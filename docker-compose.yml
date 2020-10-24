@@ -72,7 +72,7 @@ services:
       LDAP_LOG_LEVEL: "256"
       LDAP_ORGANISATION: "Symfony Inc."
       LDAP_DOMAIN: "labstag.lxc"
-      LDAP_BASE_DN: "dc=symfony,dc=lxc"
+      LDAP_BASE_DN: "dc=labstag,dc=lxc"
       LDAP_ADMIN_PASSWORD: "admin"
       LDAP_CONFIG_PASSWORD: "config"
       LDAP_READONLY_USER: "false"
