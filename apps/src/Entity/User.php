@@ -50,6 +50,12 @@ class User implements UserInterface
      */
     private $enable;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $groupe;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -155,6 +161,18 @@ class User implements UserInterface
     public function setEnable(bool $enable): self
     {
         $this->enable = $enable;
+
+        return $this;
+    }
+
+    public function getGroupe(): ?Groupe
+    {
+        return $this->groupe;
+    }
+
+    public function setGroupe(?Groupe $groupe): self
+    {
+        $this->groupe = $groupe;
 
         return $this;
     }
