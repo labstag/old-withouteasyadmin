@@ -63,6 +63,7 @@
             {field} id: <<UUID>>
             ---
             * {field} numero: string
+            * {field} country: string
             * {field} type: string<PHONE>
             * {field} principal: bool
         }

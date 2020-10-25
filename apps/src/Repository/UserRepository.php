@@ -3,7 +3,7 @@
 namespace Labstag\Repository;
 
 use Labstag\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository as SRepo;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -21,7 +21,7 @@ use get_class;
  *  $offset = null
  * )
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends SRepo implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
