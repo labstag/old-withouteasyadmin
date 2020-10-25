@@ -68,10 +68,16 @@ class User implements UserInterface
      */
     private $noteInternes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LienUser::class, mappedBy="refuser")
+     */
+    private $lienUsers;
+
     public function __construct()
     {
         $this->editos       = new ArrayCollection();
         $this->noteInternes = new ArrayCollection();
+        $this->lienUsers    = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -251,6 +257,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($noteInterne->getRefuser() === $this) {
                 $noteInterne->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LienUser[]
+     */
+    public function getLienUsers(): Collection
+    {
+        return $this->lienUsers;
+    }
+
+    public function addLienUser(LienUser $lienUser): self
+    {
+        if (!$this->lienUsers->contains($lienUser)) {
+            $this->lienUsers[] = $lienUser;
+            $lienUser->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLienUser(LienUser $lienUser): self
+    {
+        if ($this->lienUsers->contains($lienUser)) {
+            $this->lienUsers->removeElement($lienUser);
+            // set the owning side to null (unless already changed)
+            if ($lienUser->getRefuser() === $this) {
+                $lienUser->setRefuser(null);
             }
         }
 
