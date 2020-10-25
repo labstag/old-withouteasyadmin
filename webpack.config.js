@@ -1,9 +1,10 @@
 var Encore = require('@symfony/webpack-encore');
 
-// Manually configure the runtime environment if not already configured yet by the "encore" command.
-// It's useful when you use tools that rely on webpack.config.js file.
+// Manually configure the runtime environment if not already configured yet by
+// the "encore" command. It's useful when you use tools that rely on
+// webpack.config.js file.
 if (!Encore.isRuntimeEnvironmentConfigured()) {
-    Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
+  Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 
 Encore
@@ -23,21 +24,19 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', ['./assets/app.js', './assets/app.scss'])
-    .addEntry('admin', ['./assets/admin.js', './assets/admin.scss'])
+    .addEntry('app', [ './assets/app.js', './assets/app.scss' ])
+    .addEntry('admin', [ './assets/admin.js', './assets/admin.scss' ])
     //.addEntry('page1', './assets/page1.js')
     //.addEntry('page2', './assets/page2.js')
 
-    // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
+    // When enabled, Webpack "splits" your files into smaller pieces for greater
+    // optimization.
     .splitEntryChunks()
 
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
-    .configureUrlLoader({
-        fonts: { limit: 4096 },
-        images: { limit: 4096 }
-    })
+    .configureUrlLoader({fonts : {limit : 4096}, images : {limit : 4096}})
     /*
      * FEATURE CONFIG
      *
@@ -53,8 +52,8 @@ Encore
 
     // enables @babel/preset-env polyfills
     .configureBabelPresetEnv((config) => {
-        config.useBuiltIns = 'usage';
-        config.corejs = 3;
+      config.useBuiltIns = 'usage';
+      config.corejs = 3;
     })
 
     // enables Sass/SCSS support
@@ -73,6 +72,6 @@ Encore
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
     //.addEntry('admin', './assets/admin.js')
-;
+    ;
 
 module.exports = Encore.getWebpackConfig();
