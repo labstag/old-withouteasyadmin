@@ -110,7 +110,6 @@ linter-launch: apps/vendor node_modules ## Launch all linter
 	@make linter-phpstan -i
 	@make linter-phpcs -i
 	@make linter-phpmd -i
-	@make linter-phpcpd -i
 
 linter-phpcbf: apps/vendor ## fixe le code PHP à partir d'un standard
 	docker exec $(PHPFPMFULLNAME) make linter-phpcbf
@@ -123,9 +122,6 @@ linter-phpcs-onlywarning: apps/vendor ## indique les erreurs de code non corrig�
 
 linter-phpcs-onlyerror: apps/vendor ## indique les erreurs de code non corrigé par PHPCBF
 	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlyerror
-
-linter-phpcpd: apps/vendor ## verifie si il n'y a pas de copier / coller
-	docker exec $(PHPFPMFULLNAME) make linter-phpcpd
 
 linter-phpmd: apps/vendor ## indique quand le code PHP contient des erreurs de syntaxes ou des erreurs
 	docker exec $(PHPFPMFULLNAME) make linter-phpmd

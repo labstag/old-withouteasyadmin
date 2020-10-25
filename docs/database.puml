@@ -17,6 +17,7 @@
             ---
             * {field} name: string
             * {field} slug: <<SLUG>> (unique)
+            * {field} temporary: boolean
         }
 
         class Configuration {
