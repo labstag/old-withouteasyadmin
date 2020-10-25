@@ -1,29 +1,28 @@
 <?php
 
-namespace Labstag\Form;
+namespace Labstag\Form\Admin;
 
-use Labstag\Entity\PhoneUser;
+use Labstag\Entity\Template;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PhoneUserType extends AbstractType
+class TemplateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         unset($options);
-        $builder->add('numero');
-        $builder->add('country');
-        $builder->add('type');
-        $builder->add('principal');
-        $builder->add('refuser');
+        $builder->add('name');
+        $builder->add('code');
+        $builder->add('html');
+        $builder->add('text');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-                'data_class' => PhoneUser::class,
+                'data_class' => Template::class,
             ]
         );
     }

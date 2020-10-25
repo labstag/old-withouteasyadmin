@@ -1,9 +1,9 @@
 <?php
 
-namespace Labstag\Controller;
+namespace Labstag\Controller\Admin;
 
 use Labstag\Entity\PhoneUser;
-use Labstag\Form\PhoneUserType;
+use Labstag\Form\Admin\PhoneUserType;
 use Labstag\Repository\PhoneUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

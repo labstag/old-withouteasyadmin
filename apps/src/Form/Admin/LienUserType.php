@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Form;
+namespace Labstag\Form\Admin;
 
 use Labstag\Entity\LienUser;
 use Symfony\Component\Form\AbstractType;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Labstag\Controller;
+namespace Labstag\Controller\Admin;
 
 use Labstag\Entity\Edito;
-use Labstag\Form\EditoType;
+use Labstag\Form\Admin\EditoType;
 use Labstag\Repository\EditoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
