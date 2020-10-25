@@ -1,9 +1,9 @@
 <?php
 
-namespace Labstag\Controller;
+namespace Labstag\Controller\Admin;
 
 use Labstag\Entity\EmailUser;
-use Labstag\Form\EmailUserType;
+use Labstag\Form\Admin\EmailUserType;
 use Labstag\Repository\EmailUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

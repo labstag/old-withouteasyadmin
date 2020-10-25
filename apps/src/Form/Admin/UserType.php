@@ -1,29 +1,31 @@
 <?php
 
-namespace Labstag\Form;
+namespace Labstag\Form\Admin;
 
-use Labstag\Entity\NoteInterne;
+use Labstag\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NoteInterneType extends AbstractType
+class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         unset($options);
-        $builder->add('title');
-        $builder->add('content');
+        $builder->add('username');
+        $builder->add('roles');
+        $builder->add('password');
+        $builder->add('nom');
+        $builder->add('prenom');
         $builder->add('enable');
-        $builder->add('date_debut');
-        $builder->add('date_fin');
+        $builder->add('groupe');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-                'data_class' => NoteInterne::class,
+                'data_class' => User::class,
             ]
         );
     }

@@ -1,9 +1,9 @@
 <?php
 
-namespace Labstag\Controller;
+namespace Labstag\Controller\Admin;
 
 use Labstag\Entity\AdresseUser;
-use Labstag\Form\AdresseUserType;
+use Labstag\Form\Admin\AdresseUserType;
 use Labstag\Repository\AdresseUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
