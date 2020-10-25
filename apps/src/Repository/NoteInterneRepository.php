@@ -10,7 +10,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method NoteInterne|null find($id, $lockMode = null, $lockVersion = null)
  * @method NoteInterne|null findOneBy(array $criteria, array $orderBy = null)
  * @method NoteInterne[]    findAll()
- * @method NoteInterne[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method NoteInterne[]    findBy(
+ *  array $criteria,
+ *  array $orderBy = null,
+ *  $limit = null,
+ *  $offset = null
+ * )
  */
 class NoteInterneRepository extends ServiceEntityRepository
 {
