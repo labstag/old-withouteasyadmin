@@ -19,3 +19,4 @@ apps/bin/phpstan
 apps/bin/phpstan.phar
 apps/bin/phpmnd
 /apps/.env
+apps/public/assets
