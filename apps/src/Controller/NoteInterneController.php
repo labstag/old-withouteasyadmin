@@ -18,9 +18,7 @@ class NoteInterneController extends AbstractController
     /**
      * @Route("/", name="note_interne_index", methods={"GET"})
      */
-    public function index(
-        NoteInterneRepository $repository
-    ): Response
+    public function index(NoteInterneRepository $repository): Response
     {
         return $this->render(
             'note_interne/index.html.twig',
