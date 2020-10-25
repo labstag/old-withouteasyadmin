@@ -2,13 +2,13 @@
 
 namespace Labstag\Entity;
 
-use Labstag\Repository\EditoRepository;
+use Labstag\Repository\NoteInterneRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=EditoRepository::class)
+ * @ORM\Entity(repositoryClass=NoteInterneRepository::class)
  */
-class Edito
+class NoteInterne
 {
 
     /**
@@ -34,7 +34,17 @@ class Edito
     private $enable;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="editos")
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $date_debut;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $date_fin;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $refuser;
@@ -76,6 +86,30 @@ class Edito
     public function setEnable(bool $enable): self
     {
         $this->enable = $enable;
+
+        return $this;
+    }
+
+    public function getDateDebut(): ?\DateTimeImmutable
+    {
+        return $this->date_debut;
+    }
+
+    public function setDateDebut(\DateTimeImmutable $date_debut): self
+    {
+        $this->date_debut = $date_debut;
+
+        return $this;
+    }
+
+    public function getDateFin(): ?\DateTimeImmutable
+    {
+        return $this->date_fin;
+    }
+
+    public function setDateFin(?\DateTimeImmutable $date_fin): self
+    {
+        $this->date_fin = $date_fin;
 
         return $this;
     }
