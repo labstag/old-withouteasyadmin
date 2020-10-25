@@ -11,7 +11,7 @@
             * {field} gps: string
             * {field} type: string<ADRESSE>
         }
-        
+
         class Category {
             {field} id: <<UUID>>
             ---
@@ -167,11 +167,11 @@
             class Adresse_Etablissement {
                 * {field} refetablissement: <<ETABLISSEMENT>>
             }
-            
+
             class Email_Etablissement {
                 * {field} refetablissement: <<ETABLISSEMENT>>
             }
-            
+
             class Lien_Etablissement {
                 * {field} refetablissement: <<ETABLISSEMENT>>
             }
@@ -235,7 +235,7 @@
             class Tag_Bookmark {
                 * {field} refbookmark: <<BOOKMARK>>
             }
-            
+
             Tag <|-- Tag_Bookmark
 
             Bookmark }o--|| Tag_Bookmark
@@ -282,7 +282,7 @@
             Category <|-- Category_Post
 
 
-            Post }o--|| Category_Post 
+            Post }o--|| Category_Post
             Post }o--|| Tag_Post
         }
     }
