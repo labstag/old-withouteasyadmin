@@ -83,6 +83,11 @@ class User implements UserInterface
      */
     private $phoneUsers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=AdresseUser::class, mappedBy="refuser")
+     */
+    private $adresseUsers;
+
     public function __construct()
     {
         $this->editos       = new ArrayCollection();
@@ -90,6 +95,7 @@ class User implements UserInterface
         $this->lienUsers    = new ArrayCollection();
         $this->emailUsers   = new ArrayCollection();
         $this->phoneUsers   = new ArrayCollection();
+        $this->adresseUsers = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -362,6 +368,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($phoneUser->getRefuser() === $this) {
                 $phoneUser->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AdresseUser[]
+     */
+    public function getAdresseUsers(): Collection
+    {
+        return $this->adresseUsers;
+    }
+
+    public function addAdresseUser(AdresseUser $adresseUser): self
+    {
+        if (!$this->adresseUsers->contains($adresseUser)) {
+            $this->adresseUsers[] = $adresseUser;
+            $adresseUser->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdresseUser(AdresseUser $adresseUser): self
+    {
+        if ($this->adresseUsers->contains($adresseUser)) {
+            $this->adresseUsers->removeElement($adresseUser);
+            // set the owning side to null (unless already changed)
+            if ($adresseUser->getRefuser() === $this) {
+                $adresseUser->setRefuser(null);
             }
         }
 

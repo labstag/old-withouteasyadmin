@@ -18,9 +18,7 @@ class ConfigurationController extends AbstractController
     /**
      * @Route("/", name="configuration_index", methods={"GET"})
      */
-    public function index(
-        ConfigurationRepository $repository
-    ): Response
+    public function index(ConfigurationRepository $repository): Response
     {
         return $this->render(
             'configuration/index.html.twig',

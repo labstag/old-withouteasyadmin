@@ -4,12 +4,13 @@
         class Adresse {
             {field} id: <<UUID>>
             ---
-            * {field} pmr: bool
+            * {field} rue: string
             * {field} country: string
             * {field} zipcode: string
             * {field} ville: string
             * {field} gps: string
             * {field} type: string<ADRESSE>
+            * {field} pmr: bool
         }
 
         class Category {
