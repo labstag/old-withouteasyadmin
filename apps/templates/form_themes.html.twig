@@ -1,0 +1,209 @@
+{%- use "bootstrap_4_layout.html.twig" -%}
+
+{%- block fieldset_widget -%}
+    <fieldset {{ block('widget_container_attributes') }}>
+        {%- if legend is defined and legend is not empty -%}
+            <legend>{{ legend|trans({}, translation_domain) }}</legend>
+		{%- endif -%}
+        {{ form_widget(form) }}
+    </fieldset>
+{%- endblock -%}
+
+{%- block form_row -%}
+	{%- set label_attr = {} -%}
+	{%- set element_attr = {
+		'class': 'form-group'
+	} -%}
+    {%- if compound is defined and compound -%}
+		{%- set element = 'fieldset' -%}
+		{%- if form.vars.block_prefixes[1] == "collection" -%}
+			{%- if prototype is defined and allow_add -%}
+				{%- set label_attr = label_attr|merge({
+					'allow_add': true
+				}) -%}
+				{%- set element_attr = element_attr|merge({
+					'class': element_attr.class ~ ' FieldCollections',
+					'data-prototype': block('collection_item_widget')|replace({'"': "'", "\n": "", "\t": ""})
+				}) -%}
+			{%- else -%}
+				{%- set element_attr = element_attr|merge({
+					'class': element_attr.class ~ ' FieldCollection'
+				}) -%}
+			{%- endif -%}
+		{%- endif -%}
+		{%- set element_attr = element_attr|merge({
+			'id': random()
+		}) -%}
+    {%- endif -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~ "_help"}} -%}
+    {%- endif -%}
+    <{{ element|default('div') }}{%- if element_attr -%}{%- with { attr: element_attr } -%}{{ block('attributes') }}{%- endwith -%}{%- endif -%}>
+        {{- form_label(form) -}}
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_help(form) -}}
+    </{{ element|default('div') }}>
+{%- endblock -%}
+
+{%- block form_label -%}
+    {%- if label is not same as(false) -%}
+        {%- if compound is defined and compound -%}
+            {%- set element = 'legend' -%}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' col-form-label')|trim}) -%}
+        {%- else -%}
+            {%- set label_attr = label_attr|merge({for: id}) -%}
+        {%- endif -%}
+        {%- if required -%}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' required')|trim}) -%}
+        {%- endif -%}
+        {%- if label is empty -%}
+            {%- if label_format is not empty -%}
+                {%- set label = label_format|replace({
+                    '%name%': name,
+                    '%id%': id,
+                }) -%}
+            {%- else -%}
+                {%- set label = name|humanize -%}
+            {%- endif -%}
+        {%- endif -%}
+		<{{ element|default('label') }}{%- if label_attr -%}{%- with { attr: label_attr } -%}{{ block('attributes') }}{%- endwith -%}{%- endif -%}>
+			{{ label|trans }}
+			{%- if element|default('label') == 'legend' and form.vars.block_prefixes[1] == "collection" -%}
+				<div class="btn btn-info float-right ToggleFieldset">
+					<i class="far fa-window-minimize"></i>
+					<i class="fas fa-window-maximize d-none"></i>
+				</div>
+			{%- endif -%}
+			{%- if allow_add is defined and allow_add == true -%}
+				<div class="btn btn-primary btn-xs BtnCollectionAdd float-right">
+					<i class="glyphicon glyphicon-plus"></i>
+					<span>Ajouter</span>
+				</div>
+			{%- endif -%}
+		</{{ element|default('label') }}>
+		{%- block form_label_errors -%}
+			{{- form_errors(form) -}}
+		{%- endblock form_label_errors -%}
+    {%- else -%}
+        {%- if errors|length > 0 -%}
+        <div id="{{ id }}_errors" class="mb-2">
+            {{- form_errors(form) -}}
+        </div>
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock -%}
+
+
+{%- block collection_item_widget -%}
+	<tr class="CollectionRow">
+		{%- for input in prototype -%}
+			<td>
+				{{ form_widget(input) }}
+			</td>
+		{%- endfor -%}
+		{%- if allow_delete -%}
+			<td class="text-center">
+				{{- block('collection_delete') -}}
+			</td>
+		{%- endif -%}
+	</tr>
+{%- endblock -%}
+
+{%- block collection_delete -%}
+	<div class="btn btn-danger btn-xs BtnCollectionDelete" title="Supprimer">
+		<i class="fas fa-trash-alt"></i>
+	</div>
+{%- endblock -%}
+
+{%- block collection_widget -%}
+	{%- if prototype is defined -%}
+	<table class="table table-striped table-bordered table-condensed">
+		<thead>
+			{%- for input in prototype -%}
+				<th>
+					{{ form_label(input) }}
+				</th>
+			{%- endfor -%}
+			{%- if allow_delete -%}
+				<th>
+					<label>Actions</label>
+				</th>
+			{%- endif -%}
+		</thead>
+		<tbody class="TabCollection TabCollection">
+			{%- for i, row in form -%}
+				<tr class="CollectionRow">
+					{%- for input in row -%}
+						<td>
+							{{ form_widget(input) }}
+						</td>
+					{%- endfor -%}
+					{%- if allow_delete -%}
+						<td class="text-center">
+							{{- block('collection_delete') -}}
+						</td>
+					{%- endif -%}
+				</tr>
+			{%- endfor -%}
+		</tbody>
+	</table>
+	{%- else -%}
+		<div class="row">
+			{%- for row in form -%}
+				{%- for input in row -%}
+					<div class="col-md-6">
+						{{ form_row(input) }}
+					</div>
+				{%- endfor -%}
+			{%- endfor -%}
+		</div>
+	{%- endif -%}
+{%- endblock -%}
+
+{%- block vich_file_row -%}
+    {{- block('form_row') -}}
+{%- endblock -%}
+
+{%- block vich_file_widget -%}
+    <div class="vich-file">
+        {{- form_widget(form.file) -}}
+        {%- if form.delete is defined -%}
+            {{- form_row(form.delete) -}}
+        {%- endif -%}
+
+        {%- if download_uri -%}
+            <a href="{{ download_uri }}">{{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}</a>
+        {%- endif -%}
+    </div>
+{%- endblock -%}
+
+{%- block vich_image_row -%}
+    {{- block('form_row') -}}
+{%- endblock -%}
+
+{%- block vich_image_widget -%}
+    <div class="vich-image">
+        {{- form_widget(form.file) -}}
+		<div class="row">
+			<div class="col-xl-2 offset-xl-5">
+				{%- if form.delete is defined -%}
+					{{- form_row(form.delete) -}}
+				{%- endif -%}
+				{%- if image_uri -%}
+					<a href="{{ image_uri }}" data-fancybox="true">
+						<img src="{{ image_uri }}" class="img-thumbnail" />
+					</a>
+				{%- endif -%}
+				{%- if download_uri -%}
+					<a href="{{ download_uri }}">{{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}</a>
+				{%- endif -%}
+			</div>
+		</div>
+    </div>
+{%- endblock -%}
+
+{%- block vich_file_label -%}
+    {%- set label = label|trans|default(label) -%}
+    {{- block('form_label') -}}
+{%- endblock -%}
