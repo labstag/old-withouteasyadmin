@@ -35,6 +35,8 @@ jobs:
         run: |
           cd apps
           php bin/phpcs
+      - name: Test lancement bootstrap
+        run: npm run encore-dev
       - name: Run Acceptance Tests
         run: |
           cd apps
