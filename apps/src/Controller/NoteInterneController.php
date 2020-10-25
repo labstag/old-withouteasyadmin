@@ -20,7 +20,8 @@ class NoteInterneController extends AbstractController
      */
     public function index(
         NoteInterneRepository $repository
-    ): Response {
+    ): Response
+    {
         return $this->render(
             'note_interne/index.html.twig',
             [
