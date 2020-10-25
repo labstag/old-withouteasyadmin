@@ -1,9 +1,9 @@
 <?php
 
-namespace Labstag\Controller;
+namespace Labstag\Controller\Admin;
 
 use Labstag\Entity\LienUser;
-use Labstag\Form\LienUserType;
+use Labstag\Form\Admin\LienUserType;
 use Labstag\Repository\LienUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

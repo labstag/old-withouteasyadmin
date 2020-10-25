@@ -1,28 +1,29 @@
 <?php
 
-namespace Labstag\Form;
+namespace Labstag\Form\Admin;
 
-use Labstag\Entity\Template;
+use Labstag\Entity\NoteInterne;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TemplateType extends AbstractType
+class NoteInterneType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         unset($options);
-        $builder->add('name');
-        $builder->add('code');
-        $builder->add('html');
-        $builder->add('text');
+        $builder->add('title');
+        $builder->add('content');
+        $builder->add('enable');
+        $builder->add('date_debut');
+        $builder->add('date_fin');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-                'data_class' => Template::class,
+                'data_class' => NoteInterne::class,
             ]
         );
     }

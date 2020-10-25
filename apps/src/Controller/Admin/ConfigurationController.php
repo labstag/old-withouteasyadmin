@@ -1,9 +1,9 @@
 <?php
 
-namespace Labstag\Controller;
+namespace Labstag\Controller\Admin;
 
 use Labstag\Entity\Configuration;
-use Labstag\Form\ConfigurationType;
+use Labstag\Form\Admin\ConfigurationType;
 use Labstag\Repository\ConfigurationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

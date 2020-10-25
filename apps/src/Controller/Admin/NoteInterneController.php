@@ -1,9 +1,9 @@
 <?php
 
-namespace Labstag\Controller;
+namespace Labstag\Controller\Admin;
 
 use Labstag\Entity\NoteInterne;
-use Labstag\Form\NoteInterne1Type;
+use Labstag\Form\Admin\NoteInterne1Type;
 use Labstag\Repository\NoteInterneRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

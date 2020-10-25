@@ -1,19 +1,24 @@
 <?php
 
-namespace Labstag\Form;
+namespace Labstag\Form\Admin;
 
-use Labstag\Entity\EmailUser;
+use Labstag\Entity\AdresseUser;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EmailUserType extends AbstractType
+class AdresseUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         unset($options);
-        $builder->add('adresse');
-        $builder->add('principal');
+        $builder->add('rue');
+        $builder->add('country');
+        $builder->add('zipcode');
+        $builder->add('ville');
+        $builder->add('gps');
+        $builder->add('type');
+        $builder->add('pmr');
         $builder->add('refuser');
     }
 
@@ -21,7 +26,7 @@ class EmailUserType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => EmailUser::class,
+                'data_class' => AdresseUser::class,
             ]
         );
     }

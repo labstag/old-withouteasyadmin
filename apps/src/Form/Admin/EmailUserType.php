@@ -1,20 +1,19 @@
 <?php
 
-namespace Labstag\Form;
+namespace Labstag\Form\Admin;
 
-use Labstag\Entity\Edito;
+use Labstag\Entity\EmailUser;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditoType extends AbstractType
+class EmailUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         unset($options);
-        $builder->add('title');
-        $builder->add('content');
-        $builder->add('enable');
+        $builder->add('adresse');
+        $builder->add('principal');
         $builder->add('refuser');
     }
 
@@ -22,7 +21,7 @@ class EditoType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => Edito::class,
+                'data_class' => EmailUser::class,
             ]
         );
     }
