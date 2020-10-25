@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Configuration{% endblock %}
+
+{% block body %}
+    <h1>Create new Configuration</h1>
+
+    {{ include('configuration/_form.html.twig') }}
+
+    <a href="{{ path('configuration_index') }}">back to list</a>
+{% endblock %}
