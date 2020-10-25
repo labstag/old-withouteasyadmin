@@ -34,8 +34,7 @@ class UserRepository extends SRepo implements PasswordUpgraderInterface
     public function upgradePassword(
         UserInterface $user,
         string $newEncodedPassword
-    ): void
-    {
+    ): void {
         if (!$user instanceof User) {
             $msg = sprintf(
                 'Instances of "%s" are not supported.',
