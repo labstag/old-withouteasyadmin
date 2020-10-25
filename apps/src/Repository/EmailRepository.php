@@ -2,30 +2,30 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\Edito;
+use Labstag\Entity\Email;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Edito|null find($id, $lockMode = null, $lockVersion = null)
- * @method Edito|null findOneBy(array $criteria, array $orderBy = null)
- * @method Edito[]    findAll()
- * @method Edito[]    findBy(
+ * @method Email|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Email|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Email[]    findAll()
+ * @method Email[]    findBy(
  *  array $criteria,
  *  array $orderBy = null,
  *  $limit = null,
  *  $offset = null
  * )
  */
-class EditoRepository extends ServiceEntityRepository
+abstract class EmailRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Edito::class);
+        parent::__construct($registry, Email::class);
     }
 
     // /**
-    //  * @return Edito[] Returns an array of Edito objects
+    //  * @return Email[] Returns an array of Email objects
     //  */
     /*
     public function findByExampleField($value)
@@ -42,7 +42,7 @@ class EditoRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Edito
+    public function findOneBySomeField($value): ?Email
     {
         return $this->createQueryBuilder('e')
             ->andWhere('e.exampleField = :val')
