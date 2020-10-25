@@ -34,7 +34,7 @@
             * {field} content: <<HTML>>
             * {field} enable: bool
             * {field} date_debut: <<DATETIME>>
-            * {field} date_fin: <<DATETIME>>
+            {field} date_fin: <<DATETIME>>
         }
 
         class Edito {
