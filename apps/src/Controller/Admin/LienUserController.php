@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/user/lien")
+ * @Route("/admin/user/lien")
  */
 class LienUserController extends AbstractController
 {
@@ -21,7 +21,7 @@ class LienUserController extends AbstractController
     public function index(LienUserRepository $lienUserRepository): Response
     {
         return $this->render(
-            'lien_user/index.html.twig',
+            'admin/lien_user/index.html.twig',
             [
                 'lien_users' => $lienUserRepository->findAll(),
             ]
@@ -46,7 +46,7 @@ class LienUserController extends AbstractController
         }
 
         return $this->render(
-            'lien_user/new.html.twig',
+            'admin/lien_user/new.html.twig',
             [
                 'lien_user' => $lienUser,
                 'form'      => $form->createView(),
@@ -60,7 +60,7 @@ class LienUserController extends AbstractController
     public function show(LienUser $lienUser): Response
     {
         return $this->render(
-            'lien_user/show.html.twig',
+            'admin/lien_user/show.html.twig',
             ['lien_user' => $lienUser]
         );
     }
@@ -80,7 +80,7 @@ class LienUserController extends AbstractController
         }
 
         return $this->render(
-            'lien_user/edit.html.twig',
+            'admin/lien_user/edit.html.twig',
             [
                 'lien_user' => $lienUser,
                 'form'      => $form->createView(),

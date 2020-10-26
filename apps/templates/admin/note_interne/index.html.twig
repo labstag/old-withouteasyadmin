@@ -1,0 +1,43 @@
+{% extends 'admin/note_interne/layout.html.twig' %}
+
+{% block title %}NoteInterne index{% endblock %}
+
+{% block content %}
+    <h1>NoteInterne index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Enable</th>
+                <th>Date_debut</th>
+                <th>Date_fin</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for note_interne in note_internes %}
+            <tr>
+                <td>{{ note_interne.id }}</td>
+                <td>{{ note_interne.title }}</td>
+                <td>{{ note_interne.content }}</td>
+                <td>{{ note_interne.enable ? 'Yes' : 'No' }}</td>
+                <td>{{ note_interne.dateDebut ? note_interne.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ note_interne.dateFin ? note_interne.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('note_interne_show', {'id': note_interne.id}) }}">show</a>
+                    <a href="{{ path('note_interne_edit', {'id': note_interne.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('note_interne_new') }}">Create new</a>
+{% endblock %}

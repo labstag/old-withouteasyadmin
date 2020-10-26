@@ -9,7 +9,7 @@ jobs:
             - {name: 'Docker swarm init', run: 'docker swarm init --default-addr-pool 10.20.0.0/16'}
             - {name: 'Create proxy network', run: 'make create-network'}
             - {name: 'Show HELP', run: 'make help'}
-            - {name: 'Build containers', run: 'make deploy'}
+            - {name: 'Build containers', run: 'make docker-deploy'}
             - {name: 'Check running stack', run: 'docker stack ls'}
             - {name: 'Make sleep', run: 'make sleep'}
             - {name: 'Installation version PROD', run: 'make env-prod'}

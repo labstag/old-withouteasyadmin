@@ -36,12 +36,12 @@ class NoteInterne
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $date_debut;
+    private $dateDebut;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    private $date_fin;
+    private $dateFin;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes")
@@ -92,24 +92,24 @@ class NoteInterne
 
     public function getDateDebut(): ?\DateTimeImmutable
     {
-        return $this->date_debut;
+        return $this->dateDebut;
     }
 
-    public function setDateDebut(\DateTimeImmutable $date_debut): self
+    public function setDateDebut(\DateTimeImmutable $dateDebut): self
     {
-        $this->date_debut = $date_debut;
+        $this->dateDebut = $dateDebut;
 
         return $this;
     }
 
     public function getDateFin(): ?\DateTimeImmutable
     {
-        return $this->date_fin;
+        return $this->dateFin;
     }
 
-    public function setDateFin(?\DateTimeImmutable $date_fin): self
+    public function setDateFin(?\DateTimeImmutable $dateFin): self
     {
-        $this->date_fin = $date_fin;
+        $this->dateFin = $dateFin;
 
         return $this;
     }

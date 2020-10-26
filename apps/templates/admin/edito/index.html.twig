@@ -1,0 +1,39 @@
+{% extends 'admin/edito/layout.html.twig' %}
+
+{% block title %}Edito index{% endblock %}
+
+{% block content %}
+    <h1>Edito index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Enable</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for edito in editos %}
+            <tr>
+                <td>{{ edito.id }}</td>
+                <td>{{ edito.title }}</td>
+                <td>{{ edito.content }}</td>
+                <td>{{ edito.enable ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('edito_show', {'id': edito.id}) }}">show</a>
+                    <a href="{{ path('edito_edit', {'id': edito.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('edito_new') }}">Create new</a>
+{% endblock %}

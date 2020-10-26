@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/configuration")
+ * @Route("/admin/configuration")
  */
 class ConfigurationController extends AbstractController
 {
@@ -21,7 +21,7 @@ class ConfigurationController extends AbstractController
     public function index(ConfigurationRepository $repository): Response
     {
         return $this->render(
-            'configuration/index.html.twig',
+            'admin/configuration/index.html.twig',
             [
                 'configurations' => $repository->findAll(),
             ]
@@ -49,7 +49,7 @@ class ConfigurationController extends AbstractController
         }
 
         return $this->render(
-            'configuration/new.html.twig',
+            'admin/configuration/new.html.twig',
             [
                 'configuration' => $configuration,
                 'form'          => $form->createView(),
@@ -63,7 +63,7 @@ class ConfigurationController extends AbstractController
     public function show(Configuration $configuration): Response
     {
         return $this->render(
-            'configuration/show.html.twig',
+            'admin/configuration/show.html.twig',
             ['configuration' => $configuration]
         );
     }
@@ -86,7 +86,7 @@ class ConfigurationController extends AbstractController
         }
 
         return $this->render(
-            'configuration/edit.html.twig',
+            'admin/configuration/edit.html.twig',
             [
                 'configuration' => $configuration,
                 'form'          => $form->createView(),

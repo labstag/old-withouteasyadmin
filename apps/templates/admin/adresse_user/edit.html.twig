@@ -1,0 +1,13 @@
+{% extends 'admin/adresse_user/layout.html.twig' %}
+
+{% block title %}Edit AdresseUser{% endblock %}
+
+{% block content %}
+    <h1>Edit AdresseUser</h1>
+
+    {{ include('admin/crud/form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('adresse_user_index') }}">back to list</a>
+
+    {{ include('admin/adresse_user/_delete_form.html.twig') }}
+{% endblock %}

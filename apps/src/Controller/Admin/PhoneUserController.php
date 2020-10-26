@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/user/phone")
+ * @Route("/admin/user/phone")
  */
 class PhoneUserController extends AbstractController
 {
@@ -21,7 +21,7 @@ class PhoneUserController extends AbstractController
     public function index(PhoneUserRepository $phoneUserRepository): Response
     {
         return $this->render(
-            'phone_user/index.html.twig',
+            'admin/phone_user/index.html.twig',
             [
                 'phone_users' => $phoneUserRepository->findAll(),
             ]
@@ -46,7 +46,7 @@ class PhoneUserController extends AbstractController
         }
 
         return $this->render(
-            'phone_user/new.html.twig',
+            'admin/phone_user/new.html.twig',
             [
                 'phone_user' => $phoneUser,
                 'form'       => $form->createView(),
@@ -60,7 +60,7 @@ class PhoneUserController extends AbstractController
     public function show(PhoneUser $phoneUser): Response
     {
         return $this->render(
-            'phone_user/show.html.twig',
+            'admin/phone_user/show.html.twig',
             ['phone_user' => $phoneUser]
         );
     }
@@ -80,7 +80,7 @@ class PhoneUserController extends AbstractController
         }
 
         return $this->render(
-            'phone_user/edit.html.twig',
+            'admin/phone_user/edit.html.twig',
             [
                 'phone_user' => $phoneUser,
                 'form'       => $form->createView(),

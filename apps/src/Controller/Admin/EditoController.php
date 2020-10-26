@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/edito")
+ * @Route("/admin/edito")
  */
 class EditoController extends AbstractController
 {
@@ -21,7 +21,7 @@ class EditoController extends AbstractController
     public function index(EditoRepository $editoRepository): Response
     {
         return $this->render(
-            'edito/index.html.twig',
+            'admin/edito/index.html.twig',
             [
                 'editos' => $editoRepository->findAll(),
             ]
@@ -46,7 +46,7 @@ class EditoController extends AbstractController
         }
 
         return $this->render(
-            'edito/new.html.twig',
+            'admin/edito/new.html.twig',
             [
                 'edito' => $edito,
                 'form'  => $form->createView(),
@@ -60,7 +60,7 @@ class EditoController extends AbstractController
     public function show(Edito $edito): Response
     {
         return $this->render(
-            'edito/show.html.twig',
+            'admin/edito/show.html.twig',
             ['edito' => $edito]
         );
     }
@@ -80,7 +80,7 @@ class EditoController extends AbstractController
         }
 
         return $this->render(
-            'edito/edit.html.twig',
+            'admin/edito/edit.html.twig',
             [
                 'edito' => $edito,
                 'form'  => $form->createView(),

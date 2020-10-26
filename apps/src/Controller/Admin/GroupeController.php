@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/groupe")
+ * @Route("/admin/groupe")
  */
 class GroupeController extends AbstractController
 {
@@ -21,7 +21,7 @@ class GroupeController extends AbstractController
     public function index(GroupeRepository $groupeRepository): Response
     {
         return $this->render(
-            'groupe/index.html.twig',
+            'admin/groupe/index.html.twig',
             [
                 'groupes' => $groupeRepository->findAll(),
             ]
@@ -46,7 +46,7 @@ class GroupeController extends AbstractController
         }
 
         return $this->render(
-            'groupe/new.html.twig',
+            'admin/groupe/new.html.twig',
             [
                 'groupe' => $groupe,
                 'form'   => $form->createView(),
@@ -60,7 +60,7 @@ class GroupeController extends AbstractController
     public function show(Groupe $groupe): Response
     {
         return $this->render(
-            'groupe/show.html.twig',
+            'admin/groupe/show.html.twig',
             ['groupe' => $groupe]
         );
     }
@@ -80,7 +80,7 @@ class GroupeController extends AbstractController
         }
 
         return $this->render(
-            'groupe/edit.html.twig',
+            'admin/groupe/edit.html.twig',
             [
                 'groupe' => $groupe,
                 'form'   => $form->createView(),
