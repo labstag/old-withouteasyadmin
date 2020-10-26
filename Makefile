@@ -68,7 +68,7 @@ docker-image-pull: ## Get docker image
 	docker image pull redis:6.0.8
 	docker image pull mailhog/mailhog
 	docker image pull dunglas/mercure
-	docker image pull osixia/phplddapadmin
+	docker image pull osixia/phpldapadmin
 	docker image pull osixia/openldap:1.4.0
 	docker image pull mariadb:10.5.1
 	docker image pull httpd
