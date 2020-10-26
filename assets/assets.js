@@ -1,2 +1,2 @@
-require('bootstrap');
+require("bootstrap");
 console.log("aa");
