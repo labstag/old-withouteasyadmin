@@ -9,7 +9,7 @@
     "readme": "readme",
     "licenses": "license-checker",
     "commit": "sgc",
-    "dev-server": "encore dev-server",
+    "encore-dev-server": "encore dev-server",
     "encore-dev": "encore dev",
     "encore-watch": "encore dev --watch",
     "encore-build": "encore production --progress"

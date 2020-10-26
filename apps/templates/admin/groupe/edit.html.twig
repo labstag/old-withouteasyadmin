@@ -1,0 +1,13 @@
+{% extends 'admin/groupe/layout.html.twig' %}
+
+{% block title %}Edit Groupe{% endblock %}
+
+{% block content %}
+    <h1>Edit Groupe</h1>
+
+    {{ include('admin/crud/form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('groupe_index') }}">back to list</a>
+
+    {{ include('admin/groupe/_delete_form.html.twig') }}
+{% endblock %}

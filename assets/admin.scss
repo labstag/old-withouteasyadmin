@@ -1,1 +1,10 @@
 @import "assets.scss";
+label {
+  font-weight: bold;
+  &.required {
+    &:after {
+      content: " *";
+      color: red;
+    }
+  }
+}

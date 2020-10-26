@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/user/email")
+ * @Route("/admin/user/email")
  */
 class EmailUserController extends AbstractController
 {
@@ -21,7 +21,7 @@ class EmailUserController extends AbstractController
     public function index(EmailUserRepository $emailUserRepository): Response
     {
         return $this->render(
-            'email_user/index.html.twig',
+            'admin/email_user/index.html.twig',
             [
                 'email_users' => $emailUserRepository->findAll(),
             ]
@@ -46,7 +46,7 @@ class EmailUserController extends AbstractController
         }
 
         return $this->render(
-            'email_user/new.html.twig',
+            'admin/email_user/new.html.twig',
             [
                 'email_user' => $emailUser,
                 'form'       => $form->createView(),
@@ -60,7 +60,7 @@ class EmailUserController extends AbstractController
     public function show(EmailUser $emailUser): Response
     {
         return $this->render(
-            'email_user/show.html.twig',
+            'admin/email_user/show.html.twig',
             ['email_user' => $emailUser]
         );
     }
@@ -80,7 +80,7 @@ class EmailUserController extends AbstractController
         }
 
         return $this->render(
-            'email_user/edit.html.twig',
+            'admin/email_user/edit.html.twig',
             [
                 'email_user' => $emailUser,
                 'form'       => $form->createView(),

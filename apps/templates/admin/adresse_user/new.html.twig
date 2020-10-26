@@ -1,0 +1,11 @@
+{% extends 'admin/adresse_user/layout.html.twig' %}
+
+{% block title %}New AdresseUser{% endblock %}
+
+{% block content %}
+    <h1>Create new AdresseUser</h1>
+
+    {{ include('admin/crud/form.html.twig') }}
+
+    <a href="{{ path('adresse_user_index') }}">back to list</a>
+{% endblock %}
