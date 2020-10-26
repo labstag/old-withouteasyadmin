@@ -2,14 +2,12 @@
 
 namespace Labstag\Menu;
 
-
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class AdminMenuBuilder
 {
-
     private $factory;
 
     public function __construct(FactoryInterface $factory)
