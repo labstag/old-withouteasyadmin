@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/template")
+ * @Route("/admin/template")
  */
 class TemplateController extends AbstractController
 {
@@ -21,7 +21,7 @@ class TemplateController extends AbstractController
     public function index(TemplateRepository $templateRepository): Response
     {
         return $this->render(
-            'template/index.html.twig',
+            'admin/template/index.html.twig',
             [
                 'templates' => $templateRepository->findAll(),
             ]
@@ -46,7 +46,7 @@ class TemplateController extends AbstractController
         }
 
         return $this->render(
-            'template/new.html.twig',
+            'admin/template/new.html.twig',
             [
                 'template' => $template,
                 'form'     => $form->createView(),
@@ -60,7 +60,7 @@ class TemplateController extends AbstractController
     public function show(Template $template): Response
     {
         return $this->render(
-            'template/show.html.twig',
+            'admin/template/show.html.twig',
             ['template' => $template]
         );
     }
@@ -80,7 +80,7 @@ class TemplateController extends AbstractController
         }
 
         return $this->render(
-            'template/edit.html.twig',
+            'admin/template/edit.html.twig',
             [
                 'template' => $template,
                 'form'     => $form->createView(),

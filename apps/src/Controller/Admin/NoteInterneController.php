@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/noteinterne")
+ * @Route("/admin/noteinterne")
  */
 class NoteInterneController extends AbstractController
 {
@@ -21,7 +21,7 @@ class NoteInterneController extends AbstractController
     public function index(NoteInterneRepository $repository): Response
     {
         return $this->render(
-            'note_interne/index.html.twig',
+            'admin/note_interne/index.html.twig',
             [
                 'note_internes' => $repository->findAll(),
             ]
@@ -46,7 +46,7 @@ class NoteInterneController extends AbstractController
         }
 
         return $this->render(
-            'note_interne/new.html.twig',
+            'admin/note_interne/new.html.twig',
             [
                 'note_interne' => $noteInterne,
                 'form'         => $form->createView(),
@@ -60,7 +60,7 @@ class NoteInterneController extends AbstractController
     public function show(NoteInterne $noteInterne): Response
     {
         return $this->render(
-            'note_interne/show.html.twig',
+            'admin/note_interne/show.html.twig',
             ['note_interne' => $noteInterne]
         );
     }
@@ -80,7 +80,7 @@ class NoteInterneController extends AbstractController
         }
 
         return $this->render(
-            'note_interne/edit.html.twig',
+            'admin/note_interne/edit.html.twig',
             [
                 'note_interne' => $noteInterne,
                 'form'         => $form->createView(),

@@ -1,0 +1,13 @@
+{% extends 'admin/lien_user/layout.html.twig' %}
+
+{% block title %}Edit LienUser{% endblock %}
+
+{% block content %}
+    <h1>Edit LienUser</h1>
+
+    {{ include('admin/crud/form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('lien_user_index') }}">back to list</a>
+
+    {{ include('admin/lien_user/_delete_form.html.twig') }}
+{% endblock %}
