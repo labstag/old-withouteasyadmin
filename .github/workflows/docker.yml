@@ -16,4 +16,5 @@ jobs:
             - {name: 'Installation version PROD', run: 'make env-prod'}
             - {name: 'Check running containers', run: 'docker service ls'}
             - {name: 'BDD MIGRATE', run: 'make bdd-migrate'}
-            - {name: 'Run the fixtures', run: 'make bdd-fixtures'}
+            - {name: 'BDD MIGRATE', run: 'make bdd-validate'}
+            # - {name: 'Run the fixtures', run: 'make bdd-fixtures'}
