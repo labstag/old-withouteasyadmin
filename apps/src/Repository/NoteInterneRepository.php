@@ -6,17 +6,6 @@ use Labstag\Entity\NoteInterne;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @method NoteInterne|null find($id, $lockMode = null, $lockVersion = null)
- * @method NoteInterne|null findOneBy(array $criteria, array $orderBy = null)
- * @method NoteInterne[]    findAll()
- * @method NoteInterne[]    findBy(
- *  array $criteria,
- *  array $orderBy = null,
- *  $limit = null,
- *  $offset = null
- * )
- */
 class NoteInterneRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

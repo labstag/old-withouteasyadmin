@@ -73,7 +73,7 @@ docker-image-pull: ## Get docker image
 	docker image pull mariadb:10.5.1
 	docker image pull httpd
 	docker image pull phpmyadmin/phpmyadmin
-	docker image pull koromerzhin/php-fpm-symfony:latest
+	docker image pull koromerzhin/phpfpm:latest-symfony-without-xdebug
 
 env-dev: apps/.env ## Installation environnement dev
 	sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
@@ -115,17 +115,20 @@ linter-launch: apps/vendor node_modules ## Launch all linter
 linter-phpcbf: apps/vendor ## fixe le code PHP à partir d'un standard
 	docker exec $(PHPFPMFULLNAME) make linter-phpcbf
 
+linter-phpcpd: phpcpd.phar ## Vérifie s'il y a du code dupliqué
+	docker exec $(PHPFPMFULLNAME) make linter-phpcpd
+
 linter-phpcs: apps/vendor ## indique les erreurs de code non corrigé par PHPCBF
 	docker exec $(PHPFPMFULLNAME) make linter-phpcs
 
 linter-phpcs-onlywarning: apps/vendor ## indique les erreurs de code non corrigé par PHPCBF
 	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlywarning
 
-linter-phpcpd: phpcpd.phar ## Vérifie s'il y a du code dupliqué
-	docker exec $(PHPFPMFULLNAME) make linter-phpcpd
-
 linter-phpcs-onlyerror: apps/vendor ## indique les erreurs de code non corrigé par PHPCBF
 	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlyerror
+
+linter-phpinsights: apps/vendor ## PHP Insights
+	docker exec $(PHPFPMFULLNAME) make linter-phpinsights
 
 linter-phpmd: apps/vendor ## indique quand le code PHP contient des erreurs de syntaxes ou des erreurs
 	docker exec $(PHPFPMFULLNAME) make linter-phpmd

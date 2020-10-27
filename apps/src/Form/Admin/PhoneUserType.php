@@ -9,7 +9,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PhoneUserType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(
+        FormBuilderInterface $builder,
+        array $options
+    ): void
     {
         unset($options);
         $builder->add('numero');
@@ -19,7 +25,7 @@ class PhoneUserType extends AbstractType
         $builder->add('refuser');
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
