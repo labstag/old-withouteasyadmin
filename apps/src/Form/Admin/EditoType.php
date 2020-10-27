@@ -9,7 +9,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditoType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(
+        FormBuilderInterface $builder,
+        array $options
+    ): void
     {
         unset($options);
         $builder->add('title');
@@ -18,7 +24,7 @@ class EditoType extends AbstractType
         $builder->add('refuser');
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
