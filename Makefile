@@ -127,6 +127,9 @@ linter-phpcs: apps/vendor ## indique les erreurs de code non corrigé par PHPCBF
 linter-phpcs-onlywarning: apps/vendor ## indique les erreurs de code non corrigé par PHPCBF
 	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlywarning
 
+linter-phpcpd: phpcpd.phar ## Vérifie s'il y a du code dupliqué
+	docker exec $(PHPFPMFULLNAME) make linter-phpcpd
+
 linter-phpcs-onlyerror: apps/vendor ## indique les erreurs de code non corrigé par PHPCBF
 	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlyerror
 
