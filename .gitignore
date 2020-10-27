@@ -21,5 +21,4 @@ apps/bin/phpmnd
 /apps/.env
 apps/public/assets
 apps/phpcpd.phar
-apps/phpcpd.phar
 apps/twigcs.phar
