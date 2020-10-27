@@ -12,6 +12,12 @@ vendor:
 .env: ## Install .env
 	cp .env.dist .env
 
+phpcpd.phar:
+	wget https://phar.phpunit.de/phpcpd.phar
+
+twigcs.phar:
+	wget https://github.com/friendsoftwig/twigcs/releases/download/v3.2.2/twigcs.phar
+
 bdd-fixtures: vendor ## fixtures
 	php bin/console doctrine:fixtures:load -n
 
@@ -50,6 +56,9 @@ env-prod: .env ## Installation environnement prod
 linter-phpcbf: vendor ## fixe le code PHP à partir d'un standard
 	composer run phpcbf
 
+linter-phpcpd: phpcpd.phar ## Vérifie s'il y a du code dupliqué
+	php phpcpd.phar src tests
+
 linter-phpcs: vendor ## indique les erreurs de code non corrigé par PHPCBF
 	composer run phpcs
 
@@ -68,8 +77,8 @@ linter-phpmnd: vendor ## Si des chiffres sont utilisé dans le code PHP, il est 
 linter-phpstan: vendor ## regarde si le code PHP ne peux pas être optimisé
 	composer run phpstan
 
-linter-twigcs: vendor ## indique les erreurs de code de twig
-	composer run twigcs
+linter-twigcs: twigcs.phar ## indique les erreurs de code de twig
+	php twigcs.phar templates
 
 sleep: ## sleep
 	sleep 90
