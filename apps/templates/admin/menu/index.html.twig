@@ -1,0 +1,47 @@
+{% extends 'admin/menu/layout.html.twig' %}
+
+{% block title %}Menu index{% endblock %}
+
+{% block content %}
+    <h1>Menu index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Libelle</th>
+                <th>Icon</th>
+                <th>Position</th>
+                <th>Cible</th>
+                <th>Data</th>
+                <th>Separateur</th>
+                <th>Clef</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for menu in menus %}
+            <tr>
+                <td>{{ menu.id }}</td>
+                <td>{{ menu.libelle }}</td>
+                <td>{{ menu.icon }}</td>
+                <td>{{ menu.position }}</td>
+                <td>{{ menu.cible }}</td>
+                <td>{{ menu.data ? menu.data|json_encode : '' }}</td>
+                <td>{{ menu.separateur ? 'Yes' : 'No' }}</td>
+                <td>{{ menu.clef }}</td>
+                <td>
+                    <a href="{{ path('menu_show', {'id': menu.id}) }}">show</a>
+                    <a href="{{ path('menu_edit', {'id': menu.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('menu_new') }}">Create new</a>
+{% endblock %}

@@ -61,32 +61,32 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="refuser")
      */
-    private $editos;
+    private ArrayCollection $editos;
 
     /**
      * @ORM\OneToMany(targetEntity=NoteInterne::class, mappedBy="refuser")
      */
-    private $noteInternes;
+    private ArrayCollection $noteInternes;
 
     /**
      * @ORM\OneToMany(targetEntity=LienUser::class, mappedBy="refuser")
      */
-    private $lienUsers;
+    private ArrayCollection $lienUsers;
 
     /**
      * @ORM\OneToMany(targetEntity=EmailUser::class, mappedBy="refuser")
      */
-    private $emailUsers;
+    private ArrayCollection $emailUsers;
 
     /**
      * @ORM\OneToMany(targetEntity=PhoneUser::class, mappedBy="refuser")
      */
-    private $phoneUsers;
+    private ArrayCollection $phoneUsers;
 
     /**
      * @ORM\OneToMany(targetEntity=AdresseUser::class, mappedBy="refuser")
      */
-    private $adresseUsers;
+    private ArrayCollection $adresseUsers;
 
     public function __construct()
     {
@@ -157,15 +157,16 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getSalt()
+    public function getSalt(): string
     {
+        return '';
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -219,9 +220,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Edito[]
-     */
     public function getEditos(): Collection
     {
         return $this->editos;
@@ -250,9 +248,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|NoteInterne[]
-     */
     public function getNoteInternes(): Collection
     {
         return $this->noteInternes;
@@ -281,9 +276,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|LienUser[]
-     */
     public function getLienUsers(): Collection
     {
         return $this->lienUsers;
@@ -312,9 +304,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|EmailUser[]
-     */
     public function getEmailUsers(): Collection
     {
         return $this->emailUsers;
@@ -343,9 +332,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|PhoneUser[]
-     */
     public function getPhoneUsers(): Collection
     {
         return $this->phoneUsers;
@@ -374,9 +360,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|AdresseUser[]
-     */
     public function getAdresseUsers(): Collection
     {
         return $this->adresseUsers;
