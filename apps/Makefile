@@ -68,6 +68,9 @@ linter-phpcs-onlywarning: vendor ## indique les erreurs de code non corrigé par
 linter-phpcs-onlyerror: vendor ## indique les erreurs de code non corrigé par PHPCBF
 	composer run phpcs-onlyerror
 
+linter-phpinsights: apps/vendor ## PHP Insights
+	composer run phpinsights
+
 linter-phpmd: vendor ## indique quand le code PHP contient des erreurs de syntaxes ou des erreurs
 	composer run phpmd
 

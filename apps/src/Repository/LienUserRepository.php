@@ -5,17 +5,6 @@ namespace Labstag\Repository;
 use Labstag\Entity\LienUser;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @method LienUser|null find($id, $lockMode = null, $lockVersion = null)
- * @method LienUser|null findOneBy(array $criteria, array $orderBy = null)
- * @method LienUser[]    findAll()
- * @method LienUser[]    findBy(
- *  array $criteria,
- *  array $orderBy = null,
- *  $limit = null,
- *  $offset = null
- * )
- */
 class LienUserRepository extends LienRepository
 {
     public function __construct(ManagerRegistry $registry)

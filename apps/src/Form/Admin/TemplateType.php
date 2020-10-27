@@ -9,7 +9,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TemplateType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(
+        FormBuilderInterface $builder,
+        array $options
+    ): void
     {
         unset($options);
         $builder->add('name');
@@ -18,7 +25,7 @@ class TemplateType extends AbstractType
         $builder->add('text');
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [

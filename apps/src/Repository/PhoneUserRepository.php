@@ -5,17 +5,6 @@ namespace Labstag\Repository;
 use Labstag\Entity\PhoneUser;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @method PhoneUser|null find($id, $lockMode = null, $lockVersion = null)
- * @method PhoneUser|null findOneBy(array $criteria, array $orderBy = null)
- * @method PhoneUser[]    findAll()
- * @method PhoneUser[]    findBy(
- *  array $criteria,
- *  array $orderBy = null,
- *  $limit = null,
- *  $offset = null
- * )
- */
 class PhoneUserRepository extends PhoneRepository
 {
     public function __construct(ManagerRegistry $registry)

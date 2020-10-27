@@ -70,6 +70,7 @@
     "dama/doctrine-test-bundle": "^6.3",
     "doctrine/doctrine-fixtures-bundle": "^3.3",
     "friendsoftwig/twigcs": "^3.2",
+    "nunomaduro/phpinsights": "^1.14",
     "phpmd/phpmd": "^2.9",
     "phpstan/phpstan": "^0.12.50",
     "povils/phpmnd": "^2.3",
@@ -120,13 +121,15 @@
     "phpcs-onlyerror": "phpcs src features/bootstrap tests --report=full --extensions=php --warning-severity=0",
     "phpcs": "phpcs src features/bootstrap tests --report=full --extensions=php",
     "phpstan": "phpstan analyse src,features/bootsrap,tests",
+    "phpinsights": "phpinsights",
     "phpmnd": "phpmnd src,features/bootstrap,tests",
     "behat": "behat --config behat.yaml",
     "simple-phpunit": "simple-phpunit",
     "simple-phpunit-unit-integration": "simple-phpunit --testsuite unit,integration",
     "auto-scripts": {
       "cache:clear": "symfony-cmd",
-      "assets:install %PUBLIC_DIR%": "symfony-cmd"
+      "assets:install %PUBLIC_DIR%": "symfony-cmd",
+      "security-checker security:check": "script"
     },
     "post-install-cmd": [
       "@auto-scripts"
