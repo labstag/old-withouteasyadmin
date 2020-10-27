@@ -28,7 +28,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: Install npm dependencies
-        run: make install
+        run: npm install
       - name: linter readme.md
         run: make linter-readme
       - name: Validate composer.json
