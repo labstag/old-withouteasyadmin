@@ -120,7 +120,6 @@
     "phpcs-onlyerror": "phpcs src features/bootstrap tests --report=full --extensions=php --warning-severity=0",
     "phpcs": "phpcs src features/bootstrap tests --report=full --extensions=php",
     "phpstan": "phpstan analyse src,features/bootsrap,tests",
-    "twigcs": "twigcs templates",
     "phpmnd": "phpmnd src,features/bootstrap,tests",
     "behat": "behat --config behat.yaml",
     "simple-phpunit": "simple-phpunit",
