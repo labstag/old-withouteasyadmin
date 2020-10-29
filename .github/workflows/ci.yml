@@ -64,15 +64,15 @@ jobs:
       - name: Run PHP Code Sniffer
         run: |
           cd apps
-          php bin/phpcs src features/bootstrap tests --report=full --extensions=php --warning-severity=0
+          make linter-phpcs-onlyerror
       - name: Run PHP MD
         run: |
           cd apps
-          php bin/phpmd src,features/bootstrap,tests text phpmd.xml
+          make linter-phpmd
       - name: Run PHPMND
         run: |
           cd apps
-          php bin/phpmnd src,features/bootstrap,tests
+          make linter-phpmnd
   bootstrap:
     needs: install
     runs-on: ${{ matrix.operating-system }}
