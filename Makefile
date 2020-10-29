@@ -75,6 +75,9 @@ docker-image-pull: ## Get docker image
 	docker image pull phpmyadmin/phpmyadmin
 	docker image pull koromerzhin/phpfpm:latest-symfony-without-xdebug
 
+encore-dev: node_modules ## créer les assets en version dev
+	@npm run encore-dev
+
 env-dev: apps/.env ## Installation environnement dev
 	sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
 

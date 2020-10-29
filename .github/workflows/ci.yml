@@ -84,7 +84,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Test lancement bootstrap
-        run: npm run encore-dev
+        run: make encore-dev
       - name: Run twigcs
         run: |
           cd apps
