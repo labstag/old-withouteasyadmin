@@ -73,7 +73,7 @@ docker-image-pull: ## Get docker image
 	docker image pull mariadb:10.5.1
 	docker image pull httpd
 	docker image pull phpmyadmin/phpmyadmin
-	docker image pull koromerzhin/php-fpm-symfony:latest
+	docker image pull koromerzhin/phpfpm:latest-symfony-without-xdebug
 
 env-dev: apps/.env ## Installation environnement dev
 	sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
