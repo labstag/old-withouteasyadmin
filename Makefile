@@ -97,6 +97,9 @@ docker-stop: ## docker stop
 encore-dev: ## créer les assets en version dev
 	@npm run encore-dev
 
+encore-dev: node_modules ## créer les assets en version dev
+	@npm run encore-dev
+
 env-dev: apps/.env ## Installation environnement dev
 	sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
 
