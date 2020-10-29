@@ -63,6 +63,30 @@ jobs:
         run: |
           cd apps
           php bin/phpcs src features/bootstrap tests --report=full --extensions=php --warning-severity=0
+      - name: Run PHP MD
+        run: |
+          cd apps
+          php bin/phpmd src,features/bootstrap,tests text phpmd.xml
+      - name: Run PHPMND
+        run: |
+          cd apps
+          php bin/phpmnd src,features/bootstrap,tests
+  bootstrap:
+    needs: install
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Test lancement bootstrap
+        run: npm run encore-dev
+      - name: Run twigcs
+        run: |
+          cd apps
+          php bin/twigcs templates
   tests:
     needs: linter
     runs-on: ${{ matrix.operating-system }}
@@ -73,20 +97,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Run PHP MD
-        run: |
-          cd apps
-          php bin/phpmd src,features/bootstrap,tests text phpmd.xml
-      - name: Run PHPMND
-        run: |
-          cd apps
-          php bin/phpmnd src,features/bootstrap,tests
-      - name: Test lancement bootstrap
-        run: npm run encore-dev
-      - name: Run twigcs
-        run: |
-          cd apps
-          php bin/twigcs templates
       - name: Run Acceptance Tests
         run: |
           cd apps
