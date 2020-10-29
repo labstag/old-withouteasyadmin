@@ -15,8 +15,7 @@ class AdresseUserType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         unset($options);
         $builder->add('rue');
         $builder->add('country');

@@ -15,8 +15,7 @@ class PhoneUserType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         unset($options);
         $builder->add('numero');
         $builder->add('country');
