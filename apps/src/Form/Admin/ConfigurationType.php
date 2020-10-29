@@ -9,13 +9,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConfigurationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(
+        FormBuilderInterface $builder,
+        array $options
+    ): void
     {
         unset($options);
         $builder->add('name')->add('value');
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [

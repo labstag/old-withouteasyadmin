@@ -5,17 +5,6 @@ namespace Labstag\Repository;
 use Labstag\Entity\AdresseUser;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @method AdresseUser|null find($id, $lockMode = null, $lockVersion = null)
- * @method AdresseUser|null findOneBy(array $criteria, array $orderBy = null)
- * @method AdresseUser[]    findAll()
- * @method Adresse[]    findBy(
- *  array $criteria,
- *  array $orderBy = null,
- *  $limit = null,
- *  $offset = null
- * )
- */
 class AdresseUserRepository extends AdresseRepository
 {
     public function __construct(ManagerRegistry $registry)
