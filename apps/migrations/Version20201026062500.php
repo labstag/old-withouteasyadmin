@@ -19,6 +19,7 @@ final class Version20201026062500 extends AbstractMigration
 
     public function up(Schema $schema) : void
     {
+        unset($schema);
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE adresse (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', refuser_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\', rue VARCHAR(255) NOT NULL, country VARCHAR(255) NOT NULL, zipcode VARCHAR(255) NOT NULL, ville VARCHAR(255) NOT NULL, gps VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL, pmr TINYINT(1) NOT NULL, discr VARCHAR(255) NOT NULL, INDEX IDX_C35F08162B445CEF (refuser_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE configuration (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', name VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -41,6 +42,7 @@ final class Version20201026062500 extends AbstractMigration
 
     public function down(Schema $schema) : void
     {
+        unset($schema);
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D6497A45358C');
         $this->addSql('ALTER TABLE adresse DROP FOREIGN KEY FK_C35F08162B445CEF');

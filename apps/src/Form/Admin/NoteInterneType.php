@@ -9,7 +9,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NoteInterneType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(
+        FormBuilderInterface $builder,
+        array $options
+    ): void
     {
         unset($options);
         $builder->add('title');
@@ -19,7 +25,7 @@ class NoteInterneType extends AbstractType
         $builder->add('date_fin');
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [

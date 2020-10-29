@@ -38,7 +38,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install npm dependencies
-        run: make install
+        run: npm install
+      - name: linter readme.md
+        run: make linter-readme
       - name: Validate composer.json
         run: |
           cd apps

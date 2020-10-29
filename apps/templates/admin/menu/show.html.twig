@@ -1,0 +1,50 @@
+{% extends 'admin/menu/layout.html.twig' %}
+
+{% block title %}Menu{% endblock %}
+
+{% block content %}
+    <h1>Menu</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ menu.id }}</td>
+            </tr>
+            <tr>
+                <th>Libelle</th>
+                <td>{{ menu.libelle }}</td>
+            </tr>
+            <tr>
+                <th>Icon</th>
+                <td>{{ menu.icon }}</td>
+            </tr>
+            <tr>
+                <th>Position</th>
+                <td>{{ menu.position }}</td>
+            </tr>
+            <tr>
+                <th>Cible</th>
+                <td>{{ menu.cible }}</td>
+            </tr>
+            <tr>
+                <th>Data</th>
+                <td>{{ menu.data ? menu.data|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Separateur</th>
+                <td>{{ menu.separateur ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Clef</th>
+                <td>{{ menu.clef }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('menu_index') }}">back to list</a>
+
+    <a href="{{ path('menu_edit', {'id': menu.id}) }}">edit</a>
+
+    {{ include('menu/_delete_form.html.twig') }}
+{% endblock %}

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class AdminMenuBuilder
 {
 
-    private $factory;
+    private FactoryInterface $factory;
 
     public function __construct(FactoryInterface $factory)
     {
