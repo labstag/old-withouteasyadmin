@@ -112,7 +112,7 @@ git-check: node_modules ## CHECK before
 install: node_modules apps/.env ## installation
 	@make docker-deploy -i
 	@make sleep -i
-	@make linter-launch -i
+	@make linter -i
 
 install-dev: install
 	@make env-dev
