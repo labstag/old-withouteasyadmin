@@ -56,7 +56,6 @@ jobs:
           cd apps
           make tests-simple-phpunit-unit-integration
   docker:
-    needs: install
     runs-on: ubuntu-latest
     steps:
         - name: Checkout
