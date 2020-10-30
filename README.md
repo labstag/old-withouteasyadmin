@@ -10,11 +10,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-![docker](https://github.com/koromerzhin/labstag/workflows/docker/badge.svg?branch=develop)
-
 ![Continuous Integration](https://github.com/koromerzhin/labstag/workflows/Continuous%20Integration/badge.svg?branch=develop)
-
-[![DepShield Badge](https://depshield.sonatype.org/badges/koromerzhin/labstag/depshield.svg)](https://depshield.github.io)
 
 > Site Internet sous Symfony
 
