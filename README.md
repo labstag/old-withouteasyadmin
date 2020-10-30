@@ -41,10 +41,34 @@ Hosts:
 - 127.0.0.1 phpmyadmin.labstag.lxc
 - 127.0.0.1 phpldapadmin.labstag.lxc
 
+## Récupérer les images docker
+
+``` sh
+make docker-image-pull
+```
+
 ## Install
 
 ```sh
 make install
+```
+
+## after git add
+
+``` sh
+make git-check
+```
+
+## Replace git commit
+
+``` sh
+make git-commit
+```
+
+## help
+
+``` sh
+make help
 ```
 
 ## Author

@@ -20,41 +20,27 @@ jobs:
       - name: Install npm dependencies
         run: npm install
       - name: Validate composer.json
-        run: |
-          cd apps
-          make composer-validate
+        run: make composer-validate-ci
       - name: Install Composer dependencies
-        run: |
-          cd apps
-          make composer-dev
+        run: make composer-dev-ci
       - name: linter readme.md
         run: make linter-readme
       - name: Run PHP Code Sniffer
-        run: |
-          cd apps
-          make linter-phpcs-onlyerror
+        run: make linter-phpcs-onlyerror-ci
       - name: Run PHP MD
-        run: |
-          cd apps
-          make linter-phpmd
+        run: make linter-phpmd-ci
       - name: Run PHPMND
-        run: |
-          cd apps
-          make linter-phpmnd
+        run: make linter-phpmnd-ci
       - name: Test lancement bootstrap
         run: make encore-dev
       - name: Run twigcs
-        run: |
-          cd apps
-          make linter-twigcs
+        run: make linter-twigcs-ci
+      - name: Run phpstan
+        run: make linter-phpstan-ci
       - name: Run Acceptance Tests
-        run: |
-          cd apps
-          make tests-behat
+        run: make tests-behat-ci
       - name: Run Tests
-        run: |
-          cd apps
-          make tests-simple-phpunit-unit-integration
+        run: make tests-simple-phpunit-unit-integration-ci
   docker:
     runs-on: ubuntu-latest
     steps:
