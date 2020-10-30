@@ -67,7 +67,7 @@
   },
   "require-dev": {
     "behat/behat": "3.7.0",
-    "dama/doctrine-test-bundle": "6.3.3",
+    "dama/doctrine-test-bundle": "6.4.0",
     "doctrine/doctrine-fixtures-bundle": "3.3.2",
     "nunomaduro/phpinsights": "1.14.0",
     "phpmd/phpmd": "2.9.1",
