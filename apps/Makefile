@@ -90,11 +90,14 @@ ssh: ## ssh
 	docker exec -ti $(PHPFPMFULLNAME) /bin/bash
 
 tests-behat: vendor ## Lance les tests behat
-	composer behat
+	composer run behat
 
 tests-launch: vendor ## Launch all tests
 	@make tests-behat -i
-	@make tests-phpunit -i
+	@make tests-simple-phpunit -i
 
-tests-phpunit: vendor ## lance les tests phpunit
-	composer simple-phpunit
+tests-simple-phpunit: vendor ## lance les tests phpunit
+	composer run simple-phpunit
+
+tests-simple-phpunit-unit-integration: vendor ## lance les tests phpunit
+	composer run simple-phpunit-unit-integration
