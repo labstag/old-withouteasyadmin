@@ -63,8 +63,6 @@ jobs:
           uses: actions/checkout@v2
         - name: 'Docker swarm init'
           run: docker swarm init --default-addr-pool 10.20.0.0/16
-        - name: 'récupération des images'
-          run: make docker-image-pull
         - name: 'Create proxy network'
           run: make docker-create-network
         - name: 'Build containers'
