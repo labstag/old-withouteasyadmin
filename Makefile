@@ -75,6 +75,12 @@ docker-image-pull: ## Get docker image
 	docker image pull phpmyadmin/phpmyadmin
 	docker image pull koromerzhin/phpfpm:latest-symfony-without-xdebug
 
+docker-ls: ## docker service
+	@docker stack services $(STACK)
+
+encore-dev: node_modules ## créer les assets en version dev
+	@npm run encore-dev
+
 env-dev: apps/.env ## Installation environnement dev
 	sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
 
@@ -169,7 +175,10 @@ tests-behat: apps/vendor ## Lance les tests behat
 
 tests-launch: apps/vendor ## Launch all tests
 	@make tests-behat -i
-	@make tests-phpunit -i
+	@make tests-simple-phpunit-unit-integration -i
 
-tests-phpunit: apps/vendor ## lance les tests phpunit
-	docker exec $(PHPFPMFULLNAME) make tests-phpunit
+tests-simple-phpunit-unit-integration: apps/vendor ## lance les tests phpunit
+	docker exec $(PHPFPMFULLNAME) make tests-simple-phpunit-unit-integration
+
+tests-simple-phpunit: apps/vendor ## lance les tests phpunit
+	docker exec $(PHPFPMFULLNAME) make tests-simple-phpunit

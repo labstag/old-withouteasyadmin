@@ -20,9 +20,12 @@ class MenuController extends AbstractController
      */
     public function index(MenuRepository $menuRepository): Response
     {
-        return $this->render('admin/menu/index.html.twig', [
-            'menus' => $menuRepository->findAll(),
-        ]);
+        return $this->render(
+            'admin/menu/index.html.twig',
+            [
+                'menus' => $menuRepository->findAll(),
+            ]
+        );
     }
 
     /**
@@ -42,10 +45,13 @@ class MenuController extends AbstractController
             return $this->redirectToRoute('menu_index');
         }
 
-        return $this->render('admin/menu/new.html.twig', [
-            'menu' => $menu,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'admin/menu/new.html.twig',
+            [
+                'menu' => $menu,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -53,9 +59,10 @@ class MenuController extends AbstractController
      */
     public function show(Menu $menu): Response
     {
-        return $this->render('admin/menu/show.html.twig', [
-            'menu' => $menu,
-        ]);
+        return $this->render(
+            'admin/menu/show.html.twig',
+            ['menu' => $menu]
+        );
     }
 
     /**
@@ -72,10 +79,13 @@ class MenuController extends AbstractController
             return $this->redirectToRoute('menu_index');
         }
 
-        return $this->render('admin/menu/edit.html.twig', [
-            'menu' => $menu,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'admin/menu/edit.html.twig',
+            [
+                'menu' => $menu,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
