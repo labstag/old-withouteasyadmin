@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Menu
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
