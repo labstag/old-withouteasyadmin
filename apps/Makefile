@@ -100,4 +100,4 @@ tests-simple-phpunit: vendor ## lance les tests phpunit
 	composer run simple-phpunit
 
 tests-simple-phpunit-unit-integration: vendor ## lance les tests phpunit
-	composer run simple-simple-phpunit-unit-integration
+	composer run simple-phpunit-unit-integration
