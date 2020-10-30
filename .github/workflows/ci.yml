@@ -44,11 +44,11 @@ jobs:
       - name: Validate composer.json
         run: |
           cd apps
-          composer validate
+          make composer-validate
       - name: Install Composer dependencies
         run: |
           cd apps
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          make composer-dev
   linter:
     needs: install
     runs-on: ${{ matrix.operating-system }}
