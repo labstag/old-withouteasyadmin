@@ -3,7 +3,7 @@
 namespace Labstag\Controller\Admin;
 
 use Labstag\Entity\NoteInterne;
-use Labstag\Form\Admin\NoteInterne1Type;
+use Labstag\Form\Admin\NoteInterneType;
 use Labstag\Repository\NoteInterneRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +34,7 @@ class NoteInterneController extends AbstractController
     public function new(Request $request): Response
     {
         $noteInterne = new NoteInterne();
-        $form        = $this->createForm(NoteInterne1Type::class, $noteInterne);
+        $form        = $this->createForm(NoteInterneType::class, $noteInterne);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -70,7 +70,7 @@ class NoteInterneController extends AbstractController
      */
     public function edit(Request $request, NoteInterne $noteInterne): Response
     {
-        $form = $this->createForm(NoteInterne1Type::class, $noteInterne);
+        $form = $this->createForm(NoteInterneType::class, $noteInterne);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
