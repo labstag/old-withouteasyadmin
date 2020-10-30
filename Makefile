@@ -97,6 +97,9 @@ docker-stop: ## docker stop
 encore-dev: ## créer les assets en version dev
 	@npm run encore-dev
 
+docker-ls: ## docker service
+	@docker stack services $(STACK)
+
 encore-dev: node_modules ## créer les assets en version dev
 	@npm run encore-dev
 
