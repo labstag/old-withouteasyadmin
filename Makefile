@@ -65,7 +65,7 @@ docker-deploy: ## deploy
 	docker stack deploy -c docker-compose.yml $(STACK)
 
 docker-image-pull: ## Get docker image
-	docker image pull redis:6.0.8
+	docker image pull redis:6.0.9
 	docker image pull mailhog/mailhog
 	docker image pull dunglas/mercure
 	docker image pull osixia/phpldapadmin
