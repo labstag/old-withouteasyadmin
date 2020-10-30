@@ -12,8 +12,6 @@
 
 ![Continuous Integration](https://github.com/koromerzhin/labstag/workflows/Continuous%20Integration/badge.svg?branch=develop)
 
-[![DepShield Badge](https://depshield.sonatype.org/badges/koromerzhin/labstag/depshield.svg)](https://depshield.github.io)
-
 > Site Internet sous Symfony
 
 ## 🏠 [Homepage](https://github.com/koromerzhin/labstag#readme)
