@@ -83,12 +83,6 @@ linter-phpstan: vendor ## regarde si le code PHP ne peux pas être optimisé
 linter-twigcs: twigcs.phar ## indique les erreurs de code de twig
 	php twigcs.phar templates
 
-sleep: ## sleep
-	sleep 90
-
-ssh: ## ssh
-	docker exec -ti $(PHPFPMFULLNAME) /bin/bash
-
 tests-behat: vendor ## Lance les tests behat
 	composer run behat
 
