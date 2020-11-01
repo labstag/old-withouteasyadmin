@@ -87,6 +87,9 @@ docker-logs: ## logs docker
 docker-ls: ## docker service
 	@docker stack services $(STACK)
 
+docker-stop: ## docker stop
+	@docker stack rm $(STACK)
+
 encore-dev: node_modules ## créer les assets en version dev
 	@npm run encore-dev
 
@@ -112,6 +115,7 @@ git-check: node_modules ## CHECK before
 install: node_modules apps/.env ## installation
 	@make docker-deploy -i
 	@make sleep -i
+	@make bdd-migrate -i
 	@make linter -i
 
 install-dev: install
