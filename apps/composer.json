@@ -69,8 +69,6 @@
     "behat/behat": "3.7.0",
     "dama/doctrine-test-bundle": "6.4.0",
     "doctrine/doctrine-fixtures-bundle": "3.3.2",
-    "nunomaduro/phpinsights": "1.14.0",
-    "phpmd/phpmd": "2.9.1",
     "phpstan/phpstan": "0.12.52",
     "povils/phpmnd": "2.3.0",
     "squizlabs/php_codesniffer": "3.5.8",
@@ -115,11 +113,10 @@
   },
   "scripts": {
     "phpcbf": "phpcbf -d memory_limit=-1 --report=diff -p --extensions=php",
-    "phpmd": "phpmd src,features/bootstrap,tests text phpmd.xml",
     "phpcs-onlywarning": "phpcs src features/bootstrap tests --report=full --extensions=php --error-severity=0",
     "phpcs-onlyerror": "phpcs src features/bootstrap tests --report=full --extensions=php --warning-severity=0",
     "phpcs": "phpcs src features/bootstrap tests --report=full --extensions=php",
-    "phpstan": "phpstan analyse src features/bootstrap tests",
+    "phpstan": "phpstan analyse src features/bootstrap tests --ansi",
     "phpinsights": "phpinsights",
     "phpmnd": "phpmnd src,features/bootstrap,tests",
     "behat": "behat --config behat.yaml",
@@ -127,8 +124,7 @@
     "simple-phpunit-unit-integration": "simple-phpunit --testsuite unit,integration",
     "auto-scripts": {
       "cache:clear": "symfony-cmd",
-      "assets:install %PUBLIC_DIR%": "symfony-cmd",
-      "security-checker security:check": "script"
+      "assets:install %PUBLIC_DIR%": "symfony-cmd"
     },
     "post-install-cmd": [
       "@auto-scripts"
