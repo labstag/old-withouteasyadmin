@@ -23,7 +23,8 @@ class MenuController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         MenuRepository $menuRepository
-    ): Response {
+    ): Response
+    {
         $pagination = $paginator->paginate(
             $menuRepository->findAll(),
             $request->query->getInt('page', 1), /*page number*/
