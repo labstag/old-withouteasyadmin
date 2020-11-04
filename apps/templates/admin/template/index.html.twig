@@ -8,7 +8,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Code</th>
                 <th>Html</th>
@@ -17,9 +16,8 @@
             </tr>
         </thead>
         <tbody>
-        {% for template in templates %}
+        {% for template in pagination %}
             <tr>
-                <td>{{ template.id }}</td>
                 <td>{{ template.name }}</td>
                 <td>{{ template.code }}</td>
                 <td>{{ template.html }}</td>
@@ -27,6 +25,7 @@
                 <td>
                     <a href="{{ path('template_show', {'id': template.id}) }}">show</a>
                     <a href="{{ path('template_edit', {'id': template.id}) }}">edit</a>
+                    <a href="#">delete</a>
                 </td>
             </tr>
         {% else %}

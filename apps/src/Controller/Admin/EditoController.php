@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Edito;
 use Labstag\Form\Admin\EditoType;
 use Labstag\Repository\EditoRepository;
@@ -18,13 +19,20 @@ class EditoController extends AbstractController
     /**
      * @Route("/", name="edito_index", methods={"GET"})
      */
-    public function index(EditoRepository $editoRepository): Response
+    public function index(
+        PaginatorInterface $paginator,
+        Request $request,
+        EditoRepository $editoRepository
+    ): Response
     {
+        $pagination = $paginator->paginate(
+            $editoRepository->findAll(),
+            $request->query->getInt('page', 1), /*page number*/
+            10
+        );
         return $this->render(
             'admin/edito/index.html.twig',
-            [
-                'editos' => $editoRepository->findAll(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 

@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\NoteInterne;
 use Labstag\Form\Admin\NoteInterneType;
 use Labstag\Repository\NoteInterneRepository;
@@ -18,13 +19,20 @@ class NoteInterneController extends AbstractController
     /**
      * @Route("/", name="note_interne_index", methods={"GET"})
      */
-    public function index(NoteInterneRepository $repository): Response
+    public function index(
+        PaginatorInterface $paginator,
+        Request $request,
+        NoteInterneRepository $repository
+    ): Response
     {
+        $pagination = $paginator->paginate(
+            $repository->findAll(),
+            $request->query->getInt('page', 1), /*page number*/
+            10
+        );
         return $this->render(
             'admin/note_interne/index.html.twig',
-            [
-                'note_internes' => $repository->findAll(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 

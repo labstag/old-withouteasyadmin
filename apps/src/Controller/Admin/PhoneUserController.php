@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\PhoneUser;
 use Labstag\Form\Admin\PhoneUserType;
 use Labstag\Repository\PhoneUserRepository;
@@ -18,13 +19,20 @@ class PhoneUserController extends AbstractController
     /**
      * @Route("/", name="phone_user_index", methods={"GET"})
      */
-    public function index(PhoneUserRepository $phoneUserRepository): Response
+    public function index(
+        PaginatorInterface $paginator,
+        Request $request,
+        PhoneUserRepository $phoneUserRepository
+    ): Response
     {
+        $pagination = $paginator->paginate(
+            $phoneUserRepository->findAll(),
+            $request->query->getInt('page', 1), /*page number*/
+            10
+        );
         return $this->render(
             'admin/phone_user/index.html.twig',
-            [
-                'phone_users' => $phoneUserRepository->findAll(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 

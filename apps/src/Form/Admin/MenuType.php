@@ -18,10 +18,10 @@ class MenuType extends AbstractType
         $builder->add('libelle');
         $builder->add('icon');
         $builder->add('position');
-        $builder->add('cible');
         $builder->add('data');
         $builder->add('separateur');
         $builder->add('clef');
+        $builder->add('parent');
     }
 
     public function configureOptions(OptionsResolver $resolver)

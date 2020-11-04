@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Configuration;
 use Labstag\Form\Admin\ConfigurationType;
 use Labstag\Repository\ConfigurationRepository;
@@ -18,13 +19,20 @@ class ConfigurationController extends AbstractController
     /**
      * @Route("/", name="configuration_index", methods={"GET"})
      */
-    public function index(ConfigurationRepository $repository): Response
+    public function index(
+        PaginatorInterface $paginator,
+        Request $request,
+        ConfigurationRepository $repository
+    ): Response
     {
+        $pagination = $paginator->paginate(
+            $repository->findAll(),
+            $request->query->getInt('page', 1), /*page number*/
+            10
+        );
         return $this->render(
             'admin/configuration/index.html.twig',
-            [
-                'configurations' => $repository->findAll(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 
