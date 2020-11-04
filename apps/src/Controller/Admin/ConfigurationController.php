@@ -23,7 +23,8 @@ class ConfigurationController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         ConfigurationRepository $repository
-    ): Response {
+    ): Response
+    {
         $pagination = $paginator->paginate(
             $repository->findAll(),
             $request->query->getInt('page', 1), /*page number*/
