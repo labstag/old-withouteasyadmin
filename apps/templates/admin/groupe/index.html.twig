@@ -8,21 +8,20 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Code</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for groupe in groupes %}
+        {% for groupe in pagination %}
             <tr>
-                <td>{{ groupe.id }}</td>
                 <td>{{ groupe.name }}</td>
                 <td>{{ groupe.code }}</td>
                 <td>
                     <a href="{{ path('groupe_show', {'id': groupe.id}) }}">show</a>
                     <a href="{{ path('groupe_edit', {'id': groupe.id}) }}">edit</a>
+                    <a href="#">delete</a>
                 </td>
             </tr>
         {% else %}

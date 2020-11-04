@@ -8,7 +8,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Rue</th>
                 <th>Country</th>
                 <th>Zipcode</th>
@@ -20,9 +19,8 @@
             </tr>
         </thead>
         <tbody>
-        {% for adresse_user in adresse_users %}
+        {% for adresse_user in pagination %}
             <tr>
-                <td>{{ adresse_user.id }}</td>
                 <td>{{ adresse_user.rue }}</td>
                 <td>{{ adresse_user.country }}</td>
                 <td>{{ adresse_user.zipcode }}</td>
@@ -33,6 +31,7 @@
                 <td>
                     <a href="{{ path('adresse_user_show', {'id': adresse_user.id}) }}">show</a>
                     <a href="{{ path('adresse_user_edit', {'id': adresse_user.id}) }}">edit</a>
+                    <a href="#">delete</a>
                 </td>
             </tr>
         {% else %}

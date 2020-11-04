@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\AdresseUser;
 use Labstag\Form\Admin\AdresseUserType;
 use Labstag\Repository\AdresseUserRepository;
@@ -18,13 +19,20 @@ class AdresseUserController extends AbstractController
     /**
      * @Route("/", name="adresse_user_index", methods={"GET"})
      */
-    public function index(AdresseUserRepository $repository): Response
+    public function index(
+        PaginatorInterface $paginator,
+        Request $request,
+        AdresseUserRepository $repository
+    ): Response
     {
+        $pagination = $paginator->paginate(
+            $repository->findAll(),
+            $request->query->getInt('page', 1), /*page number*/
+            10
+        );
         return $this->render(
             'admin/adresse_user/index.html.twig',
-            [
-                'adresse_users' => $repository->findAll(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 

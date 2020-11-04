@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\LienUser;
 use Labstag\Form\Admin\LienUserType;
 use Labstag\Repository\LienUserRepository;
@@ -18,13 +19,20 @@ class LienUserController extends AbstractController
     /**
      * @Route("/", name="lien_user_index", methods={"GET"})
      */
-    public function index(LienUserRepository $lienUserRepository): Response
+    public function index(
+        PaginatorInterface $paginator,
+        Request $request,
+        LienUserRepository $lienUserRepository
+    ): Response
     {
+        $pagination = $paginator->paginate(
+            $lienUserRepository->findAll(),
+            $request->query->getInt('page', 1), /*page number*/
+            10
+        );
         return $this->render(
             'admin/lien_user/index.html.twig',
-            [
-                'lien_users' => $lienUserRepository->findAll(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 

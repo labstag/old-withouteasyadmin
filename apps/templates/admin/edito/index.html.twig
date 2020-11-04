@@ -8,7 +8,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Title</th>
                 <th>Content</th>
                 <th>Enable</th>
@@ -16,15 +15,15 @@
             </tr>
         </thead>
         <tbody>
-        {% for edito in editos %}
+        {% for edito in pagination %}
             <tr>
-                <td>{{ edito.id }}</td>
                 <td>{{ edito.title }}</td>
                 <td>{{ edito.content }}</td>
                 <td>{{ edito.enable ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('edito_show', {'id': edito.id}) }}">show</a>
                     <a href="{{ path('edito_edit', {'id': edito.id}) }}">edit</a>
+                    <a href="#">delete</a>
                 </td>
             </tr>
         {% else %}

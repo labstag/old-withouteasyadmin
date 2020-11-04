@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Form\Admin\GroupeType;
 use Labstag\Repository\GroupeRepository;
@@ -18,13 +19,20 @@ class GroupeController extends AbstractController
     /**
      * @Route("/", name="groupe_index", methods={"GET"})
      */
-    public function index(GroupeRepository $groupeRepository): Response
+    public function index(
+        PaginatorInterface $paginator,
+        Request $request,
+        GroupeRepository $groupeRepository
+    ): Response
     {
+        $pagination = $paginator->paginate(
+            $groupeRepository->findAll(),
+            $request->query->getInt('page', 1), /*page number*/
+            10
+        );
         return $this->render(
             'admin/groupe/index.html.twig',
-            [
-                'groupes' => $groupeRepository->findAll(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 

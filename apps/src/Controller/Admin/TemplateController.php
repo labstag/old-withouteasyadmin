@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Template;
 use Labstag\Form\Admin\TemplateType;
 use Labstag\Repository\TemplateRepository;
@@ -18,13 +19,20 @@ class TemplateController extends AbstractController
     /**
      * @Route("/", name="template_index", methods={"GET"})
      */
-    public function index(TemplateRepository $templateRepository): Response
+    public function index(
+        PaginatorInterface $paginator,
+        Request $request,
+        TemplateRepository $templateRepository
+    ): Response
     {
+        $pagination = $paginator->paginate(
+            $templateRepository->findAll(),
+            $request->query->getInt('page', 1), /*page number*/
+            10
+        );
         return $this->render(
             'admin/template/index.html.twig',
-            [
-                'templates' => $templateRepository->findAll(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 

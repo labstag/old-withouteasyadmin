@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Menu;
 use Labstag\Form\Admin\MenuType;
 use Labstag\Repository\MenuRepository;
@@ -18,13 +19,20 @@ class MenuController extends AbstractController
     /**
      * @Route("/", name="menu_index", methods={"GET"})
      */
-    public function index(MenuRepository $menuRepository): Response
+    public function index(
+        PaginatorInterface $paginator,
+        Request $request,
+        MenuRepository $menuRepository
+    ): Response
     {
+        $pagination = $paginator->paginate(
+            $menuRepository->findAll(),
+            $request->query->getInt('page', 1), /*page number*/
+            10
+        );
         return $this->render(
             'admin/menu/index.html.twig',
-            [
-                'menus' => $menuRepository->findAll(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 

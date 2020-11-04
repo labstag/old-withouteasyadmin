@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\UserType;
 use Labstag\Repository\UserRepository;
@@ -18,13 +19,20 @@ class UserController extends AbstractController
     /**
      * @Route("/", name="user_index", methods={"GET"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(
+        PaginatorInterface $paginator,
+        Request $request,
+        UserRepository $userRepository
+    ): Response
     {
+        $pagination = $paginator->paginate(
+            $userRepository->findAll(),
+            $request->query->getInt('page', 1), /*page number*/
+            10
+        );
         return $this->render(
             'admin/user/index.html.twig',
-            [
-                'users' => $userRepository->findAll(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 

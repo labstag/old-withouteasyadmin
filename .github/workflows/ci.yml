@@ -69,5 +69,5 @@ jobs:
           run: make docker-ls
         - name: 'BDD MIGRATE'
           run: make bdd-migrate
-        # - name: 'Run the fixtures'
-        #   run: make bdd-fixtures
+        - name: 'Run the fixtures'
+          run: make bdd-fixtures
