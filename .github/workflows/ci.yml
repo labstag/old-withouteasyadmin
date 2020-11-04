@@ -21,18 +21,24 @@ jobs:
         id: composer-cache
         uses: actions/cache@v2
         with:
-          path: apps/vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          path: |
+            apps/vendor
+            apps/composer.json
+            apps/composer.lock
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-
+            ${{ runner.os }}-composer-
       - name: Cache npm packages
         id: npm-cache
         uses: actions/cache@v2
         with:
-          path: package-lock
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock') }}
+          path: |
+            node_modules
+            package.json
+            package-lock.json
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-npm-
+            ${{ runner.os }}-node-
       - name: Install npm dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm install
