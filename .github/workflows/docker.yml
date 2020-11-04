@@ -18,7 +18,9 @@ jobs:
           run: make env-prod
         - name: 'Check running containers'
           run: make docker-ls
+        - name: 'Composer install'
+          run: make composer-dev-ci
         - name: 'BDD MIGRATE'
           run: make bdd-migrate
-        # - name: 'Run the fixtures'
-        #   run: make bdd-fixtures
+        - name: 'Run the fixtures'
+          run: make bdd-fixtures
