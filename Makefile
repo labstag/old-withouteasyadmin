@@ -13,19 +13,29 @@ APACHEFULLNAME  := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
-apps/vendor:
-	@make composer-dev -i
 
-apps/.env: ## Install .env
-	cp apps/.env.dist apps/.env
+package-lock.json: package.json
+	npm install
 
-bdd-fixtures: vendor ## fixtures
+node_modules: package-lock.json
+	npm install
+
+apps/composer.lock: apps/composer.json
+	docker exec $(PHPFPMFULLNAME) make composer.lock
+	
+apps/vendor: apps/composer.lock
+	docker exec $(PHPFPMFULLNAME) make vendor
+
+apps/.env: apps/.env.dist ## Install .env
+	docker exec $(PHPFPMFULLNAME) make .env
+
+bdd-fixtures: ## fixtures
 	docker exec $(PHPFPMFULLNAME) make bdd-fixtures
 
-bdd-migrate: vendor ## migrate database
+bdd-migrate: ## migrate database
 	docker exec $(PHPFPMFULLNAME) make bdd-migrate
 
-bdd-validate: vendor ## bdd validate
+bdd-validate: ## bdd validate
 	docker exec $(PHPFPMFULLNAME) make bdd-validate
 
 composer-suggests: ## suggestions package pour PHP
@@ -33,12 +43,6 @@ composer-suggests: ## suggestions package pour PHP
 
 composer-outdated: ## Packet php outdated
 	docker exec $(PHPFPMFULLNAME) make composer-outdated
-
-composer-prod: ## Installation version de production
-	docker exec $(PHPFPMFULLNAME) make composer-prod
-
-composer-dev: ## Installation version de dev
-	docker exec $(PHPFPMFULLNAME) make composer-dev
 
 composer-dev-ci: ## Installation version de dev
 	cd apps && make composer-dev
@@ -52,16 +56,16 @@ composer-validate: ## COMPOSER validate
 composer-validate-ci: ## COMPOSER validate
 	cd apps && make composer-validate
 
-contributors: node_modules ## Contributors
+contributors: ## Contributors
 	@npm run contributors
 
-contributors-add: node_modules ## add Contributors
+contributors-add: ## add Contributors
 	@npm run contributors add
 
-contributors-check: node_modules ## check Contributors
+contributors-check: ## check Contributors
 	@npm run contributors check
 
-contributors-generate: node_modules ## generate Contributors
+contributors-generate: ## generate Contributors
 	@npm run contributors generate
 
 docker-create-network: ## create network
@@ -72,13 +76,13 @@ docker-deploy: ## deploy
 
 docker-image-pull: ## Get docker image
 	docker image pull redis:6.0.9
-	docker image pull mailhog/mailhog
-	docker image pull dunglas/mercure
-	docker image pull osixia/phpldapadmin
-	docker image pull osixia/openldap:1.4.0
 	docker image pull mariadb:10.5.1
-	docker image pull httpd
-	docker image pull phpmyadmin/phpmyadmin
+	docker image pull httpd:2.4.46
+	docker image pull phpmyadmin:5.0.2
+	docker image pull mailhog/mailhog:v1.0.1
+	docker image pull osixia/phpldapadmin:0.9.0
+	docker image pull osixia/openldap:1.4.0
+	docker image pull dunglas/mercure:v0.10
 	docker image pull koromerzhin/phpfpm:7.4.12-symfony
 
 docker-logs: ## logs docker
@@ -90,7 +94,7 @@ docker-ls: ## docker service
 docker-stop: ## docker stop
 	@docker stack rm $(STACK)
 
-encore-dev: node_modules ## créer les assets en version dev
+encore-dev: ## créer les assets en version dev
 	@npm run encore-dev
 
 env-dev: apps/.env ## Installation environnement dev
@@ -101,10 +105,10 @@ env-prod: apps/.env ## Installation environnement prod
 	rm -rf apps/vendor
 	@make composer-prod -i
 
-git-commit: node_modules ## Commit data
+git-commit: ## Commit data
 	npm run commit
 
-git-check: node_modules ## CHECK before
+git-check: ## CHECK before
 	@make composer-validate -i
 	@make composer-outdated -i
 	@make bdd-validate -i
@@ -112,7 +116,7 @@ git-check: node_modules ## CHECK before
 	@make linter -i
 	@git status
 
-install: node_modules apps/.env ## installation
+install: apps/vendor node_modules apps/.env ## installation
 	@make docker-deploy -i
 	@make sleep -i
 	@make bdd-migrate -i
@@ -123,7 +127,7 @@ install-dev: install
 	@make bdd-migrate -i
 	@make bdd-features -i
 
-linter: apps/vendor node_modules ## Launch all linter
+linter: ## Launch all linter
 	@make linter-twigcs -i
 	@make linter-phpstan -i
 	@make linter-phpcpd -i
@@ -131,52 +135,52 @@ linter: apps/vendor node_modules ## Launch all linter
 	@make linter-phpmd -i
 	@make linter-readme -i
 
-linter-readme: node_modules ## linter README.md
+linter-readme: ## linter README.md
 	@npm run linter-markdown README.md
 
-linter-phpcbf: apps/vendor ## fixe le code PHP à partir d'un standard
+linter-phpcbf: ## fixe le code PHP à partir d'un standard
 	docker exec $(PHPFPMFULLNAME) make linter-phpcbf
 
 linter-phpcpd: phpcpd.phar ## Vérifie s'il y a du code dupliqué
 	docker exec $(PHPFPMFULLNAME) make linter-phpcpd
 
-linter-phpcs: apps/vendor ## indique les erreurs de code non corrigé par PHPCBF
+linter-phpcs: ## indique les erreurs de code non corrigé par PHPCBF
 	docker exec $(PHPFPMFULLNAME) make linter-phpcs
 
-linter-phpcs-onlywarning: apps/vendor ## indique les erreurs de code non corrigé par PHPCBF
+linter-phpcs-onlywarning: ## indique les erreurs de code non corrigé par PHPCBF
 	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlywarning
 
-linter-phpcs-onlyerror: apps/vendor ## indique les erreurs de code non corrigé par PHPCBF
+linter-phpcs-onlyerror: ## indique les erreurs de code non corrigé par PHPCBF
 	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlyerror
 
-linter-phpcs-onlyerror-ci: apps/vendor ## indique les erreurs de code non corrigé par PHPCBF
+linter-phpcs-onlyerror-ci: ## indique les erreurs de code non corrigé par PHPCBF
 	cd apps && make linter-phpcs-onlyerror
 
-linter-phploc: apps/vendor ## phploc
+linter-phploc: ## phploc
 	docker exec $(PHPFPMFULLNAME) make linter-phploc
 
-linter-phpmd: apps/vendor ## indique quand le code PHP contient des erreurs de syntaxes ou des erreurs
+linter-phpmd: ## indique quand le code PHP contient des erreurs de syntaxes ou des erreurs
 	docker exec $(PHPFPMFULLNAME) make linter-phpmd
 
-linter-phpmd-ci: apps/vendor ## indique quand le code PHP contient des erreurs de syntaxes ou des erreurs
+linter-phpmd-ci: ## indique quand le code PHP contient des erreurs de syntaxes ou des erreurs
 	cd apps && make linter-phpmd
 
-linter-phpmnd: apps/vendor ## Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes
+linter-phpmnd: ## Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes
 	docker exec $(PHPFPMFULLNAME) make linter-phpmnd
 
-linter-phpmnd-ci: apps/vendor ## Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes
+linter-phpmnd-ci: ## Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes
 	cd apps && make linter-phpmnd
 
-linter-phpstan: apps/vendor ## regarde si le code PHP ne peux pas être optimisé
+linter-phpstan: ## regarde si le code PHP ne peux pas être optimisé
 	docker exec $(PHPFPMFULLNAME) make linter-phpstan
 
-linter-phpstan-ci: apps/vendor ## regarde si le code PHP ne peux pas être optimisé
+linter-phpstan-ci: ## regarde si le code PHP ne peux pas être optimisé
 	cd apps && make linter-phpstan
 
-linter-twigcs: apps/vendor ## indique les erreurs de code de twig
+linter-twigcs: ## indique les erreurs de code de twig
 	docker exec $(PHPFPMFULLNAME) make linter-twigcs
 
-linter-twigcs-ci: apps/vendor ## indique les erreurs de code de twig
+linter-twigcs-ci: ## indique les erreurs de code de twig
 	cd apps &&  make linter-twigcs
 
 logs: ## logs docker
@@ -191,30 +195,27 @@ logs-mariadb: ## logs docker MARIADB
 logs-phpfpm: ## logs docker PHPFPM
 	docker service logs -f --tail 100 --raw $(PHPFPMFULLNAME)
 
-node_modules: ## npm install
-	npm install
-
 sleep: ## sleep
 	sleep 90
 
 ssh: ## ssh
 	docker exec -ti $(PHPFPMFULLNAME) /bin/bash
 
-tests-behat: apps/vendor ## Lance les tests behat
+tests-behat: ## Lance les tests behat
 	docker exec $(PHPFPMFULLNAME) make tests-behat
 
-tests-behat-ci: apps/vendor ## Lance les tests behat
+tests-behat-ci: ## Lance les tests behat
 	cd apps && make tests-behat
 
-tests-launch: apps/vendor ## Launch all tests
+tests-launch: ## Launch all tests
 	@make tests-behat -i
 	@make tests-simple-phpunit-unit-integration -i
 
-tests-simple-phpunit-unit-integration: apps/vendor ## lance les tests phpunit
+tests-simple-phpunit-unit-integration: ## lance les tests phpunit
 	docker exec $(PHPFPMFULLNAME) make tests-simple-phpunit-unit-integration
 
-tests-simple-phpunit-unit-integration-ci: apps/vendor ## lance les tests phpunit
+tests-simple-phpunit-unit-integration-ci: ## lance les tests phpunit
 	cd apps && make tests-simple-phpunit-unit-integration
 
-tests-simple-phpunit: apps/vendor ## lance les tests phpunit
+tests-simple-phpunit: ## lance les tests phpunit
 	docker exec $(PHPFPMFULLNAME) make tests-simple-phpunit
