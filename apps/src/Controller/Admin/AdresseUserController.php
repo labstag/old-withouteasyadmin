@@ -23,7 +23,8 @@ class AdresseUserController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         AdresseUserRepository $repository
-    ): Response {
+    ): Response
+    {
         $pagination = $paginator->paginate(
             $repository->findAll(),
             $request->query->getInt('page', 1), /*page number*/
