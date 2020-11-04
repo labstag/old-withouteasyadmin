@@ -23,8 +23,7 @@ class UserController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         UserRepository $userRepository
-    ): Response
-    {
+    ): Response {
         $pagination = $paginator->paginate(
             $userRepository->findAll(),
             $request->query->getInt('page', 1), /*page number*/

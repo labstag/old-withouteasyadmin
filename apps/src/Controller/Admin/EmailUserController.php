@@ -23,8 +23,7 @@ class EmailUserController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         EmailUserRepository $emailUserRepository
-    ): Response
-    {
+    ): Response {
         $pagination = $paginator->paginate(
             $emailUserRepository->findAll(),
             $request->query->getInt('page', 1), /*page number*/

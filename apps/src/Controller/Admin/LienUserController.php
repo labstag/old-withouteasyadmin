@@ -23,8 +23,7 @@ class LienUserController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         LienUserRepository $lienUserRepository
-    ): Response
-    {
+    ): Response {
         $pagination = $paginator->paginate(
             $lienUserRepository->findAll(),
             $request->query->getInt('page', 1), /*page number*/

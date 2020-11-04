@@ -23,8 +23,7 @@ class PhoneUserController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         PhoneUserRepository $phoneUserRepository
-    ): Response
-    {
+    ): Response {
         $pagination = $paginator->paginate(
             $phoneUserRepository->findAll(),
             $request->query->getInt('page', 1), /*page number*/

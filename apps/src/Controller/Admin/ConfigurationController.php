@@ -23,8 +23,7 @@ class ConfigurationController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         ConfigurationRepository $repository
-    ): Response
-    {
+    ): Response {
         $pagination = $paginator->paginate(
             $repository->findAll(),
             $request->query->getInt('page', 1), /*page number*/
@@ -82,8 +81,7 @@ class ConfigurationController extends AbstractController
     public function edit(
         Request $request,
         Configuration $configuration
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm(ConfigurationType::class, $configuration);
         $form->handleRequest($request);
 
@@ -108,8 +106,7 @@ class ConfigurationController extends AbstractController
     public function delete(
         Request $request,
         Configuration $configuration
-    ): Response
-    {
+    ): Response {
         $token = $request->request->get('_token');
         if ($this->isCsrfTokenValid('delete'.$configuration->getId(), $token)) {
             $entityManager = $this->getDoctrine()->getManager();

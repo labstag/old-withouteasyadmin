@@ -23,8 +23,7 @@ class GroupeController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         GroupeRepository $groupeRepository
-    ): Response
-    {
+    ): Response {
         $pagination = $paginator->paginate(
             $groupeRepository->findAll(),
             $request->query->getInt('page', 1), /*page number*/
