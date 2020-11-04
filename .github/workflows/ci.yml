@@ -17,18 +17,15 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, xml, ctype, iconv, intl
           coverage: xdebug
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache Composer packages
         uses: actions/cache@v2
+        id: composer-cache
         with:
           path: |
-            ${{ steps.composer-cache.outputs.dir }}
             apps/vendor
             apps/composer.json
             apps/composer.lock
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/apps/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
       - name: Cache npm packages
