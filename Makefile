@@ -152,8 +152,8 @@ linter-phpcs-onlyerror: apps/vendor ## indique les erreurs de code non corrigé 
 linter-phpcs-onlyerror-ci: apps/vendor ## indique les erreurs de code non corrigé par PHPCBF
 	cd apps && make linter-phpcs-onlyerror
 
-linter-phpinsights: apps/vendor ## PHP Insights
-	docker exec $(PHPFPMFULLNAME) make linter-phpinsights
+linter-phploc: apps/vendor ## phploc
+	docker exec $(PHPFPMFULLNAME) make linter-phploc
 
 linter-phpmd: apps/vendor ## indique quand le code PHP contient des erreurs de syntaxes ou des erreurs
 	docker exec $(PHPFPMFULLNAME) make linter-phpmd
