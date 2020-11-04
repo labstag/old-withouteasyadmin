@@ -23,7 +23,8 @@ class TemplateController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         TemplateRepository $templateRepository
-    ): Response {
+    ): Response
+    {
         $pagination = $paginator->paginate(
             $templateRepository->findAll(),
             $request->query->getInt('page', 1), /*page number*/
