@@ -23,7 +23,8 @@ class EditoController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         EditoRepository $editoRepository
-    ): Response {
+    ): Response
+    {
         $pagination = $paginator->paginate(
             $editoRepository->findAll(),
             $request->query->getInt('page', 1), /*page number*/
