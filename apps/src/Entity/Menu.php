@@ -2,10 +2,12 @@
 
 namespace Labstag\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use Labstag\Repository\MenuRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass=MenuRepository::class)
  */
 class Menu
@@ -19,7 +21,7 @@ class Menu
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $libelle;
 
@@ -34,11 +36,6 @@ class Menu
     private $position;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $cible;
-
-    /**
      * @ORM\Column(type="json", nullable=true)
      */
     private $data = [];
@@ -49,9 +46,31 @@ class Menu
     private $separateur;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $clef;
+
+    /**
+     * @Gedmo\TreeParent
+     * @ORM\ManyToOne(targetEntity="Menu", inversedBy="children")
+     * @ORM\JoinColumn(
+     *  name="parent_id",
+     *  referencedColumnName="id",
+     *  onDelete="SET NULL"
+     * )
+     */
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Menu", mappedBy="parent")
+     * @ORM\OrderBy({"position" = "ASC"})
+     */
+    private $children;
+
+    public function __construct()
+    {
+        $this->separateur = false;
+    }
 
     public function getId(): ?string
     {
@@ -94,18 +113,6 @@ class Menu
         return $this;
     }
 
-    public function getCible(): ?string
-    {
-        return $this->cible;
-    }
-
-    public function setCible(?string $cible): self
-    {
-        $this->cible = $cible;
-
-        return $this;
-    }
-
     public function getData(): ?array
     {
         return $this->data;
@@ -140,5 +147,20 @@ class Menu
         $this->clef = $clef;
 
         return $this;
+    }
+
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    public function setParent(Menu $parent)
+    {
+        $this->parent = $parent;
+    }
+
+    public function getParent(): ?Menu
+    {
+        return $this->parent;
     }
 }

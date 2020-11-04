@@ -18,13 +18,13 @@ vendor: composer.json
 	cp .env.dist .env
 
 phploc.phar:
-	wget https://phar.phpunit.de/phploc.phar
+	wget https://phar.phpunit.de/phploc-7.0.1.phar -O phploc.phar
 
 phpcpd.phar:
-	wget https://phar.phpunit.de/phpcpd.phar
+	wget https://phar.phpunit.de/phpcpd-6.0.2.phar -O phpcpd.phar
 
 phpmd.phar:
-	wget https://phar.phpunit.de/phpmd.phar
+	wget https://github.com/phpmd/phpmd/releases/download/2.9.1/phpmd.phar
 
 twigcs.phar:
 	wget https://github.com/friendsoftwig/twigcs/releases/download/v3.2.2/twigcs.phar

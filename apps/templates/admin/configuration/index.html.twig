@@ -8,21 +8,20 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Value</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for configuration in configurations %}
+        {% for configuration in pagination %}
             <tr>
-                <td>{{ configuration.id }}</td>
                 <td>{{ configuration.name }}</td>
                 <td>{{ configuration.value }}</td>
                 <td>
                     <a href="{{ path('configuration_show', {'id': configuration.id}) }}">show</a>
                     <a href="{{ path('configuration_edit', {'id': configuration.id}) }}">edit</a>
+                    <a href="#">delete</a>
                 </td>
             </tr>
         {% else %}

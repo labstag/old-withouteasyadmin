@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\EmailUser;
 use Labstag\Form\Admin\EmailUserType;
 use Labstag\Repository\EmailUserRepository;
@@ -18,13 +19,20 @@ class EmailUserController extends AbstractController
     /**
      * @Route("/", name="email_user_index", methods={"GET"})
      */
-    public function index(EmailUserRepository $emailUserRepository): Response
+    public function index(
+        PaginatorInterface $paginator,
+        Request $request,
+        EmailUserRepository $emailUserRepository
+    ): Response
     {
+        $pagination = $paginator->paginate(
+            $emailUserRepository->findAll(),
+            $request->query->getInt('page', 1), /*page number*/
+            10
+        );
         return $this->render(
             'admin/email_user/index.html.twig',
-            [
-                'email_users' => $emailUserRepository->findAll(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 

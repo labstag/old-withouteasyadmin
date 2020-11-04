@@ -8,21 +8,20 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Adresse</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for lien_user in lien_users %}
+        {% for lien_user in pagination %}
             <tr>
-                <td>{{ lien_user.id }}</td>
                 <td>{{ lien_user.name }}</td>
                 <td>{{ lien_user.adresse }}</td>
                 <td>
                     <a href="{{ path('lien_user_show', {'id': lien_user.id}) }}">show</a>
                     <a href="{{ path('lien_user_edit', {'id': lien_user.id}) }}">edit</a>
+                    <a href="#">delete</a>
                 </td>
             </tr>
         {% else %}

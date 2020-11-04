@@ -8,7 +8,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Title</th>
                 <th>Content</th>
                 <th>Enable</th>
@@ -18,9 +17,8 @@
             </tr>
         </thead>
         <tbody>
-        {% for note_interne in note_internes %}
+        {% for note_interne in pagination %}
             <tr>
-                <td>{{ note_interne.id }}</td>
                 <td>{{ note_interne.title }}</td>
                 <td>{{ note_interne.content }}</td>
                 <td>{{ note_interne.enable ? 'Yes' : 'No' }}</td>
@@ -29,6 +27,7 @@
                 <td>
                     <a href="{{ path('note_interne_show', {'id': note_interne.id}) }}">show</a>
                     <a href="{{ path('note_interne_edit', {'id': note_interne.id}) }}">edit</a>
+                    <a href="#">delete</a>
                 </td>
             </tr>
         {% else %}
