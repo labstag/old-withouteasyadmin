@@ -16,7 +16,7 @@ services:
     networks:
       - net
   mailhog:
-    image: mailhog/mailhog
+    image: mailhog/mailhog:v1.0.1
     networks:
       - net
       - proxynetwork
@@ -29,7 +29,7 @@ services:
         - "traefik.http.routers.mailhog-labstag.entrypoints=web"
         - "traefik.http.services.mailhog-labstag.loadbalancer.server.port=8025"
   mercure:
-    image: dunglas/mercure
+    image: dunglas/mercure:v0.10
     environment:
       JWT_KEY: "MyJwtSecret"
       ALLOW_ANONYMOUS: 1
@@ -48,7 +48,7 @@ services:
         - "traefik.http.routers.mercure-labstag.entrypoints=web"
         - "traefik.http.services.mercure-labstag.loadbalancer.server.port=80"
   phpldapadmin:
-    image: osixia/phpldapadmin
+    image: osixia/phpldapadmin:0.9.0
     networks:
       - net
       - proxynetwork
@@ -106,7 +106,7 @@ services:
     networks:
       - net
   apache:
-    image: httpd
+    image: httpd:2.4.46
     depends_on:
       - phpfpm
     volumes:
@@ -124,7 +124,7 @@ services:
         - "traefik.http.routers.www-labstag.entrypoints=web"
         - "traefik.http.services.www-labstag.loadbalancer.server.port=80"
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin:5.0.2
     environment:
       PMA_HOST: mariadb
       MYSQL_ROOT_PASSWORD: example
