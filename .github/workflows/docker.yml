@@ -14,8 +14,8 @@ jobs:
           run: make docker-deploy
         - name: 'Make sleep'
           run: make sleep
-        - name: 'Installation version PROD'
-          run: make env-prod
+        - name: 'Installation variable environnement'
+          run: make env-dev
         - name: 'Check running containers'
           run: make docker-ls
         - name: 'Composer install'
