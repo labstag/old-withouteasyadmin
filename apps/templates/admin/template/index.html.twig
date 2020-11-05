@@ -5,8 +5,6 @@
             <tr>
                 <th>Name</th>
                 <th>Code</th>
-                <th>Html</th>
-                <th>Text</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -15,8 +13,6 @@
             <tr>
                 <td>{{ template.name }}</td>
                 <td>{{ template.code }}</td>
-                <td>{{ template.html }}</td>
-                <td>{{ template.text }}</td>
                 <td>
                     <a href="{{ path('template_show', {'id': template.id}) }}">show</a>
                     <a href="{{ path('template_edit', {'id': template.id}) }}">edit</a>

@@ -3,6 +3,7 @@
 namespace Labstag\Entity;
 
 use Labstag\Repository\TemplateRepository;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,6 +25,7 @@ class Template
     private $name;
 
     /**
+     * @Gedmo\Slug(updatable=false, fields={"name"})
      * @ORM\Column(type="string", length=255)
      */
     private $code;
