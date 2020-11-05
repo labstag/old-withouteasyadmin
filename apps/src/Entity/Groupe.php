@@ -3,6 +3,7 @@
 namespace Labstag\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\Collection;
 use Labstag\Repository\GroupeRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,7 +27,8 @@ class Groupe
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Gedmo\Slug(updatable=false, fields={"name"})
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $code;
 

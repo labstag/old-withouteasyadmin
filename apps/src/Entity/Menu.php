@@ -2,12 +2,10 @@
 
 namespace Labstag\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
 use Labstag\Repository\MenuRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass=MenuRepository::class)
  */
 class Menu
@@ -51,7 +49,6 @@ class Menu
     private $clef;
 
     /**
-     * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="Menu", inversedBy="children")
      * @ORM\JoinColumn(
      *  name="parent_id",
@@ -66,6 +63,7 @@ class Menu
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $children;
+
 
     public function __toString()
     {

@@ -32,7 +32,7 @@ class AdminMenuBuilder
         $menu = $this->factory->createItem('menulabstag');
         $menu->setChildrenAttribute('class', 'navbar-nav');
 
-        $data      = $this->repository->findOneBy(
+        $data = $this->repository->findOneBy(
             [
                 'clef'   => 'admin',
                 'parent' => null,
