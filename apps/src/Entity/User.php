@@ -98,6 +98,11 @@ class User implements UserInterface
         $this->adresseUsers = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getUsername();
+    }
+
     public function getId(): ?string
     {
         return $this->id;

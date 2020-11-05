@@ -41,6 +41,17 @@ abstract class Phone
      */
     private $principal;
 
+    public function __toString()
+    {
+        return implode(
+            ' ',
+            [
+                $this->getCountry(),
+                $this->getNumero(),
+            ]
+        );
+    }
+
     public function getId(): ?string
     {
         return $this->id;

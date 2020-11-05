@@ -129,6 +129,7 @@ install-dev: install
 
 linter: ## Launch all linter
 	@make linter-twig -i
+	@make linter-yaml -i
 	@make linter-phpstan -i
 	@make linter-phpcpd -i
 	@make linter-phpcs -i
@@ -182,6 +183,12 @@ linter-twig: ## indique les erreurs de code de twig
 
 linter-twig-ci: ## indique les erreurs de code de twig
 	cd apps &&  make linter-twig
+
+linter-yaml: ## indique les erreurs de code de yaml
+	docker exec $(PHPFPMFULLNAME) make linter-twig
+
+linter-yaml-ci: ## indique les erreurs de code de yaml
+	cd apps &&  make linter-yaml
 
 logs: ## logs docker
 	docker service logs -f --tail 100 --raw $(STACK)

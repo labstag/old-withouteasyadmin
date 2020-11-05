@@ -31,6 +31,17 @@ abstract class Lien
      */
     protected $adresse;
 
+    public function __toString()
+    {
+        return implode(
+            ' ',
+            [
+                $this->getName(),
+                $this->getAdresse(),
+            ]
+        );
+    }
+
     public function getId(): ?string
     {
         return $this->id;

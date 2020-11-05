@@ -55,6 +55,8 @@ jobs:
         run: make encore-dev
       - name: Linter twig
         run: make linter-twig-ci
+      - name: Linter yaml
+        run: make linter-yaml-ci
       - name: linter phpstan
         run: make linter-phpstan-ci
       - name: Run Acceptance Tests

@@ -31,6 +31,11 @@ abstract class Email
      */
     protected $principal;
 
+    public function __toString()
+    {
+        return $this->getAdresse();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
