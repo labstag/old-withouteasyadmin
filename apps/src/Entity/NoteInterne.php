@@ -49,6 +49,11 @@ class NoteInterne
      */
     private $refuser;
 
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
+
     public function getId(): ?string
     {
         return $this->id;

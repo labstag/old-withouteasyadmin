@@ -91,6 +91,9 @@ linter-phpstan: ## regarde si le code PHP ne peux pas être optimisé
 linter-twig: ## indique les erreurs de code de twig
 	php bin/console lint:twig templates
 
+linter-yaml: ## indique les erreurs de code de yaml
+	php bin/console lint:yaml config
+
 tests-behat: ## Lance les tests behat
 	composer run behat
 

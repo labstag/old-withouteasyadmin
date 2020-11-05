@@ -67,6 +67,20 @@ class Menu
      */
     private $children;
 
+    public function __toString()
+    {
+        return implode(
+            ' ',
+            [
+                $this->getId(),
+                '-',
+                '('.$this->getClef().')',
+                '-',
+                $this->getLibelle(),
+            ]
+        );
+    }
+
     public function __construct()
     {
         $this->separateur = false;

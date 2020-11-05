@@ -56,6 +56,19 @@ abstract class Adresse
      */
     protected $pmr;
 
+    public function __toString()
+    {
+        return implode(
+            ' ',
+            [
+                $this->getRue(),
+                $this->getZipcode(),
+                $this->getVille(),
+                $this->getCountry(),
+            ]
+        );
+    }
+
     public function getId(): ?int
     {
         return $this->id;

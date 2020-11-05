@@ -1,7 +1,5 @@
 {% extends 'admin/user/layout.html.twig' %}
 {% block content %}
-    <h1>Create new User</h1>
-
     {{ include('admin/crud/form.html.twig') }}
 
     <a href="{{ path('user_index') }}">back to list</a>
