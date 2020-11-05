@@ -38,6 +38,10 @@ class AdminMenuBuilder
                 'parent' => null,
             ]
         );
+        if (!($data instanceof Menu)) {
+            return $menu;
+        }
+
         $childrens = $data->getChildren();
         foreach ($childrens as $child) {
             $this->addMenu($menu, $child);

@@ -4,25 +4,39 @@
 {% endblock %}
 {% block body %}
     <header>
-  <!-- Fixed navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            {{ knp_menu_render('admin_menu', {'style': 'navbar', 'currentClass': 'active'}) }}
-    </div>
-    </nav>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {{ knp_menu_render('admin_menu', {'style': 'navbar', 'currentClass': 'active'}) }}
+            </div>
+        </nav>
+        <div class="row">
+            <div class="col-6">
+                <h1>{% block headerTitre %}{% endblock %}</h1>
+            </div>
+            <div class="col-6 text-right">
+                Liens des boutons
+            </div>
+        </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Library</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+        </nav>
     </header>
-    {% block content %}
-    {% endblock %}
-    {% if pagination is defined %}
-    <div class="navigation">
+    <div class="container-fluid">
+        {% block content %}
+        {% endblock %}
+        {% if pagination is defined %}
         {{ knp_pagination_render(pagination) }}
+        {% endif %}
     </div>
-    {% endif %}
 {% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('admin') }}

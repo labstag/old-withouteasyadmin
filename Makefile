@@ -128,7 +128,7 @@ install-dev: install
 	@make bdd-features -i
 
 linter: ## Launch all linter
-	@make linter-twigcs -i
+	@make linter-twig -i
 	@make linter-phpstan -i
 	@make linter-phpcpd -i
 	@make linter-phpcs -i
@@ -177,11 +177,11 @@ linter-phpstan: ## regarde si le code PHP ne peux pas être optimisé
 linter-phpstan-ci: ## regarde si le code PHP ne peux pas être optimisé
 	cd apps && make linter-phpstan
 
-linter-twigcs: ## indique les erreurs de code de twig
-	docker exec $(PHPFPMFULLNAME) make linter-twigcs
+linter-twig: ## indique les erreurs de code de twig
+	docker exec $(PHPFPMFULLNAME) make linter-twig
 
-linter-twigcs-ci: ## indique les erreurs de code de twig
-	cd apps &&  make linter-twigcs
+linter-twig-ci: ## indique les erreurs de code de twig
+	cd apps &&  make linter-twig
 
 logs: ## logs docker
 	docker service logs -f --tail 100 --raw $(STACK)
