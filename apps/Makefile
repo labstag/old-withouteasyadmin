@@ -26,9 +26,6 @@ phpcpd.phar:
 phpmd.phar:
 	wget https://github.com/phpmd/phpmd/releases/download/2.9.1/phpmd.phar
 
-twigcs.phar:
-	wget https://github.com/friendsoftwig/twigcs/releases/download/v3.2.2/twigcs.phar
-
 bdd-fixtures: ## fixtures
 	php bin/console doctrine:fixtures:load -n
 
@@ -91,8 +88,8 @@ linter-phpmnd: ## Si des chiffres sont utilisé dans le code PHP, il est conseil
 linter-phpstan: ## regarde si le code PHP ne peux pas être optimisé
 	composer run phpstan
 
-linter-twigcs: twigcs.phar ## indique les erreurs de code de twig
-	php twigcs.phar templates
+linter-twig: ## indique les erreurs de code de twig
+	php bin/console lint:twig templates
 
 tests-behat: ## Lance les tests behat
 	composer run behat

@@ -77,6 +77,12 @@ class MenuAdminFixtures extends Fixture
                 ],
             ],
             [
+                'libelle' => 'Groupes',
+                'data'    => [
+                    'attr' => ['data-href' => 'groupe_index'],
+                ],
+            ],
+            [
                 'libelle' => 'Liste',
                 'data'    => [
                     'attr' => ['data-href' => 'user_index'],

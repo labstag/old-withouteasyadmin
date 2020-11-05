@@ -45,17 +45,17 @@ jobs:
         run: make composer-dev-ci
       - name: linter readme.md
         run: make linter-readme
-      - name: Run PHP Code Sniffer
+      - name: linter PHP Code Sniffer
         run: make linter-phpcs-onlyerror-ci
-      - name: Run PHP MD
+      - name: linter PHP MD
         run: make linter-phpmd-ci
-      - name: Run PHPMND
+      - name: linter PHPMND
         run: make linter-phpmnd-ci
       - name: Test lancement bootstrap
         run: make encore-dev
-      - name: Run twigcs
-        run: make linter-twigcs-ci
-      - name: Run phpstan
+      - name: Linter twig
+        run: make linter-twig-ci
+      - name: linter phpstan
         run: make linter-phpstan-ci
       - name: Run Acceptance Tests
         run: make tests-behat-ci

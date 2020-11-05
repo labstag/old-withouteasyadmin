@@ -4,6 +4,7 @@ namespace Labstag\Form\Admin;
 
 use Labstag\Entity\NoteInterne;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,6 +24,7 @@ class NoteInterneType extends AbstractType
         $builder->add('enable');
         $builder->add('date_debut');
         $builder->add('date_fin');
+        $builder->add('submit', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
