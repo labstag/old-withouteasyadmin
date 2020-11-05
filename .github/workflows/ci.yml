@@ -37,7 +37,7 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install npm dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: npm install
+        run: make node_modules
       - name: Validate composer.json
         run: make composer-validate-ci
       - name: Install Composer dependencies
