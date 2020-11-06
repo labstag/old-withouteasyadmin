@@ -42,6 +42,7 @@
     "webpack-notifier": "1.8.0"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^23.1.0",
     "bootstrap": "^5.0.0-alpha2",
     "bootstrap-table": "^1.18.0",
     "font-awesome": "^4.7.0",
