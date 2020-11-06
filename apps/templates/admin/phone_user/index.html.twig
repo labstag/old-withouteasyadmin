@@ -15,9 +15,9 @@
         {% for phone_user in pagination %}
             <tr>
                 <td>{{ phone_user.numero }}</td>
-                <td>{{ phone_user.country }}</td>
+                <td>{{ phone_user.country|country_name('fr') }}</td>
                 <td>{{ phone_user.type }}</td>
-                <td>{{ phone_user.principal }}</td>
+                <td>{{ phone_user.principal ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('phone_user_show', {'id': phone_user.id}) }}">show</a>
                     <a href="{{ path('phone_user_edit', {'id': phone_user.id}) }}">edit</a>

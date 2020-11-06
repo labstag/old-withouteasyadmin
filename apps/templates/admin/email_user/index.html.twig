@@ -5,6 +5,7 @@
             <tr>
                 <th>Adresse</th>
                 <th>Principal</th>
+                <th>User</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -13,6 +14,7 @@
             <tr>
                 <td>{{ email_user.adresse }}</td>
                 <td>{{ email_user.principal ? 'Yes' : 'No' }}</td>
+                <td>{{ email_user.refuser }}</td>
                 <td>
                     <a href="{{ path('email_user_show', {'id': email_user.id}) }}">show</a>
                     <a href="{{ path('email_user_edit', {'id': email_user.id}) }}">edit</a>

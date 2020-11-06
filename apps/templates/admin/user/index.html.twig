@@ -4,10 +4,8 @@
         <thead>
             <tr>
                 <th>Username</th>
-                <th>Roles</th>
-                <th>Password</th>
-                <th>Nom</th>
-                <th>Prenom</th>
+                <th>Groupe</th>
+                <th>Email</th>
                 <th>Enable</th>
                 <th>actions</th>
             </tr>
@@ -16,10 +14,8 @@
         {% for user in pagination %}
             <tr>
                 <td>{{ user.username }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
-                <td>{{ user.nom }}</td>
-                <td>{{ user.prenom }}</td>
+                <td>{{ user.groupe }}</td>
+                <td>{{ user.email }}</td>
                 <td>{{ user.enable ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('user_show', {'id': user.id}) }}">show</a>

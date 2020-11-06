@@ -4,8 +4,8 @@
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Content</th>
                 <th>Enable</th>
+                <th>User</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -13,8 +13,8 @@
         {% for edito in pagination %}
             <tr>
                 <td>{{ edito.title }}</td>
-                <td>{{ edito.content }}</td>
                 <td>{{ edito.enable ? 'Yes' : 'No' }}</td>
+                <td>{{ edito.refuser }}</td>
                 <td>
                     <a href="{{ path('edito_show', {'id': edito.id}) }}">show</a>
                     <a href="{{ path('edito_edit', {'id': edito.id}) }}">edit</a>

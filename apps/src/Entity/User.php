@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Labstag\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -27,6 +28,17 @@ class User implements UserInterface
     private $username;
 
     /**
+     * @ORM\Column(type="string", length=180, options={"default": true})
+     * @Assert\NotBlank
+     * @Assert\Email(
+     *     message="The email '{{ value }}' is not a valid email."
+     * )
+     *
+     * @var string
+     */
+    private $email;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -38,14 +50,9 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string|null
      */
-    private $nom;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $prenom;
+    private $plainPassword;
 
     /**
      * @ORM\Column(type="boolean")
@@ -53,43 +60,51 @@ class User implements UserInterface
     private $enable;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $lost;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $groupe;
 
     /**
      * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="refuser")
      */
-    private ArrayCollection $editos;
+    private $editos;
 
     /**
      * @ORM\OneToMany(targetEntity=NoteInterne::class, mappedBy="refuser")
      */
-    private ArrayCollection $noteInternes;
+    private $noteInternes;
 
     /**
      * @ORM\OneToMany(targetEntity=LienUser::class, mappedBy="refuser")
      */
-    private ArrayCollection $lienUsers;
+    private $lienUsers;
 
     /**
      * @ORM\OneToMany(targetEntity=EmailUser::class, mappedBy="refuser")
      */
-    private ArrayCollection $emailUsers;
+    private $emailUsers;
 
     /**
      * @ORM\OneToMany(targetEntity=PhoneUser::class, mappedBy="refuser")
      */
-    private ArrayCollection $phoneUsers;
+    private $phoneUsers;
 
     /**
      * @ORM\OneToMany(targetEntity=AdresseUser::class, mappedBy="refuser")
      */
-    private ArrayCollection $adresseUsers;
+    private $adresseUsers;
 
     public function __construct()
     {
+        $this->roles        = ['ROLE_USER'];
+        $this->enable       = true;
+        $this->lost         = false;
         $this->editos       = new ArrayCollection();
         $this->noteInternes = new ArrayCollection();
         $this->lienUsers    = new ArrayCollection();
@@ -101,6 +116,22 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->getUsername();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->setPassword('');
+        $this->plainPassword = $plainPassword;
+
+        return $this;
     }
 
     public function getId(): ?string
@@ -177,31 +208,7 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(?string $nom): self
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    public function setPrenom(?string $prenom): self
-    {
-        $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getEnable(): ?bool
+    public function isEnable(): ?bool
     {
         return $this->enable;
     }
@@ -389,6 +396,35 @@ class User implements UserInterface
                 $adresseUser->setRefuser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getEmail(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function isLost(): ?bool
+    {
+        return $this->lost;
+    }
+
+    public function setLost(bool $lost): self
+    {
+        $this->lost = $lost;
 
         return $this;
     }

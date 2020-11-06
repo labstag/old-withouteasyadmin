@@ -54,6 +54,11 @@ class AdminMenuBuilder
     {
         $data      = [];
         $dataChild = $child->getData();
+        if ($child->isSeparateur()) {
+            $parent->addChild('')->setExtra('divider', true);
+            return;
+        }
+
         if (isset($dataChild['attr']['data-href'])) {
             $data['route'] = $dataChild['attr']['data-href'];
         }

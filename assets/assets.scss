@@ -1,1 +1,18 @@
 @import "./../node_modules/bootstrap/scss/bootstrap.scss";
+
+label {
+  font-weight: bold;
+  &.required {
+    &:after {
+      content: " *";
+      color: red;
+    }
+  }
+}
+.RequireFormInfo{
+  text-align: right;
+  span{
+    font-weight: bold;
+    color: red;
+  }
+}

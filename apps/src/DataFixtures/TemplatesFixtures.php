@@ -4,27 +4,21 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Labstag\Repository\TemplateRepository;
 use Faker\Factory;
+use Faker\Generator;
 use Labstag\Entity\Template;
 use Twig\Environment;
 
 class TemplatesFixtures extends Fixture
 {
 
-    private TemplateRepository $repository;
-
     private Environment $twig;
 
     const NUMBER = 10;
 
-    public function __construct(
-        TemplateRepository $repository,
-        Environment $twig
-    )
+    public function __construct(Environment $twig)
     {
-        $this->twig       = $twig;
-        $this->repository = $repository;
+        $this->twig = $twig;
     }
 
     public function load(ObjectManager $manager)
@@ -84,15 +78,20 @@ class TemplatesFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
         for ($index = 0; $index < self::NUMBER; ++$index) {
-            $template = new Template();
-            $template->setName($faker->unique()->colorName);
-            /** @var string $content */
-            $content = $faker->unique()->paragraphs(10, true);
-            $template->setHtml(str_replace("\n\n", '<br />', $content));
-            $template->setText($content);
-            $manager->persist($template);
+            $this->addTemplate($faker, $manager);
         }
 
         $manager->flush();
+    }
+
+    private function addTemplate(Generator $faker, ObjectManager $manager): void
+    {
+        $template = new Template();
+        $template->setName($faker->unique()->colorName);
+        /** @var string $content */
+        $content = $faker->unique()->paragraphs(10, true);
+        $template->setHtml(str_replace("\n\n", '<br />', $content));
+        $template->setText($content);
+        $manager->persist($template);
     }
 }

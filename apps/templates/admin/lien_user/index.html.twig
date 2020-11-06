@@ -5,6 +5,7 @@
             <tr>
                 <th>Name</th>
                 <th>Adresse</th>
+                <th>User</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -13,6 +14,7 @@
             <tr>
                 <td>{{ lien_user.name }}</td>
                 <td>{{ lien_user.adresse }}</td>
+                <td>{{ lien_user.refuser }}</td>
                 <td>
                     <a href="{{ path('lien_user_show', {'id': lien_user.id}) }}">show</a>
                     <a href="{{ path('lien_user_edit', {'id': lien_user.id}) }}">edit</a>

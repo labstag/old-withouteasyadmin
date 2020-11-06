@@ -2,16 +2,18 @@
 
 namespace Labstag\DataFixtures;
 
+use DateTime;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Repository\UserRepository;
 use Faker\Factory;
 use Faker\Generator;
-use Labstag\Entity\Edito;
+use Labstag\Entity\NoteInterne;
 use Labstag\Entity\User;
 
-class EditoFixtures extends Fixture implements DependentFixtureInterface
+class NoteInterneFixtures extends Fixture implements DependentFixtureInterface
 {
     const NUMBER = 25;
 
@@ -27,8 +29,9 @@ class EditoFixtures extends Fixture implements DependentFixtureInterface
         $users = $this->userRepository->findAll();
         $faker = Factory::create('fr_FR');
         /** @var resource $finfo */
+        $maxDate = $faker->unique()->dateTimeInInterval('now', '+30 years');
         for ($index = 0; $index < self::NUMBER; ++$index) {
-            $this->addEdito($users, $faker, $manager);
+            $this->addNoteInterne($users, $faker, $manager, $maxDate);
         }
 
         // $product = new Product();
@@ -37,23 +40,30 @@ class EditoFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    private function addEdito(
+    private function addNoteInterne(
         $users,
         Generator $faker,
-        ObjectManager $manager
+        ObjectManager $manager,
+        $maxDate
     ): void
     {
-        $edito = new Edito();
-        $edito->setTitle($faker->unique()->text(rand(5, 50)));
-        $edito->setEnable((bool) rand(0, 1));
+        $noteinterne = new NoteInterne();
+        $noteinterne->setTitle($faker->unique()->text(rand(5, 50)));
+        $noteinterne->setEnable((bool) rand(0, 1));
+        $dateDebut = $faker->unique()->dateTime($maxDate);
+        $noteinterne->setDateDebut($dateDebut);
+        $dateFin = clone $dateDebut;
+        $dateFin->modify('+' .rand(10, 50). ' days');
+        $dateFin->modify('+' .rand(2, 24). ' hours');
+        $noteinterne->setDateFin($dateFin);
         /** @var string $content */
         $content = $faker->unique()->paragraphs(4, true);
-        $edito->setContent(str_replace("\n\n", '<br />', $content));
+        $noteinterne->setContent(str_replace("\n\n", '<br />', $content));
         $tabIndex = array_rand($users);
         /** @var User $user */
         $user = $users[$tabIndex];
-        $edito->setRefuser($user);
-        $manager->persist($edito);
+        $noteinterne->setRefuser($user);
+        $manager->persist($noteinterne);
     }
 
     public function getDependencies()

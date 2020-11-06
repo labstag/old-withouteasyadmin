@@ -9,28 +9,60 @@
     </fieldset>
 {%- endblock -%}
 
+{% block datetime_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline')|trim}) -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{- form_errors(form) -}}
+            {{- form_errors(form.date) -}}
+            {{- form_errors(form.time) -}}
+
+            <div class="sr-only">
+                {%- if form.date.year is defined %}{{ form_label(form.date.year) }}{% endif -%}
+                {%- if form.date.month is defined %}{{ form_label(form.date.month) }}{% endif -%}
+                {%- if form.date.day is defined %}{{ form_label(form.date.day) }}{% endif -%}
+                {%- if form.time.hour is defined %}{{ form_label(form.time.hour) }}{% endif -%}
+                {%- if form.time.minute is defined %}{{ form_label(form.time.minute) }}{% endif -%}
+                {%- if form.time.second is defined %}{{ form_label(form.time.second) }}{% endif -%}
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{- form_widget(form.date, { datetime: true } ) -}}
+                </div>
+                <div class="col">
+                    {{- form_widget(form.time, { datetime: true } ) -}}
+                </div>
+            </div>
+        </div>
+    {%- endif -%}
+{%- endblock datetime_widget %}
+
 {%- block form_row -%}
 	{%- set label_attr = {} -%}
 	{%- set element_attr = {
 		'class': 'form-group'
 	} -%}
-    {%- if compound is defined and compound -%}
-		{%- set element = 'fieldset' -%}
-		{%- if form.vars.block_prefixes[1] == "collection" -%}
-			{%- if prototype is defined and allow_add -%}
-				{%- set label_attr = label_attr|merge({
-					'allow_add': true
-				}) -%}
-				{%- set element_attr = element_attr|merge({
-					'class': element_attr.class ~ ' FieldCollections',
-					'data-prototype': block('collection_item_widget')|replace({'"': "'", "\n": "", "\t": ""})
-				}) -%}
-			{%- else -%}
-				{%- set element_attr = element_attr|merge({
-					'class': element_attr.class ~ ' FieldCollection'
-				}) -%}
-			{%- endif -%}
-		{%- endif -%}
+    {%- if form.children.date is defined and form.children.time is defined -%}
+        {%- set element = 'div' -%}
+    {%- elseif compound is defined and compound -%}
+        {%- set element = 'fieldset' -%}
+        {%- if form.vars.block_prefixes[1] == "collection" -%}
+            {%- if prototype is defined and allow_add -%}
+                {%- set label_attr = label_attr|merge({
+                    'allow_add': true
+                }) -%}
+                {%- set element_attr = element_attr|merge({
+                    'class': element_attr.class ~ ' FieldCollections',
+                    'data-prototype': block('collection_item_widget')|replace({'"': "'", "\n": "", "\t": ""})
+                }) -%}
+            {%- else -%}
+                {%- set element_attr = element_attr|merge({
+                    'class': element_attr.class ~ ' FieldCollection'
+                }) -%}
+            {%- endif -%}
+        {%- endif -%}
 		{%- set element_attr = element_attr|merge({
 			'id': random()
 		}) -%}
@@ -46,9 +78,27 @@
     </{{ element|default('div') }}>
 {%- endblock -%}
 
+{%- block form_end -%}
+    {%- set required = false %}
+    {% for children in form.children %}
+        {% if children.vars.required is defined and children.vars.required == true %}
+            {%- set required = true %}
+        {% endif %}
+    {% endfor %}
+    {%- if required == true -%}
+        <div class="RequireFormInfo">Les informations marquées d'un <span>*</span> sont obligatoires</div>
+    {%- endif -%}
+    {%- if not render_rest is defined or render_rest -%}
+        {{ form_rest(form) }}
+    {%- endif -%}
+    </form>
+{%- endblock form_end -%}
+
 {%- block form_label -%}
     {%- if label is not same as(false) -%}
-        {%- if compound is defined and compound -%}
+        {%- if form.children.date is defined and form.children.time is defined -%}
+            {%- set element = 'label' -%}
+        {%- elseif compound is defined and compound -%}
             {%- set element = 'legend' -%}
             {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' col-form-label')|trim}) -%}
         {%- else -%}
@@ -159,51 +209,4 @@
 			{%- endfor -%}
 		</div>
 	{%- endif -%}
-{%- endblock -%}
-
-{%- block vich_file_row -%}
-    {{- block('form_row') -}}
-{%- endblock -%}
-
-{%- block vich_file_widget -%}
-    <div class="vich-file">
-        {{- form_widget(form.file) -}}
-        {%- if form.delete is defined -%}
-            {{- form_row(form.delete) -}}
-        {%- endif -%}
-
-        {%- if download_uri -%}
-            <a href="{{ download_uri }}">{{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}</a>
-        {%- endif -%}
-    </div>
-{%- endblock -%}
-
-{%- block vich_image_row -%}
-    {{- block('form_row') -}}
-{%- endblock -%}
-
-{%- block vich_image_widget -%}
-    <div class="vich-image">
-        {{- form_widget(form.file) -}}
-		<div class="row">
-			<div class="col-xl-2 offset-xl-5">
-				{%- if form.delete is defined -%}
-					{{- form_row(form.delete) -}}
-				{%- endif -%}
-				{%- if image_uri -%}
-					<a href="{{ image_uri }}" data-fancybox="true">
-						<img src="{{ image_uri }}" class="img-thumbnail" />
-					</a>
-				{%- endif -%}
-				{%- if download_uri -%}
-					<a href="{{ download_uri }}">{{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}</a>
-				{%- endif -%}
-			</div>
-		</div>
-    </div>
-{%- endblock -%}
-
-{%- block vich_file_label -%}
-    {%- set label = label|trans|default(label) -%}
-    {{- block('form_label') -}}
 {%- endblock -%}

@@ -3,6 +3,8 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\Template;
+use Labstag\FormType\CoreTextareaType;
+use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,8 +24,8 @@ class TemplateType extends AbstractType
         unset($options);
         $builder->add('name');
         $builder->add('code');
-        $builder->add('html');
-        $builder->add('text');
+        $builder->add('html', WysiwygType::class);
+        $builder->add('text', CoreTextareaType::class);
         $builder->add('submit', SubmitType::class);
     }
 

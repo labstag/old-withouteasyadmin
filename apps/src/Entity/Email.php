@@ -3,6 +3,7 @@
 namespace Labstag\Entity;
 
 use Labstag\Repository\EmailRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,6 +24,10 @@ abstract class Email
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Email(
+     *     message="The email '{{ value }}' is not a valid email."
+     * )
      */
     protected $adresse;
 
@@ -36,7 +41,7 @@ abstract class Email
         return $this->getAdresse();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -53,7 +58,7 @@ abstract class Email
         return $this;
     }
 
-    public function getPrincipal(): ?bool
+    public function isPrincipal(): ?bool
     {
         return $this->principal;
     }

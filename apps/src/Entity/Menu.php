@@ -137,7 +137,7 @@ class Menu
         return $this;
     }
 
-    public function getSeparateur(): ?bool
+    public function isSeparateur(): ?bool
     {
         return $this->separateur;
     }

@@ -10,6 +10,7 @@
                 <th>Gps</th>
                 <th>Type</th>
                 <th>Pmr</th>
+                <th>User</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -17,12 +18,13 @@
         {% for adresse_user in pagination %}
             <tr>
                 <td>{{ adresse_user.rue }}</td>
-                <td>{{ adresse_user.country }}</td>
+                <td>{{ adresse_user.country|country_name('fr') }}</td>
                 <td>{{ adresse_user.zipcode }}</td>
                 <td>{{ adresse_user.ville }}</td>
                 <td>{{ adresse_user.gps }}</td>
                 <td>{{ adresse_user.type }}</td>
                 <td>{{ adresse_user.pmr ? 'Yes' : 'No' }}</td>
+                <td>{{ adresse_user.refuser }}</td>
                 <td>
                     <a href="{{ path('adresse_user_show', {'id': adresse_user.id}) }}">show</a>
                     <a href="{{ path('adresse_user_edit', {'id': adresse_user.id}) }}">edit</a>

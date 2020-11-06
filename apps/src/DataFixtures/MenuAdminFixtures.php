@@ -49,7 +49,7 @@ class MenuAdminFixtures extends Fixture
         return $data;
     }
 
-    private function getMenuUtilisateurs()
+    private function getMenuUtilisateurs(): array
     {
         $data = [
             [
@@ -82,6 +82,7 @@ class MenuAdminFixtures extends Fixture
                     'attr' => ['data-href' => 'groupe_index'],
                 ],
             ],
+            ['separator' => 1],
             [
                 'libelle' => 'Liste',
                 'data'    => [
@@ -173,12 +174,18 @@ class MenuAdminFixtures extends Fixture
     {
         $child = new Menu();
         $child->setPosition($index);
+        $child->setParent($menu);
+        if (isset($attr['separator'])) {
+            $child->setSeparateur(true);
+            $this->manager->persist($child);
+            return;
+        }
+
         $child->setLibelle($attr['libelle']);
         if (isset($attr['data'])) {
             $child->setData($attr['data']);
         }
 
-        $child->setParent($menu);
         $this->manager->persist($child);
         if (isset($attr['childs'])) {
             $indexChild = 0;

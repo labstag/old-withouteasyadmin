@@ -8,7 +8,7 @@
             </tr>
             <tr>
                 <th>Country</th>
-                <td>{{ phone_user.country }}</td>
+                <td>{{ phone_user.country|country_name('fr') }}</td>
             </tr>
             <tr>
                 <th>Type</th>
@@ -16,7 +16,7 @@
             </tr>
             <tr>
                 <th>Principal</th>
-                <td>{{ phone_user.principal }}</td>
+                <td>{{ phone_user.principal ? 'Yes' : 'No' }}</td>
             </tr>
         </tbody>
     </table>

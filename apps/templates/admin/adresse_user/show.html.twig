@@ -8,7 +8,7 @@
             </tr>
             <tr>
                 <th>Country</th>
-                <td>{{ adresse_user.country }}</td>
+                <td>{{ adresse_user.country|country_name('fr') }}</td>
             </tr>
             <tr>
                 <th>Zipcode</th>
@@ -29,6 +29,10 @@
             <tr>
                 <th>Pmr</th>
                 <td>{{ adresse_user.pmr ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>{{ adresse_user.refuser }}</td>
             </tr>
         </tbody>
     </table>

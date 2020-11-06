@@ -8,11 +8,14 @@
             </tr>
             <tr>
                 <th>Content</th>
-                <td>{{ edito.content }}</td>
+                <td>{{ edito.content|raw }}</td>
             </tr>
             <tr>
                 <th>Enable</th>
                 <td>{{ edito.enable ? 'Yes' : 'No' }}</td>
+            </tr>
+                <th>User</th>
+                <td>{{ edito.refuser }}</td>
             </tr>
         </tbody>
     </table>

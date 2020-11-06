@@ -8,19 +8,30 @@ use Labstag\Entity\Groupe;
 
 class GroupFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    private function getGroupes(): array
     {
         $groupes = [
             'visiteur',
             'admin',
             'user',
         ];
+        return $groupes;
+    }
+
+    public function load(ObjectManager $manager)
+    {
+        $groupes = $this->getGroupes();
         foreach ($groupes as $row) {
-            $groupe = new Groupe();
-            $groupe->setName($row);
-            $manager->persist($groupe);
+            $this->addGroupe($manager, $row);
         }
 
         $manager->flush();
+    }
+
+    private function addGroupe(ObjectManager $manager, string $row): void
+    {
+        $groupe = new Groupe();
+        $groupe->setName($row);
+        $manager->persist($groupe);
     }
 }

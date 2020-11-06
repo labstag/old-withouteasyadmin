@@ -3,6 +3,7 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\Edito;
+use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,7 +21,7 @@ class EditoType extends AbstractType
     {
         unset($options);
         $builder->add('title');
-        $builder->add('content');
+        $builder->add('content', WysiwygType::class);
         $builder->add('enable');
         $builder->add('refuser');
         $builder->add('submit', SubmitType::class);

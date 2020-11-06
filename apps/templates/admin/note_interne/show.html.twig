@@ -8,7 +8,7 @@
             </tr>
             <tr>
                 <th>Content</th>
-                <td>{{ note_interne.content }}</td>
+                <td>{{ note_interne.content|raw }}</td>
             </tr>
             <tr>
                 <th>Enable</th>
@@ -21,6 +21,10 @@
             <tr>
                 <th>Date_fin</th>
                 <td>{{ note_interne.dateFin ? note_interne.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>{{ note_interne.refuser }}</td>
             </tr>
         </tbody>
     </table>

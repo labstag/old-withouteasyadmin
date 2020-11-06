@@ -4,10 +4,10 @@
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Content</th>
                 <th>Enable</th>
                 <th>Date_debut</th>
                 <th>Date_fin</th>
+                <th>User</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -15,10 +15,10 @@
         {% for note_interne in pagination %}
             <tr>
                 <td>{{ note_interne.title }}</td>
-                <td>{{ note_interne.content }}</td>
                 <td>{{ note_interne.enable ? 'Yes' : 'No' }}</td>
                 <td>{{ note_interne.dateDebut ? note_interne.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ note_interne.dateFin ? note_interne.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ note_interne.refuser }}</td>
                 <td>
                     <a href="{{ path('note_interne_show', {'id': note_interne.id}) }}">show</a>
                     <a href="{{ path('note_interne_edit', {'id': note_interne.id}) }}">edit</a>

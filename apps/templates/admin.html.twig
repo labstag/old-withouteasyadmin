@@ -14,11 +14,13 @@
                 {{ knp_menu_render('admin_menu', {'style': 'navbar', 'currentClass': 'active'}) }}
             </div>
         </nav>
+    </header>
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-6">
+            <div class="col">
                 <h1>{% block headerTitre %}{% endblock %}</h1>
             </div>
-            <div class="col-6 text-right">
+            <div class="col text-right">
                 Liens des boutons
             </div>
         </div>
@@ -29,8 +31,6 @@
                 <li class="breadcrumb-item active" aria-current="page">Data</li>
             </ol>
         </nav>
-    </header>
-    <div class="container-fluid">
         {% block content %}
         {% endblock %}
         {% if pagination is defined %}

@@ -3,6 +3,7 @@
 namespace Labstag\Entity;
 
 use Labstag\Repository\NoteInterneRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,12 +35,14 @@ class NoteInterne
     private $enable;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
+     * @Assert\LessThan(propertyPath="dateFin")
      */
     private $dateDebut;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\GreaterThan(propertyPath="dateDebut")
      */
     private $dateFin;
 
@@ -83,7 +86,7 @@ class NoteInterne
         return $this;
     }
 
-    public function getEnable(): ?bool
+    public function isEnable(): ?bool
     {
         return $this->enable;
     }
@@ -95,24 +98,24 @@ class NoteInterne
         return $this;
     }
 
-    public function getDateDebut(): ?\DateTimeImmutable
+    public function getDateDebut(): ?\DateTime
     {
         return $this->dateDebut;
     }
 
-    public function setDateDebut(\DateTimeImmutable $dateDebut): self
+    public function setDateDebut(\DateTime $dateDebut): self
     {
         $this->dateDebut = $dateDebut;
 
         return $this;
     }
 
-    public function getDateFin(): ?\DateTimeImmutable
+    public function getDateFin(): ?\DateTime
     {
         return $this->dateFin;
     }
 
-    public function setDateFin(?\DateTimeImmutable $dateFin): self
+    public function setDateFin(?\DateTime $dateFin): self
     {
         $this->dateFin = $dateFin;
 

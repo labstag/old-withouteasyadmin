@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\NoteInterne;
 use Labstag\Form\Admin\NoteInterneType;
@@ -86,6 +87,8 @@ class NoteInterneController extends AbstractController
 
             return $this->redirectToRoute('note_interne_index');
         }
+
+        dump($form->getErrors());
 
         return $this->render(
             'admin/note_interne/edit.html.twig',

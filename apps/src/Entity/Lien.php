@@ -3,6 +3,7 @@
 namespace Labstag\Entity;
 
 use Labstag\Repository\LienRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +29,7 @@ abstract class Lien
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Url
      */
     protected $adresse;
 

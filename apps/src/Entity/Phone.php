@@ -3,6 +3,7 @@
 namespace Labstag\Entity;
 
 use Labstag\Repository\PhoneRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,7 +28,8 @@ abstract class Phone
     private $numero;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Country
      */
     private $country;
 
