@@ -1,6 +1,9 @@
 {% extends 'admin/phone_user/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <tbody>
             <tr>
                 <th>Numero</th>
@@ -21,9 +24,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('phone_user_index') }}">back to list</a>
+    <a href="{{ path('admin_phoneuser_index') }}">back to list</a>
 
-    <a href="{{ path('phone_user_edit', {'id': phone_user.id}) }}">edit</a>
+    <a href="{{ path('admin_phoneuser_edit', {'id': phone_user.id}) }}">edit</a>
 
     {{ include('admin/phone_user/_delete_form.html.twig') }}
 {% endblock %}

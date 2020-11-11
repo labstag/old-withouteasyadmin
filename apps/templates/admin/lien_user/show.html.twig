@@ -1,6 +1,9 @@
 {% extends 'admin/lien_user/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <tbody>
             <tr>
                 <th>Name</th>
@@ -13,9 +16,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('lien_user_index') }}">back to list</a>
+    <a href="{{ path('admin_lienuser_index') }}">back to list</a>
 
-    <a href="{{ path('lien_user_edit', {'id': lien_user.id}) }}">edit</a>
+    <a href="{{ path('admin_lienuser_edit', {'id': lien_user.id}) }}">edit</a>
 
     {{ include('admin/lien_user/_delete_form.html.twig') }}
 {% endblock %}

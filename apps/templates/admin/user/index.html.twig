@@ -1,6 +1,9 @@
 {% extends 'admin/user/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Username</th>
@@ -18,8 +21,8 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.enable ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+                    <a href="{{ path('admin_user_show', {'id': user.id}) }}">show</a>
+                    <a href="{{ path('admin_user_edit', {'id': user.id}) }}">edit</a>
                     <a href="#">delete</a>
                 </td>
             </tr>
@@ -31,5 +34,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('user_new') }}">Create new</a>
+    <a href="{{ path('admin_user_new') }}">Create new</a>
 {% endblock %}

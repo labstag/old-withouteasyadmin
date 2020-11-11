@@ -71,6 +71,15 @@ make git-commit
 make help
 ```
 
+## Users
+
+| Username | Password | Email | enable | Check |
+|--|--|--|--|--|
+| disable | password | disable@email.fr | FALSE | TRUE |
+| unverif | password | unverif@email.fr |  FALSE |FALSE |
+| admin | password | admin@email.fr | TRUE | TRUE |
+| superadmin | password | superadmin@email.fr | TRUE | TRUE |
+
 ## Author
 
 👤 **Koromerzhin**

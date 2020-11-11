@@ -6,6 +6,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Labstag\Entity\User;
 use Doctrine\Common\EventSubscriber;
+use Labstag\Entity\EmailUser;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -13,17 +14,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserListener implements EventSubscriber
 {
 
-    /**
-     * @var RouterInterface|Router
-     */
-    protected $router;
+    protected RouterInterface $router;
 
-    /**
-     * password Encoder.
-     *
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(
         RouterInterface $router,
@@ -52,8 +45,9 @@ class UserListener implements EventSubscriber
             return;
         }
 
+        $manager = $args->getEntityManager();
         $this->plainPassword($entity);
-        // $manager  = $args->getEntityManager();
+        $this->setEmail($entity, $manager);
         // $meta = $manager->getClassMetadata(get_class($entity));
         // $manager->getUnitOfWork()->recomputeSingleEntityChangeSet(
         //     $meta,
@@ -68,13 +62,44 @@ class UserListener implements EventSubscriber
             return;
         }
 
-        $this->plainPassword($entity);
         $manager = $args->getEntityManager();
-        $meta    = $manager->getClassMetadata(get_class($entity));
+        $this->plainPassword($entity);
+        $this->setEmail($entity, $manager);
+        $meta = $manager->getClassMetadata(get_class($entity));
         $manager->getUnitOfWork()->recomputeSingleEntityChangeSet(
             $meta,
             $entity
         );
+    }
+
+    private function setEmail(User $entity, $manager): void
+    {
+        $adresse = $entity->getEmail();
+        $emails  = $entity->getEmailUsers();
+        $trouver = false;
+        foreach ($emails as $emailUser) {
+            /** @var EmailUser $emailUser */
+            $emailUser->setPrincipal(false);
+            if ($emailUser->getAdresse() == $adresse) {
+                $emailUser->setPrincipal(true);
+                $trouver = true;
+            }
+
+            $manager->persist($emailUser);
+            $meta = $manager->getClassMetadata(get_class($emailUser));
+            $manager->getUnitOfWork()->computeChangeSet($meta, $emailUser);
+        }
+
+        if (!$trouver) {
+            $emailUser = new EmailUser();
+            $emailUser->setRefuser($entity);
+            $emailUser->setVerif(true);
+            $emailUser->setPrincipal(true);
+            $emailUser->setAdresse($adresse);
+            $manager->persist($emailUser);
+            $meta = $manager->getClassMetadata(get_class($emailUser));
+            $manager->getUnitOfWork()->computeChangeSet($meta, $emailUser);
+        }
     }
 
     private function plainPassword(User $entity): void

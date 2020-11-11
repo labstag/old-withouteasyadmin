@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity;
 
+use DateTime;
 use Labstag\Repository\NoteInterneRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -36,13 +37,13 @@ class NoteInterne
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\LessThan(propertyPath="dateFin")
+     * @Assert\LessThanOrEqual(propertyPath="dateFin")
      */
     private $dateDebut;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\GreaterThan(propertyPath="dateDebut")
+     * @Assert\GreaterThanOrEqual(propertyPath="dateDebut")
      */
     private $dateFin;
 
@@ -51,6 +52,13 @@ class NoteInterne
      * @ORM\JoinColumn(nullable=false)
      */
     private $refuser;
+
+    public function __construct()
+    {
+        $this->enable    = false;
+        $this->dateDebut = new DateTime();
+        $this->dateFin   = new DateTime();
+    }
 
     public function __toString()
     {

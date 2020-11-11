@@ -3,10 +3,10 @@
 namespace Labstag\Repository;
 
 use Labstag\Entity\Lien;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Doctrine\Persistence\ManagerRegistry;
 
-abstract class LienRepository extends ServiceEntityRepository
+abstract class LienRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $registry)
     {

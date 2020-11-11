@@ -3,10 +3,10 @@
 namespace Labstag\Repository;
 
 use Labstag\Entity\NoteInterne;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Doctrine\Persistence\ManagerRegistry;
 
-class NoteInterneRepository extends ServiceEntityRepository
+class NoteInterneRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $registry)
     {

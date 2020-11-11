@@ -1,10 +1,14 @@
 {% extends 'admin/email_user/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Adresse</th>
                 <th>Principal</th>
+                <th>Verif</th>
                 <th>User</th>
                 <th>actions</th>
             </tr>
@@ -14,10 +18,11 @@
             <tr>
                 <td>{{ email_user.adresse }}</td>
                 <td>{{ email_user.principal ? 'Yes' : 'No' }}</td>
+                <td>{{ email_user.verif ? 'Yes' : 'No' }}</td>
                 <td>{{ email_user.refuser }}</td>
                 <td>
-                    <a href="{{ path('email_user_show', {'id': email_user.id}) }}">show</a>
-                    <a href="{{ path('email_user_edit', {'id': email_user.id}) }}">edit</a>
+                    <a href="{{ path('admin_emailuser_show', {'id': email_user.id}) }}">show</a>
+                    <a href="{{ path('admin_emailuser_edit', {'id': email_user.id}) }}">edit</a>
                     <a href="#">delete</a>
                 </td>
             </tr>
@@ -29,5 +34,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('email_user_new') }}">Create new</a>
+    <a href="{{ path('admin_emailuser_new') }}">Create new</a>
 {% endblock %}

@@ -37,7 +37,7 @@ Encore
   // will require an extra script tag for runtime.js
   // but, you probably want this, unless you're building a single-page app
   .enableSingleRuntimeChunk()
-  .configureUrlLoader({ fonts: { limit: 4096 }, images: { limit: 4096 } })
+  .configureUrlLoader({ fonts: {}, images: {} })
   /*
    * FEATURE CONFIG
    *

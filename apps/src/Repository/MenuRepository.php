@@ -2,7 +2,7 @@
 
 namespace Labstag\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Entity\Menu;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  *  $offset = null
  * )
  */
-class MenuRepository extends ServiceEntityRepository
+class MenuRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $registry)
     {

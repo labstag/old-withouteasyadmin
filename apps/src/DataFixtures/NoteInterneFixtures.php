@@ -2,8 +2,6 @@
 
 namespace Labstag\DataFixtures;
 
-use DateTime;
-use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -13,6 +11,10 @@ use Faker\Generator;
 use Labstag\Entity\NoteInterne;
 use Labstag\Entity\User;
 
+
+/**
+ * @codeCoverageIgnore
+ */
 class NoteInterneFixtures extends Fixture implements DependentFixtureInterface
 {
     const NUMBER = 25;

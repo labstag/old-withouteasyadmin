@@ -1,12 +1,14 @@
-.DEFAULT_GOAL   := help
-STACK           := labstag
-NETWORK         := proxynetwork
-PHPFPM          := $(STACK)_phpfpm
-PHPFPMFULLNAME  := $(PHPFPM).1.$$(docker service ps -f 'name=$(PHPFPM)' $(PHPFPM) -q --no-trunc | head -n1)
-MARIADB         := $(STACK)_mariadb
-MARIADBFULLNAME := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $(MARIADB) -q --no-trunc | head -n1)
-APACHE          := $(STACK)_apache
-APACHEFULLNAME  := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
+.DEFAULT_GOAL        := help
+STACK                := labstag
+NETWORK              := proxynetwork
+PHPFPM               := $(STACK)_phpfpm
+PHPFPMFULLNAME       := $(PHPFPM).1.$$(docker service ps -f 'name=$(PHPFPM)' $(PHPFPM) -q --no-trunc | head -n1)
+PHPFPMXDEBUG         := $(STACK)_phpfpm-xdebug
+PHPFPMXDEBUGFULLNAME := $(PHPFPMXDEBUG).1.$$(docker service ps -f 'name=$(PHPFPMXDEBUG)' $(PHPFPMXDEBUG) -q --no-trunc | head -n1)
+MARIADB              := $(STACK)_mariadb
+MARIADBFULLNAME      := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $(MARIADB) -q --no-trunc | head -n1)
+APACHE               := $(STACK)_apache
+APACHEFULLNAME       := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
 %:
 	@:
 
@@ -28,6 +30,12 @@ apps/vendor: apps/composer.lock
 
 apps/.env: apps/.env.dist ## Install .env
 	docker exec $(PHPFPMFULLNAME) make .env
+	
+assets:
+	docker exec $(PHPFPMFULLNAME) make assets
+	
+assets-ci:
+	cd apps && make assets
 
 bdd-fixtures: ## fixtures
 	docker exec $(PHPFPMFULLNAME) make bdd-fixtures
@@ -85,9 +93,6 @@ docker-image-pull: ## Get docker image
 	docker image pull dunglas/mercure:v0.10
 	docker image pull koromerzhin/phpfpm:7.4.12-symfony
 
-docker-logs: ## logs docker
-	docker service logs -f --tail 100 --raw $(WWWFULLNAME)
-
 docker-ls: ## docker service
 	@docker stack services $(STACK)
 
@@ -96,6 +101,9 @@ docker-stop: ## docker stop
 
 encore-dev: ## créer les assets en version dev
 	@npm run encore-dev
+
+encore-watch: ## créer les assets en version watch
+	@npm run encore-watch
 
 env-dev: apps/.env ## Installation environnement dev
 	sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
@@ -120,6 +128,8 @@ install: apps/vendor node_modules apps/.env ## installation
 	@make docker-deploy -i
 	@make sleep -i
 	@make bdd-migrate -i
+	@make assets -i
+	@make encore-dev -i
 	@make linter -i
 
 install-dev: install
@@ -185,7 +195,7 @@ linter-twig-ci: ## indique les erreurs de code de twig
 	cd apps &&  make linter-twig
 
 linter-yaml: ## indique les erreurs de code de yaml
-	docker exec $(PHPFPMFULLNAME) make linter-twig
+	docker exec $(PHPFPMFULLNAME) make linter-yaml
 
 linter-yaml-ci: ## indique les erreurs de code de yaml
 	cd apps &&  make linter-yaml
@@ -205,11 +215,17 @@ logs-phpfpm: ## logs docker PHPFPM
 sleep: ## sleep
 	sleep 90
 
-ssh: ## ssh
+ssh-phpfpm: ## ssh phpfpm
 	docker exec -ti $(PHPFPMFULLNAME) /bin/bash
 
+ssh-phpfpm-xdebug: ## ssh phpfpm xdebug
+	docker exec -ti $(PHPFPMXDEBUGFULLNAME) /bin/bash
+
+ssh-mariadb: ## ssh mariadb
+	docker exec -ti $(MARIADBFULLNAME) /bin/bash
+
 tests-behat: ## Lance les tests behat
-	docker exec $(PHPFPMFULLNAME) make tests-behat
+	docker exec $(PHPFPMXDEBUGFULLNAME) make tests-behat
 
 tests-behat-ci: ## Lance les tests behat
 	cd apps && make tests-behat
@@ -219,10 +235,10 @@ tests-launch: ## Launch all tests
 	@make tests-simple-phpunit-unit-integration -i
 
 tests-simple-phpunit-unit-integration: ## lance les tests phpunit
-	docker exec $(PHPFPMFULLNAME) make tests-simple-phpunit-unit-integration
+	docker exec $(PHPFPMXDEBUGFULLNAME) make tests-simple-phpunit-unit-integration
 
 tests-simple-phpunit-unit-integration-ci: ## lance les tests phpunit
 	cd apps && make tests-simple-phpunit-unit-integration
 
 tests-simple-phpunit: ## lance les tests phpunit
-	docker exec $(PHPFPMFULLNAME) make tests-simple-phpunit
+	docker exec $(PHPFPMXDEBUGFULLNAME) make tests-simple-phpunit

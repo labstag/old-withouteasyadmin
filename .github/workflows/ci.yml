@@ -51,6 +51,8 @@ jobs:
         run: make linter-phpmd-ci
       - name: linter PHPMND
         run: make linter-phpmnd-ci
+      - name: Add assets
+        run: make assets-ci
       - name: Test lancement bootstrap
         run: make encore-dev
       - name: Linter twig

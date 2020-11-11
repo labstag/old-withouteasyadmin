@@ -1,7 +1,10 @@
 {% extends 'admin/phone_user/layout.html.twig' %}
 
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Numero</th>
@@ -19,8 +22,8 @@
                 <td>{{ phone_user.type }}</td>
                 <td>{{ phone_user.principal ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('phone_user_show', {'id': phone_user.id}) }}">show</a>
-                    <a href="{{ path('phone_user_edit', {'id': phone_user.id}) }}">edit</a>
+                    <a href="{{ path('admin_phoneuser_show', {'id': phone_user.id}) }}">show</a>
+                    <a href="{{ path('admin_phoneuser_edit', {'id': phone_user.id}) }}">edit</a>
                     <a href="#">delete</a>
                 </td>
             </tr>
@@ -32,5 +35,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('phone_user_new') }}">Create new</a>
+    <a href="{{ path('admin_phoneuser_new') }}">Create new</a>
 {% endblock %}

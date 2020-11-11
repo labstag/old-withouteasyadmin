@@ -12,26 +12,56 @@ use Labstag\Entity\EmailUser;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\LienUser;
 use Labstag\Entity\User;
+use Labstag\Repository\GroupeRepository;
 
+
+/**
+ * @codeCoverageIgnore
+ */
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function getUsers(): array
+
+    private GroupeRepository $groupeRepository;
+
+    public function __construct(GroupeRepository $groupeRepository)
+    {
+        $this->groupeRepository = $groupeRepository;
+    }
+
+    private function getUsers(): array
     {
         $users = [
             [
                 'username' => 'admin',
                 'password' => 'password',
-                'email'    => ['admin@email.fr'],
+                'enable'   => true,
+                'verif'    => true,
+                'email'    => 'admin@email.fr',
+                'groupe'   => 'admin',
             ],
             [
                 'username' => 'superadmin',
                 'password' => 'password',
-                'email'    => ['superadmin@email.fr'],
+                'enable'   => true,
+                'verif'    => true,
+                'email'    => 'superadmin@email.fr',
+                'groupe'   => 'superadmin',
             ],
             [
                 'username' => 'disable',
-                'password' => 'disable',
-                'email'    => ['disable@email.fr'],
+                'password' => 'password',
+                'enable'   => false,
+                'verif'    => true,
+                'email'    => 'disable@email.fr',
+                'groupe'   => 'user',
+            ],
+            [
+                'username' => 'unverif',
+                'password' => 'password',
+                'enable'   => false,
+                'verif'    => false,
+                'email'    => 'unverif@email.fr',
+                'groupe'   => 'user',
             ],
         ];
 
@@ -40,28 +70,27 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create('fr_FR');
-        $users = $this->getUsers();
+        $faker   = Factory::create('fr_FR');
+        $users   = $this->getUsers();
+        $groupes = $this->groupeRepository->findAll();
         // $product = new Product();
         // $manager->persist($product);
 
         foreach ($users as $user) {
-            $this->addUser($faker, $user, $manager);
+            $this->addUser($groupes, $faker, $user, $manager);
         }
     }
 
     private function addEmail(
         User $user,
-        int $index,
         string $adresse,
         ObjectManager $manager
     ): void
     {
         $email = new EmailUser();
+        $email->setVerif(true);
         $email->setRefuser($user);
         $email->setAdresse($adresse);
-        $principal = (0 == $index) ? true : false;
-        $email->setPrincipal($principal);
         $manager->persist($email);
     }
 
@@ -78,8 +107,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $phone->setNumero($number);
         $phone->setType($faker->unique()->word());
         $phone->setCountry($faker->unique()->countryCode());
-        $principal = (0 == $index) ? true : false;
-        $phone->setPrincipal($principal);
+        $phone->setPrincipal((1 == $index));
         $manager->persist($phone);
     }
 
@@ -117,18 +145,39 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($adresse);
     }
 
+    private function getGroupe(array $groupes, string $code)
+    {
+        foreach ($groupes as $groupe) {
+            if ($groupe->getCode() == $code) {
+                return $groupe;
+            }
+        }
+
+        return null;
+    }
+
     private function addUser(
+        array $groupes,
         Generator $faker,
         array $dataUser,
         ObjectManager $manager
     ): void
     {
         $user = new User();
+        $user->setGroupe($this->getGroupe($groupes, $dataUser['groupe']));
+        $user->setEnable($dataUser['enable']);
+        $user->setVerif($dataUser['verif']);
         $user->setUsername($dataUser['username']);
         $user->setPlainPassword($dataUser['password']);
+        $user->setEmail($dataUser['email']);
+        $rand   = rand(0, 5);
+        $emails = [];
+        for ($i = 0; $i < $rand; $i++) {
+            $emails[] = $faker->unique()->safeEmail();
+        }
 
-        foreach ($dataUser['email'] as $index => $adresse) {
-            $this->addEmail($user, $index, $adresse, $manager);
+        foreach ($emails as $adresse) {
+            $this->addEmail($user, $adresse, $manager);
         }
 
         $adresses = rand(0, 2);
@@ -146,7 +195,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $this->addLink($faker, $user, $manager);
         }
 
-        $user->setEmail($dataUser['email'][0]);
         $manager->persist($user);
         $manager->flush();
     }

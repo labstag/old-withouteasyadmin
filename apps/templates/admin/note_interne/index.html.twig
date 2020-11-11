@@ -1,6 +1,9 @@
 {% extends 'admin/note_interne/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Title</th>
@@ -20,8 +23,8 @@
                 <td>{{ note_interne.dateFin ? note_interne.dateFin|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ note_interne.refuser }}</td>
                 <td>
-                    <a href="{{ path('note_interne_show', {'id': note_interne.id}) }}">show</a>
-                    <a href="{{ path('note_interne_edit', {'id': note_interne.id}) }}">edit</a>
+                    <a href="{{ path('admin_noteinterne_show', {'id': note_interne.id}) }}">show</a>
+                    <a href="{{ path('admin_noteinterne_edit', {'id': note_interne.id}) }}">edit</a>
                     <a href="#">delete</a>
                 </td>
             </tr>
@@ -33,5 +36,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('note_interne_new') }}">Create new</a>
+    <a href="{{ path('admin_noteinterne_new') }}">Create new</a>
 {% endblock %}

@@ -1,6 +1,9 @@
 {% extends 'admin/menu/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <tbody>
             <tr>
                 <th>Libelle</th>
@@ -29,9 +32,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('menu_index') }}">back to list</a>
+    <a href="{{ path('admin_menu_index') }}">back to list</a>
 
-    <a href="{{ path('menu_edit', {'id': menu.id}) }}">edit</a>
+    <a href="{{ path('admin_menu_edit', {'id': menu.id}) }}">edit</a>
 
     {{ include('admin/menu/_delete_form.html.twig') }}
 {% endblock %}

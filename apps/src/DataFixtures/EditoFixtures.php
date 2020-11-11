@@ -11,6 +11,10 @@ use Faker\Generator;
 use Labstag\Entity\Edito;
 use Labstag\Entity\User;
 
+
+/**
+ * @codeCoverageIgnore
+ */
 class EditoFixtures extends Fixture implements DependentFixtureInterface
 {
     const NUMBER = 25;
@@ -28,7 +32,7 @@ class EditoFixtures extends Fixture implements DependentFixtureInterface
         $faker = Factory::create('fr_FR');
         /** @var resource $finfo */
         for ($index = 0; $index < self::NUMBER; ++$index) {
-            $this->addEdito($users, $faker, $manager);
+            $this->addEdito($users, $faker, $index, $manager);
         }
 
         // $product = new Product();
@@ -40,12 +44,14 @@ class EditoFixtures extends Fixture implements DependentFixtureInterface
     private function addEdito(
         $users,
         Generator $faker,
+        int $index,
         ObjectManager $manager
     ): void
     {
         $edito = new Edito();
         $edito->setTitle($faker->unique()->text(rand(5, 50)));
-        $edito->setEnable((bool) rand(0, 1));
+        $enable = ($index == 0) ? true : false;
+        $edito->setEnable($enable);
         /** @var string $content */
         $content = $faker->unique()->paragraphs(4, true);
         $edito->setContent(str_replace("\n\n", '<br />', $content));

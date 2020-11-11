@@ -1,6 +1,9 @@
 {% extends 'admin/menu/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Libelle</th>
@@ -22,8 +25,8 @@
                 <td>{{ menu.separateur ? 'Yes' : 'No' }}</td>
                 <td>{{ menu.clef }}</td>
                 <td>
-                    <a href="{{ path('menu_show', {'id': menu.id}) }}">show</a>
-                    <a href="{{ path('menu_edit', {'id': menu.id}) }}">edit</a>
+                    <a href="{{ path('admin_menu_show', {'id': menu.id}) }}">show</a>
+                    <a href="{{ path('admin_menu_edit', {'id': menu.id}) }}">edit</a>
                     <a href="#">delete</a>
                 </td>
             </tr>
@@ -35,5 +38,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('menu_new') }}">Create new</a>
+    <a href="{{ path('admin_menu_new') }}">Create new</a>
 {% endblock %}

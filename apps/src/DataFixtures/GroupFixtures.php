@@ -6,6 +6,10 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Groupe;
 
+
+/**
+ * @codeCoverageIgnore
+ */
 class GroupFixtures extends Fixture
 {
     private function getGroupes(): array
@@ -13,6 +17,7 @@ class GroupFixtures extends Fixture
         $groupes = [
             'visiteur',
             'admin',
+            'superadmin',
             'user',
         ];
         return $groupes;

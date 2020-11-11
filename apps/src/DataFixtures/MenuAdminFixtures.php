@@ -6,6 +6,10 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Menu;
 
+
+/**
+ * @codeCoverageIgnore
+ */
 class MenuAdminFixtures extends Fixture
 {
 
@@ -17,31 +21,31 @@ class MenuAdminFixtures extends Fixture
             [
                 'libelle' => 'Configuration',
                 'data'    => [
-                    'attr' => ['data-href' => 'configuration_index'],
+                    'attr' => ['data-href' => 'admin_configuration_index'],
                 ],
             ],
             [
                 'libelle' => 'Note Interne',
                 'data'    => [
-                    'attr' => ['data-href' => 'note_interne_index'],
+                    'attr' => ['data-href' => 'admin_noteinterne_index'],
                 ],
             ],
             [
                 'libelle' => 'Edito',
                 'data'    => [
-                    'attr' => ['data-href' => 'edito_index'],
+                    'attr' => ['data-href' => 'admin_edito_index'],
                 ],
             ],
             [
                 'libelle' => 'Template',
                 'data'    => [
-                    'attr' => ['data-href' => 'template_index'],
+                    'attr' => ['data-href' => 'admin_template_index'],
                 ],
             ],
             [
                 'libelle' => 'Menu',
                 'data'    => [
-                    'attr' => ['data-href' => 'menu_index'],
+                    'attr' => ['data-href' => 'admin_menu_index'],
                 ],
             ],
         ];
@@ -55,38 +59,38 @@ class MenuAdminFixtures extends Fixture
             [
                 'libelle' => 'Adresses',
                 'data'    => [
-                    'attr' => ['data-href' => 'adresse_user_index'],
+                    'attr' => ['data-href' => 'admin_adresseuser_index'],
                 ],
             ],
             [
                 'libelle' => 'Emails',
                 'data'    => [
-                    'attr' => ['data-href' => 'email_user_index'],
+                    'attr' => ['data-href' => 'admin_emailuser_index'],
                 ],
             ],
             [
                 'libelle' => 'Liens',
                 'data'    => [
-                    'attr' => ['data-href' => 'lien_user_index'],
+                    'attr' => ['data-href' => 'admin_lienuser_index'],
                 ],
             ],
             [
                 'libelle' => 'Phones',
                 'data'    => [
-                    'attr' => ['data-href' => 'phone_user_index'],
+                    'attr' => ['data-href' => 'admin_phoneuser_index'],
                 ],
             ],
             [
                 'libelle' => 'Groupes',
                 'data'    => [
-                    'attr' => ['data-href' => 'groupe_index'],
+                    'attr' => ['data-href' => 'admin_groupuser_index'],
                 ],
             ],
             ['separator' => 1],
             [
                 'libelle' => 'Liste',
                 'data'    => [
-                    'attr' => ['data-href' => 'user_index'],
+                    'attr' => ['data-href' => 'admin_user_index'],
                 ],
             ],
         ];
@@ -141,8 +145,9 @@ class MenuAdminFixtures extends Fixture
         $this->manager = $manager;
 
         $menus = [
-            'admin'  => $this->getMenuAdmin(),
-            'public' => [],
+            'admin'        => $this->getMenuAdmin(),
+            'admin-profil' => [],
+            'public'       => [],
         ];
 
         $index = 0;

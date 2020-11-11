@@ -4,6 +4,7 @@ namespace Labstag\Security;
 
 use Labstag\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -38,13 +39,17 @@ class FormAuthenticator extends AbstractAuth implements PassAuthInterface
 
     private $passwordEncoder;
 
+    private UserRepository $repository;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        UserRepository $repository
     )
     {
+        $this->repository       = $repository;
         $this->entityManager    = $entityManager;
         $this->urlGenerator     = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
@@ -81,13 +86,8 @@ class FormAuthenticator extends AbstractAuth implements PassAuthInterface
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(
-            [
-                'username' => $credentials['username'],
-            ]
-        );
-
-        if (!$user) {
+        $user = $this->repository->findUserEnable(($credentials['username']));
+        if (!($user instanceof User)) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException(
                 'Username could not be found.'

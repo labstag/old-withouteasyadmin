@@ -39,7 +39,7 @@ abstract class Phone
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean")
      */
     private $principal;
 
@@ -52,6 +52,11 @@ abstract class Phone
                 $this->getNumero(),
             ]
         );
+    }
+
+    public function __construct()
+    {
+        $this->principal = false;
     }
 
     public function getId(): ?string
@@ -95,12 +100,12 @@ abstract class Phone
         return $this;
     }
 
-    public function getPrincipal(): ?string
+    public function isPrincipal(): ?bool
     {
         return $this->principal;
     }
 
-    public function setPrincipal(string $principal): self
+    public function setPrincipal(bool $principal): self
     {
         $this->principal = $principal;
 

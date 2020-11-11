@@ -1,6 +1,9 @@
 {% extends 'admin/lien_user/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Name</th>
@@ -16,8 +19,8 @@
                 <td>{{ lien_user.adresse }}</td>
                 <td>{{ lien_user.refuser }}</td>
                 <td>
-                    <a href="{{ path('lien_user_show', {'id': lien_user.id}) }}">show</a>
-                    <a href="{{ path('lien_user_edit', {'id': lien_user.id}) }}">edit</a>
+                    <a href="{{ path('admin_lienuser_show', {'id': lien_user.id}) }}">show</a>
+                    <a href="{{ path('admin_lienuser_edit', {'id': lien_user.id}) }}">edit</a>
                     <a href="#">delete</a>
                 </td>
             </tr>
@@ -29,5 +32,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('lien_user_new') }}">Create new</a>
+    <a href="{{ path('admin_lienuser_new') }}">Create new</a>
 {% endblock %}

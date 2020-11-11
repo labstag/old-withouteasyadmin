@@ -1,6 +1,9 @@
 {% extends 'admin/groupe/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Name</th>
@@ -16,8 +19,8 @@
                 <td>{{ groupe.code }}</td>
                 <td>{{ groupe.users|length }}</td>
                 <td>
-                    <a href="{{ path('groupe_show', {'id': groupe.id}) }}">show</a>
-                    <a href="{{ path('groupe_edit', {'id': groupe.id}) }}">edit</a>
+                    <a href="{{ path('admin_groupuser_show', {'id': groupe.id}) }}">show</a>
+                    <a href="{{ path('admin_groupuser_edit', {'id': groupe.id}) }}">edit</a>
                     <a href="#">delete</a>
                 </td>
             </tr>
@@ -29,5 +32,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('groupe_new') }}">Create new</a>
+    <a href="{{ path('admin_groupuser_new') }}">Create new</a>
 {% endblock %}

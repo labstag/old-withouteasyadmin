@@ -26,6 +26,9 @@ phpcpd.phar:
 phpmd.phar:
 	wget https://github.com/phpmd/phpmd/releases/download/2.9.1/phpmd.phar
 
+assets: ## Ajouts assets
+	php bin/console assets:install public --symlink --relative
+
 bdd-fixtures: ## fixtures
 	php bin/console doctrine:fixtures:load -n
 

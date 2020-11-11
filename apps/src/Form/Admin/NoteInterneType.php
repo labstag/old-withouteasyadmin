@@ -33,17 +33,22 @@ class NoteInterneType extends AbstractType
             'date_debut',
             DateTimeType::class,
             [
-                'date_widget' => 'single_text',
-                'time_widget' => 'single_text',
+                'date_widget'  => 'single_text',
+                'time_widget'  => 'single_text',
+                'with_seconds' => true,
             ]
         );
         $builder->add(
             'date_fin',
             DateTimeType::class,
             [
-                'date_widget' => 'single_text',
-                'time_widget' => 'single_text',
+                'date_widget'  => 'single_text',
+                'time_widget'  => 'single_text',
+                'with_seconds' => true,
             ]
+        );
+        $builder->add(
+            'refuser'
         );
         $builder->add('submit', SubmitType::class);
     }

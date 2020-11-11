@@ -2,6 +2,12 @@
 {% block stylesheets %}
     {{ encore_entry_link_tags('global') }}
 {% endblock %}
+{% block content %}
+    {{ include('flashes.html.twig') }}
+    {% block body %}
+
+    {% endblock %}
+{% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('global') }}
 {% endblock %}

@@ -21,3 +21,4 @@ apps/phploc.phar
 apps/phpcpd.phar
 apps/phpmd.phar
 apps/twigcs.phar
+apps/bin/phpunit

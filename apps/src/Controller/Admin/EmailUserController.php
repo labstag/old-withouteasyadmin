@@ -6,7 +6,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\EmailUser;
 use Labstag\Form\Admin\EmailUserType;
 use Labstag\Repository\EmailUserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,10 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/admin/user/email")
  */
-class EmailUserController extends AbstractController
+class EmailUserController extends AdminControllerLib
 {
     /**
-     * @Route("/", name="email_user_index", methods={"GET"})
+     * @Route("/", name="admin_emailuser_index", methods={"GET"})
      */
     public function index(
         PaginatorInterface $paginator,
@@ -37,20 +37,15 @@ class EmailUserController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="email_user_new", methods={"GET","POST"})
+     * @Route("/new", name="admin_emailuser_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
         $emailUser = new EmailUser();
         $form      = $this->createForm(EmailUserType::class, $emailUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($emailUser);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('email_user_index');
+        $return    = $this->newForm($request, $form, $emailUser);
+        if ($return) {
+            return $this->redirectToRoute('admin_emailuser_index');
         }
 
         return $this->render(
@@ -63,7 +58,7 @@ class EmailUserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="email_user_show", methods={"GET"})
+     * @Route("/{id}", name="admin_emailuser_show", methods={"GET"})
      */
     public function show(EmailUser $emailUser): Response
     {
@@ -74,17 +69,18 @@ class EmailUserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="email_user_edit", methods={"GET","POST"})
+     * @Route(
+     *  "/{id}/edit",
+     *  name="admin_emailuser_edit",
+     *  methods={"GET","POST"}
+     * )
      */
     public function edit(Request $request, EmailUser $emailUser): Response
     {
-        $form = $this->createForm(EmailUserType::class, $emailUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('email_user_index');
+        $form   = $this->createForm(EmailUserType::class, $emailUser);
+        $return = $this->editForm($request, $form);
+        if ($return) {
+            return $this->redirectToRoute('admin_emailuser_index');
         }
 
         return $this->render(
@@ -97,17 +93,12 @@ class EmailUserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="email_user_delete", methods={"DELETE"})
+     * @Route("/{id}", name="admin_emailuser_delete", methods={"DELETE"})
      */
     public function delete(Request $request, EmailUser $emailUser): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$emailUser->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($emailUser);
-            $entityManager->flush();
-        }
+        $this->deleteEntity($request, $emailUser);
 
-        return $this->redirectToRoute('email_user_index');
+        return $this->redirectToRoute('admin_emailuser_index');
     }
 }

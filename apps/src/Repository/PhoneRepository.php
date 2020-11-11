@@ -3,10 +3,10 @@
 namespace Labstag\Repository;
 
 use Labstag\Entity\Phone;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Doctrine\Persistence\ManagerRegistry;
 
-abstract class PhoneRepository extends ServiceEntityRepository
+abstract class PhoneRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -2,7 +2,7 @@
 {% block stylesheets %}
     {{ encore_entry_link_tags('admin') }}
 {% endblock %}
-{% block body %}
+{% block content %}
     <header>
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -12,6 +12,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 {{ knp_menu_render('admin_menu', {'style': 'navbar', 'currentClass': 'active'}) }}
+                {{ knp_menu_render('admin_profilmenu', {'style': 'navbar', 'currentClass': 'active'}) }}
             </div>
         </nav>
     </header>
@@ -31,7 +32,8 @@
                 <li class="breadcrumb-item active" aria-current="page">Data</li>
             </ol>
         </nav>
-        {% block content %}
+        {{ include('flashes.html.twig') }}
+        {% block body %}
         {% endblock %}
         {% if pagination is defined %}
         {{ knp_pagination_render(pagination) }}

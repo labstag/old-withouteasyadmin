@@ -20,7 +20,6 @@ services:
       - "../src/Entity/"
       - "../src/Kernel.php"
       - "../src/Tests/"
-      - "../src/Menu/"
 
   # controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class
@@ -37,13 +36,24 @@ services:
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
 
-  app.menu_builder:
+  app.admin_menu_builder:
     class: Labstag\Menu\AdminMenuBuilder
     arguments: ["@knp_menu.factory"]
 
-  app.main_menu:
+  app.admin_profil_menu_builder:
+    class: Labstag\Menu\AdminProfilMenuBuilder
+    arguments: ["@knp_menu.factory"]
+
+  app.adminmain_menu:
     class: Knp\Menu\MenuItem # the service definition requires setting the class
-    factory: ["@app.menu_builder", createMainMenu]
+    factory: ["@app.admin_menu_builder", createMainMenu]
     arguments: ["@request_stack"]
     tags:
       - { name: knp_menu.menu, alias: admin_menu }
+
+  app.adminprofil_menu:
+    class: Knp\Menu\MenuItem # the service definition requires setting the class
+    factory: ["@app.admin_profil_menu_builder", createMainMenu]
+    arguments: ["@request_stack"]
+    tags:
+      - { name: knp_menu.menu, alias: admin_profilmenu }

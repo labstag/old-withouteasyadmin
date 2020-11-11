@@ -6,18 +6,18 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Form\Admin\GroupeType;
 use Labstag\Repository\GroupeRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/groupe")
+ * @Route("/admin/user/groupe")
  */
-class GroupeController extends AbstractController
+class GroupeController extends AdminControllerLib
 {
     /**
-     * @Route("/", name="groupe_index", methods={"GET"})
+     * @Route("/", name="admin_groupuser_index", methods={"GET"})
      */
     public function index(
         PaginatorInterface $paginator,
@@ -37,20 +37,15 @@ class GroupeController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="groupe_new", methods={"GET","POST"})
+     * @Route("/new", name="admin_groupuser_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
         $groupe = new Groupe();
         $form   = $this->createForm(GroupeType::class, $groupe);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($groupe);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('groupe_index');
+        $return = $this->newForm($request, $form, $groupe);
+        if ($return) {
+            return $this->redirectToRoute('admin_groupuser_index');
         }
 
         return $this->render(
@@ -63,7 +58,7 @@ class GroupeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="groupe_show", methods={"GET"})
+     * @Route("/{id}", name="admin_groupuser_show", methods={"GET"})
      */
     public function show(Groupe $groupe): Response
     {
@@ -74,17 +69,14 @@ class GroupeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="groupe_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Groupe $groupe): Response
     {
-        $form = $this->createForm(GroupeType::class, $groupe);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('groupe_index');
+        $form   = $this->createForm(GroupeType::class, $groupe);
+        $return = $this->editForm($request, $form);
+        if ($return) {
+            return $this->redirectToRoute('admin_groupuser_index');
         }
 
         return $this->render(
@@ -97,17 +89,12 @@ class GroupeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="groupe_delete", methods={"DELETE"})
+     * @Route("/{id}", name="admin_groupuser_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Groupe $groupe): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$groupe->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($groupe);
-            $entityManager->flush();
-        }
+        $this->deleteEntity($request, $groupe);
 
-        return $this->redirectToRoute('groupe_index');
+        return $this->redirectToRoute('admin_groupuser_index');
     }
 }

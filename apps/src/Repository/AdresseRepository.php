@@ -3,10 +3,10 @@
 namespace Labstag\Repository;
 
 use Labstag\Entity\Adresse;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Doctrine\Persistence\ManagerRegistry;
 
-abstract class AdresseRepository extends ServiceEntityRepository
+abstract class AdresseRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $registry)
     {

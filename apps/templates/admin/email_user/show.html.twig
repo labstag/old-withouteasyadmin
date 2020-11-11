@@ -1,6 +1,9 @@
 {% extends 'admin/email_user/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <tbody>
             <tr>
                 <th>Adresse</th>
@@ -11,15 +14,19 @@
                 <td>{{ email_user.principal ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
+                <th>Verif</th>
+                <td>{{ email_user.verif ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
                 <th>User</th>
                 <td>{{ email_user.refuser }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('email_user_index') }}">back to list</a>
+    <a href="{{ path('admin_emailuser_index') }}">back to list</a>
 
-    <a href="{{ path('email_user_edit', {'id': email_user.id}) }}">edit</a>
+    <a href="{{ path('admin_emailuser_edit', {'id': email_user.id}) }}">edit</a>
 
     {{ include('admin/email_user/_delete_form.html.twig') }}
 {% endblock %}

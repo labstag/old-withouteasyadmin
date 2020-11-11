@@ -3,38 +3,35 @@
 namespace Labstag\Repository;
 
 use Labstag\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository as SRepo;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserRepository extends SRepo implements PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
-    public function upgradePassword(
-        UserInterface $user,
-        string $newEncodedPassword
-    ): void
+    public function findUserEnable(string $field)
     {
-        if (!$user instanceof User) {
-            $msg = sprintf(
-                'Instances of "%s" are not supported.',
-                get_class($user)
-            );
-            throw new UnsupportedUserException($msg);
-        }
-
-        $user->setPassword($newEncodedPassword);
-        $this->_em->persist($user);
-        $this->_em->flush();
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.username=:username OR u.email=:email'
+        );
+        $query->andWhere('u.enable=true');
+        $query->andWhere('u.verif=true');
+        $query->andWhere('u.lost=false');
+        $query->setParameters(
+            [
+                'username' => $field,
+                'email'    => $field,
+            ]
+        );
+        return $query->getQuery()->getOneOrNullResult();
     }
 
     // /**

@@ -5,6 +5,7 @@ namespace Labstag\Entity;
 use Labstag\Repository\EmailRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Entity\Traits\VerifEntity;
 
 /**
  * @ORM\Entity
@@ -14,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 abstract class Email
 {
+    use VerifEntity;
 
     /**
      * @ORM\Id
@@ -35,6 +37,12 @@ abstract class Email
      * @ORM\Column(type="boolean")
      */
     protected $principal;
+
+    public function __construct()
+    {
+        $this->verif     = false;
+        $this->principal = false;
+    }
 
     public function __toString()
     {

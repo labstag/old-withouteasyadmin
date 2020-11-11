@@ -1,14 +1,14 @@
 <?php
 
-namespace Labstag\Form\Admin;
+namespace Labstag\Form\Admin\Form;
 
-use Labstag\Entity\Configuration;
+use Labstag\FormType\CoreTextareaType;
+use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ConfigurationType extends AbstractType
+class ExtraFieldsFieldsType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -19,17 +19,22 @@ class ConfigurationType extends AbstractType
     ): void
     {
         unset($options);
-        $builder->add('name');
-        $builder->add('value');
-        $builder->add('submit', SubmitType::class);
+        $builder->add(
+            'html',
+            WysiwygType::class,
+            ['help' => 'help']
+        );
+        $builder->add(
+            'textarea',
+            CoreTextareaType::class,
+            ['help' => 'help']
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
-            [
-                'data_class' => Configuration::class,
-            ]
+            []
         );
     }
 }

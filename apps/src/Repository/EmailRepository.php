@@ -3,10 +3,10 @@
 namespace Labstag\Repository;
 
 use Labstag\Entity\Email;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Doctrine\Persistence\ManagerRegistry;
 
-abstract class EmailRepository extends ServiceEntityRepository
+abstract class EmailRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $registry)
     {

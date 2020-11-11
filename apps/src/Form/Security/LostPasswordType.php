@@ -17,18 +17,10 @@ class LostPasswordType extends AbstractType
     ): void
     {
         $builder->add(
-            'username',
+            'value',
             TextType::class,
             [
-                'label'    => 'Username',
-                'required' => false,
-            ]
-        );
-        $builder->add(
-            'email',
-            EmailType::class,
-            [
-                'label'    => 'email',
+                'label'    => 'Username or email',
                 'required' => false,
             ]
         );

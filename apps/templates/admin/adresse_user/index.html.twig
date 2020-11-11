@@ -1,6 +1,9 @@
 {% extends 'admin/adresse_user/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Rue</th>
@@ -26,8 +29,8 @@
                 <td>{{ adresse_user.pmr ? 'Yes' : 'No' }}</td>
                 <td>{{ adresse_user.refuser }}</td>
                 <td>
-                    <a href="{{ path('adresse_user_show', {'id': adresse_user.id}) }}">show</a>
-                    <a href="{{ path('adresse_user_edit', {'id': adresse_user.id}) }}">edit</a>
+                    <a href="{{ path('admin_adresseuser_show', {'id': adresse_user.id}) }}">show</a>
+                    <a href="{{ path('admin_adresseuser_edit', {'id': adresse_user.id}) }}">edit</a>
                     <a href="#">delete</a>
                 </td>
             </tr>
@@ -39,5 +42,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('adresse_user_new') }}">Create new</a>
+    <a href="{{ path('admin_adresseuser_new') }}">Create new</a>
 {% endblock %}

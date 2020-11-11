@@ -1,6 +1,9 @@
 {% extends 'admin/edito/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
         <tbody>
             <tr>
                 <th>Title</th>
@@ -20,9 +23,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('edito_index') }}">back to list</a>
+    <a href="{{ path('admin_edito_index') }}">back to list</a>
 
-    <a href="{{ path('edito_edit', {'id': edito.id}) }}">edit</a>
+    <a href="{{ path('admin_edito_edit', {'id': edito.id}) }}">edit</a>
 
     {{ include('admin/edito/_delete_form.html.twig') }}
 {% endblock %}

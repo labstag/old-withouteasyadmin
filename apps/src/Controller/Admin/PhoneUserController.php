@@ -6,7 +6,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\PhoneUser;
 use Labstag\Form\Admin\PhoneUserType;
 use Labstag\Repository\PhoneUserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,10 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/admin/user/phone")
  */
-class PhoneUserController extends AbstractController
+class PhoneUserController extends AdminControllerLib
 {
     /**
-     * @Route("/", name="phone_user_index", methods={"GET"})
+     * @Route("/", name="admin_phoneuser_index", methods={"GET"})
      */
     public function index(
         PaginatorInterface $paginator,
@@ -37,20 +37,15 @@ class PhoneUserController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="phone_user_new", methods={"GET","POST"})
+     * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
         $phoneUser = new PhoneUser();
         $form      = $this->createForm(PhoneUserType::class, $phoneUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($phoneUser);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('phone_user_index');
+        $return    = $this->newForm($request, $form, $phoneUser);
+        if ($return) {
+            return $this->redirectToRoute('admin_phoneuser_index');
         }
 
         return $this->render(
@@ -63,7 +58,7 @@ class PhoneUserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="phone_user_show", methods={"GET"})
+     * @Route("/{id}", name="admin_phoneuser_show", methods={"GET"})
      */
     public function show(PhoneUser $phoneUser): Response
     {
@@ -74,17 +69,18 @@ class PhoneUserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="phone_user_edit", methods={"GET","POST"})
+     * @Route(
+     *  "/{id}/edit",
+     *  name="admin_phoneuser_edit",
+     *  methods={"GET","POST"}
+     * )
      */
     public function edit(Request $request, PhoneUser $phoneUser): Response
     {
-        $form = $this->createForm(PhoneUserType::class, $phoneUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('phone_user_index');
+        $form   = $this->createForm(PhoneUserType::class, $phoneUser);
+        $return = $this->editForm($request, $form);
+        if ($return) {
+            return $this->redirectToRoute('admin_phoneuser_index');
         }
 
         return $this->render(
@@ -97,17 +93,12 @@ class PhoneUserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="phone_user_delete", methods={"DELETE"})
+     * @Route("/{id}", name="admin_phoneuser_delete", methods={"DELETE"})
      */
     public function delete(Request $request, PhoneUser $phoneUser): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$phoneUser->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($phoneUser);
-            $entityManager->flush();
-        }
+        $this->deleteEntity($request, $phoneUser);
 
-        return $this->redirectToRoute('phone_user_index');
+        return $this->redirectToRoute('admin_phoneuser_index');
     }
 }

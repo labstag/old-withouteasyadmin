@@ -1,6 +1,6 @@
 {% extends 'admin/edito/layout.html.twig' %}
-{% block content %}
+{% block body %}
     {{ include('admin/crud/form.html.twig') }}
 
-    <a href="{{ path('edito_index') }}">back to list</a>
+    <a href="{{ path('admin_edito_index') }}">back to list</a>
 {% endblock %}

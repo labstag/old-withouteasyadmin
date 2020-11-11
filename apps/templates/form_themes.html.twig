@@ -9,35 +9,258 @@
     </fieldset>
 {%- endblock -%}
 
+{% block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <span class="{% if form is not rootform %}invalid-feedback{% else %}alert alert-danger{% endif %} d-block">
+            {%- for error in errors -%}
+                <span class="d-block">
+                    <span class="form-error-icon badge badge-danger text-uppercase">{{ 'Error'|trans({}, 'validators') }}</span> <span class="form-error-message">{{ error.message }}</span>
+                </span>
+            {%- endfor -%}
+        </span>
+    {%- endif %}
+{%- endblock form_errors %}
+
+{%- block week_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{ block('form_widget_simple') }}
+    {%- else -%}
+        {%- set vars = widget == 'text' ? { 'attr': { 'size': 1 }} : {} -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline row')|trim}) -%}
+        <div {{ block('widget_container_attributes') }}>
+            <div class="col">
+                {{ form_widget(form.year, vars) }}
+            </div>
+            <div class="col">
+                -
+            </div>
+            <div class="col">
+                {{ form_widget(form.week, vars) }}
+            </div>
+        </div>
+    {%- endif -%}
+{%- endblock week_widget -%}
+
+{% block form_help -%}
+    {%- if help is not empty -%}
+        {% if "color" in form.vars.block_prefixes or "range" in form.vars.block_prefixes %}
+            <br />
+        {% endif %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block radio_widget -%}
+    {% if form.parent.vars.preferred_choices is defined %}
+        {%- set required = false -%}
+    {% endif %}
+    {{ parent() }}
+{%- endblock radio_widget %}
+
+{% block form_widget_simple -%}
+    {%- set type = type|default('') -%}
+    {% if type == 'file' %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' custom-file-input')|trim}) -%}
+    {% elseif type != 'hidden' and type != 'range' and type != 'color' %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
+    {% endif %}
+    {%- if type == 'range' or type == 'color' %}
+        {# Attribute "required" is not supported #}
+        {%- set required = false -%}
+    {% endif %}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock form_widget_simple %}
+
+{% block time_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline row')|trim}) -%}
+        {%- if datetime is not defined or false == datetime -%}
+            <div {{ block('widget_container_attributes') -}}>
+        {%- endif -%}
+        <div class="col">
+            {{- form_widget(form.hour) -}}
+        </div>
+        {%- if with_minutes -%}
+            {% if form.hour is defined %}
+                <div class="col">
+                    :
+                </div>
+            {% endif %}
+            <div class="col">
+                {{- form_widget(form.minute) -}}
+            </div>
+        {%- endif -%}
+        {%- if with_seconds -%}
+            {% if form.hour is defined or form.minute is defined%}
+                <div class="col">
+                    :
+                </div>
+            {% endif %}
+            <div class="col">
+                {{- form_widget(form.second) -}}
+            </div>
+        {%- endif -%}
+        {%- if datetime is not defined or false == datetime -%}
+            </div>
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock time_widget %}
+
+{% block dateinterval_widget -%}
+    {%- if widget != 'single_text' and not valid -%}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-control is-invalid')|trim}) -%}
+        {% set valid = true %}
+    {%- endif -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline row')|trim}) -%}
+        <div {{ block('widget_container_attributes') }}>
+            {%- if with_years -%}
+            <div class="col">
+                {{ form_widget(form.years) }}
+            </div>
+            {%- endif -%}
+            {%- if with_months -%}
+            <div class="col">
+                {{ form_widget(form.months) }}
+            </div>
+            {%- endif -%}
+            {%- if with_weeks -%}
+            <div class="col">
+                {{ form_widget(form.weeks) }}
+            </div>
+            {%- endif -%}
+            {%- if with_days -%}
+            <div class="col">
+                {{ form_widget(form.days) }}
+            </div>
+            {%- endif -%}
+            {%- if with_hours -%}
+            <div class="col">
+                {{ form_widget(form.hours) }}
+            </div>
+            {%- endif -%}
+            {%- if with_minutes -%}
+            <div class="col">
+                {{ form_widget(form.minutes) }}
+            </div>
+            {%- endif -%}
+            {%- if with_seconds -%}
+            <div class="col">
+                {{ form_widget(form.seconds) }}
+            </div>
+            {%- endif -%}
+            {%- if with_invert %}{{ form_widget(form.invert) }}{% endif -%}
+        </div>
+    {%- endif -%}
+{%- endblock dateinterval_widget %}
+
+{% block date_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline row')|trim}) -%}
+        {%- if datetime is not defined or not datetime -%}
+            <div {{ block('widget_container_attributes') -}}>
+        {%- endif %}
+        {{- date_pattern|replace({
+            '{{ year }}': '<div class="col">{{ year }}</div>',
+            '{{ month }}': '<div class="col">{{ month }}</div>',
+            '{{ day }}': '<div class="col">{{ day }}</div>',
+        })|replace({
+            '{{ year }}': form_widget(form.year),
+            '{{ month }}': form_widget(form.month),
+            '{{ day }}': form_widget(form.day),
+        })|raw -}}
+        {%- if datetime is not defined or not datetime -%}
+            </div>
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock date_widget %}
+
 {% block datetime_widget -%}
     {%- if widget == 'single_text' -%}
         {{- block('form_widget_simple') -}}
     {%- else -%}
-        {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline')|trim}) -%}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline row')|trim}) -%}
         <div {{ block('widget_container_attributes') }}>
-            {{- form_errors(form) -}}
-            {{- form_errors(form.date) -}}
-            {{- form_errors(form.time) -}}
-
-            <div class="sr-only">
-                {%- if form.date.year is defined %}{{ form_label(form.date.year) }}{% endif -%}
-                {%- if form.date.month is defined %}{{ form_label(form.date.month) }}{% endif -%}
-                {%- if form.date.day is defined %}{{ form_label(form.date.day) }}{% endif -%}
-                {%- if form.time.hour is defined %}{{ form_label(form.time.hour) }}{% endif -%}
-                {%- if form.time.minute is defined %}{{ form_label(form.time.minute) }}{% endif -%}
-                {%- if form.time.second is defined %}{{ form_label(form.time.second) }}{% endif -%}
+            <div class="col">
+                {{- form_label(form.date) -}}
             </div>
-            <div class="row">
+            {% if form.children.date.vars.widget == 'single_text' %}
                 <div class="col">
-                    {{- form_widget(form.date, { datetime: true } ) -}}
+            {% endif %}
+                {{- form_widget(form.date, { datetime: true } ) -}}
+            {% if form.children.date.vars.widget == 'single_text' %}
                 </div>
-                <div class="col">
-                    {{- form_widget(form.time, { datetime: true } ) -}}
-                </div>
+            {% endif %}
+            <div class="col">
+                {{- form_label(form.time) -}}
             </div>
+            {% if form.children.time.vars.widget == 'single_text' %}
+                <div class="col">
+            {% endif %}
+            {{- form_widget(form.time, { datetime: true } ) -}}
+            {% if form.children.time.vars.widget == 'single_text' %}
+                </div>
+            {% endif %}
         </div>
     {%- endif -%}
 {%- endblock datetime_widget %}
+
+{% block checkbox_radio_label -%}
+    {#- Do not display the label if widget is not defined in order to prevent double label rendering -#}
+    {%- if widget is defined -%}
+        {% set is_parent_custom = parent_label_class is defined and ('checkbox-custom' in parent_label_class or 'radio-custom' in parent_label_class or 'switch-custom' in parent_label_class) %}
+        {% set is_custom = label_attr.class is defined and ('checkbox-custom' in label_attr.class or 'radio-custom' in label_attr.class or 'switch-custom' in label_attr.class) %}
+        {%- if is_parent_custom or is_custom -%}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' custom-control-label')|trim}) -%}
+        {%- else %}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' form-check-label')|trim}) -%}
+        {%- endif %}
+        {%- if not compound -%}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {%- endif -%}
+        {# {%- if required -%}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' required')|trim}) -%}
+        {%- endif -%} #}
+        {%- if parent_label_class is defined -%}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' ' ~ parent_label_class)|replace({'checkbox-inline': '', 'radio-inline': '', 'checkbox-custom': '', 'radio-custom': ''})|trim}) -%}
+        {%- endif -%}
+        {%- if label is not same as(false) and label is empty -%}
+            {%- if label_format is not empty -%}
+                {%- set label = label_format|replace({
+                    '%name%': name,
+                    '%id%': id,
+                }) -%}
+            {%- else -%}
+                {%- set label = name|humanize -%}
+            {%- endif -%}
+        {%- endif -%}
+
+        {{ widget|raw }}
+        <label{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
+            {%- if label is not same as(false) -%}
+                {%- if translation_domain is same as(false) -%}
+                    {%- if label_html is same as(false) -%}
+                        {{- label -}}
+                    {%- else -%}
+                        {{- label|raw -}}
+                    {%- endif -%}
+                {%- else -%}
+                    {%- if label_html is same as(false) -%}
+                        {{- label|trans(label_translation_parameters, translation_domain) -}}
+                    {%- else -%}
+                        {{- label|trans(label_translation_parameters, translation_domain)|raw -}}
+                    {%- endif -%}
+                {%- endif -%}
+            {%- endif -%}
+        </label>
+    {%- endif -%}
+{%- endblock checkbox_radio_label %}
 
 {%- block form_row -%}
 	{%- set label_attr = {} -%}
@@ -46,26 +269,26 @@
 	} -%}
     {%- if form.children.date is defined and form.children.time is defined -%}
         {%- set element = 'div' -%}
+    {%- elseif compound is defined and form.children.hour is defined -%}
+        {%- set element = 'div' -%}
+    {%- elseif compound is defined and form.children.year is defined -%}
+        {%- set element = 'div' -%}
+    {%- elseif compound is defined and form.children.years is defined -%}
+        {%- set element = 'div' -%}
+    {%- elseif expanded is defined and expanded -%}
+        {%- set element = 'div' -%}
     {%- elseif compound is defined and compound -%}
         {%- set element = 'fieldset' -%}
-        {%- if form.vars.block_prefixes[1] == "collection" -%}
+        {%- if "collection" in form.vars.block_prefixes -%}
             {%- if prototype is defined and allow_add -%}
                 {%- set label_attr = label_attr|merge({
                     'allow_add': true
                 }) -%}
                 {%- set element_attr = element_attr|merge({
-                    'class': element_attr.class ~ ' FieldCollections',
                     'data-prototype': block('collection_item_widget')|replace({'"': "'", "\n": "", "\t": ""})
-                }) -%}
-            {%- else -%}
-                {%- set element_attr = element_attr|merge({
-                    'class': element_attr.class ~ ' FieldCollection'
                 }) -%}
             {%- endif -%}
         {%- endif -%}
-		{%- set element_attr = element_attr|merge({
-			'id': random()
-		}) -%}
     {%- endif -%}
     {%- set widget_attr = {} -%}
     {%- if help is not empty -%}
@@ -74,11 +297,15 @@
     <{{ element|default('div') }}{%- if element_attr -%}{%- with { attr: element_attr } -%}{{ block('attributes') }}{%- endwith -%}{%- endif -%}>
         {{- form_label(form) -}}
         {{- form_widget(form, widget_attr) -}}
+        {{- form_errors(form) -}}
         {{- form_help(form) -}}
     </{{ element|default('div') }}>
 {%- endblock -%}
 
 {%- block form_end -%}
+    {%- if not render_rest is defined or render_rest -%}
+        {{ form_rest(form) }}
+    {%- endif -%}
     {%- set required = false %}
     {% for children in form.children %}
         {% if children.vars.required is defined and children.vars.required == true %}
@@ -88,15 +315,20 @@
     {%- if required == true -%}
         <div class="RequireFormInfo">Les informations marquées d'un <span>*</span> sont obligatoires</div>
     {%- endif -%}
-    {%- if not render_rest is defined or render_rest -%}
-        {{ form_rest(form) }}
-    {%- endif -%}
     </form>
 {%- endblock form_end -%}
 
 {%- block form_label -%}
     {%- if label is not same as(false) -%}
-        {%- if form.children.date is defined and form.children.time is defined -%}
+        {%- if form.children.date is defined -%}
+            {%- set element = 'label' -%}
+        {%- elseif form.children.day is defined or form.children.month is defined or form.children.year is defined -%}
+            {%- set element = 'label' -%}
+        {%- elseif form.children.hour is defined or form.children.minute is defined or form.children.second is defined -%}
+            {%- set element = 'label' -%}
+        {%- elseif form.children.years is defined or form.children.months is defined or form.children.days is defined or form.children.hours is defined or form.children.minutes is defined or form.children.seconds is defined -%}
+            {%- set element = 'label' -%}
+        {%- elseif expanded is defined and expanded -%}
             {%- set element = 'label' -%}
         {%- elseif compound is defined and compound -%}
             {%- set element = 'legend' -%}
@@ -104,7 +336,7 @@
         {%- else -%}
             {%- set label_attr = label_attr|merge({for: id}) -%}
         {%- endif -%}
-        {%- if required -%}
+        {%- if required and "color" not in form.vars.block_prefixes and "range" not in form.vars.block_prefixes -%}
             {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' required')|trim}) -%}
         {%- endif -%}
         {%- if label is empty -%}
@@ -119,45 +351,42 @@
         {%- endif -%}
 		<{{ element|default('label') }}{%- if label_attr -%}{%- with { attr: label_attr } -%}{{ block('attributes') }}{%- endwith -%}{%- endif -%}>
 			{{ label|trans }}
-			{%- if element|default('label') == 'legend' and form.vars.block_prefixes[1] == "collection" -%}
-				<div class="btn btn-info float-right ToggleFieldset">
-					<i class="far fa-window-minimize"></i>
-					<i class="fas fa-window-maximize d-none"></i>
-				</div>
-			{%- endif -%}
-			{%- if allow_add is defined and allow_add == true -%}
-				<div class="btn btn-primary btn-xs BtnCollectionAdd float-right">
-					<i class="glyphicon glyphicon-plus"></i>
-					<span>Ajouter</span>
-				</div>
-			{%- endif -%}
+            <div class="btn-group float-right" role="group">
+                {%- if allow_add is defined and allow_add == true -%}
+                    <div class="btn btn-primary btn-xs BtnCollectionAdd">
+                        <i class="fas fa-plus"></i>
+                        <span>Ajouter</span>
+                    </div>
+                {%- endif -%}
+                {%- if element|default('label') == 'legend' and "collection" in form.vars.block_prefixes and "minmax" in row_attr -%}
+                    <div class="btn btn-info ToggleFieldset">
+                        <i class="fas fa-window-minimize"></i>
+                        <i class="far fa-window-maximize d-none"></i>
+                    </div>
+                {%- endif -%}
+            </div>
 		</{{ element|default('label') }}>
-		{%- block form_label_errors -%}
-			{{- form_errors(form) -}}
-		{%- endblock form_label_errors -%}
-    {%- else -%}
-        {%- if errors|length > 0 -%}
-        <div id="{{ id }}_errors" class="mb-2">
-            {{- form_errors(form) -}}
-        </div>
-        {%- endif -%}
     {%- endif -%}
 {%- endblock -%}
 
 
 {%- block collection_item_widget -%}
-	<tr class="CollectionRow">
+	<div class="CollectionRow">
+        <div class="row">
 		{%- for input in prototype -%}
-			<td>
-				{{ form_widget(input) }}
-			</td>
+			<div class="col-auto">
+				{{ form_row(input) }}
+			</div>
 		{%- endfor -%}
+        </div>
 		{%- if allow_delete -%}
-			<td class="text-center">
-				{{- block('collection_delete') -}}
-			</td>
+            <div class="row">
+                <div class="text-center col-12">
+                    {{- block('collection_delete') -}}
+                </div>
+            </div>
 		{%- endif -%}
-	</tr>
+	</div>
 {%- endblock -%}
 
 {%- block collection_delete -%}
@@ -167,46 +396,43 @@
 {%- endblock -%}
 
 {%- block collection_widget -%}
-	{%- if prototype is defined -%}
-	<table class="table table-striped table-bordered table-condensed">
-		<thead>
-			{%- for input in prototype -%}
-				<th>
-					{{ form_label(input) }}
-				</th>
-			{%- endfor -%}
-			{%- if allow_delete -%}
-				<th>
-					<label>Actions</label>
-				</th>
-			{%- endif -%}
-		</thead>
-		<tbody class="TabCollection TabCollection">
-			{%- for i, row in form -%}
-				<tr class="CollectionRow">
-					{%- for input in row -%}
-						<td>
-							{{ form_widget(input) }}
-						</td>
-					{%- endfor -%}
-					{%- if allow_delete -%}
-						<td class="text-center">
-							{{- block('collection_delete') -}}
-						</td>
-					{%- endif -%}
-				</tr>
-			{%- endfor -%}
-		</tbody>
-	</table>
-	{%- else -%}
-		<div class="row">
-			{%- for row in form -%}
-				{%- for input in row -%}
-					<div class="col-md-6">
-						{{ form_row(input) }}
-					</div>
-				{%- endfor -%}
-			{%- endfor -%}
-		</div>
-	{%- endif -%}
+    <div class="FieldRow">
+        {%- for row in form -%}
+	        {%- if prototype is defined -%}
+                <div class="CollectionRow">
+            {% endif %}
+            <div class="row">
+                {%- for input in row -%}
+                    <div class="col-6">
+                        {{ form_row(input) }}
+                    </div>
+                {%- endfor -%}
+            </div>
+            {%- if allow_delete -%}
+                <div class="row">
+                    <div class="text-center col-12">
+                        {{- block('collection_delete') -}}
+                    </div>
+                </div>
+            {%- endif -%}
+	        {%- if prototype is defined -%}
+                </div>
+            {% endif %}
+        {%- endfor -%}
+    </div>
 {%- endblock -%}
+
+{%- block form_start -%}
+    {%- do form.setMethodRendered() -%}
+    {% set method = method|upper %}
+    {%- if method in ["GET", "POST"] -%}
+        {% set form_method = method %}
+    {%- else -%}
+        {% set form_method = "POST" %}
+    {%- endif -%}
+    <form{% if name != '' %} name="{{ name }}"{% endif %} method="{{ form_method|lower }}"{% if action != '' %} action="{{ action }}"{% endif %}{{ block('attributes') }}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    {%- if form_method != method -%}
+        <input type="hidden" name="_method" value="{{ method }}" />
+    {%- endif -%}
+    {{ form_errors(form) }}
+{%- endblock form_start -%}

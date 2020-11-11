@@ -7,7 +7,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\NoteInterne;
 use Labstag\Form\Admin\NoteInterneType;
 use Labstag\Repository\NoteInterneRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,10 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/admin/noteinterne")
  */
-class NoteInterneController extends AbstractController
+class NoteInterneController extends AdminControllerLib
 {
     /**
-     * @Route("/", name="note_interne_index", methods={"GET"})
+     * @Route("/", name="admin_noteinterne_index", methods={"GET"})
      */
     public function index(
         PaginatorInterface $paginator,
@@ -38,20 +38,15 @@ class NoteInterneController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="note_interne_new", methods={"GET","POST"})
+     * @Route("/new", name="admin_noteinterne_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
         $noteInterne = new NoteInterne();
         $form        = $this->createForm(NoteInterneType::class, $noteInterne);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($noteInterne);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('note_interne_index');
+        $return      = $this->newForm($request, $form, $noteInterne);
+        if ($return) {
+            return $this->redirectToRoute('admin_noteinterne_index');
         }
 
         return $this->render(
@@ -64,7 +59,7 @@ class NoteInterneController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="note_interne_show", methods={"GET"})
+     * @Route("/{id}", name="admin_noteinterne_show", methods={"GET"})
      */
     public function show(NoteInterne $noteInterne): Response
     {
@@ -75,17 +70,18 @@ class NoteInterneController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="note_interne_edit", methods={"GET","POST"})
+     * @Route(
+     *  "/{id}/edit",
+     *  name="admin_noteinterne_edit",
+     *  methods={"GET","POST"}
+     * )
      */
     public function edit(Request $request, NoteInterne $noteInterne): Response
     {
-        $form = $this->createForm(NoteInterneType::class, $noteInterne);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('note_interne_index');
+        $form   = $this->createForm(NoteInterneType::class, $noteInterne);
+        $return = $this->editForm($request, $form);
+        if ($return) {
+            return $this->redirectToRoute('admin_noteinterne_index');
         }
 
         dump($form->getErrors());
@@ -100,17 +96,12 @@ class NoteInterneController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="note_interne_delete", methods={"DELETE"})
+     * @Route("/{id}", name="admin_noteinterne_delete", methods={"DELETE"})
      */
     public function delete(Request $request, NoteInterne $noteInterne): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$noteInterne->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($noteInterne);
-            $entityManager->flush();
-        }
+        $this->deleteEntity($request, $noteInterne);
 
-        return $this->redirectToRoute('note_interne_index');
+        return $this->redirectToRoute('admin_noteinterne_index');
     }
 }

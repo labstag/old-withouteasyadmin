@@ -1,8 +1,8 @@
 {% extends 'admin/email_user/layout.html.twig' %}
-{% block content %}
+{% block body %}
     {{ include('admin/crud/form.html.twig') }}
 
-    <a href="{{ path('email_user_index') }}">back to list</a>
+    <a href="{{ path('admin_emailuser_index') }}">back to list</a>
 
     {{ include('admin/email_user/_delete_form.html.twig') }}
 {% endblock %}

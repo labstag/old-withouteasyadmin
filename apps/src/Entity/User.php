@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Labstag\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Entity\Traits\VerifEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -14,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+    use VerifEntity;
 
     /**
      * @ORM\Id
@@ -28,8 +30,7 @@ class User implements UserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=180, options={"default": true})
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=180, options={"default": true}, nullable=true)
      * @Assert\Email(
      *     message="The email '{{ value }}' is not a valid email."
      * )
@@ -103,8 +104,9 @@ class User implements UserInterface
     public function __construct()
     {
         $this->roles        = ['ROLE_USER'];
-        $this->enable       = true;
+        $this->enable       = false;
         $this->lost         = false;
+        $this->verif        = false;
         $this->editos       = new ArrayCollection();
         $this->noteInternes = new ArrayCollection();
         $this->lienUsers    = new ArrayCollection();

@@ -3,10 +3,10 @@
 namespace Labstag\Repository;
 
 use Labstag\Entity\Groupe;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Doctrine\Persistence\ManagerRegistry;
 
-class GroupeRepository extends ServiceEntityRepository
+class GroupeRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $registry)
     {
