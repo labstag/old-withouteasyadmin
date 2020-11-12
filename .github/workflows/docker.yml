@@ -20,6 +20,10 @@ jobs:
           run: make docker-ls
         - name: 'Composer install'
           run: make composer-dev-ci
+        - name: 'Make sleep'
+          run: make sleep
+        - name: 'Check running containers'
+          run: make docker-ls
         - name: 'BDD MIGRATE'
           run: make bdd-migrate
         - name: 'Run the fixtures'

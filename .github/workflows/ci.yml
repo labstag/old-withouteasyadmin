@@ -61,7 +61,3 @@ jobs:
         run: make linter-yaml-ci
       - name: linter phpstan
         run: make linter-phpstan-ci
-      - name: Run Acceptance Tests
-        run: make tests-behat-ci
-      - name: Run Tests
-        run: make tests-simple-phpunit-unit-integration-ci
