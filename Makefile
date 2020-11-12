@@ -82,6 +82,9 @@ docker-create-network: ## create network
 docker-deploy: ## deploy
 	docker stack deploy -c docker-compose.yml $(STACK)
 
+docker-deploy-ci: ## deploy
+	docker stack deploy -c docker-compose-ci.yml $(STACK)
+
 docker-image-pull: ## Get docker image
 	docker image pull redis:6.0.9
 	docker image pull mariadb:10.5.1
