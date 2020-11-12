@@ -12,7 +12,7 @@ use Faker\Factory;
 use Labstag\Entity\User;
 use Labstag\Repository\UserRepository;
 
-class AdminPhoneUserControllerTest extends WebTestCase
+class AdminNoteInterneControllerTest extends WebTestCase
 {
     use LoginTrait;
     use IntegrationTrait;
