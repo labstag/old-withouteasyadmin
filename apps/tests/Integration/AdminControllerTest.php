@@ -12,13 +12,13 @@ class AdminControllerTest extends WebTestCase
     use LoginTrait;
     use IntegrationTrait;
 
-    private $urls = [
+    protected $urls = [
         'admin',
         'admin_profil',
         'admin_themes',
     ];
 
-    private $groupeDisable = [
+    protected $groupeDisable = [
         'visitor',
         'disable',
     ];

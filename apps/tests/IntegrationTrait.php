@@ -71,13 +71,15 @@ trait IntegrationTrait
                 $index  = $nameForm.'['.$key.']';
                 if (is_object($value)) {
                     $post[$index] = $value->getId();
+                    continue;
                 } elseif (isset($values[$nameForm][$key]['first'])) {
                     $post[$index.'[first]']  = $value;
                     $post[$index.'[second]'] = $value;
                     unset($values[$nameForm][$key]);
-                } else {
-                    $post[$index] = $value;
+                    continue;
                 }
+
+                $post[$index] = $value;
             }
         }
 

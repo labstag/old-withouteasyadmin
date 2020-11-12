@@ -17,12 +17,12 @@ class AdminAdresseUserControllerTest extends WebTestCase
     use LoginTrait;
     use IntegrationTrait;
 
-    private $urls = [
+    protected $urls = [
         'admin_adresseuser_index',
         'admin_adresseuser_new',
     ];
 
-    private $groupeDisable = [
+    protected $groupeDisable = [
         'visitor',
         'disable',
     ];
@@ -118,7 +118,7 @@ class AdminAdresseUserControllerTest extends WebTestCase
         );
     }
 
-    private function getEntity($client)
+    protected function getEntity($client)
     {
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');
@@ -130,7 +130,7 @@ class AdminAdresseUserControllerTest extends WebTestCase
         return $data;
     }
 
-    private function getNewEntity($client)
+    protected function getNewEntity($client)
     {
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');

@@ -14,9 +14,9 @@ class AdminConfigurationControllerTest extends WebTestCase
     use LoginTrait;
     use IntegrationTrait;
 
-    private $urls = ['admin_configuration_index'];
+    protected $urls = ['admin_configuration_index'];
 
-    private $groupeDisable = [
+    protected $groupeDisable = [
         'visitor',
         'disable',
     ];
@@ -66,7 +66,7 @@ class AdminConfigurationControllerTest extends WebTestCase
         );
     }
 
-    private function getEntity($client)
+    protected function getEntity($client)
     {
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');

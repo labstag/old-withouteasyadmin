@@ -17,12 +17,12 @@ class AdminUserControllerTest extends WebTestCase
     use LoginTrait;
     use IntegrationTrait;
 
-    private $urls = [
+    protected $urls = [
         'admin_user_index',
         'admin_user_new',
     ];
 
-    private $groupeDisable = [
+    protected $groupeDisable = [
         'visitor',
         'disable',
     ];
@@ -118,7 +118,7 @@ class AdminUserControllerTest extends WebTestCase
         );
     }
 
-    private function getEntity($client)
+    protected function getEntity($client)
     {
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');
@@ -130,7 +130,7 @@ class AdminUserControllerTest extends WebTestCase
         return $data;
     }
 
-    private function getNewEntity($client)
+    protected function getNewEntity($client)
     {
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');

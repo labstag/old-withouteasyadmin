@@ -17,12 +17,12 @@ class AdminPhoneUserControllerTest extends WebTestCase
     use LoginTrait;
     use IntegrationTrait;
 
-    private $urls = [
+    protected $urls = [
         'admin_noteinterne_index',
         'admin_noteinterne_new',
     ];
 
-    private $groupeDisable = [
+    protected $groupeDisable = [
         'visitor',
         'disable',
     ];
@@ -118,7 +118,7 @@ class AdminPhoneUserControllerTest extends WebTestCase
         );
     }
 
-    private function getEntity($client)
+    protected function getEntity($client)
     {
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');
@@ -130,7 +130,7 @@ class AdminPhoneUserControllerTest extends WebTestCase
         return $data;
     }
 
-    private function getNewEntity($client)
+    protected function getNewEntity($client)
     {
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');

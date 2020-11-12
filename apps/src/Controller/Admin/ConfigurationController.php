@@ -4,7 +4,6 @@ namespace Labstag\Controller\Admin;
 
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Configuration;
-use Labstag\Form\Admin\ConfigurationType;
 use Labstag\Repository\ConfigurationRepository;
 use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;

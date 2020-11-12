@@ -17,12 +17,12 @@ class AdminEditoControllerTest extends WebTestCase
     use LoginTrait;
     use IntegrationTrait;
 
-    private $urls = [
+    protected $urls = [
         'admin_edito_index',
         'admin_edito_new',
     ];
 
-    private $groupeDisable = [
+    protected $groupeDisable = [
         'visitor',
         'disable',
     ];
@@ -118,7 +118,7 @@ class AdminEditoControllerTest extends WebTestCase
         );
     }
 
-    private function getEntity($client)
+    protected function getEntity($client)
     {
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');
@@ -130,7 +130,7 @@ class AdminEditoControllerTest extends WebTestCase
         return $data;
     }
 
-    private function getNewEntity($client)
+    protected function getNewEntity($client)
     {
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');

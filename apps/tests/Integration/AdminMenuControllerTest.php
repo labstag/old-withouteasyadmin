@@ -15,12 +15,12 @@ class AdminMenuControllerTest extends WebTestCase
     use LoginTrait;
     use IntegrationTrait;
 
-    private $urls = [
+    protected $urls = [
         'admin_menu_index',
         'admin_menu_new',
     ];
 
-    private $groupeDisable = [
+    protected $groupeDisable = [
         'visitor',
         'disable',
     ];
@@ -116,7 +116,7 @@ class AdminMenuControllerTest extends WebTestCase
         );
     }
 
-    private function getEntity($client)
+    protected function getEntity($client)
     {
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');
@@ -128,7 +128,7 @@ class AdminMenuControllerTest extends WebTestCase
         return $data;
     }
 
-    private function getNewEntity()
+    protected function getNewEntity()
     {
         $faker = Factory::create('fr_FR');
         $menu  = new Menu();
