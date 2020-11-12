@@ -125,7 +125,7 @@ class AdminUserControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(User::class);
         /** @var UserRepository $repository */
-        $data          = $repository->findOneRandom();
+        $data = $repository->findOneRandom();
 
         return $data;
     }
@@ -137,13 +137,13 @@ class AdminUserControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(Groupe::class);
         /** @var GroupeRepository $repository */
-        $groupe          = $repository->findOneRandom();
+        $groupe = $repository->findOneRandom();
         if (!($groupe instanceof Groupe)) {
             return;
         }
 
-        $faker   = Factory::create('fr_FR');
-        $user = new User();
+        $faker = Factory::create('fr_FR');
+        $user  = new User();
         $user->setGroupe($groupe);
         $user->setEnable(rand(0, 1));
         $user->setVerif(rand(0, 1));

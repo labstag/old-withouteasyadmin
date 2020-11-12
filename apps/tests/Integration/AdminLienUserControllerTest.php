@@ -125,7 +125,7 @@ class AdminLienUserControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(LienUser::class);
         /** @var LienUserRepository $repository */
-        $data          = $repository->findOneRandom();
+        $data = $repository->findOneRandom();
 
         return $data;
     }
@@ -137,13 +137,13 @@ class AdminLienUserControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(User::class);
         /** @var UserRepository $repository */
-        $user          = $repository->findOneRandom();
+        $user = $repository->findOneRandom();
         if (!($user instanceof User)) {
             return;
         }
 
-        $faker   = Factory::create('fr_FR');
-        $lien = new LienUser();
+        $faker = Factory::create('fr_FR');
+        $lien  = new LienUser();
         $lien->setRefuser($user);
         $lien->setName($faker->unique()->word());
         $lien->setAdresse($faker->unique->url());

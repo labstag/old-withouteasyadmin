@@ -123,14 +123,14 @@ class AdminTemplateControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(Template::class);
         /** @var TemplateRepository $repository */
-        $data          = $repository->findOneRandom();
+        $data = $repository->findOneRandom();
 
         return $data;
     }
 
-    private function getNewEntity($client)
+    private function getNewEntity()
     {
-        $faker   = Factory::create('fr_FR');
+        $faker    = Factory::create('fr_FR');
         $template = new Template();
         $template->setName($faker->unique()->colorName);
         /** @var string $content */

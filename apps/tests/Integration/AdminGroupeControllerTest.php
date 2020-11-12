@@ -123,14 +123,14 @@ class AdminGroupeControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(Groupe::class);
         /** @var GroupeRepository $repository */
-        $data          = $repository->findOneRandom();
+        $data = $repository->findOneRandom();
 
         return $data;
     }
 
-    private function getNewEntity($client)
+    private function getNewEntity()
     {
-        $faker   = Factory::create('fr_FR');
+        $faker  = Factory::create('fr_FR');
         $groupe = new Groupe();
         $groupe->setName($faker->unique()->word());
 

@@ -123,15 +123,15 @@ class AdminMenuControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(Menu::class);
         /** @var MenuRepository $repository */
-        $data          = $repository->findOneRandom();
+        $data = $repository->findOneRandom();
 
         return $data;
     }
 
-    private function getNewEntity($client)
+    private function getNewEntity()
     {
-        $faker   = Factory::create('fr_FR');
-        $menu = new Menu();
+        $faker = Factory::create('fr_FR');
+        $menu  = new Menu();
         $menu->setPosition(50);
         $menu->setClef($faker->unique()->word());
 

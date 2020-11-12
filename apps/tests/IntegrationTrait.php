@@ -51,41 +51,42 @@ trait IntegrationTrait
             $this->assertFalse(false);
             return;
         }
-        $client = $this->logIn($groupe);
-        $entity = $this->getNewEntity($client);
-        $newform = $this->createForm($client, $formClass, $entity);
-        $router = $client->getContainer()->get("router");
-        $url    = $router->generate($route);
-        $crawler = $client->request(Request::METHOD_GET, $url);
+
+        $client   = $this->logIn($groupe);
+        $entity   = $this->getNewEntity($client);
+        $newform  = $this->createForm($client, $formClass, $entity);
+        $router   = $client->getContainer()->get('router');
+        $url      = $router->generate($route);
+        $crawler  = $client->request(Request::METHOD_GET, $url);
         $nameForm = $newform->getName();
-        $filter = $crawler->filter('form[name="'.$nameForm.'"]');
-        $form = $filter->form();
-        $values = $form->getPhpValues();
-        $methods = get_class_methods($entity);
-        $post = [];
+        $filter   = $crawler->filter('form[name="'.$nameForm.'"]');
+        $form     = $filter->form();
+        $values   = $form->getPhpValues();
+        $methods  = get_class_methods($entity);
+        $post     = [];
         foreach (array_keys($values[$nameForm]) as $key) {
             if (in_array('get'.ucfirst($key), $methods)) {
                 $method = 'get'.ucfirst($key);
-                $value = $entity->$method();
-                $index = $nameForm."[".$key."]";
+                $value  = $entity->$method();
+                $index  = $nameForm.'['.$key.']';
                 if (is_object($value)) {
                     $post[$index] = $value->getId();
-                }elseif(isset($values[$nameForm][$key]['first'])) {
-                    $post[$index."[first]"] = $value;
-                    $post[$index."[second]"] = $value;
+                } elseif (isset($values[$nameForm][$key]['first'])) {
+                    $post[$index.'[first]']  = $value;
+                    $post[$index.'[second]'] = $value;
                     unset($values[$nameForm][$key]);
-                }else{
+                } else {
                     $post[$index] = $value;
                 }
             }
         }
 
-        foreach($values[$nameForm] as $key => $value) {
+        foreach ($values[$nameForm] as $key => $value) {
             if ($key == '_token') {
                 continue;
             }
 
-            $index = $nameForm."[".$key."]";
+            $index = $nameForm.'['.$key.']';
             if (!isset($post[$index])) {
                 $post[$index] = $value;
             }
@@ -127,8 +128,8 @@ trait IntegrationTrait
             return;
         }
 
-        $client = $this->logIn($groupe);
-        $data   = $this->getEntity($client);
+        $client  = $this->logIn($groupe);
+        $data    = $this->getEntity($client);
         $newform = $this->createForm($client, $formClass);
         if (is_null($data)) {
             $this->markTestSkipped('data introuvable');
@@ -145,7 +146,7 @@ trait IntegrationTrait
         $crawler = $client->request(Request::METHOD_GET, $url);
 
         $filter = $crawler->filter('form[name="'.$newform->getName().'"]');
-        $form = $filter->form();
+        $form   = $filter->form();
         $client->submit($form);
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }
@@ -156,6 +157,7 @@ trait IntegrationTrait
             $this->markTestSkipped('test désactivé pour le groupe '.$groupe);
             return;
         }
+
         $client = $this->logIn($groupe);
         $data   = $this->getEntity($client);
         if (is_null($data)) {

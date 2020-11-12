@@ -125,7 +125,7 @@ class AdminPhoneUserControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(NoteInterne::class);
         /** @var NoteInterneRepository $repository */
-        $data          = $repository->findOneRandom();
+        $data = $repository->findOneRandom();
 
         return $data;
     }
@@ -137,17 +137,17 @@ class AdminPhoneUserControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(User::class);
         /** @var UserRepository $repository */
-        $user          = $repository->findOneRandom();
+        $user = $repository->findOneRandom();
         if (!($user instanceof User)) {
             return;
         }
 
-        $faker   = Factory::create('fr_FR');
+        $faker       = Factory::create('fr_FR');
         $noteinterne = new NoteInterne();
         $noteinterne->setRefuser($user);
         $noteinterne->setTitle($faker->unique()->text(rand(5, 50)));
         $noteinterne->setEnable((bool) rand(0, 1));
-        $maxDate = $faker->unique()->dateTimeInInterval('now', '+30 years');
+        $maxDate   = $faker->unique()->dateTimeInInterval('now', '+30 years');
         $dateDebut = $faker->unique()->dateTime($maxDate);
         $noteinterne->setDateDebut($dateDebut);
         $dateFin = clone $dateDebut;

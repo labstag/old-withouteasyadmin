@@ -73,7 +73,7 @@ class AdminConfigurationControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(Configuration::class);
         /** @var ConfigurationRepository $repository */
-        $data          = $repository->findOneRandom();
+        $data = $repository->findOneRandom();
 
         return $data;
     }

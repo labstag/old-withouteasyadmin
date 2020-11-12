@@ -124,7 +124,7 @@ class AdminEmailUserControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(EmailUser::class);
         /** @var EmailUserRepository $repository */
-        $data          = $repository->findOneRandom();
+        $data = $repository->findOneRandom();
 
         return $data;
     }
@@ -136,12 +136,12 @@ class AdminEmailUserControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(User::class);
         /** @var UserRepository $repository */
-        $user          = $repository->findOneRandom();
+        $user = $repository->findOneRandom();
         if (!($user instanceof User)) {
             return;
         }
 
-        $faker   = Factory::create('fr_FR');
+        $faker = Factory::create('fr_FR');
         $email = new EmailUser();
         $email->setRefuser($user);
         $email->setVerif(true);

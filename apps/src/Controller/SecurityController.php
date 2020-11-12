@@ -58,14 +58,14 @@ class SecurityController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
             $this->addFlash('success', 'Changement de mot de passe effectué');
-            
+
             return $this->redirect($this->generateUrl('front'), 302);
         }
 
         return $this->render(
             'security/change-password.html.twig',
             [
-                'formChangePassword' => $form->createView()
+                'formChangePassword' => $form->createView(),
             ]
         );
     }
@@ -86,7 +86,7 @@ class SecurityController extends AbstractController
         return $this->render(
             'security/lost-password.html.twig',
             [
-                'formLostPassword' => $form->createView()
+                'formLostPassword' => $form->createView(),
             ]
         );
     }

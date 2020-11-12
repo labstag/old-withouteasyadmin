@@ -125,7 +125,7 @@ class AccessRouteAdminTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(PhoneUser::class);
         /** @var PhoneUserRepository $repository */
-        $data          = $repository->findOneRandom();
+        $data = $repository->findOneRandom();
 
         return $data;
     }
@@ -137,12 +137,12 @@ class AccessRouteAdminTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(User::class);
         /** @var UserRepository $repository */
-        $user          = $repository->findOneRandom();
+        $user = $repository->findOneRandom();
         if (!($user instanceof User)) {
             return;
         }
 
-        $faker   = Factory::create('fr_FR');
+        $faker = Factory::create('fr_FR');
         $phone = new PhoneUser();
         $phone->setRefuser($user);
         $number = $faker->unique()->e164PhoneNumber();

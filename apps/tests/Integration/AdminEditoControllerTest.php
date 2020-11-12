@@ -125,7 +125,7 @@ class AdminEditoControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(Edito::class);
         /** @var EditoRepository $repository */
-        $data          = $repository->findOneRandom();
+        $data = $repository->findOneRandom();
 
         return $data;
     }
@@ -137,12 +137,12 @@ class AdminEditoControllerTest extends WebTestCase
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(User::class);
         /** @var UserRepository $repository */
-        $user          = $repository->findOneRandom();
+        $user = $repository->findOneRandom();
         if (!($user instanceof User)) {
             return;
         }
 
-        $faker   = Factory::create('fr_FR');
+        $faker = Factory::create('fr_FR');
         $edito = new Edito();
         $edito->setRefuser($user);
         $edito->setTitle($faker->unique()->text(rand(5, 50)));

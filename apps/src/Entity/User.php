@@ -30,7 +30,12 @@ class User implements UserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=180, options={"default": true}, nullable=true)
+     * @ORM\Column(
+     *    type="string",
+     *    length=180,
+     *    options={"default": true},
+     *    nullable=true
+     * )
      * @Assert\Email(
      *     message="The email '{{ value }}' is not a valid email."
      * )
