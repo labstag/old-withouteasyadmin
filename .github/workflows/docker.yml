@@ -12,18 +12,14 @@ jobs:
           run: make docker-create-network
         - name: 'Build containers'
           run: make docker-deploy-ci
-        - name: 'Installation variable environnement'
-          run: make env-dev
-        - name: 'Check running containers'
-          run: make docker-ls
-        - name: 'Composer install'
-          run: make composer-dev-ci
-        - name: 'Check running containers'
-          run: make docker-ls
         - name: 'Make sleep'
           run: make sleep
         - name: 'Check running containers'
           run: make docker-ls
+        - name: 'Installation variable environnement'
+          run: make env-dev
+        - name: 'Composer install'
+          run: make composer-dev-ci
         - name: 'BDD MIGRATE'
           run: make bdd-migrate
         - name: 'Run the fixtures'
