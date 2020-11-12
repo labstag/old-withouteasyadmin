@@ -100,6 +100,7 @@ docker-stop: ## docker stop
 	@docker stack rm $(STACK)
 
 encore-dev: ## créer les assets en version dev
+	@npm rebuild node-sass
 	@npm run encore-dev
 
 encore-watch: ## créer les assets en version watch
