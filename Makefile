@@ -214,7 +214,7 @@ logs-phpfpm: ## logs docker PHPFPM
 	docker service logs -f --tail 100 --raw $(PHPFPMFULLNAME)
 
 sleep: ## sleep
-	sleep 90
+	sleep 180
 
 ssh-phpfpm: ## ssh phpfpm
 	docker exec -ti $(PHPFPMFULLNAME) /bin/bash
