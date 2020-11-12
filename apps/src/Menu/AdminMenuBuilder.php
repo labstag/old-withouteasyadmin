@@ -17,7 +17,7 @@ class AdminMenuBuilder
     {
         unset($requestStack);
         $menu = $this->factory->createItem('menulabstag');
-        $menu->setChildrenAttribute('class', 'navbar-nav');
+        $menu->setChildrenAttribute('class', 'navbar-nav mr-auto');
         $menu = $this->setData($menu, 'admin');
 
         return $menu;

@@ -2,6 +2,8 @@
 
 {% block body %}
     <table
+  class="table table-bordered table-hover table-striped"
+  data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
   data-show-columns="true">
@@ -24,7 +26,7 @@
                 <td>
                     <a href="{{ path('admin_phoneuser_show', {'id': phone_user.id}) }}">show</a>
                     <a href="{{ path('admin_phoneuser_edit', {'id': phone_user.id}) }}">edit</a>
-                    <a href="#">delete</a>
+                    <a href="{{ path('admin_phoneuser_delete', {'id': phone_user.id}) }}" data-token="{{ csrf_token(phone_user) }}">delete</a>
                 </td>
             </tr>
         {% else %}

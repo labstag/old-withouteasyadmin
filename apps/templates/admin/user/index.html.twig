@@ -1,6 +1,8 @@
 {% extends 'admin/user/layout.html.twig' %}
 {% block body %}
     <table
+  class="table table-bordered table-hover table-striped"
+  data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
   data-show-columns="true">
@@ -23,7 +25,7 @@
                 <td>
                     <a href="{{ path('admin_user_show', {'id': user.id}) }}">show</a>
                     <a href="{{ path('admin_user_edit', {'id': user.id}) }}">edit</a>
-                    <a href="#">delete</a>
+                    <a href="{{ path('admin_user_delete', {'id': user.id}) }}" data-token="{{ csrf_token(user) }}">delete</a>
                 </td>
             </tr>
         {% else %}

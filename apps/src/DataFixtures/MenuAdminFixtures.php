@@ -139,6 +139,37 @@ class MenuAdminFixtures extends Fixture
 
         return $data;
     }
+    private function getMenuProfilAdmin(): array
+    {
+        $data = [
+            [
+                'libelle' => 'Mon profil',
+                'data'    => [
+                    'attr' => ['data-href' => 'admin_profil'],
+                ],
+            ],
+            [
+                'libelle' => 'Logout',
+                'data'    => [
+                    'attr' => ['data-href' => 'app_logout'],
+                ],
+            ],
+        ];
+
+        return $data;
+    }
+
+    private function getMenuAdminProfilAdmin(): array
+    {
+        $data = [
+            [
+                'libelle' => 'Mon compte',
+                'childs'  => $this->getMenuProfilAdmin(),
+            ],
+        ];
+
+        return $data;
+    }
 
     public function load(ObjectManager $manager): void
     {
@@ -146,7 +177,7 @@ class MenuAdminFixtures extends Fixture
 
         $menus = [
             'admin'        => $this->getMenuAdmin(),
-            'admin-profil' => [],
+            'admin-profil' => $this->getMenuAdminProfilAdmin(),
             'public'       => [],
         ];
 

@@ -20,7 +20,7 @@
                 <td>{{ configuration.value ? configuration.value|json_encode : '' }}</td>
                 <td>
                     <a href="{{ path('admin_configuration_show', {'id': configuration.id}) }}">show</a>
-                    <a href="#">delete</a>
+                    <a href="{{ path('admin_configuration_delete', {'id': configuration.id}) }}" data-token="{{ csrf_token(configuration) }}">delete</a>
                 </td>
             </tr>
         {% else %}
