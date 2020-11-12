@@ -231,18 +231,12 @@ ssh-mariadb: ## ssh mariadb
 tests-behat: ## Lance les tests behat
 	docker exec $(PHPFPMXDEBUGFULLNAME) make tests-behat
 
-tests-behat-ci: ## Lance les tests behat
-	cd apps && make tests-behat
-
 tests-launch: ## Launch all tests
 	@make tests-behat -i
 	@make tests-simple-phpunit-unit-integration -i
 
 tests-simple-phpunit-unit-integration: ## lance les tests phpunit
 	docker exec $(PHPFPMXDEBUGFULLNAME) make tests-simple-phpunit-unit-integration
-
-tests-simple-phpunit-unit-integration-ci: ## lance les tests phpunit
-	cd apps && make tests-simple-phpunit-unit-integration
 
 tests-simple-phpunit: ## lance les tests phpunit
 	docker exec $(PHPFPMXDEBUGFULLNAME) make tests-simple-phpunit
