@@ -157,19 +157,19 @@ linter-phpcbf: ## fixe le code PHP à partir d'un standard
 	docker exec $(PHPFPMFULLNAME) make linter-phpcbf
 
 linter-phpcpd: phpcpd.phar ## Vérifie s'il y a du code dupliqué
-	docker exec $(PHPFPMFULLNAME) make linter-phpcpd
+	docker exec $(PHPFPMFULLNAME) php phpcpd.phar src tests
 
 linter-phpcs: ## indique les erreurs de code non corrigé par PHPCBF
-	docker exec $(PHPFPMFULLNAME) make linter-phpcs
+	docker exec $(PHPFPMFULLNAME) composer run phpcs
 
 linter-phpcs-onlywarning: ## indique les erreurs de code non corrigé par PHPCBF
-	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlywarning
+	docker exec $(PHPFPMFULLNAME) composer run phpcs-onlywarning
 
 linter-phpcs-onlyerror: ## indique les erreurs de code non corrigé par PHPCBF
-	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlyerror
+	docker exec $(PHPFPMFULLNAME) composer run phpcs-onlyerror
 
 linter-phpcs-onlyerror-ci: ## indique les erreurs de code non corrigé par PHPCBF
-	cd apps && make linter-phpcs-onlyerror
+	cd apps && composer run phpcs-onlyerror
 
 linter-phploc: ## phploc
 	docker exec $(PHPFPMFULLNAME) make linter-phploc
@@ -184,10 +184,10 @@ linter-phpmnd: ## Si des chiffres sont utilisé dans le code PHP, il est conseil
 	docker exec $(PHPFPMFULLNAME) make linter-phpmnd
 
 linter-phpmnd-ci: ## Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes
-	cd apps && make linter-phpmnd
+	cd apps && composer run phpmnd
 
 linter-phpstan: ## regarde si le code PHP ne peux pas être optimisé
-	docker exec $(PHPFPMFULLNAME) make linter-phpstan
+	docker exec $(PHPFPMFULLNAME) composer run phpstan
 
 linter-phpstan-ci: ## regarde si le code PHP ne peux pas être optimisé
 	cd apps && make linter-phpstan
@@ -229,14 +229,14 @@ ssh-mariadb: ## ssh mariadb
 	docker exec -ti $(MARIADBFULLNAME) /bin/bash
 
 tests-behat: ## Lance les tests behat
-	docker exec $(PHPFPMXDEBUGFULLNAME) make tests-behat
+	docker exec $(PHPFPMXDEBUGFULLNAME) composer run behat
 
 tests-launch: ## Launch all tests
 	@make tests-behat -i
 	@make tests-simple-phpunit-unit-integration -i
 
 tests-simple-phpunit-unit-integration: ## lance les tests phpunit
-	docker exec $(PHPFPMXDEBUGFULLNAME) make tests-simple-phpunit-unit-integration
+	docker exec $(PHPFPMXDEBUGFULLNAME) composer run simple-phpunit-unit-integration
 
 tests-simple-phpunit: ## lance les tests phpunit
-	docker exec $(PHPFPMXDEBUGFULLNAME) make tests-simple-phpunit
+	docker exec $(PHPFPMXDEBUGFULLNAME) composer run simple-phpunit
