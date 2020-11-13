@@ -26,6 +26,4 @@ jobs:
         run: make bdd-fixtures
       - name: Run Acceptance Tests
         run: make tests-behat
-      - name: Run Tests
-        run: make tests-simple-phpunit-unit-integration
 
