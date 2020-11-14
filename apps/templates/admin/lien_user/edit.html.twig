@@ -1,6 +1,6 @@
 {% extends 'admin/lien_user/layout.html.twig' %}
 {% block body %}
-    {{ include('admin/crud/form.html.twig') }}
+    {{ form(form) }}
 
     <a href="{{ path('admin_lienuser_index') }}">back to list</a>
 

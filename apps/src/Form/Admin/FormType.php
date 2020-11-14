@@ -2,13 +2,13 @@
 
 namespace Labstag\Form\Admin;
 
-use Labstag\Form\Admin\Form\ButtonsFieldsType;
-use Labstag\Form\Admin\Form\ChoiceFieldsType;
-use Labstag\Form\Admin\Form\DateAndTimeFieldsType;
-use Labstag\Form\Admin\Form\ExtraFieldsFieldsType as FormExtraFieldsFieldsType;
-use Labstag\Form\Admin\Form\HiddenFieldsType;
-use Labstag\Form\Admin\Form\OtherFieldsType;
-use Labstag\Form\Admin\Form\TextFieldsType;
+use Labstag\Form\Admin\Collections\Form\ButtonsFieldsType;
+use Labstag\Form\Admin\Collections\Form\ChoiceFieldsType;
+use Labstag\Form\Admin\Collections\Form\DateAndTimeFieldsType;
+use Labstag\Form\Admin\Collections\Form\ExtraFieldsFieldsType;
+use Labstag\Form\Admin\Collections\Form\HiddenFieldsType;
+use Labstag\Form\Admin\Collections\Form\OtherFieldsType;
+use Labstag\Form\Admin\Collections\Form\TextFieldsType;
 use Labstag\FormType\MinMaxCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -54,7 +54,7 @@ class FormType extends AbstractType
             'extra',
             CollectionType::class,
             [
-                'entry_type' => FormExtraFieldsFieldsType::class,
+                'entry_type' => ExtraFieldsFieldsType::class,
             ]
         );
         $builder->add(

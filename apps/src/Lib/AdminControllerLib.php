@@ -2,10 +2,9 @@
 
 namespace Labstag\Lib;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class AdminControllerLib extends AbstractController
+abstract class AdminControllerLib extends ControllerLib
 {
     protected function newForm(
         Request $request,

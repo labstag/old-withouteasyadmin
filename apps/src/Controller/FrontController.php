@@ -2,11 +2,11 @@
 
 namespace Labstag\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\PublicControllerLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FrontController extends AbstractController
+class FrontController extends PublicControllerLib
 {
     /**
      * @Route("/", name="front")

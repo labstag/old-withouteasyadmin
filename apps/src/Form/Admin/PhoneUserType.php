@@ -3,12 +3,11 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\PhoneUser;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PhoneUserType extends AbstractType
+class PhoneUserType extends PhoneType
 {
     /**
      * {@inheritdoc}
@@ -18,10 +17,7 @@ class PhoneUserType extends AbstractType
         array $options
     ): void
     {
-        unset($options);
-        $builder->add('numero');
-        $builder->add('country');
-        $builder->add('type');
+        parent::buildForm($builder, $options);
         $builder->add('principal');
         $builder->add('refuser');
         $builder->add('submit', SubmitType::class);

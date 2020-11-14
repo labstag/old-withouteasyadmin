@@ -84,8 +84,6 @@ class NoteInterneController extends AdminControllerLib
             return $this->redirectToRoute('admin_noteinterne_index');
         }
 
-        dump($form->getErrors());
-
         return $this->render(
             'admin/note_interne/edit.html.twig',
             [

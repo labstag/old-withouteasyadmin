@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Form\Admin\Form;
+namespace Labstag\Form\Admin\Collections\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;

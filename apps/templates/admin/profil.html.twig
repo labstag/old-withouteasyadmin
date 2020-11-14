@@ -3,18 +3,45 @@
 {% block title %}Hello ProfilController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/src/Controller/Admin/ProfilController.php'|file_link(0) }}">src/Controller/Admin/ProfilController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/templates/admin/profil.html.twig'|file_link(0) }}">templates/admin/profil.html.twig</a></code></li>
-    </ul>
-</div>
+    {{ form(form) }}
+    {% if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 %}
+        <div class="row">
+    {% endif %}
+    {% if entity.oauthconnectusers|length != 0 %}
+        <div class="col-auto">
+            <fieldset class="shadow p-3 mb-5 bg-white">
+                <legend>Dissocier :</legend>
+                <div class="row">
+                    {% for oauth in entity.oauthconnectusers %}
+                        <div class="col-md-4 itemConnect">
+                            <a href="{{ path('connect_lost', {'oauthCode': oauth.name}) }}" title="{{ oauth.name|e }}">
+                                <i class="fab fa-{{ oauth.name }}"></i>
+                                {{ oauth.name }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </fieldset>
+        </div>
+    {% endif %}
+    {% if oauthActivated|length != 0 %}
+        <div class="col-auto">
+            <fieldset class="shadow p-3 mb-5 bg-white">
+                <legend>Se connecter avec :</legend>
+                <div class="row">
+                {% for oauth in oauthActivated %}
+                    <div class="col-md-4 itemConnect">
+                        <a href="{{ path('connect_start', {'oauthCode': oauth.type}) }}" title="{{ oauth.type|e }}">
+                            <i class="fab fa-{{ oauth.type }}"></i>
+                            {{ oauth.type }}
+                        </a>
+                    </div>
+                {% endfor %}
+                </div>
+            </fieldset>
+        </div>
+    {% endif %}
+    {% if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 %}
+        </div>
+    {% endif %}
 {% endblock %}

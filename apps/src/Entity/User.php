@@ -106,18 +106,26 @@ class User implements UserInterface
      */
     private $adresseUsers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OauthConnectUser::class, mappedBy="refuser")
+     *
+     * @var ArrayCollection
+     */
+    private $oauthConnectUsers;
+
     public function __construct()
     {
-        $this->roles        = ['ROLE_USER'];
-        $this->enable       = false;
-        $this->lost         = false;
-        $this->verif        = false;
-        $this->editos       = new ArrayCollection();
-        $this->noteInternes = new ArrayCollection();
-        $this->lienUsers    = new ArrayCollection();
-        $this->emailUsers   = new ArrayCollection();
-        $this->phoneUsers   = new ArrayCollection();
-        $this->adresseUsers = new ArrayCollection();
+        $this->roles             = ['ROLE_USER'];
+        $this->enable            = false;
+        $this->lost              = false;
+        $this->verif             = false;
+        $this->editos            = new ArrayCollection();
+        $this->noteInternes      = new ArrayCollection();
+        $this->oauthConnectUsers = new ArrayCollection();
+        $this->lienUsers         = new ArrayCollection();
+        $this->emailUsers        = new ArrayCollection();
+        $this->phoneUsers        = new ArrayCollection();
+        $this->adresseUsers      = new ArrayCollection();
     }
 
     public function __toString()
@@ -432,6 +440,38 @@ class User implements UserInterface
     public function setLost(bool $lost): self
     {
         $this->lost = $lost;
+
+        return $this;
+    }
+
+    public function getOauthConnectUsers(): Collection
+    {
+        return $this->oauthConnectUsers;
+    }
+
+    public function addOauthConnectUsers(
+        OauthConnectUser $oauthConnectUser
+    ): self
+    {
+        if (!$this->oauthConnectUsers->contains($oauthConnectUser)) {
+            $this->oauthConnectUsers[] = $oauthConnectUser;
+            $oauthConnectUser->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOauthConnectUsers(
+        OauthConnectUser $oauthConnectUser
+    ): self
+    {
+        if ($this->oauthConnectUsers->contains($oauthConnectUser)) {
+            $this->oauthConnectUsers->removeElement($oauthConnectUser);
+            // set the owning side to null (unless already changed)
+            if ($oauthConnectUser->getRefuser() === $this) {
+                $oauthConnectUser->setRefuser(null);
+            }
+        }
 
         return $this;
     }

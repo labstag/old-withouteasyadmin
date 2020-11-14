@@ -3,7 +3,7 @@
 {% block page_title %}Log in!{% endblock %}
 
 {% block body %}
-    <div id="RowLogin">
+    <div class="d-flex align-items-center flex-column">
         {{ form_start(formLogin) }}
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
             {% if error %}
@@ -12,5 +12,21 @@
             {{ form_widget(formLogin) }}
         {{ form_end(formLogin) }}
         <a href="{{ path("app_lost") }}">J'ai perdu mon mot de passe</a>
+        {% if oauthActivated|length != 0 %}
+            <fieldset>
+                <legend>Se connecter avec :</legend>
+                <div class="row">
+                {% for oauth in oauthActivated %}
+                    <div class="col-md-4 itemConnect">
+                        <a href="{{ path('connect_start', {'oauthCode': oauth.type}) }}" title="{{ oauth.type|e }}">
+                            <i class="fab fa-{{ oauth.type }}"></i>
+                            <br />
+                            {{ oauth.type }}
+                        </a>
+                    </div>
+                {% endfor %}
+                </div>
+            </fieldset>
+        {% endif %}
     </div>
 {% endblock %}

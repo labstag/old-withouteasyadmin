@@ -14,19 +14,14 @@ label {
     }
   }
 }
-fieldset{
-  border: 1px solid black;
-  padding: 1em;
-  margin: 1em;
-}
-.CollectionRow{
-  border: 1px solid black;
-  padding: 1em;
-}
+
 .RequireFormInfo{
   text-align: right;
   span{
     font-weight: bold;
     color: red;
   }
+}
+.form-control{
+  appearance: revert;
 }

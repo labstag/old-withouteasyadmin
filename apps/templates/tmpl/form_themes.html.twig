@@ -288,6 +288,9 @@
                     'data-prototype': block('collection_item_widget')|replace({'"': "'", "\n": "", "\t": ""})
                 }) -%}
             {%- endif -%}
+            {%- set element_attr = element_attr|merge({
+                'class': element_attr.class|default('')~" shadow p-3 mb-5 bg-white"
+            }) %}
         {%- endif -%}
     {%- endif -%}
     {%- set widget_attr = {} -%}
@@ -371,21 +374,19 @@
 
 
 {%- block collection_item_widget -%}
-	<div class="CollectionRow">
+	<div class="CollectionRow shadow-sm p-3 mb-5 bg-white">
         <div class="row">
-		{%- for input in prototype -%}
-			<div class="col-auto">
-				{{ form_row(input) }}
-			</div>
-		{%- endfor -%}
-        </div>
-		{%- if allow_delete -%}
-            <div class="row">
+            {%- for input in prototype -%}
+                <div class="col-auto">
+                    {{ form_row(input) }}
+                </div>
+            {%- endfor -%}
+		    {%- if allow_delete -%}
                 <div class="text-center col-12">
                     {{- block('collection_delete') -}}
                 </div>
-            </div>
-		{%- endif -%}
+		    {%- endif -%}
+        </div>
 	</div>
 {%- endblock -%}
 
@@ -399,7 +400,7 @@
     <div class="FieldRow">
         {%- for row in form -%}
 	        {%- if prototype is defined -%}
-                <div class="CollectionRow">
+                <div class="CollectionRow shadow-sm p-3 mb-5 bg-white">
             {% endif %}
             <div class="row">
                 {%- for input in row -%}
@@ -407,14 +408,12 @@
                         {{ form_row(input) }}
                     </div>
                 {%- endfor -%}
-            </div>
-            {%- if allow_delete -%}
-                <div class="row">
+                {%- if allow_delete -%}
                     <div class="text-center col-12">
                         {{- block('collection_delete') -}}
                     </div>
-                </div>
-            {%- endif -%}
+                {%- endif -%}
+            </div>
 	        {%- if prototype is defined -%}
                 </div>
             {% endif %}

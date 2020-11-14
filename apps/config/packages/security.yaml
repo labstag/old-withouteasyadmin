@@ -26,7 +26,9 @@ security:
             provider: app_user_provider
             guard:
                 authenticators:
+                    - Labstag\Security\OauthAuthenticator
                     - Labstag\Security\FormAuthenticator
+                entry_point: Labstag\Security\FormAuthenticator
             logout:
                 path: app_logout
                 # where to redirect after logout

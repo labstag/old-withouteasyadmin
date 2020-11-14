@@ -3,12 +3,11 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\AdresseUser;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AdresseUserType extends AbstractType
+class AdresseUserType extends AdresseType
 {
     /**
      * {@inheritdoc}
@@ -18,14 +17,7 @@ class AdresseUserType extends AbstractType
         array $options
     ): void
     {
-        unset($options);
-        $builder->add('rue');
-        $builder->add('country');
-        $builder->add('zipcode');
-        $builder->add('ville');
-        $builder->add('gps');
-        $builder->add('type');
-        $builder->add('pmr');
+        parent::buildForm($builder, $options);
         $builder->add('refuser');
         $builder->add('submit', SubmitType::class);
     }

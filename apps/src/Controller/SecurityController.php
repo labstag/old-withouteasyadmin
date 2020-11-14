@@ -4,17 +4,17 @@ namespace Labstag\Controller;
 
 use Labstag\Entity\User;
 use Labstag\Form\Security\ChangePasswordType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Labstag\Form\Security\LoginType;
 use Labstag\Form\Security\LostPasswordType;
+use Labstag\Lib\GeneralControllerLib;
 use Labstag\Repository\UserRepository;
 use LogicException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController extends AbstractController
+class SecurityController extends GeneralControllerLib
 {
     /**
      * @Route("/login", name="app_login")

@@ -3,12 +3,11 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\LienUser;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LienUserType extends AbstractType
+class LienUserType extends LienType
 {
     /**
      * {@inheritdoc}
@@ -18,9 +17,7 @@ class LienUserType extends AbstractType
         array $options
     ): void
     {
-        unset($options);
-        $builder->add('name');
-        $builder->add('adresse');
+        parent::buildForm($builder, $options);
         $builder->add('refuser');
         $builder->add('submit', SubmitType::class);
     }

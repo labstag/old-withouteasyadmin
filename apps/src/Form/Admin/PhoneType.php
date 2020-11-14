@@ -1,13 +1,13 @@
 <?php
 
-namespace Labstag\Form\Admin\Form;
+namespace Labstag\Form\Admin;
 
+use Labstag\Entity\Phone;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class HiddenFieldsType extends AbstractType
+abstract class PhoneType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -18,14 +18,17 @@ class HiddenFieldsType extends AbstractType
     ): void
     {
         unset($options);
-        // hidden fields
-        $builder->add('hidden', HiddenType::class);
+        $builder->add('numero');
+        $builder->add('country');
+        $builder->add('type');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
-            []
+            [
+                'data_class' => Phone::class,
+            ]
         );
     }
 }

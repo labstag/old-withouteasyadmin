@@ -1,6 +1,6 @@
 {% extends 'admin/template/layout.html.twig' %}
 {% block body %}
-    {{ include('admin/crud/form.html.twig') }}
+    {{ form(form) }}
 
     <a href="{{ path('admin_template_index') }}">back to list</a>
 {% endblock %}

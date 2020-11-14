@@ -6,6 +6,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Configuration;
 use Symfony\Component\Dotenv\Dotenv;
+use Labstag\Service\OauthService;
 
 
 /**
@@ -14,9 +15,61 @@ use Symfony\Component\Dotenv\Dotenv;
 class ConfigurationFixtures extends Fixture
 {
 
+    private OauthService $oauthService;
+
+    public function __construct(OauthService $oauthService)
+    {
+        $this->oauthService = $oauthService;
+    }
+
     public function load(ObjectManager $manager)
     {
         $this->add($manager);
+    }
+
+    private function setGeonames($env, &$data)
+    {
+        $geonames = [];
+        if (array_key_exists('GEONAMES', $env)) {
+            $explode = explode(',', (string) $env['GEONAMES']);
+            foreach ($explode as $code) {
+                $geonames[] = [
+                    'name'     => $code,
+                    'activate' => false,
+                ];
+            }
+        }
+
+        $data['geonames'] = $geonames;
+    }
+
+    private function setOauth($env, &$data)
+    {
+        $oauth = [];
+        foreach ($env as $key => $val) {
+            if (0 != substr_count($key, 'OAUTH_')) {
+                $code    = str_replace('OAUTH_', '', $key);
+                $code    = strtolower($code);
+                $explode = explode('_', $code);
+                $type    = $explode[0];
+                $key     = $explode[1];
+                if (!isset($oauth[$type])) {
+                    $activate = $this->oauthService->getActivedProvider($type);
+
+                    $oauth[$type] = [
+                        'activate' => $activate,
+                        'type'     => $type,
+                    ];
+                }
+
+                $oauth[$type][$key] = $val;
+            }
+        }
+
+        /** @var mixed $row */
+        foreach ($oauth as $row) {
+            $data['oauth'][] = $row;
+        }
     }
 
     private function add(ObjectManager $manager): void
@@ -59,6 +112,8 @@ class ConfigurationFixtures extends Fixture
             'wysiwyg'         => [
                 ['lang' => 'fr_FR'],
             ],
+            'robotstxt'       => 'User-agent: *
+Allow: /',
             'datatable'       => [
                 [
                     'lang'     => 'fr-FR',
@@ -71,33 +126,8 @@ class ConfigurationFixtures extends Fixture
         $env    = $dotenv->parse(file_get_contents(__DIR__.'/../../.env'));
 
         ksort($env);
-        if (array_key_exists('GEONAMES_ID', $env)) {
-            $data['geonames_id'] = explode(',', (string) $env['GEONAMES_ID']);
-        }
-
-        $oauth = [];
-        foreach ($env as $key => $val) {
-            if (0 != substr_count($key, 'OAUTH_')) {
-                $code    = str_replace('OAUTH_', '', $key);
-                $code    = strtolower($code);
-                $explode = explode('_', $code);
-                $type    = $explode[0];
-                $key     = $explode[1];
-                if (!isset($oauth[$type])) {
-                    $oauth[$type] = [
-                        'activate' => false,
-                        'type'     => $type,
-                    ];
-                }
-
-                $oauth[$type][$key] = $val;
-            }
-        }
-
-        /** @var mixed $row */
-        foreach ($oauth as $row) {
-            $data['oauth'][] = $row;
-        }
+        $this->setGeonames($env, $data);
+        $this->setOauth($env, $data);
 
         foreach ($data as $key => $value) {
             $configuration = new Configuration();

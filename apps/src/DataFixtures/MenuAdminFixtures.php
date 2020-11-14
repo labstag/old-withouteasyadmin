@@ -19,6 +19,12 @@ class MenuAdminFixtures extends Fixture
     {
         $data = [
             [
+                'libelle' => 'Param',
+                'data'    => [
+                    'attr' => ['data-href' => 'admin_param'],
+                ],
+            ],
+            [
                 'libelle' => 'Configuration',
                 'data'    => [
                     'attr' => ['data-href' => 'admin_configuration_index'],

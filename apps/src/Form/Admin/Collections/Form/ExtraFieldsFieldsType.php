@@ -1,15 +1,14 @@
 <?php
 
-namespace Labstag\Form\Admin\Form;
+namespace Labstag\Form\Admin\Collections\Form;
 
+use Labstag\FormType\CoreTextareaType;
+use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OtherFieldsType extends AbstractType
+class ExtraFieldsFieldsType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -21,18 +20,13 @@ class OtherFieldsType extends AbstractType
     {
         unset($options);
         $builder->add(
-            'checkbox',
-            CheckboxType::class,
+            'html',
+            WysiwygType::class,
             ['help' => 'help']
         );
         $builder->add(
-            'file',
-            FileType::class,
-            ['help' => 'help']
-        );
-        $builder->add(
-            'radio',
-            RadioType::class,
+            'textarea',
+            CoreTextareaType::class,
             ['help' => 'help']
         );
     }
