@@ -26,7 +26,7 @@ class GroupeController extends AdminControllerLib
     ): Response
     {
         $pagination = $paginator->paginate(
-            $groupeRepository->findAll(),
+            $groupeRepository->findAllForAdmin(),
             $request->query->getInt('page', 1), /*page number*/
             10
         );

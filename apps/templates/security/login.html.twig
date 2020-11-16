@@ -4,24 +4,21 @@
 
 {% block body %}
     <div class="d-flex align-items-center flex-column">
-        {{ form_start(formLogin) }}
-            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-            {{ form_widget(formLogin) }}
-        {{ form_end(formLogin) }}
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        {{ form(formLogin) }}
         <a href="{{ path("app_lost") }}">J'ai perdu mon mot de passe</a>
-        {% if oauthActivated|length != 0 %}
+        {% if oauths|length != 0 %}
             <fieldset>
                 <legend>Se connecter avec :</legend>
                 <div class="row">
-                {% for oauth in oauthActivated %}
-                    <div class="col-md-4 itemConnect">
-                        <a href="{{ path('connect_start', {'oauthCode': oauth.type}) }}" title="{{ oauth.type|e }}">
-                            <i class="fab fa-{{ oauth.type }}"></i>
-                            <br />
-                            {{ oauth.type }}
+                {% for oauth in oauths %}
+                    <div class="itemConnect">
+                        <a href="{{ path('connect_start', {'oauthCode': oauth.name}) }}" title="{{ oauth.name|e }}">
+                            <i class="fab fa-{{ oauth.name }}"></i>
+                            {{ oauth.name }}
                         </a>
                     </div>
                 {% endfor %}

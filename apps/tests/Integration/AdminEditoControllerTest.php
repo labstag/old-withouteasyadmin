@@ -145,8 +145,8 @@ class AdminEditoControllerTest extends WebTestCase
         $faker = Factory::create('fr_FR');
         $edito = new Edito();
         $edito->setRefuser($user);
-        $edito->setTitle($faker->unique()->text(rand(5, 50)));
-        $edito->setEnable(rand(0, 1));
+        $edito->setTitle($faker->unique()->text($faker->numberBetween(5, 50)));
+        $edito->setEnable($faker->numberBetween(0, 1));
         /** @var string $content */
         $content = $faker->unique()->paragraphs(4, true);
         $edito->setContent(str_replace("\n\n", '<br />', $content));

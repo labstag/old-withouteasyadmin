@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import "macro.html.twig" as macro_site %}
 {% block stylesheets %}
     {{ encore_entry_link_tags('admin') }}
 {% endblock %}
@@ -32,7 +33,7 @@
                 <li class="breadcrumb-item active" aria-current="page">Data</li>
             </ol>
         </nav>
-        {{ include('flashes.html.twig') }}
+        {{ macro_site.flashbag(app) }}
         {% block body %}
         {% endblock %}
         <footer>

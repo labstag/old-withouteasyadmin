@@ -1,7 +1,6 @@
 {% extends 'admin/phone_user/layout.html.twig' %}
 {% block body %}
     <table
-  class="table table-bordered table-hover table-striped"
   data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
@@ -22,6 +21,10 @@
             <tr>
                 <th>Principal</th>
                 <td>{{ phone_user.principal ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td><a href="{{ path('admin_user_show', {'id': phone_user.refuser.id}) }}">{{ phone_user.refuser }}</a></td>
             </tr>
         </tbody>
     </table>

@@ -145,8 +145,8 @@ class AdminUserControllerTest extends WebTestCase
         $faker = Factory::create('fr_FR');
         $user  = new User();
         $user->setGroupe($groupe);
-        $user->setEnable(rand(0, 1));
-        $user->setVerif(rand(0, 1));
+        $user->setEnable($faker->numberBetween(0, 1));
+        $user->setVerif($faker->numberBetween(0, 1));
         $user->setUsername($faker->unique()->word());
         $user->setEmail($faker->unique()->safeEmail());
         $user->setPlainPassword($faker->unique()->password());

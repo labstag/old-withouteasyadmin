@@ -149,7 +149,7 @@ class AdminPhoneUserControllerTest extends WebTestCase
         $phone->setNumero($number);
         $phone->setType($faker->unique()->word());
         $phone->setCountry($faker->unique()->countryCode());
-        $phone->setPrincipal(rand(0, 1));
+        $phone->setPrincipal($faker->numberBetween(0, 1));
 
         return $phone;
     }

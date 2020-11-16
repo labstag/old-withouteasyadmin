@@ -26,7 +26,7 @@ class LienUserController extends AdminControllerLib
     ): Response
     {
         $pagination = $paginator->paginate(
-            $lienUserRepository->findAll(),
+            $lienUserRepository->findAllForAdmin(),
             $request->query->getInt('page', 1), /*page number*/
             10
         );

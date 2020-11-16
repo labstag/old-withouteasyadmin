@@ -1,7 +1,6 @@
 {% extends 'admin/adresse_user/layout.html.twig' %}
 {% block body %}
     <table
-  class="table table-bordered table-hover table-striped"
   data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
@@ -16,14 +15,17 @@
                 <th>Type</th>
                 <th>Pmr</th>
                 <th>User</th>
-                <th>actions</th>
+                <th class="text-center"><i class="fas fa-cog" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
         {% for adresse_user in pagination %}
             <tr>
                 <td>{{ adresse_user.rue }}</td>
-                <td>{{ adresse_user.country|country_name('fr') }}</td>
+                <td>
+                    <span class="flag-icon flag-icon-{{ adresse_user.country|lower }}"></span>
+                    {{ adresse_user.country|country_name('fr') }}
+                </td>
                 <td>{{ adresse_user.zipcode }}</td>
                 <td>{{ adresse_user.ville }}</td>
                 <td>{{ adresse_user.gps }}</td>
@@ -33,7 +35,7 @@
                 <td>
                     <a href="{{ path('admin_adresseuser_show', {'id': adresse_user.id}) }}">show</a>
                     <a href="{{ path('admin_adresseuser_edit', {'id': adresse_user.id}) }}">edit</a>
-                    <a href="{{ path('admin_adresseuser_delete', {'id': adresse_user.id}) }}" data-token="{{ csrf_token(adresse_user) }}">delete</a>
+                    <a href="{{ path('admin_adresseuser_delete', {'id': adresse_user.id}) }}" data-token="{{ csrf_token('delete' ~ adresse_user.id) }}">delete</a>
                 </td>
             </tr>
         {% else %}

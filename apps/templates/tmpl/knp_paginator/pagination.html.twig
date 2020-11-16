@@ -1,6 +1,8 @@
 {% if pageCount > 1 %}
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
+    <nav>
+        {% set classAlign = (align is not defined) ? '' : align=='center' ? ' justify-content-center' : (align=='right' ? ' justify-content-end' : '') %}
+        {% set classSize = (size is not defined) ? '' : size=='large' ? ' pagination-lg' : (size=='small' ? ' pagination-sm' : '') %}
+        <ul class="pagination{{ classAlign }}{{ classSize }}">
             {% if first is defined and current != first %}
                 {% set url = path(route, query|merge({(pageParameterName): first})) %}
                 <li class="page-item">
@@ -10,7 +12,7 @@
             {% if previous is defined %}
                 {% set url = path(route, query|merge({(pageParameterName): previous})) %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ url }}" tabindex="-1">Previous</a>
+                    <a class="page-link" rel="prev" href="{{ url }}" tabindex="-1">Previous</a>
                 </li>
             {% endif %}
             {% for page in pagesInRange %}
@@ -30,7 +32,7 @@
             {% if next is defined %}
                 {% set url = path(route, query|merge({(pageParameterName): next})) %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ url }}">Next</a>
+                    <a class="page-link" rel="next" href="{{ url }}">Next</a>
                 </li>
             {% endif %}
             {% if last is defined and current != last %}

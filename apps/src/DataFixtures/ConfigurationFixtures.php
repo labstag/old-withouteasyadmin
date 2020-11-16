@@ -2,9 +2,9 @@
 
 namespace Labstag\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Configuration;
+use Labstag\Lib\FixtureLib;
 use Symfony\Component\Dotenv\Dotenv;
 use Labstag\Service\OauthService;
 
@@ -12,7 +12,7 @@ use Labstag\Service\OauthService;
 /**
  * @codeCoverageIgnore
  */
-class ConfigurationFixtures extends Fixture
+class ConfigurationFixtures extends FixtureLib
 {
 
     private OauthService $oauthService;
@@ -133,6 +133,7 @@ Allow: /',
             $configuration = new Configuration();
             $configuration->setName($key);
             $configuration->setValue($value);
+            $this->addReference('configuration_'.$key, $configuration);
             $manager->persist($configuration);
         }
 

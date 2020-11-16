@@ -6,8 +6,8 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Labstag\Entity\User;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Labstag\Entity\EmailUser;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -33,26 +33,34 @@ class UserListener implements EventSubscriber
     public function getSubscribedEvents(): array
     {
         return [
+            Events::onFlush,
             Events::preUpdate,
             Events::prePersist,
         ];
     }
 
-    public function prePersist(LifecycleEventArgs $args): void
+    public function onFlush(OnFlushEventArgs $args): void
     {
-        $entity = $args->getEntity();
-        if (!$entity instanceof User) {
+        $manager       = $args->getEntityManager();
+        $uow           = $manager->getUnitOfWork();
+        $entityUpdates = $uow->getScheduledEntityUpdates();
+        if (count($entityUpdates) == 0) {
             return;
         }
 
-        $manager = $args->getEntityManager();
-        $this->plainPassword($entity);
-        $this->setEmail($entity, $manager);
-        // $meta = $manager->getClassMetadata(get_class($entity));
-        // $manager->getUnitOfWork()->recomputeSingleEntityChangeSet(
-        //     $meta,
-        //     $entity
-        // );
+        foreach ($entityUpdates as $entity) {
+            if (!$entity instanceof User) {
+                continue;
+            }
+
+            $this->plainPassword($entity);
+            $this->setEmail($entity, $manager);
+            $meta = $manager->getClassMetadata(get_class($entity));
+            $manager->getUnitOfWork()->recomputeSingleEntityChangeSet(
+                $meta,
+                $entity
+            );
+        }
     }
 
     public function preUpdate(LifecycleEventArgs $args): void
@@ -70,6 +78,18 @@ class UserListener implements EventSubscriber
             $meta,
             $entity
         );
+    }
+
+    public function prePersist(LifecycleEventArgs $args): void
+    {
+        $entity = $args->getEntity();
+        if (!$entity instanceof User) {
+            return;
+        }
+
+        $manager = $args->getEntityManager();
+        $this->plainPassword($entity);
+        $this->setEmail($entity, $manager);
     }
 
     private function setEmail(User $entity, $manager): void

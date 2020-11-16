@@ -1,16 +1,15 @@
 {% extends 'admin/template/layout.html.twig' %}
 {% block body %}
     <table
-  class="table table-bordered table-hover table-striped"
   data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
   data-show-columns="true">
         <thead>
             <tr>
-                <th>Name</th>
+                <th>Nom</th>
                 <th>Code</th>
-                <th>actions</th>
+                <th class="text-center"><i class="fas fa-cog" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -21,7 +20,7 @@
                 <td>
                     <a href="{{ path('admin_template_show', {'id': template.id}) }}">show</a>
                     <a href="{{ path('admin_template_edit', {'id': template.id}) }}">edit</a>
-                    <a href="{{ path('admin_template_delete', {'id': template.id}) }}" data-token="{{ csrf_token(template) }}">delete</a>
+                    <a href="{{ path('admin_template_delete', {'id': template.id}) }}" data-token="{{ csrf_token('delete' ~ template.id) }}">delete</a>
                 </td>
             </tr>
         {% else %}

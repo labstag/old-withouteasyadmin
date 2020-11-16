@@ -26,7 +26,7 @@ class TemplateController extends AdminControllerLib
     ): Response
     {
         $pagination = $paginator->paginate(
-            $templateRepository->findAll(),
+            $templateRepository->findAllForAdmin(),
             $request->query->getInt('page', 1), /*page number*/
             10
         );

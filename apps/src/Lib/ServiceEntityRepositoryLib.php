@@ -15,16 +15,21 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     public function findOneRandom()
     {
         $name          = $this->getClassMetadata()->getName();
-        $table         = substr(
-            $name,
-            strrpos($name, '\\') + 1
-        );
-        $dql           = 'SELECT p FROM Labstag:'.$table.' p ORDER BY RAND()';
+        $dql           = 'SELECT p FROM '.$name.' p ORDER BY RAND()';
         $entityManager = $this->getEntityManager();
         $query         = $entityManager->createQuery($dql);
         $query         = $query->setMaxResults(1);
         $result        = $query->getOneOrNullResult();
 
         return $result;
+    }
+
+    public function findAllForAdmin()
+    {
+        $name          = $this->getClassMetadata()->getName();
+        $dql           = 'SELECT a FROM '.$name.' a';
+        $entityManager = $this->getEntityManager();
+
+        return $entityManager->createQuery($dql);
     }
 }

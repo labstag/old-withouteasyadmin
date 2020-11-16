@@ -1,7 +1,6 @@
 {% extends 'admin/menu/layout.html.twig' %}
 {% block body %}
     <table
-  class="table table-bordered table-hover table-striped"
   data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
@@ -14,7 +13,7 @@
                 <th>Data</th>
                 <th>Separateur</th>
                 <th>Clef</th>
-                <th>actions</th>
+                <th class="text-center"><i class="fas fa-cog" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -29,7 +28,7 @@
                 <td>
                     <a href="{{ path('admin_menu_show', {'id': menu.id}) }}">show</a>
                     <a href="{{ path('admin_menu_edit', {'id': menu.id}) }}">edit</a>
-                    <a href="{{ path('admin_menu_delete', {'id': menu.id}) }}" data-token="{{ csrf_token(menu) }}">delete</a>
+                    <a href="{{ path('admin_menu_delete', {'id': menu.id}) }}" data-token="{{ csrf_token('delete' ~ menu.id) }}">delete</a>
                 </td>
             </tr>
         {% else %}

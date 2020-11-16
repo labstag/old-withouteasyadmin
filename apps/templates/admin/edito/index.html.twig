@@ -1,7 +1,6 @@
 {% extends 'admin/edito/layout.html.twig' %}
 {% block body %}
     <table
-  class="table table-bordered table-hover table-striped"
   data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
@@ -11,7 +10,7 @@
                 <th>Title</th>
                 <th>Enable</th>
                 <th>User</th>
-                <th>actions</th>
+                <th class="text-center"><i class="fas fa-cog" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +22,7 @@
                 <td>
                     <a href="{{ path('admin_edito_show', {'id': edito.id}) }}">show</a>
                     <a href="{{ path('admin_edito_edit', {'id': edito.id}) }}">edit</a>
-                    <a href="{{ path('admin_edito_delete', {'id': edito.id}) }}" data-token="{{ csrf_token(edito) }}">delete</a>
+                    <a href="{{ path('admin_edito_delete', {'id': edito.id}) }}" data-token="{{ csrf_token('delete' ~ edito.id) }}">delete</a>
                 </td>
             </tr>
         {% else %}

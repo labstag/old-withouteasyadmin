@@ -153,7 +153,7 @@ class AdminAdresseUserControllerTest extends WebTestCase
         $longitude = $faker->unique()->longitude();
         $gps       = $latitude.','.$longitude;
         $adresse->setGps($gps);
-        $adresse->setPmr(rand(0, 1));
+        $adresse->setPmr($faker->numberBetween(0, 1));
 
         return $adresse;
     }

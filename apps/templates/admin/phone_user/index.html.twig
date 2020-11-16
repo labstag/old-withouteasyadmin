@@ -2,7 +2,6 @@
 
 {% block body %}
     <table
-  class="table table-bordered table-hover table-striped"
   data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
@@ -13,20 +12,23 @@
                 <th>Country</th>
                 <th>Type</th>
                 <th>Principal</th>
-                <th>actions</th>
+                <th class="text-center"><i class="fas fa-cog" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
         {% for phone_user in pagination %}
             <tr>
                 <td>{{ phone_user.numero }}</td>
-                <td>{{ phone_user.country|country_name('fr') }}</td>
+                <td>
+                    <span class="flag-icon flag-icon-{{ phone_user.country|lower }}"></span>
+                    {{ phone_user.country|country_name('fr') }}
+                </td>
                 <td>{{ phone_user.type }}</td>
                 <td>{{ phone_user.principal ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('admin_phoneuser_show', {'id': phone_user.id}) }}">show</a>
                     <a href="{{ path('admin_phoneuser_edit', {'id': phone_user.id}) }}">edit</a>
-                    <a href="{{ path('admin_phoneuser_delete', {'id': phone_user.id}) }}" data-token="{{ csrf_token(phone_user) }}">delete</a>
+                    <a href="{{ path('admin_phoneuser_delete', {'id': phone_user.id}) }}" data-token="{{ csrf_token('delete' ~ phone_user.id) }}">delete</a>
                 </td>
             </tr>
         {% else %}

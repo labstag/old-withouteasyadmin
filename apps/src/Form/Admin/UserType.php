@@ -8,7 +8,9 @@ use Labstag\Form\Admin\Collections\User\EmailType;
 use Labstag\Form\Admin\Collections\User\LienType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
 use Labstag\FormType\MinMaxCollectionType;
+use Labstag\Repository\EmailUserRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -17,6 +19,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
+
+    private EmailUserRepository $repository;
+
+    public function __construct(EmailUserRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,7 +35,6 @@ class UserType extends AbstractType
         array $options
     ): void
     {
-        unset($options);
         $builder->add('username');
         $builder->add(
             'plainPassword',
@@ -41,6 +50,22 @@ class UserType extends AbstractType
         );
         $builder->add('enable');
         $builder->add('groupe');
+        $data   = $this->repository->getEmailsUserVerif(
+            $options['data'],
+            true
+        );
+        $emails = [];
+        foreach ($data as $email) {
+            $adresse          = $email->getAdresse();
+            $emails[$adresse] = $adresse;
+        }
+
+        ksort($emails);
+        $builder->add(
+            'email',
+            ChoiceType::class,
+            ['choices' => $emails]
+        );
         $builder->add(
             'emailUsers',
             MinMaxCollectionType::class,

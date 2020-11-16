@@ -145,14 +145,17 @@ class AdminNoteInterneControllerTest extends WebTestCase
         $faker       = Factory::create('fr_FR');
         $noteinterne = new NoteInterne();
         $noteinterne->setRefuser($user);
-        $noteinterne->setTitle($faker->unique()->text(rand(5, 50)));
-        $noteinterne->setEnable((bool) rand(0, 1));
+        $random = $faker->numberBetween(5, 50);
+        $noteinterne->setTitle($faker->unique()->text($random));
+        $noteinterne->setEnable($faker->numberBetween(0, 1));
         $maxDate   = $faker->unique()->dateTimeInInterval('now', '+30 years');
         $dateDebut = $faker->unique()->dateTime($maxDate);
         $noteinterne->setDateDebut($dateDebut);
         $dateFin = clone $dateDebut;
-        $dateFin->modify('+' .rand(10, 50). ' days');
-        $dateFin->modify('+' .rand(2, 24). ' hours');
+        $random  = $faker->numberBetween(10, 50);
+        $dateFin->modify('+' .$random. ' days');
+        $random = $faker->numberBetween(2, 24);
+        $dateFin->modify('+' .$random. ' hours');
         $noteinterne->setDateFin($dateFin);
         /** @var string $content */
         $content = $faker->unique()->paragraphs(4, true);

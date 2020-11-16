@@ -1,7 +1,6 @@
 {% extends 'admin/groupe/layout.html.twig' %}
 {% block body %}
     <table
-  class="table table-bordered table-hover table-striped"
   data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
@@ -11,7 +10,7 @@
                 <th>Name</th>
                 <th>Code</th>
                 <th>Users</th>
-                <th>actions</th>
+                <th class="text-center"><i class="fas fa-cog" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +22,7 @@
                 <td>
                     <a href="{{ path('admin_groupuser_show', {'id': groupe.id}) }}">show</a>
                     <a href="{{ path('admin_groupuser_edit', {'id': groupe.id}) }}">edit</a>
-                    <a href="{{ path('admin_groupuser_delete', {'id': groupe.id}) }}" data-token="{{ csrf_token(groupe) }}">delete</a>
+                    <a href="{{ path('admin_groupuser_delete', {'id': groupe.id}) }}" data-token="{{ csrf_token('delete' ~ groupe.id) }}">delete</a>
                 </td>
             </tr>
         {% else %}

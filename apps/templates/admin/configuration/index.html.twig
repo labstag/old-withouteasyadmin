@@ -1,7 +1,6 @@
 {% extends 'admin/configuration/layout.html.twig' %}
 {% block body %}
     <table
-  class="table table-bordered table-hover table-striped"
   data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
@@ -10,7 +9,7 @@
             <tr>
                 <th>Name</th>
                 <th>Value</th>
-                <th>actions</th>
+                <th class="text-center"><i class="fas fa-cog" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -20,7 +19,7 @@
                 <td>{{ configuration.value ? configuration.value|json_encode : '' }}</td>
                 <td>
                     <a href="{{ path('admin_configuration_show', {'id': configuration.id}) }}">show</a>
-                    <a href="{{ path('admin_configuration_delete', {'id': configuration.id}) }}" data-token="{{ csrf_token(configuration) }}">delete</a>
+                    <a href="{{ path('admin_configuration_delete', {'id': configuration.id}) }}" data-token="{{ csrf_token('delete' ~ configuration.id) }}">delete</a>
                 </td>
             </tr>
         {% else %}

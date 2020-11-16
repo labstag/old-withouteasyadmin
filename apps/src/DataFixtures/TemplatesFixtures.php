@@ -2,18 +2,18 @@
 
 namespace Labstag\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
 use Labstag\Entity\Template;
+use Labstag\Lib\FixtureLib;
 use Twig\Environment;
 
 
 /**
  * @codeCoverageIgnore
  */
-class TemplatesFixtures extends Fixture
+class TemplatesFixtures extends FixtureLib
 {
 
     private Environment $twig;

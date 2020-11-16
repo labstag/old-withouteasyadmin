@@ -26,7 +26,7 @@ class PhoneUserController extends AdminControllerLib
     ): Response
     {
         $pagination = $paginator->paginate(
-            $phoneUserRepository->findAll(),
+            $phoneUserRepository->findAllForAdmin(),
             $request->query->getInt('page', 1), /*page number*/
             10
         );

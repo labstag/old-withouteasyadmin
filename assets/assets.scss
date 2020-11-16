@@ -4,15 +4,48 @@
 @import "@fortawesome/fontawesome-free/scss/regular.scss";
 @import "@fortawesome/fontawesome-free/scss/solid.scss";
 @import "./../node_modules/bootstrap-table/dist/bootstrap-table.css";
+@import "./../node_modules/flag-icon-css/sass/flag-icon.scss";
 
 label {
-  font-weight: bold;
   &.required {
     &:after {
       content: " *";
       color: red;
     }
   }
+}
+
+.ToggleFieldset{
+  @extend .btn;
+  @extend .btn-info;
+}
+
+.BtnCollectionAdd{
+  @extend .btn;
+  @extend .btn-primary;
+}
+
+.BtnCollectionDelete{
+  @extend .btn;
+  @extend .btn-danger;
+}
+
+fieldset{
+  @extend .shadow;
+  @extend .p-3;
+  @extend .mb-5;
+  @extend .bg-white;
+}
+
+.CollectionRow{
+  @extend .shadow;
+  @extend .p-3;
+  @extend .mb-5;
+  @extend .bg-white;
+}
+
+.form-group{
+  @extend .mb-1;
 }
 
 .RequireFormInfo{
@@ -22,6 +55,22 @@ label {
     color: red;
   }
 }
+
 .form-control{
   appearance: revert;
+}
+
+.itemConnect{
+  @extend .col-md-4;
+}
+
+.th-inner{
+  .asc, .desc, .both{
+    @extend .text-decoration-none;
+    background-image: none !important;
+  }
+}
+
+legend{
+  font-weight: bold;
 }

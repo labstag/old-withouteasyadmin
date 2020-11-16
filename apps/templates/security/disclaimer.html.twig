@@ -1,0 +1,24 @@
+{% extends 'global.html.twig' %}
+{% import "macro.html.twig" as macro_site %}
+{% block content_title %}{{ title }}{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                {{ form_start(form) }}
+                {{ macro_site.flashbag(app) }}
+                {{ config['disclaimer'][0]['message']|raw }}
+                {{ form_row(form.confirm) }}
+                <div class="row">
+                    <div class="col-md-6 text-center">
+                        {{ form_row(form.submit) }}
+                    </div>
+                    <div class="col-md-6 text-center">
+                        {{ form_row(form.reset) }}
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

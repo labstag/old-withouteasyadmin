@@ -13,6 +13,22 @@ class EmailUserRepository extends EmailRepository
         parent::__construct($registry, EmailUser::class);
     }
 
+    public function getEmailsUserVerif(User $user, bool $verif)
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.refuser=:user AND u.verif=:verif'
+        );
+        $query->setParameters(
+            [
+                'user'  => $user,
+                'verif' => $verif,
+            ]
+        );
+
+        return $query->getQuery()->getResult();
+    }
+
     // /**
     //  * @return EmailUser[] Returns an array of EmailUser objects
     //  */

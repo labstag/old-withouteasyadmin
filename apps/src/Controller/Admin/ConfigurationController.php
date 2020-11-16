@@ -25,7 +25,7 @@ class ConfigurationController extends AdminControllerLib
     ): Response
     {
         $pagination = $paginator->paginate(
-            $repository->findAll(),
+            $repository->findAllForAdmin(),
             $request->query->getInt('page', 1), /*page number*/
             10
         );

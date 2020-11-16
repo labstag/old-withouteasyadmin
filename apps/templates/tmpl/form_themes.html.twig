@@ -288,9 +288,6 @@
                     'data-prototype': block('collection_item_widget')|replace({'"': "'", "\n": "", "\t": ""})
                 }) -%}
             {%- endif -%}
-            {%- set element_attr = element_attr|merge({
-                'class': element_attr.class|default('')~" shadow p-3 mb-5 bg-white"
-            }) %}
         {%- endif -%}
     {%- endif -%}
     {%- set widget_attr = {} -%}
@@ -356,13 +353,13 @@
 			{{ label|trans }}
             <div class="btn-group float-right" role="group">
                 {%- if allow_add is defined and allow_add == true -%}
-                    <div class="btn btn-primary btn-xs BtnCollectionAdd">
+                    <div class="BtnCollectionAdd">
                         <i class="fas fa-plus"></i>
                         <span>Ajouter</span>
                     </div>
                 {%- endif -%}
                 {%- if element|default('label') == 'legend' and "collection" in form.vars.block_prefixes and "minmax" in row_attr -%}
-                    <div class="btn btn-info ToggleFieldset">
+                    <div class="ToggleFieldset">
                         <i class="fas fa-window-minimize"></i>
                         <i class="far fa-window-maximize d-none"></i>
                     </div>
@@ -374,7 +371,7 @@
 
 
 {%- block collection_item_widget -%}
-	<div class="CollectionRow shadow-sm p-3 mb-5 bg-white">
+	<div class="CollectionRow">
         <div class="row">
             {%- for input in prototype -%}
                 <div class="col-auto">
@@ -391,7 +388,7 @@
 {%- endblock -%}
 
 {%- block collection_delete -%}
-	<div class="btn btn-danger btn-xs BtnCollectionDelete" title="Supprimer">
+	<div class="BtnCollectionDelete" title="Supprimer">
 		<i class="fas fa-trash-alt"></i>
 	</div>
 {%- endblock -%}
@@ -400,7 +397,7 @@
     <div class="FieldRow">
         {%- for row in form -%}
 	        {%- if prototype is defined -%}
-                <div class="CollectionRow shadow-sm p-3 mb-5 bg-white">
+                <div class="CollectionRow">
             {% endif %}
             <div class="row">
                 {%- for input in row -%}

@@ -2,15 +2,14 @@
 
 namespace Labstag\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Menu;
-
+use Labstag\Lib\FixtureLib;
 
 /**
  * @codeCoverageIgnore
  */
-class MenuAdminFixtures extends Fixture
+class MenuAdminFixtures extends FixtureLib
 {
 
     private ObjectManager $manager;

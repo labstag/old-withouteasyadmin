@@ -2,20 +2,21 @@
 
 namespace Labstag\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\DataFixtures\{
+    DependentFixtureInterface as DependentInterface
+};
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Repository\UserRepository;
 use Faker\Factory;
 use Faker\Generator;
 use Labstag\Entity\NoteInterne;
 use Labstag\Entity\User;
-
+use Labstag\Lib\FixtureLib;
 
 /**
  * @codeCoverageIgnore
  */
-class NoteInterneFixtures extends Fixture implements DependentFixtureInterface
+class NoteInterneFixtures extends FixtureLib implements DependentInterface
 {
     const NUMBER = 25;
 
@@ -33,39 +34,13 @@ class NoteInterneFixtures extends Fixture implements DependentFixtureInterface
         /** @var resource $finfo */
         $maxDate = $faker->unique()->dateTimeInInterval('now', '+30 years');
         for ($index = 0; $index < self::NUMBER; ++$index) {
-            $this->addNoteInterne($users, $faker, $manager, $maxDate);
+            $this->addNoteInterne($users, $faker, $index, $manager, $maxDate);
         }
 
         // $product = new Product();
         // $manager->persist($product);
 
         $manager->flush();
-    }
-
-    private function addNoteInterne(
-        $users,
-        Generator $faker,
-        ObjectManager $manager,
-        $maxDate
-    ): void
-    {
-        $noteinterne = new NoteInterne();
-        $noteinterne->setTitle($faker->unique()->text(rand(5, 50)));
-        $noteinterne->setEnable((bool) rand(0, 1));
-        $dateDebut = $faker->unique()->dateTime($maxDate);
-        $noteinterne->setDateDebut($dateDebut);
-        $dateFin = clone $dateDebut;
-        $dateFin->modify('+' .rand(10, 50). ' days');
-        $dateFin->modify('+' .rand(2, 24). ' hours');
-        $noteinterne->setDateFin($dateFin);
-        /** @var string $content */
-        $content = $faker->unique()->paragraphs(4, true);
-        $noteinterne->setContent(str_replace("\n\n", '<br />', $content));
-        $tabIndex = array_rand($users);
-        /** @var User $user */
-        $user = $users[$tabIndex];
-        $noteinterne->setRefuser($user);
-        $manager->persist($noteinterne);
     }
 
     public function getDependencies()

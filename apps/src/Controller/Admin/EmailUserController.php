@@ -26,7 +26,7 @@ class EmailUserController extends AdminControllerLib
     ): Response
     {
         $pagination = $paginator->paginate(
-            $emailUserRepository->findAll(),
+            $emailUserRepository->findAllForAdmin(),
             $request->query->getInt('page', 1), /*page number*/
             10
         );

@@ -26,7 +26,7 @@ class MenuController extends AdminControllerLib
     ): Response
     {
         $pagination = $paginator->paginate(
-            $menuRepository->findAll(),
+            $menuRepository->findAllForAdmin(),
             $request->query->getInt('page', 1), /*page number*/
             10
         );

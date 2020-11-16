@@ -4,8 +4,24 @@ header{
     background-color: #f1f1f1;
   }
 }
+
 form{
   background-color: #f1f1f1;
   padding: 1em;
   margin: 2em;
+}
+
+table{
+  @extend .table;
+  @extend .table-bordered;
+  @extend .table-hover;
+  @extend .table-striped;
+}
+
+a{
+  @extend .text-decoration-none;
+}
+
+.pagination{
+  @extend .justify-content-center;
 }

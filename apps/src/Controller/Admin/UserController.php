@@ -26,7 +26,7 @@ class UserController extends AdminControllerLib
     ): Response
     {
         $pagination = $paginator->paginate(
-            $userRepository->findAll(),
+            $userRepository->findAllForAdmin(),
             $request->query->getInt('page', 1), /*page number*/
             10
         );

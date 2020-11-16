@@ -1,7 +1,6 @@
 {% extends 'admin/email_user/layout.html.twig' %}
 {% block body %}
     <table
-  class="table table-bordered table-hover table-striped"
   data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
@@ -21,7 +20,7 @@
             </tr>
             <tr>
                 <th>User</th>
-                <td>{{ email_user.refuser }}</td>
+                <td><a href="{{ path('admin_user_show', {'id': email_user.refuser.id}) }}">{{ email_user.refuser }}</a></td>
             </tr>
         </tbody>
     </table>

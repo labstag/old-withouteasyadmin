@@ -26,7 +26,7 @@ class EditoController extends AdminControllerLib
     ): Response
     {
         $pagination = $paginator->paginate(
-            $editoRepository->findAll(),
+            $editoRepository->findAllForAdmin(),
             $request->query->getInt('page', 1), /*page number*/
             10
         );

@@ -2,15 +2,14 @@
 
 namespace Labstag\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Groupe;
-
+use Labstag\Lib\FixtureLib;
 
 /**
  * @codeCoverageIgnore
  */
-class GroupFixtures extends Fixture
+class GroupFixtures extends FixtureLib
 {
     private function getGroupes(): array
     {
@@ -26,17 +25,10 @@ class GroupFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $groupes = $this->getGroupes();
-        foreach ($groupes as $row) {
-            $this->addGroupe($manager, $row);
+        foreach ($groupes as $key => $row) {
+            $this->addGroupe($manager, $key, $row);
         }
 
         $manager->flush();
-    }
-
-    private function addGroupe(ObjectManager $manager, string $row): void
-    {
-        $groupe = new Groupe();
-        $groupe->setName($row);
-        $manager->persist($groupe);
     }
 }

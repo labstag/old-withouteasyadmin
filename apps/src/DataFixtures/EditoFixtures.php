@@ -2,7 +2,6 @@
 
 namespace Labstag\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Repository\UserRepository;
@@ -10,12 +9,12 @@ use Faker\Factory;
 use Faker\Generator;
 use Labstag\Entity\Edito;
 use Labstag\Entity\User;
-
+use Labstag\Lib\FixtureLib;
 
 /**
  * @codeCoverageIgnore
  */
-class EditoFixtures extends Fixture implements DependentFixtureInterface
+class EditoFixtures extends FixtureLib implements DependentFixtureInterface
 {
     const NUMBER = 25;
 
@@ -35,31 +34,7 @@ class EditoFixtures extends Fixture implements DependentFixtureInterface
             $this->addEdito($users, $faker, $index, $manager);
         }
 
-        // $product = new Product();
-        // $manager->persist($product);
-
         $manager->flush();
-    }
-
-    private function addEdito(
-        $users,
-        Generator $faker,
-        int $index,
-        ObjectManager $manager
-    ): void
-    {
-        $edito = new Edito();
-        $edito->setTitle($faker->unique()->text(rand(5, 50)));
-        $enable = ($index == 0) ? true : false;
-        $edito->setEnable($enable);
-        /** @var string $content */
-        $content = $faker->unique()->paragraphs(4, true);
-        $edito->setContent(str_replace("\n\n", '<br />', $content));
-        $tabIndex = array_rand($users);
-        /** @var User $user */
-        $user = $users[$tabIndex];
-        $edito->setRefuser($user);
-        $manager->persist($edito);
     }
 
     public function getDependencies()

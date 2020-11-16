@@ -1,7 +1,6 @@
 {% extends 'admin/note_interne/layout.html.twig' %}
 {% block body %}
     <table
-  class="table table-bordered table-hover table-striped"
   data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
@@ -13,7 +12,7 @@
                 <th>Date_debut</th>
                 <th>Date_fin</th>
                 <th>User</th>
-                <th>actions</th>
+                <th class="text-center"><i class="fas fa-cog" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -27,7 +26,7 @@
                 <td>
                     <a href="{{ path('admin_noteinterne_show', {'id': note_interne.id}) }}">show</a>
                     <a href="{{ path('admin_noteinterne_edit', {'id': note_interne.id}) }}">edit</a>
-                    <a href="{{ path('admin_noteinterne_delete', {'id': note_interne.id}) }}" data-token="{{ csrf_token(note_interne) }}">delete</a>
+                    <a href="{{ path('admin_noteinterne_delete', {'id': note_interne.id}) }}" data-token="{{ csrf_token('delete' ~ note_interne.id) }}">delete</a>
                 </td>
             </tr>
         {% else %}

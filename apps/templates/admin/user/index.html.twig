@@ -1,7 +1,6 @@
 {% extends 'admin/user/layout.html.twig' %}
 {% block body %}
     <table
-  class="table table-bordered table-hover table-striped"
   data-locale="fr-FR"
   data-toggle="table"
   data-search="true"
@@ -12,7 +11,11 @@
                 <th>Groupe</th>
                 <th>Email</th>
                 <th>Enable</th>
-                <th>actions</th>
+                <th>Adresses</th>
+                <th>Liens</th>
+                <th>Emails</th>
+                <th>Téléphones</th>
+                <th class="text-center"><i class="fas fa-cog" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -22,10 +25,14 @@
                 <td>{{ user.groupe }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.enable ? 'Yes' : 'No' }}</td>
+                <td>{{ user.adresseUsers|length }}</td>
+                <td>{{ user.lienUsers|length }}</td>
+                <td>{{ user.emailUsers|length }}</td>
+                <td>{{ user.phoneUsers|length }}</td>
                 <td>
                     <a href="{{ path('admin_user_show', {'id': user.id}) }}">show</a>
                     <a href="{{ path('admin_user_edit', {'id': user.id}) }}">edit</a>
-                    <a href="{{ path('admin_user_delete', {'id': user.id}) }}" data-token="{{ csrf_token(user) }}">delete</a>
+                    <a href="{{ path('admin_user_delete', {'id': user.id}) }}" data-token="{{ csrf_token('delete' ~ user.id) }}">delete</a>
                 </td>
             </tr>
         {% else %}

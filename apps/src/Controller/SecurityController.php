@@ -4,10 +4,12 @@ namespace Labstag\Controller;
 
 use Labstag\Entity\User;
 use Labstag\Form\Security\ChangePasswordType;
+use Labstag\Form\Security\DisclaimerType;
 use Symfony\Component\HttpFoundation\Response;
 use Labstag\Form\Security\LoginType;
 use Labstag\Form\Security\LostPasswordType;
 use Labstag\Lib\GeneralControllerLib;
+use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\Repository\UserRepository;
 use LogicException;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +19,49 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends GeneralControllerLib
 {
     /**
+     * @Route("/disclaimer", name="disclaimer")
+     *
+     * @return RedirectResponse|Response
+     */
+    public function disclaimer(Request $request)
+    {
+        $form = $this->createForm(DisclaimerType::class, []);
+        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($form->isSubmitted()) {
+            $post = $request->request->get($form->getName());
+            if (isset($post['confirm'])) {
+                $session->set('disclaimer', 1);
+
+                return $this->redirect(
+                    $this->generateUrl('front')
+                );
+            }
+
+            $this->addFlash('danger', "Veuillez accepter l'énoncé");
+        }
+
+        if (1 == $session->get('disclaimer', 0)) {
+            return $this->redirect(
+                $this->generateUrl('front')
+            );
+        }
+
+        return $this->render(
+            'security/disclaimer.html.twig',
+            [
+                'class_body' => 'DisclaimerPage',
+                'form'       => $form->createView(),
+            ]
+        );
+    }
+    /**
      * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(
+        AuthenticationUtils $authenticationUtils,
+        OauthConnectUserRepository $repository
+    ): Response
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -30,9 +72,12 @@ class SecurityController extends GeneralControllerLib
             ['username' => $lastUsername]
         );
 
+        $oauths = $repository->findDistinctAllOauth();
+
         return $this->render(
             'security/login.html.twig',
             [
+                'oauths'    => $oauths,
                 'formLogin' => $form->createView(),
                 'error'     => $error,
             ]
