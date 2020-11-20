@@ -1,22 +1,15 @@
 <?php
-
 namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Labstag\Repository\UserRepository;
 use Faker\Factory;
-use Faker\Generator;
-use Labstag\Entity\Edito;
-use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
+use Labstag\Repository\UserRepository;
 
-/**
- * @codeCoverageIgnore
- */
 class EditoFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    const NUMBER = 25;
+    public const NUMBER = 25;
 
     private UserRepository $userRepository;
 
@@ -25,7 +18,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         $this->userRepository = $userRepository;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $users = $this->userRepository->findAll();
         $faker = Factory::create('fr_FR');

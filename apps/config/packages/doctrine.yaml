@@ -161,3 +161,5 @@ doctrine:
         substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
         unhex: DoctrineExtensions\Query\Mysql\Unhex
         uuid_short: DoctrineExtensions\Query\Mysql\UuidShort
+doctrine_migrations:
+  organize_migrations: BY_YEAR_AND_MONTH

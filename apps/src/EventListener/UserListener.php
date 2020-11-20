@@ -1,13 +1,12 @@
 <?php
-
 namespace Labstag\EventListener;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Events;
-use Labstag\Entity\User;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Events;
 use Labstag\Entity\EmailUser;
+use Labstag\Entity\User;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -44,12 +43,12 @@ class UserListener implements EventSubscriber
         $manager       = $args->getEntityManager();
         $uow           = $manager->getUnitOfWork();
         $entityUpdates = $uow->getScheduledEntityUpdates();
-        if (count($entityUpdates) == 0) {
+        if (count($entityUpdates) === 0) {
             return;
         }
 
         foreach ($entityUpdates as $entity) {
-            if (!$entity instanceof User) {
+            if (! $entity instanceof User) {
                 continue;
             }
 
@@ -66,7 +65,7 @@ class UserListener implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
-        if (!$entity instanceof User) {
+        if (! $entity instanceof User) {
             return;
         }
 
@@ -83,7 +82,7 @@ class UserListener implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
-        if (!$entity instanceof User) {
+        if (! $entity instanceof User) {
             return;
         }
 
@@ -100,7 +99,7 @@ class UserListener implements EventSubscriber
         foreach ($emails as $emailUser) {
             /** @var EmailUser $emailUser */
             $emailUser->setPrincipal(false);
-            if ($emailUser->getAdresse() == $adresse) {
+            if ($emailUser->getAdresse() === $adresse) {
                 $emailUser->setPrincipal(true);
                 $trouver = true;
             }
@@ -110,22 +109,24 @@ class UserListener implements EventSubscriber
             $manager->getUnitOfWork()->computeChangeSet($meta, $emailUser);
         }
 
-        if (!$trouver) {
-            $emailUser = new EmailUser();
-            $emailUser->setRefuser($entity);
-            $emailUser->setVerif(true);
-            $emailUser->setPrincipal(true);
-            $emailUser->setAdresse($adresse);
-            $manager->persist($emailUser);
-            $meta = $manager->getClassMetadata(get_class($emailUser));
-            $manager->getUnitOfWork()->computeChangeSet($meta, $emailUser);
+        if ($trouver) {
+            return;
         }
+
+        $emailUser = new EmailUser();
+        $emailUser->setRefuser($entity);
+        $emailUser->setVerif(true);
+        $emailUser->setPrincipal(true);
+        $emailUser->setAdresse($adresse);
+        $manager->persist($emailUser);
+        $meta = $manager->getClassMetadata(get_class($emailUser));
+        $manager->getUnitOfWork()->computeChangeSet($meta, $emailUser);
     }
 
     private function plainPassword(User $entity): void
     {
         $plainPassword = $entity->getPlainPassword();
-        if ('' === $plainPassword || is_null($plainPassword)) {
+        if ($plainPassword === '' || is_null($plainPassword)) {
             return;
         }
 

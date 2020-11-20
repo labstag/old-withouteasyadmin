@@ -9,10 +9,6 @@ use Labstag\Entity\Template;
 use Labstag\Lib\FixtureLib;
 use Twig\Environment;
 
-
-/**
- * @codeCoverageIgnore
- */
 class TemplatesFixtures extends FixtureLib
 {
 

@@ -19,41 +19,25 @@ class PhoneUserController extends AdminControllerLib
     /**
      * @Route("/", name="admin_phoneuser_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        PhoneUserRepository $phoneUserRepository
-    ): Response
+    public function index(PhoneUserRepository $phoneUserRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $phoneUserRepository->findAllForAdmin(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $phoneUserRepository,
+            'findAllForAdmin',
             'admin/phone_user/index.html.twig',
-            ['pagination' => $pagination]
+            ['new' => 'admin_phoneuser_new']
         );
     }
 
     /**
      * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(): Response
     {
-        $phoneUser = new PhoneUser();
-        $form      = $this->createForm(PhoneUserType::class, $phoneUser);
-        $return    = $this->newForm($request, $form, $phoneUser);
-        if ($return) {
-            return $this->redirectToRoute('admin_phoneuser_index');
-        }
-
-        return $this->render(
-            'admin/phone_user/new.html.twig',
-            [
-                'phone_user' => $phoneUser,
-                'form'       => $form->createView(),
-            ]
+        return $this->adminCrudService->create(
+            new PhoneUser(),
+            PhoneUserType::class,
+            ['list' => 'admin_phoneuser_index']
         );
     }
 
@@ -62,9 +46,14 @@ class PhoneUserController extends AdminControllerLib
      */
     public function show(PhoneUser $phoneUser): Response
     {
-        return $this->render(
+        return $this->adminCrudService->read(
+            $phoneUser,
             'admin/phone_user/show.html.twig',
-            ['phone_user' => $phoneUser]
+            [
+                'delete' => 'admin_phoneuser_delete',
+                'list'   => 'admin_phoneuser_index',
+                'edit'   => 'admin_phoneuser_edit',
+            ]
         );
     }
 
@@ -75,19 +64,14 @@ class PhoneUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(Request $request, PhoneUser $phoneUser): Response
+    public function edit(PhoneUser $phoneUser): Response
     {
-        $form   = $this->createForm(PhoneUserType::class, $phoneUser);
-        $return = $this->editForm($request, $form);
-        if ($return) {
-            return $this->redirectToRoute('admin_phoneuser_index');
-        }
-
-        return $this->render(
-            'admin/phone_user/edit.html.twig',
+        return $this->adminCrudService->update(
+            PhoneUserType::class,
+            $phoneUser,
             [
-                'phone_user' => $phoneUser,
-                'form'       => $form->createView(),
+                'delete' => 'admin_phoneuser_delete',
+                'list'   => 'admin_phoneuser_index',
             ]
         );
     }
@@ -95,10 +79,11 @@ class PhoneUserController extends AdminControllerLib
     /**
      * @Route("/{id}", name="admin_phoneuser_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, PhoneUser $phoneUser): Response
+    public function delete(PhoneUser $phoneUser): Response
     {
-        $this->deleteEntity($request, $phoneUser);
-
-        return $this->redirectToRoute('admin_phoneuser_index');
+        return $this->adminCrudService->delete(
+            $phoneUser,
+            'admin_phoneuser_index'
+        );
     }
 }

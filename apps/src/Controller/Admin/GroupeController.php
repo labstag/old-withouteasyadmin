@@ -19,41 +19,25 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/", name="admin_groupuser_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        GroupeRepository $groupeRepository
-    ): Response
+    public function index(GroupeRepository $groupeRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $groupeRepository->findAllForAdmin(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $groupeRepository,
+            'findAllForAdmin',
             'admin/groupe/index.html.twig',
-            ['pagination' => $pagination]
+            ['new' => 'admin_groupuser_new']
         );
     }
 
     /**
      * @Route("/new", name="admin_groupuser_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(): Response
     {
-        $groupe = new Groupe();
-        $form   = $this->createForm(GroupeType::class, $groupe);
-        $return = $this->newForm($request, $form, $groupe);
-        if ($return) {
-            return $this->redirectToRoute('admin_groupuser_index');
-        }
-
-        return $this->render(
-            'admin/groupe/new.html.twig',
-            [
-                'groupe' => $groupe,
-                'form'   => $form->createView(),
-            ]
+        return $this->adminCrudService->create(
+            new Groupe(),
+            GroupeType::class,
+            ['list' => 'admin_groupuser_index']
         );
     }
 
@@ -62,28 +46,28 @@ class GroupeController extends AdminControllerLib
      */
     public function show(Groupe $groupe): Response
     {
-        return $this->render(
+        return $this->adminCrudService->read(
+            $groupe,
             'admin/groupe/show.html.twig',
-            ['groupe' => $groupe]
+            [
+                'delete' => 'admin_groupuser_delete',
+                'edit'   => 'admin_groupuser_edit',
+                'list'   => 'admin_groupuser_index',
+            ]
         );
     }
 
     /**
      * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Groupe $groupe): Response
+    public function edit(Groupe $groupe): Response
     {
-        $form   = $this->createForm(GroupeType::class, $groupe);
-        $return = $this->editForm($request, $form);
-        if ($return) {
-            return $this->redirectToRoute('admin_groupuser_index');
-        }
-
-        return $this->render(
-            'admin/groupe/edit.html.twig',
+        return $this->adminCrudService->update(
+            GroupeType::class,
+            $groupe,
             [
-                'groupe' => $groupe,
-                'form'   => $form->createView(),
+                'delete' => 'admin_groupuser_delete',
+                'list'   => 'admin_groupuser_index',
             ]
         );
     }
@@ -91,10 +75,11 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/{id}", name="admin_groupuser_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Groupe $groupe): Response
+    public function delete(Groupe $groupe): Response
     {
-        $this->deleteEntity($request, $groupe);
-
-        return $this->redirectToRoute('admin_groupuser_index');
+        return $this->adminCrudService->delete(
+            $groupe,
+            'admin_groupuser_index'
+        );
     }
 }

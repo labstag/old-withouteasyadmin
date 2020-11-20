@@ -26,13 +26,4 @@ abstract class AdresseType extends AbstractType
         $builder->add('type');
         $builder->add('pmr');
     }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults(
-            [
-                'data_class' => Adresse::class,
-            ]
-        );
-    }
 }

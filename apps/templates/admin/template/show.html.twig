@@ -3,31 +3,24 @@
     <table
   data-locale="fr-FR"
   data-toggle="table"
-  data-search="true"
   data-show-columns="true">
         <tbody>
             <tr>
                 <th>Name</th>
-                <td>{{ template.name }}</td>
+                <td>{{ entity.name }}</td>
             </tr>
             <tr>
                 <th>Code</th>
-                <td>{{ template.code }}</td>
+                <td>{{ entity.code }}</td>
             </tr>
             <tr>
                 <th>Html</th>
-                <td>{{ template.html|raw }}</td>
+                <td>{{ entity.html|raw }}</td>
             </tr>
             <tr>
                 <th>Text</th>
-                <td>{{ template.text }}</td>
+                <td>{{ entity.text }}</td>
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('admin_template_index') }}">back to list</a>
-
-    <a href="{{ path('admin_template_edit', {'id': template.id}) }}">edit</a>
-
-    {{ include('admin/template/_delete_form.html.twig') }}
 {% endblock %}

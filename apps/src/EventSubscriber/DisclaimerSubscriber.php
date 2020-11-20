@@ -1,12 +1,11 @@
 <?php
-
 namespace Labstag\EventSubscriber;
 
 use Labstag\Service\DataService;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\Routing\RouterInterface;
 
 class DisclaimerSubscriber implements EventSubscriberInterface
 {
@@ -24,11 +23,11 @@ class DisclaimerSubscriber implements EventSubscriberInterface
         $this->router      = $router;
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
         $state   = $this->disclaimerActivate($request);
-        if (!$state) {
+        if (! $state) {
             return;
         }
 
@@ -45,29 +44,26 @@ class DisclaimerSubscriber implements EventSubscriberInterface
         $controller = $request->attributes->get('_controller');
         $key        = 'disclaimer';
         $session    = $request->getSession();
-        if (!isset($config[$key]) || !isset($config[$key][0])) {
+        if (! isset($config[$key]) || ! isset($config[$key][0])) {
             return false;
         }
 
-        if (substr_count($controller, 'Labstag') == 0) {
+        if (substr_count($controller, 'Labstag') === 0) {
             return false;
         }
 
-        if (substr_count($controller, 'Controller\\Admin') != 0) {
+        if (substr_count($controller, 'Controller\\Admin') !== 0) {
             return false;
         }
 
-        if (substr_count($controller, 'SecurityController') != 0) {
+        if (substr_count($controller, 'SecurityController') !== 0) {
             return false;
         }
 
         $disclaimer = $config[$key][0];
         $activate   = $disclaimer['activate'];
-        if (1 != $session->get($key, 0) && true == $activate) {
-            return true;
-        }
 
-        return false;
+        return $session->get($key, 0) !== 1 && $activate === true;
     }
 
     public static function getSubscribedEvents()

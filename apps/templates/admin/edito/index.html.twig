@@ -3,14 +3,13 @@
     <table
   data-locale="fr-FR"
   data-toggle="table"
-  data-search="true"
   data-show-columns="true">
         <thead>
             <tr>
                 <th>Title</th>
                 <th>Enable</th>
                 <th>User</th>
-                <th class="text-center"><i class="fas fa-cog" title="Actions"></i></th>
+                <th class="text-center"><i class="BtnAdminTableAction" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -32,6 +31,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('admin_edito_new') }}">Create new</a>
 {% endblock %}

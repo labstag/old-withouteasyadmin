@@ -21,13 +21,4 @@ abstract class LienType extends AbstractType
         $builder->add('name');
         $builder->add('adresse');
     }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults(
-            [
-                'data_class' => Lien::class,
-            ]
-        );
-    }
 }

@@ -1,10 +1,9 @@
 <?php
-
 namespace Labstag\Repository;
 
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Entity\Menu;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Entity\Menu;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 
 /**
  * @method Menu|null find($id, $lockMode = null, $lockVersion = null)

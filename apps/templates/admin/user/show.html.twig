@@ -3,38 +3,32 @@
     <table
   data-locale="fr-FR"
   data-toggle="table"
-  data-search="true"
   data-show-columns="true">
         <tbody>
             <tr>
                 <th>Username</th>
-                <td>{{ user.username }}</td>
+                <td>{{ entity.username }}</td>
             </tr>
             <tr>
                 <th>Email</th>
-                <td>{{ user.email }}</td>
+                <td><a href="mailto:{{ entity.email }}">{{ entity.email }}</a></td>
             </tr>
             <tr>
                 <th>Enable</th>
-                <td>{{ user.enable ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
             </tr>
         </tbody>
     </table>
-    {% set adresses = user.adresseUsers %}
+    {% set adresses = entity.adresseUsers %}
     <div class="row">
         {% if adresses|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>Adresses ({{ user.adresseUsers|length }})</legend>
-
+                    <legend>Adresses ({{ entity.adresseUsers|length }})</legend>
                     <table>
                         <thead>
                             <tr>
-                                <th>Rue</th>
-                                <th>Country</th>
-                                <th>Zipcode</th>
-                                <th>Ville</th>
-                                <th>Gps</th>
+                                <th>Adresse</th>
                                 <th>Type</th>
                                 <th>Pmr</th>
                             </tr>
@@ -42,14 +36,16 @@
                         <tbody>
                             {% for adresse in adresses %}
                                 <tr>
-                                    <td>{{ adresse.rue }}</td>
                                     <td>
+                                        {{ adresse.rue }}
+                                        <br />
+                                        {{ adresse.zipcode }} - {{ adresse.ville }}
+                                        <br />
                                         <span class="flag-icon flag-icon-{{ adresse.country|lower }}"></span>
                                         {{ adresse.country|country_name('fr') }}
+                                        <br />
+                                        <span class="GpsIcon"></span>{{ adresse.gps }}
                                     </td>
-                                    <td>{{ adresse.zipcode }}</td>
-                                    <td>{{ adresse.ville }}</td>
-                                    <td>{{ adresse.gps }}</td>
                                     <td>{{ adresse.type }}</td>
                                     <td>{{ adresse.pmr ? 'Yes' : 'No' }}</td>
                                 </tr>
@@ -59,11 +55,11 @@
                 </fieldset>
             </div>
         {% endif %}
-        {% set liens = user.lienUsers %}
+        {% set liens = entity.lienUsers %}
         {% if liens|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>Liens ({{ user.lienUsers|length }})</legend>
+                    <legend>Liens ({{ entity.lienUsers|length }})</legend>
                     <table>
                         <thead>
                             <tr>
@@ -75,7 +71,7 @@
                             {% for lien in liens %}
                                 <tr>
                                     <td>{{ lien.name }}</td>
-                                    <td>{{ lien.adresse }}</td>
+                                    <td><a href="{{ lien.adresse }}" target="_blank">{{ lien.adresse }}</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -83,11 +79,11 @@
                 </fieldset>
             </div>
         {% endif %}
-        {% set emails = user.emailUsers %}
+        {% set emails = entity.emailUsers %}
         {% if emails|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>Emails ({{ user.emailUsers|length }})</legend>
+                    <legend>Emails ({{ entity.emailUsers|length }})</legend>
                     <table>
                         <thead>
                             <tr>
@@ -99,7 +95,7 @@
                         <tbody>
                             {% for email in emails %}
                                 <tr>
-                                    <td>{{ email.adresse }}</td>
+                                    <td><a href="mailto:{{ email.adresse }}">{{ email.adresse }}</a></td>
                                     <td>{{ email.principal ? 'Yes' : 'No' }}</td>
                                     <td>{{ email.verif ? 'Yes' : 'No' }}</td>
                                 </tr>
@@ -109,11 +105,11 @@
                 </fieldset>
             </div>
         {% endif %}
-        {% set phones = user.phoneUsers %}
+        {% set phones = entity.phoneUsers %}
         {% if phones|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>Téléphones ({{ user.phoneUsers|length }})</legend>
+                    <legend>Téléphones ({{ entity.phoneUsers|length }})</legend>
                     <table>
                         <thead>
                             <tr>
@@ -126,7 +122,7 @@
                         <tbody>
                             {% for phone in phones %}
                                 <tr>
-                                    <td>{{ phone.numero }}</td>
+                                    <td><a href="tel:{{ phone.numero }}">{{ phone.numero }}</a></td>
                                     <td>
                                         <span class="flag-icon flag-icon-{{ phone.country|lower }}"></span>
                                         {{ phone.country|country_name('fr') }}
@@ -141,10 +137,4 @@
             </div>
         {% endif %}
     </div>
-
-    <a href="{{ path('admin_user_index') }}">back to list</a>
-
-    <a href="{{ path('admin_user_edit', {'id': user.id}) }}">edit</a>
-
-    {{ include('admin/user/_delete_form.html.twig') }}
 {% endblock %}

@@ -11,8 +11,27 @@ class SecurityControllerTest extends WebTestCase
     use LoginTrait;
     use IntegrationTrait;
 
-    public function testSomething()
+    protected $urls = [
+        'app_lost',
+        'app_login',
+        'disclaimer',
+    ];
+
+    protected $groupeDisable = [
+        'visitor',
+        'disable',
+    ];
+
+    /**
+     * @dataProvider provideAllUrlWithoutParams
+     * @param string $route
+     */
+    public function testUrl($route, $groupe)
     {
-        $this->assertTrue(true);
+        $this->responseTest(
+            $route,
+            $groupe,
+            true
+        );
     }
 }

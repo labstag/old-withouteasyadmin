@@ -19,41 +19,25 @@ class EditoController extends AdminControllerLib
     /**
      * @Route("/", name="admin_edito_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        EditoRepository $editoRepository
-    ): Response
+    public function index(EditoRepository $editoRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $editoRepository->findAllForAdmin(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $editoRepository,
+            'findAllForAdmin',
             'admin/edito/index.html.twig',
-            ['pagination' => $pagination]
+            ['new' => 'admin_edito_new']
         );
     }
 
     /**
      * @Route("/new", name="admin_edito_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(): Response
     {
-        $edito  = new Edito();
-        $form   = $this->createForm(EditoType::class, $edito);
-        $return = $this->newForm($request, $form, $edito);
-        if ($return) {
-            return $this->redirectToRoute('admin_edito_index');
-        }
-
-        return $this->render(
-            'admin/edito/new.html.twig',
-            [
-                'edito' => $edito,
-                'form'  => $form->createView(),
-            ]
+        return $this->adminCrudService->create(
+            new Edito(),
+            EditoType::class,
+            ['list' => 'admin_edito_index']
         );
     }
 
@@ -62,28 +46,28 @@ class EditoController extends AdminControllerLib
      */
     public function show(Edito $edito): Response
     {
-        return $this->render(
+        return $this->adminCrudService->read(
+            $edito,
             'admin/edito/show.html.twig',
-            ['edito' => $edito]
+            [
+                'delete' => 'admin_edito_delete',
+                'edit'   => 'admin_edito_edit',
+                'list'   => 'admin_edito_index',
+            ]
         );
     }
 
     /**
      * @Route("/{id}/edit", name="admin_edito_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Edito $edito): Response
+    public function edit(Edito $edito): Response
     {
-        $form   = $this->createForm(EditoType::class, $edito);
-        $return = $this->editForm($request, $form);
-        if ($return) {
-            return $this->redirectToRoute('admin_edito_index');
-        }
-
-        return $this->render(
-            'admin/edito/edit.html.twig',
+        return $this->adminCrudService->update(
+            EditoType::class,
+            $edito,
             [
-                'edito' => $edito,
-                'form'  => $form->createView(),
+                'delete' => 'admin_edito_delete',
+                'list'   => 'admin_edito_index',
             ]
         );
     }
@@ -91,10 +75,11 @@ class EditoController extends AdminControllerLib
     /**
      * @Route("/{id}", name="admin_edito_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Edito $edito): Response
+    public function delete(Edito $edito): Response
     {
-        $this->deleteEntity($request, $edito);
-
-        return $this->redirectToRoute('admin_edito_index');
+        return $this->adminCrudService->delete(
+            $edito,
+            'admin_edito_index'
+        );
     }
 }

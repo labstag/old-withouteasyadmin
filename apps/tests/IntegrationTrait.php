@@ -48,7 +48,6 @@ trait IntegrationTrait
     {
         if (!$bool) {
             $this->markTestSkipped('test désactivé pour le groupe '.$groupe);
-            $this->assertFalse(false);
             return;
         }
 
@@ -121,36 +120,42 @@ trait IntegrationTrait
         string $groupe,
         bool $bool,
         string $route,
-        $formClass
+        $formClass,
+        string $method = 'getEntity',
+        bool $redirect = true
     )
     {
         if (!$bool) {
             $this->markTestSkipped('test désactivé pour le groupe '.$groupe);
-            $this->assertFalse(false);
             return;
         }
 
-        $client  = $this->logIn($groupe);
-        $data    = $this->getEntity($client);
-        $newform = $this->createForm($client, $formClass);
-        if (is_null($data)) {
+        $client = $this->logIn($groupe);
+        $entity = $this->$method($client);
+        if (is_null($entity)) {
             $this->markTestSkipped('data introuvable');
             return;
         }
 
-        $router  = $client->getContainer()->get('router');
-        $url     = $router->generate(
-            $route,
-            [
-                'id' => $data->getId(),
-            ]
-        );
+        $newform = $this->createForm($client, $formClass);
+
+        $router = $client->getContainer()->get('router');
+        $params = [];
+        if (is_object($entity)) {
+            $params['id'] = $entity->getId();
+        }
+
+        $url     = $router->generate($route, $params);
         $crawler = $client->request(Request::METHOD_GET, $url);
 
         $filter = $crawler->filter('form[name="'.$newform->getName().'"]');
         $form   = $filter->form();
         $client->submit($form);
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+        if ($redirect) {
+            $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+        } else {
+            $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        }
     }
 
     public function editDelete(string $groupe, bool $bool, $route)
@@ -197,20 +202,30 @@ trait IntegrationTrait
         );
     }
 
-    private function editTest(string $groupe, bool $bool, string $route)
+    private function editTest(
+        string $groupe,
+        bool $bool,
+        string $route,
+        string $method = 'getEntity'
+    )
     {
         $client = $this->logIn($groupe);
-        $data   = $this->getEntity($client);
+        $data   = $this->$method($client);
         if (is_null($data)) {
             $this->markTestSkipped('data introuvable');
             return;
+        }
+
+        $params = [];
+        if (is_object($data)) {
+            $params['id'] = $data->getId();
         }
 
         $this->responseTest(
             $route,
             $groupe,
             $bool,
-            ['id' => $data->getId()]
+            $params
         );
     }
 }

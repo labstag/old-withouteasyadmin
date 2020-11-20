@@ -20,41 +20,25 @@ class NoteInterneController extends AdminControllerLib
     /**
      * @Route("/", name="admin_noteinterne_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        NoteInterneRepository $repository
-    ): Response
+    public function index(NoteInterneRepository $repository): Response
     {
-        $pagination = $paginator->paginate(
-            $repository->findAllForAdmin(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $repository,
+            'findAllForAdmin',
             'admin/note_interne/index.html.twig',
-            ['pagination' => $pagination]
+            ['new' => 'admin_noteinterne_new']
         );
     }
 
     /**
      * @Route("/new", name="admin_noteinterne_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(): Response
     {
-        $noteInterne = new NoteInterne();
-        $form        = $this->createForm(NoteInterneType::class, $noteInterne);
-        $return      = $this->newForm($request, $form, $noteInterne);
-        if ($return) {
-            return $this->redirectToRoute('admin_noteinterne_index');
-        }
-
-        return $this->render(
-            'admin/note_interne/new.html.twig',
-            [
-                'note_interne' => $noteInterne,
-                'form'         => $form->createView(),
-            ]
+        return $this->adminCrudService->create(
+            new NoteInterne(),
+            NoteInterneType::class,
+            ['list' => 'admin_noteinterne_index']
         );
     }
 
@@ -63,9 +47,14 @@ class NoteInterneController extends AdminControllerLib
      */
     public function show(NoteInterne $noteInterne): Response
     {
-        return $this->render(
+        return $this->adminCrudService->read(
+            $noteInterne,
             'admin/note_interne/show.html.twig',
-            ['note_interne' => $noteInterne]
+            [
+                'delete' => 'admin_noteinterne_delete',
+                'list'   => 'admin_noteinterne_index',
+                'edit'   => 'admin_noteinterne_edit',
+            ]
         );
     }
 
@@ -76,19 +65,14 @@ class NoteInterneController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(Request $request, NoteInterne $noteInterne): Response
+    public function edit(NoteInterne $noteInterne): Response
     {
-        $form   = $this->createForm(NoteInterneType::class, $noteInterne);
-        $return = $this->editForm($request, $form);
-        if ($return) {
-            return $this->redirectToRoute('admin_noteinterne_index');
-        }
-
-        return $this->render(
-            'admin/note_interne/edit.html.twig',
+        return $this->adminCrudService->update(
+            NoteInterneType::class,
+            $noteInterne,
             [
-                'note_interne' => $noteInterne,
-                'form'         => $form->createView(),
+                'delete' => 'admin_noteinterne_delete',
+                'list'   => 'admin_noteinterne_index',
             ]
         );
     }
@@ -96,10 +80,11 @@ class NoteInterneController extends AdminControllerLib
     /**
      * @Route("/{id}", name="admin_noteinterne_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, NoteInterne $noteInterne): Response
+    public function delete(NoteInterne $noteInterne): Response
     {
-        $this->deleteEntity($request, $noteInterne);
-
-        return $this->redirectToRoute('admin_noteinterne_index');
+        return $this->adminCrudService->delete(
+            $noteInterne,
+            'admin_noteinterne_index'
+        );
     }
 }

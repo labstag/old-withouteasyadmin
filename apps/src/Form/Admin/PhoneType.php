@@ -22,13 +22,4 @@ abstract class PhoneType extends AbstractType
         $builder->add('country');
         $builder->add('type');
     }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults(
-            [
-                'data_class' => Phone::class,
-            ]
-        );
-    }
 }

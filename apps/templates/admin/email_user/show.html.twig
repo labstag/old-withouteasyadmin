@@ -3,31 +3,24 @@
     <table
   data-locale="fr-FR"
   data-toggle="table"
-  data-search="true"
   data-show-columns="true">
         <tbody>
             <tr>
                 <th>Adresse</th>
-                <td>{{ email_user.adresse }}</td>
+                <td><a href="mailto:{{ entity.adresse }}">{{ entity.adresse }}</a></td>
             </tr>
             <tr>
                 <th>Principal</th>
-                <td>{{ email_user.principal ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
                 <th>Verif</th>
-                <td>{{ email_user.verif ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.verif ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
                 <th>User</th>
-                <td><a href="{{ path('admin_user_show', {'id': email_user.refuser.id}) }}">{{ email_user.refuser }}</a></td>
+                <td><a href="{{ path('admin_user_show', {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a></td>
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('admin_emailuser_index') }}">back to list</a>
-
-    <a href="{{ path('admin_emailuser_edit', {'id': email_user.id}) }}">edit</a>
-
-    {{ include('admin/email_user/_delete_form.html.twig') }}
 {% endblock %}

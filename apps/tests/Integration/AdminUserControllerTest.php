@@ -118,16 +118,16 @@ class AdminUserControllerTest extends WebTestCase
         );
     }
 
-    protected function getEntity($client)
+    protected function getEntity($client): User
     {
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(User::class);
         /** @var UserRepository $repository */
-        $data = $repository->findOneRandom();
+        $entity = $repository->findOneRandom();
 
-        return $data;
+        return $entity;
     }
 
     protected function getNewEntity($client)
@@ -148,7 +148,6 @@ class AdminUserControllerTest extends WebTestCase
         $user->setEnable($faker->numberBetween(0, 1));
         $user->setVerif($faker->numberBetween(0, 1));
         $user->setUsername($faker->unique()->word());
-        $user->setEmail($faker->unique()->safeEmail());
         $user->setPlainPassword($faker->unique()->password());
 
         return $user;

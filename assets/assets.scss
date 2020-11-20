@@ -3,7 +3,7 @@
 @import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
 @import "@fortawesome/fontawesome-free/scss/regular.scss";
 @import "@fortawesome/fontawesome-free/scss/solid.scss";
-@import "./../node_modules/bootstrap-table/dist/bootstrap-table.css";
+@import "./../node_modules/bootstrap-table/src/bootstrap-table.scss";
 @import "./../node_modules/flag-icon-css/sass/flag-icon.scss";
 
 label {
@@ -28,6 +28,10 @@ label {
 .BtnCollectionDelete{
   @extend .btn;
   @extend .btn-danger;
+  i{
+    @extend .fas;
+    @extend .fa-trash-alt;
+  }
 }
 
 fieldset{
@@ -73,4 +77,9 @@ fieldset{
 
 legend{
   font-weight: bold;
+}
+
+.GpsIcon{
+  @extend .fas;
+  @extend .fa-map-marker-alt;
 }

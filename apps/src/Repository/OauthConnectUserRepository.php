@@ -1,10 +1,9 @@
 <?php
-
 namespace Labstag\Repository;
 
-use Labstag\Lib\ServiceEntityRepositoryLib;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\OauthConnectUser;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class OauthConnectUserRepository extends ServiceEntityRepositoryLib
 {
@@ -12,6 +11,33 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
     {
         parent::__construct($registry, OauthConnectUser::class);
     }    /**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           * @return OauthConnectUser|void
           */
     public function login(?string $identity, ?string $oauth)

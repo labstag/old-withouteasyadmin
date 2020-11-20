@@ -1,10 +1,8 @@
 <?php
-
 namespace Labstag\Entity;
 
-use Labstag\Repository\AdresseRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -29,33 +27,24 @@ abstract class Adresse
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\Country
      */
     protected $country;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     protected $zipcode;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     protected $ville;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     protected $gps;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     protected $type;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    /** @ORM\Column(type="boolean") */
     protected $pmr;
 
     public function __toString()

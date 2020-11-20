@@ -4,7 +4,7 @@
             <button class="close" data-dismiss="alert">×</button>
             <ul>
             {% for message in messages %}
-                <li>{{ message }}</li>
+                <li>{{ message|trans|raw }}</li>
             {% endfor %}
             </ul>
         </div>

@@ -7,10 +7,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Labstag\Lib\FixtureLib;
 use Labstag\Repository\GroupeRepository;
 
-
-/**
- * @codeCoverageIgnore
- */
 class UserFixtures extends FixtureLib implements DependentFixtureInterface
 {
 

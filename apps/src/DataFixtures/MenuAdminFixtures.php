@@ -6,9 +6,6 @@ use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Menu;
 use Labstag\Lib\FixtureLib;
 
-/**
- * @codeCoverageIgnore
- */
 class MenuAdminFixtures extends FixtureLib
 {
 

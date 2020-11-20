@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller;
 
+use Labstag\Service\MailerService;
 use Labstag\Entity\Configuration;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ProfilType;
@@ -10,15 +11,53 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\ConfigurationRepository;
-use Labstag\Service\DataService;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Labstag\Service\AdminBoutonService;
+use Labstag\Service\AdminCrudService;
+use Labstag\Service\DataService;
 
 /**
  * @Route("/admin")
  */
 class AdminController extends AdminControllerLib
 {
+
+    protected MailerService $mailerService;
+
+    public function __construct(
+        DataService $dataService,
+        AdminBoutonService $adminBoutonService,
+        AdminCrudService $adminCrudService,
+        MailerService $mailerService
+    )
+    {
+        $this->mailerService = $mailerService;
+        parent::__construct(
+            $dataService,
+            $adminBoutonService,
+            $adminCrudService
+        );
+    }
+
+    /**
+     * @Route("/test", name="test")
+     */
+    public function test()
+    {
+        $email = $this->mailerService->createEmail(
+            [
+                'html' => 'mails/test.html.twig',
+                'txt'  => 'mails/test.text.twig',
+            ]
+        );
+        $email->to('you@example.com');
+
+        $this->mailerService->send($email);
+
+        return '';
+    }
+
     /**
      * @Route("/", name="admin")
      */
@@ -38,6 +77,7 @@ class AdminController extends AdminControllerLib
         ConfigurationRepository $repository
     ): Response
     {
+        $this->adminBoutonService->addBtnSave('Sauvegarder');
         $config = $this->dataService->getConfig();
         $form   = $this->createForm(ParamType::class, $config);
         $form->handleRequest($request);
@@ -50,7 +90,7 @@ class AdminController extends AdminControllerLib
                 }
 
                 $configuration = $repository->findOneBy(['name' => $key]);
-                if (!$configuration) {
+                if (!($configuration instanceof Configuration)) {
                     $configuration = new Configuration();
                     $configuration->setName($key);
                 }
@@ -74,22 +114,11 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/profil", name="admin_profil", methods={"GET","POST"})
      */
-    public function profil(Request $request, Security $security): Response
+    public function profil(Security $security): Response
     {
-        $user   = $security->getUser();
-        $form   = $this->createForm(ProfilType::class, $user);
-        $return = $this->newForm($request, $form, $user);
-        if ($return) {
-            return $this->redirectToRoute('admin_profil');
-        }
-
-        return $this->render(
-            'admin/profil.html.twig',
-            [
-
-                'entity' => $user,
-                'form'   => $form->createView(),
-            ]
+        return $this->adminCrudService->update(
+            ProfilType::class,
+            $security->getUser()
         );
     }
 

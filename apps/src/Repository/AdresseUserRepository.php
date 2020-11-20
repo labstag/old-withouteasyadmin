@@ -1,9 +1,8 @@
 <?php
-
 namespace Labstag\Repository;
 
-use Labstag\Entity\AdresseUser;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Entity\AdresseUser;
 
 class AdresseUserRepository extends AdresseRepository
 {

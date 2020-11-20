@@ -19,41 +19,25 @@ class EmailUserController extends AdminControllerLib
     /**
      * @Route("/", name="admin_emailuser_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        EmailUserRepository $emailUserRepository
-    ): Response
+    public function index(EmailUserRepository $emailUserRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $emailUserRepository->findAllForAdmin(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $emailUserRepository,
+            'findAllForAdmin',
             'admin/email_user/index.html.twig',
-            ['pagination' => $pagination]
+            ['new' => 'admin_emailuser_new']
         );
     }
 
     /**
      * @Route("/new", name="admin_emailuser_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(): Response
     {
-        $emailUser = new EmailUser();
-        $form      = $this->createForm(EmailUserType::class, $emailUser);
-        $return    = $this->newForm($request, $form, $emailUser);
-        if ($return) {
-            return $this->redirectToRoute('admin_emailuser_index');
-        }
-
-        return $this->render(
-            'admin/email_user/new.html.twig',
-            [
-                'email_user' => $emailUser,
-                'form'       => $form->createView(),
-            ]
+        return $this->adminCrudService->create(
+            new EmailUser(),
+            EmailUserType::class,
+            ['list' => 'admin_emailuser_index']
         );
     }
 
@@ -62,9 +46,14 @@ class EmailUserController extends AdminControllerLib
      */
     public function show(EmailUser $emailUser): Response
     {
-        return $this->render(
+        return $this->adminCrudService->read(
+            $emailUser,
             'admin/email_user/show.html.twig',
-            ['email_user' => $emailUser]
+            [
+                'delete' => 'admin_emailuser_delete',
+                'edit'   => 'admin_emailuser_edit',
+                'list'   => 'admin_emailuser_index',
+            ]
         );
     }
 
@@ -75,19 +64,14 @@ class EmailUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(Request $request, EmailUser $emailUser): Response
+    public function edit(EmailUser $emailUser): Response
     {
-        $form   = $this->createForm(EmailUserType::class, $emailUser);
-        $return = $this->editForm($request, $form);
-        if ($return) {
-            return $this->redirectToRoute('admin_emailuser_index');
-        }
-
-        return $this->render(
-            'admin/email_user/edit.html.twig',
+        return $this->adminCrudService->update(
+            EmailUserType::class,
+            $emailUser,
             [
-                'email_user' => $emailUser,
-                'form'       => $form->createView(),
+                'delete' => 'admin_emailuser_delete',
+                'list'   => 'admin_emailuser_index',
             ]
         );
     }
@@ -95,10 +79,11 @@ class EmailUserController extends AdminControllerLib
     /**
      * @Route("/{id}", name="admin_emailuser_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, EmailUser $emailUser): Response
+    public function delete(EmailUser $emailUser): Response
     {
-        $this->deleteEntity($request, $emailUser);
-
-        return $this->redirectToRoute('admin_emailuser_index');
+        return $this->adminCrudService->delete(
+            $emailUser,
+            'admin_emailuser_index'
+        );
     }
 }

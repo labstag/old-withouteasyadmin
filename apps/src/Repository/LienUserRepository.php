@@ -1,9 +1,8 @@
 <?php
-
 namespace Labstag\Repository;
 
-use Labstag\Entity\LienUser;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Entity\LienUser;
 
 class LienUserRepository extends LienRepository
 {

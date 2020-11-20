@@ -20,13 +20,4 @@ abstract class EmailType extends AbstractType
         unset($options);
         $builder->add('adresse');
     }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults(
-            [
-                'data_class' => Email::class,
-            ]
-        );
-    }
 }

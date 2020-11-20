@@ -1,7 +1,4 @@
 {% extends 'admin.html.twig' %}
-
-{% block title %}Hello ProfilController!{% endblock %}
-
 {% block body %}
     {{ form(form) }}
     {% if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 %}

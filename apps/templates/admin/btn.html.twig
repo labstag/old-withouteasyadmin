@@ -1,0 +1,22 @@
+{% if btnadmin|length !=0 %}
+<div class="ListBtnAdmin" role="group">
+    {% for btn in btnadmin %}
+        <a
+    {%- for attrname, attrvalue in btn.attr|sort -%}
+        {{- " " -}}
+        {%- if attrname in ['placeholder', 'title'] -%}
+            {{- attrname }}="{{ translation_domain is same as(false) or attrvalue is null ? attrvalue : attrvalue|trans(attr_translation_parameters, translation_domain) }}"
+        {%- elseif attrvalue is same as(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not same as(false) -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}>
+            {% if btn.icon is defined %}
+                <i class="{{ btn.icon }}"></i>
+            {% endif %}
+            <span>{{ btn.text}}</span>
+        </a>
+    {% endfor %}
+</div>
+{% endif %}

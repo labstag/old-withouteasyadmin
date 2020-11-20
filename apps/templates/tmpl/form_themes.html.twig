@@ -303,18 +303,18 @@
 {%- endblock -%}
 
 {%- block form_end -%}
-    {%- if not render_rest is defined or render_rest -%}
-        {{ form_rest(form) }}
-    {%- endif -%}
-    {%- set required = false %}
-    {% for children in form.children %}
-        {% if children.vars.required is defined and children.vars.required == true %}
-            {%- set required = true %}
-        {% endif %}
-    {% endfor %}
-    {%- if required == true -%}
-        <div class="RequireFormInfo">Les informations marquées d'un <span>*</span> sont obligatoires</div>
-    {%- endif -%}
+        {%- if not render_rest is defined or render_rest -%}
+            {{ form_rest(form) }}
+        {%- endif -%}
+        {%- set required = false %}
+        {% for children in form.children %}
+            {% if children.vars.required is defined and children.vars.required == true %}
+                {%- set required = true %}
+            {% endif %}
+        {% endfor %}
+        {%- if required == true -%}
+            <div class="RequireFormInfo">Les informations marquées d'un <span>*</span> sont obligatoires</div>
+        {%- endif -%}
     </form>
 {%- endblock form_end -%}
 
@@ -389,7 +389,7 @@
 
 {%- block collection_delete -%}
 	<div class="BtnCollectionDelete" title="Supprimer">
-		<i class="fas fa-trash-alt"></i>
+		<i></i>
 	</div>
 {%- endblock -%}
 

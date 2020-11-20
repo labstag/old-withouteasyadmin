@@ -1,9 +1,8 @@
 <?php
-
 namespace Labstag\Entity;
 
-use Labstag\Repository\MenuRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Repository\MenuRepository;
 
 /**
  * @ORM\Entity(repositoryClass=MenuRepository::class)
@@ -18,34 +17,22 @@ class Menu
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private $libelle;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private $icon;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    /** @ORM\Column(type="integer") */
     private $position;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
+    /** @ORM\Column(type="json", nullable=true) */
     private $data = [];
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    /** @ORM\Column(type="boolean") */
     private $separateur;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private $clef;
 
     /**
@@ -64,7 +51,6 @@ class Menu
      */
     private $children;
 
-
     public function __toString()
     {
         return implode(
@@ -72,7 +58,7 @@ class Menu
             [
                 $this->getId(),
                 '-',
-                '('.$this->getClef().')',
+                '(' . $this->getClef() . ')',
                 '-',
                 $this->getLibelle(),
             ]
@@ -166,7 +152,7 @@ class Menu
         return $this->children;
     }
 
-    public function setParent(Menu $parent)
+    public function setParent(Menu $parent): void
     {
         $this->parent = $parent;
     }

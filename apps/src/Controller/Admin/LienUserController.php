@@ -19,41 +19,25 @@ class LienUserController extends AdminControllerLib
     /**
      * @Route("/", name="admin_lienuser_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        LienUserRepository $lienUserRepository
-    ): Response
+    public function index(LienUserRepository $lienUserRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $lienUserRepository->findAllForAdmin(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $lienUserRepository,
+            'findAllForAdmin',
             'admin/lien_user/index.html.twig',
-            ['pagination' => $pagination]
+            ['new' => 'admin_lienuser_new']
         );
     }
 
     /**
      * @Route("/new", name="admin_lienuser_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(): Response
     {
-        $lienUser = new LienUser();
-        $form     = $this->createForm(LienUserType::class, $lienUser);
-        $return   = $this->newForm($request, $form, $lienUser);
-        if ($return) {
-            return $this->redirectToRoute('admin_lienuser_index');
-        }
-
-        return $this->render(
-            'admin/lien_user/new.html.twig',
-            [
-                'lien_user' => $lienUser,
-                'form'      => $form->createView(),
-            ]
+        return $this->adminCrudService->create(
+            new LienUser(),
+            LienUserType::class,
+            ['list' => 'admin_lienuser_index']
         );
     }
 
@@ -62,28 +46,28 @@ class LienUserController extends AdminControllerLib
      */
     public function show(LienUser $lienUser): Response
     {
-        return $this->render(
+        return $this->adminCrudService->read(
+            $lienUser,
             'admin/lien_user/show.html.twig',
-            ['lien_user' => $lienUser]
+            [
+                'delete' => 'admin_lienuser_delete',
+                'list'   => 'admin_lienuser_index',
+                'edit'   => 'admin_lienuser_edit',
+            ]
         );
     }
 
     /**
      * @Route("/{id}/edit", name="admin_lienuser_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, LienUser $lienUser): Response
+    public function edit(LienUser $lienUser): Response
     {
-        $form   = $this->createForm(LienUserType::class, $lienUser);
-        $return = $this->editForm($request, $form);
-        if ($return) {
-            return $this->redirectToRoute('admin_lienuser_index');
-        }
-
-        return $this->render(
-            'admin/lien_user/edit.html.twig',
+        return $this->adminCrudService->update(
+            LienUserType::class,
+            $lienUser,
             [
-                'lien_user' => $lienUser,
-                'form'      => $form->createView(),
+                'delete' => 'admin_lienuser_delete',
+                'list'   => 'admin_lienuser_index',
             ]
         );
     }
@@ -91,10 +75,11 @@ class LienUserController extends AdminControllerLib
     /**
      * @Route("/{id}", name="admin_lienuser_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, LienUser $lienUser): Response
+    public function delete(LienUser $lienUser): Response
     {
-        $this->deleteEntity($request, $lienUser);
-
-        return $this->redirectToRoute('admin_lienuser_index');
+        return $this->adminCrudService->delete(
+            $lienUser,
+            'admin_lienuser_index'
+        );
     }
 }

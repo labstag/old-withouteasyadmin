@@ -1,28 +1,22 @@
 <?php
-
 namespace Labstag\DataFixtures;
 
 use Doctrine\Persistence\ObjectManager;
-use Labstag\Entity\Groupe;
 use Labstag\Lib\FixtureLib;
 
-/**
- * @codeCoverageIgnore
- */
 class GroupFixtures extends FixtureLib
 {
     private function getGroupes(): array
     {
-        $groupes = [
+        return [
             'visiteur',
             'admin',
             'superadmin',
             'user',
         ];
-        return $groupes;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $groupes = $this->getGroupes();
         foreach ($groupes as $key => $row) {

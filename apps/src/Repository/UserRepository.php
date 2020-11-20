@@ -1,10 +1,9 @@
 <?php
-
 namespace Labstag\Repository;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\User;
 use Labstag\Lib\ServiceEntityRepositoryLib;
-use Doctrine\Persistence\ManagerRegistry;
 
 class UserRepository extends ServiceEntityRepositoryLib
 {
@@ -28,6 +27,7 @@ class UserRepository extends ServiceEntityRepositoryLib
                 'email'    => $field,
             ]
         );
+
         return $query->getQuery()->getOneOrNullResult();
     }
 

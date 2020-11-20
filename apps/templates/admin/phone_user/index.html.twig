@@ -4,7 +4,6 @@
     <table
   data-locale="fr-FR"
   data-toggle="table"
-  data-search="true"
   data-show-columns="true">
         <thead>
             <tr>
@@ -12,7 +11,7 @@
                 <th>Country</th>
                 <th>Type</th>
                 <th>Principal</th>
-                <th class="text-center"><i class="fas fa-cog" title="Actions"></i></th>
+                <th class="text-center"><i class="BtnAdminTableAction" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -38,6 +37,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('admin_phoneuser_new') }}">Create new</a>
 {% endblock %}

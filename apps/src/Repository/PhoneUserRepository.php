@@ -1,9 +1,8 @@
 <?php
-
 namespace Labstag\Repository;
 
-use Labstag\Entity\PhoneUser;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Entity\PhoneUser;
 
 class PhoneUserRepository extends PhoneRepository
 {

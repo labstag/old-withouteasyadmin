@@ -1,10 +1,8 @@
 <?php
-
 namespace Labstag\Entity;
 
-use Labstag\Repository\PhoneRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -22,25 +20,20 @@ abstract class Phone
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     private $numero;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *
      * @Assert\Country
      */
     private $country;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     private $type;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    /** @ORM\Column(type="boolean") */
     private $principal;
 
     public function __toString()

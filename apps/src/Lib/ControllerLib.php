@@ -2,7 +2,6 @@
 
 namespace Labstag\Lib;
 
-use Labstag\Repository\ConfigurationRepository;
 use Labstag\Service\DataService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

@@ -3,30 +3,23 @@
     <table
   data-locale="fr-FR"
   data-toggle="table"
-  data-search="true"
   data-show-columns="true">
         <tbody>
             <tr>
                 <th>Title</th>
-                <td>{{ edito.title }}</td>
+                <td>{{ entity.title }}</td>
             </tr>
             <tr>
                 <th>Content</th>
-                <td>{{ edito.content|raw }}</td>
+                <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
                 <th>Enable</th>
-                <td>{{ edito.enable ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
             </tr>
                 <th>User</th>
-                <td>{{ edito.refuser }}</td>
+                <td>{{ entity.refuser }}</td>
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('admin_edito_index') }}">back to list</a>
-
-    <a href="{{ path('admin_edito_edit', {'id': edito.id}) }}">edit</a>
-
-    {{ include('admin/edito/_delete_form.html.twig') }}
 {% endblock %}

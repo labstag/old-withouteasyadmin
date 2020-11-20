@@ -1,8 +1,0 @@
-{% extends 'admin/user/layout.html.twig' %}
-{% block body %}
-    {{ form(form) }}
-
-    <a href="{{ path('admin_user_index') }}">back to list</a>
-
-    {{ include('admin/user/_delete_form.html.twig') }}
-{% endblock %}

@@ -64,6 +64,14 @@ env-prod: .env ## Installation environnement prod
 	rm -rf vendor
 	@make composer-prod -i
 
+linter: ## Launch all linter
+	@make linter-twig -i
+	@make linter-yaml -i
+	@make linter-phpstan -i
+	@make linter-phpcpd -i
+	@make linter-phpcs -i
+	@make linter-phpmd -i
+
 linter-phpcbf: ## fixe le code PHP à partir d'un standard
 	composer run phpcbf
 

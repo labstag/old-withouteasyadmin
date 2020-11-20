@@ -19,41 +19,25 @@ class UserController extends AdminControllerLib
     /**
      * @Route("/", name="admin_user_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        UserRepository $userRepository
-    ): Response
+    public function index(UserRepository $userRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $userRepository->findAllForAdmin(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $userRepository,
+            'findAllForAdmin',
             'admin/user/index.html.twig',
-            ['pagination' => $pagination]
+            ['new' => 'admin_user_new']
         );
     }
 
     /**
      * @Route("/new", name="admin_user_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(): Response
     {
-        $user   = new User();
-        $form   = $this->createForm(UserType::class, $user);
-        $return = $this->newForm($request, $form, $user);
-        if ($return) {
-            return $this->redirectToRoute('admin_user_index');
-        }
-
-        return $this->render(
-            'admin/user/new.html.twig',
-            [
-                'user' => $user,
-                'form' => $form->createView(),
-            ]
+        return $this->adminCrudService->create(
+            new User(),
+            UserType::class,
+            ['list' => 'admin_user_index']
         );
     }
 
@@ -62,28 +46,28 @@ class UserController extends AdminControllerLib
      */
     public function show(User $user): Response
     {
-        return $this->render(
+        return $this->adminCrudService->read(
+            $user,
             'admin/user/show.html.twig',
-            ['user' => $user]
+            [
+                'delete' => 'admin_user_delete',
+                'list'   => 'admin_user_index',
+                'edit'   => 'admin_user_edit',
+            ]
         );
     }
 
     /**
      * @Route("/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(User $user): Response
     {
-        $form   = $this->createForm(UserType::class, $user);
-        $return = $this->editForm($request, $form);
-        if ($return) {
-            return $this->redirectToRoute('admin_user_index');
-        }
-
-        return $this->render(
-            'admin/user/edit.html.twig',
+        return $this->adminCrudService->update(
+            UserType::class,
+            $user,
             [
-                'user' => $user,
-                'form' => $form->createView(),
+                'delete' => 'admin_user_delete',
+                'list'   => 'admin_user_index',
             ]
         );
     }
@@ -91,10 +75,11 @@ class UserController extends AdminControllerLib
     /**
      * @Route("/{id}", name="admin_user_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, User $user): Response
+    public function delete(User $user): Response
     {
-        $this->deleteEntity($request, $user);
-
-        return $this->redirectToRoute('admin_user_index');
+        return $this->adminCrudService->delete(
+            $user,
+            'admin_user_index'
+        );
     }
 }

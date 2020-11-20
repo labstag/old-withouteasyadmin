@@ -1,11 +1,9 @@
 <?php
-
 namespace Labstag\Entity;
 
-use Labstag\Repository\EmailRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Traits\VerifEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -26,6 +24,7 @@ abstract class Email
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank
      * @Assert\Email(
      *     message="The email '{{ value }}' is not a valid email."
@@ -33,9 +32,7 @@ abstract class Email
      */
     protected $adresse;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    /** @ORM\Column(type="boolean") */
     protected $principal;
 
     public function __construct()

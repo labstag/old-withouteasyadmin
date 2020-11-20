@@ -1,10 +1,9 @@
 <?php
-
 namespace Labstag\Repository;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Edito;
 use Labstag\Lib\ServiceEntityRepositoryLib;
-use Doctrine\Persistence\ManagerRegistry;
 
 class EditoRepository extends ServiceEntityRepositoryLib
 {

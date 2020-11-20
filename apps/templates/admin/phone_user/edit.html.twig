@@ -1,8 +1,0 @@
-{% extends 'admin/phone_user/layout.html.twig' %}
-{% block body %}
-    {{ form(form) }}
-
-    <a href="{{ path('admin_phoneuser_index') }}">back to list</a>
-
-    {{ include('admin/phone_user/_delete_form.html.twig') }}
-{% endblock %}

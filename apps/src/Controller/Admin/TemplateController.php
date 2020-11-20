@@ -19,41 +19,25 @@ class TemplateController extends AdminControllerLib
     /**
      * @Route("/", name="admin_template_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        TemplateRepository $templateRepository
-    ): Response
+    public function index(TemplateRepository $templateRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $templateRepository->findAllForAdmin(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $templateRepository,
+            'findAllForAdmin',
             'admin/template/index.html.twig',
-            ['pagination' => $pagination]
+            ['new' => 'admin_template_new']
         );
     }
 
     /**
      * @Route("/new", name="admin_template_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(): Response
     {
-        $template = new Template();
-        $form     = $this->createForm(TemplateType::class, $template);
-        $return   = $this->newForm($request, $form, $template);
-        if ($return) {
-            return $this->redirectToRoute('admin_template_index');
-        }
-
-        return $this->render(
-            'admin/template/new.html.twig',
-            [
-                'template' => $template,
-                'form'     => $form->createView(),
-            ]
+        return $this->adminCrudService->create(
+            new Template(),
+            TemplateType::class,
+            ['list' => 'admin_template_index']
         );
     }
 
@@ -62,28 +46,28 @@ class TemplateController extends AdminControllerLib
      */
     public function show(Template $template): Response
     {
-        return $this->render(
+        return $this->adminCrudService->read(
+            $template,
             'admin/template/show.html.twig',
-            ['template' => $template]
+            [
+                'delete' => 'admin_template_delete',
+                'list'   => 'admin_template_index',
+                'edit'   => 'admin_template_edit',
+            ]
         );
     }
 
     /**
      * @Route("/{id}/edit", name="admin_template_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Template $template): Response
+    public function edit(Template $template): Response
     {
-        $form   = $this->createForm(TemplateType::class, $template);
-        $return = $this->editForm($request, $form);
-        if ($return) {
-            return $this->redirectToRoute('admin_template_index');
-        }
-
-        return $this->render(
-            'admin/template/edit.html.twig',
+        return $this->adminCrudService->update(
+            TemplateType::class,
+            $template,
             [
-                'template' => $template,
-                'form'     => $form->createView(),
+                'delete' => 'admin_template_delete',
+                'list'   => 'admin_template_index',
             ]
         );
     }
@@ -91,10 +75,11 @@ class TemplateController extends AdminControllerLib
     /**
      * @Route("/{id}", name="admin_template_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Template $template): Response
+    public function delete(Template $template): Response
     {
-        $this->deleteEntity($request, $template);
-
-        return $this->redirectToRoute('admin_template_index');
+        return $this->adminCrudService->delete(
+            $template,
+            'admin_template_index'
+        );
     }
 }

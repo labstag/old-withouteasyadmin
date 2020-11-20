@@ -1,9 +1,8 @@
 <?php
-
 namespace Labstag\Repository;
 
-use Labstag\Entity\EmailUser;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Entity\EmailUser;
 use Labstag\Entity\User;
 
 class EmailUserRepository extends EmailRepository

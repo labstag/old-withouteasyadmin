@@ -18,10 +18,54 @@ table{
   @extend .table-striped;
 }
 
+.bootstrap-table {
+  @extend .mb-2;
+}
+
 a{
   @extend .text-decoration-none;
 }
 
 .pagination{
   @extend .justify-content-center;
+}
+
+.ListBtnAdmin{
+  @extend .btn-group;
+  @extend .btn-group-lg;
+  a{
+    @extend .d-flex;
+    @extend .flex-column;
+    @extend .align-items-center;
+    @extend .btn;
+    @extend .btn-secondary;
+  }
+}
+
+i{
+  &.BtnAdminHeaderEdit{
+    @extend .far;
+    @extend .fa-edit;
+  }
+  &.BtnAdminHeaderDelete{
+    @extend .far;
+    @extend .fa-trash-alt;
+  }
+  &.BtnAdminHeaderSave{
+    @extend .fas;
+    @extend .fa-save;
+  }
+  &.BtnAdminHeaderNew{
+    @extend .fas;
+    @extend .fa-plus;
+  }
+  &.BtnAdminHeaderList{
+    @extend .fas;
+    @extend .fa-list;
+  }
+}
+
+.BtnAdminTableAction{
+  @extend .fas;
+  @extend .fa-cog;
 }

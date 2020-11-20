@@ -1,5 +1,4 @@
 <?php
-
 namespace Labstag\Controller;
 
 use Labstag\Lib\PublicControllerLib;

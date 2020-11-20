@@ -19,41 +19,25 @@ class AdresseUserController extends AdminControllerLib
     /**
      * @Route("/", name="admin_adresseuser_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        AdresseUserRepository $repository
-    ): Response
+    public function index(AdresseUserRepository $repository): Response
     {
-        $pagination = $paginator->paginate(
-            $repository->findAllForAdmin(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $repository,
+            'findAllForAdmin',
             'admin/adresse_user/index.html.twig',
-            ['pagination' => $pagination]
+            ['new' => 'admin_adresseuser_new']
         );
     }
 
     /**
      * @Route("/new", name="admin_adresseuser_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(): Response
     {
-        $adresseUser = new AdresseUser();
-        $form        = $this->createForm(AdresseUserType::class, $adresseUser);
-        $return      = $this->newForm($request, $form, $adresseUser);
-        if ($return) {
-            return $this->redirectToRoute('admin_adresseuser_index');
-        }
-
-        return $this->render(
-            'admin/adresse_user/new.html.twig',
-            [
-                'adresse_user' => $adresseUser,
-                'form'         => $form->createView(),
-            ]
+        return $this->adminCrudService->create(
+            new AdresseUser(),
+            AdresseUserType::class,
+            ['list' => 'admin_adresseuser_index']
         );
     }
 
@@ -62,9 +46,14 @@ class AdresseUserController extends AdminControllerLib
      */
     public function show(AdresseUser $adresseUser): Response
     {
-        return $this->render(
+        return $this->adminCrudService->read(
+            $adresseUser,
             'admin/adresse_user/show.html.twig',
-            ['adresse_user' => $adresseUser]
+            [
+                'delete' => 'admin_adresseuser_delete',
+                'edit'   => 'admin_adresseuser_edit',
+                'list'   => 'admin_adresseuser_index',
+            ]
         );
     }
 
@@ -75,19 +64,14 @@ class AdresseUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(Request $request, AdresseUser $adresseUser): Response
+    public function edit(AdresseUser $adresseUser): Response
     {
-        $form   = $this->createForm(AdresseUserType::class, $adresseUser);
-        $return = $this->editForm($request, $form);
-        if ($return) {
-            return $this->redirectToRoute('admin_adresseuser_index');
-        }
-
-        return $this->render(
-            'admin/adresse_user/edit.html.twig',
+        return $this->adminCrudService->update(
+            AdresseUserType::class,
+            $adresseUser,
             [
-                'adresse_user' => $adresseUser,
-                'form'         => $form->createView(),
+                'delete' => 'admin_adresseuser_delete',
+                'list'   => 'admin_adresseuser_index',
             ]
         );
     }
@@ -95,10 +79,11 @@ class AdresseUserController extends AdminControllerLib
     /**
      * @Route("/{id}", name="admin_adresseuser_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, AdresseUser $adresseUser): Response
+    public function delete(AdresseUser $adresseUser): Response
     {
-        $this->deleteEntity($request, $adresseUser);
-
-        return $this->redirectToRoute('admin_adresseuser_index');
+        return $this->adminCrudService->delete(
+            $adresseUser,
+            'admin_adresseuser_index'
+        );
     }
 }

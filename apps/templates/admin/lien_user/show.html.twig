@@ -3,27 +3,20 @@
     <table
   data-locale="fr-FR"
   data-toggle="table"
-  data-search="true"
   data-show-columns="true">
         <tbody>
             <tr>
                 <th>Name</th>
-                <td>{{ lien_user.name }}</td>
+                <td>{{ entity.name }}</td>
             </tr>
             <tr>
                 <th>Adresse</th>
-                <td>{{ lien_user.adresse }}</td>
+                <td><a href="{{ entity.adresse }}" target="_blank">{{ entity.adresse }}</a></td>
             </tr>
             <tr>
                 <th>User</th>
-                <td><a href="{{ path('admin_user_show', {'id': lien_user.refuser.id}) }}">{{ lien_user.refuser }}</a></td>
+                <td><a href="{{ path('admin_user_show', {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a></td>
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('admin_lienuser_index') }}">back to list</a>
-
-    <a href="{{ path('admin_lienuser_edit', {'id': lien_user.id}) }}">edit</a>
-
-    {{ include('admin/lien_user/_delete_form.html.twig') }}
 {% endblock %}

@@ -50,22 +50,28 @@ class ProfilType extends AbstractType
                 'second_options'  => ['label' => 'Repeat Password'],
             ]
         );
-        $data   = $this->repository->getEmailsUserVerif(
-            $options['data'],
-            true
-        );
-        $emails = [];
-        foreach ($data as $email) {
-            $adresse          = $email->getAdresse();
-            $emails[$adresse] = $adresse;
+        if (isset($options['data']) && !is_null($options['data']->getId())) {
+            $emails = [];
+            $data   = $this->repository->getEmailsUserVerif(
+                $options['data'],
+                true
+            );
+            foreach ($data as $email) {
+                $adresse          = $email->getAdresse();
+                $emails[$adresse] = $adresse;
+            }
+
+            ksort($emails);
+
+            if (count($emails) != 0) {
+                $builder->add(
+                    'email',
+                    ChoiceType::class,
+                    ['choices' => $emails]
+                );
+            }
         }
 
-        ksort($emails);
-        $builder->add(
-            'email',
-            ChoiceType::class,
-            ['choices' => $emails]
-        );
         $builder->add(
             'emailUsers',
             MinMaxCollectionType::class,

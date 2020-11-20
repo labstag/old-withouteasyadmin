@@ -19,41 +19,25 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/", name="admin_menu_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        MenuRepository $menuRepository
-    ): Response
+    public function index(MenuRepository $menuRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $menuRepository->findAllForAdmin(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $menuRepository,
+            'findAllForAdmin',
             'admin/menu/index.html.twig',
-            ['pagination' => $pagination]
+            ['new' => 'admin_menu_new']
         );
     }
 
     /**
      * @Route("/new", name="admin_menu_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(): Response
     {
-        $menu   = new Menu();
-        $form   = $this->createForm(MenuType::class, $menu);
-        $return = $this->newForm($request, $form, $menu);
-        if ($return) {
-            return $this->redirectToRoute('admin_menu_index');
-        }
-
-        return $this->render(
-            'admin/menu/new.html.twig',
-            [
-                'menu' => $menu,
-                'form' => $form->createView(),
-            ]
+        return $this->adminCrudService->create(
+            new Menu(),
+            MenuType::class,
+            ['list' => 'admin_menu_index']
         );
     }
 
@@ -62,28 +46,28 @@ class MenuController extends AdminControllerLib
      */
     public function show(Menu $menu): Response
     {
-        return $this->render(
+        return $this->adminCrudService->read(
+            $menu,
             'admin/menu/show.html.twig',
-            ['menu' => $menu]
+            [
+                'delete' => 'admin_menu_delete',
+                'list'   => 'admin_menu_index',
+                'edit'   => 'admin_menu_edit',
+            ]
         );
     }
 
     /**
      * @Route("/{id}/edit", name="admin_menu_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Menu $menu): Response
+    public function edit(Menu $menu): Response
     {
-        $form   = $this->createForm(MenuType::class, $menu);
-        $return = $this->editForm($request, $form);
-        if ($return) {
-            return $this->redirectToRoute('admin_menu_index');
-        }
-
-        return $this->render(
-            'admin/menu/edit.html.twig',
+        return $this->adminCrudService->update(
+            MenuType::class,
+            $menu,
             [
-                'menu' => $menu,
-                'form' => $form->createView(),
+                'delete' => 'admin_menu_delete',
+                'list'   => 'admin_menu_index',
             ]
         );
     }
@@ -91,10 +75,11 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/{id}", name="admin_menu_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Menu $menu): Response
+    public function delete(Menu $menu): Response
     {
-        $this->deleteEntity($request, $menu);
-
-        return $this->redirectToRoute('admin_menu_index');
+        return $this->adminCrudService->delete(
+            $menu,
+            'admin_menu_index'
+        );
     }
 }

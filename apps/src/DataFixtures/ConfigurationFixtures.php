@@ -8,10 +8,6 @@ use Labstag\Lib\FixtureLib;
 use Symfony\Component\Dotenv\Dotenv;
 use Labstag\Service\OauthService;
 
-
-/**
- * @codeCoverageIgnore
- */
 class ConfigurationFixtures extends FixtureLib
 {
 
