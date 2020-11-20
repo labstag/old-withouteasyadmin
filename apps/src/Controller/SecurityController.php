@@ -197,7 +197,14 @@ class SecurityController extends GeneralControllerLib
 
             return $this->redirect($referer);
         } catch (Exception $exception) {
-            $this->logger->error($exception->getMessage());
+            $errorMsg = sprintf(
+                'Exception : Erreur %s dans %s L.%s : %s',
+                $exception->getCode(),
+                $exception->getFile(),
+                $exception->getLine(),
+                $exception->getMessage()
+            );
+            $this->logger->error($errorMsg);
             $this->addFlash('warning', "Probleme d'identification");
 
             return $this->redirect($referer);

@@ -102,7 +102,14 @@ class ConfigurationListener implements EventSubscriber
                 file_put_contents('robots.txt', $value);
             }
         } catch (Exception $exception) {
-            $this->logger->error($exception->getMessage());
+            $errorMsg = sprintf(
+                'Exception : Erreur %s dans %s L.%s : %s',
+                $exception->getCode(),
+                $exception->getFile(),
+                $exception->getLine(),
+                $exception->getMessage()
+            );
+            $this->logger->error($errorMsg);
             /** @var Session $session */
             $session = $this->session;
             $session->getFlashBag()->add(
