@@ -23,6 +23,9 @@ class LienUserFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function getDependencies()
     {
-        return [UserFixtures::class];
+        return [
+            CacheFixtures::class,
+            UserFixtures::class
+        ];
     }
 }

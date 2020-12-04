@@ -2,11 +2,12 @@
 
 namespace Labstag\DataFixtures;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Menu;
 use Labstag\Lib\FixtureLib;
 
-class MenuAdminFixtures extends FixtureLib
+class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
 {
 
     private ObjectManager $manager;
@@ -53,6 +54,11 @@ class MenuAdminFixtures extends FixtureLib
         ];
 
         return $data;
+    }
+
+    public function getDependencies()
+    {
+        return [CacheFixtures::class];
     }
 
     private function getMenuUtilisateurs(): array

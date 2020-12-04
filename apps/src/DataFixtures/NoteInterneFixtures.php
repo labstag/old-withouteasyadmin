@@ -2,14 +2,12 @@
 
 namespace Labstag\DataFixtures;
 
-use Doctrine\Common\DataFixtures\{
-    DependentFixtureInterface as DependentInterface
-};
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Labstag\Lib\FixtureLib;
 
-class NoteInterneFixtures extends FixtureLib implements DependentInterface
+class NoteInterneFixtures extends FixtureLib implements DependentFixtureInterface
 {
     public const NUMBER = 25;
 
@@ -26,6 +24,7 @@ class NoteInterneFixtures extends FixtureLib implements DependentInterface
     public function getDependencies()
     {
         return [
+            CacheFixtures::class,
             UserFixtures::class,
         ];
     }
