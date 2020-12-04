@@ -12,7 +12,8 @@ class MenuType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void {
+    ): void
+    {
         unset($options);
         $builder->add('libelle');
         $builder->add('icon');

@@ -20,7 +20,8 @@ class ChoiceFieldsType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void {
+    ): void
+    {
         unset($options);
         $choices = [
             'Maybe' => null,

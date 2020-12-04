@@ -16,7 +16,8 @@ class ButtonsFieldsType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void {
+    ): void
+    {
         unset($options);
         $builder->add('button', ButtonType::class);
         $builder->add('reset', ResetType::class);

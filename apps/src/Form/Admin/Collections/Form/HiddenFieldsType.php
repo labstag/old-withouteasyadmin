@@ -15,7 +15,8 @@ class HiddenFieldsType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void {
+    ): void
+    {
         unset($options);
         // hidden fields
         $builder->add('hidden', HiddenType::class);

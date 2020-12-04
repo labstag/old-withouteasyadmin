@@ -15,7 +15,8 @@ class GroupeType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void {
+    ): void
+    {
         unset($options);
         $builder->add('name');
         $builder->add('code');

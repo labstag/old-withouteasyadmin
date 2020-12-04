@@ -13,7 +13,8 @@ class GeonameType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void {
+    ): void
+    {
         $builder->add('name', TextType::class);
         $builder->add(
             'activate',

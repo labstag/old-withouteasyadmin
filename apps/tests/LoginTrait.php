@@ -7,6 +7,7 @@ use Labstag\Entity\User;
 
 trait LoginTrait
 {
+
     protected $clientDefault = null;
 
     protected $client = [];
