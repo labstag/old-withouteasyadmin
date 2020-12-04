@@ -18,6 +18,7 @@ class CacheFixtures extends FixtureLib
 
     public function load(ObjectManager $manager): void
     {
+        unset($manager);
         $this->cache->clear();
     }
 }
