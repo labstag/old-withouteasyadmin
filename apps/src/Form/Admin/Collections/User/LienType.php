@@ -8,7 +8,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LienType extends AbstractLienType
 {
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         // Configure your form options here

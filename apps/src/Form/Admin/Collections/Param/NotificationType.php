@@ -13,8 +13,7 @@ class NotificationType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add('type', TextType::class);
         $builder->add(
             'mail',

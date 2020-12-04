@@ -24,16 +24,16 @@ node_modules: package-lock.json
 
 apps/composer.lock: apps/composer.json
 	docker exec $(PHPFPMFULLNAME) make composer.lock
-	
+
 apps/vendor: apps/composer.lock
 	docker exec $(PHPFPMFULLNAME) make vendor
 
 apps/.env: apps/.env.dist ## Install .env
 	docker exec $(PHPFPMFULLNAME) make .env
-	
+
 assets:
 	docker exec $(PHPFPMFULLNAME) make assets
-	
+
 assets-ci:
 	cd apps && make assets
 
