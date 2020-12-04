@@ -8,6 +8,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 class CacheFixtures extends FixtureLib
 {
+
     protected CacheInterface $cache;
 
     public function __construct(CacheInterface $cache)

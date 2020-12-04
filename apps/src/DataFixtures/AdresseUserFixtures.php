@@ -27,7 +27,7 @@ class AdresseUserFixtures extends FixtureLib implements DependentInterface
     {
         return [
             CacheFixtures::class,
-            UserFixtures::class
+            UserFixtures::class,
         ];
     }
 }

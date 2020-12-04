@@ -25,7 +25,7 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
     {
         return [
             CacheFixtures::class,
-            UserFixtures::class
+            UserFixtures::class,
         ];
     }
 }
