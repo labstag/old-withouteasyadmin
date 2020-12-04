@@ -2,10 +2,11 @@
 
 namespace Labstag\DataFixtures;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Lib\FixtureLib;
 
-class GroupFixtures extends FixtureLib
+class GroupFixtures extends FixtureLib implements DependentFixtureInterface
 {
     private function getGroupes(): array
     {
@@ -25,5 +26,10 @@ class GroupFixtures extends FixtureLib
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [CacheFixtures::class];
     }
 }

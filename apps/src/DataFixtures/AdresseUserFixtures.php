@@ -25,6 +25,9 @@ class AdresseUserFixtures extends FixtureLib implements DependentInterface
 
     public function getDependencies()
     {
-        return [UserFixtures::class];
+        return [
+            CacheFixtures::class,
+            UserFixtures::class,
+        ];
     }
 }

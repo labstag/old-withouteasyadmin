@@ -2,6 +2,7 @@
 
 namespace Labstag\DataFixtures;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Configuration;
 use Labstag\Lib\FixtureLib;
@@ -10,7 +11,7 @@ use Symfony\Component\Dotenv\Dotenv;
 use Labstag\Service\OauthService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-class ConfigurationFixtures extends FixtureLib
+class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterface
 {
 
     private OauthService $oauthService;
@@ -44,6 +45,11 @@ class ConfigurationFixtures extends FixtureLib
         }
 
         $data['geonames'] = $geonames;
+    }
+
+    public function getDependencies()
+    {
+        return [CacheFixtures::class];
     }
 
     private function setOauth(array $env, array &$data): void
@@ -128,9 +134,9 @@ class ConfigurationFixtures extends FixtureLib
             ],
             'disclaimer'      => [
                 [
-                    'activate'     => 0,
-                    'message'      => '',
-                    'title'        => '',
+                    'activate'     => 1,
+                    'message'      => 'Site en construction',
+                    'title'        => 'Site en construction',
                     'url-redirect' => 'http://www.google.fr',
                 ],
             ],
