@@ -13,8 +13,7 @@ class MetaSiteType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add('theme-color', ColorType::class);
         $builder->add('viewport', TextType::class, ['required' => false]);
         $builder->add('description', TextType::class, ['required' => false]);
