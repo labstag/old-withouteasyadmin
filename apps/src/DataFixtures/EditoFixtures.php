@@ -25,6 +25,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
+            CacheFixtures::class,
             UserFixtures::class,
         ];
     }

@@ -2,6 +2,7 @@
 
 namespace Labstag\DataFixtures;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
@@ -11,7 +12,7 @@ use Labstag\Repository\UserRepository;
 use Twig\Environment;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-class TemplatesFixtures extends FixtureLib
+class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
 {
 
     private Environment $twig;
@@ -87,6 +88,11 @@ class TemplatesFixtures extends FixtureLib
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [CacheFixtures::class];
     }
 
     private function addTemplate(Generator $faker, ObjectManager $manager): void
