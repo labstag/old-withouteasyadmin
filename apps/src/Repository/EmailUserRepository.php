@@ -2,8 +2,9 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\EmailUser;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Entity\EmailUser;
+use Labstag\Entity\User;
 
 class EmailUserRepository extends EmailRepository
 {
@@ -12,32 +13,19 @@ class EmailUserRepository extends EmailRepository
         parent::__construct($registry, EmailUser::class);
     }
 
-    // /**
-    //  * @return EmailUser[] Returns an array of EmailUser objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getEmailsUserVerif(User $user, bool $verif): array
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.refuser=:user AND u.verif=:verif'
+        );
+        $query->setParameters(
+            [
+                'user'  => $user,
+                'verif' => $verif,
+            ]
+        );
 
-    /*
-    public function findOneBySomeField($value): ?EmailUser
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getQuery()->getResult();
     }
-    */
 }

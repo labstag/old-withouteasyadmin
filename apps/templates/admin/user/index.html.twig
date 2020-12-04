@@ -1,30 +1,36 @@
+{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/user/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-locale="fr-FR"
+  data-toggle="table"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Username</th>
-                <th>Roles</th>
-                <th>Password</th>
-                <th>Nom</th>
-                <th>Prenom</th>
+                <th>Groupe</th>
+                <th>Email</th>
                 <th>Enable</th>
-                <th>actions</th>
+                <th>Adresses</th>
+                <th>Liens</th>
+                <th>Emails</th>
+                <th>Téléphones</th>
+                <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
-        {% for user in pagination %}
+        {% for entity in pagination %}
             <tr>
-                <td>{{ user.username }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
-                <td>{{ user.nom }}</td>
-                <td>{{ user.prenom }}</td>
-                <td>{{ user.enable ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.username }}</td>
+                <td>{{ entity.groupe }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.adresseUsers|length }}</td>
+                <td>{{ entity.lienUsers|length }}</td>
+                <td>{{ entity.emailUsers|length }}</td>
+                <td>{{ entity.phoneUsers|length }}</td>
                 <td>
-                    <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
-                    <a href="#">delete</a>
+                    {{ macro_admin.actions(entity, actions) }}
                 </td>
             </tr>
         {% else %}
@@ -34,6 +40,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('user_new') }}">Create new</a>
 {% endblock %}

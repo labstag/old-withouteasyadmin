@@ -1,25 +1,22 @@
 {% extends 'admin/edito/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table>
         <tbody>
             <tr>
                 <th>Title</th>
-                <td>{{ edito.title }}</td>
+                <td>{{ entity.title }}</td>
             </tr>
             <tr>
                 <th>Content</th>
-                <td>{{ edito.content }}</td>
+                <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
                 <th>Enable</th>
-                <td>{{ edito.enable ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
+            </tr>
+                <th>User</th>
+                <td>{{ entity.refuser }}</td>
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('edito_index') }}">back to list</a>
-
-    <a href="{{ path('edito_edit', {'id': edito.id}) }}">edit</a>
-
-    {{ include('admin/edito/_delete_form.html.twig') }}
 {% endblock %}

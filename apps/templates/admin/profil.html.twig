@@ -1,0 +1,44 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    {{ form(form) }}
+    {% if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 %}
+        <div class="row">
+    {% endif %}
+    {% if entity.oauthconnectusers|length != 0 %}
+        <div class="col-auto">
+            <fieldset>
+                <legend>Dissocier :</legend>
+                <div class="row">
+                    {% for oauth in entity.oauthconnectusers %}
+                        <div class="itemConnect">
+                            <a href="{{ path('connect_lost', {'oauthCode': oauth.name}) }}" title="{{ oauth.name|e }}">
+                                <i class="fab fa-{{ oauth.name }}"></i>
+                                {{ oauth.name }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </fieldset>
+        </div>
+    {% endif %}
+    {% if oauthActivated|length != 0 %}
+        <div class="col-auto">
+            <fieldset>
+                <legend>Se connecter avec :</legend>
+                <div class="row">
+                {% for oauth in oauthActivated %}
+                    <div class="itemConnect">
+                        <a href="{{ path('connect_start', {'oauthCode': oauth.type}) }}" title="{{ oauth.type|e }}">
+                            <i class="fab fa-{{ oauth.type }}"></i>
+                            {{ oauth.type }}
+                        </a>
+                    </div>
+                {% endfor %}
+                </div>
+            </fieldset>
+        </div>
+    {% endif %}
+    {% if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 %}
+        </div>
+    {% endif %}
+{% endblock %}

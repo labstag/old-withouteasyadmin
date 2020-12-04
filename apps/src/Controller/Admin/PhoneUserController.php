@@ -6,108 +6,123 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\PhoneUser;
 use Labstag\Form\Admin\PhoneUserType;
 use Labstag\Repository\PhoneUserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/user/phone")
  */
-class PhoneUserController extends AbstractController
+class PhoneUserController extends AdminControllerLib
 {
+
+    protected string $headerTitle = "Téléphone d'utilisateurs";
+
+    protected string $urlHome = 'admin_phoneuser_index';
     /**
-     * @Route("/", name="phone_user_index", methods={"GET"})
+     * @Route("/", name="admin_phoneuser_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        PhoneUserRepository $phoneUserRepository
+    public function index(PhoneUserRepository $phoneUserRepository): Response
+    {
+        return $this->adminCrudService->list(
+            $phoneUserRepository,
+            'findAllForAdmin',
+            'admin/phone_user/index.html.twig',
+            ['new' => 'admin_phoneuser_new'],
+            [
+                'list'   => 'admin_phoneuser_index',
+                'show'   => 'admin_phoneuser_show',
+                'edit'   => 'admin_phoneuser_edit',
+                'delete' => 'admin_phoneuser_delete',
+            ]
+        );
+    }
+
+    /**
+     * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
+     */
+    public function new(RouterInterface $router): Response
+    {
+        $breadcrumb = [
+            'New' => $router->generate(
+                'admin_phoneuser_new'
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->create(
+            new PhoneUser(),
+            PhoneUserType::class,
+            ['list' => 'admin_phoneuser_index']
+        );
+    }
+
+    /**
+     * @Route("/{id}", name="admin_phoneuser_show", methods={"GET"})
+     */
+    public function show(
+        PhoneUser $phoneUser,
+        RouterInterface $router
     ): Response
     {
-        $pagination = $paginator->paginate(
-            $phoneUserRepository->findAll(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
-            'admin/phone_user/index.html.twig',
-            ['pagination' => $pagination]
-        );
-    }
-
-    /**
-     * @Route("/new", name="phone_user_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $phoneUser = new PhoneUser();
-        $form      = $this->createForm(PhoneUserType::class, $phoneUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($phoneUser);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('phone_user_index');
-        }
-
-        return $this->render(
-            'admin/phone_user/new.html.twig',
-            [
-                'phone_user' => $phoneUser,
-                'form'       => $form->createView(),
-            ]
-        );
-    }
-
-    /**
-     * @Route("/{id}", name="phone_user_show", methods={"GET"})
-     */
-    public function show(PhoneUser $phoneUser): Response
-    {
-        return $this->render(
+        $breadcrumb = [
+            'Show' => $router->generate(
+                'admin_phoneuser_show',
+                [
+                    'id' => $phoneUser->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->read(
+            $phoneUser,
             'admin/phone_user/show.html.twig',
-            ['phone_user' => $phoneUser]
-        );
-    }
-
-    /**
-     * @Route("/{id}/edit", name="phone_user_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, PhoneUser $phoneUser): Response
-    {
-        $form = $this->createForm(PhoneUserType::class, $phoneUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('phone_user_index');
-        }
-
-        return $this->render(
-            'admin/phone_user/edit.html.twig',
             [
-                'phone_user' => $phoneUser,
-                'form'       => $form->createView(),
+                'delete' => 'admin_phoneuser_delete',
+                'list'   => 'admin_phoneuser_index',
+                'edit'   => 'admin_phoneuser_edit',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="phone_user_delete", methods={"DELETE"})
+     * @Route(
+     *  "/{id}/edit",
+     *  name="admin_phoneuser_edit",
+     *  methods={"GET","POST"}
+     * )
      */
-    public function delete(Request $request, PhoneUser $phoneUser): Response
+    public function edit(
+        PhoneUser $phoneUser,
+        RouterInterface $router
+    ): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$phoneUser->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($phoneUser);
-            $entityManager->flush();
-        }
+        $breadcrumb = [
+            'Edit' => $router->generate(
+                'admin_phoneuser_edit',
+                [
+                    'id' => $phoneUser->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->update(
+            PhoneUserType::class,
+            $phoneUser,
+            [
+                'delete' => 'admin_phoneuser_delete',
+                'list'   => 'admin_phoneuser_index',
+                'show'   => 'admin_phoneuser_show',
+            ]
+        );
+    }
 
-        return $this->redirectToRoute('phone_user_index');
+    /**
+     * @Route("/delete/{id}", name="admin_phoneuser_delete", methods={"POST"})
+     */
+    public function delete(PhoneUser $phoneUser): Response
+    {
+        return $this->adminCrudService->delete($phoneUser);
     }
 }

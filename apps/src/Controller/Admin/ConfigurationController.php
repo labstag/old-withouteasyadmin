@@ -4,119 +4,73 @@ namespace Labstag\Controller\Admin;
 
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Configuration;
-use Labstag\Form\Admin\ConfigurationType;
 use Labstag\Repository\ConfigurationRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/configuration")
  */
-class ConfigurationController extends AbstractController
+class ConfigurationController extends AdminControllerLib
 {
+
+    protected string $headerTitle = 'Configuration';
+
+    protected string $urlHome = 'admin_configuration_index';
     /**
-     * @Route("/", name="configuration_index", methods={"GET"})
+     * @Route("/", name="admin_configuration_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        ConfigurationRepository $repository
-    ): Response
+    public function index(ConfigurationRepository $repository): Response
     {
-        $pagination = $paginator->paginate(
-            $repository->findAll(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $repository,
+            'findAllForAdmin',
             'admin/configuration/index.html.twig',
-            ['pagination' => $pagination]
-        );
-    }
-
-    /**
-     * @Route("/new", name="configuration_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $configuration = new Configuration();
-        $form          = $this->createForm(
-            ConfigurationType::class,
-            $configuration
-        );
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($configuration);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('configuration_index');
-        }
-
-        return $this->render(
-            'admin/configuration/new.html.twig',
+            [],
             [
-                'configuration' => $configuration,
-                'form'          => $form->createView(),
+                'list'   => 'admin_configuration_index',
+                'show'   => 'admin_configuration_show',
+                'delete' => 'admin_configuration_delete',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="configuration_show", methods={"GET"})
+     * @Route("/{id}", name="admin_configuration_show", methods={"GET"})
      */
-    public function show(Configuration $configuration): Response
+    public function show(
+        Configuration $configuration,
+        RouterInterface $router
+    ): Response
     {
-        return $this->render(
+        $breadcrumb = [
+            'Show' => $router->generate(
+                'admin_configuration_show',
+                [
+                    'id' => $configuration->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->read(
+            $configuration,
             'admin/configuration/show.html.twig',
-            ['configuration' => $configuration]
+            ['list' => 'admin_configuration_index']
         );
     }
 
     /**
-     * @Route("/{id}/edit", name="configuration_edit", methods={"GET","POST"})
+     * @Route(
+     *  "/delete/{id}",
+     *  name="admin_configuration_delete",
+     *  methods={"POST"}
+     * )
      */
-    public function edit(
-        Request $request,
-        Configuration $configuration
-    ): Response
+    public function delete(Configuration $configuration): Response
     {
-        $form = $this->createForm(ConfigurationType::class, $configuration);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('configuration_index');
-        }
-
-        return $this->render(
-            'admin/configuration/edit.html.twig',
-            [
-                'configuration' => $configuration,
-                'form'          => $form->createView(),
-            ]
-        );
-    }
-
-    /**
-     * @Route("/{id}", name="configuration_delete", methods={"DELETE"})
-     */
-    public function delete(
-        Request $request,
-        Configuration $configuration
-    ): Response
-    {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$configuration->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($configuration);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('configuration_index');
+        return $this->adminCrudService->delete($configuration);
     }
 }

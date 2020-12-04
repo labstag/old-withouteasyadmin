@@ -1,0 +1,29 @@
+{% extends 'global.html.twig' %}
+
+{% block page_title %}Log in!{% endblock %}
+
+{% block body %}
+    <div class="ShowGlobalLogin">
+        <h1>Please sign in</h1>
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        {{ form(formLogin) }}
+        <a href="{{ path("app_lost") }}">J'ai perdu mon mot de passe</a>
+        {% if oauths|length != 0 %}
+            <fieldset>
+                <legend>Se connecter avec :</legend>
+                <div class="row">
+                {% for oauth in oauths %}
+                    <div class="itemConnect">
+                        <a href="{{ path('connect_start', {'oauthCode': oauth.name}) }}" title="{{ oauth.name|e }}">
+                            <i class="fab fa-{{ oauth.name }}"></i>
+                            {{ oauth.name }}
+                        </a>
+                    </div>
+                {% endfor %}
+                </div>
+            </fieldset>
+        {% endif %}
+    </div>
+{% endblock %}

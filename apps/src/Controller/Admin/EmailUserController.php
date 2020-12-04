@@ -6,108 +6,123 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\EmailUser;
 use Labstag\Form\Admin\EmailUserType;
 use Labstag\Repository\EmailUserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/user/email")
  */
-class EmailUserController extends AbstractController
+class EmailUserController extends AdminControllerLib
 {
+
+    protected string $headerTitle = 'Email utilisateurs';
+
+    protected string $urlHome = 'admin_emailuser_index';
     /**
-     * @Route("/", name="email_user_index", methods={"GET"})
+     * @Route("/", name="admin_emailuser_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        EmailUserRepository $emailUserRepository
+    public function index(EmailUserRepository $emailUserRepository): Response
+    {
+        return $this->adminCrudService->list(
+            $emailUserRepository,
+            'findAllForAdmin',
+            'admin/email_user/index.html.twig',
+            ['new' => 'admin_emailuser_new'],
+            [
+                'list'   => 'admin_emailuser_index',
+                'show'   => 'admin_emailuser_show',
+                'edit'   => 'admin_emailuser_edit',
+                'delete' => 'admin_emailuser_delete',
+            ]
+        );
+    }
+
+    /**
+     * @Route("/new", name="admin_emailuser_new", methods={"GET","POST"})
+     */
+    public function new(RouterInterface $router): Response
+    {
+        $breadcrumb = [
+            'New' => $router->generate(
+                'admin_emailuser_new'
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->create(
+            new EmailUser(),
+            EmailUserType::class,
+            ['list' => 'admin_emailuser_index']
+        );
+    }
+
+    /**
+     * @Route("/{id}", name="admin_emailuser_show", methods={"GET"})
+     */
+    public function show(
+        EmailUser $emailUser,
+        RouterInterface $router
     ): Response
     {
-        $pagination = $paginator->paginate(
-            $emailUserRepository->findAll(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
-            'admin/email_user/index.html.twig',
-            ['pagination' => $pagination]
-        );
-    }
-
-    /**
-     * @Route("/new", name="email_user_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $emailUser = new EmailUser();
-        $form      = $this->createForm(EmailUserType::class, $emailUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($emailUser);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('email_user_index');
-        }
-
-        return $this->render(
-            'admin/email_user/new.html.twig',
-            [
-                'email_user' => $emailUser,
-                'form'       => $form->createView(),
-            ]
-        );
-    }
-
-    /**
-     * @Route("/{id}", name="email_user_show", methods={"GET"})
-     */
-    public function show(EmailUser $emailUser): Response
-    {
-        return $this->render(
+        $breadcrumb = [
+            'Show' => $router->generate(
+                'admin_emailuser_show',
+                [
+                    'id' => $emailUser->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->read(
+            $emailUser,
             'admin/email_user/show.html.twig',
-            ['email_user' => $emailUser]
-        );
-    }
-
-    /**
-     * @Route("/{id}/edit", name="email_user_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, EmailUser $emailUser): Response
-    {
-        $form = $this->createForm(EmailUserType::class, $emailUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('email_user_index');
-        }
-
-        return $this->render(
-            'admin/email_user/edit.html.twig',
             [
-                'email_user' => $emailUser,
-                'form'       => $form->createView(),
+                'delete' => 'admin_emailuser_delete',
+                'edit'   => 'admin_emailuser_edit',
+                'list'   => 'admin_emailuser_index',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="email_user_delete", methods={"DELETE"})
+     * @Route(
+     *  "/{id}/edit",
+     *  name="admin_emailuser_edit",
+     *  methods={"GET","POST"}
+     * )
      */
-    public function delete(Request $request, EmailUser $emailUser): Response
+    public function edit(
+        EmailUser $emailUser,
+        RouterInterface $router
+    ): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$emailUser->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($emailUser);
-            $entityManager->flush();
-        }
+        $breadcrumb = [
+            'Edit' => $router->generate(
+                'admin_emailuser_edit',
+                [
+                    'id' => $emailUser->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->update(
+            EmailUserType::class,
+            $emailUser,
+            [
+                'delete' => 'admin_emailuser_delete',
+                'list'   => 'admin_emailuser_index',
+                'show'   => 'admin_emailuser_show',
+            ]
+        );
+    }
 
-        return $this->redirectToRoute('email_user_index');
+    /**
+     * @Route("/delete/{id}", name="admin_emailuser_delete", methods={"POST"})
+     */
+    public function delete(EmailUser $emailUser): Response
+    {
+        return $this->adminCrudService->delete($emailUser);
     }
 }

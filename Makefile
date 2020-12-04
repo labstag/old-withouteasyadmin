@@ -1,12 +1,14 @@
-.DEFAULT_GOAL   := help
-STACK           := labstag
-NETWORK         := proxynetwork
-PHPFPM          := $(STACK)_phpfpm
-PHPFPMFULLNAME  := $(PHPFPM).1.$$(docker service ps -f 'name=$(PHPFPM)' $(PHPFPM) -q --no-trunc | head -n1)
-MARIADB         := $(STACK)_mariadb
-MARIADBFULLNAME := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $(MARIADB) -q --no-trunc | head -n1)
-APACHE          := $(STACK)_apache
-APACHEFULLNAME  := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
+.DEFAULT_GOAL        := help
+STACK                := labstag
+NETWORK              := proxynetwork
+PHPFPM               := $(STACK)_phpfpm
+PHPFPMFULLNAME       := $(PHPFPM).1.$$(docker service ps -f 'name=$(PHPFPM)' $(PHPFPM) -q --no-trunc | head -n1)
+PHPFPMXDEBUG         := $(STACK)_phpfpm-xdebug
+PHPFPMXDEBUGFULLNAME := $(PHPFPMXDEBUG).1.$$(docker service ps -f 'name=$(PHPFPMXDEBUG)' $(PHPFPMXDEBUG) -q --no-trunc | head -n1)
+MARIADB              := $(STACK)_mariadb
+MARIADBFULLNAME      := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $(MARIADB) -q --no-trunc | head -n1)
+APACHE               := $(STACK)_apache
+APACHEFULLNAME       := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
 %:
 	@:
 
@@ -22,12 +24,18 @@ node_modules: package-lock.json
 
 apps/composer.lock: apps/composer.json
 	docker exec $(PHPFPMFULLNAME) make composer.lock
-	
+
 apps/vendor: apps/composer.lock
 	docker exec $(PHPFPMFULLNAME) make vendor
 
 apps/.env: apps/.env.dist ## Install .env
 	docker exec $(PHPFPMFULLNAME) make .env
+
+assets:
+	docker exec $(PHPFPMFULLNAME) make assets
+
+assets-ci:
+	cd apps && make assets
 
 bdd-fixtures: ## fixtures
 	docker exec $(PHPFPMFULLNAME) make bdd-fixtures
@@ -74,6 +82,9 @@ docker-create-network: ## create network
 docker-deploy: ## deploy
 	docker stack deploy -c docker-compose.yml $(STACK)
 
+docker-deploy-ci: ## deploy
+	docker stack deploy -c docker-compose-ci.yml $(STACK)
+
 docker-image-pull: ## Get docker image
 	docker image pull redis:6.0.9
 	docker image pull mariadb:10.5.1
@@ -85,9 +96,6 @@ docker-image-pull: ## Get docker image
 	docker image pull dunglas/mercure:v0.10
 	docker image pull koromerzhin/phpfpm:7.4.12-symfony
 
-docker-logs: ## logs docker
-	docker service logs -f --tail 100 --raw $(WWWFULLNAME)
-
 docker-ls: ## docker service
 	@docker stack services $(STACK)
 
@@ -95,7 +103,11 @@ docker-stop: ## docker stop
 	@docker stack rm $(STACK)
 
 encore-dev: ## créer les assets en version dev
+	@npm rebuild node-sass
 	@npm run encore-dev
+
+encore-watch: ## créer les assets en version watch
+	@npm run encore-watch
 
 env-dev: apps/.env ## Installation environnement dev
 	sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
@@ -120,6 +132,8 @@ install: apps/vendor node_modules apps/.env ## installation
 	@make docker-deploy -i
 	@make sleep -i
 	@make bdd-migrate -i
+	@make assets -i
+	@make encore-dev -i
 	@make linter -i
 
 install-dev: install
@@ -143,19 +157,19 @@ linter-phpcbf: ## fixe le code PHP à partir d'un standard
 	docker exec $(PHPFPMFULLNAME) make linter-phpcbf
 
 linter-phpcpd: phpcpd.phar ## Vérifie s'il y a du code dupliqué
-	docker exec $(PHPFPMFULLNAME) make linter-phpcpd
+	docker exec $(PHPFPMFULLNAME) php phpcpd.phar src tests
 
 linter-phpcs: ## indique les erreurs de code non corrigé par PHPCBF
-	docker exec $(PHPFPMFULLNAME) make linter-phpcs
+	docker exec $(PHPFPMFULLNAME) composer run phpcs
 
 linter-phpcs-onlywarning: ## indique les erreurs de code non corrigé par PHPCBF
-	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlywarning
+	docker exec $(PHPFPMFULLNAME) composer run phpcs-onlywarning
 
 linter-phpcs-onlyerror: ## indique les erreurs de code non corrigé par PHPCBF
-	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlyerror
+	docker exec $(PHPFPMFULLNAME) composer run phpcs-onlyerror
 
 linter-phpcs-onlyerror-ci: ## indique les erreurs de code non corrigé par PHPCBF
-	cd apps && make linter-phpcs-onlyerror
+	cd apps && composer run phpcs-onlyerror
 
 linter-phploc: ## phploc
 	docker exec $(PHPFPMFULLNAME) make linter-phploc
@@ -170,10 +184,10 @@ linter-phpmnd: ## Si des chiffres sont utilisé dans le code PHP, il est conseil
 	docker exec $(PHPFPMFULLNAME) make linter-phpmnd
 
 linter-phpmnd-ci: ## Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes
-	cd apps && make linter-phpmnd
+	cd apps && composer run phpmnd
 
 linter-phpstan: ## regarde si le code PHP ne peux pas être optimisé
-	docker exec $(PHPFPMFULLNAME) make linter-phpstan
+	docker exec $(PHPFPMFULLNAME) composer run phpstan
 
 linter-phpstan-ci: ## regarde si le code PHP ne peux pas être optimisé
 	cd apps && make linter-phpstan
@@ -185,7 +199,7 @@ linter-twig-ci: ## indique les erreurs de code de twig
 	cd apps &&  make linter-twig
 
 linter-yaml: ## indique les erreurs de code de yaml
-	docker exec $(PHPFPMFULLNAME) make linter-twig
+	docker exec $(PHPFPMFULLNAME) make linter-yaml
 
 linter-yaml-ci: ## indique les erreurs de code de yaml
 	cd apps &&  make linter-yaml
@@ -202,27 +216,30 @@ logs-mariadb: ## logs docker MARIADB
 logs-phpfpm: ## logs docker PHPFPM
 	docker service logs -f --tail 100 --raw $(PHPFPMFULLNAME)
 
-sleep: ## sleep
-	sleep 90
+messenger_consume: ## Messenger Consume
+	docker exec -ti $(PHPFPMFULLNAME) make messenger_consume
 
-ssh: ## ssh
+sleep: ## sleep
+	sleep 180
+
+ssh-phpfpm: ## ssh phpfpm
 	docker exec -ti $(PHPFPMFULLNAME) /bin/bash
 
-tests-behat: ## Lance les tests behat
-	docker exec $(PHPFPMFULLNAME) make tests-behat
+ssh-phpfpm-xdebug: ## ssh phpfpm xdebug
+	docker exec -ti $(PHPFPMXDEBUGFULLNAME) /bin/bash
 
-tests-behat-ci: ## Lance les tests behat
-	cd apps && make tests-behat
+ssh-mariadb: ## ssh mariadb
+	docker exec -ti $(MARIADBFULLNAME) /bin/bash
+
+tests-behat: ## Lance les tests behat
+	docker exec $(PHPFPMXDEBUGFULLNAME) composer run behat
 
 tests-launch: ## Launch all tests
 	@make tests-behat -i
 	@make tests-simple-phpunit-unit-integration -i
 
 tests-simple-phpunit-unit-integration: ## lance les tests phpunit
-	docker exec $(PHPFPMFULLNAME) make tests-simple-phpunit-unit-integration
-
-tests-simple-phpunit-unit-integration-ci: ## lance les tests phpunit
-	cd apps && make tests-simple-phpunit-unit-integration
+	docker exec $(PHPFPMXDEBUGFULLNAME) composer run simple-phpunit-unit-integration
 
 tests-simple-phpunit: ## lance les tests phpunit
-	docker exec $(PHPFPMFULLNAME) make tests-simple-phpunit
+	docker exec $(PHPFPMXDEBUGFULLNAME) composer run simple-phpunit

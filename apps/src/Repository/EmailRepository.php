@@ -2,43 +2,25 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\Email;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 
-abstract class EmailRepository extends ServiceEntityRepository
+abstract class EmailRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Email::class);
-    }
 
-    // /**
-    //  * @return Email[] Returns an array of Email objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Get random data.
+     *
+     * @return object
+     */
+    public function findOneRandomToVerif($state)
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $name          = $this->getClassMetadata()->getName();
+        $dql           = 'SELECT p FROM ' . $name . ' p WHERE p.verif='.$state.' ORDER BY RAND()';
+        $entityManager = $this->getEntityManager();
+        $query         = $entityManager->createQuery($dql);
+        $query         = $query->setMaxResults(1);
+        $result        = $query->getOneOrNullResult();
 
-    /*
-    public function findOneBySomeField($value): ?Email
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $result;
     }
-    */
 }

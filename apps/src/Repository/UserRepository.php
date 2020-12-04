@@ -2,14 +2,11 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository as SRepo;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Labstag\Entity\User;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 
-class UserRepository extends SRepo implements PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -17,52 +14,55 @@ class UserRepository extends SRepo implements PasswordUpgraderInterface
     }
 
     /**
-     * Used to upgrade (rehash) the user's password automatically over time.
+     * Get random data.
+     *
+     * @return object
      */
-    public function upgradePassword(
-        UserInterface $user,
-        string $newEncodedPassword
-    ): void
+    public function findOneRandomToLost($state)
     {
-        if (!$user instanceof User) {
-            $msg = sprintf(
-                'Instances of "%s" are not supported.',
-                get_class($user)
-            );
-            throw new UnsupportedUserException($msg);
-        }
+        $name          = $this->getClassMetadata()->getName();
+        $dql           = 'SELECT p FROM ' . $name . ' p WHERE p.lost='.$state.' ORDER BY RAND()';
+        $entityManager = $this->getEntityManager();
+        $query         = $entityManager->createQuery($dql);
+        $query         = $query->setMaxResults(1);
+        $result        = $query->getOneOrNullResult();
 
-        $user->setPassword($newEncodedPassword);
-        $this->_em->persist($user);
-        $this->_em->flush();
+        return $result;
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Get random data.
+     *
+     * @return object
+     */
+    public function findOneRandomToVerif($state)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $name          = $this->getClassMetadata()->getName();
+        $dql           = 'SELECT p FROM ' . $name . ' p WHERE p.verif='.$state.' ORDER BY RAND()';
+        $entityManager = $this->getEntityManager();
+        $query         = $entityManager->createQuery($dql);
+        $query         = $query->setMaxResults(1);
+        $result        = $query->getOneOrNullResult();
 
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $result;
     }
-    */
+
+    public function findUserEnable(string $field): ?User
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.username=:username OR u.email=:email'
+        );
+        $query->andWhere('u.enable=true');
+        $query->andWhere('u.verif=true');
+        $query->andWhere('u.lost=false');
+        $query->setParameters(
+            [
+                'username' => $field,
+                'email'    => $field,
+            ]
+        );
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
 }

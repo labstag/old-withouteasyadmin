@@ -1,27 +1,31 @@
+{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/phone_user/layout.html.twig' %}
-
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-locale="fr-FR"
+  data-toggle="table"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Numero</th>
                 <th>Country</th>
                 <th>Type</th>
                 <th>Principal</th>
-                <th>actions</th>
+                <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
-        {% for phone_user in pagination %}
+        {% for entity in pagination %}
             <tr>
-                <td>{{ phone_user.numero }}</td>
-                <td>{{ phone_user.country }}</td>
-                <td>{{ phone_user.type }}</td>
-                <td>{{ phone_user.principal }}</td>
+                <td>{{ entity.numero }}</td>
                 <td>
-                    <a href="{{ path('phone_user_show', {'id': phone_user.id}) }}">show</a>
-                    <a href="{{ path('phone_user_edit', {'id': phone_user.id}) }}">edit</a>
-                    <a href="#">delete</a>
+                    <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
+                    {{ entity.country|country_name('fr') }}
+                </td>
+                <td>{{ entity.type }}</td>
+                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
+                <td>
+                    {{ macro_admin.actions(entity, actions) }}
                 </td>
             </tr>
         {% else %}
@@ -31,6 +35,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('phone_user_new') }}">Create new</a>
 {% endblock %}

@@ -2,112 +2,128 @@
 
 namespace Labstag\Controller\Admin;
 
+use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\NoteInterne;
 use Labstag\Form\Admin\NoteInterneType;
 use Labstag\Repository\NoteInterneRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/noteinterne")
  */
-class NoteInterneController extends AbstractController
+class NoteInterneController extends AdminControllerLib
 {
+
+    protected string $headerTitle = 'Note interne';
+
+    protected string $urlHome = 'admin_noteinterne_index';
     /**
-     * @Route("/", name="note_interne_index", methods={"GET"})
+     * @Route("/", name="admin_noteinterne_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        NoteInterneRepository $repository
+    public function index(NoteInterneRepository $repository): Response
+    {
+        return $this->adminCrudService->list(
+            $repository,
+            'findAllForAdmin',
+            'admin/note_interne/index.html.twig',
+            ['new' => 'admin_noteinterne_new'],
+            [
+                'list'   => 'admin_noteinterne_index',
+                'show'   => 'admin_noteinterne_show',
+                'edit'   => 'admin_noteinterne_edit',
+                'delete' => 'admin_noteinterne_delete',
+            ]
+        );
+    }
+
+    /**
+     * @Route("/new", name="admin_noteinterne_new", methods={"GET","POST"})
+     */
+    public function new(RouterInterface $router): Response
+    {
+        $breadcrumb = [
+            'New' => $router->generate(
+                'admin_noteinterne_new'
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->create(
+            new NoteInterne(),
+            NoteInterneType::class,
+            ['list' => 'admin_noteinterne_index']
+        );
+    }
+
+    /**
+     * @Route("/{id}", name="admin_noteinterne_show", methods={"GET"})
+     */
+    public function show(
+        NoteInterne $noteInterne,
+        RouterInterface $router
     ): Response
     {
-        $pagination = $paginator->paginate(
-            $repository->findAll(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
-            'admin/note_interne/index.html.twig',
-            ['pagination' => $pagination]
-        );
-    }
-
-    /**
-     * @Route("/new", name="note_interne_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $noteInterne = new NoteInterne();
-        $form        = $this->createForm(NoteInterneType::class, $noteInterne);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($noteInterne);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('note_interne_index');
-        }
-
-        return $this->render(
-            'admin/note_interne/new.html.twig',
-            [
-                'note_interne' => $noteInterne,
-                'form'         => $form->createView(),
-            ]
-        );
-    }
-
-    /**
-     * @Route("/{id}", name="note_interne_show", methods={"GET"})
-     */
-    public function show(NoteInterne $noteInterne): Response
-    {
-        return $this->render(
+        $breadcrumb = [
+            'Show' => $router->generate(
+                'admin_noteinterne_show',
+                [
+                    'id' => $noteInterne->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->read(
+            $noteInterne,
             'admin/note_interne/show.html.twig',
-            ['note_interne' => $noteInterne]
-        );
-    }
-
-    /**
-     * @Route("/{id}/edit", name="note_interne_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, NoteInterne $noteInterne): Response
-    {
-        $form = $this->createForm(NoteInterneType::class, $noteInterne);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('note_interne_index');
-        }
-
-        return $this->render(
-            'admin/note_interne/edit.html.twig',
             [
-                'note_interne' => $noteInterne,
-                'form'         => $form->createView(),
+                'delete' => 'admin_noteinterne_delete',
+                'list'   => 'admin_noteinterne_index',
+                'edit'   => 'admin_noteinterne_edit',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="note_interne_delete", methods={"DELETE"})
+     * @Route(
+     *  "/{id}/edit",
+     *  name="admin_noteinterne_edit",
+     *  methods={"GET","POST"}
+     * )
      */
-    public function delete(Request $request, NoteInterne $noteInterne): Response
+    public function edit(
+        NoteInterne $noteInterne,
+        RouterInterface $router
+    ): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$noteInterne->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($noteInterne);
-            $entityManager->flush();
-        }
+        $breadcrumb = [
+            'Edit' => $router->generate(
+                'admin_noteinterne_edit',
+                [
+                    'id' => $noteInterne->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->update(
+            NoteInterneType::class,
+            $noteInterne,
+            [
+                'delete' => 'admin_noteinterne_delete',
+                'list'   => 'admin_noteinterne_index',
+                'show'   => 'admin_noteinterne_show',
+            ]
+        );
+    }
 
-        return $this->redirectToRoute('note_interne_index');
+    /**
+     * @Route("/delete/{id}", name="admin_noteinterne_delete", methods={"POST"})
+     */
+    public function delete(NoteInterne $noteInterne): Response
+    {
+        return $this->adminCrudService->delete($noteInterne);
     }
 }

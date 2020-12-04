@@ -43,7 +43,7 @@ Hosts:
 
 ## Récupérer les images docker
 
-``` sh
+```sh
 make docker-image-pull
 ```
 
@@ -55,21 +55,30 @@ make install
 
 ## after git add
 
-``` sh
+```sh
 make git-check
 ```
 
 ## Replace git commit
 
-``` sh
+```sh
 make git-commit
 ```
 
 ## help
 
-``` sh
+```sh
 make help
 ```
+
+## Users
+
+| Username   | Password | Email               | enable | Check |
+| ---------- | -------- | ------------------- | ------ | ----- |
+| disable    | password | disable@email.fr    | FALSE  | TRUE  |
+| unverif    | password | unverif@email.fr    | FALSE  | FALSE |
+| admin      | password | admin@email.fr      | TRUE   | TRUE  |
+| superadmin | password | superadmin@email.fr | TRUE   | TRUE  |
 
 ## Author
 

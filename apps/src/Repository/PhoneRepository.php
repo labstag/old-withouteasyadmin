@@ -2,43 +2,8 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\Phone;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 
-abstract class PhoneRepository extends ServiceEntityRepository
+abstract class PhoneRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Phone::class);
-    }
-
-    // /**
-    //  * @return Phone[] Returns an array of Phone objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Phone
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

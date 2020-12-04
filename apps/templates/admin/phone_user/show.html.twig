@@ -1,29 +1,27 @@
 {% extends 'admin/phone_user/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table>
         <tbody>
             <tr>
                 <th>Numero</th>
-                <td>{{ phone_user.numero }}</td>
+                <td><a href="tel:{{ entity.numero }}">{{ entity.numero }}</a></td>
             </tr>
             <tr>
                 <th>Country</th>
-                <td>{{ phone_user.country }}</td>
+                <td>{{ entity.country|country_name('fr') }}</td>
             </tr>
             <tr>
                 <th>Type</th>
-                <td>{{ phone_user.type }}</td>
+                <td>{{ entity.type }}</td>
             </tr>
             <tr>
                 <th>Principal</th>
-                <td>{{ phone_user.principal }}</td>
+                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td><a href="{{ path('admin_user_show', {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a></td>
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('phone_user_index') }}">back to list</a>
-
-    <a href="{{ path('phone_user_edit', {'id': phone_user.id}) }}">edit</a>
-
-    {{ include('admin/phone_user/_delete_form.html.twig') }}
 {% endblock %}

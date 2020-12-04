@@ -1,6 +1,10 @@
+{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/adresse_user/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-locale="fr-FR"
+  data-toggle="table"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Rue</th>
@@ -10,23 +14,26 @@
                 <th>Gps</th>
                 <th>Type</th>
                 <th>Pmr</th>
-                <th>actions</th>
+                <th>User</th>
+                <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
-        {% for adresse_user in pagination %}
+        {% for entity in pagination %}
             <tr>
-                <td>{{ adresse_user.rue }}</td>
-                <td>{{ adresse_user.country }}</td>
-                <td>{{ adresse_user.zipcode }}</td>
-                <td>{{ adresse_user.ville }}</td>
-                <td>{{ adresse_user.gps }}</td>
-                <td>{{ adresse_user.type }}</td>
-                <td>{{ adresse_user.pmr ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.rue }}</td>
                 <td>
-                    <a href="{{ path('adresse_user_show', {'id': adresse_user.id}) }}">show</a>
-                    <a href="{{ path('adresse_user_edit', {'id': adresse_user.id}) }}">edit</a>
-                    <a href="#">delete</a>
+                    <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
+                    {{ entity.country|country_name('fr') }}
+                </td>
+                <td>{{ entity.zipcode }}</td>
+                <td>{{ entity.ville }}</td>
+                <td>{{ entity.gps }}</td>
+                <td>{{ entity.type }}</td>
+                <td>{{ entity.pmr ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.refuser }}</td>
+                <td>
+                    {{ macro_admin.actions(entity, actions) }}
                 </td>
             </tr>
         {% else %}
@@ -36,6 +43,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('adresse_user_new') }}">Create new</a>
 {% endblock %}

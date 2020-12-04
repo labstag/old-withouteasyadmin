@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Labstag\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Entity\Traits\VerifEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -13,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+    use VerifEntity;
 
     /**
      * @ORM\Id
@@ -22,30 +25,31 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180, unique=true, nullable=false)
+     * @Assert\NotNull
      */
     private $username;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $email;
+
+    /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string|null
      */
-    private $nom;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $prenom;
+    private $plainPassword;
 
     /**
      * @ORM\Column(type="boolean")
@@ -53,54 +57,113 @@ class User implements UserInterface
     private $enable;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $lost;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $groupe;
+    private Groupe $groupe;
 
     /**
-     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="refuser")
+     * @ORM\OneToMany(
+     *  targetEntity=Edito::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
-    private ArrayCollection $editos;
+    private $editos;
 
     /**
-     * @ORM\OneToMany(targetEntity=NoteInterne::class, mappedBy="refuser")
+     * @ORM\OneToMany(
+     *  targetEntity=NoteInterne::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
-    private ArrayCollection $noteInternes;
+    private $noteInternes;
 
     /**
-     * @ORM\OneToMany(targetEntity=LienUser::class, mappedBy="refuser")
+     * @ORM\OneToMany(
+     *  targetEntity=LienUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
-    private ArrayCollection $lienUsers;
+    private $lienUsers;
 
     /**
-     * @ORM\OneToMany(targetEntity=EmailUser::class, mappedBy="refuser")
+     * @ORM\OneToMany(
+     *  targetEntity=EmailUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
-    private ArrayCollection $emailUsers;
+    private $emailUsers;
 
     /**
-     * @ORM\OneToMany(targetEntity=PhoneUser::class, mappedBy="refuser")
+     * @ORM\OneToMany(
+     *  targetEntity=PhoneUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
-    private ArrayCollection $phoneUsers;
+    private $phoneUsers;
 
     /**
-     * @ORM\OneToMany(targetEntity=AdresseUser::class, mappedBy="refuser")
+     * @ORM\OneToMany(
+     *  targetEntity=AdresseUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
-    private ArrayCollection $adresseUsers;
+    private $adresseUsers;
+
+    /**
+     * @ORM\OneToMany(
+     *  targetEntity=OauthConnectUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
+     */
+    private $oauthConnectUsers;
 
     public function __construct()
     {
-        $this->editos       = new ArrayCollection();
-        $this->noteInternes = new ArrayCollection();
-        $this->lienUsers    = new ArrayCollection();
-        $this->emailUsers   = new ArrayCollection();
-        $this->phoneUsers   = new ArrayCollection();
-        $this->adresseUsers = new ArrayCollection();
+        $this->editos            = new ArrayCollection();
+        $this->noteInternes      = new ArrayCollection();
+        $this->lienUsers         = new ArrayCollection();
+        $this->emailUsers        = new ArrayCollection();
+        $this->phoneUsers        = new ArrayCollection();
+        $this->adresseUsers      = new ArrayCollection();
+        $this->oauthConnectUsers = new ArrayCollection();
+        $this->roles             = ['ROLE_USER'];
+        $this->enable            = false;
+        $this->lost              = false;
+        $this->verif             = false;
     }
 
     public function __toString()
     {
         return $this->getUsername();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->setPassword('');
+        $this->plainPassword = $plainPassword;
+
+        return $this;
     }
 
     public function getId(): ?string
@@ -118,7 +181,7 @@ class User implements UserInterface
         return (string) $this->username;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(?string $username): self
     {
         $this->username = $username;
 
@@ -177,31 +240,7 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(?string $nom): self
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    public function setPrenom(?string $prenom): self
-    {
-        $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getEnable(): ?bool
+    public function isEnable(): ?bool
     {
         return $this->enable;
     }
@@ -225,7 +264,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getEditos(): Collection
+    public function getEditos()
     {
         return $this->editos;
     }
@@ -253,7 +292,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getNoteInternes(): Collection
+    public function getNoteInternes()
     {
         return $this->noteInternes;
     }
@@ -281,7 +320,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getLienUsers(): Collection
+    public function getLienUsers()
     {
         return $this->lienUsers;
     }
@@ -289,8 +328,8 @@ class User implements UserInterface
     public function addLienUser(LienUser $lienUser): self
     {
         if (!$this->lienUsers->contains($lienUser)) {
-            $this->lienUsers[] = $lienUser;
             $lienUser->setRefuser($this);
+            $this->lienUsers[] = $lienUser;
         }
 
         return $this;
@@ -309,7 +348,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getEmailUsers(): Collection
+    public function getEmailUsers()
     {
         return $this->emailUsers;
     }
@@ -317,8 +356,8 @@ class User implements UserInterface
     public function addEmailUser(EmailUser $emailUser): self
     {
         if (!$this->emailUsers->contains($emailUser)) {
-            $this->emailUsers[] = $emailUser;
             $emailUser->setRefuser($this);
+            $this->emailUsers[] = $emailUser;
         }
 
         return $this;
@@ -337,7 +376,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPhoneUsers(): Collection
+    public function getPhoneUsers()
     {
         return $this->phoneUsers;
     }
@@ -365,7 +404,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAdresseUsers(): Collection
+    public function getAdresseUsers()
     {
         return $this->adresseUsers;
     }
@@ -387,6 +426,67 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($adresseUser->getRefuser() === $this) {
                 $adresseUser->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getEmail(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function isLost(): ?bool
+    {
+        return $this->lost;
+    }
+
+    public function setLost(bool $lost): self
+    {
+        $this->lost = $lost;
+
+        return $this;
+    }
+
+    public function getOauthConnectUsers()
+    {
+        return $this->oauthConnectUsers;
+    }
+
+    public function addOauthConnectUsers(
+        OauthConnectUser $oauthConnectUser
+    ): self
+    {
+        if (!$this->oauthConnectUsers->contains($oauthConnectUser)) {
+            $this->oauthConnectUsers[] = $oauthConnectUser;
+            $oauthConnectUser->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOauthConnectUsers(
+        OauthConnectUser $oauthConnectUser
+    ): self
+    {
+        if ($this->oauthConnectUsers->contains($oauthConnectUser)) {
+            $this->oauthConnectUsers->removeElement($oauthConnectUser);
+            // set the owning side to null (unless already changed)
+            if ($oauthConnectUser->getRefuser() === $this) {
+                $oauthConnectUser->setRefuser(null);
             }
         }
 
