@@ -105,6 +105,9 @@ services:
       TZ: Europe/Paris
     networks:
       - net
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ${PWD}/dump:/dump
   apache:
     image: httpd:2.4.46
     depends_on:
@@ -146,6 +149,20 @@ services:
       - openldap
       - mercure
       - mailhog
+      - redis
+    volumes:
+      - ${PWD}/apps:/var/www/
+      - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    networks:
+      - net
+  phpfpm-xdebug:
+    image: koromerzhin/phpfpm:7.4.12-symfony-xdebug
+    depends_on:
+      - mariadb
+      - openldap
+      - mercure
+      - mailhog
+      - redis
     volumes:
       - ${PWD}/apps:/var/www/
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf

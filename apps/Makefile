@@ -26,6 +26,9 @@ phpcpd.phar:
 phpmd.phar:
 	wget https://github.com/phpmd/phpmd/releases/download/2.9.1/phpmd.phar
 
+assets: ## Ajouts assets
+	php bin/console assets:install public --symlink --relative
+
 bdd-fixtures: ## fixtures
 	php bin/console doctrine:fixtures:load -n
 
@@ -61,6 +64,14 @@ env-prod: .env ## Installation environnement prod
 	rm -rf vendor
 	@make composer-prod -i
 
+linter: ## Launch all linter
+	@make linter-twig -i
+	@make linter-yaml -i
+	@make linter-phpstan -i
+	@make linter-phpcpd -i
+	@make linter-phpcs -i
+	@make linter-phpmd -i
+
 linter-phpcbf: ## fixe le code PHP à partir d'un standard
 	composer run phpcbf
 
@@ -93,6 +104,9 @@ linter-twig: ## indique les erreurs de code de twig
 
 linter-yaml: ## indique les erreurs de code de yaml
 	php bin/console lint:yaml config
+
+messenger_consume: ## Messenger Consume
+	php bin/console messenger:consume async -vv
 
 tests-behat: ## Lance les tests behat
 	composer run behat

@@ -1,33 +1,31 @@
 {% extends 'admin/note_interne/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table>
         <tbody>
             <tr>
                 <th>Title</th>
-                <td>{{ note_interne.title }}</td>
+                <td>{{ entity.title }}</td>
             </tr>
             <tr>
                 <th>Content</th>
-                <td>{{ note_interne.content }}</td>
+                <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
                 <th>Enable</th>
-                <td>{{ note_interne.enable ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
                 <th>Date_debut</th>
-                <td>{{ note_interne.dateDebut ? note_interne.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ entity.dateDebut ? entity.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>Date_fin</th>
-                <td>{{ note_interne.dateFin ? note_interne.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ entity.dateFin ? entity.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>{{ entity.refuser }}</td>
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('note_interne_index') }}">back to list</a>
-
-    <a href="{{ path('note_interne_edit', {'id': note_interne.id}) }}">edit</a>
-
-    {{ include('admin/note_interne/_delete_form.html.twig') }}
 {% endblock %}

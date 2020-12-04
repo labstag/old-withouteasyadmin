@@ -6,108 +6,114 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Edito;
 use Labstag\Form\Admin\EditoType;
 use Labstag\Repository\EditoRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/edito")
  */
-class EditoController extends AbstractController
+class EditoController extends AdminControllerLib
 {
+
+    protected string $headerTitle = 'Edito';
+
+    protected string $urlHome = 'admin_edito_index';
+
     /**
-     * @Route("/", name="edito_index", methods={"GET"})
+     * @Route("/", name="admin_edito_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        EditoRepository $editoRepository
-    ): Response
+    public function index(EditoRepository $editoRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $editoRepository->findAll(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $editoRepository,
+            'findAllForAdmin',
             'admin/edito/index.html.twig',
-            ['pagination' => $pagination]
-        );
-    }
-
-    /**
-     * @Route("/new", name="edito_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $edito = new Edito();
-        $form  = $this->createForm(EditoType::class, $edito);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($edito);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('edito_index');
-        }
-
-        return $this->render(
-            'admin/edito/new.html.twig',
+            ['new' => 'admin_edito_new'],
             [
-                'edito' => $edito,
-                'form'  => $form->createView(),
+                'list'   => 'admin_edito_index',
+                'show'   => 'admin_edito_show',
+                'edit'   => 'admin_edito_edit',
+                'delete' => 'admin_edito_delete',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="edito_show", methods={"GET"})
+     * @Route("/new", name="admin_edito_new", methods={"GET","POST"})
      */
-    public function show(Edito $edito): Response
+    public function new(RouterInterface $router): Response
     {
-        return $this->render(
+        $breadcrumb = [
+            'New' => $router->generate(
+                'admin_edito_new'
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->create(
+            new Edito(),
+            EditoType::class,
+            ['list' => 'admin_edito_index']
+        );
+    }
+
+    /**
+     * @Route("/{id}", name="admin_edito_show", methods={"GET"})
+     */
+    public function show(Edito $edito, RouterInterface $router): Response
+    {
+        $breadcrumb = [
+            'Show' => $router->generate(
+                'admin_edito_show',
+                [
+                    'id' => $edito->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->read(
+            $edito,
             'admin/edito/show.html.twig',
-            ['edito' => $edito]
-        );
-    }
-
-    /**
-     * @Route("/{id}/edit", name="edito_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Edito $edito): Response
-    {
-        $form = $this->createForm(EditoType::class, $edito);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('edito_index');
-        }
-
-        return $this->render(
-            'admin/edito/edit.html.twig',
             [
-                'edito' => $edito,
-                'form'  => $form->createView(),
+                'delete' => 'admin_edito_delete',
+                'edit'   => 'admin_edito_edit',
+                'list'   => 'admin_edito_index',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="edito_delete", methods={"DELETE"})
+     * @Route("/{id}/edit", name="admin_edito_edit", methods={"GET","POST"})
      */
-    public function delete(Request $request, Edito $edito): Response
+    public function edit(Edito $edito, RouterInterface $router): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$edito->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($edito);
-            $entityManager->flush();
-        }
+        $breadcrumb = [
+            'Edit' => $router->generate(
+                'admin_edito_edit',
+                [
+                    'id' => $edito->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->update(
+            EditoType::class,
+            $edito,
+            [
+                'delete' => 'admin_edito_delete',
+                'list'   => 'admin_edito_index',
+                'show'   => 'admin_edito_show',
+            ]
+        );
+    }
 
-        return $this->redirectToRoute('edito_index');
+    /**
+     * @Route("/delete/{id}", name="admin_edito_delete", methods={"POST"})
+     */
+    public function delete(Edito $edito): Response
+    {
+        return $this->adminCrudService->delete($edito);
     }
 }

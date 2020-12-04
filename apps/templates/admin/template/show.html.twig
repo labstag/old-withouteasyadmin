@@ -1,29 +1,23 @@
 {% extends 'admin/template/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table>
         <tbody>
             <tr>
                 <th>Name</th>
-                <td>{{ template.name }}</td>
+                <td>{{ entity.name }}</td>
             </tr>
             <tr>
                 <th>Code</th>
-                <td>{{ template.code }}</td>
+                <td>{{ entity.code }}</td>
             </tr>
             <tr>
                 <th>Html</th>
-                <td>{{ template.html }}</td>
+                <td>{{ entity.html|raw }}</td>
             </tr>
             <tr>
                 <th>Text</th>
-                <td>{{ template.text }}</td>
+                <td>{{ entity.text }}</td>
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('template_index') }}">back to list</a>
-
-    <a href="{{ path('template_edit', {'id': template.id}) }}">edit</a>
-
-    {{ include('admin/template/_delete_form.html.twig') }}
 {% endblock %}

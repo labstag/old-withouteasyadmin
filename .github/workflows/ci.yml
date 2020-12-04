@@ -37,7 +37,7 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install npm dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: npm install
+        run: make node_modules
       - name: Validate composer.json
         run: make composer-validate-ci
       - name: Install Composer dependencies
@@ -51,6 +51,8 @@ jobs:
         run: make linter-phpmd-ci
       - name: linter PHPMND
         run: make linter-phpmnd-ci
+      - name: Add assets
+        run: make assets-ci
       - name: Test lancement bootstrap
         run: make encore-dev
       - name: Linter twig
@@ -59,7 +61,3 @@ jobs:
         run: make linter-yaml-ci
       - name: linter phpstan
         run: make linter-phpstan-ci
-      - name: Run Acceptance Tests
-        run: make tests-behat-ci
-      - name: Run Tests
-        run: make tests-simple-phpunit-unit-integration-ci

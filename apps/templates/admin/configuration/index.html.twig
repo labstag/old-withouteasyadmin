@@ -1,22 +1,24 @@
+{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/configuration/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-locale="fr-FR"
+  data-toggle="table"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Value</th>
-                <th>actions</th>
+                <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
-        {% for configuration in pagination %}
+        {% for entity in pagination %}
             <tr>
-                <td>{{ configuration.name }}</td>
-                <td>{{ configuration.value }}</td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.value ? entity.value|json_encode : '' }}</td>
                 <td>
-                    <a href="{{ path('configuration_show', {'id': configuration.id}) }}">show</a>
-                    <a href="{{ path('configuration_edit', {'id': configuration.id}) }}">edit</a>
-                    <a href="#">delete</a>
+                    {{ macro_admin.actions(entity, actions) }}
                 </td>
             </tr>
         {% else %}
@@ -26,6 +28,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('configuration_new') }}">Create new</a>
 {% endblock %}

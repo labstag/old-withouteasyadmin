@@ -1,13 +1,26 @@
+{% import "modal.html.twig" as modal %}
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        {% if config.meta is defined %}
+            {% for key, value in config.meta[0] %}
+                {% if value|trim != '' %}
+                    <meta name="{{ key }}" content="{{ value|trim }}">
+                {% endif %}
+            {% endfor %}
+        {% endif %}
         {% block stylesheets %}
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block content %}{% endblock %}
+        {% block modal %}
+            {% if modalDelete is defined %}
+                {{ modal.delete() }}
+            {% endif %}
+        {% endblock %}
         {% block javascripts %}
         {% endblock %}
     </body>

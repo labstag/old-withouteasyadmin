@@ -6,108 +6,113 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Form\Admin\GroupeType;
 use Labstag\Repository\GroupeRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @Route("/admin/groupe")
+ * @Route("/admin/user/groupe")
  */
-class GroupeController extends AbstractController
+class GroupeController extends AdminControllerLib
 {
+
+    protected string $headerTitle = "Groupe d'utilisateurs";
+
+    protected string $urlHome = 'admin_groupuser_index';
     /**
-     * @Route("/", name="groupe_index", methods={"GET"})
+     * @Route("/", name="admin_groupuser_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        GroupeRepository $groupeRepository
-    ): Response
+    public function index(GroupeRepository $groupeRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $groupeRepository->findAll(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $groupeRepository,
+            'findAllForAdmin',
             'admin/groupe/index.html.twig',
-            ['pagination' => $pagination]
-        );
-    }
-
-    /**
-     * @Route("/new", name="groupe_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $groupe = new Groupe();
-        $form   = $this->createForm(GroupeType::class, $groupe);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($groupe);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('groupe_index');
-        }
-
-        return $this->render(
-            'admin/groupe/new.html.twig',
+            ['new' => 'admin_groupuser_new'],
             [
-                'groupe' => $groupe,
-                'form'   => $form->createView(),
+                'list'   => 'admin_groupuser_index',
+                'show'   => 'admin_groupuser_show',
+                'edit'   => 'admin_groupuser_edit',
+                'delete' => 'admin_groupuser_delete',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="groupe_show", methods={"GET"})
+     * @Route("/new", name="admin_groupuser_new", methods={"GET","POST"})
      */
-    public function show(Groupe $groupe): Response
+    public function new(RouterInterface $router): Response
     {
-        return $this->render(
+        $breadcrumb = [
+            'New' => $router->generate(
+                'admin_groupuser_new'
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->create(
+            new Groupe(),
+            GroupeType::class,
+            ['list' => 'admin_groupuser_index']
+        );
+    }
+
+    /**
+     * @Route("/{id}", name="admin_groupuser_show", methods={"GET"})
+     */
+    public function show(Groupe $groupe, RouterInterface $router): Response
+    {
+        $breadcrumb = [
+            'Show' => $router->generate(
+                'admin_groupuser_show',
+                [
+                    'id' => $groupe->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->read(
+            $groupe,
             'admin/groupe/show.html.twig',
-            ['groupe' => $groupe]
-        );
-    }
-
-    /**
-     * @Route("/{id}/edit", name="groupe_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Groupe $groupe): Response
-    {
-        $form = $this->createForm(GroupeType::class, $groupe);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('groupe_index');
-        }
-
-        return $this->render(
-            'admin/groupe/edit.html.twig',
             [
-                'groupe' => $groupe,
-                'form'   => $form->createView(),
+                'delete' => 'admin_groupuser_delete',
+                'edit'   => 'admin_groupuser_edit',
+                'list'   => 'admin_groupuser_index',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="groupe_delete", methods={"DELETE"})
+     * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET","POST"})
      */
-    public function delete(Request $request, Groupe $groupe): Response
+    public function edit(Groupe $groupe, RouterInterface $router): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$groupe->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($groupe);
-            $entityManager->flush();
-        }
+        $breadcrumb = [
+            'Edit' => $router->generate(
+                'admin_groupuser_edit',
+                [
+                    'id' => $groupe->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->update(
+            GroupeType::class,
+            $groupe,
+            [
+                'delete' => 'admin_groupuser_delete',
+                'list'   => 'admin_groupuser_index',
+                'show'   => 'admin_groupuser_show',
+            ]
+        );
+    }
 
-        return $this->redirectToRoute('groupe_index');
+    /**
+     * @Route("/delete/{id}", name="admin_groupuser_delete", methods={"POST"})
+     */
+    public function delete(Groupe $groupe): Response
+    {
+        return $this->adminCrudService->delete($groupe);
     }
 }

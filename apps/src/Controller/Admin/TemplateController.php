@@ -6,108 +6,113 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Template;
 use Labstag\Form\Admin\TemplateType;
 use Labstag\Repository\TemplateRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/template")
  */
-class TemplateController extends AbstractController
+class TemplateController extends AdminControllerLib
 {
+
+    protected string $headerTitle = 'Template';
+
+    protected string $urlHome = 'admin_template_index';
     /**
-     * @Route("/", name="template_index", methods={"GET"})
+     * @Route("/", name="admin_template_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        TemplateRepository $templateRepository
-    ): Response
+    public function index(TemplateRepository $templateRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $templateRepository->findAll(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $templateRepository,
+            'findAllForAdmin',
             'admin/template/index.html.twig',
-            ['pagination' => $pagination]
-        );
-    }
-
-    /**
-     * @Route("/new", name="template_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $template = new Template();
-        $form     = $this->createForm(TemplateType::class, $template);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($template);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('template_index');
-        }
-
-        return $this->render(
-            'admin/template/new.html.twig',
+            ['new' => 'admin_template_new'],
             [
-                'template' => $template,
-                'form'     => $form->createView(),
+                'list'   => 'admin_template_index',
+                'show'   => 'admin_template_show',
+                'edit'   => 'admin_template_edit',
+                'delete' => 'admin_template_delete',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="template_show", methods={"GET"})
+     * @Route("/new", name="admin_template_new", methods={"GET","POST"})
      */
-    public function show(Template $template): Response
+    public function new(RouterInterface $router): Response
     {
-        return $this->render(
+        $breadcrumb = [
+            'New' => $router->generate(
+                'admin_template_new'
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->create(
+            new Template(),
+            TemplateType::class,
+            ['list' => 'admin_template_index']
+        );
+    }
+
+    /**
+     * @Route("/{id}", name="admin_template_show", methods={"GET"})
+     */
+    public function show(Template $template, RouterInterface $router): Response
+    {
+        $breadcrumb = [
+            'Show' => $router->generate(
+                'admin_template_show',
+                [
+                    'id' => $template->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->read(
+            $template,
             'admin/template/show.html.twig',
-            ['template' => $template]
-        );
-    }
-
-    /**
-     * @Route("/{id}/edit", name="template_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Template $template): Response
-    {
-        $form = $this->createForm(TemplateType::class, $template);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('template_index');
-        }
-
-        return $this->render(
-            'admin/template/edit.html.twig',
             [
-                'template' => $template,
-                'form'     => $form->createView(),
+                'delete' => 'admin_template_delete',
+                'list'   => 'admin_template_index',
+                'edit'   => 'admin_template_edit',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="template_delete", methods={"DELETE"})
+     * @Route("/{id}/edit", name="admin_template_edit", methods={"GET","POST"})
      */
-    public function delete(Request $request, Template $template): Response
+    public function edit(Template $template, RouterInterface $router): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$template->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($template);
-            $entityManager->flush();
-        }
+        $breadcrumb = [
+            'Edit' => $router->generate(
+                'admin_template_edit',
+                [
+                    'id' => $template->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->update(
+            TemplateType::class,
+            $template,
+            [
+                'delete' => 'admin_template_delete',
+                'list'   => 'admin_template_index',
+                'show'   => 'admin_template_show',
+            ]
+        );
+    }
 
-        return $this->redirectToRoute('template_index');
+    /**
+     * @Route("/delete/{id}", name="admin_template_delete", methods={"POST"})
+     */
+    public function delete(Template $template): Response
+    {
+        return $this->adminCrudService->delete($template);
     }
 }

@@ -4,110 +4,130 @@ namespace Labstag\Controller\Admin;
 
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\User;
+use Labstag\Event\UserEntityEvent;
 use Labstag\Form\Admin\UserType;
 use Labstag\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
+use Labstag\Manager\UserManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/user")
  */
-class UserController extends AbstractController
+class UserController extends AdminControllerLib
 {
+
+    protected string $headerTitle = 'Utilisateurs';
+
+    protected string $urlHome = 'admin_user_index';
     /**
-     * @Route("/", name="user_index", methods={"GET"})
+     * @Route("/", name="admin_user_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        UserRepository $userRepository
+    public function index(UserRepository $userRepository): Response
+    {
+        return $this->adminCrudService->list(
+            $userRepository,
+            'findAllForAdmin',
+            'admin/user/index.html.twig',
+            ['new' => 'admin_user_new'],
+            [
+                'list'   => 'admin_user_index',
+                'show'   => 'admin_user_show',
+                'edit'   => 'admin_user_edit',
+                'delete' => 'admin_user_delete',
+            ]
+        );
+    }
+
+    /**
+     * @Route("/new", name="admin_user_new", methods={"GET","POST"})
+     */
+    public function new(
+        RouterInterface $router,
+        UserManager $userManager
     ): Response
     {
-        $pagination = $paginator->paginate(
-            $userRepository->findAll(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
-            'admin/user/index.html.twig',
-            ['pagination' => $pagination]
-        );
-    }
-
-    /**
-     * @Route("/new", name="user_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
+        $breadcrumb = [
+            'New' => $router->generate(
+                'admin_user_new'
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('user_index');
-        }
-
-        return $this->render(
-            'admin/user/new.html.twig',
-            [
-                'user' => $user,
-                'form' => $form->createView(),
-            ]
+        $user->setEnable(false);
+        return $this->adminCrudService->create(
+            $user,
+            UserType::class,
+            ['list' => 'admin_user_index'],
+            [UserEntityEvent::class],
+            $userManager
         );
     }
 
     /**
-     * @Route("/{id}", name="user_show", methods={"GET"})
+     * @Route("/{id}", name="admin_user_show", methods={"GET"})
      */
-    public function show(User $user): Response
+    public function show(User $user, RouterInterface $router): Response
     {
-        return $this->render(
+        $breadcrumb = [
+            'Show' => $router->generate(
+                'admin_user_show',
+                [
+                    'id' => $user->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->read(
+            $user,
             'admin/user/show.html.twig',
-            ['user' => $user]
-        );
-    }
-
-    /**
-     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, User $user): Response
-    {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('user_index');
-        }
-
-        return $this->render(
-            'admin/user/edit.html.twig',
             [
-                'user' => $user,
-                'form' => $form->createView(),
+                'delete' => 'admin_user_delete',
+                'list'   => 'admin_user_index',
+                'edit'   => 'admin_user_edit',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="user_delete", methods={"DELETE"})
+     * @Route("/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
      */
-    public function delete(Request $request, User $user): Response
+    public function edit(
+        User $user,
+        RouterInterface $router,
+        UserManager $userManager
+    ): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($user);
-            $entityManager->flush();
-        }
+        $breadcrumb = [
+            'Edit' => $router->generate(
+                'admin_user_edit',
+                [
+                    'id' => $user->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->update(
+            UserType::class,
+            $user,
+            [
+                'delete' => 'admin_user_delete',
+                'list'   => 'admin_user_index',
+                'show'   => 'admin_user_show',
+            ],
+            [UserEntityEvent::class],
+            $userManager
+        );
+    }
 
-        return $this->redirectToRoute('user_index');
+    /**
+     * @Route("/delete/{id}", name="admin_user_delete", methods={"POST"})
+     */
+    public function delete(User $user): Response
+    {
+        return $this->adminCrudService->delete($user);
     }
 }

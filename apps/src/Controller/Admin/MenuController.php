@@ -6,108 +6,113 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Menu;
 use Labstag\Form\Admin\MenuType;
 use Labstag\Repository\MenuRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/menu")
  */
-class MenuController extends AbstractController
+class MenuController extends AdminControllerLib
 {
+
+    protected string $headerTitle = 'Menu';
+
+    protected string $urlHome = 'admin_menu_index';
     /**
-     * @Route("/", name="menu_index", methods={"GET"})
+     * @Route("/", name="admin_menu_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        MenuRepository $menuRepository
-    ): Response
+    public function index(MenuRepository $menuRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $menuRepository->findAll(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $menuRepository,
+            'findAllForAdmin',
             'admin/menu/index.html.twig',
-            ['pagination' => $pagination]
-        );
-    }
-
-    /**
-     * @Route("/new", name="menu_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $menu = new Menu();
-        $form = $this->createForm(MenuType::class, $menu);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($menu);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('menu_index');
-        }
-
-        return $this->render(
-            'admin/menu/new.html.twig',
+            ['new' => 'admin_menu_new'],
             [
-                'menu' => $menu,
-                'form' => $form->createView(),
+                'list'   => 'admin_menu_index',
+                'show'   => 'admin_menu_show',
+                'edit'   => 'admin_menu_edit',
+                'delete' => 'admin_menu_delete',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="menu_show", methods={"GET"})
+     * @Route("/new", name="admin_menu_new", methods={"GET","POST"})
      */
-    public function show(Menu $menu): Response
+    public function new(RouterInterface $router): Response
     {
-        return $this->render(
+        $breadcrumb = [
+            'New' => $router->generate(
+                'admin_menu_new'
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->create(
+            new Menu(),
+            MenuType::class,
+            ['list' => 'admin_menu_index']
+        );
+    }
+
+    /**
+     * @Route("/{id}", name="admin_menu_show", methods={"GET"})
+     */
+    public function show(Menu $menu, RouterInterface $router): Response
+    {
+        $breadcrumb = [
+            'Show' => $router->generate(
+                'admin_menu_show',
+                [
+                    'id' => $menu->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->read(
+            $menu,
             'admin/menu/show.html.twig',
-            ['menu' => $menu]
-        );
-    }
-
-    /**
-     * @Route("/{id}/edit", name="menu_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Menu $menu): Response
-    {
-        $form = $this->createForm(MenuType::class, $menu);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('menu_index');
-        }
-
-        return $this->render(
-            'admin/menu/edit.html.twig',
             [
-                'menu' => $menu,
-                'form' => $form->createView(),
+                'delete' => 'admin_menu_delete',
+                'list'   => 'admin_menu_index',
+                'edit'   => 'admin_menu_edit',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="menu_delete", methods={"DELETE"})
+     * @Route("/{id}/edit", name="admin_menu_edit", methods={"GET","POST"})
      */
-    public function delete(Request $request, Menu $menu): Response
+    public function edit(Menu $menu, RouterInterface $router): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$menu->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($menu);
-            $entityManager->flush();
-        }
+        $breadcrumb = [
+            'Edit' => $router->generate(
+                'admin_menu_edit',
+                [
+                    'id' => $menu->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->update(
+            MenuType::class,
+            $menu,
+            [
+                'delete' => 'admin_menu_delete',
+                'list'   => 'admin_menu_index',
+                'show'   => 'admin_menu_show',
+            ]
+        );
+    }
 
-        return $this->redirectToRoute('menu_index');
+    /**
+     * @Route("/delete/{id}", name="admin_menu_delete", methods={"POST"})
+     */
+    public function delete(Menu $menu): Response
+    {
+        return $this->adminCrudService->delete($menu);
     }
 }

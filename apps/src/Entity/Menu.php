@@ -2,12 +2,12 @@
 
 namespace Labstag\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
-use Labstag\Repository\MenuRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Labstag\Repository\MenuRepository;
 
 /**
- * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass=MenuRepository::class)
  */
 class Menu
@@ -20,49 +20,44 @@ class Menu
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private $libelle;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private $icon;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotNull
      */
-    private $position;
+    private int $position;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private $data = [];
+    /** @ORM\Column(type="json", nullable=true) */
+    private array $data = [];
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    /** @ORM\Column(type="boolean") */
     private $separateur;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private $clef;
 
     /**
-     * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="Menu", inversedBy="children")
      * @ORM\JoinColumn(
      *  name="parent_id",
      *  referencedColumnName="id",
      *  onDelete="SET NULL"
      * )
+     * @var Menu|null
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Menu", mappedBy="parent")
+     * @ORM\OneToMany(
+     *  targetEntity="Menu",
+     *  mappedBy="parent",
+     *  cascade={"persist"}
+     * )
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $children;
@@ -74,7 +69,7 @@ class Menu
             [
                 $this->getId(),
                 '-',
-                '('.$this->getClef().')',
+                '(' . $this->getClef() . ')',
                 '-',
                 $this->getLibelle(),
             ]
@@ -83,6 +78,7 @@ class Menu
 
     public function __construct()
     {
+        $this->children   = new ArrayCollection();
         $this->separateur = false;
     }
 
@@ -139,7 +135,7 @@ class Menu
         return $this;
     }
 
-    public function getSeparateur(): ?bool
+    public function isSeparateur(): ?bool
     {
         return $this->separateur;
     }
@@ -168,7 +164,7 @@ class Menu
         return $this->children;
     }
 
-    public function setParent(Menu $parent)
+    public function setParent(Menu $parent): void
     {
         $this->parent = $parent;
     }

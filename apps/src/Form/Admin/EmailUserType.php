@@ -3,12 +3,10 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\EmailUser;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EmailUserType extends AbstractType
+class EmailUserType extends EmailType
 {
     /**
      * {@inheritdoc}
@@ -18,11 +16,9 @@ class EmailUserType extends AbstractType
         array $options
     ): void
     {
-        unset($options);
-        $builder->add('adresse');
+        parent::buildForm($builder, $options);
         $builder->add('principal');
         $builder->add('refuser');
-        $builder->add('submit', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

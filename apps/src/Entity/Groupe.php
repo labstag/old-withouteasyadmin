@@ -3,8 +3,10 @@
 namespace Labstag\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\Collection;
 use Labstag\Repository\GroupeRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,27 +24,33 @@ class Groupe
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Gedmo\Slug(updatable=false, fields={"name"})
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $code;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="groupe")
+     * @ORM\OneToMany(
+     *  targetEntity=User::class,
+     *  mappedBy="groupe",
+     *  cascade={"persist"}
+     * )
      */
     private $users;
-
-    public function __toString()
-    {
-        return $this->getName();
-    }
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     public function getId(): ?string
@@ -74,7 +82,7 @@ class Groupe
         return $this;
     }
 
-    public function getUsers(): Collection
+    public function getUsers()
     {
         return $this->users;
     }

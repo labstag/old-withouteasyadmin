@@ -6,108 +6,113 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\LienUser;
 use Labstag\Form\Admin\LienUserType;
 use Labstag\Repository\LienUserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/user/lien")
  */
-class LienUserController extends AbstractController
+class LienUserController extends AdminControllerLib
 {
+
+    protected string $headerTitle = 'Lien utilisateurs';
+
+    protected string $urlHome = 'admin_lienuser_index';
     /**
-     * @Route("/", name="lien_user_index", methods={"GET"})
+     * @Route("/", name="admin_lienuser_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        LienUserRepository $lienUserRepository
-    ): Response
+    public function index(LienUserRepository $lienUserRepository): Response
     {
-        $pagination = $paginator->paginate(
-            $lienUserRepository->findAll(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
+        return $this->adminCrudService->list(
+            $lienUserRepository,
+            'findAllForAdmin',
             'admin/lien_user/index.html.twig',
-            ['pagination' => $pagination]
-        );
-    }
-
-    /**
-     * @Route("/new", name="lien_user_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $lienUser = new LienUser();
-        $form     = $this->createForm(LienUserType::class, $lienUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($lienUser);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('lien_user_index');
-        }
-
-        return $this->render(
-            'admin/lien_user/new.html.twig',
+            ['new' => 'admin_lienuser_new'],
             [
-                'lien_user' => $lienUser,
-                'form'      => $form->createView(),
+                'list'   => 'admin_lienuser_index',
+                'show'   => 'admin_lienuser_show',
+                'edit'   => 'admin_lienuser_edit',
+                'delete' => 'admin_lienuser_delete',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="lien_user_show", methods={"GET"})
+     * @Route("/new", name="admin_lienuser_new", methods={"GET","POST"})
      */
-    public function show(LienUser $lienUser): Response
+    public function new(RouterInterface $router): Response
     {
-        return $this->render(
+        $breadcrumb = [
+            'New' => $router->generate(
+                'admin_lienuser_new'
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->create(
+            new LienUser(),
+            LienUserType::class,
+            ['list' => 'admin_lienuser_index']
+        );
+    }
+
+    /**
+     * @Route("/{id}", name="admin_lienuser_show", methods={"GET"})
+     */
+    public function show(LienUser $lienUser, RouterInterface $router): Response
+    {
+        $breadcrumb = [
+            'Show' => $router->generate(
+                'admin_lienuser_show',
+                [
+                    'id' => $lienUser->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->read(
+            $lienUser,
             'admin/lien_user/show.html.twig',
-            ['lien_user' => $lienUser]
-        );
-    }
-
-    /**
-     * @Route("/{id}/edit", name="lien_user_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, LienUser $lienUser): Response
-    {
-        $form = $this->createForm(LienUserType::class, $lienUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('lien_user_index');
-        }
-
-        return $this->render(
-            'admin/lien_user/edit.html.twig',
             [
-                'lien_user' => $lienUser,
-                'form'      => $form->createView(),
+                'delete' => 'admin_lienuser_delete',
+                'list'   => 'admin_lienuser_index',
+                'edit'   => 'admin_lienuser_edit',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="lien_user_delete", methods={"DELETE"})
+     * @Route("/{id}/edit", name="admin_lienuser_edit", methods={"GET","POST"})
      */
-    public function delete(Request $request, LienUser $lienUser): Response
+    public function edit(LienUser $lienUser, RouterInterface $router): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$lienUser->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($lienUser);
-            $entityManager->flush();
-        }
+        $breadcrumb = [
+            'Edit' => $router->generate(
+                'admin_lienuser_edit',
+                [
+                    'id' => $lienUser->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->update(
+            LienUserType::class,
+            $lienUser,
+            [
+                'delete' => 'admin_lienuser_delete',
+                'list'   => 'admin_lienuser_index',
+                'show'   => 'admin_lienuser_show',
+            ]
+        );
+    }
 
-        return $this->redirectToRoute('lien_user_index');
+    /**
+     * @Route("/delete/{id}", name="admin_lienuser_delete", methods={"POST"})
+     */
+    public function delete(LienUser $lienUser): Response
+    {
+        return $this->adminCrudService->delete($lienUser);
     }
 }

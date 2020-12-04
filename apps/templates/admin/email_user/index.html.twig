@@ -1,22 +1,28 @@
+{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/email_user/layout.html.twig' %}
-{% block content %}
-    <table class="table">
+{% block body %}
+    <table
+  data-locale="fr-FR"
+  data-toggle="table"
+  data-show-columns="true">
         <thead>
             <tr>
                 <th>Adresse</th>
                 <th>Principal</th>
-                <th>actions</th>
+                <th>Verif</th>
+                <th>User</th>
+                <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
-        {% for email_user in pagination %}
+        {% for entity in pagination %}
             <tr>
-                <td>{{ email_user.adresse }}</td>
-                <td>{{ email_user.principal ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.adresse }}</td>
+                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.verif ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.refuser }}</td>
                 <td>
-                    <a href="{{ path('email_user_show', {'id': email_user.id}) }}">show</a>
-                    <a href="{{ path('email_user_edit', {'id': email_user.id}) }}">edit</a>
-                    <a href="#">delete</a>
+                    {{ macro_admin.actions(entity, actions) }}
                 </td>
             </tr>
         {% else %}
@@ -26,6 +32,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('email_user_new') }}">Create new</a>
 {% endblock %}

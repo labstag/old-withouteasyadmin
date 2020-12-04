@@ -2,7 +2,9 @@
 
 namespace Labstag\Entity;
 
+use DateTime;
 use Labstag\Repository\NoteInterneRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,11 +22,13 @@ class NoteInterne
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
      */
     private $content;
 
@@ -34,20 +38,29 @@ class NoteInterne
     private $enable;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
+     * @Assert\LessThanOrEqual(propertyPath="dateFin")
      */
-    private $dateDebut;
+    private DateTime $dateDebut;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\GreaterThanOrEqual(propertyPath="dateDebut")
      */
-    private $dateFin;
+    private DateTime $dateFin;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $refuser;
+
+    public function __construct()
+    {
+        $this->enable    = false;
+        $this->dateDebut = new DateTime();
+        $this->dateFin   = new DateTime();
+    }
 
     public function __toString()
     {
@@ -83,7 +96,7 @@ class NoteInterne
         return $this;
     }
 
-    public function getEnable(): ?bool
+    public function isEnable(): ?bool
     {
         return $this->enable;
     }
@@ -95,24 +108,24 @@ class NoteInterne
         return $this;
     }
 
-    public function getDateDebut(): ?\DateTimeImmutable
+    public function getDateDebut(): ?\DateTime
     {
         return $this->dateDebut;
     }
 
-    public function setDateDebut(\DateTimeImmutable $dateDebut): self
+    public function setDateDebut(\DateTime $dateDebut): self
     {
         $this->dateDebut = $dateDebut;
 
         return $this;
     }
 
-    public function getDateFin(): ?\DateTimeImmutable
+    public function getDateFin(): ?\DateTime
     {
         return $this->dateFin;
     }
 
-    public function setDateFin(?\DateTimeImmutable $dateFin): self
+    public function setDateFin(?\DateTime $dateFin): self
     {
         $this->dateFin = $dateFin;
 

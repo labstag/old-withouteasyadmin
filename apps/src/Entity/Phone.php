@@ -2,8 +2,8 @@
 
 namespace Labstag\Entity;
 
-use Labstag\Repository\PhoneRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -23,22 +23,24 @@ abstract class Phone
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $numero;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank
+     * @Assert\Country
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $type;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="boolean") */
     private $principal;
 
     public function __toString()
@@ -50,6 +52,11 @@ abstract class Phone
                 $this->getNumero(),
             ]
         );
+    }
+
+    public function __construct()
+    {
+        $this->principal = false;
     }
 
     public function getId(): ?string
@@ -93,12 +100,12 @@ abstract class Phone
         return $this;
     }
 
-    public function getPrincipal(): ?string
+    public function isPrincipal(): ?bool
     {
         return $this->principal;
     }
 
-    public function setPrincipal(string $principal): self
+    public function setPrincipal(bool $principal): self
     {
         $this->principal = $principal;
 

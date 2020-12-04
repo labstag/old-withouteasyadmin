@@ -6,108 +6,122 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\AdresseUser;
 use Labstag\Form\Admin\AdresseUserType;
 use Labstag\Repository\AdresseUserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/user/adresse")
  */
-class AdresseUserController extends AbstractController
+class AdresseUserController extends AdminControllerLib
 {
+
+    protected string $headerTitle = 'Adresse utilisateurs';
+
+    protected string $urlHome = 'admin_adresseuser_index';
+
     /**
-     * @Route("/", name="adresse_user_index", methods={"GET"})
+     * @Route("/", name="admin_adresseuser_index", methods={"GET"})
      */
-    public function index(
-        PaginatorInterface $paginator,
-        Request $request,
-        AdresseUserRepository $repository
+    public function index(AdresseUserRepository $repository): Response
+    {
+        return $this->adminCrudService->list(
+            $repository,
+            'findAllForAdmin',
+            'admin/adresse_user/index.html.twig',
+            ['new' => 'admin_adresseuser_new'],
+            [
+                'list'   => 'admin_adresseuser_index',
+                'show'   => 'admin_adresseuser_show',
+                'edit'   => 'admin_adresseuser_edit',
+                'delete' => 'admin_adresseuser_delete',
+            ]
+        );
+    }
+
+    /**
+     * @Route("/new", name="admin_adresseuser_new", methods={"GET","POST"})
+     */
+    public function new(RouterInterface $router): Response
+    {
+        $breadcrumb = [
+            'new' => $router->generate('admin_adresseuser_new'),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->create(
+            new AdresseUser(),
+            AdresseUserType::class,
+            ['list' => 'admin_adresseuser_index']
+        );
+    }
+
+    /**
+     * @Route("/{id}", name="admin_adresseuser_show", methods={"GET"})
+     */
+    public function show(
+        AdresseUser $adresseUser,
+        RouterInterface $router
     ): Response
     {
-        $pagination = $paginator->paginate(
-            $repository->findAll(),
-            $request->query->getInt('page', 1), /*page number*/
-            10
-        );
-        return $this->render(
-            'admin/adresse_user/index.html.twig',
-            ['pagination' => $pagination]
-        );
-    }
-
-    /**
-     * @Route("/new", name="adresse_user_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $adresseUser = new AdresseUser();
-        $form        = $this->createForm(AdresseUserType::class, $adresseUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($adresseUser);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('adresse_user_index');
-        }
-
-        return $this->render(
-            'admin/adresse_user/new.html.twig',
-            [
-                'adresse_user' => $adresseUser,
-                'form'         => $form->createView(),
-            ]
-        );
-    }
-
-    /**
-     * @Route("/{id}", name="adresse_user_show", methods={"GET"})
-     */
-    public function show(AdresseUser $adresseUser): Response
-    {
-        return $this->render(
+        $breadcrumb = [
+            'show' => $router->generate(
+                'admin_adresseuser_show',
+                [
+                    'id' => $adresseUser->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->read(
+            $adresseUser,
             'admin/adresse_user/show.html.twig',
-            ['adresse_user' => $adresseUser]
-        );
-    }
-
-    /**
-     * @Route("/{id}/edit", name="adresse_user_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, AdresseUser $adresseUser): Response
-    {
-        $form = $this->createForm(AdresseUserType::class, $adresseUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('adresse_user_index');
-        }
-
-        return $this->render(
-            'admin/adresse_user/edit.html.twig',
             [
-                'adresse_user' => $adresseUser,
-                'form'         => $form->createView(),
+                'delete' => 'admin_adresseuser_delete',
+                'edit'   => 'admin_adresseuser_edit',
+                'list'   => 'admin_adresseuser_index',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="adresse_user_delete", methods={"DELETE"})
+     * @Route(
+     *  "/{id}/edit",
+     *  name="admin_adresseuser_edit",
+     *  methods={"GET","POST"}
+     * )
      */
-    public function delete(Request $request, AdresseUser $adresseUser): Response
+    public function edit(
+        AdresseUser $adresseUser,
+        RouterInterface $router
+    ): Response
     {
-        $token = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete'.$adresseUser->getId(), $token)) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($adresseUser);
-            $entityManager->flush();
-        }
+        $breadcrumb = [
+            'show' => $router->generate(
+                'admin_adresseuser_edit',
+                [
+                    'id' => $adresseUser->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
+        return $this->adminCrudService->update(
+            AdresseUserType::class,
+            $adresseUser,
+            [
+                'delete' => 'admin_adresseuser_delete',
+                'list'   => 'admin_adresseuser_index',
+                'show'   => 'admin_adresseuser_show',
+            ]
+        );
+    }
 
-        return $this->redirectToRoute('adresse_user_index');
+    /**
+     * @Route("/delete/{id}", name="admin_adresseuser_delete", methods={"POST"})
+     */
+    public function delete(AdresseUser $adresseUser): Response
+    {
+        return $this->adminCrudService->delete($adresseUser);
     }
 }

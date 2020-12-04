@@ -2,8 +2,8 @@
 
 namespace Labstag\Entity;
 
-use Labstag\Repository\AdresseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -23,37 +23,42 @@ abstract class Adresse
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     protected $rue;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Country
      */
     protected $country;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     protected $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     protected $ville;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     protected $gps;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank
      */
     protected $type;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    /** @ORM\Column(type="boolean") */
     protected $pmr;
 
     public function __toString()
@@ -69,7 +74,7 @@ abstract class Adresse
         );
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -146,7 +151,7 @@ abstract class Adresse
         return $this;
     }
 
-    public function getPmr(): ?bool
+    public function isPmr(): ?bool
     {
         return $this->pmr;
     }
