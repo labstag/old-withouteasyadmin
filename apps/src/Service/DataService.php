@@ -2,7 +2,10 @@
 
 namespace Labstag\Service;
 
+use Labstag\Entity\Configuration;
 use Labstag\Repository\ConfigurationRepository;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class DataService
 {
@@ -13,28 +16,46 @@ class DataService
 
     private ConfigurationRepository $repository;
 
-    public function __construct(ConfigurationRepository $repository)
+    private CacheInterface $cache;
+
+    public function __construct(
+        ConfigurationRepository $repository,
+        CacheInterface $cache
+    )
     {
+        $this->cache      = $cache;
         $this->repository = $repository;
         $this->setData();
     }
 
-    public function getOauthActivated()
+    public function getOauthActivated(): array
     {
         return $this->oauthActivated;
     }
 
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
 
-    private function setData()
+    private function setData(): void
     {
-        if (count($this->config) != 0) {
-            return;
-        }
+        $config = $this->cache->get(
+            'configuration',
+            [
+                $this,
+                'compute',
+            ]
+        );
 
+        $this->config = $config;
+
+        $this->setOauth($config);
+    }
+
+    public function compute(ItemInterface $item): array
+    {
+        $item->expiresAfter(1800);
         $data   = $this->repository->findAll();
         $config = [];
         /** @var Configuration $row */
@@ -44,19 +65,24 @@ class DataService
             $config[$key] = $value;
         }
 
-        if (isset($config['oauth']) && is_array($config['oauth'])) {
-            $oauth = [];
-            $data  = $config['oauth'];
-            foreach ($data as $row) {
-                if (1 == $row['activate']) {
-                    $type         = $row['type'];
-                    $oauth[$type] = $row;
-                }
-            }
+        return $config;
+    }
 
-            $this->oauthActivated = $oauth;
+    private function setOauth(array $config): void
+    {
+        if (!isset($config['oauth']) || !is_array($config['oauth'])) {
+            return;
         }
 
-        $this->config = $config;
+        $oauth = [];
+        $data  = $config['oauth'];
+        foreach ($data as $row) {
+            if (1 == $row['activate']) {
+                $type         = $row['type'];
+                $oauth[$type] = $row;
+            }
+        }
+
+        $this->oauthActivated = $oauth;
     }
 }

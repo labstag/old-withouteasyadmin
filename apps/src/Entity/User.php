@@ -25,25 +25,24 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180, unique=true, nullable=false)
+     * @Assert\NotNull
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     *
-     * @var string
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $password;
 
@@ -66,58 +65,84 @@ class User implements UserInterface
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
      */
-    private $groupe;
+    private Groupe $groupe;
 
     /**
-     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="refuser")
+     * @ORM\OneToMany(
+     *  targetEntity=Edito::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
     private $editos;
 
     /**
-     * @ORM\OneToMany(targetEntity=NoteInterne::class, mappedBy="refuser")
+     * @ORM\OneToMany(
+     *  targetEntity=NoteInterne::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
     private $noteInternes;
 
     /**
-     * @ORM\OneToMany(targetEntity=LienUser::class, mappedBy="refuser")
+     * @ORM\OneToMany(
+     *  targetEntity=LienUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
     private $lienUsers;
 
     /**
-     * @ORM\OneToMany(targetEntity=EmailUser::class, mappedBy="refuser")
+     * @ORM\OneToMany(
+     *  targetEntity=EmailUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
     private $emailUsers;
 
     /**
-     * @ORM\OneToMany(targetEntity=PhoneUser::class, mappedBy="refuser")
+     * @ORM\OneToMany(
+     *  targetEntity=PhoneUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
     private $phoneUsers;
 
     /**
-     * @ORM\OneToMany(targetEntity=AdresseUser::class, mappedBy="refuser")
+     * @ORM\OneToMany(
+     *  targetEntity=AdresseUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
     private $adresseUsers;
 
     /**
-     * @ORM\OneToMany(targetEntity=OauthConnectUser::class, mappedBy="refuser")
-     *
-     * @var ArrayCollection
+     * @ORM\OneToMany(
+     *  targetEntity=OauthConnectUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
     private $oauthConnectUsers;
 
     public function __construct()
     {
-        $this->roles             = ['ROLE_USER'];
-        $this->enable            = false;
-        $this->lost              = false;
-        $this->verif             = false;
         $this->editos            = new ArrayCollection();
         $this->noteInternes      = new ArrayCollection();
-        $this->oauthConnectUsers = new ArrayCollection();
         $this->lienUsers         = new ArrayCollection();
         $this->emailUsers        = new ArrayCollection();
         $this->phoneUsers        = new ArrayCollection();
         $this->adresseUsers      = new ArrayCollection();
+        $this->oauthConnectUsers = new ArrayCollection();
+        $this->roles             = ['ROLE_USER'];
+        $this->enable            = false;
+        $this->lost              = false;
+        $this->verif             = false;
     }
 
     public function __toString()
@@ -156,7 +181,7 @@ class User implements UserInterface
         return (string) $this->username;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(?string $username): self
     {
         $this->username = $username;
 
@@ -239,7 +264,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getEditos(): Collection
+    public function getEditos()
     {
         return $this->editos;
     }
@@ -267,7 +292,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getNoteInternes(): Collection
+    public function getNoteInternes()
     {
         return $this->noteInternes;
     }
@@ -295,7 +320,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getLienUsers(): Collection
+    public function getLienUsers()
     {
         return $this->lienUsers;
     }
@@ -303,8 +328,8 @@ class User implements UserInterface
     public function addLienUser(LienUser $lienUser): self
     {
         if (!$this->lienUsers->contains($lienUser)) {
-            $this->lienUsers[] = $lienUser;
             $lienUser->setRefuser($this);
+            $this->lienUsers[] = $lienUser;
         }
 
         return $this;
@@ -323,7 +348,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getEmailUsers(): Collection
+    public function getEmailUsers()
     {
         return $this->emailUsers;
     }
@@ -331,8 +356,8 @@ class User implements UserInterface
     public function addEmailUser(EmailUser $emailUser): self
     {
         if (!$this->emailUsers->contains($emailUser)) {
-            $this->emailUsers[] = $emailUser;
             $emailUser->setRefuser($this);
+            $this->emailUsers[] = $emailUser;
         }
 
         return $this;
@@ -351,7 +376,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPhoneUsers(): Collection
+    public function getPhoneUsers()
     {
         return $this->phoneUsers;
     }
@@ -379,7 +404,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAdresseUsers(): Collection
+    public function getAdresseUsers()
     {
         return $this->adresseUsers;
     }
@@ -436,7 +461,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getOauthConnectUsers(): Collection
+    public function getOauthConnectUsers()
     {
         return $this->oauthConnectUsers;
     }

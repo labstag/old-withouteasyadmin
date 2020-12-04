@@ -42,28 +42,14 @@ class AdminControllerTest extends WebTestCase
     /**
      * @dataProvider getGroupes
      */
-    public function testEditParam(string $groupe)
-    {
-        $this->editTest(
-            $groupe,
-            !in_array($groupe, $this->groupeDisable),
-            'admin_param',
-            'getConfig'
-        );
-    }
-
-    /**
-     * @dataProvider getGroupes
-     */
     public function testPostParam($groupe)
     {
-        $this->editPost(
+        $this->editPostNoRedirect(
             $groupe,
-            !in_array($groupe, $this->groupeDisable),
             'admin_param',
             ParamType::class,
-            'getConfig',
-            false
+            !in_array($groupe, $this->groupeDisable),
+            'getConfig'
         );
     }
 

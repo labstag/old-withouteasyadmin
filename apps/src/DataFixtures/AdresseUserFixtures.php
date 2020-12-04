@@ -13,19 +13,14 @@ class AdresseUserFixtures extends FixtureLib implements DependentInterface
 {
     const NUMBER = 25;
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
         for ($index = 0; $index < self::NUMBER; ++$index) {
             $indexUser = $faker->numberBetween(1, 3);
-            $user      = $this->getReference('user_'.$indexUser);
+            $user      = $this->getReference('user_' . $indexUser);
             $this->addAdresse($faker, $user, $manager);
         }
-
-        // $product = new Product();
-        // $manager->persist($product);
-
-        $manager->flush();
     }
 
     public function getDependencies()

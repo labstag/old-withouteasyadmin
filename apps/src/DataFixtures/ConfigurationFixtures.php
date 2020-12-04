@@ -5,25 +5,32 @@ namespace Labstag\DataFixtures;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Configuration;
 use Labstag\Lib\FixtureLib;
+use Labstag\Repository\UserRepository;
 use Symfony\Component\Dotenv\Dotenv;
 use Labstag\Service\OauthService;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class ConfigurationFixtures extends FixtureLib
 {
 
     private OauthService $oauthService;
 
-    public function __construct(OauthService $oauthService)
+    public function __construct(
+        OauthService $oauthService,
+        UserRepository $userRepository,
+        EventDispatcherInterface $dispatcher
+    )
     {
         $this->oauthService = $oauthService;
+        parent::__construct($userRepository, $dispatcher);
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->add($manager);
     }
 
-    private function setGeonames($env, &$data)
+    private function setGeonames(array $env, array &$data): void
     {
         $geonames = [];
         if (array_key_exists('GEONAMES', $env)) {
@@ -39,7 +46,7 @@ class ConfigurationFixtures extends FixtureLib
         $data['geonames'] = $geonames;
     }
 
-    private function setOauth($env, &$data)
+    private function setOauth(array $env, array &$data): void
     {
         $oauth = [];
         foreach ($env as $key => $val) {
@@ -72,15 +79,43 @@ class ConfigurationFixtures extends FixtureLib
     {
         $viewport = 'width=device-width, initial-scale=1, shrink-to-fit=no';
         $data     = [
+            'notification'    => [
+                [
+                    'type'   => 'oauthconnectuser',
+                    'mail'   => 1,
+                    'notify' => 1,
+                ],
+                [
+                    'type'   => 'lienuser',
+                    'mail'   => 1,
+                    'notify' => 1,
+                ],
+                [
+                    'type'   => 'emailuser',
+                    'mail'   => 1,
+                    'notify' => 1,
+                ],
+                [
+                    'type'   => 'phoneuser',
+                    'mail'   => 1,
+                    'notify' => 1,
+                ],
+                [
+                    'type'   => 'adresseuser',
+                    'mail'   => 1,
+                    'notify' => 1,
+                ],
+            ],
             'languagedefault' => 'fr',
             'language'        => [
                 'en',
                 'fr',
             ],
-            'site_email'      => 'contact@letoullec.fr',
-            'site_no-reply'   => 'no-reply@labstag.fr',
+            'site_email'      => 'contact@labstag.lxc',
+            'site_no-reply'   => 'no-reply@labstag.lxc',
+            'site_url'        => 'http://www.labstag.lxc',
             'site_title'      => 'labstag',
-            'site_copyright'  => 'Copyright '.date('Y'),
+            'site_copyright'  => 'Copyright ' . date('Y'),
             'oauth'           => [],
             'meta'            => [
                 [
@@ -110,16 +145,10 @@ class ConfigurationFixtures extends FixtureLib
             ],
             'robotstxt'       => 'User-agent: *
 Allow: /',
-            'datatable'       => [
-                [
-                    'lang'     => 'fr-FR',
-                    'pagelist' => '[5, 10, 25, 50, All]',
-                ],
-            ],
         ];
 
         $dotenv = new Dotenv();
-        $env    = $dotenv->parse(file_get_contents(__DIR__.'/../../.env'));
+        $env    = $dotenv->parse(file_get_contents(__DIR__ . '/../../.env'));
 
         ksort($env);
         $this->setGeonames($env, $data);
@@ -129,7 +158,7 @@ Allow: /',
             $configuration = new Configuration();
             $configuration->setName($key);
             $configuration->setValue($value);
-            $this->addReference('configuration_'.$key, $configuration);
+            $this->addReference('configuration_' . $key, $configuration);
             $manager->persist($configuration);
         }
 

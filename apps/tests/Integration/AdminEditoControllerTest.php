@@ -55,25 +55,13 @@ class AdminEditoControllerTest extends WebTestCase
     /**
      * @dataProvider getGroupes
      */
-    public function testEdit(string $groupe)
-    {
-        $this->editTest(
-            $groupe,
-            !in_array($groupe, $this->groupeDisable),
-            'admin_edito_edit'
-        );
-    }
-
-    /**
-     * @dataProvider getGroupes
-     */
     public function testPost($groupe)
     {
-        $this->editPost(
+        $this->editPostRedirect(
             $groupe,
-            !in_array($groupe, $this->groupeDisable),
             'admin_edito_edit',
-            EditoType::class
+            EditoType::class,
+            !in_array($groupe, $this->groupeDisable)
         );
     }
 

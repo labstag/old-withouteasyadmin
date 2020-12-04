@@ -105,6 +105,9 @@ linter-twig: ## indique les erreurs de code de twig
 linter-yaml: ## indique les erreurs de code de yaml
 	php bin/console lint:yaml config
 
+messenger_consume: ## Messenger Consume
+	php bin/console messenger:consume async -vv
+
 tests-behat: ## Lance les tests behat
 	composer run behat
 

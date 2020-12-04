@@ -51,6 +51,10 @@ i{
     @extend .far;
     @extend .fa-trash-alt;
   }
+  &.BtnAdminHeaderShow{
+    @extend .far;
+    @extend .fa-eye;
+  }
   &.BtnAdminHeaderSave{
     @extend .fas;
     @extend .fa-save;
@@ -68,4 +72,61 @@ i{
 .BtnAdminTableAction{
   @extend .fas;
   @extend .fa-cog;
+    i{
+      @extend .fas;
+      @extend .fa-plus;
+    }
+    span{
+      display: none;
+    }
+}
+
+.btnAdminTableShow{
+  @extend .btn;
+  @extend .btn-outline-primary;
+  @extend .btn-sm;
+    i{
+      @extend .far;
+      @extend .fa-eye;
+    }
+    span{
+      display: none;
+    }
+}
+
+.btnAdminTableEdit{
+  @extend .btn;
+  @extend .btn-outline-success;
+  @extend .btn-sm;
+  i{
+    @extend .fas;
+    @extend .fa-edit;
+  }
+  span{
+    display: none;
+  }
+}
+
+.btnAdminTableDelete{
+  @extend .btn;
+  @extend .btn-outline-danger;
+  @extend .btn-sm;
+  i{
+    @extend .fas;
+    @extend .fa-trash-alt;
+  }
+  span{
+    display: none;
+  }
+}
+
+.breadcrumb{
+  .separator{
+    @extend .mr-1;
+    @extend .ml-1;
+  }
+}
+
+.btngrouptable{
+  @extend .btn-group;
 }

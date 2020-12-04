@@ -6,15 +6,22 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Labstag\Lib\FixtureLib;
 use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\UserRepository;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class UserFixtures extends FixtureLib implements DependentFixtureInterface
 {
 
     private GroupeRepository $groupeRepository;
 
-    public function __construct(GroupeRepository $groupeRepository)
+    public function __construct(
+        GroupeRepository $groupeRepository,
+        UserRepository $userRepository,
+        EventDispatcherInterface $dispatcher
+    )
     {
         $this->groupeRepository = $groupeRepository;
+        parent::__construct($userRepository, $dispatcher);
     }
 
     private function getUsers(): array
@@ -25,6 +32,7 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
                 'password' => 'password',
                 'enable'   => true,
                 'verif'    => true,
+                'lost'     => false,
                 'email'    => 'admin@email.fr',
                 'groupe'   => 'admin',
             ],
@@ -33,14 +41,25 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
                 'password' => 'password',
                 'enable'   => true,
                 'verif'    => true,
+                'lost'     => false,
                 'email'    => 'superadmin@email.fr',
                 'groupe'   => 'superadmin',
+            ],
+            [
+                'username' => 'lost',
+                'password' => 'password',
+                'enable'   => false,
+                'verif'    => true,
+                'lost'     => true,
+                'email'    => 'lost@email.fr',
+                'groupe'   => 'user',
             ],
             [
                 'username' => 'disable',
                 'password' => 'password',
                 'enable'   => false,
                 'verif'    => true,
+                'lost'     => false,
                 'email'    => 'disable@email.fr',
                 'groupe'   => 'user',
             ],
@@ -49,6 +68,7 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
                 'password' => 'password',
                 'enable'   => false,
                 'verif'    => false,
+                'lost'     => false,
                 'email'    => 'unverif@email.fr',
                 'groupe'   => 'user',
             ],
@@ -57,12 +77,17 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
         return $users;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $users   = $this->getUsers();
         $groupes = $this->groupeRepository->findAll();
         foreach ($users as $index => $user) {
-            $this->addUser($groupes, $index, $user, $manager);
+            $this->addUser(
+                $groupes,
+                $index,
+                $user,
+                $manager
+            );
         }
     }
 

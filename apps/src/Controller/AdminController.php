@@ -2,62 +2,26 @@
 
 namespace Labstag\Controller;
 
-use Labstag\Service\MailerService;
-use Labstag\Entity\Configuration;
+use Labstag\Event\ConfigurationEntityEvent;
+use Labstag\Event\UserEntityEvent;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Form\Admin\ParamType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\ConfigurationRepository;
+use Labstag\Manager\UserManager;
+use Labstag\Service\AdminBoutonService;
+use Labstag\Service\DataService;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
-use Labstag\Service\AdminBoutonService;
-use Labstag\Service\AdminCrudService;
-use Labstag\Service\DataService;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/admin")
  */
 class AdminController extends AdminControllerLib
 {
-
-    protected MailerService $mailerService;
-
-    public function __construct(
-        DataService $dataService,
-        AdminBoutonService $adminBoutonService,
-        AdminCrudService $adminCrudService,
-        MailerService $mailerService
-    )
-    {
-        $this->mailerService = $mailerService;
-        parent::__construct(
-            $dataService,
-            $adminBoutonService,
-            $adminCrudService
-        );
-    }
-
-    /**
-     * @Route("/test", name="test")
-     */
-    public function test()
-    {
-        $email = $this->mailerService->createEmail(
-            [
-                'html' => 'mails/test.html.twig',
-                'txt'  => 'mails/test.text.twig',
-            ]
-        );
-        $email->to('you@example.com');
-
-        $this->mailerService->send($email);
-
-        return '';
-    }
-
     /**
      * @Route("/", name="admin")
      */
@@ -74,33 +38,20 @@ class AdminController extends AdminControllerLib
      */
     public function param(
         Request $request,
-        ConfigurationRepository $repository
+        EventDispatcherInterface $dispatcher,
+        DataService $dataService,
+        AdminBoutonService $adminBoutonService
     ): Response
     {
-        $this->adminBoutonService->addBtnSave('Sauvegarder');
-        $config = $this->dataService->getConfig();
-        $form   = $this->createForm(ParamType::class, $config);
+        $this->headerTitle = 'Paramètres';
+        $this->urlHome     = 'admin_param';
+        $config            = $dataService->getConfig();
+        $form              = $this->createForm(ParamType::class, $config);
+        $adminBoutonService->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $post    = $request->request->get($form->getName());
-            $manager = $this->getDoctrine()->getManager();
-            foreach ($post as $key => $value) {
-                if ('_token' == $key) {
-                    continue;
-                }
-
-                $configuration = $repository->findOneBy(['name' => $key]);
-                if (!($configuration instanceof Configuration)) {
-                    $configuration = new Configuration();
-                    $configuration->setName($key);
-                }
-
-                $configuration->setValue($value);
-                $manager->persist($configuration);
-            }
-
-            $manager->flush();
-            $this->addFlash('success', 'Données sauvegardé');
+            $post = $request->request->get($form->getName());
+            $dispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
 
         return $this->render(
@@ -114,11 +65,19 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/profil", name="admin_profil", methods={"GET","POST"})
      */
-    public function profil(Security $security): Response
+    public function profil(
+        Security $security,
+        UserManager $userManager
+    ): Response
     {
+        $this->headerTitle = 'Profil';
+        $this->urlHome     = 'admin_profil';
         return $this->adminCrudService->update(
             ProfilType::class,
-            $security->getUser()
+            $security->getUser(),
+            [],
+            [UserEntityEvent::class],
+            $userManager
         );
     }
 

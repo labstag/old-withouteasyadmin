@@ -3,7 +3,6 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\AdresseUser;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,7 +18,6 @@ class AdresseUserType extends AdresseType
     {
         parent::buildForm($builder, $options);
         $builder->add('refuser');
-        $builder->add('submit', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

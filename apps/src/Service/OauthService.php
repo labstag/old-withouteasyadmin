@@ -10,16 +10,16 @@ use Symfony\Component\Routing\RouterInterface;
 class OauthService
 {
 
-    protected array $configProvider;
+    private array $configProvider;
 
     /**
      * @var Router|RouterInterface
      */
-    protected $router;
+    private $router;
 
-    protected DataService $dataService;
+    private DataService $dataService;
 
-    protected array $oauthActivated;
+    private array $oauthActivated;
 
     public function __construct(
         RouterInterface $router,
@@ -98,7 +98,7 @@ class OauthService
         }
     }
 
-    public function ifConfigProviderEnable($clientName): bool
+    public function ifConfigProviderEnable(string $clientName): bool
     {
         if (!isset($this->configProvider[$clientName])) {
             return false;
@@ -213,7 +213,7 @@ class OauthService
         ];
     }
 
-    protected function setConfigProvider(): void
+    private function setConfigProvider(): void
     {
         $this->configProvider = [
             'gitlab'    => $this->setConfigProviderGitlab(),
@@ -224,7 +224,7 @@ class OauthService
         ];
     }
 
-    private function getConfig($clientName)
+    private function getConfig(string $clientName): array
     {
         if (isset($this->configProvider[$clientName])) {
             return $this->configProvider[$clientName];
@@ -233,7 +233,7 @@ class OauthService
         return [];
     }
 
-    protected function initProvider(string $clientName): GenericProviderLib
+    private function initProvider(string $clientName): GenericProviderLib
     {
         $config = $this->getConfig($clientName);
         if (isset($config['redirect'])) {

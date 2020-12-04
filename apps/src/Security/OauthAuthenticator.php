@@ -11,6 +11,7 @@ use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\Service\OauthService;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -36,60 +37,33 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    private Request $request;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
-    /**
-     * @var CsrfTokenManagerInterface
-     */
-    private $csrfTokenManager;
+    private CsrfTokenManagerInterface $csrfTokenManager;
 
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     /**
      * @var string
      */
     private $route;
 
-    /**
-     * @var OauthService
-     */
-    private $oauthService;
+    private OauthService $oauthService;
 
-    /**
-     * @var string
-     */
-    private $oauthCode;
+    private string $oauthCode;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * @var TokenStorage|TokenStorageInterface
      */
     private $tokenStorage;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -120,7 +94,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         $this->oauthCode = $oauthCode;
     }
 
-    private function setOauthCode($attributes)
+    private function setOauthCode(ParameterBag $attributes): string
     {
         if ($attributes->has('oauthCode')) {
             return $attributes->get('oauthCode');
@@ -204,7 +178,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
             $credentials['user']->toArray(),
             $this->oauthCode
         );
-        /** @var OauthConnectUser $oauthConnectUser */
+        /** @var OauthConnectUser $login */
         $login = $enm->login($identity, $this->oauthCode);
         if (!($login instanceof OauthConnectUser) || '' == $identity) {
             // fail authentication with a custom error
@@ -250,7 +224,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         return new RedirectResponse($getTargetPath);
     }
 
-    protected function getLoginUrl()
+    public function getLoginUrl()
     {
         return $this->urlGenerator->generate('app_login');
     }

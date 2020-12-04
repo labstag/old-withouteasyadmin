@@ -19,20 +19,16 @@
     </header>
     <div class="container-fluid">
         <div class="row">
+            {% if headerTitle is defined %}
             <div class="col">
-                <h1>{% block headerTitre %}{% endblock %}</h1>
+                <h1>{{ headerTitle|trans }}</h1>
             </div>
+            {% endif %}
             <div class="col text-right">
                 {{ include('admin/btn.html.twig') }}
             </div>
         </div>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Library</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Data</li>
-            </ol>
-        </nav>
+        {{ wo_render_breadcrumbs() }}
         {{ macro_site.flashbag(app) }}
         {% block body %}
         {% endblock %}

@@ -149,6 +149,7 @@ services:
       - openldap
       - mercure
       - mailhog
+      - redis
     volumes:
       - ${PWD}/apps:/var/www/
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
@@ -161,6 +162,7 @@ services:
       - openldap
       - mercure
       - mailhog
+      - redis
     volumes:
       - ${PWD}/apps:/var/www/
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf

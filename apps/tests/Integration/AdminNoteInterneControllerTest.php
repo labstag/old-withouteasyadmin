@@ -55,25 +55,13 @@ class AdminNoteInterneControllerTest extends WebTestCase
     /**
      * @dataProvider getGroupes
      */
-    public function testEdit(string $groupe)
-    {
-        $this->editTest(
-            $groupe,
-            !in_array($groupe, $this->groupeDisable),
-            'admin_noteinterne_edit'
-        );
-    }
-
-    /**
-     * @dataProvider getGroupes
-     */
     public function testPost($groupe)
     {
-        $this->editPost(
+        $this->editPostRedirect(
             $groupe,
-            !in_array($groupe, $this->groupeDisable),
             'admin_noteinterne_edit',
-            NoteInterneType::class
+            NoteInterneType::class,
+            !in_array($groupe, $this->groupeDisable)
         );
     }
 
@@ -153,9 +141,9 @@ class AdminNoteInterneControllerTest extends WebTestCase
         $noteinterne->setDateDebut($dateDebut);
         $dateFin = clone $dateDebut;
         $random  = $faker->numberBetween(10, 50);
-        $dateFin->modify('+' .$random. ' days');
+        $dateFin->modify('+' . $random . ' days');
         $random = $faker->numberBetween(2, 24);
-        $dateFin->modify('+' .$random. ' hours');
+        $dateFin->modify('+' . $random . ' hours');
         $noteinterne->setDateFin($dateFin);
         /** @var string $content */
         $content = $faker->unique()->paragraphs(4, true);

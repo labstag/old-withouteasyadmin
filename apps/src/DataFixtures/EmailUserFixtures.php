@@ -1,10 +1,13 @@
 <?php
+
 namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\FixtureLib;
+use Labstag\Repository\UserRepository;
 
 class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
 {
@@ -18,11 +21,6 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
             $user      = $this->getReference('user_' . $indexUser);
             $this->addEmail($faker, $user, $manager);
         }
-
-        // $product = new Product();
-        // $manager->persist($product);
-
-        $manager->flush();
     }
 
     public function getDependencies()

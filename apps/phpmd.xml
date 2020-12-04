@@ -10,6 +10,8 @@
 		<properties>
             <property name="exceptions">
               <value>
+                \Symfony\Component\Intl\Locale,
+                \Symfony\Component\Intl\Countries,
                 \Symfony\Component\HttpFoundation\Response,
                 \Faker\Factory,
                 \libphonenumber\PhoneNumberToTimeZonesMapper,
@@ -23,6 +25,7 @@
 		<exclude name="TooManyPublicMethods" />
 		<exclude name="TooManyMethods" />
 		<exclude name="TooManyFields" />
+        <exclude name="ExcessiveParameterList" />>
 		<exclude name="ExcessiveClassComplexity" />
 	</rule>
 	<rule ref="rulesets/controversial.xml" />

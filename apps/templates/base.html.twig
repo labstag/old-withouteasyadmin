@@ -1,3 +1,4 @@
+{% import "modal.html.twig" as modal %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,6 +16,11 @@
     </head>
     <body>
         {% block content %}{% endblock %}
+        {% block modal %}
+            {% if modalDelete is defined %}
+                {{ modal.delete() }}
+            {% endif %}
+        {% endblock %}
         {% block javascripts %}
         {% endblock %}
     </body>

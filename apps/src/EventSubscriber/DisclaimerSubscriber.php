@@ -1,9 +1,11 @@
 <?php
+
 namespace Labstag\EventSubscriber;
 
 use Labstag\Service\DataService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -38,7 +40,7 @@ class DisclaimerSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function disclaimerActivate($request): bool
+    private function disclaimerActivate(Request $request): bool
     {
         $config     = $this->dataService->getConfig();
         $controller = $request->attributes->get('_controller');
@@ -61,7 +63,7 @@ class DisclaimerSubscriber implements EventSubscriberInterface
         }
 
         $disclaimer = $config[$key][0];
-        $activate   = $disclaimer['activate'];
+        $activate   = (bool) $disclaimer['activate'];
 
         return $session->get($key, 0) !== 1 && $activate === true;
     }

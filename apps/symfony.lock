@@ -170,6 +170,9 @@
     "guzzlehttp/psr7": {
         "version": "1.7.0"
     },
+    "imagine/imagine": {
+        "version": "1.2.4"
+    },
     "jakub-onderka/php-console-color": {
         "version": "v0.2"
     },
@@ -196,6 +199,9 @@
     },
     "league/oauth2-client": {
         "version": "2.6.0"
+    },
+    "mhujer/breadcrumbs-bundle": {
+        "version": "1.5.3"
     },
     "monolog/monolog": {
         "version": "2.1.1"
@@ -651,6 +657,9 @@
     "symfony/string": {
         "version": "v5.1.7"
     },
+    "symfony/templating": {
+        "version": "v5.1.8"
+    },
     "symfony/test-pack": {
         "version": "v1.0.6"
     },
@@ -759,6 +768,12 @@
     },
     "symfony/yaml": {
         "version": "v5.1.7"
+    },
+    "tijsverkoyen/css-to-inline-styles": {
+        "version": "2.2.3"
+    },
+    "twig/cssinliner-extra": {
+        "version": "v3.1.1"
     },
     "twig/extra-bundle": {
         "version": "v3.0.5"

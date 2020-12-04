@@ -55,25 +55,13 @@ class AdminAdresseUserControllerTest extends WebTestCase
     /**
      * @dataProvider getGroupes
      */
-    public function testEdit(string $groupe)
-    {
-        $this->editTest(
-            $groupe,
-            !in_array($groupe, $this->groupeDisable),
-            'admin_adresseuser_edit'
-        );
-    }
-
-    /**
-     * @dataProvider getGroupes
-     */
     public function testPost($groupe)
     {
-        $this->editPost(
+        $this->editPostRedirect(
             $groupe,
-            !in_array($groupe, $this->groupeDisable),
             'admin_adresseuser_edit',
-            AdresseUserType::class
+            AdresseUserType::class,
+            !in_array($groupe, $this->groupeDisable)
         );
     }
 
@@ -149,9 +137,10 @@ class AdminAdresseUserControllerTest extends WebTestCase
         $adresse->setVille($faker->unique()->city());
         $adresse->setCountry($faker->unique()->countryCode());
         $adresse->setZipcode($faker->unique()->postcode());
+        $adresse->setType($faker->unique()->colorName);
         $latitude  = $faker->unique()->latitude();
         $longitude = $faker->unique()->longitude();
-        $gps       = $latitude.','.$longitude;
+        $gps       = $latitude . ',' . $longitude;
         $adresse->setGps($gps);
         $adresse->setPmr($faker->numberBetween(0, 1));
 

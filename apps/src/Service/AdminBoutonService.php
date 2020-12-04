@@ -8,11 +8,11 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 class AdminBoutonService
 {
 
-    protected array $bouton;
+    private CsrfTokenManagerInterface $csrfTokenManager;
 
-    protected CsrfTokenManagerInterface $csrfTokenManager;
+    private RouterInterface $router;
 
-    protected RouterInterface $router;
+    private array $bouton;
 
     public function __construct(
         CsrfTokenManagerInterface $csrfTokenManager,
@@ -20,8 +20,8 @@ class AdminBoutonService
     )
     {
         $this->csrfTokenManager = $csrfTokenManager;
-        $this->bouton           = [];
         $this->router           = $router;
+        $this->bouton           = [];
     }
 
     private function add(
@@ -33,6 +33,11 @@ class AdminBoutonService
         if (!isset($attr['href'])) {
             $attr['href'] = '#';
         }
+
+        $attr = array_merge(
+            $attr,
+            ['title' => $text]
+        );
 
         $this->bouton[] = [
             'icon' => $icon,
@@ -63,21 +68,47 @@ class AdminBoutonService
         return $this;
     }
 
+    public function addBtnShow(
+        string $route,
+        string $text = 'Show',
+        array $routeParam = []
+    ): self
+    {
+        $this->add(
+            'BtnAdminHeaderShow',
+            $text,
+            [
+                'href' => $this->router->generate($route, $routeParam),
+            ]
+        );
+
+        return $this;
+    }
+
     public function addBtnDelete(
         object $entity,
-        string $route,
+        array $route,
         string $text = 'Supprimer',
         array $routeParam = []
     ): self
     {
-        $code  = 'delete'.$entity->getId();
+        $code  = 'delete' . $entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
-            'id'         => 'DeleteForm',
-            'data-token' => $token,
+            'id'          => 'DeleteForm',
+            'data-token'  => $token,
+            'data-toggle' => 'modal',
+            'data-target' => '#deleteModal',
         ];
-        if ($route != '') {
-            $attr['data-url'] = $this->router->generate($route, $routeParam);
+        if (isset($route['list'])) {
+            $attr['data-redirect'] = $this->router->generate($route['list']);
+        }
+
+        if (isset($route['delete'])) {
+            $attr['data-url'] = $this->router->generate(
+                $route['delete'],
+                $routeParam
+            );
         }
 
         $this->add(
@@ -89,12 +120,15 @@ class AdminBoutonService
         return $this;
     }
 
-    public function addBtnSave(string $text = 'Sauvegarder'): self
+    public function addBtnSave(string $form, string $text = 'Sauvegarder'): self
     {
         $this->add(
             'BtnAdminHeaderSave',
             $text,
-            ['id' => 'SaveForm']
+            [
+                'id'        => 'SaveForm',
+                'data-form' => $form,
+            ]
         );
 
         return $this;

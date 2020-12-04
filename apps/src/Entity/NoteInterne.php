@@ -22,11 +22,13 @@ class NoteInterne
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
      */
     private $content;
 
@@ -39,13 +41,13 @@ class NoteInterne
      * @ORM\Column(type="datetime")
      * @Assert\LessThanOrEqual(propertyPath="dateFin")
      */
-    private $dateDebut;
+    private DateTime $dateDebut;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\GreaterThanOrEqual(propertyPath="dateDebut")
      */
-    private $dateFin;
+    private DateTime $dateFin;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes")

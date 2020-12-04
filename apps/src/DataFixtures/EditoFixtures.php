@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -11,13 +12,6 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
 {
     public const NUMBER = 25;
 
-    private UserRepository $userRepository;
-
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
-
     public function load(ObjectManager $manager): void
     {
         $users = $this->userRepository->findAll();
@@ -26,8 +20,6 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         for ($index = 0; $index < self::NUMBER; ++$index) {
             $this->addEdito($users, $faker, $index, $manager);
         }
-
-        $manager->flush();
     }
 
     public function getDependencies()

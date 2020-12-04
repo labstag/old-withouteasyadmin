@@ -3,8 +3,10 @@
 @import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
 @import "@fortawesome/fontawesome-free/scss/regular.scss";
 @import "@fortawesome/fontawesome-free/scss/solid.scss";
-@import "./../node_modules/bootstrap-table/src/bootstrap-table.scss";
-@import "./../node_modules/flag-icon-css/sass/flag-icon.scss";
+@import "bootstrap-table/src/bootstrap-table.scss";
+@import "flag-icon-css/sass/flag-icon.scss";
+@import "select2/src/scss/core.scss";
+@import "@ttskch/select2-bootstrap4-theme/src/layout.scss";
 
 label {
   &.required {
@@ -82,4 +84,54 @@ legend{
 .GpsIcon{
   @extend .fas;
   @extend .fa-map-marker-alt;
+}
+
+#deleteModal{
+  @extend .modal;
+  @extend .fade;
+}
+
+.modal-dialog{
+  @extend .modal-dialog-centered;
+  .BtnCancel{
+    @extend .btn;
+    @extend .btn-outline-success;
+    i{
+      @extend .fas;
+      @extend .fa-ban;
+    }
+  }
+  .BtnConfirmDelete{
+    @extend .btn;
+    @extend .btn-outline-danger;
+    i{
+      @extend .fas;
+      @extend .fa-trash-alt;
+    }
+  }
+}
+@media all and (min-width: 992px) {
+  .nav-item {
+    .dropdown-menu {
+      display: none;
+    }
+    &:hover {
+      .nav-link {
+        color: #fff;
+      }
+
+      .dropdown-menu {
+        display: block;
+      }
+    }
+
+    .dropdown-menu {
+      margin-top: 0;
+    }
+  }
+}
+.formError{
+  @extend .badge;
+  @extend .badge-danger;
+  @extend .text-uppercase;
 }

@@ -2,9 +2,6 @@
 
 namespace Labstag\Tests;
 
-use DateTime;
-use Labstag\Form\Admin\AdresseUserType;
-use stdClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -47,7 +44,7 @@ trait IntegrationTrait
     )
     {
         if (!$bool) {
-            $this->markTestSkipped('test désactivé pour le groupe '.$groupe);
+            $this->markTestSkipped('test désactivé pour le groupe ' . $groupe);
             return;
         }
 
@@ -58,22 +55,22 @@ trait IntegrationTrait
         $url      = $router->generate($route);
         $crawler  = $client->request(Request::METHOD_GET, $url);
         $nameForm = $newform->getName();
-        $filter   = $crawler->filter('form[name="'.$nameForm.'"]');
+        $filter   = $crawler->filter('form[name="' . $nameForm . '"]');
         $form     = $filter->form();
         $values   = $form->getPhpValues();
         $methods  = get_class_methods($entity);
         $post     = [];
         foreach (array_keys($values[$nameForm]) as $key) {
-            if (in_array('get'.ucfirst($key), $methods)) {
-                $method = 'get'.ucfirst($key);
+            if (in_array('get' . ucfirst($key), $methods)) {
+                $method = 'get' . ucfirst($key);
                 $value  = $entity->$method();
-                $index  = $nameForm.'['.$key.']';
+                $index  = $nameForm . '[' . $key . ']';
                 if (is_object($value)) {
                     $post[$index] = $value->getId();
                     continue;
                 } elseif (isset($values[$nameForm][$key]['first'])) {
-                    $post[$index.'[first]']  = $value;
-                    $post[$index.'[second]'] = $value;
+                    $post[$index . '[first]']  = $value;
+                    $post[$index . '[second]'] = $value;
                     unset($values[$nameForm][$key]);
                     continue;
                 }
@@ -87,7 +84,7 @@ trait IntegrationTrait
                 continue;
             }
 
-            $index = $nameForm.'['.$key.']';
+            $index = $nameForm . '[' . $key . ']';
             if (!isset($post[$index])) {
                 $post[$index] = $value;
             }
@@ -95,8 +92,8 @@ trait IntegrationTrait
 
         $form = $filter->form($post);
         $client->submit($form);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+        $response = $client->getResponse();
+        $this->assertFalse($response->isSuccessful());
     }
 
     /**
@@ -116,17 +113,55 @@ trait IntegrationTrait
         );
     }
 
-    public function editPost(
+    public function editPostRedirect(
         string $groupe,
-        bool $bool,
         string $route,
         $formClass,
-        string $method = 'getEntity',
-        bool $redirect = true
+        bool $bool,
+        string $method = 'getEntity'
+    )
+    {
+        $this->editPost(
+            $groupe,
+            $route,
+            $formClass,
+            $bool,
+            true,
+            $method
+        );
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+    }
+
+    public function editPostNoRedirect(
+        string $groupe,
+        string $route,
+        $formClass,
+        bool $bool,
+        string $method = 'getEntity'
+    )
+    {
+        $this->editPost(
+            $groupe,
+            $route,
+            $formClass,
+            $bool,
+            false,
+            $method,
+        );
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+    }
+
+    private function editPost(
+        string $groupe,
+        string $route,
+        $formClass,
+        bool $bool,
+        bool $redirect,
+        string $method = 'getEntity'
     )
     {
         if (!$bool) {
-            $this->markTestSkipped('test désactivé pour le groupe '.$groupe);
+            $this->markTestSkipped('test désactivé pour le groupe ' . $groupe);
             return;
         }
 
@@ -148,20 +183,22 @@ trait IntegrationTrait
         $url     = $router->generate($route, $params);
         $crawler = $client->request(Request::METHOD_GET, $url);
 
-        $filter = $crawler->filter('form[name="'.$newform->getName().'"]');
+        $filter = $crawler->filter('form[name="' . $newform->getName() . '"]');
         $form   = $filter->form();
         $client->submit($form);
+        $response = $client->getResponse();
         if ($redirect) {
-            $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-        } else {
-            $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+            $this->assertFalse($response->isSuccessful());
+            return;
         }
+
+        $this->assertTrue($response->isSuccessful());
     }
 
     public function editDelete(string $groupe, bool $bool, $route)
     {
         if (!$bool) {
-            $this->markTestSkipped('test désactivé pour le groupe '.$groupe);
+            $this->markTestSkipped('test désactivé pour le groupe ' . $groupe);
             return;
         }
 
@@ -179,10 +216,9 @@ trait IntegrationTrait
                 'id' => $data->getId(),
             ]
         );
-        $client->request(Request::METHOD_DELETE, $url);
-        $response = $client->getResponse();
+        $client->request(Request::METHOD_POST, $url);
 
-        $this->assertFalse($response->isSuccessful());
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
     private function showTest(string $groupe, bool $bool, string $route)
@@ -199,33 +235,6 @@ trait IntegrationTrait
             $groupe,
             $bool,
             ['id' => $data->getId()]
-        );
-    }
-
-    private function editTest(
-        string $groupe,
-        bool $bool,
-        string $route,
-        string $method = 'getEntity'
-    )
-    {
-        $client = $this->logIn($groupe);
-        $data   = $this->$method($client);
-        if (is_null($data)) {
-            $this->markTestSkipped('data introuvable');
-            return;
-        }
-
-        $params = [];
-        if (is_object($data)) {
-            $params['id'] = $data->getId();
-        }
-
-        $this->responseTest(
-            $route,
-            $groupe,
-            $bool,
-            $params
         );
     }
 }

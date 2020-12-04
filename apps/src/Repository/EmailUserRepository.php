@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
@@ -12,7 +13,7 @@ class EmailUserRepository extends EmailRepository
         parent::__construct($registry, EmailUser::class);
     }
 
-    public function getEmailsUserVerif(User $user, bool $verif)
+    public function getEmailsUserVerif(User $user, bool $verif): array
     {
         $queryBuilder = $this->createQueryBuilder('u');
         $query        = $queryBuilder->where(
@@ -27,33 +28,4 @@ class EmailUserRepository extends EmailRepository
 
         return $query->getQuery()->getResult();
     }
-
-    // /**
-    //  * @return EmailUser[] Returns an array of EmailUser objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?EmailUser
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

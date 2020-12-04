@@ -7,7 +7,9 @@ use Faker\Factory;
 use Faker\Generator;
 use Labstag\Entity\Template;
 use Labstag\Lib\FixtureLib;
+use Labstag\Repository\UserRepository;
 use Twig\Environment;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class TemplatesFixtures extends FixtureLib
 {
@@ -16,60 +18,63 @@ class TemplatesFixtures extends FixtureLib
 
     const NUMBER = 10;
 
-    public function __construct(Environment $twig)
+    public function __construct(
+        Environment $twig,
+        UserRepository $userRepository,
+        EventDispatcherInterface $dispatcher
+    )
     {
         $this->twig = $twig;
+        parent::__construct($userRepository, $dispatcher);
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->add($manager);
-        $this->addContactEmail($manager);
-        $this->addCheckedEmail($manager);
-        $this->addCheckedPhone($manager);
-        $this->addLostPassword($manager);
+        $data = $this->getData();
+        foreach ($data as $key => $title) {
+            $this->setData($key, $title, $manager);
+        }
+
+        $this->add($manager);
     }
 
-    private function addLostPassword(ObjectManager $manager): void
+    protected function getData(): array
     {
-        $template = new Template();
-        $template->setName('Changement de password %site%');
-        $template->setCode('lost-password');
-        $template->setHtml($this->twig->render('tpl/lost-password.html.twig'));
-        $template->setText($this->twig->render('tpl/lost-password.txt.twig'));
-        $manager->persist($template);
-        $manager->flush();
+        $data = [
+            'check-new-adresse'          => 'Ajout nouvelle adresse',
+            'check-new-phone'            => 'Ajout nouveau numéro de téléphone',
+            'check-new-link'             => 'Ajout nouvelle url',
+            'check-user'                 => 'Confirmation création compte',
+            'check-new-oauthconnectuser' => 'Nouvelle association',
+            'check-new-mail'             => 'Ajout nouveau courriel',
+            'change-email-principal'     => 'Changement de courriel principal',
+            'lost-password'              => 'Demande de nouveau mot de passe',
+            'change-password'            => 'Mot de passe changé',
+        ];
+
+        return $data;
     }
 
-    private function addCheckedPhone(ObjectManager $manager): void
+    private function setData(
+        string $key,
+        string $title,
+        ObjectManager $manager
+    ): void
     {
         $template = new Template();
-        $template->setName('Validation du téléphone %site%');
-        $template->setCode('checked-phone');
-        $template->setHtml($this->twig->render('tpl/checked-phone.html.twig'));
-        $template->setText($this->twig->render('tpl/checked-phone.txt.twig'));
-        $manager->persist($template);
-        $manager->flush();
-    }
+        $template->setName($title);
+        $template->setCode($key);
+        $htmlfile = 'tpl/mail-' . $key . '.html.twig';
+        if (is_file('templates/' . $htmlfile)) {
+            $template->setHtml($this->twig->render($htmlfile));
+        }
 
-    private function addCheckedEmail(ObjectManager $manager): void
-    {
-        $template = new Template();
-        $template->setName('Validation de mail %site%');
-        $template->setCode('checked-mail');
-        $template->setHtml($this->twig->render('tpl/checked-email.html.twig'));
-        $template->setText($this->twig->render('tpl/checked-email.txt.twig'));
-        $manager->persist($template);
-        $manager->flush();
-    }
+        $txtfile = 'tpl/mail-' . $key . '.txt.twig';
+        if (is_file('templates/' . $txtfile)) {
+            $template->setText($this->twig->render($txtfile));
+        }
 
-    private function addContactEmail(ObjectManager $manager): void
-    {
-        $template = new Template();
-        $template->setName('Contact %site%');
-        $template->setCode('contact');
-        $template->setHtml($this->twig->render('tpl/contact-email.html.twig'));
-        $template->setText($this->twig->render('tpl/contact-email.txt.twig'));
         $manager->persist($template);
         $manager->flush();
     }

@@ -7,7 +7,6 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuItem;
 use Labstag\Entity\Menu;
 use Labstag\Repository\MenuRepository;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 trait MenuTrait
 {
@@ -25,7 +24,7 @@ trait MenuTrait
         $this->repository = $repository;
     }
 
-    public function setData(MenuItem $menu, string $clef)
+    public function setData(ItemInterface $menu, string $clef): ItemInterface
     {
         $data = $this->repository->findOneBy(
             [
@@ -33,6 +32,7 @@ trait MenuTrait
                 'parent' => null,
             ]
         );
+
         if (!($data instanceof Menu)) {
             return $menu;
         }
@@ -45,7 +45,7 @@ trait MenuTrait
         return $menu;
     }
 
-    private function addMenu(MenuItem $parent, Menu $child)
+    private function addMenu(MenuItem &$parent, Menu $child): void
     {
         $data      = [];
         $dataChild = $child->getData();

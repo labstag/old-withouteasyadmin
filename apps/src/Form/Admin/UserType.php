@@ -2,6 +2,7 @@
 
 namespace Labstag\Form\Admin;
 
+use Labstag\Entity\EmailUser;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Collections\User\AdresseType;
 use Labstag\Form\Admin\Collections\User\EmailType;
@@ -13,7 +14,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -57,6 +57,7 @@ class UserType extends AbstractType
                 true
             );
             foreach ($data as $email) {
+                /** @var EmailUser $email */
                 $adresse          = $email->getAdresse();
                 $emails[$adresse] = $adresse;
             }
@@ -79,7 +80,6 @@ class UserType extends AbstractType
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'entry_type'   => EmailType::class,
-                'by_reference' => false,
             ]
         );
         $builder->add(
@@ -89,7 +89,6 @@ class UserType extends AbstractType
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'entry_type'   => PhoneType::class,
-                'by_reference' => false,
             ]
         );
         $builder->add(
@@ -99,7 +98,6 @@ class UserType extends AbstractType
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'entry_type'   => AdresseType::class,
-                'by_reference' => false,
             ]
         );
         $builder->add(
@@ -109,10 +107,8 @@ class UserType extends AbstractType
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'entry_type'   => LienType::class,
-                'by_reference' => false,
             ]
         );
-        $builder->add('submit', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

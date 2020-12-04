@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -20,17 +21,23 @@ abstract class Phone
      */
     private $id;
 
-    /** @ORM\Column(type="string", length=255) */
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     */
     private $numero;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     *
+     * @Assert\NotBlank
      * @Assert\Country
      */
     private $country;
 
-    /** @ORM\Column(type="string", length=255) */
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     */
     private $type;
 
     /** @ORM\Column(type="boolean") */

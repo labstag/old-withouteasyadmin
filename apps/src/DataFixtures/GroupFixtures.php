@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\DataFixtures;
 
 use Doctrine\Persistence\ObjectManager;

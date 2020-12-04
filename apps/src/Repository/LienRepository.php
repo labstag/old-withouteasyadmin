@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Repository;
 
 use Labstag\Lib\ServiceEntityRepositoryLib;

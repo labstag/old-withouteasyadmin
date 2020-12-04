@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -32,7 +33,9 @@ abstract class Email
      */
     protected $adresse;
 
-    /** @ORM\Column(type="boolean") */
+    /**
+     * @ORM\Column(type="boolean")
+     */
     protected $principal;
 
     public function __construct()

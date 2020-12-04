@@ -10,12 +10,17 @@ use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/user/groupe")
  */
 class GroupeController extends AdminControllerLib
 {
+
+    protected string $headerTitle = "Groupe d'utilisateurs";
+
+    protected string $urlHome = 'admin_groupuser_index';
     /**
      * @Route("/", name="admin_groupuser_index", methods={"GET"})
      */
@@ -25,15 +30,27 @@ class GroupeController extends AdminControllerLib
             $groupeRepository,
             'findAllForAdmin',
             'admin/groupe/index.html.twig',
-            ['new' => 'admin_groupuser_new']
+            ['new' => 'admin_groupuser_new'],
+            [
+                'list'   => 'admin_groupuser_index',
+                'show'   => 'admin_groupuser_show',
+                'edit'   => 'admin_groupuser_edit',
+                'delete' => 'admin_groupuser_delete',
+            ]
         );
     }
 
     /**
      * @Route("/new", name="admin_groupuser_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(RouterInterface $router): Response
     {
+        $breadcrumb = [
+            'New' => $router->generate(
+                'admin_groupuser_new'
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new Groupe(),
             GroupeType::class,
@@ -44,8 +61,17 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/{id}", name="admin_groupuser_show", methods={"GET"})
      */
-    public function show(Groupe $groupe): Response
+    public function show(Groupe $groupe, RouterInterface $router): Response
     {
+        $breadcrumb = [
+            'Show' => $router->generate(
+                'admin_groupuser_show',
+                [
+                    'id' => $groupe->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $groupe,
             'admin/groupe/show.html.twig',
@@ -60,26 +86,33 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET","POST"})
      */
-    public function edit(Groupe $groupe): Response
+    public function edit(Groupe $groupe, RouterInterface $router): Response
     {
+        $breadcrumb = [
+            'Edit' => $router->generate(
+                'admin_groupuser_edit',
+                [
+                    'id' => $groupe->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             GroupeType::class,
             $groupe,
             [
                 'delete' => 'admin_groupuser_delete',
                 'list'   => 'admin_groupuser_index',
+                'show'   => 'admin_groupuser_show',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_groupuser_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="admin_groupuser_delete", methods={"POST"})
      */
     public function delete(Groupe $groupe): Response
     {
-        return $this->adminCrudService->delete(
-            $groupe,
-            'admin_groupuser_index'
-        );
+        return $this->adminCrudService->delete($groupe);
     }
 }

@@ -6,7 +6,6 @@ use Labstag\Entity\Template;
 use Labstag\FormType\CoreTextareaType;
 use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,7 +25,6 @@ class TemplateType extends AbstractType
         $builder->add('code');
         $builder->add('html', WysiwygType::class);
         $builder->add('text', CoreTextareaType::class);
-        $builder->add('submit', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

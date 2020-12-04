@@ -54,25 +54,13 @@ class AdminEmailUserControllerTest extends WebTestCase
     /**
      * @dataProvider getGroupes
      */
-    public function testEdit(string $groupe)
-    {
-        $this->editTest(
-            $groupe,
-            !in_array($groupe, $this->groupeDisable),
-            'admin_emailuser_edit'
-        );
-    }
-
-    /**
-     * @dataProvider getGroupes
-     */
     public function testPost($groupe)
     {
-        $this->editPost(
+        $this->editPostRedirect(
             $groupe,
-            !in_array($groupe, $this->groupeDisable),
             'admin_emailuser_edit',
-            EmailUserType::class
+            EmailUserType::class,
+            !in_array($groupe, $this->groupeDisable)
         );
     }
 

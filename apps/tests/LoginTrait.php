@@ -40,7 +40,7 @@ trait LoginTrait
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(User::class);
         $user          = $repository->findUserEnable($name);
-        if ($user instanceOf User) {
+        if ($user instanceof User) {
             $client->loginUser($user);
         }
 

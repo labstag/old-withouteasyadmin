@@ -1,7 +1,10 @@
 <?php
+
 namespace Labstag\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Labstag\Repository\MenuRepository;
 
 /**
@@ -23,11 +26,14 @@ class Menu
     /** @ORM\Column(type="string", length=255, nullable=true) */
     private $icon;
 
-    /** @ORM\Column(type="integer") */
-    private $position;
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotNull
+     */
+    private int $position;
 
     /** @ORM\Column(type="json", nullable=true) */
-    private $data = [];
+    private array $data = [];
 
     /** @ORM\Column(type="boolean") */
     private $separateur;
@@ -42,11 +48,16 @@ class Menu
      *  referencedColumnName="id",
      *  onDelete="SET NULL"
      * )
+     * @var Menu|null
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Menu", mappedBy="parent")
+     * @ORM\OneToMany(
+     *  targetEntity="Menu",
+     *  mappedBy="parent",
+     *  cascade={"persist"}
+     * )
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $children;
@@ -67,6 +78,7 @@ class Menu
 
     public function __construct()
     {
+        $this->children   = new ArrayCollection();
         $this->separateur = false;
     }
 

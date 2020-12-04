@@ -10,12 +10,17 @@ use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/user/phone")
  */
 class PhoneUserController extends AdminControllerLib
 {
+
+    protected string $headerTitle = "Téléphone d'utilisateurs";
+
+    protected string $urlHome = 'admin_phoneuser_index';
     /**
      * @Route("/", name="admin_phoneuser_index", methods={"GET"})
      */
@@ -25,15 +30,27 @@ class PhoneUserController extends AdminControllerLib
             $phoneUserRepository,
             'findAllForAdmin',
             'admin/phone_user/index.html.twig',
-            ['new' => 'admin_phoneuser_new']
+            ['new' => 'admin_phoneuser_new'],
+            [
+                'list'   => 'admin_phoneuser_index',
+                'show'   => 'admin_phoneuser_show',
+                'edit'   => 'admin_phoneuser_edit',
+                'delete' => 'admin_phoneuser_delete',
+            ]
         );
     }
 
     /**
      * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(RouterInterface $router): Response
     {
+        $breadcrumb = [
+            'New' => $router->generate(
+                'admin_phoneuser_new'
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new PhoneUser(),
             PhoneUserType::class,
@@ -44,8 +61,20 @@ class PhoneUserController extends AdminControllerLib
     /**
      * @Route("/{id}", name="admin_phoneuser_show", methods={"GET"})
      */
-    public function show(PhoneUser $phoneUser): Response
+    public function show(
+        PhoneUser $phoneUser,
+        RouterInterface $router
+    ): Response
     {
+        $breadcrumb = [
+            'Show' => $router->generate(
+                'admin_phoneuser_show',
+                [
+                    'id' => $phoneUser->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $phoneUser,
             'admin/phone_user/show.html.twig',
@@ -64,26 +93,36 @@ class PhoneUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(PhoneUser $phoneUser): Response
+    public function edit(
+        PhoneUser $phoneUser,
+        RouterInterface $router
+    ): Response
     {
+        $breadcrumb = [
+            'Edit' => $router->generate(
+                'admin_phoneuser_edit',
+                [
+                    'id' => $phoneUser->getId(),
+                ]
+            ),
+        ];
+        $this->setBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             PhoneUserType::class,
             $phoneUser,
             [
                 'delete' => 'admin_phoneuser_delete',
                 'list'   => 'admin_phoneuser_index',
+                'show'   => 'admin_phoneuser_show',
             ]
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_phoneuser_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="admin_phoneuser_delete", methods={"POST"})
      */
     public function delete(PhoneUser $phoneUser): Response
     {
-        return $this->adminCrudService->delete(
-            $phoneUser,
-            'admin_phoneuser_index'
-        );
+        return $this->adminCrudService->delete($phoneUser);
     }
 }

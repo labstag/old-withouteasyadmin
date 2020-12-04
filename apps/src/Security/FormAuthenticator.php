@@ -31,13 +31,13 @@ class FormAuthenticator extends AbstractAuth implements PassAuthInterface
 
     public const LOGIN_ROUTE = 'app_login';
 
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
-    private $csrfTokenManager;
+    private CsrfTokenManagerInterface $csrfTokenManager;
 
-    private $passwordEncoder;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     private UserRepository $repository;
 
@@ -125,7 +125,7 @@ class FormAuthenticator extends AbstractAuth implements PassAuthInterface
         return new RedirectResponse($newTarget);
     }
 
-    protected function getLoginUrl()
+    public function getLoginUrl()
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }

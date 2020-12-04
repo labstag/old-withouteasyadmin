@@ -1,11 +1,12 @@
 <?php
+
 namespace Labstag\Controller;
 
-use Labstag\Lib\PublicControllerLib;
+use Labstag\Lib\ControllerLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FrontController extends PublicControllerLib
+class FrontController extends ControllerLib
 {
     /**
      * @Route("/", name="front")

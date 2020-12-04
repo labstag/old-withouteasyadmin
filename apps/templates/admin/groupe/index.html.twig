@@ -1,3 +1,4 @@
+{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/groupe/layout.html.twig' %}
 {% block body %}
     <table
@@ -9,19 +10,17 @@
                 <th>Name</th>
                 <th>Code</th>
                 <th>Users</th>
-                <th class="text-center"><i class="BtnAdminTableAction" title="Actions"></i></th>
+                <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
-        {% for groupe in pagination %}
+        {% for entity in pagination %}
             <tr>
-                <td>{{ groupe.name }}</td>
-                <td>{{ groupe.code }}</td>
-                <td>{{ groupe.users|length }}</td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.code }}</td>
+                <td>{{ entity.users|length }}</td>
                 <td>
-                    <a href="{{ path('admin_groupuser_show', {'id': groupe.id}) }}">show</a>
-                    <a href="{{ path('admin_groupuser_edit', {'id': groupe.id}) }}">edit</a>
-                    <a href="{{ path('admin_groupuser_delete', {'id': groupe.id}) }}" data-token="{{ csrf_token('delete' ~ groupe.id) }}">delete</a>
+                    {{ macro_admin.actions(entity, actions) }}
                 </td>
             </tr>
         {% else %}

@@ -1,3 +1,4 @@
+{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/template/layout.html.twig' %}
 {% block body %}
     <table
@@ -8,18 +9,16 @@
             <tr>
                 <th>Nom</th>
                 <th>Code</th>
-                <th class="text-center"><i class="BtnAdminTableAction" title="Actions"></i></th>
+                <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
-        {% for template in pagination %}
+        {% for entity in pagination %}
             <tr>
-                <td>{{ template.name }}</td>
-                <td>{{ template.code }}</td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.code }}</td>
                 <td>
-                    <a href="{{ path('admin_template_show', {'id': template.id}) }}">show</a>
-                    <a href="{{ path('admin_template_edit', {'id': template.id}) }}">edit</a>
-                    <a href="{{ path('admin_template_delete', {'id': template.id}) }}" data-token="{{ csrf_token('delete' ~ template.id) }}">delete</a>
+                    {{ macro_admin.actions(entity, actions) }}
                 </td>
             </tr>
         {% else %}

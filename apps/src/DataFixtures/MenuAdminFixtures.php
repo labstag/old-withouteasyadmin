@@ -189,9 +189,6 @@ class MenuAdminFixtures extends FixtureLib
             $index++;
         }
 
-        // $product = new Product();
-        // $manager->persist($product);
-
         $manager->flush();
     }
 

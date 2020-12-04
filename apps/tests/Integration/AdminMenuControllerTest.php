@@ -53,25 +53,13 @@ class AdminMenuControllerTest extends WebTestCase
     /**
      * @dataProvider getGroupes
      */
-    public function testEdit(string $groupe)
-    {
-        $this->editTest(
-            $groupe,
-            !in_array($groupe, $this->groupeDisable),
-            'admin_menu_edit'
-        );
-    }
-
-    /**
-     * @dataProvider getGroupes
-     */
     public function testPost($groupe)
     {
-        $this->editPost(
+        $this->editPostRedirect(
             $groupe,
-            !in_array($groupe, $this->groupeDisable),
             'admin_menu_edit',
-            MenuType::class
+            MenuType::class,
+            !in_array($groupe, $this->groupeDisable)
         );
     }
 

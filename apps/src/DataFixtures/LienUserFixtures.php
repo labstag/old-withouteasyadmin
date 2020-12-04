@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -18,11 +19,6 @@ class LienUserFixtures extends FixtureLib implements DependentFixtureInterface
             $user      = $this->getReference('user_' . $indexUser);
             $this->addLink($faker, $user, $manager);
         }
-
-        // $product = new Product();
-        // $manager->persist($product);
-
-        $manager->flush();
     }
 
     public function getDependencies()

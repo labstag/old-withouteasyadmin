@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -22,26 +23,39 @@ abstract class Adresse
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     protected $rue;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
+     * @Assert\NotBlank
      * @Assert\Country
      */
     protected $country;
 
-    /** @ORM\Column(type="string", length=255) */
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     */
     protected $zipcode;
 
-    /** @ORM\Column(type="string", length=255) */
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     */
     protected $ville;
 
-    /** @ORM\Column(type="string", length=255) */
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     */
     protected $gps;
 
-    /** @ORM\Column(type="string", length=255, nullable=true) */
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank
+     */
     protected $type;
 
     /** @ORM\Column(type="boolean") */

@@ -2,11 +2,7 @@
 
 namespace Labstag\Menu;
 
-use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Knp\Menu\MenuItem;
-use Labstag\Entity\Menu;
-use Labstag\Repository\MenuRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class AdminMenuBuilder

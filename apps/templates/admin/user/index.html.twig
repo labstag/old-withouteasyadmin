@@ -1,3 +1,4 @@
+{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/user/layout.html.twig' %}
 {% block body %}
     <table
@@ -14,24 +15,22 @@
                 <th>Liens</th>
                 <th>Emails</th>
                 <th>Téléphones</th>
-                <th class="text-center"><i class="BtnAdminTableAction" title="Actions"></i></th>
+                <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
-        {% for user in pagination %}
+        {% for entity in pagination %}
             <tr>
-                <td>{{ user.username }}</td>
-                <td>{{ user.groupe }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.enable ? 'Yes' : 'No' }}</td>
-                <td>{{ user.adresseUsers|length }}</td>
-                <td>{{ user.lienUsers|length }}</td>
-                <td>{{ user.emailUsers|length }}</td>
-                <td>{{ user.phoneUsers|length }}</td>
+                <td>{{ entity.username }}</td>
+                <td>{{ entity.groupe }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.adresseUsers|length }}</td>
+                <td>{{ entity.lienUsers|length }}</td>
+                <td>{{ entity.emailUsers|length }}</td>
+                <td>{{ entity.phoneUsers|length }}</td>
                 <td>
-                    <a href="{{ path('admin_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('admin_user_edit', {'id': user.id}) }}">edit</a>
-                    <a href="{{ path('admin_user_delete', {'id': user.id}) }}" data-token="{{ csrf_token('delete' ~ user.id) }}">delete</a>
+                    {{ macro_admin.actions(entity, actions) }}
                 </td>
             </tr>
         {% else %}

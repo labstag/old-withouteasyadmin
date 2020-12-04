@@ -20,7 +20,7 @@ class WysiwygType extends AbstractType
             $attr['class'] = '';
         }
 
-        $attr['class'] = trim($attr['class'].' wysiwyg');
+        $attr['class'] = trim($attr['class'] . ' wysiwyg');
         if (!isset($attr['rows'])) {
             $attr['rows'] = 20;
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
@@ -12,7 +13,41 @@ class UserRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, User::class);
     }
 
-    public function findUserEnable(string $field)
+    /**
+     * Get random data.
+     *
+     * @return object
+     */
+    public function findOneRandomToLost($state)
+    {
+        $name          = $this->getClassMetadata()->getName();
+        $dql           = 'SELECT p FROM ' . $name . ' p WHERE p.lost='.$state.' ORDER BY RAND()';
+        $entityManager = $this->getEntityManager();
+        $query         = $entityManager->createQuery($dql);
+        $query         = $query->setMaxResults(1);
+        $result        = $query->getOneOrNullResult();
+
+        return $result;
+    }
+
+    /**
+     * Get random data.
+     *
+     * @return object
+     */
+    public function findOneRandomToVerif($state)
+    {
+        $name          = $this->getClassMetadata()->getName();
+        $dql           = 'SELECT p FROM ' . $name . ' p WHERE p.verif='.$state.' ORDER BY RAND()';
+        $entityManager = $this->getEntityManager();
+        $query         = $entityManager->createQuery($dql);
+        $query         = $query->setMaxResults(1);
+        $result        = $query->getOneOrNullResult();
+
+        return $result;
+    }
+
+    public function findUserEnable(string $field): ?User
     {
         $queryBuilder = $this->createQueryBuilder('u');
         $query        = $queryBuilder->where(
@@ -30,33 +65,4 @@ class UserRepository extends ServiceEntityRepositoryLib
 
         return $query->getQuery()->getOneOrNullResult();
     }
-
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

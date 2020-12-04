@@ -216,6 +216,9 @@ logs-mariadb: ## logs docker MARIADB
 logs-phpfpm: ## logs docker PHPFPM
 	docker service logs -f --tail 100 --raw $(PHPFPMFULLNAME)
 
+messenger_consume: ## Messenger Consume
+	docker exec -ti $(PHPFPMFULLNAME) make messenger_consume
+
 sleep: ## sleep
 	sleep 180
 
