@@ -16,6 +16,24 @@ label {
     }
   }
 }
+a{
+  &[href^="tel:"] {
+    &:before{
+      @extend .fas;
+      @extend .fa-phone;
+      color: #000000;
+      padding-right: 5px;
+    }
+  }
+  &[href^="mailto:"] {
+    &:before{
+      @extend .fas;
+      @extend .fa-at;
+      color: #FF0000;
+      padding-right: 5px;
+    }
+  }
+}
 
 .ToggleFieldset{
   @extend .btn;
@@ -82,8 +100,11 @@ legend{
 }
 
 .GpsIcon{
-  @extend .fas;
-  @extend .fa-map-marker-alt;
+  &:before{
+    @extend .fas;
+    @extend .fa-map-marker-alt;
+    padding-right: 5px;
+  }
 }
 
 #deleteModal{

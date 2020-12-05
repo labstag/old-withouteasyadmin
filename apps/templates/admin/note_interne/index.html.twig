@@ -20,8 +20,8 @@
             <tr>
                 <td>{{ entity.title }}</td>
                 <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
-                <td>{{ entity.dateDebut ? entity.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ entity.dateFin ? entity.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime('full', 'full', locale='fr') : '' }}</td>
+                <td>{{ entity.dateFin ? entity.dateFin|format_datetime('full', 'full', locale='fr') : '' }}</td>
                 <td>{{ entity.refuser }}</td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}

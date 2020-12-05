@@ -41,7 +41,9 @@
                                         <span class="flag-icon flag-icon-{{ adresse.country|lower }}"></span>
                                         {{ adresse.country|country_name('fr') }}
                                         <br />
-                                        <span class="GpsIcon"></span>{{ adresse.gps }}
+                                        <span class="GpsIcon">
+                                            {{ adresse.gps }}
+                                        </span>
                                     </td>
                                     <td>{{ adresse.type }}</td>
                                     <td>{{ adresse.pmr ? 'Yes' : 'No' }}</td>

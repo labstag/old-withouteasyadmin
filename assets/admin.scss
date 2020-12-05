@@ -130,3 +130,15 @@ i{
 .btngrouptable{
   @extend .btn-group;
 }
+
+#navbarSupportedContent{
+  .navbar-nav{
+    &:last-child{
+      li{
+        &.last{
+          right: 25px;
+        }
+      }
+    }
+  }
+}

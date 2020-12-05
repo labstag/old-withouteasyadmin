@@ -42,7 +42,10 @@ class UserMailService
 
         $config       = $dataService->getConfig();
         $this->config = $config;
-        Locale::setDefault($config['languagedefault']);
+
+        $code = 'languagedefault';
+        $languagedefault = isset($config[$code]) ? $config[$code] : 'fr';
+        Locale::setDefault($languagedefault);
     }
 
     public function changeValue(
