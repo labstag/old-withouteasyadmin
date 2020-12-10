@@ -19,10 +19,8 @@ function clickToggleFieldset(event) {
   let fieldrow = fieldset.querySelector(".FieldRow");
   let btnCollectionAdd = fieldset.querySelector(".BtnCollectionAdd");
   if (btnCollectionAdd != null) {
-    if (
-      btnCollectionAdd.style.display == "" ||
-      btnCollectionAdd.style.display == "block"
-    ) {
+    if (btnCollectionAdd.style.display == "" ||
+        btnCollectionAdd.style.display == "block") {
       btnCollectionAdd.style.display = "none";
     } else {
       btnCollectionAdd.style.display = "block";
@@ -58,12 +56,10 @@ let wysiwygs = document.querySelectorAll(".wysiwyg");
 if (wysiwygs.length) {
   wysiwygs.forEach((element) => {
     ClassicEditor.create(element)
-      .then((editor) => {
-        window.editor = editor;
-      })
-      .catch((error) => {
-        console.error("There was a problem initializing the editor.", error);
-      });
+        .then((editor) => { window.editor = editor; })
+        .catch((error) => {
+          console.error("There was a problem initializing the editor.", error);
+        });
   });
 }
 EnableDeleteCollection();
@@ -79,5 +75,5 @@ toggleFieldsets.forEach((toggleFieldset) => {
 let selects = document.querySelectorAll("select");
 selects.forEach((select) => {
   let id = select.getAttribute("id");
-  $("#" + id).select2({ theme: "bootstrap4" });
+  $("#" + id).select2({theme : "bootstrap4"});
 });

@@ -21,32 +21,28 @@ function clickbtnConfirmDelete(event) {
   const url = element.dataset.url;
   const token = element.dataset.token;
   const redirect = element.dataset.redirect;
-  const data = { _token: token };
+  const data = {_token : token};
   const searchParams = Object.keys(data)
-    .map((key) => {
-      return encodeURIComponent(key) + "=" + encodeURIComponent(data[key]);
-    })
-    .join("&");
+                           .map((key) => {
+                             return encodeURIComponent(key) + "=" +
+                                    encodeURIComponent(data[key]);
+                           })
+                           .join("&");
   let options = {
-    method: "POST",
-    headers: {
-      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+    method : "POST",
+    headers : {
+      "Content-type" : "application/x-www-form-urlencoded; charset=UTF-8",
     },
-    body: searchParams,
+    body : searchParams,
   };
   fetch(url, options)
-    .then((response) => {
-      window.location.href = redirect;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((response) => { window.location.href = redirect; })
+      .catch((err) => { console.log(err); });
 }
 let saveForm = document.querySelectorAll("#SaveForm");
 if (saveForm.length) {
-  saveForm.forEach((element) => {
-    element.addEventListener("click", clickFormSave);
-  });
+  saveForm.forEach(
+      (element) => { element.addEventListener("click", clickFormSave); });
 }
 let btnConfirmDeletes = document.querySelectorAll(".BtnConfirmDelete");
 if (btnConfirmDeletes.length) {
@@ -56,13 +52,10 @@ if (btnConfirmDeletes.length) {
 }
 let deleteForms = document.querySelectorAll("#DeleteForm");
 if (deleteForms.length) {
-  deleteForms.forEach((element) => {
-    element.addEventListener("click", clickDeleteEntity);
-  });
+  deleteForms.forEach(
+      (element) => { element.addEventListener("click", clickDeleteEntity); });
 }
 
 window.operateEvents = {
-  "click .btnAdminTableDelete": function (event) {
-    clickDeleteEntity(event);
-  },
+  "click .btnAdminTableDelete" : function(event) { clickDeleteEntity(event); },
 };
