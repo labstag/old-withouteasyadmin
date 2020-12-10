@@ -14,8 +14,7 @@ class LostPasswordType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add(
             'value',
             TextType::class,
