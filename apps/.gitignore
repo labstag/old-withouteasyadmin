@@ -4,8 +4,11 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+<<<<<<< HEAD
 /public/robots.txt
 /public/tarteaucitron/
+=======
+>>>>>>> 016505b (Nouvelle version site Internet 0.1 (#82))
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
@@ -19,6 +22,7 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+<<<<<<< HEAD
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
@@ -35,3 +39,5 @@ yarn-error.log
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
+=======
+>>>>>>> 016505b (Nouvelle version site Internet 0.1 (#82))
