@@ -14,20 +14,57 @@ class LabstagExtension extends AbstractExtension
             // If your filter generates SAFE HTML, you should add a third
             // parameter: ['is_safe' => ['html']]
             // Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
-            new TwigFilter('formName', [$this, 'formName']),
+            new TwigFilter('formClass', [$this, 'formClass']),
+            new TwigFilter('formPrototype', [$this, 'formPrototype']),
         ];
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('formName', [$this, 'formName']),
+            new TwigFunction('formClass', [$this, 'formClass']),
+            new TwigFunction('formPrototype', [$this, 'formPrototype']),
         ];
     }
 
-    public function formName($value)
+    public function formPrototype(array $blockPrefixes): string
     {
-        // dump(get_class($value));
-        dump($value);
+        $file = '';
+        if ($blockPrefixes[1] != 'collection_entry') {
+            return $file;
+        }
+
+        $type = $blockPrefixes[2];
+
+        $newFile = "prototype/".$type.".html.twig";
+        if (is_file(__DIR__."/../../templates/".$newFile)) {
+            $file = $newFile;
+        }
+
+        return $file;
+    }
+
+    public function formClass($class)
+    {
+        $file = '';
+
+        if (is_null($class['data'])) {
+            return $file;
+        }
+
+        if (!is_object($class['data'])) {
+            return $file;
+        }
+        
+        $tabClass = explode("\\", get_class($class['data']));
+        $type = end($tabClass);
+
+        $newFile = "forms/".$type.".html.twig";
+        if (is_file(__DIR__."/../../templates/".$newFile)) {
+            $file = $newFile;
+        }
+
+        return $file;
+
     }
 }

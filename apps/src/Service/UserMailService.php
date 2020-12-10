@@ -80,7 +80,12 @@ class UserMailService
             return;
         }
 
-        $url     = $this->config['site_url'];
+        if (isset($this->config['site_url'])) {
+            $url     = $this->config['site_url'];
+        }else{
+            $url = '';
+        }
+
         $change  = [
             'url_confirm_user' => $url . $this->router->generate(
                 'app_confirm_user',
@@ -137,7 +142,12 @@ class UserMailService
             return;
         }
 
-        $url     = $this->config['site_url'];
+        if (isset($this->config['site_url'])) {
+            $url     = $this->config['site_url'];
+        }else{
+            $url = '';
+        }
+
         $change  = [
             'url_change_password' => $url . $this->router->generate(
                 'app_changepassword',
@@ -194,7 +204,12 @@ class UserMailService
             return;
         }
 
-        $url     = $this->config['site_url'];
+        if (isset($this->config['site_url'])) {
+            $url     = $this->config['site_url'];
+        }else{
+            $url = '';
+        }
+    
         $change  = [
             'url_confirm_email' => $url . $this->router->generate(
                 'app_confirm_mail',

@@ -243,3 +243,6 @@ tests-simple-phpunit-unit-integration: ## lance les tests phpunit
 
 tests-simple-phpunit: ## lance les tests phpunit
 	docker exec $(PHPFPMXDEBUGFULLNAME) composer run simple-phpunit
+
+translations: ## update translation
+	docker exec $(PHPFPMXDEBUGFULLNAME) make translations

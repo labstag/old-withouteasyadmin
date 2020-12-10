@@ -14,7 +14,7 @@ abstract class EmailRepository extends ServiceEntityRepositoryLib
      */
     public function findOneRandomToVerif($state)
     {
-        $name          = $this->getClassMetadata()->getName();
+        $name = $this->getClassMetadataName();
         $dql           = 'SELECT p FROM ' . $name . ' p WHERE p.verif='.$state.' ORDER BY RAND()';
         $entityManager = $this->getEntityManager();
         $query         = $entityManager->createQuery($dql);
