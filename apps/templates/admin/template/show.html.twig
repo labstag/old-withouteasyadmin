@@ -1,0 +1,23 @@
+{% extends 'admin/template/layout.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ entity.code }}</td>
+            </tr>
+            <tr>
+                <th>Html</th>
+                <td>{{ entity.html|raw }}</td>
+            </tr>
+            <tr>
+                <th>Text</th>
+                <td>{{ entity.text }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'admin/note_interne/layout.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>Title</th>
+                <td>{{ entity.title }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ entity.content|raw }}</td>
+            </tr>
+            <tr>
+                <th>Enable</th>
+                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Date_debut</th>
+                <td>{{ entity.dateDebut ? entity.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_fin</th>
+                <td>{{ entity.dateFin ? entity.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>{{ entity.refuser }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

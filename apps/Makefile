@@ -1,0 +1,122 @@
+.DEFAULT_GOAL   := help
+
+%:
+	@:
+
+.PHONY: bdd-migrate
+
+help:
+	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
+
+composer.lock: composer.json
+	composer update
+
+vendor: composer.json
+	composer install --no-progress --prefer-dist --optimize-autoloader
+
+.env: .env.dist ## Install .env
+	cp .env.dist .env
+
+phploc.phar:
+	wget https://phar.phpunit.de/phploc-7.0.1.phar -O phploc.phar
+
+phpcpd.phar:
+	wget https://phar.phpunit.de/phpcpd-6.0.2.phar -O phpcpd.phar
+
+phpmd.phar:
+	wget https://github.com/phpmd/phpmd/releases/download/2.9.1/phpmd.phar
+
+assets: ## Ajouts assets
+	php bin/console assets:install public --symlink --relative
+
+bdd-fixtures: ## fixtures
+	php bin/console doctrine:fixtures:load -n
+
+bdd-migrate: ## migrate database
+	php bin/console doctrine:migrations:migrate -n
+
+bdd-validate: ## bdd validate
+	php bin/console doctrine:schema:validate
+
+composer-suggests: ## suggestions package pour PHP
+	composer suggests --by-suggestion
+
+composer-outdated: ## Packet php outdated
+	composer outdated
+
+composer-prod: ## Installation version de production
+	composer install --no-dev --no-progress --prefer-dist --optimize-autoloader
+
+composer-dev: ## Installation version de dev
+	composer install --no-progress --prefer-dist --optimize-autoloader
+
+composer-update: ## COMPOSER update
+	composer update
+
+composer-validate: ## COMPOSER validate
+	composer validate
+
+env-dev: .env ## Installation environnement dev
+	sed -i 's/APP_ENV=prod/APP_ENV=dev/g' .env
+
+env-prod: .env ## Installation environnement prod
+	sed -i 's/APP_ENV=dev/APP_ENV=prod/g' .env
+	rm -rf vendor
+	@make composer-prod -i
+
+linter: ## Launch all linter
+	@make linter-twig -i
+	@make linter-yaml -i
+	@make linter-phpstan -i
+	@make linter-phpcpd -i
+	@make linter-phpcs -i
+	@make linter-phpmd -i
+
+linter-phpcbf: ## fixe le code PHP à partir d'un standard
+	composer run phpcbf
+
+linter-phpcpd: phpcpd.phar ## Vérifie s'il y a du code dupliqué
+	php phpcpd.phar src tests
+
+linter-phpcs: ## indique les erreurs de code non corrigé par PHPCBF
+	composer run phpcs
+
+linter-phpcs-onlywarning: ## indique les erreurs de code non corrigé par PHPCBF
+	composer run phpcs-onlywarning
+
+linter-phpcs-onlyerror: ## indique les erreurs de code non corrigé par PHPCBF
+	composer run phpcs-onlyerror
+
+linter-phploc: phploc.phar ## analyse with PHPLOC
+	php phploc.phar src
+
+linter-phpmd: phpmd.phar ## indique quand le code PHP contient des erreurs de syntaxes ou des erreurs
+	php phpmd.phar src,features/bootstrap,tests ansi phpmd.xml
+
+linter-phpmnd: ## Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes
+	composer run phpmnd
+
+linter-phpstan: ## regarde si le code PHP ne peux pas être optimisé
+	composer run phpstan
+
+linter-twig: ## indique les erreurs de code de twig
+	php bin/console lint:twig templates
+
+linter-yaml: ## indique les erreurs de code de yaml
+	php bin/console lint:yaml config
+
+messenger_consume: ## Messenger Consume
+	php bin/console messenger:consume async -vv
+
+tests-behat: ## Lance les tests behat
+	composer run behat
+
+tests-launch: ## Launch all tests
+	@make tests-behat -i
+	@make tests-simple-phpunit -i
+
+tests-simple-phpunit: ## lance les tests phpunit
+	composer run simple-phpunit
+
+tests-simple-phpunit-unit-integration: ## lance les tests phpunit
+	composer run simple-phpunit-unit-integration

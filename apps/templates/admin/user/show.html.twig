@@ -1,0 +1,137 @@
+{% extends 'admin/user/layout.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>Username</th>
+                <td>{{ entity.username }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td><a href="mailto:{{ entity.email }}">{{ entity.email }}</a></td>
+            </tr>
+            <tr>
+                <th>Enable</th>
+                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% set adresses = entity.adresseUsers %}
+    <div class="row">
+        {% if adresses|length !=0 %}
+            <div class="col-6">
+                <fieldset>
+                    <legend>Adresses ({{ entity.adresseUsers|length }})</legend>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Adresse</th>
+                                <th>Type</th>
+                                <th>Pmr</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for adresse in adresses %}
+                                <tr>
+                                    <td>
+                                        {{ adresse.rue }}
+                                        <br />
+                                        {{ adresse.zipcode }} - {{ adresse.ville }}
+                                        <br />
+                                        <span class="flag-icon flag-icon-{{ adresse.country|lower }}"></span>
+                                        {{ adresse.country|country_name('fr') }}
+                                        <br />
+                                        <span class="GpsIcon"></span>{{ adresse.gps }}
+                                    </td>
+                                    <td>{{ adresse.type }}</td>
+                                    <td>{{ adresse.pmr ? 'Yes' : 'No' }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        {% endif %}
+        {% set liens = entity.lienUsers %}
+        {% if liens|length !=0 %}
+            <div class="col-6">
+                <fieldset>
+                    <legend>Liens ({{ entity.lienUsers|length }})</legend>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Adresse</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for lien in liens %}
+                                <tr>
+                                    <td>{{ lien.name }}</td>
+                                    <td><a href="{{ lien.adresse }}" target="_blank">{{ lien.adresse }}</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        {% endif %}
+        {% set emails = entity.emailUsers %}
+        {% if emails|length !=0 %}
+            <div class="col-6">
+                <fieldset>
+                    <legend>Emails ({{ entity.emailUsers|length }})</legend>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Adresse</th>
+                                <th>Principal</th>
+                                <th>Verif</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for email in emails %}
+                                <tr>
+                                    <td><a href="mailto:{{ email.adresse }}">{{ email.adresse }}</a></td>
+                                    <td>{{ email.principal ? 'Yes' : 'No' }}</td>
+                                    <td>{{ email.verif ? 'Yes' : 'No' }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        {% endif %}
+        {% set phones = entity.phoneUsers %}
+        {% if phones|length !=0 %}
+            <div class="col-6">
+                <fieldset>
+                    <legend>Téléphones ({{ entity.phoneUsers|length }})</legend>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Numero</th>
+                                <th>Country</th>
+                                <th>Type</th>
+                                <th>Principal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for phone in phones %}
+                                <tr>
+                                    <td><a href="tel:{{ phone.numero }}">{{ phone.numero }}</a></td>
+                                    <td>
+                                        <span class="flag-icon flag-icon-{{ phone.country|lower }}"></span>
+                                        {{ phone.country|country_name('fr') }}
+                                    </td>
+                                    <td>{{ phone.type }}</td>
+                                    <td>{{ phone.principal ? 'Yes' : 'No' }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

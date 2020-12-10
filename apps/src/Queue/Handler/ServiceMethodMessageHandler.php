@@ -1,0 +1,40 @@
+<?php
+
+namespace Labstag\Queue\Handler;
+
+use Labstag\Queue\Message\ServiceMethodMessage;
+use Symfony\Component\Mailer\MailerInterface;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
+
+class ServiceMethodMessageHandler implements
+    MessageHandlerInterface,
+    ServiceSubscriberInterface
+{
+
+    private ContainerInterface $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    public function __invoke(ServiceMethodMessage $message): void
+    {
+        /** @var callable $callable */
+        $callable = [
+            $this->container->get($message->getServiceName()),
+            $message->getMethod(),
+        ];
+
+        call_user_func_array($callable, $message->getParams());
+    }
+
+    public static function getSubscribedServices()
+    {
+        return [
+            MailerInterface::class => MailerInterface::class,
+        ];
+    }
+}

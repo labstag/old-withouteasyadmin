@@ -1,0 +1,22 @@
+{% extends 'admin/edito/layout.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>Title</th>
+                <td>{{ entity.title }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ entity.content|raw }}</td>
+            </tr>
+            <tr>
+                <th>Enable</th>
+                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
+            </tr>
+                <th>User</th>
+                <td>{{ entity.refuser }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

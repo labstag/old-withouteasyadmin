@@ -1,0 +1,43 @@
+{% import "admin/macro.html.twig" as macro_admin %}
+{% extends 'admin/user/layout.html.twig' %}
+{% block body %}
+    <table
+  data-locale="fr-FR"
+  data-toggle="table"
+  data-show-columns="true">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Groupe</th>
+                <th>Email</th>
+                <th>Enable</th>
+                <th>Adresses</th>
+                <th>Liens</th>
+                <th>Emails</th>
+                <th>Téléphones</th>
+                <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in pagination %}
+            <tr>
+                <td>{{ entity.username }}</td>
+                <td>{{ entity.groupe }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.adresseUsers|length }}</td>
+                <td>{{ entity.lienUsers|length }}</td>
+                <td>{{ entity.emailUsers|length }}</td>
+                <td>{{ entity.phoneUsers|length }}</td>
+                <td>
+                    {{ macro_admin.actions(entity, actions) }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

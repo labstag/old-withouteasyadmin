@@ -1,0 +1,20 @@
+{% if btnadmin|length !=0 %}
+<div class="ListBtnAdmin" role="group">
+    {% for btn in btnadmin %}
+        <a
+    {%- for attrname, attrvalue in btn.attr|sort -%}
+        {{- " " -}}
+        {%- if attrvalue is same as(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not same as(false) -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}>
+            {% if btn.icon is defined %}
+                <i class="{{ btn.icon }}" title="{{ btn.text }}"></i>
+            {% endif %}
+            <span>{{ btn.text }}</span>
+        </a>
+    {% endfor %}
+</div>
+{% endif %}
