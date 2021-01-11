@@ -2,14 +2,18 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Labstag\Repository\GeoCodeRepository;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass=GeoCodeRepository::class)
+ * @ApiResource()
+ * @ApiFilter(SearchFilter::class, properties={"countryCode": "exact", "postalCode": "exact", "placeName": "partial"})
  */
 class GeoCode
 {
