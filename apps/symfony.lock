@@ -146,6 +146,9 @@
     "fig/link-util": {
         "version": "1.1.1"
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.2"
+    },
     "fzaninotto/faker": {
         "version": "v1.9.1"
     },
@@ -217,9 +220,6 @@
     },
     "nikic/php-parser": {
         "version": "v4.10.2"
-    },
-    "ocramius/proxy-manager": {
-        "version": "2.8.0"
     },
     "php": {
         "version": "7.4.2"
@@ -663,9 +663,6 @@
     "symfony/string": {
         "version": "v5.1.7"
     },
-    "symfony/templating": {
-        "version": "v5.1.8"
-    },
     "symfony/test-pack": {
         "version": "v1.0.6"
     },
@@ -792,9 +789,6 @@
     },
     "twig/twig": {
         "version": "v3.0.5"
-    },
-    "webimpress/safe-writer": {
-        "version": "2.1.0"
     },
     "webmozart/assert": {
         "version": "1.9.1"
