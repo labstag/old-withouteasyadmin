@@ -14,7 +14,7 @@ class CacheFixtures extends FixtureLib
 
     public function __construct(CacheInterface $cache)
     {
-        $this->cache   = $cache;
+        $this->cache = $cache;
     }
 
     public function load(ObjectManager $manager): void

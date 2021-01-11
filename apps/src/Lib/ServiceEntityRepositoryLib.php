@@ -11,9 +11,9 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     protected function getClassMetadataName(): string
     {
         $methods = get_class_methods($this);
-        $name = "";
-        if (in_array("getClassMetadata", $methods)) {
-            $name          = $this->getClassMetadata()->getName();
+        $name    = '';
+        if (in_array('getClassMetadata', $methods)) {
+            $name = $this->getClassMetadata()->getName();
         }
 
         return $name;
@@ -26,7 +26,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
      */
     public function findOneRandom()
     {
-        $name = $this->getClassMetadataName();
+        $name          = $this->getClassMetadataName();
         $dql           = 'SELECT p FROM ' . $name . ' p ORDER BY RAND()';
         $entityManager = $this->getEntityManager();
         $query         = $entityManager->createQuery($dql);
@@ -39,10 +39,11 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     public function findAllForAdmin(): Query
     {
         $methods = get_class_methods($this);
-        $name = "";
-        if (in_array("getClassMetadata", $methods)) {
-            $name          = $this->getClassMetadata()->getName();
+        $name    = '';
+        if (in_array('getClassMetadata', $methods)) {
+            $name = $this->getClassMetadata()->getName();
         }
+
         $dql           = 'SELECT a FROM ' . $name . ' a';
         $entityManager = $this->getEntityManager();
 

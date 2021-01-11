@@ -43,7 +43,7 @@ class UserMailService
         $config       = $dataService->getConfig();
         $this->config = $config;
 
-        $code = 'languagedefault';
+        $code            = 'languagedefault';
         $languagedefault = isset($config[$code]) ? $config[$code] : 'fr';
         Locale::setDefault($languagedefault);
     }
@@ -80,12 +80,7 @@ class UserMailService
             return;
         }
 
-        if (isset($this->config['site_url'])) {
-            $url     = $this->config['site_url'];
-        }else{
-            $url = '';
-        }
-
+        $url     = (isset($this->config['site_url'])) ? $this->config['site_url'] : '';
         $change  = [
             'url_confirm_user' => $url . $this->router->generate(
                 'app_confirm_user',
@@ -142,12 +137,7 @@ class UserMailService
             return;
         }
 
-        if (isset($this->config['site_url'])) {
-            $url     = $this->config['site_url'];
-        }else{
-            $url = '';
-        }
-
+        $url     = isset($this->config['site_url']) ? $this->config['site_url'] : $url = '';
         $change  = [
             'url_change_password' => $url . $this->router->generate(
                 'app_changepassword',
@@ -204,12 +194,7 @@ class UserMailService
             return;
         }
 
-        if (isset($this->config['site_url'])) {
-            $url     = $this->config['site_url'];
-        }else{
-            $url = '';
-        }
-    
+        $url     = isset($this->config['site_url']) ? $this->config['site_url'] : '';
         $change  = [
             'url_confirm_email' => $url . $this->router->generate(
                 'app_confirm_mail',

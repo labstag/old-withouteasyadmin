@@ -9,10 +9,10 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/api")
  */
-class PostalCodeController extends AbstractController
+class CheckPhoneController extends AbstractController
 {
     /**
-     * @Route("/codepostal")
+     * @Route("/checkphone")
      *
      * @return Response
      */
@@ -21,9 +21,7 @@ class PostalCodeController extends AbstractController
         $query = $request->query->all();
 
         return $this->json(
-            [
-                'query' => $query
-            ]
+            ['query' => $query]
         );
     }
 }

@@ -9,12 +9,19 @@ MARIADB              := $(STACK)_mariadb
 MARIADBFULLNAME      := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $(MARIADB) -q --no-trunc | head -n1)
 APACHE               := $(STACK)_apache
 APACHEFULLNAME       := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
+SUPPORTED_COMMANDS   := help package-lock.json node_modules apps/composer.lock apps/vendor apps/.env assets assets-ci bdd-fixtures bdd-migrate bdd-validate composer-suggests composer-outdated composer-dev-ci composer-update composer-validate composer-validate-ci contributors contributors-add contributors-check contributors-generate docker-create-network docker-deploy docker-deploy-ci docker-image-pull docker-ls docker-stop encore-dev encore-watch env-dev env-prod geocode geocode-ci git-commit git-check install install-dev linter linter-readme linter-phpcbf linter-phpcpd linter-phpcs linter-phpcs-onlywarning linter-phpcs-onlyerror linter-phpcs-onlyerror-ci linter-phploc linter-phpmd linter-phpmd-ci linter-phpmnd linter-phpmnd-ci linter-phpstan linter-phpstan-ci linter-twig linter-twig-ci linter-yaml linterl-yaml-ci logs logs-apache logs-mariadb logs-phpfpm messenger_consume sleep ssh-phpfpm ssh-phpfdpm-xdebug ssh-mariadb tests-behat tests-launch tests-simple-phpunit-unit-integration tests-simple-phpunit translations
+.PHONY               := help assets assets-ci bdd-fixtures bdd-migrate bdd-validate composer-suggests composer-outdated composer-dev-ci composer-update composer-validate composer-validate-ci contributors contributors-add contributors-check contributors-generate docker-create-network docker-deploy docker-deploy-ci docker-image-pull docker-ls docker-stop encore-dev encore-watch env-dev env-prod geocode geocode-ci git-commit git-check install install-dev linter linter-readme linter-phpcbf linter-phpcpd linter-phpcs linter-phpcs-onlywarning linter-phpcs-onlyerror linter-phpcs-onlyerror-ci linter-phploc linter-phpmd linter-phpmd-ci linter-phpmnd linter-phpmnd-ci linter-phpstan linter-phpstan-ci linter-twig linter-twig-ci linter-yaml linterl-yaml-ci logs logs-apache logs-mariadb logs-phpfpm messenger_consume sleep ssh-phpfpm ssh-phpfdpm-xdebug ssh-mariadb tests-behat tests-launch tests-simple-phpunit-unit-integration tests-simple-phpunit translations
+SUPPORTS_MAKE_ARGS   := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
+ifneq "$(SUPPORTS_MAKE_ARGS)" ""
+  COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(COMMAND_ARGS):;@:)
+endif
+
 %:
 	@:
 
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
-
 
 package-lock.json: package.json
 	npm install
@@ -116,6 +123,12 @@ env-prod: apps/.env ## Installation environnement prod
 	sed -i 's/APP_ENV=dev/APP_ENV=prod/g' apps/.env
 	rm -rf apps/vendor
 	@make composer-prod -i
+
+geocode: ## Geocode
+	docker exec $(PHPFPMFULLNAME) php -d memory_limit=-1 bin/console labstag:geocode:install $(COMMAND_ARGS)
+
+geocode-ci: ## Geocode
+	cd apps && php -d memory_limit=-1 bin/console labstag:geocode:install $(COMMAND_ARGS)
 
 git-commit: ## Commit data
 	npm run commit

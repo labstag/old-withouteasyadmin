@@ -64,6 +64,9 @@ env-prod: .env ## Installation environnement prod
 	rm -rf vendor
 	@make composer-prod -i
 
+geocode: ## add geocode
+	php -d memory_limit=-1 bin/console labstag:geocode:install $(COMMAND_ARGS)
+
 linter: ## Launch all linter
 	@make linter-twig -i
 	@make linter-yaml -i

@@ -36,8 +36,8 @@ class LabstagExtension extends AbstractExtension
 
         $type = $blockPrefixes[2];
 
-        $newFile = "prototype/".$type.".html.twig";
-        if (is_file(__DIR__."/../../templates/".$newFile)) {
+        $newFile = 'prototype/'.$type.'.html.twig';
+        if (is_file(__DIR__.'/../../templates/'.$newFile)) {
             $file = $newFile;
         }
 
@@ -55,12 +55,12 @@ class LabstagExtension extends AbstractExtension
         if (!is_object($class['data'])) {
             return $file;
         }
-        
-        $tabClass = explode("\\", get_class($class['data']));
-        $type = end($tabClass);
 
-        $newFile = "forms/".$type.".html.twig";
-        if (is_file(__DIR__."/../../templates/".$newFile)) {
+        $tabClass = explode('\\', get_class($class['data']));
+        $type     = end($tabClass);
+
+        $newFile = 'forms/'.$type.'.html.twig';
+        if (is_file(__DIR__.'/../../templates/'.$newFile)) {
             $file = $newFile;
         }
 
