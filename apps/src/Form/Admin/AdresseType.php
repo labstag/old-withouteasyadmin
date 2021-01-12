@@ -21,14 +21,18 @@ abstract class AdresseType extends AbstractType
         unset($options);
         $builder->add('rue');
         $builder->add('country');
-        $builder->add('zipcode');
+        $builder->add(
+            'zipcode',
+            TextType::class,
+            [
+                'attr' => ['is' => 'input-codepostal'],
+            ]
+        );
         $builder->add(
             'ville',
             TextType::class,
             [
-                'attr' => [
-                    'is' => 'adresse_town'
-                ]
+                'attr' => ['is' => 'input-ville'],
             ]
         );
         $builder->add('gps');

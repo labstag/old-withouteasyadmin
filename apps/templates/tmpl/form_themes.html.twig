@@ -1,5 +1,12 @@
 {% use "bootstrap_4_layout.html.twig" %}
 
+
+
+{% block choice_widget_collapsed %}
+    {% set attr = attr|merge({'is': 'select-selector'}) %}
+    {{ parent() }}
+{% endblock choice_widget_collapsed %}
+
 {% block form_widget %}
     {% if compound %}
         {{ block('form_widget_compound') }}
@@ -385,16 +392,10 @@
 			{{ label|trans }}
             <div class="btn-group float-right" role="group">
                 {% if allow_add is defined and allow_add == true %}
-                    <div class="BtnCollectionAdd">
-                        <i class="fas fa-plus"></i>
-                        <span>Ajouter</span>
-                    </div>
+                    <btn-addcollection title="Ajouter"></btn-addcollection>
                 {% endif %}
                 {% if element|default('label') == 'legend' and "collection" in form.vars.block_prefixes and "minmax" in row_attr %}
-                    <div class="ToggleFieldset">
-                        <i class="fas fa-window-minimize"></i>
-                        <i class="far fa-window-maximize d-none"></i>
-                    </div>
+                    <btn-togglefieldset></btn-togglefieldset>
                 {% endif %}
             </div>
 		</{{ element|default('label') }}>

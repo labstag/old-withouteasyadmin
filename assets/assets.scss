@@ -35,14 +35,26 @@ a{
   }
 }
 
-.ToggleFieldset{
+.btn-togglefieldset{
   @extend .btn;
   @extend .btn-info;
+  .min{
+    @extend .fas;
+    @extend .fa-window-minimize;
+  }
+  .max{
+    @extend .far;
+    @extend .fa-window-maximize;
+  }
 }
 
-.BtnCollectionAdd{
+.btn-addcollection{
   @extend .btn;
   @extend .btn-primary;
+  i{
+    @extend .fas;
+    @extend .fa-plus;
+  }
 }
 
 .btn-delete{

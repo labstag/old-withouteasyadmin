@@ -65,14 +65,9 @@ class LabstagExtension extends AbstractExtension
     public function formClass($class)
     {
         $file = '';
-        
-        if (!is_object($class)) {
-            return $file;
-        }
-        
-        $methods = get_class_vars(get_class($class));
 
-        if (!in_array('vars', $methods)) {
+        $methods = get_class_vars(get_class($class));
+        if (!isset($methods['vars'])) {
             return $file;
         }
 
