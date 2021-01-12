@@ -3,7 +3,8 @@
 
 
 {% block choice_widget_collapsed %}
-    {% set attr = attr|merge({'is': 'select-selector'}) %}
+    {% set isInput = attr.is|default('select-selector') %}
+    {% set attr = attr|merge({'is': isInput}) %}
     {{ parent() }}
 {% endblock choice_widget_collapsed %}
 
