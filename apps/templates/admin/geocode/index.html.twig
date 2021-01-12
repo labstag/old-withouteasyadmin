@@ -25,7 +25,10 @@
         <tbody>
         {% for entity in pagination %}
             <tr>
-                <td>{{ entity.countryCode }}</td>
+                <td>
+                    <span class="flag-icon flag-icon-{{ entity.countryCode|lower }}"></span>
+                    {{ entity.countryCode|country_name('fr') }}
+                </td>
                 <td>{{ entity.postalCode }}</td>
                 <td>{{ entity.placeName }}</td>
                 <td>{{ entity.stateName }}</td>
