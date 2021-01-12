@@ -31,22 +31,6 @@ class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterf
         $this->add($manager);
     }
 
-    private function setGeonames(array $env, array &$data): void
-    {
-        $geonames = [];
-        if (array_key_exists('GEONAMES', $env)) {
-            $explode = explode(',', (string) $env['GEONAMES']);
-            foreach ($explode as $code) {
-                $geonames[] = [
-                    'name'     => $code,
-                    'activate' => false,
-                ];
-            }
-        }
-
-        $data['geonames'] = $geonames;
-    }
-
     public function getDependencies()
     {
         return [CacheFixtures::class];
@@ -157,7 +141,6 @@ Allow: /',
         $env    = $dotenv->parse(file_get_contents(__DIR__ . '/../../.env'));
 
         ksort($env);
-        $this->setGeonames($env, $data);
         $this->setOauth($env, $data);
 
         foreach ($data as $key => $value) {

@@ -37,11 +37,29 @@ class LabstagExtension extends AbstractExtension
         $type = $blockPrefixes[2];
 
         $newFile = 'prototype/'.$type.'.html.twig';
-        if (is_file(__DIR__.'/../../templates/'.$newFile)) {
-            $file = $newFile;
+        if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
+            dump('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
+
+            return $file;
         }
 
+        $file = $newFile;
+
         return $file;
+    }
+
+    private function setTypeformClass(array $class): string
+    {
+        if (is_object($class['data'])) {
+            $tabClass = explode('\\', get_class($class['data']));
+            $type     = end($tabClass);
+
+            return $type;
+        }
+
+        $type = $class['form']->parent->vars['id'];
+
+        return $type;
     }
 
     public function formClass($class)
@@ -52,17 +70,16 @@ class LabstagExtension extends AbstractExtension
             return $file;
         }
 
-        if (!is_object($class['data'])) {
+        $type = $this->setTypeformClass($class);
+
+        $newFile = 'forms/'.$type.'.html.twig';
+        if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
+            dump('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
+
             return $file;
         }
 
-        $tabClass = explode('\\', get_class($class['data']));
-        $type     = end($tabClass);
-
-        $newFile = 'forms/'.$type.'.html.twig';
-        if (is_file(__DIR__.'/../../templates/'.$newFile)) {
-            $file = $newFile;
-        }
+        $file = $newFile;
 
         return $file;
 
