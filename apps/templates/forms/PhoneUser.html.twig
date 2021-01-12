@@ -1,5 +1,5 @@
 {% use "tmpl/form_themes.html.twig" %}
-<div class="row">
+<div class="row" data-url="{{ path('api_checkphone') }}">
     {% for input in row %}
         <div class="col-6">
             {{ form_row(input) }}

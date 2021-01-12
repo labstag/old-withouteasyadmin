@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CheckPhoneController extends AbstractController
 {
     /**
-     * @Route("/checkphone")
+     * @Route("/checkphone", name="api_checkphone")
      *
      * @return Response
      */

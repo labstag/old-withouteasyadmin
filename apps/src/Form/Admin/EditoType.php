@@ -20,7 +20,6 @@ class EditoType extends AbstractType
         array $options
     ): void
     {
-        unset($options);
         $builder->add('title');
         $builder->add('content', WysiwygType::class);
         $builder->add('enable');
