@@ -19,7 +19,7 @@
 {% endblock  %}
 
 {% block form_rows %}
-    {% set template = formClass(form.vars) %}
+    {% set template = formClass(form) %}
     {% if template == '' %}
         {% for child in form|filter(child => not child.rendered) %}
             {{ form_row(child) }}
@@ -428,15 +428,13 @@
 {% endblock %}
 
 {% block collection_delete %}
-	<div class="BtnCollectionDelete" title="Supprimer">
-		<i></i>
-	</div>
+    <btn-delete title="Supprimer"></btn-delete>
 {% endblock %}
 
 {% block collection_widget %}
     <div class="FieldRow">
         {% for row in form %}
-            {% set template = formClass(row.vars) %}
+            {% set template = formClass(row) %}
             {% if prototype is defined %}
                 <div class="CollectionRow">
             {% endif %}

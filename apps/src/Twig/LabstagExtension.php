@@ -65,12 +65,24 @@ class LabstagExtension extends AbstractExtension
     public function formClass($class)
     {
         $file = '';
+        
+        if (!is_object($class)) {
+            return $file;
+        }
+        
+        $methods = get_class_vars(get_class($class));
 
-        if (is_null($class['data'])) {
+        if (!in_array('vars', $methods)) {
             return $file;
         }
 
-        $type = $this->setTypeformClass($class);
+        $vars = $class->vars;
+
+        if (is_null($vars['data'])) {
+            return $file;
+        }
+
+        $type = $this->setTypeformClass($vars);
 
         $newFile = 'forms/'.$type.'.html.twig';
         if (!is_file(__DIR__.'/../../templates/'.$newFile)) {

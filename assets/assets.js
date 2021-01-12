@@ -1,6 +1,7 @@
 require("bootstrap");
 require("bootstrap-table");
 require("select2");
+import './elements/index'
 import bsCustomFileInput from "bs-custom-file-input";
 bsCustomFileInput.init();
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -34,17 +35,6 @@ function clickToggleFieldset(event) {
     fieldrow.style.display = "block";
   }
 }
-function clickEnableDeleteCollection(event) {
-  event.preventDefault();
-  let CollectionRow = event.currentTarget.closest(".CollectionRow");
-  CollectionRow.parentNode.removeChild(CollectionRow);
-}
-function EnableDeleteCollection() {
-  let btnCollectionDeletes = document.querySelectorAll(".BtnCollectionDelete");
-  btnCollectionDeletes.forEach((btnCollectionDelete) => {
-    btnCollectionDelete.addEventListener("click", clickEnableDeleteCollection);
-  });
-}
 function clickbtnCollectionAdd(event) {
   event.preventDefault();
   let fieldset = event.currentTarget.closest("fieldset");
@@ -52,7 +42,6 @@ function clickbtnCollectionAdd(event) {
   let html = fieldset.dataset.prototype.replace(/__name__/g, counter);
   let FieldRow = fieldset.querySelector(".FieldRow");
   FieldRow.innerHTML = FieldRow.innerHTML + html;
-  EnableDeleteCollection();
 }
 let wysiwygs = document.querySelectorAll(".wysiwyg");
 if (wysiwygs.length) {
@@ -66,7 +55,6 @@ if (wysiwygs.length) {
       });
   });
 }
-EnableDeleteCollection();
 let btnCollectionAdds = document.querySelectorAll(".BtnCollectionAdd");
 btnCollectionAdds.forEach((btnCollectionAdd) => {
   btnCollectionAdd.addEventListener("click", clickbtnCollectionAdd);
