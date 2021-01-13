@@ -2,9 +2,8 @@ export class InputCodePostal extends HTMLInputElement
 {
   connectedCallback()
   {
-    console.log('code postal');
     const row = this.closest(".row");
-    const url = row.dataset.url;
+    this.setAttribute('autocomplete', 'off');
     const selects = row.getElementsByTagName('select');
     let select = null;
     selects.forEach(
@@ -18,7 +17,13 @@ export class InputCodePostal extends HTMLInputElement
     if (null == select) {
       return;
     }
-    
-    console.log([url, select.value, this.value]);
+
+    this.country = select;
+    this.url = row.dataset.url;
+    this.addEventListener('keyup', this.onKeyup);
+  }
+
+  onKeyup(element) {
+    console.log(['codepostal', this.url, this.country.value, this.value]);
   }
 }
