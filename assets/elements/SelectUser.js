@@ -1,5 +1,6 @@
 require("select2");
-export class SelectUser extends HTMLSelectElement{
+export class SelectUser extends HTMLSelectElement
+{
   connectedCallback()
   {
     console.log('select user');

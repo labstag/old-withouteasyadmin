@@ -96,6 +96,7 @@ class AdminBoutonService
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
             'id'          => 'DeleteForm',
+            'is'          => 'link-btnadmindelete',
             'data-token'  => $token,
             'data-toggle' => 'modal',
             'data-target' => '#deleteModal',

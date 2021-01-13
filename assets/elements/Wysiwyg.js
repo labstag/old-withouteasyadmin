@@ -1,5 +1,6 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-export class Wysiwyg extends HTMLTextAreaElement{
+export class Wysiwyg extends HTMLTextAreaElement
+{
   connectedCallback()
   {
     ClassicEditor.create(this)

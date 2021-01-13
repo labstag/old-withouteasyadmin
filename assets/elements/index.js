@@ -8,14 +8,19 @@ import { SelectUser } from './SelectUser';
 import { InputPhone } from './InputPhone';
 import { InputCodePostal } from './InputCodePostal';
 import { InputVille } from './InputVille';
+import { TableDatatable } from './TableDatatable';
 
 customElements.define('btn-addcollection', BtnAddCollection);
 customElements.define('btn-delete', BtnDelete);
 customElements.define('btn-togglefieldset', BtnToggleFieldset);
-customElements.define('textarea-wysiwyg', Wysiwyg, {'extends': 'textarea'});
-customElements.define('select-country', SelectCountry, {'extends': 'select'});
-customElements.define('select-selector', SelectSelector, {'extends': 'select'});
-customElements.define('select-user', SelectUser, {'extends': 'select'});
+customElements.define('textarea-wysiwyg', Wysiwyg, { 'extends': 'textarea' });
+
+customElements.define('select-country', SelectCountry, { 'extends': 'select' });
+customElements.define('select-selector', SelectSelector, { 'extends': 'select' });
+customElements.define('select-user', SelectUser, { 'extends': 'select' });
+
 customElements.define('input-phone', InputPhone, {'extends': 'input'});
-customElements.define('input-codepostal', InputCodePostal, {'extends': 'input'});
-customElements.define('input-ville', InputVille, {'extends': 'input'});
+customElements.define('input-codepostal', InputCodePostal, { 'extends': 'input' });
+customElements.define('input-ville', InputVille, { 'extends': 'input' });
+
+customElements.define('table-datatable', TableDatatable, { 'extends': 'table' });

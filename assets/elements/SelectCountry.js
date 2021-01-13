@@ -1,5 +1,6 @@
 require("select2");
-export class SelectCountry extends HTMLSelectElement{
+export class SelectCountry extends HTMLSelectElement
+{
   connectedCallback()
   {
     const id = this.getAttribute("id");

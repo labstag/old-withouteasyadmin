@@ -1,12 +1,13 @@
-export class BtnToggleFieldset extends HTMLElement{
+export class BtnToggleFieldset extends HTMLElement
+{
   connectedCallback()
   {
     this.classList.add('btn-togglefieldset');
     this.innerHTML = '<i class="min"></i>';
-    this.addEventListener('click', this.onclick);
+    this.addEventListener('click', this.onClick);
   }
 
-  onclick(element) {
+  onClick(element) {
     element.preventDefault();
     let iElement = element.currentTarget.querySelector("i");
     let contains = iElement.classList.contains('min');

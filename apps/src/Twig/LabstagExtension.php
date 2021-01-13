@@ -67,7 +67,7 @@ class LabstagExtension extends AbstractExtension
         $file = '';
 
         $methods = get_class_vars(get_class($class));
-        if (!isset($methods['vars'])) {
+        if (!in_array('vars', $methods)) {
             return $file;
         }
 

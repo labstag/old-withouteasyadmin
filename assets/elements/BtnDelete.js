@@ -1,12 +1,13 @@
-export class BtnDelete extends HTMLElement{
+export class BtnDelete extends HTMLElement
+{
   connectedCallback()
   {
     this.classList.add('btn-delete');
     this.innerHTML = '<i></i>';
-    this.addEventListener('click', this.onclick);
+    this.addEventListener('click', this.onClick);
   }
 
-  onclick(element) {
+  onClick(element) {
     element.preventDefault();
     let CollectionRow = element.currentTarget.closest(".CollectionRow");
     CollectionRow.parentNode.removeChild(CollectionRow);

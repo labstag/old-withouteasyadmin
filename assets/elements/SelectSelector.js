@@ -1,5 +1,6 @@
 require("select2");
-export class SelectSelector extends HTMLSelectElement{
+export class SelectSelector extends HTMLSelectElement
+{
   connectedCallback()
   {
     const id = this.getAttribute("id");

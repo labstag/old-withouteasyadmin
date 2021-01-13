@@ -3,7 +3,6 @@
 @import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
 @import "@fortawesome/fontawesome-free/scss/regular.scss";
 @import "@fortawesome/fontawesome-free/scss/solid.scss";
-@import "bootstrap-table/src/bootstrap-table.scss";
 @import "flag-icon-css/sass/flag-icon.scss";
 @import "select2/src/scss/core.scss";
 @import "@ttskch/select2-bootstrap4-theme/src/layout.scss";
@@ -134,7 +133,7 @@ legend{
       @extend .fa-ban;
     }
   }
-  .BtnConfirmDelete{
+  .confirm-delete{
     @extend .btn;
     @extend .btn-outline-danger;
     i{

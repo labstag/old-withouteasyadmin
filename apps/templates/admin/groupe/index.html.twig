@@ -1,10 +1,7 @@
 {% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/groupe/layout.html.twig' %}
 {% block body %}
-    <table
-  data-locale="fr-FR"
-  data-toggle="table"
-  data-show-columns="true">
+    <table is="table-datatable">
         <thead>
             <tr>
                 <th>Name</th>

@@ -1,13 +1,14 @@
-export class BtnAddCollection extends HTMLElement{
+export class BtnAddCollection extends HTMLElement
+{
   connectedCallback()
   {
     this.classList.add('btn-addcollection');
     const title = this.getAttribute('title');
     this.innerHTML = `<i></i><span>${title}</span>`;
-    this.addEventListener('click', this.onclick);
+    this.addEventListener('click', this.onClick);
   }
 
-  onclick(element) {
+  onClick(element) {
     element.preventDefault();
     let fieldset = element.currentTarget.closest("fieldset");
     let counter = fieldset.querySelectorAll(".CollectionRow").length;
