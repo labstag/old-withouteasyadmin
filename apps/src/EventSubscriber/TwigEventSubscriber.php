@@ -60,7 +60,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
             'admin_profil',
         ];
 
-        if (!in_array($currentRoute, $routes)) {
+        if (!array_key_exists($currentRoute, $routes)) {
             return;
         }
 

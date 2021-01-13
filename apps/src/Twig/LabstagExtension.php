@@ -57,7 +57,7 @@ class LabstagExtension extends AbstractExtension
             return $type;
         }
 
-        $type = $class['form']->parent->vars['id'];
+        $type = $class['form']->vars['id'];
 
         return $type;
     }
@@ -67,13 +67,13 @@ class LabstagExtension extends AbstractExtension
         $file = '';
 
         $methods = get_class_vars(get_class($class));
-        if (!in_array('vars', $methods)) {
+        if (!array_key_exists('vars', $methods)) {
             return $file;
         }
 
         $vars = $class->vars;
 
-        if (is_null($vars['data'])) {
+        if (!array_key_exists('data', $vars) || is_null($vars['data'])) {
             return $file;
         }
 

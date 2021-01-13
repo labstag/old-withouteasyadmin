@@ -12,7 +12,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     {
         $methods = get_class_methods($this);
         $name    = '';
-        if (in_array('getClassMetadata', $methods)) {
+        if (array_key_exists('getClassMetadata', $methods)) {
             $name = $this->getClassMetadata()->getName();
         }
 
@@ -40,7 +40,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     {
         $methods = get_class_methods($this);
         $name    = '';
-        if (in_array('getClassMetadata', $methods)) {
+        if (array_key_exists('getClassMetadata', $methods)) {
             $name = $this->getClassMetadata()->getName();
         }
 
