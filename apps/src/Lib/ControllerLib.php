@@ -2,6 +2,7 @@
 
 namespace Labstag\Lib;
 
+use Labstag\Service\BreadcrumbsService;
 use Labstag\Service\DataService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,11 +11,9 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 abstract class ControllerLib extends AbstractController
 {
 
-    protected Breadcrumbs $breadcrumbs;
-
-    protected array $arrayBreadcrumbs = [];
-
     protected DataService $dataService;
+
+    private Breadcrumbs $breadcrumbs;
 
     public function __construct(
         DataService $dataService,
@@ -25,14 +24,12 @@ abstract class ControllerLib extends AbstractController
         $this->breadcrumbs = $breadcrumbs;
     }
 
-    public function setBreadcrumbs(array $breadcrumbs): void
+    private function setBreadcrumbs(): void
     {
-        $this->arrayBreadcrumbs = $breadcrumbs;
-    }
-
-    public function getBreadcrumbs(): array
-    {
-        return $this->arrayBreadcrumbs;
+        $data = BreadcrumbsService::getInstance()->get();
+        foreach ($data as $title => $route) {
+            $this->breadcrumbs->addItem($title, $route);
+        }
     }
 
     public function render(
@@ -41,10 +38,7 @@ abstract class ControllerLib extends AbstractController
         ?Response $response = null
     ): Response
     {
-        foreach ($this->arrayBreadcrumbs as $title => $route) {
-            $this->breadcrumbs->addItem($title, $route);
-        }
-
+        $this->setBreadcrumbs();
         if (isset($this->headerTitle) && $this->headerTitle != '') {
             $parameters['headerTitle'] = $this->headerTitle;
         }

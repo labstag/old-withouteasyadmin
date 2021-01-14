@@ -50,7 +50,7 @@ class EmailUserController extends AdminControllerLib
                 'admin_emailuser_new'
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new EmailUser(),
             EmailUserType::class,
@@ -74,7 +74,7 @@ class EmailUserController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $emailUser,
             'admin/email_user/show.html.twig',
@@ -106,7 +106,7 @@ class EmailUserController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             EmailUserType::class,
             $emailUser,

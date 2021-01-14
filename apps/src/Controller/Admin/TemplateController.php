@@ -50,7 +50,7 @@ class TemplateController extends AdminControllerLib
                 'admin_template_new'
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new Template(),
             TemplateType::class,
@@ -71,7 +71,7 @@ class TemplateController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $template,
             'admin/template/show.html.twig',
@@ -96,7 +96,7 @@ class TemplateController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             TemplateType::class,
             $template,

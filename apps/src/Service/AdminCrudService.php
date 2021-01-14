@@ -77,6 +77,11 @@ class AdminCrudService
         $this->adminBoutonService = $adminBoutonService;
     }
 
+    public function addBreadcrumbs(array $breadcrumbs): void
+    {
+        BreadcrumbsService::getInstance()->add($breadcrumbs);
+    }
+
     private function setBtnList(array $url): void
     {
         if (!isset($url['list'])) {

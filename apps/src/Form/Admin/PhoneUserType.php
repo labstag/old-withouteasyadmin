@@ -20,13 +20,18 @@ class PhoneUserType extends PhoneType
     {
         parent::buildForm($builder, $options);
         $builder->add('principal');
+        $choices = [];
+        if ($options['data']->getRefUser() instanceof User) {
+            $choices = [$options['data']->getRefUser()];
+        }
+
         $builder->add(
             'refuser',
             EntityType::class,
             [
                 'attr'    => ['is' => 'select-refuser'],
                 'class'   => User::class,
-                'choices' => [$options['data']->getRefUser()],
+                'choices' => $choices,
             ]
         );
     }

@@ -23,13 +23,18 @@ class EditoType extends AbstractType
         $builder->add('title');
         $builder->add('content', WysiwygType::class);
         $builder->add('enable');
+        $choices = [];
+        if ($options['data']->getRefUser() instanceof User) {
+            $choices = [$options['data']->getRefUser()];
+        }
+
         $builder->add(
             'refuser',
             EntityType::class,
             [
                 'attr'    => ['is' => 'select-refuser'],
                 'class'   => User::class,
-                'choices' => [$options['data']->getRefUser()],
+                'choices' => $choices,
             ]
         );
     }

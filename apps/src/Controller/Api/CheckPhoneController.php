@@ -18,10 +18,8 @@ class CheckPhoneController extends AbstractController
      */
     public function __invoke(Request $request): Response
     {
-        $query = $request->query->all();
+        $parameters = json_decode($request->getContent(), true);
 
-        return $this->json(
-            ['query' => $query]
-        );
+        return $this->json($parameters);
     }
 }

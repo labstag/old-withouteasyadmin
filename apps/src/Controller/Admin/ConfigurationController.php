@@ -54,7 +54,7 @@ class ConfigurationController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $configuration,
             'admin/configuration/show.html.twig',

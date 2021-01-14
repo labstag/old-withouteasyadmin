@@ -50,7 +50,7 @@ class GroupeController extends AdminControllerLib
                 'admin_groupuser_new'
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new Groupe(),
             GroupeType::class,
@@ -71,7 +71,7 @@ class GroupeController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $groupe,
             'admin/groupe/show.html.twig',
@@ -96,7 +96,7 @@ class GroupeController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             GroupeType::class,
             $groupe,

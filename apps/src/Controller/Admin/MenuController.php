@@ -50,7 +50,7 @@ class MenuController extends AdminControllerLib
                 'admin_menu_new'
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new Menu(),
             MenuType::class,
@@ -71,7 +71,7 @@ class MenuController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $menu,
             'admin/menu/show.html.twig',
@@ -96,7 +96,7 @@ class MenuController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             MenuType::class,
             $menu,

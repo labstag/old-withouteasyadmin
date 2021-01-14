@@ -49,7 +49,7 @@ class GeoCodeController extends AdminControllerLib
                 'admin_geocode_new'
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new GeoCode(),
             GeoCodeType::class,
@@ -70,7 +70,7 @@ class GeoCodeController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $geoCode,
             'admin/geocode/show.html.twig',
@@ -95,7 +95,7 @@ class GeoCodeController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             GeoCodeType::class,
             $geoCode,

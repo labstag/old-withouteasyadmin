@@ -19,13 +19,18 @@ class LienUserType extends LienType
     ): void
     {
         parent::buildForm($builder, $options);
+        $choices = [];
+        if ($options['data']->getRefUser() instanceof User) {
+            $choices = [$options['data']->getRefUser()];
+        }
+
         $builder->add(
             'refuser',
             EntityType::class,
             [
                 'attr'    => ['is' => 'select-refuser'],
                 'class'   => User::class,
-                'choices' => [$options['data']->getRefUser()],
+                'choices' => $choices,
             ]
         );
     }
