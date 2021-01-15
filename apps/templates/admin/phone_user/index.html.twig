@@ -6,6 +6,7 @@
             <tr>
                 <th>Numero</th>
                 <th>Country</th>
+                <th>Verif</th>
                 <th>Type</th>
                 <th>Principal</th>
                 <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
@@ -18,6 +19,10 @@
                 <td>
                     <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
                     {{ entity.country|country_name('fr') }}
+                </td>
+                <td>
+                    {% set check = verifPhone(entity.country, entity.numero)  ? 'OK' : 'KO' %}
+                    <span class="check{{ check }}"></span>
                 </td>
                 <td>{{ entity.type }}</td>
                 <td>{{ entity.principal ? 'Yes' : 'No' }}</td>

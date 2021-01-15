@@ -2,12 +2,20 @@
 
 namespace Labstag\Twig;
 
+use Labstag\Service\PhoneService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class LabstagExtension extends AbstractExtension
 {
+    private PhoneService $phoneService;
+
+    public function __construct(PhoneService $phoneService)
+    {
+        $this->phoneService = $phoneService;
+    }
+
     public function getFilters(): array
     {
         return [
@@ -23,8 +31,16 @@ class LabstagExtension extends AbstractExtension
     {
         return [
             new TwigFunction('formClass', [$this, 'formClass']),
+            new TwigFunction('verifPhone', [$this, 'verifPhone']),
             new TwigFunction('formPrototype', [$this, 'formPrototype']),
         ];
+    }
+
+    public function verifPhone(string $country, string $phone)
+    {
+        $verif = $this->phoneService->verif($phone, $country);
+        
+        return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
     }
 
     public function formPrototype(array $blockPrefixes): string

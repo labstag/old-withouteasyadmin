@@ -167,3 +167,14 @@ legend{
   @extend .badge-danger;
   @extend .text-uppercase;
 }
+
+.checkOK{
+  @extend .fas;
+  @extend .fa-check;
+  color: green;
+}
+.checkKO{
+  @extend .fas;
+  @extend .fa-times;
+  color: red;
+}

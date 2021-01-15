@@ -32,10 +32,17 @@ final class CheckPhoneSwaggerDecorator implements NormalizerInterface
             'tags'       => ['Check phone'],
             'parameters' => [
                 [
-                    'name'        => 'postalcode',
+                    'name'        => 'country',
                     'in'          => 'query',
-                    'required'    => false,
-                    'description' => 'postal code',
+                    'required'    => true,
+                    'description' => 'country code',
+                    'schema'      => ['type' => 'string'],
+                ],
+                [
+                    'name'        => 'phone',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'phone',
                     'schema'      => ['type' => 'string'],
                 ],
             ],
