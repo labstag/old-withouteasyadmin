@@ -13,20 +13,20 @@ export class PostalCode extends HTMLInputElement {
 
   ajax() {
     const params = {};
-    if ('' != this.country.value) {
-      params['country'] = this.country.value;
+    if ("" != this.country.value) {
+      params["country"] = this.country.value;
     }
-    if ('' != this.ville.value) {
-      params['placeName'] = this.ville.value;
+    if ("" != this.ville.value) {
+      params["placeName"] = this.ville.value;
     }
-    if ('' != this.codepostal.value) {
-      params['postalCode'] = this.codepostal.value;
+    if ("" != this.codepostal.value) {
+      params["postalCode"] = this.codepostal.value;
     }
 
-    fetch(this.url + '?' + new URLSearchParams(params))
-        .then(response => response.json())
-        .then(this.fetchResponse.bind(this))
-        .catch(this.fetchCatch);
+    fetch(this.url + "?" + new URLSearchParams(params))
+      .then((response) => response.json())
+      .then(this.fetchResponse.bind(this))
+      .catch(this.fetchCatch);
   }
 
   onKeydown(element) {
@@ -36,25 +36,25 @@ export class PostalCode extends HTMLInputElement {
 
   setData() {
     this.row = this.closest(".row");
-    this.inputs = this.row.getElementsByTagName('input');
-    const selects = this.row.getElementsByTagName('select');
+    this.inputs = this.row.getElementsByTagName("input");
+    const selects = this.row.getElementsByTagName("select");
     this.country = null;
     this.codepostal = null;
     this.ville = null;
     this.gps = null;
     selects.forEach((element) => {
-      let isInput = element.getAttribute('is');
-      if (isInput == 'select-country') {
+      let isInput = element.getAttribute("is");
+      if (isInput == "select-country") {
         this.country = element;
       }
     });
     this.inputs.forEach((element) => {
-      let isInput = element.getAttribute('is');
-      if ('input-codepostal' == isInput) {
+      let isInput = element.getAttribute("is");
+      if ("input-codepostal" == isInput) {
         this.codepostal = element;
-      } else if ('input-ville' == isInput) {
+      } else if ("input-ville" == isInput) {
         this.ville = element;
-      } else if ('input-gps' == isInput) {
+      } else if ("input-gps" == isInput) {
         this.gps = element;
       }
     });

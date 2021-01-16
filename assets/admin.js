@@ -1,4 +1,4 @@
-import './elements/admin/index'
+import "./elements/admin/index";
 
 import * as assets from "./assets";
 
@@ -9,6 +9,7 @@ function clickFormSave(event) {
 }
 let saveForm = document.querySelectorAll("#SaveForm");
 if (saveForm.length) {
-  saveForm.forEach(
-      (element) => { element.addEventListener("click", clickFormSave); });
+  saveForm.forEach((element) => {
+    element.addEventListener("click", clickFormSave);
+  });
 }

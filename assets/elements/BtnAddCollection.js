@@ -1,9 +1,9 @@
 export class BtnAddCollection extends HTMLElement {
   connectedCallback() {
-    this.classList.add('btn-addcollection');
-    const title = this.getAttribute('title');
+    this.classList.add("btn-addcollection");
+    const title = this.getAttribute("title");
     this.innerHTML = `<i></i><span>${title}</span>`;
-    this.addEventListener('click', this.onClick);
+    this.addEventListener("click", this.onClick);
   }
 
   onClick(element) {
