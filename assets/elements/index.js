@@ -7,6 +7,8 @@ import { SelectCountry } from './SelectCountry';
 import { SelectUser } from './SelectUser';
 import { InputPhone } from './InputPhone';
 import { InputCodePostal } from './InputCodePostal';
+import { InputEmail } from './InputEmail';
+import { InputUrl } from './InputUrl';
 import { InputVille } from './InputVille';
 import { TableDatatable } from './TableDatatable';
 
@@ -20,6 +22,8 @@ customElements.define('select-selector', SelectSelector, { 'extends': 'select' }
 customElements.define('select-user', SelectUser, { 'extends': 'select' });
 
 customElements.define('input-phone', InputPhone, {'extends': 'input'});
+customElements.define('input-email', InputEmail, {'extends': 'input'});
+customElements.define('input-url', InputUrl, {'extends': 'input'});
 customElements.define('input-codepostal', InputCodePostal, { 'extends': 'input' });
 customElements.define('input-ville', InputVille, { 'extends': 'input' });
 
