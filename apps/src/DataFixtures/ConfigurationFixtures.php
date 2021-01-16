@@ -67,7 +67,7 @@ class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterf
 
     private function add(ObjectManager $manager): void
     {
-        $data     = [
+        $data = [
             'notification'    => [
                 [
                     'type'   => 'oauthconnectuser',

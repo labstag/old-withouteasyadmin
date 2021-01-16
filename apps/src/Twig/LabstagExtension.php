@@ -9,6 +9,7 @@ use Twig\TwigFunction;
 
 class LabstagExtension extends AbstractExtension
 {
+
     private PhoneService $phoneService;
 
     public function __construct(PhoneService $phoneService)
@@ -39,7 +40,7 @@ class LabstagExtension extends AbstractExtension
     public function verifPhone(string $country, string $phone)
     {
         $verif = $this->phoneService->verif($phone, $country);
-        
+
         return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
     }
 

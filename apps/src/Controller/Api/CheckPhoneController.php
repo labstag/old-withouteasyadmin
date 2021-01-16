@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CheckPhoneController extends AbstractController
 {
+
     private PhoneService $phoneService;
 
     public function __construct(PhoneService $phoneService)
@@ -26,15 +27,13 @@ class CheckPhoneController extends AbstractController
      */
     public function __invoke(Request $request): Response
     {
-        $get = $request->query->all();
-        $return = [
-            'isvalid' => false
-        ];
+        $get    = $request->query->all();
+        $return = ['isvalid' => false];
         if (!array_key_exists('country', $get) || !array_key_exists('phone', $get)) {
             return $this->json($return);
         }
 
-        $verif = $this->phoneService->verif($get['phone'], $get['country']);
+        $verif             = $this->phoneService->verif($get['phone'], $get['country']);
         $return['isvalid'] = array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
 
         return $this->json($return);

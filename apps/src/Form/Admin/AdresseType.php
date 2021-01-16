@@ -43,7 +43,13 @@ abstract class AdresseType extends AbstractType
                 'attr' => ['is' => 'input-ville'],
             ]
         );
-        $builder->add('gps');
+        $builder->add(
+            'gps',
+            TextType::class,
+            [
+                'attr' => ['is' => 'input-gps'],
+            ]
+        );
         $builder->add('type');
         $builder->add('pmr');
     }

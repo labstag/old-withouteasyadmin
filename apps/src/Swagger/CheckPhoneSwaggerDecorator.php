@@ -53,13 +53,9 @@ final class CheckPhoneSwaggerDecorator implements NormalizerInterface
                             'schema' => [
                                 'type'       => 'object',
                                 'properties' => [
-                                    'books_count'    => [
-                                        'type'    => 'integer',
-                                        'example' => 997,
-                                    ],
-                                    'topbooks_count' => [
-                                        'type'    => 'integer',
-                                        'example' => 101,
+                                    'isvalid' => [
+                                        'type'    => 'boolean',
+                                        'example' => true,
                                     ],
                                 ],
                             ],
