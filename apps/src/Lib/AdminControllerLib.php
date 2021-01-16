@@ -4,6 +4,7 @@ namespace Labstag\Lib;
 
 use Labstag\Service\AdminBoutonService;
 use Labstag\Service\AdminCrudService;
+use Labstag\Service\BreadcrumbsService;
 use Labstag\Service\DataService;
 use Symfony\Component\HttpFoundation\Response;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
@@ -32,28 +33,29 @@ abstract class AdminControllerLib extends ControllerLib
         parent::__construct($dataService, $breadcrumbs);
     }
 
+    private function setBreadcrumbsPage()
+    {
+        if ($this->headerTitle == '' && $this->urlHome == '') {
+            return;
+        }
+
+        $router      = $this->get('router');
+        $breadcrumbs = [
+            $this->headerTitle => $router->generate(
+                $this->urlHome
+            ),
+        ];
+
+        BreadcrumbsService::getInstance()->addPosition($breadcrumbs, 0);
+    }
+
     public function render(
         string $view,
         array $parameters = [],
         ?Response $response = null
     ): Response
     {
-        $router           = $this->get('router');
-        $arrayBreadcrumbs = $this->getBreadcrumbs();
-        $adminBreadcrumbs = [
-            'Home' => $router->generate('admin'),
-        ];
-        if ($this->headerTitle != '' && $this->urlHome != '') {
-            $adminBreadcrumbs[$this->headerTitle] = $router->generate(
-                $this->urlHome
-            );
-        }
-
-        $arrayBreadcrumbs = array_merge(
-            $adminBreadcrumbs,
-            $arrayBreadcrumbs
-        );
-        $this->setBreadcrumbs($arrayBreadcrumbs);
+        $this->setBreadcrumbsPage();
         $parameters = array_merge(
             $parameters,
             [

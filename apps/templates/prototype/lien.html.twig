@@ -1,0 +1,14 @@
+{% use "tmpl/form_themes.html.twig" %}
+LIEN
+<div class="row">
+    {% for input in prototype %}
+        <div class="col-4">
+            {{ form_row(input) }}
+        </div>
+    {% endfor %}
+    {% if allow_delete %}
+        <div class="text-center col-4">
+            {{ block('collection_delete') }}
+        </div>
+    {% endif %}
+</div>

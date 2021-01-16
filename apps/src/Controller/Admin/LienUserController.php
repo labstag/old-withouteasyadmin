@@ -50,7 +50,7 @@ class LienUserController extends AdminControllerLib
                 'admin_lienuser_new'
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new LienUser(),
             LienUserType::class,
@@ -71,7 +71,7 @@ class LienUserController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $lienUser,
             'admin/lien_user/show.html.twig',
@@ -96,7 +96,7 @@ class LienUserController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             LienUserType::class,
             $lienUser,

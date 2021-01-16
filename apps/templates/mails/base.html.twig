@@ -58,7 +58,9 @@
 								<table class="footer" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
 									<tr>
 										<td class="content-cell" align="center">
-                                            <a href="{{ config['site_url'] }}">{{ config['site_title'] }}</a>
+                                            {% if config['site_url'] is defined %}
+                                                <a href="{{ config['site_url'] }}">{{ config['site_title'] }}</a>
+                                            {% endif %}
                                         </td>
 									</tr>
 								</table>

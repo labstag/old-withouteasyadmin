@@ -49,7 +49,7 @@ class AdresseUserController extends AdminControllerLib
         $breadcrumb = [
             'new' => $router->generate('admin_adresseuser_new'),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new AdresseUser(),
             AdresseUserType::class,
@@ -73,7 +73,7 @@ class AdresseUserController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $adresseUser,
             'admin/adresse_user/show.html.twig',
@@ -98,14 +98,14 @@ class AdresseUserController extends AdminControllerLib
     ): Response
     {
         $breadcrumb = [
-            'show' => $router->generate(
+            'edit' => $router->generate(
                 'admin_adresseuser_edit',
                 [
                     'id' => $adresseUser->getId(),
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             AdresseUserType::class,
             $adresseUser,

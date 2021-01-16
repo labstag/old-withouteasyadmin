@@ -54,6 +54,10 @@ class DisclaimerSubscriber implements EventSubscriberInterface
             return false;
         }
 
+        if (substr_count($controller, 'Controller\\Api') !== 0) {
+            return false;
+        }
+
         if (substr_count($controller, 'Controller\\Admin') !== 0) {
             return false;
         }

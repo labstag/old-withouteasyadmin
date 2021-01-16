@@ -5,7 +5,6 @@ namespace Labstag\Form\Admin;
 use Labstag\Form\Admin\Collections\Param\DisclaimerType;
 use Labstag\Form\Admin\Collections\Param\MetaSiteType;
 use Labstag\Form\Admin\Collections\Param\OauthType;
-use Labstag\Form\Admin\Collections\Param\GeonameType;
 use Labstag\Form\Admin\Collections\Param\NotificationType;
 use Labstag\FormType\WysiwygType;
 use Labstag\FormType\MinMaxCollectionType;
@@ -34,15 +33,6 @@ class ParamType extends AbstractType
             'language',
             LanguageType::class,
             ['multiple' => true]
-        );
-        $builder->add(
-            'geonames',
-            MinMaxCollectionType::class,
-            [
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'entry_type'   => GeonameType::class,
-            ]
         );
         $builder->add(
             'notification',

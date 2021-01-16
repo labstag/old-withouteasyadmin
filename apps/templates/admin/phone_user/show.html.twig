@@ -8,7 +8,10 @@
             </tr>
             <tr>
                 <th>Country</th>
-                <td>{{ entity.country|country_name('fr') }}</td>
+                <td>
+                    <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
+                    {{ entity.country|country_name('fr') }}
+                </td>
             </tr>
             <tr>
                 <th>Type</th>

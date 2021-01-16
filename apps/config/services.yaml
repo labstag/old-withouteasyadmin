@@ -51,3 +51,6 @@ services:
     arguments: ["@request_stack"]
     tags:
       - { name: knp_menu.menu, alias: admin_profilmenu }
+  Labstag\Swagger\CheckPhoneSwaggerDecorator:
+    decorates: 'api_platform.swagger.normalizer.api_gateway'
+    autoconfigure: false

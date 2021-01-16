@@ -55,7 +55,7 @@ class UserController extends AdminControllerLib
                 'admin_user_new'
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         $user = new User();
         $user->setEnable(false);
         return $this->adminCrudService->create(
@@ -80,7 +80,7 @@ class UserController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $user,
             'admin/user/show.html.twig',
@@ -109,7 +109,7 @@ class UserController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             UserType::class,
             $user,

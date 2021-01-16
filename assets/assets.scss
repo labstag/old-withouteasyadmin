@@ -3,7 +3,6 @@
 @import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
 @import "@fortawesome/fontawesome-free/scss/regular.scss";
 @import "@fortawesome/fontawesome-free/scss/solid.scss";
-@import "bootstrap-table/src/bootstrap-table.scss";
 @import "flag-icon-css/sass/flag-icon.scss";
 @import "select2/src/scss/core.scss";
 @import "@ttskch/select2-bootstrap4-theme/src/layout.scss";
@@ -16,18 +15,48 @@ label {
     }
   }
 }
+a{
+  &[href^="tel:"] {
+    &:before{
+      @extend .fas;
+      @extend .fa-phone;
+      color: #000000;
+      padding-right: 5px;
+    }
+  }
+  &[href^="mailto:"] {
+    &:before{
+      @extend .fas;
+      @extend .fa-at;
+      color: #FF0000;
+      padding-right: 5px;
+    }
+  }
+}
 
-.ToggleFieldset{
+.btn-togglefieldset{
   @extend .btn;
   @extend .btn-info;
+  .min{
+    @extend .fas;
+    @extend .fa-window-minimize;
+  }
+  .max{
+    @extend .far;
+    @extend .fa-window-maximize;
+  }
 }
 
-.BtnCollectionAdd{
+.btn-addcollection{
   @extend .btn;
   @extend .btn-primary;
+  i{
+    @extend .fas;
+    @extend .fa-plus;
+  }
 }
 
-.BtnCollectionDelete{
+.btn-delete{
   @extend .btn;
   @extend .btn-danger;
   i{
@@ -82,8 +111,11 @@ legend{
 }
 
 .GpsIcon{
-  @extend .fas;
-  @extend .fa-map-marker-alt;
+  &:before{
+    @extend .fas;
+    @extend .fa-map-marker-alt;
+    padding-right: 5px;
+  }
 }
 
 #deleteModal{
@@ -101,7 +133,7 @@ legend{
       @extend .fa-ban;
     }
   }
-  .BtnConfirmDelete{
+  .confirm-delete{
     @extend .btn;
     @extend .btn-outline-danger;
     i{
@@ -134,4 +166,15 @@ legend{
   @extend .badge;
   @extend .badge-danger;
   @extend .text-uppercase;
+}
+
+.checkOK{
+  @extend .fas;
+  @extend .fa-check;
+  color: green;
+}
+.checkKO{
+  @extend .fas;
+  @extend .fa-times;
+  color: red;
 }

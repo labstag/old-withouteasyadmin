@@ -77,7 +77,8 @@ class AdminController extends AdminControllerLib
             $security->getUser(),
             [],
             [UserEntityEvent::class],
-            $userManager
+            $userManager,
+            'admin/profil.html.twig'
         );
     }
 

@@ -51,7 +51,7 @@ class EditoController extends AdminControllerLib
                 'admin_edito_new'
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new Edito(),
             EditoType::class,
@@ -72,7 +72,7 @@ class EditoController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $edito,
             'admin/edito/show.html.twig',
@@ -97,7 +97,7 @@ class EditoController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             EditoType::class,
             $edito,
