@@ -1,20 +1,22 @@
 {% macro show(entity, url) %}
     {% set title = "Show"|trans %}
-    <a href="{{ path(url, {'id': entity.id}) }}" class="btnAdminTableShow" title="{{ title }}">
-        <i title="{{ title }}"></i>
-        <span>{{ title }}</span>
-    </a>
+    <link-show data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}"></link-show>
 {% endmacro %}
 {% macro edit(entity, url) %}
     {% set title = "Edit"|trans %}
-    <a href="{{ path(url, {'id': entity.id}) }}" class="btnAdminTableEdit" title="{{ title }}">
-        <i title="{{ title }}"></i>
-        <span>{{ title }}</span>
-    </a>
+    <link-edit data-href="{{ path(url, {'id': entity.id}) }}" data-title="#{{ title|e }}"></link-edit>
 {% endmacro %}
 {% macro delete(entity, urlDelete, urlList) %}
     {% set title = "Delete"|trans %}
-    <a href="#"
+    <link-delete
+        data-url="{{ path(urlDelete, {'id': entity.id}) }}"
+        data-token="{{ csrf_token('delete' ~ entity.id) }}"
+        data-title="{{ title }}"
+        {% if urlList != '' %}
+            data-redirect="{{ path(urlList) }}"
+        {% endif %}
+    ></link-delete>
+    {# <a href="#"
         data-url="{{ path(urlDelete, {'id': entity.id}) }}"
         data-token="{{ csrf_token('delete' ~ entity.id) }}"
         class="btnAdminTableDelete"
@@ -24,7 +26,7 @@
     {% if urlList != '' %} data-redirect="{{ path(urlList) }}"{% endif %}>
         <i title="{{ title }}"></i>
         <span>{{ title }}</span>
-    </a>
+    </a> #}
 {% endmacro %}
 {% macro actions (entity, actions) %}
     <div class="btngrouptable" role="group">

@@ -51,7 +51,7 @@ class NoteInterneController extends AdminControllerLib
                 'admin_noteinterne_new'
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new NoteInterne(),
             NoteInterneType::class,
@@ -75,7 +75,7 @@ class NoteInterneController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $noteInterne,
             'admin/note_interne/show.html.twig',
@@ -107,7 +107,7 @@ class NoteInterneController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             NoteInterneType::class,
             $noteInterne,

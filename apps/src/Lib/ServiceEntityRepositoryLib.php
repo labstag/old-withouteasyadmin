@@ -8,6 +8,17 @@ use Doctrine\ORM\Query;
 abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 {
 
+    protected function getClassMetadataName(): string
+    {
+        $methods = get_class_methods($this);
+        $name    = '';
+        if (in_array('getClassMetadata', $methods)) {
+            $name = $this->getClassMetadata()->getName();
+        }
+
+        return $name;
+    }
+
     /**
      * Get random data.
      *
@@ -15,7 +26,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
      */
     public function findOneRandom()
     {
-        $name          = $this->getClassMetadata()->getName();
+        $name          = $this->getClassMetadataName();
         $dql           = 'SELECT p FROM ' . $name . ' p ORDER BY RAND()';
         $entityManager = $this->getEntityManager();
         $query         = $entityManager->createQuery($dql);
@@ -27,7 +38,13 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 
     public function findAllForAdmin(): Query
     {
-        $name          = $this->getClassMetadata()->getName();
+        $methods = get_class_methods($this);
+        $name    = '';
+
+        if (in_array('getClassMetadata', $methods)) {
+            $name = $this->getClassMetadata()->getName();
+        }
+
         $dql           = 'SELECT a FROM ' . $name . ' a';
         $entityManager = $this->getEntityManager();
 

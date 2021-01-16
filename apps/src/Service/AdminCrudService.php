@@ -77,6 +77,11 @@ class AdminCrudService
         $this->adminBoutonService = $adminBoutonService;
     }
 
+    public function addBreadcrumbs(array $breadcrumbs): void
+    {
+        BreadcrumbsService::getInstance()->add($breadcrumbs);
+    }
+
     private function setBtnList(array $url): void
     {
         if (!isset($url['list'])) {
@@ -286,7 +291,8 @@ class AdminCrudService
         object $entity,
         array $url = [],
         array $events = [],
-        object $manager = null
+        object $manager = null,
+        string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
         $this->setBtnViewUpdate($url, $entity);
@@ -322,7 +328,7 @@ class AdminCrudService
         }
 
         return $this->controller->render(
-            'admin/crud/form.html.twig',
+            $twig,
             [
                 'entity' => $entity,
                 'form'   => $form->createView(),

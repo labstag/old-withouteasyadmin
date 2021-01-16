@@ -50,7 +50,7 @@ class PhoneUserController extends AdminControllerLib
                 'admin_phoneuser_new'
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new PhoneUser(),
             PhoneUserType::class,
@@ -74,7 +74,7 @@ class PhoneUserController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->read(
             $phoneUser,
             'admin/phone_user/show.html.twig',
@@ -106,7 +106,7 @@ class PhoneUserController extends AdminControllerLib
                 ]
             ),
         ];
-        $this->setBreadcrumbs($breadcrumb);
+        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             PhoneUserType::class,
             $phoneUser,

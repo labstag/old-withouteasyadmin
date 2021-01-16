@@ -3,9 +3,11 @@
 namespace Labstag\EventSubscriber;
 
 use Labstag\Service\AdminBoutonService;
+use Labstag\Service\BreadcrumbsService;
 use Labstag\Service\DataService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
@@ -17,13 +19,16 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     protected AdminBoutonService $adminBoutonService;
 
+    protected RouterInterface $router;
 
     public function __construct(
+        RouterInterface $router,
         Environment $twig,
         AdminBoutonService $adminBoutonService,
         DataService $dataService
     )
     {
+        $this->router             = $router;
         $this->adminBoutonService = $adminBoutonService;
         $this->twig               = $twig;
         $this->dataService        = $dataService;
@@ -46,10 +51,21 @@ class TwigEventSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $this->setBreadCrumbsAdmin();
+
         $this->twig->addGlobal(
             'btnadmin',
             $this->adminBoutonService->get()
         );
+    }
+
+    private function setBreadCrumbsAdmin()
+    {
+        $adminBreadcrumbs = [
+            'Home' => $this->router->generate('admin'),
+        ];
+
+        BreadcrumbsService::getInstance()->add($adminBreadcrumbs);
     }
 
     private function setLoginPage(ControllerEvent $event): void

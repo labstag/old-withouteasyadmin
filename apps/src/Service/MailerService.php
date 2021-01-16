@@ -57,7 +57,11 @@ class MailerService
             $email->text($text);
         }
 
-        return $email->from($config['site_no-reply']);
+        if (isset($config['site_no-reply'])) {
+            $email->from($config['site_no-reply']);
+        }
+
+        return $email;
     }
 
     public function send(Email $email): void

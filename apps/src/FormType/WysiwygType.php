@@ -20,10 +20,11 @@ class WysiwygType extends AbstractType
             $attr['class'] = '';
         }
 
-        $attr['class'] = trim($attr['class'] . ' wysiwyg');
         if (!isset($attr['rows'])) {
             $attr['rows'] = 20;
         }
+
+        $attr['is'] = 'textarea-wysiwyg';
 
         $view->vars['attr'] = $attr;
         unset($form);
