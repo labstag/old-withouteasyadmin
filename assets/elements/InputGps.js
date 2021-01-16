@@ -1,6 +1,3 @@
-export class InputGps extends HTMLInputElement
-{
-  connectedCallback()
-  {
-  }
+export class InputGps extends HTMLInputElement {
+  connectedCallback() {}
 }

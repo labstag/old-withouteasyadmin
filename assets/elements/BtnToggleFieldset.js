@@ -1,7 +1,5 @@
-export class BtnToggleFieldset extends HTMLElement
-{
-  connectedCallback()
-  {
+export class BtnToggleFieldset extends HTMLElement {
+  connectedCallback() {
     this.classList.add('btn-togglefieldset');
     this.innerHTML = '<i class="min"></i>';
     this.addEventListener('click', this.onClick);
@@ -18,10 +16,8 @@ export class BtnToggleFieldset extends HTMLElement
     let fieldrow = fieldset.querySelector(".FieldRow");
     let btnCollectionAdd = fieldset.querySelector(".BtnCollectionAdd");
     if (btnCollectionAdd != null) {
-      if (
-        btnCollectionAdd.style.display == "" ||
-        btnCollectionAdd.style.display == "block"
-      ) {
+      if (btnCollectionAdd.style.display == "" ||
+          btnCollectionAdd.style.display == "block") {
         btnCollectionAdd.style.display = "none";
       } else {
         btnCollectionAdd.style.display = "block";
@@ -32,6 +28,5 @@ export class BtnToggleFieldset extends HTMLElement
     } else {
       fieldrow.style.display = "block";
     }
-
   }
 }

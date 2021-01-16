@@ -1,5 +1,4 @@
-export class LinkEdit extends HTMLElement
-{
+export class LinkEdit extends HTMLElement {
   constructor() {
     super();
     if ('' != this.innerHTML) {
@@ -16,7 +15,7 @@ export class LinkEdit extends HTMLElement
     this.iElement.setAttribute('title', title);
     this.spanElement.innerHTML = title
 
-    this.aElement.append(this.iElement);
+                                 this.aElement.append(this.iElement);
     this.appendChild(this.aElement);
   }
 }

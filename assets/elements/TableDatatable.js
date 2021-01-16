@@ -1,6 +1,3 @@
-export class TableDatatable extends HTMLTableElement
-{
-  constructor() {
-    super();
-  }
+export class TableDatatable extends HTMLTableElement {
+  constructor() { super(); }
 }

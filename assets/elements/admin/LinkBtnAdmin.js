@@ -1,6 +1,5 @@
-export class LinkBtnAdmin extends HTMLElement{
-  constructor()
-  {
+export class LinkBtnAdmin extends HTMLElement {
+  constructor() {
     super();
     if ('' != this.innerHTML) {
       return;
@@ -22,7 +21,7 @@ export class LinkBtnAdmin extends HTMLElement{
       iElement.setAttribute('title', text);
       aElement.append(iElement);
     }
-    
+
     let spanElement = document.createElement('span');
     spanElement.innerHTML = text;
     aElement.append(spanElement);

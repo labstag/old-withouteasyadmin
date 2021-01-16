@@ -1,14 +1,11 @@
-export class InputUrl extends HTMLInputElement
-{
-  connectedCallback()
-  {
+export class InputUrl extends HTMLInputElement {
+  connectedCallback() {
     this.timeout = null;
     this.addEventListener('keydown', this.onKeydown);
     this.onKeydown();
   }
 
-  traitement()
-  {
+  traitement() {
     this.classList.remove('is-valid');
     this.classList.remove('is-invalid');
     console.log(this.checkValidity());

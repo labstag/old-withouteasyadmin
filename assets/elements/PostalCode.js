@@ -1,7 +1,5 @@
-export class PostalCode extends HTMLInputElement
-{
-  fetchResponse(response)
-  {
+export class PostalCode extends HTMLInputElement {
+  fetchResponse(response) {
     if (0 == response.length) {
       return;
     }
@@ -12,11 +10,9 @@ export class PostalCode extends HTMLInputElement
       this.gps.value = data.latitude + "," + data.longitude;
     }
   }
-  
-  ajax()
-  {
-    const params = {
-    };
+
+  ajax() {
+    const params = {};
     if ('' != this.country.value) {
       params['country'] = this.country.value;
     }
@@ -28,10 +24,9 @@ export class PostalCode extends HTMLInputElement
     }
 
     fetch(this.url + '?' + new URLSearchParams(params))
-      .then(response => response.json())
-      .then(this.fetchResponse.bind(this))
-      .catch(this.fetchCatch);
-
+        .then(response => response.json())
+        .then(this.fetchResponse.bind(this))
+        .catch(this.fetchCatch);
   }
 
   onKeydown(element) {
@@ -39,8 +34,7 @@ export class PostalCode extends HTMLInputElement
     this.timeout = setTimeout(this.ajax.bind(this), 500);
   }
 
-  setData()
-  {
+  setData() {
     this.row = this.closest(".row");
     this.inputs = this.row.getElementsByTagName('input');
     const selects = this.row.getElementsByTagName('select');
@@ -48,26 +42,22 @@ export class PostalCode extends HTMLInputElement
     this.codepostal = null;
     this.ville = null;
     this.gps = null;
-    selects.forEach(
-      (element) => {
-        let isInput = element.getAttribute('is');
-        if (isInput == 'select-country') {
-          this.country = element;
-        }
+    selects.forEach((element) => {
+      let isInput = element.getAttribute('is');
+      if (isInput == 'select-country') {
+        this.country = element;
       }
-    );
-    this.inputs.forEach(
-      (element) => {
-        let isInput = element.getAttribute('is');
-        if ('input-codepostal' == isInput) {
-          this.codepostal = element;
-        } else if ('input-ville' == isInput) {
-          this.ville = element;
-        } else if ('input-gps' == isInput) {
-          this.gps = element;
-        }
+    });
+    this.inputs.forEach((element) => {
+      let isInput = element.getAttribute('is');
+      if ('input-codepostal' == isInput) {
+        this.codepostal = element;
+      } else if ('input-ville' == isInput) {
+        this.ville = element;
+      } else if ('input-gps' == isInput) {
+        this.gps = element;
       }
-    );
+    });
 
     this.url = this.row.dataset.url;
     this.timeout = null;

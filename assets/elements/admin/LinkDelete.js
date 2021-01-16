@@ -1,5 +1,4 @@
-export class LinkDelete extends HTMLElement
-{
+export class LinkDelete extends HTMLElement {
   constructor() {
     super();
     if ('' != this.innerHTML) {
