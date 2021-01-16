@@ -7,7 +7,6 @@ use Doctrine\ORM\Query;
 
 abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 {
-
     protected function getClassMetadataName(): string
     {
         $methods = get_class_methods($this);

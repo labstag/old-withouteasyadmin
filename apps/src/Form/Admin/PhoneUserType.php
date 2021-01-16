@@ -16,8 +16,7 @@ class PhoneUserType extends PhoneType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         parent::buildForm($builder, $options);
         $builder->add('principal');
         $choices = [];
