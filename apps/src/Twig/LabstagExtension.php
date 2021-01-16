@@ -73,7 +73,7 @@ class LabstagExtension extends AbstractExtension
             return $type;
         }
 
-        $type = $class['form']->vars['id'];
+        $type = $class['form']->vars['unique_block_prefix'];
 
         return $type;
     }

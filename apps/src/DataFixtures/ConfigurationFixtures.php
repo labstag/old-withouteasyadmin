@@ -67,7 +67,6 @@ class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterf
 
     private function add(ObjectManager $manager): void
     {
-        $viewport = 'width=device-width, initial-scale=1, shrink-to-fit=no';
         $data     = [
             'notification'    => [
                 [
@@ -109,7 +108,7 @@ class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterf
             'oauth'           => [],
             'meta'            => [
                 [
-                    'viewport'    => $viewport,
+                    'viewport'    => 'width=device-width, initial-scale=1',
                     'author'      => 'koromerzhin',
                     'theme-color' => '#ff0000',
                     'description' => '',

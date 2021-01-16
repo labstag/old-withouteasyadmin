@@ -99,6 +99,16 @@
 
 {% block form_widget_simple %}
     {% set type = type|default('') %}
+    {% if attr.inputmode is defined and attr.inputmode == 'url' %}
+        {% set isInput = attr.is|default('input-url') %}
+        {% set attr = attr|merge({'is': isInput}) %}
+    {% elseif type == 'email' %}
+        {% set isInput = attr.is|default('input-email') %}
+        {% set attr = attr|merge({'is': isInput}) %}
+    {% elseif type == 'tel' %}
+        {% set isInput = attr.is|default('input-phone') %}
+        {% set attr = attr|merge({'is': isInput}) %}
+    {% endif %}
     {% if type == 'file' %}
         {% set attr = attr|merge({class: (attr.class|default('') ~ ' custom-file-input')|trim}) %}
     {% elseif type != 'hidden' and type != 'range' and type != 'color' %}
