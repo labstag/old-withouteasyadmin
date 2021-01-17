@@ -48,7 +48,7 @@ services:
         - "traefik.http.routers.mercure-labstag.entrypoints=web"
         - "traefik.http.services.mercure-labstag.loadbalancer.server.port=80"
   mariadb:
-    image: mariadb:10.5.1
+    image: mariadb:10.5.8
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: core
