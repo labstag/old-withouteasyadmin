@@ -94,12 +94,10 @@ docker-deploy-ci: ## deploy
 
 docker-image-pull: ## Get docker image
 	docker image pull redis:6.0.9
-	docker image pull mariadb:10.5.1
+	docker image pull mariadb:10.5.8
 	docker image pull httpd:2.4.46
 	docker image pull phpmyadmin:5.0.2
 	docker image pull mailhog/mailhog:v1.0.1
-	docker image pull osixia/phpldapadmin:0.9.0
-	docker image pull osixia/openldap:1.4.0
 	docker image pull dunglas/mercure:v0.10
 	docker image pull koromerzhin/phpfpm:7.4.12-symfony
 
