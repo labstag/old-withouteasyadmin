@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc4af39a6fa6d4e3752dd0cbe6423dcb",
+    "content-hash": "f69ca880685f367df0009c2aaea91b04",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2145,16 +2145,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.12.12",
+            "version": "8.12.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "f3802f572c5fff322a2ccd8d2d792c147ed9e3c4"
+                "reference": "d3d4ed9466249747249f3032717c4aebaaa8363e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/f3802f572c5fff322a2ccd8d2d792c147ed9e3c4",
-                "reference": "f3802f572c5fff322a2ccd8d2d792c147ed9e3c4",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/d3d4ed9466249747249f3032717c4aebaaa8363e",
+                "reference": "d3d4ed9466249747249f3032717c4aebaaa8363e",
                 "shasum": ""
             },
             "require": {
@@ -2168,8 +2168,8 @@
                 "pear/versioncontrol_git": "^0.5",
                 "phing/phing": "^2.7",
                 "php-coveralls/php-coveralls": "^1.0|^2.0",
-                "phpunit/phpunit": "^4.8.36|^5.0|^7.0",
-                "symfony/console": "^2.8|^3.0"
+                "symfony/console": "^2.8|^3.0",
+                "symfony/phpunit-bridge": "^4.2 || ^5"
             },
             "type": "library",
             "extra": {
@@ -2214,7 +2214,7 @@
                 "issues": "https://github.com/giggsey/libphonenumber-for-php/issues",
                 "source": "https://github.com/giggsey/libphonenumber-for-php"
             },
-            "time": "2020-10-29T09:27:40+00:00"
+            "time": "2021-01-12T14:54:36+00:00"
         },
         {
             "name": "giggsey/locale",
