@@ -29,7 +29,7 @@ services:
         - "traefik.http.routers.mailhog-labstag.entrypoints=web"
         - "traefik.http.services.mailhog-labstag.loadbalancer.server.port=8025"
   mercure:
-    image: dunglas/mercure:v0.10
+    image: dunglas/mercure:v0.11
     environment:
       JWT_KEY: "MyJwtSecret"
       ALLOW_ANONYMOUS: 1
