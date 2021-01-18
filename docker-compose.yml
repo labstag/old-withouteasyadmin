@@ -15,6 +15,9 @@ services:
     image: redis:6.0.9
     networks:
       - net
+    deploy:
+      labels:
+        - "traefik.enable=false"
   mailhog:
     image: mailhog/mailhog:v1.0.1
     networks:
@@ -60,6 +63,9 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
       - ${PWD}/dump:/dump
+    deploy:
+      labels:
+        - "traefik.enable=false"
   apache:
     image: httpd:2.4.46
     depends_on:
@@ -106,6 +112,9 @@ services:
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     networks:
       - net
+    deploy:
+      labels:
+        - "traefik.enable=false"
   phpfpm-xdebug:
     image: koromerzhin/phpfpm:7.4.12-symfony-xdebug
     depends_on:
@@ -118,3 +127,6 @@ services:
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     networks:
       - net
+    deploy:
+      labels:
+        - "traefik.enable=false"
