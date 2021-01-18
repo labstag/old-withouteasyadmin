@@ -41,9 +41,6 @@ apps/.env: apps/.env.dist ## Install .env
 assets:
 	docker exec $(PHPFPMFULLNAME) make assets
 
-assets-ci:
-	cd apps && make assets
-
 bdd-fixtures: ## fixtures
 	docker exec $(PHPFPMFULLNAME) make bdd-fixtures
 
@@ -59,17 +56,11 @@ composer-suggests: ## suggestions package pour PHP
 composer-outdated: ## Packet php outdated
 	docker exec $(PHPFPMFULLNAME) make composer-outdated
 
-composer-dev-ci: ## Installation version de dev
-	cd apps && make composer-dev
-
 composer-update: ## COMPOSER update
 	docker exec $(PHPFPMFULLNAME) make composer-update
 
 composer-validate: ## COMPOSER validate
 	docker exec $(PHPFPMFULLNAME) make composer-validate
-
-composer-validate-ci: ## COMPOSER validate
-	cd apps && make composer-validate
 
 contributors: ## Contributors
 	@npm run contributors
@@ -88,9 +79,6 @@ docker-create-network: ## create network
 
 docker-deploy: ## deploy
 	docker stack deploy -c docker-compose.yml $(STACK)
-
-docker-deploy-ci: ## deploy
-	docker stack deploy -c docker-compose-ci.yml $(STACK)
 
 docker-image-pull: ## Get docker image
 	docker image pull redis:6.0.9
@@ -124,9 +112,6 @@ env-prod: apps/.env ## Installation environnement prod
 
 geocode: ## Geocode
 	docker exec $(PHPFPMFULLNAME) php -d memory_limit=-1 bin/console labstag:geocode:install $(COMMAND_ARGS)
-
-geocode-ci: ## Geocode
-	cd apps && php -d memory_limit=-1 bin/console labstag:geocode:install $(COMMAND_ARGS)
 
 git-commit: ## Commit data
 	npm run commit
@@ -179,41 +164,23 @@ linter-phpcs-onlywarning: ## indique les erreurs de code non corrigé par PHPCBF
 linter-phpcs-onlyerror: ## indique les erreurs de code non corrigé par PHPCBF
 	docker exec $(PHPFPMFULLNAME) composer run phpcs-onlyerror
 
-linter-phpcs-onlyerror-ci: ## indique les erreurs de code non corrigé par PHPCBF
-	cd apps && composer run phpcs-onlyerror
-
 linter-phploc: ## phploc
 	docker exec $(PHPFPMFULLNAME) make linter-phploc
 
 linter-phpmd: ## indique quand le code PHP contient des erreurs de syntaxes ou des erreurs
 	docker exec $(PHPFPMFULLNAME) make linter-phpmd
 
-linter-phpmd-ci: ## indique quand le code PHP contient des erreurs de syntaxes ou des erreurs
-	cd apps && make linter-phpmd
-
 linter-phpmnd: ## Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes
 	docker exec $(PHPFPMFULLNAME) make linter-phpmnd
-
-linter-phpmnd-ci: ## Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes
-	cd apps && composer run phpmnd
 
 linter-phpstan: ## regarde si le code PHP ne peux pas être optimisé
 	docker exec $(PHPFPMFULLNAME) composer run phpstan
 
-linter-phpstan-ci: ## regarde si le code PHP ne peux pas être optimisé
-	cd apps && make linter-phpstan
-
 linter-twig: ## indique les erreurs de code de twig
 	docker exec $(PHPFPMFULLNAME) make linter-twig
 
-linter-twig-ci: ## indique les erreurs de code de twig
-	cd apps &&  make linter-twig
-
 linter-yaml: ## indique les erreurs de code de yaml
 	docker exec $(PHPFPMFULLNAME) make linter-yaml
-
-linter-yaml-ci: ## indique les erreurs de code de yaml
-	cd apps &&  make linter-yaml
 
 logs: ## logs docker
 	docker service logs -f --tail 100 --raw $(STACK)

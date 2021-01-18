@@ -39,25 +39,25 @@ jobs:
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: make node_modules
       - name: Validate composer.json
-        run: make composer-validate-ci
+        run: make composer-validate
       - name: Install Composer dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: make composer-dev-ci
+        run: make composer-dev
       - name: linter readme.md
         run: make linter-readme
       - name: linter PHP Code Sniffer
-        run: make linter-phpcs-onlyerror-ci
+        run: make linter-phpcs-onlyerror
       - name: linter PHP MD
-        run: make linter-phpmd-ci
+        run: make linter-phpmd
       - name: linter PHPMND
-        run: make linter-phpmnd-ci
+        run: make linter-phpmnd
       - name: Add assets
-        run: make assets-ci
+        run: make assets
       - name: Test lancement bootstrap
         run: make encore-dev
       - name: Linter twig
-        run: make linter-twig-ci
+        run: make linter-twig
       - name: Linter yaml
-        run: make linter-yaml-ci
+        run: make linter-yaml
       - name: linter phpstan
-        run: make linter-phpstan-ci
+        run: make linter-phpstan
