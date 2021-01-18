@@ -80,8 +80,8 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.www-labstag.rule=Host(`labstag.lxc`, `www.labstag.lxc`, `labstag.letoullec.fr`)"
-        - "traefik.http.middlewares.wwwredirectregex.redirectregex.regex=^http://labstag.lxc/(.*)"
-        - "traefik.http.middlewares.wwwredirectregex.redirectregex.replacement=http://www.labstag.lxc/$${1}"
+        - "traefik.http.middlewares.labstagredirectregex.redirectregex.regex=^http://labstag.lxc/(.*)"
+        - "traefik.http.middlewares.labstagredirectregex.redirectregex.replacement=http://www.labstag.lxc/$${1}"
         - "traefik.http.routers.www-labstag.entrypoints=web"
         - "traefik.http.services.www-labstag.loadbalancer.server.port=80"
   phpmyadmin:
