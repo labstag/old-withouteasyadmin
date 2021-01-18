@@ -109,7 +109,7 @@ class LienUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_lienuser_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="admin_lienuser_delete", methods={"DELETE"})
      */
     public function delete(LienUser $lienUser): Response
     {

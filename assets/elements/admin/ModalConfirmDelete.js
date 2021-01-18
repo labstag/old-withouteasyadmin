@@ -11,18 +11,14 @@ export class ModalConfirmDelete extends HTMLButtonElement {
     const url = element.dataset.url;
     const token = element.dataset.token;
     const redirect = element.dataset.redirect;
-    const data = { _token: token };
-    const searchParams = Object.keys(data)
-      .map((key) => {
-        return encodeURIComponent(key) + "=" + encodeURIComponent(data[key]);
-      })
-      .join("&");
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('_token', token);
     let options = {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
       },
-      body: searchParams,
+      body: urlSearchParams,
     };
     fetch(url, options)
       .then((response) => {
