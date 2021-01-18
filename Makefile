@@ -165,13 +165,13 @@ linter-phpcpd: phpcpd.phar ## Vérifie s'il y a du code dupliqué
 	docker exec $(PHPFPMFULLNAME) php phpcpd.phar src tests
 
 linter-phpcs: ## indique les erreurs de code non corrigé par PHPCBF
-	docker exec $(PHPFPMFULLNAME) COMPOSER_MEMORY_LIMIT=-1 composer run phpcs
+	docker exec $(PHPFPMFULLNAME) make linter-phpcs
 
 linter-phpcs-onlywarning: ## indique les erreurs de code non corrigé par PHPCBF
-	docker exec $(PHPFPMFULLNAME) COMPOSER_MEMORY_LIMIT=-1 composer run phpcs-onlywarning
+	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlywarning
 
 linter-phpcs-onlyerror: ## indique les erreurs de code non corrigé par PHPCBF
-	docker exec $(PHPFPMFULLNAME) COMPOSER_MEMORY_LIMIT=-1 composer run phpcs-onlyerror
+	docker exec $(PHPFPMFULLNAME) make linter-phpcs-onlyerror
 
 linter-phploc: ## phploc
 	docker exec $(PHPFPMFULLNAME) make linter-phploc
@@ -183,7 +183,7 @@ linter-phpmnd: ## Si des chiffres sont utilisé dans le code PHP, il est conseil
 	docker exec $(PHPFPMFULLNAME) make linter-phpmnd
 
 linter-phpstan: ## regarde si le code PHP ne peux pas être optimisé
-	docker exec $(PHPFPMFULLNAME) COMPOSER_MEMORY_LIMIT=-1 composer run phpstan
+	docker exec $(PHPFPMFULLNAME) make linter-phpstan
 
 linter-twig: ## indique les erreurs de code de twig
 	docker exec $(PHPFPMFULLNAME) make linter-twig
@@ -219,17 +219,17 @@ ssh-mariadb: ## ssh mariadb
 	docker exec -ti $(MARIADBFULLNAME) /bin/bash
 
 tests-behat: ## Lance les tests behat
-	docker exec $(PHPFPMXDEBUGFULLNAME) COMPOSER_MEMORY_LIMIT=-1 composer run behat
+	docker exec $(PHPFPMXDEBUGFULLNAME) make tests-behat
 
 tests-launch: ## Launch all tests
 	@make tests-behat -i
 	@make tests-simple-phpunit-unit-integration -i
 
 tests-simple-phpunit-unit-integration: ## lance les tests phpunit
-	docker exec $(PHPFPMXDEBUGFULLNAME) COMPOSER_MEMORY_LIMIT=-1 composer run simple-phpunit-unit-integration
+	docker exec $(PHPFPMXDEBUGFULLNAME) make tests-simple-phpunit-unit-integration
 
 tests-simple-phpunit: ## lance les tests phpunit
-	docker exec $(PHPFPMXDEBUGFULLNAME) COMPOSER_MEMORY_LIMIT=-1 composer run simple-phpunit
+	docker exec $(PHPFPMXDEBUGFULLNAME) make tests-simple-phpunit
 
 translations: ## update translation
 	docker exec $(PHPFPMXDEBUGFULLNAME) make translations
