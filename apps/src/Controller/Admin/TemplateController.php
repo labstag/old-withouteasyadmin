@@ -109,7 +109,7 @@ class TemplateController extends AdminControllerLib
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_template_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="admin_template_delete", methods={"DELETE"})
      */
     public function delete(Template $template): Response
     {

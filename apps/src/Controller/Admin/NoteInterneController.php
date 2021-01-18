@@ -120,7 +120,7 @@ class NoteInterneController extends AdminControllerLib
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_noteinterne_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="admin_noteinterne_delete", methods={"DELETE"})
      */
     public function delete(NoteInterne $noteInterne): Response
     {

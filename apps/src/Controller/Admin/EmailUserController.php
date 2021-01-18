@@ -119,7 +119,7 @@ class EmailUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_emailuser_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="admin_emailuser_delete", methods={"DELETE"})
      */
     public function delete(EmailUser $emailUser): Response
     {

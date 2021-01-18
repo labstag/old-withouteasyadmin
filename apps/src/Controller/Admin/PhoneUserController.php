@@ -119,7 +119,7 @@ class PhoneUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_phoneuser_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="admin_phoneuser_delete", methods={"DELETE"})
      */
     public function delete(PhoneUser $phoneUser): Response
     {
