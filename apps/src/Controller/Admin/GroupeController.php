@@ -109,7 +109,7 @@ class GroupeController extends AdminControllerLib
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_groupuser_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="admin_groupuser_delete", methods={"DELETE"})
      */
     public function delete(Groupe $groupe): Response
     {

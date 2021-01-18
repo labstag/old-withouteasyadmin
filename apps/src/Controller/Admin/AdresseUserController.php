@@ -118,7 +118,7 @@ class AdresseUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_adresseuser_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="admin_adresseuser_delete", methods={"DELETE"})
      */
     public function delete(AdresseUser $adresseUser): Response
     {

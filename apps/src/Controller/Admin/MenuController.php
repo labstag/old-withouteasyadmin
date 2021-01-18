@@ -109,7 +109,7 @@ class MenuController extends AdminControllerLib
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_menu_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="admin_menu_delete", methods={"DELETE"})
      */
     public function delete(Menu $menu): Response
     {

@@ -110,7 +110,7 @@ class EditoController extends AdminControllerLib
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_edito_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="admin_edito_delete", methods={"DELETE"})
      */
     public function delete(Edito $edito): Response
     {
