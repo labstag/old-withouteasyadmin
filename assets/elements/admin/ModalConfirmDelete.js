@@ -1,8 +1,8 @@
 export class ModalConfirmDelete extends HTMLButtonElement {
   constructor() {
     super();
-    this.classList.add('confirm-delete');
-    this.addEventListener('click', this.onClick);
+    this.classList.add("confirm-delete");
+    this.addEventListener("click", this.onClick);
   }
 
   onClick(event) {
@@ -12,16 +12,20 @@ export class ModalConfirmDelete extends HTMLButtonElement {
     const token = element.dataset.token;
     const redirect = element.dataset.redirect;
     const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('_token', token);
+    urlSearchParams.append("_token", token);
     let options = {
-      method : "DELETE",
-      headers : {
-        "Content-type" : "application/x-www-form-urlencoded; charset=UTF-8",
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
       },
-      body : urlSearchParams,
+      body: urlSearchParams,
     };
     fetch(url, options)
-        .then((response) => { window.location.href = redirect; })
-        .catch((err) => { console.log(err); });
+      .then((response) => {
+        window.location.href = redirect;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
