@@ -9,8 +9,8 @@ MARIADB              := $(STACK)_mariadb
 MARIADBFULLNAME      := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $(MARIADB) -q --no-trunc | head -n1)
 APACHE               := $(STACK)_apache
 APACHEFULLNAME       := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
-SUPPORTED_COMMANDS   := help package-lock.json node_modules apps/composer.lock apps/vendor apps/.env assets assets-ci bdd-fixtures bdd-migrate bdd-validate composer-suggests composer-outdated composer-dev-ci composer-update composer-validate composer-validate-ci contributors contributors-add contributors-check contributors-generate docker-create-network docker-deploy docker-deploy-ci docker-image-pull docker-ls docker-stop encore-dev encore-watch env-dev env-prod geocode geocode-ci git-commit git-check install install-dev linter linter-readme linter-phpcbf linter-phpcpd linter-phpcs linter-phpcs-onlywarning linter-phpcs-onlyerror linter-phpcs-onlyerror-ci linter-phploc linter-phpmd linter-phpmd-ci linter-phpmnd linter-phpmnd-ci linter-phpstan linter-phpstan-ci linter-twig linter-twig-ci linter-yaml linterl-yaml-ci logs logs-apache logs-mariadb logs-phpfpm messenger_consume sleep ssh-phpfpm ssh-phpfdpm-xdebug ssh-mariadb tests-behat tests-launch tests-simple-phpunit-unit-integration tests-simple-phpunit translations
-.PHONY               := help assets assets-ci bdd-fixtures bdd-migrate bdd-validate composer-suggests composer-outdated composer-dev-ci composer-update composer-validate composer-validate-ci contributors contributors-add contributors-check contributors-generate docker-create-network docker-deploy docker-deploy-ci docker-image-pull docker-ls docker-stop encore-dev encore-watch env-dev env-prod geocode geocode-ci git-commit git-check install install-dev linter linter-readme linter-phpcbf linter-phpcpd linter-phpcs linter-phpcs-onlywarning linter-phpcs-onlyerror linter-phpcs-onlyerror-ci linter-phploc linter-phpmd linter-phpmd-ci linter-phpmnd linter-phpmnd-ci linter-phpstan linter-phpstan-ci linter-twig linter-twig-ci linter-yaml linterl-yaml-ci logs logs-apache logs-mariadb logs-phpfpm messenger_consume sleep ssh-phpfpm ssh-phpfdpm-xdebug ssh-mariadb tests-behat tests-launch tests-simple-phpunit-unit-integration tests-simple-phpunit translations
+.PHONY               := help assets bdd-fixtures bdd-migrate bdd-validate composer-suggests composer-outdated composer-dev composer-update composer-validate contributors contributors-add contributors-check contributors-generate docker-create-network docker-deploy docker-image-pull docker-ls docker-stop encore-dev encore-watch env-dev env-prod geocode git-commit git-check install install-dev linter linter-readme linter-phpcbf linter-phpcpd linter-phpcs linter-phpcs-onlywarning linter-phpcs-onlyerror linter-phploc linter-phpmd linter-phpmnd linter-phpstan linter-twig linter-yaml logs logs-apache logs-mariadb logs-phpfpm messenger_consume sleep ssh-phpfpm ssh-phpfdpm-xdebug ssh-mariadb tests-behat tests-launch tests-simple-phpunit-unit-integration tests-simple-phpunit translations
+SUPPORTED_COMMANDS   := geocode
 SUPPORTS_MAKE_ARGS   := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
   COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -28,6 +28,12 @@ package-lock.json: package.json
 
 node_modules: package-lock.json
 	npm install
+
+dump:
+	mkdir dump
+
+mariadb_data:
+	mkdir mariadb_data
 
 apps/composer.lock: apps/composer.json
 	docker exec $(PHPFPMFULLNAME) make composer.lock
@@ -55,6 +61,9 @@ composer-suggests: ## suggestions package pour PHP
 
 composer-outdated: ## Packet php outdated
 	docker exec $(PHPFPMFULLNAME) make composer-outdated
+
+composer-dev: ## Installation version de dev
+	docker exec $(PHPFPMFULLNAME) make composer-dev
 
 composer-update: ## COMPOSER update
 	docker exec $(PHPFPMFULLNAME) make composer-update
@@ -124,7 +133,7 @@ git-check: ## CHECK before
 	@make linter -i
 	@git status
 
-install: apps/vendor node_modules apps/.env ## installation
+install: dump mariadb_data apps/vendor node_modules apps/.env ## installation
 	@make docker-deploy -i
 	@make sleep -i
 	@make bdd-migrate -i
