@@ -14,7 +14,7 @@ export class ModalConfirmDelete extends HTMLButtonElement {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('_token', token);
     let options = {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
       },
