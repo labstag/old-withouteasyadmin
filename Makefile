@@ -42,7 +42,7 @@ apps/vendor: apps/composer.lock
 	docker exec $(PHPFPMFULLNAME) make vendor
 
 apps/.env: apps/.env.dist ## Install .env
-	docker exec $(PHPFPMFULLNAME) make .env
+	cp apps/.env.dist apps/.env
 
 assets:
 	docker exec $(PHPFPMFULLNAME) make assets
