@@ -16,7 +16,6 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
  */
 class Groupe
 {
-
     use SoftDeleteableEntity;
 
     /**

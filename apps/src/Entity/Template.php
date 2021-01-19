@@ -14,7 +14,6 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
  */
 class Template
 {
-
     use SoftDeleteableEntity;
 
     /**

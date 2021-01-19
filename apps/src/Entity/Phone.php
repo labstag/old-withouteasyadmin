@@ -16,7 +16,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 abstract class Phone
 {
-
     use SoftDeleteableEntity;
 
     /**

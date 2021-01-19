@@ -13,7 +13,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Configuration
 {
-
     use SoftDeleteableEntity;
 
     /**

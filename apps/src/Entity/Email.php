@@ -17,7 +17,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 abstract class Email
 {
-
     use SoftDeleteableEntity;
     use VerifEntity;
 
