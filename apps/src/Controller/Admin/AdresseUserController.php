@@ -58,12 +58,8 @@ class AdresseUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_adresseuser_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'new' => $router->generate('admin_adresseuser_new'),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new AdresseUser(),
             AdresseUserType::class,
@@ -76,10 +72,7 @@ class AdresseUserController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_adresseuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        AdresseUser $adresseUser,
-        RouterInterface $router
-    ): Response
+    public function showOrPreview(AdresseUser $adresseUser): Response
     {
         return $this->adminCrudService->showOrPreview(
             $adresseUser,
@@ -102,20 +95,8 @@ class AdresseUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(
-        AdresseUser $adresseUser,
-        RouterInterface $router
-    ): Response
+    public function edit(AdresseUser $adresseUser): Response
     {
-        $breadcrumb = [
-            'edit' => $router->generate(
-                'admin_adresseuser_edit',
-                [
-                    'id' => $adresseUser->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             AdresseUserType::class,
             $adresseUser,

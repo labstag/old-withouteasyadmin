@@ -28,7 +28,7 @@ class PhoneUserController extends AdminControllerLib
      * @Route("/", name="admin_phoneuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(RouterInterface $router, PhoneUserRepository $repository): Response
+    public function indexOrTrash(PhoneUserRepository $repository): Response
     {
         return $this->adminCrudService->listOrTrash(
             $repository,
@@ -58,14 +58,8 @@ class PhoneUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_phoneuser_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new PhoneUser(),
             PhoneUserType::class,
@@ -78,10 +72,7 @@ class PhoneUserController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_phoneuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        PhoneUser $phoneUser,
-        RouterInterface $router
-    ): Response
+    public function showOrPreview(PhoneUser $phoneUser): Response
     {
         return $this->adminCrudService->showOrPreview(
             $phoneUser,
@@ -104,20 +95,8 @@ class PhoneUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(
-        PhoneUser $phoneUser,
-        RouterInterface $router
-    ): Response
+    public function edit(PhoneUser $phoneUser): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_phoneuser_edit',
-                [
-                    'id' => $phoneUser->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             PhoneUserType::class,
             $phoneUser,

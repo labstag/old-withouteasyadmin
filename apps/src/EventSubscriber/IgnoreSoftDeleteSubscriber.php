@@ -41,7 +41,8 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 
     public function onKernelController(ControllerEvent $event)
     {
-        if (!is_array($controller = $event->getController())) {
+        $controller = $event->getController();
+        if (!is_array($controller)) {
             return;
         }
 
@@ -52,7 +53,8 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 
     private function readAnnotation($controller, $method, $annotation)
     {
-        $classReflection = new ReflectionClass(ClassUtils::getClass($controller));
+        $utils           = new ClassUtils();
+        $classReflection = new ReflectionClass($utils->getClass($controller));
         $classAnnotation = $this->reader->getClassAnnotation($classReflection, $annotation);
 
         $objectReflection = new ReflectionObject($controller);

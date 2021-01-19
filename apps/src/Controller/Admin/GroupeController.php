@@ -56,14 +56,8 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_groupuser_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_groupuser_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new Groupe(),
             GroupeType::class,
@@ -76,7 +70,7 @@ class GroupeController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_groupuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(Groupe $groupe, RouterInterface $router): Response
+    public function showOrPreview(Groupe $groupe): Response
     {
         return $this->adminCrudService->showOrPreview(
             $groupe,
@@ -95,17 +89,8 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET","POST"})
      */
-    public function edit(Groupe $groupe, RouterInterface $router): Response
+    public function edit(Groupe $groupe): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_groupuser_edit',
-                [
-                    'id' => $groupe->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             GroupeType::class,
             $groupe,

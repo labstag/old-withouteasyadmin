@@ -48,7 +48,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $dql = 'SELECT a FROM ' . $name . ' a';
 
         $entityManager = $this->getEntityManager();
-        $dql = $entityManager->createQueryBuilder();
+        $dql           = $entityManager->createQueryBuilder();
         $dql->select('a');
         $dql->from($name, 'a');
         $dql->where('a.deletedAt IS NOT NULL');

@@ -58,14 +58,8 @@ class TemplateController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_template_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_template_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new Template(),
             TemplateType::class,
@@ -78,7 +72,7 @@ class TemplateController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_template_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(Template $template, RouterInterface $router): Response
+    public function showOrPreview(Template $template): Response
     {
         return $this->adminCrudService->showOrPreview(
             $template,
@@ -97,17 +91,8 @@ class TemplateController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_template_edit", methods={"GET","POST"})
      */
-    public function edit(Template $template, RouterInterface $router): Response
+    public function edit(Template $template): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_template_edit',
-                [
-                    'id' => $template->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             TemplateType::class,
             $template,

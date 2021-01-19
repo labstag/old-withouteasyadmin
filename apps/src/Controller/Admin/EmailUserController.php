@@ -58,14 +58,8 @@ class EmailUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_emailuser_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_emailuser_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new EmailUser(),
             EmailUserType::class,
@@ -78,10 +72,7 @@ class EmailUserController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_emailuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        EmailUser $emailUser,
-        RouterInterface $router
-    ): Response
+    public function showOrPreview(EmailUser $emailUser): Response
     {
         return $this->adminCrudService->showOrPreview(
             $emailUser,
@@ -104,20 +95,8 @@ class EmailUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(
-        EmailUser $emailUser,
-        RouterInterface $router
-    ): Response
+    public function edit(EmailUser $emailUser): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_emailuser_edit',
-                [
-                    'id' => $emailUser->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             EmailUserType::class,
             $emailUser,

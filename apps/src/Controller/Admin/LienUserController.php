@@ -58,14 +58,8 @@ class LienUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_lienuser_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_lienuser_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new LienUser(),
             LienUserType::class,
@@ -78,7 +72,7 @@ class LienUserController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_lienuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(LienUser $lienUser, RouterInterface $router): Response
+    public function showOrPreview(LienUser $lienUser): Response
     {
         return $this->adminCrudService->showOrPreview(
             $lienUser,
@@ -97,17 +91,8 @@ class LienUserController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_lienuser_edit", methods={"GET","POST"})
      */
-    public function edit(LienUser $lienUser, RouterInterface $router): Response
+    public function edit(LienUser $lienUser): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_lienuser_edit',
-                [
-                    'id' => $lienUser->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             LienUserType::class,
             $lienUser,

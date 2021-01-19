@@ -57,10 +57,7 @@ class ConfigurationController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_configuration_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Configuration $configuration,
-        RouterInterface $router
-    ): Response
+    public function showOrPreview(Configuration $configuration): Response
     {
         return $this->adminCrudService->showOrPreview(
             $configuration,

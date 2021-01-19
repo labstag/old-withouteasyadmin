@@ -59,14 +59,8 @@ class NoteInterneController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_noteinterne_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_noteinterne_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new NoteInterne(),
             NoteInterneType::class,
@@ -79,10 +73,7 @@ class NoteInterneController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_noteinterne_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        NoteInterne $noteInterne,
-        RouterInterface $router
-    ): Response
+    public function showOrPreview(NoteInterne $noteInterne): Response
     {
         return $this->adminCrudService->showOrPreview(
             $noteInterne,
@@ -105,20 +96,8 @@ class NoteInterneController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(
-        NoteInterne $noteInterne,
-        RouterInterface $router
-    ): Response
+    public function edit(NoteInterne $noteInterne): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_noteinterne_edit',
-                [
-                    'id' => $noteInterne->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             NoteInterneType::class,
             $noteInterne,

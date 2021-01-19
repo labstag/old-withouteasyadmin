@@ -30,7 +30,7 @@ class UserController extends AdminControllerLib
      * @Route("/", name="admin_user_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(RouterInterface $router, UserRepository $repository): Response
+    public function indexOrTrash(UserRepository $repository): Response
     {
         return $this->adminCrudService->listOrTrash(
             $repository,
@@ -60,17 +60,8 @@ class UserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_user_new", methods={"GET","POST"})
      */
-    public function new(
-        RouterInterface $router,
-        UserManager $userManager
-    ): Response
+    public function new(UserManager $userManager): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_user_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         $user = new User();
         $user->setEnable(false);
         return $this->adminCrudService->create(
@@ -87,7 +78,7 @@ class UserController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_user_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(User $user, RouterInterface $router): Response
+    public function showOrPreview(User $user): Response
     {
         return $this->adminCrudService->showOrPreview(
             $user,
@@ -106,21 +97,8 @@ class UserController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
      */
-    public function edit(
-        User $user,
-        RouterInterface $router,
-        UserManager $userManager
-    ): Response
+    public function edit(User $user, UserManager $userManager): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_user_edit',
-                [
-                    'id' => $user->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             UserType::class,
             $user,

@@ -54,14 +54,8 @@ class GeoCodeController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_geocode_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_geocode_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new GeoCode(),
             GeoCodeType::class,
@@ -74,7 +68,7 @@ class GeoCodeController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_geocode_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(GeoCode $geoCode, RouterInterface $router): Response
+    public function showOrPreview(GeoCode $geoCode): Response
     {
         return $this->adminCrudService->showOrPreview(
             $geoCode,
@@ -93,17 +87,8 @@ class GeoCodeController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_geocode_edit", methods={"GET","POST"})
      */
-    public function edit(GeoCode $geoCode, RouterInterface $router): Response
+    public function edit(GeoCode $geoCode): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_template_edit',
-                [
-                    'id' => $geoCode->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             GeoCodeType::class,
             $geoCode,

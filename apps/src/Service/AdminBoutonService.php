@@ -12,7 +12,7 @@ class AdminBoutonService
     private CsrfTokenManagerInterface $csrfTokenManager;
 
     private RouterInterface $router;
-    
+
     private Environment $twig;
 
     private array $bouton;
@@ -66,7 +66,7 @@ class AdminBoutonService
         );
         $code  = 'restore' . $entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr = [
+        $attr  = [
             'data-toggle' => 'modal',
             'data-token'  => $token,
             'data-target' => '#restoreModal',
@@ -105,7 +105,7 @@ class AdminBoutonService
         );
         $code  = 'destroy' . $entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr = [
+        $attr  = [
             'data-toggle' => 'modal',
             'data-token'  => $token,
             'data-target' => '#destroyModal',
@@ -255,7 +255,7 @@ class AdminBoutonService
             true
         );
         $attr = [
-            'is'   => 'link-btnadminempty',
+            'is'          => 'link-btnadminempty',
             'data-toggle' => 'modal',
             'data-target' => '#emptyModal',
         ];
@@ -266,6 +266,7 @@ class AdminBoutonService
         if (isset($route['empty'])) {
             $attr['data-url'] = $this->router->generate($route['empty']);
         }
+
         $this->add(
             'BtnAdminHeaderEmpty',
             $text,

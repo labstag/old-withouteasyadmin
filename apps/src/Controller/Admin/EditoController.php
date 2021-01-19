@@ -58,14 +58,8 @@ class EditoController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_edito_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_edito_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new Edito(),
             EditoType::class,
@@ -78,7 +72,7 @@ class EditoController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_edito_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(Edito $edito, RouterInterface $router): Response
+    public function showOrPreview(Edito $edito): Response
     {
         return $this->adminCrudService->showOrPreview(
             $edito,
@@ -97,17 +91,8 @@ class EditoController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_edito_edit", methods={"GET","POST"})
      */
-    public function edit(Edito $edito, RouterInterface $router): Response
+    public function edit(Edito $edito): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_edito_edit',
-                [
-                    'id' => $edito->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             EditoType::class,
             $edito,

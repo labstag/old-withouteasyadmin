@@ -58,14 +58,8 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_menu_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_menu_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new Menu(),
             MenuType::class,
@@ -78,7 +72,7 @@ class MenuController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_menu_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(Menu $menu, RouterInterface $router): Response
+    public function showOrPreview(Menu $menu): Response
     {
         return $this->adminCrudService->showOrPreview(
             $menu,
@@ -97,17 +91,8 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_menu_edit", methods={"GET","POST"})
      */
-    public function edit(Menu $menu, RouterInterface $router): Response
+    public function edit(Menu $menu): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_menu_edit',
-                [
-                    'id' => $menu->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             MenuType::class,
             $menu,
