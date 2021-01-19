@@ -47,7 +47,7 @@ class UserController extends AdminControllerLib
             [
                 'list'    => 'admin_user_index',
                 'show'    => 'admin_user_show',
-                'preview'    => 'admin_user_preview',
+                'preview' => 'admin_user_preview',
                 'edit'    => 'admin_user_edit',
                 'delete'  => 'admin_user_delete',
                 'destroy' => 'admin_user_destroy',
@@ -92,11 +92,11 @@ class UserController extends AdminControllerLib
             $user,
             'admin/user/show.html.twig',
             [
-                'delete' => 'admin_user_delete',
+                'delete'  => 'admin_user_delete',
                 'restore' => 'admin_user_restore',
                 'destroy' => 'admin_user_destroy',
-                'list'   => 'admin_user_index',
-                'edit'   => 'admin_user_edit',
+                'list'    => 'admin_user_index',
+                'edit'    => 'admin_user_edit',
                 'trash'   => 'admin_user_trash',
             ]
         );

@@ -43,7 +43,7 @@ class ConfigurationController extends AdminControllerLib
             [
                 'list'    => 'admin_configuration_index',
                 'show'    => 'admin_configuration_show',
-                'preview'    => 'admin_configuration_preview',
+                'preview' => 'admin_configuration_preview',
                 'delete'  => 'admin_configuration_delete',
                 'destroy' => 'admin_configuration_destroy',
                 'restore' => 'admin_configuration_restore',

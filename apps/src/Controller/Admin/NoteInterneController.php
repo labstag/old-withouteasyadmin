@@ -46,7 +46,7 @@ class NoteInterneController extends AdminControllerLib
             [
                 'list'    => 'admin_noteinterne_index',
                 'show'    => 'admin_noteinterne_show',
-                'preview'    => 'admin_noteinterne_preview',
+                'preview' => 'admin_noteinterne_preview',
                 'edit'    => 'admin_noteinterne_edit',
                 'delete'  => 'admin_noteinterne_delete',
                 'destroy' => 'admin_noteinterne_destroy',
@@ -87,11 +87,11 @@ class NoteInterneController extends AdminControllerLib
             $noteInterne,
             'admin/note_interne/show.html.twig',
             [
-                'delete' => 'admin_noteinterne_delete',
+                'delete'  => 'admin_noteinterne_delete',
                 'restore' => 'admin_noteinterne_restore',
                 'destroy' => 'admin_noteinterne_destroy',
-                'list'   => 'admin_noteinterne_index',
-                'edit'   => 'admin_noteinterne_edit',
+                'list'    => 'admin_noteinterne_index',
+                'edit'    => 'admin_noteinterne_edit',
                 'trash'   => 'admin_noteinterne_trash',
             ]
         );

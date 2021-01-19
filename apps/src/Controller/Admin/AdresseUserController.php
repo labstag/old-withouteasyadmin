@@ -45,7 +45,7 @@ class AdresseUserController extends AdminControllerLib
             [
                 'list'    => 'admin_adresseuser_index',
                 'show'    => 'admin_adresseuser_show',
-                'preview'    => 'admin_adresseuser_preview',
+                'preview' => 'admin_adresseuser_preview',
                 'edit'    => 'admin_adresseuser_edit',
                 'delete'  => 'admin_adresseuser_delete',
                 'destroy' => 'admin_adresseuser_destroy',
@@ -84,11 +84,11 @@ class AdresseUserController extends AdminControllerLib
             $adresseUser,
             'admin/adresse_user/show.html.twig',
             [
-                'delete' => 'admin_adresseuser_delete',
+                'delete'  => 'admin_adresseuser_delete',
                 'restore' => 'admin_adresseuser_restore',
                 'destroy' => 'admin_adresseuser_destroy',
-                'edit'   => 'admin_adresseuser_edit',
-                'list'   => 'admin_adresseuser_index',
+                'edit'    => 'admin_adresseuser_edit',
+                'list'    => 'admin_adresseuser_index',
                 'trash'   => 'admin_adresseuser_trash',
             ]
         );

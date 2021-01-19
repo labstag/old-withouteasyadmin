@@ -81,11 +81,11 @@ class GroupeController extends AdminControllerLib
             $groupe,
             'admin/groupe/show.html.twig',
             [
-                'delete' => 'admin_groupuser_delete',
+                'delete'  => 'admin_groupuser_delete',
                 'restore' => 'admin_groupuser_restore',
                 'destroy' => 'admin_groupuser_destroy',
-                'edit'   => 'admin_groupuser_edit',
-                'list'   => 'admin_groupuser_index',
+                'edit'    => 'admin_groupuser_edit',
+                'list'    => 'admin_groupuser_index',
                 'trash'   => 'admin_groupuser_trash',
             ]
         );

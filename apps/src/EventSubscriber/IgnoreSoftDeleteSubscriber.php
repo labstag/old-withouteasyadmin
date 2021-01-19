@@ -8,17 +8,34 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use ReflectionClass;
 use ReflectionObject;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 {
 
+    const ANNOTATION = 'Labstag\Annotation\IgnoreSoftDelete';
+
     private Reader $reader;
 
     private EntityManagerInterface $entityManager;
 
-    public function __construct(Reader $reader, EntityManagerInterface $entityManager) {
-        $this->reader = $reader;
+    private RequestStack $requestStack;
+
+    private Request $request;
+
+    public function __construct(
+        Reader $reader,
+        EntityManagerInterface $entityManager,
+        RequestStack $requestStack
+    )
+    {
+        $this->requestStack = $requestStack;
+        /** @var Request $request */
+        $request             = $this->requestStack->getCurrentRequest();
+        $this->request       = $request;
+        $this->reader        = $reader;
         $this->entityManager = $entityManager;
     }
 
@@ -33,7 +50,8 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
         $this->ignoreSoftDeleteAnnotation($controller, $method);
     }
 
-    private function readAnnotation($controller, $method, $annotation) {
+    private function readAnnotation($controller, $method, $annotation)
+    {
         $classReflection = new ReflectionClass(ClassUtils::getClass($controller));
         $classAnnotation = $this->reader->getClassAnnotation($classReflection, $annotation);
 
@@ -45,21 +63,44 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
             return false;
         }
 
-        return [$classAnnotation, $classReflection, $methodAnnotation, $methodReflection];
+        return [
+            $classAnnotation,
+            $classReflection,
+            $methodAnnotation,
+            $methodReflection,
+        ];
     }
 
-    private function ignoreSoftDeleteAnnotation($controller, $method) {
-        $class = 'Labstag\Annotation\IgnoreSoftDelete';
-        
-        if ($this->readAnnotation($controller, $method, $class)) {
+    private function ignoreSoftDeleteAnnotation($controller, $method)
+    {
+        $routeCurrent = $this->request->get('_route');
+        $routes       = [
+            '_trash',
+            '_preview',
+            '_destroy',
+            '_empty',
+            '_restore',
+        ];
+
+        $find = 0;
+        foreach ($routes as $route) {
+            if (0 != substr_count($routeCurrent, $route)) {
+                $find = 1;
+                break;
+            }
+        }
+
+        if (0 == $find) {
+            return;
+        }
+
+        if ($this->readAnnotation($controller, $method, self::ANNOTATION)) {
             $this->entityManager->getFilters()->disable('softdeleteable');
         }
     }
 
     public static function getSubscribedEvents()
     {
-        return [
-            'kernel.controller' => 'onKernelController',
-        ];
+        return ['kernel.controller' => 'onKernelController'];
     }
 }

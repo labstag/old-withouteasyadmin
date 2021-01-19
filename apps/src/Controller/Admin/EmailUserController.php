@@ -45,7 +45,7 @@ class EmailUserController extends AdminControllerLib
             [
                 'list'    => 'admin_emailuser_index',
                 'show'    => 'admin_emailuser_show',
-                'preview'    => 'admin_emailuser_preview',
+                'preview' => 'admin_emailuser_preview',
                 'edit'    => 'admin_emailuser_edit',
                 'delete'  => 'admin_emailuser_delete',
                 'destroy' => 'admin_emailuser_destroy',
@@ -86,11 +86,11 @@ class EmailUserController extends AdminControllerLib
             $emailUser,
             'admin/email_user/show.html.twig',
             [
-                'delete' => 'admin_emailuser_delete',
+                'delete'  => 'admin_emailuser_delete',
                 'restore' => 'admin_emailuser_restore',
                 'destroy' => 'admin_emailuser_destroy',
-                'edit'   => 'admin_emailuser_edit',
-                'list'   => 'admin_emailuser_index',
+                'edit'    => 'admin_emailuser_edit',
+                'list'    => 'admin_emailuser_index',
                 'trash'   => 'admin_emailuser_trash',
             ]
         );

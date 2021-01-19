@@ -45,7 +45,7 @@ class EditoController extends AdminControllerLib
             [
                 'list'    => 'admin_edito_index',
                 'show'    => 'admin_edito_show',
-                'preview'    => 'admin_edito_preview',
+                'preview' => 'admin_edito_preview',
                 'edit'    => 'admin_edito_edit',
                 'delete'  => 'admin_edito_delete',
                 'destroy' => 'admin_edito_destroy',
@@ -83,11 +83,11 @@ class EditoController extends AdminControllerLib
             $edito,
             'admin/edito/show.html.twig',
             [
-                'delete' => 'admin_edito_delete',
+                'delete'  => 'admin_edito_delete',
                 'restore' => 'admin_edito_restore',
                 'destroy' => 'admin_edito_destroy',
-                'edit'   => 'admin_edito_edit',
-                'list'   => 'admin_edito_index',
+                'edit'    => 'admin_edito_edit',
+                'list'    => 'admin_edito_index',
                 'trash'   => 'admin_edito_trash',
             ]
         );

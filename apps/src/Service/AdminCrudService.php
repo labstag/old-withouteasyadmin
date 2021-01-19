@@ -8,7 +8,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\AdminBoutonService;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -89,7 +88,7 @@ class AdminCrudService
     public function setPage($header, $url)
     {
         $this->headerTitle = $header;
-        $this->urlHome = $url;
+        $this->urlHome     = $url;
     }
 
     private function setBtnList(array $url): void
@@ -238,6 +237,7 @@ class AdminCrudService
             ];
             $this->addBreadcrumbs($breadcrumb);
         }
+
         $breadcrumb = [
             $routeType => $this->router->generate(
                 $routeCurrent,
@@ -435,9 +435,7 @@ class AdminCrudService
          *  - RESTORE
          */
         return new JsonResponse(
-            [
-
-            ]
+            []
         );
         $state     = false;
         $token     = $this->request->request->get('_token');

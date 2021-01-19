@@ -45,7 +45,7 @@ class MenuController extends AdminControllerLib
             [
                 'list'    => 'admin_menu_index',
                 'show'    => 'admin_menu_show',
-                'preview'    => 'admin_menu_preview',
+                'preview' => 'admin_menu_preview',
                 'edit'    => 'admin_menu_edit',
                 'delete'  => 'admin_menu_delete',
                 'destroy' => 'admin_menu_destroy',
@@ -83,11 +83,11 @@ class MenuController extends AdminControllerLib
             $menu,
             'admin/menu/show.html.twig',
             [
-                'delete' => 'admin_menu_delete',
+                'delete'  => 'admin_menu_delete',
                 'restore' => 'admin_menu_restore',
                 'destroy' => 'admin_menu_destroy',
-                'list'   => 'admin_menu_index',
-                'edit'   => 'admin_menu_edit',
+                'list'    => 'admin_menu_index',
+                'edit'    => 'admin_menu_edit',
                 'trash'   => 'admin_menu_trash',
             ]
         );

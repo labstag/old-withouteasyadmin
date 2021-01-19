@@ -45,7 +45,7 @@ class TemplateController extends AdminControllerLib
             [
                 'list'    => 'admin_template_index',
                 'show'    => 'admin_template_show',
-                'preview'    => 'admin_template_preview',
+                'preview' => 'admin_template_preview',
                 'edit'    => 'admin_template_edit',
                 'delete'  => 'admin_template_delete',
                 'destroy' => 'admin_template_destroy',
@@ -83,11 +83,11 @@ class TemplateController extends AdminControllerLib
             $template,
             'admin/template/show.html.twig',
             [
-                'delete' => 'admin_template_delete',
+                'delete'  => 'admin_template_delete',
                 'restore' => 'admin_template_restore',
                 'destroy' => 'admin_template_destroy',
-                'list'   => 'admin_template_index',
-                'edit'   => 'admin_template_edit',
+                'list'    => 'admin_template_index',
+                'edit'    => 'admin_template_edit',
                 'trash'   => 'admin_template_trash',
             ]
         );

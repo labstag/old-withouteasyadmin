@@ -45,7 +45,7 @@ class LienUserController extends AdminControllerLib
             [
                 'list'    => 'admin_lienuser_index',
                 'show'    => 'admin_lienuser_show',
-                'preview'    => 'admin_lienuser_preview',
+                'preview' => 'admin_lienuser_preview',
                 'edit'    => 'admin_lienuser_edit',
                 'delete'  => 'admin_lienuser_delete',
                 'destroy' => 'admin_lienuser_destroy',
@@ -83,11 +83,11 @@ class LienUserController extends AdminControllerLib
             $lienUser,
             'admin/lien_user/show.html.twig',
             [
-                'delete' => 'admin_lienuser_delete',
+                'delete'  => 'admin_lienuser_delete',
                 'restore' => 'admin_lienuser_restore',
                 'destroy' => 'admin_lienuser_destroy',
-                'list'   => 'admin_lienuser_index',
-                'edit'   => 'admin_lienuser_edit',
+                'list'    => 'admin_lienuser_index',
+                'edit'    => 'admin_lienuser_edit',
                 'trash'   => 'admin_lienuser_trash',
             ]
         );

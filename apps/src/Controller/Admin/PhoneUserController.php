@@ -45,7 +45,7 @@ class PhoneUserController extends AdminControllerLib
             [
                 'list'    => 'admin_phoneuser_index',
                 'show'    => 'admin_phoneuser_show',
-                'preview'    => 'admin_phoneuser_preview',
+                'preview' => 'admin_phoneuser_preview',
                 'edit'    => 'admin_phoneuser_edit',
                 'delete'  => 'admin_phoneuser_delete',
                 'destroy' => 'admin_phoneuser_destroy',
@@ -86,11 +86,11 @@ class PhoneUserController extends AdminControllerLib
             $phoneUser,
             'admin/phone_user/show.html.twig',
             [
-                'delete' => 'admin_phoneuser_delete',
+                'delete'  => 'admin_phoneuser_delete',
                 'restore' => 'admin_phoneuser_restore',
                 'destroy' => 'admin_phoneuser_destroy',
-                'list'   => 'admin_phoneuser_index',
-                'edit'   => 'admin_phoneuser_edit',
+                'list'    => 'admin_phoneuser_index',
+                'edit'    => 'admin_phoneuser_edit',
                 'trash'   => 'admin_phoneuser_trash',
             ]
         );

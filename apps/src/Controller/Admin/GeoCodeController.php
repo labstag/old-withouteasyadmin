@@ -79,11 +79,11 @@ class GeoCodeController extends AdminControllerLib
             $geoCode,
             'admin/geocode/show.html.twig',
             [
-                'delete' => 'admin_geocode_delete',
+                'delete'  => 'admin_geocode_delete',
                 'restore' => 'admin_geocode_restore',
                 'destroy' => 'admin_geocode_destroy',
-                'list'   => 'admin_geocode_index',
-                'edit'   => 'admin_geocode_edit',
+                'list'    => 'admin_geocode_index',
+                'edit'    => 'admin_geocode_edit',
                 'trash'   => 'admin_geocode_trash',
             ]
         );
