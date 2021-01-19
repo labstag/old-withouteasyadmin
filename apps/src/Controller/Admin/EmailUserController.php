@@ -26,6 +26,7 @@ class EmailUserController extends AdminControllerLib
     /**
      * @Route("/trash", name="admin_emailuser_trash", methods={"GET"})
      * @Route("/", name="admin_emailuser_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
     public function indexOrTrash(EmailUserRepository $repository): Response
     {

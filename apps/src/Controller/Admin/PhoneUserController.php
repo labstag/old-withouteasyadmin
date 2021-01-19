@@ -26,6 +26,7 @@ class PhoneUserController extends AdminControllerLib
     /**
      * @Route("/trash", name="admin_phoneuser_trash", methods={"GET"})
      * @Route("/", name="admin_phoneuser_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
     public function indexOrTrash(RouterInterface $router, PhoneUserRepository $repository): Response
     {

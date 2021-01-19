@@ -24,6 +24,7 @@ class GeoCodeController extends AdminControllerLib
     /**
      * @Route("/trash", name="admin_geocode_trash", methods={"GET"})
      * @Route("/", name="admin_geocode_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
     public function index(GeoCodeRepository $repository): Response
     {

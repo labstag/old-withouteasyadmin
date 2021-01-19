@@ -441,20 +441,32 @@ class AdminCrudService
 
     public function entityDeleteDestroyRestore(object $entity): JsonResponse
     {
-        /**
-         * TODO: refaire pour prendre en compte si c'est, suivant l'url, :
-         *  - DELETE
-         *  - DESTROY
-         *  - RESTORE
-         */
-        return new JsonResponse(
-            []
-        );
-        $state     = false;
+        $routeCurrent = $this->request->get('_route');
         $token     = $this->request->request->get('_token');
-        $csrfToken = new CsrfToken('delete' . $entity->getId(), $token);
-        if ($this->csrfTokenManager->isTokenValid($csrfToken)) {
-            $this->entityManager->remove($entity);
+        $state     = false;
+        if (0 != substr_count($routeCurrent, '_destroy')) {
+            $csrfToken = new CsrfToken('destroy' . $entity->getId(), $token);
+            if (is_null($entity->getDeletedAt())) {
+                unset($csrfToken);
+            }
+        } elseif (0 != substr_count($routeCurrent, '_restore')) {
+            $csrfToken = new CsrfToken('restore' . $entity->getId(), $token);
+            if (is_null($entity->getDeletedAt())) {
+                unset($csrfToken);
+            }
+        } elseif (0 != substr_count($routeCurrent, '_delete')) {
+            $csrfToken = new CsrfToken('delete' . $entity->getId(), $token);
+        }
+
+        if (isset($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
+            if (0 != substr_count($routeCurrent, '_destroy')) {
+                $this->entityManager->remove($entity);
+            } elseif (0 != substr_count($routeCurrent, '_restore')) {
+                $entity->setDeletedAt(null);
+                $this->entityManager->persist($entity);
+            } elseif (0 != substr_count($routeCurrent, '_delete')) {
+                $this->entityManager->remove($entity);
+            }
             $this->entityManager->flush();
             $state = true;
         }
@@ -467,12 +479,15 @@ class AdminCrudService
             ]
         );
     }
-
-    /**
-     * TODO: vide la corbeille
-     */
+    
     public function empty(ServiceEntityRepositoryLib $repository): JsonResponse
     {
+        $all = $repository->findTrashForAdmin();
+        foreach ($all as $entity) {
+            $this->entityManager->remove($entity);
+        }
+
+        $this->entityManager->flush();
         return new JsonResponse(
             []
         );

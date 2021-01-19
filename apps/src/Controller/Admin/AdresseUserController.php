@@ -26,6 +26,7 @@ class AdresseUserController extends AdminControllerLib
     /**
      * @Route("/trash", name="admin_adresseuser_trash", methods={"GET"})
      * @Route("/", name="admin_adresseuser_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
     public function indexOrTrash(AdresseUserRepository $repository): Response
     {

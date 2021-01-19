@@ -26,6 +26,7 @@ class EditoController extends AdminControllerLib
     /**
      * @Route("/trash", name="admin_edito_trash", methods={"GET"})
      * @Route("/", name="admin_edito_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
     public function indexOrTrash(EditoRepository $repository): Response
     {

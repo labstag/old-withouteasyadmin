@@ -26,6 +26,7 @@ class TemplateController extends AdminControllerLib
     /**
      * @Route("/trash", name="admin_template_trash", methods={"GET"})
      * @Route("/", name="admin_template_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
     public function indexOrTrash(TemplateRepository $repository): Response
     {

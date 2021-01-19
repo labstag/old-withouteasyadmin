@@ -26,6 +26,7 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/trash", name="admin_groupuser_trash", methods={"GET"})
      * @Route("/", name="admin_groupuser_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
     public function index(GroupeRepository $repository): Response
     {

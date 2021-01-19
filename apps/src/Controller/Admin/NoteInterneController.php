@@ -27,6 +27,7 @@ class NoteInterneController extends AdminControllerLib
     /**
      * @Route("/trash", name="admin_noteinterne_trash", methods={"GET"})
      * @Route("/", name="admin_noteinterne_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
     public function indexOrTrash(NoteInterneRepository $repository): Response
     {

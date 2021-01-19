@@ -26,6 +26,7 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/trash", name="admin_menu_trash", methods={"GET"})
      * @Route("/", name="admin_menu_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
     public function indexOrTrash(MenuRepository $repository): Response
     {

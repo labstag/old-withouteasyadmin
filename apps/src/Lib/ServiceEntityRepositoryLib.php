@@ -48,7 +48,6 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $dql = 'SELECT a FROM ' . $name . ' a';
 
         $entityManager = $this->getEntityManager();
-        $entityManager->getFilters()->disable('softdeleteable');
         $dql = $entityManager->createQueryBuilder();
         $dql->select('a');
         $dql->from($name, 'a');

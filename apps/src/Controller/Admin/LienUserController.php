@@ -26,6 +26,7 @@ class LienUserController extends AdminControllerLib
     /**
      * @Route("/trash", name="admin_lienuser_trash", methods={"GET"})
      * @Route("/", name="admin_lienuser_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
     public function indexOrTrash(LienUserRepository $lienUserRepository): Response
     {

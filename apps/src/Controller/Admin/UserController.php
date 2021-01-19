@@ -28,6 +28,7 @@ class UserController extends AdminControllerLib
     /**
      * @Route("/trash", name="admin_user_trash", methods={"GET"})
      * @Route("/", name="admin_user_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
     public function indexOrTrash(RouterInterface $router, UserRepository $repository): Response
     {

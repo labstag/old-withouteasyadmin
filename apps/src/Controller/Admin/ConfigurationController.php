@@ -25,6 +25,7 @@ class ConfigurationController extends AdminControllerLib
     /**
      * @Route("/trash", name="admin_configuration_trash", methods={"GET"})
      * @Route("/", name="admin_configuration_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
     public function indexOrTrash(ConfigurationRepository $repository): Response
     {
