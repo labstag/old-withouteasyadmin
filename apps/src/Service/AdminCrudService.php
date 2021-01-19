@@ -130,11 +130,6 @@ class AdminCrudService
         if (!isset($url['delete'])) {
             return;
         }
-
-        $this->twig->addGlobal(
-            'modalDelete',
-            true
-        );
         $urlsDelete = [
             'delete' => $url['delete'],
         ];
@@ -184,13 +179,34 @@ class AdminCrudService
 
             if (isset($url['empty'])) {
                 $this->adminBoutonService->addBtnEmpty(
-                    $url['empty']
+                    [
+                        'empty' => $url['empty'],
+                        'list' => $url['list']
+                    ]
+                );
+            }
+            if (isset($actions['destroy'])) {
+                $this->twig->addGlobal(
+                    'modalDestroy',
+                    true
+                );
+            }
+            if (isset($actions['restore'])) {
+                $this->twig->addGlobal(
+                    'modalRestore',
+                    true
                 );
             }
         } elseif (isset($url['trash'])) {
             $this->adminBoutonService->addBtnTrash(
                 $url['trash']
             );
+            if (isset($actions['delete'])) {
+                $this->twig->addGlobal(
+                    'modalDelete',
+                    true
+                );
+            }
         }
 
         if (isset($url['new'])) {
@@ -204,13 +220,6 @@ class AdminCrudService
             $this->request->query->getInt('page', 1),
             10
         );
-
-        if (isset($actions['delete'])) {
-            $this->twig->addGlobal(
-                'modalDelete',
-                true
-            );
-        }
 
         return $this->controller->render(
             $html,
@@ -274,7 +283,11 @@ class AdminCrudService
 
         if (isset($url['restore']) && 'preview' == $routeType) {
             $this->adminBoutonService->addBtnRestore(
-                $url['restore'],
+                $entity,
+                [
+                    'restore' => $url['restore'],
+                    'list' => $url['trash']
+                ],
                 'Restore',
                 [
                     'id' => $entity->getId(),
@@ -284,7 +297,11 @@ class AdminCrudService
 
         if (isset($url['destroy']) && 'preview' == $routeType) {
             $this->adminBoutonService->addBtnDestroy(
-                $url['destroy'],
+                $entity,
+                [
+                    'destroy' => $url['destroy'],
+                    'list' => $url['trash']
+                ],
                 'Destroy',
                 [
                     'id' => $entity->getId(),
@@ -293,10 +310,6 @@ class AdminCrudService
         }
 
         if (isset($url['delete']) && 'show' == $routeType) {
-            $this->twig->addGlobal(
-                'modalDelete',
-                true
-            );
             $urlsDelete = [
                 'delete' => $url['delete'],
             ];

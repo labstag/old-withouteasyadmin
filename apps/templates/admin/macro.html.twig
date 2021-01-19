@@ -17,6 +17,28 @@
         {% endif %}
     ></link-delete>
 {% endmacro %}
+{% macro destroy(entity, urlDelete, urlList) %}
+    {% set title = "Destroy"|trans %}
+    <link-destroy
+        data-url="{{ path(urlDelete, {'id': entity.id}) }}"
+        data-token="{{ csrf_token('destroy' ~ entity.id) }}"
+        data-title="{{ title }}"
+        {% if urlList != '' %}
+            data-redirect="{{ path(urlList) }}"
+        {% endif %}
+    ></link-destroy>
+{% endmacro %}
+{% macro restore(entity, urlDelete, urlList) %}
+    {% set title = "Restore"|trans %}
+    <link-restore
+        data-url="{{ path(urlDelete, {'id': entity.id}) }}"
+        data-token="{{ csrf_token('restore' ~ entity.id) }}"
+        data-title="{{ title }}"
+        {% if urlList != '' %}
+            data-redirect="{{ path(urlList) }}"
+        {% endif %}
+    ></link-restore>
+{% endmacro %}
 {% macro actions (entity, actions) %}
     <div class="btngrouptable" role="group">
         {% if actions['show'] is defined %}
@@ -28,20 +50,29 @@
             {% endif %}
             {{ _self.show(entity, urlShow, titleShow) }}
         {% endif %}
-        {% if actions['edit'] is defined and 0 == app.request.attributes.get('_route')|split('trash')|length-1 %}
-            {{ _self.edit(entity, actions['edit']) }}
-        {% endif %}
-        {% if actions['delete'] is defined %}
-            {% set urlDelete = actions['delete'] %}
-            {% set urlList = '' %}
-            {% if actions['list'] is defined %}
-                {% set urlList = actions['list'] %}
+        {% if 0 == app.request.attributes.get('_route')|split('trash')|length-1 %}
+            {% if actions['edit'] is defined %}
+                {{ _self.edit(entity, actions['edit']) }}
             {% endif %}
-            {% if app.request.attributes.get('_route')|split('trash')|length-1 != 0 %}
+            {% if actions['delete'] is defined %}
+                {% set url = actions['delete'] %}
+                {% set urlList = '' %}
+                {% if actions['list'] is defined %}
+                    {% set urlList = actions['list'] %}
+                {% endif %}
+                {{ _self.delete(entity, url, urlList) }}
+            {% endif %}
+        {% else %}
+            {% if actions['restore'] is defined %}
                 {% set urlList = app.request.attributes.get('_route') %}
-                {% set urlDelete = actions['destroy'] %}
+                {% set url = actions['restore'] %}
+                {{ _self.restore(entity, url, urlList) }}
             {% endif %}
-            {{ _self.delete(entity, urlDelete, urlList) }}
+            {% if actions['destroy'] is defined %}
+                {% set urlList = app.request.attributes.get('_route') %}
+                {% set url = actions['destroy'] %}
+                {{ _self.destroy(entity, url, urlList) }}
+            {% endif %}
         {% endif %}
     </div>
 {% endmacro %}

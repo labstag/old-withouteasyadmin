@@ -29,12 +29,15 @@ a{
 .ListBtnAdmin{
   @extend .btn-group;
   @extend .btn-group-lg;
-  a{
-    @extend .d-flex;
-    @extend .flex-column;
-    @extend .align-items-center;
+  .link-btnadmin{
     @extend .btn;
     @extend .btn-secondary;
+    a{
+      @extend .d-flex;
+      @extend .flex-column;
+      @extend .align-items-center;
+      color: white;
+    }
   }
 }
 
@@ -119,7 +122,20 @@ i{
   }
 }
 
-.link-delete{
+.link-restore{
+  @extend .btn;
+  @extend .btn-outline-success;
+  @extend .btn-sm;
+  i{
+    @extend .fas;
+    @extend .fa-trash-restore;
+  }
+  span{
+    display: none;
+  }
+}
+
+.link-delete, .link-destroy{
   @extend .btn;
   @extend .btn-outline-danger;
   @extend .btn-sm;

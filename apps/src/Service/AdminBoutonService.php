@@ -4,6 +4,7 @@ namespace Labstag\Service;
 
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Twig\Environment;
 
 class AdminBoutonService
 {
@@ -11,14 +12,18 @@ class AdminBoutonService
     private CsrfTokenManagerInterface $csrfTokenManager;
 
     private RouterInterface $router;
+    
+    private Environment $twig;
 
     private array $bouton;
 
     public function __construct(
+        Environment $twig,
         CsrfTokenManagerInterface $csrfTokenManager,
         RouterInterface $router
     )
     {
+        $this->twig             = $twig;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->router           = $router;
         $this->bouton           = [];
@@ -49,16 +54,33 @@ class AdminBoutonService
     }
 
     public function addBtnRestore(
-        string $route,
+        object $entity,
+        array $route,
         string $text = 'Restore',
         array $routeParam = []
     ): self
     {
+        $this->twig->addGlobal(
+            'modalRestore',
+            true
+        );
+        $code  = 'restore' . $entity->getId();
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr = [
+            'data-toggle' => 'modal',
+            'data-token'  => $token,
+            'data-target' => '#restoreModal',
             'is'          => 'link-btnadminrestore',
         ];
-        if ($route != '') {
-            $attr['href'] = $this->router->generate($route, $routeParam);
+        if (isset($route['list'])) {
+            $attr['data-redirect'] = $this->router->generate($route['list']);
+        }
+
+        if (isset($route['restore'])) {
+            $attr['data-url'] = $this->router->generate(
+                $route['restore'],
+                $routeParam
+            );
         }
 
         $this->add(
@@ -71,14 +93,33 @@ class AdminBoutonService
     }
 
     public function addBtnDestroy(
-        string $route,
+        object $entity,
+        array $route,
         string $text = 'Destroy',
         array $routeParam = []
     ): self
     {
-        $attr = [];
-        if ($route != '') {
-            $attr['href'] = $this->router->generate($route, $routeParam);
+        $this->twig->addGlobal(
+            'modalDestroy',
+            true
+        );
+        $code  = 'destroy' . $entity->getId();
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        $attr = [
+            'data-toggle' => 'modal',
+            'data-token'  => $token,
+            'data-target' => '#destroyModal',
+            'is'          => 'link-btnadmindestroy',
+        ];
+        if (isset($route['list'])) {
+            $attr['data-redirect'] = $this->router->generate($route['list']);
+        }
+
+        if (isset($route['destroy'])) {
+            $attr['data-url'] = $this->router->generate(
+                $route['destroy'],
+                $routeParam
+            );
         }
 
         $this->add(
@@ -134,6 +175,10 @@ class AdminBoutonService
         array $routeParam = []
     ): self
     {
+        $this->twig->addGlobal(
+            'modalDelete',
+            true
+        );
         $code  = 'delete' . $entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
@@ -203,16 +248,28 @@ class AdminBoutonService
         return $this;
     }
 
-    public function addBtnEmpty(string $route, string $text = 'Vider'): self
+    public function addBtnEmpty(array $route, string $text = 'Vider'): self
     {
+        $this->twig->addGlobal(
+            'modalEmpty',
+            true
+        );
+        $attr = [
+            'is'   => 'link-btnadminempty',
+            'data-toggle' => 'modal',
+            'data-target' => '#emptyModal',
+        ];
+        if (isset($route['list'])) {
+            $attr['data-redirect'] = $this->router->generate($route['list']);
+        }
+
+        if (isset($route['empty'])) {
+            $attr['data-url'] = $this->router->generate($route['empty']);
+        }
         $this->add(
             'BtnAdminHeaderEmpty',
             $text,
-            [
-
-                'is'   => 'link-btnadminempty',
-                'href' => $this->router->generate($route),
-            ]
+            $attr
         );
 
         return $this;
