@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 
 /**
  * @Route("/admin/user/phone")
@@ -21,21 +22,35 @@ class PhoneUserController extends AdminControllerLib
     protected string $headerTitle = "Téléphone d'utilisateurs";
 
     protected string $urlHome = 'admin_phoneuser_index';
+
     /**
+     * @Route("/trash", name="admin_phoneuser_trash", methods={"GET"})
      * @Route("/", name="admin_phoneuser_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function index(PhoneUserRepository $phoneUserRepository): Response
+    public function indexOrTrash(PhoneUserRepository $repository): Response
     {
-        return $this->adminCrudService->list(
-            $phoneUserRepository,
-            'findAllForAdmin',
-            'admin/phone_user/index.html.twig',
-            ['new' => 'admin_phoneuser_new'],
+        return $this->adminCrudService->listOrTrash(
+            $repository,
             [
-                'list'   => 'admin_phoneuser_index',
-                'show'   => 'admin_phoneuser_show',
-                'edit'   => 'admin_phoneuser_edit',
-                'delete' => 'admin_phoneuser_delete',
+                'trash' => 'findTrashForAdmin',
+                'all'   => 'findAllForAdmin',
+            ],
+            'admin/phone_user/index.html.twig',
+            [
+                'new'   => 'admin_phoneuser_new',
+                'empty' => 'admin_phoneuser_empty',
+                'trash' => 'admin_phoneuser_trash',
+                'list'  => 'admin_phoneuser_index',
+            ],
+            [
+                'list'    => 'admin_phoneuser_index',
+                'show'    => 'admin_phoneuser_show',
+                'preview' => 'admin_phoneuser_preview',
+                'edit'    => 'admin_phoneuser_edit',
+                'delete'  => 'admin_phoneuser_delete',
+                'destroy' => 'admin_phoneuser_destroy',
+                'restore' => 'admin_phoneuser_restore',
             ]
         );
     }
@@ -43,14 +58,8 @@ class PhoneUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_phoneuser_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new PhoneUser(),
             PhoneUserType::class,
@@ -60,28 +69,21 @@ class PhoneUserController extends AdminControllerLib
 
     /**
      * @Route("/{id}", name="admin_phoneuser_show", methods={"GET"})
+     * @Route("/preview/{id}", name="admin_phoneuser_preview", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function show(
-        PhoneUser $phoneUser,
-        RouterInterface $router
-    ): Response
+    public function showOrPreview(PhoneUser $phoneUser): Response
     {
-        $breadcrumb = [
-            'Show' => $router->generate(
-                'admin_phoneuser_show',
-                [
-                    'id' => $phoneUser->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->read(
+        return $this->adminCrudService->showOrPreview(
             $phoneUser,
             'admin/phone_user/show.html.twig',
             [
-                'delete' => 'admin_phoneuser_delete',
-                'list'   => 'admin_phoneuser_index',
-                'edit'   => 'admin_phoneuser_edit',
+                'delete'  => 'admin_phoneuser_delete',
+                'restore' => 'admin_phoneuser_restore',
+                'destroy' => 'admin_phoneuser_destroy',
+                'list'    => 'admin_phoneuser_index',
+                'edit'    => 'admin_phoneuser_edit',
+                'trash'   => 'admin_phoneuser_trash',
             ]
         );
     }
@@ -93,20 +95,8 @@ class PhoneUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(
-        PhoneUser $phoneUser,
-        RouterInterface $router
-    ): Response
+    public function edit(PhoneUser $phoneUser): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_phoneuser_edit',
-                [
-                    'id' => $phoneUser->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             PhoneUserType::class,
             $phoneUser,
@@ -120,9 +110,21 @@ class PhoneUserController extends AdminControllerLib
 
     /**
      * @Route("/delete/{id}", name="admin_phoneuser_delete", methods={"DELETE"})
+     * @Route("/destroy/{id}", name="admin_phoneuser_destroy", methods={"DELETE"})
+     * @Route("/restore/{id}", name="admin_phoneuser_restore")
+     * @IgnoreSoftDelete
      */
-    public function delete(PhoneUser $phoneUser): Response
+    public function entityDeleteDestroyRestore(PhoneUser $phoneUser): Response
     {
-        return $this->adminCrudService->delete($phoneUser);
+        return $this->adminCrudService->entityDeleteDestroyRestore($phoneUser);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/empty", name="admin_phoneuser_empty", methods={"DELETE"})
+     */
+    public function empty(PhoneUserRepository $repository): Response
+    {
+        return $this->adminCrudService->empty($repository);
     }
 }

@@ -4,12 +4,17 @@ namespace Labstag\Entity;
 
 use Labstag\Repository\ConfigurationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=ConfigurationRepository::class)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Configuration
 {
+
+    use SoftDeleteableEntity;
 
     /**
      * @ORM\Id

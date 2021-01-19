@@ -6,6 +6,7 @@ export class LinkBtnAdmin extends HTMLElement{
       return;
     }
     let aElement = document.createElement('a');
+    this.classList.add('link-btnadmin');
     const icon = this.getAttribute('icon');
     const text = this.getAttribute('text');
     const idElement = this.getAttribute('id');

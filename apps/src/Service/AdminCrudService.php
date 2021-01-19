@@ -8,7 +8,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\AdminBoutonService;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -49,6 +48,10 @@ class AdminCrudService
 
     private AdminControllerLib $controller;
 
+    protected string $headerTitle = '';
+
+    protected string $urlHome = '';
+
     public function __construct(
         Environment $twig,
         AdminBoutonService $adminBoutonService,
@@ -80,6 +83,12 @@ class AdminCrudService
     public function addBreadcrumbs(array $breadcrumbs): void
     {
         BreadcrumbsService::getInstance()->add($breadcrumbs);
+    }
+
+    public function setPage($header, $url)
+    {
+        $this->headerTitle = $header;
+        $this->urlHome     = $url;
     }
 
     private function setBtnList(array $url): void
@@ -122,10 +131,6 @@ class AdminCrudService
             return;
         }
 
-        $this->twig->addGlobal(
-            'modalDelete',
-            true
-        );
         $urlsDelete = [
             'delete' => $url['delete'],
         ];
@@ -148,18 +153,73 @@ class AdminCrudService
         $this->controller = $controller;
     }
 
-    public function list(
+    private function listOrTrashRouteTrash($url, $actions)
+    {
+        $breadcrumb = [
+            'Trash' => $this->router->generate(
+                'admin_adresseuser_trash'
+            ),
+        ];
+        $this->addBreadcrumbs($breadcrumb);
+        if (isset($url['list'])) {
+            $this->adminBoutonService->addBtnList(
+                $url['list']
+            );
+        }
+
+        if (isset($url['empty'])) {
+            $this->adminBoutonService->addBtnEmpty(
+                [
+                    'empty' => $url['empty'],
+                    'list'  => $url['list'],
+                ]
+            );
+        }
+
+        if (isset($actions['destroy'])) {
+            $this->twig->addGlobal(
+                'modalDestroy',
+                true
+            );
+        }
+
+        if (isset($actions['restore'])) {
+            $this->twig->addGlobal(
+                'modalRestore',
+                true
+            );
+        }
+    }
+
+    public function listOrTrash(
         ServiceEntityRepositoryLib $repository,
-        string $method,
+        array $methods,
         string $html,
         array $url = [],
         array $actions = []
     ): Response
     {
+        $routeCurrent = $this->request->get('_route');
+        $routeType    = (0 != substr_count($routeCurrent, 'trash')) ? 'trash' : 'all';
+        $method       = $methods[$routeType];
+
+        if ('trash' == $routeType) {
+            $this->listOrTrashRouteTrash($url, $actions);
+        } elseif (isset($url['trash'])) {
+            $this->adminBoutonService->addBtnTrash(
+                $url['trash']
+            );
+            if (isset($actions['delete'])) {
+                $this->twig->addGlobal(
+                    'modalDelete',
+                    true
+                );
+            }
+        }
+
         if (isset($url['new'])) {
             $this->adminBoutonService->addBtnNew(
-                $url['new'],
-                'Nouveau',
+                $url['new']
             );
         }
 
@@ -168,13 +228,6 @@ class AdminCrudService
             $this->request->query->getInt('page', 1),
             10
         );
-
-        if (isset($actions['delete'])) {
-            $this->twig->addGlobal(
-                'modalDelete',
-                true
-            );
-        }
 
         return $this->controller->render(
             $html,
@@ -185,34 +238,119 @@ class AdminCrudService
         );
     }
 
-    public function read(
-        object $entity,
-        string $twigShow,
-        array $url = []
-    ): Response
+    private function showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity)
     {
-        if (isset($url['list'])) {
-            $this->adminBoutonService->addBtnList(
-                $url['list'],
-                'Liste',
-            );
+        if ('preview' == $routeType && isset($url['trash'])) {
+            $breadcrumb = [
+                'Trash' => $this->router->generate(
+                    $url['trash']
+                ),
+            ];
+            $this->addBreadcrumbs($breadcrumb);
         }
 
-        if (isset($url['edit'])) {
-            $this->adminBoutonService->addEdit(
-                $url['edit'],
-                'Editer',
+        $breadcrumb = [
+            $routeType => $this->router->generate(
+                $routeCurrent,
+                [
+                    'id' => $entity->getId(),
+                ]
+            ),
+        ];
+        $this->addBreadcrumbs($breadcrumb);
+    }
+
+    private function showOrPreviewaddBtnList($url, $routeType)
+    {
+        if (!(isset($url['list']) && 'show' == $routeType)) {
+            return;
+        }
+
+        $this->adminBoutonService->addBtnList(
+            $url['list'],
+            'Liste',
+        );
+    }
+
+    private function showOrPreviewaddBtnTrash($url, $routeType)
+    {
+        if (!(isset($url['trash']) && 'preview' == $routeType)) {
+            return;
+        }
+
+        $this->adminBoutonService->addBtnTrash(
+            $url['trash'],
+            'Trash',
+        );
+    }
+
+    private function showOrPreviewaddBtnEdit($url, $routeType, $entity)
+    {
+        if (!(isset($url['edit']) && 'show' == $routeType)) {
+            return;
+        }
+
+        $this->adminBoutonService->addBtnEdit(
+            $url['edit'],
+            'Editer',
+            [
+                'id' => $entity->getId(),
+            ]
+        );
+    }
+
+    private function showOrPreviewaddBtnRestore($url, $routeType, $entity)
+    {
+        if (!(isset($url['restore']) && 'preview' == $routeType)) {
+            $this->adminBoutonService->addBtnRestore(
+                $entity,
+                [
+                    'restore' => $url['restore'],
+                    'list'    => $url['trash'],
+                ],
+                'Restore',
                 [
                     'id' => $entity->getId(),
                 ]
             );
         }
+    }
 
-        if (isset($url['delete'])) {
-            $this->twig->addGlobal(
-                'modalDelete',
-                true
-            );
+    private function showOrPreviewaddBtnDestroy($url, $routeType, $entity)
+    {
+        if (!(isset($url['destroy']) && 'preview' == $routeType)) {
+            return;
+        }
+
+        $this->adminBoutonService->addBtnDestroy(
+            $entity,
+            [
+                'destroy' => $url['destroy'],
+                'list'    => $url['trash'],
+            ],
+            'Destroy',
+            [
+                'id' => $entity->getId(),
+            ]
+        );
+    }
+
+    public function showOrPreview(
+        object $entity,
+        string $twigShow,
+        array $url = []
+    ): Response
+    {
+        $routeCurrent = $this->request->get('_route');
+        $routeType    = (0 != substr_count($routeCurrent, 'preview')) ? 'preview' : 'show';
+        $this->showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity);
+        $this->showOrPreviewaddBtnList($url, $routeType);
+        $this->showOrPreviewaddBtnTrash($url, $routeType);
+        $this->showOrPreviewaddBtnEdit($url, $routeType, $entity);
+        $this->showOrPreviewaddBtnRestore($url, $routeType, $entity);
+        $this->showOrPreviewaddBtnDestroy($url, $routeType, $entity);
+
+        if (isset($url['delete']) && 'show' == $routeType) {
             $urlsDelete = [
                 'delete' => $url['delete'],
             ];
@@ -244,10 +382,16 @@ class AdminCrudService
         object $manager = null
     ): Response
     {
+        $routeCurrent = $this->request->get('_route');
+        $breadcrumb   = [
+            'New' => $this->router->generate(
+                $routeCurrent
+            ),
+        ];
+        $this->addBreadcrumbs($breadcrumb);
         if (isset($url['list'])) {
             $this->adminBoutonService->addBtnList(
-                $url['list'],
-                'Liste',
+                $url['list']
             );
         }
 
@@ -295,6 +439,16 @@ class AdminCrudService
         string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
+        $routeCurrent = $this->request->get('_route');
+        $breadcrumb   = [
+            'edit' => $this->router->generate(
+                $routeCurrent,
+                [
+                    'id' => $entity->getId(),
+                ]
+            ),
+        ];
+        $this->addBreadcrumbs($breadcrumb);
         $this->setBtnViewUpdate($url, $entity);
         $oldEntity = clone $entity;
         $form      = $this->formFactory->create($formType, $entity);
@@ -336,13 +490,66 @@ class AdminCrudService
         );
     }
 
-    public function delete(object $entity): JsonResponse
+    private function setEntityCsrfDestroy($entity, $token)
     {
-        $state     = false;
-        $token     = $this->request->request->get('_token');
+        $csrfToken = new CsrfToken('destroy' . $entity->getId(), $token);
+        if (is_null($entity->getDeletedAt())) {
+            unset($csrfToken);
+        }
+
+        return $csrfToken;
+    }
+
+    private function setEntityCsrfRestore($entity, $token)
+    {
+        $csrfToken = new CsrfToken('restore' . $entity->getId(), $token);
+        if (is_null($entity->getDeletedAt())) {
+            unset($csrfToken);
+        }
+
+        return $csrfToken;
+    }
+
+    private function setEntityCsrfDelete($entity, $token)
+    {
         $csrfToken = new CsrfToken('delete' . $entity->getId(), $token);
-        if ($this->csrfTokenManager->isTokenValid($csrfToken)) {
-            $this->entityManager->remove($entity);
+        if (is_null($entity->getDeletedAt())) {
+            unset($csrfToken);
+        }
+
+        return $csrfToken;
+    }
+
+    private function setEntityCsrf($routeCurrent, $entity, $token)
+    {
+        if (0 == substr_count($routeCurrent, '_destroy')) {
+            $csrfToken = $this->setEntityCsrfDestroy($entity, $token);
+        } elseif (0 == substr_count($routeCurrent, '_restore')) {
+            $csrfToken = $this->setEntityCsrfRestore($entity, $token);
+        } elseif (0 == substr_count($routeCurrent, '_delete')) {
+            $csrfToken = $this->setEntityCsrfDelete($entity, $token);
+        }
+
+        return $csrfToken;
+    }
+
+    public function entityDeleteDestroyRestore(object $entity): JsonResponse
+    {
+        $routeCurrent = $this->request->get('_route');
+        $token        = $this->request->request->get('_token');
+        $state        = false;
+        $csrfToken    = $this->setEntityCsrf($routeCurrent, $entity, $token);
+
+        if (isset($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
+            if (0 != substr_count($routeCurrent, '_destroy')) {
+                $this->entityManager->remove($entity);
+            } elseif (0 != substr_count($routeCurrent, '_restore')) {
+                $entity->setDeletedAt(null);
+                $this->entityManager->persist($entity);
+            } elseif (0 != substr_count($routeCurrent, '_delete')) {
+                $this->entityManager->remove($entity);
+            }
+
             $this->entityManager->flush();
             $state = true;
         }
@@ -353,6 +560,19 @@ class AdminCrudService
                 'token' => $token,
                 'all'   => $this->request->query->all(),
             ]
+        );
+    }
+
+    public function empty(ServiceEntityRepositoryLib $repository): JsonResponse
+    {
+        $all = $repository->findTrashForAdmin();
+        foreach ($all as $entity) {
+            $this->entityManager->remove($entity);
+        }
+
+        $this->entityManager->flush();
+        return new JsonResponse(
+            []
         );
     }
 }

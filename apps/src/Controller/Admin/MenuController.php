@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 
 /**
  * @Route("/admin/menu")
@@ -21,21 +22,35 @@ class MenuController extends AdminControllerLib
     protected string $headerTitle = 'Menu';
 
     protected string $urlHome = 'admin_menu_index';
+
     /**
+     * @Route("/trash", name="admin_menu_trash", methods={"GET"})
      * @Route("/", name="admin_menu_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function index(MenuRepository $menuRepository): Response
+    public function indexOrTrash(MenuRepository $repository): Response
     {
-        return $this->adminCrudService->list(
-            $menuRepository,
-            'findAllForAdmin',
-            'admin/menu/index.html.twig',
-            ['new' => 'admin_menu_new'],
+        return $this->adminCrudService->listOrTrash(
+            $repository,
             [
-                'list'   => 'admin_menu_index',
-                'show'   => 'admin_menu_show',
-                'edit'   => 'admin_menu_edit',
-                'delete' => 'admin_menu_delete',
+                'trash' => 'findTrashForAdmin',
+                'all'   => 'findAllForAdmin',
+            ],
+            'admin/menu/index.html.twig',
+            [
+                'new'   => 'admin_menu_new',
+                'empty' => 'admin_menu_empty',
+                'trash' => 'admin_menu_trash',
+                'list'  => 'admin_menu_index',
+            ],
+            [
+                'list'    => 'admin_menu_index',
+                'show'    => 'admin_menu_show',
+                'preview' => 'admin_menu_preview',
+                'edit'    => 'admin_menu_edit',
+                'delete'  => 'admin_menu_delete',
+                'destroy' => 'admin_menu_destroy',
+                'restore' => 'admin_menu_restore',
             ]
         );
     }
@@ -43,14 +58,8 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_menu_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_menu_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new Menu(),
             MenuType::class,
@@ -60,25 +69,21 @@ class MenuController extends AdminControllerLib
 
     /**
      * @Route("/{id}", name="admin_menu_show", methods={"GET"})
+     * @Route("/preview/{id}", name="admin_menu_preview", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function show(Menu $menu, RouterInterface $router): Response
+    public function showOrPreview(Menu $menu): Response
     {
-        $breadcrumb = [
-            'Show' => $router->generate(
-                'admin_menu_show',
-                [
-                    'id' => $menu->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->read(
+        return $this->adminCrudService->showOrPreview(
             $menu,
             'admin/menu/show.html.twig',
             [
-                'delete' => 'admin_menu_delete',
-                'list'   => 'admin_menu_index',
-                'edit'   => 'admin_menu_edit',
+                'delete'  => 'admin_menu_delete',
+                'restore' => 'admin_menu_restore',
+                'destroy' => 'admin_menu_destroy',
+                'list'    => 'admin_menu_index',
+                'edit'    => 'admin_menu_edit',
+                'trash'   => 'admin_menu_trash',
             ]
         );
     }
@@ -86,17 +91,8 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_menu_edit", methods={"GET","POST"})
      */
-    public function edit(Menu $menu, RouterInterface $router): Response
+    public function edit(Menu $menu): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_menu_edit',
-                [
-                    'id' => $menu->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             MenuType::class,
             $menu,
@@ -110,9 +106,21 @@ class MenuController extends AdminControllerLib
 
     /**
      * @Route("/delete/{id}", name="admin_menu_delete", methods={"DELETE"})
+     * @Route("/destroy/{id}", name="admin_menu_destroy", methods={"DELETE"})
+     * @Route("/restore/{id}", name="admin_menu_restore")
+     * @IgnoreSoftDelete
      */
-    public function delete(Menu $menu): Response
+    public function entityDeleteDestroyRestore(Menu $menu): Response
     {
-        return $this->adminCrudService->delete($menu);
+        return $this->adminCrudService->entityDeleteDestroyRestore($menu);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/empty", name="admin_menu_empty", methods={"DELETE"})
+     */
+    public function empty(MenuRepository $repository): Response
+    {
+        return $this->adminCrudService->empty($repository);
     }
 }

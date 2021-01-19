@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 
 /**
  * @Route("/admin/user/email")
@@ -21,21 +22,35 @@ class EmailUserController extends AdminControllerLib
     protected string $headerTitle = 'Email utilisateurs';
 
     protected string $urlHome = 'admin_emailuser_index';
+
     /**
+     * @Route("/trash", name="admin_emailuser_trash", methods={"GET"})
      * @Route("/", name="admin_emailuser_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function index(EmailUserRepository $emailUserRepository): Response
+    public function indexOrTrash(EmailUserRepository $repository): Response
     {
-        return $this->adminCrudService->list(
-            $emailUserRepository,
-            'findAllForAdmin',
-            'admin/email_user/index.html.twig',
-            ['new' => 'admin_emailuser_new'],
+        return $this->adminCrudService->listOrTrash(
+            $repository,
             [
-                'list'   => 'admin_emailuser_index',
-                'show'   => 'admin_emailuser_show',
-                'edit'   => 'admin_emailuser_edit',
-                'delete' => 'admin_emailuser_delete',
+                'trash' => 'findTrashForAdmin',
+                'all'   => 'findAllForAdmin',
+            ],
+            'admin/email_user/index.html.twig',
+            [
+                'new'   => 'admin_emailuser_new',
+                'empty' => 'admin_emailuser_empty',
+                'trash' => 'admin_emailuser_trash',
+                'list'  => 'admin_emailuser_index',
+            ],
+            [
+                'list'    => 'admin_emailuser_index',
+                'show'    => 'admin_emailuser_show',
+                'preview' => 'admin_emailuser_preview',
+                'edit'    => 'admin_emailuser_edit',
+                'delete'  => 'admin_emailuser_delete',
+                'destroy' => 'admin_emailuser_destroy',
+                'restore' => 'admin_emailuser_restore',
             ]
         );
     }
@@ -43,14 +58,8 @@ class EmailUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_emailuser_new", methods={"GET","POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function new(): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_emailuser_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->create(
             new EmailUser(),
             EmailUserType::class,
@@ -60,28 +69,21 @@ class EmailUserController extends AdminControllerLib
 
     /**
      * @Route("/{id}", name="admin_emailuser_show", methods={"GET"})
+     * @Route("/preview/{id}", name="admin_emailuser_preview", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function show(
-        EmailUser $emailUser,
-        RouterInterface $router
-    ): Response
+    public function showOrPreview(EmailUser $emailUser): Response
     {
-        $breadcrumb = [
-            'Show' => $router->generate(
-                'admin_emailuser_show',
-                [
-                    'id' => $emailUser->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->read(
+        return $this->adminCrudService->showOrPreview(
             $emailUser,
             'admin/email_user/show.html.twig',
             [
-                'delete' => 'admin_emailuser_delete',
-                'edit'   => 'admin_emailuser_edit',
-                'list'   => 'admin_emailuser_index',
+                'delete'  => 'admin_emailuser_delete',
+                'restore' => 'admin_emailuser_restore',
+                'destroy' => 'admin_emailuser_destroy',
+                'edit'    => 'admin_emailuser_edit',
+                'list'    => 'admin_emailuser_index',
+                'trash'   => 'admin_emailuser_trash',
             ]
         );
     }
@@ -93,20 +95,8 @@ class EmailUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(
-        EmailUser $emailUser,
-        RouterInterface $router
-    ): Response
+    public function edit(EmailUser $emailUser): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_emailuser_edit',
-                [
-                    'id' => $emailUser->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             EmailUserType::class,
             $emailUser,
@@ -120,9 +110,21 @@ class EmailUserController extends AdminControllerLib
 
     /**
      * @Route("/delete/{id}", name="admin_emailuser_delete", methods={"DELETE"})
+     * @Route("/destroy/{id}", name="admin_emailuser_destroy", methods={"DELETE"})
+     * @Route("/restore/{id}", name="admin_emailuser_restore")
+     * @IgnoreSoftDelete
      */
-    public function delete(EmailUser $emailUser): Response
+    public function entityDeleteDestroyRestore(EmailUser $emailUser): Response
     {
-        return $this->adminCrudService->delete($emailUser);
+        return $this->adminCrudService->entityDeleteDestroyRestore($emailUser);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/empty", name="admin_emailuser_empty", methods={"DELETE"})
+     */
+    public function empty(EmailUserRepository $repository): Response
+    {
+        return $this->adminCrudService->empty($repository);
     }
 }

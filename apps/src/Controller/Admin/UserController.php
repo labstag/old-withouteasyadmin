@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 
 /**
  * @Route("/admin/user")
@@ -23,21 +24,35 @@ class UserController extends AdminControllerLib
     protected string $headerTitle = 'Utilisateurs';
 
     protected string $urlHome = 'admin_user_index';
+
     /**
+     * @Route("/trash", name="admin_user_trash", methods={"GET"})
      * @Route("/", name="admin_user_index", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function index(UserRepository $userRepository): Response
+    public function indexOrTrash(UserRepository $repository): Response
     {
-        return $this->adminCrudService->list(
-            $userRepository,
-            'findAllForAdmin',
-            'admin/user/index.html.twig',
-            ['new' => 'admin_user_new'],
+        return $this->adminCrudService->listOrTrash(
+            $repository,
             [
-                'list'   => 'admin_user_index',
-                'show'   => 'admin_user_show',
-                'edit'   => 'admin_user_edit',
-                'delete' => 'admin_user_delete',
+                'trash' => 'findTrashForAdmin',
+                'all'   => 'findAllForAdmin',
+            ],
+            'admin/user/index.html.twig',
+            [
+                'new'   => 'admin_user_new',
+                'empty' => 'admin_user_empty',
+                'trash' => 'admin_user_trash',
+                'list'  => 'admin_user_index',
+            ],
+            [
+                'list'    => 'admin_user_index',
+                'show'    => 'admin_user_show',
+                'preview' => 'admin_user_preview',
+                'edit'    => 'admin_user_edit',
+                'delete'  => 'admin_user_delete',
+                'destroy' => 'admin_user_destroy',
+                'restore' => 'admin_user_restore',
             ]
         );
     }
@@ -45,17 +60,8 @@ class UserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_user_new", methods={"GET","POST"})
      */
-    public function new(
-        RouterInterface $router,
-        UserManager $userManager
-    ): Response
+    public function new(UserManager $userManager): Response
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_user_new'
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         $user = new User();
         $user->setEnable(false);
         return $this->adminCrudService->create(
@@ -69,25 +75,21 @@ class UserController extends AdminControllerLib
 
     /**
      * @Route("/{id}", name="admin_user_show", methods={"GET"})
+     * @Route("/preview/{id}", name="admin_user_preview", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function show(User $user, RouterInterface $router): Response
+    public function showOrPreview(User $user): Response
     {
-        $breadcrumb = [
-            'Show' => $router->generate(
-                'admin_user_show',
-                [
-                    'id' => $user->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->read(
+        return $this->adminCrudService->showOrPreview(
             $user,
             'admin/user/show.html.twig',
             [
-                'delete' => 'admin_user_delete',
-                'list'   => 'admin_user_index',
-                'edit'   => 'admin_user_edit',
+                'delete'  => 'admin_user_delete',
+                'restore' => 'admin_user_restore',
+                'destroy' => 'admin_user_destroy',
+                'list'    => 'admin_user_index',
+                'edit'    => 'admin_user_edit',
+                'trash'   => 'admin_user_trash',
             ]
         );
     }
@@ -95,21 +97,8 @@ class UserController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
      */
-    public function edit(
-        User $user,
-        RouterInterface $router,
-        UserManager $userManager
-    ): Response
+    public function edit(User $user, UserManager $userManager): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_user_edit',
-                [
-                    'id' => $user->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
         return $this->adminCrudService->update(
             UserType::class,
             $user,
@@ -125,9 +114,21 @@ class UserController extends AdminControllerLib
 
     /**
      * @Route("/delete/{id}", name="admin_user_delete", methods={"DELETE"})
+     * @Route("/destroy/{id}", name="admin_user_destroy", methods={"DELETE"})
+     * @Route("/restore/{id}", name="admin_user_restore")
+     * @IgnoreSoftDelete
      */
-    public function delete(User $user): Response
+    public function entityDeleteDestroyRestore(User $user): Response
     {
-        return $this->adminCrudService->delete($user);
+        return $this->adminCrudService->entityDeleteDestroyRestore($user);
+    }
+
+    /**
+     * @Route("/restore/{id}", name="admin_user_restore")
+     * @Route("/empty", name="admin_user_empty", methods={"DELETE"})
+     */
+    public function empty(UserRepository $repository): Response
+    {
+        return $this->adminCrudService->empty($repository);
     }
 }

@@ -118,7 +118,7 @@ legend{
   }
 }
 
-#deleteModal{
+#deleteModal, #destroyModal, #emptyModal, #restoreModal{
   @extend .modal;
   @extend .fade;
 }
@@ -133,7 +133,7 @@ legend{
       @extend .fa-ban;
     }
   }
-  .confirm-delete{
+  .confirm-delete, .confirm-destroy, .confirm-empty, .confirm-restore{
     @extend .btn;
     @extend .btn-outline-danger;
     i{

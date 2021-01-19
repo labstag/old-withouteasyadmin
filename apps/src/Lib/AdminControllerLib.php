@@ -30,6 +30,7 @@ abstract class AdminControllerLib extends ControllerLib
         $this->adminBoutonService = $adminBoutonService;
         $this->adminCrudService   = $adminCrudService;
         $this->adminCrudService->setController($this);
+        $this->adminCrudService->setPage($this->headerTitle, $this->urlHome);
         parent::__construct($dataService, $breadcrumbs);
     }
 
