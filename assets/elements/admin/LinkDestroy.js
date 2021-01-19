@@ -1,5 +1,4 @@
-export class LinkDestroy extends HTMLElement
-{
+export class LinkDestroy extends HTMLElement {
   constructor() {
     super();
     if ('' != this.innerHTML) {

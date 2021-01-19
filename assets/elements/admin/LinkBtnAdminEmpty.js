@@ -1,13 +1,12 @@
-import { LinkBtnAdmin } from "./LinkBtnAdmin";
+import {LinkBtnAdmin} from "./LinkBtnAdmin";
 
-export class LinkBtnAdminEmpty extends LinkBtnAdmin{
+export class LinkBtnAdminEmpty extends LinkBtnAdmin {
   constructor() {
     super();
     this.addEventListener('click', this.onClick);
   }
 
-  onClick(element)
-  {
+  onClick(element) {
     element.preventDefault();
     let url = element.currentTarget.dataset.url;
     let token = element.currentTarget.dataset.token;

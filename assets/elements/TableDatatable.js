@@ -1,5 +1,4 @@
-export class TableDatatable extends HTMLTableElement
-{
+export class TableDatatable extends HTMLTableElement {
   constructor() {
     super();
     let ths = this.getElementsByTagName('th');
@@ -8,13 +7,11 @@ export class TableDatatable extends HTMLTableElement
     let tbody = tbodys[tbodys.length - 1];
     thLast.classList.add('text-center');
     let tr = tbody.getElementsByTagName('tr');
-    tr.forEach(
-      (element) => {
-        let tds = element.getElementsByTagName('td');
-        let tdLast = tds[tds.length - 1];
-        tdLast.classList.add('text-center');
-      }
-    );
+    tr.forEach((element) => {
+      let tds = element.getElementsByTagName('td');
+      let tdLast = tds[tds.length - 1];
+      tdLast.classList.add('text-center');
+    });
     console.log(tbody.innerHTML);
   }
 }

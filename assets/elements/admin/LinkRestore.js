@@ -1,5 +1,4 @@
-export class LinkRestore extends HTMLElement
-{
+export class LinkRestore extends HTMLElement {
   constructor() {
     super();
     if ('' != this.innerHTML) {
