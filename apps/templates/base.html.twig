@@ -20,6 +20,15 @@
             {% if modalDelete is defined %}
                 {{ modal.delete() }}
             {% endif %}
+            {% if modalEmpty is defined %}
+                {{ modal.empty() }}
+            {% endif %}
+            {% if modalDestroy is defined %}
+                {{ modal.destroy() }}
+            {% endif %}
+            {% if modalRestore is defined %}
+                {{ modal.restore() }}
+            {% endif %}
         {% endblock %}
         {% block javascripts %}
         {% endblock %}

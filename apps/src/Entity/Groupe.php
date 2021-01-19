@@ -8,12 +8,16 @@ use Doctrine\Common\Collections\Collection;
 use Labstag\Repository\GroupeRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=GroupeRepository::class)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Groupe
 {
+
+    use SoftDeleteableEntity;
 
     /**
      * @ORM\Id
