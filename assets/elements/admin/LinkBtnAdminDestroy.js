@@ -1,9 +1,9 @@
-import {LinkBtnAdmin} from "./LinkBtnAdmin";
+import { LinkBtnAdmin } from "./LinkBtnAdmin";
 
 export class LinkBtnAdminDestroy extends LinkBtnAdmin {
   constructor() {
     super();
-    this.addEventListener('click', this.onClick);
+    this.addEventListener("click", this.onClick);
   }
 
   onClick(element) {

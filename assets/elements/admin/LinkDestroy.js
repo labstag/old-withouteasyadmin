@@ -1,17 +1,17 @@
 export class LinkDestroy extends HTMLElement {
   constructor() {
     super();
-    if ('' != this.innerHTML) {
+    if ("" != this.innerHTML) {
       return;
     }
 
     let title = this.dataset.title;
     let href = this.dataset.url;
-    this.classList.add('link-destroy');
+    this.classList.add("link-destroy");
     this.dataset.toggle = "modal";
     this.dataset.target = "#destroyModal";
     this.innerHTML = `<i title="${title}"></i><span>${title}</span>`;
-    this.addEventListener('click', this.onClick);
+    this.addEventListener("click", this.onClick);
   }
 
   onClick(element) {
