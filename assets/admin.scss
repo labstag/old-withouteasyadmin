@@ -39,6 +39,22 @@ a{
 }
 
 i{
+  &.BtnAdminHeaderDestroy{
+    @extend .fas;
+    @extend .fa-trash;
+  }
+  &.BtnAdminHeaderRestore{
+    @extend .fas;
+    @extend .fa-trash-restore;
+  }
+  &.BtnAdminHeaderTrash{
+    @extend .fas;
+    @extend .fa-trash;
+  }
+  &.BtnAdminHeaderEmpty{
+    @extend .fas;
+    @extend .fa-trash;
+  }
   &.BtnAdminHeaderEdit{
     @extend .far;
     @extend .fa-edit;

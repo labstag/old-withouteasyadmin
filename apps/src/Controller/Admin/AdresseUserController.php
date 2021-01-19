@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 
 /**
  * @Route("/admin/user/adresse")
@@ -23,20 +24,32 @@ class AdresseUserController extends AdminControllerLib
     protected string $urlHome = 'admin_adresseuser_index';
 
     /**
+     * @Route("/trash", name="admin_adresseuser_trash", methods={"GET"})
      * @Route("/", name="admin_adresseuser_index", methods={"GET"})
      */
-    public function index(AdresseUserRepository $repository): Response
+    public function indexOrTrash(AdresseUserRepository $repository): Response
     {
-        return $this->adminCrudService->list(
+        return $this->adminCrudService->listOrTrash(
             $repository,
-            'findAllForAdmin',
-            'admin/adresse_user/index.html.twig',
-            ['new' => 'admin_adresseuser_new'],
             [
-                'list'   => 'admin_adresseuser_index',
-                'show'   => 'admin_adresseuser_show',
-                'edit'   => 'admin_adresseuser_edit',
-                'delete' => 'admin_adresseuser_delete',
+                'trash' => 'findTrashForAdmin',
+                'all'   => 'findAllForAdmin',
+            ],
+            'admin/adresse_user/index.html.twig',
+            [
+                'new'   => 'admin_adresseuser_new',
+                'empty' => 'admin_adresseuser_empty',
+                'trash' => 'admin_adresseuser_trash',
+                'list'  => 'admin_adresseuser_index',
+            ],
+            [
+                'list'    => 'admin_adresseuser_index',
+                'show'    => 'admin_adresseuser_show',
+                'preview'    => 'admin_adresseuser_preview',
+                'edit'    => 'admin_adresseuser_edit',
+                'delete'  => 'admin_adresseuser_delete',
+                'destroy' => 'admin_adresseuser_destroy',
+                'restore' => 'admin_adresseuser_restore',
             ]
         );
     }
@@ -59,28 +72,24 @@ class AdresseUserController extends AdminControllerLib
 
     /**
      * @Route("/{id}", name="admin_adresseuser_show", methods={"GET"})
+     * @Route("/preview/{id}", name="admin_adresseuser_preview", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function show(
+    public function showOrPreview(
         AdresseUser $adresseUser,
         RouterInterface $router
     ): Response
     {
-        $breadcrumb = [
-            'show' => $router->generate(
-                'admin_adresseuser_show',
-                [
-                    'id' => $adresseUser->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->read(
+        return $this->adminCrudService->showOrPreview(
             $adresseUser,
             'admin/adresse_user/show.html.twig',
             [
                 'delete' => 'admin_adresseuser_delete',
+                'restore' => 'admin_adresseuser_restore',
+                'destroy' => 'admin_adresseuser_destroy',
                 'edit'   => 'admin_adresseuser_edit',
                 'list'   => 'admin_adresseuser_index',
+                'trash'   => 'admin_adresseuser_trash',
             ]
         );
     }
@@ -119,9 +128,21 @@ class AdresseUserController extends AdminControllerLib
 
     /**
      * @Route("/delete/{id}", name="admin_adresseuser_delete", methods={"DELETE"})
+     * @Route("/destroy/{id}", name="admin_adresseuser_destroy", methods={"DELETE"})
+     * @Route("/restore/{id}", name="admin_adresseuser_restore")
+     * @IgnoreSoftDelete
      */
-    public function delete(AdresseUser $adresseUser): Response
+    public function entityDeleteDestroyRestore(AdresseUser $adresseUser): Response
     {
-        return $this->adminCrudService->delete($adresseUser);
+        return $this->adminCrudService->entityDeleteDestroyRestore($adresseUser);
+    }
+
+    /**
+     * @Route("/empty", name="admin_adresseuser_empty", methods={"DELETE"})
+     * @IgnoreSoftDelete
+     */
+    public function empty(AdresseUserRepository $repository): Response
+    {
+        return $this->adminCrudService->empty($repository);
     }
 }

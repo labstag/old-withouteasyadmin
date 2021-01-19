@@ -9,6 +9,7 @@ use Labstag\Repository\GeoCodeRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 
 /**
  * @Route("/admin/geocode")
@@ -21,20 +22,30 @@ class GeoCodeController extends AdminControllerLib
     protected string $urlHome = 'admin_geocode_index';
 
     /**
+     * @Route("/trash", name="admin_geocode_trash", methods={"GET"})
      * @Route("/", name="admin_geocode_index", methods={"GET"})
      */
-    public function index(GeoCodeRepository $geoCodeRepository): Response
+    public function index(GeoCodeRepository $repository): Response
     {
-        return $this->adminCrudService->list(
-            $geoCodeRepository,
-            'findAllForAdmin',
-            'admin/geocode/index.html.twig',
-            ['new' => 'admin_template_new'],
+        return $this->adminCrudService->listOrTrash(
+            $repository,
             [
-                'list'   => 'admin_geocode_index',
-                'show'   => 'admin_geocode_show',
-                'edit'   => 'admin_geocode_edit',
-                'delete' => 'admin_geocode_delete',
+                'trash' => 'findTrashForAdmin',
+                'all'   => 'findAllForAdmin',
+            ],
+            'admin/geocode/index.html.twig',
+            [
+                'new'   => 'admin_geocode_new',
+                'empty' => 'admin_geocode_empty',
+                'trash' => 'admin_geocode_trash',
+                'list'  => 'admin_geocode_index',
+            ],
+            [
+                'list'        => 'admin_geocode_index',
+                'show'        => 'admin_geocode_show',
+                'edit'        => 'admin_geocode_edit',
+                'delete'      => 'admin_geocode_delete',
+                'trashdelete' => 'admin_geocode_destroy',
             ]
         );
     }
@@ -59,25 +70,21 @@ class GeoCodeController extends AdminControllerLib
 
     /**
      * @Route("/{id}", name="admin_geocode_show", methods={"GET"})
+     * @Route("/preview/{id}", name="admin_geocode_preview", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function show(GeoCode $geoCode, RouterInterface $router): Response
+    public function showOrPreview(GeoCode $geoCode, RouterInterface $router): Response
     {
-        $breadcrumb = [
-            'Show' => $router->generate(
-                'admin_geocode_show',
-                [
-                    'id' => $geoCode->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->read(
+        return $this->adminCrudService->showOrPreview(
             $geoCode,
             'admin/geocode/show.html.twig',
             [
                 'delete' => 'admin_geocode_delete',
+                'restore' => 'admin_geocode_restore',
+                'destroy' => 'admin_geocode_destroy',
                 'list'   => 'admin_geocode_index',
                 'edit'   => 'admin_geocode_edit',
+                'trash'   => 'admin_geocode_trash',
             ]
         );
     }
@@ -109,9 +116,21 @@ class GeoCodeController extends AdminControllerLib
 
     /**
      * @Route("/{id}", name="admin_geocode_delete", methods={"DELETE"})
+     * @Route("/restore/{id}", name="admin_geocode_restore")
+     * @Route("/destroy/{id}", name="admin_geocode_destroy", methods={"DELETE"})
+     * @IgnoreSoftDelete
      */
-    public function delete(GeoCode $geoCode): Response
+    public function entityDeleteDestroyRestore(GeoCode $geoCode): Response
     {
-        return $this->adminCrudService->delete($geoCode);
+        return $this->adminCrudService->entityDeleteDestroyRestore($geoCode);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/empty", name="admin_geocode_empty", methods={"DELETE"})
+     */
+    public function empty(GeoCodeRepository $repository): Response
+    {
+        return $this->adminCrudService->empty($repository);
     }
 }

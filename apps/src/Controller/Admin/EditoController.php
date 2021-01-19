@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 
 /**
  * @Route("/admin/edito")
@@ -23,20 +24,32 @@ class EditoController extends AdminControllerLib
     protected string $urlHome = 'admin_edito_index';
 
     /**
+     * @Route("/trash", name="admin_edito_trash", methods={"GET"})
      * @Route("/", name="admin_edito_index", methods={"GET"})
      */
-    public function index(EditoRepository $editoRepository): Response
+    public function indexOrTrash(EditoRepository $repository): Response
     {
-        return $this->adminCrudService->list(
-            $editoRepository,
-            'findAllForAdmin',
-            'admin/edito/index.html.twig',
-            ['new' => 'admin_edito_new'],
+        return $this->adminCrudService->listOrTrash(
+            $repository,
             [
-                'list'   => 'admin_edito_index',
-                'show'   => 'admin_edito_show',
-                'edit'   => 'admin_edito_edit',
-                'delete' => 'admin_edito_delete',
+                'trash' => 'findTrashForAdmin',
+                'all'   => 'findAllForAdmin',
+            ],
+            'admin/edito/index.html.twig',
+            [
+                'new'   => 'admin_edito_new',
+                'empty' => 'admin_edito_empty',
+                'trash' => 'admin_edito_trash',
+                'list'  => 'admin_edito_index',
+            ],
+            [
+                'list'    => 'admin_edito_index',
+                'show'    => 'admin_edito_show',
+                'preview'    => 'admin_edito_preview',
+                'edit'    => 'admin_edito_edit',
+                'delete'  => 'admin_edito_delete',
+                'destroy' => 'admin_edito_destroy',
+                'restore' => 'admin_edito_restore',
             ]
         );
     }
@@ -61,25 +74,21 @@ class EditoController extends AdminControllerLib
 
     /**
      * @Route("/{id}", name="admin_edito_show", methods={"GET"})
+     * @Route("/preview/{id}", name="admin_edito_preview", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function show(Edito $edito, RouterInterface $router): Response
+    public function showOrPreview(Edito $edito, RouterInterface $router): Response
     {
-        $breadcrumb = [
-            'Show' => $router->generate(
-                'admin_edito_show',
-                [
-                    'id' => $edito->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->read(
+        return $this->adminCrudService->showOrPreview(
             $edito,
             'admin/edito/show.html.twig',
             [
                 'delete' => 'admin_edito_delete',
+                'restore' => 'admin_edito_restore',
+                'destroy' => 'admin_edito_destroy',
                 'edit'   => 'admin_edito_edit',
                 'list'   => 'admin_edito_index',
+                'trash'   => 'admin_edito_trash',
             ]
         );
     }
@@ -111,9 +120,21 @@ class EditoController extends AdminControllerLib
 
     /**
      * @Route("/delete/{id}", name="admin_edito_delete", methods={"DELETE"})
+     * @Route("/destroy/{id}", name="admin_edito_destroy", methods={"DELETE"})
+     * @Route("/restore/{id}", name="admin_edito_restore")
+     * @IgnoreSoftDelete
      */
-    public function delete(Edito $edito): Response
+    public function entityDeleteDestroyRestore(Edito $edito): Response
     {
-        return $this->adminCrudService->delete($edito);
+        return $this->adminCrudService->entityDeleteDestroyRestore($edito);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/empty", name="admin_edito_empty", methods={"DELETE"})
+     */
+    public function empty(EditoRepository $repository): Response
+    {
+        return $this->adminCrudService->empty($repository);
     }
 }

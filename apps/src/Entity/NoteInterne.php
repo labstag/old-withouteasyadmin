@@ -6,12 +6,17 @@ use DateTime;
 use Labstag\Repository\NoteInterneRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=NoteInterneRepository::class)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class NoteInterne
 {
+
+    use SoftDeleteableEntity;
 
     /**
      * @ORM\Id

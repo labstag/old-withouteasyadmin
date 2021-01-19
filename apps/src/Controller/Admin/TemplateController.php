@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 
 /**
  * @Route("/admin/template")
@@ -21,21 +22,34 @@ class TemplateController extends AdminControllerLib
     protected string $headerTitle = 'Template';
 
     protected string $urlHome = 'admin_template_index';
+
     /**
+     * @Route("/trash", name="admin_template_trash", methods={"GET"})
      * @Route("/", name="admin_template_index", methods={"GET"})
      */
-    public function index(TemplateRepository $templateRepository): Response
+    public function indexOrTrash(TemplateRepository $repository): Response
     {
-        return $this->adminCrudService->list(
-            $templateRepository,
-            'findAllForAdmin',
-            'admin/template/index.html.twig',
-            ['new' => 'admin_template_new'],
+        return $this->adminCrudService->listOrTrash(
+            $repository,
             [
-                'list'   => 'admin_template_index',
-                'show'   => 'admin_template_show',
-                'edit'   => 'admin_template_edit',
-                'delete' => 'admin_template_delete',
+                'trash' => 'findTrashForAdmin',
+                'all'   => 'findAllForAdmin',
+            ],
+            'admin/template/index.html.twig',
+            [
+                'new'   => 'admin_template_new',
+                'empty' => 'admin_template_empty',
+                'trash' => 'admin_template_trash',
+                'list'  => 'admin_template_index',
+            ],
+            [
+                'list'    => 'admin_template_index',
+                'show'    => 'admin_template_show',
+                'preview'    => 'admin_template_preview',
+                'edit'    => 'admin_template_edit',
+                'delete'  => 'admin_template_delete',
+                'destroy' => 'admin_template_destroy',
+                'restore' => 'admin_template_restore',
             ]
         );
     }
@@ -60,25 +74,21 @@ class TemplateController extends AdminControllerLib
 
     /**
      * @Route("/{id}", name="admin_template_show", methods={"GET"})
+     * @Route("/preview/{id}", name="admin_template_preview", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function show(Template $template, RouterInterface $router): Response
+    public function showOrPreview(Template $template, RouterInterface $router): Response
     {
-        $breadcrumb = [
-            'Show' => $router->generate(
-                'admin_template_show',
-                [
-                    'id' => $template->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->read(
+        return $this->adminCrudService->showOrPreview(
             $template,
             'admin/template/show.html.twig',
             [
                 'delete' => 'admin_template_delete',
+                'restore' => 'admin_template_restore',
+                'destroy' => 'admin_template_destroy',
                 'list'   => 'admin_template_index',
                 'edit'   => 'admin_template_edit',
+                'trash'   => 'admin_template_trash',
             ]
         );
     }
@@ -110,9 +120,21 @@ class TemplateController extends AdminControllerLib
 
     /**
      * @Route("/delete/{id}", name="admin_template_delete", methods={"DELETE"})
+     * @Route("/destroy/{id}", name="admin_template_destroy", methods={"DELETE"})
+     * @Route("/restore/{id}", name="admin_template_restore")
+     * @IgnoreSoftDelete
      */
-    public function delete(Template $template): Response
+    public function entityDeleteDestroyRestore(Template $template): Response
     {
-        return $this->adminCrudService->delete($template);
+        return $this->adminCrudService->entityDeleteDestroyRestore($template);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/empty", name="admin_template_empty", methods={"DELETE"})
+     */
+    public function empty(TemplateRepository $repository): Response
+    {
+        return $this->adminCrudService->empty($repository);
     }
 }

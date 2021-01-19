@@ -48,6 +48,46 @@ class AdminBoutonService
         return $this;
     }
 
+    public function addRestore(
+        string $route,
+        string $text = 'Restore',
+        array $routeParam = []
+    ): self
+    {
+        $attr = [];
+        if ($route != '') {
+            $attr['href'] = $this->router->generate($route, $routeParam);
+        }
+
+        $this->add(
+            'BtnAdminHeaderRestore',
+            $text,
+            $attr
+        );
+
+        return $this;
+    }
+
+    public function addDestroy(
+        string $route,
+        string $text = 'Destroy',
+        array $routeParam = []
+    ): self
+    {
+        $attr = [];
+        if ($route != '') {
+            $attr['href'] = $this->router->generate($route, $routeParam);
+        }
+
+        $this->add(
+            'BtnAdminHeaderDestroy',
+            $text,
+            $attr
+        );
+
+        return $this;
+    }
+
     public function addEdit(
         string $route,
         string $text = 'Editer',
@@ -139,6 +179,32 @@ class AdminBoutonService
     {
         $this->add(
             'BtnAdminHeaderNew',
+            $text,
+            [
+                'href' => $this->router->generate($route),
+            ]
+        );
+
+        return $this;
+    }
+
+    public function addBtnTrash(string $route, string $text = 'Corbeille'): self
+    {
+        $this->add(
+            'BtnAdminHeaderTrash',
+            $text,
+            [
+                'href' => $this->router->generate($route),
+            ]
+        );
+
+        return $this;
+    }
+
+    public function addBtnEmpty(string $route, string $text = 'Vider'): self
+    {
+        $this->add(
+            'BtnAdminHeaderEmpty',
             $text,
             [
                 'href' => $this->router->generate($route),

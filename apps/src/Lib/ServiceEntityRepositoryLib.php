@@ -36,6 +36,27 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $result;
     }
 
+    public function findTrashForAdmin(): array
+    {
+        $methods = get_class_methods($this);
+        $name    = '';
+
+        if (in_array('getClassMetadata', $methods)) {
+            $name = $this->getClassMetadata()->getName();
+        }
+
+        $dql = 'SELECT a FROM ' . $name . ' a';
+
+        $entityManager = $this->getEntityManager();
+        $entityManager->getFilters()->disable('softdeleteable');
+        $dql = $entityManager->createQueryBuilder();
+        $dql->select('a');
+        $dql->from($name, 'a');
+        $dql->where('a.deletedAt IS NOT NULL');
+
+        return $dql->getQuery()->getResult();
+    }
+
     public function findAllForAdmin(): Query
     {
         $methods = get_class_methods($this);

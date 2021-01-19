@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 
 /**
  * @Route("/admin/noteinterne")
@@ -22,21 +23,34 @@ class NoteInterneController extends AdminControllerLib
     protected string $headerTitle = 'Note interne';
 
     protected string $urlHome = 'admin_noteinterne_index';
+
     /**
+     * @Route("/trash", name="admin_noteinterne_trash", methods={"GET"})
      * @Route("/", name="admin_noteinterne_index", methods={"GET"})
      */
-    public function index(NoteInterneRepository $repository): Response
+    public function indexOrTrash(NoteInterneRepository $repository): Response
     {
-        return $this->adminCrudService->list(
+        return $this->adminCrudService->listOrTrash(
             $repository,
-            'findAllForAdmin',
-            'admin/note_interne/index.html.twig',
-            ['new' => 'admin_noteinterne_new'],
             [
-                'list'   => 'admin_noteinterne_index',
-                'show'   => 'admin_noteinterne_show',
-                'edit'   => 'admin_noteinterne_edit',
-                'delete' => 'admin_noteinterne_delete',
+                'trash' => 'findTrashForAdmin',
+                'all'   => 'findAllForAdmin',
+            ],
+            'admin/note_interne/index.html.twig',
+            [
+                'new'   => 'admin_noteinterne_new',
+                'empty' => 'admin_noteinterne_empty',
+                'trash' => 'admin_noteinterne_trash',
+                'list'  => 'admin_noteinterne_index',
+            ],
+            [
+                'list'    => 'admin_noteinterne_index',
+                'show'    => 'admin_noteinterne_show',
+                'preview'    => 'admin_noteinterne_preview',
+                'edit'    => 'admin_noteinterne_edit',
+                'delete'  => 'admin_noteinterne_delete',
+                'destroy' => 'admin_noteinterne_destroy',
+                'restore' => 'admin_noteinterne_restore',
             ]
         );
     }
@@ -61,28 +75,24 @@ class NoteInterneController extends AdminControllerLib
 
     /**
      * @Route("/{id}", name="admin_noteinterne_show", methods={"GET"})
+     * @Route("/preview/{id}", name="admin_noteinterne_preview", methods={"GET"})
+     * @IgnoreSoftDelete
      */
-    public function show(
+    public function showOrPreview(
         NoteInterne $noteInterne,
         RouterInterface $router
     ): Response
     {
-        $breadcrumb = [
-            'Show' => $router->generate(
-                'admin_noteinterne_show',
-                [
-                    'id' => $noteInterne->getId(),
-                ]
-            ),
-        ];
-        $this->adminCrudService->addBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->read(
+        return $this->adminCrudService->showOrPreview(
             $noteInterne,
             'admin/note_interne/show.html.twig',
             [
                 'delete' => 'admin_noteinterne_delete',
+                'restore' => 'admin_noteinterne_restore',
+                'destroy' => 'admin_noteinterne_destroy',
                 'list'   => 'admin_noteinterne_index',
                 'edit'   => 'admin_noteinterne_edit',
+                'trash'   => 'admin_noteinterne_trash',
             ]
         );
     }
@@ -121,9 +131,20 @@ class NoteInterneController extends AdminControllerLib
 
     /**
      * @Route("/delete/{id}", name="admin_noteinterne_delete", methods={"DELETE"})
+     * @Route("/destroy/{id}", name="admin_noteinterne_destroy", methods={"DELETE"})
+     * @Route("/restore/{id}", name="admin_noteinterne_restore")
+     * @IgnoreSoftDelete
      */
-    public function delete(NoteInterne $noteInterne): Response
+    public function entityDeleteDestroyRestore(NoteInterne $noteInterne): Response
     {
-        return $this->adminCrudService->delete($noteInterne);
+        return $this->adminCrudService->entityDeleteDestroyRestore($noteInterne);
+    }
+
+    /**
+     * @Route("/empty", name="admin_noteinterne_empty", methods={"DELETE"})
+     */
+    public function empty(NoteInterneRepository $repository): Response
+    {
+        return $this->adminCrudService->empty($repository);
     }
 }

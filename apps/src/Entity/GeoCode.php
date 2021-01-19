@@ -8,15 +8,20 @@ use Labstag\Repository\GeoCodeRepository;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass=GeoCodeRepository::class)
  * @ApiResource()
  * @ApiFilter(SearchFilter::class, properties={"countryCode": "exact", "postalCode": "exact", "placeName": "partial"})
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class GeoCode
 {
+
+    use SoftDeleteableEntity;
 
     /**
      * @ORM\Id

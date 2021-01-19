@@ -5,12 +5,17 @@ namespace Labstag\Entity;
 use Labstag\Repository\EditoRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=EditoRepository::class)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Edito
 {
+
+    use SoftDeleteableEntity;
 
     /**
      * @ORM\Id

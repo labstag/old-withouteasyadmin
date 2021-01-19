@@ -1,5 +1,5 @@
-{% macro show(entity, url) %}
-    {% set title = "Show"|trans %}
+{% macro show(entity, url, title) %}
+    {% set title = title|trans %}
     <link-show data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}"></link-show>
 {% endmacro %}
 {% macro edit(entity, url) %}
@@ -16,32 +16,32 @@
             data-redirect="{{ path(urlList) }}"
         {% endif %}
     ></link-delete>
-    {# <a href="#"
-        data-url="{{ path(urlDelete, {'id': entity.id}) }}"
-        data-token="{{ csrf_token('delete' ~ entity.id) }}"
-        class="btnAdminTableDelete"
-        title="{{ title }}"
-        data-toggle="modal"
-        data-target="#deleteModal"
-    {% if urlList != '' %} data-redirect="{{ path(urlList) }}"{% endif %}>
-        <i title="{{ title }}"></i>
-        <span>{{ title }}</span>
-    </a> #}
 {% endmacro %}
 {% macro actions (entity, actions) %}
     <div class="btngrouptable" role="group">
         {% if actions['show'] is defined %}
-            {{ _self.show(entity, actions['show']) }}
+            {% set urlShow = actions['show'] %}
+            {% set titleShow = 'show' %}
+            {% if app.request.attributes.get('_route')|split('trash')|length-1 != 0 %}
+                {% set urlShow = actions['preview'] %}
+                {% set titleShow = 'preview' %}
+            {% endif %}
+            {{ _self.show(entity, urlShow, titleShow) }}
         {% endif %}
-        {% if actions['edit'] is defined %}
+        {% if actions['edit'] is defined and 0 == app.request.attributes.get('_route')|split('trash')|length-1 %}
             {{ _self.edit(entity, actions['edit']) }}
         {% endif %}
         {% if actions['delete'] is defined %}
+            {% set urlDelete = actions['delete'] %}
             {% set urlList = '' %}
             {% if actions['list'] is defined %}
                 {% set urlList = actions['list'] %}
             {% endif %}
-            {{ _self.delete(entity, actions['delete'], urlList) }}
+            {% if app.request.attributes.get('_route')|split('trash')|length-1 != 0 %}
+                {% set urlList = app.request.attributes.get('_route') %}
+                {% set urlDelete = actions['destroy'] %}
+            {% endif %}
+            {{ _self.delete(entity, urlDelete, urlList) }}
         {% endif %}
     </div>
 {% endmacro %}
