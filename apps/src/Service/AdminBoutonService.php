@@ -48,13 +48,15 @@ class AdminBoutonService
         return $this;
     }
 
-    public function addRestore(
+    public function addBtnRestore(
         string $route,
         string $text = 'Restore',
         array $routeParam = []
     ): self
     {
-        $attr = [];
+        $attr = [
+            'is'          => 'link-btnadminrestore',
+        ];
         if ($route != '') {
             $attr['href'] = $this->router->generate($route, $routeParam);
         }
@@ -68,7 +70,7 @@ class AdminBoutonService
         return $this;
     }
 
-    public function addDestroy(
+    public function addBtnDestroy(
         string $route,
         string $text = 'Destroy',
         array $routeParam = []
@@ -88,7 +90,7 @@ class AdminBoutonService
         return $this;
     }
 
-    public function addEdit(
+    public function addBtnEdit(
         string $route,
         string $text = 'Editer',
         array $routeParam = []
@@ -207,6 +209,8 @@ class AdminBoutonService
             'BtnAdminHeaderEmpty',
             $text,
             [
+
+                'is'   => 'link-btnadminempty',
                 'href' => $this->router->generate($route),
             ]
         );

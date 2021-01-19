@@ -263,7 +263,7 @@ class AdminCrudService
         }
 
         if (isset($url['edit']) && 'show' == $routeType) {
-            $this->adminBoutonService->addEdit(
+            $this->adminBoutonService->addBtnEdit(
                 $url['edit'],
                 'Editer',
                 [
@@ -273,7 +273,7 @@ class AdminCrudService
         }
 
         if (isset($url['restore']) && 'preview' == $routeType) {
-            $this->adminBoutonService->addRestore(
+            $this->adminBoutonService->addBtnRestore(
                 $url['restore'],
                 'Restore',
                 [
@@ -283,7 +283,7 @@ class AdminCrudService
         }
 
         if (isset($url['destroy']) && 'preview' == $routeType) {
-            $this->adminBoutonService->addDestroy(
+            $this->adminBoutonService->addBtnDestroy(
                 $url['destroy'],
                 'Destroy',
                 [
