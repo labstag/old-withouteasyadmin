@@ -217,7 +217,7 @@ class AdminCrudService
             }
         }
 
-        if (isset($url['new'])) {
+        if (isset($url['new']) && 'trash' != $routeType) {
             $this->adminBoutonService->addBtnNew(
                 $url['new']
             );
