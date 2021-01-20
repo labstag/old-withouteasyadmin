@@ -14,6 +14,7 @@ use Labstag\Form\Security\LoginType;
 use Labstag\Form\Security\LostPasswordType;
 use Labstag\Lib\ControllerLib;
 use Labstag\Repository\OauthConnectUserRepository;
+use Labstag\RequestHandler\EmailRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
@@ -279,7 +280,10 @@ class SecurityController extends ControllerLib
     /**
      * @Route("/confirm/email/{id}", name="app_confirm_mail")
      */
-    public function confirmEmail(Email $email): RedirectResponse
+    public function confirmEmail(
+        Email $email,
+        EmailRequestHandler $emailRequestHandler
+    ): RedirectResponse
     {
         if ($email->isVerif()) {
             $this->addFlash('danger', 'Courriel déjà confirmé');
@@ -288,9 +292,8 @@ class SecurityController extends ControllerLib
         }
 
         $email->setVerif(true);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($email);
-        $entityManager->flush();
+        $old = clone $email;
+        $emailRequestHandler->update($old, $clone);
         $this->addFlash('success', 'Courriel confirmé');
 
         return $this->redirect($this->generateUrl('front'), 302);
@@ -299,7 +302,10 @@ class SecurityController extends ControllerLib
     /**
      * @Route("/confirm/user/{id}", name="app_confirm_user")
      */
-    public function confirmUser(User $user): RedirectResponse
+    public function confirmUser(
+        User $user,
+        UserRequestHandler $userRequestHandler
+    ): RedirectResponse
     {
         if ($user->isVerif()) {
             $this->addFlash('danger', 'Utilisation déjà activé');
@@ -308,9 +314,8 @@ class SecurityController extends ControllerLib
         }
 
         $user->setVerif(true);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($user);
-        $entityManager->flush();
+        $old = clone $user;
+        $userRequestHandler->update($old, $user);
         $this->addFlash('success', 'Utilisation activé');
 
         return $this->redirect($this->generateUrl('front'), 302);

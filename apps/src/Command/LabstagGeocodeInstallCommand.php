@@ -5,6 +5,7 @@ namespace Labstag\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\GeoCode;
 use Labstag\Repository\GeoCodeRepository;
+use Labstag\RequestHandler\GeoCodeRequestHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,13 +27,17 @@ class LabstagGeocodeInstallCommand extends Command
 
     protected EntityManagerInterface $entityManager;
 
+    protected GeoCodeRequestHandler $geoCodeRH;
+
     public function __construct(
         GeoCodeRepository $repository,
         EntityManagerInterface $entityManager,
         HttpClientInterface $client,
-        string $name = null
+        GeoCodeRequestHandler $geoCodeRH,
+        string $name = null,
     )
     {
+        $this->geoCodeRH     = $geoCodeRH;
         $this->entityManager = $entityManager;
         $this->repository    = $repository;
         $this->client        = $client;
@@ -101,6 +106,7 @@ class LabstagGeocodeInstallCommand extends Command
                     $entity->setPlaceName($row[2]);
                 }
 
+                $old = clone $entity;
                 $entity->setStateName($row[3]);
                 $entity->setStateCode($row[4]);
                 $entity->setProvinceName($row[5]);
@@ -110,10 +116,9 @@ class LabstagGeocodeInstallCommand extends Command
                 $entity->setLatitude($row[9]);
                 $entity->setLongitude($row[10]);
                 $entity->setAccuracy((int) $row[11]);
-                $this->entityManager->persist($entity);
+                $this->$this->geoCodeRH($old, $entity);
             }
 
-            $this->entityManager->flush();
             $zip->close();
         }
 

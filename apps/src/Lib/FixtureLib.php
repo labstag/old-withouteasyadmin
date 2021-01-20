@@ -4,7 +4,6 @@ namespace Labstag\Lib;
 
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\AdresseUser;
 use Labstag\Entity\Edito;
@@ -26,15 +25,12 @@ use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\OauthService;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 
 abstract class FixtureLib extends Fixture
 {
 
     protected UserRepository $userRepository;
-
-    protected EventDispatcherInterface $dispatcher;
 
     protected OauthService $oauthService;
 
@@ -64,7 +60,6 @@ abstract class FixtureLib extends Fixture
         OauthService $oauthService,
         UserRepository $userRepository,
         GroupeRepository $groupeRepository,
-        EventDispatcherInterface $dispatcher,
         Environment $twig,
         EmailUserRequestHandler $emailUserRH,
         LienUserRequestHandler $lienUserRH,
@@ -78,7 +73,6 @@ abstract class FixtureLib extends Fixture
     )
     {
         $this->twig             = $twig;
-        $this->dispatcher       = $dispatcher;
         $this->userRepository   = $userRepository;
         $this->oauthService     = $oauthService;
         $this->groupeRepository = $groupeRepository;

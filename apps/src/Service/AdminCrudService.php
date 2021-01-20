@@ -8,7 +8,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\AdminBoutonService;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -43,8 +42,6 @@ class AdminCrudService
 
     private SessionInterface $session;
 
-    private EventDispatcherInterface $dispatcher;
-
     private Environment $twig;
 
     private AdminControllerLib $controller;
@@ -62,12 +59,10 @@ class AdminCrudService
         RouterInterface $router,
         CsrfTokenManagerInterface $csrfTokenManager,
         EntityManagerInterface $entityManager,
-        SessionInterface $session,
-        EventDispatcherInterface $dispatcher
+        SessionInterface $session
     )
     {
         $this->twig             = $twig;
-        $this->dispatcher       = $dispatcher;
         $this->session          = $session;
         $this->entityManager    = $entityManager;
         $this->csrfTokenManager = $csrfTokenManager;
@@ -514,7 +509,6 @@ class AdminCrudService
         $state        = false;
         $csrfToken    = $this->setEntityCsrf($routeCurrent, $entity, $token);
 
-        dump($csrfToken);
         if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
             if (0 != substr_count($routeCurrent, '_destroy')) {
                 $this->entityManager->remove($entity);
