@@ -36,9 +36,9 @@ class EditoWorkflowSubscriber implements EventSubscriberInterface
     {
         return [
             'workflow.edito.guard.submit' => 'onWorkflowEditoGuardSubmit',
-            'workflow.edito.transition' => 'onWorkflowEditoTransition',
-            'workflow.edito.enter' => 'onWorkflowEditoEnter',
-            'workflow.edito.leave' => 'onWorkflowEditoLeave',
+            'workflow.edito.transition'   => 'onWorkflowEditoTransition',
+            'workflow.edito.enter'        => 'onWorkflowEditoEnter',
+            'workflow.edito.leave'        => 'onWorkflowEditoLeave',
         ];
     }
 }

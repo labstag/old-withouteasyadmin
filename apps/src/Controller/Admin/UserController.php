@@ -66,8 +66,8 @@ class UserController extends AdminControllerLib
         return $this->adminCrudService->create(
             $user,
             UserType::class,
-            ['list' => 'admin_user_index'],
-            $requestHandler
+            $requestHandler,
+            ['list' => 'admin_user_index']
         );
     }
 
@@ -100,12 +100,12 @@ class UserController extends AdminControllerLib
         return $this->adminCrudService->update(
             UserType::class,
             $user,
+            $requestHandler,
             [
                 'delete' => 'admin_user_delete',
                 'list'   => 'admin_user_index',
                 'show'   => 'admin_user_show',
-            ],
-            $requestHandler
+            ]
         );
     }
 

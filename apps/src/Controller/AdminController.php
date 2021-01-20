@@ -71,8 +71,8 @@ class AdminController extends AdminControllerLib
         return $this->adminCrudService->update(
             ProfilType::class,
             $security->getUser(),
-            [],
             $requestHandler,
+            [],
             'admin/profil.html.twig'
         );
     }

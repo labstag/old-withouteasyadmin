@@ -64,8 +64,8 @@ class EditoController extends AdminControllerLib
         return $this->adminCrudService->create(
             new Edito(),
             EditoType::class,
-            ['list' => 'admin_edito_index'],
-            $requestHandler
+            $requestHandler,
+            ['list' => 'admin_edito_index']
         );
     }
 
@@ -98,12 +98,12 @@ class EditoController extends AdminControllerLib
         return $this->adminCrudService->update(
             EditoType::class,
             $edito,
+            $requestHandler,
             [
                 'delete' => 'admin_edito_delete',
                 'list'   => 'admin_edito_index',
                 'show'   => 'admin_edito_show',
-            ],
-            $requestHandler
+            ]
         );
     }
 

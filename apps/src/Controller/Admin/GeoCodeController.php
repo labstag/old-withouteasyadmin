@@ -60,8 +60,8 @@ class GeoCodeController extends AdminControllerLib
         return $this->adminCrudService->create(
             new GeoCode(),
             GeoCodeType::class,
-            ['list' => 'admin_geocode_index'],
-            $requestHandler
+            $requestHandler,
+            ['list' => 'admin_geocode_index']
         );
     }
 
@@ -94,12 +94,12 @@ class GeoCodeController extends AdminControllerLib
         return $this->adminCrudService->update(
             GeoCodeType::class,
             $geoCode,
+            $requestHandler,
             [
                 'delete' => 'admin_geocode_delete',
                 'list'   => 'admin_geocode_index',
                 'show'   => 'admin_geocode_show',
-            ],
-            $requestHandler
+            ]
         );
     }
 

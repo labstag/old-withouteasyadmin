@@ -13,11 +13,12 @@ class NoteInterneFixtures extends FixtureLib implements DependentFixtureInterfac
 
     public function load(ObjectManager $manager): void
     {
+        unset($manager);
         $users   = $this->userRepository->findAll();
         $faker   = Factory::create('fr_FR');
         $maxDate = $faker->unique()->dateTimeInInterval('now', '+30 years');
         for ($index = 0; $index < self::NUMBER; ++$index) {
-            $this->addNoteInterne($users, $faker, $index, $manager, $maxDate);
+            $this->addNoteInterne($users, $faker, $index, $maxDate);
         }
     }
 

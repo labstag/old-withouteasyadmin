@@ -24,7 +24,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
     private RequestStack $requestStack;
 
     /**
-     * 
+     *
      * @var Request|null
      */
     private $request;

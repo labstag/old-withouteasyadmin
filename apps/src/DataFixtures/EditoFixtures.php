@@ -14,11 +14,12 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
+        unset($manager);
         $users = $this->userRepository->findAll();
         $faker = Factory::create('fr_FR');
         /** @var resource $finfo */
         for ($index = 0; $index < self::NUMBER; ++$index) {
-            $this->addEdito($users, $faker, $index, $manager);
+            $this->addEdito($users, $faker, $index);
         }
     }
 

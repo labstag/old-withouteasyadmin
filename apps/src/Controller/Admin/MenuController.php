@@ -64,8 +64,8 @@ class MenuController extends AdminControllerLib
         return $this->adminCrudService->create(
             new Menu(),
             MenuType::class,
-            ['list' => 'admin_menu_index'],
-            $requestHandler
+            $requestHandler,
+            ['list' => 'admin_menu_index']
         );
     }
 
@@ -98,12 +98,12 @@ class MenuController extends AdminControllerLib
         return $this->adminCrudService->update(
             MenuType::class,
             $menu,
+            $requestHandler,
             [
                 'delete' => 'admin_menu_delete',
                 'list'   => 'admin_menu_index',
                 'show'   => 'admin_menu_show',
-            ],
-            $requestHandler
+            ]
         );
     }
 

@@ -64,8 +64,8 @@ class TemplateController extends AdminControllerLib
         return $this->adminCrudService->create(
             new Template(),
             TemplateType::class,
-            ['list' => 'admin_template_index'],
-            $requestHandler
+            $requestHandler,
+            ['list' => 'admin_template_index']
         );
     }
 
@@ -98,12 +98,12 @@ class TemplateController extends AdminControllerLib
         return $this->adminCrudService->update(
             TemplateType::class,
             $template,
+            $requestHandler,
             [
                 'delete' => 'admin_template_delete',
                 'list'   => 'admin_template_index',
                 'show'   => 'admin_template_show',
-            ],
-            $requestHandler
+            ]
         );
     }
 

@@ -35,28 +35,30 @@ abstract class FixtureLib extends Fixture
     protected UserRepository $userRepository;
 
     protected EventDispatcherInterface $dispatcher;
-    
+
     protected OauthService $oauthService;
-    
+
     protected Environment $twig;
 
     protected GroupeRepository $groupeRepository;
 
-    protected EmailUserRequestHandler $emailUserRequestHandler;
+    protected EmailUserRequestHandler $emailUserRH;
 
-    protected LienUserRequestHandler $lienUserRequestHandler;
-    
-    protected NoteInterneRequestHandler $noteInterneRequestHandler;
+    protected LienUserRequestHandler $lienUserRH;
 
-    protected GroupeRequestHandler $groupeRequestHandler;
+    protected NoteInterneRequestHandler $noteInterneRH;
 
-    protected EditoRequestHandler $editoRequestHandler;
+    protected GroupeRequestHandler $groupeRH;
 
-    protected PhoneUserRequestHandler $phoneUserRequestHandler;
+    protected EditoRequestHandler $editoRH;
 
-    protected AdresseUserRequestHandler $adresseUserRequestHandler;
+    protected PhoneUserRequestHandler $phoneUserRH;
 
-    protected TemplateRequestHandler $templateRequestHandler;
+    protected AdresseUserRequestHandler $adresseUserRH;
+
+    protected TemplateRequestHandler $templateRH;
+
+    protected UserRequestHandler $userRH;
 
     public function __construct(
         OauthService $oauthService,
@@ -64,31 +66,31 @@ abstract class FixtureLib extends Fixture
         GroupeRepository $groupeRepository,
         EventDispatcherInterface $dispatcher,
         Environment $twig,
-        EmailUserRequestHandler $emailUserRequestHandler,
-        LienUserRequestHandler $lienUserRequestHandler,
-        NoteInterneRequestHandler $noteInterneRequestHandler,
-        GroupeRequestHandler $groupeRequestHandler,
-        EditoRequestHandler $editoRequestHandler,
-        UserRequestHandler $userRequestHandler,
-        PhoneUserRequestHandler $phoneUserRequestHandler,
-        AdresseUserRequestHandler $adresseUserRequestHandler,
-        TemplateRequestHandler $templateRequestHandler
+        EmailUserRequestHandler $emailUserRH,
+        LienUserRequestHandler $lienUserRH,
+        NoteInterneRequestHandler $noteInterneRH,
+        GroupeRequestHandler $groupeRH,
+        EditoRequestHandler $editoRH,
+        UserRequestHandler $userRH,
+        PhoneUserRequestHandler $phoneUserRH,
+        AdresseUserRequestHandler $adresseUserRH,
+        TemplateRequestHandler $templateRH
     )
     {
-        $this->twig = $twig;
-        $this->dispatcher     = $dispatcher;
-        $this->userRepository = $userRepository;
-        $this->oauthService = $oauthService;
+        $this->twig             = $twig;
+        $this->dispatcher       = $dispatcher;
+        $this->userRepository   = $userRepository;
+        $this->oauthService     = $oauthService;
         $this->groupeRepository = $groupeRepository;
-        $this->templateRequestHandler = $templateRequestHandler;
-        $this->adresseUserRequestHandler = $adresseUserRequestHandler;
-        $this->phoneUserRequestHandler = $phoneUserRequestHandler;
-        $this->userRequestHandler = $userRequestHandler;
-        $this->editoRequestHandler = $editoRequestHandler;
-        $this->groupeRequestHandler = $groupeRequestHandler;
-        $this->noteInterneRequestHandler = $noteInterneRequestHandler;
-        $this->lienUserRequestHandler = $lienUserRequestHandler;
-        $this->emailUserRequestHandler = $emailUserRequestHandler;
+        $this->templateRH       = $templateRH;
+        $this->adresseUserRH    = $adresseUserRH;
+        $this->phoneUserRH      = $phoneUserRH;
+        $this->userRH           = $userRH;
+        $this->editoRH          = $editoRH;
+        $this->groupeRH         = $groupeRH;
+        $this->noteInterneRH    = $noteInterneRH;
+        $this->lienUserRH       = $lienUserRH;
+        $this->emailUserRH      = $emailUserRH;
     }
 
     private function getGroupe(array $groupes, string $code): ?Groupe
@@ -104,21 +106,19 @@ abstract class FixtureLib extends Fixture
 
     protected function addEmail(
         Generator $faker,
-        User $user,
-        ObjectManager $manager
+        User $user
     ): void
     {
         $email = new EmailUser();
         $old   = clone $email;
         $email->setRefuser($user);
         $email->setAdresse($faker->safeEmail);
-        $this->emailUserRequestHandler->create($old, $email);
+        $this->emailUserRH->create($old, $email);
     }
 
     protected function addLink(
         Generator $faker,
-        User $user,
-        ObjectManager $manager
+        User $user
     ): void
     {
         $lien = new LienUser();
@@ -126,19 +126,18 @@ abstract class FixtureLib extends Fixture
         $lien->setRefUser($user);
         $lien->setName($faker->word());
         $lien->setAdresse($faker->url);
-        $this->lienUserRequestHandler->create($old, $lien);
+        $this->lienUserRH->create($old, $lien);
     }
 
     protected function addNoteInterne(
         array $users,
         Generator $faker,
         int $index,
-        ObjectManager $manager,
         DateTime $maxDate
     ): void
     {
         $noteinterne = new NoteInterne();
-        $old = clone $noteinterne;
+        $old         = clone $noteinterne;
         $random      = $faker->numberBetween(5, 50);
         $noteinterne->setTitle($faker->text($random));
         $noteinterne->setEnable((bool) $faker->numberBetween(0, 1));
@@ -156,31 +155,29 @@ abstract class FixtureLib extends Fixture
         /** @var User $user */
         $user = $users[$tabIndex];
         $noteinterne->setRefuser($user);
-        $this->noteInterneRequestHandler->create($old, $noteinterne);
+        $this->noteInterneRH->create($old, $noteinterne);
     }
 
     protected function addGroupe(
-        ObjectManager $manager,
         int $key,
         string $row
     ): void
     {
         $groupe = new Groupe();
-        $old = clone $groupe;
+        $old    = clone $groupe;
         $groupe->setName($row);
         $this->addReference('groupe_' . $key, $groupe);
-        $this->groupeRequestHandler->create($old, $groupe);
+        $this->groupeRH->create($old, $groupe);
     }
 
     protected function addEdito(
         array $users,
         Generator $faker,
-        int $index,
-        ObjectManager $manager
+        int $index
     ): void
     {
-        $edito = new Edito();
-        $old = clone $edito;
+        $edito  = new Edito();
+        $old    = clone $edito;
         $random = $faker->numberBetween(5, 50);
         $edito->setTitle($faker->text($random));
         $enable = ($index == 0) ? true : false;
@@ -193,18 +190,18 @@ abstract class FixtureLib extends Fixture
         /** @var User $user */
         $user = $users[$tabIndex];
         $edito->setRefuser($user);
-        $this->editoRequestHandler->create($old, $edito);
+        $this->editoRH->create($old, $edito);
     }
 
     protected function addUser(
         array $groupes,
         int $index,
-        array $dataUser,
-        ObjectManager $manager
+        array $dataUser
     ): void
     {
         $user = new User();
-        $old  = clone $user;;
+        $old  = clone $user;
+
         $user->setGroupe($this->getGroupe($groupes, $dataUser['groupe']));
         $user->setEnable($dataUser['enable']);
         $user->setVerif($dataUser['verif']);
@@ -213,13 +210,12 @@ abstract class FixtureLib extends Fixture
         $user->setPlainPassword($dataUser['password']);
         $user->setEmail($dataUser['email']);
         $this->addReference('user_' . $index, $user);
-        $this->userRequestHandler->create($old, $user);
+        $this->userRH->create($old, $user);
     }
 
     protected function addPhone(
         Generator $faker,
-        User $user,
-        ObjectManager $manager
+        User $user
     ): void
     {
         $number = $faker->e164PhoneNumber;
@@ -229,13 +225,12 @@ abstract class FixtureLib extends Fixture
         $phone->setNumero($number);
         $phone->setType($faker->word());
         $phone->setCountry($faker->countryCode);
-        $this->phoneUserRequestHandler->create($old, $phone);
+        $this->phoneUserRH->create($old, $phone);
     }
 
     protected function addAdresse(
         Generator $faker,
-        User $user,
-        ObjectManager $manager
+        User $user
     ): void
     {
         $adresse = new AdresseUser();
@@ -251,6 +246,6 @@ abstract class FixtureLib extends Fixture
         $gps       = $latitude . ',' . $longitude;
         $adresse->setGps($gps);
         $adresse->setPmr((bool) $faker->numberBetween(0, 1));
-        $this->adresseUserRequestHandler->create($old, $adresse);
+        $this->adresseUserRH->create($old, $adresse);
     }
 }

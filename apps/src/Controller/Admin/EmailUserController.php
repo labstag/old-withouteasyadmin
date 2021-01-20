@@ -64,8 +64,8 @@ class EmailUserController extends AdminControllerLib
         return $this->adminCrudService->create(
             new EmailUser(),
             EmailUserType::class,
-            ['list' => 'admin_emailuser_index'],
-            $requestHandler
+            $requestHandler,
+            ['list' => 'admin_emailuser_index']
         );
     }
 
@@ -102,12 +102,12 @@ class EmailUserController extends AdminControllerLib
         return $this->adminCrudService->update(
             EmailUserType::class,
             $emailUser,
+            $requestHandler,
             [
                 'delete' => 'admin_emailuser_delete',
                 'list'   => 'admin_emailuser_index',
                 'show'   => 'admin_emailuser_show',
-            ],
-            $requestHandler
+            ]
         );
     }
 

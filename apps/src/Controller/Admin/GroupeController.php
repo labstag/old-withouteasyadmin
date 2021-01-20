@@ -62,8 +62,8 @@ class GroupeController extends AdminControllerLib
         return $this->adminCrudService->create(
             new Groupe(),
             GroupeType::class,
-            ['list' => 'admin_groupuser_index'],
-            $requestHandler
+            $requestHandler,
+            ['list' => 'admin_groupuser_index']
         );
     }
 
@@ -96,12 +96,12 @@ class GroupeController extends AdminControllerLib
         return $this->adminCrudService->update(
             GroupeType::class,
             $groupe,
+            $requestHandler,
             [
                 'delete' => 'admin_groupuser_delete',
                 'list'   => 'admin_groupuser_index',
                 'show'   => 'admin_groupuser_show',
-            ],
-            $requestHandler
+            ]
         );
     }
 

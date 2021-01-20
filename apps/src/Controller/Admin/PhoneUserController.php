@@ -64,8 +64,8 @@ class PhoneUserController extends AdminControllerLib
         return $this->adminCrudService->create(
             new PhoneUser(),
             PhoneUserType::class,
-            ['list' => 'admin_phoneuser_index'],
-            $requestHandler
+            $requestHandler,
+            ['list' => 'admin_phoneuser_index']
         );
     }
 
@@ -102,12 +102,12 @@ class PhoneUserController extends AdminControllerLib
         return $this->adminCrudService->update(
             PhoneUserType::class,
             $phoneUser,
+            $requestHandler,
             [
                 'delete' => 'admin_phoneuser_delete',
                 'list'   => 'admin_phoneuser_index',
                 'show'   => 'admin_phoneuser_show',
-            ],
-            $requestHandler
+            ]
         );
     }
 

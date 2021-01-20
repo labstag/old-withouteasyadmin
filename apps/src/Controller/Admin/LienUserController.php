@@ -64,8 +64,8 @@ class LienUserController extends AdminControllerLib
         return $this->adminCrudService->create(
             new LienUser(),
             LienUserType::class,
-            ['list' => 'admin_lienuser_index'],
-            $requestHandler
+            $requestHandler,
+            ['list' => 'admin_lienuser_index']
         );
     }
 
@@ -98,12 +98,12 @@ class LienUserController extends AdminControllerLib
         return $this->adminCrudService->update(
             LienUserType::class,
             $lienUser,
+            $requestHandler,
             [
                 'delete' => 'admin_lienuser_delete',
                 'list'   => 'admin_lienuser_index',
                 'show'   => 'admin_lienuser_show',
-            ],
-            $requestHandler
+            ]
         );
     }
 

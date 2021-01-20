@@ -65,8 +65,8 @@ class NoteInterneController extends AdminControllerLib
         return $this->adminCrudService->create(
             new NoteInterne(),
             NoteInterneType::class,
-            ['list' => 'admin_noteinterne_index'],
-            $requestHandler
+            $requestHandler,
+            ['list' => 'admin_noteinterne_index']
         );
     }
 
@@ -103,12 +103,12 @@ class NoteInterneController extends AdminControllerLib
         return $this->adminCrudService->update(
             NoteInterneType::class,
             $noteInterne,
+            $requestHandler,
             [
                 'delete' => 'admin_noteinterne_delete',
                 'list'   => 'admin_noteinterne_index',
                 'show'   => 'admin_noteinterne_show',
-            ],
-            $requestHandler
+            ]
         );
     }
 

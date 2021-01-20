@@ -66,15 +66,11 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
+        unset($manager);
         $users   = $this->getUsers();
         $groupes = $this->groupeRepository->findAll();
         foreach ($users as $index => $user) {
-            $this->addUser(
-                $groupes,
-                $index,
-                $user,
-                $manager
-            );
+            $this->addUser($groupes, $index, $user);
         }
     }
 

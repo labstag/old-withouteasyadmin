@@ -31,9 +31,9 @@ abstract class RequestHandlerLib
         if (!$this->workflows->has($entity)) {
             return;
         }
-        
-        $workflow = $this->workflows->get($entity);
-        $definition = $workflow->getDefinition();
+
+        $workflow    = $this->workflows->get($entity);
+        $definition  = $workflow->getDefinition();
         $transitions = $definition->getTransitions();
         foreach ($transitions as $transition) {
             $name = $transition->getName();

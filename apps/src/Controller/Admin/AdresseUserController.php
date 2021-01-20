@@ -64,8 +64,8 @@ class AdresseUserController extends AdminControllerLib
         return $this->adminCrudService->create(
             new AdresseUser(),
             AdresseUserType::class,
-            ['list' => 'admin_adresseuser_index'],
-            $requestHandler
+            $requestHandler,
+            ['list' => 'admin_adresseuser_index']
         );
     }
 
@@ -102,12 +102,12 @@ class AdresseUserController extends AdminControllerLib
         return $this->adminCrudService->update(
             AdresseUserType::class,
             $adresseUser,
+            $requestHandler,
             [
                 'delete' => 'admin_adresseuser_delete',
                 'list'   => 'admin_adresseuser_index',
                 'show'   => 'admin_adresseuser_show',
-            ],
-            $requestHandler
+            ]
         );
     }
 
