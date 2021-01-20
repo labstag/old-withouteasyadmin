@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\AdresseUserRequestHandler;
 
 /**
  * @Route("/admin/user/adresse")
@@ -58,12 +59,13 @@ class AdresseUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_adresseuser_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(AdresseUserRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new AdresseUser(),
             AdresseUserType::class,
-            ['list' => 'admin_adresseuser_index']
+            ['list' => 'admin_adresseuser_index'],
+            $requestHandler
         );
     }
 
@@ -95,7 +97,7 @@ class AdresseUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(AdresseUser $adresseUser): Response
+    public function edit(AdresseUser $adresseUser, AdresseUserRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             AdresseUserType::class,
@@ -104,7 +106,8 @@ class AdresseUserController extends AdminControllerLib
                 'delete' => 'admin_adresseuser_delete',
                 'list'   => 'admin_adresseuser_index',
                 'show'   => 'admin_adresseuser_show',
-            ]
+            ],
+            $requestHandler
         );
     }
 

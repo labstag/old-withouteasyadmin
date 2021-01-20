@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\MenuRequestHandler;
 
 /**
  * @Route("/admin/menu")
@@ -58,12 +59,13 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_menu_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(MenuRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new Menu(),
             MenuType::class,
-            ['list' => 'admin_menu_index']
+            ['list' => 'admin_menu_index'],
+            $requestHandler
         );
     }
 
@@ -91,7 +93,7 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_menu_edit", methods={"GET","POST"})
      */
-    public function edit(Menu $menu): Response
+    public function edit(Menu $menu, MenuRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             MenuType::class,
@@ -100,7 +102,8 @@ class MenuController extends AdminControllerLib
                 'delete' => 'admin_menu_delete',
                 'list'   => 'admin_menu_index',
                 'show'   => 'admin_menu_show',
-            ]
+            ],
+            $requestHandler
         );
     }
 

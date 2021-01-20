@@ -1,0 +1,80 @@
+framework:
+  workflows:
+    edito:
+      type: 'state_machine' # or 'state_machine'
+      audit_trail:
+        enabled: true
+      marking_store:
+        type: 'method'
+        property: 'state'
+      supports:
+        - Labstag\Entity\Edito
+      initial_marking: start
+      places:
+        start:
+          metadata:
+            description: Human review
+            bg_color: DeepSkyBlue
+        coding:
+          metadata:
+            description: Human review
+            bg_color: DeepSkyBlue
+        test:
+          metadata:
+            description: Human review
+            bg_color: DeepSkyBlue
+        review:
+          metadata:
+            description: Human review
+            bg_color: DeepSkyBlue
+        merged:
+          metadata:
+            description: Human review
+            bg_color: DeepSkyBlue
+        closed:
+          metadata:
+            description: Human review
+            bg_color: DeepSkyBlue
+      transitions:
+        submit:
+            from: start
+            to: test
+            metadata:
+              label: Accept PR
+              arrow_color: Turquoise
+        update:
+            from: [coding, test, review]
+            to: test
+            metadata:
+              label: Accept PR
+              arrow_color: Turquoise
+        wait_for_review:
+            from: test
+            to: review
+            metadata:
+              label: Accept PR
+              arrow_color: Turquoise
+        request_change:
+            from: review
+            to: coding
+            metadata:
+              label: Accept PR
+              arrow_color: Turquoise
+        accept:
+            from: review
+            to: merged
+            metadata:
+              label: Accept PR
+              arrow_color: Turquoise
+        reject:
+            from: review
+            to: closed
+            metadata:
+              label: Accept PR
+              arrow_color: Turquoise
+        reopen:
+            from: closed
+            to: review
+            metadata:
+              label: Accept PR
+              arrow_color: Turquoise

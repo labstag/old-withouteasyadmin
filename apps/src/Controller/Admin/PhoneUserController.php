@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\PhoneUserRequestHandler;
 
 /**
  * @Route("/admin/user/phone")
@@ -58,12 +59,13 @@ class PhoneUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(PhoneUserRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new PhoneUser(),
             PhoneUserType::class,
-            ['list' => 'admin_phoneuser_index']
+            ['list' => 'admin_phoneuser_index'],
+            $requestHandler
         );
     }
 
@@ -95,7 +97,7 @@ class PhoneUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(PhoneUser $phoneUser): Response
+    public function edit(PhoneUser $phoneUser, PhoneUserRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             PhoneUserType::class,
@@ -104,7 +106,8 @@ class PhoneUserController extends AdminControllerLib
                 'delete' => 'admin_phoneuser_delete',
                 'list'   => 'admin_phoneuser_index',
                 'show'   => 'admin_phoneuser_show',
-            ]
+            ],
+            $requestHandler
         );
     }
 

@@ -6,7 +6,6 @@ use Exception;
 use Labstag\Entity\Email;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
-use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\GenericProviderLib;
 use Labstag\Form\Security\ChangePasswordType;
 use Labstag\Form\Security\DisclaimerType;
@@ -15,13 +14,12 @@ use Labstag\Form\Security\LoginType;
 use Labstag\Form\Security\LostPasswordType;
 use Labstag\Lib\ControllerLib;
 use Labstag\Repository\OauthConnectUserRepository;
+use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
 use Labstag\Service\UserService;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
-use LogicException;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -324,7 +322,7 @@ class SecurityController extends ControllerLib
     public function changePassword(
         User $user,
         Request $request,
-        EventDispatcherInterface $dispatcher
+        UserRequestHandler $requestHandler
     ): Response
     {
         if (!$user->isLost()) {
@@ -336,14 +334,9 @@ class SecurityController extends ControllerLib
         $form = $this->createForm(ChangePasswordType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $old           = clone $user;
+            $old = clone $user;
             $user->setLost(false);
-            $entityManager->persist($user);
-            $entityManager->flush();
-            $dispatcher->dispatch(
-                new UserEntityEvent($old, $user, [])
-            );
+            $requestHandler->update($old, $user);
 
             return $this->redirect($this->generateUrl('front'), 302);
         }

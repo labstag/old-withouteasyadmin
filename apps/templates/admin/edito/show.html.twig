@@ -19,4 +19,9 @@
             </tr>
         </tbody>
     </table>
+    {% for transition in workflow_transitions(entity) %}
+        <a href="...">{{ transition.name }}</a>
+    {% else %}
+        No actions available.
+    {% endfor %}
 {% endblock %}

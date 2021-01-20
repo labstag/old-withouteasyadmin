@@ -11,19 +11,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 
 class UserFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
-    private GroupeRepository $groupeRepository;
-
-    public function __construct(
-        GroupeRepository $groupeRepository,
-        UserRepository $userRepository,
-        EventDispatcherInterface $dispatcher
-    )
-    {
-        $this->groupeRepository = $groupeRepository;
-        parent::__construct($userRepository, $dispatcher);
-    }
-
     private function getUsers(): array
     {
         $users = [

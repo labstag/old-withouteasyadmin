@@ -18,6 +18,11 @@
                 <td>{{ entity.refuser }}</td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}
+                    {% for transition in workflow_transitions(entity) %}
+                        <a href="...">{{ transition.name }}</a>
+                    {% else %}
+                        No actions available.
+                    {% endfor %}
                 </td>
             </tr>
         {% else %}

@@ -11,8 +11,8 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
-        {% block stylesheets %}
-        {% endblock %}
+        {% block stylesheets %}{% endblock %}
+        {% block javascripts %}{% endblock %}
     </head>
     <body>
         {% block content %}{% endblock %}
@@ -29,8 +29,6 @@
             {% if modalRestore is defined %}
                 {{ modal.restore() }}
             {% endif %}
-        {% endblock %}
-        {% block javascripts %}
         {% endblock %}
     </body>
 </html>

@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\NoteInterneRequestHandler;
 
 /**
  * @Route("/admin/noteinterne")
@@ -59,12 +60,13 @@ class NoteInterneController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_noteinterne_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(NoteInterneRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new NoteInterne(),
             NoteInterneType::class,
-            ['list' => 'admin_noteinterne_index']
+            ['list' => 'admin_noteinterne_index'],
+            $requestHandler
         );
     }
 
@@ -96,7 +98,7 @@ class NoteInterneController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(NoteInterne $noteInterne): Response
+    public function edit(NoteInterne $noteInterne, NoteInterneRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             NoteInterneType::class,
@@ -105,7 +107,8 @@ class NoteInterneController extends AdminControllerLib
                 'delete' => 'admin_noteinterne_delete',
                 'list'   => 'admin_noteinterne_index',
                 'show'   => 'admin_noteinterne_show',
-            ]
+            ],
+            $requestHandler
         );
     }
 

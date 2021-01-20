@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\EditoRequestHandler;
 
 /**
  * @Route("/admin/edito")
@@ -58,12 +59,13 @@ class EditoController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_edito_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(EditoRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new Edito(),
             EditoType::class,
-            ['list' => 'admin_edito_index']
+            ['list' => 'admin_edito_index'],
+            $requestHandler
         );
     }
 
@@ -91,7 +93,7 @@ class EditoController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_edito_edit", methods={"GET","POST"})
      */
-    public function edit(Edito $edito): Response
+    public function edit(Edito $edito, EditoRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             EditoType::class,
@@ -100,7 +102,8 @@ class EditoController extends AdminControllerLib
                 'delete' => 'admin_edito_delete',
                 'list'   => 'admin_edito_index',
                 'show'   => 'admin_edito_show',
-            ]
+            ],
+            $requestHandler
         );
     }
 

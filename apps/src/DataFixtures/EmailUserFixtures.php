@@ -5,7 +5,6 @@ namespace Labstag\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
-use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\FixtureLib;
 use Labstag\Repository\UserRepository;
 

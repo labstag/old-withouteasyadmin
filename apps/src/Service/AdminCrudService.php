@@ -5,6 +5,7 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\AdminBoutonService;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -378,8 +379,7 @@ class AdminCrudService
         object $entity,
         string $formType,
         array $url = [],
-        array $events = [],
-        object $manager = null
+        RequestHandlerLib $handler
     ): Response
     {
         $routeCurrent = $this->request->get('_route');
@@ -400,20 +400,7 @@ class AdminCrudService
         $this->adminBoutonService->addBtnSave($form->getName(), 'Ajouter');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!is_null($manager)) {
-                $manager->setArrayCollection($entity);
-            }
-
-            $this->entityManager->persist($entity);
-            $this->entityManager->flush();
-            if (count($events) != 0) {
-                foreach ($events as $event) {
-                    $this->dispatcher->dispatch(
-                        new $event($oldEntity, $entity)
-                    );
-                }
-            }
-
+            $handler->create($oldEntity, $entity);
             if (isset($url['list'])) {
                 return new RedirectResponse(
                     $this->router->generate($url['list'])
@@ -434,8 +421,7 @@ class AdminCrudService
         string $formType,
         object $entity,
         array $url = [],
-        array $events = [],
-        object $manager = null,
+        RequestHandlerLib $handler,
         string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
@@ -455,25 +441,13 @@ class AdminCrudService
         $this->adminBoutonService->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!is_null($manager)) {
-                $manager->setArrayCollection($entity);
-            }
-
-            $this->entityManager->flush();
+            $handler->update($oldEntity, $entity);
             /** @var Session $session */
             $session = $this->session;
             $session->getFlashBag()->add(
                 'success',
                 'Données sauvegardé'
             );
-            if (count($events) != 0) {
-                foreach ($events as $event) {
-                    $this->dispatcher->dispatch(
-                        new $event($oldEntity, $entity)
-                    );
-                }
-            }
-
             if (isset($url['list'])) {
                 return new RedirectResponse(
                     $this->router->generate($url['list'])
@@ -494,7 +468,7 @@ class AdminCrudService
     {
         $csrfToken = new CsrfToken('destroy' . $entity->getId(), $token);
         if (is_null($entity->getDeletedAt())) {
-            unset($csrfToken);
+            $csrfToken = null;
         }
 
         return $csrfToken;
@@ -504,7 +478,7 @@ class AdminCrudService
     {
         $csrfToken = new CsrfToken('restore' . $entity->getId(), $token);
         if (is_null($entity->getDeletedAt())) {
-            unset($csrfToken);
+            $csrfToken = null;
         }
 
         return $csrfToken;
@@ -513,8 +487,8 @@ class AdminCrudService
     private function setEntityCsrfDelete($entity, $token)
     {
         $csrfToken = new CsrfToken('delete' . $entity->getId(), $token);
-        if (is_null($entity->getDeletedAt())) {
-            unset($csrfToken);
+        if (!is_null($entity->getDeletedAt())) {
+            $csrfToken = null;
         }
 
         return $csrfToken;
@@ -522,11 +496,11 @@ class AdminCrudService
 
     private function setEntityCsrf($routeCurrent, $entity, $token)
     {
-        if (0 == substr_count($routeCurrent, '_destroy')) {
+        if (0 != substr_count($routeCurrent, '_destroy')) {
             $csrfToken = $this->setEntityCsrfDestroy($entity, $token);
-        } elseif (0 == substr_count($routeCurrent, '_restore')) {
+        } elseif (0 != substr_count($routeCurrent, '_restore')) {
             $csrfToken = $this->setEntityCsrfRestore($entity, $token);
-        } elseif (0 == substr_count($routeCurrent, '_delete')) {
+        } elseif (0 != substr_count($routeCurrent, '_delete')) {
             $csrfToken = $this->setEntityCsrfDelete($entity, $token);
         }
 
@@ -540,7 +514,8 @@ class AdminCrudService
         $state        = false;
         $csrfToken    = $this->setEntityCsrf($routeCurrent, $entity, $token);
 
-        if (isset($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
+        dump($csrfToken);
+        if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
             if (0 != substr_count($routeCurrent, '_destroy')) {
                 $this->entityManager->remove($entity);
             } elseif (0 != substr_count($routeCurrent, '_restore')) {

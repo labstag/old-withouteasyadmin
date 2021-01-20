@@ -40,7 +40,7 @@
     "regenerator-runtime": "0.13.7",
     "sass-loader": "^9.0.3",
     "semantic-git-commit-cli": "3.7.0",
-    "stimulus": "^1.1.1",
+    "stimulus": "^2.0.0",
     "url-loader": "^4.1.1",
     "webpack-notifier": "1.12.0"
   },

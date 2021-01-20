@@ -1,6 +1,5 @@
 <?php
-
-namespace Labstag\Manager;
+namespace Labstag\RequestHandler;
 
 use Labstag\Entity\AdresseUser;
 use Labstag\Entity\EmailUser;
@@ -8,20 +7,31 @@ use Labstag\Entity\LienUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
+use Labstag\Lib\RequestHandlerLib;
 use Labstag\Event\UserCollectionEvent;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use Labstag\Event\UserEntityEvent;
 
-class UserManager
+class UserRequestHandler extends RequestHandlerLib
 {
-
-    protected EventDispatcherInterface $dispatcher;
-
-    public function __construct(EventDispatcherInterface $dispatcher)
+    public function create($oldEntity, $entity)
     {
-        $this->dispatcher = $dispatcher;
+        $this->setArrayCollection($entity);
+        parent::create($oldEntity, $entity);
+        $this->dispatcher->dispatch(
+            new UserEntityEvent($oldEntity, $entity)
+        );
     }
 
-    public function setArrayCollection(User $entity): void
+    public function update($oldEntity, $entity)
+    {
+        $this->setArrayCollection($entity);
+        $this->entityManager->flush();
+        $this->dispatcher->dispatch(
+            new UserEntityEvent($oldEntity, $entity)
+        );
+    }
+
+    private function setArrayCollection(User $entity)
     {
         $userCollectionEvent = new UserCollectionEvent();
         $oauthConnectUsers   = $entity->getOauthConnectUsers();
@@ -63,7 +73,5 @@ class UserManager
             $row->setRefuser($entity);
             $userCollectionEvent->addAdresseUser($old, $row);
         }
-
-        $this->dispatcher->dispatch($userCollectionEvent);
     }
 }

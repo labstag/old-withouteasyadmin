@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\TemplateRequestHandler;
 
 /**
  * @Route("/admin/template")
@@ -58,12 +59,13 @@ class TemplateController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_template_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(TemplateRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new Template(),
             TemplateType::class,
-            ['list' => 'admin_template_index']
+            ['list' => 'admin_template_index'],
+            $requestHandler
         );
     }
 
@@ -91,7 +93,7 @@ class TemplateController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_template_edit", methods={"GET","POST"})
      */
-    public function edit(Template $template): Response
+    public function edit(Template $template, TemplateRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             TemplateType::class,
@@ -100,7 +102,8 @@ class TemplateController extends AdminControllerLib
                 'delete' => 'admin_template_delete',
                 'list'   => 'admin_template_index',
                 'show'   => 'admin_template_show',
-            ]
+            ],
+            $requestHandler
         );
     }
 

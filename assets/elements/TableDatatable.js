@@ -15,6 +15,5 @@ export class TableDatatable extends HTMLTableElement
         tdLast.classList.add('text-center');
       }
     );
-    console.log(tbody.innerHTML);
   }
 }

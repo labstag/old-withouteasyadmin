@@ -4,16 +4,15 @@ namespace Labstag\Controller\Admin;
 
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\User;
-use Labstag\Event\UserEntityEvent;
 use Labstag\Form\Admin\UserType;
 use Labstag\Repository\UserRepository;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Manager\UserManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\UserRequestHandler;
 
 /**
  * @Route("/admin/user")
@@ -60,7 +59,7 @@ class UserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_user_new", methods={"GET","POST"})
      */
-    public function new(UserManager $userManager): Response
+    public function new(UserRequestHandler $requestHandler): Response
     {
         $user = new User();
         $user->setEnable(false);
@@ -68,8 +67,7 @@ class UserController extends AdminControllerLib
             $user,
             UserType::class,
             ['list' => 'admin_user_index'],
-            [UserEntityEvent::class],
-            $userManager
+            $requestHandler
         );
     }
 
@@ -97,7 +95,7 @@ class UserController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
      */
-    public function edit(User $user, UserManager $userManager): Response
+    public function edit(User $user, UserRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             UserType::class,
@@ -107,8 +105,7 @@ class UserController extends AdminControllerLib
                 'list'   => 'admin_user_index',
                 'show'   => 'admin_user_show',
             ],
-            [UserEntityEvent::class],
-            $userManager
+            $requestHandler
         );
     }
 

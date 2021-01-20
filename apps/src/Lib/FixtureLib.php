@@ -14,10 +14,20 @@ use Labstag\Entity\LienUser;
 use Labstag\Entity\NoteInterne;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
-use Labstag\Event\UserCollectionEvent;
-use Labstag\Event\UserEntityEvent;
+use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
+use Labstag\RequestHandler\AdresseUserRequestHandler;
+use Labstag\RequestHandler\EditoRequestHandler;
+use Labstag\RequestHandler\EmailUserRequestHandler;
+use Labstag\RequestHandler\GroupeRequestHandler;
+use Labstag\RequestHandler\LienUserRequestHandler;
+use Labstag\RequestHandler\NoteInterneRequestHandler;
+use Labstag\RequestHandler\PhoneUserRequestHandler;
+use Labstag\RequestHandler\TemplateRequestHandler;
+use Labstag\RequestHandler\UserRequestHandler;
+use Labstag\Service\OauthService;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Twig\Environment;
 
 abstract class FixtureLib extends Fixture
 {
@@ -25,14 +35,60 @@ abstract class FixtureLib extends Fixture
     protected UserRepository $userRepository;
 
     protected EventDispatcherInterface $dispatcher;
+    
+    protected OauthService $oauthService;
+    
+    protected Environment $twig;
+
+    protected GroupeRepository $groupeRepository;
+
+    protected EmailUserRequestHandler $emailUserRequestHandler;
+
+    protected LienUserRequestHandler $lienUserRequestHandler;
+    
+    protected NoteInterneRequestHandler $noteInterneRequestHandler;
+
+    protected GroupeRequestHandler $groupeRequestHandler;
+
+    protected EditoRequestHandler $editoRequestHandler;
+
+    protected PhoneUserRequestHandler $phoneUserRequestHandler;
+
+    protected AdresseUserRequestHandler $adresseUserRequestHandler;
+
+    protected TemplateRequestHandler $templateRequestHandler;
 
     public function __construct(
+        OauthService $oauthService,
         UserRepository $userRepository,
-        EventDispatcherInterface $dispatcher
+        GroupeRepository $groupeRepository,
+        EventDispatcherInterface $dispatcher,
+        Environment $twig,
+        EmailUserRequestHandler $emailUserRequestHandler,
+        LienUserRequestHandler $lienUserRequestHandler,
+        NoteInterneRequestHandler $noteInterneRequestHandler,
+        GroupeRequestHandler $groupeRequestHandler,
+        EditoRequestHandler $editoRequestHandler,
+        UserRequestHandler $userRequestHandler,
+        PhoneUserRequestHandler $phoneUserRequestHandler,
+        AdresseUserRequestHandler $adresseUserRequestHandler,
+        TemplateRequestHandler $templateRequestHandler
     )
     {
+        $this->twig = $twig;
         $this->dispatcher     = $dispatcher;
         $this->userRepository = $userRepository;
+        $this->oauthService = $oauthService;
+        $this->groupeRepository = $groupeRepository;
+        $this->templateRequestHandler = $templateRequestHandler;
+        $this->adresseUserRequestHandler = $adresseUserRequestHandler;
+        $this->phoneUserRequestHandler = $phoneUserRequestHandler;
+        $this->userRequestHandler = $userRequestHandler;
+        $this->editoRequestHandler = $editoRequestHandler;
+        $this->groupeRequestHandler = $groupeRequestHandler;
+        $this->noteInterneRequestHandler = $noteInterneRequestHandler;
+        $this->lienUserRequestHandler = $lienUserRequestHandler;
+        $this->emailUserRequestHandler = $emailUserRequestHandler;
     }
 
     private function getGroupe(array $groupes, string $code): ?Groupe
@@ -56,13 +112,7 @@ abstract class FixtureLib extends Fixture
         $old   = clone $email;
         $email->setRefuser($user);
         $email->setAdresse($faker->safeEmail);
-        $user->addEmailUser($email);
-        $manager->persist($user);
-        $manager->persist($email);
-        $manager->flush();
-        $userCollectionEvent = new UserCollectionEvent();
-        $userCollectionEvent->addEmailUser($old, $email);
-        $this->dispatcher->dispatch($userCollectionEvent);
+        $this->emailUserRequestHandler->create($old, $email);
     }
 
     protected function addLink(
@@ -76,13 +126,7 @@ abstract class FixtureLib extends Fixture
         $lien->setRefUser($user);
         $lien->setName($faker->word());
         $lien->setAdresse($faker->url);
-        $user->addLienUser($lien);
-        $manager->persist($user);
-        $manager->persist($lien);
-        $manager->flush();
-        $userCollectionEvent = new UserCollectionEvent();
-        $userCollectionEvent->addLienUser($old, $lien);
-        $this->dispatcher->dispatch($userCollectionEvent);
+        $this->lienUserRequestHandler->create($old, $lien);
     }
 
     protected function addNoteInterne(
@@ -94,6 +138,7 @@ abstract class FixtureLib extends Fixture
     ): void
     {
         $noteinterne = new NoteInterne();
+        $old = clone $noteinterne;
         $random      = $faker->numberBetween(5, 50);
         $noteinterne->setTitle($faker->text($random));
         $noteinterne->setEnable((bool) $faker->numberBetween(0, 1));
@@ -111,10 +156,7 @@ abstract class FixtureLib extends Fixture
         /** @var User $user */
         $user = $users[$tabIndex];
         $noteinterne->setRefuser($user);
-        $user->addNoteInterne($noteinterne);
-        $manager->persist($noteinterne);
-        $manager->persist($user);
-        $manager->flush();
+        $this->noteInterneRequestHandler->create($old, $noteinterne);
     }
 
     protected function addGroupe(
@@ -124,9 +166,10 @@ abstract class FixtureLib extends Fixture
     ): void
     {
         $groupe = new Groupe();
+        $old = clone $groupe;
         $groupe->setName($row);
         $this->addReference('groupe_' . $key, $groupe);
-        $manager->persist($groupe);
+        $this->groupeRequestHandler->create($old, $groupe);
     }
 
     protected function addEdito(
@@ -136,7 +179,8 @@ abstract class FixtureLib extends Fixture
         ObjectManager $manager
     ): void
     {
-        $edito  = new Edito();
+        $edito = new Edito();
+        $old = clone $edito;
         $random = $faker->numberBetween(5, 50);
         $edito->setTitle($faker->text($random));
         $enable = ($index == 0) ? true : false;
@@ -149,10 +193,7 @@ abstract class FixtureLib extends Fixture
         /** @var User $user */
         $user = $users[$tabIndex];
         $edito->setRefuser($user);
-        $user->addEdito($edito);
-        $manager->persist($user);
-        $manager->persist($edito);
-        $manager->flush();
+        $this->editoRequestHandler->create($old, $edito);
     }
 
     protected function addUser(
@@ -162,8 +203,8 @@ abstract class FixtureLib extends Fixture
         ObjectManager $manager
     ): void
     {
-        $old  = new User();
         $user = new User();
+        $old  = clone $user;;
         $user->setGroupe($this->getGroupe($groupes, $dataUser['groupe']));
         $user->setEnable($dataUser['enable']);
         $user->setVerif($dataUser['verif']);
@@ -172,11 +213,7 @@ abstract class FixtureLib extends Fixture
         $user->setPlainPassword($dataUser['password']);
         $user->setEmail($dataUser['email']);
         $this->addReference('user_' . $index, $user);
-        $manager->persist($user);
-        $manager->flush();
-        $this->dispatcher->dispatch(
-            new UserEntityEvent($old, $user, [])
-        );
+        $this->userRequestHandler->create($old, $user);
     }
 
     protected function addPhone(
@@ -192,11 +229,7 @@ abstract class FixtureLib extends Fixture
         $phone->setNumero($number);
         $phone->setType($faker->word());
         $phone->setCountry($faker->countryCode);
-        $manager->persist($phone);
-        $manager->flush();
-        $userCollectionEvent = new UserCollectionEvent();
-        $userCollectionEvent->addPhoneUser($old, $phone);
-        $this->dispatcher->dispatch($userCollectionEvent);
+        $this->phoneUserRequestHandler->create($old, $phone);
     }
 
     protected function addAdresse(
@@ -218,12 +251,6 @@ abstract class FixtureLib extends Fixture
         $gps       = $latitude . ',' . $longitude;
         $adresse->setGps($gps);
         $adresse->setPmr((bool) $faker->numberBetween(0, 1));
-        $user->addAdresseUser($adresse);
-        $manager->persist($user);
-        $manager->persist($adresse);
-        $manager->flush();
-        $userCollectionEvent = new UserCollectionEvent();
-        $userCollectionEvent->addAdresseUser($old, $adresse);
-        $this->dispatcher->dispatch($userCollectionEvent);
+        $this->adresseUserRequestHandler->create($old, $adresse);
     }
 }

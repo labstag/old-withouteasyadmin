@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\EmailUserRequestHandler;
 
 /**
  * @Route("/admin/user/email")
@@ -58,12 +59,13 @@ class EmailUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_emailuser_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(EmailUserRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new EmailUser(),
             EmailUserType::class,
-            ['list' => 'admin_emailuser_index']
+            ['list' => 'admin_emailuser_index'],
+            $requestHandler
         );
     }
 
@@ -95,7 +97,7 @@ class EmailUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(EmailUser $emailUser): Response
+    public function edit(EmailUser $emailUser, EmailUserRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             EmailUserType::class,
@@ -104,7 +106,8 @@ class EmailUserController extends AdminControllerLib
                 'delete' => 'admin_emailuser_delete',
                 'list'   => 'admin_emailuser_index',
                 'show'   => 'admin_emailuser_show',
-            ]
+            ],
+            $requestHandler
         );
     }
 
