@@ -34,7 +34,7 @@ class LabstagGeocodeInstallCommand extends Command
         EntityManagerInterface $entityManager,
         HttpClientInterface $client,
         GeoCodeRequestHandler $geoCodeRH,
-        string $name = null,
+        string $name = null
     )
     {
         $this->geoCodeRH     = $geoCodeRH;
