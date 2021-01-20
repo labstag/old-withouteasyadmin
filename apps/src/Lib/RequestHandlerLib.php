@@ -44,7 +44,7 @@ abstract class RequestHandlerLib
         }
     }
 
-    protected function create($oldEntity, $entity)
+    public function create($oldEntity, $entity)
     {
         $this->initWorkflow($entity);
         unset($oldEntity);
@@ -52,7 +52,7 @@ abstract class RequestHandlerLib
         $this->entityManager->flush();
     }
 
-    protected function update($oldEntity, $entity)
+    public function update($oldEntity, $entity)
     {
         unset($oldEntity, $entity);
         $this->entityManager->flush();
