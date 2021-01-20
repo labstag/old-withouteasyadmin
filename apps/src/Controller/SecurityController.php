@@ -293,7 +293,7 @@ class SecurityController extends ControllerLib
 
         $email->setVerif(true);
         $old = clone $email;
-        $emailRequestHandler->update($old, $clone);
+        $emailRequestHandler->update($old, $email);
         $this->addFlash('success', 'Courriel confirmé');
 
         return $this->redirect($this->generateUrl('front'), 302);
