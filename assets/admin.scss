@@ -17,7 +17,12 @@ table{
   @extend .table-hover;
   @extend .table-striped;
 }
-
+.thactions{
+  @extend .text-center;
+  i{
+    @extend .BtnAdminTableAction;
+  }
+}
 a{
   @extend .text-decoration-none;
 }
