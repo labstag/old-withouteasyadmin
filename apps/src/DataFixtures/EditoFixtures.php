@@ -18,9 +18,22 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         $users = $this->userRepository->findAll();
         $faker = Factory::create('fr_FR');
         /** @var resource $finfo */
+        $states = $this->getStates();
         for ($index = 0; $index < self::NUMBER; ++$index) {
-            $this->addEdito($users, $faker, $index);
+            $stateId = array_rand($states);
+            $state   = $states[$stateId];
+            $this->addEdito($users, $faker, $index, $state);
         }
+    }
+
+    private function getStates()
+    {
+        return [
+            'brouillon',
+            'relecture',
+            'publie',
+            'rejete',
+        ];
     }
 
     public function getDependencies()

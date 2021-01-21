@@ -5,6 +5,7 @@ namespace Labstag\Controller;
 use Exception;
 use Labstag\Entity\Email;
 use Labstag\Entity\OauthConnectUser;
+use Labstag\Entity\Phone;
 use Labstag\Entity\User;
 use Labstag\Lib\GenericProviderLib;
 use Labstag\Form\Security\ChangePasswordType;
@@ -15,6 +16,7 @@ use Labstag\Form\Security\LostPasswordType;
 use Labstag\Lib\ControllerLib;
 use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\RequestHandler\EmailRequestHandler;
+use Labstag\RequestHandler\PhoneRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
@@ -278,6 +280,26 @@ class SecurityController extends ControllerLib
     }
 
     /**
+     * @Route("/confirm/phone/{id}", name="app_confirm_phone")
+     */
+    public function confirmPhone(
+        Phone $phone,
+        PhoneRequestHandler $emailRequestHandler
+    ): RedirectResponse
+    {
+        if ('averifier' != $phone->getState()) {
+            $this->addFlash('danger', 'Phone déjà confirmé');
+
+            return $this->redirect($this->generateUrl('front'), 302);
+        }
+
+        $emailRequestHandler->changeWorkflowState($phone, 'valide');
+        $this->addFlash('success', 'Phone confirmé');
+
+        return $this->redirect($this->generateUrl('front'), 302);
+    }
+
+    /**
      * @Route("/confirm/email/{id}", name="app_confirm_mail")
      */
     public function confirmEmail(
@@ -285,15 +307,13 @@ class SecurityController extends ControllerLib
         EmailRequestHandler $emailRequestHandler
     ): RedirectResponse
     {
-        if ($email->isVerif()) {
+        if ('averifier' != $email->getState()) {
             $this->addFlash('danger', 'Courriel déjà confirmé');
 
             return $this->redirect($this->generateUrl('front'), 302);
         }
 
-        $email->setVerif(true);
-        $old = clone $email;
-        $emailRequestHandler->update($old, $email);
+        $emailRequestHandler->changeWorkflowState($email, 'valide');
         $this->addFlash('success', 'Courriel confirmé');
 
         return $this->redirect($this->generateUrl('front'), 302);
@@ -307,15 +327,13 @@ class SecurityController extends ControllerLib
         UserRequestHandler $userRequestHandler
     ): RedirectResponse
     {
-        if ($user->isVerif()) {
+        if ('avalider' != $user->getState()) {
             $this->addFlash('danger', 'Utilisation déjà activé');
 
             return $this->redirect($this->generateUrl('front'), 302);
         }
 
-        $user->setVerif(true);
-        $old = clone $user;
-        $userRequestHandler->update($old, $user);
+        $userRequestHandler->changeWorkflowState($user, 'valide');
         $this->addFlash('success', 'Utilisation activé');
 
         return $this->redirect($this->generateUrl('front'), 302);
@@ -330,7 +348,7 @@ class SecurityController extends ControllerLib
         UserRequestHandler $requestHandler
     ): Response
     {
-        if (!$user->isLost()) {
+        if ('lostpassword' != $user->getState()) {
             $this->addFlash('danger', 'Demande de mot de passe non envoyé');
 
             return $this->redirect($this->generateUrl('front'), 302);
@@ -339,9 +357,7 @@ class SecurityController extends ControllerLib
         $form = $this->createForm(ChangePasswordType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $old = clone $user;
-            $user->setLost(false);
-            $requestHandler->update($old, $user);
+            $requestHandler->changeWorkflowState($user, 'valider');
 
             return $this->redirect($this->generateUrl('front'), 302);
         }

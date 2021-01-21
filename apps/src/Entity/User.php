@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Collection;
 use Labstag\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Labstag\Entity\Traits\VerifEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -20,7 +19,6 @@ class User implements UserInterface
 {
 
     use SoftDeleteableEntity;
-    use VerifEntity;
 
     /**
      * @ORM\Id
@@ -55,16 +53,6 @@ class User implements UserInterface
      * @var string|null
      */
     private $plainPassword;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $enable;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $lost;
 
     /**
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users")
@@ -150,9 +138,6 @@ class User implements UserInterface
         $this->adresseUsers      = new ArrayCollection();
         $this->oauthConnectUsers = new ArrayCollection();
         $this->roles             = ['ROLE_USER'];
-        $this->enable            = false;
-        $this->lost              = false;
-        $this->verif             = false;
     }
 
     public function getState()
@@ -258,18 +243,6 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function isEnable(): ?bool
-    {
-        return $this->enable;
-    }
-
-    public function setEnable(bool $enable): self
-    {
-        $this->enable = $enable;
-
-        return $this;
     }
 
     public function getGroupe(): ?Groupe
@@ -465,18 +438,6 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function isLost(): ?bool
-    {
-        return $this->lost;
-    }
-
-    public function setLost(bool $lost): self
-    {
-        $this->lost = $lost;
 
         return $this;
     }

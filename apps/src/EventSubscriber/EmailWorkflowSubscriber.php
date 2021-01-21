@@ -25,13 +25,13 @@ class EmailWorkflowSubscriber implements EventSubscriberInterface
     public function transitionSubmit(Event $event)
     {
         unset($event);
-        dump('submit');
+        // dump('submit');
     }
 
     public function transitionValider(Event $event)
     {
         unset($event);
-        dump('valider');
+        // dump('valider');
     }
 
     public static function getSubscribedEvents()

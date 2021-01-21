@@ -153,8 +153,6 @@ class UserService
             return;
         }
 
-        $old = clone $user;
-        $user->setLost(true);
-        $this->userRH->create($old, $user);
+        $this->userRH->changeWorkflowState($user, 'lostpassword');
     }
 }

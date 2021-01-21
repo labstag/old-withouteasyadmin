@@ -34,31 +34,31 @@ class TemplateWorkflowSubscriber implements EventSubscriberInterface
     public function transitionSubmit(Event $event)
     {
         unset($event);
-        dump('submit');
+        // dump('submit');
     }
 
     public function transitionRelire(Event $event)
     {
         unset($event);
-        dump('relire');
+        // dump('relire');
     }
 
     public function transitionCorriger(Event $event)
     {
         unset($event);
-        dump('corriger');
+        // dump('corriger');
     }
 
     public function transitionPublier(Event $event)
     {
         unset($event);
-        dump('publier');
+        // dump('publier');
     }
 
     public function transitionRejeter(Event $event)
     {
         unset($event);
-        dump('rejeter');
+        // dump('rejeter');
     }
 
     public static function getSubscribedEvents()

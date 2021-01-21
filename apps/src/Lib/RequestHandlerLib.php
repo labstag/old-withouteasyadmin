@@ -57,4 +57,15 @@ abstract class RequestHandlerLib
         unset($oldEntity, $entity);
         $this->entityManager->flush();
     }
+
+    public function changeWorkflowState($entity, $state)
+    {
+        if (!$this->workflows->has($entity)) {
+            return;
+        }
+
+        $entity->setState($state);
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+    }
 }

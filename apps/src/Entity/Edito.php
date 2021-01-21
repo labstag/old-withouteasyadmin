@@ -37,11 +37,6 @@ class Edito
     private $content;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $enable;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="editos")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -92,18 +87,6 @@ class Edito
     public function setContent(string $content): self
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function isEnable(): ?bool
-    {
-        return $this->enable;
-    }
-
-    public function setEnable(bool $enable): self
-    {
-        $this->enable = $enable;
 
         return $this;
     }

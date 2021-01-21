@@ -134,7 +134,6 @@ abstract class FixtureLib extends Fixture
         $old         = clone $noteinterne;
         $random      = $faker->numberBetween(5, 50);
         $noteinterne->setTitle($faker->text($random));
-        $noteinterne->setEnable((bool) $faker->numberBetween(0, 1));
         $dateDebut = $faker->dateTime($maxDate);
         $noteinterne->setDateDebut($dateDebut);
         $dateFin = clone $dateDebut;
@@ -167,15 +166,14 @@ abstract class FixtureLib extends Fixture
     protected function addEdito(
         array $users,
         Generator $faker,
-        int $index
+        int $index,
+        string $state
     ): void
     {
         $edito  = new Edito();
         $old    = clone $edito;
         $random = $faker->numberBetween(5, 50);
         $edito->setTitle($faker->text($random));
-        $enable = ($index == 0) ? true : false;
-        $edito->setEnable($enable);
         /** @var string $content */
         $content = $faker->paragraphs(4, true);
         $edito->setContent(str_replace("\n\n", '<br />', $content));
@@ -185,6 +183,7 @@ abstract class FixtureLib extends Fixture
         $user = $users[$tabIndex];
         $edito->setRefuser($user);
         $this->editoRH->create($old, $edito);
+        $this->editoRH->changeWorkflowState($edito, $state);
     }
 
     protected function addUser(
@@ -197,14 +196,12 @@ abstract class FixtureLib extends Fixture
         $old  = clone $user;
 
         $user->setGroupe($this->getGroupe($groupes, $dataUser['groupe']));
-        $user->setEnable($dataUser['enable']);
-        $user->setVerif($dataUser['verif']);
-        $user->setLost($dataUser['lost']);
         $user->setUsername($dataUser['username']);
         $user->setPlainPassword($dataUser['password']);
         $user->setEmail($dataUser['email']);
         $this->addReference('user_' . $index, $user);
         $this->userRH->create($old, $user);
+        $this->userRH->changeWorkflowState($user, $dataUser['state']);
     }
 
     protected function addPhone(

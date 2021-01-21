@@ -63,7 +63,6 @@ class UserController extends AdminControllerLib
     public function new(UserRequestHandler $requestHandler): Response
     {
         $user = new User();
-        $user->setEnable(false);
         return $this->adminCrudService->create(
             $user,
             UserType::class,

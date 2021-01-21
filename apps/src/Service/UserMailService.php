@@ -285,8 +285,15 @@ class UserMailService
             return;
         }
 
+        $url     = isset($this->config['site_url']) ? $this->config['site_url'] : '';
         $change  = [
-            'tel_number' => $phoneUser->getNumero(),
+            'url_confirm_phone' => $url . $this->router->generate(
+                'app_confirm_phone',
+                [
+                    'id' => $phoneUser->getId(),
+                ]
+            ),
+            'tel_number'        => $phoneUser->getNumero(),
         ];
         $html    = $template->getHtml();
         $txt     = $template->getText();

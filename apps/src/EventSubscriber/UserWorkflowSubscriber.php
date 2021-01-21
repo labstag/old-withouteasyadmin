@@ -37,37 +37,37 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
     public function transitionSubmit(Event $event)
     {
         unset($event);
-        dump('submit');
+        // dump('submit');
     }
 
     public function transitionValidation(Event $event)
     {
         unset($event);
-        dump('validation');
+        // dump('validation');
     }
 
     public function transitionPasswordLost(Event $event)
     {
         unset($event);
-        dump('passwordlost');
+        // dump('passwordlost');
     }
 
     public function transitionChangerPassword(Event $event)
     {
         unset($event);
-        dump('changepassword');
+        // dump('changepassword');
     }
 
     public function transitionDesactiver(Event $event)
     {
         unset($event);
-        dump('desactiver');
+        // dump('desactiver');
     }
 
     public function transitionActiver(Event $event)
     {
         unset($event);
-        dump('activer');
+        // dump('activer');
     }
 
     public static function getSubscribedEvents()

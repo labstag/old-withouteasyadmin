@@ -54,11 +54,11 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     private function setChangePassword(User $oldEntity, User $newEntity): void
     {
-        if ($oldEntity->isLost() == $newEntity->isLost()) {
+        if ($oldEntity->getState() == $newEntity->getState()) {
             return;
         }
 
-        if (!$oldEntity->isLost()) {
+        if ('lostpassword' != $oldEntity->getState()) {
             return;
         }
 
@@ -73,11 +73,11 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     private function setLost(User $oldEntity, User $newEntity): void
     {
-        if ($oldEntity->isLost() == $newEntity->isLost()) {
+        if ($oldEntity->getState() == $newEntity->getState()) {
             return;
         }
 
-        if (!$newEntity->isLost()) {
+        if ('lostpassword' != $newEntity->getState()) {
             return;
         }
 
@@ -92,11 +92,11 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     private function setEnable(User $oldEntity, User $newEntity): void
     {
-        if ($oldEntity->isVerif() == $newEntity->isVerif()) {
+        if ($oldEntity->getState() == $newEntity->getState()) {
             return;
         }
 
-        if ($newEntity->isVerif()) {
+        if ('valider' != $newEntity->getState()) {
             return;
         }
 
@@ -129,7 +129,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
             $this->entityManager->persist($emailUser);
         }
 
-        if ($newEntity->isEnable()) {
+        if ('valider' == $newEntity->getState()) {
             $this->userMailService->changeEmailPrincipal($newEntity);
         }
 
@@ -148,10 +148,10 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $emailUser = new EmailUser();
         $old       = clone $emailUser;
         $emailUser->setRefuser($newEntity);
-        $emailUser->setVerif(true);
         $emailUser->setPrincipal(true);
         $emailUser->setAdresse($adresse);
         $this->emailUserRH->create($old, $emailUser);
+        $this->emailUserRH->changeWorkflowState($emailUser, 'valide');
     }
 
     private function setPassword(User $user): void
@@ -167,7 +167,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         );
 
         $user->setPassword($encodePassword);
-        if ($user->isEnable()) {
+        if ('valider' == $user->getState()) {
             $this->userMailService->changePassword($user);
         }
 

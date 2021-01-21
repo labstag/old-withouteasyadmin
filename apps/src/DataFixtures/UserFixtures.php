@@ -17,6 +17,7 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'admin',
                 'password' => 'password',
+                'state'    => 'valider',
                 'enable'   => true,
                 'verif'    => true,
                 'lost'     => false,
@@ -26,6 +27,7 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'superadmin',
                 'password' => 'password',
+                'state'    => 'valider',
                 'enable'   => true,
                 'verif'    => true,
                 'lost'     => false,
@@ -35,6 +37,7 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'lost',
                 'password' => 'password',
+                'state'    => 'lostpassword',
                 'enable'   => false,
                 'verif'    => true,
                 'lost'     => true,
@@ -44,6 +47,7 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'disable',
                 'password' => 'password',
+                'state'    => 'disable',
                 'enable'   => false,
                 'verif'    => true,
                 'lost'     => false,
@@ -53,6 +57,7 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'unverif',
                 'password' => 'password',
+                'state'    => 'avalider',
                 'enable'   => false,
                 'verif'    => false,
                 'lost'     => false,

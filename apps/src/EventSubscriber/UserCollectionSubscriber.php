@@ -83,7 +83,7 @@ class UserCollectionSubscriber implements EventSubscriberInterface
         $old = $data['old'];
         /** @var EmailUser $new */
         $new = $data['new'];
-        if ($old->getId() == $new->getId() || $new->isVerif()) {
+        if ($old->getId() == $new->getId() || 'valide' != $new->getState()) {
             return;
         }
 

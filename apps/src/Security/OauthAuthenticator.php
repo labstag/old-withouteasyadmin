@@ -188,7 +188,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         $user = $login->getRefuser();
-        if (!($user instanceof User) || !$user->isEnable()) {
+        if (!($user instanceof User) || 'valider' != $user->getState()) {
             throw new CustomUserMessageAuthenticationException(
                 'Username not activate.'
             );
