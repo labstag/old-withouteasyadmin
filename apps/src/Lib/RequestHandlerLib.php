@@ -39,32 +39,35 @@ abstract class RequestHandlerLib
             $name = $transition->getName();
             if ($workflow->can($entity, $name)) {
                 $workflow->apply($entity, $name);
+                $this->entityManager->persist($entity);
+                $this->entityManager->flush();
                 break;
             }
         }
     }
 
-    public function create($oldEntity, $entity)
+    public function handle($oldEntity, $entity)
     {
-        $this->initWorkflow($entity);
-        unset($oldEntity);
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
+        if ($oldEntity->getId() != $entity->getId()) {
+            $this->initWorkflow($entity);
+        }
     }
 
-    public function update($oldEntity, $entity)
-    {
-        unset($oldEntity, $entity);
-        $this->entityManager->flush();
-    }
-
-    public function changeWorkflowState($entity, $state)
+    public function changeWorkflowState($entity, array $states)
     {
         if (!$this->workflows->has($entity)) {
             return;
         }
 
-        $entity->setState($state);
+        $workflow = $this->workflows->get($entity);
+        foreach ($states as $state) {
+            if ($workflow->can($entity, $state)) {
+                $workflow->apply($entity, $state);
+            }
+        }
+
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
     }

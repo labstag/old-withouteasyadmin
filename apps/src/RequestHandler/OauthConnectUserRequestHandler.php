@@ -12,19 +12,11 @@ use Labstag\Event\UserCollectionEvent;
 
 class OauthConnectUserRequestHandler extends RequestHandlerLib
 {
-    public function create($oldEntity, $entity)
+    public function handle($oldEntity, $entity)
     {
         $this->setArrayCollection($entity);
         $userCollectionEvent = new UserCollectionEvent();
-        parent::create($oldEntity, $entity);
-        $userCollectionEvent->addOauthConnectUser($oldEntity, $entity);
-    }
-
-    public function update($oldEntity, $entity)
-    {
-        $this->setArrayCollection($entity);
-        $userCollectionEvent = new UserCollectionEvent();
-        $this->entityManager->flush();
+        parent::handle($oldEntity, $entity);
         $userCollectionEvent->addOauthConnectUser($oldEntity, $entity);
     }
 

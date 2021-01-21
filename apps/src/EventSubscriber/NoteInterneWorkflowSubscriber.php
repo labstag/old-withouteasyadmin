@@ -5,7 +5,7 @@ namespace Labstag\EventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class TemplateWorkflowSubscriber implements EventSubscriberInterface
+class NoteInterneWorkflowSubscriber implements EventSubscriberInterface
 {
 
     public function onTransition(Event $event)
@@ -34,35 +34,30 @@ class TemplateWorkflowSubscriber implements EventSubscriberInterface
     public function transitionSubmit(Event $event)
     {
         unset($event);
-        // dump('submit');
     }
 
     public function transitionRelire(Event $event)
     {
         unset($event);
-        // dump('relire');
     }
 
     public function transitionCorriger(Event $event)
     {
         unset($event);
-        // dump('corriger');
     }
 
     public function transitionPublier(Event $event)
     {
         unset($event);
-        // dump('publier');
     }
 
     public function transitionRejeter(Event $event)
     {
         unset($event);
-        // dump('rejeter');
     }
 
     public static function getSubscribedEvents()
     {
-        return ['workflow.template.transition' => 'onTransition'];
+        return ['workflow.noteinterne.transition' => 'onTransition'];
     }
 }

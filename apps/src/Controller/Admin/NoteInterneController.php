@@ -46,13 +46,14 @@ class NoteInterneController extends AdminControllerLib
                 'list'  => 'admin_noteinterne_index',
             ],
             [
-                'list'    => 'admin_noteinterne_index',
-                'show'    => 'admin_noteinterne_show',
-                'preview' => 'admin_noteinterne_preview',
-                'edit'    => 'admin_noteinterne_edit',
-                'delete'  => 'admin_noteinterne_delete',
-                'destroy' => 'admin_noteinterne_destroy',
-                'restore' => 'admin_noteinterne_restore',
+                'list'     => 'admin_noteinterne_index',
+                'show'     => 'admin_noteinterne_show',
+                'preview'  => 'admin_noteinterne_preview',
+                'edit'     => 'admin_noteinterne_edit',
+                'delete'   => 'admin_noteinterne_delete',
+                'destroy'  => 'admin_noteinterne_destroy',
+                'restore'  => 'admin_noteinterne_restore',
+                'workflow' => 'admin_noteinterne_workflow',
             ]
         );
     }
@@ -129,5 +130,14 @@ class NoteInterneController extends AdminControllerLib
     public function empty(NoteInterneRepository $repository): Response
     {
         return $this->adminCrudService->empty($repository);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/workflow/{state}/{id}", name="admin_noteinterne_workflow", methods={"POST"})
+     */
+    public function workflow(NoteInterne $noteInterne, string $state): Response
+    {
+        return $this->adminCrudService->workflow($noteInterne, $state);
     }
 }

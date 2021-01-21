@@ -48,24 +48,9 @@ class Template
      */
     private $text;
 
-    /**
-     * @ORM\Column(type="array")
-     */
-    private $state;
-
     public function __toString()
     {
         return $this->getName();
-    }
-
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
     }
 
     public function getId(): ?string

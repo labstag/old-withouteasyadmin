@@ -20,7 +20,15 @@
             </tr>
             <tr>
                 <th>User</th>
-                <td>{{ entity.refuser }}</td>
+                <td><a href="{{ path('admin_user_show', {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a></td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>

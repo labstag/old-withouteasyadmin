@@ -2,11 +2,26 @@
 
 namespace Labstag\EventSubscriber;
 
+use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class UserWorkflowSubscriber implements EventSubscriberInterface
 {
+
+    private UserMailService $userMailService;
+
+    private SessionInterface $session;
+
+    public function __construct(
+        UserMailService $userMailService,
+        SessionInterface $session
+    )
+    {
+        $this->session         = $session;
+        $this->userMailService = $userMailService;
+    }
 
     public function onTransition(Event $event)
     {
@@ -16,58 +31,34 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
             case 'submit':
                 $this->transitionSubmit($event);
                 break;
-            case 'validation':
-                $this->transitionValidation($event);
-                break;
             case 'passwordlost':
                 $this->transitionPasswordLost($event);
-                break;
-            case 'changepassword':
-                $this->transitionChangerPassword($event);
-                break;
-            case 'desactiver':
-                $this->transitionDesactiver($event);
-                break;
-            case 'activer':
-                $this->transitionActiver($event);
                 break;
         }
     }
 
     public function transitionSubmit(Event $event)
     {
-        unset($event);
-        // dump('submit');
-    }
-
-    public function transitionValidation(Event $event)
-    {
-        unset($event);
-        // dump('validation');
+        $entity = $event->getSubject();
+        $this->userMailService->newUser($entity);
+        /** @var Session $session */
+        $session = $this->session;
+        $session->getFlashBag()->add(
+            'success',
+            'Nouveau compte utilisateur créer'
+        );
     }
 
     public function transitionPasswordLost(Event $event)
     {
-        unset($event);
-        // dump('passwordlost');
-    }
-
-    public function transitionChangerPassword(Event $event)
-    {
-        unset($event);
-        // dump('changepassword');
-    }
-
-    public function transitionDesactiver(Event $event)
-    {
-        unset($event);
-        // dump('desactiver');
-    }
-
-    public function transitionActiver(Event $event)
-    {
-        unset($event);
-        // dump('activer');
+        $entity = $event->getSubject();
+        $this->userMailService->lostPassword($entity);
+        /** @var Session $session */
+        $session = $this->session;
+        $session->getFlashBag()->add(
+            'success',
+            'Demande de nouveau mot de passe envoyé'
+        );
     }
 
     public static function getSubscribedEvents()

@@ -119,6 +119,7 @@
                         <thead>
                             <tr>
                                 <th>Numero</th>
+                                <th>Verif</th>
                                 <th>Country</th>
                                 <th>Type</th>
                                 <th>Principal</th>
@@ -128,6 +129,10 @@
                             {% for phone in phones %}
                                 <tr>
                                     <td><a href="tel:{{ phone.numero }}">{{ phone.numero }}</a></td>
+                                    <td>
+                                        {% set check = verifPhone(phone.country, phone.numero)  ? 'OK' : 'KO' %}
+                                        <span class="check{{ check }}"></span>
+                                    </td>
                                     <td>
                                         <span class="flag-icon flag-icon-{{ phone.country|lower }}"></span>
                                         {{ phone.country|country_name('fr') }}

@@ -34,31 +34,26 @@ class EditoWorkflowSubscriber implements EventSubscriberInterface
     public function transitionSubmit(Event $event)
     {
         unset($event);
-        // dump('submit');
     }
 
     public function transitionRelire(Event $event)
     {
         unset($event);
-        // dump('relire');
     }
 
     public function transitionCorriger(Event $event)
     {
         unset($event);
-        // dump('corriger');
     }
 
     public function transitionPublier(Event $event)
     {
         unset($event);
-        // dump('publier');
     }
 
     public function transitionRejeter(Event $event)
     {
         unset($event);
-        // dump('rejeter');
     }
 
     public static function getSubscribedEvents()

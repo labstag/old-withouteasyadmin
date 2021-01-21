@@ -17,7 +17,10 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'admin',
                 'password' => 'password',
-                'state'    => 'valider',
+                'state'    => [
+                    'submit',
+                    'validation',
+                ],
                 'enable'   => true,
                 'verif'    => true,
                 'lost'     => false,
@@ -27,7 +30,10 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'superadmin',
                 'password' => 'password',
-                'state'    => 'valider',
+                'state'    => [
+                    'submit',
+                    'validation',
+                ],
                 'enable'   => true,
                 'verif'    => true,
                 'lost'     => false,
@@ -37,7 +43,11 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'lost',
                 'password' => 'password',
-                'state'    => 'lostpassword',
+                'state'    => [
+                    'submit',
+                    'validation',
+                    'passwordlost',
+                ],
                 'enable'   => false,
                 'verif'    => true,
                 'lost'     => true,
@@ -47,7 +57,11 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'disable',
                 'password' => 'password',
-                'state'    => 'disable',
+                'state'    => [
+                    'submit',
+                    'validation',
+                    'desactiver',
+                ],
                 'enable'   => false,
                 'verif'    => true,
                 'lost'     => false,
@@ -57,7 +71,7 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'unverif',
                 'password' => 'password',
-                'state'    => 'avalider',
+                'state'    => ['submit'],
                 'enable'   => false,
                 'verif'    => false,
                 'lost'     => false,

@@ -13,19 +13,10 @@ use Labstag\Event\UserEntityEvent;
 
 class UserRequestHandler extends RequestHandlerLib
 {
-    public function create($oldEntity, $entity)
+    public function handle($oldEntity, $entity)
     {
         $this->setArrayCollection($entity);
-        parent::create($oldEntity, $entity);
-        $this->dispatcher->dispatch(
-            new UserEntityEvent($oldEntity, $entity)
-        );
-    }
-
-    public function update($oldEntity, $entity)
-    {
-        $this->setArrayCollection($entity);
-        $this->entityManager->flush();
+        parent::handle($oldEntity, $entity);
         $this->dispatcher->dispatch(
             new UserEntityEvent($oldEntity, $entity)
         );

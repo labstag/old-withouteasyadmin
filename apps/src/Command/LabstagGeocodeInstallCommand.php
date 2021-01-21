@@ -116,7 +116,7 @@ class LabstagGeocodeInstallCommand extends Command
                 $entity->setLatitude($row[9]);
                 $entity->setLongitude($row[10]);
                 $entity->setAccuracy((int) $row[11]);
-                $this->$this->geoCodeRH($old, $entity);
+                $this->geoCodeRH->handle($old, $entity);
             }
 
             $zip->close();

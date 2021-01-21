@@ -107,7 +107,7 @@ abstract class FixtureLib extends Fixture
         $old   = clone $email;
         $email->setRefuser($user);
         $email->setAdresse($faker->safeEmail);
-        $this->emailUserRH->create($old, $email);
+        $this->emailUserRH->handle($old, $email);
     }
 
     protected function addLink(
@@ -120,14 +120,15 @@ abstract class FixtureLib extends Fixture
         $lien->setRefUser($user);
         $lien->setName($faker->word());
         $lien->setAdresse($faker->url);
-        $this->lienUserRH->create($old, $lien);
+        $this->lienUserRH->handle($old, $lien);
     }
 
     protected function addNoteInterne(
         array $users,
         Generator $faker,
         int $index,
-        DateTime $maxDate
+        DateTime $maxDate,
+        array $states
     ): void
     {
         $noteinterne = new NoteInterne();
@@ -148,7 +149,8 @@ abstract class FixtureLib extends Fixture
         /** @var User $user */
         $user = $users[$tabIndex];
         $noteinterne->setRefuser($user);
-        $this->noteInterneRH->create($old, $noteinterne);
+        $this->noteInterneRH->handle($old, $noteinterne);
+        $this->noteInterneRH->changeWorkflowState($noteinterne, $states);
     }
 
     protected function addGroupe(
@@ -160,14 +162,14 @@ abstract class FixtureLib extends Fixture
         $old    = clone $groupe;
         $groupe->setName($row);
         $this->addReference('groupe_' . $key, $groupe);
-        $this->groupeRH->create($old, $groupe);
+        $this->groupeRH->handle($old, $groupe);
     }
 
     protected function addEdito(
         array $users,
         Generator $faker,
         int $index,
-        string $state
+        array $states
     ): void
     {
         $edito  = new Edito();
@@ -182,8 +184,8 @@ abstract class FixtureLib extends Fixture
         /** @var User $user */
         $user = $users[$tabIndex];
         $edito->setRefuser($user);
-        $this->editoRH->create($old, $edito);
-        $this->editoRH->changeWorkflowState($edito, $state);
+        $this->editoRH->handle($old, $edito);
+        $this->editoRH->changeWorkflowState($edito, $states);
     }
 
     protected function addUser(
@@ -200,13 +202,14 @@ abstract class FixtureLib extends Fixture
         $user->setPlainPassword($dataUser['password']);
         $user->setEmail($dataUser['email']);
         $this->addReference('user_' . $index, $user);
-        $this->userRH->create($old, $user);
+        $this->userRH->handle($old, $user);
         $this->userRH->changeWorkflowState($user, $dataUser['state']);
     }
 
     protected function addPhone(
         Generator $faker,
-        User $user
+        User $user,
+        array $states
     ): void
     {
         $number = $faker->e164PhoneNumber;
@@ -216,7 +219,8 @@ abstract class FixtureLib extends Fixture
         $phone->setNumero($number);
         $phone->setType($faker->word());
         $phone->setCountry($faker->countryCode);
-        $this->phoneUserRH->create($old, $phone);
+        $this->phoneUserRH->handle($old, $phone);
+        $this->phoneUserRH->changeWorkflowState($phone, $states);
     }
 
     protected function addAdresse(
@@ -237,6 +241,6 @@ abstract class FixtureLib extends Fixture
         $gps       = $latitude . ',' . $longitude;
         $adresse->setGps($gps);
         $adresse->setPmr((bool) $faker->numberBetween(0, 1));
-        $this->adresseUserRH->create($old, $adresse);
+        $this->adresseUserRH->handle($old, $adresse);
     }
 }

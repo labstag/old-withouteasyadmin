@@ -2,11 +2,19 @@
 
 namespace Labstag\EventSubscriber;
 
+use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class PhoneWorkflowSubscriber implements EventSubscriberInterface
 {
+
+    private UserMailService $userMailService;
+
+    public function __construct(UserMailService $userMailService)
+    {
+        $this->userMailService = $userMailService;
+    }
 
     public function onTransition(Event $event)
     {
@@ -16,22 +24,13 @@ class PhoneWorkflowSubscriber implements EventSubscriberInterface
             case 'submit':
                 $this->transitionSubmit($event);
                 break;
-            case 'valider':
-                $this->transitionValider($event);
-                break;
         }
     }
 
     public function transitionSubmit(Event $event)
     {
-        unset($event);
-        // dump('submit');
-    }
-
-    public function transitionValider(Event $event)
-    {
-        unset($event);
-        // dump('valider');
+        $entity = $event->getSubject();
+        $this->userMailService->checkNewPhone($entity->getRefuser(), $entity);
     }
 
     public static function getSubscribedEvents()

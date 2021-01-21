@@ -408,7 +408,7 @@ class AdminCrudService
         $this->adminBoutonService->addBtnSave($form->getName(), 'Ajouter');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $handler->create($oldEntity, $entity);
+            $handler->handle($oldEntity, $entity);
             if (isset($url['list'])) {
                 return new RedirectResponse(
                     $this->router->generate($url['list'])
@@ -449,7 +449,7 @@ class AdminCrudService
         $this->adminBoutonService->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $handler->update($oldEntity, $entity);
+            $handler->handle($oldEntity, $entity);
             /** @var Session $session */
             $session = $this->session;
             $session->getFlashBag()->add(

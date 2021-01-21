@@ -47,8 +47,6 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $newEntity = $event->getNewEntity();
         $this->setPassword($newEntity);
         $this->setPrincipalMail($oldEntity, $newEntity);
-        $this->setLost($oldEntity, $newEntity);
-        $this->setEnable($oldEntity, $newEntity);
         $this->setChangePassword($oldEntity, $newEntity);
     }
 
@@ -68,44 +66,6 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $session->getFlashBag()->add(
             'success',
             'Changement de mot de passe effectué'
-        );
-    }
-
-    private function setLost(User $oldEntity, User $newEntity): void
-    {
-        if ($oldEntity->getState() == $newEntity->getState()) {
-            return;
-        }
-
-        if ('lostpassword' != $newEntity->getState()) {
-            return;
-        }
-
-        $this->userMailService->lostPassword($newEntity);
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
-            'success',
-            'Demande de nouveau mot de passe envoyé'
-        );
-    }
-
-    private function setEnable(User $oldEntity, User $newEntity): void
-    {
-        if ($oldEntity->getState() == $newEntity->getState()) {
-            return;
-        }
-
-        if ('valider' != $newEntity->getState()) {
-            return;
-        }
-
-        $this->userMailService->newUser($newEntity);
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
-            'success',
-            'Nouveau compte utilisateur créer'
         );
     }
 
@@ -150,8 +110,8 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $emailUser->setRefuser($newEntity);
         $emailUser->setPrincipal(true);
         $emailUser->setAdresse($adresse);
-        $this->emailUserRH->create($old, $emailUser);
-        $this->emailUserRH->changeWorkflowState($emailUser, 'valide');
+        $this->emailUserRH->handle($old, $emailUser);
+        $this->emailUserRH->changeWorkflowState($emailUser, ['submit', 'valider']);
     }
 
     private function setPassword(User $user): void

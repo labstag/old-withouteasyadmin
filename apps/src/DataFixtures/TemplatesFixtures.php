@@ -64,7 +64,7 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
             $template->setText($this->twig->render($txtfile));
         }
 
-        $this->templateRH->create($oldTemplate, $template);
+        $this->templateRH->handle($oldTemplate, $template);
     }
 
     private function add(ObjectManager $manager): void
@@ -90,6 +90,6 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
         $content = $faker->unique()->paragraphs(10, true);
         $template->setHtml(str_replace("\n\n", '<br />', $content));
         $template->setText($content);
-        $this->templateRH->create($oldTemplate, $template);
+        $this->templateRH->handle($oldTemplate, $template);
     }
 }

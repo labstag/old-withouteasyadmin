@@ -8,6 +8,7 @@
                 <th>Date_debut</th>
                 <th>Date_fin</th>
                 <th>User</th>
+                <th>State</th>
                 <th><i title="Actions"></i></th>
             </tr>
         </thead>
@@ -18,6 +19,11 @@
                 <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime('full', 'full', locale='fr') : '' }}</td>
                 <td>{{ entity.dateFin ? entity.dateFin|format_datetime('full', 'full', locale='fr') : '' }}</td>
                 <td>{{ entity.refuser }}</td>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>

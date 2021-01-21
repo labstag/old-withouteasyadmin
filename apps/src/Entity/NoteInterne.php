@@ -55,10 +55,25 @@ class NoteInterne
      */
     private $refuser;
 
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $state;
+
     public function __construct()
     {
         $this->dateDebut = new DateTime();
         $this->dateFin   = new DateTime();
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 
     public function __toString()

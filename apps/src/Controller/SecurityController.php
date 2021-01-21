@@ -293,7 +293,7 @@ class SecurityController extends ControllerLib
             return $this->redirect($this->generateUrl('front'), 302);
         }
 
-        $emailRequestHandler->changeWorkflowState($phone, 'valide');
+        $emailRequestHandler->changeWorkflowState($phone, ['valider']);
         $this->addFlash('success', 'Phone confirmé');
 
         return $this->redirect($this->generateUrl('front'), 302);
@@ -313,7 +313,7 @@ class SecurityController extends ControllerLib
             return $this->redirect($this->generateUrl('front'), 302);
         }
 
-        $emailRequestHandler->changeWorkflowState($email, 'valide');
+        $emailRequestHandler->changeWorkflowState($email, ['valider']);
         $this->addFlash('success', 'Courriel confirmé');
 
         return $this->redirect($this->generateUrl('front'), 302);
@@ -333,7 +333,7 @@ class SecurityController extends ControllerLib
             return $this->redirect($this->generateUrl('front'), 302);
         }
 
-        $userRequestHandler->changeWorkflowState($user, 'valide');
+        $userRequestHandler->changeWorkflowState($user, ['validation']);
         $this->addFlash('success', 'Utilisation activé');
 
         return $this->redirect($this->generateUrl('front'), 302);
@@ -357,7 +357,7 @@ class SecurityController extends ControllerLib
         $form = $this->createForm(ChangePasswordType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $requestHandler->changeWorkflowState($user, 'valider');
+            $requestHandler->changeWorkflowState($user, ['valider']);
 
             return $this->redirect($this->generateUrl('front'), 302);
         }

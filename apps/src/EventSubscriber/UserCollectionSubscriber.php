@@ -25,14 +25,10 @@ class UserCollectionSubscriber implements EventSubscriberInterface
     {
         $oauthConnectUser = $event->getOauthConnectUser();
         $lienUser         = $event->getLienUser();
-        $emailUser        = $event->getEmailUser();
-        $phoneUser        = $event->getPhoneUser();
         $adresseUser      = $event->getAdresseUser();
 
         $this->setOauthConnectUser($oauthConnectUser);
         $this->setLienUser($lienUser);
-        $this->setEmailUser($emailUser);
-        $this->setPhoneUser($phoneUser);
         $this->setAdresseUser($adresseUser);
     }
 
@@ -71,40 +67,6 @@ class UserCollectionSubscriber implements EventSubscriberInterface
         }
 
         $this->userMailService->checkNewLink($new->getRefuser(), $new);
-    }
-
-    private function setEmailUser(array $data): void
-    {
-        if (count($data) == 0) {
-            return;
-        }
-
-        /** @var EmailUser $old */
-        $old = $data['old'];
-        /** @var EmailUser $new */
-        $new = $data['new'];
-        if ($old->getId() == $new->getId() || 'valide' != $new->getState()) {
-            return;
-        }
-
-        $this->userMailService->checkNewMail($new->getRefuser(), $new);
-    }
-
-    private function setPhoneUser(array $data): void
-    {
-        if (count($data) == 0) {
-            return;
-        }
-
-        /** @var PhoneUser $old */
-        $old = $data['old'];
-        /** @var PhoneUser $new */
-        $new = $data['new'];
-        if ($old->getId() == $new->getId()) {
-            return;
-        }
-
-        $this->userMailService->checkNewPhone($new->getRefuser(), $new);
     }
 
     private function setAdresseUser(array $data): void

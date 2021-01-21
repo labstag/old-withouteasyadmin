@@ -88,7 +88,7 @@ class UserService
         if ($oauthConnect instanceof OauthConnectUser) {
             $old = clone $oauthConnect;
             $oauthConnect->setData($userOauth->toArray());
-            $this->oauthConnectUserRH->create($old, $oauthConnect);
+            $this->oauthConnectUserRH->handle($old, $oauthConnect);
             $session->getFlashBag()->add('success', 'Compte associé');
 
             return;
@@ -153,6 +153,6 @@ class UserService
             return;
         }
 
-        $this->userRH->changeWorkflowState($user, 'lostpassword');
+        $this->userRH->changeWorkflowState($user, ['lostpassword']);
     }
 }
