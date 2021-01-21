@@ -43,6 +43,11 @@ abstract class Email
      */
     protected $principal;
 
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $state;
+
     public function __construct()
     {
         $this->verif     = false;
@@ -52,6 +57,16 @@ abstract class Email
     public function __toString()
     {
         return $this->getAdresse();
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 
     public function getId(): ?string

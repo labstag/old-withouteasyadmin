@@ -15,19 +15,17 @@ class OauthConnectUserRequestHandler extends RequestHandlerLib
     public function create($oldEntity, $entity)
     {
         $this->setArrayCollection($entity);
+        $userCollectionEvent = new UserCollectionEvent();
         parent::create($oldEntity, $entity);
-        $this->dispatcher->dispatch(
-            new UserCollectionEvent($oldEntity, $entity)
-        );
+        $userCollectionEvent->addOauthConnectUser($oldEntity, $entity);
     }
 
     public function update($oldEntity, $entity)
     {
         $this->setArrayCollection($entity);
+        $userCollectionEvent = new UserCollectionEvent();
         $this->entityManager->flush();
-        $this->dispatcher->dispatch(
-            new UserCollectionEvent($oldEntity, $entity)
-        );
+        $userCollectionEvent->addOauthConnectUser($oldEntity, $entity);
     }
 
     private function setArrayCollection(User $entity)

@@ -10,7 +10,7 @@ MARIADBFULLNAME      := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $
 APACHE               := $(STACK)_apache
 APACHEFULLNAME       := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
 .PHONY               := help assets bdd-fixtures bdd-migrate bdd-validate composer-suggests composer-outdated composer-dev composer-update composer-validate contributors contributors-add contributors-check contributors-generate docker-create-network docker-deploy docker-image-pull docker-ls docker-stop encore-dev encore-watch env-dev env-prod geocode git-commit git-check install install-dev linter linter-readme linter-phpcbf linter-phpcpd linter-phpcs linter-phpcs-onlywarning linter-phpcs-onlyerror linter-phploc linter-phpmd linter-phpmnd linter-phpstan linter-twig linter-yaml logs logs-apache logs-mariadb logs-phpfpm messenger_consume sleep ssh-phpfpm ssh-phpfdpm-xdebug ssh-mariadb tests-behat tests-launch tests-simple-phpunit-unit-integration tests-simple-phpunit translations
-SUPPORTED_COMMANDS   := geocode sleep
+SUPPORTED_COMMANDS   := geocode sleep workflow-png
 SUPPORTS_MAKE_ARGS   := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
   COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -233,3 +233,6 @@ tests-simple-phpunit: ## lance les tests phpunit
 
 translations: ## update translation
 	docker exec $(PHPFPMXDEBUGFULLNAME) make translations
+
+workflow-png: ## generate workflow png
+	docker exec $(PHPFPMXDEBUGFULLNAME) make workflow-png $(COMMAND_ARGS)

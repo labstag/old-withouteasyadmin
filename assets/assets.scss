@@ -118,7 +118,7 @@ legend{
   }
 }
 
-#deleteModal, #destroyModal, #emptyModal, #restoreModal{
+#deleteModal, #destroyModal, #emptyModal, #restoreModal, #workflowModal{
   @extend .modal;
   @extend .fade;
 }
@@ -133,12 +133,28 @@ legend{
       @extend .fa-ban;
     }
   }
-  .confirm-delete, .confirm-destroy, .confirm-empty, .confirm-restore{
+  .confirm-delete, .confirm-destroy, .confirm-empty{
     @extend .btn;
     @extend .btn-outline-danger;
     i{
       @extend .fas;
       @extend .fa-trash-alt;
+    }
+  }
+  .confirm-restore{
+    @extend .btn;
+    @extend .btn-outline-danger;
+    i{
+      @extend .fas;
+      @extend .fa-trash-restore;
+    }
+  }
+  .confirm-workflow{
+    @extend .btn;
+    @extend .btn-outline-danger;
+    i{
+      @extend .fas;
+      @extend .fa-sign-in-alt;
     }
   }
 }

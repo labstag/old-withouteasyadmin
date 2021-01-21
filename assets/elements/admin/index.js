@@ -11,7 +11,11 @@ import { LinkBtnAdminDelete } from './LinkBtnAdminDelete';
 import {ModalConfirmDelete} from './ModalConfirmDelete';
 import {ModalConfirmDestroy} from './ModalConfirmDestroy';
 import {ModalConfirmRestore} from './ModalConfirmRestore';
+import {ModalConfirmWorkflow} from './ModalConfirmWorkflow';
 import {ModalConfirmEmpty} from './ModalConfirmEmpty';
+import { WorkflowAction } from './WorkflowAction';
+
+customElements.define('workflow-action', WorkflowAction);
 
 customElements.define('link-show', LinkShow);
 customElements.define('link-edit', LinkEdit);
@@ -28,3 +32,4 @@ customElements.define('confirm-delete', ModalConfirmDelete, { 'extends': 'button
 customElements.define('confirm-destroy', ModalConfirmDestroy, { 'extends': 'button' });
 customElements.define('confirm-restore', ModalConfirmRestore, { 'extends': 'button' });
 customElements.define('confirm-empty', ModalConfirmEmpty, { 'extends': 'button' });
+customElements.define('confirm-workflow', ModalConfirmWorkflow, { 'extends': 'button' });

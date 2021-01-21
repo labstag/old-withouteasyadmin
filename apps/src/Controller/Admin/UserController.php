@@ -45,13 +45,14 @@ class UserController extends AdminControllerLib
                 'list'  => 'admin_user_index',
             ],
             [
-                'list'    => 'admin_user_index',
-                'show'    => 'admin_user_show',
-                'preview' => 'admin_user_preview',
-                'edit'    => 'admin_user_edit',
-                'delete'  => 'admin_user_delete',
-                'destroy' => 'admin_user_destroy',
-                'restore' => 'admin_user_restore',
+                'list'     => 'admin_user_index',
+                'show'     => 'admin_user_show',
+                'preview'  => 'admin_user_preview',
+                'edit'     => 'admin_user_edit',
+                'delete'   => 'admin_user_delete',
+                'destroy'  => 'admin_user_destroy',
+                'restore'  => 'admin_user_restore',
+                'workflow' => 'admin_user_workflow',
             ]
         );
     }
@@ -127,5 +128,14 @@ class UserController extends AdminControllerLib
     public function empty(UserRepository $repository): Response
     {
         return $this->adminCrudService->empty($repository);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/workflow/{state}/{id}", name="admin_user_workflow", methods={"POST"})
+     */
+    public function workflow(User $user, string $state): Response
+    {
+        return $this->adminCrudService->workflow($user, $state);
     }
 }

@@ -45,13 +45,14 @@ class EmailUserController extends AdminControllerLib
                 'list'  => 'admin_emailuser_index',
             ],
             [
-                'list'    => 'admin_emailuser_index',
-                'show'    => 'admin_emailuser_show',
-                'preview' => 'admin_emailuser_preview',
-                'edit'    => 'admin_emailuser_edit',
-                'delete'  => 'admin_emailuser_delete',
-                'destroy' => 'admin_emailuser_destroy',
-                'restore' => 'admin_emailuser_restore',
+                'list'     => 'admin_emailuser_index',
+                'show'     => 'admin_emailuser_show',
+                'preview'  => 'admin_emailuser_preview',
+                'edit'     => 'admin_emailuser_edit',
+                'delete'   => 'admin_emailuser_delete',
+                'destroy'  => 'admin_emailuser_destroy',
+                'restore'  => 'admin_emailuser_restore',
+                'workflow' => 'admin_emailuser_workflow',
             ]
         );
     }
@@ -129,5 +130,14 @@ class EmailUserController extends AdminControllerLib
     public function empty(EmailUserRepository $repository): Response
     {
         return $this->adminCrudService->empty($repository);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/workflow/{state}/{id}", name="admin_emailuser_workflow", methods={"POST"})
+     */
+    public function workflow(EmailUser $emailUser, string $state): Response
+    {
+        return $this->adminCrudService->workflow($emailUser, $state);
     }
 }

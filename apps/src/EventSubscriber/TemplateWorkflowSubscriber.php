@@ -5,7 +5,7 @@ namespace Labstag\EventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class EditoWorkflowSubscriber implements EventSubscriberInterface
+class TemplateWorkflowSubscriber implements EventSubscriberInterface
 {
 
     public function onTransition(Event $event)
@@ -63,6 +63,6 @@ class EditoWorkflowSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return ['workflow.edito.transition' => 'onTransition'];
+        return ['workflow.template.transition' => 'onTransition'];
     }
 }

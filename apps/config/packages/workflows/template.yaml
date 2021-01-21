@@ -1,6 +1,6 @@
 framework:
   workflows:
-    edito:
+    template:
       type: 'state_machine' # or 'state_machine'
       audit_trail:
         enabled: true
@@ -8,7 +8,7 @@ framework:
         type: 'method'
         property: 'state'
       supports:
-        - Labstag\Entity\Edito
+        - Labstag\Entity\Template
       initial_marking: start
       places:
         - start

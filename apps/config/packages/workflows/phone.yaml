@@ -1,0 +1,23 @@
+framework:
+  workflows:
+    phone:
+      type: 'state_machine' # or 'state_machine'
+      audit_trail:
+        enabled: true
+      marking_store:
+        type: 'method'
+        property: 'state'
+      supports:
+        - Labstag\Entity\Phone
+      initial_marking: start
+      places:
+        - start
+        - averifier
+        - valide
+      transitions:
+        submit:
+            from: start
+            to: averifier
+        valider:
+            from: averifier
+            to: valide

@@ -45,13 +45,14 @@ class TemplateController extends AdminControllerLib
                 'list'  => 'admin_template_index',
             ],
             [
-                'list'    => 'admin_template_index',
-                'show'    => 'admin_template_show',
-                'preview' => 'admin_template_preview',
-                'edit'    => 'admin_template_edit',
-                'delete'  => 'admin_template_delete',
-                'destroy' => 'admin_template_destroy',
-                'restore' => 'admin_template_restore',
+                'list'     => 'admin_template_index',
+                'show'     => 'admin_template_show',
+                'preview'  => 'admin_template_preview',
+                'edit'     => 'admin_template_edit',
+                'delete'   => 'admin_template_delete',
+                'destroy'  => 'admin_template_destroy',
+                'restore'  => 'admin_template_restore',
+                'workflow' => 'admin_template_workflow',
             ]
         );
     }
@@ -125,5 +126,14 @@ class TemplateController extends AdminControllerLib
     public function empty(TemplateRepository $repository): Response
     {
         return $this->adminCrudService->empty($repository);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/workflow/{state}/{id}", name="admin_template_workflow", methods={"POST"})
+     */
+    public function workflow(Template $template, string $state): Response
+    {
+        return $this->adminCrudService->workflow($template, $state);
     }
 }

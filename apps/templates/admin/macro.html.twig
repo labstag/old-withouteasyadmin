@@ -39,6 +39,18 @@
         {% endif %}
     ></link-restore>
 {% endmacro %}
+{% macro workflow(entity, actions) %}
+    {% if workflow_has(entity) and actions['workflow'] is defined %}
+        {% for transition in workflow_transitions(entity) %}
+            <workflow-action
+                data-url="{{ path(actions['workflow'], {'id': entity.id, 'state': transition.name}) }}"
+                data-name="{{ transition.name }}"
+                data-token="{{ csrf_token(transition.name ~ entity.id) }}"
+                data-redirect="{{ path(actions['list']) }}"
+            ></workflow-action>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
 {% macro actions (entity, actions) %}
     <div class="btngrouptable" role="group">
         {% if actions['show'] is defined %}
@@ -62,6 +74,7 @@
                 {% endif %}
                 {{ _self.delete(entity, url, urlList) }}
             {% endif %}
+            {{ _self.workflow(entity, actions) }}
         {% else %}
             {% if actions['restore'] is defined %}
                 {% set urlList = app.request.attributes.get('_route') %}

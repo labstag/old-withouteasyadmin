@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\User;
 use Labstag\Event\UserEntityEvent;
+use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -23,13 +24,17 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     private UserMailService $userMailService;
 
+    private EmailUserRequestHandler $emailUserRH;
+
     public function __construct(
         SessionInterface $session,
         EntityManagerInterface $entityManager,
         UserPasswordEncoderInterface $passwordEncoder,
-        UserMailService $userMailService
+        UserMailService $userMailService,
+        EmailUserRequestHandler $emailUserRH
     )
     {
+        $this->emailUserRH     = $emailUserRH;
         $this->userMailService = $userMailService;
         $this->entityManager   = $entityManager;
         $this->session         = $session;
@@ -141,12 +146,12 @@ class UserEntitySubscriber implements EventSubscriberInterface
         }
 
         $emailUser = new EmailUser();
+        $old       = clone $emailUser;
         $emailUser->setRefuser($newEntity);
         $emailUser->setVerif(true);
         $emailUser->setPrincipal(true);
         $emailUser->setAdresse($adresse);
-        $this->entityManager->persist($emailUser);
-        $this->entityManager->flush();
+        $this->emailUserRH->create($old, $emailUser);
     }
 
     private function setPassword(User $user): void

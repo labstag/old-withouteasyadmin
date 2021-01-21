@@ -29,6 +29,9 @@
             {% if modalRestore is defined %}
                 {{ modal.restore() }}
             {% endif %}
+            {% if modalWorkflow is defined %}
+                {{ modal.Workflow() }}
+            {% endif %}
         {% endblock %}
     </body>
 </html>

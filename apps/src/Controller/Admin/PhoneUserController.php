@@ -45,13 +45,14 @@ class PhoneUserController extends AdminControllerLib
                 'list'  => 'admin_phoneuser_index',
             ],
             [
-                'list'    => 'admin_phoneuser_index',
-                'show'    => 'admin_phoneuser_show',
-                'preview' => 'admin_phoneuser_preview',
-                'edit'    => 'admin_phoneuser_edit',
-                'delete'  => 'admin_phoneuser_delete',
-                'destroy' => 'admin_phoneuser_destroy',
-                'restore' => 'admin_phoneuser_restore',
+                'list'     => 'admin_phoneuser_index',
+                'show'     => 'admin_phoneuser_show',
+                'preview'  => 'admin_phoneuser_preview',
+                'edit'     => 'admin_phoneuser_edit',
+                'delete'   => 'admin_phoneuser_delete',
+                'destroy'  => 'admin_phoneuser_destroy',
+                'restore'  => 'admin_phoneuser_restore',
+                'workflow' => 'admin_phoneuser_workflow',
             ]
         );
     }
@@ -129,5 +130,14 @@ class PhoneUserController extends AdminControllerLib
     public function empty(PhoneUserRepository $repository): Response
     {
         return $this->adminCrudService->empty($repository);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/workflow/{state}/{id}", name="admin_phoneuser_workflow", methods={"POST"})
+     */
+    public function workflow(PhoneUser $phoneUser, string $state): Response
+    {
+        return $this->adminCrudService->workflow($phoneUser, $state);
     }
 }

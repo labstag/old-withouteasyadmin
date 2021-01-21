@@ -135,6 +135,11 @@ class User implements UserInterface
      */
     private $oauthConnectUsers;
 
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $state;
+
     public function __construct()
     {
         $this->editos            = new ArrayCollection();
@@ -148,6 +153,16 @@ class User implements UserInterface
         $this->enable            = false;
         $this->lost              = false;
         $this->verif             = false;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 
     public function __toString()

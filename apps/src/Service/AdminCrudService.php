@@ -3,6 +3,7 @@
 namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Lib\RequestHandlerLib;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Workflow\Registry;
 use Twig\Environment;
 
 class AdminCrudService
@@ -50,6 +52,8 @@ class AdminCrudService
 
     protected string $urlHome = '';
 
+    protected Registry $workflows;
+
     public function __construct(
         Environment $twig,
         AdminBoutonService $adminBoutonService,
@@ -57,11 +61,13 @@ class AdminCrudService
         RequestStack $requestStack,
         FormFactoryInterface $formFactory,
         RouterInterface $router,
+        Registry $workflows,
         CsrfTokenManagerInterface $csrfTokenManager,
         EntityManagerInterface $entityManager,
         SessionInterface $session
     )
     {
+        $this->workflows        = $workflows;
         $this->twig             = $twig;
         $this->session          = $session;
         $this->entityManager    = $entityManager;
@@ -208,6 +214,13 @@ class AdminCrudService
             if (isset($actions['delete'])) {
                 $this->twig->addGlobal(
                     'modalDelete',
+                    true
+                );
+            }
+
+            if (isset($actions['workflow'])) {
+                $this->twig->addGlobal(
+                    'modalWorkflow',
                     true
                 );
             }
@@ -540,6 +553,19 @@ class AdminCrudService
         }
 
         $this->entityManager->flush();
+        return new JsonResponse(
+            []
+        );
+    }
+
+    public function workflow($entity, string $state): JsonResponse
+    {
+        if ($this->workflows->has($entity)) {
+            $workflow = $this->workflows->get($entity);
+            $workflow->apply($entity, $state);
+            $this->entityManager->flush();
+        }
+
         return new JsonResponse(
             []
         );

@@ -45,13 +45,14 @@ class EditoController extends AdminControllerLib
                 'list'  => 'admin_edito_index',
             ],
             [
-                'list'    => 'admin_edito_index',
-                'show'    => 'admin_edito_show',
-                'preview' => 'admin_edito_preview',
-                'edit'    => 'admin_edito_edit',
-                'delete'  => 'admin_edito_delete',
-                'destroy' => 'admin_edito_destroy',
-                'restore' => 'admin_edito_restore',
+                'list'     => 'admin_edito_index',
+                'show'     => 'admin_edito_show',
+                'preview'  => 'admin_edito_preview',
+                'edit'     => 'admin_edito_edit',
+                'delete'   => 'admin_edito_delete',
+                'destroy'  => 'admin_edito_destroy',
+                'restore'  => 'admin_edito_restore',
+                'workflow' => 'admin_edito_workflow',
             ]
         );
     }
@@ -125,5 +126,14 @@ class EditoController extends AdminControllerLib
     public function empty(EditoRepository $repository): Response
     {
         return $this->adminCrudService->empty($repository);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/workflow/{state}/{id}", name="admin_edito_workflow", methods={"POST"})
+     */
+    public function workflow(Edito $edito, string $state): Response
+    {
+        return $this->adminCrudService->workflow($edito, $state);
     }
 }
