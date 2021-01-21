@@ -11,10 +11,6 @@
                 <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
-                <th>Enable</th>
-                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
                 <th>Date_debut</th>
                 <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime('full', 'full', locale='fr') : '' }}</td>
             </tr>

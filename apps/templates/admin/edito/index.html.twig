@@ -5,8 +5,8 @@
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Enable</th>
                 <th>User</th>
+                <th>State</th>
                 <th><i class="BtnAdminTableAction" title="Actions"></i></th>
             </tr>
         </thead>
@@ -14,8 +14,12 @@
         {% for entity in pagination %}
             <tr>
                 <td>{{ entity.title }}</td>
-                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
                 <td>{{ entity.refuser }}</td>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>

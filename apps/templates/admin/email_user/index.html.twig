@@ -6,8 +6,8 @@
             <tr>
                 <th>Adresse</th>
                 <th>Principal</th>
-                <th>Verif</th>
                 <th>User</th>
+                <th>State</th>
                 <th><i class="BtnAdminTableAction" title="Actions"></i></th>
             </tr>
         </thead>
@@ -16,8 +16,12 @@
             <tr>
                 <td>{{ entity.adresse }}</td>
                 <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
-                <td>{{ entity.verif ? 'Yes' : 'No' }}</td>
                 <td>{{ entity.refuser }}</td>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>

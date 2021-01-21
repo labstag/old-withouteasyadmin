@@ -5,7 +5,6 @@
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Enable</th>
                 <th>Date_debut</th>
                 <th>Date_fin</th>
                 <th>User</th>
@@ -16,7 +15,6 @@
         {% for entity in pagination %}
             <tr>
                 <td>{{ entity.title }}</td>
-                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
                 <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime('full', 'full', locale='fr') : '' }}</td>
                 <td>{{ entity.dateFin ? entity.dateFin|format_datetime('full', 'full', locale='fr') : '' }}</td>
                 <td>{{ entity.refuser }}</td>

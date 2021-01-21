@@ -7,12 +7,20 @@
                 <td>{{ entity.username }}</td>
             </tr>
             <tr>
+                <th>Groupe</th>
+                <td>{{ entity.groupe }}</td>
+            </tr>
+            <tr>
                 <th>Email</th>
                 <td><a href="mailto:{{ entity.email }}">{{ entity.email }}</a></td>
             </tr>
             <tr>
-                <th>Enable</th>
-                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
+                <th>State</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>
@@ -88,7 +96,6 @@
                             <tr>
                                 <th>Adresse</th>
                                 <th>Principal</th>
-                                <th>Verif</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -96,7 +103,6 @@
                                 <tr>
                                     <td><a href="mailto:{{ email.adresse }}">{{ email.adresse }}</a></td>
                                     <td>{{ email.principal ? 'Yes' : 'No' }}</td>
-                                    <td>{{ email.verif ? 'Yes' : 'No' }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
