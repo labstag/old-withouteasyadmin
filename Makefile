@@ -208,21 +208,21 @@ endif
 
 inspect: ## docker service inspect
 ifeq ($(COMMAND_ARGS),redis)
-	docker service inspect $(REDIS)
+	@docker service inspect $(REDIS)
 else ifeq ($(COMMAND_ARGS),mailhog)
-	docker service inspect $(MAILHOG)
+	@docker service inspect $(MAILHOG)
 else ifeq ($(COMMAND_ARGS),mercure)
-	docker service inspect $(MERCURE)
+	@docker service inspect $(MERCURE)
 else ifeq ($(COMMAND_ARGS),mariadb)
-	docker service inspect $(MARIADB)
+	@docker service inspect $(MARIADB)
 else ifeq ($(COMMAND_ARGS),apache)
-	docker service inspect $(APACHE)
+	@docker service inspect $(APACHE)
 else ifeq ($(COMMAND_ARGS),phpmyadmin)
-	docker service inspect $(PHPMYADMIN)
+	@docker service inspect $(PHPMYADMIN)
 else ifeq ($(COMMAND_ARGS),phpfpm)
-	docker service inspect $(PHPFPM)
+	@docker service inspect $(PHPFPM)
 else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
-	docker service inspect $(PHPFPMXDEBUG)
+	@docker service inspect $(PHPFPMXDEBUG)
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -360,8 +360,6 @@ else
 	@echo "consume: Messenger Consume"
 endif
 
-
-
 service-update: ## docker service update
 ifeq ($(COMMAND_ARGS),redis)
 	docker service update $(REDIS)
@@ -400,21 +398,21 @@ sleep: ## sleep
 
 ssh: ## SSH
 ifeq ($(COMMAND_ARGS),redis)
-	docker exec -it $(REDISFULLNAME) /bin/bash
+	@docker exec -it $(REDISFULLNAME) /bin/bash
 else ifeq ($(COMMAND_ARGS),mailhog)
-	docker exec -it $(MAILHOGFULLNAME) /bin/bash
+	@docker exec -it $(MAILHOGFULLNAME) /bin/bash
 else ifeq ($(COMMAND_ARGS),mercure)
-	docker exec -it $(MERCUREFULLNAME) /bin/bash
+	@docker exec -it $(MERCUREFULLNAME) /bin/bash
 else ifeq ($(COMMAND_ARGS),mariadb)
-	docker exec -it $(MARIADBFULLNAME) /bin/bash
+	@docker exec -it $(MARIADBFULLNAME) /bin/bash
 else ifeq ($(COMMAND_ARGS),apache)
-	docker exec -it $(APACHEFULLNAME) /bin/bash
+	@docker exec -it $(APACHEFULLNAME) /bin/bash
 else ifeq ($(COMMAND_ARGS),phpmyadmin)
-	docker exec -it $(PHPMYADMINFULLNAME) /bin/bash
+	@docker exec -it $(PHPMYADMINFULLNAME) /bin/bash
 else ifeq ($(COMMAND_ARGS),phpfpm)
-	docker exec -it $(PHPFPMFULLNAME) /bin/bash
+	@docker exec -it $(PHPFPMFULLNAME) /bin/bash
 else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
-	docker exec -it $(PHPFPMXDEBUGFULLNAME) /bin/bash
+	@docker exec -it $(PHPFPMXDEBUGFULLNAME) /bin/bash
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
