@@ -1,14 +1,14 @@
 export class WorkflowAction extends HTMLElement {
   constructor() {
     super();
-    if ('' != this.innerHTML) {
+    if ("" != this.innerHTML) {
       return;
     }
-    this.classList.add('workflow-action');
+    this.classList.add("workflow-action");
     this.innerHTML = "<i></i> " + this.dataset.name;
     this.dataset.toggle = "modal";
     this.dataset.target = "#workflowModal";
-    this.addEventListener('click', this.onClick);
+    this.addEventListener("click", this.onClick);
   }
 
   onClick(element) {
