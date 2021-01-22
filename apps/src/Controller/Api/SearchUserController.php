@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Api;
 
+use Labstag\Repository\UserRepository;
 use Labstag\Service\PhoneService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ class SearchUserController extends AbstractController
      *
      * @return Response
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, UserRepository $repository): Response
     {
         $get    = $request->query->all();
         $return = ['isvalid' => false];
@@ -33,6 +34,17 @@ class SearchUserController extends AbstractController
             return $this->json($return);
         }
 
-        return $this->json($get);
+        $users = $repository->findUserName($get['name']);
+        echo count($users);
+        $data = [];
+
+        foreach ($users as $user) {
+            $data[] = [
+                'id'   => $user->getId(),
+                'name' => $user->getUsername(),
+            ];
+        }
+
+        return $this->json($data);
     }
 }
