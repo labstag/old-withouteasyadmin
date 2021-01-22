@@ -269,7 +269,7 @@ ifeq ($(COMMAND_ARGS),all)
 	@make linter phpcpd -i
 	@make linter phpcs -i
 	@make linter phpmd -i
-	@make linter markdown -i
+	@make linter readme -i
 else ifeq ($(COMMAND_ARGS),readme)
 	@npm run linter-markdown README.md
 else ifeq ($(COMMAND_ARGS),phpcbf)
