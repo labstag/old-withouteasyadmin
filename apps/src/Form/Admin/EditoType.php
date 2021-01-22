@@ -18,8 +18,7 @@ class EditoType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add('title');
         $builder->add('content', WysiwygType::class);
         $choices = [];

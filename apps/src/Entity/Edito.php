@@ -14,7 +14,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Edito
 {
-
     use SoftDeleteableEntity;
 
     /**
