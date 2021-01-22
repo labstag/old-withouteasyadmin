@@ -20,12 +20,11 @@ class GroupFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
+        unset($manager);
         $groupes = $this->getGroupes();
         foreach ($groupes as $key => $row) {
-            $this->addGroupe($manager, $key, $row);
+            $this->addGroupe($key, $row);
         }
-
-        $manager->flush();
     }
 
     public function getDependencies()

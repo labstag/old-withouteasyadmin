@@ -38,11 +38,6 @@ class NoteInterne
     private $content;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $enable;
-
-    /**
      * @ORM\Column(type="datetime")
      * @Assert\LessThanOrEqual(propertyPath="dateFin")
      */
@@ -60,11 +55,25 @@ class NoteInterne
      */
     private $refuser;
 
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $state;
+
     public function __construct()
     {
-        $this->enable    = false;
         $this->dateDebut = new DateTime();
         $this->dateFin   = new DateTime();
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 
     public function __toString()
@@ -97,18 +106,6 @@ class NoteInterne
     public function setContent(string $content): self
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function isEnable(): ?bool
-    {
-        return $this->enable;
-    }
-
-    public function setEnable(bool $enable): self
-    {
-        $this->enable = $enable;
 
         return $this;
     }

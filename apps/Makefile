@@ -3,6 +3,13 @@
 %:
 	@:
 
+SUPPORTED_COMMANDS   := workflow-png
+SUPPORTS_MAKE_ARGS   := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
+ifneq "$(SUPPORTS_MAKE_ARGS)" ""
+  COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(COMMAND_ARGS):;@:)
+endif
+
 .PHONY: bdd-migrate translations
 
 help:
@@ -126,3 +133,6 @@ tests-simple-phpunit-unit-integration: ## lance les tests phpunit
 
 translations: ## update translation
 	php bin/console translation:update --force fr
+
+workflow-png: ## generate workflow png
+	php bin/console workflow:dump $(COMMAND_ARGS) | dot -Tpng -o $(COMMAND_ARGS).png

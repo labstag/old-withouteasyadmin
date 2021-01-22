@@ -7,12 +7,20 @@
                 <td>{{ entity.username }}</td>
             </tr>
             <tr>
+                <th>Groupe</th>
+                <td>{{ entity.groupe }}</td>
+            </tr>
+            <tr>
                 <th>Email</th>
                 <td><a href="mailto:{{ entity.email }}">{{ entity.email }}</a></td>
             </tr>
             <tr>
-                <th>Enable</th>
-                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
+                <th>State</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>
@@ -88,7 +96,6 @@
                             <tr>
                                 <th>Adresse</th>
                                 <th>Principal</th>
-                                <th>Verif</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -96,7 +103,6 @@
                                 <tr>
                                     <td><a href="mailto:{{ email.adresse }}">{{ email.adresse }}</a></td>
                                     <td>{{ email.principal ? 'Yes' : 'No' }}</td>
-                                    <td>{{ email.verif ? 'Yes' : 'No' }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -113,6 +119,7 @@
                         <thead>
                             <tr>
                                 <th>Numero</th>
+                                <th>Verif</th>
                                 <th>Country</th>
                                 <th>Type</th>
                                 <th>Principal</th>
@@ -122,6 +129,10 @@
                             {% for phone in phones %}
                                 <tr>
                                     <td><a href="tel:{{ phone.numero }}">{{ phone.numero }}</a></td>
+                                    <td>
+                                        {% set check = verifPhone(phone.country, phone.numero)  ? 'OK' : 'KO' %}
+                                        <span class="check{{ check }}"></span>
+                                    </td>
                                     <td>
                                         <span class="flag-icon flag-icon-{{ phone.country|lower }}"></span>
                                         {{ phone.country|country_name('fr') }}

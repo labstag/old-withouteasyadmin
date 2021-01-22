@@ -6,7 +6,7 @@ export class TableDatatable extends HTMLTableElement
     let tbodys = this.getElementsByTagName('tbody');
     let thLast = ths[ths.length - 1];
     let tbody = tbodys[tbodys.length - 1];
-    thLast.classList.add('text-center');
+    thLast.classList.add('thactions');
     let tr = tbody.getElementsByTagName('tr');
     tr.forEach(
       (element) => {
@@ -15,6 +15,5 @@ export class TableDatatable extends HTMLTableElement
         tdLast.classList.add('text-center');
       }
     );
-    console.log(tbody.innerHTML);
   }
 }

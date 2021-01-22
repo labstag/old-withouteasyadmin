@@ -12,9 +12,15 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=GeoCodeRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get"
+ *     },
+ *     itemOperations={
+ *         "get"
+ *     }
+ * )
  * @ApiFilter(SearchFilter::class, properties={"countryCode": "exact", "postalCode": "exact", "placeName": "partial"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */

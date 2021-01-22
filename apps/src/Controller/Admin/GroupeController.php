@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\GroupeRequestHandler;
 
 /**
  * @Route("/admin/user/groupe")
@@ -56,11 +57,12 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_groupuser_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(GroupeRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new Groupe(),
             GroupeType::class,
+            $requestHandler,
             ['list' => 'admin_groupuser_index']
         );
     }
@@ -89,11 +91,12 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET","POST"})
      */
-    public function edit(Groupe $groupe): Response
+    public function edit(Groupe $groupe, GroupeRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             GroupeType::class,
             $groupe,
+            $requestHandler,
             [
                 'delete' => 'admin_groupuser_delete',
                 'list'   => 'admin_groupuser_index',

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\User;
 use Labstag\Event\UserEntityEvent;
+use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -23,13 +24,17 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     private UserMailService $userMailService;
 
+    private EmailUserRequestHandler $emailUserRH;
+
     public function __construct(
         SessionInterface $session,
         EntityManagerInterface $entityManager,
         UserPasswordEncoderInterface $passwordEncoder,
-        UserMailService $userMailService
+        UserMailService $userMailService,
+        EmailUserRequestHandler $emailUserRH
     )
     {
+        $this->emailUserRH     = $emailUserRH;
         $this->userMailService = $userMailService;
         $this->entityManager   = $entityManager;
         $this->session         = $session;
@@ -42,18 +47,16 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $newEntity = $event->getNewEntity();
         $this->setPassword($newEntity);
         $this->setPrincipalMail($oldEntity, $newEntity);
-        $this->setLost($oldEntity, $newEntity);
-        $this->setEnable($oldEntity, $newEntity);
         $this->setChangePassword($oldEntity, $newEntity);
     }
 
     private function setChangePassword(User $oldEntity, User $newEntity): void
     {
-        if ($oldEntity->isLost() == $newEntity->isLost()) {
+        if ($oldEntity->getState() == $newEntity->getState()) {
             return;
         }
 
-        if (!$oldEntity->isLost()) {
+        if ('lostpassword' != $oldEntity->getState()) {
             return;
         }
 
@@ -63,44 +66,6 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $session->getFlashBag()->add(
             'success',
             'Changement de mot de passe effectué'
-        );
-    }
-
-    private function setLost(User $oldEntity, User $newEntity): void
-    {
-        if ($oldEntity->isLost() == $newEntity->isLost()) {
-            return;
-        }
-
-        if (!$newEntity->isLost()) {
-            return;
-        }
-
-        $this->userMailService->lostPassword($newEntity);
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
-            'success',
-            'Demande de nouveau mot de passe envoyé'
-        );
-    }
-
-    private function setEnable(User $oldEntity, User $newEntity): void
-    {
-        if ($oldEntity->isVerif() == $newEntity->isVerif()) {
-            return;
-        }
-
-        if ($newEntity->isVerif()) {
-            return;
-        }
-
-        $this->userMailService->newUser($newEntity);
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
-            'success',
-            'Nouveau compte utilisateur créer'
         );
     }
 
@@ -124,7 +89,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
             $this->entityManager->persist($emailUser);
         }
 
-        if ($newEntity->isEnable()) {
+        if ('valider' == $newEntity->getState()) {
             $this->userMailService->changeEmailPrincipal($newEntity);
         }
 
@@ -141,12 +106,12 @@ class UserEntitySubscriber implements EventSubscriberInterface
         }
 
         $emailUser = new EmailUser();
+        $old       = clone $emailUser;
         $emailUser->setRefuser($newEntity);
-        $emailUser->setVerif(true);
         $emailUser->setPrincipal(true);
         $emailUser->setAdresse($adresse);
-        $this->entityManager->persist($emailUser);
-        $this->entityManager->flush();
+        $this->emailUserRH->handle($old, $emailUser);
+        $this->emailUserRH->changeWorkflowState($emailUser, ['submit', 'valider']);
     }
 
     private function setPassword(User $user): void
@@ -162,7 +127,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         );
 
         $user->setPassword($encodePassword);
-        if ($user->isEnable()) {
+        if ('valider' == $user->getState()) {
             $this->userMailService->changePassword($user);
         }
 

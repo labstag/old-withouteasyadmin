@@ -37,19 +37,29 @@ class Edito
     private $content;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $enable;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="editos")
      * @ORM\JoinColumn(nullable=false)
      */
     private $refuser;
 
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $state;
+
     public function __toString()
     {
         return $this->getTitle();
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 
     public function getId(): ?string
@@ -77,18 +87,6 @@ class Edito
     public function setContent(string $content): self
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function isEnable(): ?bool
-    {
-        return $this->enable;
-    }
-
-    public function setEnable(bool $enable): self
-    {
-        $this->enable = $enable;
 
         return $this;
     }

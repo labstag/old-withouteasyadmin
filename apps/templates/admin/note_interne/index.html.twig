@@ -5,21 +5,25 @@
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Enable</th>
                 <th>Date_debut</th>
                 <th>Date_fin</th>
                 <th>User</th>
-                <th><i class="BtnAdminTableAction" title="Actions"></i></th>
+                <th>State</th>
+                <th><i title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
         {% for entity in pagination %}
             <tr>
                 <td>{{ entity.title }}</td>
-                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
                 <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime('full', 'full', locale='fr') : '' }}</td>
                 <td>{{ entity.dateFin ? entity.dateFin|format_datetime('full', 'full', locale='fr') : '' }}</td>
                 <td>{{ entity.refuser }}</td>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>

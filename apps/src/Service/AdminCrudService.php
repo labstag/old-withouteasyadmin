@@ -3,11 +3,14 @@
 namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\RequestHandlerLib;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\AdminBoutonService;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use LogicException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,8 +20,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Workflow\Registry;
 use Twig\Environment;
 
 class AdminCrudService
@@ -42,8 +47,6 @@ class AdminCrudService
 
     private SessionInterface $session;
 
-    private EventDispatcherInterface $dispatcher;
-
     private Environment $twig;
 
     private AdminControllerLib $controller;
@@ -52,6 +55,10 @@ class AdminCrudService
 
     protected string $urlHome = '';
 
+    protected Registry $workflows;
+
+    protected AuthorizationCheckerInterface $authorizationChecker;
+
     public function __construct(
         Environment $twig,
         AdminBoutonService $adminBoutonService,
@@ -59,20 +66,22 @@ class AdminCrudService
         RequestStack $requestStack,
         FormFactoryInterface $formFactory,
         RouterInterface $router,
+        Registry $workflows,
         CsrfTokenManagerInterface $csrfTokenManager,
         EntityManagerInterface $entityManager,
         SessionInterface $session,
-        EventDispatcherInterface $dispatcher
+        AuthorizationCheckerInterface $authorizationChecker
     )
     {
-        $this->twig             = $twig;
-        $this->dispatcher       = $dispatcher;
-        $this->session          = $session;
-        $this->entityManager    = $entityManager;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->router           = $router;
-        $this->formFactory      = $formFactory;
-        $this->requestStack     = $requestStack;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->workflows            = $workflows;
+        $this->twig                 = $twig;
+        $this->session              = $session;
+        $this->entityManager        = $entityManager;
+        $this->csrfTokenManager     = $csrfTokenManager;
+        $this->router               = $router;
+        $this->formFactory          = $formFactory;
+        $this->requestStack         = $requestStack;
         /** @var Request $request */
         $request                  = $this->requestStack->getCurrentRequest();
         $this->request            = $request;
@@ -199,6 +208,7 @@ class AdminCrudService
         array $actions = []
     ): Response
     {
+        $this->denyAccessUnlessGranted('list', $repository->getClassName());
         $routeCurrent = $this->request->get('_route');
         $routeType    = (0 != substr_count($routeCurrent, 'trash')) ? 'trash' : 'all';
         $method       = $methods[$routeType];
@@ -212,6 +222,13 @@ class AdminCrudService
             if (isset($actions['delete'])) {
                 $this->twig->addGlobal(
                     'modalDelete',
+                    true
+                );
+            }
+
+            if (isset($actions['workflow'])) {
+                $this->twig->addGlobal(
+                    'modalWorkflow',
                     true
                 );
             }
@@ -341,6 +358,7 @@ class AdminCrudService
         array $url = []
     ): Response
     {
+        $this->denyAccessUnlessGranted('view', $entity);
         $routeCurrent = $this->request->get('_route');
         $routeType    = (0 != substr_count($routeCurrent, 'preview')) ? 'preview' : 'show';
         $this->showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity);
@@ -374,14 +392,34 @@ class AdminCrudService
         );
     }
 
+    private function denyAccessUnlessGranted($attribute, $subject = null, string $message = 'Access Denied.'): void
+    {
+        if (!$this->authorizationChecker->isGranted($attribute, $subject)) {
+            $exception = $this->createAccessDeniedException($message);
+            $exception->setAttributes($attribute);
+            $exception->setSubject($subject);
+
+            throw $exception;
+        }
+    }
+
+    private function createAccessDeniedException(string $message = 'Access Denied.', \Throwable $previous = null): AccessDeniedException
+    {
+        if (!class_exists(AccessDeniedException::class)) {
+            throw new LogicException('You can not use the "createAccessDeniedException" method if the Security component is not available. Try running "composer require symfony/security-bundle".');
+        }
+
+        return new AccessDeniedException($message, $previous);
+    }
+
     public function create(
         object $entity,
         string $formType,
-        array $url = [],
-        array $events = [],
-        object $manager = null
+        RequestHandlerLib $handler,
+        array $url = []
     ): Response
     {
+        $this->denyAccessUnlessGranted('create', $entity);
         $routeCurrent = $this->request->get('_route');
         $breadcrumb   = [
             'New' => $this->router->generate(
@@ -400,20 +438,7 @@ class AdminCrudService
         $this->adminBoutonService->addBtnSave($form->getName(), 'Ajouter');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!is_null($manager)) {
-                $manager->setArrayCollection($entity);
-            }
-
-            $this->entityManager->persist($entity);
-            $this->entityManager->flush();
-            if (count($events) != 0) {
-                foreach ($events as $event) {
-                    $this->dispatcher->dispatch(
-                        new $event($oldEntity, $entity)
-                    );
-                }
-            }
-
+            $handler->handle($oldEntity, $entity);
             if (isset($url['list'])) {
                 return new RedirectResponse(
                     $this->router->generate($url['list'])
@@ -433,12 +458,12 @@ class AdminCrudService
     public function update(
         string $formType,
         object $entity,
+        RequestHandlerLib $handler,
         array $url = [],
-        array $events = [],
-        object $manager = null,
         string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
+        $this->denyAccessUnlessGranted('update', $entity);
         $routeCurrent = $this->request->get('_route');
         $breadcrumb   = [
             'edit' => $this->router->generate(
@@ -455,25 +480,13 @@ class AdminCrudService
         $this->adminBoutonService->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!is_null($manager)) {
-                $manager->setArrayCollection($entity);
-            }
-
-            $this->entityManager->flush();
+            $handler->handle($oldEntity, $entity);
             /** @var Session $session */
             $session = $this->session;
             $session->getFlashBag()->add(
                 'success',
                 'Données sauvegardé'
             );
-            if (count($events) != 0) {
-                foreach ($events as $event) {
-                    $this->dispatcher->dispatch(
-                        new $event($oldEntity, $entity)
-                    );
-                }
-            }
-
             if (isset($url['list'])) {
                 return new RedirectResponse(
                     $this->router->generate($url['list'])
@@ -494,7 +507,7 @@ class AdminCrudService
     {
         $csrfToken = new CsrfToken('destroy' . $entity->getId(), $token);
         if (is_null($entity->getDeletedAt())) {
-            unset($csrfToken);
+            $csrfToken = null;
         }
 
         return $csrfToken;
@@ -504,7 +517,7 @@ class AdminCrudService
     {
         $csrfToken = new CsrfToken('restore' . $entity->getId(), $token);
         if (is_null($entity->getDeletedAt())) {
-            unset($csrfToken);
+            $csrfToken = null;
         }
 
         return $csrfToken;
@@ -513,8 +526,8 @@ class AdminCrudService
     private function setEntityCsrfDelete($entity, $token)
     {
         $csrfToken = new CsrfToken('delete' . $entity->getId(), $token);
-        if (is_null($entity->getDeletedAt())) {
-            unset($csrfToken);
+        if (!is_null($entity->getDeletedAt())) {
+            $csrfToken = null;
         }
 
         return $csrfToken;
@@ -522,25 +535,38 @@ class AdminCrudService
 
     private function setEntityCsrf($routeCurrent, $entity, $token)
     {
-        if (0 == substr_count($routeCurrent, '_destroy')) {
+        if (0 != substr_count($routeCurrent, '_destroy')) {
             $csrfToken = $this->setEntityCsrfDestroy($entity, $token);
-        } elseif (0 == substr_count($routeCurrent, '_restore')) {
+        } elseif (0 != substr_count($routeCurrent, '_restore')) {
             $csrfToken = $this->setEntityCsrfRestore($entity, $token);
-        } elseif (0 == substr_count($routeCurrent, '_delete')) {
+        } elseif (0 != substr_count($routeCurrent, '_delete')) {
             $csrfToken = $this->setEntityCsrfDelete($entity, $token);
         }
 
         return $csrfToken;
     }
 
+    private function guardDeleteDestroyRestore($routeCurrent, $entity)
+    {
+        if (0 != substr_count($routeCurrent, '_destroy')) {
+            $attribute = 'destroy';
+        } elseif (0 != substr_count($routeCurrent, '_restore')) {
+            $attribute = 'restore';
+        } elseif (0 != substr_count($routeCurrent, '_delete')) {
+            $attribute = 'delete';
+        }
+
+        $this->denyAccessUnlessGranted($attribute, $entity);
+    }
+
     public function entityDeleteDestroyRestore(object $entity): JsonResponse
     {
         $routeCurrent = $this->request->get('_route');
-        $token        = $this->request->request->get('_token');
-        $state        = false;
-        $csrfToken    = $this->setEntityCsrf($routeCurrent, $entity, $token);
-
-        if (isset($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
+        $this->guardDeleteDestroyRestore($routeCurrent, $entity);
+        $token     = $this->request->request->get('_token');
+        $state     = false;
+        $csrfToken = $this->setEntityCsrf($routeCurrent, $entity, $token);
+        if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
             if (0 != substr_count($routeCurrent, '_destroy')) {
                 $this->entityManager->remove($entity);
             } elseif (0 != substr_count($routeCurrent, '_restore')) {
@@ -571,6 +597,19 @@ class AdminCrudService
         }
 
         $this->entityManager->flush();
+        return new JsonResponse(
+            []
+        );
+    }
+
+    public function workflow($entity, string $state): JsonResponse
+    {
+        if ($this->workflows->has($entity)) {
+            $workflow = $this->workflows->get($entity);
+            $workflow->apply($entity, $state);
+            $this->entityManager->flush();
+        }
+
         return new JsonResponse(
             []
         );

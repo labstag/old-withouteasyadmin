@@ -13,19 +13,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 
 class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
-    private OauthService $oauthService;
-
-    public function __construct(
-        OauthService $oauthService,
-        UserRepository $userRepository,
-        EventDispatcherInterface $dispatcher
-    )
-    {
-        $this->oauthService = $oauthService;
-        parent::__construct($userRepository, $dispatcher);
-    }
-
     public function load(ObjectManager $manager): void
     {
         $this->add($manager);

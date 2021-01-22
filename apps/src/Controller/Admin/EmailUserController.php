@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\EmailUserRequestHandler;
 
 /**
  * @Route("/admin/user/email")
@@ -44,13 +45,14 @@ class EmailUserController extends AdminControllerLib
                 'list'  => 'admin_emailuser_index',
             ],
             [
-                'list'    => 'admin_emailuser_index',
-                'show'    => 'admin_emailuser_show',
-                'preview' => 'admin_emailuser_preview',
-                'edit'    => 'admin_emailuser_edit',
-                'delete'  => 'admin_emailuser_delete',
-                'destroy' => 'admin_emailuser_destroy',
-                'restore' => 'admin_emailuser_restore',
+                'list'     => 'admin_emailuser_index',
+                'show'     => 'admin_emailuser_show',
+                'preview'  => 'admin_emailuser_preview',
+                'edit'     => 'admin_emailuser_edit',
+                'delete'   => 'admin_emailuser_delete',
+                'destroy'  => 'admin_emailuser_destroy',
+                'restore'  => 'admin_emailuser_restore',
+                'workflow' => 'admin_emailuser_workflow',
             ]
         );
     }
@@ -58,11 +60,12 @@ class EmailUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_emailuser_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(EmailUserRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new EmailUser(),
             EmailUserType::class,
+            $requestHandler,
             ['list' => 'admin_emailuser_index']
         );
     }
@@ -95,11 +98,12 @@ class EmailUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(EmailUser $emailUser): Response
+    public function edit(EmailUser $emailUser, EmailUserRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             EmailUserType::class,
             $emailUser,
+            $requestHandler,
             [
                 'delete' => 'admin_emailuser_delete',
                 'list'   => 'admin_emailuser_index',
@@ -126,5 +130,14 @@ class EmailUserController extends AdminControllerLib
     public function empty(EmailUserRepository $repository): Response
     {
         return $this->adminCrudService->empty($repository);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/workflow/{state}/{id}", name="admin_emailuser_workflow", methods={"POST"})
+     */
+    public function workflow(EmailUser $emailUser, string $state): Response
+    {
+        return $this->adminCrudService->workflow($emailUser, $state);
     }
 }

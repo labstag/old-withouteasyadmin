@@ -48,7 +48,6 @@ class UserType extends AbstractType
                 'second_options'  => ['label' => 'Repeat Password'],
             ]
         );
-        $builder->add('enable');
         $builder->add('groupe');
         if (isset($options['data']) && !is_null($options['data']->getId())) {
             $emails = [];

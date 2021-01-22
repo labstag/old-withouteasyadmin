@@ -4,7 +4,6 @@ namespace Labstag\Lib;
 
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\AdresseUser;
 use Labstag\Entity\Edito;
@@ -14,25 +13,78 @@ use Labstag\Entity\LienUser;
 use Labstag\Entity\NoteInterne;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
-use Labstag\Event\UserCollectionEvent;
-use Labstag\Event\UserEntityEvent;
+use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use Labstag\RequestHandler\AdresseUserRequestHandler;
+use Labstag\RequestHandler\EditoRequestHandler;
+use Labstag\RequestHandler\EmailUserRequestHandler;
+use Labstag\RequestHandler\GroupeRequestHandler;
+use Labstag\RequestHandler\LienUserRequestHandler;
+use Labstag\RequestHandler\NoteInterneRequestHandler;
+use Labstag\RequestHandler\PhoneUserRequestHandler;
+use Labstag\RequestHandler\TemplateRequestHandler;
+use Labstag\RequestHandler\UserRequestHandler;
+use Labstag\Service\OauthService;
+use Twig\Environment;
 
 abstract class FixtureLib extends Fixture
 {
 
     protected UserRepository $userRepository;
 
-    protected EventDispatcherInterface $dispatcher;
+    protected OauthService $oauthService;
+
+    protected Environment $twig;
+
+    protected GroupeRepository $groupeRepository;
+
+    protected EmailUserRequestHandler $emailUserRH;
+
+    protected LienUserRequestHandler $lienUserRH;
+
+    protected NoteInterneRequestHandler $noteInterneRH;
+
+    protected GroupeRequestHandler $groupeRH;
+
+    protected EditoRequestHandler $editoRH;
+
+    protected PhoneUserRequestHandler $phoneUserRH;
+
+    protected AdresseUserRequestHandler $adresseUserRH;
+
+    protected TemplateRequestHandler $templateRH;
+
+    protected UserRequestHandler $userRH;
 
     public function __construct(
+        OauthService $oauthService,
         UserRepository $userRepository,
-        EventDispatcherInterface $dispatcher
+        GroupeRepository $groupeRepository,
+        Environment $twig,
+        EmailUserRequestHandler $emailUserRH,
+        LienUserRequestHandler $lienUserRH,
+        NoteInterneRequestHandler $noteInterneRH,
+        GroupeRequestHandler $groupeRH,
+        EditoRequestHandler $editoRH,
+        UserRequestHandler $userRH,
+        PhoneUserRequestHandler $phoneUserRH,
+        AdresseUserRequestHandler $adresseUserRH,
+        TemplateRequestHandler $templateRH
     )
     {
-        $this->dispatcher     = $dispatcher;
-        $this->userRepository = $userRepository;
+        $this->twig             = $twig;
+        $this->userRepository   = $userRepository;
+        $this->oauthService     = $oauthService;
+        $this->groupeRepository = $groupeRepository;
+        $this->templateRH       = $templateRH;
+        $this->adresseUserRH    = $adresseUserRH;
+        $this->phoneUserRH      = $phoneUserRH;
+        $this->userRH           = $userRH;
+        $this->editoRH          = $editoRH;
+        $this->groupeRH         = $groupeRH;
+        $this->noteInterneRH    = $noteInterneRH;
+        $this->lienUserRH       = $lienUserRH;
+        $this->emailUserRH      = $emailUserRH;
     }
 
     private function getGroupe(array $groupes, string $code): ?Groupe
@@ -48,27 +100,19 @@ abstract class FixtureLib extends Fixture
 
     protected function addEmail(
         Generator $faker,
-        User $user,
-        ObjectManager $manager
+        User $user
     ): void
     {
         $email = new EmailUser();
         $old   = clone $email;
         $email->setRefuser($user);
         $email->setAdresse($faker->safeEmail);
-        $user->addEmailUser($email);
-        $manager->persist($user);
-        $manager->persist($email);
-        $manager->flush();
-        $userCollectionEvent = new UserCollectionEvent();
-        $userCollectionEvent->addEmailUser($old, $email);
-        $this->dispatcher->dispatch($userCollectionEvent);
+        $this->emailUserRH->handle($old, $email);
     }
 
     protected function addLink(
         Generator $faker,
-        User $user,
-        ObjectManager $manager
+        User $user
     ): void
     {
         $lien = new LienUser();
@@ -76,27 +120,21 @@ abstract class FixtureLib extends Fixture
         $lien->setRefUser($user);
         $lien->setName($faker->word());
         $lien->setAdresse($faker->url);
-        $user->addLienUser($lien);
-        $manager->persist($user);
-        $manager->persist($lien);
-        $manager->flush();
-        $userCollectionEvent = new UserCollectionEvent();
-        $userCollectionEvent->addLienUser($old, $lien);
-        $this->dispatcher->dispatch($userCollectionEvent);
+        $this->lienUserRH->handle($old, $lien);
     }
 
     protected function addNoteInterne(
         array $users,
         Generator $faker,
         int $index,
-        ObjectManager $manager,
-        DateTime $maxDate
+        DateTime $maxDate,
+        array $states
     ): void
     {
         $noteinterne = new NoteInterne();
+        $old         = clone $noteinterne;
         $random      = $faker->numberBetween(5, 50);
         $noteinterne->setTitle($faker->text($random));
-        $noteinterne->setEnable((bool) $faker->numberBetween(0, 1));
         $dateDebut = $faker->dateTime($maxDate);
         $noteinterne->setDateDebut($dateDebut);
         $dateFin = clone $dateDebut;
@@ -111,36 +149,33 @@ abstract class FixtureLib extends Fixture
         /** @var User $user */
         $user = $users[$tabIndex];
         $noteinterne->setRefuser($user);
-        $user->addNoteInterne($noteinterne);
-        $manager->persist($noteinterne);
-        $manager->persist($user);
-        $manager->flush();
+        $this->noteInterneRH->handle($old, $noteinterne);
+        $this->noteInterneRH->changeWorkflowState($noteinterne, $states);
     }
 
     protected function addGroupe(
-        ObjectManager $manager,
         int $key,
         string $row
     ): void
     {
         $groupe = new Groupe();
+        $old    = clone $groupe;
         $groupe->setName($row);
         $this->addReference('groupe_' . $key, $groupe);
-        $manager->persist($groupe);
+        $this->groupeRH->handle($old, $groupe);
     }
 
     protected function addEdito(
         array $users,
         Generator $faker,
         int $index,
-        ObjectManager $manager
+        array $states
     ): void
     {
         $edito  = new Edito();
+        $old    = clone $edito;
         $random = $faker->numberBetween(5, 50);
         $edito->setTitle($faker->text($random));
-        $enable = ($index == 0) ? true : false;
-        $edito->setEnable($enable);
         /** @var string $content */
         $content = $faker->paragraphs(4, true);
         $edito->setContent(str_replace("\n\n", '<br />', $content));
@@ -149,40 +184,32 @@ abstract class FixtureLib extends Fixture
         /** @var User $user */
         $user = $users[$tabIndex];
         $edito->setRefuser($user);
-        $user->addEdito($edito);
-        $manager->persist($user);
-        $manager->persist($edito);
-        $manager->flush();
+        $this->editoRH->handle($old, $edito);
+        $this->editoRH->changeWorkflowState($edito, $states);
     }
 
     protected function addUser(
         array $groupes,
         int $index,
-        array $dataUser,
-        ObjectManager $manager
+        array $dataUser
     ): void
     {
-        $old  = new User();
         $user = new User();
+        $old  = clone $user;
+
         $user->setGroupe($this->getGroupe($groupes, $dataUser['groupe']));
-        $user->setEnable($dataUser['enable']);
-        $user->setVerif($dataUser['verif']);
-        $user->setLost($dataUser['lost']);
         $user->setUsername($dataUser['username']);
         $user->setPlainPassword($dataUser['password']);
         $user->setEmail($dataUser['email']);
         $this->addReference('user_' . $index, $user);
-        $manager->persist($user);
-        $manager->flush();
-        $this->dispatcher->dispatch(
-            new UserEntityEvent($old, $user, [])
-        );
+        $this->userRH->handle($old, $user);
+        $this->userRH->changeWorkflowState($user, $dataUser['state']);
     }
 
     protected function addPhone(
         Generator $faker,
         User $user,
-        ObjectManager $manager
+        array $states
     ): void
     {
         $number = $faker->e164PhoneNumber;
@@ -192,17 +219,13 @@ abstract class FixtureLib extends Fixture
         $phone->setNumero($number);
         $phone->setType($faker->word());
         $phone->setCountry($faker->countryCode);
-        $manager->persist($phone);
-        $manager->flush();
-        $userCollectionEvent = new UserCollectionEvent();
-        $userCollectionEvent->addPhoneUser($old, $phone);
-        $this->dispatcher->dispatch($userCollectionEvent);
+        $this->phoneUserRH->handle($old, $phone);
+        $this->phoneUserRH->changeWorkflowState($phone, $states);
     }
 
     protected function addAdresse(
         Generator $faker,
-        User $user,
-        ObjectManager $manager
+        User $user
     ): void
     {
         $adresse = new AdresseUser();
@@ -218,12 +241,6 @@ abstract class FixtureLib extends Fixture
         $gps       = $latitude . ',' . $longitude;
         $adresse->setGps($gps);
         $adresse->setPmr((bool) $faker->numberBetween(0, 1));
-        $user->addAdresseUser($adresse);
-        $manager->persist($user);
-        $manager->persist($adresse);
-        $manager->flush();
-        $userCollectionEvent = new UserCollectionEvent();
-        $userCollectionEvent->addAdresseUser($old, $adresse);
-        $this->dispatcher->dispatch($userCollectionEvent);
+        $this->adresseUserRH->handle($old, $adresse);
     }
 }

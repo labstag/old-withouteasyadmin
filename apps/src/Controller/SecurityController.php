@@ -5,8 +5,8 @@ namespace Labstag\Controller;
 use Exception;
 use Labstag\Entity\Email;
 use Labstag\Entity\OauthConnectUser;
+use Labstag\Entity\Phone;
 use Labstag\Entity\User;
-use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\GenericProviderLib;
 use Labstag\Form\Security\ChangePasswordType;
 use Labstag\Form\Security\DisclaimerType;
@@ -15,13 +15,14 @@ use Labstag\Form\Security\LoginType;
 use Labstag\Form\Security\LostPasswordType;
 use Labstag\Lib\ControllerLib;
 use Labstag\Repository\OauthConnectUserRepository;
+use Labstag\RequestHandler\EmailRequestHandler;
+use Labstag\RequestHandler\PhoneRequestHandler;
+use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
 use Labstag\Service\UserService;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
-use LogicException;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -279,20 +280,40 @@ class SecurityController extends ControllerLib
     }
 
     /**
+     * @Route("/confirm/phone/{id}", name="app_confirm_phone")
+     */
+    public function confirmPhone(
+        Phone $phone,
+        PhoneRequestHandler $emailRequestHandler
+    ): RedirectResponse
+    {
+        if ('averifier' != $phone->getState()) {
+            $this->addFlash('danger', 'Phone déjà confirmé');
+
+            return $this->redirect($this->generateUrl('front'), 302);
+        }
+
+        $emailRequestHandler->changeWorkflowState($phone, ['valider']);
+        $this->addFlash('success', 'Phone confirmé');
+
+        return $this->redirect($this->generateUrl('front'), 302);
+    }
+
+    /**
      * @Route("/confirm/email/{id}", name="app_confirm_mail")
      */
-    public function confirmEmail(Email $email): RedirectResponse
+    public function confirmEmail(
+        Email $email,
+        EmailRequestHandler $emailRequestHandler
+    ): RedirectResponse
     {
-        if ($email->isVerif()) {
+        if ('averifier' != $email->getState()) {
             $this->addFlash('danger', 'Courriel déjà confirmé');
 
             return $this->redirect($this->generateUrl('front'), 302);
         }
 
-        $email->setVerif(true);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($email);
-        $entityManager->flush();
+        $emailRequestHandler->changeWorkflowState($email, ['valider']);
         $this->addFlash('success', 'Courriel confirmé');
 
         return $this->redirect($this->generateUrl('front'), 302);
@@ -301,18 +322,18 @@ class SecurityController extends ControllerLib
     /**
      * @Route("/confirm/user/{id}", name="app_confirm_user")
      */
-    public function confirmUser(User $user): RedirectResponse
+    public function confirmUser(
+        User $user,
+        UserRequestHandler $userRequestHandler
+    ): RedirectResponse
     {
-        if ($user->isVerif()) {
+        if ('avalider' != $user->getState()) {
             $this->addFlash('danger', 'Utilisation déjà activé');
 
             return $this->redirect($this->generateUrl('front'), 302);
         }
 
-        $user->setVerif(true);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($user);
-        $entityManager->flush();
+        $userRequestHandler->changeWorkflowState($user, ['validation']);
         $this->addFlash('success', 'Utilisation activé');
 
         return $this->redirect($this->generateUrl('front'), 302);
@@ -324,10 +345,10 @@ class SecurityController extends ControllerLib
     public function changePassword(
         User $user,
         Request $request,
-        EventDispatcherInterface $dispatcher
+        UserRequestHandler $requestHandler
     ): Response
     {
-        if (!$user->isLost()) {
+        if ('lostpassword' != $user->getState()) {
             $this->addFlash('danger', 'Demande de mot de passe non envoyé');
 
             return $this->redirect($this->generateUrl('front'), 302);
@@ -336,14 +357,7 @@ class SecurityController extends ControllerLib
         $form = $this->createForm(ChangePasswordType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $old           = clone $user;
-            $user->setLost(false);
-            $entityManager->persist($user);
-            $entityManager->flush();
-            $dispatcher->dispatch(
-                new UserEntityEvent($old, $user, [])
-            );
+            $requestHandler->changeWorkflowState($user, ['valider']);
 
             return $this->redirect($this->generateUrl('front'), 302);
         }

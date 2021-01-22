@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\EditoRequestHandler;
 
 /**
  * @Route("/admin/edito")
@@ -44,13 +45,14 @@ class EditoController extends AdminControllerLib
                 'list'  => 'admin_edito_index',
             ],
             [
-                'list'    => 'admin_edito_index',
-                'show'    => 'admin_edito_show',
-                'preview' => 'admin_edito_preview',
-                'edit'    => 'admin_edito_edit',
-                'delete'  => 'admin_edito_delete',
-                'destroy' => 'admin_edito_destroy',
-                'restore' => 'admin_edito_restore',
+                'list'     => 'admin_edito_index',
+                'show'     => 'admin_edito_show',
+                'preview'  => 'admin_edito_preview',
+                'edit'     => 'admin_edito_edit',
+                'delete'   => 'admin_edito_delete',
+                'destroy'  => 'admin_edito_destroy',
+                'restore'  => 'admin_edito_restore',
+                'workflow' => 'admin_edito_workflow',
             ]
         );
     }
@@ -58,11 +60,12 @@ class EditoController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_edito_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(EditoRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new Edito(),
             EditoType::class,
+            $requestHandler,
             ['list' => 'admin_edito_index']
         );
     }
@@ -91,11 +94,12 @@ class EditoController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_edito_edit", methods={"GET","POST"})
      */
-    public function edit(Edito $edito): Response
+    public function edit(Edito $edito, EditoRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             EditoType::class,
             $edito,
+            $requestHandler,
             [
                 'delete' => 'admin_edito_delete',
                 'list'   => 'admin_edito_index',
@@ -122,5 +126,14 @@ class EditoController extends AdminControllerLib
     public function empty(EditoRepository $repository): Response
     {
         return $this->adminCrudService->empty($repository);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/workflow/{state}/{id}", name="admin_edito_workflow", methods={"POST"})
+     */
+    public function workflow(Edito $edito, string $state): Response
+    {
+        return $this->adminCrudService->workflow($edito, $state);
     }
 }

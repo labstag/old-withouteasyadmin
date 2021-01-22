@@ -5,11 +5,11 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
-use Labstag\Event\UserCollectionEvent;
-use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\GenericProviderLib;
 use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\Repository\UserRepository;
+use Labstag\RequestHandler\OauthConnectUserRequestHandler;
+use Labstag\RequestHandler\UserRequestHandler;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -17,8 +17,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class UserService
 {
-
-    private EventDispatcherInterface $dispatcher;
 
     private UserRepository $repository;
 
@@ -28,19 +26,25 @@ class UserService
 
     private OauthService $oauthService;
 
+    private OauthConnectUserRequestHandler $oauthConnectUserRH;
+
+    private UserRequestHandler $userRH;
+
     public function __construct(
-        EventDispatcherInterface $dispatcher,
         SessionInterface $session,
         EntityManagerInterface $entityManager,
         UserRepository $repository,
-        OauthService $oauthService
+        OauthService $oauthService,
+        UserRequestHandler $userRH,
+        OauthConnectUserRequestHandler $oauthConnectUserRH
     )
     {
-        $this->oauthService  = $oauthService;
-        $this->session       = $session;
-        $this->entityManager = $entityManager;
-        $this->repository    = $repository;
-        $this->dispatcher    = $dispatcher;
+        $this->userRH             = $userRH;
+        $this->oauthService       = $oauthService;
+        $this->session            = $session;
+        $this->entityManager      = $entityManager;
+        $this->repository         = $repository;
+        $this->oauthConnectUserRH = $oauthConnectUserRH;
     }
 
     public function addOauthToUser(
@@ -50,11 +54,10 @@ class UserService
     ): void
     {
         /** @var Session $session */
-        $session             = $this->session;
-        $userCollectionEvent = new UserCollectionEvent();
-        $data                = $userOauth->toArray();
-        $identity            = $this->oauthService->getIdentity($data, $client);
-        $find                = $this->findOAuthIdentity(
+        $session  = $this->session;
+        $data     = $userOauth->toArray();
+        $identity = $this->oauthService->getIdentity($data, $client);
+        $find     = $this->findOAuthIdentity(
             $user,
             $identity,
             $client,
@@ -85,10 +88,7 @@ class UserService
         if ($oauthConnect instanceof OauthConnectUser) {
             $old = clone $oauthConnect;
             $oauthConnect->setData($userOauth->toArray());
-            $this->entityManager->persist($oauthConnect);
-            $this->entityManager->flush();
-            $userCollectionEvent->addOauthConnectUser($old, $oauthConnect);
-            $this->dispatcher->dispatch($userCollectionEvent);
+            $this->oauthConnectUserRH->handle($old, $oauthConnect);
             $session->getFlashBag()->add('success', 'Compte associé');
 
             return;
@@ -153,12 +153,6 @@ class UserService
             return;
         }
 
-        $old = clone $user;
-        $user->setLost(true);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-        $this->dispatcher->dispatch(
-            new UserEntityEvent($old, $user, [])
-        );
+        $this->userRH->changeWorkflowState($user, ['lostpassword']);
     }
 }

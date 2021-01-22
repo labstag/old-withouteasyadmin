@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\GeoCodeRequestHandler;
 
 /**
  * @Route("/admin/geocode")
@@ -54,11 +55,12 @@ class GeoCodeController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_geocode_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(GeoCodeRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new GeoCode(),
             GeoCodeType::class,
+            $requestHandler,
             ['list' => 'admin_geocode_index']
         );
     }
@@ -87,11 +89,12 @@ class GeoCodeController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_geocode_edit", methods={"GET","POST"})
      */
-    public function edit(GeoCode $geoCode): Response
+    public function edit(GeoCode $geoCode, GeoCodeRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             GeoCodeType::class,
             $geoCode,
+            $requestHandler,
             [
                 'delete' => 'admin_geocode_delete',
                 'list'   => 'admin_geocode_index',

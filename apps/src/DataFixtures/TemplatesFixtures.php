@@ -9,32 +9,20 @@ use Faker\Generator;
 use Labstag\Entity\Template;
 use Labstag\Lib\FixtureLib;
 use Labstag\Repository\UserRepository;
+use Labstag\RequestHandler\TemplateRequestHandler;
 use Twig\Environment;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
-    private Environment $twig;
-
     const NUMBER = 10;
-
-    public function __construct(
-        Environment $twig,
-        UserRepository $userRepository,
-        EventDispatcherInterface $dispatcher
-    )
-    {
-        $this->twig = $twig;
-        parent::__construct($userRepository, $dispatcher);
-    }
 
     public function load(ObjectManager $manager): void
     {
         $this->add($manager);
         $data = $this->getData();
         foreach ($data as $key => $title) {
-            $this->setData($key, $title, $manager);
+            $this->setData($key, $title);
         }
 
         $this->add($manager);
@@ -59,11 +47,11 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
 
     private function setData(
         string $key,
-        string $title,
-        ObjectManager $manager
+        string $title
     ): void
     {
-        $template = new Template();
+        $template    = new Template();
+        $oldTemplate = clone $template;
         $template->setName($title);
         $template->setCode($key);
         $htmlfile = 'tpl/mail-' . $key . '.html.twig';
@@ -76,18 +64,16 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
             $template->setText($this->twig->render($txtfile));
         }
 
-        $manager->persist($template);
-        $manager->flush();
+        $this->templateRH->handle($oldTemplate, $template);
     }
 
     private function add(ObjectManager $manager): void
     {
+        unset($manager);
         $faker = Factory::create('fr_FR');
         for ($index = 0; $index < self::NUMBER; ++$index) {
-            $this->addTemplate($faker, $manager);
+            $this->addTemplate($faker);
         }
-
-        $manager->flush();
     }
 
     public function getDependencies()
@@ -95,14 +81,15 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
         return [CacheFixtures::class];
     }
 
-    private function addTemplate(Generator $faker, ObjectManager $manager): void
+    private function addTemplate(Generator $faker): void
     {
-        $template = new Template();
+        $template    = new Template();
+        $oldTemplate = clone $template;
         $template->setName($faker->unique()->colorName);
         /** @var string $content */
         $content = $faker->unique()->paragraphs(10, true);
         $template->setHtml(str_replace("\n\n", '<br />', $content));
         $template->setText($content);
-        $manager->persist($template);
+        $this->templateRH->handle($oldTemplate, $template);
     }
 }

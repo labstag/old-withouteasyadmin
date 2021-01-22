@@ -9,7 +9,8 @@
                 <th>Verif</th>
                 <th>Type</th>
                 <th>Principal</th>
-                <th><i class="BtnAdminTableAction" title="Actions"></i></th>
+                <th>State</th>
+                <th><i title="Actions"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,11 @@
                 </td>
                 <td>{{ entity.type }}</td>
                 <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>

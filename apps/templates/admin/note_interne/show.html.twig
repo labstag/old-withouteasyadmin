@@ -11,10 +11,6 @@
                 <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
-                <th>Enable</th>
-                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
                 <th>Date_debut</th>
                 <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime('full', 'full', locale='fr') : '' }}</td>
             </tr>
@@ -24,7 +20,15 @@
             </tr>
             <tr>
                 <th>User</th>
-                <td>{{ entity.refuser }}</td>
+                <td><a href="{{ path('admin_user_show', {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a></td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>

@@ -744,7 +744,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "1.6",
-            "ref": "6747b34e25c836dd684d27846a452d8f8a3abb2e"
+            "ref": "f362ed8e8aa99a8cb216e6bdb2ac833dfb7643dd"
         },
         "files": [
             "assets/app.js",

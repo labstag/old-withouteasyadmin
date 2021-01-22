@@ -4,7 +4,6 @@ namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Labstag\Entity\Traits\VerifEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -19,7 +18,6 @@ abstract class Email
 {
 
     use SoftDeleteableEntity;
-    use VerifEntity;
 
     /**
      * @ORM\Id
@@ -43,15 +41,29 @@ abstract class Email
      */
     protected $principal;
 
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $state;
+
     public function __construct()
     {
-        $this->verif     = false;
         $this->principal = false;
     }
 
     public function __toString()
     {
         return $this->getAdresse();
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 
     public function getId(): ?string

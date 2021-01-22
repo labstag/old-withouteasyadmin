@@ -48,6 +48,11 @@ abstract class Phone
     /** @ORM\Column(type="boolean") */
     private $principal;
 
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $state;
+
     public function __toString()
     {
         return implode(
@@ -57,6 +62,16 @@ abstract class Phone
                 $this->getNumero(),
             ]
         );
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 
     public function __construct()

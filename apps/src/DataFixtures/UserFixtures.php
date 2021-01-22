@@ -11,25 +11,16 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 
 class UserFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
-    private GroupeRepository $groupeRepository;
-
-    public function __construct(
-        GroupeRepository $groupeRepository,
-        UserRepository $userRepository,
-        EventDispatcherInterface $dispatcher
-    )
-    {
-        $this->groupeRepository = $groupeRepository;
-        parent::__construct($userRepository, $dispatcher);
-    }
-
     private function getUsers(): array
     {
         $users = [
             [
                 'username' => 'admin',
                 'password' => 'password',
+                'state'    => [
+                    'submit',
+                    'validation',
+                ],
                 'enable'   => true,
                 'verif'    => true,
                 'lost'     => false,
@@ -39,6 +30,10 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'superadmin',
                 'password' => 'password',
+                'state'    => [
+                    'submit',
+                    'validation',
+                ],
                 'enable'   => true,
                 'verif'    => true,
                 'lost'     => false,
@@ -48,6 +43,11 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'lost',
                 'password' => 'password',
+                'state'    => [
+                    'submit',
+                    'validation',
+                    'passwordlost',
+                ],
                 'enable'   => false,
                 'verif'    => true,
                 'lost'     => true,
@@ -57,6 +57,11 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'disable',
                 'password' => 'password',
+                'state'    => [
+                    'submit',
+                    'validation',
+                    'desactiver',
+                ],
                 'enable'   => false,
                 'verif'    => true,
                 'lost'     => false,
@@ -66,6 +71,7 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
             [
                 'username' => 'unverif',
                 'password' => 'password',
+                'state'    => ['submit'],
                 'enable'   => false,
                 'verif'    => false,
                 'lost'     => false,
@@ -79,15 +85,11 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
+        unset($manager);
         $users   = $this->getUsers();
         $groupes = $this->groupeRepository->findAll();
         foreach ($users as $index => $user) {
-            $this->addUser(
-                $groupes,
-                $index,
-                $user,
-                $manager
-            );
+            $this->addUser($groupes, $index, $user);
         }
     }
 

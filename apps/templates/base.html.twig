@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{{ config.site_title }}{% endblock %}</title>
         {% if config.meta is defined %}
             {% for key, value in config.meta[0] %}
                 {% if value|trim != '' %}
@@ -11,8 +11,8 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
-        {% block stylesheets %}
-        {% endblock %}
+        {% block stylesheets %}{% endblock %}
+        {% block javascripts %}{% endblock %}
     </head>
     <body>
         {% block content %}{% endblock %}
@@ -29,8 +29,9 @@
             {% if modalRestore is defined %}
                 {{ modal.restore() }}
             {% endif %}
-        {% endblock %}
-        {% block javascripts %}
+            {% if modalWorkflow is defined %}
+                {{ modal.Workflow() }}
+            {% endif %}
         {% endblock %}
     </body>
 </html>
