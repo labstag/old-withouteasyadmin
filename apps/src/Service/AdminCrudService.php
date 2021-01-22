@@ -74,14 +74,14 @@ class AdminCrudService
     )
     {
         $this->authorizationChecker = $authorizationChecker;
-        $this->workflows        = $workflows;
-        $this->twig             = $twig;
-        $this->session          = $session;
-        $this->entityManager    = $entityManager;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->router           = $router;
-        $this->formFactory      = $formFactory;
-        $this->requestStack     = $requestStack;
+        $this->workflows            = $workflows;
+        $this->twig                 = $twig;
+        $this->session              = $session;
+        $this->entityManager        = $entityManager;
+        $this->csrfTokenManager     = $csrfTokenManager;
+        $this->router               = $router;
+        $this->formFactory          = $formFactory;
+        $this->requestStack         = $requestStack;
         /** @var Request $request */
         $request                  = $this->requestStack->getCurrentRequest();
         $this->request            = $request;
@@ -208,7 +208,6 @@ class AdminCrudService
         array $actions = []
     ): Response
     {
-
         $this->denyAccessUnlessGranted('list', $repository->getClassName());
         $routeCurrent = $this->request->get('_route');
         $routeType    = (0 != substr_count($routeCurrent, 'trash')) ? 'trash' : 'all';
@@ -403,7 +402,7 @@ class AdminCrudService
             throw $exception;
         }
     }
-    
+
     private function createAccessDeniedException(string $message = 'Access Denied.', \Throwable $previous = null): AccessDeniedException
     {
         if (!class_exists(AccessDeniedException::class)) {
@@ -556,6 +555,7 @@ class AdminCrudService
         } elseif (0 != substr_count($routeCurrent, '_delete')) {
             $attribute = 'delete';
         }
+
         $this->denyAccessUnlessGranted($attribute, $entity);
     }
 
@@ -563,9 +563,9 @@ class AdminCrudService
     {
         $routeCurrent = $this->request->get('_route');
         $this->guardDeleteDestroyRestore($routeCurrent, $entity);
-        $token        = $this->request->request->get('_token');
-        $state        = false;
-        $csrfToken    = $this->setEntityCsrf($routeCurrent, $entity, $token);
+        $token     = $this->request->request->get('_token');
+        $state     = false;
+        $csrfToken = $this->setEntityCsrf($routeCurrent, $entity, $token);
         if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
             if (0 != substr_count($routeCurrent, '_destroy')) {
                 $this->entityManager->remove($entity);
