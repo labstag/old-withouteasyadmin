@@ -28,9 +28,9 @@ PHPFPMXDEBUGFULLNAME := $(PHPFPMXDEBUG).1.$$(docker service ps -f 'name=$(PHPFPM
 
 DOCKER_EXECPHP := @docker exec $(PHPFPMXDEBUGFULLNAME)
 
-.PHONY := help assets bdd composer contributors docker encore env geocode git install linter logs messenger sleep ssh tests translations workflow-png
+.PHONY := help assets bdd composer contributors docker encore env geocode git inspect install linter logs messenger sleep ssh tests translations workflow-png
 
-SUPPORTED_COMMANDS := bdd composer contributors docker encore env geocode git install linter logs messenger sleep ssh tests workflow-png
+SUPPORTED_COMMANDS := bdd composer contributors docker encore env geocode git inspect install linter logs messenger sleep ssh tests workflow-png
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
   COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -206,6 +206,39 @@ else
 	@echo "check: CHECK before"
 endif
 
+inspect: ## docker inspect
+ifeq ($(COMMAND_ARGS),redis)
+	docker inspect $(REDIS)
+else ifeq ($(COMMAND_ARGS),mailhog)
+	docker inspect $(MAILHOG)
+else ifeq ($(COMMAND_ARGS),mercure)
+	docker inspect $(MERCURE)
+else ifeq ($(COMMAND_ARGS),mariadb)
+	docker inspect $(MARIADB)
+else ifeq ($(COMMAND_ARGS),apache)
+	docker inspect $(APACHE)
+else ifeq ($(COMMAND_ARGS),phpmyadmin)
+	docker inspect $(PHPMYADMIN)
+else ifeq ($(COMMAND_ARGS),phpfpm)
+	docker inspect $(PHPFPM)
+else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
+	docker inspect $(PHPFPMXDEBUG)
+else
+	@echo "ARGUMENT missing"
+	@echo "---"
+	@echo "make inspect ARGUMENT"
+	@echo "---"
+	@echo "stack: logs stack"
+	@echo "redis: REDIS"
+	@echo "mailhot: MAILHOG"
+	@echo "mercure: MERCURE""
+	@echo "mariadb: MARIADB"
+	@echo "apache: APACHE"
+	@echo "phpmyadmin: PHPMYADMIN
+	@echo "phpfpm: PHPFPM"
+	@echo "phpfpm-xdebug: PHPFPMXDEBUG"
+endif
+
 install: dump mariadb_data apps/.env ## installation
 ifeq ($(COMMAND_ARGS),all)
 	@make node_modules -i
@@ -325,6 +358,41 @@ else
 	@echo "make messenger ARGUMENT"
 	@echo "---"
 	@echo "consume: Messenger Consume"
+endif
+
+
+
+service-update: ## docker service update
+ifeq ($(COMMAND_ARGS),redis)
+	docker service update $(REDIS)
+else ifeq ($(COMMAND_ARGS),mailhog)
+	docker service update $(MAILHOG)
+else ifeq ($(COMMAND_ARGS),mercure)
+	docker service update $(MERCURE)
+else ifeq ($(COMMAND_ARGS),mariadb)
+	docker service update $(MARIADB)
+else ifeq ($(COMMAND_ARGS),apache)
+	docker service update $(APACHE)
+else ifeq ($(COMMAND_ARGS),phpmyadmin)
+	docker service update $(PHPMYADMIN)
+else ifeq ($(COMMAND_ARGS),phpfpm)
+	docker service update $(PHPFPM)
+else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
+	docker inspect $(PHPFPMXDEBUG)
+else
+	@echo "ARGUMENT missing"
+	@echo "---"
+	@echo "make service-update ARGUMENT"
+	@echo "---"
+	@echo "stack: logs stack"
+	@echo "redis: REDIS"
+	@echo "mailhot: MAILHOG"
+	@echo "mercure: MERCURE""
+	@echo "mariadb: MARIADB"
+	@echo "apache: APACHE"
+	@echo "phpmyadmin: PHPMYADMIN
+	@echo "phpfpm: PHPFPM"
+	@echo "phpfpm-xdebug: PHPFPMXDEBUG"
 endif
 
 sleep: ## sleep
