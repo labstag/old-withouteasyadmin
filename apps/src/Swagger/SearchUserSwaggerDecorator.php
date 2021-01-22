@@ -46,9 +46,13 @@ final class SearchUserSwaggerDecorator implements NormalizerInterface
                             'schema' => [
                                 'type'       => 'object',
                                 'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
+                                    'id' => [
+                                        'type'    => 'string',
+                                        'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
+                                    ],
+                                    'name' => [
+                                        'type'    => 'string',
+                                        'example' => 'username',
                                     ],
                                 ],
                             ],

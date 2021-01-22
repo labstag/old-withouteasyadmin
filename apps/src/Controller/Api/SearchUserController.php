@@ -35,7 +35,6 @@ class SearchUserController extends AbstractController
         }
 
         $users = $repository->findUserName($get['name']);
-        echo count($users);
         $data = [];
 
         foreach ($users as $user) {
