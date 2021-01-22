@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @see GetUserController
  */
-final class searchUserSwaggerDecorator implements NormalizerInterface
+final class SearchUserSwaggerDecorator implements NormalizerInterface
 {
 
     private NormalizerInterface $decorated;

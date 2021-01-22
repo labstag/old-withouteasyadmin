@@ -34,10 +34,5 @@ class SearchUserController extends AbstractController
         }
 
         return $this->json($get);
-
-        $verif             = $this->phoneService->verif($get['phone'], $get['country']);
-        $return['isvalid'] = array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
-
-        return $this->json($return);
     }
 }
