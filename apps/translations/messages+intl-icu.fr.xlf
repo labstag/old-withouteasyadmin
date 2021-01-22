@@ -17,6 +17,14 @@
         <source>Delete</source>
         <target>Delete</target>
       </trans-unit>
+      <trans-unit id="6pu36oP" resname="Destroy">
+        <source>Destroy</source>
+        <target>Destroy</target>
+      </trans-unit>
+      <trans-unit id="p24TuYO" resname="Restore">
+        <source>Restore</source>
+        <target>Restore</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

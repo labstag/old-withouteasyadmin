@@ -1,17 +1,37 @@
-.DEFAULT_GOAL        := help
-STACK                := labstag
-NETWORK              := proxynetwork
-PHPFPM               := $(STACK)_phpfpm
-PHPFPMFULLNAME       := $(PHPFPM).1.$$(docker service ps -f 'name=$(PHPFPM)' $(PHPFPM) -q --no-trunc | head -n1)
+.DEFAULT_GOAL := help
+STACK         := labstag
+NETWORK       := proxynetwork
+
+REDIS         := $(STACK)_redis
+REDISFULLNAME := $(REDIS).1.$$(docker service ps -f 'name=$(REDIS)' $(REDIS) -q --no-trunc | head -n1)
+
+MAILHOG         := $(STACK)_mailhog
+MAILHOGFULLNAME := $(MAILHOG).1.$$(docker service ps -f 'name=$(MAILHOG)' $(MAILHOG) -q --no-trunc | head -n1)
+
+MERCURE         := $(STACK)_mercure
+MERCUREFULLNAME := $(MERCURE).1.$$(docker service ps -f 'name=$(MERCURE)' $(MERCURE) -q --no-trunc | head -n1)
+
+MARIADB         := $(STACK)_mariadb
+MARIADBFULLNAME := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $(MARIADB) -q --no-trunc | head -n1)
+
+APACHE         := $(STACK)_apache
+APACHEFULLNAME := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
+
+PHPMYADMIN         := $(STACK)_phpmyadmin
+PHPMYADMINFULLNAME := $(PHPMYADMIN).1.$$(docker service ps -f 'name=$(PHPMYADMIN)' $(PHPMYADMIN) -q --no-trunc | head -n1)
+
+PHPFPM         := $(STACK)_phpfpm
+PHPFPMFULLNAME := $(PHPFPM).1.$$(docker service ps -f 'name=$(PHPFPM)' $(PHPFPM) -q --no-trunc | head -n1)
+
 PHPFPMXDEBUG         := $(STACK)_phpfpm-xdebug
 PHPFPMXDEBUGFULLNAME := $(PHPFPMXDEBUG).1.$$(docker service ps -f 'name=$(PHPFPMXDEBUG)' $(PHPFPMXDEBUG) -q --no-trunc | head -n1)
-MARIADB              := $(STACK)_mariadb
-MARIADBFULLNAME      := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $(MARIADB) -q --no-trunc | head -n1)
-APACHE               := $(STACK)_apache
-APACHEFULLNAME       := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
-.PHONY               := help assets bdd composer contributors docker encore env geocode git install linter logs messenger sleep ssh tests translations workflow-png
-SUPPORTED_COMMANDS   := bdd composer contributors docker encore env geocode git install linter logs messenger sleep ssh tests workflow-png
-SUPPORTS_MAKE_ARGS   := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
+
+DOCKER_EXECPHP := @docker exec $(PHPFPMXDEBUGFULLNAME)
+
+.PHONY := help assets bdd composer contributors docker encore env geocode git install linter logs messenger sleep ssh tests translations workflow-png
+
+SUPPORTED_COMMANDS := bdd composer contributors docker encore env geocode git install linter logs messenger sleep ssh tests workflow-png
+SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
   COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   $(eval $(COMMAND_ARGS):;@:)
@@ -36,24 +56,24 @@ mariadb_data:
 	@mkdir mariadb_data
 
 apps/composer.lock: apps/composer.json
-	@docker exec $(PHPFPMFULLNAME) make composer.lock
+	$(DOCKER_EXECPHP) make composer.lock
 
 apps/vendor: apps/composer.lock
-	@docker exec $(PHPFPMFULLNAME) make vendor
+	$(DOCKER_EXECPHP) make vendor
 
 apps/.env: apps/.env.dist ## Install .env
 	@cp apps/.env.dist apps/.env
 
 assets:
-	@docker exec $(PHPFPMFULLNAME) make assets
+	$(DOCKER_EXECPHP) make assets
 
 bdd: ## Scripts for BDD
 ifeq ($(COMMAND_ARGS),fixtures)
-	@docker exec $(PHPFPMFULLNAME) make bdd fixtures
+	$(DOCKER_EXECPHP) make bdd fixtures
 else ifeq ($(COMMAND_ARGS),migrate)
-	@docker exec $(PHPFPMFULLNAME) make bdd migrate
+	$(DOCKER_EXECPHP) make bdd migrate
 else ifeq ($(COMMAND_ARGS),validate)
-	@docker exec $(PHPFPMFULLNAME) make bdd validate
+	$(DOCKER_EXECPHP) make bdd validate
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -66,19 +86,19 @@ endif
 
 composer: ## Scripts for composer
 ifeq ($(COMMAND_ARGS),suggests)
-	@docker exec $(PHPFPMFULLNAME) make composer suggests
+	$(DOCKER_EXECPHP) make composer suggests
 else ifeq ($(COMMAND_ARGS),outdated)
-	@docker exec $(PHPFPMFULLNAME) make composer outdated
+	$(DOCKER_EXECPHP) make composer outdated
 else ifeq ($(COMMAND_ARGS),fund)
-	@docker exec $(PHPFPMFULLNAME) make composer fund
+	$(DOCKER_EXECPHP) make composer fund
 else ifeq ($(COMMAND_ARGS),prod)
-	@docker exec $(PHPFPMFULLNAME) make composer prod
+	$(DOCKER_EXECPHP) make composer prod
 else ifeq ($(COMMAND_ARGS),dev)
-	@docker exec $(PHPFPMFULLNAME) make composer dev
+	$(DOCKER_EXECPHP) make composer dev
 else ifeq ($(COMMAND_ARGS),update)
-	@docker exec $(PHPFPMFULLNAME) make composer update
+	$(DOCKER_EXECPHP) make composer update
 else ifeq ($(COMMAND_ARGS),validate)
-	@docker exec $(PHPFPMFULLNAME) make composer validate
+	$(DOCKER_EXECPHP) make composer validate
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -165,7 +185,7 @@ else
 endif
 
 geocode: ## Geocode
-	@docker exec $(PHPFPMFULLNAME) make geocode $(COMMAND_ARGS)
+	$(DOCKER_EXECPHP) make geocode $(COMMAND_ARGS)
 
 git: ## Scripts GIT
 ifeq ($(COMMAND_ARGS),commit)
@@ -220,27 +240,27 @@ ifeq ($(COMMAND_ARGS),all)
 else ifeq ($(COMMAND_ARGS),readme)
 	@npm run linter-markdown README.md
 else ifeq ($(COMMAND_ARGS),phpcbf)
-	@docker exec $(PHPFPMFULLNAME) make linter phpcbf
+	$(DOCKER_EXECPHP) make linter phpcbf
 else ifeq ($(COMMAND_ARGS),phpcpd)
-	@docker exec $(PHPFPMFULLNAME) make linter phpcpd
+	$(DOCKER_EXECPHP) make linter phpcpd
 else ifeq ($(COMMAND_ARGS),phpcs)
-	@docker exec $(PHPFPMFULLNAME) make linter phpcs
+	$(DOCKER_EXECPHP) make linter phpcs
 else ifeq ($(COMMAND_ARGS),phpcs-onlywarning)
-	@docker exec $(PHPFPMFULLNAME) make linter phpcs-onlywarning
+	$(DOCKER_EXECPHP) make linter phpcs-onlywarning
 else ifeq ($(COMMAND_ARGS),phpcs-onlyerror)
-	@docker exec $(PHPFPMFULLNAME) make linter phpcs-onlyerror
+	$(DOCKER_EXECPHP) make linter phpcs-onlyerror
 else ifeq ($(COMMAND_ARGS),phploc)
-	@docker exec $(PHPFPMFULLNAME) make linter phploc
+	$(DOCKER_EXECPHP) make linter phploc
 else ifeq ($(COMMAND_ARGS),phpmd)
-	@docker exec $(PHPFPMFULLNAME) make linter phpmd
+	$(DOCKER_EXECPHP) make linter phpmd
 else ifeq ($(COMMAND_ARGS),phpmnd)
-	@docker exec $(PHPFPMFULLNAME) make linter phpmnd
+	$(DOCKER_EXECPHP) make linter phpmnd
 else ifeq ($(COMMAND_ARGS),phpstan)
-	@docker exec $(PHPFPMFULLNAME) make linter phpstan
+	$(DOCKER_EXECPHP) make linter phpstan
 else ifeq ($(COMMAND_ARGS),twig)
-	@docker exec $(PHPFPMFULLNAME) make linter twig
+	$(DOCKER_EXECPHP) make linter twig
 else ifeq ($(COMMAND_ARGS),yaml)
-	@docker exec $(PHPFPMFULLNAME) make linter yaml
+	$(DOCKER_EXECPHP) make linter yaml
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -264,26 +284,41 @@ endif
 logs: ## Scripts logs
 ifeq ($(COMMAND_ARGS),stack)
 	@docker service logs -f --tail 100 --raw $(STACK)
-else ifeq ($(COMMAND_ARGS),apache)
-	@docker service logs -f --tail 100 --raw $(APACHEFULLNAME)
+else ifeq ($(COMMAND_ARGS),redis)
+	@docker service logs -f --tail 100 --raw $(REDISFULLNAME)
+else ifeq ($(COMMAND_ARGS),mailhog)
+	@docker service logs -f --tail 100 --raw $(MAILHOGFULLNAME)
+else ifeq ($(COMMAND_ARGS),mercure)
+	@docker service logs -f --tail 100 --raw $(MERCUREFULLNAME)
 else ifeq ($(COMMAND_ARGS),mariadb)
 	@docker service logs -f --tail 100 --raw $(MARIADBFULLNAME)
+else ifeq ($(COMMAND_ARGS),apache)
+	@docker service logs -f --tail 100 --raw $(APACHEFULLNAME)
+else ifeq ($(COMMAND_ARGS),phpmyadmin)
+	@docker service logs -f --tail 100 --raw $(PHPMYADMINFULLNAME)
 else ifeq ($(COMMAND_ARGS),phpfpm)
 	@docker service logs -f --tail 100 --raw $(PHPFPMFULLNAME)
+else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
+	@docker service logs -f --tail 100 --raw $(PHPFPMXDEBUGFULLNAME)
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
 	@echo "make logs ARGUMENT"
 	@echo "---"
 	@echo "stack: logs stack"
-	@echo "apache: APACHE"
+	@echo "redis: REDIS"
+	@echo "mailhot: MAILHOG"
+	@echo "mercure: MERCURE""
 	@echo "mariadb: MARIADB"
+	@echo "apache: APACHE"
+	@echo "phpmyadmin: PHPMYADMIN
 	@echo "phpfpm: PHPFPM"
+	@echo "phpfpm-xdebug: PHPFPMXDEBUG"
 endif
 
 messenger: ## Scripts messenger
 ifeq ($(COMMAND_ARGS),consule)
-	@docker exec -ti $(PHPFPMFULLNAME) make messenger consume
+	$(DOCKER_EXECPHP) make messenger consume
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -296,20 +331,36 @@ sleep: ## sleep
 	@sleep  $(COMMAND_ARGS)
 
 ssh: ## SSH
-ifeq ($(COMMAND_ARGS),phpfpm)
-	@docker exec -ti $(PHPFPMFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
-	@docker exec -ti $(PHPFPMXDEBUGFULLNAME) /bin/bash
+ifeq ($(COMMAND_ARGS),redis)
+	docker exec -it $(REDISFULLNAME) /bin/bash
+else ifeq ($(COMMAND_ARGS),mailhog)
+	docker exec -it $(MAILHOGFULLNAME) /bin/bash
+else ifeq ($(COMMAND_ARGS),mercure)
+	docker exec -it $(MERCUREFULLNAME) /bin/bash
 else ifeq ($(COMMAND_ARGS),mariadb)
-	@docker exec -ti $(MARIADBFULLNAME) /bin/bash
+	docker exec -it $(MARIADBFULLNAME) /bin/bash
+else ifeq ($(COMMAND_ARGS),apache)
+	docker exec -it $(APACHEFULLNAME) /bin/bash
+else ifeq ($(COMMAND_ARGS),phpmyadmin)
+	docker exec -it $(PHPMYADMINFULLNAME) /bin/bash
+else ifeq ($(COMMAND_ARGS),phpfpm)
+	docker exec -it $(PHPFPMFULLNAME) /bin/bash
+else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
+	docker exec -it $(PHPFPMXDEBUGFULLNAME) /bin/bash
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
 	@echo "make ssh ARGUMENT"
 	@echo "---"
-	@echo "phpfpm:  ssh phpfpm"
-	@echo "phpfpm-xdebug: ssh phpfpm xdebug"
-	@echo "mariadb: ssh mariadb"
+	@echo "stack: logs stack"
+	@echo "redis: REDIS"
+	@echo "mailhot: MAILHOG"
+	@echo "mercure: MERCURE""
+	@echo "mariadb: MARIADB"
+	@echo "apache: APACHE"
+	@echo "phpmyadmin: PHPMYADMIN
+	@echo "phpfpm: PHPFPM"
+	@echo "phpfpm-xdebug: PHPFPMXDEBUG"
 endif
 
 tests: ## Scripts tests
@@ -333,7 +384,7 @@ else
 endif
 
 translations: ## update translation
-	@docker exec $(PHPFPMXDEBUGFULLNAME) make translations
+	$(DOCKER_EXECPHP) make translations
 
 workflow-png: ## generate workflow png
-	@docker exec $(PHPFPMXDEBUGFULLNAME) make workflow-png $(COMMAND_ARGS)
+	$(DOCKER_EXECPHP) make workflow-png $(COMMAND_ARGS)
