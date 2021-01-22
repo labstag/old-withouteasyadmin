@@ -101,7 +101,7 @@ endif
 geocode: ## add geocode
 	php -d memory_limit=-1 bin/console labstag:geocode:install $(COMMAND_ARGS)
 
-linter: phpcpd.phar phploc.phar ## Scripts Linter
+linter: phpcpd.phar phploc.phar phpmd.phar ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
 	@make linter twig -i
 	@make linter yaml -i
