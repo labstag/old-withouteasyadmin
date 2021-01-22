@@ -54,3 +54,6 @@ services:
   Labstag\Swagger\CheckPhoneSwaggerDecorator:
     decorates: 'api_platform.swagger.normalizer.api_gateway'
     autoconfigure: false
+  Labstag\Swagger\searchUserSwaggerDecorator:
+    decorates: 'api_platform.swagger.normalizer.api_gateway'
+    autoconfigure: false
