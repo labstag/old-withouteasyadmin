@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\NoteInterneRequestHandler;
 
 /**
  * @Route("/admin/noteinterne")
@@ -45,13 +46,14 @@ class NoteInterneController extends AdminControllerLib
                 'list'  => 'admin_noteinterne_index',
             ],
             [
-                'list'    => 'admin_noteinterne_index',
-                'show'    => 'admin_noteinterne_show',
-                'preview' => 'admin_noteinterne_preview',
-                'edit'    => 'admin_noteinterne_edit',
-                'delete'  => 'admin_noteinterne_delete',
-                'destroy' => 'admin_noteinterne_destroy',
-                'restore' => 'admin_noteinterne_restore',
+                'list'     => 'admin_noteinterne_index',
+                'show'     => 'admin_noteinterne_show',
+                'preview'  => 'admin_noteinterne_preview',
+                'edit'     => 'admin_noteinterne_edit',
+                'delete'   => 'admin_noteinterne_delete',
+                'destroy'  => 'admin_noteinterne_destroy',
+                'restore'  => 'admin_noteinterne_restore',
+                'workflow' => 'admin_noteinterne_workflow',
             ]
         );
     }
@@ -59,11 +61,12 @@ class NoteInterneController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_noteinterne_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(NoteInterneRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new NoteInterne(),
             NoteInterneType::class,
+            $requestHandler,
             ['list' => 'admin_noteinterne_index']
         );
     }
@@ -96,11 +99,12 @@ class NoteInterneController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(NoteInterne $noteInterne): Response
+    public function edit(NoteInterne $noteInterne, NoteInterneRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             NoteInterneType::class,
             $noteInterne,
+            $requestHandler,
             [
                 'delete' => 'admin_noteinterne_delete',
                 'list'   => 'admin_noteinterne_index',
@@ -126,5 +130,14 @@ class NoteInterneController extends AdminControllerLib
     public function empty(NoteInterneRepository $repository): Response
     {
         return $this->adminCrudService->empty($repository);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/workflow/{state}/{id}", name="admin_noteinterne_workflow", methods={"POST"})
+     */
+    public function workflow(NoteInterne $noteInterne, string $state): Response
+    {
+        return $this->adminCrudService->workflow($noteInterne, $state);
     }
 }

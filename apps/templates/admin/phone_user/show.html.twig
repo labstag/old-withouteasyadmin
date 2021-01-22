@@ -7,6 +7,13 @@
                 <td><a href="tel:{{ entity.numero }}">{{ entity.numero }}</a></td>
             </tr>
             <tr>
+                <th>Verif</th>
+                <td>
+                    {% set check = verifPhone(entity.country, entity.numero)  ? 'OK' : 'KO' %}
+                    <span class="check{{ check }}"></span>
+                </td>
+            </tr>
+            <tr>
                 <th>Country</th>
                 <td>
                     <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
@@ -24,6 +31,14 @@
             <tr>
                 <th>User</th>
                 <td><a href="{{ path('admin_user_show', {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a></td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>

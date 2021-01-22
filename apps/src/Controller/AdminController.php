@@ -3,14 +3,13 @@
 namespace Labstag\Controller;
 
 use Labstag\Event\ConfigurationEntityEvent;
-use Labstag\Event\UserEntityEvent;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Form\Admin\ParamType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Manager\UserManager;
+use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\AdminBoutonService;
 use Labstag\Service\DataService;
 use Symfony\Component\Routing\Annotation\Route;
@@ -65,19 +64,15 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/profil", name="admin_profil", methods={"GET","POST"})
      */
-    public function profil(
-        Security $security,
-        UserManager $userManager
-    ): Response
+    public function profil(Security $security, UserRequestHandler $requestHandler): Response
     {
         $this->headerTitle = 'Profil';
         $this->urlHome     = 'admin_profil';
         return $this->adminCrudService->update(
             ProfilType::class,
             $security->getUser(),
+            $requestHandler,
             [],
-            [UserEntityEvent::class],
-            $userManager,
             'admin/profil.html.twig'
         );
     }

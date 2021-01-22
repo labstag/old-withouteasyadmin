@@ -97,7 +97,7 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.phpmyadmin-labstag.rule=Host(`phpmyadmin.labstag.lxc`)"
+        - "traefik.http.routers.phpmyadmin-labstag.rule=Host(`phpmyadmin.labstag.lxc`, `phpmyadmin.letoullec.fr`)"
         - "traefik.http.routers.phpmyadmin-labstag.entrypoints=web"
         - "traefik.http.services.phpmyadmin-labstag.loadbalancer.server.port=80"
   phpfpm:

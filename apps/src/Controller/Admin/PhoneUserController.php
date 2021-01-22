@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\RequestHandler\PhoneUserRequestHandler;
 
 /**
  * @Route("/admin/user/phone")
@@ -44,13 +45,14 @@ class PhoneUserController extends AdminControllerLib
                 'list'  => 'admin_phoneuser_index',
             ],
             [
-                'list'    => 'admin_phoneuser_index',
-                'show'    => 'admin_phoneuser_show',
-                'preview' => 'admin_phoneuser_preview',
-                'edit'    => 'admin_phoneuser_edit',
-                'delete'  => 'admin_phoneuser_delete',
-                'destroy' => 'admin_phoneuser_destroy',
-                'restore' => 'admin_phoneuser_restore',
+                'list'     => 'admin_phoneuser_index',
+                'show'     => 'admin_phoneuser_show',
+                'preview'  => 'admin_phoneuser_preview',
+                'edit'     => 'admin_phoneuser_edit',
+                'delete'   => 'admin_phoneuser_delete',
+                'destroy'  => 'admin_phoneuser_destroy',
+                'restore'  => 'admin_phoneuser_restore',
+                'workflow' => 'admin_phoneuser_workflow',
             ]
         );
     }
@@ -58,11 +60,12 @@ class PhoneUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
      */
-    public function new(): Response
+    public function new(PhoneUserRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->create(
             new PhoneUser(),
             PhoneUserType::class,
+            $requestHandler,
             ['list' => 'admin_phoneuser_index']
         );
     }
@@ -95,11 +98,12 @@ class PhoneUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(PhoneUser $phoneUser): Response
+    public function edit(PhoneUser $phoneUser, PhoneUserRequestHandler $requestHandler): Response
     {
         return $this->adminCrudService->update(
             PhoneUserType::class,
             $phoneUser,
+            $requestHandler,
             [
                 'delete' => 'admin_phoneuser_delete',
                 'list'   => 'admin_phoneuser_index',
@@ -126,5 +130,14 @@ class PhoneUserController extends AdminControllerLib
     public function empty(PhoneUserRepository $repository): Response
     {
         return $this->adminCrudService->empty($repository);
+    }
+
+    /**
+     * @IgnoreSoftDelete
+     * @Route("/workflow/{state}/{id}", name="admin_phoneuser_workflow", methods={"POST"})
+     */
+    public function workflow(PhoneUser $phoneUser, string $state): Response
+    {
+        return $this->adminCrudService->workflow($phoneUser, $state);
     }
 }

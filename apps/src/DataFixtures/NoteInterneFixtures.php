@@ -13,12 +13,42 @@ class NoteInterneFixtures extends FixtureLib implements DependentFixtureInterfac
 
     public function load(ObjectManager $manager): void
     {
-        $users   = $this->userRepository->findAll();
-        $faker   = Factory::create('fr_FR');
-        $maxDate = $faker->unique()->dateTimeInInterval('now', '+30 years');
+        unset($manager);
+        $users     = $this->userRepository->findAll();
+        $faker     = Factory::create('fr_FR');
+        $statesTab = $this->getStates();
+        $maxDate   = $faker->unique()->dateTimeInInterval('now', '+30 years');
         for ($index = 0; $index < self::NUMBER; ++$index) {
-            $this->addNoteInterne($users, $faker, $index, $manager, $maxDate);
+            $stateId = array_rand($statesTab);
+            $states  = $statesTab[$stateId];
+            $this->addNoteInterne($users, $faker, $index, $maxDate, $states);
         }
+    }
+
+    private function getStates()
+    {
+        return [
+            ['submit'],
+            [
+                'submit',
+                'relire',
+            ],
+            [
+                'submit',
+                'relire',
+                'corriger',
+            ],
+            [
+                'submit',
+                'relire',
+                'publier',
+            ],
+            [
+                'submit',
+                'relire',
+                'rejeter',
+            ],
+        ];
     }
 
     public function getDependencies()

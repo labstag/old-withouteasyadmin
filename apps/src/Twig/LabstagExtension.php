@@ -3,6 +3,7 @@
 namespace Labstag\Twig;
 
 use Labstag\Service\PhoneService;
+use Symfony\Component\Workflow\Registry;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -12,8 +13,14 @@ class LabstagExtension extends AbstractExtension
 
     private PhoneService $phoneService;
 
-    public function __construct(PhoneService $phoneService)
+    protected Registry $workflows;
+
+    public function __construct(
+        PhoneService $phoneService,
+        Registry $workflows
+    )
     {
+        $this->workflows    = $workflows;
         $this->phoneService = $phoneService;
     }
 
@@ -23,7 +30,9 @@ class LabstagExtension extends AbstractExtension
             // If your filter generates SAFE HTML, you should add a third
             // parameter: ['is_safe' => ['html']]
             // Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
+            new TwigFilter('workflow_has', [$this, 'workflowHas']),
             new TwigFilter('formClass', [$this, 'formClass']),
+            new TwigFilter('verifPhone', [$this, 'verifPhone']),
             new TwigFilter('formPrototype', [$this, 'formPrototype']),
         ];
     }
@@ -31,10 +40,16 @@ class LabstagExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('workflow_has', [$this, 'workflowHas']),
             new TwigFunction('formClass', [$this, 'formClass']),
             new TwigFunction('verifPhone', [$this, 'verifPhone']),
             new TwigFunction('formPrototype', [$this, 'formPrototype']),
         ];
+    }
+
+    public function workflowHas($entity)
+    {
+        return $this->workflows->has($entity);
     }
 
     public function verifPhone(string $country, string $phone)

@@ -78,7 +78,7 @@
                     </button>
 					<button type="button" is="confirm-empty">
                         <i></i>
-                        <span>Supprimer</span>
+                        <span>Vider</span>
                     </button>
 				</div>
 			</div>
@@ -107,11 +107,39 @@
                     </button>
 					<button type="button" is="confirm-restore">
                         <i></i>
-                        <span>Supprimer</span>
+                        <span>Restaurer</span>
                     </button>
 				</div>
 			</div>
 		</div>
 	</div>
 {% endmacro %}
-
+{% macro Workflow() %}
+	<div id="workflowModal" tabindex="-1" aria-labelledby="workflowModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="workflowModalLabel">
+                        Supprimer ?
+                    </h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Êtes-vous sûr de vouloir changer d'état cette donnée ?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="BtnCancel" data-dismiss="modal">
+                        <i></i>
+                        <span>Annuler</span>
+                    </button>
+					<button type="button" is="confirm-workflow">
+                        <i></i>
+                        <span>Confirmer</span>
+                    </button>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endmacro %}
