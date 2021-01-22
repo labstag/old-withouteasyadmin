@@ -35,7 +35,7 @@ class SearchUserController extends AbstractController
         }
 
         $users = $repository->findUserName($get['name']);
-        $data = [];
+        $data  = [];
 
         foreach ($users as $user) {
             $data[] = [
