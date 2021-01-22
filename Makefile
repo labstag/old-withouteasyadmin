@@ -206,23 +206,23 @@ else
 	@echo "check: CHECK before"
 endif
 
-inspect: ## docker inspect
+inspect: ## docker service inspect
 ifeq ($(COMMAND_ARGS),redis)
-	docker inspect $(REDIS)
+	docker service inspect $(REDIS)
 else ifeq ($(COMMAND_ARGS),mailhog)
-	docker inspect $(MAILHOG)
+	docker service inspect $(MAILHOG)
 else ifeq ($(COMMAND_ARGS),mercure)
-	docker inspect $(MERCURE)
+	docker service inspect $(MERCURE)
 else ifeq ($(COMMAND_ARGS),mariadb)
-	docker inspect $(MARIADB)
+	docker service inspect $(MARIADB)
 else ifeq ($(COMMAND_ARGS),apache)
-	docker inspect $(APACHE)
+	docker service inspect $(APACHE)
 else ifeq ($(COMMAND_ARGS),phpmyadmin)
-	docker inspect $(PHPMYADMIN)
+	docker service inspect $(PHPMYADMIN)
 else ifeq ($(COMMAND_ARGS),phpfpm)
-	docker inspect $(PHPFPM)
+	docker service inspect $(PHPFPM)
 else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
-	docker inspect $(PHPFPMXDEBUG)
+	docker service inspect $(PHPFPMXDEBUG)
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -378,7 +378,7 @@ else ifeq ($(COMMAND_ARGS),phpmyadmin)
 else ifeq ($(COMMAND_ARGS),phpfpm)
 	docker service update $(PHPFPM)
 else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
-	docker inspect $(PHPFPMXDEBUG)
+	docker service update $(PHPFPMXDEBUG)
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
