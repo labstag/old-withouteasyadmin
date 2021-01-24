@@ -5,6 +5,22 @@ export class SelectRefUser extends HTMLSelectElement
   {
     console.log('select user');
     const id = this.getAttribute("id");
-    $("#" + id).select2({ theme: "bootstrap4" });
+    $("#" + id).select2({
+      theme: "bootstrap4",
+      ajax: {
+        url: this.dataset.url,
+        data: function (params)
+        {
+          let query = {
+            name: params.term
+          };
+
+          return query;
+        },
+        dataType: 'json'
+      }
+    });
+
+
   }
 }

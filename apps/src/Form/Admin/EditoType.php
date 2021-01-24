@@ -4,6 +4,7 @@ namespace Labstag\Form\Admin;
 
 use Labstag\Entity\Edito;
 use Labstag\Entity\User;
+use Labstag\FormType\SelectRefUserType;
 use Labstag\FormType\WysiwygType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -29,9 +30,8 @@ class EditoType extends AbstractType
 
         $builder->add(
             'refuser',
-            EntityType::class,
+            SelectRefUserType::class,
             [
-                'attr'    => ['is' => 'select-refuser'],
                 'class'   => User::class,
                 'choices' => $choices,
             ]
