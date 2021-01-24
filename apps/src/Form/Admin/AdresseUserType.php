@@ -17,8 +17,7 @@ class AdresseUserType extends AdresseType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         parent::buildForm($builder, $options);
         $choices = [];
         if ($options['data']->getRefUser() instanceof User) {
