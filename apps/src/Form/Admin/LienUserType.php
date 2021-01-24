@@ -4,6 +4,7 @@ namespace Labstag\Form\Admin;
 
 use Labstag\Entity\LienUser;
 use Labstag\Entity\User;
+use Labstag\FormType\SelectRefUserType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,18 +20,12 @@ class LienUserType extends LienType
     ): void
     {
         parent::buildForm($builder, $options);
-        $choices = [];
-        if ($options['data']->getRefUser() instanceof User) {
-            $choices = [$options['data']->getRefUser()];
-        }
 
         $builder->add(
             'refuser',
-            EntityType::class,
+            SelectRefUserType::class,
             [
-                'attr'    => ['is' => 'select-refuser'],
-                'class'   => User::class,
-                'choices' => $choices,
+                'class' => User::class,
             ]
         );
     }

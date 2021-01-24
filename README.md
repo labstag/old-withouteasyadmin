@@ -44,25 +44,25 @@ Hosts:
 ## Récupérer les images docker
 
 ```sh
-make docker-image-pull
+make docker image-pull
 ```
 
 ## Install
 
 ```sh
-make install
+make install dev
 ```
 
 ## after git add
 
 ```sh
-make git-check
+make git check
 ```
 
 ## Replace git commit
 
 ```sh
-make git-commit
+make git commit
 ```
 
 ## help

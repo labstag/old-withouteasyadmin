@@ -31,4 +31,20 @@ class UserRepository extends ServiceEntityRepositoryLib
 
         return $query->getQuery()->getOneOrNullResult();
     }
+
+    public function findUserName(string $field)
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.username LIKE :username OR u.email LIKE :email'
+        );
+        $query->setParameters(
+            [
+                'username' => '%'.$field.'%',
+                'email'    => '%'.$field.'%',
+            ]
+        );
+
+        return $query->getQuery()->getResult();
+    }
 }

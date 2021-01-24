@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Workflow\Registry;
@@ -57,8 +56,6 @@ class AdminCrudService
 
     protected Registry $workflows;
 
-    protected AuthorizationCheckerInterface $authorizationChecker;
-
     public function __construct(
         Environment $twig,
         AdminBoutonService $adminBoutonService,
@@ -69,19 +66,17 @@ class AdminCrudService
         Registry $workflows,
         CsrfTokenManagerInterface $csrfTokenManager,
         EntityManagerInterface $entityManager,
-        SessionInterface $session,
-        AuthorizationCheckerInterface $authorizationChecker
+        SessionInterface $session
     )
     {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->workflows            = $workflows;
-        $this->twig                 = $twig;
-        $this->session              = $session;
-        $this->entityManager        = $entityManager;
-        $this->csrfTokenManager     = $csrfTokenManager;
-        $this->router               = $router;
-        $this->formFactory          = $formFactory;
-        $this->requestStack         = $requestStack;
+        $this->workflows        = $workflows;
+        $this->twig             = $twig;
+        $this->session          = $session;
+        $this->entityManager    = $entityManager;
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->router           = $router;
+        $this->formFactory      = $formFactory;
+        $this->requestStack     = $requestStack;
         /** @var Request $request */
         $request                  = $this->requestStack->getCurrentRequest();
         $this->request            = $request;
@@ -208,7 +203,6 @@ class AdminCrudService
         array $actions = []
     ): Response
     {
-        $this->denyAccessUnlessGranted('list', $repository->getClassName());
         $routeCurrent = $this->request->get('_route');
         $routeType    = (0 != substr_count($routeCurrent, 'trash')) ? 'trash' : 'all';
         $method       = $methods[$routeType];
@@ -358,7 +352,6 @@ class AdminCrudService
         array $url = []
     ): Response
     {
-        $this->denyAccessUnlessGranted('view', $entity);
         $routeCurrent = $this->request->get('_route');
         $routeType    = (0 != substr_count($routeCurrent, 'preview')) ? 'preview' : 'show';
         $this->showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity);
@@ -392,26 +385,6 @@ class AdminCrudService
         );
     }
 
-    private function denyAccessUnlessGranted($attribute, $subject = null, string $message = 'Access Denied.'): void
-    {
-        if (!$this->authorizationChecker->isGranted($attribute, $subject)) {
-            $exception = $this->createAccessDeniedException($message);
-            $exception->setAttributes($attribute);
-            $exception->setSubject($subject);
-
-            throw $exception;
-        }
-    }
-
-    private function createAccessDeniedException(string $message = 'Access Denied.', \Throwable $previous = null): AccessDeniedException
-    {
-        if (!class_exists(AccessDeniedException::class)) {
-            throw new LogicException('You can not use the "createAccessDeniedException" method if the Security component is not available. Try running "composer require symfony/security-bundle".');
-        }
-
-        return new AccessDeniedException($message, $previous);
-    }
-
     public function create(
         object $entity,
         string $formType,
@@ -419,7 +392,6 @@ class AdminCrudService
         array $url = []
     ): Response
     {
-        $this->denyAccessUnlessGranted('create', $entity);
         $routeCurrent = $this->request->get('_route');
         $breadcrumb   = [
             'New' => $this->router->generate(
@@ -463,7 +435,6 @@ class AdminCrudService
         string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
-        $this->denyAccessUnlessGranted('update', $entity);
         $routeCurrent = $this->request->get('_route');
         $breadcrumb   = [
             'edit' => $this->router->generate(
@@ -546,26 +517,12 @@ class AdminCrudService
         return $csrfToken;
     }
 
-    private function guardDeleteDestroyRestore($routeCurrent, $entity)
-    {
-        if (0 != substr_count($routeCurrent, '_destroy')) {
-            $attribute = 'destroy';
-        } elseif (0 != substr_count($routeCurrent, '_restore')) {
-            $attribute = 'restore';
-        } elseif (0 != substr_count($routeCurrent, '_delete')) {
-            $attribute = 'delete';
-        }
-
-        $this->denyAccessUnlessGranted($attribute, $entity);
-    }
-
     public function entityDeleteDestroyRestore(object $entity): JsonResponse
     {
         $routeCurrent = $this->request->get('_route');
-        $this->guardDeleteDestroyRestore($routeCurrent, $entity);
-        $token     = $this->request->request->get('_token');
-        $state     = false;
-        $csrfToken = $this->setEntityCsrf($routeCurrent, $entity, $token);
+        $token        = $this->request->request->get('_token');
+        $state        = false;
+        $csrfToken    = $this->setEntityCsrf($routeCurrent, $entity, $token);
         if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
             if (0 != substr_count($routeCurrent, '_destroy')) {
                 $this->entityManager->remove($entity);

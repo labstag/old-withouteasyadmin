@@ -4,6 +4,7 @@ namespace Labstag\Form\Admin;
 
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
+use Labstag\FormType\SelectRefUserType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,9 +28,8 @@ class PhoneUserType extends PhoneType
 
         $builder->add(
             'refuser',
-            EntityType::class,
+            SelectRefUserType::class,
             [
-                'attr'    => ['is' => 'select-refuser'],
                 'class'   => User::class,
                 'choices' => $choices,
             ]
