@@ -228,13 +228,13 @@ else
 	@echo "---"
 	@echo "make inspect ARGUMENT"
 	@echo "---"
-	@echo "stack: logs stack"
+	@echo "stack: inspect stack"
 	@echo "redis: REDIS"
 	@echo "mailhot: MAILHOG"
-	@echo "mercure: MERCURE""
+	@echo "mercure: MERCURE"
 	@echo "mariadb: MARIADB"
 	@echo "apache: APACHE"
-	@echo "phpmyadmin: PHPMYADMIN
+	@echo "phpmyadmin: PHPMYADMIN"
 	@echo "phpfpm: PHPFPM"
 	@echo "phpfpm-xdebug: PHPFPMXDEBUG"
 endif
@@ -341,10 +341,10 @@ else
 	@echo "stack: logs stack"
 	@echo "redis: REDIS"
 	@echo "mailhot: MAILHOG"
-	@echo "mercure: MERCURE""
+	@echo "mercure: MERCURE"
 	@echo "mariadb: MARIADB"
 	@echo "apache: APACHE"
-	@echo "phpmyadmin: PHPMYADMIN
+	@echo "phpmyadmin: PHPMYADMIN"
 	@echo "phpfpm: PHPFPM"
 	@echo "phpfpm-xdebug: PHPFPMXDEBUG"
 endif
@@ -385,10 +385,10 @@ else
 	@echo "stack: logs stack"
 	@echo "redis: REDIS"
 	@echo "mailhot: MAILHOG"
-	@echo "mercure: MERCURE""
+	@echo "mercure: MERCURE"
 	@echo "mariadb: MARIADB"
 	@echo "apache: APACHE"
-	@echo "phpmyadmin: PHPMYADMIN
+	@echo "phpmyadmin: PHPMYADMIN"
 	@echo "phpfpm: PHPFPM"
 	@echo "phpfpm-xdebug: PHPFPMXDEBUG"
 endif
@@ -421,10 +421,10 @@ else
 	@echo "stack: logs stack"
 	@echo "redis: REDIS"
 	@echo "mailhot: MAILHOG"
-	@echo "mercure: MERCURE""
+	@echo "mercure: MERCURE"
 	@echo "mariadb: MARIADB"
 	@echo "apache: APACHE"
-	@echo "phpmyadmin: PHPMYADMIN
+	@echo "phpmyadmin: PHPMYADMIN"
 	@echo "phpfpm: PHPFPM"
 	@echo "phpfpm-xdebug: PHPFPMXDEBUG"
 endif

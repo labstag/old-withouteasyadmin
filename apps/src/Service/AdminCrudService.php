@@ -203,6 +203,7 @@ class AdminCrudService
         array $actions = []
     ): Response
     {
+        dump('aa');
         $routeCurrent = $this->request->get('_route');
         $routeType    = (0 != substr_count($routeCurrent, 'trash')) ? 'trash' : 'all';
         $method       = $methods[$routeType];
