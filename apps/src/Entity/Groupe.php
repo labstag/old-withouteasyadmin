@@ -47,9 +47,14 @@ class Groupe
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe")
+     */
+    private $routes;
+
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->routes = new ArrayCollection();
     }
 
     public function __toString()
@@ -108,6 +113,36 @@ class Groupe
             // set the owning side to null (unless already changed)
             if ($user->getGroupe() === $this) {
                 $user->setGroupe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RouteGroupe[]
+     */
+    public function getRoutes(): Collection
+    {
+        return $this->routes;
+    }
+
+    public function addRoute(RouteGroupe $route): self
+    {
+        if (!$this->routes->contains($route)) {
+            $this->routes[] = $route;
+            $route->setRefgroupe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoute(RouteGroupe $route): self
+    {
+        if ($this->routes->removeElement($route)) {
+            // set the owning side to null (unless already changed)
+            if ($route->getRefgroupe() === $this) {
+                $route->setRefgroupe(null);
             }
         }
 

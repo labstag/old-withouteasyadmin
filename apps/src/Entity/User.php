@@ -128,6 +128,11 @@ class User implements UserInterface
      */
     private $state;
 
+    /**
+     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser")
+     */
+    private $routes;
+
     public function __construct()
     {
         $this->editos            = new ArrayCollection();
@@ -138,6 +143,7 @@ class User implements UserInterface
         $this->adresseUsers      = new ArrayCollection();
         $this->oauthConnectUsers = new ArrayCollection();
         $this->roles             = ['ROLE_USER'];
+        $this->routes            = new ArrayCollection();
     }
 
     public function getState()
@@ -468,6 +474,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($oauthConnectUser->getRefuser() === $this) {
                 $oauthConnectUser->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RouteUser[]
+     */
+    public function getRoutes(): Collection
+    {
+        return $this->routes;
+    }
+
+    public function addRoute(RouteUser $route): self
+    {
+        if (!$this->routes->contains($route)) {
+            $this->routes[] = $route;
+            $route->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoute(RouteUser $route): self
+    {
+        if ($this->routes->removeElement($route)) {
+            // set the owning side to null (unless already changed)
+            if ($route->getRefuser() === $this) {
+                $route->setRefuser(null);
             }
         }
 

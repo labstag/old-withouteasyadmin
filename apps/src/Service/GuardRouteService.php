@@ -3,28 +3,57 @@
 namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\Groupe;
 use Labstag\Entity\Route;
+use Labstag\Repository\RouteGroupeRepository;
 use Labstag\Repository\RouteRepository;
+use Symfony\Component\Routing\Route as Routing;
 use Symfony\Component\Routing\RouterInterface;
 
 class GuardRouteService
 {
 
+    const GROUPE_ENABLE = ['visiteur'];
+    const REGEX_ALL     = [
+        '/(SecurityController)/',
+        '/(web_profiler.controller)/',
+        '/(error_controller)/',
+        '/(api_platform)/',
+    ];
+    const REGEX_ADMIN   = ['/(Controller\\Admin)/'];
+
     private RouterInterface $router;
 
-    private RouteRepository $repository;
+    private RouteRepository $repositoryRoute;
 
     private EntityManagerInterface $entityManager;
+
+    private RouteGroupeRepository $repositoryGroupe;
 
     public function __construct(
         RouterInterface $router,
         EntityManagerInterface $entityManager,
-        RouteRepository $repository
+        RouteRepository $repositoryRoute,
+        RouteGroupeRepository $repositoryGroupe
     )
     {
-        $this->entityManager = $entityManager;
-        $this->repository    = $repository;
-        $this->router        = $router;
+        $this->repositoryGroupe = $repositoryGroupe;
+        $this->entityManager    = $entityManager;
+        $this->repositoryRoute  = $repositoryRoute;
+        $this->router           = $router;
+    }
+
+    public function regex(array $regexs, string $string)
+    {
+        $data = [];
+        foreach ($regexs as $regex) {
+            preg_match($regex, $string, $matches);
+            foreach ($matches as $info) {
+                $data[] = $info;
+            }
+        }
+
+        return $data;
     }
 
     public function all(): array
@@ -33,13 +62,14 @@ class GuardRouteService
         $collection = $this->router->getRouteCollection();
         $all        = $collection->all();
         foreach ($all as $name => $route) {
-            /** @var Route $route */
+            /** @var Routing $route */
             $defaults = $route->getDefaults();
             if (!isset($defaults['_controller'])) {
                 continue;
             }
 
-            if (0 == substr_count($defaults['_controller'], 'Labstag\Controller')) {
+            $matches = $this->regex(self::REGEX_ALL, $defaults['_controller']);
+            if (0 != count($matches)) {
                 continue;
             }
 
@@ -51,21 +81,12 @@ class GuardRouteService
 
     public function tables()
     {
-        $data       = [];
-        $collection = $this->router->getRouteCollection();
-        $all        = $collection->all();
+        $data = [];
+        $all  = $this->all();
         foreach ($all as $name => $route) {
-            /** @var Route $route */
+            /** @var Routing $route */
             $defaults = $route->getDefaults();
-            if (!isset($defaults['_controller'])) {
-                continue;
-            }
-
-            if (0 == substr_count($defaults['_controller'], 'Labstag\Controller')) {
-                continue;
-            }
-
-            $data[] = [
+            $data[]   = [
                 $name,
                 $defaults['_controller'],
             ];
@@ -77,7 +98,7 @@ class GuardRouteService
     public function save($name): void
     {
         $search = ['name' => $name];
-        $result = $this->repository->findOneBy(
+        $result = $this->repositoryRoute->findOneBy(
             $search
         );
 
@@ -92,9 +113,15 @@ class GuardRouteService
         $this->entityManager->flush();
     }
 
-    public function delete(array $routes): void
+    public function delete(): void
     {
-        $results = $this->repository->findLost($routes);
+        $all    = $this->all();
+        $routes = [];
+        foreach (array_keys($all) as $name) {
+            $routes[] = $name;
+        }
+
+        $results = $this->repositoryRoute->findLost($routes);
         foreach ($results as $route) {
             $this->entityManager->remove($route);
         }
@@ -102,9 +129,15 @@ class GuardRouteService
         $this->entityManager->flush();
     }
 
-    public function old(array $routes)
+    public function old()
     {
-        $results = $this->repository->findLost($routes);
+        $all    = $this->all();
+        $routes = [];
+        foreach (array_keys($all) as $name) {
+            $routes[] = $name;
+        }
+
+        $results = $this->repositoryRoute->findLost($routes);
         $data    = [];
         foreach ($results as $route) {
             $data[] = [$route];

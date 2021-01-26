@@ -2,6 +2,9 @@
 
 namespace Labstag\Command;
 
+use Labstag\Entity\Groupe;
+use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\UserRepository;
 use Labstag\Service\GuardRouteService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -18,12 +21,16 @@ class LabstagGuardRouteCommand extends Command
 
     protected GuardRouteService $service;
 
+    protected GroupeRepository $repositoryGroupe;
+
     public function __construct(
         GuardRouteService $service,
+        GroupeRepository $repositoryGroupe,
         string $name = null
     )
     {
-        $this->service = $service;
+        $this->repositoryGroupe = $repositoryGroupe;
+        $this->service          = $service;
         parent::__construct($name);
     }
 
@@ -38,11 +45,9 @@ class LabstagGuardRouteCommand extends Command
         $inputOutput->title('Installation du système de droit utilisateurs');
         $inputOutput->section('Enregistrement des routes');
         $all         = $this->service->all();
-        $routes      = [];
         $progressBar = new ProgressBar($output, count($all));
         $progressBar->start();
         foreach (array_keys($all) as $name) {
-            $routes[] = $name;
             $progressBar->advance();
             $this->service->save($name);
         }
@@ -58,17 +63,14 @@ class LabstagGuardRouteCommand extends Command
             ],
             $table
         );
-        $table = $this->service->old($routes);
+        $table = $this->service->old();
         if (0 != count($table)) {
             $inputOutput->section('Suppression des anciennes routes');
             $inputOutput->table(
-                [
-                    'route',
-                    'controller',
-                ],
+                ['route'],
                 $table
             );
-            $table = $this->service->delete($routes);
+            $table = $this->service->delete();
             $inputOutput->newLine();
             $inputOutput->success('Fin de suppression');
         }
