@@ -53,7 +53,7 @@ class GuardRouterSubscriber implements EventSubscriberInterface
         if (empty($token)) {
             $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
             if (!$this->searchRouteGroupe($groupe, $route)) {
-                dd('ERROR 401');
+                dump('ERROR 401');
             }
 
             return;
@@ -68,7 +68,7 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
         $state = $this->searchRouteUser($user, $route);
         if (!$state) {
-            dd('ERROR 403');
+            dump('ERROR 403');
         }
     }
 

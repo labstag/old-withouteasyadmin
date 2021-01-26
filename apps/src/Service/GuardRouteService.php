@@ -14,13 +14,12 @@ class GuardRouteService
 {
 
     const GROUPE_ENABLE = ['visiteur'];
-    const REGEX_ALL     = [
+    const REGEX         = [
         '/(SecurityController)/',
         '/(web_profiler.controller)/',
         '/(error_controller)/',
         '/(api_platform)/',
     ];
-    const REGEX_ADMIN   = ['/(Controller\\Admin)/'];
 
     private RouterInterface $router;
 
@@ -28,25 +27,21 @@ class GuardRouteService
 
     private EntityManagerInterface $entityManager;
 
-    private RouteGroupeRepository $repositoryGroupe;
-
     public function __construct(
         RouterInterface $router,
         EntityManagerInterface $entityManager,
-        RouteRepository $repositoryRoute,
-        RouteGroupeRepository $repositoryGroupe
+        RouteRepository $repositoryRoute
     )
     {
-        $this->repositoryGroupe = $repositoryGroupe;
-        $this->entityManager    = $entityManager;
-        $this->repositoryRoute  = $repositoryRoute;
-        $this->router           = $router;
+        $this->entityManager   = $entityManager;
+        $this->repositoryRoute = $repositoryRoute;
+        $this->router          = $router;
     }
 
-    public function regex(array $regexs, string $string)
+    public function regex(string $string)
     {
         $data = [];
-        foreach ($regexs as $regex) {
+        foreach (self::REGEX as $regex) {
             preg_match($regex, $string, $matches);
             foreach ($matches as $info) {
                 $data[] = $info;
@@ -68,7 +63,7 @@ class GuardRouteService
                 continue;
             }
 
-            $matches = $this->regex(self::REGEX_ALL, $defaults['_controller']);
+            $matches = $this->regex($defaults['_controller']);
             if (0 != count($matches)) {
                 continue;
             }

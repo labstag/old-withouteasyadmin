@@ -2,16 +2,16 @@
 
 namespace Labstag\Swagger;
 
-use Labstag\Controller\Api\CheckPhoneController;
+use Labstag\Controller\Api\CheckController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Adds the Swagger documentation for the CheckPhoneController.
+ * Adds the Swagger documentation for the CheckController.
  *
- * @see CheckPhoneController
+ * @see CheckController
  */
-final class CheckPhoneSwaggerDecorator implements NormalizerInterface
+final class CheckSwaggerDecorator implements NormalizerInterface
 {
 
     private NormalizerInterface $decorated;
@@ -28,8 +28,8 @@ final class CheckPhoneSwaggerDecorator implements NormalizerInterface
     {
         $docs          = $this->decorated->normalize($object, $format, $context);
         $statsEndpoint = [
-            'summary'    => 'Check phone number.',
-            'tags'       => ['Check phone'],
+            'summary'    => 'Phone number.',
+            'tags'       => ['Check'],
             'parameters' => [
                 [
                     'name'        => 'country',
@@ -65,7 +65,7 @@ final class CheckPhoneSwaggerDecorator implements NormalizerInterface
             ],
         ];
 
-        $docs['paths']['/api/checkphone']['get'] = $statsEndpoint;
+        $docs['paths']['/api/check/phone']['get'] = $statsEndpoint;
 
         return $docs;
     }

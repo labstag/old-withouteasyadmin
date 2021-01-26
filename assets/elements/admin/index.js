@@ -14,6 +14,8 @@ import {ModalConfirmRestore} from './ModalConfirmRestore';
 import {ModalConfirmWorkflow} from './ModalConfirmWorkflow';
 import {ModalConfirmEmpty} from './ModalConfirmEmpty';
 import { WorkflowAction } from './WorkflowAction';
+import { GuardGroups } from './GuardGroups';
+import { GuardGroup } from './GuardGroup';
 
 customElements.define('workflow-action', WorkflowAction);
 
@@ -27,6 +29,9 @@ customElements.define('link-btnadminempty', LinkBtnAdminEmpty);
 customElements.define('link-btnadminrestore', LinkBtnAdminRestore);
 customElements.define('link-btnadmindestroy', LinkBtnAdminDestroy);
 customElements.define('link-btnadmindelete', LinkBtnAdminDelete);
+
+customElements.define('guard-groups', GuardGroups, {'extends': 'table'})
+customElements.define('guard-group', GuardGroup)
 
 customElements.define('confirm-delete', ModalConfirmDelete, { 'extends': 'button' });
 customElements.define('confirm-destroy', ModalConfirmDestroy, { 'extends': 'button' });

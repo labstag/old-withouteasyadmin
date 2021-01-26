@@ -184,3 +184,13 @@ i{
     }
   }
 }
+.guard-group {
+  @extend .custom-control;
+  @extend .custom-switch;
+  input{
+    @extend .custom-control-input;
+  }
+  label{
+    @extend .custom-control-label;
+  }
+}

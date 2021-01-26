@@ -44,4 +44,17 @@ class RouteGroupeRepository extends ServiceEntityRepositoryLib
 
         return $query->getQuery()->getResult();
     }
+
+    public function findEnable()
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->where(
+            'a.state=:state'
+        );
+        $query->setParameters(
+            ['state' => 1]
+        );
+
+        return $query->getQuery()->getResult();
+    }
 }
