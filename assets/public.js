@@ -1,3 +1,3 @@
-import * as assets from './assets';
+import './assets'
 
-console.log("public");
+console.log('public')

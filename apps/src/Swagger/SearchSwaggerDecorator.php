@@ -2,16 +2,16 @@
 
 namespace Labstag\Swagger;
 
-use Labstag\Controller\Api\GetUserController;
+use Labstag\Controller\Api\SearchController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Adds the Swagger documentation for the GetUserController.
+ * Adds the Swagger documentation for the SearchController.
  *
- * @see GetUserController
+ * @see SearchController
  */
-final class SearchUserSwaggerDecorator implements NormalizerInterface
+final class SearchSwaggerDecorator implements NormalizerInterface
 {
 
     private NormalizerInterface $decorated;

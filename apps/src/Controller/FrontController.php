@@ -14,8 +14,7 @@ class FrontController extends ControllerLib
     public function index(): Response
     {
         return $this->render(
-            'front.html.twig',
-            ['controller_name' => 'FrontController']
+            'front.html.twig'
         );
     }
 }

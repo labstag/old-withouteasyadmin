@@ -1,5 +1,11 @@
 {% use "tmpl/form_themes.html.twig" %}
-<div class="row" data-url="{{ path('api_geo_codes_get_collection', {'_format': 'json'}) }}">
+{% set state = guard_route('api_geo_codes_get_collection') %}
+{% if state == false %}
+    {% set url = path('api_geo_codes_get_collection', {'_format': 'json'}) %}
+{% else %}
+    {% set url = '#' %}
+{% endif %}
+<div class="row" data-url="{{ url }}">
     {% for input in prototype %}
         <div class="col-auto">
             {{ form_row(input) }}

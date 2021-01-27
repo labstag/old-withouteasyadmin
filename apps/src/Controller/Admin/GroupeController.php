@@ -12,7 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\Repository\RouteRepository;
 use Labstag\RequestHandler\GroupeRequestHandler;
+use Labstag\Service\AdminBoutonService;
 
 /**
  * @Route("/admin/user/groupe")
@@ -49,6 +51,7 @@ class GroupeController extends AdminControllerLib
                 'show'        => 'admin_groupuser_show',
                 'edit'        => 'admin_groupuser_edit',
                 'delete'      => 'admin_groupuser_delete',
+                'guard'       => 'admin_groupuser_guard',
                 'trashdelete' => 'admin_groupuser_destroy',
             ]
         );
@@ -82,8 +85,55 @@ class GroupeController extends AdminControllerLib
                 'restore' => 'admin_groupuser_restore',
                 'destroy' => 'admin_groupuser_destroy',
                 'edit'    => 'admin_groupuser_edit',
+                'guard'   => 'admin_groupuser_guard',
                 'list'    => 'admin_groupuser_index',
                 'trash'   => 'admin_groupuser_trash',
+            ]
+        );
+    }
+
+    /**
+     * @Route("/{id}/guard", name="admin_groupuser_guard")
+     */
+    public function guard(
+        RouteRepository $routeRepo,
+        Groupe $groupe,
+        AdminBoutonService $adminBoutonService
+    ): Response
+    {
+        $breadcrumb = [
+            'Guard' => $this->generateUrl(
+                'admin_groupuser_guard',
+                [
+                    'id' => $groupe->getId(),
+                ]
+            ),
+        ];
+        $this->addBreadcrumbs($breadcrumb);
+        $adminBoutonService->addBtnList(
+            'admin_groupuser_index',
+            'Liste',
+        );
+        $adminBoutonService->addBtnShow(
+            'admin_groupuser_show',
+            'Show',
+            [
+                'id' => $groupe->getId(),
+            ]
+        );
+
+        $adminBoutonService->addBtnEdit(
+            'admin_groupuser_edit',
+            'Editer',
+            [
+                'id' => $groupe->getId(),
+            ]
+        );
+        return $this->render(
+            'admin/guard/group.html.twig',
+            [
+                'group' => $groupe,
+                'all'   => $routeRepo->findBy([], ['name' => 'ASC']),
             ]
         );
     }
@@ -100,6 +150,7 @@ class GroupeController extends AdminControllerLib
             [
                 'delete' => 'admin_groupuser_delete',
                 'list'   => 'admin_groupuser_index',
+                'guard'  => 'admin_groupuser_guard',
                 'show'   => 'admin_groupuser_show',
             ]
         );

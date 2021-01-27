@@ -12,7 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\Repository\RouteRepository;
 use Labstag\RequestHandler\UserRequestHandler;
+use Labstag\Service\AdminBoutonService;
+use Labstag\Service\BreadcrumbsService;
 
 /**
  * @Route("/admin/user")
@@ -51,6 +54,7 @@ class UserController extends AdminControllerLib
                 'edit'     => 'admin_user_edit',
                 'delete'   => 'admin_user_delete',
                 'destroy'  => 'admin_user_destroy',
+                'guard'    => 'admin_user_guard',
                 'restore'  => 'admin_user_restore',
                 'workflow' => 'admin_user_workflow',
             ]
@@ -86,8 +90,55 @@ class UserController extends AdminControllerLib
                 'restore' => 'admin_user_restore',
                 'destroy' => 'admin_user_destroy',
                 'list'    => 'admin_user_index',
+                'guard'   => 'admin_user_guard',
                 'edit'    => 'admin_user_edit',
                 'trash'   => 'admin_user_trash',
+            ]
+        );
+    }
+
+    /**
+     * @Route("/{id}/guard", name="admin_user_guard")
+     */
+    public function guard(
+        RouteRepository $routeRepo,
+        User $user,
+        AdminBoutonService $adminBoutonService
+    ): Response
+    {
+        $breadcrumb = [
+            'Guard' => $this->generateUrl(
+                'admin_user_guard',
+                [
+                    'id' => $user->getId(),
+                ]
+            ),
+        ];
+        $this->addBreadcrumbs($breadcrumb);
+        $adminBoutonService->addBtnList(
+            'admin_user_index',
+            'Liste',
+        );
+        $adminBoutonService->addBtnShow(
+            'admin_user_show',
+            'Show',
+            [
+                'id' => $user->getId(),
+            ]
+        );
+
+        $adminBoutonService->addBtnEdit(
+            'admin_user_edit',
+            'Editer',
+            [
+                'id' => $user->getId(),
+            ]
+        );
+        return $this->render(
+            'admin/guard/user.html.twig',
+            [
+                'user' => $user,
+                'all'  => $routeRepo->findBy([], ['name' => 'ASC']),
             ]
         );
     }
@@ -104,6 +155,7 @@ class UserController extends AdminControllerLib
             [
                 'delete' => 'admin_user_delete',
                 'list'   => 'admin_user_index',
+                'guard'  => 'admin_user_guard',
                 'show'   => 'admin_user_show',
             ]
         );

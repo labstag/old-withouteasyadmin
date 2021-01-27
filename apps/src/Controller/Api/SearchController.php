@@ -9,9 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 /**
- * @Route("/api")
+ * @Route("/api/search")
  */
-class SearchUserController extends AbstractController
+class SearchController extends AbstractController
 {
 
     private PhoneService $phoneService;
@@ -22,11 +22,11 @@ class SearchUserController extends AbstractController
     }
 
     /**
-     * @Route("/search/user", name="api_search_user")
+     * @Route("/user", name="api_search_user")
      *
      * @return Response
      */
-    public function __invoke(Request $request, UserRepository $repository): Response
+    public function user(Request $request, UserRepository $repository): Response
     {
         $get    = $request->query->all();
         $return = ['isvalid' => false];

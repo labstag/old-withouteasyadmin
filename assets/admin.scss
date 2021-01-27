@@ -63,6 +63,10 @@ i{
     @extend .fas;
     @extend .fa-trash;
   }
+  &.BtnAdminHeaderGuard{
+    @extend .fas;
+    @extend .fa-gavel;
+  }
   &.BtnAdminHeaderEdit{
     @extend .far;
     @extend .fa-edit;
@@ -95,6 +99,19 @@ i{
     i{
       @extend .fas;
       @extend .fa-plus;
+    }
+    span{
+      display: none;
+    }
+}
+
+.link-guard{
+  @extend .btn;
+  @extend .btn-outline-dark;
+  @extend .btn-sm;
+    i{
+      @extend .fas;
+      @extend .fa-gavel;
     }
     span{
       display: none;
@@ -182,5 +199,15 @@ i{
         }
       }
     }
+  }
+}
+.guard-group, .guard-user {
+  @extend .custom-control;
+  @extend .custom-switch;
+  input{
+    @extend .custom-control-input;
+  }
+  label{
+    @extend .custom-control-label;
   }
 }
