@@ -1,4 +1,4 @@
-export class LinkEdit extends HTMLElement {
+export class LinkGuard extends HTMLElement {
   constructor () {
     super()
     if (this.innerHTML !== '') {
@@ -10,7 +10,7 @@ export class LinkEdit extends HTMLElement {
     this.aElement = document.createElement('a')
     this.iElement = document.createElement('i')
     this.spanElement = document.createElement('span')
-    this.aElement.classList.add('link-edit')
+    this.aElement.classList.add('link-guard')
     this.aElement.setAttribute('href', href)
     this.iElement.setAttribute('title', title)
     this.spanElement.innerHTML = title

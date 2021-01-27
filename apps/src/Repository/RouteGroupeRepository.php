@@ -45,15 +45,19 @@ class RouteGroupeRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getResult();
     }
 
-    public function findEnable()
+    public function findEnable(Groupe $groupe = null)
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $query        = $queryBuilder->where(
             'a.state=:state'
         );
-        $query->setParameters(
-            ['state' => 1]
-        );
+        $parameters   = ['state' => 1];
+        if (!is_null($groupe)) {
+            $query->andWhere('a.refgroupe=:refgroupe');
+            $parameters['refgroupe'] = $groupe;
+        }
+
+        $query->setParameters($parameters);
 
         return $query->getQuery()->getResult();
     }

@@ -27,9 +27,11 @@ final class GuardSwaggerDecorator implements NormalizerInterface
     public function normalize($object, string $format = null, array $context = [])
     {
         $docs = $this->decorated->normalize($object, $format, $context);
-        $this->setUser($docs);
-        $this->setGroup($docs);
+        $this->setRefUser($docs);
+        $this->setRefGroup($docs);
         $this->setGroups($docs);
+        $this->setGroup($docs);
+        $this->setUser($docs);
 
         return $docs;
     }
@@ -48,7 +50,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setUser(&$docs)
+    private function setRefUser(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'User.',
@@ -97,10 +99,10 @@ final class GuardSwaggerDecorator implements NormalizerInterface
             ],
         ];
 
-        $docs['paths']['/api/guard/user/{route}/{user}']['post'] = $statsEndpoint;
+        $docs['paths']['/api/guard/setuser/{route}/{user}']['post'] = $statsEndpoint;
     }
 
-    private function setGroup(&$docs)
+    private function setRefGroup(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'Group.',
@@ -149,13 +151,77 @@ final class GuardSwaggerDecorator implements NormalizerInterface
             ],
         ];
 
-        $docs['paths']['/api/guard/group/{route}/{groupe}']['post'] = $statsEndpoint;
+        $docs['paths']['/api/guard/setgroup/{route}/{groupe}']['post'] = $statsEndpoint;
     }
 
     private function setGroups(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'Groups.',
+            'tags'       => ['Guard'],
+            'parameters' => [],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'ok' => [
+                                        'type'    => 'boolean',
+                                        'example' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/guard/groups']['get'] = $statsEndpoint;
+    }
+
+    private function setUser(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'Group.',
+            'tags'       => ['Guard'],
+            'parameters' => [
+                [
+                    'name'        => 'user',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'user',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'ok' => [
+                                        'type'    => 'boolean',
+                                        'example' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/guard/users/{user}']['get'] = $statsEndpoint;
+    }
+
+    private function setGroup(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'Group.',
             'tags'       => ['Guard'],
             'parameters' => [
                 [

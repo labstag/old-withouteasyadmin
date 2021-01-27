@@ -34,7 +34,7 @@ class GuardController extends AdminControllerLib
         $this->headerTitle = 'Droits';
         $this->urlHome     = 'admin_guard_index';
         return $this->render(
-            'admin/guard.html.twig',
+            'admin/guard/index.html.twig',
             [
                 'groups' => $groupeRepo->findBy([], ['name' => 'ASC']),
                 'all'    => $routeRepo->findBy([], ['name' => 'ASC']),

@@ -101,6 +101,19 @@ i{
     }
 }
 
+.link-guard{
+  @extend .btn;
+  @extend .btn-outline-dark;
+  @extend .btn-sm;
+    i{
+      @extend .fas;
+      @extend .fa-gavel;
+    }
+    span{
+      display: none;
+    }
+}
+
 .link-show{
   @extend .btn;
   @extend .btn-outline-primary;

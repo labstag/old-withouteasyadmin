@@ -1,2 +1,2 @@
-import * as assets from "./assets";
-console.log("global");
+import './assets'
+console.log('global')

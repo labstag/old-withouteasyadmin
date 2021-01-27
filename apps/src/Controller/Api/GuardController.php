@@ -1,8 +1,10 @@
 <?php
 namespace Labstag\Controller\Api;
 
+use Labstag\Entity\Groupe;
 use Labstag\Entity\RouteGroupe;
 use Labstag\Entity\RouteUser;
+use Labstag\Entity\User;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\RouteGroupeRepository;
 use Labstag\Repository\RouteRepository;
@@ -50,11 +52,11 @@ class GuardController extends AbstractController
     }
 
     /**
-     * @Route("/user/{route}/{user}", name="api_guard_user", methods={"POST"})
+     * @Route("/setuser/{route}/{user}", name="api_guard_setuser", methods={"POST"})
      *
      * @return Response
      */
-    public function user(
+    public function setuser(
         string $route,
         string $user,
         UserRepository $userRepo,
@@ -102,6 +104,61 @@ class GuardController extends AbstractController
     }
 
     /**
+     * @Route("/users/{user}", name="api_guard_user")
+     *
+     * @return Response
+     */
+    public function user(
+        User $user,
+        RouteGroupeRepository $routeGroupeRepo,
+        RouteUserRepository $routeUserRepo
+    ): JsonResponse
+    {
+        $data    = [
+            'groups' => [],
+            'user'   => [],
+        ];
+        $results = $routeGroupeRepo->findEnable($user->getGroupe());
+        foreach ($results as $row) {
+            /** @var RouteGroupe $row */
+            $data['groups'][] = [
+                'groupe' => $row->getRefgroupe()->getCode(),
+                'route'  => $row->getRefroute()->getName(),
+            ];
+        }
+
+        $results = $routeUserRepo->findEnable($user);
+        foreach ($results as $row) {
+            /** @var RouteUser $row */
+            $data['user'][] = [
+                'route' => $row->getRefroute()->getName(),
+            ];
+        }
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/groups/{groupe}", name="api_guard_group")
+     *
+     * @return Response
+     */
+    public function groupe(Groupe $groupe, RouteGroupeRepository $routeGroupeRepo): JsonResponse
+    {
+        $results = $routeGroupeRepo->findEnable($groupe);
+        $data    = [];
+        foreach ($results as $row) {
+            /** @var RouteGroupe $row */
+            $data[] = [
+                'groupe' => $row->getRefgroupe()->getCode(),
+                'route'  => $row->getRefroute()->getName(),
+            ];
+        }
+
+        return new JsonResponse($data);
+    }
+
+    /**
      * @Route("/groups", name="api_guard_groups")
      *
      * @return Response
@@ -119,15 +176,14 @@ class GuardController extends AbstractController
         }
 
         return new JsonResponse($data);
-
     }
 
     /**
-     * @Route("/group/{route}/{groupe}", name="api_guard_group")
+     * @Route("/setgroup/{route}/{groupe}", name="api_guard_setgroup")
      *
      * @return Response
      */
-    public function groupe(
+    public function setgroup(
         string $route,
         string $groupe,
         GroupeRepository $groupeRepo,

@@ -2,6 +2,10 @@
     {% set title = title|trans %}
     <link-show data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}"></link-show>
 {% endmacro %}
+{% macro guard(entity, url, title) %}
+    {% set title = title|trans %}
+    <link-guard data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}"></link-guard>
+{% endmacro %}
 {% macro edit(entity, url) %}
     {% set title = "Edit"|trans %}
     <link-edit data-href="{{ path(url, {'id': entity.id}) }}" data-title="#{{ title|e }}"></link-edit>
@@ -65,6 +69,9 @@
             {{ _self.show(entity, urlShow, titleShow) }}
         {% endif %}
         {% if 0 == app.request.attributes.get('_route')|split('trash')|length-1 %}
+            {% if actions['guard'] is defined %}
+                {{ _self.guard(entity, actions['guard'], 'guard') }}
+            {% endif %}
             {% if actions['edit'] is defined %}
                 {{ _self.edit(entity, actions['edit']) }}
             {% endif %}

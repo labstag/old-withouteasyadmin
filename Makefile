@@ -262,6 +262,7 @@ endif
 
 linter: ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
+	@make linter eslint -i
 	@make linter twig -i
 	@make linter yaml -i
 	@make linter phpstan -i
@@ -271,6 +272,10 @@ ifeq ($(COMMAND_ARGS),all)
 	@make linter readme -i
 else ifeq ($(COMMAND_ARGS),readme)
 	@npm run linter-markdown README.md
+else ifeq ($(COMMAND_ARGS),eslint)
+	@npm run eslint
+else ifeq ($(COMMAND_ARGS),eslint-fix)
+	@npm run eslint-fix
 else ifeq ($(COMMAND_ARGS),phpcbf)
 	$(DOCKER_EXECPHP) make linter phpcbf
 else ifeq ($(COMMAND_ARGS),phpcpd)
@@ -300,6 +305,8 @@ else
 	@echo "---"
 	@echo "linter all: ## Launch all linter"
 	@echo "readme: linter README.md"
+	@echo "eslint: indique les erreurs sur le code JavaScript à partir d'un standard"
+	@echo "eslint-fix: fixe le code JavaScript à partir d'un standard"
 	@echo "phpcbf: fixe le code PHP à partir d'un standard"
 	@echo "phpcpd: Vérifie s'il y a du code dupliqué"
 	@echo "phpcs: indique les erreurs de code non corrigé par PHPCBF"

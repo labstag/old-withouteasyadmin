@@ -34,6 +34,11 @@ abstract class AdminControllerLib extends ControllerLib
         parent::__construct($dataService, $breadcrumbs);
     }
 
+    public function addBreadcrumbs(array $breadcrumbs): void
+    {
+        BreadcrumbsService::getInstance()->add($breadcrumbs);
+    }
+
     private function setBreadcrumbsPage()
     {
         if ($this->headerTitle == '' && $this->urlHome == '') {

@@ -3,6 +3,7 @@
 namespace Labstag\Twig;
 
 use Labstag\Entity\Groupe;
+use Labstag\Entity\User;
 use Labstag\Service\GuardRouteService;
 use Labstag\Service\PhoneService;
 use Symfony\Component\Workflow\Registry;
@@ -40,7 +41,8 @@ class LabstagExtension extends AbstractExtension
             // Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
             new TwigFilter('workflow_has', [$this, 'workflowHas']),
             new TwigFilter('guard_route', [$this, 'guardRoute']),
-            new TwigFilter('guard_route_enable', [$this, 'guardRouteEnable']),
+            new TwigFilter('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
+            new TwigFilter('guard_route_enable_user', [$this, 'guardRouteEnableUser']),
             new TwigFilter('formClass', [$this, 'formClass']),
             new TwigFilter('verifPhone', [$this, 'verifPhone']),
             new TwigFilter('formPrototype', [$this, 'formPrototype']),
@@ -52,14 +54,33 @@ class LabstagExtension extends AbstractExtension
         return [
             new TwigFunction('workflow_has', [$this, 'workflowHas']),
             new TwigFunction('guard_route', [$this, 'guardRoute']),
-            new TwigFunction('guard_route_enable', [$this, 'guardRouteEnable']),
+            new TwigFunction('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
+            new TwigFunction('guard_route_enable_user', [$this, 'guardRouteEnableUser']),
             new TwigFunction('formClass', [$this, 'formClass']),
             new TwigFunction('verifPhone', [$this, 'verifPhone']),
             new TwigFunction('formPrototype', [$this, 'formPrototype']),
         ];
     }
 
-    public function guardRouteEnable(string $route, Groupe $groupe): bool
+    public function guardRouteEnableUser(string $route, User $user): bool
+    {
+        $all = $this->guardRouteService->all();
+        if (!array_key_exists($route, $all)) {
+            return false;
+        }
+
+        $data     = $all[$route];
+        $defaults = $data->getDefaults();
+        $matches  = [];
+        preg_match(self::REGEX_CONTROLLER_ADMIN, $defaults['_controller'], $matches);
+        if (0 != count($matches) && 'visiteur' == $user->getGroupe()->getCode()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
     {
         $all = $this->guardRouteService->all();
         if (!array_key_exists($route, $all)) {
