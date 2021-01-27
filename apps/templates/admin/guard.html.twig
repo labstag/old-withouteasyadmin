@@ -1,6 +1,6 @@
 {% extends 'admin.html.twig' %}
 {% block body %}
-    <table is="guard-groups" data-url="{{ path('admin_guard_groups') }}">
+    <table is="guard-groups" data-url="{{ path('api_guard_groups') }}">
         <thead>
             <tr>
                 <th>
@@ -31,7 +31,7 @@
                             data-state=0
                             data-groupe="{{ group.code|e }}"
                             data-route="{{ route.name|e }}"
-                            data-url="{{ path('admin_guard_setgroup', {'route': route, 'groupe': group}) }}"
+                            data-url="{{ path('api_guard_group', {'route': route, 'groupe': group}) }}"
                             data-token="{{ csrf_token('guard-'~ group.id ~'-route-' ~ route.name) }}"
                         />
                     {% else %}

@@ -39,8 +39,8 @@ export class GuardGroup extends HTMLElement
   onChange(element) {
     element.preventDefault();
     const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('_token', this.dataset.url);
-    urlSearchParams.append('state', this.checkbox.checked);
+    urlSearchParams.append('_token', this.dataset.token);
+    urlSearchParams.append('state', (false === this.checkbox.checked) ? 0 : 1);
     let options = {
       method: 'POST',
       headers: {

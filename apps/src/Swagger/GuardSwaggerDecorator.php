@@ -29,8 +29,23 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         $docs = $this->decorated->normalize($object, $format, $context);
         $this->setUser($docs);
         $this->setGroup($docs);
+        $this->setGroups($docs);
 
         return $docs;
+    }
+
+    private function setReturnUserGroup()
+    {
+        return [
+            'ok'      => [
+                'type'    => 'boolean',
+                'example' => true,
+            ],
+            'message' => [
+                'type'    => 'string',
+                'example' => 'Changement effectué',
+            ],
+        ];
     }
 
     private function setUser(&$docs)
@@ -60,6 +75,13 @@ final class GuardSwaggerDecorator implements NormalizerInterface
                     'description' => 'token',
                     'schema'      => ['type' => 'string'],
                 ],
+                [
+                    'name'        => 'state',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'state',
+                    'schema'      => ['type' => 'boolean'],
+                ],
             ],
             'responses'  => [
                 Response::HTTP_OK => [
@@ -67,12 +89,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
                         'application/json' => [
                             'schema' => [
                                 'type'       => 'object',
-                                'properties' => [
-                                    'state' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
+                                'properties' => $this->setReturnUserGroup(),
                             ],
                         ],
                     ],
@@ -110,6 +127,44 @@ final class GuardSwaggerDecorator implements NormalizerInterface
                     'description' => 'token',
                     'schema'      => ['type' => 'string'],
                 ],
+                [
+                    'name'        => 'state',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'state',
+                    'schema'      => ['type' => 'boolean'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => $this->setReturnUserGroup(),
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/guard/group/{route}/{groupe}']['post'] = $statsEndpoint;
+    }
+
+    private function setGroups(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'Groups.',
+            'tags'       => ['Guard'],
+            'parameters' => [
+                [
+                    'name'        => 'groupe',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'groupe',
+                    'schema'      => ['type' => 'string'],
+                ],
             ],
             'responses'  => [
                 Response::HTTP_OK => [
@@ -118,7 +173,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
                             'schema' => [
                                 'type'       => 'object',
                                 'properties' => [
-                                    'state' => [
+                                    'ok' => [
                                         'type'    => 'boolean',
                                         'example' => true,
                                     ],
@@ -130,7 +185,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
             ],
         ];
 
-        $docs['paths']['/api/guard/group/{route}/{groupe}']['post'] = $statsEndpoint;
+        $docs['paths']['/api/guard/groups/{groupe}']['get'] = $statsEndpoint;
     }
 
     /**

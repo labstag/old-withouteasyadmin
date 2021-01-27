@@ -23,12 +23,9 @@ PHPMYADMINFULLNAME := $(PHPMYADMIN).1.$$(docker service ps -f 'name=$(PHPMYADMIN
 PHPFPM         := $(STACK)_phpfpm
 PHPFPMFULLNAME := $(PHPFPM).1.$$(docker service ps -f 'name=$(PHPFPM)' $(PHPFPM) -q --no-trunc | head -n1)
 
-PHPFPMXDEBUG         := $(STACK)_phpfpm-xdebug
-PHPFPMXDEBUGFULLNAME := $(PHPFPMXDEBUG).1.$$(docker service ps -f 'name=$(PHPFPMXDEBUG)' $(PHPFPMXDEBUG) -q --no-trunc | head -n1)
+DOCKER_EXECPHP := @docker exec $(PHPFPMFULLNAME)
 
-DOCKER_EXECPHP := @docker exec $(PHPFPMXDEBUGFULLNAME)
-
-.PHONY := help assets bdd composer contributors docker encore env geocode git inspect install linter logs messenger sleep ssh tests translations workflow-png
+.PHONY := help assets bdd composer contributors docker encore env folders geocode git inspect install linter logs messenger sleep ssh tests translations workflow-png
 
 SUPPORTED_COMMANDS := bdd composer contributors docker encore env geocode git inspect install linter logs messenger sleep ssh tests workflow-png
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
@@ -168,6 +165,8 @@ else
 	@echo "watch: créer les assets en version watch"
 endif
 
+folders: mariadb_data dump ## Create folder
+
 env: apps/.env ## Scripts Installation environnement
 ifeq ($(COMMAND_ARGS),dev)
 	@sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
@@ -190,13 +189,15 @@ geocode: ## Geocode
 git: ## Scripts GIT
 ifeq ($(COMMAND_ARGS),commit)
 	@npm run commit
+else ifeq ($(COMMAND_ARGS),status)
+	@git status
 else ifeq ($(COMMAND_ARGS),check)
 	@make composer validate -i
 	@make composer outdated -i
 	@make bdd validate -i
 	@make contributors check -i
 	@make linter all -i
-	@git status
+	@make git status -i
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -204,6 +205,7 @@ else
 	@echo "---"
 	@echo "commit: Commit data"
 	@echo "check: CHECK before"
+	@echo "status: status"
 endif
 
 inspect: ## docker service inspect
@@ -221,8 +223,6 @@ else ifeq ($(COMMAND_ARGS),phpmyadmin)
 	@docker service inspect $(PHPMYADMIN)
 else ifeq ($(COMMAND_ARGS),phpfpm)
 	@docker service inspect $(PHPFPM)
-else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
-	@docker service inspect $(PHPFPMXDEBUG)
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -236,10 +236,9 @@ else
 	@echo "apache: APACHE"
 	@echo "phpmyadmin: PHPMYADMIN"
 	@echo "phpfpm: PHPFPM"
-	@echo "phpfpm-xdebug: PHPFPMXDEBUG"
 endif
 
-install: dump mariadb_data apps/.env ## installation
+install: folders apps/.env ## installation
 ifeq ($(COMMAND_ARGS),all)
 	@make node_modules -i
 	@make docker deploy -i
@@ -331,8 +330,6 @@ else ifeq ($(COMMAND_ARGS),phpmyadmin)
 	@docker service logs -f --tail 100 --raw $(PHPMYADMINFULLNAME)
 else ifeq ($(COMMAND_ARGS),phpfpm)
 	@docker service logs -f --tail 100 --raw $(PHPFPMFULLNAME)
-else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
-	@docker service logs -f --tail 100 --raw $(PHPFPMXDEBUGFULLNAME)
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -346,7 +343,6 @@ else
 	@echo "apache: APACHE"
 	@echo "phpmyadmin: PHPMYADMIN"
 	@echo "phpfpm: PHPFPM"
-	@echo "phpfpm-xdebug: PHPFPMXDEBUG"
 endif
 
 messenger: ## Scripts messenger
@@ -375,8 +371,6 @@ else ifeq ($(COMMAND_ARGS),phpmyadmin)
 	docker service update $(PHPMYADMIN)
 else ifeq ($(COMMAND_ARGS),phpfpm)
 	docker service update $(PHPFPM)
-else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
-	docker service update $(PHPFPMXDEBUG)
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -390,7 +384,6 @@ else
 	@echo "apache: APACHE"
 	@echo "phpmyadmin: PHPMYADMIN"
 	@echo "phpfpm: PHPFPM"
-	@echo "phpfpm-xdebug: PHPFPMXDEBUG"
 endif
 
 sleep: ## sleep
@@ -411,8 +404,6 @@ else ifeq ($(COMMAND_ARGS),phpmyadmin)
 	@docker exec -it $(PHPMYADMINFULLNAME) /bin/bash
 else ifeq ($(COMMAND_ARGS),phpfpm)
 	@docker exec -it $(PHPFPMFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
-	@docker exec -it $(PHPFPMXDEBUGFULLNAME) /bin/bash
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -426,18 +417,17 @@ else
 	@echo "apache: APACHE"
 	@echo "phpmyadmin: PHPMYADMIN"
 	@echo "phpfpm: PHPFPM"
-	@echo "phpfpm-xdebug: PHPFPMXDEBUG"
 endif
 
 tests: ## Scripts tests
 ifeq ($(COMMAND_ARGS),launch)
-	@docker exec $(PHPFPMXDEBUGFULLNAME) make tests all
+	@docker exec $(PHPFPMFULLNAME) make tests all
 else ifeq ($(COMMAND_ARGS),behat)
-	@docker exec $(PHPFPMXDEBUGFULLNAME) make tests behat
+	@docker exec $(PHPFPMFULLNAME) make tests behat
 else ifeq ($(COMMAND_ARGS),simple-phpunit-unit-integration)
-	@docker exec $(PHPFPMXDEBUGFULLNAME) make tests simple-phpunit-unit-integration
+	@docker exec $(PHPFPMFULLNAME) make tests simple-phpunit-unit-integration
 else ifeq ($(COMMAND_ARGS),simple-phpunit)
-	@docker exec $(PHPFPMXDEBUGFULLNAME) make tests simple-phpunit
+	@docker exec $(PHPFPMFULLNAME) make tests simple-phpunit
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
