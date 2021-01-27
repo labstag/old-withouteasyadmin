@@ -1,60 +1,83 @@
 {% macro show(entity, url, title) %}
     {% set title = title|trans %}
-    <link-show data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}"></link-show>
+    {% set state = guard_route(url) %}
+    {% if state == true %}
+        <link-show data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}"></link-show>
+    {% endif %}
 {% endmacro %}
 {% macro guard(entity, url, title) %}
     {% set title = title|trans %}
-    <link-guard data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}"></link-guard>
+    {% set state = guard_route(url) %}
+    {% if state == true %}
+        <link-guard data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}"></link-guard>
+    {% endif %}
 {% endmacro %}
 {% macro edit(entity, url) %}
     {% set title = "Edit"|trans %}
-    <link-edit data-href="{{ path(url, {'id': entity.id}) }}" data-title="#{{ title|e }}"></link-edit>
+    {% set state = guard_route(url) %}
+    {% if state == true %}
+        <link-edit data-href="{{ path(url, {'id': entity.id}) }}" data-title="#{{ title|e }}"></link-edit>
+    {% endif %}
 {% endmacro %}
 {% macro delete(entity, urlDelete, urlList) %}
     {% set title = "Delete"|trans %}
-    <link-delete
-        data-url="{{ path(urlDelete, {'id': entity.id}) }}"
-        data-token="{{ csrf_token('delete' ~ entity.id) }}"
-        data-title="{{ title }}"
-        {% if urlList != '' %}
-            data-redirect="{{ path(urlList) }}"
-        {% endif %}
-    ></link-delete>
+    {% set state = guard_route(urlList) %}
+    {% if state == true %}
+        <link-delete
+            data-url="{{ path(urlDelete, {'id': entity.id}) }}"
+            data-token="{{ csrf_token('delete' ~ entity.id) }}"
+            data-title="{{ title }}"
+            {% if urlList != '' %}
+                data-redirect="{{ path(urlList) }}"
+            {% endif %}
+        ></link-delete>
+    {% endif %}
 {% endmacro %}
 {% macro destroy(entity, urlDelete, urlList) %}
     {% set title = "Destroy"|trans %}
-    <link-destroy
-        data-url="{{ path(urlDelete, {'id': entity.id}) }}"
-        data-token="{{ csrf_token('destroy' ~ entity.id) }}"
-        data-title="{{ title }}"
-        {% if urlList != '' %}
-            data-redirect="{{ path(urlList) }}"
-        {% endif %}
-    ></link-destroy>
+    {% set state1 = guard_route(urlDelete) %}
+    {% set state2 = guard_route(urlList) %}
+    {% if state1 == true and state2 == true %}
+        <link-destroy
+            data-url="{{ path(urlDelete, {'id': entity.id}) }}"
+            data-token="{{ csrf_token('destroy' ~ entity.id) }}"
+            data-title="{{ title }}"
+            {% if urlList != '' %}
+                data-redirect="{{ path(urlList) }}"
+            {% endif %}
+        ></link-destroy>
+    {% endif %}
 {% endmacro %}
 {% macro restore(entity, urlDelete, urlList) %}
     {% set title = "Restore"|trans %}
-    <link-restore
-        data-url="{{ path(urlDelete, {'id': entity.id}) }}"
-        data-token="{{ csrf_token('restore' ~ entity.id) }}"
-        data-title="{{ title }}"
-        {% if urlList != '' %}
-            data-redirect="{{ path(urlList) }}"
-        {% endif %}
-    ></link-restore>
+    {% set state1 = guard_route(urlDelete) %}
+    {% set state2 = guard_route(urlList) %}
+    {% if state1 == true and state2 == true %}
+        <link-restore
+            data-url="{{ path(urlDelete, {'id': entity.id}) }}"
+            data-token="{{ csrf_token('restore' ~ entity.id) }}"
+            data-title="{{ title }}"
+            {% if urlList != '' %}
+                data-redirect="{{ path(urlList) }}"
+            {% endif %}
+        ></link-restore>
+    {% endif %}
 {% endmacro %}
 {% macro workflow(entity, actions) %}
     {% if workflow_has(entity) and actions['workflow'] is defined %}
-        <div class="btngrouptable" role="group">
-        {% for transition in workflow_transitions(entity) %}
-            <workflow-action
-                data-url="{{ path(actions['workflow'], {'id': entity.id, 'state': transition.name}) }}"
-                data-name="{{ transition.name }}"
-                data-token="{{ csrf_token(transition.name ~ entity.id) }}"
-                data-redirect="{{ path(actions['list']) }}"
-            ></workflow-action>
-        {% endfor %}
-        </div>
+        {% set state = guard_route(actions['workflow']) %}
+        {% if state == true %}
+            <div class="btngrouptable" role="group">
+            {% for transition in workflow_transitions(entity) %}
+                <workflow-action
+                    data-url="{{ path(actions['workflow'], {'id': entity.id, 'state': transition.name}) }}"
+                    data-name="{{ transition.name }}"
+                    data-token="{{ csrf_token(transition.name ~ entity.id) }}"
+                    data-redirect="{{ path(actions['list']) }}"
+                ></workflow-action>
+            {% endfor %}
+            </div>
+        {% endif %}
     {% endif %}
 {% endmacro %}
 {% macro actions (entity, actions) %}

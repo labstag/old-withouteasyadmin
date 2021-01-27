@@ -111,6 +111,7 @@ class AdminCrudService
     {
         $this->setBtnList($url);
         $this->setBtnShow($url, $entity);
+        $this->setBtnGuard($url, $entity);
         $this->setBtnDelete($url, $entity);
     }
 
@@ -123,6 +124,21 @@ class AdminCrudService
         $this->adminBoutonService->addBtnShow(
             $url['show'],
             'Show',
+            [
+                'id' => $entity->getId(),
+            ]
+        );
+    }
+
+    private function setBtnGuard(array $url, object $entity): void
+    {
+        if (!isset($url['guard'])) {
+            return;
+        }
+
+        $this->adminBoutonService->addBtnGuard(
+            $url['guard'],
+            'Guard',
             [
                 'id' => $entity->getId(),
             ]
@@ -295,6 +311,21 @@ class AdminCrudService
         );
     }
 
+    private function showOrPreviewaddBtnGuard($url, $routeType, $entity)
+    {
+        if (!(isset($url['guard']) && 'show' == $routeType)) {
+            return;
+        }
+
+        $this->adminBoutonService->addBtnGuard(
+            $url['guard'],
+            'Guard',
+            [
+                'id' => $entity->getId(),
+            ]
+        );
+    }
+
     private function showOrPreviewaddBtnEdit($url, $routeType, $entity)
     {
         if (!(isset($url['edit']) && 'show' == $routeType)) {
@@ -356,6 +387,7 @@ class AdminCrudService
         $routeType    = (0 != substr_count($routeCurrent, 'preview')) ? 'preview' : 'show';
         $this->showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity);
         $this->showOrPreviewaddBtnList($url, $routeType);
+        $this->showOrPreviewaddBtnGuard($url, $routeType, $entity);
         $this->showOrPreviewaddBtnTrash($url, $routeType);
         $this->showOrPreviewaddBtnEdit($url, $routeType, $entity);
         $this->showOrPreviewaddBtnRestore($url, $routeType, $entity);

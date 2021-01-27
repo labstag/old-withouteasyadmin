@@ -63,6 +63,10 @@ i{
     @extend .fas;
     @extend .fa-trash;
   }
+  &.BtnAdminHeaderGuard{
+    @extend .fas;
+    @extend .fa-gavel;
+  }
   &.BtnAdminHeaderEdit{
     @extend .far;
     @extend .fa-edit;
@@ -197,7 +201,7 @@ i{
     }
   }
 }
-.guard-group {
+.guard-group, .guard-user {
   @extend .custom-control;
   @extend .custom-switch;
   input{

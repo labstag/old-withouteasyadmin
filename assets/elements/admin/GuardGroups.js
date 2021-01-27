@@ -1,7 +1,6 @@
 export class GuardGroups extends HTMLTableElement {
   constructor () {
     super()
-    console.log('guard GROUPS')
     fetch(this.dataset.url)
       .then(response => response.json())
       .then(this.fetchResponse.bind(this))
@@ -14,7 +13,6 @@ export class GuardGroups extends HTMLTableElement {
 
   fetchResponse (response) {
     const checkboxs = document.getElementsByTagName('guard-group')
-    console.log(checkboxs.length)
     response.forEach(
       element => {
         checkboxs.forEach(

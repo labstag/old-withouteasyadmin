@@ -15,6 +15,23 @@ class RouteUserRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, RouteUser::class);
     }
 
+    public function findEnable(User $user = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->where(
+            'a.state=:state'
+        );
+        $parameters   = ['state' => 1];
+        if (!is_null($user)) {
+            $query->andWhere('a.refuser=:refuser');
+            $parameters['refuser'] = $user;
+        }
+
+        $query->setParameters($parameters);
+
+        return $query->getQuery()->getResult();
+    }
+
     public function findRoute(User $user, string $route)
     {
         $queryBuilder = $this->createQueryBuilder('a');
@@ -36,6 +53,6 @@ class RouteUserRepository extends ServiceEntityRepositoryLib
             ]
         );
 
-        return $query->getQuery()->getResult();
+        return $query->getQuery()->getOneOrNullResult();
     }
 }

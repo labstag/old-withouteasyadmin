@@ -42,7 +42,7 @@ class RouteGroupeRepository extends ServiceEntityRepositoryLib
             ]
         );
 
-        return $query->getQuery()->getResult();
+        return $query->getQuery()->getOneOrNullResult();
     }
 
     public function findEnable(Groupe $groupe = null)

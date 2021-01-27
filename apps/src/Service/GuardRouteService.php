@@ -5,8 +5,10 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Route;
+use Labstag\Entity\User;
 use Labstag\Repository\RouteGroupeRepository;
 use Labstag\Repository\RouteRepository;
+use Labstag\Repository\RouteUserRepository;
 use Symfony\Component\Routing\Route as Routing;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -27,13 +29,21 @@ class GuardRouteService
 
     private EntityManagerInterface $entityManager;
 
+    private RouteUserRepository $routeUserRepo;
+
+    private RouteGroupeRepository $routeGroupeRepo;
+
     public function __construct(
         RouterInterface $router,
         EntityManagerInterface $entityManager,
+        RouteUserRepository $routeUserRepo,
+        RouteGroupeRepository $routeGroupeRepo,
         RouteRepository $repositoryRoute
     )
     {
         $this->entityManager   = $entityManager;
+        $this->routeGroupeRepo = $routeGroupeRepo;
+        $this->routeUserRepo   = $routeUserRepo;
         $this->repositoryRoute = $repositoryRoute;
         $this->router          = $router;
     }
@@ -139,5 +149,30 @@ class GuardRouteService
         }
 
         return $data;
+    }
+
+    public function searchRouteGroupe(Groupe $groupe, string $route): bool
+    {
+        $entity = $this->routeGroupeRepo->findRoute($groupe, $route);
+        if (empty($entity)) {
+            return false;
+        }
+
+        return $entity->isState();
+    }
+
+    public function searchRouteUser(User $user, string $route): bool
+    {
+        $state = $this->searchRouteGroupe($user->getGroupe(), $route);
+        if (!$state) {
+            return false;
+        }
+
+        $entity = $this->routeUserRepo->findRoute($user, $route);
+        if (empty($entity)) {
+            return false;
+        }
+
+        return $entity->isState();
     }
 }

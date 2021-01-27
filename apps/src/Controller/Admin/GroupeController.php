@@ -14,6 +14,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Repository\RouteRepository;
 use Labstag\RequestHandler\GroupeRequestHandler;
+use Labstag\Service\AdminBoutonService;
 
 /**
  * @Route("/admin/user/groupe")
@@ -96,7 +97,8 @@ class GroupeController extends AdminControllerLib
      */
     public function guard(
         RouteRepository $routeRepo,
-        Groupe $groupe
+        Groupe $groupe,
+        AdminBoutonService $adminBoutonService
     ): Response
     {
         $breadcrumb = [
@@ -108,6 +110,25 @@ class GroupeController extends AdminControllerLib
             ),
         ];
         $this->addBreadcrumbs($breadcrumb);
+        $adminBoutonService->addBtnList(
+            'admin_groupuser_index',
+            'Liste',
+        );
+        $adminBoutonService->addBtnShow(
+            'admin_groupuser_show',
+            'Show',
+            [
+                'id' => $groupe->getId(),
+            ]
+        );
+
+        $adminBoutonService->addBtnEdit(
+            'admin_groupuser_edit',
+            'Editer',
+            [
+                'id' => $groupe->getId(),
+            ]
+        );
         return $this->render(
             'admin/guard/group.html.twig',
             [
@@ -129,6 +150,7 @@ class GroupeController extends AdminControllerLib
             [
                 'delete' => 'admin_groupuser_delete',
                 'list'   => 'admin_groupuser_index',
+                'guard'  => 'admin_groupuser_guard',
                 'show'   => 'admin_groupuser_show',
             ]
         );

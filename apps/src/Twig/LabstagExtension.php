@@ -4,8 +4,10 @@ namespace Labstag\Twig;
 
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
+use Labstag\Repository\GroupeRepository;
 use Labstag\Service\GuardRouteService;
 use Labstag\Service\PhoneService;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Registry;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -20,16 +22,24 @@ class LabstagExtension extends AbstractExtension
 
     protected GuardRouteService $guardRouteService;
 
+    protected TokenStorageInterface $token;
+
+    protected GroupeRepository $groupeRepository;
+
     const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     public function __construct(
         PhoneService $phoneService,
         Registry $workflows,
+        TokenStorageInterface $token,
+        GroupeRepository $groupeRepository,
         GuardRouteService $guardRouteService
     )
     {
         $this->guardRouteService = $guardRouteService;
+        $this->groupeRepository  = $groupeRepository;
         $this->workflows         = $workflows;
+        $this->token             = $token;
         $this->phoneService      = $phoneService;
     }
 
@@ -100,7 +110,34 @@ class LabstagExtension extends AbstractExtension
 
     public function guardRoute(string $route): bool
     {
-        dump($route, 'fonction non terminé');
+        $all   = $this->guardRouteService->all();
+        $token = $this->token->getToken();
+        if (!array_key_exists($route, $all)) {
+            return true;
+        }
+
+        $token = $this->token->getToken();
+        if (empty($token) || !$token->getUser() instanceof User) {
+            $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
+            if (!$this->guardRouteService->searchRouteGroupe($groupe, $route)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        /** @var User $user */
+        $user   = $token->getUser();
+        $groupe = $user->getGroupe();
+        if ('superadmin' == $groupe->getCode()) {
+            return true;
+        }
+
+        $state = $this->guardRouteService->searchRouteUser($user, $route);
+        if (!$state) {
+            return false;
+        }
+
         return true;
     }
 

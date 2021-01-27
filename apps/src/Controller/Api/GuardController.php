@@ -66,7 +66,7 @@ class GuardController extends AbstractController
     {
         $data  = ['ok' => false];
         $post  = $this->request->request->all();
-        $user  = $userRepo->findOneBy(['code' => $user]);
+        $user  = $userRepo->findOneBy(['username' => $user]);
         $route = $this->routeRepo->findOneBy(['name' => $route]);
         if (empty($user) || empty($route) || !array_key_exists('_token', $post)) {
             $data['message'] = 'Erreur de saisie';
@@ -122,8 +122,7 @@ class GuardController extends AbstractController
         foreach ($results as $row) {
             /** @var RouteGroupe $row */
             $data['groups'][] = [
-                'groupe' => $row->getRefgroupe()->getCode(),
-                'route'  => $row->getRefroute()->getName(),
+                'route' => $row->getRefroute()->getName(),
             ];
         }
 

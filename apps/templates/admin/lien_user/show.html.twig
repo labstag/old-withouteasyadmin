@@ -12,7 +12,14 @@
             </tr>
             <tr>
                 <th>User</th>
-                <td><a href="{{ path('admin_user_show', {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a></td>
+                <td>
+                    {% set state = guard_route('admin_user_show') %}
+                    {% if state == true %}
+                        <a href="{{ path('admin_user_show', {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
+                    {% else %}
+                        {{ entity.refuser }}
+                    {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>

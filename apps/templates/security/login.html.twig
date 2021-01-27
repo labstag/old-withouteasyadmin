@@ -9,8 +9,12 @@
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
         {{ form(formLogin) }}
-        <a href="{{ path("app_lost") }}">J'ai perdu mon mot de passe</a>
-        {% if oauths|length != 0 %}
+        {% set state = guard_route('app_lost') %}
+        {% if state == true %}
+            <a href="{{ path("app_lost") }}">J'ai perdu mon mot de passe</a>
+        {% endif %}
+        {% set state = guard_route('connect_start') %}
+        {% if state == true and oauths|length != 0 %}
             <fieldset>
                 <legend>Se connecter avec :</legend>
                 <div class="row">

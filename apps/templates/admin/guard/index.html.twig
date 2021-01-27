@@ -1,47 +1,53 @@
 {% extends 'admin.html.twig' %}
 {% block body %}
-    <table is="guard-groups" data-url="{{ path('api_guard_groups') }}">
-        <thead>
-            <tr>
-                <th>
-                    Route
-                </th>
-                {% for group in groups %}
-                    {% if 'superadmin' != group.code %}
-                <th>
-                    {{ group.name }}
-                </th>
-                    {% endif %}
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-        {% for route in all %}
-            <tr>
-                <td>
-                    {{ route.name }}
-                </td>
-                {% for group in groups %}
-                    {% if 'superadmin' != group.code %}
-                <td>
-                    {% set enable = guard_route_enable_group(route.name, group) %}
-                    {% if enable %}
-                        <guard-group
-                            title="{{ group.name|e }}"
-                            data-state=0
-                            data-groupe="{{ group.code|e }}"
-                            data-route="{{ route.name|e }}"
-                            data-url="{{ path('api_guard_setgroup', {'route': route, 'groupe': group}) }}"
-                            data-token="{{ csrf_token('guard-'~ group.id ~'-route-' ~ route.name) }}"
-                        />
-                    {% else %}
-                        ---
-                    {% endif %}
-                </td>   
-                    {% endif %}
-                {% endfor %}
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% set state = guard_route('api_guard_groups') %}
+    {% if state == false %}
+        Droit manquant
+    {% else %}
+        <table is="guard-groups" data-url="{{ path('api_guard_groups') }}">
+            <thead>
+                <tr>
+                    <th>
+                        Route
+                    </th>
+                    {% for group in groups %}
+                        {% if 'superadmin' != group.code %}
+                    <th>
+                        {{ group.name }}
+                    </th>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for route in all %}
+                <tr>
+                    <td>
+                        {{ route.name }}
+                    </td>
+                    {% for group in groups %}
+                        {% if 'superadmin' != group.code %}
+                    <td>
+                        {% set enable = guard_route_enable_group(route.name, group) %}
+                        {% set state = guard_route('api_guard_setgroup') %}
+                        {% if enable and enable %}
+                            <guard-group
+                                title="{{ group.name|e }}"
+                                data-state=0
+                                data-groupe="{{ group.code|e }}"
+                                data-route="{{ route.name|e }}"
+                                data-url="{{ path('api_guard_setgroup', {'route': route, 'groupe': group}) }}"
+                                data-token="{{ csrf_token('guard-'~ group.id ~'-route-' ~ route.name) }}"
+                            />
+                        {% else %}
+                            ---
+                        {% endif %}
+                    </td>   
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock %}

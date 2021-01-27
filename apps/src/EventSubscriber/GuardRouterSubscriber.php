@@ -21,20 +21,12 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
     private GroupeRepository $groupeRepository;
 
-    private RouteGroupeRepository $routeGroupeRepo;
-
-    private RouteUserRepository $routeUserRepo;
-
     public function __construct(
         TokenStorageInterface $token,
         GroupeRepository $groupeRepository,
-        RouteGroupeRepository $routeGroupeRepo,
-        RouteUserRepository $routeUserRepo,
         GuardRouteService $guardRouteService
     )
     {
-        $this->routeGroupeRepo   = $routeGroupeRepo;
-        $this->routeUserRepo     = $routeUserRepo;
         $this->groupeRepository  = $groupeRepository;
         $this->token             = $token;
         $this->guardRouteService = $guardRouteService;
@@ -52,8 +44,8 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
         if (empty($token) || !$token->getUser() instanceof User) {
             $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
-            if (!$this->searchRouteGroupe($groupe, $route)) {
-                dump('ERROR 401');
+            if (!$this->guardRouteService->searchRouteGroupe($groupe, $route)) {
+                dd('ERROR 401');
             }
 
             return;
@@ -66,35 +58,10 @@ class GuardRouterSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $state = $this->searchRouteUser($user, $route);
+        $state = $this->guardRouteService->searchRouteUser($user, $route);
         if (!$state) {
-            dump('ERROR 403');
+            dd('ERROR 403');
         }
-    }
-
-    private function searchRouteGroupe(Groupe $groupe, string $route): bool
-    {
-        $entity = $this->routeGroupeRepo->findRoute($groupe, $route);
-        if (empty($entity)) {
-            return false;
-        }
-
-        return $entity->isState();
-    }
-
-    private function searchRouteUser(User $user, string $route): bool
-    {
-        $state = $this->searchRouteGroupe($user->getGroupe(), $route);
-        if (!$state) {
-            return false;
-        }
-
-        $entity = $this->routeUserRepo->findRoute($user, $route);
-        if (empty($entity)) {
-            return false;
-        }
-
-        return $entity->isState();
     }
 
     public static function getSubscribedEvents()

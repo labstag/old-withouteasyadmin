@@ -14,6 +14,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Repository\RouteRepository;
 use Labstag\RequestHandler\UserRequestHandler;
+use Labstag\Service\AdminBoutonService;
 use Labstag\Service\BreadcrumbsService;
 
 /**
@@ -88,8 +89,8 @@ class UserController extends AdminControllerLib
                 'delete'  => 'admin_user_delete',
                 'restore' => 'admin_user_restore',
                 'destroy' => 'admin_user_destroy',
-                'guard'   => 'admin_user_guard',
                 'list'    => 'admin_user_index',
+                'guard'   => 'admin_user_guard',
                 'edit'    => 'admin_user_edit',
                 'trash'   => 'admin_user_trash',
             ]
@@ -101,7 +102,8 @@ class UserController extends AdminControllerLib
      */
     public function guard(
         RouteRepository $routeRepo,
-        User $user
+        User $user,
+        AdminBoutonService $adminBoutonService
     ): Response
     {
         $breadcrumb = [
@@ -113,6 +115,25 @@ class UserController extends AdminControllerLib
             ),
         ];
         $this->addBreadcrumbs($breadcrumb);
+        $adminBoutonService->addBtnList(
+            'admin_user_index',
+            'Liste',
+        );
+        $adminBoutonService->addBtnShow(
+            'admin_user_show',
+            'Show',
+            [
+                'id' => $user->getId(),
+            ]
+        );
+
+        $adminBoutonService->addBtnEdit(
+            'admin_user_edit',
+            'Editer',
+            [
+                'id' => $user->getId(),
+            ]
+        );
         return $this->render(
             'admin/guard/user.html.twig',
             [
@@ -134,6 +155,7 @@ class UserController extends AdminControllerLib
             [
                 'delete' => 'admin_user_delete',
                 'list'   => 'admin_user_index',
+                'guard'  => 'admin_user_guard',
                 'show'   => 'admin_user_show',
             ]
         );

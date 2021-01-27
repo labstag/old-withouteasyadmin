@@ -4,7 +4,8 @@
     {% if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 %}
         <div class="row">
     {% endif %}
-    {% if entity.oauthconnectusers|length != 0 %}
+    {% set state = guard_route('connect_lost') %}
+    {% if state == true and entity.oauthconnectusers|length != 0 %}
         <div class="col-auto">
             <fieldset>
                 <legend>Dissocier :</legend>
@@ -21,7 +22,8 @@
             </fieldset>
         </div>
     {% endif %}
-    {% if oauthActivated|length != 0 %}
+    {% set state = guard_route('connect_start') %}
+    {% if state == true and oauthActivated|length != 0 %}
         <div class="col-auto">
             <fieldset>
                 <legend>Se connecter avec :</legend>

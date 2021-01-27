@@ -8,7 +8,6 @@ export class InputUrl extends HTMLInputElement {
   traitement () {
     this.classList.remove('is-valid')
     this.classList.remove('is-invalid')
-    console.log(this.checkValidity())
     this.classList.add(this.checkValidity() ? 'is-valid' : 'is-invalid')
   }
 

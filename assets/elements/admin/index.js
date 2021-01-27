@@ -16,7 +16,9 @@ import { ModalConfirmWorkflow } from './ModalConfirmWorkflow'
 import { ModalConfirmEmpty } from './ModalConfirmEmpty'
 import { WorkflowAction } from './WorkflowAction'
 import { GuardGroups } from './GuardGroups'
+import { GuardUsers } from './GuardUsers'
 import { GuardGroup } from './GuardGroup'
+import { GuardUser } from './GuardUser'
 
 customElements.define('workflow-action', WorkflowAction)
 
@@ -33,7 +35,10 @@ customElements.define('link-btnadmindestroy', LinkBtnAdminDestroy)
 customElements.define('link-btnadmindelete', LinkBtnAdminDelete)
 
 customElements.define('guard-groups', GuardGroups, { extends: 'table' })
+customElements.define('guard-users', GuardUsers, { extends: 'table' })
+
 customElements.define('guard-group', GuardGroup)
+customElements.define('guard-user', GuardUser)
 
 customElements.define('confirm-delete', ModalConfirmDelete, { extends: 'button' })
 customElements.define('confirm-destroy', ModalConfirmDestroy, { extends: 'button' })
