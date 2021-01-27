@@ -42,9 +42,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: 'Create folders'
-        run: |
-          make dump
-          make mariadb_data
+        run: make folders
       - name: 'Installation variable environnement'
         run: make env dev
       - name: 'sleep'

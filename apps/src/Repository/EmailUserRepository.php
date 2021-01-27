@@ -17,12 +17,12 @@ class EmailUserRepository extends EmailRepository
     {
         $queryBuilder = $this->createQueryBuilder('u');
         $query        = $queryBuilder->where(
-            'u.refuser=:user AND u.verif=:verif'
+            'u.refuser=:user AND u.state LIKE :state'
         );
         $query->setParameters(
             [
                 'user'  => $user,
-                'verif' => $verif,
+                'state' => $verif ? 'valide' : 'averifier',
             ]
         );
 

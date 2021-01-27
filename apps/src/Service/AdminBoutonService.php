@@ -131,6 +131,26 @@ class AdminBoutonService
         return $this;
     }
 
+    public function addBtnGuard(
+        string $route,
+        string $text = 'Editer',
+        array $routeParam = []
+    ): self
+    {
+        $attr = [];
+        if ($route != '') {
+            $attr['href'] = $this->router->generate($route, $routeParam);
+        }
+
+        $this->add(
+            'BtnAdminHeaderGuard',
+            $text,
+            $attr
+        );
+
+        return $this;
+    }
+
     public function addBtnEdit(
         string $route,
         string $text = 'Editer',

@@ -102,6 +102,12 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
             ],
             ['separator' => 1],
             [
+                'libelle' => 'Droits',
+                'data'    => [
+                    'attr' => ['data-href' => 'admin_guard_index'],
+                ],
+            ],
+            [
                 'libelle' => 'Liste',
                 'data'    => [
                     'attr' => ['data-href' => 'admin_user_index'],

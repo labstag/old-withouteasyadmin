@@ -12,16 +12,16 @@ framework:
       initial_marking: start
       places:
         - start
-        - avalider
+        - nonverifier
         - valider
         - lostpassword
         - disable
       transitions:
         submit:
             from: start
-            to: avalider
+            to: nonverifier
         validation:
-            from: avalider
+            from: nonverifier
             to: valider
         passwordlost:
             from: valider

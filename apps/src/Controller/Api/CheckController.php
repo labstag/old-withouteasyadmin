@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 /**
- * @Route("/api")
+ * @Route("/api/check")
  */
-class CheckPhoneController extends AbstractController
+class CheckController extends AbstractController
 {
 
     private PhoneService $phoneService;
@@ -21,11 +21,11 @@ class CheckPhoneController extends AbstractController
     }
 
     /**
-     * @Route("/checkphone", name="api_checkphone")
+     * @Route("/phone", name="api_check_phone")
      *
      * @return Response
      */
-    public function __invoke(Request $request): Response
+    public function phone(Request $request): Response
     {
         $get    = $request->query->all();
         $return = ['isvalid' => false];

@@ -1,0 +1,44 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    {% set state = guard_route('api_guard_group') %}
+    {% if state == false %}
+        Droit manquant
+    {% else %}
+        <table is="guard-groups" data-url="{{ path('api_guard_group', {'groupe': group.id }) }}">
+            <thead>
+                <tr>
+                    <th>
+                        Route
+                    </th>
+                    <th>
+                        Guard {{ group.name }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for route in all %}
+                {% set enable = guard_route_enable_group(route.name, group) %}
+                {% if enable %}
+                <tr>
+                    <td>
+                        {{ route.name }}
+                    </td>
+                    <td>
+                        {% set state = guard_route('api_guard_setgroup') %}
+                        {% if state == true %}
+                            <guard-group
+                                title="{{ group.name|e }}"
+                                data-state=0
+                                data-groupe="{{ group.code|e }}"
+                                data-route="{{ route.name|e }}"
+                                data-url="{{ path('api_guard_setgroup', {'route': route, 'groupe': group}) }}"
+                                data-token="{{ csrf_token('guard-'~ group.id ~'-route-' ~ route.name) }}"
+                            />
+                        {% endif %}
+                </tr>
+                    {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
