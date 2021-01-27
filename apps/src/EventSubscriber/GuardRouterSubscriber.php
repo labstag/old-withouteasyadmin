@@ -9,26 +9,38 @@ use Labstag\Repository\RouteGroupeRepository;
 use Labstag\Repository\RouteUserRepository;
 use Labstag\Service\GuardRouteService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class GuardRouterSubscriber implements EventSubscriberInterface
 {
 
     private TokenStorageInterface $token;
 
+    private SessionInterface $session;
+
     private GuardRouteService $guardRouteService;
 
     private GroupeRepository $groupeRepository;
 
+    protected RouterInterface $router;
+
     public function __construct(
+        SessionInterface $session,
+        RouterInterface $router,
         TokenStorageInterface $token,
         GroupeRepository $groupeRepository,
         GuardRouteService $guardRouteService
     )
     {
         $this->groupeRepository  = $groupeRepository;
+        $this->session           = $session;
         $this->token             = $token;
+        $this->router            = $router;
         $this->guardRouteService = $guardRouteService;
     }
 
@@ -45,7 +57,17 @@ class GuardRouterSubscriber implements EventSubscriberInterface
         if (empty($token) || !$token->getUser() instanceof User) {
             $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
             if (!$this->guardRouteService->searchRouteGroupe($groupe, $route)) {
-                dd('ERROR 401');
+                /** @var Session $session */
+                $session = $this->session;
+                $session->getFlashBag()->add(
+                    'note',
+                    "Vous n'avez pas les droits nécessaires"
+                );
+                $event->setResponse(
+                    new RedirectResponse(
+                        $this->router->generate('login')
+                    )
+                );
             }
 
             return;
@@ -60,7 +82,7 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
         $state = $this->guardRouteService->searchRouteUser($user, $route);
         if (!$state) {
-            dd('ERROR 403');
+            throw new AccessDeniedException();
         }
     }
 

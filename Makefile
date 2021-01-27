@@ -25,8 +25,6 @@ PHPFPMFULLNAME := $(PHPFPM).1.$$(docker service ps -f 'name=$(PHPFPM)' $(PHPFPM)
 
 DOCKER_EXECPHP := @docker exec $(PHPFPMFULLNAME)
 
-.PHONY := help assets bdd composer contributors docker encore env folders geocode git inspect install linter logs messenger sleep ssh tests translations workflow-png
-
 SUPPORTED_COMMANDS := bdd composer contributors docker encore env geocode git inspect install linter logs messenger sleep ssh tests workflow-png
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""

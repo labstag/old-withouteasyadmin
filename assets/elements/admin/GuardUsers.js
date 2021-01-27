@@ -29,11 +29,11 @@ export class GuardUsers extends HTMLTableElement {
       element => {
         refgroups.forEach(
           refgroup => {
-            let check = 'KO';
+            let check = 'KO'
             if (refgroup.dataset.route === element.route) {
-              check = 'OK';
+              check = 'OK'
             }
-            refgroup.innerHTML = '<span class="check'+check+'"></span>';
+            refgroup.innerHTML = '<span class="check' + check + '"></span>'
           }
         )
       }
