@@ -28,7 +28,9 @@
                 <td>{{ entity.gps }}</td>
                 <td>{{ entity.type }}</td>
                 <td>{{ entity.pmr ? 'Yes' : 'No' }}</td>
-                <td>{{ entity.refuser }}</td>
+                <td>
+                    {{ entity.refuser.username }}
+                </td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>
