@@ -42,7 +42,7 @@ class GroupeController extends AdminControllerLib
             'admin/groupe/index.html.twig',
             [
                 'new'   => 'admin_groupuser_new',
-                'empty' => 'admin_groupuser_empty',
+                'empty' => 'api_action_empty',
                 'trash' => 'admin_groupuser_trash',
                 'list'  => 'admin_groupuser_index',
             ],

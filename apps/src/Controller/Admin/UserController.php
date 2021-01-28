@@ -43,7 +43,7 @@ class UserController extends AdminControllerLib
             'admin/user/index.html.twig',
             [
                 'new'   => 'admin_user_new',
-                'empty' => 'admin_user_empty',
+                'empty' => 'api_action_empty',
                 'trash' => 'admin_user_trash',
                 'list'  => 'admin_user_index',
             ],

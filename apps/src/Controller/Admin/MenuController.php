@@ -40,7 +40,7 @@ class MenuController extends AdminControllerLib
             'admin/menu/index.html.twig',
             [
                 'new'   => 'admin_menu_new',
-                'empty' => 'admin_menu_empty',
+                'empty' => 'api_action_empty',
                 'trash' => 'admin_menu_trash',
                 'list'  => 'admin_menu_index',
             ],

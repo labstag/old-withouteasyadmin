@@ -39,7 +39,7 @@
     {% set state2 = guard_route(urlList) %}
     {% if state1 == true and state2 == true %}
         <link-destroy
-            data-url="{{ path(urlDelete, {'id': entity.id}) }}"
+            data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
             data-token="{{ csrf_token('destroy' ~ entity.id) }}"
             data-title="{{ title }}"
             {% if urlList != '' %}
@@ -54,7 +54,7 @@
     {% set state2 = guard_route(urlList) %}
     {% if state1 == true and state2 == true %}
         <link-restore
-            data-url="{{ path(urlDelete, {'id': entity.id}) }}"
+            data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
             data-token="{{ csrf_token('restore' ~ entity.id) }}"
             data-title="{{ title }}"
             {% if urlList != '' %}

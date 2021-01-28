@@ -282,7 +282,7 @@ class AdminBoutonService
         return $this;
     }
 
-    public function addBtnEmpty(array $route, string $text = 'Vider'): self
+    public function addBtnEmpty(array $route, string $entity, string $text = 'Vider'): self
     {
         $this->twig->addGlobal(
             'modalEmpty',
@@ -301,7 +301,10 @@ class AdminBoutonService
         }
 
         if (isset($route['empty'])) {
-            $attr['data-url'] = $this->router->generate($route['empty']);
+            $attr['data-url'] = $this->router->generate(
+                $route['empty'],
+                ['entity' => $entity]
+            );
         }
 
         $this->add(

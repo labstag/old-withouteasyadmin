@@ -38,7 +38,7 @@ class GeoCodeController extends AdminControllerLib
             'admin/geocode/index.html.twig',
             [
                 'new'   => 'admin_geocode_new',
-                'empty' => 'admin_geocode_empty',
+                'empty' => 'api_action_empty',
                 'trash' => 'admin_geocode_trash',
                 'list'  => 'admin_geocode_index',
             ],
