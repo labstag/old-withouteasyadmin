@@ -228,8 +228,6 @@ class LabstagUserCommand extends Command
         $workflow->apply($entity, $state);
         $this->entityManager->flush();
         $inputOutput->success('Utilisateur passé au stade "'.$state.'"');
-
-        dump($state);
     }
 
     protected function enable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
