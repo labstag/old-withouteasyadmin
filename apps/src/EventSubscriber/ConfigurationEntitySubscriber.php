@@ -49,7 +49,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         $this->flushPostConfiguration($post);
     }
 
-    private function flushPostConfiguration(array $post): void
+    protected function flushPostConfiguration(array $post): void
     {
         foreach ($post as $key => $value) {
             if ('_token' == $key) {
@@ -72,7 +72,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         $session->getFlashBag()->add('success', 'Données sauvegardé');
     }
 
-    private function setRobotsTxt(array $post): void
+    protected function setRobotsTxt(array $post): void
     {
         if (!isset($post['robotstxt'])) {
             return;

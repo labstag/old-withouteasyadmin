@@ -16,22 +16,22 @@ class RouteGroupe
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $state;
+    protected $state;
 
     /**
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="routes")
      */
-    private $refgroupe;
+    protected $refgroupe;
 
     /**
      * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="groupes")
      */
-    private $refroute;
+    protected $refroute;
 
     public function getId(): ?int
     {

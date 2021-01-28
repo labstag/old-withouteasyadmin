@@ -13,7 +13,7 @@ class ServiceMethodMessageHandler implements
     ServiceSubscriberInterface
 {
 
-    private ContainerInterface $container;
+    protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {

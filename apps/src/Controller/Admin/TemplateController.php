@@ -49,9 +49,9 @@ class TemplateController extends AdminControllerLib
                 'show'    => 'admin_template_show',
                 'preview' => 'admin_template_preview',
                 'edit'    => 'admin_template_edit',
-                'delete'  => 'admin_template_delete',
-                'destroy' => 'admin_template_destroy',
-                'restore' => 'admin_template_restore',
+                'delete'  => 'api_action_delete',
+                'destroy' => 'api_action_destroy',
+                'restore' => 'api_action_restore',
             ]
         );
     }
@@ -80,9 +80,9 @@ class TemplateController extends AdminControllerLib
             $template,
             'admin/template/show.html.twig',
             [
-                'delete'  => 'admin_template_delete',
-                'restore' => 'admin_template_restore',
-                'destroy' => 'admin_template_destroy',
+                'delete'  => 'api_action_delete',
+                'restore' => 'api_action_restore',
+                'destroy' => 'api_action_destroy',
                 'list'    => 'admin_template_index',
                 'edit'    => 'admin_template_edit',
                 'trash'   => 'admin_template_trash',
@@ -100,30 +100,10 @@ class TemplateController extends AdminControllerLib
             $template,
             $requestHandler,
             [
-                'delete' => 'admin_template_delete',
+                'delete' => 'api_action_delete',
                 'list'   => 'admin_template_index',
                 'show'   => 'admin_template_show',
             ]
         );
-    }
-
-    /**
-     * @Route("/delete/{id}", name="admin_template_delete", methods={"DELETE"})
-     * @Route("/destroy/{id}", name="admin_template_destroy", methods={"DELETE"})
-     * @Route("/restore/{id}", name="admin_template_restore")
-     * @IgnoreSoftDelete
-     */
-    public function entityDeleteDestroyRestore(Template $template): Response
-    {
-        return $this->adminCrudService->entityDeleteDestroyRestore($template);
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/empty", name="admin_template_empty", methods={"DELETE"})
-     */
-    public function empty(TemplateRepository $repository): Response
-    {
-        return $this->adminCrudService->empty($repository);
     }
 }

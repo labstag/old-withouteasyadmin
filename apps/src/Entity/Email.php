@@ -44,7 +44,7 @@ abstract class Email
     /**
      * @ORM\Column(type="array")
      */
-    private $state;
+    protected $state;
 
     public function __construct()
     {

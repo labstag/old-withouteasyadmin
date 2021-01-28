@@ -49,9 +49,9 @@ class MenuController extends AdminControllerLib
                 'show'    => 'admin_menu_show',
                 'preview' => 'admin_menu_preview',
                 'edit'    => 'admin_menu_edit',
-                'delete'  => 'admin_menu_delete',
-                'destroy' => 'admin_menu_destroy',
-                'restore' => 'admin_menu_restore',
+                'delete'  => 'api_action_delete',
+                'destroy' => 'api_action_destroy',
+                'restore' => 'api_action_restore',
             ]
         );
     }
@@ -80,9 +80,9 @@ class MenuController extends AdminControllerLib
             $menu,
             'admin/menu/show.html.twig',
             [
-                'delete'  => 'admin_menu_delete',
-                'restore' => 'admin_menu_restore',
-                'destroy' => 'admin_menu_destroy',
+                'delete'  => 'api_action_delete',
+                'restore' => 'api_action_restore',
+                'destroy' => 'api_action_destroy',
                 'list'    => 'admin_menu_index',
                 'edit'    => 'admin_menu_edit',
                 'trash'   => 'admin_menu_trash',
@@ -100,30 +100,10 @@ class MenuController extends AdminControllerLib
             $menu,
             $requestHandler,
             [
-                'delete' => 'admin_menu_delete',
+                'delete' => 'api_action_delete',
                 'list'   => 'admin_menu_index',
                 'show'   => 'admin_menu_show',
             ]
         );
-    }
-
-    /**
-     * @Route("/delete/{id}", name="admin_menu_delete", methods={"DELETE"})
-     * @Route("/destroy/{id}", name="admin_menu_destroy", methods={"DELETE"})
-     * @Route("/restore/{id}", name="admin_menu_restore")
-     * @IgnoreSoftDelete
-     */
-    public function entityDeleteDestroyRestore(Menu $menu): Response
-    {
-        return $this->adminCrudService->entityDeleteDestroyRestore($menu);
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/empty", name="admin_menu_empty", methods={"DELETE"})
-     */
-    public function empty(MenuRepository $repository): Response
-    {
-        return $this->adminCrudService->empty($repository);
     }
 }

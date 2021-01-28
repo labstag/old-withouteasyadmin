@@ -14,7 +14,7 @@ export class ModalConfirmRestore extends HTMLButtonElement {
     const urlSearchParams = new URLSearchParams()
     urlSearchParams.append('_token', token)
     const options = {
-      method: 'DELETE',
+      method: 'POST',
       headers: {
         'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },

@@ -9,13 +9,13 @@ use Twig\Environment;
 class AdminBoutonService
 {
 
-    private CsrfTokenManagerInterface $csrfTokenManager;
+    protected CsrfTokenManagerInterface $csrfTokenManager;
 
-    private RouterInterface $router;
+    protected RouterInterface $router;
 
-    private Environment $twig;
+    protected Environment $twig;
 
-    private array $bouton;
+    protected array $bouton;
 
     public function __construct(
         Environment $twig,
@@ -29,7 +29,7 @@ class AdminBoutonService
         $this->bouton           = [];
     }
 
-    private function add(
+    protected function add(
         string $icon,
         string $text,
         array $attr = []
@@ -53,6 +53,15 @@ class AdminBoutonService
         return $this;
     }
 
+    protected function classEntity($entity)
+    {
+        $class = get_class($entity);
+
+        $class = str_replace('Labstag\\Entity\\', '', $class);
+
+        return strtolower($class);
+    }
+
     public function addBtnRestore(
         object $entity,
         array $route,
@@ -73,7 +82,12 @@ class AdminBoutonService
             'is'          => 'link-btnadminrestore',
         ];
         if (isset($route['list'])) {
-            $attr['data-redirect'] = $this->router->generate($route['list']);
+            $attr['data-redirect'] = $this->router->generate(
+                $route['list'],
+                [
+                    'entity' => $this->classEntity($entity),
+                ]
+            );
         }
 
         if (isset($route['restore'])) {
@@ -274,9 +288,12 @@ class AdminBoutonService
             'modalEmpty',
             true
         );
-        $attr = [
+        $code  = 'empty';
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        $attr  = [
             'is'          => 'link-btnadminempty',
             'data-toggle' => 'modal',
+            'data-token'  => $token,
             'data-target' => '#emptyModal',
         ];
         if (isset($route['list'])) {

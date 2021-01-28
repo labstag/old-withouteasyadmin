@@ -16,7 +16,7 @@ class PhoneUser extends Phone
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="phoneUsers")
      * @Assert\NotBlank
      */
-    private $refuser;
+    protected $refuser;
 
     public function getRefuser(): ?User
     {

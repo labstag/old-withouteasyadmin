@@ -37,33 +37,33 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    private Request $request;
+    protected Request $request;
 
-    private EntityManagerInterface $entityManager;
+    protected EntityManagerInterface $entityManager;
 
-    private UrlGeneratorInterface $urlGenerator;
+    protected UrlGeneratorInterface $urlGenerator;
 
-    private CsrfTokenManagerInterface $csrfTokenManager;
+    protected CsrfTokenManagerInterface $csrfTokenManager;
 
-    private UserPasswordEncoderInterface $passwordEncoder;
+    protected UserPasswordEncoderInterface $passwordEncoder;
 
     /**
      * @var string
      */
-    private $route;
+    protected $route;
 
-    private OauthService $oauthService;
+    protected OauthService $oauthService;
 
-    private string $oauthCode;
+    protected string $oauthCode;
 
-    private RequestStack $requestStack;
+    protected RequestStack $requestStack;
 
     /**
      * @var TokenStorage|TokenStorageInterface
      */
-    private $tokenStorage;
+    protected $tokenStorage;
 
-    private LoggerInterface $logger;
+    protected LoggerInterface $logger;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -94,7 +94,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         $this->oauthCode = $oauthCode;
     }
 
-    private function setOauthCode(ParameterBag $attributes): string
+    protected function setOauthCode(ParameterBag $attributes): string
     {
         if ($attributes->has('oauthCode')) {
             return $attributes->get('oauthCode');

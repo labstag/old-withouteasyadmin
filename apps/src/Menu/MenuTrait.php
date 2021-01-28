@@ -11,9 +11,9 @@ use Labstag\Repository\MenuRepository;
 trait MenuTrait
 {
 
-    private FactoryInterface $factory;
+    protected FactoryInterface $factory;
 
-    private MenuRepository $repository;
+    protected MenuRepository $repository;
 
     public function __construct(
         FactoryInterface $factory,
@@ -45,7 +45,7 @@ trait MenuTrait
         return $menu;
     }
 
-    private function addMenu(MenuItem &$parent, Menu $child): void
+    protected function addMenu(MenuItem &$parent, Menu $child): void
     {
         $data      = [];
         $dataChild = $child->getData();

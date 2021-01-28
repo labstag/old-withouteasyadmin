@@ -44,7 +44,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function setAdminPages(ControllerEvent $event): void
+    protected function setAdminPages(ControllerEvent $event): void
     {
         $controller = $event->getRequest()->attributes->get('_controller');
         if (substr_count($controller, 'Controller\Admin') == 0) {
@@ -59,7 +59,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function setBreadCrumbsAdmin()
+    protected function setBreadCrumbsAdmin()
     {
         $adminBreadcrumbs = [
             'Home' => $this->router->generate('admin'),
@@ -68,7 +68,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         BreadcrumbsService::getInstance()->add($adminBreadcrumbs);
     }
 
-    private function setLoginPage(ControllerEvent $event): void
+    protected function setLoginPage(ControllerEvent $event): void
     {
         $currentRoute = $event->getRequest()->attributes->get('_route');
         $routes       = [

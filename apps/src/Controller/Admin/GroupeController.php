@@ -50,7 +50,7 @@ class GroupeController extends AdminControllerLib
                 'list'        => 'admin_groupuser_index',
                 'show'        => 'admin_groupuser_show',
                 'edit'        => 'admin_groupuser_edit',
-                'delete'      => 'admin_groupuser_delete',
+                'delete'      => 'api_action_delete',
                 'guard'       => 'admin_groupuser_guard',
                 'trashdelete' => 'admin_groupuser_destroy',
             ]
@@ -81,9 +81,9 @@ class GroupeController extends AdminControllerLib
             $groupe,
             'admin/groupe/show.html.twig',
             [
-                'delete'  => 'admin_groupuser_delete',
-                'restore' => 'admin_groupuser_restore',
-                'destroy' => 'admin_groupuser_destroy',
+                'delete'  => 'api_action_delete',
+                'restore' => 'api_action_restore',
+                'destroy' => 'api_action_destroy',
                 'edit'    => 'admin_groupuser_edit',
                 'guard'   => 'admin_groupuser_guard',
                 'list'    => 'admin_groupuser_index',
@@ -148,31 +148,11 @@ class GroupeController extends AdminControllerLib
             $groupe,
             $requestHandler,
             [
-                'delete' => 'admin_groupuser_delete',
+                'delete' => 'api_action_delete',
                 'list'   => 'admin_groupuser_index',
                 'guard'  => 'admin_groupuser_guard',
                 'show'   => 'admin_groupuser_show',
             ]
         );
-    }
-
-    /**
-     * @Route("/delete/{id}", name="admin_groupuser_delete", methods={"DELETE"})
-     * @Route("/destroy/{id}", name="admin_groupuser_destroy", methods={"DELETE"})
-     * @Route("/restore/{id}", name="admin_groupuser_restore")
-     * @IgnoreSoftDelete
-     */
-    public function entityDeleteDestroyRestore(Groupe $groupe): Response
-    {
-        return $this->adminCrudService->entityDeleteDestroyRestore($groupe);
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/empty", name="admin_groupuser_empty", methods={"DELETE"})
-     */
-    public function empty(GroupeRepository $repository): Response
-    {
-        return $this->adminCrudService->empty($repository);
     }
 }

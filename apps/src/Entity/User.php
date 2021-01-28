@@ -25,40 +25,40 @@ class User implements UserInterface
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
      * @Assert\NotNull
      */
-    private $username;
+    protected $username;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $email;
+    protected $email;
 
     /**
      * @ORM\Column(type="json")
      */
-    private array $roles = [];
+    protected array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string", nullable=true)
      */
-    private $password;
+    protected $password;
 
     /**
      * @var string|null
      */
-    private $plainPassword;
+    protected $plainPassword;
 
     /**
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
      */
-    private Groupe $groupe;
+    protected Groupe $groupe;
 
     /**
      * @ORM\OneToMany(
@@ -67,7 +67,7 @@ class User implements UserInterface
      *  cascade={"persist"}
      * )
      */
-    private $editos;
+    protected $editos;
 
     /**
      * @ORM\OneToMany(
@@ -76,7 +76,7 @@ class User implements UserInterface
      *  cascade={"persist"}
      * )
      */
-    private $noteInternes;
+    protected $noteInternes;
 
     /**
      * @ORM\OneToMany(
@@ -85,7 +85,7 @@ class User implements UserInterface
      *  cascade={"persist"}
      * )
      */
-    private $lienUsers;
+    protected $lienUsers;
 
     /**
      * @ORM\OneToMany(
@@ -94,7 +94,7 @@ class User implements UserInterface
      *  cascade={"persist"}
      * )
      */
-    private $emailUsers;
+    protected $emailUsers;
 
     /**
      * @ORM\OneToMany(
@@ -103,7 +103,7 @@ class User implements UserInterface
      *  cascade={"persist"}
      * )
      */
-    private $phoneUsers;
+    protected $phoneUsers;
 
     /**
      * @ORM\OneToMany(
@@ -112,7 +112,7 @@ class User implements UserInterface
      *  cascade={"persist"}
      * )
      */
-    private $adresseUsers;
+    protected $adresseUsers;
 
     /**
      * @ORM\OneToMany(
@@ -121,17 +121,17 @@ class User implements UserInterface
      *  cascade={"persist"}
      * )
      */
-    private $oauthConnectUsers;
+    protected $oauthConnectUsers;
 
     /**
      * @ORM\Column(type="array")
      */
-    private $state;
+    protected $state;
 
     /**
      * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser")
      */
-    private $routes;
+    protected $routes;
 
     public function __construct()
     {

@@ -49,9 +49,9 @@ class PhoneUserController extends AdminControllerLib
                 'show'     => 'admin_phoneuser_show',
                 'preview'  => 'admin_phoneuser_preview',
                 'edit'     => 'admin_phoneuser_edit',
-                'delete'   => 'admin_phoneuser_delete',
-                'destroy'  => 'admin_phoneuser_destroy',
-                'restore'  => 'admin_phoneuser_restore',
+                'delete'   => 'api_action_delete',
+                'destroy'  => 'api_action_destroy',
+                'restore'  => 'api_action_restore',
                 'workflow' => 'admin_phoneuser_workflow',
             ]
         );
@@ -81,9 +81,9 @@ class PhoneUserController extends AdminControllerLib
             $phoneUser,
             'admin/phone_user/show.html.twig',
             [
-                'delete'  => 'admin_phoneuser_delete',
-                'restore' => 'admin_phoneuser_restore',
-                'destroy' => 'admin_phoneuser_destroy',
+                'delete'  => 'api_action_delete',
+                'restore' => 'api_action_restore',
+                'destroy' => 'api_action_destroy',
                 'list'    => 'admin_phoneuser_index',
                 'edit'    => 'admin_phoneuser_edit',
                 'trash'   => 'admin_phoneuser_trash',
@@ -105,31 +105,11 @@ class PhoneUserController extends AdminControllerLib
             $phoneUser,
             $requestHandler,
             [
-                'delete' => 'admin_phoneuser_delete',
+                'delete' => 'api_action_delete',
                 'list'   => 'admin_phoneuser_index',
                 'show'   => 'admin_phoneuser_show',
             ]
         );
-    }
-
-    /**
-     * @Route("/delete/{id}", name="admin_phoneuser_delete", methods={"DELETE"})
-     * @Route("/destroy/{id}", name="admin_phoneuser_destroy", methods={"DELETE"})
-     * @Route("/restore/{id}", name="admin_phoneuser_restore")
-     * @IgnoreSoftDelete
-     */
-    public function entityDeleteDestroyRestore(PhoneUser $phoneUser): Response
-    {
-        return $this->adminCrudService->entityDeleteDestroyRestore($phoneUser);
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/empty", name="admin_phoneuser_empty", methods={"DELETE"})
-     */
-    public function empty(PhoneUserRepository $repository): Response
-    {
-        return $this->adminCrudService->empty($repository);
     }
 
     /**

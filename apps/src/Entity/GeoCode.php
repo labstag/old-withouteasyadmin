@@ -34,68 +34,68 @@ class GeoCode
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=2)
      * @Assert\Country
      */
-    private $countryCode;
+    protected $countryCode;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $postalCode;
+    protected $postalCode;
 
     /**
      * @ORM\Column(type="string", length=180)
      */
-    private $placeName;
+    protected $placeName;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $stateName;
+    protected $stateName;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $stateCode;
+    protected $stateCode;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $provinceName;
+    protected $provinceName;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $provinceCode;
+    protected $provinceCode;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $communityName;
+    protected $communityName;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $communityCode;
+    protected $communityCode;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $latitude;
+    protected $latitude;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $longitude;
+    protected $longitude;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $accuracy;
+    protected $accuracy;
 
     public function getId(): ?string
     {

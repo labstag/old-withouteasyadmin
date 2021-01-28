@@ -14,7 +14,7 @@ class AdresseUser extends Adresse
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="adresseUsers")
      */
-    private $refuser;
+    protected $refuser;
 
     public function getRefuser(): ?User
     {

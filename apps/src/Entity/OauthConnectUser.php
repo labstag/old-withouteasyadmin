@@ -17,21 +17,21 @@ class OauthConnectUser
      *
      * @var string
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="array")
      *
      * @var array
      */
-    private $data = [];
+    protected $data = [];
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="oauthConnectUsers")
@@ -39,14 +39,14 @@ class OauthConnectUser
      *
      * @var User
      */
-    private $refuser;
+    protected $refuser;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @var string
      */
-    private $identity;
+    protected $identity;
 
     public function getId(): ?string
     {

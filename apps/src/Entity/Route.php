@@ -18,22 +18,22 @@ class Route
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refroute")
      */
-    private $groupes;
+    protected $groupes;
 
     /**
      * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refroute")
      */
-    private $users;
+    protected $users;
 
     public function __construct()
     {

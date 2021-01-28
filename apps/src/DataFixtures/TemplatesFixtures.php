@@ -45,7 +45,7 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
         return $data;
     }
 
-    private function setData(
+    protected function setData(
         string $key,
         string $title
     ): void
@@ -67,7 +67,7 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
         $this->templateRH->handle($oldTemplate, $template);
     }
 
-    private function add(ObjectManager $manager): void
+    protected function add(ObjectManager $manager): void
     {
         unset($manager);
         $faker = Factory::create('fr_FR');
@@ -81,7 +81,7 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
         return [CacheFixtures::class];
     }
 
-    private function addTemplate(Generator $faker): void
+    protected function addTemplate(Generator $faker): void
     {
         $template    = new Template();
         $oldTemplate = clone $template;

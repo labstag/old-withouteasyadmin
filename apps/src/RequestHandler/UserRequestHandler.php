@@ -22,7 +22,7 @@ class UserRequestHandler extends RequestHandlerLib
         );
     }
 
-    private function setArrayCollection(User $entity)
+    protected function setArrayCollection(User $entity)
     {
         $userCollectionEvent = new UserCollectionEvent();
         $oauthConnectUsers   = $entity->getOauthConnectUsers();

@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class CheckSwaggerDecorator implements NormalizerInterface
 {
 
-    private NormalizerInterface $decorated;
+    protected NormalizerInterface $decorated;
 
     public function __construct(NormalizerInterface $decorated)
     {

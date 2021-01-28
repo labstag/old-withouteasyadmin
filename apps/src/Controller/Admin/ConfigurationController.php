@@ -45,9 +45,9 @@ class ConfigurationController extends AdminControllerLib
                 'list'    => 'admin_configuration_index',
                 'show'    => 'admin_configuration_show',
                 'preview' => 'admin_configuration_preview',
-                'delete'  => 'admin_configuration_delete',
-                'destroy' => 'admin_configuration_destroy',
-                'restore' => 'admin_configuration_restore',
+                'delete'  => 'api_action_delete',
+                'destroy' => 'api_action_destroy',
+                'restore' => 'api_action_restore',
             ]
         );
     }
@@ -64,29 +64,5 @@ class ConfigurationController extends AdminControllerLib
             'admin/configuration/show.html.twig',
             ['list' => 'admin_configuration_index']
         );
-    }
-
-    /**
-     * @Route(
-     *  "/delete/{id}",
-     *  name="admin_configuration_delete",
-     *  methods={"POST"}
-     * )
-     * @Route("/destroy/{id}", name="admin_configuration_destroy", methods={"DELETE"})
-     * @Route("/restore/{id}", name="admin_configuration_restore")
-     * @IgnoreSoftDelete
-     */
-    public function entityDeleteDestroyRestore(Configuration $configuration): Response
-    {
-        return $this->adminCrudService->entityDeleteDestroyRestore($configuration);
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/empty", name="admin_configuration_empty", methods={"DELETE"})
-     */
-    public function empty(ConfigurationRepository $repository): Response
-    {
-        return $this->adminCrudService->empty($repository);
     }
 }
