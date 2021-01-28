@@ -1,10 +1,6 @@
 export class LinkDestroy extends HTMLElement {
   constructor () {
     super()
-    if (this.innerHTML !== '') {
-      return
-    }
-
     const title = this.dataset.title
     this.classList.add('link-destroy')
     this.dataset.toggle = 'modal'

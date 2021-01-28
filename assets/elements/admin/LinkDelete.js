@@ -1,10 +1,6 @@
 export class LinkDelete extends HTMLElement {
   constructor () {
     super()
-    if (this.innerHTML !== '') {
-      return
-    }
-
     const title = this.dataset.title
     this.classList.add('link-delete')
     this.dataset.toggle = 'modal'
