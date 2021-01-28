@@ -262,6 +262,7 @@ linter: ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
 	@make linter eslint -i
 	@make linter twig -i
+	@make linter container -i
 	@make linter yaml -i
 	@make linter phpstan -i
 	@make linter phpcpd -i
@@ -294,6 +295,8 @@ else ifeq ($(COMMAND_ARGS),phpstan)
 	$(DOCKER_EXECPHP) make linter phpstan
 else ifeq ($(COMMAND_ARGS),twig)
 	$(DOCKER_EXECPHP) make linter twig
+else ifeq ($(COMMAND_ARGS),container)
+	$(DOCKER_EXECPHP) make linter container
 else ifeq ($(COMMAND_ARGS),yaml)
 	$(DOCKER_EXECPHP) make linter yaml
 else
@@ -315,6 +318,7 @@ else
 	@echo "phpmnd: Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes"
 	@echo "phpstan: regarde si le code PHP ne peux pas être optimisé"
 	@echo "twig: indique les erreurs de code de twig"
+	@echo "container: indique les erreurs de code de container"
 	@echo "yaml: indique les erreurs de code de yaml"
 endif
 
