@@ -346,7 +346,6 @@ class AdminCrudService
 
     protected function showOrPreviewaddBtnRestore($url, $routeType, $entity)
     {
-        dump($routeType);
         if (isset($url['restore']) && 'preview' == $routeType) {
             $this->adminBoutonService->addBtnRestore(
                 $entity,

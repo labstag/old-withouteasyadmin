@@ -148,19 +148,15 @@ class ActionsController extends AbstractController
         }
 
         $tokenValid = $this->apiActionsService->verifToken('delete', $entity);
-        dump($tokenValid);
         if (!$tokenValid) {
             $data['message'] = 'token incorrect';
 
-            dump($data);
             return new JsonResponse($data);
         }
 
         $data['action'] = true;
         $this->entityManager->remove($entity);
         $this->entityManager->flush();
-
-        dump($data);
 
         return new JsonResponse($data);
     }
