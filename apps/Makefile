@@ -142,7 +142,7 @@ else
 	@echo "---"
 	@echo "make linter ARGUMENT"
 	@echo "---"
-	@echo "linter all: ## Launch all linter"
+	@echo "all: ## Launch all linter"
 	@echo "phpcbf: fixe le code PHP à partir d'un standard"
 	@echo "phpcpd: Vérifie s'il y a du code dupliqué"
 	@echo "phpcs: indique les erreurs de code non corrigé par PHPCBF"

@@ -304,7 +304,7 @@ else
 	@echo "---"
 	@echo "make linter ARGUMENT"
 	@echo "---"
-	@echo "linter all: ## Launch all linter"
+	@echo "all: ## Launch all linter"
 	@echo "readme: linter README.md"
 	@echo "eslint: indique les erreurs sur le code JavaScript à partir d'un standard"
 	@echo "eslint-fix: fixe le code JavaScript à partir d'un standard"
@@ -418,7 +418,64 @@ else
 	@echo "---"
 	@echo "make ssh ARGUMENT"
 	@echo "---"
-	@echo "stack: logs stack"
+	@echo "redis: REDIS"
+	@echo "mailhot: MAILHOG"
+	@echo "mercure: MERCURE"
+	@echo "mariadb: MARIADB"
+	@echo "apache: APACHE"
+	@echo "phpmyadmin: PHPMYADMIN"
+	@echo "phpfpm: PHPFPM"
+endif
+
+inspect: ## inspect
+ifeq ($(COMMAND_ARGS),redis)
+	@docker service inspect $(REDIS)
+else ifeq ($(COMMAND_ARGS),mailhog)
+	@docker service inspect $(MAILHOG)
+else ifeq ($(COMMAND_ARGS),mercure)
+	@docker service inspect $(MERCURE)
+else ifeq ($(COMMAND_ARGS),mariadb)
+	@docker service inspect $(MARIADB)
+else ifeq ($(COMMAND_ARGS),apache)
+	@docker service inspect $(APACHE)
+else ifeq ($(COMMAND_ARGS),phpmyadmin)
+	@docker service inspect $(PHPMYADMIN)
+else ifeq ($(COMMAND_ARGS),phpfpm)
+	@docker service inspect $(PHPFPM)
+else
+	@echo "ARGUMENT missing"
+	@echo "---"
+	@echo "make inspect ARGUMENT"
+	@echo "---"
+	@echo "redis: REDIS"
+	@echo "mailhot: MAILHOG"
+	@echo "mercure: MERCURE"
+	@echo "mariadb: MARIADB"
+	@echo "apache: APACHE"
+	@echo "phpmyadmin: PHPMYADMIN"
+	@echo "phpfpm: PHPFPM"
+endif
+
+update: ## update
+ifeq ($(COMMAND_ARGS),redis)
+	@docker service update $(REDIS)
+else ifeq ($(COMMAND_ARGS),mailhog)
+	@docker service update $(MAILHOG)
+else ifeq ($(COMMAND_ARGS),mercure)
+	@docker service update $(MERCURE)
+else ifeq ($(COMMAND_ARGS),mariadb)
+	@docker service update $(MARIADB)
+else ifeq ($(COMMAND_ARGS),apache)
+	@docker service update $(APACHE)
+else ifeq ($(COMMAND_ARGS),phpmyadmin)
+	@docker service update $(PHPMYADMIN)
+else ifeq ($(COMMAND_ARGS),phpfpm)
+	@docker service update $(PHPFPM)
+else
+	@echo "ARGUMENT missing"
+	@echo "---"
+	@echo "make update ARGUMENT"
+	@echo "---"
 	@echo "redis: REDIS"
 	@echo "mailhot: MAILHOG"
 	@echo "mercure: MERCURE"
