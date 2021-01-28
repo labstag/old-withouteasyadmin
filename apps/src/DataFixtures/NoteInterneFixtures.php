@@ -25,7 +25,7 @@ class NoteInterneFixtures extends FixtureLib implements DependentFixtureInterfac
         }
     }
 
-    private function getStates()
+    protected function getStates()
     {
         return [
             ['submit'],

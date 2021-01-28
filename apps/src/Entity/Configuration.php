@@ -21,17 +21,17 @@ class Configuration
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="object", nullable=true)
      */
-    private $value;
+    protected $value;
 
     public function __toString()
     {

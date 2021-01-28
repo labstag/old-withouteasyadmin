@@ -17,17 +17,17 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 
     const ANNOTATION = 'Labstag\Annotation\IgnoreSoftDelete';
 
-    private Reader $reader;
+    protected Reader $reader;
 
-    private EntityManagerInterface $entityManager;
+    protected EntityManagerInterface $entityManager;
 
-    private RequestStack $requestStack;
+    protected RequestStack $requestStack;
 
     /**
      *
      * @var Request|null
      */
-    private $request;
+    protected $request;
 
     public function __construct(
         Reader $reader,
@@ -55,7 +55,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
         $this->ignoreSoftDeleteAnnotation($controller, $method);
     }
 
-    private function readAnnotation($controller, $method, $annotation)
+    protected function readAnnotation($controller, $method, $annotation)
     {
         $utils           = new ClassUtils();
         $classReflection = new ReflectionClass($utils->getClass($controller));
@@ -77,7 +77,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
         ];
     }
 
-    private function ignoreSoftDeleteAnnotation($controller, $method)
+    protected function ignoreSoftDeleteAnnotation($controller, $method)
     {
         $routeCurrent = $this->request->get('_route');
         $routes       = [

@@ -23,42 +23,42 @@ class NoteInterne
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      */
-    private $title;
+    protected $title;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank
      */
-    private $content;
+    protected $content;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\LessThanOrEqual(propertyPath="dateFin")
      */
-    private DateTime $dateDebut;
+    protected DateTime $dateDebut;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\GreaterThanOrEqual(propertyPath="dateDebut")
      */
-    private DateTime $dateFin;
+    protected DateTime $dateFin;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $refuser;
+    protected $refuser;
 
     /**
      * @ORM\Column(type="array")
      */
-    private $state;
+    protected $state;
 
     public function __construct()
     {

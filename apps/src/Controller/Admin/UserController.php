@@ -52,11 +52,11 @@ class UserController extends AdminControllerLib
                 'show'     => 'admin_user_show',
                 'preview'  => 'admin_user_preview',
                 'edit'     => 'admin_user_edit',
-                'delete'   => 'admin_user_delete',
-                'destroy'  => 'admin_user_destroy',
+                'delete'   => 'api_action_delete',
+                'destroy'  => 'api_action_destroy',
                 'guard'    => 'admin_user_guard',
-                'restore'  => 'admin_user_restore',
-                'workflow' => 'admin_user_workflow',
+                'restore'  => 'api_action_restore',
+                'workflow' => 'api_action_workflow',
             ]
         );
     }
@@ -86,9 +86,9 @@ class UserController extends AdminControllerLib
             $user,
             'admin/user/show.html.twig',
             [
-                'delete'  => 'admin_user_delete',
-                'restore' => 'admin_user_restore',
-                'destroy' => 'admin_user_destroy',
+                'delete'  => 'api_action_delete',
+                'restore' => 'api_action_restore',
+                'destroy' => 'api_action_destroy',
                 'list'    => 'admin_user_index',
                 'guard'   => 'admin_user_guard',
                 'edit'    => 'admin_user_edit',
@@ -153,40 +153,11 @@ class UserController extends AdminControllerLib
             $user,
             $requestHandler,
             [
-                'delete' => 'admin_user_delete',
+                'delete' => 'api_action_delete',
                 'list'   => 'admin_user_index',
                 'guard'  => 'admin_user_guard',
                 'show'   => 'admin_user_show',
             ]
         );
-    }
-
-    /**
-     * @Route("/delete/{id}", name="admin_user_delete", methods={"DELETE"})
-     * @Route("/destroy/{id}", name="admin_user_destroy", methods={"DELETE"})
-     * @Route("/restore/{id}", name="admin_user_restore")
-     * @IgnoreSoftDelete
-     */
-    public function entityDeleteDestroyRestore(User $user): Response
-    {
-        return $this->adminCrudService->entityDeleteDestroyRestore($user);
-    }
-
-    /**
-     * @Route("/restore/{id}", name="admin_user_restore")
-     * @Route("/empty", name="admin_user_empty", methods={"DELETE"})
-     */
-    public function empty(UserRepository $repository): Response
-    {
-        return $this->adminCrudService->empty($repository);
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/workflow/{state}/{id}", name="admin_user_workflow", methods={"POST"})
-     */
-    public function workflow(User $user, string $state): Response
-    {
-        return $this->adminCrudService->workflow($user, $state);
     }
 }

@@ -87,7 +87,7 @@ abstract class FixtureLib extends Fixture
         $this->emailUserRH      = $emailUserRH;
     }
 
-    private function getGroupe(array $groupes, string $code): ?Groupe
+    protected function getGroupe(array $groupes, string $code): ?Groupe
     {
         foreach ($groupes as $groupe) {
             if ($groupe->getCode() == $code) {

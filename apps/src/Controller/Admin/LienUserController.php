@@ -49,9 +49,9 @@ class LienUserController extends AdminControllerLib
                 'show'    => 'admin_lienuser_show',
                 'preview' => 'admin_lienuser_preview',
                 'edit'    => 'admin_lienuser_edit',
-                'delete'  => 'admin_lienuser_delete',
-                'destroy' => 'admin_lienuser_destroy',
-                'restore' => 'admin_lienuser_restore',
+                'delete'  => 'api_action_delete',
+                'destroy' => 'api_action_destroy',
+                'restore' => 'api_action_restore',
             ]
         );
     }
@@ -80,9 +80,9 @@ class LienUserController extends AdminControllerLib
             $lienUser,
             'admin/lien_user/show.html.twig',
             [
-                'delete'  => 'admin_lienuser_delete',
-                'restore' => 'admin_lienuser_restore',
-                'destroy' => 'admin_lienuser_destroy',
+                'delete'  => 'api_action_delete',
+                'restore' => 'api_action_restore',
+                'destroy' => 'api_action_destroy',
                 'list'    => 'admin_lienuser_index',
                 'edit'    => 'admin_lienuser_edit',
                 'trash'   => 'admin_lienuser_trash',
@@ -100,30 +100,10 @@ class LienUserController extends AdminControllerLib
             $lienUser,
             $requestHandler,
             [
-                'delete' => 'admin_lienuser_delete',
+                'delete' => 'api_action_delete',
                 'list'   => 'admin_lienuser_index',
                 'show'   => 'admin_lienuser_show',
             ]
         );
-    }
-
-    /**
-     * @Route("/delete/{id}", name="admin_lienuser_delete", methods={"DELETE"})
-     * @Route("/destroy/{id}", name="admin_lienuser_destroy", methods={"DELETE"})
-     * @Route("/restore/{id}", name="admin_lienuser_restore")
-     * @IgnoreSoftDelete
-     */
-    public function entityDeleteDestroyRestore(LienUser $lienUser): Response
-    {
-        return $this->adminCrudService->entityDeleteDestroyRestore($lienUser);
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/empty", name="admin_lienuser_empty", methods={"DELETE"})
-     */
-    public function empty(LienUserRepository $repository): Response
-    {
-        return $this->adminCrudService->empty($repository);
     }
 }

@@ -13,7 +13,7 @@ abstract class ControllerLib extends AbstractController
 
     protected DataService $dataService;
 
-    private Breadcrumbs $breadcrumbs;
+    protected Breadcrumbs $breadcrumbs;
 
     public function __construct(
         DataService $dataService,
@@ -24,7 +24,7 @@ abstract class ControllerLib extends AbstractController
         $this->breadcrumbs = $breadcrumbs;
     }
 
-    private function setBreadcrumbs(): void
+    protected function setBreadcrumbs(): void
     {
         $data = BreadcrumbsService::getInstance()->get();
         foreach ($data as $title => $route) {

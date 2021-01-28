@@ -49,9 +49,9 @@ class AdresseUserController extends AdminControllerLib
                 'show'    => 'admin_adresseuser_show',
                 'preview' => 'admin_adresseuser_preview',
                 'edit'    => 'admin_adresseuser_edit',
-                'delete'  => 'admin_adresseuser_delete',
-                'destroy' => 'admin_adresseuser_destroy',
-                'restore' => 'admin_adresseuser_restore',
+                'delete'  => 'api_action_delete',
+                'destroy' => 'api_action_destroy',
+                'restore' => 'api_action_restore',
             ]
         );
     }
@@ -80,9 +80,9 @@ class AdresseUserController extends AdminControllerLib
             $adresseUser,
             'admin/adresse_user/show.html.twig',
             [
-                'delete'  => 'admin_adresseuser_delete',
-                'restore' => 'admin_adresseuser_restore',
-                'destroy' => 'admin_adresseuser_destroy',
+                'delete'  => 'api_action_delete',
+                'restore' => 'api_action_restore',
+                'destroy' => 'api_action_destroy',
                 'edit'    => 'admin_adresseuser_edit',
                 'list'    => 'admin_adresseuser_index',
                 'trash'   => 'admin_adresseuser_trash',
@@ -104,30 +104,10 @@ class AdresseUserController extends AdminControllerLib
             $adresseUser,
             $requestHandler,
             [
-                'delete' => 'admin_adresseuser_delete',
+                'delete' => 'api_action_delete',
                 'list'   => 'admin_adresseuser_index',
                 'show'   => 'admin_adresseuser_show',
             ]
         );
-    }
-
-    /**
-     * @Route("/delete/{id}", name="admin_adresseuser_delete", methods={"DELETE"})
-     * @Route("/destroy/{id}", name="admin_adresseuser_destroy", methods={"DELETE"})
-     * @Route("/restore/{id}", name="admin_adresseuser_restore")
-     * @IgnoreSoftDelete
-     */
-    public function entityDeleteDestroyRestore(AdresseUser $adresseUser): Response
-    {
-        return $this->adminCrudService->entityDeleteDestroyRestore($adresseUser);
-    }
-
-    /**
-     * @Route("/empty", name="admin_adresseuser_empty", methods={"DELETE"})
-     * @IgnoreSoftDelete
-     */
-    public function empty(AdresseUserRepository $repository): Response
-    {
-        return $this->adminCrudService->empty($repository);
     }
 }

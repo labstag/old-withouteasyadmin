@@ -40,7 +40,7 @@ class DisclaimerSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function disclaimerActivate(Request $request): bool
+    protected function disclaimerActivate(Request $request): bool
     {
         $config     = $this->dataService->getConfig();
         $controller = $request->attributes->get('_controller');

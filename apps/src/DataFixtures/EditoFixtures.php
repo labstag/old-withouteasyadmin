@@ -26,7 +26,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         }
     }
 
-    private function getStates()
+    protected function getStates()
     {
         return [
             ['submit'],

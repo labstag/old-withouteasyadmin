@@ -37,11 +37,11 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 class SecurityController extends ControllerLib
 {
 
-    private OauthService $oauthService;
+    protected OauthService $oauthService;
 
-    private LoggerInterface $logger;
+    protected LoggerInterface $logger;
 
-    private UserService $userService;
+    protected UserService $userService;
 
     public function __construct(
         OauthService $oauthService,

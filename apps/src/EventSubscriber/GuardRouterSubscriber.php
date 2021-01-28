@@ -19,13 +19,13 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class GuardRouterSubscriber implements EventSubscriberInterface
 {
 
-    private TokenStorageInterface $token;
+    protected TokenStorageInterface $token;
 
-    private SessionInterface $session;
+    protected SessionInterface $session;
 
-    private GuardRouteService $guardRouteService;
+    protected GuardRouteService $guardRouteService;
 
-    private GroupeRepository $groupeRepository;
+    protected GroupeRepository $groupeRepository;
 
     protected RouterInterface $router;
 

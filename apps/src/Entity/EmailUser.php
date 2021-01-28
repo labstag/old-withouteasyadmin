@@ -16,7 +16,7 @@ class EmailUser extends Email
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="emailUsers")
      * @Assert\NotBlank
      */
-    private $refuser;
+    protected $refuser;
 
     public function getRefuser(): ?User
     {

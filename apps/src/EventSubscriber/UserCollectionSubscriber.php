@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class UserCollectionSubscriber implements EventSubscriberInterface
 {
 
-    private UserMailService $userMailService;
+    protected UserMailService $userMailService;
 
     public function __construct(UserMailService $userMailService)
     {
@@ -32,7 +32,7 @@ class UserCollectionSubscriber implements EventSubscriberInterface
         $this->setAdresseUser($adresseUser);
     }
 
-    private function setOauthConnectUser(array $data): void
+    protected function setOauthConnectUser(array $data): void
     {
         if (count($data) == 0) {
             return;
@@ -52,7 +52,7 @@ class UserCollectionSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function setLienUser(array $data): void
+    protected function setLienUser(array $data): void
     {
         if (count($data) == 0) {
             return;
@@ -69,7 +69,7 @@ class UserCollectionSubscriber implements EventSubscriberInterface
         $this->userMailService->checkNewLink($new->getRefuser(), $new);
     }
 
-    private function setAdresseUser(array $data): void
+    protected function setAdresseUser(array $data): void
     {
         if (count($data) == 0) {
             return;

@@ -11,7 +11,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 
 class UserFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    private function getUsers(): array
+    protected function getUsers(): array
     {
         $users = [
             [

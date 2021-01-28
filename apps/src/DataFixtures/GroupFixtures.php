@@ -8,7 +8,7 @@ use Labstag\Lib\FixtureLib;
 
 class GroupFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    private function getGroupes(): array
+    protected function getGroupes(): array
     {
         return [
             'visiteur',

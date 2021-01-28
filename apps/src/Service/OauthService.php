@@ -10,16 +10,16 @@ use Symfony\Component\Routing\RouterInterface;
 class OauthService
 {
 
-    private array $configProvider;
+    protected array $configProvider;
 
     /**
      * @var Router|RouterInterface
      */
-    private $router;
+    protected $router;
 
-    private DataService $dataService;
+    protected DataService $dataService;
 
-    private array $oauthActivated;
+    protected array $oauthActivated;
 
     public function __construct(
         RouterInterface $router,
@@ -120,7 +120,7 @@ class OauthService
         return array_key_exists($clientName, $this->configProvider);
     }
 
-    private function setConfigProviderGitlab(): array
+    protected function setConfigProviderGitlab(): array
     {
         $urlAuthorize   = 'https://gitlab.com/oauth/authorize';
         $urlAccessToken = 'https://gitlab.com/oauth/token';
@@ -138,7 +138,7 @@ class OauthService
         ];
     }
 
-    private function setConfigProviderBitbucket(): array
+    protected function setConfigProviderBitbucket(): array
     {
         $urlAuthorize   = 'https://bitbucket.org/site/oauth2/authorize';
         $urlAccessToken = 'https://bitbucket.org/site/oauth2/access_token';
@@ -153,7 +153,7 @@ class OauthService
         ];
     }
 
-    private function setConfigProviderGithub(): array
+    protected function setConfigProviderGithub(): array
     {
         $urlAuthorize   = 'https://github.com/login/oauth/authorize';
         $urlAccessToken = 'https://github.com/login/oauth/access_token';
@@ -168,7 +168,7 @@ class OauthService
         ];
     }
 
-    private function setConfigProviderDiscord(): array
+    protected function setConfigProviderDiscord(): array
     {
         $urlAuthorize   = 'https://discordapp.com/api/v6/oauth2/authorize';
         $urlAccessToken = 'https://discordapp.com/api/v6/oauth2/token';
@@ -191,7 +191,7 @@ class OauthService
         ];
     }
 
-    private function setConfigProviderGoogle(): array
+    protected function setConfigProviderGoogle(): array
     {
         $urlAuthorize   = 'https://accounts.google.com/o/oauth2/v2/auth';
         $urlAccessToken = 'https://www.googleapis.com/oauth2/v4/token';
@@ -213,7 +213,7 @@ class OauthService
         ];
     }
 
-    private function setConfigProvider(): void
+    protected function setConfigProvider(): void
     {
         $this->configProvider = [
             'gitlab'    => $this->setConfigProviderGitlab(),
@@ -224,7 +224,7 @@ class OauthService
         ];
     }
 
-    private function getConfig(string $clientName): array
+    protected function getConfig(string $clientName): array
     {
         if (isset($this->configProvider[$clientName])) {
             return $this->configProvider[$clientName];
@@ -233,7 +233,7 @@ class OauthService
         return [];
     }
 
-    private function initProvider(string $clientName): GenericProviderLib
+    protected function initProvider(string $clientName): GenericProviderLib
     {
         $config = $this->getConfig($clientName);
         if (isset($config['redirect'])) {
@@ -267,7 +267,7 @@ class OauthService
     /**
      * @param mixed $entity
      */
-    private function caseBitbucket(array $data, &$entity): void
+    protected function caseBitbucket(array $data, &$entity): void
     {
         if (!isset($data['uuid'])) {
             return;
@@ -279,7 +279,7 @@ class OauthService
     /**
      * @param mixed $entity
      */
-    private function caseGoogle(array $data, &$entity): void
+    protected function caseGoogle(array $data, &$entity): void
     {
         if (!isset($data['sub'])) {
             return;
@@ -291,7 +291,7 @@ class OauthService
     /**
      * @param mixed $entity
      */
-    private function caseDiscord(array $data, &$entity): void
+    protected function caseDiscord(array $data, &$entity): void
     {
         if (!isset($data['id'])) {
             return;

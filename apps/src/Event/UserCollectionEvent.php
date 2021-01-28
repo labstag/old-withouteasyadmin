@@ -11,15 +11,15 @@ use Labstag\Entity\PhoneUser;
 class UserCollectionEvent
 {
 
-    private array $oauthConnectUser = [];
+    protected array $oauthConnectUser = [];
 
-    private array $lienUser = [];
+    protected array $lienUser = [];
 
-    private array $emailUser = [];
+    protected array $emailUser = [];
 
-    private array $phoneUser = [];
+    protected array $phoneUser = [];
 
-    private array $adresseUser = [];
+    protected array $adresseUser = [];
 
     public function addOauthConnectUser(
         OauthConnectUser $old,

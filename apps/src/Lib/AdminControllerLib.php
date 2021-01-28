@@ -39,7 +39,7 @@ abstract class AdminControllerLib extends ControllerLib
         BreadcrumbsService::getInstance()->add($breadcrumbs);
     }
 
-    private function setBreadcrumbsPage()
+    protected function setBreadcrumbsPage()
     {
         if ($this->headerTitle == '' && $this->urlHome == '') {
             return;

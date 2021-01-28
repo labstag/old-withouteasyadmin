@@ -2,16 +2,16 @@
 
 namespace Labstag\Swagger;
 
-use Labstag\Controller\Api\GuardController;
+use Labstag\Controller\Api\ActionsController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Adds the Swagger documentation for the GuardController.
+ * Adds the Swagger documentation for the ActionsController.
  *
- * @see GuardController
+ * @see ActionsController
  */
-final class GuardSwaggerDecorator implements NormalizerInterface
+final class ActionsSwaggerDecorator implements NormalizerInterface
 {
 
     protected NormalizerInterface $decorated;
@@ -27,139 +27,36 @@ final class GuardSwaggerDecorator implements NormalizerInterface
     public function normalize($object, string $format = null, array $context = [])
     {
         $docs = $this->decorated->normalize($object, $format, $context);
-        $this->setRefUser($docs);
-        $this->setRefGroup($docs);
-        $this->setGroups($docs);
-        $this->setGroup($docs);
-        $this->setUser($docs);
+        $this->setEmpty($docs);
+        $this->setRestore($docs);
+        $this->setDestroy($docs);
+        $this->setDelete($docs);
+        $this->setWorkflow($docs);
 
         return $docs;
     }
 
-    protected function setReturnUserGroup()
-    {
-        return [
-            'ok'      => [
-                'type'    => 'boolean',
-                'example' => true,
-            ],
-            'message' => [
-                'type'    => 'string',
-                'example' => 'Changement effectué',
-            ],
-        ];
-    }
-
-    protected function setRefUser(&$docs)
+    protected function setWorkflow(&$docs)
     {
         $statsEndpoint = [
-            'summary'    => 'User.',
-            'tags'       => ['Guard'],
+            'summary'    => 'workflow.',
+            'tags'       => ['Actions'],
             'parameters' => [
                 [
-                    'name'        => 'route',
+                    'name'        => 'country',
                     'in'          => 'query',
                     'required'    => true,
-                    'description' => 'route',
+                    'description' => 'country code',
                     'schema'      => ['type' => 'string'],
                 ],
                 [
-                    'name'        => 'user',
+                    'name'        => 'phone',
                     'in'          => 'query',
                     'required'    => true,
-                    'description' => 'user',
+                    'description' => 'phone',
                     'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'state',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'state',
-                    'schema'      => ['type' => 'boolean'],
                 ],
             ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => $this->setReturnUserGroup(),
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $docs['paths']['/api/guard/setuser/{route}/{user}']['post'] = $statsEndpoint;
-    }
-
-    protected function setRefGroup(&$docs)
-    {
-        $statsEndpoint = [
-            'summary'    => 'Group.',
-            'tags'       => ['Guard'],
-            'parameters' => [
-                [
-                    'name'        => 'route',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'route',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'groupe',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'groupe',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'state',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'state',
-                    'schema'      => ['type' => 'boolean'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => $this->setReturnUserGroup(),
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $docs['paths']['/api/guard/setgroup/{route}/{groupe}']['post'] = $statsEndpoint;
-    }
-
-    protected function setGroups(&$docs)
-    {
-        $statsEndpoint = [
-            'summary'    => 'Groups.',
-            'tags'       => ['Guard'],
-            'parameters' => [],
             'responses'  => [
                 Response::HTTP_OK => [
                     'content' => [
@@ -167,7 +64,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
                             'schema' => [
                                 'type'       => 'object',
                                 'properties' => [
-                                    'ok' => [
+                                    'isvalid' => [
                                         'type'    => 'boolean',
                                         'example' => true,
                                     ],
@@ -179,20 +76,27 @@ final class GuardSwaggerDecorator implements NormalizerInterface
             ],
         ];
 
-        $docs['paths']['/api/guard/groups']['get'] = $statsEndpoint;
+        $docs['paths']['/api/actions/workflow/{entity}/{state}/{id}']['post'] = $statsEndpoint;
     }
 
-    protected function setUser(&$docs)
+    protected function setEmpty(&$docs)
     {
         $statsEndpoint = [
-            'summary'    => 'Group.',
-            'tags'       => ['Guard'],
+            'summary'    => 'empty entity.',
+            'tags'       => ['Actions'],
             'parameters' => [
                 [
-                    'name'        => 'user',
+                    'name'        => 'country',
                     'in'          => 'query',
                     'required'    => true,
-                    'description' => 'user',
+                    'description' => 'country code',
+                    'schema'      => ['type' => 'string'],
+                ],
+                [
+                    'name'        => 'phone',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'phone',
                     'schema'      => ['type' => 'string'],
                 ],
             ],
@@ -203,7 +107,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
                             'schema' => [
                                 'type'       => 'object',
                                 'properties' => [
-                                    'ok' => [
+                                    'isvalid' => [
                                         'type'    => 'boolean',
                                         'example' => true,
                                     ],
@@ -215,20 +119,27 @@ final class GuardSwaggerDecorator implements NormalizerInterface
             ],
         ];
 
-        $docs['paths']['/api/guard/users/{user}']['get'] = $statsEndpoint;
+        $docs['paths']['/api/actions/empty/{entity}']['delete'] = $statsEndpoint;
     }
 
-    protected function setGroup(&$docs)
+    protected function setRestore(&$docs)
     {
         $statsEndpoint = [
-            'summary'    => 'Group.',
-            'tags'       => ['Guard'],
+            'summary'    => 'restore.',
+            'tags'       => ['Actions'],
             'parameters' => [
                 [
-                    'name'        => 'groupe',
+                    'name'        => 'country',
                     'in'          => 'query',
                     'required'    => true,
-                    'description' => 'groupe',
+                    'description' => 'country code',
+                    'schema'      => ['type' => 'string'],
+                ],
+                [
+                    'name'        => 'phone',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'phone',
                     'schema'      => ['type' => 'string'],
                 ],
             ],
@@ -239,7 +150,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
                             'schema' => [
                                 'type'       => 'object',
                                 'properties' => [
-                                    'ok' => [
+                                    'isvalid' => [
                                         'type'    => 'boolean',
                                         'example' => true,
                                     ],
@@ -251,7 +162,93 @@ final class GuardSwaggerDecorator implements NormalizerInterface
             ],
         ];
 
-        $docs['paths']['/api/guard/groups/{groupe}']['get'] = $statsEndpoint;
+        $docs['paths']['/api/actions/restore/{entity}/{id}']['post'] = $statsEndpoint;
+    }
+
+    protected function setDestroy(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'destroy.',
+            'tags'       => ['Actions'],
+            'parameters' => [
+                [
+                    'name'        => 'country',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'country code',
+                    'schema'      => ['type' => 'string'],
+                ],
+                [
+                    'name'        => 'phone',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'phone',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'isvalid' => [
+                                        'type'    => 'boolean',
+                                        'example' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/actions/destroy/{entity}/{id}']['delete'] = $statsEndpoint;
+    }
+
+    protected function setDelete(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'Delete.',
+            'tags'       => ['Actions'],
+            'parameters' => [
+                [
+                    'name'        => 'country',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'country code',
+                    'schema'      => ['type' => 'string'],
+                ],
+                [
+                    'name'        => 'phone',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'phone',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'isvalid' => [
+                                        'type'    => 'boolean',
+                                        'example' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/actions/delete/{entity}/{id}']['delete'] = $statsEndpoint;
     }
 
     /**

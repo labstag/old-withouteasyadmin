@@ -49,9 +49,9 @@ class EditoController extends AdminControllerLib
                 'show'     => 'admin_edito_show',
                 'preview'  => 'admin_edito_preview',
                 'edit'     => 'admin_edito_edit',
-                'delete'   => 'admin_edito_delete',
-                'destroy'  => 'admin_edito_destroy',
-                'restore'  => 'admin_edito_restore',
+                'delete'   => 'api_action_delete',
+                'destroy'  => 'api_action_destroy',
+                'restore'  => 'api_action_restore',
                 'workflow' => 'admin_edito_workflow',
             ]
         );
@@ -81,9 +81,9 @@ class EditoController extends AdminControllerLib
             $edito,
             'admin/edito/show.html.twig',
             [
-                'delete'  => 'admin_edito_delete',
-                'restore' => 'admin_edito_restore',
-                'destroy' => 'admin_edito_destroy',
+                'delete'  => 'api_action_delete',
+                'restore' => 'api_action_restore',
+                'destroy' => 'api_action_destroy',
                 'edit'    => 'admin_edito_edit',
                 'list'    => 'admin_edito_index',
                 'trash'   => 'admin_edito_trash',
@@ -101,31 +101,11 @@ class EditoController extends AdminControllerLib
             $edito,
             $requestHandler,
             [
-                'delete' => 'admin_edito_delete',
+                'delete' => 'api_action_delete',
                 'list'   => 'admin_edito_index',
                 'show'   => 'admin_edito_show',
             ]
         );
-    }
-
-    /**
-     * @Route("/delete/{id}", name="admin_edito_delete", methods={"DELETE"})
-     * @Route("/destroy/{id}", name="admin_edito_destroy", methods={"DELETE"})
-     * @Route("/restore/{id}", name="admin_edito_restore")
-     * @IgnoreSoftDelete
-     */
-    public function entityDeleteDestroyRestore(Edito $edito): Response
-    {
-        return $this->adminCrudService->entityDeleteDestroyRestore($edito);
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/empty", name="admin_edito_empty", methods={"DELETE"})
-     */
-    public function empty(EditoRepository $repository): Response
-    {
-        return $this->adminCrudService->empty($repository);
     }
 
     /**

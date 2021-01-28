@@ -5,11 +5,11 @@ namespace Labstag\Queue\Message;
 class ServiceMethodMessage
 {
 
-    private string $serviceName;
+    protected string $serviceName;
 
-    private string $method;
+    protected string $method;
 
-    private array $params;
+    protected array $params;
 
     public function __construct(
         string $serviceName,

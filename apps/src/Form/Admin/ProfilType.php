@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 class ProfilType extends AbstractType
 {
 
-    private EmailUserRepository $repository;
+    protected EmailUserRepository $repository;
 
     public function __construct(EmailUserRepository $repository)
     {

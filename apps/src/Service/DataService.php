@@ -10,13 +10,13 @@ use Symfony\Contracts\Cache\ItemInterface;
 class DataService
 {
 
-    private array $oauthActivated = [];
+    protected array $oauthActivated = [];
 
-    private array $config = [];
+    protected array $config = [];
 
-    private ConfigurationRepository $repository;
+    protected ConfigurationRepository $repository;
 
-    private CacheInterface $cache;
+    protected CacheInterface $cache;
 
     public function __construct(
         ConfigurationRepository $repository,
@@ -38,7 +38,7 @@ class DataService
         return $this->config;
     }
 
-    private function setData(): void
+    protected function setData(): void
     {
         $config = $this->cache->get(
             'configuration',
@@ -68,7 +68,7 @@ class DataService
         return $config;
     }
 
-    private function setOauth(array $config): void
+    protected function setOauth(array $config): void
     {
         if (!isset($config['oauth']) || !is_array($config['oauth'])) {
             return;

@@ -18,17 +18,17 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class UserService
 {
 
-    private UserRepository $repository;
+    protected UserRepository $repository;
 
-    private EntityManagerInterface $entityManager;
+    protected EntityManagerInterface $entityManager;
 
-    private SessionInterface $session;
+    protected SessionInterface $session;
 
-    private OauthService $oauthService;
+    protected OauthService $oauthService;
 
-    private OauthConnectUserRequestHandler $oauthConnectUserRH;
+    protected OauthConnectUserRequestHandler $oauthConnectUserRH;
 
-    private UserRequestHandler $userRH;
+    protected UserRequestHandler $userRH;
 
     public function __construct(
         SessionInterface $session,
@@ -103,7 +103,7 @@ class UserService
     /**
      * @param mixed $oauthConnect
      */
-    private function findOAuthIdentity(
+    protected function findOAuthIdentity(
         User $user,
         string $identity,
         string $client,

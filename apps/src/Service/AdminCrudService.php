@@ -2,17 +2,12 @@
 
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Lib\RequestHandlerLib;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\AdminBoutonService;
-use LogicException;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -20,41 +15,32 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Workflow\Registry;
 use Twig\Environment;
 
 class AdminCrudService
 {
 
-    private AdminBoutonService $adminBoutonService;
+    protected AdminBoutonService $adminBoutonService;
 
-    private PaginatorInterface $paginator;
+    protected PaginatorInterface $paginator;
 
-    private RequestStack $requestStack;
+    protected RequestStack $requestStack;
 
-    private Request $request;
+    protected Request $request;
 
-    private FormFactoryInterface $formFactory;
+    protected FormFactoryInterface $formFactory;
 
-    private RouterInterface $router;
+    protected RouterInterface $router;
 
-    private CsrfTokenManagerInterface $csrfTokenManager;
+    protected SessionInterface $session;
 
-    private EntityManagerInterface $entityManager;
+    protected Environment $twig;
 
-    private SessionInterface $session;
-
-    private Environment $twig;
-
-    private AdminControllerLib $controller;
+    protected AdminControllerLib $controller;
 
     protected string $headerTitle = '';
 
     protected string $urlHome = '';
-
-    protected Registry $workflows;
 
     public function __construct(
         Environment $twig,
@@ -63,20 +49,14 @@ class AdminCrudService
         RequestStack $requestStack,
         FormFactoryInterface $formFactory,
         RouterInterface $router,
-        Registry $workflows,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        EntityManagerInterface $entityManager,
         SessionInterface $session
     )
     {
-        $this->workflows        = $workflows;
-        $this->twig             = $twig;
-        $this->session          = $session;
-        $this->entityManager    = $entityManager;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->router           = $router;
-        $this->formFactory      = $formFactory;
-        $this->requestStack     = $requestStack;
+        $this->twig         = $twig;
+        $this->session      = $session;
+        $this->router       = $router;
+        $this->formFactory  = $formFactory;
+        $this->requestStack = $requestStack;
         /** @var Request $request */
         $request                  = $this->requestStack->getCurrentRequest();
         $this->request            = $request;
@@ -95,7 +75,7 @@ class AdminCrudService
         $this->urlHome     = $url;
     }
 
-    private function setBtnList(array $url): void
+    protected function setBtnList(array $url): void
     {
         if (!isset($url['list'])) {
             return;
@@ -107,7 +87,7 @@ class AdminCrudService
         );
     }
 
-    private function setBtnViewUpdate(array $url, object $entity): void
+    protected function setBtnViewUpdate(array $url, object $entity): void
     {
         $this->setBtnList($url);
         $this->setBtnShow($url, $entity);
@@ -115,7 +95,7 @@ class AdminCrudService
         $this->setBtnDelete($url, $entity);
     }
 
-    private function setBtnShow(array $url, object $entity): void
+    protected function setBtnShow(array $url, object $entity): void
     {
         if (!isset($url['show'])) {
             return;
@@ -130,7 +110,7 @@ class AdminCrudService
         );
     }
 
-    private function setBtnGuard(array $url, object $entity): void
+    protected function setBtnGuard(array $url, object $entity): void
     {
         if (!isset($url['guard'])) {
             return;
@@ -145,7 +125,7 @@ class AdminCrudService
         );
     }
 
-    private function setBtnDelete(array $url, object $entity): void
+    protected function setBtnDelete(array $url, object $entity): void
     {
         if (!isset($url['delete'])) {
             return;
@@ -163,9 +143,19 @@ class AdminCrudService
             $urlsDelete,
             'Supprimer',
             [
-                'id' => $entity->getId(),
+                'id'     => $entity->getId(),
+                'entity' => $this->classEntity($entity),
             ]
         );
+    }
+
+    protected function classEntity($entity)
+    {
+        $class = get_class($entity);
+
+        $class = str_replace('Labstag\\Entity\\', '', $class);
+
+        return strtolower($class);
     }
 
     public function setController(AdminControllerLib $controller): void
@@ -173,7 +163,7 @@ class AdminCrudService
         $this->controller = $controller;
     }
 
-    private function listOrTrashRouteTrash($url, $actions)
+    protected function listOrTrashRouteTrash($url, $actions)
     {
         $breadcrumb = [
             'Trash' => $this->router->generate(
@@ -265,7 +255,7 @@ class AdminCrudService
         );
     }
 
-    private function showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity)
+    protected function showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity)
     {
         if ('preview' == $routeType && isset($url['trash'])) {
             $breadcrumb = [
@@ -287,7 +277,7 @@ class AdminCrudService
         $this->addBreadcrumbs($breadcrumb);
     }
 
-    private function showOrPreviewaddBtnList($url, $routeType)
+    protected function showOrPreviewaddBtnList($url, $routeType)
     {
         if (!(isset($url['list']) && 'show' == $routeType)) {
             return;
@@ -299,7 +289,7 @@ class AdminCrudService
         );
     }
 
-    private function showOrPreviewaddBtnTrash($url, $routeType)
+    protected function showOrPreviewaddBtnTrash($url, $routeType)
     {
         if (!(isset($url['trash']) && 'preview' == $routeType)) {
             return;
@@ -311,7 +301,7 @@ class AdminCrudService
         );
     }
 
-    private function showOrPreviewaddBtnGuard($url, $routeType, $entity)
+    protected function showOrPreviewaddBtnGuard($url, $routeType, $entity)
     {
         if (!(isset($url['guard']) && 'show' == $routeType)) {
             return;
@@ -326,7 +316,7 @@ class AdminCrudService
         );
     }
 
-    private function showOrPreviewaddBtnEdit($url, $routeType, $entity)
+    protected function showOrPreviewaddBtnEdit($url, $routeType, $entity)
     {
         if (!(isset($url['edit']) && 'show' == $routeType)) {
             return;
@@ -341,9 +331,10 @@ class AdminCrudService
         );
     }
 
-    private function showOrPreviewaddBtnRestore($url, $routeType, $entity)
+    protected function showOrPreviewaddBtnRestore($url, $routeType, $entity)
     {
-        if (!(isset($url['restore']) && 'preview' == $routeType)) {
+        dump($routeType);
+        if (isset($url['restore']) && 'preview' == $routeType) {
             $this->adminBoutonService->addBtnRestore(
                 $entity,
                 [
@@ -352,13 +343,14 @@ class AdminCrudService
                 ],
                 'Restore',
                 [
-                    'id' => $entity->getId(),
+                    'id'     => $entity->getId(),
+                    'entity' => $this->classEntity($entity),
                 ]
             );
         }
     }
 
-    private function showOrPreviewaddBtnDestroy($url, $routeType, $entity)
+    protected function showOrPreviewaddBtnDestroy($url, $routeType, $entity)
     {
         if (!(isset($url['destroy']) && 'preview' == $routeType)) {
             return;
@@ -406,7 +398,8 @@ class AdminCrudService
                 $urlsDelete,
                 'Supprimer',
                 [
-                    'id' => $entity->getId(),
+                    'id'     => $entity->getId(),
+                    'entity' => $this->classEntity($entity),
                 ]
             );
         }
@@ -503,104 +496,6 @@ class AdminCrudService
                 'entity' => $entity,
                 'form'   => $form->createView(),
             ]
-        );
-    }
-
-    private function setEntityCsrfDestroy($entity, $token)
-    {
-        $csrfToken = new CsrfToken('destroy' . $entity->getId(), $token);
-        if (is_null($entity->getDeletedAt())) {
-            $csrfToken = null;
-        }
-
-        return $csrfToken;
-    }
-
-    private function setEntityCsrfRestore($entity, $token)
-    {
-        $csrfToken = new CsrfToken('restore' . $entity->getId(), $token);
-        if (is_null($entity->getDeletedAt())) {
-            $csrfToken = null;
-        }
-
-        return $csrfToken;
-    }
-
-    private function setEntityCsrfDelete($entity, $token)
-    {
-        $csrfToken = new CsrfToken('delete' . $entity->getId(), $token);
-        if (!is_null($entity->getDeletedAt())) {
-            $csrfToken = null;
-        }
-
-        return $csrfToken;
-    }
-
-    private function setEntityCsrf($routeCurrent, $entity, $token)
-    {
-        if (0 != substr_count($routeCurrent, '_destroy')) {
-            $csrfToken = $this->setEntityCsrfDestroy($entity, $token);
-        } elseif (0 != substr_count($routeCurrent, '_restore')) {
-            $csrfToken = $this->setEntityCsrfRestore($entity, $token);
-        } elseif (0 != substr_count($routeCurrent, '_delete')) {
-            $csrfToken = $this->setEntityCsrfDelete($entity, $token);
-        }
-
-        return $csrfToken;
-    }
-
-    public function entityDeleteDestroyRestore(object $entity): JsonResponse
-    {
-        $routeCurrent = $this->request->get('_route');
-        $token        = $this->request->request->get('_token');
-        $state        = false;
-        $csrfToken    = $this->setEntityCsrf($routeCurrent, $entity, $token);
-        if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
-            if (0 != substr_count($routeCurrent, '_destroy')) {
-                $this->entityManager->remove($entity);
-            } elseif (0 != substr_count($routeCurrent, '_restore')) {
-                $entity->setDeletedAt(null);
-                $this->entityManager->persist($entity);
-            } elseif (0 != substr_count($routeCurrent, '_delete')) {
-                $this->entityManager->remove($entity);
-            }
-
-            $this->entityManager->flush();
-            $state = true;
-        }
-
-        return new JsonResponse(
-            [
-                'state' => $state,
-                'token' => $token,
-                'all'   => $this->request->query->all(),
-            ]
-        );
-    }
-
-    public function empty(ServiceEntityRepositoryLib $repository): JsonResponse
-    {
-        $all = $repository->findTrashForAdmin();
-        foreach ($all as $entity) {
-            $this->entityManager->remove($entity);
-        }
-
-        $this->entityManager->flush();
-        return new JsonResponse(
-            []
-        );
-    }
-
-    public function workflow($entity, string $state): JsonResponse
-    {
-        if ($this->workflows->has($entity)) {
-            $workflow = $this->workflows->get($entity);
-            $workflow->apply($entity, $state);
-            $this->entityManager->flush();
-        }
-
-        return new JsonResponse(
-            []
         );
     }
 }
