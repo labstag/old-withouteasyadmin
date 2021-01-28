@@ -32,4 +32,24 @@ class AdresseUserRepository extends AdresseRepository
 
         return $query->getQuery();
     }
+
+    public function findTrashForAdmin(): Query
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->leftJoin(
+            'a.refuser',
+            'u'
+        );
+        $query->where(
+            'u.deletedAt!=:userDeleteAt OR a.deletedAt!=:adresseDeleteAt'
+        );
+        $query->setParameters(
+            [
+                'userDeleteAt'    => '',
+                'adresseDeleteAt' => '',
+            ]
+        );
+
+        return $query->getQuery();
+    }
 }

@@ -376,7 +376,8 @@ class AdminCrudService
             ],
             'Destroy',
             [
-                'id' => $entity->getId(),
+                'id'     => $entity->getId(),
+                'entity' => $this->classEntity($entity),
             ]
         );
     }
