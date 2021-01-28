@@ -434,10 +434,10 @@
 			{{ label|trans }}
             <div class="btn-group float-right" role="group">
                 {% if allow_add is defined and allow_add == true %}
-                    <btn-addcollection title="Ajouter"></btn-addcollection>
+                    <btn-addcollection title="Ajouter" />
                 {% endif %}
                 {% if element|default('label') == 'legend' and "collection" in form.vars.block_prefixes and "minmax" in row_attr %}
-                    <btn-togglefieldset></btn-togglefieldset>
+                    <btn-togglefieldset />
                 {% endif %}
             </div>
 		</{{ element|default('label') }}>
@@ -471,7 +471,7 @@
 {% endblock %}
 
 {% block collection_delete %}
-    <btn-delete title="Supprimer"></btn-delete>
+    <btn-delete title="Supprimer" />
 {% endblock %}
 
 {% block collection_widget %}

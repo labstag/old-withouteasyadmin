@@ -40,7 +40,7 @@ class AdresseUserController extends AdminControllerLib
             'admin/adresse_user/index.html.twig',
             [
                 'new'   => 'admin_adresseuser_new',
-                'empty' => 'admin_adresseuser_empty',
+                'empty' => 'api_action_empty',
                 'trash' => 'admin_adresseuser_trash',
                 'list'  => 'admin_adresseuser_index',
             ],

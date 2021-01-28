@@ -40,7 +40,7 @@ class EmailUserController extends AdminControllerLib
             'admin/email_user/index.html.twig',
             [
                 'new'   => 'admin_emailuser_new',
-                'empty' => 'admin_emailuser_empty',
+                'empty' => 'api_action_empty',
                 'trash' => 'admin_emailuser_trash',
                 'list'  => 'admin_emailuser_index',
             ],

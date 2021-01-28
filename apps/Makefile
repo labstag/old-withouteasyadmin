@@ -10,6 +10,8 @@ ifneq "$(SUPPORTS_MAKE_ARGS)" ""
   $(eval $(COMMAND_ARGS):;@:)
 endif
 
+SYMFONY_EXEC := @symfony console
+
 .PHONY: translations tests
 
 help:
@@ -34,15 +36,15 @@ phpmd.phar:
 	wget https://github.com/phpmd/phpmd/releases/download/2.9.1/phpmd.phar
 
 assets: ## Ajouts assets
-	php bin/console assets:install public --symlink --relative
+	${SYMFONY_EXEC} assets:install public --symlink --relative
 
 bdd: ## Scripts for BDD
 ifeq ($(COMMAND_ARGS),fixtures)
-	@php bin/console doctrine:fixtures:load -n
+	${SYMFONY_EXEC} doctrine:fixtures:load -n
 else ifeq ($(COMMAND_ARGS),migrate)
-	@php bin/console doctrine:migrations:migrate -n
+	${SYMFONY_EXEC} doctrine:migrations:migrate -n
 else ifeq ($(COMMAND_ARGS),validate)
-	@php bin/console doctrine:schema:validate
+	${SYMFONY_EXEC} doctrine:schema:validate
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -104,6 +106,7 @@ geocode: ## add geocode
 linter: phpcpd.phar phploc.phar phpmd.phar ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
 	@make linter twig -i
+	@make linter container -i
 	@make linter yaml -i
 	@make linter phpstan -i
 	@make linter phpcpd -i
@@ -128,10 +131,12 @@ else ifeq ($(COMMAND_ARGS),phpmnd)
 	@COMPOSER_MEMORY_LIMIT=-1 composer run phpmnd
 else ifeq ($(COMMAND_ARGS),phpstan)
 	@COMPOSER_MEMORY_LIMIT=-1 composer run phpstan
+else ifeq ($(COMMAND_ARGS),container)
+	${SYMFONY_EXEC} lint:container
 else ifeq ($(COMMAND_ARGS),twig)
-	@php bin/console lint:twig templates
+	${SYMFONY_EXEC} lint:twig templates
 else ifeq ($(COMMAND_ARGS),yaml)
-	@php bin/console lint:yaml config
+	${SYMFONY_EXEC} lint:yaml config
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -148,12 +153,13 @@ else
 	@echo "phpmnd: Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes"
 	@echo "phpstan: regarde si le code PHP ne peux pas être optimisé"
 	@echo "twig: indique les erreurs de code de twig"
+	@echo "container: indique les erreurs de code de container"
 	@echo "yaml: indique les erreurs de code de yaml"
 endif
 
 messenger: ## Scripts messenger
 ifeq ($(COMMAND_ARGS),consule)
-	@php bin/console messenger:consume async -vv
+	${SYMFONY_EXEC} messenger:consume async -vv
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -184,7 +190,7 @@ else
 endif
 
 translations: ## update translation
-	php bin/console translation:update --force fr
+	${SYMFONY_EXEC} translation:update --force fr
 
 workflow-png: ## generate workflow png
-	php bin/console workflow:dump $(COMMAND_ARGS) | dot -Tpng -o $(COMMAND_ARGS).png
+	${SYMFONY_EXEC} workflow:dump $(COMMAND_ARGS) | dot -Tpng -o $(COMMAND_ARGS).png

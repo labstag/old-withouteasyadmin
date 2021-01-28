@@ -41,7 +41,7 @@ class NoteInterneController extends AdminControllerLib
             'admin/note_interne/index.html.twig',
             [
                 'new'   => 'admin_noteinterne_new',
-                'empty' => 'admin_noteinterne_empty',
+                'empty' => 'api_action_empty',
                 'trash' => 'admin_noteinterne_trash',
                 'list'  => 'admin_noteinterne_index',
             ],

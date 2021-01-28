@@ -1,10 +1,6 @@
 export class LinkEdit extends HTMLElement {
   constructor () {
     super()
-    if (this.innerHTML !== '') {
-      return
-    }
-
     const title = this.dataset.title
     const href = this.dataset.href
     this.aElement = document.createElement('a')

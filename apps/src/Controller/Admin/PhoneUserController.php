@@ -40,7 +40,7 @@ class PhoneUserController extends AdminControllerLib
             'admin/phone_user/index.html.twig',
             [
                 'new'   => 'admin_phoneuser_new',
-                'empty' => 'admin_phoneuser_empty',
+                'empty' => 'api_action_empty',
                 'trash' => 'admin_phoneuser_trash',
                 'list'  => 'admin_phoneuser_index',
             ],

@@ -1,9 +1,6 @@
 export class LinkBtnAdmin extends HTMLElement {
   constructor () {
     super()
-    if (this.innerHTML !== '') {
-      return
-    }
     const aElement = document.createElement('a')
     this.classList.add('link-btnadmin')
     const icon = this.getAttribute('icon')

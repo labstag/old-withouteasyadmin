@@ -40,7 +40,7 @@ class LienUserController extends AdminControllerLib
             'admin/lien_user/index.html.twig',
             [
                 'new'   => 'admin_lienuser_new',
-                'empty' => 'admin_lienuser_empty',
+                'empty' => 'api_action_empty',
                 'trash' => 'admin_lienuser_trash',
                 'list'  => 'admin_lienuser_index',
             ],

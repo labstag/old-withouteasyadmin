@@ -163,8 +163,20 @@ class AdminCrudService
         $this->controller = $controller;
     }
 
-    protected function listOrTrashRouteTrash($url, $actions)
+    protected function listOrTrashRouteTrash(
+        array $url,
+        array $actions,
+        ServiceEntityRepositoryLib $repository
+    )
     {
+        $entity = strtolower(
+            str_replace(
+                'Labstag\\Entity\\',
+                '',
+                $repository->getClassName()
+            )
+        );
+
         $breadcrumb = [
             'Trash' => $this->router->generate(
                 'admin_adresseuser_trash'
@@ -182,7 +194,8 @@ class AdminCrudService
                 [
                     'empty' => $url['empty'],
                     'list'  => $url['list'],
-                ]
+                ],
+                $entity
             );
         }
 
@@ -214,7 +227,7 @@ class AdminCrudService
         $method       = $methods[$routeType];
 
         if ('trash' == $routeType) {
-            $this->listOrTrashRouteTrash($url, $actions);
+            $this->listOrTrashRouteTrash($url, $actions, $repository);
         } elseif (isset($url['trash'])) {
             $this->adminBoutonService->addBtnTrash(
                 $url['trash']

@@ -1,9 +1,6 @@
 export class GuardUser extends HTMLElement {
   constructor () {
     super()
-    if (this.innerHTML.trim() !== '') {
-      return
-    }
     this.classList.add('guard-user')
     const uuid = this.uuidv4()
     this.innerHTML = '<input type="checkbox" id="' + uuid + '"><label for="' + uuid + '">&nbsp;</label>'
