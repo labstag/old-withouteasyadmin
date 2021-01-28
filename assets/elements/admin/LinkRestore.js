@@ -1,10 +1,6 @@
 export class LinkRestore extends HTMLElement {
   constructor () {
     super()
-    if (this.innerHTML !== '') {
-      return
-    }
-
     const title = this.dataset.title
     this.classList.add('link-restore')
     this.dataset.toggle = 'modal'

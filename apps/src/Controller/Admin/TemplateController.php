@@ -40,7 +40,7 @@ class TemplateController extends AdminControllerLib
             'admin/template/index.html.twig',
             [
                 'new'   => 'admin_template_new',
-                'empty' => 'admin_template_empty',
+                'empty' => 'api_action_empty',
                 'trash' => 'admin_template_trash',
                 'list'  => 'admin_template_index',
             ],

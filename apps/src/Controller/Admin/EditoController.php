@@ -40,7 +40,7 @@ class EditoController extends AdminControllerLib
             'admin/edito/index.html.twig',
             [
                 'new'   => 'admin_edito_new',
-                'empty' => 'admin_edito_empty',
+                'empty' => 'api_action_empty',
                 'trash' => 'admin_edito_trash',
                 'list'  => 'admin_edito_index',
             ],

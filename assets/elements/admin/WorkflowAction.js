@@ -1,9 +1,6 @@
 export class WorkflowAction extends HTMLElement {
   constructor () {
     super()
-    if (this.innerHTML !== '') {
-      return
-    }
     this.classList.add('workflow-action')
     this.innerHTML = '<i></i> ' + this.dataset.name
     this.dataset.toggle = 'modal'

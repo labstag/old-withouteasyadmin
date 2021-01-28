@@ -2,21 +2,21 @@
     {% set title = title|trans %}
     {% set state = guard_route(url) %}
     {% if state == true %}
-        <link-show data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}"></link-show>
+        <link-show data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}" />
     {% endif %}
 {% endmacro %}
 {% macro guard(entity, url, title) %}
     {% set title = title|trans %}
     {% set state = guard_route(url) %}
     {% if state == true %}
-        <link-guard data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}"></link-guard>
+        <link-guard data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}" />
     {% endif %}
 {% endmacro %}
 {% macro edit(entity, url) %}
     {% set title = "Edit"|trans %}
     {% set state = guard_route(url) %}
     {% if state == true %}
-        <link-edit data-href="{{ path(url, {'id': entity.id}) }}" data-title="#{{ title|e }}"></link-edit>
+        <link-edit data-href="{{ path(url, {'id': entity.id}) }}" data-title="#{{ title|e }}" />
     {% endif %}
 {% endmacro %}
 {% macro delete(entity, urlDelete, urlList) %}
@@ -30,7 +30,7 @@
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
-        ></link-delete>
+        />
     {% endif %}
 {% endmacro %}
 {% macro destroy(entity, urlDelete, urlList) %}
@@ -39,13 +39,13 @@
     {% set state2 = guard_route(urlList) %}
     {% if state1 == true and state2 == true %}
         <link-destroy
-            data-url="{{ path(urlDelete, {'id': entity.id}) }}"
+            data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
             data-token="{{ csrf_token('destroy' ~ entity.id) }}"
             data-title="{{ title }}"
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
-        ></link-destroy>
+        />
     {% endif %}
 {% endmacro %}
 {% macro restore(entity, urlDelete, urlList) %}
@@ -54,13 +54,13 @@
     {% set state2 = guard_route(urlList) %}
     {% if state1 == true and state2 == true %}
         <link-restore
-            data-url="{{ path(urlDelete, {'id': entity.id}) }}"
+            data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
             data-token="{{ csrf_token('restore' ~ entity.id) }}"
             data-title="{{ title }}"
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
-        ></link-restore>
+        />
     {% endif %}
 {% endmacro %}
 {% macro workflow(entity, actions) %}
@@ -74,7 +74,7 @@
                     data-name="{{ transition.name }}"
                     data-token="{{ csrf_token('workflow-' ~ transition.name ~ entity.id) }}"
                     data-redirect="{{ path(actions['list']) }}"
-                ></workflow-action>
+                />
             {% endfor %}
             </div>
         {% endif %}

@@ -37,7 +37,7 @@ class ConfigurationController extends AdminControllerLib
             ],
             'admin/configuration/index.html.twig',
             [
-                'empty' => 'admin_configuration_empty',
+                'empty' => 'api_action_empty',
                 'trash' => 'admin_configuration_trash',
                 'list'  => 'admin_configuration_index',
             ],
