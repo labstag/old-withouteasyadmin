@@ -52,7 +52,7 @@ class EmailUserController extends AdminControllerLib
                 'delete'   => 'api_action_delete',
                 'destroy'  => 'api_action_destroy',
                 'restore'  => 'api_action_restore',
-                'workflow' => 'admin_emailuser_workflow',
+                'workflow' => 'api_action_workflow',
             ]
         );
     }
@@ -110,14 +110,5 @@ class EmailUserController extends AdminControllerLib
                 'show'   => 'admin_emailuser_show',
             ]
         );
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/workflow/{state}/{id}", name="admin_emailuser_workflow", methods={"POST"})
-     */
-    public function workflow(EmailUser $emailUser, string $state): Response
-    {
-        return $this->adminCrudService->workflow($emailUser, $state);
     }
 }

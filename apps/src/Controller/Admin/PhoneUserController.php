@@ -52,7 +52,7 @@ class PhoneUserController extends AdminControllerLib
                 'delete'   => 'api_action_delete',
                 'destroy'  => 'api_action_destroy',
                 'restore'  => 'api_action_restore',
-                'workflow' => 'admin_phoneuser_workflow',
+                'workflow' => 'api_action_workflow',
             ]
         );
     }
@@ -110,14 +110,5 @@ class PhoneUserController extends AdminControllerLib
                 'show'   => 'admin_phoneuser_show',
             ]
         );
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/workflow/{state}/{id}", name="admin_phoneuser_workflow", methods={"POST"})
-     */
-    public function workflow(PhoneUser $phoneUser, string $state): Response
-    {
-        return $this->adminCrudService->workflow($phoneUser, $state);
     }
 }

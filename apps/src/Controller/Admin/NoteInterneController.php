@@ -53,7 +53,7 @@ class NoteInterneController extends AdminControllerLib
                 'delete'   => 'api_action_delete',
                 'destroy'  => 'api_action_destroy',
                 'restore'  => 'api_action_restore',
-                'workflow' => 'admin_noteinterne_workflow',
+                'workflow' => 'api_action_workflow',
             ]
         );
     }
@@ -111,14 +111,5 @@ class NoteInterneController extends AdminControllerLib
                 'show'   => 'admin_noteinterne_show',
             ]
         );
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/workflow/{state}/{id}", name="admin_noteinterne_workflow", methods={"POST"})
-     */
-    public function workflow(NoteInterne $noteInterne, string $state): Response
-    {
-        return $this->adminCrudService->workflow($noteInterne, $state);
     }
 }
