@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class UserType extends AbstractType
 {
 
-    private EmailUserRepository $repository;
+    protected EmailUserRepository $repository;
 
     public function __construct(EmailUserRepository $repository)
     {

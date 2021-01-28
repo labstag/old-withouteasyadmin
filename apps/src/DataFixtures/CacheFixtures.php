@@ -10,7 +10,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 class CacheFixtures extends FixtureLib
 {
 
-    private CacheInterface $cache;
+    protected CacheInterface $cache;
 
     public function __construct(CacheInterface $cache)
     {

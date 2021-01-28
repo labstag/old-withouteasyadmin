@@ -23,7 +23,7 @@ class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterf
         return [CacheFixtures::class];
     }
 
-    private function setOauth(array $env, array &$data): void
+    protected function setOauth(array $env, array &$data): void
     {
         $oauth = [];
         foreach ($env as $key => $val) {
@@ -52,7 +52,7 @@ class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterf
         }
     }
 
-    private function add(ObjectManager $manager): void
+    protected function add(ObjectManager $manager): void
     {
         $data = [
             'notification'    => [

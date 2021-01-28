@@ -11,7 +11,7 @@ use ZipArchive;
 class GeocodeService
 {
 
-    private HttpClientInterface $client;
+    protected HttpClientInterface $client;
 
     protected GeoCodeRequestHandler $geoCodeRH;
 

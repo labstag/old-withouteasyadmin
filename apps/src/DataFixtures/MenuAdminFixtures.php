@@ -10,9 +10,9 @@ use Labstag\Lib\FixtureLib;
 class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
 {
 
-    private ObjectManager $manager;
+    protected ObjectManager $manager;
 
-    private function getMenuGeneral(): array
+    protected function getMenuGeneral(): array
     {
         $data = [
             [
@@ -67,7 +67,7 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
         return [CacheFixtures::class];
     }
 
-    private function getMenuUtilisateurs(): array
+    protected function getMenuUtilisateurs(): array
     {
         $data = [
             [
@@ -118,7 +118,7 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
         return $data;
     }
 
-    private function getMenuAdmin(): array
+    protected function getMenuAdmin(): array
     {
         $data = [
             [
@@ -159,7 +159,7 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
 
         return $data;
     }
-    private function getMenuProfilAdmin(): array
+    protected function getMenuProfilAdmin(): array
     {
         $data = [
             [
@@ -179,7 +179,7 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
         return $data;
     }
 
-    private function getMenuAdminProfilAdmin(): array
+    protected function getMenuAdminProfilAdmin(): array
     {
         $data = [
             [
@@ -210,7 +210,7 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
         $manager->flush();
     }
 
-    private function saveMenu(int $index, string $key, array $childs): void
+    protected function saveMenu(int $index, string $key, array $childs): void
     {
         $menu = new Menu();
         $menu->setPosition($index);
@@ -223,7 +223,7 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
         }
     }
 
-    private function addChild(int $index, Menu $menu, array $attr): void
+    protected function addChild(int $index, Menu $menu, array $attr): void
     {
         $child = new Menu();
         $child->setPosition($index);

@@ -16,7 +16,7 @@ class LienUser extends Lien
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="lienUsers")
      * @Assert\NotBlank
      */
-    private $refuser;
+    protected $refuser;
 
     public function getRefuser(): ?User
     {

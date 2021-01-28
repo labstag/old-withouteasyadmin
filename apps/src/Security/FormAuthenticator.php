@@ -31,15 +31,15 @@ class FormAuthenticator extends AbstractAuth implements PassAuthInterface
 
     public const LOGIN_ROUTE = 'app_login';
 
-    private EntityManagerInterface $entityManager;
+    protected EntityManagerInterface $entityManager;
 
-    private UrlGeneratorInterface $urlGenerator;
+    protected UrlGeneratorInterface $urlGenerator;
 
-    private CsrfTokenManagerInterface $csrfTokenManager;
+    protected CsrfTokenManagerInterface $csrfTokenManager;
 
-    private UserPasswordEncoderInterface $passwordEncoder;
+    protected UserPasswordEncoderInterface $passwordEncoder;
 
-    private UserRepository $repository;
+    protected UserRepository $repository;
 
     public function __construct(
         EntityManagerInterface $entityManager,

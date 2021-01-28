@@ -24,34 +24,34 @@ abstract class Phone
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      */
-    private $numero;
+    protected $numero;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank
      * @Assert\Country
      */
-    private $country;
+    protected $country;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      */
-    private $type;
+    protected $type;
 
     /** @ORM\Column(type="boolean") */
-    private $principal;
+    protected $principal;
 
     /**
      * @ORM\Column(type="array")
      */
-    private $state;
+    protected $state;
 
     public function __toString()
     {

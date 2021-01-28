@@ -16,22 +16,22 @@ class RouteUser
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $state;
+    protected $state;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="routes")
      */
-    private $refuser;
+    protected $refuser;
 
     /**
      * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="users")
      */
-    private $refroute;
+    protected $refroute;
 
     public function getId(): ?int
     {

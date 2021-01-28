@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SearchController extends AbstractController
 {
 
-    private PhoneService $phoneService;
+    protected PhoneService $phoneService;
 
     public function __construct(PhoneService $phoneService)
     {

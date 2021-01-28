@@ -24,7 +24,7 @@
     {% set state = guard_route(urlList) %}
     {% if state == true %}
         <link-delete
-            data-url="{{ path(urlDelete, {'id': entity.id}) }}"
+            data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
             data-token="{{ csrf_token('delete' ~ entity.id) }}"
             data-title="{{ title }}"
             {% if urlList != '' %}
@@ -70,9 +70,9 @@
             <div class="btngrouptable" role="group">
             {% for transition in workflow_transitions(entity) %}
                 <workflow-action
-                    data-url="{{ path(actions['workflow'], {'id': entity.id, 'state': transition.name}) }}"
+                    data-url="{{ path(actions['workflow'], {'id': entity.id, 'state': transition.name, 'entity': class_entity(entity)}) }}"
                     data-name="{{ transition.name }}"
-                    data-token="{{ csrf_token(transition.name ~ entity.id) }}"
+                    data-token="{{ csrf_token('workflow-' ~ transition.name ~ entity.id) }}"
                     data-redirect="{{ path(actions['list']) }}"
                 ></workflow-action>
             {% endfor %}

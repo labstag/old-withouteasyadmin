@@ -26,17 +26,17 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 class GuardController extends AbstractController
 {
 
-    private CsrfTokenManagerInterface $csrfTokenManager;
+    protected CsrfTokenManagerInterface $csrfTokenManager;
 
-    private RouteRepository $routeRepo;
+    protected RouteRepository $routeRepo;
 
-    private RequestStack $requestStack;
+    protected RequestStack $requestStack;
 
     /**
      *
      * @var Request|null
      */
-    private $request;
+    protected $request;
 
     public function __construct(
         CsrfTokenManagerInterface $csrfTokenManager,

@@ -16,15 +16,15 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserEntitySubscriber implements EventSubscriberInterface
 {
 
-    private SessionInterface $session;
+    protected SessionInterface $session;
 
-    private EntityManagerInterface $entityManager;
+    protected EntityManagerInterface $entityManager;
 
-    private UserPasswordEncoderInterface $passwordEncoder;
+    protected UserPasswordEncoderInterface $passwordEncoder;
 
-    private UserMailService $userMailService;
+    protected UserMailService $userMailService;
 
-    private EmailUserRequestHandler $emailUserRH;
+    protected EmailUserRequestHandler $emailUserRH;
 
     public function __construct(
         SessionInterface $session,
@@ -50,7 +50,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $this->setChangePassword($oldEntity, $newEntity);
     }
 
-    private function setChangePassword(User $oldEntity, User $newEntity): void
+    protected function setChangePassword(User $oldEntity, User $newEntity): void
     {
         if ($oldEntity->getState() == $newEntity->getState()) {
             return;
@@ -69,7 +69,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         );
     }
 
-    private function setPrincipalMail(User $oldEntity, User $newEntity): void
+    protected function setPrincipalMail(User $oldEntity, User $newEntity): void
     {
         if ($oldEntity->getEmail() == $newEntity->getEmail()) {
             return;
@@ -114,7 +114,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $this->emailUserRH->changeWorkflowState($emailUser, ['submit', 'valider']);
     }
 
-    private function setPassword(User $user): void
+    protected function setPassword(User $user): void
     {
         $plainPassword = $user->getPlainPassword();
         if ($plainPassword === '' || is_null($plainPassword)) {

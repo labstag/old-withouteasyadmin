@@ -10,7 +10,7 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 class EnqueueMethod
 {
 
-    private MessageBusInterface $bus;
+    protected MessageBusInterface $bus;
 
     public function __construct(MessageBusInterface $bus)
     {

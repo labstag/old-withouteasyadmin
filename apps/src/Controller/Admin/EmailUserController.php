@@ -49,9 +49,9 @@ class EmailUserController extends AdminControllerLib
                 'show'     => 'admin_emailuser_show',
                 'preview'  => 'admin_emailuser_preview',
                 'edit'     => 'admin_emailuser_edit',
-                'delete'   => 'admin_emailuser_delete',
-                'destroy'  => 'admin_emailuser_destroy',
-                'restore'  => 'admin_emailuser_restore',
+                'delete'   => 'api_action_delete',
+                'destroy'  => 'api_action_destroy',
+                'restore'  => 'api_action_restore',
                 'workflow' => 'admin_emailuser_workflow',
             ]
         );
@@ -81,9 +81,9 @@ class EmailUserController extends AdminControllerLib
             $emailUser,
             'admin/email_user/show.html.twig',
             [
-                'delete'  => 'admin_emailuser_delete',
-                'restore' => 'admin_emailuser_restore',
-                'destroy' => 'admin_emailuser_destroy',
+                'delete'  => 'api_action_delete',
+                'restore' => 'api_action_restore',
+                'destroy' => 'api_action_destroy',
                 'edit'    => 'admin_emailuser_edit',
                 'list'    => 'admin_emailuser_index',
                 'trash'   => 'admin_emailuser_trash',
@@ -105,31 +105,11 @@ class EmailUserController extends AdminControllerLib
             $emailUser,
             $requestHandler,
             [
-                'delete' => 'admin_emailuser_delete',
+                'delete' => 'api_action_delete',
                 'list'   => 'admin_emailuser_index',
                 'show'   => 'admin_emailuser_show',
             ]
         );
-    }
-
-    /**
-     * @Route("/delete/{id}", name="admin_emailuser_delete", methods={"DELETE"})
-     * @Route("/destroy/{id}", name="admin_emailuser_destroy", methods={"DELETE"})
-     * @Route("/restore/{id}", name="admin_emailuser_restore")
-     * @IgnoreSoftDelete
-     */
-    public function entityDeleteDestroyRestore(EmailUser $emailUser): Response
-    {
-        return $this->adminCrudService->entityDeleteDestroyRestore($emailUser);
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/empty", name="admin_emailuser_empty", methods={"DELETE"})
-     */
-    public function empty(EmailUserRepository $repository): Response
-    {
-        return $this->adminCrudService->empty($repository);
     }
 
     /**

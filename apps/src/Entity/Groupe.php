@@ -24,19 +24,19 @@ class Groupe
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      */
-    private $name;
+    protected $name;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $code;
+    protected $code;
 
     /**
      * @ORM\OneToMany(
@@ -45,12 +45,12 @@ class Groupe
      *  cascade={"persist"}
      * )
      */
-    private $users;
+    protected $users;
 
     /**
      * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe")
      */
-    private $routes;
+    protected $routes;
 
     public function __construct()
     {

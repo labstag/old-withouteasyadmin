@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CheckController extends AbstractController
 {
 
-    private PhoneService $phoneService;
+    protected PhoneService $phoneService;
 
     public function __construct(PhoneService $phoneService)
     {

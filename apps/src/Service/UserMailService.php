@@ -18,15 +18,15 @@ use Symfony\Component\Routing\RouterInterface;
 class UserMailService
 {
 
-    private MailerService $mailerService;
+    protected MailerService $mailerService;
 
-    private TemplateRepository $repository;
+    protected TemplateRepository $repository;
 
-    private RouterInterface $router;
+    protected RouterInterface $router;
 
-    private array $config;
+    protected array $config;
 
-    private DataService $dataService;
+    protected DataService $dataService;
 
     public function __construct(
         RouterInterface $router,

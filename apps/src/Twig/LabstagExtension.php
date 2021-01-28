@@ -16,7 +16,7 @@ use Twig\TwigFunction;
 class LabstagExtension extends AbstractExtension
 {
 
-    private PhoneService $phoneService;
+    protected PhoneService $phoneService;
 
     protected Registry $workflows;
 
@@ -51,6 +51,7 @@ class LabstagExtension extends AbstractExtension
             // Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
             new TwigFilter('workflow_has', [$this, 'workflowHas']),
             new TwigFilter('guard_route', [$this, 'guardRoute']),
+            new TwigFilter('class_entity', [$this, 'classEntity']),
             new TwigFilter('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
             new TwigFilter('guard_route_enable_user', [$this, 'guardRouteEnableUser']),
             new TwigFilter('formClass', [$this, 'formClass']),
@@ -64,6 +65,7 @@ class LabstagExtension extends AbstractExtension
         return [
             new TwigFunction('workflow_has', [$this, 'workflowHas']),
             new TwigFunction('guard_route', [$this, 'guardRoute']),
+            new TwigFunction('class_entity', [$this, 'classEntity']),
             new TwigFunction('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
             new TwigFunction('guard_route_enable_user', [$this, 'guardRouteEnableUser']),
             new TwigFunction('formClass', [$this, 'formClass']),
@@ -88,6 +90,15 @@ class LabstagExtension extends AbstractExtension
         }
 
         return true;
+    }
+
+    public function classEntity($entity)
+    {
+        $class = get_class($entity);
+
+        $class = str_replace('Labstag\\Entity\\', '', $class);
+
+        return strtolower($class);
     }
 
     public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
@@ -174,7 +185,7 @@ class LabstagExtension extends AbstractExtension
         return $file;
     }
 
-    private function setTypeformClass(array $class): string
+    protected function setTypeformClass(array $class): string
     {
         if (is_object($class['data'])) {
             $tabClass = explode('\\', get_class($class['data']));

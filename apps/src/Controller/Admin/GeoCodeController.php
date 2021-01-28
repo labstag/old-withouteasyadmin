@@ -46,7 +46,7 @@ class GeoCodeController extends AdminControllerLib
                 'list'        => 'admin_geocode_index',
                 'show'        => 'admin_geocode_show',
                 'edit'        => 'admin_geocode_edit',
-                'delete'      => 'admin_geocode_delete',
+                'delete'      => 'api_action_delete',
                 'trashdelete' => 'admin_geocode_destroy',
             ]
         );
@@ -76,9 +76,9 @@ class GeoCodeController extends AdminControllerLib
             $geoCode,
             'admin/geocode/show.html.twig',
             [
-                'delete'  => 'admin_geocode_delete',
-                'restore' => 'admin_geocode_restore',
-                'destroy' => 'admin_geocode_destroy',
+                'delete'  => 'api_action_delete',
+                'restore' => 'api_action_restore',
+                'destroy' => 'api_action_destroy',
                 'list'    => 'admin_geocode_index',
                 'edit'    => 'admin_geocode_edit',
                 'trash'   => 'admin_geocode_trash',
@@ -96,30 +96,10 @@ class GeoCodeController extends AdminControllerLib
             $geoCode,
             $requestHandler,
             [
-                'delete' => 'admin_geocode_delete',
+                'delete' => 'api_action_delete',
                 'list'   => 'admin_geocode_index',
                 'show'   => 'admin_geocode_show',
             ]
         );
-    }
-
-    /**
-     * @Route("/{id}", name="admin_geocode_delete", methods={"DELETE"})
-     * @Route("/restore/{id}", name="admin_geocode_restore")
-     * @Route("/destroy/{id}", name="admin_geocode_destroy", methods={"DELETE"})
-     * @IgnoreSoftDelete
-     */
-    public function entityDeleteDestroyRestore(GeoCode $geoCode): Response
-    {
-        return $this->adminCrudService->entityDeleteDestroyRestore($geoCode);
-    }
-
-    /**
-     * @IgnoreSoftDelete
-     * @Route("/empty", name="admin_geocode_empty", methods={"DELETE"})
-     */
-    public function empty(GeoCodeRepository $repository): Response
-    {
-        return $this->adminCrudService->empty($repository);
     }
 }

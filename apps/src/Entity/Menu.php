@@ -23,28 +23,28 @@ class Menu
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
-    private $id;
+    protected $id;
 
     /** @ORM\Column(type="string", length=255, nullable=true) */
-    private $libelle;
+    protected $libelle;
 
     /** @ORM\Column(type="string", length=255, nullable=true) */
-    private $icon;
+    protected $icon;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotNull
      */
-    private int $position;
+    protected int $position;
 
     /** @ORM\Column(type="json", nullable=true) */
-    private array $data = [];
+    protected array $data = [];
 
     /** @ORM\Column(type="boolean") */
-    private $separateur;
+    protected $separateur;
 
     /** @ORM\Column(type="string", length=255, nullable=true) */
-    private $clef;
+    protected $clef;
 
     /**
      * @ORM\ManyToOne(targetEntity="Menu", inversedBy="children")
@@ -55,7 +55,7 @@ class Menu
      * )
      * @var Menu|null
      */
-    private $parent;
+    protected $parent;
 
     /**
      * @ORM\OneToMany(
@@ -65,7 +65,7 @@ class Menu
      * )
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $children;
+    protected $children;
 
     public function __toString()
     {

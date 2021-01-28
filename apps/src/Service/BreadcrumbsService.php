@@ -6,13 +6,13 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 class BreadcrumbsService
 {
 
-    private static $instance = null;
+    protected static $instance = null;
 
     protected Breadcrumbs $breadcrumbs;
 
-    private array $data = [];
+    protected array $data = [];
 
-    private function __construct()
+    protected function __construct()
     {
     }
 

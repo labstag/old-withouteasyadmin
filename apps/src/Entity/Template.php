@@ -22,31 +22,31 @@ class Template
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      */
-    private $name;
+    protected $name;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
      * @ORM\Column(type="string", length=255)
      */
-    private $code;
+    protected $code;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\NotBlank
      */
-    private $html;
+    protected $html;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\NotBlank
      */
-    private $text;
+    protected $text;
 
     public function __toString()
     {

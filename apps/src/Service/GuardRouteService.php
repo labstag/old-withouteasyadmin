@@ -23,15 +23,15 @@ class GuardRouteService
         '/(api_platform)/',
     ];
 
-    private RouterInterface $router;
+    protected RouterInterface $router;
 
-    private RouteRepository $repositoryRoute;
+    protected RouteRepository $repositoryRoute;
 
-    private EntityManagerInterface $entityManager;
+    protected EntityManagerInterface $entityManager;
 
-    private RouteUserRepository $routeUserRepo;
+    protected RouteUserRepository $routeUserRepo;
 
-    private RouteGroupeRepository $routeGroupeRepo;
+    protected RouteGroupeRepository $routeGroupeRepo;
 
     public function __construct(
         RouterInterface $router,
