@@ -14,6 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class File
 {
     use SoftDeleteableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
