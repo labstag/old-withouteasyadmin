@@ -132,6 +132,7 @@ else ifeq ($(COMMAND_ARGS),image-pull)
 	@docker image pull mailhog/mailhog:v1.0.1
 	@docker image pull dunglas/mercure:v0.10
 	@docker image pull koromerzhin/phpfpm:7.4.12-symfony
+	@docker image pull koromerzhin/phpfpm:7.4.12-symfony-xdebug
 else ifeq ($(COMMAND_ARGS),ls)
 	@docker stack services $(STACK)
 else ifeq ($(COMMAND_ARGS),stop)
