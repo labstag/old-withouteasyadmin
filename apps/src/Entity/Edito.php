@@ -47,6 +47,11 @@ class Edito
      */
     protected $state;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=File::class, inversedBy="editos")
+     */
+    private $fond;
+
     public function __toString()
     {
         return $this->getTitle();
@@ -99,6 +104,18 @@ class Edito
     public function setRefuser(?User $refuser): self
     {
         $this->refuser = $refuser;
+
+        return $this;
+    }
+
+    public function getFond(): ?File
+    {
+        return $this->fond;
+    }
+
+    public function setFond(?File $fond): self
+    {
+        $this->fond = $fond;
 
         return $this;
     }

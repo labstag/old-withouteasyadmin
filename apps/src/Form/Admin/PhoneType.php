@@ -29,7 +29,10 @@ abstract class PhoneType extends AbstractType
             'country',
             CountryType::class,
             [
-                'attr' => ['is' => 'select-country'],
+                'attr' => [
+                    'is'      => 'select-country',
+                    'choices' => 'true',
+                ],
             ]
         );
         $builder->add('type');

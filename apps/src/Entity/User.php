@@ -133,6 +133,11 @@ class User implements UserInterface
      */
     protected $routes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=File::class, inversedBy="users")
+     */
+    private $avatar;
+
     public function __construct()
     {
         $this->editos            = new ArrayCollection();
@@ -506,6 +511,18 @@ class User implements UserInterface
                 $route->setRefuser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvatar(): ?File
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?File $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

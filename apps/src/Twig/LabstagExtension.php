@@ -7,6 +7,7 @@ use Labstag\Entity\User;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Service\GuardRouteService;
 use Labstag\Service\PhoneService;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Registry;
 use Twig\Extension\AbstractExtension;
@@ -26,16 +27,20 @@ class LabstagExtension extends AbstractExtension
 
     protected GroupeRepository $groupeRepository;
 
+    protected LoggerInterface $logger;
+
     const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     public function __construct(
         PhoneService $phoneService,
         Registry $workflows,
         TokenStorageInterface $token,
+        LoggerInterface $logger,
         GroupeRepository $groupeRepository,
         GuardRouteService $guardRouteService
     )
     {
+        $this->logger            = $logger;
         $this->guardRouteService = $guardRouteService;
         $this->groupeRepository  = $groupeRepository;
         $this->workflows         = $workflows;
@@ -175,7 +180,7 @@ class LabstagExtension extends AbstractExtension
 
         $newFile = 'prototype/'.$type.'.html.twig';
         if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
-            dump('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
+            $this->logger->info('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
 
             return $file;
         }
@@ -218,7 +223,7 @@ class LabstagExtension extends AbstractExtension
 
         $newFile = 'forms/'.$type.'.html.twig';
         if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
-            dump('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
+            $this->logger->info('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
 
             return $file;
         }

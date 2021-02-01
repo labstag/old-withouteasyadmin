@@ -8,7 +8,7 @@
 
 {%- block choice_widget_options -%}
     {% set selectedOnly = false %}
-    {% if attr.is is defined and attr.is != 'select-selector' %}
+    {% if attr.is is defined and attr.is != 'select-selector' and attr.choices is not defined %}
         {% set selectedOnly = true %}
     {% endif %}
     {% for group_label, choice in options %}

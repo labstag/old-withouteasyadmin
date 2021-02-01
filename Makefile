@@ -92,6 +92,8 @@ else ifeq ($(COMMAND_ARGS),dev)
 	$(DOCKER_EXECPHP) make composer dev
 else ifeq ($(COMMAND_ARGS),update)
 	$(DOCKER_EXECPHP) make composer update
+else ifeq ($(COMMAND_ARGS),install)
+	$(DOCKER_EXECPHP) make composer install
 else ifeq ($(COMMAND_ARGS),validate)
 	$(DOCKER_EXECPHP) make composer validate
 else
@@ -100,6 +102,7 @@ else
 	@echo "make composer ARGUMENT"
 	@echo "---"
 	@echo "suggests: suggestions package pour PHP"
+	@echo "install: install"
 	@echo "outdated: Packet php outdated"
 	@echo "fund: Discover how to help fund the maintenance of your dependencies."
 	@echo "prod: Installation version de prod"
@@ -155,6 +158,8 @@ ifeq ($(COMMAND_ARGS),dev)
 	@npm run encore-dev
 else ifeq ($(COMMAND_ARGS),watch)
 	@npm run encore-watch
+else ifeq ($(COMMAND_ARGS),build)
+	@npm run encore-build
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -162,6 +167,7 @@ else
 	@echo "---"
 	@echo "dev: créer les assets en version dev"
 	@echo "watch: créer les assets en version watch"
+	@echo "build: créer les assets en version prod"
 endif
 
 folders: mariadb_data dump ## Create folder

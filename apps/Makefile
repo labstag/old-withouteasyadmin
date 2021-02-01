@@ -68,6 +68,8 @@ else ifeq ($(COMMAND_ARGS),dev)
 	@composer install --no-progress --prefer-dist --optimize-autoloader
 else ifeq ($(COMMAND_ARGS),update)
 	@composer update
+else ifeq ($(COMMAND_ARGS),install)
+	@composer install
 else ifeq ($(COMMAND_ARGS),validate)
 	@composer validate
 else
@@ -81,6 +83,7 @@ else
 	@echo "prod: Installation version de prod"
 	@echo "dev: Installation version de dev"
 	@echo "update: COMPOSER update"
+	@echo "install: COMPOSER install"
 	@echo "validate: COMPOSER validate"
 endif
 

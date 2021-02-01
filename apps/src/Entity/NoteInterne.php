@@ -60,6 +60,11 @@ class NoteInterne
      */
     protected $state;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=File::class, inversedBy="noteInternes")
+     */
+    private $fond;
+
     public function __construct()
     {
         $this->dateDebut = new DateTime();
@@ -142,6 +147,18 @@ class NoteInterne
     public function setRefuser(?User $refuser): self
     {
         $this->refuser = $refuser;
+
+        return $this;
+    }
+
+    public function getFond(): ?File
+    {
+        return $this->fond;
+    }
+
+    public function setFond(?File $fond): self
+    {
+        $this->fond = $fond;
 
         return $this;
     }
