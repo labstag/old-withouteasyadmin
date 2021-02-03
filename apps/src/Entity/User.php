@@ -2,20 +2,26 @@
 
 namespace Labstag\Entity;
 
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Labstag\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Labstag\Annotation\Uploadable;
+use Labstag\Annotation\UploadableField;
+use Serializable;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Uploadable()
  */
-class User implements UserInterface
+class User implements UserInterface, Serializable
 {
 
     use SoftDeleteableEntity;
@@ -134,9 +140,14 @@ class User implements UserInterface
     protected $routes;
 
     /**
-     * @ORM\ManyToOne(targetEntity=File::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="users")
      */
-    private $avatar;
+    protected $avatar;
+
+    /**
+     * @UploadableField(filename="avatar", path="user/avatar")
+     */
+    protected $file;
 
     public function __construct()
     {
@@ -515,15 +526,47 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAvatar(): ?File
+    public function getAvatar(): ?Attachment
     {
         return $this->avatar;
     }
 
-    public function setAvatar(?File $avatar): self
+    public function setAvatar(?Attachment $avatar): self
     {
         $this->avatar = $avatar;
 
         return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file): self
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    public function serialize()
+    {
+        return serialize(
+            [
+                $this->id,
+                $this->username,
+                $this->password,
+            ]
+        );
+    }
+
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+        ) = unserialize($serialized);
     }
 }

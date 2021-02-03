@@ -8,6 +8,7 @@ use Labstag\FormType\SelectRefUserType;
 use Labstag\FormType\WysiwygType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -27,6 +28,12 @@ class EditoType extends AbstractType
         if ($options['data']->getRefUser() instanceof User) {
             $choices = [$options['data']->getRefUser()];
         }
+
+        $builder->add(
+            'file',
+            FileType::class,
+            ['required' => false]
+        );
 
         $builder->add(
             'refuser',

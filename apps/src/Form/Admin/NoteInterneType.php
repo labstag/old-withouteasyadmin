@@ -6,6 +6,7 @@ use Labstag\Entity\NoteInterne;
 use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,6 +44,12 @@ class NoteInterneType extends AbstractType
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
             ]
+        );
+
+        $builder->add(
+            'file',
+            FileType::class,
+            ['required' => false]
         );
         $builder->add(
             'refuser'

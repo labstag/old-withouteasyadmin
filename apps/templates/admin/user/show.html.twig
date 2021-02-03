@@ -14,6 +14,14 @@
                 <th>Email</th>
                 <td><a href="mailto:{{ entity.email }}">{{ entity.email }}</a></td>
             </tr>
+            {% if entity.avatar.name is defined %}
+            <tr>
+                <th>Avatar</th>
+                <td>
+                    <img src="{{ asset(entity.avatar.name) }}" />
+                </td>
+            </tr>
+            {% endif %}
             <tr>
                 <th>State</th>
                 <td>

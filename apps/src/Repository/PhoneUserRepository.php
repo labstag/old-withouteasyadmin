@@ -39,19 +39,13 @@ class PhoneUserRepository extends PhoneRepository
             'u'
         );
         $query->where(
-            'u.deletedAt=:userDeleteAt AND a.deletedAt=:adresseDeleteAt'
-        );
-        $query->setParameters(
-            [
-                'userDeleteAt'    => '',
-                'adresseDeleteAt' => '',
-            ]
+            'u.id IS NOT NULL'
         );
 
         return $query->getQuery();
     }
 
-    public function findTrashForAdmin(): Query
+    public function findTrashForAdmin(): array
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $query        = $queryBuilder->leftJoin(
@@ -59,15 +53,9 @@ class PhoneUserRepository extends PhoneRepository
             'u'
         );
         $query->where(
-            'u.deletedAt!=:userDeleteAt OR a.deletedAt!=:adresseDeleteAt'
-        );
-        $query->setParameters(
-            [
-                'userDeleteAt'    => '',
-                'adresseDeleteAt' => '',
-            ]
+            'u.deletedAt IS NOT NULL OR a.deletedAt IS NOT NULL'
         );
 
-        return $query->getQuery();
+        return $query->getQuery()->getResult();
     }
 }

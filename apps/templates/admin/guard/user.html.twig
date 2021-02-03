@@ -40,6 +40,10 @@
                         />
                 </tr>
                 {% endif %}
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">no records found</td>
+                </tr>
             {% endfor %}
             </tbody>
         </table>

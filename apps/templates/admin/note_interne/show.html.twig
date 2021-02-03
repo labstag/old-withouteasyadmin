@@ -18,6 +18,14 @@
                 <th>Date_fin</th>
                 <td>{{ entity.dateFin ? entity.dateFin|format_datetime('full', 'full', locale='fr') : '' }}</td>
             </tr>
+            {% if entity.fond.name is defined %}
+            <tr>
+                <th>Avatar</th>
+                <td>
+                    <img src="{{ asset(entity.fond.name) }}" />
+                </td>
+            </tr>
+            {% endif %}
             <tr>
                 <th>User</th>
                 <td>

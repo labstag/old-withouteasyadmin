@@ -2,15 +2,20 @@
 
 namespace Labstag\Entity;
 
+use DateTimeImmutable;
+use Symfony\Component\HttpFoundation\File\File;
 use Labstag\Repository\EditoRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Labstag\Annotation\Uploadable;
+use Labstag\Annotation\UploadableField;
 
 /**
  * @ORM\Entity(repositoryClass=EditoRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Uploadable()
  */
 class Edito
 {
@@ -48,9 +53,14 @@ class Edito
     protected $state;
 
     /**
-     * @ORM\ManyToOne(targetEntity=File::class, inversedBy="editos")
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="editos")
      */
     private $fond;
+
+    /**
+     * @UploadableField(filename="fond", path="edito/fond")
+     */
+    protected $file;
 
     public function __toString()
     {
@@ -108,14 +118,26 @@ class Edito
         return $this;
     }
 
-    public function getFond(): ?File
+    public function getFond(): ?Attachment
     {
         return $this->fond;
     }
 
-    public function setFond(?File $fond): self
+    public function setFond(?Attachment $fond): self
     {
         $this->fond = $fond;
+
+        return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file): self
+    {
+        $this->file = $file;
 
         return $this;
     }
