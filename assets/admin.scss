@@ -166,6 +166,14 @@ i{
     @extend .fa-sign-in-alt;
   }
 }
+.attachment-img{
+  img{
+    @extend .img-fluid;
+    @extend .img-thumbnail;
+    @extend .mx-auto;
+    @extend .d-block;
+  }
+}
 .link-delete, .link-destroy{
   @extend .btn;
   @extend .btn-outline-danger;

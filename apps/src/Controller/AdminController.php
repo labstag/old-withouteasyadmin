@@ -70,6 +70,7 @@ class AdminController extends AdminControllerLib
     {
         $this->headerTitle = 'Profil';
         $this->urlHome     = 'admin_profil';
+        $this->adminCrudService->modalAttachmentDelete();
         return $this->adminCrudService->update(
             ProfilType::class,
             $security->getUser(),

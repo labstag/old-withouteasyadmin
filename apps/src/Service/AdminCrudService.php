@@ -244,6 +244,14 @@ class AdminCrudService
         }
     }
 
+    public function modalAttachmentDelete(): void
+    {
+        $this->twig->addGlobal(
+            'modalAttachmentDelete',
+            true
+        );
+    }
+
     public function listOrTrash(
         ServiceEntityRepositoryLib $repository,
         array $methods,
@@ -457,7 +465,8 @@ class AdminCrudService
         object $entity,
         string $formType,
         RequestHandlerLib $handler,
-        array $url = []
+        array $url = [],
+        string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
         $routeCurrent = $this->request->get('_route');
@@ -488,7 +497,7 @@ class AdminCrudService
         }
 
         return $this->controller->render(
-            'admin/crud/form.html.twig',
+            $twig,
             [
                 'entity' => $entity,
                 'form'   => $form->createView(),
@@ -561,8 +570,8 @@ class AdminCrudService
             $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
             if (is_null($attachmentField)) {
                 $attachment = new Attachment();
-            }else{
-                $attachment      = $this->attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
+            } else {
+                $attachment = $this->attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
                 if (!$attachment instanceof Attachment) {
                     $attachment = new Attachment();
                 }

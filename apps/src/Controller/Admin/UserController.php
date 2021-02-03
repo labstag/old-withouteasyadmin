@@ -71,7 +71,8 @@ class UserController extends AdminControllerLib
             $user,
             UserType::class,
             $requestHandler,
-            ['list' => 'admin_user_index']
+            ['list' => 'admin_user_index'],
+            'admin/user/form.html.twig'
         );
     }
 
@@ -82,6 +83,7 @@ class UserController extends AdminControllerLib
      */
     public function showOrPreview(User $user): Response
     {
+        $this->adminCrudService->modalAttachmentDelete();
         return $this->adminCrudService->showOrPreview(
             $user,
             'admin/user/show.html.twig',
@@ -157,7 +159,8 @@ class UserController extends AdminControllerLib
                 'list'   => 'admin_user_index',
                 'guard'  => 'admin_user_guard',
                 'show'   => 'admin_user_show',
-            ]
+            ],
+            'admin/user/form.html.twig'
         );
     }
 }

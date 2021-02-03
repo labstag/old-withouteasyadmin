@@ -61,14 +61,13 @@ services:
       - { name: knp_menu.menu, alias: admin_profilmenu }
   Labstag\Swagger\CheckSwaggerDecorator:
     decorates: 'api_platform.swagger.normalizer.api_gateway'
-    autoconfigure: false
   Labstag\Swagger\SearchSwaggerDecorator:
     decorates: 'api_platform.swagger.normalizer.api_gateway'
-    autoconfigure: false
   Labstag\Swagger\GuardSwaggerDecorator:
     decorates: 'api_platform.swagger.normalizer.api_gateway'
-    autoconfigure: false
   Labstag\Swagger\ActionsSwaggerDecorator:
+    decorates: 'api_platform.swagger.normalizer.api_gateway'
+  Labstag\Swagger\AttachmentSwaggerDecorator:
     decorates: 'api_platform.swagger.normalizer.api_gateway'
   Labstag\Reader\UploadAnnotationReader:
     arguments: ["@annotations.reader"]

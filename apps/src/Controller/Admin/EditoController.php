@@ -66,7 +66,8 @@ class EditoController extends AdminControllerLib
             new Edito(),
             EditoType::class,
             $requestHandler,
-            ['list' => 'admin_edito_index']
+            ['list' => 'admin_edito_index'],
+            'admin/edito/form.html.twig'
         );
     }
 
@@ -96,6 +97,7 @@ class EditoController extends AdminControllerLib
      */
     public function edit(Edito $edito, EditoRequestHandler $requestHandler): Response
     {
+        $this->adminCrudService->modalAttachmentDelete();
         return $this->adminCrudService->update(
             EditoType::class,
             $edito,
@@ -104,7 +106,8 @@ class EditoController extends AdminControllerLib
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_edito_index',
                 'show'   => 'admin_edito_show',
-            ]
+            ],
+            'admin/edito/form.html.twig'
         );
     }
 }

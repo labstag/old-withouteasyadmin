@@ -2,16 +2,16 @@
 
 namespace Labstag\Swagger;
 
-use Labstag\Controller\Api\ActionsController;
+use Labstag\Controller\Api\AttachmentDecorator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Adds the Swagger documentation for the ActionsController.
+ * Adds the Swagger documentation for the AttachmentDecorator.
  *
- * @see ActionsController
+ * @see AttachmentDecorator
  */
-final class ActionsSwaggerDecorator implements NormalizerInterface
+final class AttachmentSwaggerDecorator implements NormalizerInterface
 {
 
     protected NormalizerInterface $decorated;
@@ -21,248 +21,183 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $this->decorated = $decorated;
     }
 
+    private function setUserAvatar(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'User avatar.',
+            'tags'       => ['Attachment'],
+            'parameters' => [
+                [
+                    'name'        => 'entity',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'entity',
+                    'schema'      => ['type' => 'string'],
+                ],
+                [
+                    'name'        => '_token',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'token',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'isvalid' => [
+                                        'type'    => 'boolean',
+                                        'example' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/attachment/user/avatar/{entity}']['delete'] = $statsEndpoint;
+    }
+
+    private function setProfilAvatar(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'Profil avatar.',
+            'tags'       => ['Attachment'],
+            'parameters' => [
+                [
+                    'name'        => '_token',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'token',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'isvalid' => [
+                                        'type'    => 'boolean',
+                                        'example' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/attachment/profil/avatar']['delete'] = $statsEndpoint;
+    }
+
+    private function setNoteInterneFond(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'node interne Fond.',
+            'tags'       => ['Attachment'],
+            'parameters' => [
+                [
+                    'name'        => 'entity',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'entity',
+                    'schema'      => ['type' => 'string'],
+                ],
+                [
+                    'name'        => '_token',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'token',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'isvalid' => [
+                                        'type'    => 'boolean',
+                                        'example' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/attachment/noteinterne/fond/{entity}']['delete'] = $statsEndpoint;
+    }
+
+    private function setEditoFond(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'edito fond.',
+            'tags'       => ['Attachment'],
+            'parameters' => [
+                [
+                    'name'        => 'entity',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'entity',
+                    'schema'      => ['type' => 'string'],
+                ],
+                [
+                    'name'        => '_token',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'token',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'isvalid' => [
+                                        'type'    => 'boolean',
+                                        'example' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/attachment/edito/fond/{entity}']['delete'] = $statsEndpoint;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function normalize($object, string $format = null, array $context = [])
     {
         $docs = $this->decorated->normalize($object, $format, $context);
-        $this->setEmpty($docs);
-        $this->setRestore($docs);
-        $this->setDestroy($docs);
-        $this->setDelete($docs);
-        $this->setWorkflow($docs);
+        $this->setProfilAvatar($docs);
+        $this->setUserAvatar($docs);
+        $this->setNoteInterneFond($docs);
+        $this->setEditoFond($docs);
 
         return $docs;
-    }
-
-    protected function setWorkflow(&$docs)
-    {
-        $statsEndpoint = [
-            'summary'    => 'workflow.',
-            'tags'       => ['Actions'],
-            'parameters' => [
-                [
-                    'name'        => 'entity',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entity',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'state',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'state',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'id',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'id',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $docs['paths']['/api/actions/workflow/{entity}/{state}/{id}']['post'] = $statsEndpoint;
-    }
-
-    protected function setEmpty(&$docs)
-    {
-        $statsEndpoint = [
-            'summary'    => 'empty entity.',
-            'tags'       => ['Actions'],
-            'parameters' => [
-                [
-                    'name'        => 'entity',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entity',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $docs['paths']['/api/actions/empty/{entity}']['delete'] = $statsEndpoint;
-    }
-
-    protected function setRestore(&$docs)
-    {
-        $statsEndpoint = [
-            'summary'    => 'restore.',
-            'tags'       => ['Actions'],
-            'parameters' => [
-                [
-                    'name'        => 'country',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'country code',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'phone',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'phone',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $docs['paths']['/api/actions/restore/{entity}/{id}']['post'] = $statsEndpoint;
-    }
-
-    protected function setDestroy(&$docs)
-    {
-        $statsEndpoint = [
-            'summary'    => 'destroy.',
-            'tags'       => ['Actions'],
-            'parameters' => [
-                [
-                    'name'        => 'country',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'country code',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'phone',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'phone',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $docs['paths']['/api/actions/destroy/{entity}/{id}']['delete'] = $statsEndpoint;
-    }
-
-    protected function setDelete(&$docs)
-    {
-        $statsEndpoint = [
-            'summary'    => 'Delete.',
-            'tags'       => ['Actions'],
-            'parameters' => [
-                [
-                    'name'        => 'country',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'country code',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'phone',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'phone',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $docs['paths']['/api/actions/delete/{entity}/{id}']['delete'] = $statsEndpoint;
     }
 
     /**

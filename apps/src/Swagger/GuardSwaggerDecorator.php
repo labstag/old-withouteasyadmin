@@ -71,7 +71,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
                     'schema'      => ['type' => 'string'],
                 ],
                 [
-                    'name'        => 'token',
+                    'name'        => '_token',
                     'in'          => 'query',
                     'required'    => true,
                     'description' => 'token',
@@ -123,7 +123,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
                     'schema'      => ['type' => 'string'],
                 ],
                 [
-                    'name'        => 'token',
+                    'name'        => '_token',
                     'in'          => 'query',
                     'required'    => true,
                     'description' => 'token',

@@ -89,7 +89,7 @@ class LabstagExtension extends AbstractExtension
         ];
     }
 
-    public function getAttachment($data): ?string
+    public function getAttachment($data): ?Attachment
     {
         if (is_null($data)) {
             return null;
@@ -101,7 +101,12 @@ class LabstagExtension extends AbstractExtension
             return null;
         }
 
-        return $attachment->getName();
+        $file = $attachment->getName();
+        if (!is_file($file)) {
+            return null;
+        }
+
+        return $attachment;
     }
 
     public function guardRouteEnableUser(string $route, User $user): bool

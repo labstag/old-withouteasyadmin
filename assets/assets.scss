@@ -54,7 +54,7 @@ a{
   }
 }
 
-.btn-delete{
+.btn-delete, .attachment-delete{
   @extend .btn;
   @extend .btn-danger;
   i{
@@ -116,7 +116,7 @@ legend{
   }
 }
 
-#deleteModal, #destroyModal, #emptyModal, #restoreModal, #workflowModal{
+#deleteModal, #deleteAttachmentModal, #destroyModal, #emptyModal, #restoreModal, #workflowModal{
   @extend .modal;
   @extend .fade;
 }
@@ -131,7 +131,7 @@ legend{
       @extend .fa-ban;
     }
   }
-  .confirm-delete, .confirm-destroy, .confirm-empty{
+  .confirm-delete, .confirm-destroy, .confirm-empty, .confirm-deleteattachment{
     @extend .btn;
     @extend .btn-outline-danger;
     i{
