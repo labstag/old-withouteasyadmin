@@ -1,6 +1,6 @@
 {% use "tmpl/form_themes.html.twig" %}
 {% set state = guard_route('api_check_phone') %}
-{% if state == false %}
+{% if state == true %}
     {% set url = path('api_check_phone', {'_format': 'json'}) %}
 {% else %}
     {% set url = '#' %}

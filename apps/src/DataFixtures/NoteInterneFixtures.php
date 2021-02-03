@@ -54,7 +54,7 @@ class NoteInterneFixtures extends FixtureLib implements DependentFixtureInterfac
     public function getDependencies()
     {
         return [
-            CacheFixtures::class,
+            DataFixtures::class,
             UserFixtures::class,
         ];
     }

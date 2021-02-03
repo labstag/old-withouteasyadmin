@@ -26,8 +26,9 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.mailhog-labstag.rule=Host(`mailhog.labstag.lxc`)"
-        - "traefik.http.routers.mailhog-labstag.entrypoints=web"
+        - "traefik.http.routers.mailhog-labstag.rule=Host(`mailhog-labstag.traefik.me`)"
+        - "traefik.http.routers.mailhog-labstag-tls.tls.domains[0].main=mailhog-labstag.traefik.me"
+        - "traefik.http.routers.mailhog-labstag-tls.tls.domains[0].sans=mailhog-labstag-*.traefik.me"
         - "traefik.http.services.mailhog-labstag.loadbalancer.server.port=8025"
   mercure:
     image: dunglas/mercure:v0.11
@@ -44,8 +45,9 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.mercure-labstag.rule=Host(`mercure.labstag.lxc`)"
-        - "traefik.http.routers.mercure-labstag.entrypoints=web"
+        - "traefik.http.routers.mercure-labstag.rule=Host(`mercure-labstag.traefik.me`)"
+        - "traefik.http.routers.mercure-labstag-tls.tls.domains[0].main=mercure-labstag.traefik.me"
+        - "traefik.http.routers.mercure-labstag-tls.tls.domains[0].sans=mercure-labstag-*.traefik.me"
         - "traefik.http.services.mercure-labstag.loadbalancer.server.port=80"
   mariadb:
     image: mariadb:10.5.8
@@ -76,11 +78,10 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.www-labstag.rule=Host(`labstag.lxc`, `www.labstag.lxc`, `labstag.letoullec.fr`)"
-        - "traefik.http.middlewares.labstagredirectregex.redirectregex.regex=^http://labstag.lxc/(.*)"
-        - "traefik.http.middlewares.labstagredirectregex.redirectregex.replacement=http://www.labstag.lxc/$${1}"
-        - "traefik.http.routers.www-labstag.entrypoints=web"
-        - "traefik.http.services.www-labstag.loadbalancer.server.port=80"
+        - "traefik.http.routers.labstag.rule=Host(`labstag.traefik.me`)"
+        - "traefik.http.routers.labstag-tls.tls.domains[0].main=labstag.traefik.me"
+        - "traefik.http.routers.labstag-tls.tls.domains[0].sans=labstag-*.traefik.me"
+        - "traefik.http.services.labstag.loadbalancer.server.port=80"
   phpmyadmin:
     image: phpmyadmin:5.0.2
     environment:
@@ -94,8 +95,9 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.phpmyadmin-labstag.rule=Host(`phpmyadmin.labstag.lxc`, `phpmyadmin.letoullec.fr`)"
-        - "traefik.http.routers.phpmyadmin-labstag.entrypoints=web"
+        - "traefik.http.routers.phpmyadmin-labstag.rule=Host(`phpmyadmin-labstag.traefik.me`)"
+        - "traefik.http.routers.phpmyadmin-labstag-tls.tls.domains[0].main=phpmyadmin-labstag.traefik.me"
+        - "traefik.http.routers.phpmyadmin-labstag-tls.tls.domains[0].sans=phpmyadmin-labstag-*.traefik.me"
         - "traefik.http.services.phpmyadmin-labstag.loadbalancer.server.port=80"
   phpfpm:
     image: koromerzhin/phpfpm:7.4.12-symfony-xdebug

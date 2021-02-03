@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\Entity\Attachment;
 use Symfony\Component\Workflow\Registry;
 
 /**
@@ -55,11 +56,20 @@ class ActionsController extends AbstractController
 
         $data['action'] = true;
         $all            = $repository->findTrashForAdmin();
+        $files          = [];
         foreach ($all as $entity) {
             $this->entityManager->remove($entity);
+            if ($entity instanceof Attachment) {
+                $files[] = $entity->getName();
+            }
         }
 
         $this->entityManager->flush();
+        foreach ($files as $file) {
+            if ('' != $file && is_file($file)) {
+                unlink($file);
+            }
+        }
 
         return new JsonResponse($data);
     }
@@ -124,7 +134,14 @@ class ActionsController extends AbstractController
 
         $data['action'] = true;
         $this->entityManager->remove($entity);
+        if ($entity instanceof Attachment) {
+            $file = $entity->getName();
+        }
+
         $this->entityManager->flush();
+        if ('' != $file && is_file($file)) {
+            unlink($file);
+        }
 
         return new JsonResponse($data);
     }

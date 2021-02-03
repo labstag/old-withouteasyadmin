@@ -18,6 +18,15 @@
                 <th>Date_fin</th>
                 <td>{{ entity.dateFin ? entity.dateFin|format_datetime('full', 'full', locale='fr') : '' }}</td>
             </tr>
+            {% set fond = attachment(entity.fond) %}
+            {% if fond != null %}
+            <tr>
+                <th>Fond</th>
+                <td>
+                    <img src="{{ asset(fond.name) }}" />
+                </td>
+            </tr>
+            {% endif %}
             <tr>
                 <th>User</th>
                 <td>

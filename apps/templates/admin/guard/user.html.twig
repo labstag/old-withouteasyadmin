@@ -19,28 +19,38 @@
                 </tr>
             </thead>
             <tbody>
-            {% for route in all %}
-                {% set enable = guard_route_enable_user(route.name, user) %}
-                {% set state = guard_route('api_guard_setuser') %}
-                {% if enable and state %}
+            {% if user.groupe.code != 'superadmin' %}
+                {% for route in all %}
+                    {% set enable = guard_route_enable_user(route.name, user) %}
+                    {% set state = guard_route('api_guard_setuser') %}
+                    {% if enable and state %}
+                    <tr>
+                        <td>
+                            {{ route.name }}
+                        </td>
+                        <td>
+                            <guard-refgroup data-route="{{ route.name|e }}" />
+                        </td>
+                        <td>
+                            <guard-user
+                                data-state=0
+                                data-user="{{ user.id|e }}"
+                                data-route="{{ route.name|e }}"
+                                data-url="{{ path('api_guard_setuser', {'route': route, 'user': user}) }}"
+                                data-token="{{ csrf_token('guard-'~ user.id ~'-route-' ~ route.name) }}"
+                            />
+                    </tr>
+                    {% endif %}
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center">no records found</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
                 <tr>
-                    <td>
-                        {{ route.name }}
-                    </td>
-                    <td>
-                        <guard-refgroup data-route="{{ route.name|e }}" />
-                    </td>
-                    <td>
-                        <guard-user
-                            data-state=0
-                            data-user="{{ user.id|e }}"
-                            data-route="{{ route.name|e }}"
-                            data-url="{{ path('api_guard_setuser', {'route': route, 'user': user}) }}"
-                            data-token="{{ csrf_token('guard-'~ user.id ~'-route-' ~ route.name) }}"
-                        />
+                    <td colspan="3" class="text-center">no records found</td>
                 </tr>
-                {% endif %}
-            {% endfor %}
+            {% endif %}
             </tbody>
         </table>
     {% endif %}

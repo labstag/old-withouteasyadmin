@@ -1,0 +1,40 @@
+{% import "admin/macro.html.twig" as macro_admin %}
+{% extends 'admin/attachment/layout.html.twig' %}
+{% block body %}
+    <table is="table-datatable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Mime type</th>
+                <th>Size</th>
+                <th>Dimensions</th>
+                <th>Download</th>
+                <th>State</th>
+                <th><i title="Actions"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in pagination %}
+            <tr>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.mimeType }}</td>
+                <td>{{ entity.size }}</td>
+                <td>{{ entity.dimensions|json_encode }}</td>
+                <td><a href="{{ asset(entity.name) }}" target="_blank">Voir le fichier</a></td>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ macro_admin.actions(entity, actions) }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7" class="text-center">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

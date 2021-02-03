@@ -32,6 +32,9 @@
             {% if modalWorkflow is defined %}
                 {{ modal.Workflow() }}
             {% endif %}
+            {% if modalAttachmentDelete is defined %}
+                {{ modal.attachmentDelete() }}
+            {% endif %}
         {% endblock %}
     </body>
 </html>
