@@ -26,7 +26,7 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            CacheFixtures::class,
+            DataFixtures::class,
             UserFixtures::class,
         ];
     }

@@ -78,7 +78,7 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function getDependencies()
     {
-        return [CacheFixtures::class];
+        return [DataFixtures::class];
     }
 
     protected function addTemplate(Generator $faker): void
