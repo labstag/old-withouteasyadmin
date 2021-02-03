@@ -16,28 +16,38 @@
                 </tr>
             </thead>
             <tbody>
-            {% for route in all %}
-                {% set enable = guard_route_enable_group(route.name, group) %}
-                {% if enable %}
-                <tr>
-                    <td>
-                        {{ route.name }}
-                    </td>
-                    <td>
-                        {% set state = guard_route('api_guard_setgroup') %}
-                        {% if state == true %}
-                            <guard-group
-                                title="{{ group.name|e }}"
-                                data-state=0
-                                data-groupe="{{ group.code|e }}"
-                                data-route="{{ route.name|e }}"
-                                data-url="{{ path('api_guard_setgroup', {'route': route, 'groupe': group}) }}"
-                                data-token="{{ csrf_token('guard-'~ group.id ~'-route-' ~ route.name) }}"
-                            />
+            {% if group.code != 'superadmin' %}
+                {% for route in all %}
+                    {% set enable = guard_route_enable_group(route.name, group) %}
+                    {% if enable %}
+                    <tr>
+                        <td>
+                            {{ route.name }}
+                        </td>
+                        <td>
+                            {% set state = guard_route('api_guard_setgroup') %}
+                            {% if state == true %}
+                                <guard-group
+                                    title="{{ group.name|e }}"
+                                    data-state=0
+                                    data-groupe="{{ group.code|e }}"
+                                    data-route="{{ route.name|e }}"
+                                    data-url="{{ path('api_guard_setgroup', {'route': route, 'groupe': group}) }}"
+                                    data-token="{{ csrf_token('guard-'~ group.id ~'-route-' ~ route.name) }}"
+                                />
+                            {% endif %}
+                    </tr>
                         {% endif %}
+                {% else %}
+                    <tr>
+                        <td colspan="2" class="text-center">no records found</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="2" class="text-center">no records found</td>
                 </tr>
-                    {% endif %}
-            {% endfor %}
+            {% endif %}
             </tbody>
         </table>
     {% endif %}
