@@ -67,7 +67,8 @@ class NoteInterneController extends AdminControllerLib
             new NoteInterne(),
             NoteInterneType::class,
             $requestHandler,
-            ['list' => 'admin_noteinterne_index']
+            ['list' => 'admin_noteinterne_index'],
+            'admin/note_interne/form.html.twig'
         );
     }
 
@@ -110,7 +111,8 @@ class NoteInterneController extends AdminControllerLib
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_noteinterne_index',
                 'show'   => 'admin_noteinterne_show',
-            ]
+            ],
+            'admin/note_interne/form.html.twig'
         );
     }
 }
