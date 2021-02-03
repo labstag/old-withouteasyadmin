@@ -57,6 +57,8 @@ jobs:
         run: make composer dev
       - name: linter readme.md
         run: make linter readme
+      - name: linter SCSS
+        run: make linter stylelint
       - name: linter PHP Code Sniffer
         run: make linter phpcs-onlyerror
       - name: linter PHP MD

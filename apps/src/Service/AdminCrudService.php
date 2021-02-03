@@ -567,17 +567,8 @@ class AdminCrudService
                 continue;
             }
 
-            $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
-            if (is_null($attachmentField)) {
-                $attachment = new Attachment();
-            } else {
-                $attachment = $this->attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
-                if (!$attachment instanceof Attachment) {
-                    $attachment = new Attachment();
-                }
-            }
-
-            $old = clone $attachment;
+            $attachment = $this->setAttachment($accessor, $entity, $annotation);
+            $old        = clone $attachment;
 
             $filename = $file->getClientOriginalName();
             $path     = $this->container->get('file_directory').'/'.$annotation->getPath();
@@ -600,5 +591,21 @@ class AdminCrudService
             $this->attachmentRH->handle($old, $attachment);
             $accessor->setValue($entity, $annotation->getFilename(), $attachment);
         }
+    }
+
+    protected function setAttachment($accessor, $entity, $annotation): Attachment
+    {
+        $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
+        if (is_null($attachmentField)) {
+            $attachment = new Attachment();
+            return $attachment;
+        }
+
+        $attachment = $this->attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
+        if (!$attachment instanceof Attachment) {
+            $attachment = new Attachment();
+        }
+
+        return $attachment;
     }
 }
