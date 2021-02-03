@@ -1,4 +1,4 @@
-{% extends 'admin/note_interne/layout.html.twig' %}
+{% extends 'admin/edito/layout.html.twig' %}
 {% block body %}
     <table>
         <tbody>
@@ -10,20 +10,11 @@
                 <th>Content</th>
                 <td>{{ entity.content|raw }}</td>
             </tr>
+            {% if entity.fond.name is defined %}
             <tr>
-                <th>Date_debut</th>
-                <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime('full', 'full', locale='fr') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Date_fin</th>
-                <td>{{ entity.dateFin ? entity.dateFin|format_datetime('full', 'full', locale='fr') : '' }}</td>
-            </tr>
-            {% set fond = attachment(entity.fond) %}
-            {% if fond != null %}
-            <tr>
-                <th>Fond</th>
+                <th>Avatar</th>
                 <td>
-                    <img src="{{ asset(fond) }}" />
+                    <img src="{{ asset(entity.fond.name) }}" />
                 </td>
             </tr>
             {% endif %}

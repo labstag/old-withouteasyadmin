@@ -2,21 +2,30 @@
     {% set title = title|trans %}
     {% set state = guard_route(url) %}
     {% if state == true %}
-        <link-show data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}" />
+        <link-show
+            data-href="{{ path(url, {'id': entity.id}) }}"
+            data-title="{{ title|e }}"
+        ></link-show>
     {% endif %}
 {% endmacro %}
 {% macro guard(entity, url, title) %}
     {% set title = title|trans %}
     {% set state = guard_route(url) %}
     {% if state == true %}
-        <link-guard data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}" />
+        <link-guard
+            data-href="{{ path(url, {'id': entity.id}) }}"
+            data-title="{{ title|e }}"
+        ><link-guard>
     {% endif %}
 {% endmacro %}
 {% macro edit(entity, url) %}
     {% set title = "Edit"|trans %}
     {% set state = guard_route(url) %}
     {% if state == true %}
-        <link-edit data-href="{{ path(url, {'id': entity.id}) }}" data-title="#{{ title|e }}" />
+        <link-edit
+            data-href="{{ path(url, {'id': entity.id}) }}"
+            data-title="#{{ title|e }}"
+        ></link-edit>
     {% endif %}
 {% endmacro %}
 {% macro delete(entity, urlDelete, urlList) %}
@@ -30,7 +39,7 @@
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
-        />
+        ></link-delete>
     {% endif %}
 {% endmacro %}
 {% macro destroy(entity, urlDelete, urlList) %}
@@ -45,7 +54,7 @@
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
-        />
+        ></link-destroy>
     {% endif %}
 {% endmacro %}
 {% macro restore(entity, urlDelete, urlList) %}
@@ -60,7 +69,7 @@
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
-        />
+        ></link-restore>
     {% endif %}
 {% endmacro %}
 {% macro workflow(entity, actions) %}
@@ -74,7 +83,7 @@
                     data-name="{{ transition.name }}"
                     data-token="{{ csrf_token('workflow-' ~ transition.name ~ entity.id) }}"
                     data-redirect="{{ path(actions['list']) }}"
-                />
+                ></workflow-action>
             {% endfor %}
             </div>
         {% endif %}

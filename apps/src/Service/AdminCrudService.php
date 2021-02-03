@@ -10,6 +10,7 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\FileRequestHandler;
 use Labstag\Service\AdminBoutonService;
@@ -55,6 +56,8 @@ class AdminCrudService
 
     protected AttachmentRequestHandler $attachmentRH;
 
+    protected AttachmentRepository $attachmentRepository;
+
     protected string $headerTitle = '';
 
     protected string $urlHome = '';
@@ -69,19 +72,21 @@ class AdminCrudService
         FormFactoryInterface $formFactory,
         RouterInterface $router,
         ContainerBagInterface $container,
+        AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         SessionInterface $session
     )
     {
-        $this->entityManager     = $entityManager;
-        $this->attachmentRH      = $attachmentRH;
-        $this->uploadAnnotReader = $uploadAnnotReader;
-        $this->container         = $container;
-        $this->twig              = $twig;
-        $this->session           = $session;
-        $this->router            = $router;
-        $this->formFactory       = $formFactory;
-        $this->requestStack      = $requestStack;
+        $this->attachmentRepository = $attachmentRepository;
+        $this->entityManager        = $entityManager;
+        $this->attachmentRH         = $attachmentRH;
+        $this->uploadAnnotReader    = $uploadAnnotReader;
+        $this->container            = $container;
+        $this->twig                 = $twig;
+        $this->session              = $session;
+        $this->router               = $router;
+        $this->formFactory          = $formFactory;
+        $this->requestStack         = $requestStack;
         /** @var Request $request */
         $request                  = $this->requestStack->getCurrentRequest();
         $this->request            = $request;
@@ -553,7 +558,8 @@ class AdminCrudService
                 continue;
             }
 
-            $attachment = $accessor->getValue($entity, $annotation->getFilename());
+            $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
+            $attachment      = $this->attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
             if (!$attachment instanceof Attachment) {
                 $attachment = new Attachment();
             }
@@ -561,7 +567,7 @@ class AdminCrudService
             $old = clone $attachment;
 
             $filename = $file->getClientOriginalName();
-            $path     = $annotation->getPath();
+            $path     = $this->container->get('file_directory').'/'.$annotation->getPath();
             $file->move(
                 $path,
                 $filename
@@ -571,7 +577,13 @@ class AdminCrudService
             $attachment->setSize(filesize($file));
             $size = getimagesize($file);
             $attachment->setDimensions(is_array($size) ? $size : []);
-            $attachment->setName($file);
+            $attachment->setName(
+                str_replace(
+                    $this->container->get('kernel.project_dir').'/public/',
+                    '',
+                    $file
+                )
+            );
             $this->attachmentRH->handle($old, $attachment);
             $accessor->setValue($entity, $annotation->getFilename(), $attachment);
         }

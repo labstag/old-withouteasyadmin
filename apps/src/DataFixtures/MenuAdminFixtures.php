@@ -28,6 +28,12 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
                 ],
             ],
             [
+                'libelle' => 'Attachment',
+                'data'    => [
+                    'attr' => ['data-href' => 'admin_attachment_index'],
+                ],
+            ],
+            [
                 'libelle' => 'Geocode',
                 'data'    => [
                     'attr' => ['data-href' => 'admin_geocode_index'],

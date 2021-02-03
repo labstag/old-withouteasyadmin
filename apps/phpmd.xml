@@ -10,6 +10,7 @@
 		<properties>
             <property name="exceptions">
               <value>
+                \Symfony\Component\PropertyAccess\PropertyAccess,
                 \Symfony\Component\Intl\Locale,
                 \Symfony\Component\Intl\Countries,
                 \Symfony\Component\HttpFoundation\Response,
