@@ -54,7 +54,10 @@ class UserType extends AbstractType
         $builder->add(
             'file',
             FileType::class,
-            ['required' => false]
+            [
+                'required' => false,
+                'attr'     => ['accept' => 'image/*'],
+            ]
         );
         if (isset($options['data']) && !is_null($options['data']->getId())) {
             $emails = [];

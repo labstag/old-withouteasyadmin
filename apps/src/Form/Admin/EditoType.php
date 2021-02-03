@@ -32,7 +32,10 @@ class EditoType extends AbstractType
         $builder->add(
             'file',
             FileType::class,
-            ['required' => false]
+            [
+                'required' => false,
+                'attr'     => ['accept' => 'image/*'],
+            ]
         );
 
         $builder->add(
