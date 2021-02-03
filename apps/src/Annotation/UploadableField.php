@@ -10,7 +10,6 @@ use InvalidArgumentException;
  */
 class UploadableField
 {
-
     private $filename;
 
     private $path;

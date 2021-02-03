@@ -19,7 +19,6 @@ use Labstag\Annotation\UploadableField;
  */
 class Edito
 {
-
     use SoftDeleteableEntity;
 
     /**

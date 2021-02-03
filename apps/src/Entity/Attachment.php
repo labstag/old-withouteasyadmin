@@ -15,7 +15,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Attachment
 {
-
     use SoftDeleteableEntity;
 
     /**

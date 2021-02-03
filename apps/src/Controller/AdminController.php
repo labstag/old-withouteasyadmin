@@ -42,8 +42,7 @@ class AdminController extends AdminControllerLib
         EventDispatcherInterface $dispatcher,
         DataService $dataService,
         AdminBoutonService $adminBoutonService
-    ): Response
-    {
+    ): Response {
         $this->headerTitle = 'Paramètres';
         $this->urlHome     = 'admin_param';
         $config            = $dataService->getConfig();
@@ -66,7 +65,7 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/profil", name="admin_profil", methods={"GET","POST"})
      */
-    public function profil( Security $security, UserRequestHandler $requestHandler): Response
+    public function profil(Security $security, UserRequestHandler $requestHandler): Response
     {
         $this->headerTitle = 'Profil';
         $this->urlHome     = 'admin_profil';
