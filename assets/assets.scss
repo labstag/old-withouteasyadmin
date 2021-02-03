@@ -7,160 +7,193 @@
 
 label {
   &.required {
-    &:after {
+    &::after {
       content: " *";
       color: red;
     }
   }
 }
-a{
+
+a {
   &[href^="tel:"] {
-    &:before{
+    &::before {
       @extend .fas;
       @extend .fa-phone;
-      color: #000000;
+
+      color: #000;
       padding-right: 5px;
     }
   }
+
   &[href^="mailto:"] {
-    &:before{
+    &::before {
       @extend .fas;
       @extend .fa-at;
-      color: #FF0000;
+
+      color: #f00;
       padding-right: 5px;
     }
   }
 }
 
-.btn-togglefieldset{
+.btn-togglefieldset {
   @extend .btn;
   @extend .btn-info;
-  .min{
+
+  .min {
     @extend .fas;
     @extend .fa-window-minimize;
   }
-  .max{
+
+  .max {
     @extend .far;
     @extend .fa-window-maximize;
   }
 }
 
-.btn-addcollection{
+.btn-addcollection {
   @extend .btn;
   @extend .btn-primary;
-  i{
+
+  i {
     @extend .fas;
     @extend .fa-plus;
   }
 }
 
-.btn-delete, .attachment-delete{
+.btn-delete,
+.attachment-delete {
   @extend .btn;
   @extend .btn-danger;
-  i{
+
+  i {
     @extend .fas;
     @extend .fa-trash-alt;
   }
 }
 
-fieldset{
+fieldset {
   @extend .shadow;
   @extend .p-3;
   @extend .mb-5;
   @extend .bg-white;
 }
 
-.CollectionRow{
+.CollectionRow {
   @extend .shadow;
   @extend .p-3;
   @extend .mb-5;
   @extend .bg-white;
 }
 
-.form-group{
+.form-group {
   @extend .mb-1;
 }
 
-.RequireFormInfo{
+.RequireFormInfo {
   text-align: right;
-  span{
+
+  span {
     font-weight: bold;
     color: red;
   }
 }
 
-.form-control{
+.form-control {
   appearance: revert;
 }
 
-.itemConnect{
+.itemConnect {
   @extend .col-md-4;
 }
 
-.th-inner{
-  .asc, .desc, .both{
+.th-inner {
+  .asc,
+  .desc,
+  .both {
     @extend .text-decoration-none;
+
     background-image: none !important;
   }
 }
 
-legend{
+legend {
   font-weight: bold;
 }
 
-.GpsIcon{
-  &:before{
+.GpsIcon {
+  &::before {
     @extend .fas;
     @extend .fa-map-marker-alt;
+
     padding-right: 5px;
   }
 }
 
-#deleteModal, #deleteAttachmentModal, #destroyModal, #emptyModal, #restoreModal, #workflowModal{
+#deleteModal,
+#deleteAttachmentModal,
+#destroyModal,
+#emptyModal,
+#restoreModal,
+#workflowModal {
   @extend .modal;
   @extend .fade;
 }
 
-.modal-dialog{
+.modal-dialog {
   @extend .modal-dialog-centered;
-  .BtnCancel{
+
+  .BtnCancel {
     @extend .btn;
     @extend .btn-outline-success;
-    i{
+
+    i {
       @extend .fas;
       @extend .fa-ban;
     }
   }
-  .confirm-delete, .confirm-destroy, .confirm-empty, .confirm-deleteattachment{
+
+  .confirm-delete,
+  .confirm-destroy,
+  .confirm-empty,
+  .confirm-deleteattachment {
     @extend .btn;
     @extend .btn-outline-danger;
-    i{
+
+    i {
       @extend .fas;
       @extend .fa-trash-alt;
     }
   }
-  .confirm-restore{
+
+  .confirm-restore {
     @extend .btn;
     @extend .btn-outline-danger;
-    i{
+
+    i {
       @extend .fas;
       @extend .fa-trash-restore;
     }
   }
-  .confirm-workflow{
+
+  .confirm-workflow {
     @extend .btn;
     @extend .btn-outline-danger;
-    i{
+
+    i {
       @extend .fas;
       @extend .fa-sign-in-alt;
     }
   }
 }
+
 @media all and (min-width: 992px) {
   .nav-item {
     .dropdown-menu {
       display: none;
+      margin-top: 0;
     }
+
     &:hover {
       .nav-link {
         color: #fff;
@@ -170,25 +203,25 @@ legend{
         display: block;
       }
     }
-
-    .dropdown-menu {
-      margin-top: 0;
-    }
   }
 }
-.formError{
+
+.formError {
   @extend .badge;
   @extend .badge-danger;
   @extend .text-uppercase;
 }
 
-.checkOK{
+.checkOK {
   @extend .fas;
   @extend .fa-check;
+
   color: green;
 }
-.checkKO{
+
+.checkKO {
   @extend .fas;
   @extend .fa-times;
+
   color: red;
 }

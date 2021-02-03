@@ -1,221 +1,256 @@
 @import "assets.scss";
-header{
-  .row{
+
+header {
+  .row {
     background-color: #f1f1f1;
   }
 }
 
-form{
+form {
   background-color: #f1f1f1;
   padding: 1em;
   margin: 2em;
 }
 
-table{
+table {
   @extend .table;
   @extend .table-bordered;
   @extend .table-hover;
   @extend .table-striped;
 }
-.thactions{
+
+.thactions {
   @extend .text-center;
-  i{
+
+  i {
     @extend .BtnAdminTableAction;
   }
 }
-a{
+
+a {
   @extend .text-decoration-none;
 }
 
-.pagination{
+.pagination {
   @extend .justify-content-center;
 }
 
-.ListBtnAdmin{
+.ListBtnAdmin {
   @extend .btn-group;
   @extend .btn-group-lg;
-  .link-btnadmin{
+
+  .link-btnadmin {
     @extend .btn;
     @extend .btn-secondary;
-    a{
+
+    a {
       @extend .d-flex;
       @extend .flex-column;
       @extend .align-items-center;
+
       color: white;
     }
   }
 }
 
-i{
-  &.BtnAdminHeaderDestroy{
-    @extend .fas;
-    @extend .fa-trash;
-  }
-  &.BtnAdminHeaderRestore{
-    @extend .fas;
-    @extend .fa-trash-restore;
-  }
-  &.BtnAdminHeaderTrash{
-    @extend .fas;
-    @extend .fa-trash;
-  }
-  &.BtnAdminHeaderEmpty{
-    @extend .fas;
-    @extend .fa-trash;
-  }
-  &.BtnAdminHeaderGuard{
-    @extend .fas;
-    @extend .fa-gavel;
-  }
-  &.BtnAdminHeaderEdit{
-    @extend .far;
-    @extend .fa-edit;
-  }
-  &.BtnAdminHeaderDelete{
-    @extend .far;
-    @extend .fa-trash-alt;
-  }
-  &.BtnAdminHeaderShow{
-    @extend .far;
-    @extend .fa-eye;
-  }
-  &.BtnAdminHeaderSave{
-    @extend .fas;
-    @extend .fa-save;
-  }
-  &.BtnAdminHeaderNew{
+.btn-admin-header-destroy {
+  @extend .fas;
+  @extend .fa-trash;
+}
+
+.btn-admin-header-restore {
+  @extend .fas;
+  @extend .fa-trash-restore;
+}
+
+.btn-admin-header-trash {
+  @extend .fas;
+  @extend .fa-trash;
+}
+
+.btn-admin-header-empty {
+  @extend .fas;
+  @extend .fa-trash;
+}
+
+.btn-admin-header-guard {
+  @extend .fas;
+  @extend .fa-gavel;
+}
+
+.btn-admin-header-edit {
+  @extend .far;
+  @extend .fa-edit;
+}
+
+.btn-admin-header-delete {
+  @extend .far;
+  @extend .fa-trash-alt;
+}
+
+.btn-admin-header-show {
+  @extend .far;
+  @extend .fa-eye;
+}
+
+.btn-admin-header-save {
+  @extend .fas;
+  @extend .fa-save;
+}
+
+.btn-admin-header-new {
+  @extend .fas;
+  @extend .fa-plus;
+}
+
+.btn-admin-header-list {
+  @extend .fas;
+  @extend .fa-list;
+}
+
+.BtnAdminTableAction {
+  @extend .fas;
+  @extend .fa-cog;
+
+  i {
     @extend .fas;
     @extend .fa-plus;
   }
-  &.BtnAdminHeaderList{
-    @extend .fas;
-    @extend .fa-list;
+
+  span {
+    display: none;
   }
 }
 
-.BtnAdminTableAction{
-  @extend .fas;
-  @extend .fa-cog;
-    i{
-      @extend .fas;
-      @extend .fa-plus;
-    }
-    span{
-      display: none;
-    }
-}
-
-.link-guard{
+.link-guard {
   @extend .btn;
   @extend .btn-outline-dark;
   @extend .btn-sm;
-    i{
-      @extend .fas;
-      @extend .fa-gavel;
-    }
-    span{
-      display: none;
-    }
+
+  i {
+    @extend .fas;
+    @extend .fa-gavel;
+  }
+
+  span {
+    display: none;
+  }
 }
 
-.link-show{
+.link-show {
   @extend .btn;
   @extend .btn-outline-primary;
   @extend .btn-sm;
-    i{
-      @extend .far;
-      @extend .fa-eye;
-    }
-    span{
-      display: none;
-    }
+
+  i {
+    @extend .far;
+    @extend .fa-eye;
+  }
+
+  span {
+    display: none;
+  }
 }
 
-.link-edit{
+.link-edit {
   @extend .btn;
   @extend .btn-outline-success;
   @extend .btn-sm;
-  i{
+
+  i {
     @extend .fas;
     @extend .fa-edit;
   }
-  span{
+
+  span {
     display: none;
   }
 }
 
-.link-restore{
+.link-restore {
   @extend .btn;
   @extend .btn-outline-success;
   @extend .btn-sm;
-  i{
+
+  i {
     @extend .fas;
     @extend .fa-trash-restore;
   }
-  span{
+
+  span {
     display: none;
   }
 }
 
-.workflow-action{
+.workflow-action {
   @extend .btn;
   @extend .btn-outline-info;
   @extend .btn-sm;
-  i{
+
+  i {
     @extend .fas;
     @extend .fa-sign-in-alt;
   }
 }
-.attachment-img{
-  img{
+
+.attachment-img {
+  img {
     @extend .img-fluid;
     @extend .img-thumbnail;
     @extend .mx-auto;
     @extend .d-block;
   }
 }
-.link-delete, .link-destroy{
+
+.link-delete,
+.link-destroy {
   @extend .btn;
   @extend .btn-outline-danger;
   @extend .btn-sm;
-  i{
+
+  i {
     @extend .fas;
     @extend .fa-trash-alt;
   }
-  span{
+
+  span {
     display: none;
   }
 }
 
-.breadcrumb{
-  .separator{
+.breadcrumb {
+  .separator {
     @extend .mr-1;
     @extend .ml-1;
   }
 }
 
-.btngrouptable{
+.btngrouptable {
   @extend .btn-group;
 }
 
-#navbarSupportedContent{
-  .navbar-nav{
-    &:last-child{
-      li{
-        &.last{
+#navbarSupportedContent {
+  .navbar-nav {
+    &:last-child {
+      li {
+        &.last {
           right: 25px;
         }
       }
     }
   }
 }
-.guard-group, .guard-user {
+
+.guard-group,
+.guard-user {
   @extend .custom-control;
   @extend .custom-switch;
-  input{
+
+  input {
     @extend .custom-control-input;
   }
-  label{
+
+  label {
     @extend .custom-control-label;
   }
 }

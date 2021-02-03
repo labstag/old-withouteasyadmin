@@ -268,6 +268,7 @@ endif
 linter: ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
 	@make linter eslint -i
+	@make linter stylelint -i
 	@make linter twig -i
 	@make linter container -i
 	@make linter yaml -i
@@ -278,6 +279,10 @@ ifeq ($(COMMAND_ARGS),all)
 	@make linter readme -i
 else ifeq ($(COMMAND_ARGS),readme)
 	@npm run linter-markdown README.md
+else ifeq ($(COMMAND_ARGS),stylelint)
+	@npm run stylelint
+else ifeq ($(COMMAND_ARGS),stylelint-fix)
+	@npm run stylelint-fix
 else ifeq ($(COMMAND_ARGS),eslint)
 	@npm run eslint
 else ifeq ($(COMMAND_ARGS),eslint-fix)
@@ -313,6 +318,8 @@ else
 	@echo "---"
 	@echo "all: ## Launch all linter"
 	@echo "readme: linter README.md"
+	@echo "stylelint": indique les erreurs dans le code SCSS"
+	@echo "stylelint-fix": fix les erreurs dans le code SCSS"
 	@echo "eslint: indique les erreurs sur le code JavaScript à partir d'un standard"
 	@echo "eslint-fix: fixe le code JavaScript à partir d'un standard"
 	@echo "phpcbf: fixe le code PHP à partir d'un standard"
