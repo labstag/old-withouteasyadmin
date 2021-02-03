@@ -2,18 +2,28 @@
 
 namespace Labstag\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Entity\Attachment;
+use Labstag\Entity\File;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
+use Labstag\RequestHandler\FileRequestHandler;
 use Labstag\Service\AdminBoutonService;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
@@ -38,25 +48,45 @@ class AdminCrudService
 
     protected AdminControllerLib $controller;
 
+    protected ContainerBagInterface $container;
+
+    protected UploadAnnotationReader $uploadAnnotReader;
+
+    protected EntityManagerInterface $entityManager;
+
+    protected AttachmentRequestHandler $attachmentRH;
+
+    protected AttachmentRepository $attachmentRepository;
+
     protected string $headerTitle = '';
 
     protected string $urlHome = '';
 
     public function __construct(
+        UploadAnnotationReader $uploadAnnotReader,
         Environment $twig,
         AdminBoutonService $adminBoutonService,
         PaginatorInterface $paginator,
         RequestStack $requestStack,
+        EntityManagerInterface $entityManager,
         FormFactoryInterface $formFactory,
         RouterInterface $router,
+        ContainerBagInterface $container,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
         SessionInterface $session
     )
     {
-        $this->twig         = $twig;
-        $this->session      = $session;
-        $this->router       = $router;
-        $this->formFactory  = $formFactory;
-        $this->requestStack = $requestStack;
+        $this->attachmentRepository = $attachmentRepository;
+        $this->entityManager        = $entityManager;
+        $this->attachmentRH         = $attachmentRH;
+        $this->uploadAnnotReader    = $uploadAnnotReader;
+        $this->container            = $container;
+        $this->twig                 = $twig;
+        $this->session              = $session;
+        $this->router               = $router;
+        $this->formFactory          = $formFactory;
+        $this->requestStack         = $requestStack;
         /** @var Request $request */
         $request                  = $this->requestStack->getCurrentRequest();
         $this->request            = $request;
@@ -212,6 +242,14 @@ class AdminCrudService
                 true
             );
         }
+    }
+
+    public function modalAttachmentDelete(): void
+    {
+        $this->twig->addGlobal(
+            'modalAttachmentDelete',
+            true
+        );
     }
 
     public function listOrTrash(
@@ -427,7 +465,8 @@ class AdminCrudService
         object $entity,
         string $formType,
         RequestHandlerLib $handler,
-        array $url = []
+        array $url = [],
+        string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
         $routeCurrent = $this->request->get('_route');
@@ -448,6 +487,7 @@ class AdminCrudService
         $this->adminBoutonService->addBtnSave($form->getName(), 'Ajouter');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->upload($entity);
             $handler->handle($oldEntity, $entity);
             if (isset($url['list'])) {
                 return new RedirectResponse(
@@ -457,7 +497,7 @@ class AdminCrudService
         }
 
         return $this->controller->render(
-            'admin/crud/form.html.twig',
+            $twig,
             [
                 'entity' => $entity,
                 'form'   => $form->createView(),
@@ -489,6 +529,7 @@ class AdminCrudService
         $this->adminBoutonService->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->upload($entity);
             $handler->handle($oldEntity, $entity);
             /** @var Session $session */
             $session = $this->session;
@@ -510,5 +551,61 @@ class AdminCrudService
                 'form'   => $form->createView(),
             ]
         );
+    }
+
+    protected function upload($entity)
+    {
+        if (!$this->uploadAnnotReader->isUploadable($entity)) {
+            return;
+        }
+
+        $annotations = $this->uploadAnnotReader->getUploadableFields($entity);
+        foreach ($annotations as $property => $annotation) {
+            $accessor = PropertyAccess::createPropertyAccessor();
+            $file     = $accessor->getValue($entity, $property);
+            if (!$file instanceof UploadedFile) {
+                continue;
+            }
+
+            $attachment = $this->setAttachment($accessor, $entity, $annotation);
+            $old        = clone $attachment;
+
+            $filename = $file->getClientOriginalName();
+            $path     = $this->container->get('file_directory').'/'.$annotation->getPath();
+            $file->move(
+                $path,
+                $filename
+            );
+            $file = $path.'/'.$filename;
+            $attachment->setMimeType(mime_content_type($file));
+            $attachment->setSize(filesize($file));
+            $size = getimagesize($file);
+            $attachment->setDimensions(is_array($size) ? $size : []);
+            $attachment->setName(
+                str_replace(
+                    $this->container->get('kernel.project_dir').'/public/',
+                    '',
+                    $file
+                )
+            );
+            $this->attachmentRH->handle($old, $attachment);
+            $accessor->setValue($entity, $annotation->getFilename(), $attachment);
+        }
+    }
+
+    protected function setAttachment($accessor, $entity, $annotation): Attachment
+    {
+        $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
+        if (is_null($attachmentField)) {
+            $attachment = new Attachment();
+            return $attachment;
+        }
+
+        $attachment = $this->attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
+        if (!$attachment instanceof Attachment) {
+            $attachment = new Attachment();
+        }
+
+        return $attachment;
     }
 }

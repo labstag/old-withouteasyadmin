@@ -3,15 +3,20 @@
 namespace Labstag\Entity;
 
 use DateTime;
+use DateTimeImmutable;
+use Symfony\Component\HttpFoundation\File\File;
 use Labstag\Repository\NoteInterneRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Labstag\Annotation\Uploadable;
+use Labstag\Annotation\UploadableField;
 
 /**
  * @ORM\Entity(repositoryClass=NoteInterneRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Uploadable()
  */
 class NoteInterne
 {
@@ -59,6 +64,16 @@ class NoteInterne
      * @ORM\Column(type="array")
      */
     protected $state;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="noteInternes")
+     */
+    private $fond;
+
+    /**
+     * @UploadableField(filename="fond", path="noteinterne/fond")
+     */
+    protected $file;
 
     public function __construct()
     {
@@ -142,6 +157,30 @@ class NoteInterne
     public function setRefuser(?User $refuser): self
     {
         $this->refuser = $refuser;
+
+        return $this;
+    }
+
+    public function getFond(): ?Attachment
+    {
+        return $this->fond;
+    }
+
+    public function setFond(?Attachment $fond): self
+    {
+        $this->fond = $fond;
+
+        return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file): self
+    {
+        $this->file = $file;
 
         return $this;
     }

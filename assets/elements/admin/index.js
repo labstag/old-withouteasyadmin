@@ -10,6 +10,7 @@ import { LinkBtnAdminDestroy } from './LinkBtnAdminDestroy'
 import { LinkBtnAdmin } from './LinkBtnAdmin'
 import { LinkBtnAdminDelete } from './LinkBtnAdminDelete'
 import { ModalConfirmDelete } from './ModalConfirmDelete'
+import { ModalConfirmDeleteAttachment } from './ModalConfirmDeleteAttachment'
 import { ModalConfirmDestroy } from './ModalConfirmDestroy'
 import { ModalConfirmRestore } from './ModalConfirmRestore'
 import { ModalConfirmWorkflow } from './ModalConfirmWorkflow'
@@ -19,6 +20,8 @@ import { GuardGroups } from './GuardGroups'
 import { GuardUsers } from './GuardUsers'
 import { GuardGroup } from './GuardGroup'
 import { GuardUser } from './GuardUser'
+import { AttachmentImg } from './AttachmentImg'
+import { AttachmentDelete } from './AttachmentDelete'
 
 customElements.define('workflow-action', WorkflowAction)
 
@@ -41,7 +44,11 @@ customElements.define('guard-group', GuardGroup)
 customElements.define('guard-user', GuardUser)
 
 customElements.define('confirm-delete', ModalConfirmDelete, { extends: 'button' })
+customElements.define('confirm-deleteattachment', ModalConfirmDeleteAttachment, { extends: 'button' })
 customElements.define('confirm-destroy', ModalConfirmDestroy, { extends: 'button' })
 customElements.define('confirm-restore', ModalConfirmRestore, { extends: 'button' })
 customElements.define('confirm-empty', ModalConfirmEmpty, { extends: 'button' })
 customElements.define('confirm-workflow', ModalConfirmWorkflow, { extends: 'button' })
+
+customElements.define('attachment-img', AttachmentImg)
+customElements.define('attachment-delete', AttachmentDelete)

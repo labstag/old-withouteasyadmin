@@ -1,22 +1,43 @@
+{% macro form_img(entity, field, name, url) %}
+    {% set file = attachment(field) %}
+    {% if file != null %}
+        <attachment-img
+            data-src="{{ asset(file.name) }}"
+            data-name="{{ name|e }}"
+            data-url="{{ url }}"
+            data-token="{{ csrf_token('attachment-img-' ~ entity.id) }}"
+        ></attachment-img>
+    {% endif %}
+{% endmacro %}
+
 {% macro show(entity, url, title) %}
     {% set title = title|trans %}
     {% set state = guard_route(url) %}
     {% if state == true %}
-        <link-show data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}" />
+        <link-show
+            data-href="{{ path(url, {'id': entity.id}) }}"
+            data-title="{{ title|e }}"
+        ></link-show>
     {% endif %}
 {% endmacro %}
 {% macro guard(entity, url, title) %}
     {% set title = title|trans %}
     {% set state = guard_route(url) %}
     {% if state == true %}
-        <link-guard data-href="{{ path(url, {'id': entity.id}) }}" data-title="{{ title|e }}" />
+        <link-guard
+            data-href="{{ path(url, {'id': entity.id}) }}"
+            data-title="{{ title|e }}"
+        ></link-guard>
     {% endif %}
 {% endmacro %}
 {% macro edit(entity, url) %}
     {% set title = "Edit"|trans %}
     {% set state = guard_route(url) %}
     {% if state == true %}
-        <link-edit data-href="{{ path(url, {'id': entity.id}) }}" data-title="#{{ title|e }}" />
+        <link-edit
+            data-href="{{ path(url, {'id': entity.id}) }}"
+            data-title="#{{ title|e }}"
+        ></link-edit>
     {% endif %}
 {% endmacro %}
 {% macro delete(entity, urlDelete, urlList) %}
@@ -30,7 +51,7 @@
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
-        />
+        ></link-delete>
     {% endif %}
 {% endmacro %}
 {% macro destroy(entity, urlDelete, urlList) %}
@@ -45,7 +66,7 @@
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
-        />
+        ></link-destroy>
     {% endif %}
 {% endmacro %}
 {% macro restore(entity, urlDelete, urlList) %}
@@ -60,7 +81,7 @@
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
-        />
+        ></link-restore>
     {% endif %}
 {% endmacro %}
 {% macro workflow(entity, actions) %}
@@ -74,24 +95,25 @@
                     data-name="{{ transition.name }}"
                     data-token="{{ csrf_token('workflow-' ~ transition.name ~ entity.id) }}"
                     data-redirect="{{ path(actions['list']) }}"
-                />
+                ></workflow-action>
             {% endfor %}
             </div>
         {% endif %}
     {% endif %}
 {% endmacro %}
 {% macro actions (entity, actions) %}
+    {% set trash = app.request.attributes.get('_route')|split('trash')|length-1 %}
     <div class="btngrouptable" role="group">
         {% if actions['show'] is defined %}
             {% set urlShow = actions['show'] %}
             {% set titleShow = 'show' %}
-            {% if app.request.attributes.get('_route')|split('trash')|length-1 != 0 %}
+            {% if trash != 0 %}
                 {% set urlShow = actions['preview'] %}
                 {% set titleShow = 'preview' %}
             {% endif %}
             {{ _self.show(entity, urlShow, titleShow) }}
         {% endif %}
-        {% if 0 == app.request.attributes.get('_route')|split('trash')|length-1 %}
+        {% if 0 == trash %}
             {% if actions['guard'] is defined %}
                 {{ _self.guard(entity, actions['guard'], 'guard') }}
             {% endif %}
@@ -107,19 +129,19 @@
                 {{ _self.delete(entity, url, urlList) }}
             {% endif %}
         {% else %}
-            {% if actions['restore'] is defined %}
-                {% set urlList = app.request.attributes.get('_route') %}
-                {% set url = actions['restore'] %}
-                {{ _self.restore(entity, url, urlList) }}
-            {% endif %}
             {% if actions['destroy'] is defined %}
                 {% set urlList = app.request.attributes.get('_route') %}
                 {% set url = actions['destroy'] %}
                 {{ _self.destroy(entity, url, urlList) }}
             {% endif %}
+            {% if actions['restore'] is defined %}
+                {% set urlList = app.request.attributes.get('_route') %}
+                {% set url = actions['restore'] %}
+                {{ _self.restore(entity, url, urlList) }}
+            {% endif %}
         {% endif %}
     </div>
-    {% if 0 == app.request.attributes.get('_route')|split('trash')|length-1 %}
+    {% if 0 == trash %}
         {{ _self.workflow(entity, actions) }}
     {% endif %}
 {% endmacro %}

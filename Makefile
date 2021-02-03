@@ -25,7 +25,7 @@ PHPFPMFULLNAME := $(PHPFPM).1.$$(docker service ps -f 'name=$(PHPFPM)' $(PHPFPM)
 
 DOCKER_EXECPHP := @docker exec $(PHPFPMFULLNAME)
 
-SUPPORTED_COMMANDS := bdd composer contributors docker encore env geocode git inspect install linter logs messenger sleep ssh tests workflow-png
+SUPPORTED_COMMANDS := bdd composer contributors docker encore env geocode git inspect install linter logs messenger sleep ssh tests workflow-png update inspect
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
   COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -92,6 +92,8 @@ else ifeq ($(COMMAND_ARGS),dev)
 	$(DOCKER_EXECPHP) make composer dev
 else ifeq ($(COMMAND_ARGS),update)
 	$(DOCKER_EXECPHP) make composer update
+else ifeq ($(COMMAND_ARGS),install)
+	$(DOCKER_EXECPHP) make composer install
 else ifeq ($(COMMAND_ARGS),validate)
 	$(DOCKER_EXECPHP) make composer validate
 else
@@ -100,6 +102,7 @@ else
 	@echo "make composer ARGUMENT"
 	@echo "---"
 	@echo "suggests: suggestions package pour PHP"
+	@echo "install: install"
 	@echo "outdated: Packet php outdated"
 	@echo "fund: Discover how to help fund the maintenance of your dependencies."
 	@echo "prod: Installation version de prod"
@@ -132,6 +135,7 @@ else ifeq ($(COMMAND_ARGS),image-pull)
 	@docker image pull mailhog/mailhog:v1.0.1
 	@docker image pull dunglas/mercure:v0.10
 	@docker image pull koromerzhin/phpfpm:7.4.12-symfony
+	@docker image pull koromerzhin/phpfpm:7.4.12-symfony-xdebug
 else ifeq ($(COMMAND_ARGS),ls)
 	@docker stack services $(STACK)
 else ifeq ($(COMMAND_ARGS),stop)
@@ -154,6 +158,8 @@ ifeq ($(COMMAND_ARGS),dev)
 	@npm run encore-dev
 else ifeq ($(COMMAND_ARGS),watch)
 	@npm run encore-watch
+else ifeq ($(COMMAND_ARGS),build)
+	@npm run encore-build
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -161,6 +167,7 @@ else
 	@echo "---"
 	@echo "dev: créer les assets en version dev"
 	@echo "watch: créer les assets en version watch"
+	@echo "build: créer les assets en version prod"
 endif
 
 folders: mariadb_data dump ## Create folder
@@ -261,6 +268,7 @@ endif
 linter: ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
 	@make linter eslint -i
+	@make linter stylelint -i
 	@make linter twig -i
 	@make linter container -i
 	@make linter yaml -i
@@ -271,6 +279,10 @@ ifeq ($(COMMAND_ARGS),all)
 	@make linter readme -i
 else ifeq ($(COMMAND_ARGS),readme)
 	@npm run linter-markdown README.md
+else ifeq ($(COMMAND_ARGS),stylelint)
+	@npm run stylelint
+else ifeq ($(COMMAND_ARGS),stylelint-fix)
+	@npm run stylelint-fix
 else ifeq ($(COMMAND_ARGS),eslint)
 	@npm run eslint
 else ifeq ($(COMMAND_ARGS),eslint-fix)
@@ -304,8 +316,10 @@ else
 	@echo "---"
 	@echo "make linter ARGUMENT"
 	@echo "---"
-	@echo "linter all: ## Launch all linter"
+	@echo "all: ## Launch all linter"
 	@echo "readme: linter README.md"
+	@echo "stylelint": indique les erreurs dans le code SCSS"
+	@echo "stylelint-fix": fix les erreurs dans le code SCSS"
 	@echo "eslint: indique les erreurs sur le code JavaScript à partir d'un standard"
 	@echo "eslint-fix: fixe le code JavaScript à partir d'un standard"
 	@echo "phpcbf: fixe le code PHP à partir d'un standard"
@@ -365,21 +379,21 @@ else
 	@echo "consume: Messenger Consume"
 endif
 
-service-update: ## docker service update
+update: ## docker service update
 ifeq ($(COMMAND_ARGS),redis)
-	docker service update $(REDIS)
+	@docker service update $(REDIS)
 else ifeq ($(COMMAND_ARGS),mailhog)
-	docker service update $(MAILHOG)
+	@docker service update $(MAILHOG)
 else ifeq ($(COMMAND_ARGS),mercure)
-	docker service update $(MERCURE)
+	@docker service update $(MERCURE)
 else ifeq ($(COMMAND_ARGS),mariadb)
-	docker service update $(MARIADB)
+	@docker service update $(MARIADB)
 else ifeq ($(COMMAND_ARGS),apache)
-	docker service update $(APACHE)
+	@docker service update $(APACHE)
 else ifeq ($(COMMAND_ARGS),phpmyadmin)
-	docker service update $(PHPMYADMIN)
+	@docker service update $(PHPMYADMIN)
 else ifeq ($(COMMAND_ARGS),phpfpm)
-	docker service update $(PHPFPM)
+	@docker service update $(PHPFPM)
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -418,7 +432,6 @@ else
 	@echo "---"
 	@echo "make ssh ARGUMENT"
 	@echo "---"
-	@echo "stack: logs stack"
 	@echo "redis: REDIS"
 	@echo "mailhot: MAILHOG"
 	@echo "mercure: MERCURE"

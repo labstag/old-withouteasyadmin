@@ -12,6 +12,7 @@ use Labstag\FormType\MinMaxCollectionType;
 use Labstag\Repository\EmailUserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -49,6 +50,15 @@ class UserType extends AbstractType
             ]
         );
         $builder->add('groupe');
+
+        $builder->add(
+            'file',
+            FileType::class,
+            [
+                'required' => false,
+                'attr'     => ['accept' => 'image/*'],
+            ]
+        );
         if (isset($options['data']) && !is_null($options['data']->getId())) {
             $emails = [];
             $data   = $this->repository->getEmailsUserVerif(

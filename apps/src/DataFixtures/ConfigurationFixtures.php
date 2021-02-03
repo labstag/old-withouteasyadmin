@@ -20,7 +20,7 @@ class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterf
 
     public function getDependencies()
     {
-        return [CacheFixtures::class];
+        return [DataFixtures::class];
     }
 
     protected function setOauth(array $env, array &$data): void

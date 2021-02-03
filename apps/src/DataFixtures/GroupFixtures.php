@@ -29,6 +29,6 @@ class GroupFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function getDependencies()
     {
-        return [CacheFixtures::class];
+        return [DataFixtures::class];
     }
 }

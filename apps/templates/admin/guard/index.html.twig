@@ -46,6 +46,10 @@
                         {% endif %}
                     {% endfor %}
                 </tr>
+            {% else %}
+                <tr>
+                    <td colspan="{{ groups|length+1 }}" class="text-center">no records found</td>
+                </tr>
             {% endfor %}
             </tbody>
         </table>

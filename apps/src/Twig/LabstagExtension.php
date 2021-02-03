@@ -4,9 +4,12 @@ namespace Labstag\Twig;
 
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Service\GuardRouteService;
 use Labstag\Service\PhoneService;
+use Labstag\Entity\Attachment;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Registry;
 use Twig\Extension\AbstractExtension;
@@ -26,21 +29,31 @@ class LabstagExtension extends AbstractExtension
 
     protected GroupeRepository $groupeRepository;
 
+    protected LoggerInterface $logger;
+
+    protected AttachmentRepository $attachmentRepository;
+
     const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
+
+    const FOLDER_ENTITY = 'Labstag\\Entity\\';
 
     public function __construct(
         PhoneService $phoneService,
         Registry $workflows,
         TokenStorageInterface $token,
+        LoggerInterface $logger,
         GroupeRepository $groupeRepository,
+        AttachmentRepository $attachmentRepository,
         GuardRouteService $guardRouteService
     )
     {
-        $this->guardRouteService = $guardRouteService;
-        $this->groupeRepository  = $groupeRepository;
-        $this->workflows         = $workflows;
-        $this->token             = $token;
-        $this->phoneService      = $phoneService;
+        $this->attachmentRepository = $attachmentRepository;
+        $this->logger               = $logger;
+        $this->guardRouteService    = $guardRouteService;
+        $this->groupeRepository     = $groupeRepository;
+        $this->workflows            = $workflows;
+        $this->token                = $token;
+        $this->phoneService         = $phoneService;
     }
 
     public function getFilters(): array
@@ -52,6 +65,7 @@ class LabstagExtension extends AbstractExtension
             new TwigFilter('workflow_has', [$this, 'workflowHas']),
             new TwigFilter('guard_route', [$this, 'guardRoute']),
             new TwigFilter('class_entity', [$this, 'classEntity']),
+            new TwigFilter('attachment', [$this, 'getAttachment']),
             new TwigFilter('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
             new TwigFilter('guard_route_enable_user', [$this, 'guardRouteEnableUser']),
             new TwigFilter('formClass', [$this, 'formClass']),
@@ -66,12 +80,33 @@ class LabstagExtension extends AbstractExtension
             new TwigFunction('workflow_has', [$this, 'workflowHas']),
             new TwigFunction('guard_route', [$this, 'guardRoute']),
             new TwigFunction('class_entity', [$this, 'classEntity']),
+            new TwigFunction('attachment', [$this, 'getAttachment']),
             new TwigFunction('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
             new TwigFunction('guard_route_enable_user', [$this, 'guardRouteEnableUser']),
             new TwigFunction('formClass', [$this, 'formClass']),
             new TwigFunction('verifPhone', [$this, 'verifPhone']),
             new TwigFunction('formPrototype', [$this, 'formPrototype']),
         ];
+    }
+
+    public function getAttachment($data): ?Attachment
+    {
+        if (is_null($data)) {
+            return null;
+        }
+
+        $id         = $data->getId();
+        $attachment = $this->attachmentRepository->findOneBy(['id' => $id]);
+        if (is_null($attachment)) {
+            return null;
+        }
+
+        $file = $attachment->getName();
+        if (!is_file($file)) {
+            return null;
+        }
+
+        return $attachment;
     }
 
     public function guardRouteEnableUser(string $route, User $user): bool
@@ -96,9 +131,9 @@ class LabstagExtension extends AbstractExtension
     {
         $class = get_class($entity);
 
-        $class = str_replace('Labstag\\Entity\\', '', $class);
+        $class = substr($class, strpos($class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY));
 
-        return strtolower($class);
+        return trim(strtolower($class));
     }
 
     public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
@@ -175,7 +210,7 @@ class LabstagExtension extends AbstractExtension
 
         $newFile = 'prototype/'.$type.'.html.twig';
         if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
-            dump('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
+            $this->logger->info('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
 
             return $file;
         }
@@ -218,7 +253,7 @@ class LabstagExtension extends AbstractExtension
 
         $newFile = 'forms/'.$type.'.html.twig';
         if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
-            dump('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
+            $this->logger->info('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
 
             return $file;
         }

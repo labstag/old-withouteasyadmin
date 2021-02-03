@@ -98,7 +98,7 @@ class AdminBoutonService
         }
 
         $this->add(
-            'BtnAdminHeaderRestore',
+            'btn-admin-header-restore',
             $text,
             $attr
         );
@@ -137,7 +137,7 @@ class AdminBoutonService
         }
 
         $this->add(
-            'BtnAdminHeaderDestroy',
+            'btn-admin-header-destroy',
             $text,
             $attr
         );
@@ -157,7 +157,7 @@ class AdminBoutonService
         }
 
         $this->add(
-            'BtnAdminHeaderGuard',
+            'btn-admin-header-guard',
             $text,
             $attr
         );
@@ -177,7 +177,7 @@ class AdminBoutonService
         }
 
         $this->add(
-            'BtnAdminHeaderEdit',
+            'btn-admin-header-edit',
             $text,
             $attr
         );
@@ -192,7 +192,7 @@ class AdminBoutonService
     ): self
     {
         $this->add(
-            'BtnAdminHeaderShow',
+            'btn-admin-header-show',
             $text,
             [
                 'href' => $this->router->generate($route, $routeParam),
@@ -234,7 +234,7 @@ class AdminBoutonService
         }
 
         $this->add(
-            'BtnAdminHeaderDelete',
+            'btn-admin-header-delete',
             $text,
             $attr
         );
@@ -245,7 +245,7 @@ class AdminBoutonService
     public function addBtnSave(string $form, string $text = 'Sauvegarder'): self
     {
         $this->add(
-            'BtnAdminHeaderSave',
+            'btn-admin-header-save',
             $text,
             [
                 'id'        => 'SaveForm',
@@ -259,7 +259,7 @@ class AdminBoutonService
     public function addBtnNew(string $route, string $text = 'Nouveau'): self
     {
         $this->add(
-            'BtnAdminHeaderNew',
+            'btn-admin-header-new',
             $text,
             [
                 'href' => $this->router->generate($route),
@@ -272,7 +272,7 @@ class AdminBoutonService
     public function addBtnTrash(string $route, string $text = 'Corbeille'): self
     {
         $this->add(
-            'BtnAdminHeaderTrash',
+            'btn-admin-header-trash',
             $text,
             [
                 'href' => $this->router->generate($route),
@@ -308,7 +308,7 @@ class AdminBoutonService
         }
 
         $this->add(
-            'BtnAdminHeaderEmpty',
+            'btn-admin-header-empty',
             $text,
             $attr
         );
@@ -319,7 +319,7 @@ class AdminBoutonService
     public function addBtnList(string $route, string $text = 'Liste'): self
     {
         $this->add(
-            'BtnAdminHeaderList',
+            'btn-admin-header-list',
             $text,
             [
                 'href' => $this->router->generate($route),

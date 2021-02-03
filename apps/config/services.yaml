@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    file_directory: '%kernel.project_dir%/public/uploads'
 
 services:
   # default configuration for services in *this* file
@@ -16,6 +17,7 @@ services:
   Labstag\:
     resource: "../src/"
     exclude:
+      - "../src/Reader/"
       - "../src/DependencyInjection/"
       - "../src/Entity/"
       - "../src/Kernel.php"
@@ -59,13 +61,13 @@ services:
       - { name: knp_menu.menu, alias: admin_profilmenu }
   Labstag\Swagger\CheckSwaggerDecorator:
     decorates: 'api_platform.swagger.normalizer.api_gateway'
-    autoconfigure: false
   Labstag\Swagger\SearchSwaggerDecorator:
     decorates: 'api_platform.swagger.normalizer.api_gateway'
-    autoconfigure: false
   Labstag\Swagger\GuardSwaggerDecorator:
     decorates: 'api_platform.swagger.normalizer.api_gateway'
-    autoconfigure: false
   Labstag\Swagger\ActionsSwaggerDecorator:
     decorates: 'api_platform.swagger.normalizer.api_gateway'
-    autoconfigure: false
+  Labstag\Swagger\AttachmentSwaggerDecorator:
+    decorates: 'api_platform.swagger.normalizer.api_gateway'
+  Labstag\Reader\UploadAnnotationReader:
+    arguments: ["@annotations.reader"]

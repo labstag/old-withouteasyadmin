@@ -47,12 +47,13 @@ class GroupeController extends AdminControllerLib
                 'list'  => 'admin_groupuser_index',
             ],
             [
-                'list'        => 'admin_groupuser_index',
-                'show'        => 'admin_groupuser_show',
-                'edit'        => 'admin_groupuser_edit',
-                'delete'      => 'api_action_delete',
-                'guard'       => 'admin_groupuser_guard',
-                'trashdelete' => 'admin_groupuser_destroy',
+                'list'    => 'admin_groupuser_index',
+                'show'    => 'admin_groupuser_show',
+                'edit'    => 'admin_groupuser_edit',
+                'preview' => 'admin_groupuser_preview',
+                'delete'  => 'api_action_delete',
+                'guard'   => 'admin_groupuser_guard',
+                'destroy' => 'api_action_destroy',
             ]
         );
     }

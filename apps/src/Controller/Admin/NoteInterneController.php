@@ -101,6 +101,7 @@ class NoteInterneController extends AdminControllerLib
      */
     public function edit(NoteInterne $noteInterne, NoteInterneRequestHandler $requestHandler): Response
     {
+        $this->adminCrudService->modalAttachmentDelete();
         return $this->adminCrudService->update(
             NoteInterneType::class,
             $noteInterne,

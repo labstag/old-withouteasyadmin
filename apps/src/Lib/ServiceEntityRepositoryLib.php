@@ -36,7 +36,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $result;
     }
 
-    public function findTrashForAdmin(): Query
+    public function findTrashForAdmin(): array
     {
         $methods = get_class_methods($this);
         $name    = '';
@@ -53,7 +53,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $dql->from($name, 'a');
         $dql->where('a.deletedAt IS NOT NULL');
 
-        return $dql->getQuery();
+        return $dql->getQuery()->getResult();
     }
 
     public function findAllForAdmin(): Query

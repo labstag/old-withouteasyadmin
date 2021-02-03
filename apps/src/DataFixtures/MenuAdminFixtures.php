@@ -28,6 +28,12 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
                 ],
             ],
             [
+                'libelle' => 'Attachment',
+                'data'    => [
+                    'attr' => ['data-href' => 'admin_attachment_index'],
+                ],
+            ],
+            [
                 'libelle' => 'Geocode',
                 'data'    => [
                     'attr' => ['data-href' => 'admin_geocode_index'],
@@ -64,7 +70,7 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function getDependencies()
     {
-        return [CacheFixtures::class];
+        return [DataFixtures::class];
     }
 
     protected function getMenuUtilisateurs(): array

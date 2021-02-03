@@ -9,9 +9,12 @@ use Labstag\Form\Admin\ParamType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\AdminBoutonService;
 use Labstag\Service\DataService;
+use Labstag\Service\UploadService;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -63,10 +66,11 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/profil", name="admin_profil", methods={"GET","POST"})
      */
-    public function profil(Security $security, UserRequestHandler $requestHandler): Response
+    public function profil( Security $security, UserRequestHandler $requestHandler): Response
     {
         $this->headerTitle = 'Profil';
         $this->urlHome     = 'admin_profil';
+        $this->adminCrudService->modalAttachmentDelete();
         return $this->adminCrudService->update(
             ProfilType::class,
             $security->getUser(),
