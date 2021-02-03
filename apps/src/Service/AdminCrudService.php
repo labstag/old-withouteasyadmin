@@ -559,9 +559,13 @@ class AdminCrudService
             }
 
             $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
-            $attachment      = $this->attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
-            if (!$attachment instanceof Attachment) {
+            if (is_null($attachmentField)) {
                 $attachment = new Attachment();
+            }else{
+                $attachment      = $this->attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
+                if (!$attachment instanceof Attachment) {
+                    $attachment = new Attachment();
+                }
             }
 
             $old = clone $attachment;
