@@ -32,7 +32,7 @@ class GroupeController extends AdminControllerLib
      */
     public function index(GroupeRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -62,7 +62,7 @@ class GroupeController extends AdminControllerLib
      */
     public function new(GroupeRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new Groupe(),
             GroupeType::class,
             $requestHandler,
@@ -77,7 +77,7 @@ class GroupeController extends AdminControllerLib
      */
     public function showOrPreview(Groupe $groupe): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->showOrPreview(
             $groupe,
             'admin/groupe/show.html.twig',
             [
@@ -149,7 +149,7 @@ class GroupeController extends AdminControllerLib
      */
     public function edit(Groupe $groupe, GroupeRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             GroupeType::class,
             $groupe,
             $requestHandler,

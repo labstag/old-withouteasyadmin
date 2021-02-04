@@ -32,7 +32,7 @@ class UserController extends AdminControllerLib
      */
     public function indexOrTrash(UserRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -65,7 +65,7 @@ class UserController extends AdminControllerLib
     public function new(UserRequestHandler $requestHandler): Response
     {
         $user = new User();
-        return $this->adminCrudService->create(
+        return $this->create(
             $user,
             UserType::class,
             $requestHandler,
@@ -81,8 +81,8 @@ class UserController extends AdminControllerLib
      */
     public function showOrPreview(User $user): Response
     {
-        $this->adminCrudService->modalAttachmentDelete();
-        return $this->adminCrudService->showOrPreview(
+        $this->modalAttachmentDelete();
+        return $this->showOrPreview(
             $user,
             'admin/user/show.html.twig',
             [
@@ -152,7 +152,7 @@ class UserController extends AdminControllerLib
      */
     public function edit(User $user, UserRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             UserType::class,
             $user,
             $requestHandler,

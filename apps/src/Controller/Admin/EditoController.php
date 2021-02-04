@@ -31,7 +31,7 @@ class EditoController extends AdminControllerLib
      */
     public function indexOrTrash(EditoRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -62,7 +62,7 @@ class EditoController extends AdminControllerLib
      */
     public function new(EditoRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new Edito(),
             EditoType::class,
             $requestHandler,
@@ -78,7 +78,7 @@ class EditoController extends AdminControllerLib
      */
     public function showOrPreview(Edito $edito): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->showOrPreview(
             $edito,
             'admin/edito/show.html.twig',
             [
@@ -97,8 +97,8 @@ class EditoController extends AdminControllerLib
      */
     public function edit(Edito $edito, EditoRequestHandler $requestHandler): Response
     {
-        $this->adminCrudService->modalAttachmentDelete();
-        return $this->adminCrudService->update(
+        $this->modalAttachmentDelete();
+        return $this->update(
             EditoType::class,
             $edito,
             $requestHandler,

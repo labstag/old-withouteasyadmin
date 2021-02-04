@@ -31,7 +31,7 @@ class TemplateController extends AdminControllerLib
      */
     public function indexOrTrash(TemplateRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -61,7 +61,7 @@ class TemplateController extends AdminControllerLib
      */
     public function new(TemplateRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new Template(),
             TemplateType::class,
             $requestHandler,
@@ -76,7 +76,7 @@ class TemplateController extends AdminControllerLib
      */
     public function showOrPreview(Template $template): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->showOrPreview(
             $template,
             'admin/template/show.html.twig',
             [
@@ -95,7 +95,7 @@ class TemplateController extends AdminControllerLib
      */
     public function edit(Template $template, TemplateRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             TemplateType::class,
             $template,
             $requestHandler,

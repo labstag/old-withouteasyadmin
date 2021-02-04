@@ -31,7 +31,7 @@ class LienUserController extends AdminControllerLib
      */
     public function indexOrTrash(LienUserRepository $lienUserRepository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $lienUserRepository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -61,7 +61,7 @@ class LienUserController extends AdminControllerLib
      */
     public function new(LienUserRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new LienUser(),
             LienUserType::class,
             $requestHandler,
@@ -76,7 +76,7 @@ class LienUserController extends AdminControllerLib
      */
     public function showOrPreview(LienUser $lienUser): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->showOrPreview(
             $lienUser,
             'admin/lien_user/show.html.twig',
             [
@@ -95,7 +95,7 @@ class LienUserController extends AdminControllerLib
      */
     public function edit(LienUser $lienUser, LienUserRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             LienUserType::class,
             $lienUser,
             $requestHandler,

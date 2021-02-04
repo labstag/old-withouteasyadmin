@@ -31,7 +31,7 @@ class PhoneUserController extends AdminControllerLib
      */
     public function indexOrTrash(PhoneUserRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -62,7 +62,7 @@ class PhoneUserController extends AdminControllerLib
      */
     public function new(PhoneUserRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new PhoneUser(),
             PhoneUserType::class,
             $requestHandler,
@@ -77,7 +77,7 @@ class PhoneUserController extends AdminControllerLib
      */
     public function showOrPreview(PhoneUser $phoneUser): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->showOrPreview(
             $phoneUser,
             'admin/phone_user/show.html.twig',
             [
@@ -100,7 +100,7 @@ class PhoneUserController extends AdminControllerLib
      */
     public function edit(PhoneUser $phoneUser, PhoneUserRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             PhoneUserType::class,
             $phoneUser,
             $requestHandler,

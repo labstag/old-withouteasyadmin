@@ -31,7 +31,7 @@ class MenuController extends AdminControllerLib
      */
     public function indexOrTrash(MenuRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -61,7 +61,7 @@ class MenuController extends AdminControllerLib
      */
     public function new(MenuRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new Menu(),
             MenuType::class,
             $requestHandler,
@@ -76,7 +76,7 @@ class MenuController extends AdminControllerLib
      */
     public function showOrPreview(Menu $menu): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->showOrPreview(
             $menu,
             'admin/menu/show.html.twig',
             [
@@ -95,7 +95,7 @@ class MenuController extends AdminControllerLib
      */
     public function edit(Menu $menu, MenuRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             MenuType::class,
             $menu,
             $requestHandler,

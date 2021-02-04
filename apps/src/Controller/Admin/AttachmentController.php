@@ -31,7 +31,7 @@ class AttachmentController extends AdminControllerLib
      */
     public function indexOrTrash(AttachmentRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',

@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
-use Labstag\Service\AdminCrudService;
 use Labstag\Service\DataService;
 use Labstag\Service\GuardService;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -41,8 +40,6 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected string $urlHome = '';
 
-    protected AdminCrudService $adminCrudService;
-
     protected Environment $twig;
 
     protected AdminBtnSingleton $btnInstance;
@@ -55,27 +52,55 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected TokenStorageInterface $token;
 
+    protected PaginatorInterface $paginator;
+
+    protected RequestStack $requestStack;
+
+    protected Request $request;
+
+    protected SessionInterface $session;
+
+    protected UploadAnnotationReader $uploadAnnotReader;
+
+    protected EntityManagerInterface $entityManager;
+
+    protected AttachmentRequestHandler $attachmentRH;
+
+    protected AttachmentRepository $attachmentRepository;
+
     public function __construct(
+        UploadAnnotationReader $uploadAnnotReader,
+        PaginatorInterface $paginator,
+        RequestStack $requestStack,
         DataService $dataService,
-        AdminCrudService $adminCrudService,
+        EntityManagerInterface $entityManager,
         Breadcrumbs $breadcrumbs,
         Environment $twig,
         TokenStorageInterface $token,
         CsrfTokenManagerInterface $csrfTokenManager,
+        AttachmentRequestHandler $attachmentRH,
+        AttachmentRepository $attachmentRepository,
         GuardService $guardService,
-        RouterInterface $router
+        RouterInterface $router,
+        SessionInterface $session
     )
     {
-        $this->guardService     = $guardService;
-        $this->twig             = $twig;
-        $this->router           = $router;
-        $this->token            = $token;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->adminCrudService = $adminCrudService;
-        $this->adminCrudService->setController($this);
-        $this->adminCrudService->setPage($this->headerTitle, $this->urlHome);
+        $this->session              = $session;
+        $this->attachmentRH         = $attachmentRH;
+        $this->attachmentRepository = $attachmentRepository;
+        $this->entityManager        = $entityManager;
+        $this->requestStack         = $requestStack;
+        /** @var Request $request */
+        $request                 = $this->requestStack->getCurrentRequest();
+        $this->request           = $request;
+        $this->paginator         = $paginator;
+        $this->uploadAnnotReader = $uploadAnnotReader;
+        $this->guardService      = $guardService;
+        $this->twig              = $twig;
+        $this->router            = $router;
+        $this->token             = $token;
+        $this->csrfTokenManager  = $csrfTokenManager;
         $this->setSingletonsAdmin();
-        $this->adminCrudService->setBtnInstance($this->btnInstance);
         parent::__construct($dataService, $breadcrumbs);
     }
 
@@ -135,12 +160,6 @@ abstract class AdminControllerLib extends ControllerLib
     public function setBtnInstance($btnInstance)
     {
         $this->btnInstance = $btnInstance;
-    }
-
-    public function setPage($header, $url)
-    {
-        $this->headerTitle = $header;
-        $this->urlHome     = $url;
     }
 
     protected function setBtnList(array $url): void
@@ -237,11 +256,6 @@ abstract class AdminControllerLib extends ControllerLib
         $class = str_replace('Labstag\\Entity\\', '', $class);
 
         return strtolower($class);
-    }
-
-    public function setController(AdminControllerLib $controller): void
-    {
-        $this->controller = $controller;
     }
 
     protected function listOrTrashRouteTrash(
@@ -348,7 +362,7 @@ abstract class AdminControllerLib extends ControllerLib
             10
         );
 
-        return $this->controller->render(
+        return $this->render(
             $html,
             [
                 'pagination' => $pagination,
@@ -506,7 +520,7 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        return $this->controller->render(
+        return $this->render(
             $twigShow,
             ['entity' => $entity]
         );
@@ -534,7 +548,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
 
         $oldEntity = clone $entity;
-        $form      = $this->formFactory->create($formType, $entity);
+        $form      = $this->createForm($formType, $entity);
         $this->btnInstance->addBtnSave($form->getName(), 'Ajouter');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -547,7 +561,7 @@ abstract class AdminControllerLib extends ControllerLib
             }
         }
 
-        return $this->controller->render(
+        return $this->render(
             $twig,
             [
                 'entity' => $entity,
@@ -576,7 +590,7 @@ abstract class AdminControllerLib extends ControllerLib
         $this->addBreadcrumbs($breadcrumb);
         $this->setBtnViewUpdate($url, $entity);
         $oldEntity = clone $entity;
-        $form      = $this->formFactory->create($formType, $entity);
+        $form      = $this->createForm($formType, $entity);
         $this->btnInstance->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -595,7 +609,7 @@ abstract class AdminControllerLib extends ControllerLib
             }
         }
 
-        return $this->controller->render(
+        return $this->render(
             $twig,
             [
                 'entity' => $entity,
@@ -622,7 +636,7 @@ abstract class AdminControllerLib extends ControllerLib
             $old        = clone $attachment;
 
             $filename = $file->getClientOriginalName();
-            $path     = $this->container->get('file_directory').'/'.$annotation->getPath();
+            $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $file->move(
                 $path,
                 $filename
@@ -634,7 +648,7 @@ abstract class AdminControllerLib extends ControllerLib
             $attachment->setDimensions(is_array($size) ? $size : []);
             $attachment->setName(
                 str_replace(
-                    $this->container->get('kernel.project_dir').'/public/',
+                    $this->getParameter('kernel.project_dir').'/public/',
                     '',
                     $file
                 )

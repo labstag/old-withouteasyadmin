@@ -31,7 +31,7 @@ class AdresseUserController extends AdminControllerLib
      */
     public function indexOrTrash(AdresseUserRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -61,7 +61,7 @@ class AdresseUserController extends AdminControllerLib
      */
     public function new(AdresseUserRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new AdresseUser(),
             AdresseUserType::class,
             $requestHandler,
@@ -76,7 +76,7 @@ class AdresseUserController extends AdminControllerLib
      */
     public function showOrPreview(AdresseUser $adresseUser): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->showOrPreview(
             $adresseUser,
             'admin/adresse_user/show.html.twig',
             [
@@ -99,7 +99,7 @@ class AdresseUserController extends AdminControllerLib
      */
     public function edit(AdresseUser $adresseUser, AdresseUserRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             AdresseUserType::class,
             $adresseUser,
             $requestHandler,

@@ -29,7 +29,7 @@ class GeoCodeController extends AdminControllerLib
      */
     public function index(GeoCodeRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -57,7 +57,7 @@ class GeoCodeController extends AdminControllerLib
      */
     public function new(GeoCodeRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new GeoCode(),
             GeoCodeType::class,
             $requestHandler,
@@ -72,7 +72,7 @@ class GeoCodeController extends AdminControllerLib
      */
     public function showOrPreview(GeoCode $geoCode): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->showOrPreview(
             $geoCode,
             'admin/geocode/show.html.twig',
             [
@@ -91,7 +91,7 @@ class GeoCodeController extends AdminControllerLib
      */
     public function edit(GeoCode $geoCode, GeoCodeRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             GeoCodeType::class,
             $geoCode,
             $requestHandler,

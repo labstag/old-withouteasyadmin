@@ -29,7 +29,7 @@ class ConfigurationController extends AdminControllerLib
      */
     public function indexOrTrash(ConfigurationRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -59,7 +59,7 @@ class ConfigurationController extends AdminControllerLib
      */
     public function showOrPreview(Configuration $configuration): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->showOrPreview(
             $configuration,
             'admin/configuration/show.html.twig',
             ['list' => 'admin_configuration_index']

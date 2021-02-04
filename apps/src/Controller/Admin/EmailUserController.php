@@ -31,7 +31,7 @@ class EmailUserController extends AdminControllerLib
      */
     public function indexOrTrash(EmailUserRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -62,7 +62,7 @@ class EmailUserController extends AdminControllerLib
      */
     public function new(EmailUserRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new EmailUser(),
             EmailUserType::class,
             $requestHandler,
@@ -77,7 +77,7 @@ class EmailUserController extends AdminControllerLib
      */
     public function showOrPreview(EmailUser $emailUser): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->showOrPreview(
             $emailUser,
             'admin/email_user/show.html.twig',
             [
@@ -100,7 +100,7 @@ class EmailUserController extends AdminControllerLib
      */
     public function edit(EmailUser $emailUser, EmailUserRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             EmailUserType::class,
             $emailUser,
             $requestHandler,

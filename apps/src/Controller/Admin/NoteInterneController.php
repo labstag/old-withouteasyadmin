@@ -32,7 +32,7 @@ class NoteInterneController extends AdminControllerLib
      */
     public function indexOrTrash(NoteInterneRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -63,7 +63,7 @@ class NoteInterneController extends AdminControllerLib
      */
     public function new(NoteInterneRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new NoteInterne(),
             NoteInterneType::class,
             $requestHandler,
@@ -79,7 +79,7 @@ class NoteInterneController extends AdminControllerLib
      */
     public function showOrPreview(NoteInterne $noteInterne): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->showOrPreview(
             $noteInterne,
             'admin/note_interne/show.html.twig',
             [
@@ -102,8 +102,8 @@ class NoteInterneController extends AdminControllerLib
      */
     public function edit(NoteInterne $noteInterne, NoteInterneRequestHandler $requestHandler): Response
     {
-        $this->adminCrudService->modalAttachmentDelete();
-        return $this->adminCrudService->update(
+        $this->modalAttachmentDelete();
+        return $this->update(
             NoteInterneType::class,
             $noteInterne,
             $requestHandler,
