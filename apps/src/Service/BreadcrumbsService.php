@@ -1,14 +1,10 @@
 <?php
 namespace Labstag\Service;
 
-use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
-
 class BreadcrumbsService
 {
 
     protected static $instance = null;
-
-    protected Breadcrumbs $breadcrumbs;
 
     protected array $data = [];
 

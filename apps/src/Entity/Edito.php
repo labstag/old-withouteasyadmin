@@ -55,7 +55,7 @@ class Edito
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="editos")
      */
-    private $fond;
+    protected $fond;
 
     /**
      * @UploadableField(filename="fond", path="edito/fond")

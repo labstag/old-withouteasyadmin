@@ -21,7 +21,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $this->decorated = $decorated;
     }
 
-    private function setUserAvatar(&$docs)
+    protected function setUserAvatar(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'User avatar.',
@@ -64,7 +64,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/user/avatar/{entity}']['delete'] = $statsEndpoint;
     }
 
-    private function setProfilAvatar(&$docs)
+    protected function setProfilAvatar(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'Profil avatar.',
@@ -100,7 +100,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/profil/avatar']['delete'] = $statsEndpoint;
     }
 
-    private function setNoteInterneFond(&$docs)
+    protected function setNoteInterneFond(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'node interne Fond.',
@@ -143,7 +143,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/noteinterne/fond/{entity}']['delete'] = $statsEndpoint;
     }
 
-    private function setEditoFond(&$docs)
+    protected function setEditoFond(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'edito fond.',

@@ -68,7 +68,7 @@ class NoteInterne
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="noteInternes")
      */
-    private $fond;
+    protected $fond;
 
     /**
      * @UploadableField(filename="fond", path="noteinterne/fond")
