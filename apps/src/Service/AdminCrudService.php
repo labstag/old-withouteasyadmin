@@ -13,7 +13,8 @@ use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\FileRequestHandler;
-use Labstag\Service\AdminBoutonService;
+use Labstag\Singleton\AdminBtnSingleton;
+use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -29,8 +30,6 @@ use Twig\Environment;
 
 class AdminCrudService
 {
-
-    protected AdminBoutonService $adminBoutonService;
 
     protected PaginatorInterface $paginator;
 
@@ -58,6 +57,8 @@ class AdminCrudService
 
     protected AttachmentRepository $attachmentRepository;
 
+    protected AdminBtnSingleton $btnInstance;
+
     protected string $headerTitle = '';
 
     protected string $urlHome = '';
@@ -65,7 +66,6 @@ class AdminCrudService
     public function __construct(
         UploadAnnotationReader $uploadAnnotReader,
         Environment $twig,
-        AdminBoutonService $adminBoutonService,
         PaginatorInterface $paginator,
         RequestStack $requestStack,
         EntityManagerInterface $entityManager,
@@ -88,15 +88,19 @@ class AdminCrudService
         $this->formFactory          = $formFactory;
         $this->requestStack         = $requestStack;
         /** @var Request $request */
-        $request                  = $this->requestStack->getCurrentRequest();
-        $this->request            = $request;
-        $this->paginator          = $paginator;
-        $this->adminBoutonService = $adminBoutonService;
+        $request         = $this->requestStack->getCurrentRequest();
+        $this->request   = $request;
+        $this->paginator = $paginator;
+    }
+
+    public function setBtnInstance($btnInstance)
+    {
+        $this->btnInstance = $btnInstance;
     }
 
     public function addBreadcrumbs(array $breadcrumbs): void
     {
-        BreadcrumbsService::getInstance()->add($breadcrumbs);
+        BreadcrumbsSingleton::getInstance()->add($breadcrumbs);
     }
 
     public function setPage($header, $url)
@@ -111,7 +115,7 @@ class AdminCrudService
             return;
         }
 
-        $this->adminBoutonService->addBtnList(
+        $this->btnInstance->addBtnList(
             $url['list'],
             'Liste',
         );
@@ -131,7 +135,7 @@ class AdminCrudService
             return;
         }
 
-        $this->adminBoutonService->addBtnShow(
+        $this->btnInstance->addBtnShow(
             $url['show'],
             'Show',
             [
@@ -146,7 +150,7 @@ class AdminCrudService
             return;
         }
 
-        $this->adminBoutonService->addBtnGuard(
+        $this->btnInstance->addBtnGuard(
             $url['guard'],
             'Guard',
             [
@@ -168,7 +172,7 @@ class AdminCrudService
             $urlsDelete['list'] = $url['list'];
         }
 
-        $this->adminBoutonService->addBtnDelete(
+        $this->btnInstance->addBtnDelete(
             $entity,
             $urlsDelete,
             'Supprimer',
@@ -214,13 +218,13 @@ class AdminCrudService
         ];
         $this->addBreadcrumbs($breadcrumb);
         if (isset($url['list'])) {
-            $this->adminBoutonService->addBtnList(
+            $this->btnInstance->addBtnList(
                 $url['list']
             );
         }
 
         if (isset($url['empty'])) {
-            $this->adminBoutonService->addBtnEmpty(
+            $this->btnInstance->addBtnEmpty(
                 [
                     'empty' => $url['empty'],
                     'list'  => $url['list'],
@@ -267,7 +271,7 @@ class AdminCrudService
         if ('trash' == $routeType) {
             $this->listOrTrashRouteTrash($url, $actions, $repository);
         } elseif (isset($url['trash'])) {
-            $this->adminBoutonService->addBtnTrash(
+            $this->btnInstance->addBtnTrash(
                 $url['trash']
             );
             if (isset($actions['delete'])) {
@@ -286,7 +290,7 @@ class AdminCrudService
         }
 
         if (isset($url['new']) && 'trash' != $routeType) {
-            $this->adminBoutonService->addBtnNew(
+            $this->btnInstance->addBtnNew(
                 $url['new']
             );
         }
@@ -334,7 +338,7 @@ class AdminCrudService
             return;
         }
 
-        $this->adminBoutonService->addBtnList(
+        $this->btnInstance->addBtnList(
             $url['list'],
             'Liste',
         );
@@ -346,7 +350,7 @@ class AdminCrudService
             return;
         }
 
-        $this->adminBoutonService->addBtnTrash(
+        $this->btnInstance->addBtnTrash(
             $url['trash'],
             'Trash',
         );
@@ -358,7 +362,7 @@ class AdminCrudService
             return;
         }
 
-        $this->adminBoutonService->addBtnGuard(
+        $this->btnInstance->addBtnGuard(
             $url['guard'],
             'Guard',
             [
@@ -373,7 +377,7 @@ class AdminCrudService
             return;
         }
 
-        $this->adminBoutonService->addBtnEdit(
+        $this->btnInstance->addBtnEdit(
             $url['edit'],
             'Editer',
             [
@@ -385,7 +389,7 @@ class AdminCrudService
     protected function showOrPreviewaddBtnRestore($url, $routeType, $entity)
     {
         if (isset($url['restore']) && 'preview' == $routeType) {
-            $this->adminBoutonService->addBtnRestore(
+            $this->btnInstance->addBtnRestore(
                 $entity,
                 [
                     'restore' => $url['restore'],
@@ -406,7 +410,7 @@ class AdminCrudService
             return;
         }
 
-        $this->adminBoutonService->addBtnDestroy(
+        $this->btnInstance->addBtnDestroy(
             $entity,
             [
                 'destroy' => $url['destroy'],
@@ -444,7 +448,7 @@ class AdminCrudService
                 $urlsDelete['list'] = $url['list'];
             }
 
-            $this->adminBoutonService->addBtnDelete(
+            $this->btnInstance->addBtnDelete(
                 $entity,
                 $urlsDelete,
                 'Supprimer',
@@ -477,14 +481,14 @@ class AdminCrudService
         ];
         $this->addBreadcrumbs($breadcrumb);
         if (isset($url['list'])) {
-            $this->adminBoutonService->addBtnList(
+            $this->btnInstance->addBtnList(
                 $url['list']
             );
         }
 
         $oldEntity = clone $entity;
         $form      = $this->formFactory->create($formType, $entity);
-        $this->adminBoutonService->addBtnSave($form->getName(), 'Ajouter');
+        $this->btnInstance->addBtnSave($form->getName(), 'Ajouter');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->upload($entity);
@@ -526,7 +530,7 @@ class AdminCrudService
         $this->setBtnViewUpdate($url, $entity);
         $oldEntity = clone $entity;
         $form      = $this->formFactory->create($formType, $entity);
-        $this->adminBoutonService->addBtnSave($form->getName(), 'Sauvegarder');
+        $this->btnInstance->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->upload($entity);

@@ -46,7 +46,7 @@ class UploadAnnotationReader
         return $properties;
     }
 
-    private function setReflection($entity): ReflectionClass
+    protected function setReflection($entity): ReflectionClass
     {
         return new ReflectionClass(get_class($entity));
     }

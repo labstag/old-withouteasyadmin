@@ -48,42 +48,19 @@ class GuardRouterSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         $route   = $request->attributes->get('_route');
-        $all     = $this->guardRouteService->all();
         $token   = $this->token->getToken();
-        if (!array_key_exists($route, $all)) {
+        $acces   = $this->guardRouteService->guardRoute($route, $token);
+        if ($acces) {
             return;
         }
 
-        if (empty($token) || !$token->getUser() instanceof User) {
-            $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
-            if (!$this->guardRouteService->searchRouteGroupe($groupe, $route)) {
-                /** @var Session $session */
-                $session = $this->session;
-                $session->getFlashBag()->add(
-                    'note',
-                    "Vous n'avez pas les droits nécessaires"
-                );
-                $event->setResponse(
-                    new RedirectResponse(
-                        $this->router->generate('login')
-                    )
-                );
-            }
-
-            return;
-        }
-
-        /** @var User $user */
-        $user   = $token->getUser();
-        $groupe = $user->getGroupe();
-        if ('superadmin' == $groupe->getCode()) {
-            return;
-        }
-
-        $state = $this->guardRouteService->searchRouteUser($user, $route);
-        if (!$state) {
-            throw new AccessDeniedException();
-        }
+        /** @var Session $session */
+        $session = $this->session;
+        $session->getFlashBag()->add(
+            'note',
+            "Vous n'avez pas les droits nécessaires"
+        );
+        throw new AccessDeniedException();
     }
 
     public static function getSubscribedEvents()

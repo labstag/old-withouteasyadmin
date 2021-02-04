@@ -11,9 +11,9 @@ use InvalidArgumentException;
 class UploadableField
 {
 
-    private $filename;
+    protected $filename;
 
-    private $path;
+    protected $path;
 
     public function __construct(array $options)
     {

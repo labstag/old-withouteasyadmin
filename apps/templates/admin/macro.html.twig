@@ -1,5 +1,9 @@
 {% macro form_img(entity, field, name, url) %}
     {% set file = attachment(field) %}
+    {% set state = guard_route(url) %}
+    {% if state == false %}
+        {% set url = '#' %}
+    {% endif %}
     {% if file != null %}
         <attachment-img
             data-src="{{ asset(file.name) }}"
@@ -42,8 +46,9 @@
 {% endmacro %}
 {% macro delete(entity, urlDelete, urlList) %}
     {% set title = "Delete"|trans %}
-    {% set state = guard_route(urlList) %}
-    {% if state == true %}
+    {% set state1 = guard_route(urlDelete) %}
+    {% set state2 = guard_route(urlList) %}
+    {% if state1 == true and state2 == true %}
         <link-delete
             data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
             data-token="{{ csrf_token('delete' ~ entity.id) }}"
@@ -86,8 +91,9 @@
 {% endmacro %}
 {% macro workflow(entity, actions) %}
     {% if workflow_has(entity) and actions['workflow'] is defined %}
-        {% set state = guard_route(actions['workflow']) %}
-        {% if state == true %}
+        {% set state1 = guard_route(actions['list']) %}
+        {% set state2 = guard_route(actions['workflow']) %}
+        {% if state1 == true  and state2 == true%}
             <div class="btngrouptable" role="group">
             {% for transition in workflow_transitions(entity) %}
                 <workflow-action
