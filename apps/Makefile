@@ -108,6 +108,8 @@ geocode: ## add geocode
 
 linter: phpcpd.phar phploc.phar phpmd.phar ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
+	@make linter php-cs-fixer -i
+	@make linter phpcbf -i
 	@make linter twig -i
 	@make linter container -i
 	@make linter yaml -i
@@ -118,6 +120,8 @@ ifeq ($(COMMAND_ARGS),all)
 	@make linter readme -i
 else ifeq ($(COMMAND_ARGS),phpcbf)
 	@COMPOSER_MEMORY_LIMIT=-1 composer run phpcbf
+else ifeq ($(COMMAND_ARGS),php-cs-fixer)
+	@COMPOSER_MEMORY_LIMIT=-1 composer run php-cs-fixer
 else ifeq ($(COMMAND_ARGS),phpcpd)
 	@php phpcpd.phar src tests
 else ifeq ($(COMMAND_ARGS),phpcs)

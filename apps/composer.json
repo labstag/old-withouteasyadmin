@@ -119,6 +119,7 @@
     "symfony/polyfill-php56": "*"
   },
   "scripts": {
+    "php-cs-fixer": "php-cs-fixer fix src",
     "phpcbf": "phpcbf -d memory_limit=-1 --report=diff -p --extensions=php",
     "phpcs-onlywarning": "phpcs --report=full --extensions=php --error-severity=0",
     "phpcs-onlyerror": "phpcs --report=full --extensions=php --warning-severity=0",
