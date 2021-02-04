@@ -174,6 +174,7 @@ class ActionsController extends ApiControllerLib
         ];
         $repository = $this->apiActionsService->getRepository($entity);
         $entity     = $repository->find($id);
+        $this->denyAccessUnlessGranted('workflow-'.$state, $entity);
         if (is_null($entity)) {
             $data['message'] = 'entité inconnu';
 

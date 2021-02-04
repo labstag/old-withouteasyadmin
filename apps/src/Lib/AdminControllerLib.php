@@ -572,6 +572,7 @@ abstract class AdminControllerLib extends ControllerLib
         string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
+        $this->denyAccessUnlessGranted('edit', $entity);
         $routeCurrent = $this->request->get('_route');
         $breadcrumb   = [
             'edit' => $this->router->generate(

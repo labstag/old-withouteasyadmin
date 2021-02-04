@@ -267,8 +267,7 @@ endif
 
 linter: ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
-	@make linter php-cs-fixer -i
-	@make linter phpcbf -i
+	@make linter phpfix -i
 	@make linter eslint -i
 	@make linter stylelint -i
 	@make linter twig -i
@@ -279,6 +278,9 @@ ifeq ($(COMMAND_ARGS),all)
 	@make linter phpcs -i
 	@make linter phpmd -i
 	@make linter readme -i
+else ifeq ($(COMMAND_ARGS),phpfix)
+	@make linter php-cs-fixer -i
+	@make linter phpcbf -i
 else ifeq ($(COMMAND_ARGS),readme)
 	@npm run linter-markdown README.md
 else ifeq ($(COMMAND_ARGS),stylelint)
@@ -322,6 +324,7 @@ else
 	@echo "---"
 	@echo "all: ## Launch all linter"
 	@echo "readme: linter README.md"
+	@echo "phpfix: PHP-CS-FIXER & PHPCBF"
 	@echo "stylelint: indique les erreurs dans le code SCSS"
 	@echo "stylelint-fix: fix les erreurs dans le code SCSS"
 	@echo "eslint: indique les erreurs sur le code JavaScript à partir d'un standard"
