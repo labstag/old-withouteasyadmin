@@ -23,42 +23,42 @@ class Attachment
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $mimeType;
+    protected $mimeType;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $size;
+    protected $size;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private $dimensions = [];
+    protected $dimensions = [];
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar")
      */
-    private $users;
+    protected $users;
 
     /**
      * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond")
      */
-    private $editos;
+    protected $editos;
 
     /**
      * @ORM\OneToMany(targetEntity=NoteInterne::class, mappedBy="fond")
      */
-    private $noteInternes;
+    protected $noteInternes;
 
     /**
      * @ORM\Column(type="array")

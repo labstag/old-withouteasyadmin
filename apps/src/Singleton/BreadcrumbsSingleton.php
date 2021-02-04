@@ -1,14 +1,10 @@
 <?php
-namespace Labstag\Service;
+namespace Labstag\Singleton;
 
-use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
-
-class BreadcrumbsService
+class BreadcrumbsSingleton
 {
 
     protected static $instance = null;
-
-    protected Breadcrumbs $breadcrumbs;
 
     protected array $data = [];
 
@@ -19,7 +15,7 @@ class BreadcrumbsService
     public static function getInstance()
     {
         if (is_null(self::$instance)) {
-            self::$instance = new BreadcrumbsService();
+            self::$instance = new BreadcrumbsSingleton();
         }
 
         return self::$instance;

@@ -2,8 +2,8 @@
 
 namespace Labstag\Lib;
 
-use Labstag\Service\BreadcrumbsService;
 use Labstag\Service\DataService;
+use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
@@ -15,6 +15,8 @@ abstract class ControllerLib extends AbstractController
 
     protected Breadcrumbs $breadcrumbs;
 
+    protected BreadcrumbsSingleton $breadcrumbsInstance;
+
     public function __construct(
         DataService $dataService,
         Breadcrumbs $breadcrumbs
@@ -22,11 +24,17 @@ abstract class ControllerLib extends AbstractController
     {
         $this->dataService = $dataService;
         $this->breadcrumbs = $breadcrumbs;
+        $this->setSingletons();
+    }
+
+    protected function setSingletons()
+    {
+        $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
     }
 
     protected function setBreadcrumbs(): void
     {
-        $data = BreadcrumbsService::getInstance()->get();
+        $data = $this->breadcrumbsInstance->get();
         foreach ($data as $title => $route) {
             $this->breadcrumbs->addItem($title, $route);
         }
