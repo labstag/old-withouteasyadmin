@@ -95,10 +95,7 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/{id}/guard", name="admin_groupuser_guard")
      */
-    public function guard(
-        RouteRepository $routeRepo,
-        Groupe $groupe
-    ): Response
+    public function guard(Groupe $groupe): Response
     {
         $breadcrumb = [
             'Guard' => $this->generateUrl(

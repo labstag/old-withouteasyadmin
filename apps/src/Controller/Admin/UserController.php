@@ -100,10 +100,7 @@ class UserController extends AdminControllerLib
     /**
      * @Route("/{id}/guard", name="admin_user_guard")
      */
-    public function guard(
-        RouteRepository $routeRepo,
-        User $user
-    ): Response
+    public function guard(User $user): Response
     {
         $breadcrumb = [
             'Guard' => $this->generateUrl(
