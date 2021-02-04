@@ -39,21 +39,77 @@ class GuardRouteService
 
     protected GroupeRepository $groupeRepository;
 
+    protected RouteRepository $routeRepository;
+
     public function __construct(
         RouterInterface $router,
         EntityManagerInterface $entityManager,
         RouteUserRepository $routeUserRepo,
         GroupeRepository $groupeRepository,
+        RouteRepository $routeRepository,
         RouteGroupeRepository $routeGroupeRepo,
         RouteRepository $repositoryRoute
     )
     {
+        $this->routeRepository  = $routeRepository;
         $this->entityManager    = $entityManager;
         $this->groupeRepository = $groupeRepository;
         $this->routeGroupeRepo  = $routeGroupeRepo;
         $this->routeUserRepo    = $routeUserRepo;
         $this->repositoryRoute  = $repositoryRoute;
         $this->router           = $router;
+    }
+
+    public function getGuardRoutesForGroupe(Groupe $groupe): array
+    {
+        $routes = $this->routesEnableGroupe($groupe);
+        if ($groupe->getCode() == 'superadmin') {
+            $routes = [];
+        }
+
+        return $routes;
+    }
+
+    public function getGuardRoutesForUser(User $user): array
+    {
+        $routes = $this->routesEnableUser($user);
+        if ($user->getGroupe()->getCode() == 'superadmin') {
+            $routes = [];
+        }
+
+        return $routes;
+    }
+
+    public function routesEnableGroupe(Groupe $groupe): array
+    {
+        $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
+        $routes = [];
+        foreach ($data as $route) {
+            $state = $this->guardRouteEnableGroupe($route, $groupe);
+            if (!$state) {
+                continue;
+            }
+
+            $routes[] = $route;
+        }
+
+        return $routes;
+    }
+
+    public function routesEnableUser(User $user): array
+    {
+        $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
+        $routes = [];
+        foreach ($data as $route) {
+            $state = $this->guardRouteEnableUser($route, $user);
+            if (!$state) {
+                continue;
+            }
+
+            $routes[] = $route;
+        }
+
+        return $routes;
     }
 
     public function regex(string $string)
@@ -236,6 +292,10 @@ class GuardRouteService
     public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
     {
         $all = $this->all();
+        if ('superadmin' == $groupe->getCode()) {
+            return true;
+        }
+
         if (!array_key_exists($route, $all)) {
             return false;
         }

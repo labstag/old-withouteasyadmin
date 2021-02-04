@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\File;
+use Labstag\Entity\User;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -59,6 +60,8 @@ class AdminCrudService
 
     protected AdminBtnSingleton $btnInstance;
 
+    protected GuardRouteService $guardRouteService;
+
     protected string $headerTitle = '';
 
     protected string $urlHome = '';
@@ -74,6 +77,7 @@ class AdminCrudService
         ContainerBagInterface $container,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
+        GuardRouteService $guardRouteService,
         SessionInterface $session
     )
     {
@@ -86,6 +90,7 @@ class AdminCrudService
         $this->session              = $session;
         $this->router               = $router;
         $this->formFactory          = $formFactory;
+        $this->guardRouteService    = $guardRouteService;
         $this->requestStack         = $requestStack;
         /** @var Request $request */
         $request         = $this->requestStack->getCurrentRequest();
@@ -144,9 +149,22 @@ class AdminCrudService
         );
     }
 
+    protected function enableBtnGuard($entity): bool
+    {
+        if ($entity instanceof User) {
+            $routes = $this->guardRouteService->getGuardRoutesForUser($entity);
+
+            return (count($routes) != 0) ? true : false;
+        }
+
+        $routes = $this->guardRouteService->getGuardRoutesForGroupe($entity);
+
+        return (count($routes) != 0) ? true : false;
+    }
+
     protected function setBtnGuard(array $url, object $entity): void
     {
-        if (!isset($url['guard'])) {
+        if (!isset($url['guard']) || !$this->enableBtnGuard($entity)) {
             return;
         }
 
@@ -358,7 +376,7 @@ class AdminCrudService
 
     protected function showOrPreviewaddBtnGuard($url, $routeType, $entity)
     {
-        if (!(isset($url['guard']) && 'show' == $routeType)) {
+        if (!(isset($url['guard']) && 'show' == $routeType) || !$this->enableBtnGuard($entity)) {
             return;
         }
 

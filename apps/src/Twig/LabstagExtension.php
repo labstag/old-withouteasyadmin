@@ -68,6 +68,8 @@ class LabstagExtension extends AbstractExtension
             new TwigFilter('attachment', [$this, 'getAttachment']),
             new TwigFilter('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
             new TwigFilter('guard_route_enable_user', [$this, 'guardRouteEnableUser']),
+            new TwigFilter('guard_user_access', [$this, 'guardAccessUserRoutes']),
+            new TwigFilter('guard_group_access', [$this, 'guardAccessGroupRoutes']),
             new TwigFilter('formClass', [$this, 'formClass']),
             new TwigFilter('verifPhone', [$this, 'verifPhone']),
             new TwigFilter('formPrototype', [$this, 'formPrototype']),
@@ -83,6 +85,8 @@ class LabstagExtension extends AbstractExtension
             new TwigFunction('attachment', [$this, 'getAttachment']),
             new TwigFunction('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
             new TwigFunction('guard_route_enable_user', [$this, 'guardRouteEnableUser']),
+            new TwigFunction('guard_user_access', [$this, 'guardAccessUserRoutes']),
+            new TwigFunction('guard_group_access', [$this, 'guardAccessGroupRoutes']),
             new TwigFunction('formClass', [$this, 'formClass']),
             new TwigFunction('verifPhone', [$this, 'verifPhone']),
             new TwigFunction('formPrototype', [$this, 'formPrototype']),
@@ -121,6 +125,20 @@ class LabstagExtension extends AbstractExtension
         $class = substr($class, strpos($class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY));
 
         return trim(strtolower($class));
+    }
+
+    public function guardAccessUserRoutes(User $user): bool
+    {
+        $routes = $this->guardRouteService->getGuardRoutesForUser($user);
+
+        return (count($routes) != 0) ? true : false;
+    }
+
+    public function guardAccessGroupRoutes(Groupe $groupe): bool
+    {
+        $routes = $this->guardRouteService->getGuardRoutesForGroupe($groupe);
+
+        return (count($routes) != 0) ? true : false;
     }
 
     public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
