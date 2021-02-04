@@ -156,35 +156,8 @@ class LabstagExtension extends AbstractExtension
 
     public function guardRoute(string $route): bool
     {
-        $all   = $this->guardRouteService->all();
         $token = $this->token->getToken();
-        if (!array_key_exists($route, $all)) {
-            return true;
-        }
-
-        $token = $this->token->getToken();
-        if (empty($token) || !$token->getUser() instanceof User) {
-            $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
-            if (!$this->guardRouteService->searchRouteGroupe($groupe, $route)) {
-                return false;
-            }
-
-            return true;
-        }
-
-        /** @var User $user */
-        $user   = $token->getUser();
-        $groupe = $user->getGroupe();
-        if ('superadmin' == $groupe->getCode()) {
-            return true;
-        }
-
-        $state = $this->guardRouteService->searchRouteUser($user, $route);
-        if (!$state) {
-            return false;
-        }
-
-        return true;
+        return $this->guardRouteService->guardRoute($route, $token);
     }
 
     public function workflowHas($entity)

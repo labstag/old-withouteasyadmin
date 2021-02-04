@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Route;
 use Labstag\Entity\User;
+use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\RouteGroupeRepository;
 use Labstag\Repository\RouteRepository;
 use Labstag\Repository\RouteUserRepository;
@@ -33,19 +34,23 @@ class GuardRouteService
 
     protected RouteGroupeRepository $routeGroupeRepo;
 
+    protected GroupeRepository $groupeRepository;
+
     public function __construct(
         RouterInterface $router,
         EntityManagerInterface $entityManager,
         RouteUserRepository $routeUserRepo,
+        GroupeRepository $groupeRepository,
         RouteGroupeRepository $routeGroupeRepo,
         RouteRepository $repositoryRoute
     )
     {
-        $this->entityManager   = $entityManager;
-        $this->routeGroupeRepo = $routeGroupeRepo;
-        $this->routeUserRepo   = $routeUserRepo;
-        $this->repositoryRoute = $repositoryRoute;
-        $this->router          = $router;
+        $this->entityManager    = $entityManager;
+        $this->groupeRepository = $groupeRepository;
+        $this->routeGroupeRepo  = $routeGroupeRepo;
+        $this->routeUserRepo    = $routeUserRepo;
+        $this->repositoryRoute  = $repositoryRoute;
+        $this->router           = $router;
     }
 
     public function regex(string $string)
@@ -151,7 +156,7 @@ class GuardRouteService
         return $data;
     }
 
-    public function searchRouteGroupe(Groupe $groupe, string $route): bool
+    protected function searchRouteGroupe(Groupe $groupe, string $route): bool
     {
         $entity = $this->routeGroupeRepo->findRoute($groupe, $route);
         if (empty($entity)) {
@@ -161,7 +166,7 @@ class GuardRouteService
         return $entity->isState();
     }
 
-    public function searchRouteUser(User $user, string $route): bool
+    protected function searchRouteUser(User $user, string $route): bool
     {
         $state = $this->searchRouteGroupe($user->getGroupe(), $route);
         if (!$state) {
@@ -174,5 +179,36 @@ class GuardRouteService
         }
 
         return $entity->isState();
+    }
+
+    public function guardRoute(string $route, $token)
+    {
+        $all = $this->all();
+        if (!array_key_exists($route, $all)) {
+            return true;
+        }
+
+        if (empty($token) || !$token->getUser() instanceof User) {
+            $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
+            if (!$this->searchRouteGroupe($groupe, $route)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        /** @var User $user */
+        $user   = $token->getUser();
+        $groupe = $user->getGroupe();
+        if ('superadmin' == $groupe->getCode()) {
+            return true;
+        }
+
+        $state = $this->searchRouteUser($user, $route);
+        if (!$state) {
+            return false;
+        }
+
+        return true;
     }
 }
