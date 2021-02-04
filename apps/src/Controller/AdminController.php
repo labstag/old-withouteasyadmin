@@ -12,7 +12,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\UserRequestHandler;
-use Labstag\Service\AdminBoutonService;
 use Labstag\Service\DataService;
 use Labstag\Service\UploadService;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,15 +39,14 @@ class AdminController extends AdminControllerLib
     public function param(
         Request $request,
         EventDispatcherInterface $dispatcher,
-        DataService $dataService,
-        AdminBoutonService $adminBoutonService
+        DataService $dataService
     ): Response
     {
         $this->headerTitle = 'Paramètres';
         $this->urlHome     = 'admin_param';
         $config            = $dataService->getConfig();
         $form              = $this->createForm(ParamType::class, $config);
-        $adminBoutonService->addBtnSave($form->getName(), 'Sauvegarder');
+        $this->btnInstance->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $post = $request->request->get($form->getName());

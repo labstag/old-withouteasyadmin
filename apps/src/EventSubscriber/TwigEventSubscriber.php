@@ -2,12 +2,13 @@
 
 namespace Labstag\EventSubscriber;
 
-use Labstag\Service\AdminBoutonService;
 use Labstag\Service\DataService;
+use Labstag\Singleton\AdminBtnSingleton;
 use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
@@ -17,21 +18,21 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     protected Environment $twig;
 
-    protected AdminBoutonService $adminBoutonService;
-
     protected RouterInterface $router;
+
+    protected CsrfTokenManagerInterface $csrfTokenManager;
 
     public function __construct(
         RouterInterface $router,
         Environment $twig,
-        AdminBoutonService $adminBoutonService,
+        CsrfTokenManagerInterface $csrfTokenManager,
         DataService $dataService
     )
     {
-        $this->router             = $router;
-        $this->adminBoutonService = $adminBoutonService;
-        $this->twig               = $twig;
-        $this->dataService        = $dataService;
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->router           = $router;
+        $this->twig             = $twig;
+        $this->dataService      = $dataService;
     }
 
     public function onControllerEvent(ControllerEvent $event): void
@@ -52,11 +53,6 @@ class TwigEventSubscriber implements EventSubscriberInterface
         }
 
         $this->setBreadCrumbsAdmin();
-
-        $this->twig->addGlobal(
-            'btnadmin',
-            $this->adminBoutonService->get()
-        );
     }
 
     protected function setBreadCrumbsAdmin()

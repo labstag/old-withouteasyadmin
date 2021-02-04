@@ -14,7 +14,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Repository\RouteRepository;
 use Labstag\RequestHandler\UserRequestHandler;
-use Labstag\Service\AdminBoutonService;
 
 /**
  * @Route("/admin/user")
@@ -103,8 +102,7 @@ class UserController extends AdminControllerLib
      */
     public function guard(
         RouteRepository $routeRepo,
-        User $user,
-        AdminBoutonService $adminBoutonService
+        User $user
     ): Response
     {
         $breadcrumb = [
@@ -116,11 +114,11 @@ class UserController extends AdminControllerLib
             ),
         ];
         $this->addBreadcrumbs($breadcrumb);
-        $adminBoutonService->addBtnList(
+        $this->btnInstance->addBtnList(
             'admin_user_index',
             'Liste',
         );
-        $adminBoutonService->addBtnShow(
+        $this->btnInstance->addBtnShow(
             'admin_user_show',
             'Show',
             [
@@ -128,7 +126,7 @@ class UserController extends AdminControllerLib
             ]
         );
 
-        $adminBoutonService->addBtnEdit(
+        $this->btnInstance->addBtnEdit(
             'admin_user_edit',
             'Editer',
             [

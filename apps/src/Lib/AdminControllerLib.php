@@ -2,7 +2,6 @@
 
 namespace Labstag\Lib;
 
-use Labstag\Service\AdminBoutonService;
 use Labstag\Service\AdminCrudService;
 use Labstag\Service\DataService;
 use Labstag\Singleton\AdminBtnSingleton;
@@ -19,8 +18,6 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected string $urlHome = '';
 
-    protected AdminBoutonService $adminBoutonService;
-
     protected AdminCrudService $adminCrudService;
 
     protected Environment $twig;
@@ -33,7 +30,6 @@ abstract class AdminControllerLib extends ControllerLib
 
     public function __construct(
         DataService $dataService,
-        AdminBoutonService $adminBoutonService,
         AdminCrudService $adminCrudService,
         Breadcrumbs $breadcrumbs,
         Environment $twig,
@@ -41,14 +37,14 @@ abstract class AdminControllerLib extends ControllerLib
         RouterInterface $router
     )
     {
-        $this->twig               = $twig;
-        $this->router             = $router;
-        $this->csrfTokenManager   = $csrfTokenManager;
-        $this->adminBoutonService = $adminBoutonService;
-        $this->adminCrudService   = $adminCrudService;
+        $this->twig             = $twig;
+        $this->router           = $router;
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->adminCrudService = $adminCrudService;
         $this->adminCrudService->setController($this);
         $this->adminCrudService->setPage($this->headerTitle, $this->urlHome);
         $this->setSingletonsAdmin();
+        $this->adminCrudService->setBtnInstance($this->btnInstance);
         parent::__construct($dataService, $breadcrumbs);
     }
 
@@ -93,10 +89,9 @@ abstract class AdminControllerLib extends ControllerLib
         $parameters = array_merge(
             $parameters,
             [
-                'btnadmin' => $this->adminBoutonService->get(),
+                'btnadmin' => $this->btnInstance->get(),
             ]
         );
-
         return parent::render($view, $parameters, $response);
     }
 }
