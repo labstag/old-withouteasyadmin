@@ -126,7 +126,7 @@ class GroupeController extends AdminControllerLib
             ]
         );
 
-        $routes = $this->guardRouteService->getGuardRoutesForGroupe($groupe);
+        $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
         if (count($routes) == 0) {
             $this->addFlash(
                 'danger',

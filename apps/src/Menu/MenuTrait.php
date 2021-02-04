@@ -7,7 +7,7 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuItem;
 use Labstag\Entity\Menu;
 use Labstag\Repository\MenuRepository;
-use Labstag\Service\GuardRouteService;
+use Labstag\Service\GuardService;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 trait MenuTrait
@@ -17,7 +17,7 @@ trait MenuTrait
 
     protected MenuRepository $repository;
 
-    protected GuardRouteService $guardRouteService;
+    protected GuardService $guardService;
 
     protected TokenStorageInterface $token;
 
@@ -25,13 +25,13 @@ trait MenuTrait
         FactoryInterface $factory,
         MenuRepository $repository,
         TokenStorageInterface $token,
-        GuardRouteService $guardRouteService
+        GuardService $guardService
     )
     {
-        $this->token             = $token;
-        $this->guardRouteService = $guardRouteService;
-        $this->factory           = $factory;
-        $this->repository        = $repository;
+        $this->token        = $token;
+        $this->guardService = $guardService;
+        $this->factory      = $factory;
+        $this->repository   = $repository;
     }
 
     public function setData(ItemInterface $menu, string $clef): ItemInterface
@@ -103,7 +103,7 @@ trait MenuTrait
 
         if (isset($dataChild['attr']['data-href'])) {
             $token = $this->token->getToken();
-            $state = $this->guardRouteService->guardRoute($dataChild['attr']['data-href'], $token);
+            $state = $this->guardService->guardRoute($dataChild['attr']['data-href'], $token);
             if (!$state) {
                 return;
             }

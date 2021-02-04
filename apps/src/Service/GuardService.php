@@ -3,7 +3,9 @@
 namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\Edito;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\NoteInterne;
 use Labstag\Entity\Route;
 use Labstag\Entity\User;
 use Labstag\Repository\GroupeRepository;
@@ -12,8 +14,9 @@ use Labstag\Repository\RouteRepository;
 use Labstag\Repository\RouteUserRepository;
 use Symfony\Component\Routing\Route as Routing;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Workflow\Registry;
 
-class GuardRouteService
+class GuardService
 {
 
     const GROUPE_ENABLE = ['visiteur'];
@@ -41,12 +44,15 @@ class GuardRouteService
 
     protected RouteRepository $routeRepository;
 
+    protected Registry $workflows;
+
     public function __construct(
         RouterInterface $router,
         EntityManagerInterface $entityManager,
         RouteUserRepository $routeUserRepo,
         GroupeRepository $groupeRepository,
         RouteRepository $routeRepository,
+        Registry $workflows,
         RouteGroupeRepository $routeGroupeRepo,
         RouteRepository $repositoryRoute
     )
@@ -54,6 +60,7 @@ class GuardRouteService
         $this->routeRepository  = $routeRepository;
         $this->entityManager    = $entityManager;
         $this->groupeRepository = $groupeRepository;
+        $this->workflows        = $workflows;
         $this->routeGroupeRepo  = $routeGroupeRepo;
         $this->routeUserRepo    = $routeUserRepo;
         $this->repositoryRoute  = $repositoryRoute;

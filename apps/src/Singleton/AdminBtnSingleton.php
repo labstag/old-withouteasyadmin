@@ -1,7 +1,7 @@
 <?php
 namespace Labstag\Singleton;
 
-use Labstag\Service\GuardRouteService;
+use Labstag\Service\GuardService;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -20,7 +20,7 @@ class AdminBtnSingleton
 
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
-    protected GuardRouteService $guardRouteService;
+    protected GuardService $guardService;
 
     protected TokenStorageInterface $token;
 
@@ -50,21 +50,21 @@ class AdminBtnSingleton
         RouterInterface $router,
         TokenStorageInterface $token,
         CsrfTokenManagerInterface $csrfTokenManager,
-        GuardRouteService $guardRouteService
+        GuardService $guardService
     )
     {
-        $this->twig              = $twig;
-        $this->router            = $router;
-        $this->token             = $token;
-        $this->csrfTokenManager  = $csrfTokenManager;
-        $this->guardRouteService = $guardRouteService;
-        $this->init              = true;
+        $this->twig             = $twig;
+        $this->router           = $router;
+        $this->token            = $token;
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->guardService     = $guardService;
+        $this->init             = true;
     }
 
     protected function isRouteEnable(string $route)
     {
         $token = $this->token->getToken();
-        return $this->guardRouteService->guardRoute($route, $token);
+        return $this->guardService->guardRoute($route, $token);
     }
 
     protected function isRoutesEnable(array $routes)

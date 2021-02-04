@@ -6,7 +6,7 @@ use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\GroupeRepository;
-use Labstag\Service\GuardRouteService;
+use Labstag\Service\GuardService;
 use Labstag\Service\PhoneService;
 use Labstag\Entity\Attachment;
 use Psr\Log\LoggerInterface;
@@ -23,7 +23,7 @@ class LabstagExtension extends AbstractExtension
 
     protected Registry $workflows;
 
-    protected GuardRouteService $guardRouteService;
+    protected GuardService $guardService;
 
     protected TokenStorageInterface $token;
 
@@ -44,12 +44,12 @@ class LabstagExtension extends AbstractExtension
         LoggerInterface $logger,
         GroupeRepository $groupeRepository,
         AttachmentRepository $attachmentRepository,
-        GuardRouteService $guardRouteService
+        GuardService $guardService
     )
     {
         $this->attachmentRepository = $attachmentRepository;
         $this->logger               = $logger;
-        $this->guardRouteService    = $guardRouteService;
+        $this->guardService         = $guardService;
         $this->groupeRepository     = $groupeRepository;
         $this->workflows            = $workflows;
         $this->token                = $token;
@@ -115,7 +115,7 @@ class LabstagExtension extends AbstractExtension
 
     public function guardRouteEnableUser(string $route, User $user): bool
     {
-        return $this->guardRouteService->guardRouteEnableUser($route, $user);
+        return $this->guardService->guardRouteEnableUser($route, $user);
     }
 
     public function classEntity($entity)
@@ -129,27 +129,27 @@ class LabstagExtension extends AbstractExtension
 
     public function guardAccessUserRoutes(User $user): bool
     {
-        $routes = $this->guardRouteService->getGuardRoutesForUser($user);
+        $routes = $this->guardService->getGuardRoutesForUser($user);
 
         return (count($routes) != 0) ? true : false;
     }
 
     public function guardAccessGroupRoutes(Groupe $groupe): bool
     {
-        $routes = $this->guardRouteService->getGuardRoutesForGroupe($groupe);
+        $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
 
         return (count($routes) != 0) ? true : false;
     }
 
     public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
     {
-        return $this->guardRouteService->guardRouteEnableGroupe($route, $groupe);
+        return $this->guardService->guardRouteEnableGroupe($route, $groupe);
     }
 
     public function guardRoute(string $route): bool
     {
         $token = $this->token->getToken();
-        return $this->guardRouteService->guardRoute($route, $token);
+        return $this->guardService->guardRoute($route, $token);
     }
 
     public function workflowHas($entity)

@@ -60,7 +60,7 @@ class AdminCrudService
 
     protected AdminBtnSingleton $btnInstance;
 
-    protected GuardRouteService $guardRouteService;
+    protected GuardService $guardService;
 
     protected string $headerTitle = '';
 
@@ -77,7 +77,7 @@ class AdminCrudService
         ContainerBagInterface $container,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
-        GuardRouteService $guardRouteService,
+        GuardService $guardService,
         SessionInterface $session
     )
     {
@@ -90,7 +90,7 @@ class AdminCrudService
         $this->session              = $session;
         $this->router               = $router;
         $this->formFactory          = $formFactory;
-        $this->guardRouteService    = $guardRouteService;
+        $this->guardService         = $guardService;
         $this->requestStack         = $requestStack;
         /** @var Request $request */
         $request         = $this->requestStack->getCurrentRequest();
@@ -152,12 +152,12 @@ class AdminCrudService
     protected function enableBtnGuard($entity): bool
     {
         if ($entity instanceof User) {
-            $routes = $this->guardRouteService->getGuardRoutesForUser($entity);
+            $routes = $this->guardService->getGuardRoutesForUser($entity);
 
             return (count($routes) != 0) ? true : false;
         }
 
-        $routes = $this->guardRouteService->getGuardRoutesForGroupe($entity);
+        $routes = $this->guardService->getGuardRoutesForGroupe($entity);
 
         return (count($routes) != 0) ? true : false;
     }

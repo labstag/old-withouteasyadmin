@@ -130,12 +130,11 @@ class UserController extends AdminControllerLib
                 'id' => $user->getId(),
             ]
         );
-        $routes = $this->guardRouteService->getGuardRoutesForUser($user);
+        $routes = $this->guardService->getGuardRoutesForUser($user);
         if (count($routes) == 0) {
-            $this->addFlash(
-                'danger',
-                "L'utilisateur fait partie du groupe superadmin, qui n'est pas un groupe qui peut avoir des droits spécifique"
-            );
+            $msg  = "L'utilisateur fait partie du groupe superadmin, qui n'est pas";
+            $msg .= ' un groupe qui peut avoir des droits spécifique';
+            $this->addFlash('danger', $msg);
             return $this->redirect($this->generateUrl('admin_user_index'));
         }
 

@@ -24,7 +24,7 @@ use Labstag\RequestHandler\NoteInterneRequestHandler;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
-use Labstag\Service\GuardRouteService;
+use Labstag\Service\GuardService;
 use Labstag\Service\OauthService;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
@@ -58,7 +58,7 @@ abstract class FixtureLib extends Fixture
 
     protected UserRequestHandler $userRH;
 
-    protected GuardRouteService $guardService;
+    protected GuardService $guardService;
 
     protected CacheInterface $cache;
 
@@ -66,7 +66,7 @@ abstract class FixtureLib extends Fixture
         OauthService $oauthService,
         UserRepository $userRepository,
         GroupeRepository $groupeRepository,
-        GuardRouteService $guardService,
+        GuardService $guardService,
         Environment $twig,
         EmailUserRequestHandler $emailUserRH,
         LienUserRequestHandler $lienUserRH,
