@@ -3,10 +3,8 @@
 namespace Labstag\EventSubscriber;
 
 use Labstag\Entity\AdresseUser;
-use Labstag\Entity\EmailUser;
 use Labstag\Entity\LienUser;
 use Labstag\Entity\OauthConnectUser;
-use Labstag\Entity\PhoneUser;
 use Labstag\Event\UserCollectionEvent;
 use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -34,7 +32,7 @@ class UserCollectionSubscriber implements EventSubscriberInterface
 
     protected function setOauthConnectUser(array $data): void
     {
-        if (count($data) == 0) {
+        if (0 == count($data)) {
             return;
         }
 
@@ -54,7 +52,7 @@ class UserCollectionSubscriber implements EventSubscriberInterface
 
     protected function setLienUser(array $data): void
     {
-        if (count($data) == 0) {
+        if (0 == count($data)) {
             return;
         }
 
@@ -71,7 +69,7 @@ class UserCollectionSubscriber implements EventSubscriberInterface
 
     protected function setAdresseUser(array $data): void
     {
-        if (count($data) == 0) {
+        if (0 == count($data)) {
             return;
         }
 
@@ -85,7 +83,6 @@ class UserCollectionSubscriber implements EventSubscriberInterface
 
         $this->userMailService->checkNewAdresse($new->getRefuser(), $new);
     }
-
 
     public static function getSubscribedEvents()
     {

@@ -2,9 +2,9 @@
 
 namespace Labstag\Repository;
 
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\AdresseUser;
-use Doctrine\ORM\Query;
 
 class AdresseUserRepository extends AdresseRepository
 {

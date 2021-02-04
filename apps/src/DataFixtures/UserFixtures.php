@@ -2,12 +2,9 @@
 
 namespace Labstag\DataFixtures;
 
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 use Labstag\Lib\FixtureLib;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\UserRepository;
-use Psr\EventDispatcher\EventDispatcherInterface;
 
 class UserFixtures extends FixtureLib implements DependentFixtureInterface
 {

@@ -2,18 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
 use Labstag\Form\Admin\GroupeType;
-use Labstag\Repository\GroupeRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\GroupeRepository;
+use Labstag\RequestHandler\GroupeRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\Repository\RouteRepository;
-use Labstag\RequestHandler\GroupeRequestHandler;
 
 /**
  * @Route("/admin/user/groupe")
@@ -77,7 +73,7 @@ class GroupeController extends AdminControllerLib
      */
     public function showOrPreview(Groupe $groupe): Response
     {
-        return $this->showOrPreview(
+        return $this->renderShowOrPreview(
             $groupe,
             'admin/groupe/show.html.twig',
             [
@@ -127,11 +123,12 @@ class GroupeController extends AdminControllerLib
         );
 
         $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
-        if (count($routes) == 0) {
+        if (0 == count($routes)) {
             $this->addFlash(
                 'danger',
                 "Le groupe superadmin n'est pas un groupe qui peut avoir des droits spécifique"
             );
+
             return $this->redirect($this->generateUrl('admin_groupuser_index'));
         }
 

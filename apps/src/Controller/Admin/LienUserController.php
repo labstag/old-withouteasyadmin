@@ -2,17 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\LienUser;
 use Labstag\Form\Admin\LienUserType;
-use Labstag\Repository\LienUserRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\LienUserRepository;
+use Labstag\RequestHandler\LienUserRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\LienUserRequestHandler;
 
 /**
  * @Route("/admin/user/lien")
@@ -76,7 +73,7 @@ class LienUserController extends AdminControllerLib
      */
     public function showOrPreview(LienUser $lienUser): Response
     {
-        return $this->showOrPreview(
+        return $this->renderShowOrPreview(
             $lienUser,
             'admin/lien_user/show.html.twig',
             [

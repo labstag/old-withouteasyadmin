@@ -3,15 +3,13 @@
 namespace Labstag\Entity;
 
 use DateTime;
-use DateTimeImmutable;
-use Symfony\Component\HttpFoundation\File\File;
-use Labstag\Repository\NoteInterneRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Repository\NoteInterneRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=NoteInterneRepository::class)
@@ -20,7 +18,6 @@ use Labstag\Annotation\UploadableField;
  */
 class NoteInterne
 {
-
     use SoftDeleteableEntity;
 
     /**
@@ -125,24 +122,24 @@ class NoteInterne
         return $this;
     }
 
-    public function getDateDebut(): ?\DateTime
+    public function getDateDebut(): ?DateTime
     {
         return $this->dateDebut;
     }
 
-    public function setDateDebut(\DateTime $dateDebut): self
+    public function setDateDebut(DateTime $dateDebut): self
     {
         $this->dateDebut = $dateDebut;
 
         return $this;
     }
 
-    public function getDateFin(): ?\DateTime
+    public function getDateFin(): ?DateTime
     {
         return $this->dateFin;
     }
 
-    public function setDateFin(?\DateTime $dateFin): self
+    public function setDateFin(?DateTime $dateFin): self
     {
         $this->dateFin = $dateFin;
 

@@ -2,11 +2,10 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\RouteUser;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
 use Labstag\Lib\ServiceEntityRepositoryLib;
-
 
 class RouteUserRepository extends ServiceEntityRepositoryLib
 {

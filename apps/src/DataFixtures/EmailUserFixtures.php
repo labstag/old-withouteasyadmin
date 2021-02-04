@@ -6,7 +6,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Labstag\Lib\FixtureLib;
-use Labstag\Repository\UserRepository;
 
 class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
 {
@@ -18,7 +17,7 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
         $faker = Factory::create('fr_FR');
         for ($index = 0; $index < self::NUMBER; ++$index) {
             $indexUser = $faker->numberBetween(1, 3);
-            $user      = $this->getReference('user_' . $indexUser);
+            $user      = $this->getReference('user_'.$indexUser);
             $this->addEmail($faker, $user);
         }
     }

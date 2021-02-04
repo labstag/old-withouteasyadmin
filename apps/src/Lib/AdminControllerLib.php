@@ -5,18 +5,13 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Attachment;
-use Labstag\Entity\File;
 use Labstag\Entity\User;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
-use Labstag\RequestHandler\FileRequestHandler;
+use Labstag\Service\DataService;
+use Labstag\Service\GuardService;
 use Labstag\Singleton\AdminBtnSingleton;
-use Labstag\Singleton\BreadcrumbsSingleton;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,11 +21,9 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
-use Twig\Environment;
-use Labstag\Service\DataService;
-use Labstag\Service\GuardService;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Twig\Environment;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 abstract class AdminControllerLib extends ControllerLib
@@ -127,7 +120,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function setBreadcrumbsPage()
     {
-        if ($this->headerTitle == '' && $this->urlHome == '') {
+        if ('' == $this->headerTitle && '' == $this->urlHome) {
             return;
         }
 
@@ -154,6 +147,7 @@ abstract class AdminControllerLib extends ControllerLib
                 'btnadmin' => $this->btnInstance->get(),
             ]
         );
+
         return parent::render($view, $parameters, $response);
     }
 
@@ -202,12 +196,12 @@ abstract class AdminControllerLib extends ControllerLib
         if ($entity instanceof User) {
             $routes = $this->guardService->getGuardRoutesForUser($entity);
 
-            return (count($routes) != 0) ? true : false;
+            return (0 != count($routes)) ? true : false;
         }
 
         $routes = $this->guardService->getGuardRoutesForGroupe($entity);
 
-        return (count($routes) != 0) ? true : false;
+        return (0 != count($routes)) ? true : false;
     }
 
     protected function setBtnGuard(array $url, object $entity): void
@@ -485,7 +479,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    public function form(
+    public function renderShowOrPreview(
         object $entity,
         string $twigShow,
         array $url = []
@@ -663,6 +657,7 @@ abstract class AdminControllerLib extends ControllerLib
         $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
         if (is_null($attachmentField)) {
             $attachment = new Attachment();
+
             return $attachment;
         }
 

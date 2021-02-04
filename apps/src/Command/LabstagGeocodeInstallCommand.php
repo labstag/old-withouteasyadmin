@@ -2,21 +2,13 @@
 
 namespace Labstag\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Labstag\Entity\GeoCode;
-use Labstag\Repository\GeoCodeRepository;
-use Labstag\RequestHandler\GeoCodeRequestHandler;
 use Labstag\Service\GeocodeService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Intl\Countries;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use ZipArchive;
 
 class LabstagGeocodeInstallCommand extends Command
 {
@@ -52,6 +44,7 @@ class LabstagGeocodeInstallCommand extends Command
                     $country
                 )
             );
+
             return COMMAND::FAILURE;
         }
 
@@ -60,6 +53,7 @@ class LabstagGeocodeInstallCommand extends Command
             $inputOutput->warning(
                 ['fichier inexistant']
             );
+
             return COMMAND::FAILURE;
         }
 

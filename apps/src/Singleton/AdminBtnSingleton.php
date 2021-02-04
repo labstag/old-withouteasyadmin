@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Singleton;
 
 use Labstag\Service\GuardService;
@@ -64,6 +65,7 @@ class AdminBtnSingleton
     protected function isRouteEnable(string $route)
     {
         $token = $this->token->getToken();
+
         return $this->guardService->guardRoute($route, $token);
     }
 
@@ -133,7 +135,7 @@ class AdminBtnSingleton
             'modalRestore',
             true
         );
-        $code  = 'restore' . $entity->getId();
+        $code  = 'restore'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
             'data-toggle'   => 'modal',
@@ -184,7 +186,7 @@ class AdminBtnSingleton
             'modalDestroy',
             true
         );
-        $code  = 'destroy' . $entity->getId();
+        $code  = 'destroy'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
             'data-toggle'   => 'modal',
@@ -213,7 +215,7 @@ class AdminBtnSingleton
         array $routeParam = []
     ): self
     {
-        if ($route == '' || !$this->isRouteEnable($route)) {
+        if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
@@ -234,7 +236,7 @@ class AdminBtnSingleton
         array $routeParam = []
     ): self
     {
-        if ($route == '' || !$this->isRouteEnable($route)) {
+        if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
@@ -255,7 +257,7 @@ class AdminBtnSingleton
         array $routeParam = []
     ): self
     {
-        if ($route == '' || !$this->isRouteEnable($route)) {
+        if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
@@ -294,7 +296,7 @@ class AdminBtnSingleton
             'modalDelete',
             true
         );
-        $code  = 'delete' . $entity->getId();
+        $code  = 'delete'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
             'id'            => 'DeleteForm',
@@ -334,7 +336,7 @@ class AdminBtnSingleton
 
     public function addBtnNew(string $route, string $text = 'Nouveau'): self
     {
-        if ($route == '' || !$this->isRouteEnable($route)) {
+        if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
@@ -351,7 +353,7 @@ class AdminBtnSingleton
 
     public function addBtnTrash(string $route, string $text = 'Corbeille'): self
     {
-        if ($route == '' || !$this->isRouteEnable($route)) {
+        if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
@@ -409,7 +411,7 @@ class AdminBtnSingleton
 
     public function addBtnList(string $route, string $text = 'Liste'): self
     {
-        if ($route == '' || !$this->isRouteEnable($route)) {
+        if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 

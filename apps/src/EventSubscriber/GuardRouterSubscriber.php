@@ -2,14 +2,9 @@
 
 namespace Labstag\EventSubscriber;
 
-use Labstag\Entity\Groupe;
-use Labstag\Entity\User;
 use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\RouteGroupeRepository;
-use Labstag\Repository\RouteUserRepository;
 use Labstag\Service\GuardService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\RouterInterface;

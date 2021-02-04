@@ -7,7 +7,6 @@ use Labstag\Lib\FixtureLib;
 
 class DataFixtures extends FixtureLib
 {
-
     public function load(ObjectManager $manager): void
     {
         unset($manager);

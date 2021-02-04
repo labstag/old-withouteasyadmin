@@ -2,8 +2,8 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Entity\Route;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class RouteRepository extends ServiceEntityRepositoryLib

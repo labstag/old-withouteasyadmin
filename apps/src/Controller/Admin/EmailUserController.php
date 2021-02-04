@@ -2,17 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\EmailUser;
 use Labstag\Form\Admin\EmailUserType;
-use Labstag\Repository\EmailUserRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\EmailUserRepository;
+use Labstag\RequestHandler\EmailUserRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\EmailUserRequestHandler;
 
 /**
  * @Route("/admin/user/email")
@@ -77,7 +74,7 @@ class EmailUserController extends AdminControllerLib
      */
     public function showOrPreview(EmailUser $emailUser): Response
     {
-        return $this->showOrPreview(
+        return $this->renderShowOrPreview(
             $emailUser,
             'admin/email_user/show.html.twig',
             [

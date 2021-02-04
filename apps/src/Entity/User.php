@@ -2,19 +2,17 @@
 
 namespace Labstag\Entity;
 
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Labstag\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Repository\UserRepository;
 use Serializable;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -23,7 +21,6 @@ use Serializable;
  */
 class User implements UserInterface, Serializable
 {
-
     use SoftDeleteableEntity;
 
     /**
@@ -563,10 +560,9 @@ class User implements UserInterface, Serializable
 
     public function unserialize($serialized)
     {
-        list (
+        list(
             $this->id,
             $this->username,
-            $this->password,
-        ) = unserialize($serialized);
+            $this->password) = unserialize($serialized);
     }
 }

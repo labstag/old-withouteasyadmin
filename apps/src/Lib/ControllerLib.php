@@ -47,7 +47,7 @@ abstract class ControllerLib extends AbstractController
     ): Response
     {
         $this->setBreadcrumbs();
-        if (isset($this->headerTitle) && $this->headerTitle != '') {
+        if (isset($this->headerTitle) && '' != $this->headerTitle) {
             $parameters['headerTitle'] = $this->headerTitle;
         }
 

@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class ActionsSwaggerDecorator implements NormalizerInterface
 {
 
-    protected NormalizerInterface $decorated;
+    private NormalizerInterface $decorated;
 
     public function __construct(NormalizerInterface $decorated)
     {
@@ -36,7 +36,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         return $docs;
     }
 
-    protected function setWorkflow(&$docs)
+    private function setWorkflow(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'workflow.',
@@ -93,7 +93,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/workflow/{entity}/{state}/{id}']['post'] = $statsEndpoint;
     }
 
-    protected function setEmpty(&$docs)
+    private function setEmpty(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'empty entity.',
@@ -136,7 +136,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/empty/{entity}']['delete'] = $statsEndpoint;
     }
 
-    protected function setRestore(&$docs)
+    private function setRestore(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'restore.',
@@ -179,7 +179,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/restore/{entity}/{id}']['post'] = $statsEndpoint;
     }
 
-    protected function setDestroy(&$docs)
+    private function setDestroy(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'destroy.',
@@ -222,7 +222,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/destroy/{entity}/{id}']['delete'] = $statsEndpoint;
     }
 
-    protected function setDelete(&$docs)
+    private function setDelete(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'Delete.',

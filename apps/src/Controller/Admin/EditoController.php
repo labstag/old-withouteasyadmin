@@ -2,17 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
 use Labstag\Form\Admin\EditoType;
-use Labstag\Repository\EditoRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\EditoRepository;
+use Labstag\RequestHandler\EditoRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\EditoRequestHandler;
 
 /**
  * @Route("/admin/edito")
@@ -78,7 +75,7 @@ class EditoController extends AdminControllerLib
      */
     public function showOrPreview(Edito $edito): Response
     {
-        return $this->showOrPreview(
+        return $this->renderShowOrPreview(
             $edito,
             'admin/edito/show.html.twig',
             [
@@ -98,6 +95,7 @@ class EditoController extends AdminControllerLib
     public function edit(Edito $edito, EditoRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
+
         return $this->update(
             EditoType::class,
             $edito,

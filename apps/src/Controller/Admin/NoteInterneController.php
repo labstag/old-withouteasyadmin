@@ -2,18 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use DateTime;
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\NoteInterne;
 use Labstag\Form\Admin\NoteInterneType;
-use Labstag\Repository\NoteInterneRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\NoteInterneRepository;
+use Labstag\RequestHandler\NoteInterneRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\NoteInterneRequestHandler;
 
 /**
  * @Route("/admin/noteinterne")
@@ -79,7 +75,7 @@ class NoteInterneController extends AdminControllerLib
      */
     public function showOrPreview(NoteInterne $noteInterne): Response
     {
-        return $this->showOrPreview(
+        return $this->renderShowOrPreview(
             $noteInterne,
             'admin/note_interne/show.html.twig',
             [
@@ -103,6 +99,7 @@ class NoteInterneController extends AdminControllerLib
     public function edit(NoteInterne $noteInterne, NoteInterneRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
+
         return $this->update(
             NoteInterneType::class,
             $noteInterne,

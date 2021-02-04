@@ -2,10 +2,9 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\RouteGroupe;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Groupe;
-use Labstag\Entity\Route;
+use Labstag\Entity\RouteGroupe;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
 /**

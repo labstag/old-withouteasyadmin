@@ -2,13 +2,13 @@
 
 namespace Labstag\Twig;
 
+use Labstag\Entity\Attachment;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Service\GuardService;
 use Labstag\Service\PhoneService;
-use Labstag\Entity\Attachment;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Registry;
@@ -131,14 +131,14 @@ class LabstagExtension extends AbstractExtension
     {
         $routes = $this->guardService->getGuardRoutesForUser($user);
 
-        return (count($routes) != 0) ? true : false;
+        return (0 != count($routes)) ? true : false;
     }
 
     public function guardAccessGroupRoutes(Groupe $groupe): bool
     {
         $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
 
-        return (count($routes) != 0) ? true : false;
+        return (0 != count($routes)) ? true : false;
     }
 
     public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
@@ -149,6 +149,7 @@ class LabstagExtension extends AbstractExtension
     public function guardRoute(string $route): bool
     {
         $token = $this->token->getToken();
+
         return $this->guardService->guardRoute($route, $token);
     }
 
@@ -167,7 +168,7 @@ class LabstagExtension extends AbstractExtension
     public function formPrototype(array $blockPrefixes): string
     {
         $file = '';
-        if ($blockPrefixes[1] != 'collection_entry') {
+        if ('collection_entry' != $blockPrefixes[1]) {
             return $file;
         }
 
@@ -226,6 +227,5 @@ class LabstagExtension extends AbstractExtension
         $file = $newFile;
 
         return $file;
-
     }
 }

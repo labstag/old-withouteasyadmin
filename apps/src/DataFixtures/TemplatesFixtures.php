@@ -8,10 +8,6 @@ use Faker\Factory;
 use Faker\Generator;
 use Labstag\Entity\Template;
 use Labstag\Lib\FixtureLib;
-use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\TemplateRequestHandler;
-use Twig\Environment;
-use Psr\EventDispatcher\EventDispatcherInterface;
 
 class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
 {
@@ -54,13 +50,13 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
         $oldTemplate = clone $template;
         $template->setName($title);
         $template->setCode($key);
-        $htmlfile = 'tpl/mail-' . $key . '.html.twig';
-        if (is_file('templates/' . $htmlfile)) {
+        $htmlfile = 'tpl/mail-'.$key.'.html.twig';
+        if (is_file('templates/'.$htmlfile)) {
             $template->setHtml($this->twig->render($htmlfile));
         }
 
-        $txtfile = 'tpl/mail-' . $key . '.txt.twig';
-        if (is_file('templates/' . $txtfile)) {
+        $txtfile = 'tpl/mail-'.$key.'.txt.twig';
+        if (is_file('templates/'.$txtfile)) {
             $template->setText($this->twig->render($txtfile));
         }
 

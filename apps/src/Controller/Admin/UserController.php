@@ -2,18 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\UserType;
-use Labstag\Repository\UserRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\UserRepository;
+use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\Repository\RouteRepository;
-use Labstag\RequestHandler\UserRequestHandler;
 
 /**
  * @Route("/admin/user")
@@ -65,6 +61,7 @@ class UserController extends AdminControllerLib
     public function new(UserRequestHandler $requestHandler): Response
     {
         $user = new User();
+
         return $this->create(
             $user,
             UserType::class,
@@ -82,7 +79,8 @@ class UserController extends AdminControllerLib
     public function showOrPreview(User $user): Response
     {
         $this->modalAttachmentDelete();
-        return $this->showOrPreview(
+
+        return $this->renderShowOrPreview(
             $user,
             'admin/user/show.html.twig',
             [
@@ -131,10 +129,11 @@ class UserController extends AdminControllerLib
             ]
         );
         $routes = $this->guardService->getGuardRoutesForUser($user);
-        if (count($routes) == 0) {
+        if (0 == count($routes)) {
             $msg  = "L'utilisateur fait partie du groupe superadmin, qui n'est pas";
             $msg .= ' un groupe qui peut avoir des droits spécifique';
             $this->addFlash('danger', $msg);
+
             return $this->redirect($this->generateUrl('admin_user_index'));
         }
 

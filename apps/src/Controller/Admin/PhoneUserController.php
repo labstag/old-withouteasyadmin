@@ -2,17 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\PhoneUser;
 use Labstag\Form\Admin\PhoneUserType;
-use Labstag\Repository\PhoneUserRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\PhoneUserRepository;
+use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\PhoneUserRequestHandler;
 
 /**
  * @Route("/admin/user/phone")
@@ -77,7 +74,7 @@ class PhoneUserController extends AdminControllerLib
      */
     public function showOrPreview(PhoneUser $phoneUser): Response
     {
-        return $this->showOrPreview(
+        return $this->renderShowOrPreview(
             $phoneUser,
             'admin/phone_user/show.html.twig',
             [

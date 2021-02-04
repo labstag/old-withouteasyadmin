@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,7 +42,7 @@ class GeocodeService
             $file
         );
         $statusCode = $response->getStatusCode();
-        if ($statusCode != 200) {
+        if (200 != $statusCode) {
             return [];
         }
 
@@ -100,5 +101,4 @@ class GeocodeService
         $entity->setAccuracy((int) $row[11]);
         $this->geoCodeRH->handle($old, $entity);
     }
-
 }

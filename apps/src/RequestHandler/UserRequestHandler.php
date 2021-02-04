@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\RequestHandler;
 
 use Labstag\Entity\AdresseUser;
@@ -7,9 +8,9 @@ use Labstag\Entity\LienUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Event\UserCollectionEvent;
 use Labstag\Event\UserEntityEvent;
+use Labstag\Lib\RequestHandlerLib;
 
 class UserRequestHandler extends RequestHandlerLib
 {

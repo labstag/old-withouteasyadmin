@@ -63,12 +63,12 @@ trait MenuTrait
         $data = $menu->getChildren();
         foreach ($data as $key => $row) {
             $extras = $row->getExtras();
-            if (count($extras) != 0) {
+            if (0 != count($extras)) {
                 continue;
             }
 
             $children = $row->getChildren();
-            if (count($children) == 0) {
+            if (0 == count($children)) {
                 $menu->removeChild($key);
                 continue;
             }
@@ -82,8 +82,8 @@ trait MenuTrait
         $divider = 0;
         foreach ($children as $child) {
             $extras = $child->getExtras();
-            if (array_key_exists('divider', $extras) && $extras['divider'] == true) {
-                $divider++;
+            if (array_key_exists('divider', $extras) && true == $extras['divider']) {
+                ++$divider;
             }
         }
 
@@ -98,6 +98,7 @@ trait MenuTrait
         $dataChild = $child->getData();
         if ($child->isSeparateur()) {
             $parent->addChild('')->setExtra('divider', true);
+
             return;
         }
 

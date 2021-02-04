@@ -7,13 +7,12 @@ use Labstag\Entity\Email;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\Phone;
 use Labstag\Entity\User;
-use Labstag\Lib\GenericProviderLib;
 use Labstag\Form\Security\ChangePasswordType;
 use Labstag\Form\Security\DisclaimerType;
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Form\Security\LoginType;
 use Labstag\Form\Security\LostPasswordType;
 use Labstag\Lib\ControllerLib;
+use Labstag\Lib\GenericProviderLib;
 use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\RequestHandler\EmailRequestHandler;
 use Labstag\RequestHandler\PhoneRequestHandler;
@@ -24,14 +23,15 @@ use Labstag\Service\UserService;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class SecurityController extends ControllerLib
@@ -88,7 +88,7 @@ class SecurityController extends ControllerLib
             $manager->flush();
             $this->addFlash(
                 'success',
-                'Connexion Oauh ' . $oauthCode . ' dissocié'
+                'Connexion Oauh '.$oauthCode.' dissocié'
             );
         }
 
@@ -250,6 +250,7 @@ class SecurityController extends ControllerLib
             ]
         );
     }
+
     /**
      * @Route("/login", name="app_login")
      */
@@ -372,7 +373,6 @@ class SecurityController extends ControllerLib
 
     /**
      * @Route("/lost", name="app_lost")
-     *
      */
     public function lost(Request $request): Response
     {

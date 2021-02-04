@@ -4,10 +4,10 @@ namespace Labstag\Form\Admin;
 
 use Labstag\Form\Admin\Collections\Param\DisclaimerType;
 use Labstag\Form\Admin\Collections\Param\MetaSiteType;
-use Labstag\Form\Admin\Collections\Param\OauthType;
 use Labstag\Form\Admin\Collections\Param\NotificationType;
-use Labstag\FormType\WysiwygType;
+use Labstag\Form\Admin\Collections\Param\OauthType;
 use Labstag\FormType\MinMaxCollectionType;
+use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;

@@ -6,10 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Configuration;
 use Labstag\Lib\FixtureLib;
-use Labstag\Repository\UserRepository;
 use Symfony\Component\Dotenv\Dotenv;
-use Labstag\Service\OauthService;
-use Psr\EventDispatcher\EventDispatcherInterface;
 
 class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterface
 {
@@ -91,7 +88,7 @@ class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterf
             'site_no-reply'   => 'no-reply@labstag.lxc',
             'site_url'        => 'http://www.labstag.lxc',
             'site_title'      => 'labstag',
-            'site_copyright'  => 'Copyright ' . date('Y'),
+            'site_copyright'  => 'Copyright '.date('Y'),
             'oauth'           => [],
             'meta'            => [
                 [
@@ -124,7 +121,7 @@ Allow: /',
         ];
 
         $dotenv = new Dotenv();
-        $env    = $dotenv->parse(file_get_contents(__DIR__ . '/../../.env'));
+        $env    = $dotenv->parse(file_get_contents(__DIR__.'/../../.env'));
 
         ksort($env);
         $this->setOauth($env, $data);
@@ -133,7 +130,7 @@ Allow: /',
             $configuration = new Configuration();
             $configuration->setName($key);
             $configuration->setValue($value);
-            $this->addReference('configuration_' . $key, $configuration);
+            $this->addReference('configuration_'.$key, $configuration);
             $manager->persist($configuration);
         }
 

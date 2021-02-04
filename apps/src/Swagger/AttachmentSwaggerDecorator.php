@@ -14,14 +14,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class AttachmentSwaggerDecorator implements NormalizerInterface
 {
 
-    protected NormalizerInterface $decorated;
+    private NormalizerInterface $decorated;
 
     public function __construct(NormalizerInterface $decorated)
     {
         $this->decorated = $decorated;
     }
 
-    protected function setUserAvatar(&$docs)
+    private function setUserAvatar(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'User avatar.',
@@ -64,7 +64,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/user/avatar/{entity}']['delete'] = $statsEndpoint;
     }
 
-    protected function setProfilAvatar(&$docs)
+    private function setProfilAvatar(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'Profil avatar.',
@@ -100,7 +100,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/profil/avatar']['delete'] = $statsEndpoint;
     }
 
-    protected function setNoteInterneFond(&$docs)
+    private function setNoteInterneFond(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'node interne Fond.',
@@ -143,7 +143,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/noteinterne/fond/{entity}']['delete'] = $statsEndpoint;
     }
 
-    protected function setEditoFond(&$docs)
+    private function setEditoFond(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'edito fond.',

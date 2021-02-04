@@ -2,8 +2,8 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\Attachment;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Entity\Attachment;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class AttachmentRepository extends ServiceEntityRepositoryLib

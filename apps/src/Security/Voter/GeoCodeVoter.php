@@ -21,6 +21,7 @@ class GeoCodeVoter extends Voter
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         unset($attribute, $subject, $token);
+
         return true;
     }
 }

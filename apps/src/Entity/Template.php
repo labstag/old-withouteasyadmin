@@ -2,11 +2,11 @@
 
 namespace Labstag\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\TemplateRepository;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TemplateRepository::class)
@@ -14,7 +14,6 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
  */
 class Template
 {
-
     use SoftDeleteableEntity;
 
     /**

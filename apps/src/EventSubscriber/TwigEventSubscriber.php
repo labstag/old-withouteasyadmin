@@ -47,7 +47,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
     protected function setAdminPages(ControllerEvent $event): void
     {
         $controller = $event->getRequest()->attributes->get('_controller');
-        if (substr_count($controller, 'Controller\Admin') == 0) {
+        if (0 == substr_count($controller, 'Controller\Admin')) {
             return;
         }
 

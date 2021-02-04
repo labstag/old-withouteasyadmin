@@ -4,19 +4,16 @@ namespace Labstag\Controller;
 
 use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Form\Admin\FormType;
-use Labstag\Form\Admin\ProfilType;
 use Labstag\Form\Admin\ParamType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
+use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
-use Labstag\Service\UploadService;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/admin")
@@ -64,11 +61,12 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/profil", name="admin_profil", methods={"GET","POST"})
      */
-    public function profil( Security $security, UserRequestHandler $requestHandler): Response
+    public function profil(Security $security, UserRequestHandler $requestHandler): Response
     {
         $this->headerTitle = 'Profil';
         $this->urlHome     = 'admin_profil';
         $this->modalAttachmentDelete();
+
         return $this->update(
             ProfilType::class,
             $security->getUser(),
@@ -94,6 +92,7 @@ class AdminController extends AdminControllerLib
         ];
 
         $form = $this->createForm(FormType::class, $data);
+
         return $this->render(
             'admin/form.html.twig',
             [

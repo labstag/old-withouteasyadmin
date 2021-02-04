@@ -3,9 +3,7 @@
 namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Labstag\Entity\Edito;
 use Labstag\Entity\Groupe;
-use Labstag\Entity\NoteInterne;
 use Labstag\Entity\Route;
 use Labstag\Entity\User;
 use Labstag\Repository\GroupeRepository;
@@ -18,7 +16,6 @@ use Symfony\Component\Workflow\Registry;
 
 class GuardService
 {
-
     const GROUPE_ENABLE = ['visiteur'];
 
     const REGEX = [
@@ -70,7 +67,7 @@ class GuardService
     public function getGuardRoutesForGroupe(Groupe $groupe): array
     {
         $routes = $this->routesEnableGroupe($groupe);
-        if ($groupe->getCode() == 'superadmin') {
+        if ('superadmin' == $groupe->getCode()) {
             $routes = [];
         }
 
@@ -80,7 +77,7 @@ class GuardService
     public function getGuardRoutesForUser(User $user): array
     {
         $routes = $this->routesEnableUser($user);
-        if ($user->getGroupe()->getCode() == 'superadmin') {
+        if ('superadmin' == $user->getGroupe()->getCode()) {
             $routes = [];
         }
 

@@ -2,17 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
 use Labstag\Form\Admin\MenuType;
-use Labstag\Repository\MenuRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\MenuRepository;
+use Labstag\RequestHandler\MenuRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\MenuRequestHandler;
 
 /**
  * @Route("/admin/menu")
@@ -76,7 +73,7 @@ class MenuController extends AdminControllerLib
      */
     public function showOrPreview(Menu $menu): Response
     {
-        return $this->showOrPreview(
+        return $this->renderShowOrPreview(
             $menu,
             'admin/menu/show.html.twig',
             [

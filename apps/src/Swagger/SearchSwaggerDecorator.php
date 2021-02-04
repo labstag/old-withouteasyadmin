@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class SearchSwaggerDecorator implements NormalizerInterface
 {
 
-    protected NormalizerInterface $decorated;
+    private NormalizerInterface $decorated;
 
     public function __construct(NormalizerInterface $decorated)
     {

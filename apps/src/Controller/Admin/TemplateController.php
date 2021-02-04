@@ -2,17 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Template;
 use Labstag\Form\Admin\TemplateType;
-use Labstag\Repository\TemplateRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\TemplateRepository;
+use Labstag\RequestHandler\TemplateRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\TemplateRequestHandler;
 
 /**
  * @Route("/admin/template")
@@ -76,7 +73,7 @@ class TemplateController extends AdminControllerLib
      */
     public function showOrPreview(Template $template): Response
     {
-        return $this->showOrPreview(
+        return $this->renderShowOrPreview(
             $template,
             'admin/template/show.html.twig',
             [

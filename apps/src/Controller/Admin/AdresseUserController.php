@@ -2,17 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\AdresseUser;
 use Labstag\Form\Admin\AdresseUserType;
-use Labstag\Repository\AdresseUserRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\AdresseUserRepository;
+use Labstag\RequestHandler\AdresseUserRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\AdresseUserRequestHandler;
 
 /**
  * @Route("/admin/user/adresse")
@@ -76,7 +73,7 @@ class AdresseUserController extends AdminControllerLib
      */
     public function showOrPreview(AdresseUser $adresseUser): Response
     {
-        return $this->showOrPreview(
+        return $this->renderShowOrPreview(
             $adresseUser,
             'admin/adresse_user/show.html.twig',
             [
