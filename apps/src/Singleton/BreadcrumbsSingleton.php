@@ -1,7 +1,7 @@
 <?php
-namespace Labstag\Service;
+namespace Labstag\Singleton;
 
-class BreadcrumbsService
+class BreadcrumbsSingleton
 {
 
     protected static $instance = null;
@@ -15,7 +15,7 @@ class BreadcrumbsService
     public static function getInstance()
     {
         if (is_null(self::$instance)) {
-            self::$instance = new BreadcrumbsService();
+            self::$instance = new BreadcrumbsSingleton();
         }
 
         return self::$instance;

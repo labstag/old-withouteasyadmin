@@ -15,7 +15,6 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Repository\RouteRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\AdminBoutonService;
-use Labstag\Service\BreadcrumbsService;
 
 /**
  * @Route("/admin/user")

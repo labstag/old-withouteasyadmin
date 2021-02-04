@@ -14,6 +14,7 @@ use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\FileRequestHandler;
 use Labstag\Service\AdminBoutonService;
+use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -96,7 +97,7 @@ class AdminCrudService
 
     public function addBreadcrumbs(array $breadcrumbs): void
     {
-        BreadcrumbsService::getInstance()->add($breadcrumbs);
+        BreadcrumbsSingleton::getInstance()->add($breadcrumbs);
     }
 
     public function setPage($header, $url)
