@@ -11,11 +11,8 @@ class GroupeVoter extends Voter
     protected function supports($attribute, $subject)
     {
         unset($attribute);
-        if (!$subject instanceof Groupe) {
-            return false;
-        }
 
-        return true;
+        return !(!$subject instanceof Groupe);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

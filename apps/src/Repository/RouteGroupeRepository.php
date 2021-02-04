@@ -44,7 +44,7 @@ class RouteGroupeRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getOneOrNullResult();
     }
 
-    public function findEnable(Groupe $groupe = null)
+    public function findEnable(?Groupe $groupe = null)
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $query        = $queryBuilder->where(

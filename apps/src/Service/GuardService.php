@@ -253,11 +253,8 @@ class GuardService
 
         if (empty($token) || !$token->getUser() instanceof User) {
             $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
-            if (!$this->searchRouteGroupe($groupe, $route)) {
-                return false;
-            }
 
-            return true;
+            return !(!$this->searchRouteGroupe($groupe, $route));
         }
 
         /** @var User $user */
@@ -268,11 +265,8 @@ class GuardService
         }
 
         $state = $this->searchRouteUser($user, $route);
-        if (!$state) {
-            return false;
-        }
 
-        return true;
+        return !(!$state);
     }
 
     public function guardRouteEnableUser(string $route, User $user): bool
@@ -286,11 +280,8 @@ class GuardService
         $defaults = $data->getDefaults();
         $matches  = [];
         preg_match(self::REGEX_CONTROLLER_ADMIN, $defaults['_controller'], $matches);
-        if (0 != count($matches) && 'visiteur' == $user->getGroupe()->getCode()) {
-            return false;
-        }
 
-        return true;
+        return !(0 != count($matches) && 'visiteur' == $user->getGroupe()->getCode());
     }
 
     public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
@@ -308,10 +299,7 @@ class GuardService
         $defaults = $data->getDefaults();
         $matches  = [];
         preg_match(self::REGEX_CONTROLLER_ADMIN, $defaults['_controller'], $matches);
-        if (0 != count($matches) && 'visiteur' == $groupe->getCode()) {
-            return false;
-        }
 
-        return true;
+        return !(0 != count($matches) && 'visiteur' == $groupe->getCode());
     }
 }

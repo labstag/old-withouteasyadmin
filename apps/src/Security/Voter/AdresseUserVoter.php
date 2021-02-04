@@ -11,11 +11,8 @@ class AdresseUserVoter extends Voter
     protected function supports($attribute, $subject)
     {
         unset($attribute);
-        if (!$subject instanceof AdresseUser) {
-            return false;
-        }
 
-        return true;
+        return !(!$subject instanceof AdresseUser);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

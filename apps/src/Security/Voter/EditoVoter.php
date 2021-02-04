@@ -11,11 +11,8 @@ class EditoVoter extends Voter
     protected function supports($attribute, $subject)
     {
         unset($attribute);
-        if (!$subject instanceof Edito) {
-            return false;
-        }
 
-        return true;
+        return !(!$subject instanceof Edito);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

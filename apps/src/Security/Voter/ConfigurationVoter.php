@@ -11,11 +11,8 @@ class ConfigurationVoter extends Voter
     protected function supports($attribute, $subject)
     {
         unset($attribute);
-        if (!$subject instanceof Configuration) {
-            return false;
-        }
 
-        return true;
+        return !(!$subject instanceof Configuration);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

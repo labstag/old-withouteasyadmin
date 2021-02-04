@@ -11,11 +11,8 @@ class NoteInterneVoter extends Voter
     protected function supports($attribute, $subject)
     {
         unset($attribute);
-        if (!$subject instanceof NoteInterne) {
-            return false;
-        }
 
-        return true;
+        return !(!$subject instanceof NoteInterne);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

@@ -108,8 +108,7 @@ geocode: ## add geocode
 
 linter: phpcpd.phar phploc.phar phpmd.phar ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
-	@make linter php-cs-fixer -i
-	@make linter phpcbf -i
+	@make linter phpfix -i
 	@make linter twig -i
 	@make linter container -i
 	@make linter yaml -i
@@ -118,6 +117,9 @@ ifeq ($(COMMAND_ARGS),all)
 	@make linter phpcs -i
 	@make linter phpmd -i
 	@make linter readme -i
+else ifeq ($(COMMAND_ARGS),phpfix)
+	@make linter php-cs-fixer -i
+	@make linter phpcbf -i
 else ifeq ($(COMMAND_ARGS),phpcbf)
 	@COMPOSER_MEMORY_LIMIT=-1 composer run phpcbf
 else ifeq ($(COMMAND_ARGS),php-cs-fixer)
@@ -150,6 +152,7 @@ else
 	@echo "make linter ARGUMENT"
 	@echo "---"
 	@echo "all: ## Launch all linter"
+	@echo "phpfix: PHP-CS-FIXER & PHPCBF"
 	@echo "phpcbf: fixe le code PHP à partir d'un standard"
 	@echo "phpcpd: Vérifie s'il y a du code dupliqué"
 	@echo "phpcs: indique les erreurs de code non corrigé par PHPCBF"

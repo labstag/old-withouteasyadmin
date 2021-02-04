@@ -11,11 +11,8 @@ class GeoCodeVoter extends Voter
     protected function supports($attribute, $subject)
     {
         unset($attribute);
-        if (!$subject instanceof GeoCode) {
-            return false;
-        }
 
-        return true;
+        return !(!$subject instanceof GeoCode);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

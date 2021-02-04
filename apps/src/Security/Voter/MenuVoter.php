@@ -11,11 +11,8 @@ class MenuVoter extends Voter
     protected function supports($attribute, $subject)
     {
         unset($attribute);
-        if (!$subject instanceof Menu) {
-            return false;
-        }
 
-        return true;
+        return !(!$subject instanceof Menu);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

@@ -11,11 +11,8 @@ class PhoneUserVoter extends Voter
     protected function supports($attribute, $subject)
     {
         unset($attribute);
-        if (!$subject instanceof PhoneUser) {
-            return false;
-        }
 
-        return true;
+        return !(!$subject instanceof PhoneUser);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

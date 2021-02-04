@@ -11,11 +11,8 @@ class LienUserVoter extends Voter
     protected function supports($attribute, $subject)
     {
         unset($attribute);
-        if (!$subject instanceof LienUser) {
-            return false;
-        }
 
-        return true;
+        return !(!$subject instanceof LienUser);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

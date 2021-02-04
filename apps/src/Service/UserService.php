@@ -133,11 +133,7 @@ class UserService
             return true;
         }
 
-        if (!isset($query['code']) || $oauth2state !== $query['state']) {
-            return true;
-        }
-
-        return false;
+        return (bool) (!isset($query['code']) || $oauth2state !== $query['state']);
     }
 
     public function postLostPassword(array $post): void

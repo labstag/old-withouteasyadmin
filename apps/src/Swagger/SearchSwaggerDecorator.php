@@ -24,7 +24,7 @@ final class SearchSwaggerDecorator implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, string $format = null, array $context = [])
+    public function normalize($object, ?string $format = null, array $context = [])
     {
         $docs          = $this->decorated->normalize($object, $format, $context);
         $statsEndpoint = [
@@ -70,7 +70,7 @@ final class SearchSwaggerDecorator implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, string $format = null): bool
+    public function supportsNormalization($data, ?string $format = null): bool
     {
         return $this->decorated->supportsNormalization($data, $format);
     }

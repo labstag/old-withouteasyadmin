@@ -22,7 +22,7 @@ class LabstagGuardRouteCommand extends Command
     public function __construct(
         GuardService $service,
         GroupeRepository $repositoryGroupe,
-        string $name = null
+        ?string $name = null
     )
     {
         $this->repositoryGroupe = $repositoryGroupe;

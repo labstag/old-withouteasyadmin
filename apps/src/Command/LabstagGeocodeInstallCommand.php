@@ -19,7 +19,7 @@ class LabstagGeocodeInstallCommand extends Command
 
     public function __construct(
         GeocodeService $service,
-        string $name = null
+        ?string $name = null
     )
     {
         $this->service = $service;

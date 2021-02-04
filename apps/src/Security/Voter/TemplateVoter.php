@@ -11,11 +11,8 @@ class TemplateVoter extends Voter
     protected function supports($attribute, $subject)
     {
         unset($attribute);
-        if (!$subject instanceof Template) {
-            return false;
-        }
 
-        return true;
+        return !(!$subject instanceof Template);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

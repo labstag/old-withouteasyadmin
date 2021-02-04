@@ -37,7 +37,7 @@ class LabstagUserCommand extends Command
         Registry $workflows,
         EntityManagerInterface $entityManager,
         UserRequestHandler $userRequestHandler,
-        string $name = null
+        ?string $name = null
     )
     {
         $this->groupeRepository   = $groupeRepository;
