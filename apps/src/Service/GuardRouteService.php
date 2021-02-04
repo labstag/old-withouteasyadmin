@@ -17,12 +17,15 @@ class GuardRouteService
 {
 
     const GROUPE_ENABLE = ['visiteur'];
-    const REGEX         = [
+
+    const REGEX = [
         '/(SecurityController)/',
         '/(web_profiler.controller)/',
         '/(error_controller)/',
         '/(api_platform)/',
     ];
+
+    const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     protected RouterInterface $router;
 
@@ -206,6 +209,42 @@ class GuardRouteService
 
         $state = $this->searchRouteUser($user, $route);
         if (!$state) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function guardRouteEnableUser(string $route, User $user): bool
+    {
+        $all = $this->all();
+        if (!array_key_exists($route, $all)) {
+            return false;
+        }
+
+        $data     = $all[$route];
+        $defaults = $data->getDefaults();
+        $matches  = [];
+        preg_match(self::REGEX_CONTROLLER_ADMIN, $defaults['_controller'], $matches);
+        if (0 != count($matches) && 'visiteur' == $user->getGroupe()->getCode()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
+    {
+        $all = $this->all();
+        if (!array_key_exists($route, $all)) {
+            return false;
+        }
+
+        $data     = $all[$route];
+        $defaults = $data->getDefaults();
+        $matches  = [];
+        preg_match(self::REGEX_CONTROLLER_ADMIN, $defaults['_controller'], $matches);
+        if (0 != count($matches) && 'visiteur' == $groupe->getCode()) {
             return false;
         }
 

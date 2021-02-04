@@ -111,20 +111,7 @@ class LabstagExtension extends AbstractExtension
 
     public function guardRouteEnableUser(string $route, User $user): bool
     {
-        $all = $this->guardRouteService->all();
-        if (!array_key_exists($route, $all)) {
-            return false;
-        }
-
-        $data     = $all[$route];
-        $defaults = $data->getDefaults();
-        $matches  = [];
-        preg_match(self::REGEX_CONTROLLER_ADMIN, $defaults['_controller'], $matches);
-        if (0 != count($matches) && 'visiteur' == $user->getGroupe()->getCode()) {
-            return false;
-        }
-
-        return true;
+        return $this->guardRouteService->guardRouteEnableUser($route, $user);
     }
 
     public function classEntity($entity)
@@ -138,20 +125,7 @@ class LabstagExtension extends AbstractExtension
 
     public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
     {
-        $all = $this->guardRouteService->all();
-        if (!array_key_exists($route, $all)) {
-            return false;
-        }
-
-        $data     = $all[$route];
-        $defaults = $data->getDefaults();
-        $matches  = [];
-        preg_match(self::REGEX_CONTROLLER_ADMIN, $defaults['_controller'], $matches);
-        if (0 != count($matches) && 'visiteur' == $groupe->getCode()) {
-            return false;
-        }
-
-        return true;
+        return $this->guardRouteService->guardRouteEnableGroupe($route, $groupe);
     }
 
     public function guardRoute(string $route): bool
