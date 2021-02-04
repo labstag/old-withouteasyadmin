@@ -26,8 +26,13 @@
 {% endmacro %}
 {% macro guard(entity, url, title) %}
     {% set title = title|trans %}
-    {% set state = guard_route(url) %}
-    {% if state == true %}
+    {% set state1 = guard_route(url) %}
+    {% if entity.groupe is defined %}
+        {% set state2 = guard_user_access(entity) %}
+    {% else %}
+        {% set state2 = guard_group_access(entity) %}
+    {% endif %}
+    {% if state1 == true and state2 == true %}
         <link-guard
             data-href="{{ path(url, {'id': entity.id}) }}"
             data-title="{{ title|e }}"
