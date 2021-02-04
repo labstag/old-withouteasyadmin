@@ -3,7 +3,6 @@
 namespace Labstag\EventSubscriber;
 
 use Labstag\Service\DataService;
-use Labstag\Singleton\AdminBtnSingleton;
 use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;

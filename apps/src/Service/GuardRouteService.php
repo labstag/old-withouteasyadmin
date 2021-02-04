@@ -184,7 +184,7 @@ class GuardRouteService
         return $entity->isState();
     }
 
-    public function guardRoute(string $route, $token)
+    public function guardRoute($route, $token)
     {
         $all = $this->all();
         if (!array_key_exists($route, $all)) {
