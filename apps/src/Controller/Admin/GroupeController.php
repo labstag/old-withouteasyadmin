@@ -128,11 +128,21 @@ class GroupeController extends AdminControllerLib
                 'id' => $groupe->getId(),
             ]
         );
+
+        $routes = $this->guardRouteService->getGuardRoutesForGroupe($groupe);
+        if (count($routes) == 0) {
+            $this->addFlash(
+                'danger',
+                "Le groupe superadmin n'est pas un groupe qui peut avoir des droits spécifique"
+            );
+            return $this->redirect($this->generateUrl('admin_groupuser_index'));
+        }
+
         return $this->render(
             'admin/guard/group.html.twig',
             [
-                'group' => $groupe,
-                'all'   => $routeRepo->findBy([], ['name' => 'ASC']),
+                'group'  => $groupe,
+                'routes' => $routes,
             ]
         );
     }

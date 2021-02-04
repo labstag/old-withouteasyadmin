@@ -16,10 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% if group.code != 'superadmin' %}
-                {% for route in all %}
-                    {% set enable = guard_route_enable_group(route.name, group) %}
-                    {% if enable %}
+                {% for route in routes %}
                     <tr>
                         <td>
                             {{ route.name }}
@@ -37,17 +34,7 @@
                                 />
                             {% endif %}
                     </tr>
-                        {% endif %}
-                {% else %}
-                    <tr>
-                        <td colspan="2" class="text-center">no records found</td>
-                    </tr>
                 {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="2" class="text-center">no records found</td>
-                </tr>
-            {% endif %}
             </tbody>
         </table>
     {% endif %}

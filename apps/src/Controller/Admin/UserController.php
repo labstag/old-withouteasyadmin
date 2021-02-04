@@ -133,11 +133,20 @@ class UserController extends AdminControllerLib
                 'id' => $user->getId(),
             ]
         );
+        $routes = $this->guardRouteService->getGuardRoutesForUser($user);
+        if (count($routes) == 0) {
+            $this->addFlash(
+                'danger',
+                "L'utilisateur fait partie du groupe superadmin, qui n'est pas un groupe qui peut avoir des droits spécifique"
+            );
+            return $this->redirect($this->generateUrl('admin_user_index'));
+        }
+
         return $this->render(
             'admin/guard/user.html.twig',
             [
-                'user' => $user,
-                'all'  => $routeRepo->findBy([], ['name' => 'ASC']),
+                'user'   => $user,
+                'routes' => $routes,
             ]
         );
     }
