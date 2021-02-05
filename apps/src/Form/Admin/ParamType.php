@@ -22,8 +22,7 @@ class ParamType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add('site_title', TextType::class);
         $builder->add('robotstxt', TextareaType::class);
         $builder->add('languagedefault', LanguageType::class);

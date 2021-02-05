@@ -19,8 +19,7 @@ class GuardController extends AdminControllerLib
     public function index(
         RouteRepository $routeRepo,
         GroupeRepository $groupeRepo
-    ): Response
-    {
+    ): Response {
         $this->headerTitle = 'Droits';
         $this->urlHome     = 'admin_guard_index';
 

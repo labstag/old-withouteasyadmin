@@ -44,8 +44,7 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
     protected function setData(
         string $key,
         string $title
-    ): void
-    {
+    ): void {
         $template    = new Template();
         $oldTemplate = clone $template;
         $template->setName($title);
