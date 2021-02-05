@@ -12,7 +12,7 @@ class ConfigurationVoter extends Voter
     {
         unset($attribute);
 
-        return !(!$subject instanceof Configuration);
+        return $subject instanceof Configuration;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

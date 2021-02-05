@@ -12,7 +12,7 @@ class MenuVoter extends Voter
     {
         unset($attribute);
 
-        return !(!$subject instanceof Menu);
+        return $subject instanceof Menu;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

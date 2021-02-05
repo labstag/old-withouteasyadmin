@@ -12,7 +12,7 @@ class EmailUserVoter extends Voter
     {
         unset($attribute);
 
-        return !(!$subject instanceof EmailUser);
+        return $subject instanceof EmailUser;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

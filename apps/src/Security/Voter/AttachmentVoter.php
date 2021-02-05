@@ -12,7 +12,7 @@ class AttachmentVoter extends Voter
     {
         unset($attribute);
 
-        return !(!$subject instanceof Attachment);
+        return $subject instanceof Attachment;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

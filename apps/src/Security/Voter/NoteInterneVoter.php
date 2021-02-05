@@ -12,13 +12,26 @@ class NoteInterneVoter extends Voter
     {
         unset($attribute);
 
-        return !(!$subject instanceof NoteInterne);
+        return $subject instanceof NoteInterne;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        unset($attribute, $subject, $token);
+        switch ($attribute) {
+            case 'edit':
+                $return = $this->canEdit($subject, $token);
+                break;
+            default:
+                $return = true;
+        }
 
-        return true;
+        return $return;
+    }
+
+    protected function canEdit(NoteInterne $entity, TokenInterface $token): bool
+    {
+        $state = $entity->getState();
+
+        return !(in_array($state, ['publie', 'rejete']));
     }
 }

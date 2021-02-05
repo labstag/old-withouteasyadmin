@@ -12,7 +12,7 @@ class TemplateVoter extends Voter
     {
         unset($attribute);
 
-        return !(!$subject instanceof Template);
+        return $subject instanceof Template;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

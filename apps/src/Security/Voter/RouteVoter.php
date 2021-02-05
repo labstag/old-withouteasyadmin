@@ -12,7 +12,7 @@ class RouteVoter extends Voter
     {
         unset($attribute);
 
-        return !(!$subject instanceof Route);
+        return $subject instanceof Route;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

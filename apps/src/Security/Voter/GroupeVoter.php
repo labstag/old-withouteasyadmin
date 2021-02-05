@@ -12,7 +12,7 @@ class GroupeVoter extends Voter
     {
         unset($attribute);
 
-        return !(!$subject instanceof Groupe);
+        return $subject instanceof Groupe;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

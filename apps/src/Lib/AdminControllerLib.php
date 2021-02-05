@@ -428,7 +428,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function showOrPreviewaddBtnEdit($url, $routeType, $entity)
     {
-        if (!(isset($url['edit']) && 'show' == $routeType)) {
+        if (!(isset($url['edit']) && 'show' == $routeType) || !$this->isGranted('edit', $entity)) {
             return;
         }
 

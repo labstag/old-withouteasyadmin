@@ -12,7 +12,7 @@ class GeoCodeVoter extends Voter
     {
         unset($attribute);
 
-        return !(!$subject instanceof GeoCode);
+        return $subject instanceof GeoCode;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

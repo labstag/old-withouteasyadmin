@@ -69,14 +69,18 @@ class AdminBtnSingleton
         return $this->guardService->guardRoute($route, $token);
     }
 
-    protected function isRoutesEnable(array $routes)
+    protected function isRoutesEnable(array $routes): bool
     {
         foreach ($routes as $route) {
             $state = $this->isRouteEnable($route);
             if (!$state) {
+                dump($route);
+
                 return false;
             }
         }
+
+        return true;
     }
 
     protected function add(
