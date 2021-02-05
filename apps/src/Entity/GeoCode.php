@@ -4,12 +4,12 @@ namespace Labstag\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Labstag\Repository\GeoCodeRepository;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Repository\GeoCodeRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=GeoCodeRepository::class)
@@ -26,7 +26,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class GeoCode
 {
-
     use SoftDeleteableEntity;
 
     /**

@@ -9,12 +9,9 @@ use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Workflow\Registry;
@@ -40,7 +37,7 @@ class LabstagUserCommand extends Command
         Registry $workflows,
         EntityManagerInterface $entityManager,
         UserRequestHandler $userRequestHandler,
-        string $name = null
+        ?string $name = null
     )
     {
         $this->groupeRepository   = $groupeRepository;
@@ -114,7 +111,7 @@ class LabstagUserCommand extends Command
         $question->setMultiselect(true);
         $usernames = $helper->ask($input, $output, $question);
         foreach ($usernames as $username) {
-            if ($username == '') {
+            if ('' == $username) {
                 continue;
             }
 
@@ -133,7 +130,7 @@ class LabstagUserCommand extends Command
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
-            /** @var User $user */
+            /* @var User $user */
             $table[] = [
                 'username' => $user->getUsername(),
                 'email'    => $user->getEmail(),
@@ -202,6 +199,7 @@ class LabstagUserCommand extends Command
             $inputOutput->warning(
                 ['Utilisateur introuvable']
             );
+
             return;
         }
 
@@ -222,6 +220,7 @@ class LabstagUserCommand extends Command
             $inputOutput->warning(
                 ['Action impossible']
             );
+
             return;
         }
 
@@ -237,6 +236,7 @@ class LabstagUserCommand extends Command
             $inputOutput->warning(
                 ['Utilisateur introuvable']
             );
+
             return;
         }
 
@@ -253,6 +253,7 @@ class LabstagUserCommand extends Command
             $inputOutput->warning(
                 ['Action impossible']
             );
+
             return;
         }
 
@@ -261,6 +262,7 @@ class LabstagUserCommand extends Command
             $inputOutput->warning(
                 ['Action impossible']
             );
+
             return;
         }
 
@@ -276,6 +278,7 @@ class LabstagUserCommand extends Command
             $inputOutput->warning(
                 ['Utilisateur introuvable']
             );
+
             return;
         }
 
@@ -292,6 +295,7 @@ class LabstagUserCommand extends Command
             $inputOutput->warning(
                 ['Action impossible']
             );
+
             return;
         }
 
@@ -300,6 +304,7 @@ class LabstagUserCommand extends Command
             $inputOutput->warning(
                 ['Action impossible']
             );
+
             return;
         }
 
@@ -315,6 +320,7 @@ class LabstagUserCommand extends Command
             $inputOutput->warning(
                 ['Utilisateur introuvable']
             );
+
             return;
         }
 
@@ -341,7 +347,7 @@ class LabstagUserCommand extends Command
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
-            /** @var User $user */
+            /* @var User $user */
             $table[$user->getUsername()] = json_encode(
                 [
                     'username' => $user->getUsername(),

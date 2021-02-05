@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Reader;
 
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -26,7 +27,7 @@ class UploadAnnotationReader
     }
 
     /**
-     * Liste les champs uploadable d'une entité (sous forme de tableau associatif)
+     * Liste les champs uploadable d'une entité (sous forme de tableau associatif).
      */
     public function getUploadableFields($entity): array
     {

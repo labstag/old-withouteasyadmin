@@ -2,15 +2,13 @@
 
 namespace Labstag\Entity;
 
-use DateTimeImmutable;
-use Symfony\Component\HttpFoundation\File\File;
-use Labstag\Repository\EditoRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Repository\EditoRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EditoRepository::class)
@@ -19,7 +17,6 @@ use Labstag\Annotation\UploadableField;
  */
 class Edito
 {
-
     use SoftDeleteableEntity;
 
     /**

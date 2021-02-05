@@ -2,14 +2,9 @@
 
 namespace Labstag\EventSubscriber;
 
-use Labstag\Entity\Groupe;
-use Labstag\Entity\User;
 use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\RouteGroupeRepository;
-use Labstag\Repository\RouteUserRepository;
-use Labstag\Service\GuardRouteService;
+use Labstag\Service\GuardService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\RouterInterface;
@@ -23,7 +18,7 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
     protected SessionInterface $session;
 
-    protected GuardRouteService $guardRouteService;
+    protected GuardService $guardService;
 
     protected GroupeRepository $groupeRepository;
 
@@ -34,14 +29,14 @@ class GuardRouterSubscriber implements EventSubscriberInterface
         RouterInterface $router,
         TokenStorageInterface $token,
         GroupeRepository $groupeRepository,
-        GuardRouteService $guardRouteService
+        GuardService $guardService
     )
     {
-        $this->groupeRepository  = $groupeRepository;
-        $this->session           = $session;
-        $this->token             = $token;
-        $this->router            = $router;
-        $this->guardRouteService = $guardRouteService;
+        $this->groupeRepository = $groupeRepository;
+        $this->session          = $session;
+        $this->token            = $token;
+        $this->router           = $router;
+        $this->guardService     = $guardService;
     }
 
     public function onKernelRequest(RequestEvent $event)
@@ -49,7 +44,7 @@ class GuardRouterSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
         $route   = $request->attributes->get('_route');
         $token   = $this->token->getToken();
-        $acces   = $this->guardRouteService->guardRoute($route, $token);
+        $acces   = $this->guardService->guardRoute($route, $token);
         if ($acces) {
             return;
         }

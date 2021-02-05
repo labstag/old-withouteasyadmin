@@ -2,28 +2,18 @@
 
 namespace Labstag\Controller\Api;
 
-use Labstag\Service\PhoneService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Lib\ApiControllerLib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 /**
  * @Route("/api/check")
  */
-class CheckController extends AbstractController
+class CheckController extends ApiControllerLib
 {
-
-    protected PhoneService $phoneService;
-
-    public function __construct(PhoneService $phoneService)
-    {
-        $this->phoneService = $phoneService;
-    }
-
     /**
      * @Route("/phone", name="api_check_phone")
-     *
-     * @return Response
      */
     public function phone(Request $request): Response
     {

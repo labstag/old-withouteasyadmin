@@ -24,7 +24,7 @@ use Labstag\RequestHandler\NoteInterneRequestHandler;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
-use Labstag\Service\GuardRouteService;
+use Labstag\Service\GuardService;
 use Labstag\Service\OauthService;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
@@ -58,7 +58,7 @@ abstract class FixtureLib extends Fixture
 
     protected UserRequestHandler $userRH;
 
-    protected GuardRouteService $guardService;
+    protected GuardService $guardService;
 
     protected CacheInterface $cache;
 
@@ -66,7 +66,7 @@ abstract class FixtureLib extends Fixture
         OauthService $oauthService,
         UserRepository $userRepository,
         GroupeRepository $groupeRepository,
-        GuardRouteService $guardService,
+        GuardService $guardService,
         Environment $twig,
         EmailUserRequestHandler $emailUserRH,
         LienUserRequestHandler $lienUserRH,
@@ -148,13 +148,13 @@ abstract class FixtureLib extends Fixture
         $dateDebut = $faker->dateTime($maxDate);
         $noteinterne->setDateDebut($dateDebut);
         $dateFin = clone $dateDebut;
-        $dateFin->modify('+' . $faker->numberBetween(10, 50) . ' days');
-        $dateFin->modify('+' . $faker->numberBetween(2, 24) . ' hours');
+        $dateFin->modify('+'.$faker->numberBetween(10, 50).' days');
+        $dateFin->modify('+'.$faker->numberBetween(2, 24).' hours');
         $noteinterne->setDateFin($dateFin);
         /** @var string $content */
         $content = $faker->paragraphs(4, true);
         $noteinterne->setContent(str_replace("\n\n", '<br />', $content));
-        $this->addReference('noteinterne_' . $index, $noteinterne);
+        $this->addReference('noteinterne_'.$index, $noteinterne);
         $tabIndex = array_rand($users);
         /** @var User $user */
         $user = $users[$tabIndex];
@@ -171,7 +171,7 @@ abstract class FixtureLib extends Fixture
         $groupe = new Groupe();
         $old    = clone $groupe;
         $groupe->setName($row);
-        $this->addReference('groupe_' . $key, $groupe);
+        $this->addReference('groupe_'.$key, $groupe);
         $this->groupeRH->handle($old, $groupe);
     }
 
@@ -189,7 +189,7 @@ abstract class FixtureLib extends Fixture
         /** @var string $content */
         $content = $faker->paragraphs(4, true);
         $edito->setContent(str_replace("\n\n", '<br />', $content));
-        $this->addReference('edito_' . $index, $edito);
+        $this->addReference('edito_'.$index, $edito);
         $tabIndex = array_rand($users);
         /** @var User $user */
         $user = $users[$tabIndex];
@@ -211,7 +211,7 @@ abstract class FixtureLib extends Fixture
         $user->setUsername($dataUser['username']);
         $user->setPlainPassword($dataUser['password']);
         $user->setEmail($dataUser['email']);
-        $this->addReference('user_' . $index, $user);
+        $this->addReference('user_'.$index, $user);
         $this->userRH->handle($old, $user);
         $this->userRH->changeWorkflowState($user, $dataUser['state']);
     }
@@ -248,7 +248,7 @@ abstract class FixtureLib extends Fixture
         $adresse->setType($faker->unique()->colorName);
         $latitude  = $faker->latitude;
         $longitude = $faker->longitude;
-        $gps       = $latitude . ',' . $longitude;
+        $gps       = $latitude.','.$longitude;
         $adresse->setGps($gps);
         $adresse->setPmr((bool) $faker->numberBetween(0, 1));
         $this->adresseUserRH->handle($old, $adresse);

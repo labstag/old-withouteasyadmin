@@ -2,9 +2,9 @@
 
 namespace Labstag\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\LienUserRepository;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=LienUserRepository::class)

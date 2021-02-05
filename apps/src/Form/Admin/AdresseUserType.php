@@ -5,7 +5,6 @@ namespace Labstag\Form\Admin;
 use Labstag\Entity\AdresseUser;
 use Labstag\Entity\User;
 use Labstag\FormType\SelectRefUserType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

@@ -1,8 +1,8 @@
 <?php
+
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use LogicException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Workflow\Registry;
 

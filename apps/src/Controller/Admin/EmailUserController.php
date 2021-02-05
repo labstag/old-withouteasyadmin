@@ -2,17 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\EmailUser;
 use Labstag\Form\Admin\EmailUserType;
-use Labstag\Repository\EmailUserRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\EmailUserRepository;
+use Labstag\RequestHandler\EmailUserRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\EmailUserRequestHandler;
 
 /**
  * @Route("/admin/user/email")
@@ -31,7 +28,7 @@ class EmailUserController extends AdminControllerLib
      */
     public function indexOrTrash(EmailUserRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -62,7 +59,7 @@ class EmailUserController extends AdminControllerLib
      */
     public function new(EmailUserRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new EmailUser(),
             EmailUserType::class,
             $requestHandler,
@@ -77,7 +74,7 @@ class EmailUserController extends AdminControllerLib
      */
     public function showOrPreview(EmailUser $emailUser): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->renderShowOrPreview(
             $emailUser,
             'admin/email_user/show.html.twig',
             [
@@ -100,7 +97,7 @@ class EmailUserController extends AdminControllerLib
      */
     public function edit(EmailUser $emailUser, EmailUserRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             EmailUserType::class,
             $emailUser,
             $requestHandler,

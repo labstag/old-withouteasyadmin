@@ -2,16 +2,29 @@
 
 namespace Labstag\Lib;
 
-use Labstag\Service\AdminCrudService;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Entity\Attachment;
+use Labstag\Entity\User;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\DataService;
-use Labstag\Service\GuardRouteService;
+use Labstag\Service\GuardService;
 use Labstag\Singleton\AdminBtnSingleton;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 use Twig\Environment;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 abstract class AdminControllerLib extends ControllerLib
 {
@@ -20,13 +33,11 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected string $urlHome = '';
 
-    protected AdminCrudService $adminCrudService;
-
     protected Environment $twig;
 
     protected AdminBtnSingleton $btnInstance;
 
-    protected GuardRouteService $guardRouteService;
+    protected GuardService $guardService;
 
     protected RouterInterface $router;
 
@@ -34,27 +45,55 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected TokenStorageInterface $token;
 
+    protected PaginatorInterface $paginator;
+
+    protected RequestStack $requestStack;
+
+    protected Request $request;
+
+    protected SessionInterface $session;
+
+    protected UploadAnnotationReader $uploadAnnotReader;
+
+    protected EntityManagerInterface $entityManager;
+
+    protected AttachmentRequestHandler $attachmentRH;
+
+    protected AttachmentRepository $attachmentRepository;
+
     public function __construct(
+        UploadAnnotationReader $uploadAnnotReader,
+        PaginatorInterface $paginator,
+        RequestStack $requestStack,
         DataService $dataService,
-        AdminCrudService $adminCrudService,
+        EntityManagerInterface $entityManager,
         Breadcrumbs $breadcrumbs,
         Environment $twig,
         TokenStorageInterface $token,
         CsrfTokenManagerInterface $csrfTokenManager,
-        GuardRouteService $guardRouteService,
-        RouterInterface $router
+        AttachmentRequestHandler $attachmentRH,
+        AttachmentRepository $attachmentRepository,
+        GuardService $guardService,
+        RouterInterface $router,
+        SessionInterface $session
     )
     {
-        $this->guardRouteService = $guardRouteService;
+        $this->session              = $session;
+        $this->attachmentRH         = $attachmentRH;
+        $this->attachmentRepository = $attachmentRepository;
+        $this->entityManager        = $entityManager;
+        $this->requestStack         = $requestStack;
+        /** @var Request $request */
+        $request                 = $this->requestStack->getCurrentRequest();
+        $this->request           = $request;
+        $this->paginator         = $paginator;
+        $this->uploadAnnotReader = $uploadAnnotReader;
+        $this->guardService      = $guardService;
         $this->twig              = $twig;
         $this->router            = $router;
         $this->token             = $token;
         $this->csrfTokenManager  = $csrfTokenManager;
-        $this->adminCrudService  = $adminCrudService;
-        $this->adminCrudService->setController($this);
-        $this->adminCrudService->setPage($this->headerTitle, $this->urlHome);
         $this->setSingletonsAdmin();
-        $this->adminCrudService->setBtnInstance($this->btnInstance);
         parent::__construct($dataService, $breadcrumbs);
     }
 
@@ -67,7 +106,7 @@ abstract class AdminControllerLib extends ControllerLib
                 $this->router,
                 $this->token,
                 $this->csrfTokenManager,
-                $this->guardRouteService
+                $this->guardService
             );
         }
 
@@ -81,7 +120,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function setBreadcrumbsPage()
     {
-        if ($this->headerTitle == '' && $this->urlHome == '') {
+        if ('' == $this->headerTitle && '' == $this->urlHome) {
             return;
         }
 
@@ -108,6 +147,526 @@ abstract class AdminControllerLib extends ControllerLib
                 'btnadmin' => $this->btnInstance->get(),
             ]
         );
+
         return parent::render($view, $parameters, $response);
+    }
+
+    public function setBtnInstance($btnInstance)
+    {
+        $this->btnInstance = $btnInstance;
+    }
+
+    protected function setBtnList(array $url): void
+    {
+        if (!isset($url['list'])) {
+            return;
+        }
+
+        $this->btnInstance->addBtnList(
+            $url['list'],
+            'Liste',
+        );
+    }
+
+    protected function setBtnViewUpdate(array $url, object $entity): void
+    {
+        $this->setBtnList($url);
+        $this->setBtnShow($url, $entity);
+        $this->setBtnGuard($url, $entity);
+        $this->setBtnDelete($url, $entity);
+    }
+
+    protected function setBtnShow(array $url, object $entity): void
+    {
+        if (!isset($url['show'])) {
+            return;
+        }
+
+        $this->btnInstance->addBtnShow(
+            $url['show'],
+            'Show',
+            [
+                'id' => $entity->getId(),
+            ]
+        );
+    }
+
+    protected function enableBtnGuard($entity): bool
+    {
+        if ($entity instanceof User) {
+            $routes = $this->guardService->getGuardRoutesForUser($entity);
+
+            return (0 != count($routes)) ? true : false;
+        }
+
+        $routes = $this->guardService->getGuardRoutesForGroupe($entity);
+
+        return (0 != count($routes)) ? true : false;
+    }
+
+    protected function setBtnGuard(array $url, object $entity): void
+    {
+        if (!isset($url['guard']) || !$this->enableBtnGuard($entity)) {
+            return;
+        }
+
+        $this->btnInstance->addBtnGuard(
+            $url['guard'],
+            'Guard',
+            [
+                'id' => $entity->getId(),
+            ]
+        );
+    }
+
+    protected function setBtnDelete(array $url, object $entity): void
+    {
+        if (!isset($url['delete'])) {
+            return;
+        }
+
+        $urlsDelete = [
+            'delete' => $url['delete'],
+        ];
+        if (isset($url['list'])) {
+            $urlsDelete['list'] = $url['list'];
+        }
+
+        $this->btnInstance->addBtnDelete(
+            $entity,
+            $urlsDelete,
+            'Supprimer',
+            [
+                'id'     => $entity->getId(),
+                'entity' => $this->classEntity($entity),
+            ]
+        );
+    }
+
+    protected function classEntity($entity)
+    {
+        $class = get_class($entity);
+
+        $class = str_replace('Labstag\\Entity\\', '', $class);
+
+        return strtolower($class);
+    }
+
+    protected function listOrTrashRouteTrash(
+        array $url,
+        array $actions,
+        ServiceEntityRepositoryLib $repository
+    )
+    {
+        $entity = strtolower(
+            str_replace(
+                'Labstag\\Entity\\',
+                '',
+                $repository->getClassName()
+            )
+        );
+
+        $breadcrumb = [
+            'Trash' => $this->router->generate(
+                'admin_adresseuser_trash'
+            ),
+        ];
+        $this->addBreadcrumbs($breadcrumb);
+        if (isset($url['list'])) {
+            $this->btnInstance->addBtnList(
+                $url['list']
+            );
+        }
+
+        if (isset($url['empty'])) {
+            $this->btnInstance->addBtnEmpty(
+                [
+                    'empty' => $url['empty'],
+                    'list'  => $url['list'],
+                ],
+                $entity
+            );
+        }
+
+        if (isset($actions['destroy'])) {
+            $this->twig->addGlobal(
+                'modalDestroy',
+                true
+            );
+        }
+
+        if (isset($actions['restore'])) {
+            $this->twig->addGlobal(
+                'modalRestore',
+                true
+            );
+        }
+    }
+
+    public function modalAttachmentDelete(): void
+    {
+        $this->twig->addGlobal(
+            'modalAttachmentDelete',
+            true
+        );
+    }
+
+    public function listOrTrash(
+        ServiceEntityRepositoryLib $repository,
+        array $methods,
+        string $html,
+        array $url = [],
+        array $actions = []
+    ): Response
+    {
+        $routeCurrent = $this->request->get('_route');
+        $routeType    = (0 != substr_count($routeCurrent, 'trash')) ? 'trash' : 'all';
+        $method       = $methods[$routeType];
+
+        if ('trash' == $routeType) {
+            $this->listOrTrashRouteTrash($url, $actions, $repository);
+        } elseif (isset($url['trash'])) {
+            $this->btnInstance->addBtnTrash(
+                $url['trash']
+            );
+            if (isset($actions['delete'])) {
+                $this->twig->addGlobal(
+                    'modalDelete',
+                    true
+                );
+            }
+
+            if (isset($actions['workflow'])) {
+                $this->twig->addGlobal(
+                    'modalWorkflow',
+                    true
+                );
+            }
+        }
+
+        if (isset($url['new']) && 'trash' != $routeType) {
+            $this->btnInstance->addBtnNew(
+                $url['new']
+            );
+        }
+
+        $pagination = $this->paginator->paginate(
+            $repository->$method(),
+            $this->request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render(
+            $html,
+            [
+                'pagination' => $pagination,
+                'actions'    => $actions,
+            ]
+        );
+    }
+
+    protected function showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity)
+    {
+        if ('preview' == $routeType && isset($url['trash'])) {
+            $breadcrumb = [
+                'Trash' => $this->router->generate(
+                    $url['trash']
+                ),
+            ];
+            $this->addBreadcrumbs($breadcrumb);
+        }
+
+        $breadcrumb = [
+            $routeType => $this->router->generate(
+                $routeCurrent,
+                [
+                    'id' => $entity->getId(),
+                ]
+            ),
+        ];
+        $this->addBreadcrumbs($breadcrumb);
+    }
+
+    protected function showOrPreviewaddBtnList($url, $routeType)
+    {
+        if (!(isset($url['list']) && 'show' == $routeType)) {
+            return;
+        }
+
+        $this->btnInstance->addBtnList(
+            $url['list'],
+            'Liste',
+        );
+    }
+
+    protected function showOrPreviewaddBtnTrash($url, $routeType)
+    {
+        if (!(isset($url['trash']) && 'preview' == $routeType)) {
+            return;
+        }
+
+        $this->btnInstance->addBtnTrash(
+            $url['trash'],
+            'Trash',
+        );
+    }
+
+    protected function showOrPreviewaddBtnGuard($url, $routeType, $entity)
+    {
+        if (!(isset($url['guard']) && 'show' == $routeType) || !$this->enableBtnGuard($entity)) {
+            return;
+        }
+
+        $this->btnInstance->addBtnGuard(
+            $url['guard'],
+            'Guard',
+            [
+                'id' => $entity->getId(),
+            ]
+        );
+    }
+
+    protected function showOrPreviewaddBtnEdit($url, $routeType, $entity)
+    {
+        if (!(isset($url['edit']) && 'show' == $routeType) || !$this->isGranted('edit', $entity)) {
+            return;
+        }
+
+        $this->btnInstance->addBtnEdit(
+            $url['edit'],
+            'Editer',
+            [
+                'id' => $entity->getId(),
+            ]
+        );
+    }
+
+    protected function showOrPreviewaddBtnRestore($url, $routeType, $entity)
+    {
+        if (isset($url['restore']) && 'preview' == $routeType) {
+            $this->btnInstance->addBtnRestore(
+                $entity,
+                [
+                    'restore' => $url['restore'],
+                    'list'    => $url['trash'],
+                ],
+                'Restore',
+                [
+                    'id'     => $entity->getId(),
+                    'entity' => $this->classEntity($entity),
+                ]
+            );
+        }
+    }
+
+    protected function showOrPreviewaddBtnDestroy($url, $routeType, $entity)
+    {
+        if (!(isset($url['destroy']) && 'preview' == $routeType)) {
+            return;
+        }
+
+        $this->btnInstance->addBtnDestroy(
+            $entity,
+            [
+                'destroy' => $url['destroy'],
+                'list'    => $url['trash'],
+            ],
+            'Destroy',
+            [
+                'id'     => $entity->getId(),
+                'entity' => $this->classEntity($entity),
+            ]
+        );
+    }
+
+    public function renderShowOrPreview(
+        object $entity,
+        string $twigShow,
+        array $url = []
+    ): Response
+    {
+        $routeCurrent = $this->request->get('_route');
+        $routeType    = (0 != substr_count($routeCurrent, 'preview')) ? 'preview' : 'show';
+        $this->showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity);
+        $this->showOrPreviewaddBtnList($url, $routeType);
+        $this->showOrPreviewaddBtnGuard($url, $routeType, $entity);
+        $this->showOrPreviewaddBtnTrash($url, $routeType);
+        $this->showOrPreviewaddBtnEdit($url, $routeType, $entity);
+        $this->showOrPreviewaddBtnRestore($url, $routeType, $entity);
+        $this->showOrPreviewaddBtnDestroy($url, $routeType, $entity);
+
+        if (isset($url['delete']) && 'show' == $routeType) {
+            $urlsDelete = [
+                'delete' => $url['delete'],
+            ];
+            if (isset($url['list'])) {
+                $urlsDelete['list'] = $url['list'];
+            }
+
+            $this->btnInstance->addBtnDelete(
+                $entity,
+                $urlsDelete,
+                'Supprimer',
+                [
+                    'id'     => $entity->getId(),
+                    'entity' => $this->classEntity($entity),
+                ]
+            );
+        }
+
+        return $this->render(
+            $twigShow,
+            ['entity' => $entity]
+        );
+    }
+
+    public function create(
+        object $entity,
+        string $formType,
+        RequestHandlerLib $handler,
+        array $url = [],
+        string $twig = 'admin/crud/form.html.twig'
+    ): Response
+    {
+        $routeCurrent = $this->request->get('_route');
+        $breadcrumb   = [
+            'New' => $this->router->generate(
+                $routeCurrent
+            ),
+        ];
+        $this->addBreadcrumbs($breadcrumb);
+        if (isset($url['list'])) {
+            $this->btnInstance->addBtnList(
+                $url['list']
+            );
+        }
+
+        $oldEntity = clone $entity;
+        $form      = $this->createForm($formType, $entity);
+        $this->btnInstance->addBtnSave($form->getName(), 'Ajouter');
+        $form->handleRequest($this->request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->upload($entity);
+            $handler->handle($oldEntity, $entity);
+            if (isset($url['list'])) {
+                return new RedirectResponse(
+                    $this->router->generate($url['list'])
+                );
+            }
+        }
+
+        return $this->render(
+            $twig,
+            [
+                'entity' => $entity,
+                'form'   => $form->createView(),
+            ]
+        );
+    }
+
+    public function update(
+        string $formType,
+        object $entity,
+        RequestHandlerLib $handler,
+        array $url = [],
+        string $twig = 'admin/crud/form.html.twig'
+    ): Response
+    {
+        $this->denyAccessUnlessGranted('edit', $entity);
+        $routeCurrent = $this->request->get('_route');
+        $breadcrumb   = [
+            'edit' => $this->router->generate(
+                $routeCurrent,
+                [
+                    'id' => $entity->getId(),
+                ]
+            ),
+        ];
+        $this->addBreadcrumbs($breadcrumb);
+        $this->setBtnViewUpdate($url, $entity);
+        $oldEntity = clone $entity;
+        $form      = $this->createForm($formType, $entity);
+        $this->btnInstance->addBtnSave($form->getName(), 'Sauvegarder');
+        $form->handleRequest($this->request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->upload($entity);
+            $handler->handle($oldEntity, $entity);
+            /** @var Session $session */
+            $session = $this->session;
+            $session->getFlashBag()->add(
+                'success',
+                'Données sauvegardé'
+            );
+            if (isset($url['list'])) {
+                return new RedirectResponse(
+                    $this->router->generate($url['list'])
+                );
+            }
+        }
+
+        return $this->render(
+            $twig,
+            [
+                'entity' => $entity,
+                'form'   => $form->createView(),
+            ]
+        );
+    }
+
+    protected function upload($entity)
+    {
+        if (!$this->uploadAnnotReader->isUploadable($entity)) {
+            return;
+        }
+
+        $annotations = $this->uploadAnnotReader->getUploadableFields($entity);
+        foreach ($annotations as $property => $annotation) {
+            $accessor = PropertyAccess::createPropertyAccessor();
+            $file     = $accessor->getValue($entity, $property);
+            if (!$file instanceof UploadedFile) {
+                continue;
+            }
+
+            $attachment = $this->setAttachment($accessor, $entity, $annotation);
+            $old        = clone $attachment;
+
+            $filename = $file->getClientOriginalName();
+            $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $file->move(
+                $path,
+                $filename
+            );
+            $file = $path.'/'.$filename;
+            $attachment->setMimeType(mime_content_type($file));
+            $attachment->setSize(filesize($file));
+            $size = getimagesize($file);
+            $attachment->setDimensions(is_array($size) ? $size : []);
+            $attachment->setName(
+                str_replace(
+                    $this->getParameter('kernel.project_dir').'/public/',
+                    '',
+                    $file
+                )
+            );
+            $this->attachmentRH->handle($old, $attachment);
+            $accessor->setValue($entity, $annotation->getFilename(), $attachment);
+        }
+    }
+
+    protected function setAttachment($accessor, $entity, $annotation): Attachment
+    {
+        $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
+        if (is_null($attachmentField)) {
+            $attachment = new Attachment();
+
+            return $attachment;
+        }
+
+        $attachment = $this->attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
+        if (!$attachment instanceof Attachment) {
+            $attachment = new Attachment();
+        }
+
+        return $attachment;
     }
 }

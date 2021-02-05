@@ -267,6 +267,7 @@ endif
 
 linter: ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
+	@make linter phpfix -i
 	@make linter eslint -i
 	@make linter stylelint -i
 	@make linter twig -i
@@ -277,6 +278,9 @@ ifeq ($(COMMAND_ARGS),all)
 	@make linter phpcs -i
 	@make linter phpmd -i
 	@make linter readme -i
+else ifeq ($(COMMAND_ARGS),phpfix)
+	@make linter php-cs-fixer -i
+	@make linter phpcbf -i
 else ifeq ($(COMMAND_ARGS),readme)
 	@npm run linter-markdown README.md
 else ifeq ($(COMMAND_ARGS),stylelint)
@@ -287,6 +291,8 @@ else ifeq ($(COMMAND_ARGS),eslint)
 	@npm run eslint
 else ifeq ($(COMMAND_ARGS),eslint-fix)
 	@npm run eslint-fix
+else ifeq ($(COMMAND_ARGS),php-cs-fixer)
+	$(DOCKER_EXECPHP) make linter php-cs-fixer
 else ifeq ($(COMMAND_ARGS),phpcbf)
 	$(DOCKER_EXECPHP) make linter phpcbf
 else ifeq ($(COMMAND_ARGS),phpcpd)
@@ -318,11 +324,13 @@ else
 	@echo "---"
 	@echo "all: ## Launch all linter"
 	@echo "readme: linter README.md"
+	@echo "phpfix: PHP-CS-FIXER & PHPCBF"
 	@echo "stylelint: indique les erreurs dans le code SCSS"
 	@echo "stylelint-fix: fix les erreurs dans le code SCSS"
 	@echo "eslint: indique les erreurs sur le code JavaScript à partir d'un standard"
 	@echo "eslint-fix: fixe le code JavaScript à partir d'un standard"
 	@echo "phpcbf: fixe le code PHP à partir d'un standard"
+	@echo "php-cs-fixer: fixe le code PHP à partir d'un standard"
 	@echo "phpcpd: Vérifie s'il y a du code dupliqué"
 	@echo "phpcs: indique les erreurs de code non corrigé par PHPCBF"
 	@echo "phpcs-onlywarning: indique les erreurs de code non corrigé par PHPCBF"

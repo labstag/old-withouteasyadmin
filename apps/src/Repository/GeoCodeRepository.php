@@ -2,8 +2,8 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\GeoCode;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Entity\GeoCode;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class GeoCodeRepository extends ServiceEntityRepositoryLib

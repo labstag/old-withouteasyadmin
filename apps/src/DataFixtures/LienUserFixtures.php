@@ -17,7 +17,7 @@ class LienUserFixtures extends FixtureLib implements DependentFixtureInterface
         $faker = Factory::create('fr_FR');
         for ($index = 0; $index < self::NUMBER; ++$index) {
             $indexUser = $faker->numberBetween(1, 3);
-            $user      = $this->getReference('user_' . $indexUser);
+            $user      = $this->getReference('user_'.$indexUser);
             $this->addLink($faker, $user);
         }
     }

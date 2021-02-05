@@ -41,8 +41,9 @@
 {% endmacro %}
 {% macro edit(entity, url) %}
     {% set title = "Edit"|trans %}
-    {% set state = guard_route(url) %}
-    {% if state == true %}
+    {% set state1 = guard_route(url) %}
+    {% set state2 = is_granted('edit', entity) %}
+    {% if state1 == true and state2 == true %}
         <link-edit
             data-href="{{ path(url, {'id': entity.id}) }}"
             data-title="#{{ title|e }}"

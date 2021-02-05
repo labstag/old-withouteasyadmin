@@ -2,10 +2,8 @@
 
 namespace Labstag\Form\Admin;
 
-use Labstag\Entity\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class EmailType extends AbstractType
 {

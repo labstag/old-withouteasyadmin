@@ -2,10 +2,10 @@
 
 namespace Labstag\Entity;
 
-use Labstag\Repository\ConfigurationRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Repository\ConfigurationRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ConfigurationRepository::class)
@@ -13,7 +13,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Configuration
 {
-
     use SoftDeleteableEntity;
 
     /**

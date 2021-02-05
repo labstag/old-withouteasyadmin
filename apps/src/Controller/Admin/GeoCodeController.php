@@ -2,15 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\GeoCode;
 use Labstag\Form\Admin\GeoCodeType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\GeoCodeRepository;
+use Labstag\RequestHandler\GeoCodeRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\GeoCodeRequestHandler;
 
 /**
  * @Route("/admin/geocode")
@@ -29,7 +28,7 @@ class GeoCodeController extends AdminControllerLib
      */
     public function index(GeoCodeRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -57,7 +56,7 @@ class GeoCodeController extends AdminControllerLib
      */
     public function new(GeoCodeRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new GeoCode(),
             GeoCodeType::class,
             $requestHandler,
@@ -72,7 +71,7 @@ class GeoCodeController extends AdminControllerLib
      */
     public function showOrPreview(GeoCode $geoCode): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->renderShowOrPreview(
             $geoCode,
             'admin/geocode/show.html.twig',
             [
@@ -91,7 +90,7 @@ class GeoCodeController extends AdminControllerLib
      */
     public function edit(GeoCode $geoCode, GeoCodeRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             GeoCodeType::class,
             $geoCode,
             $requestHandler,

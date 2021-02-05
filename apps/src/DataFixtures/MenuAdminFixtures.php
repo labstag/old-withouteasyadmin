@@ -165,6 +165,7 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
 
         return $data;
     }
+
     protected function getMenuProfilAdmin(): array
     {
         $data = [
@@ -210,7 +211,7 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
         $index = 0;
         foreach ($menus as $key => $child) {
             $this->saveMenu($index, $key, $child);
-            $index++;
+            ++$index;
         }
 
         $manager->flush();
@@ -225,7 +226,7 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
         $indexChild = 0;
         foreach ($childs as $attr) {
             $this->addChild($indexChild, $menu, $attr);
-            $indexChild++;
+            ++$indexChild;
         }
     }
 
@@ -237,6 +238,7 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
         if (isset($attr['separator'])) {
             $child->setSeparateur(true);
             $this->manager->persist($child);
+
             return;
         }
 
@@ -250,7 +252,7 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
             $indexChild = 0;
             foreach ($attr['childs'] as $attrChild) {
                 $this->addChild($indexChild, $child, $attrChild);
-                $indexChild++;
+                ++$indexChild;
             }
         }
     }

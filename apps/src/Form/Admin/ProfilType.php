@@ -2,7 +2,6 @@
 
 namespace Labstag\Form\Admin;
 
-use Labstag\Entity\EmailUser;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Collections\User\AdresseType;
 use Labstag\Form\Admin\Collections\User\EmailType;
@@ -11,12 +10,12 @@ use Labstag\Form\Admin\Collections\User\PhoneType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\Repository\EmailUserRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ProfilType extends AbstractType
 {
@@ -62,7 +61,7 @@ class ProfilType extends AbstractType
 
             ksort($emails);
 
-            if (count($emails) != 0) {
+            if (0 != count($emails)) {
                 $builder->add(
                     'email',
                     ChoiceType::class,

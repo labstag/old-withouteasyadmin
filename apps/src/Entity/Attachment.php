@@ -4,10 +4,10 @@ namespace Labstag\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Labstag\Repository\AttachmentRepository;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Repository\AttachmentRepository;
 
 /**
  * @ORM\Entity(repositoryClass=AttachmentRepository::class)
@@ -15,7 +15,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Attachment
 {
-
     use SoftDeleteableEntity;
 
     /**

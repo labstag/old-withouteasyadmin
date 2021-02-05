@@ -2,15 +2,12 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Configuration;
-use Labstag\Repository\ConfigurationRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\ConfigurationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
 
 /**
  * @Route("/admin/configuration")
@@ -29,7 +26,7 @@ class ConfigurationController extends AdminControllerLib
      */
     public function indexOrTrash(ConfigurationRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -59,7 +56,7 @@ class ConfigurationController extends AdminControllerLib
      */
     public function showOrPreview(Configuration $configuration): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->renderShowOrPreview(
             $configuration,
             'admin/configuration/show.html.twig',
             ['list' => 'admin_configuration_index']

@@ -2,17 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
 use Labstag\Form\Admin\EditoType;
-use Labstag\Repository\EditoRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\EditoRepository;
+use Labstag\RequestHandler\EditoRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\EditoRequestHandler;
 
 /**
  * @Route("/admin/edito")
@@ -31,7 +28,7 @@ class EditoController extends AdminControllerLib
      */
     public function indexOrTrash(EditoRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -62,7 +59,7 @@ class EditoController extends AdminControllerLib
      */
     public function new(EditoRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new Edito(),
             EditoType::class,
             $requestHandler,
@@ -78,7 +75,7 @@ class EditoController extends AdminControllerLib
      */
     public function showOrPreview(Edito $edito): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->renderShowOrPreview(
             $edito,
             'admin/edito/show.html.twig',
             [
@@ -97,8 +94,9 @@ class EditoController extends AdminControllerLib
      */
     public function edit(Edito $edito, EditoRequestHandler $requestHandler): Response
     {
-        $this->adminCrudService->modalAttachmentDelete();
-        return $this->adminCrudService->update(
+        $this->modalAttachmentDelete();
+
+        return $this->update(
             EditoType::class,
             $edito,
             $requestHandler,

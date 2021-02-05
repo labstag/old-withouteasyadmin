@@ -2,17 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
-use Labstag\Entity\Edito;
-use Labstag\Form\Admin\EditoType;
-use Labstag\Repository\AttachmentRepository;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\EditoRequestHandler;
 
 /**
  * @Route("/admin/attachment")
@@ -31,7 +25,7 @@ class AttachmentController extends AdminControllerLib
      */
     public function indexOrTrash(AttachmentRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',

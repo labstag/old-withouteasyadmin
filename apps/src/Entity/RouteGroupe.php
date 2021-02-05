@@ -2,8 +2,8 @@
 
 namespace Labstag\Entity;
 
-use Labstag\Repository\RouteGroupeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Repository\RouteGroupeRepository;
 
 /**
  * @ORM\Entity(repositoryClass=RouteGroupeRepository::class)

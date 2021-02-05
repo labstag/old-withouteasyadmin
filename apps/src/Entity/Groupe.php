@@ -3,12 +3,12 @@
 namespace Labstag\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\GroupeRepository;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=GroupeRepository::class)
@@ -16,7 +16,6 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
  */
 class Groupe
 {
-
     use SoftDeleteableEntity;
 
     /**

@@ -2,39 +2,18 @@
 
 namespace Labstag\Controller\Api;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Labstag\Service\ApiActionsService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\Entity\Attachment;
+use Labstag\Lib\ApiControllerLib;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\Entity\Attachment;
-use Symfony\Component\Workflow\Registry;
 
 /**
  * @Route("/api/actions")
  */
-class ActionsController extends AbstractController
+class ActionsController extends ApiControllerLib
 {
-
-    protected ApiActionsService $apiActionsService;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected Registry $workflows;
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        Registry $workflows,
-        ApiActionsService $apiActionsService
-    )
-    {
-        $this->entityManager     = $entityManager;
-        $this->workflows         = $workflows;
-        $this->apiActionsService = $apiActionsService;
-    }
-
     /**
      * @Route("/empty/{entity}", name="api_action_empty", methods={"DELETE"})
      * @IgnoreSoftDelete
@@ -51,6 +30,7 @@ class ActionsController extends AbstractController
         $tokenValid = $this->apiActionsService->verifToken('empty');
         if (!$tokenValid) {
             $data['message'] = 'token incorrect';
+
             return new JsonResponse($data);
         }
 
@@ -90,12 +70,14 @@ class ActionsController extends AbstractController
         $entity     = $repository->find($id);
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
             $data['message'] = 'entité inconnu';
+
             return new JsonResponse($data);
         }
 
         $tokenValid = $this->apiActionsService->verifToken('restore', $entity);
         if (!$tokenValid) {
             $data['message'] = 'token incorrect';
+
             return new JsonResponse($data);
         }
 
@@ -123,12 +105,14 @@ class ActionsController extends AbstractController
         $entity     = $repository->find($id);
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
             $data['message'] = 'entité inconnu';
+
             return new JsonResponse($data);
         }
 
         $tokenValid = $this->apiActionsService->verifToken('destroy', $entity);
         if (!$tokenValid) {
             $data['message'] = 'token incorrect';
+
             return new JsonResponse($data);
         }
 
@@ -161,6 +145,7 @@ class ActionsController extends AbstractController
         $entity     = $repository->find($id);
         if (is_null($entity) || !is_null($entity->getDeletedAt())) {
             $data['message'] = 'entité inconnu';
+
             return new JsonResponse($data);
         }
 
@@ -189,14 +174,17 @@ class ActionsController extends AbstractController
         ];
         $repository = $this->apiActionsService->getRepository($entity);
         $entity     = $repository->find($id);
+        $this->denyAccessUnlessGranted('workflow-'.$state, $entity);
         if (is_null($entity)) {
             $data['message'] = 'entité inconnu';
+
             return new JsonResponse($data);
         }
 
         $tokenValid = $this->apiActionsService->verifToken('workflow-'.$state, $entity);
         if (!$tokenValid) {
             $data['message'] = 'token incorrect';
+
             return new JsonResponse($data);
         }
 

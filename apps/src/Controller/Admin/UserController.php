@@ -2,18 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\UserType;
-use Labstag\Repository\UserRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\UserRepository;
+use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\Repository\RouteRepository;
-use Labstag\RequestHandler\UserRequestHandler;
 
 /**
  * @Route("/admin/user")
@@ -32,7 +28,7 @@ class UserController extends AdminControllerLib
      */
     public function indexOrTrash(UserRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -65,7 +61,8 @@ class UserController extends AdminControllerLib
     public function new(UserRequestHandler $requestHandler): Response
     {
         $user = new User();
-        return $this->adminCrudService->create(
+
+        return $this->create(
             $user,
             UserType::class,
             $requestHandler,
@@ -81,8 +78,9 @@ class UserController extends AdminControllerLib
      */
     public function showOrPreview(User $user): Response
     {
-        $this->adminCrudService->modalAttachmentDelete();
-        return $this->adminCrudService->showOrPreview(
+        $this->modalAttachmentDelete();
+
+        return $this->renderShowOrPreview(
             $user,
             'admin/user/show.html.twig',
             [
@@ -130,12 +128,12 @@ class UserController extends AdminControllerLib
                 'id' => $user->getId(),
             ]
         );
-        $routes = $this->guardRouteService->getGuardRoutesForUser($user);
-        if (count($routes) == 0) {
-            $this->addFlash(
-                'danger',
-                "L'utilisateur fait partie du groupe superadmin, qui n'est pas un groupe qui peut avoir des droits spécifique"
-            );
+        $routes = $this->guardService->getGuardRoutesForUser($user);
+        if (0 == count($routes)) {
+            $msg  = "L'utilisateur fait partie du groupe superadmin, qui n'est pas";
+            $msg .= ' un groupe qui peut avoir des droits spécifique';
+            $this->addFlash('danger', $msg);
+
             return $this->redirect($this->generateUrl('admin_user_index'));
         }
 
@@ -153,7 +151,7 @@ class UserController extends AdminControllerLib
      */
     public function edit(User $user, UserRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             UserType::class,
             $user,
             $requestHandler,

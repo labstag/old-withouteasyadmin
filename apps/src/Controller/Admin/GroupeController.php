@@ -2,18 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
 use Labstag\Form\Admin\GroupeType;
-use Labstag\Repository\GroupeRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\GroupeRepository;
+use Labstag\RequestHandler\GroupeRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\Repository\RouteRepository;
-use Labstag\RequestHandler\GroupeRequestHandler;
 
 /**
  * @Route("/admin/user/groupe")
@@ -32,7 +28,7 @@ class GroupeController extends AdminControllerLib
      */
     public function index(GroupeRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -62,7 +58,7 @@ class GroupeController extends AdminControllerLib
      */
     public function new(GroupeRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new Groupe(),
             GroupeType::class,
             $requestHandler,
@@ -77,7 +73,7 @@ class GroupeController extends AdminControllerLib
      */
     public function showOrPreview(Groupe $groupe): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->renderShowOrPreview(
             $groupe,
             'admin/groupe/show.html.twig',
             [
@@ -126,12 +122,13 @@ class GroupeController extends AdminControllerLib
             ]
         );
 
-        $routes = $this->guardRouteService->getGuardRoutesForGroupe($groupe);
-        if (count($routes) == 0) {
+        $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
+        if (0 == count($routes)) {
             $this->addFlash(
                 'danger',
                 "Le groupe superadmin n'est pas un groupe qui peut avoir des droits spécifique"
             );
+
             return $this->redirect($this->generateUrl('admin_groupuser_index'));
         }
 
@@ -149,7 +146,7 @@ class GroupeController extends AdminControllerLib
      */
     public function edit(Groupe $groupe, GroupeRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             GroupeType::class,
             $groupe,
             $requestHandler,

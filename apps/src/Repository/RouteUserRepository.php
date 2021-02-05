@@ -2,11 +2,10 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\RouteUser;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
 use Labstag\Lib\ServiceEntityRepositoryLib;
-
 
 class RouteUserRepository extends ServiceEntityRepositoryLib
 {
@@ -15,7 +14,7 @@ class RouteUserRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, RouteUser::class);
     }
 
-    public function findEnable(User $user = null)
+    public function findEnable(?User $user = null)
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $query        = $queryBuilder->where(

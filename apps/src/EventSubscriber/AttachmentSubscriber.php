@@ -7,7 +7,6 @@ use Symfony\Component\Workflow\Event\Event;
 
 class AttachmentSubscriber implements EventSubscriberInterface
 {
-
     public function onTransition(Event $event)
     {
         $transition = $event->getTransition();

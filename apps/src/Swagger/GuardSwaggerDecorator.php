@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class GuardSwaggerDecorator implements NormalizerInterface
 {
 
-    protected NormalizerInterface $decorated;
+    private NormalizerInterface $decorated;
 
     public function __construct(NormalizerInterface $decorated)
     {
@@ -24,7 +24,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, string $format = null, array $context = [])
+    public function normalize($object, ?string $format = null, array $context = [])
     {
         $docs = $this->decorated->normalize($object, $format, $context);
         $this->setRefUser($docs);
@@ -36,7 +36,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         return $docs;
     }
 
-    protected function setReturnUserGroup()
+    private function setReturnUserGroup()
     {
         return [
             'ok'      => [
@@ -50,7 +50,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    protected function setRefUser(&$docs)
+    private function setRefUser(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'User.',
@@ -102,7 +102,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/guard/setuser/{route}/{user}']['post'] = $statsEndpoint;
     }
 
-    protected function setRefGroup(&$docs)
+    private function setRefGroup(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'Group.',
@@ -154,7 +154,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/guard/setgroup/{route}/{groupe}']['post'] = $statsEndpoint;
     }
 
-    protected function setGroups(&$docs)
+    private function setGroups(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'Groups.',
@@ -182,7 +182,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/guard/groups']['get'] = $statsEndpoint;
     }
 
-    protected function setUser(&$docs)
+    private function setUser(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'Group.',
@@ -218,7 +218,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/guard/users/{user}']['get'] = $statsEndpoint;
     }
 
-    protected function setGroup(&$docs)
+    private function setGroup(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'Group.',
@@ -257,7 +257,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, string $format = null): bool
+    public function supportsNormalization($data, ?string $format = null): bool
     {
         return $this->decorated->supportsNormalization($data, $format);
     }

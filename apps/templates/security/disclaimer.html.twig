@@ -5,7 +5,7 @@
     <div class="ShowGlobalLDisclaimer">
         {{ form_start(form) }}
         {{ macro_site.flashbag(app) }}
-        {{ config['disclaimer'][0]['message']|raw }}
+        {{ config['disclaimer']['message']|raw }}
         {{ form_row(form.confirm) }}
         <div class="container">
             <div class="row">

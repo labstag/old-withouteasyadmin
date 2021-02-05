@@ -63,7 +63,7 @@ class UserMailService
         $change = array_merge($change, $otherchange);
 
         foreach ($change as $key => $after) {
-            $before  = '%' . $key . '%';
+            $before  = '%'.$key.'%';
             $content = str_replace($before, $after, $content);
         }
 
@@ -82,7 +82,7 @@ class UserMailService
 
         $url     = (isset($this->config['site_url'])) ? $this->config['site_url'] : '';
         $change  = [
-            'url_confirm_user' => $url . $this->router->generate(
+            'url_confirm_user' => $url.$this->router->generate(
                 'app_confirm_user',
                 [
                     'id' => $user->getId(),
@@ -139,7 +139,7 @@ class UserMailService
 
         $url     = isset($this->config['site_url']) ? $this->config['site_url'] : $url = '';
         $change  = [
-            'url_change_password' => $url . $this->router->generate(
+            'url_change_password' => $url.$this->router->generate(
                 'app_changepassword',
                 [
                     'id' => $user->getId(),
@@ -196,7 +196,7 @@ class UserMailService
 
         $url     = isset($this->config['site_url']) ? $this->config['site_url'] : '';
         $change  = [
-            'url_confirm_email' => $url . $this->router->generate(
+            'url_confirm_email' => $url.$this->router->generate(
                 'app_confirm_mail',
                 [
                     'id' => $emailUser->getId(),
@@ -287,7 +287,7 @@ class UserMailService
 
         $url     = isset($this->config['site_url']) ? $this->config['site_url'] : '';
         $change  = [
-            'url_confirm_phone' => $url . $this->router->generate(
+            'url_confirm_phone' => $url.$this->router->generate(
                 'app_confirm_phone',
                 [
                     'id' => $phoneUser->getId(),

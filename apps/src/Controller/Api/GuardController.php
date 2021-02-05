@@ -1,56 +1,27 @@
 <?php
+
 namespace Labstag\Controller\Api;
 
 use Labstag\Entity\Groupe;
 use Labstag\Entity\RouteGroupe;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
+use Labstag\Lib\ApiControllerLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\RouteGroupeRepository;
-use Labstag\Repository\RouteRepository;
 use Labstag\Repository\RouteUserRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\RouteGroupeRequestHandler;
 use Labstag\RequestHandler\RouteUserRequestHandler;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * @Route("/api/guard")
  */
-class GuardController extends AbstractController
+class GuardController extends ApiControllerLib
 {
-
-    protected CsrfTokenManagerInterface $csrfTokenManager;
-
-    protected RouteRepository $routeRepo;
-
-    protected RequestStack $requestStack;
-
-    /**
-     *
-     * @var Request|null
-     */
-    protected $request;
-
-    public function __construct(
-        CsrfTokenManagerInterface $csrfTokenManager,
-        RequestStack $requestStack,
-        RouteRepository $routeRepo
-    )
-    {
-        $this->routeRepo    = $routeRepo;
-        $this->requestStack = $requestStack;
-        /** @var Request $request */
-        $this->request          = $this->requestStack->getCurrentRequest();
-        $this->csrfTokenManager = $csrfTokenManager;
-    }
-
     /**
      * @Route("/setuser/{route}/{user}", name="api_guard_setuser", methods={"POST"})
      *
@@ -70,17 +41,19 @@ class GuardController extends AbstractController
         $route = $this->routeRepo->findOneBy(['name' => $route]);
         if (empty($user) || empty($route) || !array_key_exists('_token', $post)) {
             $data['message'] = 'Erreur de saisie';
+
             return new JsonResponse($data);
         }
 
         $userId    = $user->getId();
         $routeId   = $route->getId();
         $csrfToken = new CsrfToken(
-            'guard-' . $userId.'-route-'.$routeId,
+            'guard-'.$userId.'-route-'.$routeId,
             $post['_token']
         );
         if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
             $data['message'] = 'token incorrect';
+
             return new JsonResponse($data);
         }
 
@@ -100,6 +73,7 @@ class GuardController extends AbstractController
         $routeUser->setState($post['state']);
         $routeUserRH->handle($old, $routeUser);
         $data['ok'] = true;
+
         return new JsonResponse($data);
     }
 
@@ -120,7 +94,7 @@ class GuardController extends AbstractController
         ];
         $results = $routeGroupeRepo->findEnable($user->getGroupe());
         foreach ($results as $row) {
-            /** @var RouteGroupe $row */
+            /* @var RouteGroupe $row */
             $data['groups'][] = [
                 'route' => $row->getRefroute()->getName(),
             ];
@@ -128,7 +102,7 @@ class GuardController extends AbstractController
 
         $results = $routeUserRepo->findEnable($user);
         foreach ($results as $row) {
-            /** @var RouteUser $row */
+            /* @var RouteUser $row */
             $data['user'][] = [
                 'route' => $row->getRefroute()->getName(),
             ];
@@ -147,7 +121,7 @@ class GuardController extends AbstractController
         $results = $routeGroupeRepo->findEnable($groupe);
         $data    = [];
         foreach ($results as $row) {
-            /** @var RouteGroupe $row */
+            /* @var RouteGroupe $row */
             $data[] = [
                 'groupe' => $row->getRefgroupe()->getCode(),
                 'route'  => $row->getRefroute()->getName(),
@@ -167,7 +141,7 @@ class GuardController extends AbstractController
         $results = $routeGroupeRepo->findEnable();
         $data    = [];
         foreach ($results as $row) {
-            /** @var RouteGroupe $row */
+            /* @var RouteGroupe $row */
             $data[] = [
                 'groupe' => $row->getRefgroupe()->getCode(),
                 'route'  => $row->getRefroute()->getName(),
@@ -196,17 +170,19 @@ class GuardController extends AbstractController
         $route  = $this->routeRepo->findOneBy(['name' => $route]);
         if (empty($groupe) || empty($route) || !array_key_exists('_token', $post)) {
             $data['message'] = 'Erreur de saisie';
+
             return new JsonResponse($data);
         }
 
         $groupeId  = $groupe->getId();
         $routeId   = $route->getId();
         $csrfToken = new CsrfToken(
-            'guard-' . $groupeId.'-route-'.$routeId,
+            'guard-'.$groupeId.'-route-'.$routeId,
             $post['_token']
         );
         if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
             $data['message'] = 'token incorrect';
+
             return new JsonResponse($data);
         }
 
@@ -226,7 +202,7 @@ class GuardController extends AbstractController
         $routeGroupe->setState($post['state']);
         $routeGroupeRH->handle($old, $routeGroupe);
         $data['ok'] = true;
-        return new JsonResponse($data);
 
+        return new JsonResponse($data);
     }
 }

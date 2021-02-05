@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Singleton;
 
 class BreadcrumbsSingleton
@@ -33,7 +34,7 @@ class BreadcrumbsSingleton
                 }
             }
 
-            $integer++;
+            ++$integer;
         }
 
         $this->data = $newbreadcrumbs;
