@@ -30,6 +30,7 @@ class EditoVoter extends Voter
 
     protected function canEdit(Edito $entity, TokenInterface $token): bool
     {
+        unset($token);
         $state = $entity->getState();
 
         return !(in_array($state, ['publie', 'rejete']));

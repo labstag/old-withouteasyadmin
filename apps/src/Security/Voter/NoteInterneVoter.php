@@ -30,6 +30,7 @@ class NoteInterneVoter extends Voter
 
     protected function canEdit(NoteInterne $entity, TokenInterface $token): bool
     {
+        unset($token);
         $state = $entity->getState();
 
         return !(in_array($state, ['publie', 'rejete']));
