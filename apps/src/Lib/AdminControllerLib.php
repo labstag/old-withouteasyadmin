@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
@@ -311,6 +312,31 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
+    protected function setTrashIcon($methods, $repository, $url, $actions)
+    {
+        $methodTrash = $methods['trash'];
+        $total       = $repository->$methodTrash();
+        if (0 != count($total)) {
+            $this->btnInstance->addBtnTrash(
+                $url['trash']
+            );
+        }
+
+        if (isset($actions['delete'])) {
+            $this->twig->addGlobal(
+                'modalDelete',
+                true
+            );
+        }
+
+        if (isset($actions['workflow'])) {
+            $this->twig->addGlobal(
+                'modalWorkflow',
+                true
+            );
+        }
+    }
+
     public function listOrTrash(
         ServiceEntityRepositoryLib $repository,
         array $methods,
@@ -326,22 +352,7 @@ abstract class AdminControllerLib extends ControllerLib
         if ('trash' == $routeType) {
             $this->listOrTrashRouteTrash($url, $actions, $repository);
         } elseif (isset($url['trash'])) {
-            $this->btnInstance->addBtnTrash(
-                $url['trash']
-            );
-            if (isset($actions['delete'])) {
-                $this->twig->addGlobal(
-                    'modalDelete',
-                    true
-                );
-            }
-
-            if (isset($actions['workflow'])) {
-                $this->twig->addGlobal(
-                    'modalWorkflow',
-                    true
-                );
-            }
+            $this->setTrashIcon($methods, $repository, $url, $actions);
         }
 
         if (isset($url['new']) && 'trash' != $routeType) {
@@ -355,6 +366,10 @@ abstract class AdminControllerLib extends ControllerLib
             $this->request->query->getInt('page', 1),
             10
         );
+
+        if ('trash' == $routeType && 0 == $pagination->count()) {
+            throw new AccessDeniedException();
+        }
 
         return $this->render(
             $html,
@@ -512,6 +527,10 @@ abstract class AdminControllerLib extends ControllerLib
                     'entity' => $this->classEntity($entity),
                 ]
             );
+        }
+
+        if ('preview' == $routeType && is_null($entity->getDeletedAt())) {
+            throw new AccessDeniedException();
         }
 
         return $this->render(
