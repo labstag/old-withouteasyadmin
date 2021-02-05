@@ -2,10 +2,9 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\RouteGroupe;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Groupe;
-use Labstag\Entity\Route;
+use Labstag\Entity\RouteGroupe;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
 /**
@@ -45,7 +44,7 @@ class RouteGroupeRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getOneOrNullResult();
     }
 
-    public function findEnable(Groupe $groupe = null)
+    public function findEnable(?Groupe $groupe = null)
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $query        = $queryBuilder->where(

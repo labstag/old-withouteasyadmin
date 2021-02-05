@@ -1,6 +1,6 @@
 <?php
-namespace Labstag\RequestHandler;
 
+namespace Labstag\RequestHandler;
 
 class PhoneUserRequestHandler extends PhoneRequestHandler
 {

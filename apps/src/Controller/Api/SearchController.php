@@ -2,29 +2,19 @@
 
 namespace Labstag\Controller\Api;
 
+use Labstag\Lib\ApiControllerLib;
 use Labstag\Repository\UserRepository;
-use Labstag\Service\PhoneService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 /**
  * @Route("/api/search")
  */
-class SearchController extends AbstractController
+class SearchController extends ApiControllerLib
 {
-
-    protected PhoneService $phoneService;
-
-    public function __construct(PhoneService $phoneService)
-    {
-        $this->phoneService = $phoneService;
-    }
-
     /**
      * @Route("/user", name="api_search_user")
-     *
-     * @return Response
      */
     public function user(Request $request, UserRepository $repository): Response
     {

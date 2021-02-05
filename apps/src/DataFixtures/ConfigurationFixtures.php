@@ -6,10 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Configuration;
 use Labstag\Lib\FixtureLib;
-use Labstag\Repository\UserRepository;
 use Symfony\Component\Dotenv\Dotenv;
-use Labstag\Service\OauthService;
-use Psr\EventDispatcher\EventDispatcherInterface;
 
 class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterface
 {
@@ -91,40 +88,32 @@ class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterf
             'site_no-reply'   => 'no-reply@labstag.lxc',
             'site_url'        => 'http://www.labstag.lxc',
             'site_title'      => 'labstag',
-            'site_copyright'  => 'Copyright ' . date('Y'),
+            'site_copyright'  => 'Copyright '.date('Y'),
             'oauth'           => [],
             'meta'            => [
-                [
-                    'viewport'    => 'width=device-width, initial-scale=1',
-                    'author'      => 'koromerzhin',
-                    'theme-color' => '#ff0000',
-                    'description' => '',
-                    'keywords'    => '',
-                ],
+                'viewport'    => 'width=device-width, initial-scale=1',
+                'author'      => 'koromerzhin',
+                'theme-color' => '#ff0000',
+                'description' => '',
+                'keywords'    => '',
             ],
             'disclaimer'      => [
-                [
-                    'activate'     => 1,
-                    'message'      => 'Site en construction',
-                    'title'        => 'Site en construction',
-                    'url-redirect' => 'http://www.google.fr',
-                ],
+                'activate'     => 1,
+                'message'      => 'Site en construction',
+                'title'        => 'Site en construction',
+                'url-redirect' => 'http://www.google.fr',
             ],
             'moment'          => [
-                [
-                    'format' => 'MMMM Do YYYY, H:mm:ss',
-                    'lang'   => 'fr',
-                ],
+                'format' => 'MMMM Do YYYY, H:mm:ss',
+                'lang'   => 'fr',
             ],
-            'wysiwyg'         => [
-                ['lang' => 'fr_FR'],
-            ],
+            'wysiwyg'         => ['lang' => 'fr_FR'],
             'robotstxt'       => 'User-agent: *
 Allow: /',
         ];
 
         $dotenv = new Dotenv();
-        $env    = $dotenv->parse(file_get_contents(__DIR__ . '/../../.env'));
+        $env    = $dotenv->parse(file_get_contents(__DIR__.'/../../.env'));
 
         ksort($env);
         $this->setOauth($env, $data);
@@ -133,7 +122,7 @@ Allow: /',
             $configuration = new Configuration();
             $configuration->setName($key);
             $configuration->setValue($value);
-            $this->addReference('configuration_' . $key, $configuration);
+            $this->addReference('configuration_'.$key, $configuration);
             $manager->persist($configuration);
         }
 

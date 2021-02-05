@@ -7,7 +7,6 @@ use Doctrine\ORM\Query;
 
 abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 {
-
     protected function getClassMetadataName(): string
     {
         $methods = get_class_methods($this);
@@ -27,7 +26,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     public function findOneRandom()
     {
         $name          = $this->getClassMetadataName();
-        $dql           = 'SELECT p FROM ' . $name . ' p ORDER BY RAND()';
+        $dql           = 'SELECT p FROM '.$name.' p ORDER BY RAND()';
         $entityManager = $this->getEntityManager();
         $query         = $entityManager->createQuery($dql);
         $query         = $query->setMaxResults(1);
@@ -45,7 +44,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
             $name = $this->getClassMetadata()->getName();
         }
 
-        $dql = 'SELECT a FROM ' . $name . ' a';
+        $dql = 'SELECT a FROM '.$name.' a';
 
         $entityManager = $this->getEntityManager();
         $dql           = $entityManager->createQueryBuilder();
@@ -65,7 +64,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
             $name = $this->getClassMetadata()->getName();
         }
 
-        $dql           = 'SELECT a FROM ' . $name . ' a';
+        $dql           = 'SELECT a FROM '.$name.' a';
         $entityManager = $this->getEntityManager();
 
         return $entityManager->createQuery($dql);

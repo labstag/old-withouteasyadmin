@@ -6,12 +6,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\Configuration;
 use Labstag\Event\ConfigurationEntityEvent;
-use Symfony\Contracts\Cache\CacheInterface;
 use Labstag\Repository\ConfigurationRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class ConfigurationEntitySubscriber implements EventSubscriberInterface
 {
@@ -60,6 +60,10 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
             if (!($configuration instanceof Configuration)) {
                 $configuration = new Configuration();
                 $configuration->setName($key);
+            }
+
+            if (in_array($key, ['meta', 'disclaimer'])) {
+                $value = $value[0];
             }
 
             $configuration->setValue($value);

@@ -3,9 +3,9 @@
 namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
@@ -16,7 +16,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 abstract class Phone
 {
-
     use SoftDeleteableEntity;
 
     /**

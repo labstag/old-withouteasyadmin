@@ -2,8 +2,8 @@
 
 namespace Labstag\Entity;
 
-use Labstag\Repository\AdresseUserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Repository\AdresseUserRepository;
 
 /**
  * @ORM\Entity(repositoryClass=AdresseUserRepository::class)

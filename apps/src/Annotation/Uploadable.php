@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Annotation;
 
 use Doctrine\Common\Annotations\Annotation\Target;
@@ -9,5 +10,4 @@ use Doctrine\Common\Annotations\Annotation\Target;
  */
 class Uploadable
 {
-
 }

@@ -16,17 +16,15 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\{
-    TokenStorage,
-    TokenStorageInterface
-};
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\{
     Exception\CustomUserMessageAuthenticationException
 };
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\{
     AbstractFormLoginAuthenticator
@@ -166,9 +164,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
     {
         unset($userProvider);
         if (!isset($credentials['user'])) {
-            throw new CustomUserMessageAuthenticationException(
-                'Connexion impossible avec ce service.'
-            );
+            throw new CustomUserMessageAuthenticationException('Connexion impossible avec ce service.');
         }
 
         /** @var OauthConnectUserRepository $enm */
@@ -182,16 +178,12 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         $login = $enm->login($identity, $this->oauthCode);
         if (!($login instanceof OauthConnectUser) || '' == $identity) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException(
-                'Username could not be found.'
-            );
+            throw new CustomUserMessageAuthenticationException('Username could not be found.');
         }
 
         $user = $login->getRefuser();
         if (!($user instanceof User) || 'valider' != $user->getState()) {
-            throw new CustomUserMessageAuthenticationException(
-                'Username not activate.'
-            );
+            throw new CustomUserMessageAuthenticationException('Username not activate.');
         }
 
         return $user;

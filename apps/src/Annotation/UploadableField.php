@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Annotation;
 
 use Doctrine\Common\Annotations\Annotation\Target;

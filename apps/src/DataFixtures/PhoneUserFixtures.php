@@ -20,7 +20,7 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
             $indexUser = $faker->numberBetween(1, 3);
             $stateId   = array_rand($statesTab);
             $states    = $statesTab[$stateId];
-            $user      = $this->getReference('user_' . $indexUser);
+            $user      = $this->getReference('user_'.$indexUser);
             $this->addPhone($faker, $user, $states);
         }
     }

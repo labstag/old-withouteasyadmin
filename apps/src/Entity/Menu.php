@@ -4,10 +4,10 @@ namespace Labstag\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Symfony\Component\Validator\Constraints as Assert;
-use Labstag\Repository\MenuRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Repository\MenuRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MenuRepository::class)
@@ -15,7 +15,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Menu
 {
-
     use SoftDeleteableEntity;
 
     /**
@@ -53,6 +52,7 @@ class Menu
      *  referencedColumnName="id",
      *  onDelete="SET NULL"
      * )
+     *
      * @var Menu|null
      */
     protected $parent;
@@ -74,7 +74,7 @@ class Menu
             [
                 $this->getId(),
                 '-',
-                '(' . $this->getClef() . ')',
+                '('.$this->getClef().')',
                 '-',
                 $this->getLibelle(),
             ]

@@ -1,7 +1,7 @@
 <?php
+
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +11,6 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class ApiActionsService
 {
-
     const REPOSITORY     = 'Repository';
     const REQUESTHANDLER = 'RequestHandler';
 
@@ -54,7 +53,6 @@ class ApiActionsService
         }
 
         return $repositories;
-
     }
 
     public function getRepository(string $entity): ?ServiceEntityRepositoryLib
@@ -82,9 +80,10 @@ class ApiActionsService
         $token = $this->request->request->get('_token');
 
         $csrfToken = new CsrfToken(
-            $action . (is_null($entity) ? '' : $entity->getId()),
+            $action.(is_null($entity) ? '' : $entity->getId()),
             $token
         );
+
         return $this->csrfTokenManager->isTokenValid($csrfToken);
     }
 }

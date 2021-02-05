@@ -2,17 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
 use Labstag\Form\Admin\MenuType;
-use Labstag\Repository\MenuRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\MenuRepository;
+use Labstag\RequestHandler\MenuRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\RequestHandler\MenuRequestHandler;
 
 /**
  * @Route("/admin/menu")
@@ -31,7 +28,7 @@ class MenuController extends AdminControllerLib
      */
     public function indexOrTrash(MenuRepository $repository): Response
     {
-        return $this->adminCrudService->listOrTrash(
+        return $this->listOrTrash(
             $repository,
             [
                 'trash' => 'findTrashForAdmin',
@@ -61,7 +58,7 @@ class MenuController extends AdminControllerLib
      */
     public function new(MenuRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->create(
+        return $this->create(
             new Menu(),
             MenuType::class,
             $requestHandler,
@@ -76,7 +73,7 @@ class MenuController extends AdminControllerLib
      */
     public function showOrPreview(Menu $menu): Response
     {
-        return $this->adminCrudService->showOrPreview(
+        return $this->renderShowOrPreview(
             $menu,
             'admin/menu/show.html.twig',
             [
@@ -95,7 +92,7 @@ class MenuController extends AdminControllerLib
      */
     public function edit(Menu $menu, MenuRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->update(
+        return $this->update(
             MenuType::class,
             $menu,
             $requestHandler,

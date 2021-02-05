@@ -21,7 +21,7 @@ class EnqueueMethod
         string $service,
         string $method,
         array $params = [],
-        DateTimeInterface $date = null
+        ?DateTimeInterface $date = null
     ): void
     {
         $stamps = [];

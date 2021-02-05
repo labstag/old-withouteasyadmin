@@ -4,8 +4,8 @@ namespace Labstag\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Labstag\Repository\RouteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Repository\RouteRepository;
 
 /**
  * @ORM\Entity(repositoryClass=RouteRepository::class)

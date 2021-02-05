@@ -6,7 +6,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Labstag\Lib\FixtureLib;
-use Labstag\Repository\UserRepository;
 
 class EditoFixtures extends FixtureLib implements DependentFixtureInterface
 {

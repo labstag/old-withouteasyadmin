@@ -73,7 +73,7 @@ class UserType extends AbstractType
 
             ksort($emails);
 
-            if (count($emails) != 0) {
+            if (0 != count($emails)) {
                 $builder->add(
                     'email',
                     ChoiceType::class,
