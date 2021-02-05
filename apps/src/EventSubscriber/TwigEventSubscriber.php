@@ -21,6 +21,8 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
+    const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
+
     public function __construct(
         RouterInterface $router,
         Environment $twig,
@@ -38,10 +40,24 @@ class TwigEventSubscriber implements EventSubscriberInterface
     {
         $this->setLoginPage($event);
         $this->setAdminPages($event);
-        $this->twig->addGlobal(
-            'config',
-            $this->dataService->getConfig()
-        );
+        $this->setConfig($event);
+    }
+
+    protected function setConfig(ControllerEvent $event): void
+    {
+        $controller = $event->getRequest()->attributes->get('_controller');
+        $config     = $this->dataService->getConfig();
+        $matches    = [];
+        preg_match(self::ADMIN_CONTROLLER, $controller, $matches);
+        if (!array_key_exists('meta', $config)) {
+            $config['meta'] = [];
+        }
+
+        if (0 != count($matches)) {
+            $config['meta']['robots'] = 'noindex';
+        }
+
+        $this->twig->addGlobal('config', $config);
     }
 
     protected function setAdminPages(ControllerEvent $event): void

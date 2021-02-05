@@ -46,7 +46,7 @@ class DisclaimerSubscriber implements EventSubscriberInterface
         $controller = $request->attributes->get('_controller');
         $key        = 'disclaimer';
         $session    = $request->getSession();
-        if (!isset($config[$key]) || !isset($config[$key][0])) {
+        if (!isset($config[$key]) || !isset($config[$key])) {
             return false;
         }
 
@@ -66,7 +66,7 @@ class DisclaimerSubscriber implements EventSubscriberInterface
             return false;
         }
 
-        $disclaimer = $config[$key][0];
+        $disclaimer = $config[$key];
         $activate   = (bool) $disclaimer['activate'];
 
         return 1 !== $session->get($key, 0) && true === $activate;

@@ -91,31 +91,23 @@ class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterf
             'site_copyright'  => 'Copyright '.date('Y'),
             'oauth'           => [],
             'meta'            => [
-                [
-                    'viewport'    => 'width=device-width, initial-scale=1',
-                    'author'      => 'koromerzhin',
-                    'theme-color' => '#ff0000',
-                    'description' => '',
-                    'keywords'    => '',
-                ],
+                'viewport'    => 'width=device-width, initial-scale=1',
+                'author'      => 'koromerzhin',
+                'theme-color' => '#ff0000',
+                'description' => '',
+                'keywords'    => '',
             ],
             'disclaimer'      => [
-                [
-                    'activate'     => 1,
-                    'message'      => 'Site en construction',
-                    'title'        => 'Site en construction',
-                    'url-redirect' => 'http://www.google.fr',
-                ],
+                'activate'     => 1,
+                'message'      => 'Site en construction',
+                'title'        => 'Site en construction',
+                'url-redirect' => 'http://www.google.fr',
             ],
             'moment'          => [
-                [
-                    'format' => 'MMMM Do YYYY, H:mm:ss',
-                    'lang'   => 'fr',
-                ],
+                'format' => 'MMMM Do YYYY, H:mm:ss',
+                'lang'   => 'fr',
             ],
-            'wysiwyg'         => [
-                ['lang' => 'fr_FR'],
-            ],
+            'wysiwyg'         => ['lang' => 'fr_FR'],
             'robotstxt'       => 'User-agent: *
 Allow: /',
         ];
