@@ -62,6 +62,10 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
                 $configuration->setName($key);
             }
 
+            if (in_array($key, ['meta', 'disclaimer'])) {
+                $value = $value[0];
+            }
+
             $configuration->setValue($value);
             $this->entityManager->persist($configuration);
         }

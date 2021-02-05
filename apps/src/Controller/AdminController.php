@@ -39,10 +39,16 @@ class AdminController extends AdminControllerLib
         DataService $dataService
     ): Response
     {
-        $this->headerTitle = 'Paramètres';
-        $this->urlHome     = 'admin_param';
-        $config            = $dataService->getConfig();
-        $form              = $this->createForm(ParamType::class, $config);
+        $this->headerTitle    = 'Paramètres';
+        $this->urlHome        = 'admin_param';
+        $config               = $dataService->getConfig();
+        $config['disclaimer'] = [
+            $config['disclaimer'],
+        ];
+        $config['meta']       = [
+            $config['meta'],
+        ];
+        $form                 = $this->createForm(ParamType::class, $config);
         $this->btnInstance->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
