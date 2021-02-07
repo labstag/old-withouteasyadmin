@@ -315,7 +315,9 @@ abstract class AdminControllerLib extends ControllerLib
     protected function setTrashIcon($methods, $repository, $url, $actions)
     {
         $methodTrash = $methods['trash'];
+        $this->entityManager->getFilters()->disable('softdeleteable');
         $total       = $repository->$methodTrash();
+        $this->entityManager->getFilters()->enable('softdeleteable');
         if (0 != count($total)) {
             $this->btnInstance->addBtnTrash(
                 $url['trash']
