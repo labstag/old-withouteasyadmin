@@ -51,9 +51,15 @@ class Groupe
      */
     protected $routes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe")
+     */
+    private $workflowGroupes;
+
     public function __construct()
     {
-        $this->routes = new ArrayCollection();
+        $this->routes          = new ArrayCollection();
+        $this->workflowGroupes = new ArrayCollection();
     }
 
     public function __toString()
@@ -142,6 +148,36 @@ class Groupe
             // set the owning side to null (unless already changed)
             if ($route->getRefgroupe() === $this) {
                 $route->setRefgroupe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WorkflowGroupe[]
+     */
+    public function getWorkflowGroupes(): Collection
+    {
+        return $this->workflowGroupes;
+    }
+
+    public function addWorkflowGroupe(WorkflowGroupe $workflowGroupe): self
+    {
+        if (!$this->workflowGroupes->contains($workflowGroupe)) {
+            $this->workflowGroupes[] = $workflowGroupe;
+            $workflowGroupe->setRefgroupe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWorkflowGroupe(WorkflowGroupe $workflowGroupe): self
+    {
+        if ($this->workflowGroupes->removeElement($workflowGroupe)) {
+            // set the owning side to null (unless already changed)
+            if ($workflowGroupe->getRefgroupe() === $this) {
+                $workflowGroupe->setRefgroupe(null);
             }
         }
 

@@ -36,8 +36,7 @@ class LabstagUserCommand extends Command
         GroupeRepository $groupeRepository,
         Registry $workflows,
         EntityManagerInterface $entityManager,
-        UserRequestHandler $userRequestHandler,
-        ?string $name = null
+        UserRequestHandler $userRequestHandler
     )
     {
         $this->groupeRepository   = $groupeRepository;
@@ -45,7 +44,7 @@ class LabstagUserCommand extends Command
         $this->workflows          = $workflows;
         $this->userRequestHandler = $userRequestHandler;
         $this->userRepository     = $userRepository;
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure()

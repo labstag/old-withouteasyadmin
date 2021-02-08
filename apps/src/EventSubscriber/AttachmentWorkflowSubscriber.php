@@ -5,7 +5,7 @@ namespace Labstag\EventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class AttachmentSubscriber implements EventSubscriberInterface
+class AttachmentWorkflowSubscriber implements EventSubscriberInterface
 {
     public function onTransition(Event $event)
     {
