@@ -3,9 +3,13 @@
 namespace Labstag\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Annotation\Trashable;
 use Labstag\Entity\User;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
+/**
+ * @Trashable(url="admin_user_trash")
+ */
 class UserRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $registry)

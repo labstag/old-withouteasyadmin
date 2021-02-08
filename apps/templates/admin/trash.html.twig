@@ -1,0 +1,33 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    <table is="table-datatable">
+        <thead>
+            <tr>
+                <th>Entité</th>
+                <th>Count</th>
+                <th></th>
+                <th><i title="Actions"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for data in trash %}
+            <tr>
+                <td>
+                    {{ data.entity }}
+                </td>
+                <td>
+                    {{ data.trash }}
+                </td>
+                <td>
+                    {{ data.properties.url }}
+                </td>
+                <td>
+                    {{ data|json_encode }}
+                </td>
+            </tr>
+        {% else %}
+            no records found
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

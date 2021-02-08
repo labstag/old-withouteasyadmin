@@ -74,8 +74,6 @@ class AdminBtnSingleton
         foreach ($routes as $route) {
             $state = $this->isRouteEnable($route);
             if (!$state) {
-                dump($route);
-
                 return false;
             }
         }

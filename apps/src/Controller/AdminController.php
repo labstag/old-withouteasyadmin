@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller;
 
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ParamType;
@@ -9,6 +10,7 @@ use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
+use Labstag\Service\TrashService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +29,34 @@ class AdminController extends AdminControllerLib
     {
         return $this->render(
             'admin/index.html.twig'
+        );
+    }
+
+    /**
+     * @Route("/trash", name="admin_trash")
+     * @IgnoreSoftDelete
+     */
+    public function trash(TrashService $trashService): Response
+    {
+        $this->headerTitle = 'Trash';
+        $this->urlHome     = 'admin_trash';
+        $all               = $trashService->all();
+        $doctrine          = $this->getDoctrine();
+        foreach ($all as $key => &$data) {
+            $repository = $doctrine->getRepository($data['entity']);
+            $total      = count($repository->findTrashForAdmin());
+            if (0 == $total) {
+                unset($all[$key]);
+                continue;
+            }
+
+            $data['trash'] = $total;
+            $data['token'] = $this->csrfTokenManager->getToken('empty')->getValue();
+        }
+
+        return $this->render(
+            'admin/trash.html.twig',
+            ['trash' => $all]
         );
     }
 
