@@ -66,6 +66,7 @@ class LabstagExtension extends AbstractExtension
             new TwigFilter('guard_route', [$this, 'guardRoute']),
             new TwigFilter('class_entity', [$this, 'classEntity']),
             new TwigFilter('attachment', [$this, 'getAttachment']),
+            new TwigFilter('phone_valid', [$this, 'isPhoneValid']),
             new TwigFilter('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
             new TwigFilter('guard_route_enable_user', [$this, 'guardRouteEnableUser']),
             new TwigFilter('guard_user_access', [$this, 'guardAccessUserRoutes']),
@@ -83,6 +84,7 @@ class LabstagExtension extends AbstractExtension
             new TwigFunction('guard_route', [$this, 'guardRoute']),
             new TwigFunction('class_entity', [$this, 'classEntity']),
             new TwigFunction('attachment', [$this, 'getAttachment']),
+            new TwigFunction('phone_valid', [$this, 'isPhoneValid']),
             new TwigFunction('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
             new TwigFunction('guard_route_enable_user', [$this, 'guardRouteEnableUser']),
             new TwigFunction('guard_user_access', [$this, 'guardAccessUserRoutes']),
@@ -91,6 +93,13 @@ class LabstagExtension extends AbstractExtension
             new TwigFunction('verifPhone', [$this, 'verifPhone']),
             new TwigFunction('formPrototype', [$this, 'formPrototype']),
         ];
+    }
+
+    public function isPhoneValid(string $number, string $country): bool
+    {
+        $verif = $this->phoneService->verif($number, $country);
+
+        return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
     }
 
     public function getAttachment($data): ?Attachment
