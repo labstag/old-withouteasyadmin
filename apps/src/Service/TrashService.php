@@ -6,25 +6,50 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Labstag\Annotation\Trashable;
 use ReflectionClass;
 use Symfony\Component\Finder\Finder;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class TrashService
 {
+
+    protected ManagerRegistry $manager;
+
+    protected CsrfTokenManagerInterface $csrfTokenManager;
+
+    public function __construct(
+        ManagerRegistry $manager,
+        CsrfTokenManagerInterface $csrfTokenManager
+    )
+    {
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->manager          = $manager;
+    }
+
     public function all()
     {
         $finder = new Finder();
         $finder->files()->in(__DIR__.'/../Repository');
         $data = [];
         foreach ($finder as $file) {
-            $repository  = 'Labstag\\Repository\\'.$file->getFilenameWithoutExtension();
-            $isTrashable = $this->isTrashable($repository);
+            $repositoryFile = 'Labstag\\Repository\\'.$file->getFilenameWithoutExtension();
+            $isTrashable    = $this->isTrashable($repositoryFile);
             if ($isTrashable) {
+                $entity     = str_replace(
+                    'Repository',
+                    '',
+                    'Labstag\\Entity\\'.$file->getFilenameWithoutExtension()
+                );
+                $repository = $this->manager->getRepository($entity);
+                $trash      = $repository->findTrashForAdmin();
+                if (count($trash) == 0) {
+                    continue;
+                }
+
                 $data[] = [
-                    'properties' => $this->getProperties($repository),
-                    'entity'     => str_replace(
-                        'Repository',
-                        '',
-                        'Labstag\\Entity\\'.$file->getFilenameWithoutExtension()
-                    ),
+                    'properties' => $this->getProperties($repositoryFile),
+                    'entity'     => $entity,
+                    'total'      => count($trash),
+                    'token'      => $this->csrfTokenManager->getToken('empty')->getValue(),
                 ];
             }
         }

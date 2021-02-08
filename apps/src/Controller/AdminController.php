@@ -41,18 +41,6 @@ class AdminController extends AdminControllerLib
         $this->headerTitle = 'Trash';
         $this->urlHome     = 'admin_trash';
         $all               = $trashService->all();
-        $doctrine          = $this->getDoctrine();
-        foreach ($all as $key => &$data) {
-            $repository = $doctrine->getRepository($data['entity']);
-            $total      = count($repository->findTrashForAdmin());
-            if (0 == $total) {
-                unset($all[$key]);
-                continue;
-            }
-
-            $data['trash'] = $total;
-            $data['token'] = $this->csrfTokenManager->getToken('empty')->getValue();
-        }
 
         return $this->render(
             'admin/trash.html.twig',
