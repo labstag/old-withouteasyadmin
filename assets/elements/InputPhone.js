@@ -20,7 +20,6 @@ export class InputPhone extends HTMLInputElement {
     this.url = this.row.dataset.url
     this.timeout = null
     this.addEventListener('keydown', this.onKeydown)
-    this.onKeydown()
   }
 
   fetchResponse (response) {
