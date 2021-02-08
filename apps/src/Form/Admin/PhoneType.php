@@ -28,14 +28,18 @@ abstract class PhoneType extends AbstractType
     ): void
     {
         $optionsInput = [];
-        /** @var PhoneUser $phoneuser */
-        $phoneUser = $options['data'];
-        $country   = $phoneUser->getCountry();
-        $number    = $phoneUser->getNumero();
-        $verif     = $this->phoneService->verif($number, $country);
-        $verif     = array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
+        if (array_key_exists('data', $options)) {
+            /* @var PhoneUser $phoneuser */
+            dd($options);
+            $phoneUser = $options['data'];
+            $country   = $phoneUser->getCountry();
+            $number    = $phoneUser->getNumero();
+            $verif     = $this->phoneService->verif($number, $country);
+            $verif     = array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
 
-        $optionsInput['attr']['class'] = $verif ? 'is-valid' : 'is-invalid';
+            $optionsInput['attr']['class'] = $verif ? 'is-valid' : 'is-invalid';
+        }
+
         $builder->add(
             'numero',
             TelType::class,

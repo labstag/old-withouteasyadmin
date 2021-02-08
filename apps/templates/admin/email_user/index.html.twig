@@ -8,6 +8,7 @@
                 <th>Principal</th>
                 <th>User</th>
                 <th>State</th>
+                <th>Workflow</th>
                 <th><i title="Actions"></i></th>
             </tr>
         </thead>
@@ -23,12 +24,15 @@
                     {% endfor %}
                 </td>
                 <td>
+                    {{ macro_admin.workflow(entity, actions) }}
+                </td>
+                <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5" class="text-center">no records found</td>
+                <td colspan="6" class="text-center">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
