@@ -89,9 +89,9 @@ endif
 
 env: .env ## Scripts Installation environnement
 ifeq ($(COMMAND_ARGS),dev)
-	@sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
+	@sed -i 's/APP_ENV=prod/APP_ENV=dev/g' .env
 else ifeq ($(COMMAND_ARGS),prod)
-	@sed -i 's/APP_ENV=dev/APP_ENV=prod/g' apps/.env
+	@sed -i 's/APP_ENV=dev/APP_ENV=prod/g' .env
 	@rm -rf vendor
 	@make composer prod -i
 else
