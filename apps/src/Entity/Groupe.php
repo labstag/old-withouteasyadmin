@@ -50,7 +50,6 @@ class Groupe
      * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe")
      */
     protected $routes;
-
     /**
      * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe")
      */
