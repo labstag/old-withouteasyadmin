@@ -2,17 +2,23 @@
 {% import "modal.html.twig" as modal %}
 {% extends 'admin.html.twig' %}
 {% block body %}
-    <table is="table-datatable">
+    <table
+        is="table-datatable"
+        data-action="Actions"
+        data-multiple
+        data-multipleall="Tout sélectionner"
+        data-multipleelement="Selection"
+    >
         <thead>
             <tr>
                 <th>Entité</th>
                 <th>Count</th>
-                <th><i title="Actions"></i></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
         {% for data in trash %}
-            <tr>
+            <tr data-id="{{ data.name }}">
                 <td>
                     {{ data.entity }}
                 </td>

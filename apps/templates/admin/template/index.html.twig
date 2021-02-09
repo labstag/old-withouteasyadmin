@@ -1,17 +1,23 @@
 {% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/template/layout.html.twig' %}
 {% block body %}
-    <table is="table-datatable">
+    <table
+        is="table-datatable"
+        data-action="Actions"
+        data-multiple
+        data-multipleall="Tout sélectionner"
+        data-multipleelement="Selection"
+    >
         <thead>
             <tr>
                 <th>Nom</th>
                 <th>Code</th>
-                <th><i title="Actions"></i></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
         {% for entity in pagination %}
-            <tr>
+            <tr data-id="{{ entity.id }}">
                 <td>{{ entity.name }}</td>
                 <td>{{ entity.code }}</td>
                 <td>
