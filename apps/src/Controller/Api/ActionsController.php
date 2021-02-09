@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ActionsController extends ApiControllerLib
 {
     /**
-     * @Route("/empties, name="api_action_empties", methods={"DELETE"})
+     * @Route("/empties", name="api_action_empties", methods={"DELETE"})
      * @IgnoreSoftDelete
      *
      * @return Response
