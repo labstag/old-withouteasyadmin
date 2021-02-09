@@ -81,7 +81,7 @@ class AdminBtnSingleton
         return true;
     }
 
-    protected function add(
+    public function add(
         string $icon,
         string $text,
         array $attr = []

@@ -15,6 +15,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class ActionsController extends ApiControllerLib
 {
     /**
+     * @Route("/empties, name="api_action_empties", methods={"DELETE"})
+     * @IgnoreSoftDelete
+     *
+     * @return Response
+     */
+    public function empties(string $entity): JsonResponse
+    {
+        return new JsonResponse([]);
+    }
+    /**
+     * @Route("/emptyall", name="api_action_emptyall", methods={"DELETE"})
+     * @IgnoreSoftDelete
+     *
+     * @return Response
+     */
+    public function emptyall(string $entity): JsonResponse
+    {
+        return new JsonResponse([]);
+    }
+    /**
      * @Route("/empty/{entity}", name="api_action_empty", methods={"DELETE"})
      * @IgnoreSoftDelete
      *

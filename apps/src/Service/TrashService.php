@@ -3,10 +3,10 @@
 namespace Labstag\Service;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use ReflectionClass;
 use Symfony\Component\Finder\Finder;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class TrashService
@@ -41,11 +41,18 @@ class TrashService
                 );
                 $repository = $this->manager->getRepository($entity);
                 $trash      = $repository->findTrashForAdmin();
-                if (count($trash) == 0) {
+                if (0 == count($trash)) {
                     continue;
                 }
 
                 $data[] = [
+                    'name'       => strtolower(
+                        str_replace(
+                            'Repository',
+                            '',
+                            $file->getFilenameWithoutExtension()
+                        )
+                    ),
                     'properties' => $this->getProperties($repositoryFile),
                     'entity'     => $entity,
                     'total'      => count($trash),

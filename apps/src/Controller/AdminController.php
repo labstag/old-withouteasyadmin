@@ -41,6 +41,53 @@ class AdminController extends AdminControllerLib
         $this->headerTitle = 'Trash';
         $this->urlHome     = 'admin_trash';
         $all               = $trashService->all();
+        if (0 == count($all)) {
+            $this->addFlash(
+                'danger',
+                'La corbeille est vide'
+            );
+
+            return $this->redirect($this->generateUrl('admin'));
+        }
+
+        $this->twig->addGlobal(
+            'modalEmpty',
+            true
+        );
+        $this->twig->addGlobal(
+            'modalEmptyAll',
+            true
+        );
+        $this->twig->addGlobal(
+            'modalEmpties',
+            true
+        );
+        $code  = 'empty';
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        $this->btnInstance->add(
+            'btn-admin-header-emptyall',
+            'Tout vider',
+            [
+                'is'            => 'link-btnadminemptyall',
+                'data-toggle'   => 'modal',
+                'data-target'   => '#emptyallModal',
+                'data-token'    => $token,
+                'data-redirect' => $this->router->generate('admin_trash'),
+                'data-url'      => $this->router->generate('api_action_emptyall')
+            ]
+        );
+        $this->btnInstance->add(
+            'btn-admin-header-empties',
+            'Vider la sélection',
+            [
+                'is'            => 'link-btnadminempties',
+                'data-toggle'   => 'modal',
+                'data-target'   => '#emptiesModal',
+                'data-token'    => $token,
+                'data-redirect' => $this->router->generate('admin_trash'),
+                'data-url'      => $this->router->generate('api_action_empties')
+            ]
+        );
 
         return $this->render(
             'admin/trash.html.twig',

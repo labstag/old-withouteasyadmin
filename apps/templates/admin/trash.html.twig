@@ -5,7 +5,6 @@
             <tr>
                 <th>Entité</th>
                 <th>Count</th>
-                <th></th>
                 <th><i title="Actions"></i></th>
             </tr>
         </thead>
@@ -19,10 +18,14 @@
                     {{ data.total }}
                 </td>
                 <td>
-                    {{ data.properties.url }}
-                </td>
-                <td>
-                    {{ data|json_encode }}
+                    <btn-trash
+                        href="{{ data.properties.url }}"
+                        title="Aller sur cette corbeille"
+                    ></btn-trash>
+                    <btn-destroy
+                        redirect="{{ path(app.request.attributes.get('_route')) }}"
+                        href="{{ path('api_action_empty', {'entity': data.name}) }}"
+                    ></btn-destroy>
                 </td>
             </tr>
         {% else %}
