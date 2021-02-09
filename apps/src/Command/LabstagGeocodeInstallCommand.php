@@ -17,13 +17,10 @@ class LabstagGeocodeInstallCommand extends Command
 
     protected GeocodeService $service;
 
-    public function __construct(
-        GeocodeService $service,
-        ?string $name = null
-    )
+    public function __construct(GeocodeService $service)
     {
         $this->service = $service;
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure()
