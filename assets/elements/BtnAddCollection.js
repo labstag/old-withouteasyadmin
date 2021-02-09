@@ -16,6 +16,8 @@ export class BtnAddCollection extends HTMLElement {
     const counter = fieldset.querySelectorAll('.CollectionRow').length
     const html = fieldset.dataset.prototype.replace(/__name__/g, counter)
     const FieldRow = fieldset.querySelector('.FieldRow')
-    FieldRow.innerHTML += html
+    if (FieldRow !== null) {
+      FieldRow.innerHTML += html
+    }
   }
 }

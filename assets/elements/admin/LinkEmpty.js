@@ -12,6 +12,11 @@ export class LinkEmpty extends HTMLElement {
     this.append(iElement)
     this.append(spanElement)
     this.addEventListener('click', this.onClick)
+    const btnConfirm = document.querySelector('confirm-empty')
+    if (btnConfirm === null) {
+      return
+    }
+    this.remove()
   }
 
   onClick (element) {
@@ -19,7 +24,10 @@ export class LinkEmpty extends HTMLElement {
     const url = element.currentTarget.dataset.url
     const token = element.currentTarget.dataset.token
     const redirect = element.currentTarget.dataset.redirect
-    const btnConfirm = document.querySelector('.confirm-empty')
+    const btnConfirm = document.querySelector('confirm-empty')
+    if (btnConfirm === null) {
+      return
+    }
     btnConfirm.dataset.url = url
     btnConfirm.dataset.token = token
     btnConfirm.dataset.redirect = redirect

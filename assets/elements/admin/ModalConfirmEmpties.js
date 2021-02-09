@@ -1,4 +1,4 @@
-export class ModalConfirmEmpties extends HTMLButtonElement {
+export class ModalConfirmEmpties extends HTMLElement {
   constructor () {
     super()
     this.classList.add('confirm-empties')

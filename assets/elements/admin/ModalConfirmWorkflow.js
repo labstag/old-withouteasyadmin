@@ -1,4 +1,4 @@
-export class ModalConfirmWorkflow extends HTMLButtonElement {
+export class ModalConfirmWorkflow extends HTMLElement {
   constructor () {
     super()
     this.classList.add('confirm-workflow')

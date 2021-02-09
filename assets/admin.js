@@ -4,13 +4,11 @@ function clickFormSave (event) {
   event.preventDefault()
   const formId = event.currentTarget.dataset.form
   const formElement = document.querySelector("form[name='" + formId + "']")
-  if (formElement !== undefined) {
+  if (formElement !== null) {
     formElement.submit()
   }
 }
-const saveForm = document.querySelectorAll('#SaveForm')
-if (saveForm.length) {
-  saveForm.forEach((element) => {
-    element.addEventListener('click', clickFormSave)
-  })
+const saveForm = document.querySelector('#SaveForm')
+if (saveForm !== null) {
+  saveForm.addEventListener('click', clickFormSave)
 }
