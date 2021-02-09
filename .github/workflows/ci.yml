@@ -73,8 +73,8 @@ jobs:
         run: make linter twig
       - name: Linter yaml
         run: make linter yaml
-      # - name: linter phpstan
-      #   run: make linter phpstan
+      - name: linter phpstan
+        run: make linter phpstan
       - name: 'Composer install'
         run: make composer dev
       - name: 'BDD MIGRATE'
