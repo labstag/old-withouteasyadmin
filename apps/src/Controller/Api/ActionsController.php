@@ -24,6 +24,7 @@ class ActionsController extends ApiControllerLib
     {
         return new JsonResponse([]);
     }
+
     /**
      * @Route("/emptyall", name="api_action_emptyall", methods={"DELETE"})
      * @IgnoreSoftDelete
@@ -34,6 +35,7 @@ class ActionsController extends ApiControllerLib
     {
         return new JsonResponse([]);
     }
+
     /**
      * @Route("/empty/{entity}", name="api_action_empty", methods={"DELETE"})
      * @IgnoreSoftDelete

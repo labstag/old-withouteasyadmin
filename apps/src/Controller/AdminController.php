@@ -73,7 +73,7 @@ class AdminController extends AdminControllerLib
                 'data-target'   => '#emptyallModal',
                 'data-token'    => $token,
                 'data-redirect' => $this->router->generate('admin_trash'),
-                'data-url'      => $this->router->generate('api_action_emptyall')
+                'data-url'      => $this->router->generate('api_action_emptyall'),
             ]
         );
         $this->btnInstance->add(
@@ -85,7 +85,7 @@ class AdminController extends AdminControllerLib
                 'data-target'   => '#emptiesModal',
                 'data-token'    => $token,
                 'data-redirect' => $this->router->generate('admin_trash'),
-                'data-url'      => $this->router->generate('api_action_empties')
+                'data-url'      => $this->router->generate('api_action_empties'),
             ]
         );
 
