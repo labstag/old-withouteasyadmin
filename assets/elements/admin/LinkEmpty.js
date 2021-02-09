@@ -13,7 +13,7 @@ export class LinkEmpty extends HTMLElement {
     this.append(spanElement)
     this.addEventListener('click', this.onClick)
     const btnConfirm = document.querySelector('confirm-empty')
-    if (btnConfirm === null) {
+    if (btnConfirm !== null) {
       return
     }
     this.remove()
