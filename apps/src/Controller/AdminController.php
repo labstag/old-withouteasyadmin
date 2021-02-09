@@ -102,8 +102,7 @@ class AdminController extends AdminControllerLib
         Request $request,
         EventDispatcherInterface $dispatcher,
         DataService $dataService
-    ): Response
-    {
+    ): Response {
         $this->headerTitle    = 'Paramètres';
         $this->urlHome        = 'admin_param';
         $config               = $dataService->getConfig();
