@@ -85,6 +85,64 @@
 		</div>
 	</div>
 {% endmacro %}
+{% macro emptyall() %}
+	<div id="emptyallModal" tabindex="-1" aria-labelledby="emptyallModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="emptyallModalLabel">
+                        Supprimer ?
+                    </h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Êtes-vous sûr de vouloir vider la corbeille ?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="BtnCancel" data-dismiss="modal">
+                        <i></i>
+                        <span>Annuler</span>
+                    </button>
+					<button type="button" is="confirm-emptyall">
+                        <i></i>
+                        <span>Vider</span>
+                    </button>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endmacro %}
+{% macro empties() %}
+	<div id="emptiesModal" tabindex="-1" aria-labelledby="emptiesModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="emptiesModalLabel">
+                        Supprimer ?
+                    </h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Êtes-vous sûr de vouloir vider la corbeille ?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="BtnCancel" data-dismiss="modal">
+                        <i></i>
+                        <span>Annuler</span>
+                    </button>
+					<button type="button" is="confirm-empties">
+                        <i></i>
+                        <span>Vider</span>
+                    </button>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endmacro %}
 {% macro empty() %}
 	<div id="emptyModal" tabindex="-1" aria-labelledby="emptyModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

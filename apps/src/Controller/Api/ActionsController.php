@@ -20,7 +20,7 @@ class ActionsController extends ApiControllerLib
      *
      * @return Response
      */
-    public function empties(string $entity): JsonResponse
+    public function empties(): JsonResponse
     {
         return new JsonResponse([]);
     }
@@ -30,7 +30,7 @@ class ActionsController extends ApiControllerLib
      *
      * @return Response
      */
-    public function emptyall(string $entity): JsonResponse
+    public function emptyall(): JsonResponse
     {
         return new JsonResponse([]);
     }

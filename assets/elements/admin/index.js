@@ -5,6 +5,8 @@ import { LinkRestore } from './LinkRestore'
 import { LinkDelete } from './LinkDelete'
 import { LinkDestroy } from './LinkDestroy'
 import { LinkBtnAdminEmpty } from './LinkBtnAdminEmpty'
+import { LinkBtnAdminEmpties } from './LinkBtnAdminEmpties'
+import { LinkBtnAdminEmptyAll } from './LinkBtnAdminEmptyAll'
 import { LinkBtnAdminRestore } from './LinkBtnAdminRestore'
 import { LinkBtnAdminDestroy } from './LinkBtnAdminDestroy'
 import { LinkBtnAdmin } from './LinkBtnAdmin'
@@ -15,6 +17,8 @@ import { ModalConfirmDestroy } from './ModalConfirmDestroy'
 import { ModalConfirmRestore } from './ModalConfirmRestore'
 import { ModalConfirmWorkflow } from './ModalConfirmWorkflow'
 import { ModalConfirmEmpty } from './ModalConfirmEmpty'
+import { ModalConfirmEmptyAll } from './ModalConfirmEmptyAll'
+import { ModalConfirmEmpties } from './ModalConfirmEmpties'
 import { WorkflowAction } from './WorkflowAction'
 import { GuardGroups } from './GuardGroups'
 import { GuardUsers } from './GuardUsers'
@@ -22,6 +26,8 @@ import { GuardGroup } from './GuardGroup'
 import { GuardUser } from './GuardUser'
 import { AttachmentImg } from './AttachmentImg'
 import { AttachmentDelete } from './AttachmentDelete'
+import { LinkTrash } from './LinkTrash'
+import { LinkEmpty } from './LinkEmpty'
 
 customElements.define('workflow-action', WorkflowAction)
 
@@ -31,8 +37,13 @@ customElements.define('link-edit', LinkEdit)
 customElements.define('link-delete', LinkDelete)
 customElements.define('link-restore', LinkRestore)
 customElements.define('link-destroy', LinkDestroy)
+customElements.define('link-trash', LinkTrash)
 customElements.define('link-btnadmin', LinkBtnAdmin)
+
+customElements.define('link-empty', LinkEmpty)
 customElements.define('link-btnadminempty', LinkBtnAdminEmpty)
+customElements.define('link-btnadminempties', LinkBtnAdminEmpties)
+customElements.define('link-btnadminemptyall', LinkBtnAdminEmptyAll)
 customElements.define('link-btnadminrestore', LinkBtnAdminRestore)
 customElements.define('link-btnadmindestroy', LinkBtnAdminDestroy)
 customElements.define('link-btnadmindelete', LinkBtnAdminDelete)
@@ -48,6 +59,8 @@ customElements.define('confirm-deleteattachment', ModalConfirmDeleteAttachment, 
 customElements.define('confirm-destroy', ModalConfirmDestroy, { extends: 'button' })
 customElements.define('confirm-restore', ModalConfirmRestore, { extends: 'button' })
 customElements.define('confirm-empty', ModalConfirmEmpty, { extends: 'button' })
+customElements.define('confirm-emptyall', ModalConfirmEmptyAll, { extends: 'button' })
+customElements.define('confirm-empties', ModalConfirmEmpties, { extends: 'button' })
 customElements.define('confirm-workflow', ModalConfirmWorkflow, { extends: 'button' })
 
 customElements.define('attachment-img', AttachmentImg)

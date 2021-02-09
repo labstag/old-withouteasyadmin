@@ -134,6 +134,8 @@ legend {
 #deleteAttachmentModal,
 #destroyModal,
 #emptyModal,
+#emptiesModal,
+#emptyallModal,
 #restoreModal,
 #workflowModal {
   @extend .modal;
@@ -156,6 +158,8 @@ legend {
   .confirm-delete,
   .confirm-destroy,
   .confirm-empty,
+  .confirm-empties,
+  .confirm-emptyall,
   .confirm-deleteattachment {
     @extend .btn;
     @extend .btn-outline-danger;

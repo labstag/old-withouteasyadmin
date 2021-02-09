@@ -35,7 +35,7 @@ a {
   @extend .justify-content-center;
 }
 
-.ListBtnAdmin {
+.list-btn-admin {
   @extend .btn-group;
   @extend .btn-group-lg;
 
@@ -69,6 +69,16 @@ a {
 }
 
 .btn-admin-header-empty {
+  @extend .fas;
+  @extend .fa-trash;
+}
+
+.btn-admin-header-emptyall {
+  @extend .fas;
+  @extend .fa-trash;
+}
+
+.btn-admin-header-empties {
   @extend .fas;
   @extend .fa-trash;
 }
@@ -137,6 +147,21 @@ a {
   }
 }
 
+.link-trash {
+  @extend .btn;
+  @extend .btn-outline-success;
+  @extend .btn-sm;
+
+  i {
+    @extend .fas;
+    @extend .fa-trash;
+  }
+
+  span {
+    display: none;
+  }
+}
+
 .link-show {
   @extend .btn;
   @extend .btn-outline-primary;
@@ -160,6 +185,21 @@ a {
   i {
     @extend .fas;
     @extend .fa-edit;
+  }
+
+  span {
+    display: none;
+  }
+}
+
+.link-empty {
+  @extend .btn;
+  @extend .btn-outline-danger;
+  @extend .btn-sm;
+
+  i {
+    @extend .fas;
+    @extend .fa-trash-restore;
   }
 
   span {

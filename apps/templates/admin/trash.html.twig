@@ -1,3 +1,5 @@
+{% import "modal.html.twig" as modal %}
+{% import "modal.html.twig" as modal %}
 {% extends 'admin.html.twig' %}
 {% block body %}
     <table is="table-datatable">
@@ -18,14 +20,16 @@
                     {{ data.total }}
                 </td>
                 <td>
-                    <btn-trash
-                        href="{{ data.properties.url }}"
+                    <link-trash
+                        href="{{ path(data.properties.url) }}"
                         title="Aller sur cette corbeille"
-                    ></btn-trash>
-                    <btn-destroy
-                        redirect="{{ path(app.request.attributes.get('_route')) }}"
-                        href="{{ path('api_action_empty', {'entity': data.name}) }}"
-                    ></btn-destroy>
+                    ></link-trash>
+                    <link-empty
+                        data-redirect="{{ path(app.request.attributes.get('_route')) }}"
+                        data-url="{{ path('api_action_empty', {'entity': data.name}) }}"
+                        data-token="{{ data.token }}"
+                        title="Vider"
+                    ></link-empty>
                 </td>
             </tr>
         {% else %}
@@ -33,4 +37,9 @@
         {% endfor %}
         </tbody>
     </table>
+{% endblock %}
+{% block modal %}
+    {{ parent() }}
+    {{ modal.empties() }}
+    {{ modal.emptyall() }}
 {% endblock %}

@@ -16,6 +16,7 @@ import { TableDatatable } from './TableDatatable'
 customElements.define('btn-addcollection', BtnAddCollection)
 customElements.define('btn-delete', BtnDelete)
 customElements.define('btn-togglefieldset', BtnToggleFieldset)
+
 customElements.define('textarea-wysiwyg', Wysiwyg, { extends: 'textarea' })
 
 customElements.define('select-country', SelectCountry, { extends: 'select' })
