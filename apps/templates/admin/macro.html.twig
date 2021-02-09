@@ -96,7 +96,8 @@
     {% endif %}
 {% endmacro %}
 {% macro workflow(entity, actions) %}
-    {% if workflow_has(entity) and actions['workflow'] is defined %}
+    {% set trash = app.request.attributes.get('_route')|split('trash')|length-1 %}
+    {% if workflow_has(entity) and actions['workflow'] is defined and 0 == trash %}
         {% set state1 = guard_route(actions['list']) %}
         {% set state2 = guard_route(actions['workflow']) %}
         {% if state1 == true  and state2 == true%}
@@ -153,7 +154,4 @@
             {% endif %}
         {% endif %}
     </div>
-    {% if 0 == trash %}
-        {{ _self.workflow(entity, actions) }}
-    {% endif %}
 {% endmacro %}

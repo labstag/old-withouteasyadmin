@@ -78,7 +78,7 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.labstag.rule=Host(`labstag.traefik.me`, `labstag.letoullec.fr`)"
+        - "traefik.http.routers.labstag.rule=Host(`labstag.traefik.me`)"
         - "traefik.http.routers.labstag-tls.tls.domains[0].main=labstag.traefik.me"
         - "traefik.http.routers.labstag-tls.tls.domains[0].sans=labstag-*.traefik.me"
         - "traefik.http.services.labstag.loadbalancer.server.port=80"
@@ -95,7 +95,7 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.phpmyadmin-labstag.rule=Host(`phpmyadmin-labstag.traefik.me`, `phpmyadmin.letoullec.fr`)"
+        - "traefik.http.routers.phpmyadmin-labstag.rule=Host(`phpmyadmin-labstag.traefik.me`)"
         - "traefik.http.routers.phpmyadmin-labstag-tls.tls.domains[0].main=phpmyadmin-labstag.traefik.me"
         - "traefik.http.routers.phpmyadmin-labstag-tls.tls.domains[0].sans=phpmyadmin-labstag-*.traefik.me"
         - "traefik.http.services.phpmyadmin-labstag.loadbalancer.server.port=80"

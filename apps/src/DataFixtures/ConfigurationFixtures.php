@@ -113,7 +113,10 @@ Allow: /',
         ];
 
         $dotenv = new Dotenv();
-        $env    = $dotenv->parse(file_get_contents(__DIR__.'/../../.env'));
+        $env    = [];
+        if (is_file(__DIR__.'/../../.env')) {
+            $env = $dotenv->parse(file_get_contents(__DIR__.'/../../.env'));
+        }
 
         ksort($env);
         $this->setOauth($env, $data);
