@@ -34,6 +34,9 @@ export class TableDatatable extends HTMLTableElement {
       const tr = tbody.getElementsByTagName('tr')
       tr.forEach(
         (element) => {
+          if (element.dataset.id === undefined) {
+            return
+          }
           const tdElement = document.createElement('td')
           const selectElementElement = document.createElement('select-element')
           if (multipleelement !== undefined) {
