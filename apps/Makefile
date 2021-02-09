@@ -12,6 +12,8 @@ endif
 
 SYMFONY_EXEC := @symfony console
 
+COMPOSER_EXEC := @COMPOSER_MEMORY_LIMIT=-1 composer
+
 .PHONY: translations tests
 
 help:
@@ -57,21 +59,21 @@ endif
 
 composer: ## Scripts for composer
 ifeq ($(COMMAND_ARGS),suggests)
-	@composer suggests --by-suggestion
+	${COMPOSER_EXEC} suggests --by-suggestion
 else ifeq ($(COMMAND_ARGS),outdated)
-	@composer outdated
+	${COMPOSER_EXEC} outdated
 else ifeq ($(COMMAND_ARGS),fund)
-	@composer fund
+	${COMPOSER_EXEC} fund
 else ifeq ($(COMMAND_ARGS),prod)
-	@composer install --no-dev --no-progress --prefer-dist --optimize-autoloader
+	${COMPOSER_EXEC} install --no-dev --no-progress --prefer-dist --optimize-autoloader
 else ifeq ($(COMMAND_ARGS),dev)
-	@composer install --no-progress --prefer-dist --optimize-autoloader
+	${COMPOSER_EXEC} install --no-progress --prefer-dist --optimize-autoloader
 else ifeq ($(COMMAND_ARGS),update)
-	@composer update
+	${COMPOSER_EXEC} update
 else ifeq ($(COMMAND_ARGS),install)
-	@composer install
+	${COMPOSER_EXEC} install
 else ifeq ($(COMMAND_ARGS),validate)
-	@composer validate
+	${COMPOSER_EXEC} validate
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -121,25 +123,25 @@ else ifeq ($(COMMAND_ARGS),phpfix)
 	@make linter php-cs-fixer -i
 	@make linter phpcbf -i
 else ifeq ($(COMMAND_ARGS),phpcbf)
-	@COMPOSER_MEMORY_LIMIT=-1 composer run phpcbf
+	${COMPOSER_EXEC} run phpcbf
 else ifeq ($(COMMAND_ARGS),php-cs-fixer)
-	@COMPOSER_MEMORY_LIMIT=-1 composer run php-cs-fixer
+	${COMPOSER_EXEC} run php-cs-fixer
 else ifeq ($(COMMAND_ARGS),phpcpd)
 	@php phpcpd.phar src tests
 else ifeq ($(COMMAND_ARGS),phpcs)
-	@COMPOSER_MEMORY_LIMIT=-1 composer run phpcs
+	${COMPOSER_EXEC} run phpcs
 else ifeq ($(COMMAND_ARGS),phpcs-onlywarning)
-	@COMPOSER_MEMORY_LIMIT=-1 composer run phpcs-onlywarning
+	${COMPOSER_EXEC} run phpcs-onlywarning
 else ifeq ($(COMMAND_ARGS),phpcs-onlyerror)
-	@COMPOSER_MEMORY_LIMIT=-1 composer run phpcs-onlyerror
+	${COMPOSER_EXEC} run phpcs-onlyerror
 else ifeq ($(COMMAND_ARGS),phploc)
 	@php phploc.phar src
 else ifeq ($(COMMAND_ARGS),phpmd)
 	@php phpmd.phar src,features/bootstrap,tests ansi phpmd.xml
 else ifeq ($(COMMAND_ARGS),phpmnd)
-	@COMPOSER_MEMORY_LIMIT=-1 composer run phpmnd
+	${COMPOSER_EXEC} run phpmnd
 else ifeq ($(COMMAND_ARGS),phpstan)
-	@COMPOSER_MEMORY_LIMIT=-1 composer run phpstan
+	${COMPOSER_EXEC} run phpstan
 else ifeq ($(COMMAND_ARGS),container)
 	${SYMFONY_EXEC} lint:container
 else ifeq ($(COMMAND_ARGS),twig)
@@ -183,11 +185,11 @@ ifeq ($(COMMAND_ARGS),launch)
 	@make tests behat -i
 	@make tests simple-phpunit -i
 else ifeq ($(COMMAND_ARGS),behat)
-	@COMPOSER_MEMORY_LIMIT=-1 composer run behat
+	${COMPOSER_EXEC} run behat
 else ifeq ($(COMMAND_ARGS),simple-phpunit-unit-integration)
-	@COMPOSER_MEMORY_LIMIT=-1 composer run simple-phpunit-unit-integration
+	${COMPOSER_EXEC} run simple-phpunit-unit-integration
 else ifeq ($(COMMAND_ARGS),simple-phpunit)
-	@COMPOSER_MEMORY_LIMIT=-1 composer run simple-phpunit
+	${COMPOSER_EXEC} run simple-phpunit
 else
 	@echo "ARGUMENT missing"
 	@echo "---"

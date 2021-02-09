@@ -29,7 +29,9 @@ export class SelectElement extends HTMLElement {
   changeChecked () {
     const selectElement = document.querySelectorAll("select-element>input[type='checkbox']:checked")
     const linkBtnAdminEmptiesElement = document.querySelector('link-btnadminempties')
-    linkBtnAdminEmptiesElement.style.display = (selectElement.length != 0) ? 'block' : 'none'
+    if (linkBtnAdminEmptiesElement !== null) {
+      linkBtnAdminEmptiesElement.style.display = (selectElement.length !== 0) ? 'block' : 'none'
+    }
   }
 
   onChange (event) {

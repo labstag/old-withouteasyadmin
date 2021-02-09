@@ -2,10 +2,13 @@
 
 namespace Labstag\Controller\Api;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
 use Labstag\Lib\ApiControllerLib;
+use Labstag\Service\TrashService;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,9 +23,36 @@ class ActionsController extends ApiControllerLib
      *
      * @return Response
      */
-    public function empties(): JsonResponse
+    public function empties(Request $request): JsonResponse
     {
-        return new JsonResponse([]);
+        $data       = [
+            'action'  => false,
+            'message' => '',
+        ];
+        $tokenValid = $this->apiActionsService->verifToken('empty');
+        if (!$tokenValid) {
+            $data['message'] = 'token incorrect';
+
+            return new JsonResponse($data);
+        }
+
+        $entities = explode(',', $request->request->get('entities'));
+        $error    = [];
+        foreach ($entities as $entity) {
+            $repository = $this->apiActionsService->getRepository($entity);
+            try {
+                $this->deleteEntity($repository);
+            } catch (Exception $exception) {
+                $error[] = $exception->getMessage();
+            }
+        }
+
+        $data['message'] = $error;
+        if (0 === count($error)) {
+            $data['action'] = true;
+        }
+
+        return new JsonResponse($data);
     }
 
     /**
@@ -31,9 +61,63 @@ class ActionsController extends ApiControllerLib
      *
      * @return Response
      */
-    public function emptyall(): JsonResponse
+    public function emptyall(TrashService $trashService): JsonResponse
     {
-        return new JsonResponse([]);
+        $tokenValid = $this->apiActionsService->verifToken('empty');
+
+        $data = [
+            'action'  => false,
+            'message' => '',
+        ];
+        if (!$tokenValid) {
+            $data['message'] = 'token incorrect';
+
+            return new JsonResponse($data);
+        }
+
+        $error           = $this->deleteAll($trashService);
+        $data['message'] = $error;
+        if (0 === count($error)) {
+            $data['action'] = true;
+        }
+
+        return new JsonResponse($data);
+    }
+
+    private function deleteAll(TrashService $trashService)
+    {
+        $all   = $trashService->all();
+        $error = [];
+        foreach ($all as $data) {
+            $entity     = $data['name'];
+            $repository = $this->apiActionsService->getRepository($entity);
+            try {
+                $this->deleteEntity($repository);
+            } catch (Exception $exception) {
+                $error[] = $exception->getMessage();
+            }
+        }
+
+        return $error;
+    }
+
+    private function deleteEntity($repository)
+    {
+        $all   = $repository->findTrashForAdmin();
+        $files = [];
+        foreach ($all as $entity) {
+            $this->entityManager->remove($entity);
+            if ($entity instanceof Attachment) {
+                $files[] = $entity->getName();
+            }
+        }
+
+        $this->entityManager->flush();
+        foreach ($files as $file) {
+            if ('' != $file && is_file($file)) {
+                unlink($file);
+            }
+        }
     }
 
     /**
@@ -56,21 +140,16 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $data['action'] = true;
-        $all            = $repository->findTrashForAdmin();
-        $files          = [];
-        foreach ($all as $entity) {
-            $this->entityManager->remove($entity);
-            if ($entity instanceof Attachment) {
-                $files[] = $entity->getName();
-            }
+        $error = [];
+        try {
+            $this->deleteEntity($repository);
+        } catch (Exception $exception) {
+            $error[] = $exception->getMessage();
         }
 
-        $this->entityManager->flush();
-        foreach ($files as $file) {
-            if ('' != $file && is_file($file)) {
-                unlink($file);
-            }
+        $data['error'] = $error;
+        if (0 === count($error)) {
+            $data['action'] = true;
         }
 
         return new JsonResponse($data);

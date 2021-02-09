@@ -26,16 +26,22 @@
                     {{ data.total }}
                 </td>
                 <td>
+                    {% set state = guard_route(data.properties.url) %}
+                    {% if state == true %}
                     <link-trash
                         href="{{ path(data.properties.url) }}"
                         title="Aller sur cette corbeille"
                     ></link-trash>
-                    <link-empty
-                        data-redirect="{{ path(app.request.attributes.get('_route')) }}"
-                        data-url="{{ path('api_action_empty', {'entity': data.name}) }}"
-                        data-token="{{ data.token }}"
-                        title="Vider"
-                    ></link-empty>
+                    {% endif %}
+                    {% set state = guard_route('api_action_empty') %}
+                    {% if state == true %}
+                        <link-empty
+                            data-redirect="{{ path(app.request.attributes.get('_route')) }}"
+                            data-url="{{ path('api_action_empty', {'entity': data.name}) }}"
+                            data-token="{{ data.token }}"
+                            title="Vider"
+                        ></link-empty>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

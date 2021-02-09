@@ -28,6 +28,8 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
     {
         $docs = $this->decorated->normalize($object, $format, $context);
         $this->setEmpty($docs);
+        $this->setEmpties($docs);
+        $this->setEmptyAll($docs);
         $this->setRestore($docs);
         $this->setDestroy($docs);
         $this->setDelete($docs);
@@ -91,6 +93,85 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         ];
 
         $docs['paths']['/api/actions/workflow/{entity}/{state}/{id}']['post'] = $statsEndpoint;
+    }
+
+    private function setEmpties(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'empty entity.',
+            'tags'       => ['Actions'],
+            'parameters' => [
+                [
+                    'name'        => 'entities',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'entities',
+                    'schema'      => ['type' => 'string'],
+                ],
+                [
+                    'name'        => '_token',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'token',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'isvalid' => [
+                                        'type'    => 'boolean',
+                                        'example' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/actions/empties']['delete'] = $statsEndpoint;
+    }
+
+    private function setEmptyAll(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'empty entity.',
+            'tags'       => ['Actions'],
+            'parameters' => [
+                [
+                    'name'        => '_token',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'token',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'isvalid' => [
+                                        'type'    => 'boolean',
+                                        'example' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/actions/emptyall']['delete'] = $statsEndpoint;
     }
 
     private function setEmpty(&$docs)

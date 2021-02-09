@@ -339,6 +339,13 @@ abstract class AdminControllerLib extends ControllerLib
         }
     }
 
+    protected function isRouteEnable(string $route)
+    {
+        $token = $this->token->getToken();
+
+        return $this->guardService->guardRoute($route, $token);
+    }
+
     public function listOrTrash(
         ServiceEntityRepositoryLib $repository,
         array $methods,

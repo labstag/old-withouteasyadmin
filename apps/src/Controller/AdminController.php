@@ -64,30 +64,34 @@ class AdminController extends AdminControllerLib
         );
         $code  = 'empty';
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $this->btnInstance->add(
-            'btn-admin-header-emptyall',
-            'Tout vider',
-            [
-                'is'            => 'link-btnadminemptyall',
-                'data-toggle'   => 'modal',
-                'data-target'   => '#emptyallModal',
-                'data-token'    => $token,
-                'data-redirect' => $this->router->generate('admin_trash'),
-                'data-url'      => $this->router->generate('api_action_emptyall'),
-            ]
-        );
-        $this->btnInstance->add(
-            'btn-admin-header-empties',
-            'Vider la sélection',
-            [
-                'is'            => 'link-btnadminempties',
-                'data-toggle'   => 'modal',
-                'data-target'   => '#emptiesModal',
-                'data-token'    => $token,
-                'data-redirect' => $this->router->generate('admin_trash'),
-                'data-url'      => $this->router->generate('api_action_empties'),
-            ]
-        );
+        if ($this->isRouteEnable('api_action_emptyall')) {
+            $this->btnInstance->add(
+                'btn-admin-header-emptyall',
+                'Tout vider',
+                [
+                    'is'            => 'link-btnadminemptyall',
+                    'data-toggle'   => 'modal',
+                    'data-target'   => '#emptyallModal',
+                    'data-token'    => $token,
+                    'data-redirect' => $this->router->generate('admin_trash'),
+                    'data-url'      => $this->router->generate('api_action_emptyall'),
+                ]
+            );
+        }
+        if ($this->isRouteEnable('api_action_empties')) {
+            $this->btnInstance->add(
+                'btn-admin-header-empties',
+                'Vider la sélection',
+                [
+                    'is'            => 'link-btnadminempties',
+                    'data-toggle'   => 'modal',
+                    'data-target'   => '#emptiesModal',
+                    'data-token'    => $token,
+                    'data-redirect' => $this->router->generate('admin_trash'),
+                    'data-url'      => $this->router->generate('api_action_empties'),
+                ]
+            );
+        }
 
         return $this->render(
             'admin/trash.html.twig',
