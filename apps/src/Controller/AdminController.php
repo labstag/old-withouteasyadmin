@@ -78,6 +78,7 @@ class AdminController extends AdminControllerLib
                 ]
             );
         }
+
         if ($this->isRouteEnable('api_action_empties')) {
             $this->btnInstance->add(
                 'btn-admin-header-empties',
