@@ -2,7 +2,7 @@ export class AttachmentDelete extends HTMLElement {
   constructor () {
     super()
     this.classList.add('attachment-delete')
-    this.innerHTML = '<i></i>'
+    this.append(document.createElement('i'))
     this.dataset.toggle = 'modal'
     this.dataset.target = '#deleteAttachmentModal'
 

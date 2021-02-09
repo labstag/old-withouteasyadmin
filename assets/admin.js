@@ -3,7 +3,10 @@ import './elements/admin/index'
 function clickFormSave (event) {
   event.preventDefault()
   const formId = event.currentTarget.dataset.form
-  document.querySelector("form[name='" + formId + "']").submit()
+  const formElement = document.querySelector("form[name='" + formId + "']")
+  if (formElement !== undefined) {
+    formElement.submit()
+  }
 }
 const saveForm = document.querySelectorAll('#SaveForm')
 if (saveForm.length) {

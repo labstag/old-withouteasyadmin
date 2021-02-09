@@ -5,7 +5,12 @@ export class LinkDelete extends HTMLElement {
     this.classList.add('link-delete')
     this.dataset.toggle = 'modal'
     this.dataset.target = '#deleteModal'
-    this.innerHTML = `<i title="${title}"></i><span>${title}</span>`
+    const iElement = document.createElement('i')
+    iElement.setAttribute('title', title)
+    const spanElement = document.createElement('span')
+    spanElement.append(document.createTextNode(title))
+    this.append(iElement)
+    this.append(spanElement)
     this.addEventListener('click', this.onClick)
   }
 

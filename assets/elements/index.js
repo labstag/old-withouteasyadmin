@@ -12,6 +12,8 @@ import { InputUrl } from './InputUrl'
 import { InputVille } from './InputVille'
 import { InputGps } from './InputGps'
 import { TableDatatable } from './TableDatatable'
+import { SelectAll } from './SelectAll'
+import { SelectElement } from './SelectElement'
 
 customElements.define('btn-addcollection', BtnAddCollection)
 customElements.define('btn-delete', BtnDelete)
@@ -31,3 +33,6 @@ customElements.define('input-codepostal', InputCodePostal, { extends: 'input' })
 customElements.define('input-ville', InputVille, { extends: 'input' })
 
 customElements.define('table-datatable', TableDatatable, { extends: 'table' })
+
+customElements.define('select-all', SelectAll)
+customElements.define('select-element', SelectElement)

@@ -2,7 +2,9 @@ export class WorkflowAction extends HTMLElement {
   constructor () {
     super()
     this.classList.add('workflow-action')
-    this.innerHTML = '<i></i> ' + this.dataset.name
+    const iElement = document.createElement('i')
+    this.append(iElement)
+    this.append(document.createTextNode(this.dataset.name))
     this.dataset.toggle = 'modal'
     this.dataset.target = '#workflowModal'
     this.addEventListener('click', this.onClick)

@@ -1,7 +1,9 @@
 export class BtnToggleFieldset extends HTMLElement {
   connectedCallback () {
     this.classList.add('btn-togglefieldset')
-    this.innerHTML = '<i class="min"></i>'
+    const iElement = document.createElement('i')
+    iElement.setAttribute('class', 'min')
+    this.append(iElement)
     this.addEventListener('click', this.onClick)
   }
 

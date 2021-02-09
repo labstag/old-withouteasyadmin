@@ -5,7 +5,12 @@ export class LinkEmpty extends HTMLElement {
     this.classList.add('link-empty')
     this.dataset.toggle = 'modal'
     this.dataset.target = '#emptyModal'
-    this.innerHTML = `<i title="${title}"></i><span>${title}</span>`
+    const iElement = document.createElement('i')
+    iElement.setAttribute('title', title)
+    const spanElement = document.createElement('span')
+    spanElement.append(document.createTextNode(title))
+    this.append(iElement)
+    this.append(spanElement)
     this.addEventListener('click', this.onClick)
   }
 
