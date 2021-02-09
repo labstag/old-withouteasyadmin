@@ -13,6 +13,14 @@ export class ModalConfirmEmpties extends HTMLElement {
     const redirect = element.dataset.redirect
     const urlSearchParams = new URLSearchParams()
     urlSearchParams.append('_token', token)
+    const selectElement = document.querySelectorAll("select-element>input[type='checkbox']:checked")
+    const entities = []
+    selectElement.forEach(
+      element => {
+        entities.push(element.closest('select-element').dataset.id)
+      }
+    )
+    urlSearchParams.append('entities', entities)
     const options = {
       method: 'DELETE',
       headers: {

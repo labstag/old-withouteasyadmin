@@ -5,6 +5,7 @@ export class LinkBtnAdminEmpties extends LinkBtnAdmin {
     super()
     this.addEventListener('click', this.onClick)
     const btnConfirm = document.querySelector('confirm-empties')
+    this.style.display = 'none'
     if (btnConfirm !== null) {
       return
     }

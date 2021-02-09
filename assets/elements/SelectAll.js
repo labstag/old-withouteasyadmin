@@ -9,5 +9,20 @@ export class SelectAll extends HTMLElement {
       checkbox.setAttribute('title', title)
     }
     this.append(checkbox)
+    checkbox.addEventListener('click', this.onClick)
+  }
+
+  onClick (event) {
+    // element.preventDefault()
+    const table = event.currentTarget.closest('table')
+    const checked = event.currentTarget.checked
+    const tbody = table.querySelector('tbody')
+    const checkboxs = tbody.querySelectorAll("input[type='checkbox']")
+    checkboxs.forEach(
+      element => {
+        element.checked = checked
+        element.closest('select-element').dataset.checked = checked ? 1 : 0
+      }
+    )
   }
 }

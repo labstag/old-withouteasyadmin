@@ -40,9 +40,9 @@ export class TableDatatable extends HTMLTableElement {
           const tdElement = document.createElement('td')
           const selectElementElement = document.createElement('select-element')
           if (multipleelement !== undefined) {
-            selectElementElement.setAttribute('title', multipleelement)
+            selectElementElement.dataset.title = multipleelement
           }
-          selectElementElement.setAttribute('id', element.dataset.id)
+          selectElementElement.dataset.id = element.dataset.id
           tdElement.append(selectElementElement)
           element.prepend(tdElement)
         }
