@@ -414,7 +414,7 @@ class AdminBtnSingleton
     public function addSupprimerSelection(
         array $routes,
         string $code,
-        string $title = 'Supprimer la selection'
+        string $title = 'Supprimer'
     ): self
     {
         $token = $this->csrfTokenManager->getToken($code)->getValue();
@@ -445,7 +445,7 @@ class AdminBtnSingleton
     public function addViderSelection(
         array $routes,
         string $code,
-        string $title = 'Vider la sélection'
+        string $title = 'Supprimer'
     ): self
     {
         $token = $this->csrfTokenManager->getToken($code)->getValue();
