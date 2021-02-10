@@ -1,4 +1,4 @@
-<table is="guard-route">
+<table is="guard-route" data-url="{{ path('api_guard_route', {'user' : user.id}) }}">
     <thead>
         <tr>
             <th rowspan=2>
@@ -15,6 +15,7 @@
             <th>
                 <guard-routeuser
                     data-state=0
+                    data-url="{{ path('api_guard_routeuser', {'user' : user.id}) }}"
                     data-token="{{ csrf_token('guard') }}"
                 ></guard-routeuser>
             </th>
@@ -33,6 +34,7 @@
                 <guard-routesetuser
                     data-state=0
                     data-route="{{ route.name|e }}"
+                    data-url="{{ path('api_guard_routesetuser', {'user' : user.id, 'route': route.name}) }}"
                     data-token="{{ csrf_token('guard') }}"
                 ></guard-routesetuser>
             </td>

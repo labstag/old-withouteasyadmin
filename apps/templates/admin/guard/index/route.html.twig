@@ -1,4 +1,4 @@
-<table is="guard-route">
+<table is="guard-route" data-url="{{ path('api_guard_route') }}">
     <thead>
         <tr>
             <th rowspan=2>
@@ -19,6 +19,7 @@
                     {% if 'superadmin' != group.code %}
                         <guard-routegroup
                             data-state=0
+                            data-url="{{ path('api_guard_routegroup', {'group' : group.id}) }}"
                             data-token="{{ csrf_token('guard') }}"
                         ></guard-routegroup>
                     {% else %}
@@ -37,6 +38,7 @@
             <td>
                 <guard-routegroups
                     data-state=0
+                    data-url="{{ path('api_guard_routegroups', {'group' : group.id}) }}"
                     data-route="{{ route.name|e }}"
                     data-token="{{ csrf_token('guard') }}"
                 ></guard-routegroups>
@@ -49,6 +51,7 @@
                             data-state=0
                             data-groupe="{{ group.code|e }}"
                             data-route="{{ route.name|e }}"
+                            data-url="{{ path('api_guard_routesetgroup', {'group' : group.id, 'route': route.name}) }}"
                             data-token="{{ csrf_token('guard') }}"
                         ></guard-routesetgroup>
                     {% else %}
