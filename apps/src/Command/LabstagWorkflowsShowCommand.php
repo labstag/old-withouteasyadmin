@@ -9,6 +9,7 @@ use Labstag\RequestHandler\WorkflowRequestHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class LabstagWorkflowsShowCommand extends Command
@@ -45,7 +46,8 @@ class LabstagWorkflowsShowCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        unset($input, $output);
+        $inputOutput = new SymfonyStyle($input, $output);
+        $inputOutput->title('Ajout des workflows dans la base de données');
         $container = $this->getApplication()->getKernel()->getContainer();
         $list      = $container->getServiceIds();
         $workflows = [];
@@ -83,6 +85,7 @@ class LabstagWorkflowsShowCommand extends Command
                 $this->workflowRH->handle($old, $workflow);
             }
         }
+        $inputOutput->success('Fin de traitement');
 
         return Command::SUCCESS;
     }
