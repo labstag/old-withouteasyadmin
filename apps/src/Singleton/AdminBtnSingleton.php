@@ -418,7 +418,15 @@ class AdminBtnSingleton
     ): self
     {
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if (!array_key_exists('redirect', $routes) || !array_key_exists('href', $routes['redirect']) || !array_key_exists('params', $routes['redirect']) || !$this->isRouteEnable($routes['redirect']['href']) || !array_key_exists('url', $routes) || !array_key_exists('href', $routes['url']) || !array_key_exists('params', $routes['url']) || !$this->isRouteEnable($routes['url']['href'])) {
+        if (!array_key_exists('redirect', $routes)
+            || !array_key_exists('href', $routes['redirect'])
+            || !array_key_exists('params', $routes['redirect'])
+            || !$this->isRouteEnable($routes['redirect']['href'])
+            || !array_key_exists('url', $routes)
+            || !array_key_exists('href', $routes['url'])
+            || !array_key_exists('params', $routes['url'])
+            || !$this->isRouteEnable($routes['url']['href'])
+        ) {
             return $this;
         }
 
@@ -449,7 +457,15 @@ class AdminBtnSingleton
     ): self
     {
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if (!array_key_exists('redirect', $routes) || !array_key_exists('href', $routes['redirect']) || !array_key_exists('params', $routes['redirect']) || !$this->isRouteEnable($routes['redirect']['href']) || !array_key_exists('url', $routes) || !array_key_exists('href', $routes['url']) || !array_key_exists('params', $routes['url']) || !$this->isRouteEnable($routes['url']['href'])) {
+        if (!array_key_exists('redirect', $routes)
+            || !array_key_exists('href', $routes['redirect'])
+            || !array_key_exists('params', $routes['redirect'])
+            || !$this->isRouteEnable($routes['redirect']['href'])
+            || !array_key_exists('url', $routes)
+            || !array_key_exists('href', $routes['url'])
+            || !array_key_exists('params', $routes['url'])
+            || !$this->isRouteEnable($routes['url']['href'])
+        ) {
             return $this;
         }
 
@@ -480,7 +496,15 @@ class AdminBtnSingleton
     ): self
     {
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if (!array_key_exists('redirect', $routes) || !array_key_exists('href', $routes['redirect']) || !array_key_exists('params', $routes['redirect']) || !$this->isRouteEnable($routes['redirect']['href']) || !array_key_exists('url', $routes) || !array_key_exists('href', $routes['url']) || !array_key_exists('params', $routes['url']) || !$this->isRouteEnable($routes['url']['href'])) {
+        if (!array_key_exists('redirect', $routes)
+            || !array_key_exists('href', $routes['redirect'])
+            || !array_key_exists('params', $routes['redirect'])
+            || !$this->isRouteEnable($routes['redirect']['href'])
+            || !array_key_exists('url', $routes)
+            || !array_key_exists('href', $routes['url'])
+            || !array_key_exists('params', $routes['url'])
+            || !$this->isRouteEnable($routes['url']['href'])
+        ) {
             return $this;
         }
 

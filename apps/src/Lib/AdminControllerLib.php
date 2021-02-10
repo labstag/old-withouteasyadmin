@@ -312,11 +312,13 @@ abstract class AdminControllerLib extends ControllerLib
                 'url'      => [
                     'href'   => 'api_action_destroies',
                     'params' => [
-                        'entity' => strtolower(str_replace(
-                            'Labstag\\Entity\\',
-                            '',
-                            $repository->getClassName()
-                        )),
+                        'entity' => strtolower(
+                            str_replace(
+                                'Labstag\\Entity\\',
+                                '',
+                                $repository->getClassName()
+                            )
+                        ),
                     ],
                 ],
             ],
@@ -332,11 +334,13 @@ abstract class AdminControllerLib extends ControllerLib
                 'url'      => [
                     'href'   => 'api_action_restories',
                     'params' => [
-                        'entity' => strtolower(str_replace(
-                            'Labstag\\Entity\\',
-                            '',
-                            $repository->getClassName()
-                        )),
+                        'entity' => strtolower(
+                            str_replace(
+                                'Labstag\\Entity\\',
+                                '',
+                                $repository->getClassName()
+                            )
+                        ),
                     ],
                 ],
             ],
@@ -409,6 +413,7 @@ abstract class AdminControllerLib extends ControllerLib
                 $url['new']
             );
         }
+
         if ('trash' != $routeType) {
             $this->btnInstance->addSupprimerSelection(
                 [
@@ -419,11 +424,13 @@ abstract class AdminControllerLib extends ControllerLib
                     'url'      => [
                         'href'   => 'api_action_deleties',
                         'params' => [
-                            'entity' => strtolower(str_replace(
-                                'Labstag\\Entity\\',
-                                '',
-                                $repository->getClassName()
-                            )),
+                            'entity' => strtolower(
+                                str_replace(
+                                    'Labstag\\Entity\\',
+                                    '',
+                                    $repository->getClassName()
+                                )
+                            ),
                         ],
                     ],
                 ],

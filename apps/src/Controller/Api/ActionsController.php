@@ -163,7 +163,7 @@ class ActionsController extends ApiControllerLib
      */
     public function restories(string $entity, Request $request): JsonResponse
     {
-        $data       = [
+        $data = [
             'action'  => false,
             'message' => '',
         ];
@@ -174,11 +174,12 @@ class ActionsController extends ApiControllerLib
 
             return new JsonResponse($data);
         }
-        $entities = explode(',', $request->request->get('entities'));
-        $error    = [];
+
+        $entities   = explode(',', $request->request->get('entities'));
+        $error      = [];
         $repository = $this->apiActionsService->getRepository($entity);
         foreach ($entities as $id) {
-            try{
+            try {
                 $entity = $repository->find($id);
                 dump($entity);
                 $this->restoreEntity($entity);
@@ -247,7 +248,7 @@ class ActionsController extends ApiControllerLib
      */
     public function destroies(string $entity, Request $request): JsonResponse
     {
-        $data       = [
+        $data = [
             'action'  => false,
             'message' => '',
         ];
@@ -258,11 +259,12 @@ class ActionsController extends ApiControllerLib
 
             return new JsonResponse($data);
         }
-        $entities = explode(',', $request->request->get('entities'));
-        $error    = [];
+
+        $entities   = explode(',', $request->request->get('entities'));
+        $error      = [];
         $repository = $this->apiActionsService->getRepository($entity);
         foreach ($entities as $id) {
-            try{
+            try {
                 $entity = $repository->find($id);
                 $this->destroyEntity($entity);
             } catch (Exception $exception) {
@@ -283,6 +285,7 @@ class ActionsController extends ApiControllerLib
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
             return;
         }
+
         $file = '';
         $this->entityManager->remove($entity);
         if ($entity instanceof Attachment) {
@@ -335,7 +338,7 @@ class ActionsController extends ApiControllerLib
      */
     public function deleties(string $entity, Request $request): JsonResponse
     {
-        $data       = [
+        $data = [
             'action'  => false,
             'message' => '',
         ];
@@ -346,11 +349,12 @@ class ActionsController extends ApiControllerLib
 
             return new JsonResponse($data);
         }
-        $entities = explode(',', $request->request->get('entities'));
-        $error    = [];
+
+        $entities   = explode(',', $request->request->get('entities'));
+        $error      = [];
         $repository = $this->apiActionsService->getRepository($entity);
         foreach ($entities as $id) {
-            try{
+            try {
                 $entity = $repository->find($id);
                 $this->deleteEntity($entity);
             } catch (Exception $exception) {
@@ -362,6 +366,7 @@ class ActionsController extends ApiControllerLib
         if (0 === count($error)) {
             $data['action'] = true;
         }
+
         unset($entity);
 
         return new JsonResponse($data);
@@ -372,6 +377,7 @@ class ActionsController extends ApiControllerLib
         if (is_null($entity) || !is_null($entity->getDeletedAt())) {
             return;
         }
+
         $this->entityManager->remove($entity);
         $this->entityManager->flush();
     }
