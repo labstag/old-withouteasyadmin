@@ -1,0 +1,78 @@
+{% set state = guard_route('api_guard_groups') %}
+{% if state == false %}
+    Droit manquant
+{% else %}
+    <table is="guard-route" data-url="{{ path('api_guard_groups') }}">
+        <thead>
+            <tr>
+                <th rowspan=2>
+                    Route
+                </th>
+                <th rowspan=2>
+                    Actions
+                </th>
+                {% for group in groups %}
+                    <th>
+                        {{ group.name }}
+                    </th>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for group in groups %}
+                    <th>
+                        {% if 'superadmin' != group.code %}
+                            <guard-routegroup
+                                data-state=0
+                                data-token="{{ csrf_token('guard-group-route-' ~ group.id) }}"
+                            ></guard-routegroup>
+                        {% else %}
+                            ----
+                        {% endif %}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for route in routes %}
+            <tr>
+                <td>
+                    {{ route.name }}
+                </td>
+                <td>
+                    <guard-routegroups
+                        data-state=0
+                        data-route="{{ route.name|e }}"
+                        data-token="{{ csrf_token('guard-group-route-' ~ route.name) }}"
+                    ></guard-routegroups>
+                </td>
+                {% for group in groups %}
+                    <td>
+                        {% if 'superadmin' != group.code %}
+                            {% set enable = guard_route_enable_group(route.name, group) %}
+                            {% set state = guard_route('api_guard_setgroup') %}
+                            {% if enable and enable %}
+                                <guard-routesetgroup
+                                    title="{{ group.name|e }}"
+                                    data-state=0
+                                    data-groupe="{{ group.code|e }}"
+                                    data-route="{{ route.name|e }}"
+                                    data-url="{{ path('api_guard_setgroup', {'route': route, 'groupe': group}) }}"
+                                    data-token="{{ csrf_token('guard-'~ group.id ~'-route-' ~ route.name) }}"
+                                ></guard-routesetgroup>
+                            {% else %}
+                                ---
+                            {% endif %}
+                        {% else %}
+                            ---
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="{{ groups|length+2 }}" class="text-center">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

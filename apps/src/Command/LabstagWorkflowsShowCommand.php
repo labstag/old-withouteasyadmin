@@ -85,6 +85,7 @@ class LabstagWorkflowsShowCommand extends Command
                 $this->workflowRH->handle($old, $workflow);
             }
         }
+
         $inputOutput->success('Fin de traitement');
 
         return Command::SUCCESS;
