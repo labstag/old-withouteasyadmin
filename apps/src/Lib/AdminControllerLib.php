@@ -312,11 +312,11 @@ abstract class AdminControllerLib extends ControllerLib
                 'url'      => [
                     'href'   => 'api_action_destroies',
                     'params' => [
-                        'entity' => str_replace(
+                        'entity' => strtolower(str_replace(
                             'Labstag\\Entity\\',
                             '',
                             $repository->getClassName()
-                        ),
+                        )),
                     ],
                 ],
             ],
@@ -332,11 +332,11 @@ abstract class AdminControllerLib extends ControllerLib
                 'url'      => [
                     'href'   => 'api_action_restories',
                     'params' => [
-                        'entity' => str_replace(
+                        'entity' => strtolower(str_replace(
                             'Labstag\\Entity\\',
                             '',
                             $repository->getClassName()
-                        ),
+                        )),
                     ],
                 ],
             ],
@@ -408,7 +408,8 @@ abstract class AdminControllerLib extends ControllerLib
             $this->btnInstance->addBtnNew(
                 $url['new']
             );
-
+        }
+        if ('trash' != $routeType) {
             $this->btnInstance->addSupprimerSelection(
                 [
                     'redirect' => [
@@ -418,11 +419,11 @@ abstract class AdminControllerLib extends ControllerLib
                     'url'      => [
                         'href'   => 'api_action_deleties',
                         'params' => [
-                            'entity' => str_replace(
+                            'entity' => strtolower(str_replace(
                                 'Labstag\\Entity\\',
                                 '',
                                 $repository->getClassName()
-                            ),
+                            )),
                         ],
                     ],
                 ],

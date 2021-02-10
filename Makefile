@@ -266,7 +266,7 @@ linter: ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
 	@make linter phpfix -i
 	@make linter eslint -i
-	@make linter stylelint -i
+	@make linter stylelint-fix -i
 	@make linter twig -i
 	@make linter container -i
 	@make linter yaml -i

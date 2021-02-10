@@ -41,7 +41,7 @@ class ActionsController extends ApiControllerLib
         foreach ($entities as $entity) {
             $repository = $this->apiActionsService->getRepository($entity);
             try {
-                $this->deleteEntity($repository);
+                $this->deleteEntityByRepository($repository);
             } catch (Exception $exception) {
                 $error[] = $exception->getMessage();
             }
@@ -92,7 +92,7 @@ class ActionsController extends ApiControllerLib
             $entity     = $data['name'];
             $repository = $this->apiActionsService->getRepository($entity);
             try {
-                $this->deleteEntity($repository);
+                $this->deleteEntityByRepository($repository);
             } catch (Exception $exception) {
                 $error[] = $exception->getMessage();
             }
@@ -101,7 +101,7 @@ class ActionsController extends ApiControllerLib
         return $error;
     }
 
-    private function deleteEntity($repository)
+    private function deleteEntityByRepository($repository)
     {
         $all   = $repository->findTrashForAdmin();
         $files = [];
@@ -142,7 +142,7 @@ class ActionsController extends ApiControllerLib
 
         $error = [];
         try {
-            $this->deleteEntity($repository);
+            $this->deleteEntityByRepository($repository);
         } catch (Exception $exception) {
             $error[] = $exception->getMessage();
         }
@@ -161,11 +161,49 @@ class ActionsController extends ApiControllerLib
      *
      * @return Response
      */
-    public function restories(string $entity): JsonResponse
+    public function restories(string $entity, Request $request): JsonResponse
     {
-        unset($entity);
+        $data       = [
+            'action'  => false,
+            'message' => '',
+        ];
 
-        return new JsonResponse([]);
+        $tokenValid = $this->apiActionsService->verifToken('restories');
+        if (!$tokenValid) {
+            $data['message'] = 'token incorrect';
+
+            return new JsonResponse($data);
+        }
+        $entities = explode(',', $request->request->get('entities'));
+        $error    = [];
+        $repository = $this->apiActionsService->getRepository($entity);
+        foreach ($entities as $id) {
+            try{
+                $entity = $repository->find($id);
+                dump($entity);
+                $this->restoreEntity($entity);
+            } catch (Exception $exception) {
+                $error[] = $exception->getMessage();
+            }
+        }
+
+        $data['error'] = $error;
+        if (0 === count($error)) {
+            $data['action'] = true;
+        }
+
+        return new JsonResponse($data);
+    }
+
+    private function restoreEntity($entity)
+    {
+        if (is_null($entity) || is_null($entity->getDeletedAt())) {
+            return;
+        }
+
+        $entity->setDeletedAt(null);
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
     }
 
     /**
@@ -196,9 +234,7 @@ class ActionsController extends ApiControllerLib
         }
 
         $data['action'] = true;
-        $entity->setDeletedAt(null);
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
+        $this->restoreEntity($entity);
 
         return new JsonResponse($data);
     }
@@ -209,11 +245,54 @@ class ActionsController extends ApiControllerLib
      *
      * @return Response
      */
-    public function destroies(string $entity): JsonResponse
+    public function destroies(string $entity, Request $request): JsonResponse
     {
-        unset($entity);
+        $data       = [
+            'action'  => false,
+            'message' => '',
+        ];
 
-        return new JsonResponse([]);
+        $tokenValid = $this->apiActionsService->verifToken('destroies');
+        if (!$tokenValid) {
+            $data['message'] = 'token incorrect';
+
+            return new JsonResponse($data);
+        }
+        $entities = explode(',', $request->request->get('entities'));
+        $error    = [];
+        $repository = $this->apiActionsService->getRepository($entity);
+        foreach ($entities as $id) {
+            try{
+                $entity = $repository->find($id);
+                $this->destroyEntity($entity);
+            } catch (Exception $exception) {
+                $error[] = $exception->getMessage();
+            }
+        }
+
+        $data['error'] = $error;
+        if (0 === count($error)) {
+            $data['action'] = true;
+        }
+
+        return new JsonResponse($data);
+    }
+
+    private function destroyEntity($entity)
+    {
+        if (is_null($entity) || is_null($entity->getDeletedAt())) {
+            return;
+        }
+        $file = '';
+        $this->entityManager->remove($entity);
+        if ($entity instanceof Attachment) {
+            $file = $entity->getName();
+        }
+
+        $this->entityManager->flush();
+        if ('' != $file && is_file($file)) {
+            unlink($file);
+        }
     }
 
     /**
@@ -244,15 +323,7 @@ class ActionsController extends ApiControllerLib
         }
 
         $data['action'] = true;
-        $this->entityManager->remove($entity);
-        if ($entity instanceof Attachment) {
-            $file = $entity->getName();
-        }
-
-        $this->entityManager->flush();
-        if ('' != $file && is_file($file)) {
-            unlink($file);
-        }
+        $this->destroyEntity($entity);
 
         return new JsonResponse($data);
     }
@@ -262,11 +333,47 @@ class ActionsController extends ApiControllerLib
      *
      * @return Response
      */
-    public function deleties(string $entity): JsonResponse
+    public function deleties(string $entity, Request $request): JsonResponse
     {
+        $data       = [
+            'action'  => false,
+            'message' => '',
+        ];
+
+        $tokenValid = $this->apiActionsService->verifToken('deleties');
+        if (!$tokenValid) {
+            $data['message'] = 'token incorrect';
+
+            return new JsonResponse($data);
+        }
+        $entities = explode(',', $request->request->get('entities'));
+        $error    = [];
+        $repository = $this->apiActionsService->getRepository($entity);
+        foreach ($entities as $id) {
+            try{
+                $entity = $repository->find($id);
+                $this->deleteEntity($entity);
+            } catch (Exception $exception) {
+                $error[] = $exception->getMessage();
+            }
+        }
+
+        $data['error'] = $error;
+        if (0 === count($error)) {
+            $data['action'] = true;
+        }
         unset($entity);
 
-        return new JsonResponse([]);
+        return new JsonResponse($data);
+    }
+
+    private function deleteEntity($entity)
+    {
+        if (is_null($entity) || !is_null($entity->getDeletedAt())) {
+            return;
+        }
+        $this->entityManager->remove($entity);
+        $this->entityManager->flush();
     }
 
     /**
@@ -296,8 +403,7 @@ class ActionsController extends ApiControllerLib
         }
 
         $data['action'] = true;
-        $this->entityManager->remove($entity);
-        $this->entityManager->flush();
+        $this->deleteEntity($entity);
 
         return new JsonResponse($data);
     }

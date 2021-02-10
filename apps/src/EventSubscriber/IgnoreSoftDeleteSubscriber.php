@@ -79,6 +79,9 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
     {
         $routeCurrent = $this->request->get('_route');
         $routes       = [
+            'api_action_destroies',
+            'api_action_restories',
+            'api_action_deleties',
             'api_action_emptyall',
             'api_action_empties',
             '_trash',
