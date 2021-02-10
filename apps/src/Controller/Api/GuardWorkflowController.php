@@ -20,27 +20,27 @@ class GuardWorkflowController extends ApiControllerLib
     }
 
     /**
-     * @Route("/group", name="api_guard_workflowgroup", methods={"POST"})
+     * @Route("/group/{group}", name="api_guard_workflowgroup", methods={"POST"})
      */
-    public function group()
+    public function group(Groupe $group)
     {
-
+        unset($group);
     }
 
     /**
-     * @Route("/groups", name="api_guard_workflowgroups", methods={"POST"})
+     * @Route("/groups/{entity}/{transition}", name="api_guard_workflowgroups", methods={"POST"})
      */
-    public function groups()
+    public function groups(string $entity, string $transition)
     {
-
+        unset($entity, $transition);
     }
 
     /**
-     * @Route("/setgroup", name="api_guard_workflowsetgroup", methods={"POST"})
+     * @Route("/setgroup/{group}/{entity}/{transition}", name="api_guard_workflowsetgroup", methods={"POST"})
      */
-    public function setgroup()
+    public function setgroup(string $group, string $entity, string $transition)
     {
-
+        unset($group, $entity, $transition);
     }
 
     /**

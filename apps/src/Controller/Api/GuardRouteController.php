@@ -21,27 +21,27 @@ class GuardRouteController extends ApiControllerLib
     }
 
     /**
-     * @Route("/group", name="api_guard_routegroup", methods={"POST"})
+     * @Route("/group/{group}", name="api_guard_routegroup", methods={"POST"})
      */
-    public function group()
+    public function group(Groupe $group)
     {
-
+        unset($group);
     }
 
     /**
-     * @Route("/groups", name="api_guard_routegroups", methods={"POST"})
+     * @Route("/groups/{route}", name="api_guard_routegroups", methods={"POST"})
      */
-    public function groups()
+    public function groups(string $route)
     {
-
+        unset($route);
     }
 
     /**
-     * @Route("/setgroup", name="api_guard_routesetgroup", methods={"POST"})
+     * @Route("/setgroup/{route}/{group}", name="api_guard_routesetgroup", methods={"POST"})
      */
-    public function setgroup()
+    public function setgroup(string $route, Groupe $group)
     {
-
+        unset($route, $group);
     }
 
     /**
