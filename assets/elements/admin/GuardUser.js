@@ -8,7 +8,7 @@ export class GuardUser extends HTMLElement {
     inputElement.setAttribute('id', uuid)
     const labelElement = document.createElement('label')
     labelElement.setAttribute('for', uuid)
-    labelElement.append(document.createTextNode('&nbsp;'))
+    // labelElement.append(document.createTextNode('&nbsp;'))
     this.append(inputElement)
     this.append(labelElement)
     const checkboxs = this.getElementsByTagName('input')

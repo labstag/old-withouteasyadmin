@@ -1,0 +1,50 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    {% set state = guard_route('api_guard_user') %}
+    {% if state == false %}
+        Droit manquant
+    {% else %}
+        <table is="guard-users" data-url="{{ path('api_guard_user', {'user': user.id }) }}">
+            <thead>
+                <tr>
+                    <th>
+                        Route
+                    </th>
+                    <th>
+                        Guard {{ user.groupe.name }}
+                    </th>
+                    <th>
+                        Guard {{ user.username }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for route in routes %}
+                {% set state = guard_route('api_guard_setuser') %}
+                {% if state %}
+                <tr>
+                    <td>
+                        {{ route.name }}
+                    </td>
+                    <td>
+                        <guard-refgroup data-route="{{ route.name|e }}" />
+                    </td>
+                    <td>
+                        <guard-user
+                            data-state=0
+                            data-user="{{ user.id|e }}"
+                            data-route="{{ route.name|e }}"
+                            data-url="{{ path('api_guard_setuser', {'route': route, 'user': user}) }}"
+                            data-token="{{ csrf_token('guard') }}"
+                        />
+                </tr>
+                {% endif %}
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
