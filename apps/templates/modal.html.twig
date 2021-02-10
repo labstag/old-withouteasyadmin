@@ -143,6 +143,35 @@
 		</div>
 	</div>
 {% endmacro %}
+{% macro deleties() %}
+	<div id="deletiesModal" tabindex="-1" aria-labelledby="deletiesModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deletiesModalLabel">
+                        Supprimer ?
+                    </h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Êtes-vous sûr de vouloir supprimer la sélection ?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="BtnCancel" data-dismiss="modal">
+                        <i></i>
+                        <span>Annuler</span>
+                    </button>
+					<confirm-deleties>
+                        <i></i>
+                        <span>Vider</span>
+                    </confirm-deleties>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endmacro %}
 {% macro empty() %}
 	<div id="emptyModal" tabindex="-1" aria-labelledby="emptyModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

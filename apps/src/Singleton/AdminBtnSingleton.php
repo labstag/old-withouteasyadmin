@@ -411,6 +411,68 @@ class AdminBtnSingleton
         return $this;
     }
 
+    public function addSupprimerSelection(
+        array $routes,
+        string $code,
+        string $title = 'Supprimer la selection'
+    ): self
+    {
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        if (!array_key_exists('redirect', $routes) || !array_key_exists('href', $routes['redirect']) || !array_key_exists('params', $routes['redirect']) || !$this->isRouteEnable($routes['redirect']['href']) || !array_key_exists('url', $routes) || !array_key_exists('href', $routes['url']) || !array_key_exists('params', $routes['url']) || !$this->isRouteEnable($routes['url']['href'])) {
+            return $this;
+        }
+
+        $this->twig->addGlobal(
+            'modalDeleties',
+            true
+        );
+        $this->add(
+            'btn-admin-header-deleties',
+            $title,
+            [
+                'is'            => 'link-btnadmindeleties',
+                'data-toggle'   => 'modal',
+                'data-target'   => '#deletiesModal',
+                'data-token'    => $token,
+                'data-redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
+                'data-url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+            ]
+        );
+
+        return $this;
+    }
+
+    public function addViderSelection(
+        array $routes,
+        string $code,
+        string $title = 'Vider la sélection'
+    ): self
+    {
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        if (!array_key_exists('redirect', $routes) || !array_key_exists('href', $routes['redirect']) || !array_key_exists('params', $routes['redirect']) || !$this->isRouteEnable($routes['redirect']['href']) || !array_key_exists('url', $routes) || !array_key_exists('href', $routes['url']) || !array_key_exists('params', $routes['url']) || !$this->isRouteEnable($routes['url']['href'])) {
+            return $this;
+        }
+
+        $this->twig->addGlobal(
+            'modalEmpties',
+            true
+        );
+        $this->add(
+            'btn-admin-header-empties',
+            $title,
+            [
+                'is'            => 'link-btnadminempties',
+                'data-toggle'   => 'modal',
+                'data-token'    => $token,
+                'data-target'   => '#emptiesModal',
+                'data-redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
+                'data-url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+            ]
+        );
+
+        return $this;
+    }
+
     public function addBtnList(string $route, string $text = 'Liste'): self
     {
         if ('' == $route || !$this->isRouteEnable($route)) {

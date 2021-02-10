@@ -29,7 +29,7 @@ class ActionsController extends ApiControllerLib
             'action'  => false,
             'message' => '',
         ];
-        $tokenValid = $this->apiActionsService->verifToken('empty');
+        $tokenValid = $this->apiActionsService->verifToken('empties');
         if (!$tokenValid) {
             $data['message'] = 'token incorrect';
 
@@ -63,7 +63,7 @@ class ActionsController extends ApiControllerLib
      */
     public function emptyall(TrashService $trashService): JsonResponse
     {
-        $tokenValid = $this->apiActionsService->verifToken('empty');
+        $tokenValid = $this->apiActionsService->verifToken('emptyall');
 
         $data = [
             'action'  => false,
@@ -191,6 +191,18 @@ class ActionsController extends ApiControllerLib
     }
 
     /**
+     * @Route("/destroy/{entity}", name="api_action_destroies", methods={"DELETE"})
+     * @IgnoreSoftDelete
+     *
+     * @return Response
+     */
+    public function destroies(string $entity): JsonResponse
+    {
+        unset($entity);
+        return new JsonResponse([]);
+    }
+
+    /**
      * @Route("/destroy/{entity}/{id}", name="api_action_destroy", methods={"DELETE"})
      * @IgnoreSoftDelete
      *
@@ -229,6 +241,17 @@ class ActionsController extends ApiControllerLib
         }
 
         return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/delete/{entity}/", name="api_action_deleties", methods={"DELETE"})
+     *
+     * @return Response
+     */
+    public function deleties(string $entity): JsonResponse
+    {
+        unset($entity);
+        return new JsonResponse([]);
     }
 
     /**

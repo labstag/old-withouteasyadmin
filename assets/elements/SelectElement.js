@@ -32,6 +32,10 @@ export class SelectElement extends HTMLElement {
     if (linkBtnAdminEmptiesElement !== null) {
       linkBtnAdminEmptiesElement.style.display = (selectElement.length !== 0) ? 'block' : 'none'
     }
+    const linkBtnAdminDeletiesElement = document.querySelector('link-btnadmindeleties')
+    if (linkBtnAdminDeletiesElement !== null) {
+      linkBtnAdminDeletiesElement.style.display = (selectElement.length !== 0) ? 'block' : 'none'
+    }
   }
 
   onChange (event) {

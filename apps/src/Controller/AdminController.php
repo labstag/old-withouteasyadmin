@@ -54,17 +54,12 @@ class AdminController extends AdminControllerLib
             'modalEmpty',
             true
         );
-        $this->twig->addGlobal(
-            'modalEmptyAll',
-            true
-        );
-        $this->twig->addGlobal(
-            'modalEmpties',
-            true
-        );
-        $code  = 'empty';
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        $token = $this->csrfTokenManager->getToken('emptyall')->getValue();
         if ($this->isRouteEnable('api_action_emptyall')) {
+            $this->twig->addGlobal(
+                'modalEmptyAll',
+                true
+            );
             $this->btnInstance->add(
                 'btn-admin-header-emptyall',
                 'Tout vider',
@@ -79,20 +74,19 @@ class AdminController extends AdminControllerLib
             );
         }
 
-        if ($this->isRouteEnable('api_action_empties')) {
-            $this->btnInstance->add(
-                'btn-admin-header-empties',
-                'Vider la sélection',
-                [
-                    'is'            => 'link-btnadminempties',
-                    'data-toggle'   => 'modal',
-                    'data-target'   => '#emptiesModal',
-                    'data-token'    => $token,
-                    'data-redirect' => $this->router->generate('admin_trash'),
-                    'data-url'      => $this->router->generate('api_action_empties'),
-                ]
-            );
-        }
+        $this->btnInstance->addViderSelection(
+            [
+                'redirect' => [
+                    'href'   => 'admin_trash',
+                    'params' => [],
+                ],
+                'url'      => [
+                    'href'   => 'api_action_empties',
+                    'params' => [],
+                ],
+            ],
+            'empties'
+        );
 
         return $this->render(
             'admin/trash.html.twig',

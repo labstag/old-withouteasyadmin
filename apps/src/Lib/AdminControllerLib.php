@@ -302,6 +302,26 @@ abstract class AdminControllerLib extends ControllerLib
                 true
             );
         }
+
+        $this->btnInstance->addViderSelection(
+            [
+                'redirect' => [
+                    'href'   => $this->request->get('_route'),
+                    'params' => [],
+                ],
+                'url'      => [
+                    'href'   => 'api_action_destroies',
+                    'params' => [
+                        'entity' => str_replace(
+                            'Labstag\\Entity\\',
+                            '',
+                            $repository->getClassName()
+                        ),
+                    ],
+                ],
+            ],
+            'destroies'
+        );
     }
 
     public function modalAttachmentDelete(): void
@@ -367,6 +387,26 @@ abstract class AdminControllerLib extends ControllerLib
         if (isset($url['new']) && 'trash' != $routeType) {
             $this->btnInstance->addBtnNew(
                 $url['new']
+            );
+
+            $this->btnInstance->addSupprimerSelection(
+                [
+                    'redirect' => [
+                        'href'   => $this->request->get('_route'),
+                        'params' => [],
+                    ],
+                    'url'      => [
+                        'href'   => 'api_action_deleties',
+                        'params' => [
+                            'entity' => str_replace(
+                                'Labstag\\Entity\\',
+                                '',
+                                $repository->getClassName()
+                            ),
+                        ],
+                    ],
+                ],
+                'deleties'
             );
         }
 

@@ -23,6 +23,12 @@
             {% if modalEmpty is defined %}
                 {{ modal.empty() }}
             {% endif %}
+            {% if modalEmpties is defined %}
+                {{ modal.empties() }}
+            {% endif %}
+            {% if modalDeleties is defined %}
+                {{ modal.deleties() }}
+            {% endif %}
             {% if modalDestroy is defined %}
                 {{ modal.destroy() }}
             {% endif %}

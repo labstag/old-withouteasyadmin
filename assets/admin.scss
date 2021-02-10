@@ -93,7 +93,7 @@ a {
   @extend .fa-edit;
 }
 
-.btn-admin-header-delete {
+.btn-admin-header-delete, .btn-admin-header-deleties {
   @extend .far;
   @extend .fa-trash-alt;
 }
