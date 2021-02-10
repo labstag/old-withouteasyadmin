@@ -22,7 +22,7 @@
                     {% if 'superadmin' != group.code %}
                         <guard-workflowgroup
                             data-state=0
-                            data-token="{{ csrf_token('guard-group-workflow-' ~ group.id) }}"
+                            data-token="{{ csrf_token('guard') }}"
                         ></guard-workflowgroup>
                     {% else %}
                         ----
@@ -45,7 +45,7 @@
                     data-state=0
                     data-entity="{{ workflow.entity|e }}"
                     data-transition="{{ workflow.transition|e }}"
-                    data-token="{{ csrf_token('guard-groups-workflow-' ~ workflow.entity ~ workflow.transition) }}"
+                    data-token="{{ csrf_token('guard') }}"
                 ></guard-workflowgroups>
             </td>
             {% for group in groups %}
@@ -57,7 +57,7 @@
                             data-groupe="{{ group.code|e }}"
                             data-entity="{{ workflow.entity|e }}"
                             data-transition="{{ workflow.transition|e }}"
-                            data-token="{{ csrf_token('guard-'~ group.id ~'-workflow-' ~ workflow.entity ~ workflow.transition) }}"
+                            data-token="{{ csrf_token('guard') }}"
                         ></guard-workflowsetgroup>
                     {% else %}
                         ---

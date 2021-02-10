@@ -8,27 +8,19 @@
                 Transition
             </th>
             <th rowspan=2>
-                Actions
+                Groupe {{ user.groupe.name }}
             </th>
-            {% for group in groups %}
-                <th>
-                    {{ group.name }}
-                </th>
-            {% endfor %}
+            <th>
+                {{ user.username }}
+            </th>
         </tr>
         <tr>
-            {% for group in groups %}
-                <th>
-                    {% if 'superadmin' != group.code %}
-                        <guard-workflowgroup
-                            data-state=0
-                            data-token="{{ csrf_token('guard-group-workflow-' ~ group.id) }}"
-                        ></guard-workflowgroup>
-                    {% else %}
-                        ----
-                    {% endif %}
-                </th>
-            {% endfor %}
+            <th>
+                <guard-workflowuser
+                    data-state=0
+                    data-token="{{ csrf_token('guard') }}"
+                ></guard-workflowuser>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -41,33 +33,23 @@
                 {{ workflow.transition }}
             </td>
             <td>
-                 <guard-workflowgroups
+                <guard-refgroup
+                    data-entity="{{ workflow.entity|e }}"
+                    data-transition="{{ workflow.transition|e }}"
+                ></guard-refgroup>
+            </td>
+            <td>
+                <guard-workflowsetgroup
                     data-state=0
                     data-entity="{{ workflow.entity|e }}"
                     data-transition="{{ workflow.transition|e }}"
-                    data-token="{{ csrf_token('guard-groups-workflow-' ~ workflow.entity ~ workflow.transition) }}"
-                ></guard-workflowgroups>
+                    data-token="{{ csrf_token('guard') }}"
+                ></guard-workflowsetgroup>
             </td>
-            {% for group in groups %}
-                <td>
-                    {% if 'superadmin' != group.code %}
-                        <guard-workflowsetgroup
-                            title="{{ group.name|e }}"
-                            data-state=0
-                            data-groupe="{{ group.code|e }}"
-                            data-entity="{{ workflow.entity|e }}"
-                            data-transition="{{ workflow.transition|e }}"
-                            data-token="{{ csrf_token('guard-'~ group.id ~'-workflow-' ~ workflow.entity ~ workflow.transition) }}"
-                        ></guard-workflowsetgroup>
-                    {% else %}
-                        ---
-                    {% endif %}
-                </td>
-            {% endfor %}
         </tr>
     {% else %}
             <tr>
-                <td colspan="{{ groups|length+3 }}" class="text-center">no records found</td>
+                <td colspan="4" class="text-center">no records found</td>
             </tr>
     {% endfor %}
     </tbody>

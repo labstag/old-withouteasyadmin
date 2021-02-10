@@ -7,6 +7,7 @@ use Labstag\Entity\Groupe;
 use Labstag\Form\Admin\GroupeType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -91,7 +92,10 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/{id}/guard", name="admin_groupuser_guard")
      */
-    public function guard(Groupe $groupe): Response
+    public function guard(
+        Groupe $groupe,
+        WorkflowRepository $workflowRepo
+    ): Response
     {
         $breadcrumb = [
             'Guard' => $this->generateUrl(
@@ -137,6 +141,7 @@ class GroupeController extends AdminControllerLib
             [
                 'group'  => $groupe,
                 'routes' => $routes,
+                'workflows' => $workflowRepo->findBy([], ['entity' => 'ASC', 'transition' => 'ASC']),
             ]
         );
     }
