@@ -144,8 +144,8 @@ class UserController extends AdminControllerLib
         return $this->render(
             'admin/guard/user.html.twig',
             [
-                'user'   => $user,
-                'routes' => $routes,
+                'user'      => $user,
+                'routes'    => $routes,
                 'workflows' => $workflowRepo->findBy([], ['entity' => 'ASC', 'transition' => 'ASC']),
             ]
         );

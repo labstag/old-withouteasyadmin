@@ -139,8 +139,8 @@ class GroupeController extends AdminControllerLib
         return $this->render(
             'admin/guard/group.html.twig',
             [
-                'group'  => $groupe,
-                'routes' => $routes,
+                'group'     => $groupe,
+                'routes'    => $routes,
                 'workflows' => $workflowRepo->findBy([], ['entity' => 'ASC', 'transition' => 'ASC']),
             ]
         );
