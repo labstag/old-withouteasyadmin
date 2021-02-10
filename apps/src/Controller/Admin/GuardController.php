@@ -21,8 +21,7 @@ class GuardController extends AdminControllerLib
         RouteRepository $routeRepo,
         GroupeRepository $groupeRepo,
         WorkflowRepository $workflowRepo
-    ): Response
-    {
+    ): Response {
         $this->headerTitle = 'Droits';
         $this->urlHome     = 'admin_guard_index';
 
