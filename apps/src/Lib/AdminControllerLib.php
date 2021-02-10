@@ -322,6 +322,26 @@ abstract class AdminControllerLib extends ControllerLib
             ],
             'destroies'
         );
+
+        $this->btnInstance->addRestoreSelection(
+            [
+                'redirect' => [
+                    'href'   => $this->request->get('_route'),
+                    'params' => [],
+                ],
+                'url'      => [
+                    'href'   => 'api_action_restories',
+                    'params' => [
+                        'entity' => str_replace(
+                            'Labstag\\Entity\\',
+                            '',
+                            $repository->getClassName()
+                        ),
+                    ],
+                ],
+            ],
+            'restories'
+        );
     }
 
     public function modalAttachmentDelete(): void

@@ -36,6 +36,10 @@ export class SelectElement extends HTMLElement {
     if (linkBtnAdminDeletiesElement !== null) {
       linkBtnAdminDeletiesElement.style.display = (selectElement.length !== 0) ? 'block' : 'none'
     }
+    const linkBtnAdminRestoriesElement = document.querySelector('link-btnadminrestories')
+    if (linkBtnAdminRestoriesElement !== null) {
+      linkBtnAdminRestoriesElement.style.display = (selectElement.length !== 0) ? 'block' : 'none'
+    }
   }
 
   onChange (event) {

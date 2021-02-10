@@ -156,6 +156,19 @@ class ActionsController extends ApiControllerLib
     }
 
     /**
+     * @Route("/restories/{entity}", name="api_action_restories", methods={"POST"})
+     * @IgnoreSoftDelete
+     *
+     * @return Response
+     */
+    public function restories(string $entity): JsonResponse
+    {
+        unset($entity);
+
+        return new JsonResponse([]);
+    }
+
+    /**
      * @Route("/restore/{entity}/{id}", name="api_action_restore", methods={"POST"})
      * @IgnoreSoftDelete
      *
@@ -191,7 +204,7 @@ class ActionsController extends ApiControllerLib
     }
 
     /**
-     * @Route("/destroy/{entity}", name="api_action_destroies", methods={"DELETE"})
+     * @Route("/destroies/{entity}", name="api_action_destroies", methods={"DELETE"})
      * @IgnoreSoftDelete
      *
      * @return Response
@@ -199,6 +212,7 @@ class ActionsController extends ApiControllerLib
     public function destroies(string $entity): JsonResponse
     {
         unset($entity);
+
         return new JsonResponse([]);
     }
 
@@ -244,13 +258,14 @@ class ActionsController extends ApiControllerLib
     }
 
     /**
-     * @Route("/delete/{entity}/", name="api_action_deleties", methods={"DELETE"})
+     * @Route("/deleties/{entity}/", name="api_action_deleties", methods={"DELETE"})
      *
      * @return Response
      */
     public function deleties(string $entity): JsonResponse
     {
         unset($entity);
+
         return new JsonResponse([]);
     }
 

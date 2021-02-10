@@ -138,6 +138,7 @@ legend {
 #emptiesModal,
 #emptyallModal,
 #restoreModal,
+#restoriesModal,
 #workflowModal {
   @extend .modal;
   @extend .fade;
@@ -172,7 +173,8 @@ legend {
     }
   }
 
-  .confirm-restore {
+  .confirm-restore,
+  .confirm-restories {
     @extend .btn;
     @extend .btn-outline-danger;
 

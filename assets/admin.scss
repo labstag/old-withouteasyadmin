@@ -58,7 +58,8 @@ a {
   @extend .fa-trash;
 }
 
-.btn-admin-header-restore {
+.btn-admin-header-restore,
+.btn-admin-header-restories {
   @extend .fas;
   @extend .fa-trash-restore;
 }
@@ -68,16 +69,8 @@ a {
   @extend .fa-trash;
 }
 
-.btn-admin-header-empty {
-  @extend .fas;
-  @extend .fa-trash;
-}
-
-.btn-admin-header-emptyall {
-  @extend .fas;
-  @extend .fa-trash;
-}
-
+.btn-admin-header-empty,
+.btn-admin-header-emptyall,
 .btn-admin-header-empties {
   @extend .fas;
   @extend .fa-trash;
