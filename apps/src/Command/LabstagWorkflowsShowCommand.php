@@ -40,7 +40,7 @@ class LabstagWorkflowsShowCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('Add a short description for your command');
+        $this->setDescription('Ajout des workflows en base de données');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
