@@ -3,11 +3,20 @@ export class AttachmentImg extends HTMLElement {
     super()
     const title = this.dataset.name
     this.classList.add('attachment-img')
-    if (this.dataset.url === '#') {
-      this.innerHTML = `<fieldset><legend>${title}</legend><img /></fieldset>`
-    } else {
-      this.innerHTML = `<fieldset><legend>${title}</legend><img /><br /><attachment-delete></attachment-delete></fieldset>`
+    const fieldsetElement = document.createElement('fieldset')
+    const legendElement = document.createElement('legend')
+    legendElement.append(document.createTextNode(title))
+    fieldsetElement.append(legendElement)
+    const imgElement = document.createElement('img')
+    fieldsetElement.append(imgElement)
+    if (this.dataset.url !== '#') {
+      const brElement = document.createElement('br')
+      fieldsetElement.append(brElement)
+      const attachmentDeleteElement = document.createElement('attachment-delete')
+      fieldsetElement.append(attachmentDeleteElement)
     }
+
+    this.append(fieldsetElement)
 
     const imgs = this.getElementsByTagName('img')
     const img = imgs[imgs.length - 1]

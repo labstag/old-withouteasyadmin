@@ -3,7 +3,14 @@ export class GuardGroup extends HTMLElement {
     super()
     this.classList.add('guard-group')
     const uuid = this.uuidv4()
-    this.innerHTML = '<input type="checkbox" id="' + uuid + '"><label for="' + uuid + '">&nbsp;</label>'
+    const inputElement = document.createElement('input')
+    inputElement.setAttribute('type', 'checkbox')
+    inputElement.setAttribute('id', uuid)
+    const labelElement = document.createElement('label')
+    labelElement.setAttribute('for', uuid)
+    labelElement.append(document.createTextNode('&nbsp;'))
+    this.append(inputElement)
+    this.append(labelElement)
     const checkboxs = this.getElementsByTagName('input')
     this.checkbox = checkboxs[0]
     this.token = this.dataset.token

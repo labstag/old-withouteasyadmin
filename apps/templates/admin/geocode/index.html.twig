@@ -1,7 +1,13 @@
 {% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/geocode/layout.html.twig' %}
 {% block body %}
-    <table is="table-datatable">
+    <table
+        is="table-datatable"
+        data-action="Actions"
+        data-multiple
+        data-multipleall="Tout sélectionner"
+        data-multipleelement="Selection"
+    >
         <thead>
             <tr>
                 <th>CountryCode</th>
@@ -21,7 +27,7 @@
         </thead>
         <tbody>
         {% for entity in pagination %}
-            <tr>
+            <tr data-id="{{ entity.id }}">
                 <td>
                     <span class="flag-icon flag-icon-{{ entity.countryCode|lower }}"></span>
                     {{ entity.countryCode|country_name('fr') }}

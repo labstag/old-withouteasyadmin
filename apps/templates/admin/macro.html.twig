@@ -81,7 +81,7 @@
     {% endif %}
 {% endmacro %}
 {% macro restore(entity, urlDelete, urlList) %}
-    {% set title = "Restore"|trans %}
+    {% set title = "Restaurer"|trans %}
     {% set state1 = guard_route(urlDelete) %}
     {% set state2 = guard_route(urlList) %}
     {% if state1 == true and state2 == true %}

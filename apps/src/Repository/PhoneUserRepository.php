@@ -4,9 +4,13 @@ namespace Labstag\Repository;
 
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Annotation\Trashable;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
 
+/**
+ * @Trashable(url="admin_phoneuser_trash")
+ */
 class PhoneUserRepository extends PhoneRepository
 {
     public function __construct(ManagerRegistry $registry)
