@@ -4,8 +4,12 @@ namespace Labstag\Repository;
 
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Annotation\Trashable;
 use Labstag\Entity\LienUser;
 
+/**
+ * @Trashable(url="admin_lienuser_trash")
+ */
 class LienUserRepository extends LienRepository
 {
     public function __construct(ManagerRegistry $registry)

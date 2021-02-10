@@ -131,10 +131,14 @@ legend {
 }
 
 #deleteModal,
+#deletiesModal,
 #deleteAttachmentModal,
 #destroyModal,
 #emptyModal,
+#emptiesModal,
+#emptyallModal,
 #restoreModal,
+#restoriesModal,
 #workflowModal {
   @extend .modal;
   @extend .fade;
@@ -154,8 +158,11 @@ legend {
   }
 
   .confirm-delete,
+  .confirm-deleties,
   .confirm-destroy,
   .confirm-empty,
+  .confirm-empties,
+  .confirm-emptyall,
   .confirm-deleteattachment {
     @extend .btn;
     @extend .btn-outline-danger;
@@ -166,7 +173,8 @@ legend {
     }
   }
 
-  .confirm-restore {
+  .confirm-restore,
+  .confirm-restories {
     @extend .btn;
     @extend .btn-outline-danger;
 

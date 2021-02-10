@@ -35,7 +35,7 @@ a {
   @extend .justify-content-center;
 }
 
-.ListBtnAdmin {
+.list-btn-admin {
   @extend .btn-group;
   @extend .btn-group-lg;
 
@@ -58,7 +58,8 @@ a {
   @extend .fa-trash;
 }
 
-.btn-admin-header-restore {
+.btn-admin-header-restore,
+.btn-admin-header-restories {
   @extend .fas;
   @extend .fa-trash-restore;
 }
@@ -68,7 +69,9 @@ a {
   @extend .fa-trash;
 }
 
-.btn-admin-header-empty {
+.btn-admin-header-empty,
+.btn-admin-header-emptyall,
+.btn-admin-header-empties {
   @extend .fas;
   @extend .fa-trash;
 }
@@ -83,7 +86,8 @@ a {
   @extend .fa-edit;
 }
 
-.btn-admin-header-delete {
+.btn-admin-header-delete,
+.btn-admin-header-deleties {
   @extend .far;
   @extend .fa-trash-alt;
 }
@@ -137,6 +141,21 @@ a {
   }
 }
 
+.link-trash {
+  @extend .btn;
+  @extend .btn-outline-success;
+  @extend .btn-sm;
+
+  i {
+    @extend .fas;
+    @extend .fa-trash;
+  }
+
+  span {
+    display: none;
+  }
+}
+
 .link-show {
   @extend .btn;
   @extend .btn-outline-primary;
@@ -160,6 +179,21 @@ a {
   i {
     @extend .fas;
     @extend .fa-edit;
+  }
+
+  span {
+    display: none;
+  }
+}
+
+.link-empty {
+  @extend .btn;
+  @extend .btn-outline-danger;
+  @extend .btn-sm;
+
+  i {
+    @extend .fas;
+    @extend .fa-trash-restore;
   }
 
   span {

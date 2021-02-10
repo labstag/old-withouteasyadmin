@@ -33,7 +33,9 @@ export class GuardUsers extends HTMLTableElement {
             if (refgroup.dataset.route === element.route) {
               check = 'OK'
             }
-            refgroup.innerHTML = '<span class="check' + check + '"></span>'
+            const spanElement = document.createElement('span')
+            spanElement.setAttribute('class', 'check' + check)
+            refgroup.append(spanElement)
           }
         )
       }

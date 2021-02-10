@@ -302,6 +302,50 @@ abstract class AdminControllerLib extends ControllerLib
                 true
             );
         }
+
+        $this->btnInstance->addViderSelection(
+            [
+                'redirect' => [
+                    'href'   => $this->request->get('_route'),
+                    'params' => [],
+                ],
+                'url'      => [
+                    'href'   => 'api_action_destroies',
+                    'params' => [
+                        'entity' => strtolower(
+                            str_replace(
+                                'Labstag\\Entity\\',
+                                '',
+                                $repository->getClassName()
+                            )
+                        ),
+                    ],
+                ],
+            ],
+            'destroies'
+        );
+
+        $this->btnInstance->addRestoreSelection(
+            [
+                'redirect' => [
+                    'href'   => $this->request->get('_route'),
+                    'params' => [],
+                ],
+                'url'      => [
+                    'href'   => 'api_action_restories',
+                    'params' => [
+                        'entity' => strtolower(
+                            str_replace(
+                                'Labstag\\Entity\\',
+                                '',
+                                $repository->getClassName()
+                            )
+                        ),
+                    ],
+                ],
+            ],
+            'restories'
+        );
     }
 
     public function modalAttachmentDelete(): void
@@ -339,6 +383,13 @@ abstract class AdminControllerLib extends ControllerLib
         }
     }
 
+    protected function isRouteEnable(string $route)
+    {
+        $token = $this->token->getToken();
+
+        return $this->guardService->guardRoute($route, $token);
+    }
+
     public function listOrTrash(
         ServiceEntityRepositoryLib $repository,
         array $methods,
@@ -360,6 +411,30 @@ abstract class AdminControllerLib extends ControllerLib
         if (isset($url['new']) && 'trash' != $routeType) {
             $this->btnInstance->addBtnNew(
                 $url['new']
+            );
+        }
+
+        if ('trash' != $routeType) {
+            $this->btnInstance->addSupprimerSelection(
+                [
+                    'redirect' => [
+                        'href'   => $this->request->get('_route'),
+                        'params' => [],
+                    ],
+                    'url'      => [
+                        'href'   => 'api_action_deleties',
+                        'params' => [
+                            'entity' => strtolower(
+                                str_replace(
+                                    'Labstag\\Entity\\',
+                                    '',
+                                    $repository->getClassName()
+                                )
+                            ),
+                        ],
+                    ],
+                ],
+                'deleties'
             );
         }
 
