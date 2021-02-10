@@ -47,9 +47,6 @@ node_modules: package-lock.json
 dump:
 	@mkdir dump
 
-mariadb_data:
-	@mkdir mariadb_data
-
 apps/composer.lock: apps/composer.json
 	$(DOCKER_EXECPHP) make composer.lock
 
@@ -170,7 +167,7 @@ else
 	@echo "build: créer les assets en version prod"
 endif
 
-folders: mariadb_data dump ## Create folder
+folders: dump ## Create folder
 
 env: apps/.env ## Scripts Installation environnement
 ifeq ($(COMMAND_ARGS),dev)
