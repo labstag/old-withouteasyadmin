@@ -191,7 +191,7 @@ class GuardRouteController extends ApiControllerLib
         RouteGroupeRequestHandler $routeGroupeRH
     )
     {
-        $data        = [
+        $data = [
             'delete' => 0,
             'add'    => 0,
             'error'  => '',
@@ -199,6 +199,7 @@ class GuardRouteController extends ApiControllerLib
         if ('superadmin' == $group->getCode()) {
             return new JsonResponse($data);
         }
+
         $state       = $request->request->get('state');
         $routeGroupe = $routeGroupeRepo->findOneBy(['refgroupe' => $group, 'refroute' => $route]);
         if ('0' === $state) {
@@ -286,7 +287,7 @@ class GuardRouteController extends ApiControllerLib
         RouteUserRequestHandler $routeUserRH
     )
     {
-        $data      = [
+        $data = [
             'delete' => 0,
             'add'    => 0,
             'error'  => '',
@@ -294,6 +295,7 @@ class GuardRouteController extends ApiControllerLib
         if ('superadmin' == $user->getGroupe()->getCode()) {
             return new JsonResponse($data);
         }
+
         $state     = $request->request->get('state');
         $routeUser = $routeUserRepo->findOneBy(['refuser' => $user, 'refroute' => $route]);
         if ('0' === $state) {
