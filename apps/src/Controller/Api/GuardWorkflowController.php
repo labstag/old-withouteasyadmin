@@ -8,9 +8,9 @@ use Labstag\Entity\Workflow;
 use Labstag\Entity\WorkflowGroupe;
 use Labstag\Entity\WorkflowUser;
 use Labstag\Lib\ApiControllerLib;
+use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\Repository\WorkflowGroupeRepository;
-use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\Repository\WorkflowUserRepository;
 use Labstag\RequestHandler\WorkflowGroupeRequestHandler;
@@ -167,7 +167,7 @@ class GuardWorkflowController extends ApiControllerLib
             $workflowGroupe = $workflowGroupeRepo->findOneBy(['refgroupe' => $group, 'refworkflow' => $workflow]);
             if (!$workflowGroupe instanceof WorkflowGroupe) {
                 $workflowGroupe = new WorkflowGroupe();
-                $data['add'] = 1;
+                $data['add']    = 1;
                 $workflowGroupe->setRefgroupe($group);
                 $workflowGroupe->setRefworkflow($workflow);
                 $old = clone $workflowGroupe;
@@ -199,7 +199,7 @@ class GuardWorkflowController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $state       = $request->request->get('state');
+        $state          = $request->request->get('state');
         $workflowGroupe = $workflowGroupeRepo->findOneBy(['refgroupe' => $group, 'refworkflow' => $workflow]);
         if ('0' === $state) {
             if ($workflowGroupe instanceof WorkflowGroupe) {
@@ -213,7 +213,7 @@ class GuardWorkflowController extends ApiControllerLib
 
         if (!$workflowGroupe instanceof WorkflowGroupe) {
             $workflowGroupe = new WorkflowGroupe();
-            $data['add'] = 1;
+            $data['add']    = 1;
             $workflowGroupe->setRefgroupe($group);
             $workflowGroupe->setRefworkflow($workflow);
             $old = clone $workflowGroupe;
@@ -258,12 +258,12 @@ class GuardWorkflowController extends ApiControllerLib
         }
 
         $workflows = $workflowRepo->findAll();
-        /** @var WorkflowUser $route */
+        /* @var WorkflowUser $route */
         foreach ($workflows as $workflow) {
             $workflowUser = $workflowUserRepo->findOneBy(['refuser' => $user, 'refworkflow' => $workflow]);
             if (!$workflowUser instanceof WorkflowUser) {
-                $data['add'] = 1;
-                $workflowUser   = new WorkflowUser();
+                $data['add']  = 1;
+                $workflowUser = new WorkflowUser();
                 $workflowUser->setRefuser($user);
                 $workflowUser->setRefworkflow($workflow);
                 $old = clone $workflowUser;
@@ -295,7 +295,7 @@ class GuardWorkflowController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $state     = $request->request->get('state');
+        $state        = $request->request->get('state');
         $workflowUser = $workflowUserRepo->findOneBy(['refuser' => $user, 'refworkflow' => $workflow]);
         if ('0' === $state) {
             if ($workflowUser instanceof WorkflowUser) {
@@ -308,8 +308,8 @@ class GuardWorkflowController extends ApiControllerLib
         }
 
         if (!$workflowUser instanceof WorkflowUser) {
-            $workflowUser   = new WorkflowUser();
-            $data['add'] = 1;
+            $workflowUser = new WorkflowUser();
+            $data['add']  = 1;
             $workflowUser->setRefuser($user);
             $workflowUser->setRefworkflow($workflow);
             $old = clone $workflowUser;
