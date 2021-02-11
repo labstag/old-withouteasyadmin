@@ -72,6 +72,7 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
 
             $stategroupe = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
             $event->setBlocked(!$stategroupe);
+
             return;
         }
 

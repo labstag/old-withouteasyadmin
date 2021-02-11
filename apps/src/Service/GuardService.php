@@ -233,8 +233,9 @@ class GuardService
     protected function searchRouteUser(User $user, string $route): bool
     {
         $stateGroupe = $this->searchRouteGroupe($user->getGroupe(), $route);
-        $entity = $this->routeUserRepo->findRoute($user, $route);
-        $stateUser = ($entity instanceof RouteUser) ? $entity->isState() : false;
+        $entity      = $this->routeUserRepo->findRoute($user, $route);
+        $stateUser   = ($entity instanceof RouteUser) ? $entity->isState() : false;
+
         return $stateGroupe || $stateUser;
     }
 
