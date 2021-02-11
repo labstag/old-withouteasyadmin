@@ -181,7 +181,6 @@ class ActionsController extends ApiControllerLib
         foreach ($entities as $id) {
             try {
                 $entity = $repository->find($id);
-                dump($entity);
                 $this->restoreEntity($entity);
             } catch (Exception $exception) {
                 $error[] = $exception->getMessage();

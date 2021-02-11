@@ -30,7 +30,6 @@ abstract class PhoneType extends AbstractType
         $optionsInput = [];
         if (array_key_exists('data', $options)) {
             /* @var PhoneUser $phoneuser */
-            dd($options);
             $phoneUser = $options['data'];
             $country   = $phoneUser->getCountry();
             $number    = $phoneUser->getNumero();
