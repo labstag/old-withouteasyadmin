@@ -70,18 +70,7 @@ class LabstagWorkflowsShowCommand extends Command
             }
         }
 
-        $toDelete = $this->workflowRepository->toDeleteEntities($entities);
-        foreach ($toDelete as $entity) {
-            $this->entityManager->remove($entity);
-        }
-
-        foreach ($data as $entity => $transitions) {
-            $toDelete = $this->workflowRepository->toDeleteTransition($entity, $transitions);
-            foreach ($toDelete as $entity) {
-                $this->entityManager->remove($entity);
-            }
-        }
-
+        $this->delete($entities, $data);
         $this->entityManager->flush();
         foreach ($data as $name => $transitions) {
             foreach ($transitions as $transition) {
@@ -96,5 +85,20 @@ class LabstagWorkflowsShowCommand extends Command
         $inputOutput->success('Fin de traitement');
 
         return Command::SUCCESS;
+    }
+
+    private function delete($entities, $data)
+    {
+        $toDelete = $this->workflowRepository->toDeleteEntities($entities);
+        foreach ($toDelete as $entity) {
+            $this->entityManager->remove($entity);
+        }
+
+        foreach ($data as $entity => $transitions) {
+            $toDelete = $this->workflowRepository->toDeleteTransition($entity, $transitions);
+            foreach ($toDelete as $entity) {
+                $this->entityManager->remove($entity);
+            }
+        }
     }
 }

@@ -52,11 +52,9 @@ class GuardRouteController extends ApiControllerLib
                     'route' => $row->getRefroute()->getName(),
                 ];
             }
-
-            $results = $routeGroupeRepo->findEnable($user->getGroupe());
-        } else {
-            $results = $routeGroupeRepo->findEnable();
         }
+
+        $results = $this->getResultWorkflow($request, $userRepository, $routeGroupeRepo);
 
         foreach ($results as $row) {
             /* @var RouteGroupe $row */
@@ -67,6 +65,18 @@ class GuardRouteController extends ApiControllerLib
         }
 
         return new JsonResponse($data);
+    }
+
+    private function getResultWorkflow($request, $userRepository, $routeGroupeRepo)
+    {
+        $get = $request->query->all();
+        if (array_key_exists('user', $get)) {
+            $user = $userRepository->find($get['user']);
+
+            return $routeGroupeRepo->findEnable($user->getGroupe());
+        }
+
+        return $routeGroupeRepo->findEnable();
     }
 
     /**
@@ -186,6 +196,9 @@ class GuardRouteController extends ApiControllerLib
             'add'    => 0,
             'error'  => '',
         ];
+        if ('superadmin' == $group->getCode()) {
+            return new JsonResponse($data);
+        }
         $state       = $request->request->get('state');
         $routeGroupe = $routeGroupeRepo->findOneBy(['refgroupe' => $group, 'refroute' => $route]);
         if ('0' === $state) {
@@ -278,6 +291,9 @@ class GuardRouteController extends ApiControllerLib
             'add'    => 0,
             'error'  => '',
         ];
+        if ('superadmin' == $user->getGroupe()->getCode()) {
+            return new JsonResponse($data);
+        }
         $state     = $request->request->get('state');
         $routeUser = $routeUserRepo->findOneBy(['refuser' => $user, 'refroute' => $route]);
         if ('0' === $state) {

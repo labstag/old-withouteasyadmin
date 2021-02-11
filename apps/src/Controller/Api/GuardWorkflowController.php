@@ -48,12 +48,9 @@ class GuardWorkflowController extends ApiControllerLib
                     'transition' => $row->getRefworkflow()->getTransition(),
                 ];
             }
-
-            $results = $workflowGroupeRepo->findEnable($user->getGroupe());
-        } else {
-            $results = $workflowGroupeRepo->findEnable();
         }
 
+        $results = $this->getResultWorkflow($request, $workflowGroupeRepo, $userRepository);
         foreach ($results as $row) {
             /* @var WorkflowGroupe $row */
             $data['group'][] = [
@@ -63,6 +60,18 @@ class GuardWorkflowController extends ApiControllerLib
         }
 
         return new JsonResponse($data);
+    }
+
+    private function getResultWorkflow($request, $workflowGroupeRepo, $userRepository)
+    {
+        $get = $request->query->all();
+        if (array_key_exists('user', $get)) {
+            $user = $userRepository->find($get['user']);
+
+            return $workflowGroupeRepo->findEnable($user->getGroupe());
+        }
+
+        return $workflowGroupeRepo->findEnable();
     }
 
     /**
