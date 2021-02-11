@@ -1,14 +1,14 @@
-export class GuardGroup extends HTMLElement {
+export class GuardSet extends HTMLElement {
   constructor () {
     super()
-    this.classList.add('guard-group')
+    this.classList.add('guard-set')
     const uuid = this.uuidv4()
     const inputElement = document.createElement('input')
     inputElement.setAttribute('type', 'checkbox')
     inputElement.setAttribute('id', uuid)
     const labelElement = document.createElement('label')
     labelElement.setAttribute('for', uuid)
-    labelElement.append(document.createTextNode('&nbsp;'))
+    labelElement.innerHTML = '&nbsp;'
     this.append(inputElement)
     this.append(labelElement)
     const checkboxs = this.getElementsByTagName('input')
@@ -33,7 +33,8 @@ export class GuardGroup extends HTMLElement {
   }
 
   changeState () {
-    this.checkbox.checked = (this.dataset.state === '1')
+    const input = this.querySelector('input')
+    input.checked = (this.dataset.state === '1')
   }
 
   onChange (element) {
@@ -48,9 +49,15 @@ export class GuardGroup extends HTMLElement {
       },
       body: urlSearchParams
     }
-    fetch(this.dataset.url, options).catch((err) => {
+    fetch(this.dataset.url, options).then(() => {
+      this.refresh()
+    }).catch((err) => {
       console.log(err)
     })
+  }
+
+  refresh () {
+    this.closest('table').dataset.refresh = 1
   }
 
   uuidv4 () {

@@ -28,14 +28,14 @@ class AttachmentController extends ApiControllerLib
     public function profilAvatar(UserRequestHandler $userRequestHandler): JsonResponse
     {
         $return = [
-            'state'   => false,
-            'message' => '',
+            'state' => false,
+            'error' => '',
         ];
         $token  = $this->token->getToken();
         $entity = $token->getUser();
         $token  = $this->verifToken($entity);
         if (!$token) {
-            $return['message'] = 'Token incorrect';
+            $return['error'] = 'Token incorrect';
 
             return new JsonResponse($return);
         }
@@ -58,12 +58,12 @@ class AttachmentController extends ApiControllerLib
     public function userAvatar(User $entity, UserRequestHandler $userRequestHandler): JsonResponse
     {
         $return = [
-            'state'   => false,
-            'message' => '',
+            'state' => false,
+            'error' => '',
         ];
         $token  = $this->verifToken($entity);
         if (!$token) {
-            $return['message'] = 'Token incorrect';
+            $return['error'] = 'Token incorrect';
 
             return new JsonResponse($return);
         }
@@ -86,12 +86,12 @@ class AttachmentController extends ApiControllerLib
     public function editoFond(Edito $entity, EditoRequestHandler $editoRH): JsonResponse
     {
         $return = [
-            'state'   => false,
-            'message' => '',
+            'state' => false,
+            'error' => '',
         ];
         $token  = $this->verifToken($entity);
         if (!$token) {
-            $return['message'] = 'Token incorrect';
+            $return['error'] = 'Token incorrect';
 
             return new JsonResponse($return);
         }
@@ -114,12 +114,12 @@ class AttachmentController extends ApiControllerLib
     public function noteinterneFond(NoteInterne $entity, NoteInterneRequestHandler $noteInterneRH): JsonResponse
     {
         $return = [
-            'state'   => false,
-            'message' => '',
+            'state' => false,
+            'error' => '',
         ];
         $token  = $this->verifToken($entity);
         if (!$token) {
-            $return['message'] = 'Token incorrect';
+            $return['error'] = 'Token incorrect';
 
             return new JsonResponse($return);
         }

@@ -26,12 +26,12 @@ class ActionsController extends ApiControllerLib
     public function empties(Request $request): JsonResponse
     {
         $data       = [
-            'action'  => false,
-            'message' => '',
+            'action' => false,
+            'error'  => '',
         ];
         $tokenValid = $this->apiActionsService->verifToken('empties');
         if (!$tokenValid) {
-            $data['message'] = 'token incorrect';
+            $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
         }
@@ -47,7 +47,7 @@ class ActionsController extends ApiControllerLib
             }
         }
 
-        $data['message'] = $error;
+        $data['error'] = $error;
         if (0 === count($error)) {
             $data['action'] = true;
         }
@@ -66,17 +66,17 @@ class ActionsController extends ApiControllerLib
         $tokenValid = $this->apiActionsService->verifToken('emptyall');
 
         $data = [
-            'action'  => false,
-            'message' => '',
+            'action' => false,
+            'error'  => '',
         ];
         if (!$tokenValid) {
-            $data['message'] = 'token incorrect';
+            $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
         }
 
-        $error           = $this->deleteAll($trashService);
-        $data['message'] = $error;
+        $error         = $this->deleteAll($trashService);
+        $data['error'] = $error;
         if (0 === count($error)) {
             $data['action'] = true;
         }
@@ -129,13 +129,13 @@ class ActionsController extends ApiControllerLib
     public function empty(string $entity): JsonResponse
     {
         $data       = [
-            'action'  => false,
-            'message' => '',
+            'action' => false,
+            'error'  => '',
         ];
         $repository = $this->apiActionsService->getRepository($entity);
         $tokenValid = $this->apiActionsService->verifToken('empty');
         if (!$tokenValid) {
-            $data['message'] = 'token incorrect';
+            $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
         }
@@ -164,13 +164,13 @@ class ActionsController extends ApiControllerLib
     public function restories(string $entity, Request $request): JsonResponse
     {
         $data = [
-            'action'  => false,
-            'message' => '',
+            'action' => false,
+            'error'  => '',
         ];
 
         $tokenValid = $this->apiActionsService->verifToken('restories');
         if (!$tokenValid) {
-            $data['message'] = 'token incorrect';
+            $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
         }
@@ -216,20 +216,20 @@ class ActionsController extends ApiControllerLib
     public function restore(string $entity, string $id): JsonResponse
     {
         $data       = [
-            'action'  => false,
-            'message' => '',
+            'action' => false,
+            'error'  => '',
         ];
         $repository = $this->apiActionsService->getRepository($entity);
         $entity     = $repository->find($id);
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
-            $data['message'] = 'entité inconnu';
+            $data['error'] = 'entité inconnu';
 
             return new JsonResponse($data);
         }
 
         $tokenValid = $this->apiActionsService->verifToken('restore', $entity);
         if (!$tokenValid) {
-            $data['message'] = 'token incorrect';
+            $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
         }
@@ -249,13 +249,13 @@ class ActionsController extends ApiControllerLib
     public function destroies(string $entity, Request $request): JsonResponse
     {
         $data = [
-            'action'  => false,
-            'message' => '',
+            'action' => false,
+            'error'  => '',
         ];
 
         $tokenValid = $this->apiActionsService->verifToken('destroies');
         if (!$tokenValid) {
-            $data['message'] = 'token incorrect';
+            $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
         }
@@ -307,20 +307,20 @@ class ActionsController extends ApiControllerLib
     public function destroy(string $entity, string $id): JsonResponse
     {
         $data       = [
-            'action'  => false,
-            'message' => '',
+            'action' => false,
+            'error'  => '',
         ];
         $repository = $this->apiActionsService->getRepository($entity);
         $entity     = $repository->find($id);
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
-            $data['message'] = 'entité inconnu';
+            $data['error'] = 'entité inconnu';
 
             return new JsonResponse($data);
         }
 
         $tokenValid = $this->apiActionsService->verifToken('destroy', $entity);
         if (!$tokenValid) {
-            $data['message'] = 'token incorrect';
+            $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
         }
@@ -339,13 +339,13 @@ class ActionsController extends ApiControllerLib
     public function deleties(string $entity, Request $request): JsonResponse
     {
         $data = [
-            'action'  => false,
-            'message' => '',
+            'action' => false,
+            'error'  => '',
         ];
 
         $tokenValid = $this->apiActionsService->verifToken('deleties');
         if (!$tokenValid) {
-            $data['message'] = 'token incorrect';
+            $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
         }
@@ -390,20 +390,20 @@ class ActionsController extends ApiControllerLib
     public function delete(string $entity, string $id): JsonResponse
     {
         $data       = [
-            'action'  => false,
-            'message' => '',
+            'action' => false,
+            'error'  => '',
         ];
         $repository = $this->apiActionsService->getRepository($entity);
         $entity     = $repository->find($id);
         if (is_null($entity) || !is_null($entity->getDeletedAt())) {
-            $data['message'] = 'entité inconnu';
+            $data['error'] = 'entité inconnu';
 
             return new JsonResponse($data);
         }
 
         $tokenValid = $this->apiActionsService->verifToken('delete', $entity);
         if (!$tokenValid) {
-            $data['message'] = 'token incorrect';
+            $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
         }
@@ -420,21 +420,21 @@ class ActionsController extends ApiControllerLib
     public function workflow(string $entity, string $state, string $id): Response
     {
         $data       = [
-            'action'  => false,
-            'message' => '',
+            'action' => false,
+            'error'  => '',
         ];
         $repository = $this->apiActionsService->getRepository($entity);
         $entity     = $repository->find($id);
         $this->denyAccessUnlessGranted('workflow-'.$state, $entity);
         if (is_null($entity)) {
-            $data['message'] = 'entité inconnu';
+            $data['error'] = 'entité inconnu';
 
             return new JsonResponse($data);
         }
 
         $tokenValid = $this->apiActionsService->verifToken('workflow-'.$state, $entity);
         if (!$tokenValid) {
-            $data['message'] = 'token incorrect';
+            $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
         }
