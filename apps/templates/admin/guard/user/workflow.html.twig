@@ -1,4 +1,4 @@
-<table is="guard-workflow" data-url="{{ path('api_guard_route', {'user' : user.id}) }}">
+<table is="guard-workflow" data-url="{{ path('api_guard_workflow', {'user' : user.id}) }}" data-refresh=0>
     <thead>
         <tr>
             <th rowspan=2>
@@ -16,11 +16,11 @@
         </tr>
         <tr>
             <th>
-                <guard-workflowuser
+                <guard-set
                     data-state=0
                     data-token="{{ csrf_token('guard') }}"
                     data-url="{{ path('api_guard_workflowuser', {'user' : user.id}) }}"
-                ></guard-workflowuser>
+                ></guard-set>
             </th>
         </tr>
     </thead>
@@ -35,18 +35,20 @@
             </td>
             <td>
                 <guard-refgroup
+                    data-state=0
+                    data-group="{{ user.groupe.code }}"
                     data-entity="{{ workflow.entity|e }}"
                     data-transition="{{ workflow.transition|e }}"
                 ></guard-refgroup>
             </td>
             <td>
-                <guard-workflowsetuser
+                <guard-set
                     data-state=0
                     data-entity="{{ workflow.entity|e }}"
                     data-transition="{{ workflow.transition|e }}"
                     data-token="{{ csrf_token('guard') }}"
-                    data-url="{{ path('api_guard_workflowsetuser', {'user' : user.id, 'entity' : workflow.entity, 'transition': workflow.transition}) }}"
-                ></guard-workflowsetuser>
+                    data-url="{{ path('api_guard_workflowsetuser', {'user' : user.id, 'workflow' : workflow.id}) }}"
+                ></guard-set>
             </td>
         </tr>
     {% else %}
