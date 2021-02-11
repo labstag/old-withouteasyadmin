@@ -2,7 +2,8 @@ export class WorkflowAction extends HTMLElement {
   connectedCallback () {
     this.classList.add('workflow-action')
     const iElement = document.createElement('i')
-    this.append(iElement)
+    this.innerHTML = '&nbsp;'
+    this.prepend(iElement)
     this.append(document.createTextNode(this.dataset.name))
     this.dataset.toggle = 'modal'
     this.dataset.target = '#workflowModal'
