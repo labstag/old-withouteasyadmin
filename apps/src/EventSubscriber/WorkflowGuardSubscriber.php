@@ -38,18 +38,17 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
         $this->groupeRepo         = $groupeRepo;
         $this->workflowUserRepo   = $workflowUserRepo;
         $this->workflowGroupeRepo = $workflowGroupeRepo;
-        $this->token                    = $token;
+        $this->token              = $token;
     }
 
     public function onWorkflowAttachmentGuard(GuardEvent $event)
     {
-
         $stategroupe = false;
         $stateuser   = false;
-        $token      = $this->token->getToken();
-        $name       = $event->getWorkflowName();
-        $transition = $event->getTransition()->getName();
-        $workflow   = $this->workflowRepo->findOneBy(
+        $token       = $this->token->getToken();
+        $name        = $event->getWorkflowName();
+        $transition  = $event->getTransition()->getName();
+        $workflow    = $this->workflowRepo->findOneBy(
             [
                 'entity'     => $name,
                 'transition' => $transition,
@@ -57,7 +56,7 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
         );
 
         if (is_null($token)) {
-            $groupe = $this->groupeRepo->findOneBy(['code' => 'visiteur']);
+            $groupe         = $this->groupeRepo->findOneBy(['code' => 'visiteur']);
             $workflowGroupe = $this->workflowGroupeRepo->findOneBy(
                 [
                     'refgroupe'   => $groupe,
@@ -65,16 +64,15 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
                 ]
             );
 
-            $stategroupe    = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
+            $stategroupe = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
             $event->setBlocked(!$stategroupe);
             return;
         }
 
         /** @var User $user */
-        print_r(get_class($token));
         $user = $token->getUser();
         if (!$user instanceof User) {
-            $groupe = $this->groupeRepo->findOneBy(['code' => 'visiteur']);
+            $groupe         = $this->groupeRepo->findOneBy(['code' => 'visiteur']);
             $workflowGroupe = $this->workflowGroupeRepo->findOneBy(
                 [
                     'refgroupe'   => $groupe,
@@ -82,7 +80,7 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
                 ]
             );
 
-            $stategroupe    = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
+            $stategroupe = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
             $event->setBlocked(!$stategroupe);
             return;
         }
