@@ -2,7 +2,16 @@
 
 namespace Labstag\Controller\Api;
 
+use Labstag\Entity\Groupe;
+use Labstag\Entity\User;
+use Labstag\Entity\Workflow;
+use Labstag\Entity\WorkflowUser;
 use Labstag\Lib\ApiControllerLib;
+use Labstag\Repository\UserRepository;
+use Labstag\Repository\WorkflowGroupeRepository;
+use Labstag\Repository\WorkflowUserRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -10,13 +19,50 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class GuardWorkflowController extends ApiControllerLib
 {
-
     /**
      * @Route("/", name="api_guard_workflow")
      */
-    public function index()
+    public function index(
+        WorkflowGroupeRepository $workflowGroupeRepo,
+        WorkflowUserRepository $workflowUserRepo,
+        UserRepository $userRepository,
+        Request $request
+    )
     {
+        $data = [
+            'group' => [],
+        ];
+        $get  = $request->query->all();
+        if (array_key_exists('user', $get)) {
+            $data['user'] = [];
+            $user         = $userRepository->find($get['user']);
+            if (!$user instanceof User) {
+                return new JsonResponse($data);
+            }
 
+            $results = $workflowUserRepo->findEnable($user);
+            foreach ($results as $row) {
+                /* @var WorkflowUser $row */
+                $data['user'][] = [
+                    'entity'     => $row->getRefworkflow()->getEntity(),
+                    'transition' => $row->getRefworkflow()->getTransition(),
+                ];
+            }
+
+            $results = $workflowGroupeRepo->findEnable($user->getGroupe());
+        } else {
+            $results = $workflowGroupeRepo->findEnable();
+        }
+
+        foreach ($results as $row) {
+            /* @var WorkflowGroupe $row */
+            $data['group'][] = [
+                'entity'     => $row->getRefworkflow()->getEntity(),
+                'transition' => $row->getRefworkflow()->getTransition(),
+            ];
+        }
+
+        return new JsonResponse($data);
     }
 
     /**
@@ -25,45 +71,52 @@ class GuardWorkflowController extends ApiControllerLib
     public function group(Groupe $group)
     {
         unset($group);
+        $data = [];
+
+        return new JsonResponse($data);
     }
 
     /**
-     * @Route("/groups/{entity}/{transition}", name="api_guard_workflowgroups", methods={"POST"})
+     * @Route("/groups/{workflow}", name="api_guard_workflowgroups", methods={"POST"})
      */
-    public function groups(string $entity, string $transition)
+    public function groups(Workflow $workflow)
     {
-        unset($entity, $transition);
+        unset($workflow);
+        $data = [];
+
+        return new JsonResponse($data);
     }
 
     /**
-     * @Route("/setgroup/{group}/{entity}/{transition}", name="api_guard_workflowsetgroup", methods={"POST"})
+     * @Route("/setgroup/{group}/{workflow}", name="api_guard_workflowsetgroup", methods={"POST"})
      */
-    public function setgroup(string $group, string $entity, string $transition)
+    public function setgroup(Groupe $group, Workflow $workflow)
     {
-        unset($group, $entity, $transition);
+        unset($group, $workflow);
+        $data = [];
+
+        return new JsonResponse($data);
     }
 
     /**
-     * @Route("/user", name="api_guard_workflowuser", methods={"POST"})
+     * @Route("/user/{user}", name="api_guard_workflowuser", methods={"POST"})
      */
-    public function user()
+    public function user(User $user)
     {
+        unset($user);
+        $data = [];
 
+        return new JsonResponse($data);
     }
 
     /**
-     * @Route("/groups", name="api_guard_workflowusers", methods={"POST"})
+     * @Route("/setuser/{user}/{workflow]", name="api_guard_workflowsetuser", methods={"POST"})
      */
-    public function users()
+    public function setuser(User $user, Workflow $workflow)
     {
+        unset($user, $workflow);
+        $data = [];
 
-    }
-
-    /**
-     * @Route("/setgroup", name="api_guard_workflowsetuser", methods={"POST"})
-     */
-    public function setuser()
-    {
-
+        return new JsonResponse($data);
     }
 }

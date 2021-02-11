@@ -70,9 +70,16 @@ class LabstagWorkflowsShowCommand extends Command
             }
         }
 
-        $toDelete = $this->workflowRepository->toDelete($entities);
+        $toDelete = $this->workflowRepository->toDeleteEntities($entities);
         foreach ($toDelete as $entity) {
             $this->entityManager->remove($entity);
+        }
+
+        foreach ($data as $entity => $transitions) {
+            $toDelete = $this->workflowRepository->toDeleteTransition($entity, $transitions);
+            foreach ($toDelete as $entity) {
+                $this->entityManager->remove($entity);
+            }
         }
 
         $this->entityManager->flush();
