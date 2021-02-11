@@ -149,7 +149,7 @@ class GuardWorkflowController extends ApiControllerLib
         ];
         $state = $request->request->get('state');
         if ('0' === $state) {
-            foreach ($route->getGroupes() as $workflowGroupe) {
+            foreach ($workflow->getGroupes() as $workflowGroupe) {
                 $data['delete'] = 1;
                 $this->entityManager->remove($workflowGroupe);
                 $this->entityManager->flush();
