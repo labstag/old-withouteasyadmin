@@ -20,11 +20,11 @@
             {% for group in groups %}
                 <th>
                     {% if 'superadmin' != group.code %}
-                        <guard-set
+                        <guard-changeworkflow
                             data-state=0
                             data-url="{{ path('api_guard_workflowgroup', {'group' : group.id}) }}"
                             data-token="{{ csrf_token('guard') }}"
-                        ></guard-set>
+                        ></guard-changeworkflow>
                     {% else %}
                         ----
                     {% endif %}
@@ -42,26 +42,24 @@
                 {{ workflow.transition }}
             </td>
             <td>
-                 <guard-set
+                 <guard-allworkflow
                     data-state=0
-                    data-entity="{{ workflow.entity|e }}"
-                    data-transition="{{ workflow.transition|e }}"
                     data-url="{{ path('api_guard_workflowgroups', {'workflow' : workflow.id}) }}"
                     data-token="{{ csrf_token('guard') }}"
-                ></guard-set>
+                ></guard-allworkflow>
             </td>
             {% for group in groups %}
                 <td>
                     {% if 'superadmin' != group.code %}
-                        <guard-set
+                        <guard-setworkflow
                             title="{{ group.name|e }}"
                             data-state=0
                             data-groupe="{{ group.code|e }}"
                             data-entity="{{ workflow.entity|e }}"
                             data-transition="{{ workflow.transition|e }}"
-                        data-url="{{ path('api_guard_workflowsetgroup', {'group' : group.id, 'workflow' : workflow.id}) }}"
+                            data-url="{{ path('api_guard_workflowsetgroup', {'group' : group.id, 'workflow' : workflow.id}) }}"
                             data-token="{{ csrf_token('guard') }}"
-                        ></guard-set>
+                        ></guard-setworkflow>
                     {% else %}
                         ---
                     {% endif %}

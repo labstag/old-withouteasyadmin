@@ -74,11 +74,14 @@ class LabstagWorkflowsShowCommand extends Command
         $this->entityManager->flush();
         foreach ($data as $name => $transitions) {
             foreach ($transitions as $transition) {
-                $workflow = new Workflow();
-                $workflow->setEntity($name);
-                $workflow->setTransition($transition);
-                $old = clone $workflow;
-                $this->workflowRH->handle($old, $workflow);
+                $workflow = $this->workflowRepository->findOneBy(['entity' => $name, 'transition' => $transition]);
+                if (!$workflow instanceof Workflow) {
+                    $workflow = new Workflow();
+                    $workflow->setEntity($name);
+                    $workflow->setTransition($transition);
+                    $old = clone $workflow;
+                    $this->workflowRH->handle($old, $workflow);
+                }
             }
         }
 

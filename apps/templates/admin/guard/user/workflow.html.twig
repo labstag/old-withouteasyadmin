@@ -16,11 +16,11 @@
         </tr>
         <tr>
             <th>
-                <guard-set
+                <guard-changeworkflow
                     data-state=0
                     data-token="{{ csrf_token('guard') }}"
                     data-url="{{ path('api_guard_workflowuser', {'user' : user.id}) }}"
-                ></guard-set>
+                ></guard-changeworkflow>
             </th>
         </tr>
     </thead>
@@ -34,21 +34,21 @@
                 {{ workflow.transition }}
             </td>
             <td>
-                <guard-refgroup
+                <guard-refgroupworkflow
                     data-state=0
-                    data-group="{{ user.groupe.code }}"
+                    data-group="{{ user.groupe.code|e }}"
                     data-entity="{{ workflow.entity|e }}"
                     data-transition="{{ workflow.transition|e }}"
-                ></guard-refgroup>
+                ></guard-refgroupworkflow>
             </td>
             <td>
-                <guard-set
+                <guard-setworkflow
                     data-state=0
                     data-entity="{{ workflow.entity|e }}"
                     data-transition="{{ workflow.transition|e }}"
                     data-token="{{ csrf_token('guard') }}"
                     data-url="{{ path('api_guard_workflowsetuser', {'user' : user.id, 'workflow' : workflow.id}) }}"
-                ></guard-set>
+                ></guard-setworkflow>
             </td>
         </tr>
     {% else %}

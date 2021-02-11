@@ -5,11 +5,14 @@ namespace Labstag\Controller\Api;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Entity\Workflow;
+use Labstag\Entity\WorkflowGroupe;
 use Labstag\Entity\WorkflowUser;
 use Labstag\Lib\ApiControllerLib;
 use Labstag\Repository\UserRepository;
 use Labstag\Repository\WorkflowGroupeRepository;
+use Labstag\Repository\WorkflowRepository;
 use Labstag\Repository\WorkflowUserRepository;
+use Labstag\RequestHandler\WorkflowGroupeRequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,6 +57,7 @@ class GuardWorkflowController extends ApiControllerLib
         foreach ($results as $row) {
             /* @var WorkflowGroupe $row */
             $data['group'][] = [
+                'groupe'     => $row->getRefgroupe()->getCode(),
                 'entity'     => $row->getRefworkflow()->getEntity(),
                 'transition' => $row->getRefworkflow()->getTransition(),
             ];
@@ -77,10 +81,50 @@ class GuardWorkflowController extends ApiControllerLib
     /**
      * @Route("/group/{group}", name="api_guard_workflowgroup", methods={"POST"})
      */
-    public function group(Groupe $group)
+    public function group(
+        Request $request,
+        Groupe $group,
+        WorkflowRepository $workflowRepo,
+        WorkflowGroupeRepository $workflowGroupeRepo,
+        WorkflowGroupeRequestHandler $workflowGroupeRH
+    )
     {
-        unset($group);
-        $data = [];
+        $data = [
+            'delete' => 0,
+            'add'    => 0,
+            'error'  => '',
+        ];
+        if ('superadmin' == $group->getCode()) {
+            return new JsonResponse($data);
+        }
+
+        $state = $request->request->get('state');
+        if ('0' === $state) {
+            $toDelete = $workflowGroupeRepo->findBy(['refgroupe' => $group]);
+            foreach ($toDelete as $entity) {
+                $data['delete'] = 1;
+                $this->entityManager->remove($entity);
+            }
+
+            $this->entityManager->flush();
+
+            return new JsonResponse($data);
+        }
+
+        $workflows = $workflowRepo->findAll();
+        /* @var EntityRoute $route */
+        foreach ($workflows as $workflow) {
+            $workflowGroupe = $workflowGroupeRepo->findOneBy(['refgroupe' => $group, 'refworkflow' => $workflow]);
+            if (!$workflowGroupe instanceof WorkflowGroupe) {
+                $workflowGroupe = new WorkflowGroupe();
+                $data['add']    = 1;
+                $workflowGroupe->setRefgroupe($group);
+                $workflowGroupe->setRefworkflow($workflow);
+                $old = clone $workflowGroupe;
+                $workflowGroupe->setState($state);
+                $workflowGroupeRH->handle($old, $workflowGroupe);
+            }
+        }
 
         return new JsonResponse($data);
     }

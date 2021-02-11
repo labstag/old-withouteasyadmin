@@ -30,46 +30,35 @@ export class GuardWorkflow extends HTMLTableElement {
   }
 
   fetchResponse (response) {
-    console.log(response)
-    // if (response.group !== undefined) {
-    //   const refgroup = document.getElementsByTagName('guard-refgroup')
-    //   if (refgroup.length !== 0 && response.group.length !== 0) {
-    //     response.group.forEach(
-    //       element => {
-    //         refgroup.forEach(
-    //           refgroup => {
-    //             refgroup.dataset.state = (refgroup.dataset.group === element.groupe && refgroup.dataset.transition === element.transition && refgroup.dataset.entity === element.entity) ? 1 : 0
-    //           }
-    //         )
-    //       }
-    //     )
-    //   }
-    //   const guardWorkflowSetGroups = document.getElementsByTagName('guard-workflowetgroup')
-    //   if (guardWorkflowSetGroups.length !== 0 && response.group.length !== 0) {
-    //     response.group.forEach(
-    //       element => {
-    //         guardWorkflowSetGroups.forEach(
-    //           guardWorkflowSetGroup => {
-    //             guardWorkflowSetGroup.dataset.state = (guardWorkflowSetGroup.dataset.groupe === element.groupe && guardWorkflowSetGroup.dataset.transition === element.transition && guardWorkflowSetGroup.dataset.entity === element.entity) ? 1 : 0
-    //           }
-    //         )
-    //       }
-    //     )
-    //   }
-    // }
-    // if (response.user !== undefined) {
-    //   const guardWorkflowSetUsers = document.getElementsByTagName('guard-workflowetuser')
-    //   if (guardWorkflowSetUsers.length !== 0 && response.user.length !== 0) {
-    //     response.user.forEach(
-    //       element => {
-    //         guardWorkflowSetUsers.forEach(
-    //           guardWorkflowSetUser => {
-    //             guardWorkflowSetUser.dataset.state = (guardWorkflowSetUser.dataset.transition === element.transition && guardWorkflowSetUser.dataset.entity === element.entity) ? 1 : 0
-    //           }
-    //         )
-    //       }
-    //     )
-    //   }
-    // }
+    const guardsets = document.getElementsByTagName('guard-setworkflow')
+    if (response.group !== undefined) {
+      const refgroups = document.getElementsByTagName('guard-refgroupworkflow')
+      if (refgroups.length !== 0 && response.group.length !== 0) {
+        refgroups.forEach(
+          refgroup => {
+            const data = response.group.filter(element => (refgroup.dataset.group === element.groupe && refgroup.dataset.transition === element.transition && refgroup.dataset.entity === element.entity))
+            refgroup.dataset.state = (data.length === 1) ? 1 : 0
+          }
+        )
+      }
+      if (response.group.length !== 0) {
+        guardsets.forEach(
+          guardset => {
+            const data = response.group.filter(element => (guardset.dataset.groupe === element.groupe && guardset.dataset.transition === element.transition && guardset.dataset.entity === element.entity))
+            guardset.dataset.state = (data.length === 1) ? 1 : 0
+          }
+        )
+      }
+    }
+    if (response.user !== undefined) {
+      if (response.user.length !== 0) {
+        guardsets.forEach(
+          guardset => {
+            const data = response.user.filter(element => (guardset.dataset.transition === element.transition && guardset.dataset.entity === element.entity))
+            guardset.dataset.state = (data.length === 1) ? 1 : 0
+          }
+        )
+      }
+    }
   }
 }

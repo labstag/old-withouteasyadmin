@@ -30,9 +30,9 @@ export class GuardRoute extends HTMLTableElement {
   }
 
   fetchResponse (response) {
-    const guardsets = document.getElementsByTagName('guard-set')
+    const guardsets = document.getElementsByTagName('guard-setroute')
     if (response.group !== undefined) {
-      const refgroups = document.getElementsByTagName('guard-refgroup')
+      const refgroups = document.getElementsByTagName('guard-refgrouproute')
       if (refgroups.length !== 0 && response.group.length !== 0) {
         refgroups.forEach(
           refgroup => {
