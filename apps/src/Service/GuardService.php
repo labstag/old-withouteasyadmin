@@ -5,6 +5,7 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Route;
+use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\RouteGroupeRepository;
@@ -231,17 +232,10 @@ class GuardService
 
     protected function searchRouteUser(User $user, string $route): bool
     {
-        $state = $this->searchRouteGroupe($user->getGroupe(), $route);
-        if (!$state) {
-            return false;
-        }
-
+        $stateGroupe = $this->searchRouteGroupe($user->getGroupe(), $route);
         $entity = $this->routeUserRepo->findRoute($user, $route);
-        if (empty($entity)) {
-            return false;
-        }
-
-        return $entity->isState();
+        $stateUser = ($entity instanceof RouteUser) ? $entity->isState() : false;
+        return $stateGroupe || $stateUser;
     }
 
     public function guardRoute($route, $token)

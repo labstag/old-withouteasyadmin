@@ -56,16 +56,6 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
         );
 
         if (is_null($token)) {
-            $groupe         = $this->groupeRepo->findOneBy(['code' => 'visiteur']);
-            $workflowGroupe = $this->workflowGroupeRepo->findOneBy(
-                [
-                    'refgroupe'   => $groupe,
-                    'refworkflow' => $workflow,
-                ]
-            );
-
-            $stategroupe = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
-            $event->setBlocked(!$stategroupe);
             return;
         }
 
