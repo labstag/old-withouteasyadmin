@@ -152,6 +152,7 @@ class LabstagUserCommand extends Command
 
     protected function create($helper, $inputOutput, InputInterface $input, OutputInterface $output)
     {
+        $inputOutput = new SymfonyStyle($input, $output);
         $user     = new User();
         $old      = clone $user;
         $question = new Question("Entrer le username de l'utilisateur : ");
@@ -159,8 +160,15 @@ class LabstagUserCommand extends Command
         $user->setUsername($username);
         $question = new Question("Entrer le password de l'utilisateur : ");
         $question->setHidden(true);
-        $password = $helper->ask($input, $output, $question);
-        $user->setPlainPassword($password);
+        $password1 = $helper->ask($input, $output, $question);
+        $question = new Question("Resaisir le password de l'utilisateur : ");
+        $question->setHidden(true);
+        $password2 = $helper->ask($input, $output, $question);
+        if ($password1 !== $password2) {
+            $inputOutput->error('Mot de passe incorrect');
+            return;
+        }
+        $user->setPlainPassword($password1);
         $question = new Question("Entrer l'email de l'utilisateur : ");
         $email    = $helper->ask($input, $output, $question);
         $user->setEmail($email);
