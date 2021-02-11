@@ -9,6 +9,7 @@ use Labstag\RequestHandler\WorkflowRequestHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class LabstagWorkflowsShowCommand extends Command
@@ -40,12 +41,13 @@ class LabstagWorkflowsShowCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('Add a short description for your command');
+        $this->setDescription('Ajout des workflows en base de données');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        unset($input, $output);
+        $inputOutput = new SymfonyStyle($input, $output);
+        $inputOutput->title('Ajout des workflows dans la base de données');
         $container = $this->getApplication()->getKernel()->getContainer();
         $list      = $container->getServiceIds();
         $workflows = [];
@@ -68,22 +70,38 @@ class LabstagWorkflowsShowCommand extends Command
             }
         }
 
-        $toDelete = $this->workflowRepository->toDelete($entities);
+        $this->delete($entities, $data);
+        $this->entityManager->flush();
+        foreach ($data as $name => $transitions) {
+            foreach ($transitions as $transition) {
+                $workflow = $this->workflowRepository->findOneBy(['entity' => $name, 'transition' => $transition]);
+                if (!$workflow instanceof Workflow) {
+                    $workflow = new Workflow();
+                    $workflow->setEntity($name);
+                    $workflow->setTransition($transition);
+                    $old = clone $workflow;
+                    $this->workflowRH->handle($old, $workflow);
+                }
+            }
+        }
+
+        $inputOutput->success('Fin de traitement');
+
+        return Command::SUCCESS;
+    }
+
+    private function delete($entities, $data)
+    {
+        $toDelete = $this->workflowRepository->toDeleteEntities($entities);
         foreach ($toDelete as $entity) {
             $this->entityManager->remove($entity);
         }
 
-        $this->entityManager->flush();
-        foreach ($data as $name => $transitions) {
-            foreach ($transitions as $transition) {
-                $workflow = new Workflow();
-                $workflow->setEntity($name);
-                $workflow->setTransition($transition);
-                $old = clone $workflow;
-                $this->workflowRH->handle($old, $workflow);
+        foreach ($data as $entity => $transitions) {
+            $toDelete = $this->workflowRepository->toDeleteTransition($entity, $transitions);
+            foreach ($toDelete as $entity) {
+                $this->entityManager->remove($entity);
             }
         }
-
-        return Command::SUCCESS;
     }
 }

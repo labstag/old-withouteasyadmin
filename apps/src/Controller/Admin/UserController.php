@@ -7,6 +7,7 @@ use Labstag\Entity\User;
 use Labstag\Form\Admin\UserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\UserRepository;
+use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -98,7 +99,10 @@ class UserController extends AdminControllerLib
     /**
      * @Route("/{id}/guard", name="admin_user_guard")
      */
-    public function guard(User $user): Response
+    public function guard(
+        User $user,
+        WorkflowRepository $workflowRepo
+    ): Response
     {
         $breadcrumb = [
             'Guard' => $this->generateUrl(
@@ -140,8 +144,9 @@ class UserController extends AdminControllerLib
         return $this->render(
             'admin/guard/user.html.twig',
             [
-                'user'   => $user,
-                'routes' => $routes,
+                'user'      => $user,
+                'routes'    => $routes,
+                'workflows' => $workflowRepo->findBy([], ['entity' => 'ASC', 'transition' => 'ASC']),
             ]
         );
     }

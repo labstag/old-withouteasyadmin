@@ -40,7 +40,7 @@ class GuardController extends ApiControllerLib
         $user  = $userRepo->findOneBy(['username' => $user]);
         $route = $this->routeRepo->findOneBy(['name' => $route]);
         if (empty($user) || empty($route) || !array_key_exists('_token', $post)) {
-            $data['message'] = 'Erreur de saisie';
+            $data['error'] = 'Erreur de saisie';
 
             return new JsonResponse($data);
         }
@@ -52,7 +52,7 @@ class GuardController extends ApiControllerLib
             $post['_token']
         );
         if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
-            $data['message'] = 'token incorrect';
+            $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
         }
@@ -169,7 +169,7 @@ class GuardController extends ApiControllerLib
         $groupe = $groupeRepo->findOneBy(['code' => $groupe]);
         $route  = $this->routeRepo->findOneBy(['name' => $route]);
         if (empty($groupe) || empty($route) || !array_key_exists('_token', $post)) {
-            $data['message'] = 'Erreur de saisie';
+            $data['error'] = 'Erreur de saisie';
 
             return new JsonResponse($data);
         }
@@ -181,7 +181,7 @@ class GuardController extends ApiControllerLib
             $post['_token']
         );
         if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
-            $data['message'] = 'token incorrect';
+            $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
         }
