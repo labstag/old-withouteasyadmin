@@ -59,7 +59,6 @@ trait MenuTrait
 
     protected function correctionMenu(MenuItem $menu)
     {
-        // dump(get_class_methods($menu));
         $data = $menu->getChildren();
         foreach ($data as $key => $row) {
             $extras = $row->getExtras();

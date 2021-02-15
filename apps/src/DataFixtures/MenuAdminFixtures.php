@@ -16,6 +16,12 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
     {
         $data = [
             [
+                'libelle' => 'Trash',
+                'data'    => [
+                    'attr' => ['data-href' => 'admin_trash'],
+                ],
+            ],
+            [
                 'libelle' => 'Param',
                 'data'    => [
                     'attr' => ['data-href' => 'admin_param'],

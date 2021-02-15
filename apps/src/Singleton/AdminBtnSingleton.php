@@ -74,8 +74,6 @@ class AdminBtnSingleton
         foreach ($routes as $route) {
             $state = $this->isRouteEnable($route);
             if (!$state) {
-                dump($route);
-
                 return false;
             }
         }
@@ -83,7 +81,7 @@ class AdminBtnSingleton
         return true;
     }
 
-    protected function add(
+    public function add(
         string $icon,
         string $text,
         array $attr = []
@@ -408,6 +406,123 @@ class AdminBtnSingleton
             'btn-admin-header-empty',
             $text,
             $attr
+        );
+
+        return $this;
+    }
+
+    public function addSupprimerSelection(
+        array $routes,
+        string $code,
+        string $title = 'Supprimer'
+    ): self
+    {
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        if (!array_key_exists('redirect', $routes)
+            || !array_key_exists('href', $routes['redirect'])
+            || !array_key_exists('params', $routes['redirect'])
+            || !$this->isRouteEnable($routes['redirect']['href'])
+            || !array_key_exists('url', $routes)
+            || !array_key_exists('href', $routes['url'])
+            || !array_key_exists('params', $routes['url'])
+            || !$this->isRouteEnable($routes['url']['href'])
+        ) {
+            return $this;
+        }
+
+        $this->twig->addGlobal(
+            'modalDeleties',
+            true
+        );
+        $this->add(
+            'btn-admin-header-deleties',
+            $title,
+            [
+                'is'            => 'link-btnadmindeleties',
+                'data-toggle'   => 'modal',
+                'data-target'   => '#deletiesModal',
+                'data-token'    => $token,
+                'data-redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
+                'data-url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+            ]
+        );
+
+        return $this;
+    }
+
+    public function addRestoreSelection(
+        array $routes,
+        string $code,
+        string $title = 'Restaurer'
+    ): self
+    {
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        if (!array_key_exists('redirect', $routes)
+            || !array_key_exists('href', $routes['redirect'])
+            || !array_key_exists('params', $routes['redirect'])
+            || !$this->isRouteEnable($routes['redirect']['href'])
+            || !array_key_exists('url', $routes)
+            || !array_key_exists('href', $routes['url'])
+            || !array_key_exists('params', $routes['url'])
+            || !$this->isRouteEnable($routes['url']['href'])
+        ) {
+            return $this;
+        }
+
+        $this->twig->addGlobal(
+            'modalRestories',
+            true
+        );
+        $this->add(
+            'btn-admin-header-restories',
+            $title,
+            [
+                'is'            => 'link-btnadminrestories',
+                'data-toggle'   => 'modal',
+                'data-token'    => $token,
+                'data-target'   => '#restoriesModal',
+                'data-redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
+                'data-url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+            ]
+        );
+
+        return $this;
+    }
+
+    public function addViderSelection(
+        array $routes,
+        string $code,
+        string $title = 'Supprimer'
+    ): self
+    {
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        if (!array_key_exists('redirect', $routes)
+            || !array_key_exists('href', $routes['redirect'])
+            || !array_key_exists('params', $routes['redirect'])
+            || !$this->isRouteEnable($routes['redirect']['href'])
+            || !array_key_exists('url', $routes)
+            || !array_key_exists('href', $routes['url'])
+            || !array_key_exists('params', $routes['url'])
+            || !$this->isRouteEnable($routes['url']['href'])
+        ) {
+            return $this;
+        }
+
+        $this->twig->addGlobal(
+            'modalEmpties',
+            true
+        );
+        $this->add(
+            'btn-admin-header-empties',
+            $title,
+            [
+                'is'            => 'link-btnadminempties',
+                'data-toggle'   => 'modal',
+                'data-token'    => $token,
+                'data-target'   => '#emptiesModal',
+                'data-redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
+                'data-url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+            ]
         );
 
         return $this;

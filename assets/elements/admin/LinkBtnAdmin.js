@@ -21,7 +21,7 @@ export class LinkBtnAdmin extends HTMLElement {
     }
 
     const spanElement = document.createElement('span')
-    spanElement.innerHTML = text
+    spanElement.append(document.createTextNode(text))
     aElement.append(spanElement)
 
     this.appendChild(aElement)

@@ -5,6 +5,7 @@ namespace Labstag\Controller\Admin;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\RouteRepository;
+use Labstag\Repository\WorkflowRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,7 +19,8 @@ class GuardController extends AdminControllerLib
      */
     public function index(
         RouteRepository $routeRepo,
-        GroupeRepository $groupeRepo
+        GroupeRepository $groupeRepo,
+        WorkflowRepository $workflowRepo
     ): Response
     {
         $this->headerTitle = 'Droits';
@@ -27,8 +29,9 @@ class GuardController extends AdminControllerLib
         return $this->render(
             'admin/guard/index.html.twig',
             [
-                'groups' => $groupeRepo->findBy([], ['name' => 'ASC']),
-                'all'    => $routeRepo->findBy([], ['name' => 'ASC']),
+                'groups'    => $groupeRepo->findBy([], ['name' => 'ASC']),
+                'routes'    => $routeRepo->findBy([], ['name' => 'ASC']),
+                'workflows' => $workflowRepo->findBy([], ['entity' => 'ASC', 'transition' => 'ASC']),
             ]
         );
     }

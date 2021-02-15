@@ -1,0 +1,323 @@
+<?php
+
+namespace Labstag\Controller\Api;
+
+use Labstag\Entity\Groupe;
+use Labstag\Entity\Route as EntityRoute;
+use Labstag\Entity\RouteGroupe;
+use Labstag\Entity\RouteUser;
+use Labstag\Entity\User;
+use Labstag\Lib\ApiControllerLib;
+use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\RouteGroupeRepository;
+use Labstag\Repository\RouteUserRepository;
+use Labstag\Repository\UserRepository;
+use Labstag\RequestHandler\RouteGroupeRequestHandler;
+use Labstag\RequestHandler\RouteUserRequestHandler;
+use Labstag\Service\GuardService;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/api/guard/route")
+ */
+class GuardRouteController extends ApiControllerLib
+{
+    /**
+     * @Route("/", name="api_guard_route")
+     */
+    public function index(
+        RouteGroupeRepository $routeGroupeRepo,
+        RouteUserRepository $routeUserRepo,
+        UserRepository $userRepository,
+        Request $request
+    )
+    {
+        $data = [
+            'group' => [],
+        ];
+        $get  = $request->query->all();
+        if (array_key_exists('user', $get)) {
+            $data['user'] = [];
+            $user         = $userRepository->find($get['user']);
+            if (!$user instanceof User) {
+                return new JsonResponse($data);
+            }
+
+            $results = $routeUserRepo->findEnable($user);
+            foreach ($results as $row) {
+                /* @var RouteUser $row */
+                $data['user'][] = [
+                    'route' => $row->getRefroute()->getName(),
+                ];
+            }
+        }
+
+        $results = $this->getResultWorkflow($request, $userRepository, $routeGroupeRepo);
+
+        foreach ($results as $row) {
+            /* @var RouteGroupe $row */
+            $data['group'][] = [
+                'groupe' => $row->getRefgroupe()->getCode(),
+                'route'  => $row->getRefroute()->getName(),
+            ];
+        }
+
+        return new JsonResponse($data);
+    }
+
+    private function getResultWorkflow($request, $userRepository, $routeGroupeRepo)
+    {
+        $get = $request->query->all();
+        if (array_key_exists('user', $get)) {
+            $user = $userRepository->find($get['user']);
+
+            return $routeGroupeRepo->findEnable($user->getGroupe());
+        }
+
+        return $routeGroupeRepo->findEnable();
+    }
+
+    /**
+     * @Route("/group/{group}", name="api_guard_routegroup", methods={"POST"})
+     */
+    public function group(
+        Groupe $group,
+        GuardService $guardService,
+        RouteGroupeRepository $routeGroupeRepo,
+        RouteGroupeRequestHandler $routeGroupeRH,
+        Request $request
+    )
+    {
+        $data = [
+            'delete' => 0,
+            'add'    => 0,
+            'error'  => '',
+        ];
+        if ('superadmin' == $group->getCode()) {
+            return new JsonResponse($data);
+        }
+
+        $state = $request->request->get('state');
+        if ('0' === $state) {
+            $toDelete = $routeGroupeRepo->findBy(['refgroupe' => $group]);
+            foreach ($toDelete as $entity) {
+                $data['delete'] = 1;
+                $this->entityManager->remove($entity);
+            }
+
+            $this->entityManager->flush();
+
+            return new JsonResponse($data);
+        }
+
+        $routes = $guardService->getGuardRoutesForGroupe($group);
+        /** @var EntityRoute $route */
+        foreach ($routes as $route) {
+            $routeGroupe = $routeGroupeRepo->findOneBy(['refgroupe' => $group, 'refroute' => $route]);
+            if (!$routeGroupe instanceof RouteGroupe) {
+                $routeGroupe = new RouteGroupe();
+                $data['add'] = 1;
+                $routeGroupe->setRefgroupe($group);
+                $routeGroupe->setRefroute($route);
+                $old = clone $routeGroupe;
+                $routeGroupe->setState($state);
+                $routeGroupeRH->handle($old, $routeGroupe);
+            }
+        }
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/groups/{route}", name="api_guard_routegroups", methods={"POST"})
+     */
+    public function groups(
+        EntityRoute $route,
+        GuardService $guardService,
+        GroupeRepository $groupeRepo,
+        RouteGroupeRepository $routeGroupeRepo,
+        RouteGroupeRequestHandler $routeGroupeRH,
+        Request $request
+    )
+    {
+        $data  = [
+            'delete' => 0,
+            'add'    => 0,
+            'error'  => '',
+        ];
+        $state = $request->request->get('state');
+        if ('0' === $state) {
+            foreach ($route->getGroupes() as $routeGroupe) {
+                $data['delete'] = 1;
+                $this->entityManager->remove($routeGroupe);
+                $this->entityManager->flush();
+            }
+
+            return new JsonResponse($data);
+        }
+
+        $groupes = $groupeRepo->findAll();
+        foreach ($groupes as $group) {
+            $enable = $guardService->guardRouteEnableGroupe($route->getName(), $group);
+            if ('superadmin' === $group->getCode() || !$enable) {
+                continue;
+            }
+
+            $routeGroupe = $routeGroupeRepo->findOneBy(['refgroupe' => $group, 'refroute' => $route]);
+            if (!$routeGroupe instanceof RouteGroupe) {
+                $routeGroupe = new RouteGroupe();
+                $data['add'] = 1;
+                $routeGroupe->setRefgroupe($group);
+                $routeGroupe->setRefroute($route);
+                $old = clone $routeGroupe;
+                $routeGroupe->setState($state);
+                $routeGroupeRH->handle($old, $routeGroupe);
+            }
+        }
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/setgroup/{group}/{route}", name="api_guard_routesetgroup", methods={"POST"})
+     */
+    public function setgroup(
+        Groupe $group,
+        EntityRoute $route,
+        Request $request,
+        RouteGroupeRepository $routeGroupeRepo,
+        RouteGroupeRequestHandler $routeGroupeRH
+    )
+    {
+        $data = [
+            'delete' => 0,
+            'add'    => 0,
+            'error'  => '',
+        ];
+        if ('superadmin' == $group->getCode()) {
+            return new JsonResponse($data);
+        }
+
+        $state       = $request->request->get('state');
+        $routeGroupe = $routeGroupeRepo->findOneBy(['refgroupe' => $group, 'refroute' => $route]);
+        if ('0' === $state) {
+            if ($routeGroupe instanceof RouteGroupe) {
+                $data['delete'] = 1;
+                $this->entityManager->remove($routeGroupe);
+                $this->entityManager->flush();
+            }
+
+            return new JsonResponse($data);
+        }
+
+        if (!$routeGroupe instanceof RouteGroupe) {
+            $routeGroupe = new RouteGroupe();
+            $data['add'] = 1;
+            $routeGroupe->setRefgroupe($group);
+            $routeGroupe->setRefroute($route);
+            $old = clone $routeGroupe;
+            $routeGroupe->setState($state);
+            $routeGroupeRH->handle($old, $routeGroupe);
+        }
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/user/{user}", name="api_guard_routeuser", methods={"POST"})
+     */
+    public function user(
+        User $user,
+        Request $request,
+        GuardService $guardService,
+        RouteUserRepository $routeUserRepo,
+        RouteUserRequestHandler $routeUserRH
+    )
+    {
+        $data = [
+            'delete' => 0,
+            'add'    => 0,
+            'error'  => '',
+        ];
+        if ('superadmin' == $user->getGroupe()->getCode()) {
+            return new JsonResponse($data);
+        }
+
+        $state = $request->request->get('state');
+        if ('0' === $state) {
+            $toDelete = $routeUserRepo->findBy(['refuser' => $user]);
+            foreach ($toDelete as $entity) {
+                $data['delete'] = 1;
+                $this->entityManager->remove($entity);
+            }
+
+            $this->entityManager->flush();
+
+            return new JsonResponse($data);
+        }
+
+        $routes = $guardService->getGuardRoutesForUser($user);
+        /** @var EntityRoute $route */
+        foreach ($routes as $route) {
+            $routeUser = $routeUserRepo->findOneBy(['refuser' => $user, 'refroute' => $route]);
+            if (!$routeUser instanceof RouteUser) {
+                $data['add'] = 1;
+                $routeUser   = new RouteUser();
+                $routeUser->setRefuser($user);
+                $routeUser->setRefroute($route);
+                $old = clone $routeUser;
+                $routeUser->setState($state);
+                $routeUserRH->handle($old, $routeUser);
+            }
+        }
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/setuser/{user}/{route}", name="api_guard_routesetuser", methods={"POST"})
+     */
+    public function setuser(
+        User $user,
+        EntityRoute $route,
+        Request $request,
+        RouteUserRepository $routeUserRepo,
+        RouteUserRequestHandler $routeUserRH
+    )
+    {
+        $data = [
+            'delete' => 0,
+            'add'    => 0,
+            'error'  => '',
+        ];
+        if ('superadmin' == $user->getGroupe()->getCode()) {
+            return new JsonResponse($data);
+        }
+
+        $state     = $request->request->get('state');
+        $routeUser = $routeUserRepo->findOneBy(['refuser' => $user, 'refroute' => $route]);
+        if ('0' === $state) {
+            if ($routeUser instanceof RouteUser) {
+                $data['delete'] = 1;
+                $this->entityManager->remove($routeUser);
+                $this->entityManager->flush();
+            }
+
+            return new JsonResponse($data);
+        }
+
+        if (!$routeUser instanceof RouteUser) {
+            $routeUser   = new RouteUser();
+            $data['add'] = 1;
+            $routeUser->setRefuser($user);
+            $routeUser->setRefroute($route);
+            $old = clone $routeUser;
+            $routeUser->setState($state);
+            $routeUserRH->handle($old, $routeUser);
+        }
+
+        return new JsonResponse($data);
+    }
+}

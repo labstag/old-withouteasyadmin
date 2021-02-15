@@ -1,4 +1,4 @@
-export class ModalConfirmDeleteAttachment extends HTMLButtonElement {
+export class ModalConfirmDeleteAttachment extends HTMLElement {
   constructor () {
     super()
     this.classList.add('confirm-deleteattachment')

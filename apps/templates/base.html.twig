@@ -23,11 +23,20 @@
             {% if modalEmpty is defined %}
                 {{ modal.empty() }}
             {% endif %}
+            {% if modalEmpties is defined %}
+                {{ modal.empties() }}
+            {% endif %}
+            {% if modalDeleties is defined %}
+                {{ modal.deleties() }}
+            {% endif %}
             {% if modalDestroy is defined %}
                 {{ modal.destroy() }}
             {% endif %}
             {% if modalRestore is defined %}
                 {{ modal.restore() }}
+            {% endif %}
+            {% if modalRestories is defined %}
+                {{ modal.restories() }}
             {% endif %}
             {% if modalWorkflow is defined %}
                 {{ modal.Workflow() }}

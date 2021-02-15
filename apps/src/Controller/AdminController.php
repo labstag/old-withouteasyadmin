@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller;
 
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ParamType;
@@ -9,6 +10,7 @@ use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
+use Labstag\Service\TrashService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +29,68 @@ class AdminController extends AdminControllerLib
     {
         return $this->render(
             'admin/index.html.twig'
+        );
+    }
+
+    /**
+     * @Route("/trash", name="admin_trash")
+     * @IgnoreSoftDelete
+     */
+    public function trash(TrashService $trashService): Response
+    {
+        $this->headerTitle = 'Trash';
+        $this->urlHome     = 'admin_trash';
+        $all               = $trashService->all();
+        if (0 == count($all)) {
+            $this->addFlash(
+                'danger',
+                'La corbeille est vide'
+            );
+
+            return $this->redirect($this->generateUrl('admin'));
+        }
+
+        $this->twig->addGlobal(
+            'modalEmpty',
+            true
+        );
+        $token = $this->csrfTokenManager->getToken('emptyall')->getValue();
+        if ($this->isRouteEnable('api_action_emptyall')) {
+            $this->twig->addGlobal(
+                'modalEmptyAll',
+                true
+            );
+            $this->btnInstance->add(
+                'btn-admin-header-emptyall',
+                'Tout vider',
+                [
+                    'is'            => 'link-btnadminemptyall',
+                    'data-toggle'   => 'modal',
+                    'data-target'   => '#emptyallModal',
+                    'data-token'    => $token,
+                    'data-redirect' => $this->router->generate('admin_trash'),
+                    'data-url'      => $this->router->generate('api_action_emptyall'),
+                ]
+            );
+        }
+
+        $this->btnInstance->addViderSelection(
+            [
+                'redirect' => [
+                    'href'   => 'admin_trash',
+                    'params' => [],
+                ],
+                'url'      => [
+                    'href'   => 'api_action_empties',
+                    'params' => [],
+                ],
+            ],
+            'empties'
+        );
+
+        return $this->render(
+            'admin/trash.html.twig',
+            ['trash' => $all]
         );
     }
 

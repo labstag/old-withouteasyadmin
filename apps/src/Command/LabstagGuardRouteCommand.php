@@ -21,13 +21,12 @@ class LabstagGuardRouteCommand extends Command
 
     public function __construct(
         GuardService $service,
-        GroupeRepository $repositoryGroupe,
-        ?string $name = null
+        GroupeRepository $repositoryGroupe
     )
     {
         $this->repositoryGroupe = $repositoryGroupe;
         $this->service          = $service;
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure()

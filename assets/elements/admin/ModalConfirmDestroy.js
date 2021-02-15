@@ -1,4 +1,4 @@
-export class ModalConfirmDestroy extends HTMLButtonElement {
+export class ModalConfirmDestroy extends HTMLElement {
   constructor () {
     super()
     this.classList.add('confirm-destroy')

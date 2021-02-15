@@ -5,8 +5,18 @@ export class LinkDestroy extends HTMLElement {
     this.classList.add('link-destroy')
     this.dataset.toggle = 'modal'
     this.dataset.target = '#destroyModal'
-    this.innerHTML = `<i title="${title}"></i><span>${title}</span>`
+    const iElement = document.createElement('i')
+    iElement.setAttribute('title', title)
+    const spanElement = document.createElement('span')
+    spanElement.append(document.createTextNode(title))
+    this.append(iElement)
+    this.append(spanElement)
     this.addEventListener('click', this.onClick)
+    const btnConfirm = document.querySelector('confirm-destroy')
+    if (btnConfirm !== null) {
+      return
+    }
+    this.remove()
   }
 
   onClick (element) {
@@ -14,7 +24,10 @@ export class LinkDestroy extends HTMLElement {
     const url = element.currentTarget.dataset.url
     const token = element.currentTarget.dataset.token
     const redirect = element.currentTarget.dataset.redirect
-    const btnConfirm = document.querySelector('.confirm-destroy')
+    const btnConfirm = document.querySelector('confirm-destroy')
+    if (btnConfirm === null) {
+      return
+    }
     btnConfirm.dataset.url = url
     btnConfirm.dataset.token = token
     btnConfirm.dataset.redirect = redirect
