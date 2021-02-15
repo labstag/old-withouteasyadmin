@@ -4,8 +4,12 @@ namespace Labstag\Repository;
 
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Annotation\Trashable;
 use Labstag\Entity\AdresseUser;
 
+/**
+ * @Trashable(url="admin_adresseuser_trash")
+ */
 class AdresseUserRepository extends AdresseRepository
 {
     public function __construct(ManagerRegistry $registry)

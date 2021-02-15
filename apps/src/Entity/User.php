@@ -146,6 +146,11 @@ class User implements UserInterface, Serializable
      */
     protected $file;
 
+    /**
+     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refuser")
+     */
+    private $workflowUsers;
+
     public function __construct()
     {
         $this->editos            = new ArrayCollection();
@@ -157,6 +162,7 @@ class User implements UserInterface, Serializable
         $this->oauthConnectUsers = new ArrayCollection();
         $this->roles             = ['ROLE_USER'];
         $this->routes            = new ArrayCollection();
+        $this->workflowUsers     = new ArrayCollection();
     }
 
     public function getState()
@@ -564,5 +570,35 @@ class User implements UserInterface, Serializable
             $this->id,
             $this->username,
             $this->password) = unserialize($serialized);
+    }
+
+    /**
+     * @return Collection|WorkflowUser[]
+     */
+    public function getWorkflowUsers(): Collection
+    {
+        return $this->workflowUsers;
+    }
+
+    public function addWorkflowUser(WorkflowUser $workflowUser): self
+    {
+        if (!$this->workflowUsers->contains($workflowUser)) {
+            $this->workflowUsers[] = $workflowUser;
+            $workflowUser->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWorkflowUser(WorkflowUser $workflowUser): self
+    {
+        if ($this->workflowUsers->removeElement($workflowUser)) {
+            // set the owning side to null (unless already changed)
+            if ($workflowUser->getRefuser() === $this) {
+                $workflowUser->setRefuser(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -1,19 +1,26 @@
 {% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/email_user/layout.html.twig' %}
 {% block body %}
-    <table is="table-datatable">
+    <table
+        is="table-datatable"
+        data-action="Actions"
+        data-multiple
+        data-multipleall="Tout sélectionner"
+        data-multipleelement="Selection"
+    >
         <thead>
             <tr>
                 <th>Adresse</th>
                 <th>Principal</th>
                 <th>User</th>
                 <th>State</th>
-                <th><i title="Actions"></i></th>
+                <th>Workflow</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
         {% for entity in pagination %}
-            <tr>
+            <tr data-id="{{ entity.id }}">
                 <td>{{ entity.adresse }}</td>
                 <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
                 <td>{{ entity.refuser }}</td>
@@ -23,12 +30,15 @@
                     {% endfor %}
                 </td>
                 <td>
+                    {{ macro_admin.workflow(entity, actions) }}
+                </td>
+                <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5" class="text-center">no records found</td>
+                <td colspan="6" class="text-center">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

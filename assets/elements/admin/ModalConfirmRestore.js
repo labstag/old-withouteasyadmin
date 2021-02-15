@@ -1,4 +1,4 @@
-export class ModalConfirmRestore extends HTMLButtonElement {
+export class ModalConfirmRestore extends HTMLElement {
   constructor () {
     super()
     this.classList.add('confirm-restore')

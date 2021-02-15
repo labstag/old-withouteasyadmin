@@ -434,10 +434,10 @@
 			{{ label|trans }}
             <div class="btn-group float-right" role="group">
                 {% if allow_add is defined and allow_add == true %}
-                    <btn-addcollection title="Ajouter" />
+                    <btn-addcollection title="Ajouter"></btn-addcollection>
                 {% endif %}
                 {% if element|default('label') == 'legend' and "collection" in form.vars.block_prefixes and "minmax" in row_attr %}
-                    <btn-togglefieldset />
+                    <btn-togglefieldset></btn-togglefieldset>
                 {% endif %}
             </div>
 		</{{ element|default('label') }}>

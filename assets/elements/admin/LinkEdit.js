@@ -9,7 +9,7 @@ export class LinkEdit extends HTMLElement {
     this.aElement.classList.add('link-edit')
     this.aElement.setAttribute('href', href)
     this.iElement.setAttribute('title', title)
-    this.spanElement.innerHTML = title
+    this.spanElement.append(document.createTextNode(title))
 
     this.aElement.append(this.iElement)
     this.appendChild(this.aElement)
