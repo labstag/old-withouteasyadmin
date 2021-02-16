@@ -57,37 +57,37 @@ jobs:
       - name: Install Composer dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: make composer dev
-  linter-readme:
+  linterreadme:
     runs-on: ${{ matrix.operating-system }}
     needs: install
     steps:
       - run: make linter readme
-  linter-stylelint:
+  linterstylelint:
     runs-on: ${{ matrix.operating-system }}
     needs: install
     steps:
       - run: make linter stylelint
-  linter-onlyerror:
+  linteronlyerror:
     runs-on: ${{ matrix.operating-system }}
     needs: install
     steps:
       - run: make linter phpcs-onlyerror
-  linter-phpmd:
+  linterphpmd:
     runs-on: ${{ matrix.operating-system }}
     needs: install
     steps:
       - run: make linter phpmd
-  linter-phpmnd:
+  linterphpmnd:
     runs-on: ${{ matrix.operating-system }}
     needs: install
     steps:
       - run: make linter phpmnd
-  linter-twig:
+  lintertwig:
     runs-on: ${{ matrix.operating-system }}
     needs: install
     steps:
       - run: make linter twig
-  linter-yaml:
+  linteryaml:
     runs-on: ${{ matrix.operating-system }}
     needs: install
     steps:
@@ -95,11 +95,11 @@ jobs:
   bdd-fixtures:
     runs-on: ${{ matrix.operating-system }}
     needs: 
-      -linter-stylelint
-      - linter-onlyerror
-      - linter-phpmd
-      - linter-phpmnd
-      - linter-twig
-      - linter-yaml
+      -linterstylelint
+      - linteronlyerror
+      - linterphpmd
+      - linterphpmnd
+      - lintertwig
+      - linteryaml
     
    
