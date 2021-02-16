@@ -1,14 +1,14 @@
 name: Continuous Integration
 on: [push]
 jobs:
+  runs-on: ${{ matrix.operating-system }}
+  strategy:
+    fail-fast: false
+    matrix:
+      operating-system: [ubuntu-20.04]
+      php-versions: ["7.4"]
   install:
     name: docker
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
-        php-versions: ["7.4"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -60,89 +60,41 @@ jobs:
         run: make composer dev
   linterreadme:
     name: docker
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
-        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter readme
   linterstylelint:
     name: docker
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
-        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter stylelint
   linteronlyerror:
     name: docker
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
-        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter phpcs-onlyerror
   linterphpmd:
     name: docker
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
-        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter phpmd
   linterphpmnd:
     name: docker
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
-        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter phpmnd
   lintertwig:
     name: docker
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
-        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter twig
   linteryaml:
     name: docker
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
-        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter yaml
   bddfixtures:
     name: docker
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
-        php-versions: ["7.4"]
     needs: 
       - linterstylelint
       - linteronlyerror
