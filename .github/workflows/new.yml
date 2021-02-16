@@ -104,16 +104,16 @@ jobs:
       matrix:
         operating-system: [ubuntu-20.04]
         php-versions: ["7.4"]
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
-        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter phpmnd
   lintertwig:
     runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-20.04]
+        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter twig
