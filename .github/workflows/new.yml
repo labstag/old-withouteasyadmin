@@ -59,26 +59,56 @@ jobs:
         run: make composer dev
   linterreadme:
     runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-20.04]
+        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter readme
   linterstylelint:
     runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-20.04]
+        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter stylelint
   linteronlyerror:
     runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-20.04]
+        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter phpcs-onlyerror
   linterphpmd:
     runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-20.04]
+        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter phpmd
   linterphpmnd:
     runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-20.04]
+        php-versions: ["7.4"]
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-20.04]
+        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter phpmnd
@@ -89,17 +119,29 @@ jobs:
       - run: make linter twig
   linteryaml:
     runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-20.04]
+        php-versions: ["7.4"]
     needs: install
     steps:
       - run: make linter yaml
-  bdd-fixtures:
+  bddfixtures:
     runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-20.04]
+        php-versions: ["7.4"]
     needs: 
-      -linterstylelint
+      - linterstylelint
       - linteronlyerror
       - linterphpmd
       - linterphpmnd
       - lintertwig
       - linteryaml
+    steps:
+      - run: make bdd migrate
     
    
