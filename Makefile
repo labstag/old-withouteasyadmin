@@ -1,3 +1,5 @@
+isDocker := $(shell docker info > /dev/null 2>&1 && echo 1)
+
 .DEFAULT_GOAL := help
 STACK         := labstag
 NETWORK       := proxynetwork
@@ -17,7 +19,7 @@ MARIADBFULLNAME := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $(MARI
 APACHE         := $(STACK)_apache
 APACHEFULLNAME := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
 
-PHPMYADMIN         := $(STACK)_phpmyadmin
+PMYADMIN         := $(STACK)_phpmyadmin
 PHPMYADMINFULLNAME := $(PHPMYADMIN).1.$$(docker service ps -f 'name=$(PHPMYADMIN)' $(PHPMYADMIN) -q --no-trunc | head -n1)
 
 PHPFPM         := $(STACK)_phpfpm
@@ -31,10 +33,9 @@ ifneq "$(SUPPORTS_MAKE_ARGS)" ""
   COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   $(eval $(COMMAND_ARGS):;@:)
 endif
-
-%:
 	@:
 
+.PHONY: help
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
@@ -47,6 +48,12 @@ node_modules: package-lock.json
 dump:
 	@mkdir dump
 
+isdocker: ## Docker is launch
+ifeq ($(isDocker), 0)
+	@echo "Docker is not launch"
+	exit 1
+endif
+
 apps/composer.lock: apps/composer.json
 	$(DOCKER_EXECPHP) make composer.lock
 
@@ -56,9 +63,11 @@ apps/vendor: apps/composer.lock
 apps/.env: apps/.env.dist ## Install .env
 	@cp apps/.env.dist apps/.env
 
+.PHONY: assets
 assets:
 	$(DOCKER_EXECPHP) make assets
 
+.PHONY: bdd
 bdd: ## Scripts for BDD
 ifeq ($(COMMAND_ARGS),fixtures)
 	$(DOCKER_EXECPHP) make bdd fixtures
@@ -76,6 +85,7 @@ else
 	@echo "validate: bdd validate"
 endif
 
+.PHONY: composer
 composer: ## Scripts for composer
 ifeq ($(COMMAND_ARGS),suggests)
 	$(DOCKER_EXECPHP) make composer suggests
@@ -108,6 +118,7 @@ else
 	@echo "validate: COMPOSER validate"
 endif
 
+.PHONY: contributors
 contributors: ## Contributors
 ifeq ($(COMMAND_ARGS),add)
 	@npm run contributors add
@@ -119,6 +130,7 @@ else
 	@npm run contributors
 endif
 
+.PHONY: docker
 docker: ## Scripts docker
 ifeq ($(COMMAND_ARGS),create-network)
 	@docker network create --driver=overlay $(NETWORK)
@@ -149,6 +161,7 @@ else
 	@echo "stop: docker stop"
 endif
 
+.PHONY: encore
 encore: ## Script for Encore
 ifeq ($(COMMAND_ARGS),dev)
 	@npm rebuild node-sass
@@ -167,8 +180,10 @@ else
 	@echo "build: créer les assets en version prod"
 endif
 
+.PHONY: folders
 folders: dump ## Create folder
 
+.PHONY: env
 env: apps/.env ## Scripts Installation environnement
 ifeq ($(COMMAND_ARGS),dev)
 	@sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
@@ -185,9 +200,11 @@ else
 	@echo "prod: environnement prod"
 endif
 
+.PHONY: geocode
 geocode: ## Geocode
 	$(DOCKER_EXECPHP) make geocode $(COMMAND_ARGS)
 
+.PHONY: git
 git: ## Scripts GIT
 ifeq ($(COMMAND_ARGS),commit)
 	@npm run commit
@@ -210,6 +227,7 @@ else
 	@echo "status: status"
 endif
 
+.PHONY: inspect
 inspect: ## docker service inspect
 ifeq ($(COMMAND_ARGS),redis)
 	@docker service inspect $(REDIS)
@@ -240,6 +258,7 @@ else
 	@echo "phpfpm: PHPFPM"
 endif
 
+.PHONY: install
 install: folders apps/.env ## installation
 ifeq ($(COMMAND_ARGS),all)
 	@make node_modules -i
@@ -262,6 +281,7 @@ else
 	@echo "dev: dev"
 endif
 
+.PHONY: linter
 linter: ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
 	@make linter phpfix -i
@@ -341,6 +361,7 @@ else
 	@echo "yaml: indique les erreurs de code de yaml"
 endif
 
+.PHONY: logs
 logs: ## Scripts logs
 ifeq ($(COMMAND_ARGS),stack)
 	@docker service logs -f --tail 100 --raw $(STACK)
@@ -373,6 +394,7 @@ else
 	@echo "phpfpm: PHPFPM"
 endif
 
+.PHONY: messenger
 messenger: ## Scripts messenger
 ifeq ($(COMMAND_ARGS),consule)
 	$(DOCKER_EXECPHP) make messenger consume
@@ -384,6 +406,7 @@ else
 	@echo "consume: Messenger Consume"
 endif
 
+.PHONY: update
 update: ## docker service update
 ifeq ($(COMMAND_ARGS),redis)
 	@docker service update $(REDIS)
@@ -414,9 +437,11 @@ else
 	@echo "phpfpm: PHPFPM"
 endif
 
+.PHONY: sleep
 sleep: ## sleep
 	@sleep  $(COMMAND_ARGS)
 
+.PHONY: ssh
 ssh: ## SSH
 ifeq ($(COMMAND_ARGS),redis)
 	@docker exec -it $(REDISFULLNAME) /bin/bash
@@ -446,6 +471,7 @@ else
 	@echo "phpfpm: PHPFPM"
 endif
 
+.PHONY: tests
 tests: ## Scripts tests
 ifeq ($(COMMAND_ARGS),launch)
 	@docker exec $(PHPFPMFULLNAME) make tests all
@@ -466,8 +492,10 @@ else
 	@echo "simple-phpunit: lance les tests phpunit"
 endif
 
+.PHONY: translations
 translations: ## update translation
 	$(DOCKER_EXECPHP) make translations
 
+.PHONY: workflow-png
 workflow-png: ## generate workflow png
 	$(DOCKER_EXECPHP) make workflow-png $(COMMAND_ARGS)
