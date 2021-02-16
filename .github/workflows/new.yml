@@ -58,22 +58,27 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: make composer dev
   linter-readme:
+    runs-on: ${{ matrix.operating-system }}
     needs: install
     steps:
       - run: make linter readme
   linter-stylelint:
+    runs-on: ${{ matrix.operating-system }}
     needs: install
     steps:
       - run: make linter stylelint
   linter-onlyerror:
+    runs-on: ${{ matrix.operating-system }}
     needs: install
     steps:
       - run: make linter phpcs-onlyerror
   linter-phpmd:
+    runs-on: ${{ matrix.operating-system }}
     needs: install
     steps:
       - run: make linter phpmd
   linter-phpmnd:
+    runs-on: ${{ matrix.operating-system }}
     needs: install
     steps:
       - run: make linter phpmnd
