@@ -82,4 +82,24 @@ jobs:
     needs: install
     steps:
       - run: make linter phpmnd
+  linter-twig:
+    runs-on: ${{ matrix.operating-system }}
+    needs: install
+    steps:
+      - run: make linter twig
+  linter-yaml:
+    runs-on: ${{ matrix.operating-system }}
+    needs: install
+    steps:
+      - run: make linter yaml
+  bdd-fixtures:
+    runs-on: ${{ matrix.operating-system }}
+    needs: 
+      -linter-stylelint
+      - linter-onlyerror
+      - linter-phpmd
+      - linter-phpmnd
+      - linter-twig
+      - linter-yaml
+    
    
