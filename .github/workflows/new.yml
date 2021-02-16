@@ -66,6 +66,8 @@ jobs:
         php-versions: ["7.4"]
     needs: install
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - run: make linter readme
   linterstylelint:
     runs-on: ${{ matrix.operating-system }}
@@ -76,6 +78,8 @@ jobs:
         php-versions: ["7.4"]
     needs: install
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - run: make linter stylelint
   linteronlyerror:
     runs-on: ${{ matrix.operating-system }}
@@ -86,6 +90,8 @@ jobs:
         php-versions: ["7.4"]
     needs: install
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - run: make linter phpcs-onlyerror
   linterphpmd:
     runs-on: ${{ matrix.operating-system }}
@@ -96,6 +102,8 @@ jobs:
         php-versions: ["7.4"]
     needs: install
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - run: make linter phpmd
   linterphpmnd:
     runs-on: ${{ matrix.operating-system }}
@@ -106,6 +114,8 @@ jobs:
         php-versions: ["7.4"]
     needs: install
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - run: make linter phpmnd
   lintertwig:
     runs-on: ${{ matrix.operating-system }}
@@ -116,6 +126,8 @@ jobs:
         php-versions: ["7.4"]
     needs: install
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - run: make linter twig
   linteryaml:
     runs-on: ${{ matrix.operating-system }}
@@ -126,6 +138,8 @@ jobs:
         php-versions: ["7.4"]
     needs: install
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - run: make linter yaml
   bddfixtures:
     runs-on: ${{ matrix.operating-system }}
@@ -142,6 +156,8 @@ jobs:
       - lintertwig
       - linteryaml
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - run: make bdd migrate
     
    
