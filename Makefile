@@ -47,6 +47,7 @@ node_modules: package-lock.json
 dump:
 	@mkdir dump
 
+.PHONY: isdocker
 isdocker: ## Docker is launch
 ifeq ($(isDocker), 0)
 	@echo "Docker is not launch"
