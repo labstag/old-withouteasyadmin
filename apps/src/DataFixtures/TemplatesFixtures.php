@@ -16,23 +16,12 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $this->add($manager);
-        $data = $this->getData();
+        $data = $this->installService->getData('template');
         foreach ($data as $key => $title) {
             $this->setData($key, $title);
         }
 
         $this->add($manager);
-    }
-
-    protected function getData(): array
-    {
-        $data = [];
-        $file = __DIR__.'/../../json/template.json';
-        if (is_file($file)) {
-            $data = json_decode(file_get_contents($file), true);
-        }
-
-        return $data;
     }
 
     protected function setData(

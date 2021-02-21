@@ -8,21 +8,10 @@ use Labstag\Lib\FixtureLib;
 
 class GroupFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    protected function getGroupes(): array
-    {
-        $data = [];
-        $file = __DIR__.'/../../json/group.json';
-        if (is_file($file)) {
-            $data = json_decode(file_get_contents($file), true);
-        }
-
-        return $data;
-    }
-
     public function load(ObjectManager $manager): void
     {
         unset($manager);
-        $groupes = $this->getGroupes();
+        $groupes = $this->installService->getData('group');
         foreach ($groupes as $key => $row) {
             $this->addGroupe($key, $row);
         }

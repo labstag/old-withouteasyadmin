@@ -21,17 +21,8 @@ class MenuAdminFixtures extends FixtureLib implements DependentFixtureInterface
     {
         $this->manager = $manager;
 
-        $menuadmin = [];
-        $file      = __DIR__.'/../../json/menuadmin.json';
-        if (is_file($file)) {
-            $menuadmin = json_decode(file_get_contents($file), true);
-        }
-
-        $menuadminprofil = [];
-        $file            = __DIR__.'/../../json/menuadminprofil.json';
-        if (is_file($file)) {
-            $menuadminprofil = json_decode(file_get_contents($file), true);
-        }
+        $menuadmin       = $this->installService->getData('menuadmin');
+        $menuadminprofil = $this->installService->getData('menuadminprofil');
 
         $menus = [
             'admin'        => $menuadmin,

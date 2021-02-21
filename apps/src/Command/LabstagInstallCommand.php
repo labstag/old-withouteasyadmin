@@ -2,6 +2,7 @@
 
 namespace Labstag\Command;
 
+use Labstag\Service\InstallService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,6 +13,16 @@ class LabstagInstallCommand extends Command
 {
 
     protected static $defaultName = 'labstag:install';
+
+    protected InstallService $installService;
+
+    public function __construct(
+        InstallService $installService
+    )
+    {
+        $this->installService = $installService;
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -28,83 +39,27 @@ class LabstagInstallCommand extends Command
     {
         $inputOutput = new SymfonyStyle($input, $output);
         if ($input->getOption('menuadmin')) {
-            $this->menuadmin($input, $output);
+            $inputOutput->note('Ajout du menu admin');
+            $this->installService->menuadmin();
         } elseif ($input->getOption('menuadminprofil')) {
-            $this->menuadminprofil($input, $output);
+            $inputOutput->note('Ajout du menu admin profil');
+            $this->installService->menuadminprofil();
         } elseif ($input->getOption('group')) {
-            $this->group($input, $output);
+            $inputOutput->note('Ajout des groupes');
+            $this->installService->group();
         } elseif ($input->getOption('config')) {
-            $this->config($input, $output);
+            $inputOutput->note('Ajout de la configuration');
+            $this->installService->config();
         } elseif ($input->getOption('templates')) {
-            $this->templates($input, $output);
+            $inputOutput->note('Ajout des templates');
+            $this->installService->templates();
         } elseif ($input->getOption('all')) {
-            $this->all($input, $output);
+            $inputOutput->note('Installations');
+            $this->installService->all();
         }
 
         $inputOutput->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;
-    }
-
-    protected function menuadmin($input, $output)
-    {
-        $data = $this->getData('menuadmin');
-        dump($data);
-        $inputOutput = new SymfonyStyle($input, $output);
-        $inputOutput->note('Ajout du menu admin');
-    }
-
-    protected function menuadminprofil($input, $output)
-    {
-        $data = $this->getData('menuadminprofil');
-        dump($data);
-        $inputOutput = new SymfonyStyle($input, $output);
-        $inputOutput->note('Ajout du menu admin profil');
-    }
-
-    protected function group($input, $output)
-    {
-        $data = $this->getData('group');
-        dump($data);
-        $inputOutput = new SymfonyStyle($input, $output);
-        $inputOutput->note('Ajout des groupes');
-    }
-
-    protected function config($input, $output)
-    {
-        $data = $this->getData('config');
-        dump($data);
-        $inputOutput = new SymfonyStyle($input, $output);
-        $inputOutput->note('Ajout de la configuration');
-    }
-
-    protected function templates($input, $output)
-    {
-        $data = $this->getData('template');
-        dump($data);
-        $inputOutput = new SymfonyStyle($input, $output);
-        $inputOutput->note('Ajout des templates');
-    }
-
-    protected function getData($file)
-    {
-        $file = __DIR__.'/../../json/'.$file.'.json';
-        $data = [];
-        if (is_file($file)) {
-            $data = json_decode(file_get_contents($file), true);
-        }
-
-        return $data;
-    }
-
-    public function all($input, $output)
-    {
-        $inputOutput = new SymfonyStyle($input, $output);
-        $inputOutput->note('Installations');
-        $this->menuadmin($input, $output);
-        $this->menuadminprofil($input, $output);
-        $this->group($input, $output);
-        $this->config($input, $output);
-        $this->templates($input, $output);
     }
 }

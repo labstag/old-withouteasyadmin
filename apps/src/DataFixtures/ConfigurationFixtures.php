@@ -6,7 +6,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Configuration;
 use Labstag\Lib\FixtureLib;
-use Symfony\Component\Dotenv\Dotenv;
 
 class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterface
 {
@@ -51,20 +50,8 @@ class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterf
 
     protected function add(ObjectManager $manager): void
     {
-        $data = [];
-        $file = __DIR__.'/../../json/config.json';
-        if (is_file($file)) {
-            $data = json_decode(file_get_contents($file), true);
-        }
-
-        $dotenv  = new Dotenv();
-        $env     = [];
-        $fileenv = __DIR__.'/../../.env';
-        if (is_file($fileenv)) {
-            $env = $dotenv->parse(file_get_contents($fileenv));
-        }
-
-        ksort($env);
+        $data = $this->installService->getData('config');
+        $env  = $this->installService->getEnv();
         $this->setOauth($env, $data);
 
         foreach ($data as $key => $value) {
