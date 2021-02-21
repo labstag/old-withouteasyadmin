@@ -51,71 +51,17 @@ class ConfigurationFixtures extends FixtureLib implements DependentFixtureInterf
 
     protected function add(ObjectManager $manager): void
     {
-        $data = [
-            'notification'    => [
-                [
-                    'type'   => 'oauthconnectuser',
-                    'mail'   => 1,
-                    'notify' => 1,
-                ],
-                [
-                    'type'   => 'lienuser',
-                    'mail'   => 1,
-                    'notify' => 1,
-                ],
-                [
-                    'type'   => 'emailuser',
-                    'mail'   => 1,
-                    'notify' => 1,
-                ],
-                [
-                    'type'   => 'phoneuser',
-                    'mail'   => 1,
-                    'notify' => 1,
-                ],
-                [
-                    'type'   => 'adresseuser',
-                    'mail'   => 1,
-                    'notify' => 1,
-                ],
-            ],
-            'languagedefault' => 'fr',
-            'language'        => [
-                'en',
-                'fr',
-            ],
-            'site_email'      => 'contact@labstag.lxc',
-            'site_no-reply'   => 'no-reply@labstag.lxc',
-            'site_url'        => 'http://www.labstag.lxc',
-            'site_title'      => 'labstag',
-            'site_copyright'  => 'Copyright '.date('Y'),
-            'oauth'           => [],
-            'meta'            => [
-                'viewport'    => 'width=device-width, initial-scale=1',
-                'author'      => 'koromerzhin',
-                'theme-color' => '#ff0000',
-                'description' => '',
-                'keywords'    => '',
-            ],
-            'disclaimer'      => [
-                'activate'     => 1,
-                'message'      => 'Site en construction',
-                'title'        => 'Site en construction',
-                'url-redirect' => 'http://www.google.fr',
-            ],
-            'moment'          => [
-                'format' => 'MMMM Do YYYY, H:mm:ss',
-                'lang'   => 'fr',
-            ],
-            'wysiwyg'         => ['lang' => 'fr_FR'],
-            'robotstxt'       => 'User-agent: *
-Allow: /',
-        ];
+        $data = [];
+        $file = __DIR__.'/../../json/config.json';
+        if (is_file($file)) {
+            $data = json_decode(file_get_contents($file), true);
+        }
 
-        $dotenv = new Dotenv();
-        $env    = [];
-        if (is_file(__DIR__.'/../../.env')) {
-            $env = $dotenv->parse(file_get_contents(__DIR__.'/../../.env'));
+        $dotenv  = new Dotenv();
+        $env     = [];
+        $fileenv = __DIR__.'/../../.env';
+        if (is_file($fileenv)) {
+            $env = $dotenv->parse(file_get_contents($fileenv));
         }
 
         ksort($env);

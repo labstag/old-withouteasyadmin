@@ -10,12 +10,13 @@ class GroupFixtures extends FixtureLib implements DependentFixtureInterface
 {
     protected function getGroupes(): array
     {
-        return [
-            'visiteur',
-            'admin',
-            'superadmin',
-            'user',
-        ];
+        $data = [];
+        $file = __DIR__.'/../../json/group.json';
+        if (is_file($file)) {
+            $data = json_decode(file_get_contents($file), true);
+        }
+
+        return $data;
     }
 
     public function load(ObjectManager $manager): void

@@ -26,17 +26,11 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
 
     protected function getData(): array
     {
-        $data = [
-            'check-new-adresse'          => 'Ajout nouvelle adresse',
-            'check-new-phone'            => 'Ajout nouveau numéro de téléphone',
-            'check-new-link'             => 'Ajout nouvelle url',
-            'check-user'                 => 'Confirmation création compte',
-            'check-new-oauthconnectuser' => 'Nouvelle association',
-            'check-new-mail'             => 'Ajout nouveau courriel',
-            'change-email-principal'     => 'Changement de courriel principal',
-            'lost-password'              => 'Demande de nouveau mot de passe',
-            'change-password'            => 'Mot de passe changé',
-        ];
+        $data = [];
+        $file = __DIR__.'/../../json/template.json';
+        if (is_file($file)) {
+            $data = json_decode(file_get_contents($file), true);
+        }
 
         return $data;
     }

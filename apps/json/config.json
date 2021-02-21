@@ -1,0 +1,52 @@
+{
+    "notification": [{
+        "type": "oauthconnectuser",
+        "mail": 1,
+        "notify": 1
+    }, {
+        "type": "lienuser",
+        "mail": 1,
+        "notify": 1
+    }, {
+        "type": "emailuser",
+        "mail": 1,
+        "notify": 1
+    }, {
+        "type": "phoneuser",
+        "mail": 1,
+        "notify": 1
+    }, {
+        "type": "adresseuser",
+        "mail": 1,
+        "notify": 1
+    }],
+    "languagedefault": "fr",
+    "language": ["en", "fr"],
+    "site_email": "contact@labstag.lxc",
+    "site_no-reply": "no-reply@labstag.lxc",
+    "site_url": "http:\/\/www.labstag.lxc",
+    "site_title": "labstag",
+    "site_copyright": "Copyright 2021",
+    "oauth": [],
+    "meta": {
+        "viewport": "width=device-width, initial-scale=1",
+        "author": "koromerzhin",
+        "theme-color": "#ff0000",
+        "description": "",
+        "keywords": ""
+    },
+    "disclaimer": {
+        "activate": 1,
+        "message": "Site en construction",
+        "title": "Site en construction",
+        "url-redirect": "http:\/\/www.google.fr"
+    },
+    "moment": {
+        "format": "MMMM Do YYYY, H:mm:ss",
+        "lang": "fr"
+    },
+    "wysiwyg": {
+        "lang": "fr_FR"
+    },
+    "robotstxt": "User-agent: *\nAllow: \/"
+}
