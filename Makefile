@@ -208,6 +208,8 @@ geocode: ## Geocode
 git: ## Scripts GIT
 ifeq ($(COMMAND_ARGS),commit)
 	@npm run commit
+else ifeq ($(COMMAND_ARGS),update)
+	@git update
 else ifeq ($(COMMAND_ARGS),status)
 	@git status
 else ifeq ($(COMMAND_ARGS),check)
@@ -223,6 +225,7 @@ else
 	@echo "make git ARGUMENT"
 	@echo "---"
 	@echo "commit: Commit data"
+	@echo "update: Update git"
 	@echo "check: CHECK before"
 	@echo "status: status"
 endif
@@ -499,3 +502,13 @@ translations: ## update translation
 .PHONY: workflow-png
 workflow-png: ## generate workflow png
 	$(DOCKER_EXECPHP) make workflow-png $(COMMAND_ARGS)
+
+.PHONY: upgrade
+upgrade: ## upgrade git
+	$(DOCKER_EXECPHP) symfony labstag:update --maintenanceon
+	@make git update -i
+	@make apps/vendor -i
+	@make node_modules -i
+	@make encore build -i
+	$(DOCKER_EXECPHP) symfony cache:clear
+	$(DOCKER_EXECPHP) symfony labstag:update --maintenanceoff
