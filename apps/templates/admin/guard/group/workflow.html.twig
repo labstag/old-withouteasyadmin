@@ -1,0 +1,59 @@
+<table is="guard-workflow" data-url="{{ path('api_guard_workflow', {'group' : group.id}) }}" data-refresh=0>
+    <thead>
+        <tr>
+            <th rowspan=2>
+                Entité
+            </th>
+            <th rowspan=2>
+                Transition
+            </th>
+            <th>
+                {{ group.name }}
+            </th>
+        </tr>
+        <tr>
+            <th>
+                {% if 'superadmin' != group.code %}
+                    <guard-changeworkflow
+                        data-state=0
+                        data-url="{{ path('api_guard_workflowgroup', {'group' : group.id}) }}"
+                        data-token="{{ csrf_token('guard') }}"
+                    ></guard-changeworkflow>
+                {% else %}
+                    ----
+                {% endif %}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for workflow in workflows %}
+        <tr>
+            <td>
+                {{ workflow.entity }}
+            </td>
+            <td>
+                {{ workflow.transition }}
+            </td>
+            <td>
+                {% if 'superadmin' != group.code %}
+                    <guard-setworkflow
+                        title="{{ group.name|e }}"
+                        data-state=0
+                        data-groupe="{{ group.code|e }}"
+                        data-entity="{{ workflow.entity|e }}"
+                        data-transition="{{ workflow.transition|e }}"
+                        data-url="{{ path('api_guard_workflowsetgroup', {'group' : group.id, 'workflow' : workflow.id}) }}"
+                        data-token="{{ csrf_token('guard') }}"
+                    ></guard-setworkflow>
+                {% else %}
+                    ---
+                {% endif %}
+            </td>
+        </tr>
+    {% else %}
+            <tr>
+                <td colspan="3" class="text-center">no records found</td>
+            </tr>
+    {% endfor %}
+    </tbody>
+</table>

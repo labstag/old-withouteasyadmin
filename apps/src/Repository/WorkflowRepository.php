@@ -13,7 +13,7 @@ class WorkflowRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, Workflow::class);
     }
 
-    public function toDelete(array $entities)
+    public function toDeleteEntities(array $entities)
     {
         $queryBuilder = $this->createQueryBuilder('u');
         $query        = $queryBuilder->where(
@@ -21,6 +21,22 @@ class WorkflowRepository extends ServiceEntityRepositoryLib
         );
         $query->setParameters(
             ['entities' => $entities]
+        );
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function toDeletetransition(string $entity, array $transitions)
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.entity=:entity AND u.transition NOT IN (:transitions)'
+        );
+        $query->setParameters(
+            [
+                'entity'      => $entity,
+                'transitions' => $transitions,
+            ]
         );
 
         return $query->getQuery()->getResult();

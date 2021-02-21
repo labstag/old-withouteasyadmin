@@ -16,7 +16,6 @@ export class AttachmentDelete extends HTMLElement {
 
   onClick (element) {
     element.preventDefault()
-    console.log(element.currentTarget.dataset)
     const url = element.currentTarget.dataset.url
     const token = element.currentTarget.dataset.token
     const redirect = document.location.href
