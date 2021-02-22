@@ -243,6 +243,7 @@ endif
 install: folders apps/.env ## installation
 ifeq ($(COMMAND_ARGS),all)
 	@make node_modules -i
+	@make docker image-pull -i
 	@make docker deploy -i
 	@make apps/vendor -i
 	@make sleep 60 -i
