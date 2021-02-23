@@ -50,7 +50,7 @@ services:
         - "traefik.http.routers.mercure-labstag-tls.tls.domains[0].sans=mercure-labstag-*.traefik.me"
         - "traefik.http.services.mercure-labstag.loadbalancer.server.port=80"
   mariadb:
-    image: mariadb:10.5.8
+    image: mariadb:10.5.9
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: core
