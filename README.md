@@ -35,18 +35,12 @@ docker swarm
 
 Hosts:
 
-- 127.0.0.1 labstag.lxc
-- 127.0.0.1 www.labstag.lxc
-- 127.0.0.1 mailhog.labstag.lxc
-- 127.0.0.1 mercure.labstag.lxc
-- 127.0.0.1 phpmyadmin.labstag.lxc
-- 127.0.0.1 phpldapadmin.labstag.lxc
-
-## Récupérer les images docker
-
-```sh
-make docker image-pull
-```
+- labstag.traefik.me
+- labstag.traefik.me
+- mailhog-labstag.traefik.me
+- mercure-labstag.traefik.me
+- phpmyadmin-labstag.traefik.me
+- phpldapadmin-labstag.traefik.me
 
 ## Install
 
