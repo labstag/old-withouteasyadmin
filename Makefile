@@ -206,9 +206,7 @@ geocode: ## Geocode
 
 .PHONY: git
 git: ## Scripts GIT
-ifeq ($(COMMAND_ARGS),commit)
-	@npm run commit
-else ifeq ($(COMMAND_ARGS),update)
+ifeq ($(COMMAND_ARGS),update)
 	@git update
 else ifeq ($(COMMAND_ARGS),status)
 	@git status
@@ -224,7 +222,6 @@ else
 	@echo "---"
 	@echo "make git ARGUMENT"
 	@echo "---"
-	@echo "commit: Commit data"
 	@echo "update: Update git"
 	@echo "check: CHECK before"
 	@echo "status: status"
