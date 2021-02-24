@@ -134,17 +134,10 @@ endif
 docker: ## Scripts docker
 ifeq ($(COMMAND_ARGS),create-network)
 	@docker network create --driver=overlay $(NETWORK)
+else ifeq ($(COMMAND_ARGS),image-pull)
+	@more docker-compose.yml | grep image: | sed -e "s/^.*image:[[:space:]]//" | while read i; do docker pull $$i; done
 else ifeq ($(COMMAND_ARGS),deploy)
 	@docker stack deploy -c docker-compose.yml $(STACK)
-else ifeq ($(COMMAND_ARGS),image-pull)
-	@docker image pull redis:6.0.9
-	@docker image pull mariadb:10.5.8
-	@docker image pull httpd:2.4.46
-	@docker image pull phpmyadmin:5.0.2
-	@docker image pull mailhog/mailhog:v1.0.1
-	@docker image pull dunglas/mercure:v0.10
-	@docker image pull koromerzhin/phpfpm:7.4.12-symfony
-	@docker image pull koromerzhin/phpfpm:7.4.12-symfony-xdebug
 else ifeq ($(COMMAND_ARGS),ls)
 	@docker stack services $(STACK)
 else ifeq ($(COMMAND_ARGS),stop)
@@ -262,6 +255,7 @@ endif
 install: folders apps/.env ## installation
 ifeq ($(COMMAND_ARGS),all)
 	@make node_modules -i
+	@make docker image-pull -i
 	@make docker deploy -i
 	@make apps/vendor -i
 	@make sleep 60 -i
