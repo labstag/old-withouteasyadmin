@@ -13,22 +13,6 @@ jobs:
         uses: actions/checkout@v2
       - name: 'Create folders'
         run: make folders
-      - name: 'Docker swarm init'
-        run: docker swarm init --default-addr-pool 10.20.0.0/16
-      - name: 'Create proxy network'
-        run: make docker create-network
-      - name: 'Build containers'
-        run: make docker deploy
-      - name: 'sleep'
-        run: make sleep 60
-      - name: 'docker ls'
-        run: make docker ls
-      - name: Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, xml, ctype, iconv, intl
-          coverage: xdebug
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v2
@@ -47,13 +31,29 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      - name: Install npm dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: make node_modules
+      - name: 'Docker swarm init'
+        run: docker swarm init --default-addr-pool 10.20.0.0/16
+      - name: 'Create proxy network'
+        run: make docker create-network
+      - name: 'Build containers'
+        run: make docker deploy
+      - name: 'sleep'
+        run: make sleep 60
+      - name: 'docker ls'
+        run: make docker ls
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, xml, ctype, iconv, intl
+          coverage: xdebug
       - name: 'Installation variable environnement'
         run: make env dev
       - name: 'Create file .env'
         run: make env dev
-      - name: Install npm dependencies
-        if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: make node_modules
       - name: Install Composer dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: make composer dev
