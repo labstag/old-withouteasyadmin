@@ -83,7 +83,7 @@ services:
         - "traefik.http.routers.labstag-tls.tls.domains[0].sans=labstag-*.traefik.me"
         - "traefik.http.services.labstag.loadbalancer.server.port=80"
   phpmyadmin:
-    image: phpmyadmin:5.0.2
+    image: phpmyadmin/phpmyadmin:5.1.0
     environment:
       PMA_HOST: mariadb
       MYSQL_ROOT_PASSWORD: example
