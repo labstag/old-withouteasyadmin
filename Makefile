@@ -19,7 +19,7 @@ MARIADBFULLNAME := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $(MARI
 APACHE         := $(STACK)_apache
 APACHEFULLNAME := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
 
-PMYADMIN         := $(STACK)_phpmyadmin
+PHPMYADMIN         := $(STACK)_phpmyadmin
 PHPMYADMINFULLNAME := $(PHPMYADMIN).1.$$(docker service ps -f 'name=$(PHPMYADMIN)' $(PHPMYADMIN) -q --no-trunc | head -n1)
 
 PHPFPM         := $(STACK)_phpfpm
