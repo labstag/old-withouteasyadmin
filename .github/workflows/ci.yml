@@ -19,6 +19,10 @@ jobs:
         run: make docker create-network
       - name: 'Build containers'
         run: make docker deploy
+      - name: 'sleep'
+        run: make sleep 60
+      - name: 'docker ls'
+        run: make docker ls
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2
         with:
@@ -45,10 +49,6 @@ jobs:
             ${{ runner.os }}-node-
       - name: 'Installation variable environnement'
         run: make env dev
-      - name: 'sleep'
-        run: make sleep 60
-      - name: 'docker ls'
-        run: make docker ls
       - name: 'Create file .env'
         run: make env dev
       - name: Install npm dependencies
