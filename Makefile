@@ -51,12 +51,6 @@ ifeq ($(isDocker), 0)
 	exit 1
 endif
 
-apps/composer.lock: apps/composer.json
-	$(DOCKER_EXECPHP) make composer.lock
-
-apps/vendor: apps/composer.lock
-	$(DOCKER_EXECPHP) make vendor
-
 apps/.env: apps/.env.dist ## Install .env
 	@cp apps/.env.dist apps/.env
 
@@ -254,15 +248,14 @@ ifeq ($(COMMAND_ARGS),all)
 	@make node_modules -i
 	@make docker image-pull -i
 	@make docker deploy -i
-	@make apps/vendor -i
 	@make sleep 60 -i
 	@make bdd migrate -i
 	@make assets -i
 	@make encore dev -i
-	@make linter -i
+	@make linter all i
 else ifeq ($(COMMAND_ARGS),dev)
 	@make install all
-	@make bdd features -i
+	@make bdd fixtures -i
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -495,7 +488,7 @@ workflow-png: ## generate workflow png
 upgrade: ## upgrade git
 	$(DOCKER_EXECPHP) symfony labstag:update --maintenanceon
 	@make git update -i
-	@make apps/vendor -i
+	@make composer install -i
 	@make node_modules -i
 	@make encore build -i
 	$(DOCKER_EXECPHP) symfony cache:clear
