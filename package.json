@@ -15,7 +15,9 @@
     "encore-dev-server": "encore dev-server",
     "encore-dev": "encore dev",
     "encore-watch": "encore dev --watch",
-    "encore-build": "encore production --progress"
+    "encore-build": "encore production --progress",
+    "changelog": "changelog",
+    "jscpd": "jscpd assets apps/src"
   },
   "repository": {
     "type": "git",
@@ -39,6 +41,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "file-loader": "^6.2.0",
+    "generate-changelog": "^1.8.0",
+    "jscpd": "^3.3.24",
     "license-checker": "25.0.1",
     "markdownlint-cli": "0.26.0",
     "readme-md-generator": "1.0.0",

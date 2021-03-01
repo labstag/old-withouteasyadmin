@@ -275,7 +275,6 @@ ifeq ($(COMMAND_ARGS),all)
 	@make linter container -i
 	@make linter yaml -i
 	@make linter phpstan -i
-	@make linter phpcpd -i
 	@make linter phpcs -i
 	@make linter phpmd -i
 	@make linter readme -i
@@ -296,8 +295,6 @@ else ifeq ($(COMMAND_ARGS),php-cs-fixer)
 	$(DOCKER_EXECPHP) make linter php-cs-fixer
 else ifeq ($(COMMAND_ARGS),phpcbf)
 	$(DOCKER_EXECPHP) make linter phpcbf
-else ifeq ($(COMMAND_ARGS),phpcpd)
-	$(DOCKER_EXECPHP) make linter phpcpd
 else ifeq ($(COMMAND_ARGS),phpcs)
 	$(DOCKER_EXECPHP) make linter phpcs
 else ifeq ($(COMMAND_ARGS),phpcs-onlywarning)
@@ -332,7 +329,6 @@ else
 	@echo "eslint-fix: fixe le code JavaScript à partir d'un standard"
 	@echo "phpcbf: fixe le code PHP à partir d'un standard"
 	@echo "php-cs-fixer: fixe le code PHP à partir d'un standard"
-	@echo "phpcpd: Vérifie s'il y a du code dupliqué"
 	@echo "phpcs: indique les erreurs de code non corrigé par PHPCBF"
 	@echo "phpcs-onlywarning: indique les erreurs de code non corrigé par PHPCBF"
 	@echo "phpcs-onlyerror: indique les erreurs de code non corrigé par PHPCBF"

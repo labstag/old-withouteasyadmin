@@ -28,9 +28,6 @@ vendor: composer.json
 phploc.phar:
 	wget https://phar.phpunit.de/phploc-7.0.1.phar -O phploc.phar
 
-phpcpd.phar:
-	wget https://phar.phpunit.de/phpcpd-6.0.2.phar -O phpcpd.phar
-
 phpmd.phar:
 	wget https://github.com/phpmd/phpmd/releases/download/2.9.1/phpmd.phar
 
@@ -105,14 +102,13 @@ endif
 geocode: ## add geocode
 	php -d memory_limit=-1 bin/console labstag:geocode:install $(COMMAND_ARGS)
 
-linter: phpcpd.phar phploc.phar phpmd.phar ## Scripts Linter
+linter: phploc.phar phpmd.phar ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
 	@make linter phpfix -i
 	@make linter twig -i
 	@make linter container -i
 	@make linter yaml -i
 	@make linter phpstan -i
-	@make linter phpcpd -i
 	@make linter phpcs -i
 	@make linter phpmd -i
 	@make linter readme -i
@@ -123,8 +119,6 @@ else ifeq ($(COMMAND_ARGS),phpcbf)
 	${COMPOSER_EXEC} run phpcbf
 else ifeq ($(COMMAND_ARGS),php-cs-fixer)
 	${COMPOSER_EXEC} run php-cs-fixer
-else ifeq ($(COMMAND_ARGS),phpcpd)
-	@php phpcpd.phar src tests
 else ifeq ($(COMMAND_ARGS),phpcs)
 	${COMPOSER_EXEC} run phpcs
 else ifeq ($(COMMAND_ARGS),phpcs-onlywarning)
@@ -153,7 +147,6 @@ else
 	@echo "all: ## Launch all linter"
 	@echo "phpfix: PHP-CS-FIXER & PHPCBF"
 	@echo "phpcbf: fixe le code PHP à partir d'un standard"
-	@echo "phpcpd: Vérifie s'il y a du code dupliqué"
 	@echo "phpcs: indique les erreurs de code non corrigé par PHPCBF"
 	@echo "phpcs-onlywarning: indique les erreurs de code non corrigé par PHPCBF"
 	@echo "phpcs-onlyerror: indique les erreurs de code non corrigé par PHPCBF"
