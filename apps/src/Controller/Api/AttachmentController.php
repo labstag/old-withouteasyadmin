@@ -57,6 +57,11 @@ class AttachmentController extends ApiControllerLib
      */
     public function userAvatar(User $entity, UserRequestHandler $userRequestHandler): JsonResponse
     {
+        return $this->deleteFile($entity, $userRequestHandler, 'getAvatar', 'setAvatar');
+    }
+
+    private function deleteFile($entity, $requesthandler, $methodGet, $methodSet)
+    {
         $return = [
             'state' => false,
             'error' => '',
@@ -69,10 +74,10 @@ class AttachmentController extends ApiControllerLib
         }
 
         $old        = clone $entity;
-        $attachment = $entity->getAvatar();
+        $attachment = $entity->$methodGet();
         $this->deleteAttachment($attachment);
-        $entity->setAvatar(null);
-        $userRequestHandler->handle($old, $entity);
+        $entity->$methodSet(null);
+        $requesthandler->handle($old, $entity);
         $return['state'] = true;
 
         return new JsonResponse($return);
@@ -85,25 +90,7 @@ class AttachmentController extends ApiControllerLib
      */
     public function editoFond(Edito $entity, EditoRequestHandler $editoRH): JsonResponse
     {
-        $return = [
-            'state' => false,
-            'error' => '',
-        ];
-        $token  = $this->verifToken($entity);
-        if (!$token) {
-            $return['error'] = 'Token incorrect';
-
-            return new JsonResponse($return);
-        }
-
-        $old        = clone $entity;
-        $attachment = $entity->getFond();
-        $this->deleteAttachment($attachment);
-        $entity->setFond(null);
-        $editoRH->handle($old, $entity);
-        $return['state'] = true;
-
-        return new JsonResponse($return);
+        return $this->deleteFile($entity, $editoRH, 'getFond', 'setFond');
     }
 
     /**
@@ -113,25 +100,7 @@ class AttachmentController extends ApiControllerLib
      */
     public function noteinterneFond(NoteInterne $entity, NoteInterneRequestHandler $noteInterneRH): JsonResponse
     {
-        $return = [
-            'state' => false,
-            'error' => '',
-        ];
-        $token  = $this->verifToken($entity);
-        if (!$token) {
-            $return['error'] = 'Token incorrect';
-
-            return new JsonResponse($return);
-        }
-
-        $old        = clone $entity;
-        $attachment = $entity->getFond();
-        $this->deleteAttachment($attachment);
-        $entity->setFond(null);
-        $noteInterneRH->handle($old, $entity);
-        $return['state'] = true;
-
-        return new JsonResponse($return);
+        return $this->deleteFile($entity, $noteInterneRH, 'getFond', 'setFond');
     }
 
     protected function deleteAttachment(?Attachment $attachment)

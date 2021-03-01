@@ -118,17 +118,7 @@ class GuardController extends ApiControllerLib
      */
     public function groupe(Groupe $groupe, RouteGroupeRepository $routeGroupeRepo): JsonResponse
     {
-        $results = $routeGroupeRepo->findEnable($groupe);
-        $data    = [];
-        foreach ($results as $row) {
-            /* @var RouteGroupe $row */
-            $data[] = [
-                'groupe' => $row->getRefgroupe()->getCode(),
-                'route'  => $row->getRefroute()->getName(),
-            ];
-        }
-
-        return new JsonResponse($data);
+        return $this->getGroupe($routeGroupeRepo, $groupe);
     }
 
     /**
@@ -138,7 +128,12 @@ class GuardController extends ApiControllerLib
      */
     public function groupes(RouteGroupeRepository $routeGroupeRepo): JsonResponse
     {
-        $results = $routeGroupeRepo->findEnable();
+        return $this->getGroupe($routeGroupeRepo);
+    }
+
+    private function getGroupe($routeGroupeRepo, ?Groupe $groupe = null)
+    {
+        $results = $routeGroupeRepo->findEnable($groupe);
         $data    = [];
         foreach ($results as $row) {
             /* @var RouteGroupe $row */
