@@ -80,8 +80,8 @@ class UserMailService
             return;
         }
 
-        $url     = (isset($this->config['site_url'])) ? $this->config['site_url'] : '';
-        $change  = [
+        $url    = (isset($this->config['site_url'])) ? $this->config['site_url'] : '';
+        $change = [
             'url_confirm_user' => $url.$this->router->generate(
                 'app_confirm_user',
                 [
@@ -89,6 +89,19 @@ class UserMailService
                 ]
             ),
         ];
+        $this->setEmail(
+            $template,
+            $user,
+            $change
+        );
+    }
+
+    private function setEmail(
+        $template,
+        $user,
+        $change = []
+    )
+    {
         $html    = $template->getHtml();
         $txt     = $template->getText();
         $subject = $template->getName();
@@ -113,18 +126,10 @@ class UserMailService
             return;
         }
 
-        $html    = $template->getHtml();
-        $txt     = $template->getText();
-        $subject = $template->getName();
-        $email   = $this->mailerService->createEmail(
-            [
-                'html' => $this->changeValue($user, $html),
-                'txt'  => $this->changeValue($user, $txt),
-            ]
+        $this->setEmail(
+            $template,
+            $user
         );
-        $email->subject($subject);
-        $email->to($user->getEmail());
-        $this->mailerService->send($email);
     }
 
     public function lostPassword(User $user): void
@@ -137,8 +142,8 @@ class UserMailService
             return;
         }
 
-        $url     = isset($this->config['site_url']) ? $this->config['site_url'] : $url = '';
-        $change  = [
+        $url    = isset($this->config['site_url']) ? $this->config['site_url'] : $url = '';
+        $change = [
             'url_change_password' => $url.$this->router->generate(
                 'app_changepassword',
                 [
@@ -146,18 +151,11 @@ class UserMailService
                 ]
             ),
         ];
-        $html    = $template->getHtml();
-        $txt     = $template->getText();
-        $subject = $template->getName();
-        $email   = $this->mailerService->createEmail(
-            [
-                'html' => $this->changeValue($user, $html, $change),
-                'txt'  => $this->changeValue($user, $txt, $change),
-            ]
+        $this->setEmail(
+            $template,
+            $user,
+            $change
         );
-        $email->subject($subject);
-        $email->to($user->getEmail());
-        $this->mailerService->send($email);
     }
 
     public function changeEmailPrincipal(User $user): void
@@ -170,18 +168,10 @@ class UserMailService
             return;
         }
 
-        $html    = $template->getHtml();
-        $txt     = $template->getText();
-        $subject = $template->getName();
-        $email   = $this->mailerService->createEmail(
-            [
-                'html' => $this->changeValue($user, $html),
-                'txt'  => $this->changeValue($user, $txt),
-            ]
+        $this->setEmail(
+            $template,
+            $user
         );
-        $email->subject($subject);
-        $email->to($user->getEmail());
-        $this->mailerService->send($email);
     }
 
     public function checkNewMail(User $user, EmailUser $emailUser): void
@@ -194,8 +184,8 @@ class UserMailService
             return;
         }
 
-        $url     = isset($this->config['site_url']) ? $this->config['site_url'] : '';
-        $change  = [
+        $url    = isset($this->config['site_url']) ? $this->config['site_url'] : '';
+        $change = [
             'url_confirm_email' => $url.$this->router->generate(
                 'app_confirm_mail',
                 [
@@ -204,18 +194,11 @@ class UserMailService
             ),
             'courriel'          => $emailUser->getAdresse(),
         ];
-        $html    = $template->getHtml();
-        $txt     = $template->getText();
-        $subject = $template->getName();
-        $email   = $this->mailerService->createEmail(
-            [
-                'html' => $this->changeValue($user, $html, $change),
-                'txt'  => $this->changeValue($user, $txt, $change),
-            ]
+        $this->setEmail(
+            $template,
+            $user,
+            $change
         );
-        $email->subject($subject);
-        $email->to($user->getEmail());
-        $this->mailerService->send($email);
     }
 
     public function checkNewOauthConnectUser(
@@ -231,21 +214,14 @@ class UserMailService
             return;
         }
 
-        $change  = [
+        $change = [
             'oauth_name' => $oauthConnectUser->getName(),
         ];
-        $html    = $template->getHtml();
-        $txt     = $template->getText();
-        $subject = $template->getName();
-        $email   = $this->mailerService->createEmail(
-            [
-                'html' => $this->changeValue($user, $html, $change),
-                'txt'  => $this->changeValue($user, $txt, $change),
-            ]
+        $this->setEmail(
+            $template,
+            $user,
+            $change
         );
-        $email->subject($subject);
-        $email->to($user->getEmail());
-        $this->mailerService->send($email);
     }
 
     public function checkNewLink(User $user, LienUser $lienUser): void
@@ -258,21 +234,14 @@ class UserMailService
             return;
         }
 
-        $change  = [
+        $change = [
             'link' => $lienUser->getAdresse(),
         ];
-        $html    = $template->getHtml();
-        $txt     = $template->getText();
-        $subject = $template->getName();
-        $email   = $this->mailerService->createEmail(
-            [
-                'html' => $this->changeValue($user, $html, $change),
-                'txt'  => $this->changeValue($user, $txt, $change),
-            ]
+        $this->setEmail(
+            $template,
+            $user,
+            $change
         );
-        $email->subject($subject);
-        $email->to($user->getEmail());
-        $this->mailerService->send($email);
     }
 
     public function checkNewPhone(User $user, PhoneUser $phoneUser): void
@@ -285,8 +254,8 @@ class UserMailService
             return;
         }
 
-        $url     = isset($this->config['site_url']) ? $this->config['site_url'] : '';
-        $change  = [
+        $url    = isset($this->config['site_url']) ? $this->config['site_url'] : '';
+        $change = [
             'url_confirm_phone' => $url.$this->router->generate(
                 'app_confirm_phone',
                 [
@@ -295,18 +264,11 @@ class UserMailService
             ),
             'tel_number'        => $phoneUser->getNumero(),
         ];
-        $html    = $template->getHtml();
-        $txt     = $template->getText();
-        $subject = $template->getName();
-        $email   = $this->mailerService->createEmail(
-            [
-                'html' => $this->changeValue($user, $html, $change),
-                'txt'  => $this->changeValue($user, $txt, $change),
-            ]
+        $this->setEmail(
+            $template,
+            $user,
+            $change
         );
-        $email->subject($subject);
-        $email->to($user->getEmail());
-        $this->mailerService->send($email);
     }
 
     public function checkNewAdresse(User $user, AdresseUser $adresseUser): void
@@ -319,7 +281,7 @@ class UserMailService
             return;
         }
 
-        $change  = [
+        $change = [
             'adresse_rue'     => $adresseUser->getRue(),
             'adresse_zipcode' => $adresseUser->getZipcode(),
             'adresse_ville'   => $adresseUser->getVille(),
@@ -327,17 +289,10 @@ class UserMailService
             'adresse_gps'     => $adresseUser->getGps(),
             'adresse_pmr'     => $adresseUser->isPmr() ? 'Oui' : 'Non',
         ];
-        $html    = $template->getHtml();
-        $txt     = $template->getText();
-        $subject = $template->getName();
-        $email   = $this->mailerService->createEmail(
-            [
-                'html' => $this->changeValue($user, $html, $change),
-                'txt'  => $this->changeValue($user, $txt, $change),
-            ]
+        $this->setEmail(
+            $template,
+            $user,
+            $change
         );
-        $email->subject($subject);
-        $email->to($user->getEmail());
-        $this->mailerService->send($email);
     }
 }

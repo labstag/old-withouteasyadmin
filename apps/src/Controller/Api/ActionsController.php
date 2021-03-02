@@ -223,7 +223,11 @@ class ActionsController extends ApiControllerLib
      */
     public function restore(string $entity, string $id): JsonResponse
     {
-        $entity = $this->getDataRestoreDelete($data, $entity, $id);
+        $data   = [
+            'action' => false,
+            'error'  => '',
+        ];
+        $entity = $this->getDataRestoreDelete($entity, $id);
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
             $data['error'] = 'entité inconnu';
 
@@ -243,12 +247,8 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    private function getDataRestoreDelete(&$data, $entity, $id)
+    private function getDataRestoreDelete($entity, $id)
     {
-        $data       = [
-            'action' => false,
-            'error'  => '',
-        ];
         $repository = $this->apiActionsService->getRepository($entity);
 
         return $repository->find($id);
@@ -343,7 +343,11 @@ class ActionsController extends ApiControllerLib
      */
     public function delete(string $entity, string $id): JsonResponse
     {
-        $entity = $this->getDataRestoreDelete($data, $entity, $id);
+        $data   = [
+            'action' => false,
+            'error'  => '',
+        ];
+        $entity = $this->getDataRestoreDelete($entity, $id);
         if (is_null($entity) || !is_null($entity->getDeletedAt())) {
             $data['error'] = 'entité inconnu';
 

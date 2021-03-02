@@ -266,20 +266,24 @@ class GuardService
 
     public function guardRouteEnableUser(string $route, User $user): bool
     {
-        $all = $this->all();
-        if (!array_key_exists($route, $all)) {
-            return false;
-        }
-
-        $data     = $all[$route];
-        $defaults = $data->getDefaults();
-        $matches  = [];
-        preg_match(self::REGEX_CONTROLLER_ADMIN, $defaults['_controller'], $matches);
-
-        return !(0 != count($matches) && 'visiteur' == $user->getGroupe()->getCode());
+        return $this->isRouteGroupe(
+            $user->getGroupe(),
+            $route
+        );
     }
 
     public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
+    {
+        return $this->isRouteGroupe(
+            $groupe,
+            $route
+        );
+    }
+
+    private function isRouteGroupe(
+        $groupe,
+        $route
+    )
     {
         $all = $this->all();
         if ('superadmin' == $groupe->getCode()) {
