@@ -39,27 +39,61 @@ class LabstagInstallCommand extends Command
     {
         $inputOutput = new SymfonyStyle($input, $output);
         if ($input->getOption('menuadmin')) {
-            $inputOutput->note('Ajout du menu admin');
-            $this->installService->menuadmin();
+            $this->setMenuAdmin($inputOutput);
         } elseif ($input->getOption('menuadminprofil')) {
-            $inputOutput->note('Ajout du menu admin profil');
-            $this->installService->menuadminprofil();
+            $this->setMenuAdminProfil($inputOutput);
         } elseif ($input->getOption('group')) {
-            $inputOutput->note('Ajout des groupes');
-            $this->installService->group();
+            $this->setGroup($inputOutput);
         } elseif ($input->getOption('config')) {
-            $inputOutput->note('Ajout de la configuration');
-            $this->installService->config();
+            $this->setConfig($inputOutput);
         } elseif ($input->getOption('templates')) {
-            $inputOutput->note('Ajout des templates');
-            $this->installService->templates();
+            $this->setTemplates($inputOutput);
         } elseif ($input->getOption('all')) {
-            $inputOutput->note('Installations');
-            $this->installService->all();
+            $this->all($inputOutput);
         }
 
         $inputOutput->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;
+    }
+
+    protected function all($inputOutput)
+    {
+        $inputOutput->note('Installations');
+        $this->setMenuAdmin($inputOutput);
+        $this->setMenuAdminProfil($inputOutput);
+        $this->setGroup($inputOutput);
+        $this->setConfig($inputOutput);
+        $this->setTemplates($inputOutput);
+    }
+
+    protected function setTemplates($inputOutput)
+    {
+        $inputOutput->note('Ajout des templates');
+        $this->installService->templates();
+    }
+
+    protected function setConfig($inputOutput)
+    {
+        $inputOutput->note('Ajout de la configuration');
+        $this->installService->config();
+    }
+
+    protected function setGroup($inputOutput)
+    {
+        $inputOutput->note('Ajout des groupes');
+        $this->installService->group();
+    }
+
+    protected function setMenuAdmin($inputOutput)
+    {
+        $inputOutput->note('Ajout du menu admin');
+        $this->installService->menuadmin();
+    }
+
+    protected function setMenuAdminProfil($inputOutput)
+    {
+        $inputOutput->note('Ajout du menu admin profil');
+        $this->installService->menuadminprofil();
     }
 }

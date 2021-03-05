@@ -47,6 +47,10 @@ class DataService
                 'compute',
             ]
         );
+        if (0 === count($config)) {
+            $this->cache->delete('configuration');
+            $this->setData();
+        }
 
         $this->config = $config;
 

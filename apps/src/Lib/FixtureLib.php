@@ -175,6 +175,7 @@ abstract class FixtureLib extends Fixture
     {
         $groupe = new Groupe();
         $old    = clone $groupe;
+        $groupe->setCode($row);
         $groupe->setName($row);
         $this->addReference('groupe_'.$key, $groupe);
         $this->groupeRH->handle($old, $groupe);
