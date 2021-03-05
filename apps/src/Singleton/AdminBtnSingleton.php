@@ -434,20 +434,39 @@ class AdminBtnSingleton
             'modalDeleties',
             true
         );
-        $this->add(
+        $this->setBtnAdd(
             'btn-admin-header-deleties',
+            'link-btnadmindeleties',
+            'deletiesModal',
+            $title,
+            $token,
+            $routes
+        );
+
+        return $this;
+    }
+
+    private function setBtnAdd(
+        $name,
+        $isinput,
+        $target,
+        $title,
+        $token,
+        $routes
+    )
+    {
+        $this->add(
+            $name,
             $title,
             [
-                'is'            => 'link-btnadmindeleties',
+                'is'            => $isinput,
                 'data-toggle'   => 'modal',
-                'data-target'   => '#deletiesModal',
+                'data-target'   => '#'.$target,
                 'data-token'    => $token,
                 'data-redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
                 'data-url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
             ]
         );
-
-        return $this;
     }
 
     public function addRestoreSelection(
@@ -512,17 +531,13 @@ class AdminBtnSingleton
             'modalEmpties',
             true
         );
-        $this->add(
+        $this->setBtnAdd(
             'btn-admin-header-empties',
+            'link-btnadminempties',
+            'emptiesModal',
             $title,
-            [
-                'is'            => 'link-btnadminempties',
-                'data-toggle'   => 'modal',
-                'data-token'    => $token,
-                'data-target'   => '#emptiesModal',
-                'data-redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
-                'data-url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
-            ]
+            $token,
+            $routes
         );
 
         return $this;

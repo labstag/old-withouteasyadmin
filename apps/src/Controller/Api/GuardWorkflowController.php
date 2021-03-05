@@ -8,9 +8,9 @@ use Labstag\Entity\Workflow;
 use Labstag\Entity\WorkflowGroupe;
 use Labstag\Entity\WorkflowUser;
 use Labstag\Lib\ApiControllerLib;
+use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\Repository\WorkflowGroupeRepository;
-use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\Repository\WorkflowUserRepository;
 use Labstag\RequestHandler\WorkflowGroupeRequestHandler;
@@ -91,41 +91,23 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowGroupeRequestHandler $workflowGroupeRH
     )
     {
-        $data = [
+        $data      = [
             'delete' => 0,
             'add'    => 0,
             'error'  => '',
         ];
-        if ('superadmin' == $group->getCode()) {
-            return new JsonResponse($data);
-        }
-
-        $state = $request->request->get('state');
-        if ('0' === $state) {
-            $toDelete = $workflowGroupeRepo->findBy(['refgroupe' => $group]);
-            foreach ($toDelete as $entity) {
-                $data['delete'] = 1;
-                $this->entityManager->remove($entity);
-            }
-
-            $this->entityManager->flush();
-
-            return new JsonResponse($data);
-        }
-
+        $state     = $request->request->get('state');
         $workflows = $workflowRepo->findAll();
         /* @var EntityRoute $route */
         foreach ($workflows as $workflow) {
-            $workflowGroupe = $workflowGroupeRepo->findOneBy(['refgroupe' => $group, 'refworkflow' => $workflow]);
-            if (!$workflowGroupe instanceof WorkflowGroupe) {
-                $workflowGroupe = new WorkflowGroupe();
-                $data['add']    = 1;
-                $workflowGroupe->setRefgroupe($group);
-                $workflowGroupe->setRefworkflow($workflow);
-                $old = clone $workflowGroupe;
-                $workflowGroupe->setState($state);
-                $workflowGroupeRH->handle($old, $workflowGroupe);
-            }
+            $data = $this->setWorkflowGroupe(
+                $data,
+                $workflowGroupeRepo,
+                $group,
+                $workflow,
+                $state,
+                $workflowGroupeRH
+            );
         }
 
         return new JsonResponse($data);
@@ -142,41 +124,62 @@ class GuardWorkflowController extends ApiControllerLib
         Request $request
     )
     {
-        $data  = [
+        $data    = [
             'delete' => 0,
             'add'    => 0,
             'error'  => '',
         ];
-        $state = $request->request->get('state');
+        $state   = $request->request->get('state');
+        $groupes = $groupeRepo->findAll();
+        foreach ($groupes as $group) {
+            $data = $this->setWorkflowGroupe(
+                $data,
+                $workflowGroupeRepo,
+                $group,
+                $workflow,
+                $state,
+                $workflowGroupeRH
+            );
+        }
+
+        return new JsonResponse($data);
+    }
+
+    private function setWorkflowGroupe(
+        $data,
+        $workflowGroupeRepo,
+        $group,
+        $workflow,
+        $state,
+        $workflowGroupeRH
+    )
+    {
+        $workflowGroupe = $workflowGroupeRepo->findOneBy(['refgroupe' => $group, 'refworkflow' => $workflow]);
         if ('0' === $state) {
-            foreach ($workflow->getGroupes() as $workflowGroupe) {
+            if ($workflowGroupe instanceof WorkflowGroupe) {
                 $data['delete'] = 1;
                 $this->entityManager->remove($workflowGroupe);
                 $this->entityManager->flush();
             }
 
-            return new JsonResponse($data);
+            return $data;
         }
 
-        $groupes = $groupeRepo->findAll();
-        foreach ($groupes as $group) {
-            if ('superadmin' === $group->getCode()) {
-                continue;
-            }
-
-            $workflowGroupe = $workflowGroupeRepo->findOneBy(['refgroupe' => $group, 'refworkflow' => $workflow]);
-            if (!$workflowGroupe instanceof WorkflowGroupe) {
-                $workflowGroupe = new WorkflowGroupe();
-                $data['add'] = 1;
-                $workflowGroupe->setRefgroupe($group);
-                $workflowGroupe->setRefworkflow($workflow);
-                $old = clone $workflowGroupe;
-                $workflowGroupe->setState($state);
-                $workflowGroupeRH->handle($old, $workflowGroupe);
-            }
+        if ('superadmin' === $group->getCode()) {
+            return $data;
         }
 
-        return new JsonResponse($data);
+        if (!$workflowGroupe instanceof WorkflowGroupe) {
+            $workflowGroupe = new WorkflowGroupe();
+            $data['add']    = 1;
+            $workflowGroupe->setRefgroupe($group);
+            $workflowGroupe->setRefworkflow($workflow);
+            $old = clone $workflowGroupe;
+            $workflowGroupe->setState($state);
+            $workflowGroupeRH->handle($old, $workflowGroupe);
+        }
+
+        return $data;
     }
 
     /**
@@ -190,36 +193,20 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowGroupeRequestHandler $workflowGroupeRH
     )
     {
-        $data = [
+        $data  = [
             'delete' => 0,
             'add'    => 0,
             'error'  => '',
         ];
-        if ('superadmin' == $group->getCode()) {
-            return new JsonResponse($data);
-        }
-
-        $state       = $request->request->get('state');
-        $workflowGroupe = $workflowGroupeRepo->findOneBy(['refgroupe' => $group, 'refworkflow' => $workflow]);
-        if ('0' === $state) {
-            if ($workflowGroupe instanceof WorkflowGroupe) {
-                $data['delete'] = 1;
-                $this->entityManager->remove($workflowGroupe);
-                $this->entityManager->flush();
-            }
-
-            return new JsonResponse($data);
-        }
-
-        if (!$workflowGroupe instanceof WorkflowGroupe) {
-            $workflowGroupe = new WorkflowGroupe();
-            $data['add'] = 1;
-            $workflowGroupe->setRefgroupe($group);
-            $workflowGroupe->setRefworkflow($workflow);
-            $old = clone $workflowGroupe;
-            $workflowGroupe->setState($state);
-            $workflowGroupeRH->handle($old, $workflowGroupe);
-        }
+        $state = $request->request->get('state');
+        $data  = $this->setWorkflowGroupe(
+            $data,
+            $workflowGroupeRepo,
+            $group,
+            $workflow,
+            $state,
+            $workflowGroupeRH
+        );
 
         return new JsonResponse($data);
     }
@@ -235,41 +222,23 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowUserRequestHandler $workflowUserRH
     )
     {
-        $data = [
+        $data      = [
             'delete' => 0,
             'add'    => 0,
             'error'  => '',
         ];
-        if ('superadmin' == $user->getGroupe()->getCode()) {
-            return new JsonResponse($data);
-        }
-
-        $state = $request->request->get('state');
-        if ('0' === $state) {
-            $toDelete = $workflowUserRepo->findBy(['refuser' => $user]);
-            foreach ($toDelete as $entity) {
-                $data['delete'] = 1;
-                $this->entityManager->remove($entity);
-            }
-
-            $this->entityManager->flush();
-
-            return new JsonResponse($data);
-        }
-
+        $state     = $request->request->get('state');
         $workflows = $workflowRepo->findAll();
-        /** @var WorkflowUser $route */
+        /* @var WorkflowUser $route */
         foreach ($workflows as $workflow) {
-            $workflowUser = $workflowUserRepo->findOneBy(['refuser' => $user, 'refworkflow' => $workflow]);
-            if (!$workflowUser instanceof WorkflowUser) {
-                $data['add'] = 1;
-                $workflowUser   = new WorkflowUser();
-                $workflowUser->setRefuser($user);
-                $workflowUser->setRefworkflow($workflow);
-                $old = clone $workflowUser;
-                $workflowUser->setState($state);
-                $workflowUserRH->handle($old, $workflowUser);
-            }
+            $data = $this->setWorkflowUser(
+                $data,
+                $workflowUserRepo,
+                $user,
+                $workflow,
+                $state,
+                $workflowUserRH
+            );
         }
 
         return new JsonResponse($data);
@@ -286,16 +255,33 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowUserRequestHandler $workflowUserRH
     )
     {
-        $data = [
+        $data  = [
             'delete' => 0,
             'add'    => 0,
             'error'  => '',
         ];
-        if ('superadmin' == $user->getGroupe()->getCode()) {
-            return new JsonResponse($data);
-        }
+        $state = $request->request->get('state');
+        $data  = $this->setWorkflowUser(
+            $data,
+            $workflowUserRepo,
+            $user,
+            $workflow,
+            $state,
+            $workflowUserRH
+        );
 
-        $state     = $request->request->get('state');
+        return new JsonResponse($data);
+    }
+
+    private function setWorkflowUser(
+        $data,
+        $workflowUserRepo,
+        $user,
+        $workflow,
+        $state,
+        $workflowUserRH
+    )
+    {
         $workflowUser = $workflowUserRepo->findOneBy(['refuser' => $user, 'refworkflow' => $workflow]);
         if ('0' === $state) {
             if ($workflowUser instanceof WorkflowUser) {
@@ -304,12 +290,16 @@ class GuardWorkflowController extends ApiControllerLib
                 $this->entityManager->flush();
             }
 
-            return new JsonResponse($data);
+            return $data;
+        }
+
+        if ('superadmin' === $user->getGroupe()->getCode()) {
+            return $data;
         }
 
         if (!$workflowUser instanceof WorkflowUser) {
-            $workflowUser   = new WorkflowUser();
-            $data['add'] = 1;
+            $data['add']  = 1;
+            $workflowUser = new WorkflowUser();
             $workflowUser->setRefuser($user);
             $workflowUser->setRefworkflow($workflow);
             $old = clone $workflowUser;
@@ -317,6 +307,6 @@ class GuardWorkflowController extends ApiControllerLib
             $workflowUserRH->handle($old, $workflowUser);
         }
 
-        return new JsonResponse($data);
+        return $data;
     }
 }

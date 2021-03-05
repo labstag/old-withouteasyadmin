@@ -36,9 +36,9 @@ class PhoneService
      *
      * @throws NumberParseException
      */
-    public function verif(string $numero, string $locale): array
+    public function verif(?string $numero, ?string $locale): array
     {
-        $numero         = str_replace([' ', '-', '.'], '', $numero);
+        $numero         = str_replace([' ', '-', '.'], '', (string) $numero);
         $data           = [];
         $timeZoneMapper = PhoneNumberToTimeZonesMapper::getInstance();
         $carrier        = PhoneNumberToCarrierMapper::getInstance();

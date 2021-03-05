@@ -5,6 +5,7 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Route;
+use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\RouteGroupeRepository;
@@ -231,17 +232,11 @@ class GuardService
 
     protected function searchRouteUser(User $user, string $route): bool
     {
-        $state = $this->searchRouteGroupe($user->getGroupe(), $route);
-        if (!$state) {
-            return false;
-        }
+        $stateGroupe = $this->searchRouteGroupe($user->getGroupe(), $route);
+        $entity      = $this->routeUserRepo->findRoute($user, $route);
+        $stateUser   = ($entity instanceof RouteUser) ? $entity->isState() : false;
 
-        $entity = $this->routeUserRepo->findRoute($user, $route);
-        if (empty($entity)) {
-            return false;
-        }
-
-        return $entity->isState();
+        return $stateGroupe || $stateUser;
     }
 
     public function guardRoute($route, $token)
@@ -271,20 +266,24 @@ class GuardService
 
     public function guardRouteEnableUser(string $route, User $user): bool
     {
-        $all = $this->all();
-        if (!array_key_exists($route, $all)) {
-            return false;
-        }
-
-        $data     = $all[$route];
-        $defaults = $data->getDefaults();
-        $matches  = [];
-        preg_match(self::REGEX_CONTROLLER_ADMIN, $defaults['_controller'], $matches);
-
-        return !(0 != count($matches) && 'visiteur' == $user->getGroupe()->getCode());
+        return $this->isRouteGroupe(
+            $user->getGroupe(),
+            $route
+        );
     }
 
     public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
+    {
+        return $this->isRouteGroupe(
+            $groupe,
+            $route
+        );
+    }
+
+    private function isRouteGroupe(
+        $groupe,
+        $route
+    )
     {
         $all = $this->all();
         if ('superadmin' == $groupe->getCode()) {

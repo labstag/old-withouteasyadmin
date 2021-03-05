@@ -31,14 +31,18 @@ class LabstagUserCommand extends Command
 
     protected GroupeRepository $groupeRepository;
 
+    protected UserRequestHandler $userRH;
+
     public function __construct(
         UserRepository $userRepository,
         GroupeRepository $groupeRepository,
         Registry $workflows,
+        UserRequestHandler $userRH,
         EntityManagerInterface $entityManager,
         UserRequestHandler $userRequestHandler
     )
     {
+        $this->userRH             = $userRH;
         $this->groupeRepository   = $groupeRepository;
         $this->entityManager      = $entityManager;
         $this->workflows          = $workflows;
@@ -63,6 +67,17 @@ class LabstagUserCommand extends Command
         $this->state($helper, $username, $inputOutput, $input, $output);
     }
 
+    protected function actionUpdatePassword($input, $output, $inputOutput)
+    {
+        $helper   = $this->getHelper('question');
+        $question = new ChoiceQuestion(
+            "Entrer le username de l'utilisateur : ",
+            $this->tableQuestionUser()
+        );
+        $username = $helper->ask($input, $output, $question);
+        $this->updatePassword($helper, $username, $inputOutput, $input, $output);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $inputOutput = new SymfonyStyle($input, $output);
@@ -70,12 +85,13 @@ class LabstagUserCommand extends Command
         $question    = new ChoiceQuestion(
             'Action à effectué',
             [
-                'list'    => 'list',
-                'create'  => 'create',
-                'enable'  => 'enable',
-                'disable' => 'disable',
-                'delete'  => 'delete',
-                'state'   => 'state',
+                'list'           => 'list',
+                'create'         => 'create',
+                'enable'         => 'enable',
+                'disable'        => 'disable',
+                'delete'         => 'delete',
+                'state'          => 'state',
+                'updatepassword' => 'updatepassword',
             ]
         );
 
@@ -86,6 +102,9 @@ class LabstagUserCommand extends Command
                 break;
             case 'create':
                 $this->create($helper, $inputOutput, $input, $output);
+                break;
+            case 'updatepassword':
+                $this->actionUpdatePassword($input, $output, $inputOutput);
                 break;
             case 'state':
                 $this->actionState($input, $output, $inputOutput);
@@ -152,15 +171,25 @@ class LabstagUserCommand extends Command
 
     protected function create($helper, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $user     = new User();
-        $old      = clone $user;
-        $question = new Question("Entrer le username de l'utilisateur : ");
-        $username = $helper->ask($input, $output, $question);
+        $inputOutput = new SymfonyStyle($input, $output);
+        $user        = new User();
+        $old         = clone $user;
+        $question    = new Question("Entrer le username de l'utilisateur : ");
+        $username    = $helper->ask($input, $output, $question);
         $user->setUsername($username);
         $question = new Question("Entrer le password de l'utilisateur : ");
         $question->setHidden(true);
-        $password = $helper->ask($input, $output, $question);
-        $user->setPlainPassword($password);
+        $password1 = $helper->ask($input, $output, $question);
+        $question  = new Question("Resaisir le password de l'utilisateur : ");
+        $question->setHidden(true);
+        $password2 = $helper->ask($input, $output, $question);
+        if ($password1 !== $password2) {
+            $inputOutput->error('Mot de passe incorrect');
+
+            return;
+        }
+
+        $user->setPlainPassword($password1);
         $question = new Question("Entrer l'email de l'utilisateur : ");
         $email    = $helper->ask($input, $output, $question);
         $user->setEmail($email);
@@ -189,6 +218,35 @@ class LabstagUserCommand extends Command
 
         $this->userRequestHandler->handle($old, $user);
         $inputOutput->success('Utilisateur ajouté');
+    }
+
+    protected function updatePassword($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
+    {
+        $entity = $this->userRepository->findOneBy(['username' => $username]);
+        if (!$entity instanceof User || is_null($entity)) {
+            $inputOutput->warning(
+                ['Utilisateur introuvable']
+            );
+
+            return;
+        }
+
+        $question = new Question("Entrer le password de l'utilisateur : ");
+        $question->setHidden(true);
+        $password1 = $helper->ask($input, $output, $question);
+        $question  = new Question("Resaisir le password de l'utilisateur : ");
+        $question->setHidden(true);
+        $password2 = $helper->ask($input, $output, $question);
+        if ($password1 !== $password2) {
+            $inputOutput->error('Mot de passe incorrect');
+
+            return;
+        }
+
+        $old = clone $entity;
+        $entity->setPlainPassword($password1);
+        $this->userRH->handle($old, $entity);
+        $inputOutput->success('Mot de passe changé');
     }
 
     protected function state($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)

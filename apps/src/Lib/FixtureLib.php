@@ -25,6 +25,7 @@ use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\GuardService;
+use Labstag\Service\InstallService;
 use Labstag\Service\OauthService;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
@@ -62,7 +63,10 @@ abstract class FixtureLib extends Fixture
 
     protected CacheInterface $cache;
 
+    protected InstallService $installService;
+
     public function __construct(
+        InstallService $installService,
         OauthService $oauthService,
         UserRepository $userRepository,
         GroupeRepository $groupeRepository,
@@ -80,6 +84,7 @@ abstract class FixtureLib extends Fixture
         CacheInterface $cache
     )
     {
+        $this->installService   = $installService;
         $this->cache            = $cache;
         $this->guardService     = $guardService;
         $this->twig             = $twig;
@@ -170,6 +175,7 @@ abstract class FixtureLib extends Fixture
     {
         $groupe = new Groupe();
         $old    = clone $groupe;
+        $groupe->setCode($row);
         $groupe->setName($row);
         $this->addReference('groupe_'.$key, $groupe);
         $this->groupeRH->handle($old, $groupe);

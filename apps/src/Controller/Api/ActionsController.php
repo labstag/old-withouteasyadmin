@@ -163,12 +163,17 @@ class ActionsController extends ApiControllerLib
      */
     public function restories(string $entity, Request $request): JsonResponse
     {
+        return $this->deleteOrRestore($entity, $request, 'restories');
+    }
+
+    private function deleteOrRestore(string $entity, Request $request, string $token)
+    {
         $data = [
             'action' => false,
             'error'  => '',
         ];
 
-        $tokenValid = $this->apiActionsService->verifToken('restories');
+        $tokenValid = $this->apiActionsService->verifToken($token);
         if (!$tokenValid) {
             $data['error'] = 'token incorrect';
 
@@ -178,11 +183,12 @@ class ActionsController extends ApiControllerLib
         $entities   = explode(',', $request->request->get('entities'));
         $error      = [];
         $repository = $this->apiActionsService->getRepository($entity);
+        $method     = ('deleties' == $token) ? 'deleteEntity' : 'restoreEntity';
+        $method     = ('destroies' == $token) ? 'destroyEntity' : $method;
         foreach ($entities as $id) {
             try {
                 $entity = $repository->find($id);
-                dump($entity);
-                $this->restoreEntity($entity);
+                $this->$method($entity);
             } catch (Exception $exception) {
                 $error[] = $exception->getMessage();
             }
@@ -192,6 +198,8 @@ class ActionsController extends ApiControllerLib
         if (0 === count($error)) {
             $data['action'] = true;
         }
+
+        unset($entity);
 
         return new JsonResponse($data);
     }
@@ -215,12 +223,11 @@ class ActionsController extends ApiControllerLib
      */
     public function restore(string $entity, string $id): JsonResponse
     {
-        $data       = [
+        $data   = [
             'action' => false,
             'error'  => '',
         ];
-        $repository = $this->apiActionsService->getRepository($entity);
-        $entity     = $repository->find($id);
+        $entity = $this->getDataRestoreDelete($entity, $id);
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
             $data['error'] = 'entité inconnu';
 
@@ -240,6 +247,13 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
+    private function getDataRestoreDelete($entity, $id)
+    {
+        $repository = $this->apiActionsService->getRepository($entity);
+
+        return $repository->find($id);
+    }
+
     /**
      * @Route("/destroies/{entity}", name="api_action_destroies", methods={"DELETE"})
      * @IgnoreSoftDelete
@@ -248,36 +262,7 @@ class ActionsController extends ApiControllerLib
      */
     public function destroies(string $entity, Request $request): JsonResponse
     {
-        $data = [
-            'action' => false,
-            'error'  => '',
-        ];
-
-        $tokenValid = $this->apiActionsService->verifToken('destroies');
-        if (!$tokenValid) {
-            $data['error'] = 'token incorrect';
-
-            return new JsonResponse($data);
-        }
-
-        $entities   = explode(',', $request->request->get('entities'));
-        $error      = [];
-        $repository = $this->apiActionsService->getRepository($entity);
-        foreach ($entities as $id) {
-            try {
-                $entity = $repository->find($id);
-                $this->destroyEntity($entity);
-            } catch (Exception $exception) {
-                $error[] = $exception->getMessage();
-            }
-        }
-
-        $data['error'] = $error;
-        if (0 === count($error)) {
-            $data['action'] = true;
-        }
-
-        return new JsonResponse($data);
+        return $this->deleteOrRestore($entity, $request, 'destroies');
     }
 
     private function destroyEntity($entity)
@@ -338,38 +323,7 @@ class ActionsController extends ApiControllerLib
      */
     public function deleties(string $entity, Request $request): JsonResponse
     {
-        $data = [
-            'action' => false,
-            'error'  => '',
-        ];
-
-        $tokenValid = $this->apiActionsService->verifToken('deleties');
-        if (!$tokenValid) {
-            $data['error'] = 'token incorrect';
-
-            return new JsonResponse($data);
-        }
-
-        $entities   = explode(',', $request->request->get('entities'));
-        $error      = [];
-        $repository = $this->apiActionsService->getRepository($entity);
-        foreach ($entities as $id) {
-            try {
-                $entity = $repository->find($id);
-                $this->deleteEntity($entity);
-            } catch (Exception $exception) {
-                $error[] = $exception->getMessage();
-            }
-        }
-
-        $data['error'] = $error;
-        if (0 === count($error)) {
-            $data['action'] = true;
-        }
-
-        unset($entity);
-
-        return new JsonResponse($data);
+        return $this->deleteOrRestore($entity, $request, 'deleties');
     }
 
     private function deleteEntity($entity)
@@ -389,12 +343,11 @@ class ActionsController extends ApiControllerLib
      */
     public function delete(string $entity, string $id): JsonResponse
     {
-        $data       = [
+        $data   = [
             'action' => false,
             'error'  => '',
         ];
-        $repository = $this->apiActionsService->getRepository($entity);
-        $entity     = $repository->find($id);
+        $entity = $this->getDataRestoreDelete($entity, $id);
         if (is_null($entity) || !is_null($entity->getDeletedAt())) {
             $data['error'] = 'entité inconnu';
 

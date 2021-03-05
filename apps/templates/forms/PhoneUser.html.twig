@@ -6,16 +6,9 @@
     {% set url = '#' %}
 {% endif %}
 <div class="row" data-url="{{ url }}">
-    {% set number = row['numero'].vars.value %}
-    {% set country = row['country'].vars.value %}
-    {% set verif = phone_valid(number, country) %}
     {% for input in row %}
         <div class="col-6">
-            {% if input.vars.name == 'numero' %}
-                {{ form_row(input, {'attr': {'class': verif ? 'is-valid' : 'is-invalid'}}) }}
-            {% else %}
-                {{ form_row(input) }}
-            {% endif %}
+            {{ form_row(input) }}
         </div>
     {% endfor %}
     {% if allow_delete %}
