@@ -48,8 +48,7 @@ class DataService
             ]
         );
         if (0 === count($config)) {
-            $this->cache->delete('configuration');
-            $this->setData();
+            $config = $this->getConfiguration();
         }
 
         $this->config = $config;
@@ -60,6 +59,12 @@ class DataService
     public function compute(ItemInterface $item): array
     {
         $item->expiresAfter(1800);
+
+        return $this->getConfiguration();
+    }
+
+    protected function getConfiguration()
+    {
         $data   = $this->repository->findAll();
         $config = [];
         /** @var Configuration $row */
