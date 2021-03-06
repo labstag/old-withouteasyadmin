@@ -77,7 +77,7 @@
     "behat/behat": "3.7.0",
     "doctrine/doctrine-fixtures-bundle": "3.4.0",
     "friendsofphp/php-cs-fixer": "^2.18",
-    "phpstan/phpstan": "0.12.67",
+    "phpstan/phpstan": "0.12.80",
     "povils/phpmnd": "2.4.0",
     "squizlabs/php_codesniffer": "3.5.8",
     "symfony/browser-kit": "5.2.*",
