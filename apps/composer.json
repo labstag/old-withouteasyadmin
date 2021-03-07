@@ -74,7 +74,7 @@
     "webonyx/graphql-php": "14.5.1"
   },
   "require-dev": {
-    "behat/behat": "3.7.0",
+    "behat/behat": "3.8.1",
     "doctrine/doctrine-fixtures-bundle": "3.4.0",
     "friendsofphp/php-cs-fixer": "^2.18",
     "phpstan/phpstan": "0.12.80",
