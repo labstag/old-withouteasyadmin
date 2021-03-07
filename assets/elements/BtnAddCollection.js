@@ -1,4 +1,5 @@
-export class BtnAddCollection extends HTMLElement {
+import { ElementHTML } from './ElementHTML'
+export class BtnAddCollection extends ElementHTML {
   connectedCallback () {
     this.classList.add('btn-addcollection')
     const title = this.getAttribute('title')

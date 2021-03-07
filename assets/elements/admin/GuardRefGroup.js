@@ -1,15 +1,8 @@
-export class GuardRefGroup extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class GuardRefGroup extends ElementHTML {
   constructor () {
     super()
-    this.changeState()
-    const observer = new MutationObserver(this.mutationObserver.bind(this))
-    observer.observe(this, {
-      attributes: true
-    })
-  }
-
-  mutationObserver (mutations) {
-    mutations.forEach(this.forEachMutationObserver.bind(this))
+    this.setMutations()
   }
 
   forEachMutationObserver (mutation) {

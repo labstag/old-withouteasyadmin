@@ -500,5 +500,6 @@ upgrade: ## upgrade git
 	@make composer install -i
 	@make node_modules -i
 	@make encore build -i
+	@make commands -i
 	$(DOCKER_EXECPHP) symfony cache:clear
 	$(DOCKER_EXECPHP) symfony labstag:update --maintenanceoff

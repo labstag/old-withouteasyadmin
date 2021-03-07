@@ -1,4 +1,5 @@
-export class SelectElement extends HTMLElement {
+import { ElementHTML } from './ElementHTML'
+export class SelectElement extends ElementHTML {
   constructor () {
     super()
     const title = this.dataset.title
@@ -14,10 +15,6 @@ export class SelectElement extends HTMLElement {
     observer.observe(this, {
       attributes: true
     })
-  }
-
-  mutationObserver (mutations) {
-    mutations.forEach(this.forEachMutationObserver.bind(this))
   }
 
   forEachMutationObserver (mutation) {

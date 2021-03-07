@@ -1,4 +1,5 @@
-export class BtnToggleFieldset extends HTMLElement {
+import { ElementHTML } from './ElementHTML'
+export class BtnToggleFieldset extends ElementHTML {
   connectedCallback () {
     this.classList.add('btn-togglefieldset')
     const iElement = document.createElement('i')

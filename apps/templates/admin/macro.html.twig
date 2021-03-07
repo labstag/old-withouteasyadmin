@@ -19,8 +19,8 @@
     {% set state = guard_route(url) %}
     {% if state == true %}
         <link-show
-            data-href="{{ path(url, {'id': entity.id}) }}"
-            data-title="{{ title|e }}"
+            href="{{ path(url, {'id': entity.id}) }}"
+            title="{{ title|e }}"
         ></link-show>
     {% endif %}
 {% endmacro %}
@@ -34,8 +34,8 @@
     {% endif %}
     {% if state1 == true and state2 == true %}
         <link-guard
-            data-href="{{ path(url, {'id': entity.id}) }}"
-            data-title="{{ title|e }}"
+            href="{{ path(url, {'id': entity.id}) }}"
+            title="{{ title|e }}"
         ></link-guard>
     {% endif %}
 {% endmacro %}
@@ -45,8 +45,8 @@
     {% set state2 = is_granted('edit', entity) %}
     {% if state1 == true and state2 == true %}
         <link-edit
-            data-href="{{ path(url, {'id': entity.id}) }}"
-            data-title="#{{ title|e }}"
+            href="{{ path(url, {'id': entity.id}) }}"
+            title="#{{ title|e }}"
         ></link-edit>
     {% endif %}
 {% endmacro %}

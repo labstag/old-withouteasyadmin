@@ -1,4 +1,5 @@
-export class LinkRestore extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class LinkRestore extends ElementHTML {
   constructor () {
     super()
     const title = this.dataset.title

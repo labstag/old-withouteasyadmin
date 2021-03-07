@@ -1,4 +1,5 @@
-export class BtnDelete extends HTMLElement {
+import { ElementHTML } from './ElementHTML'
+export class BtnDelete extends ElementHTML {
   connectedCallback () {
     this.classList.add('btn-delete')
     this.append(document.createElement('i'))

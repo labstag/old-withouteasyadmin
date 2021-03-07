@@ -1,4 +1,5 @@
-export class AttachmentDelete extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class AttachmentDelete extends ElementHTML {
   constructor () {
     super()
     this.classList.add('attachment-delete')

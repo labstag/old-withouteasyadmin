@@ -1,4 +1,5 @@
-export class LinkDelete extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class LinkDelete extends ElementHTML {
   constructor () {
     super()
     const title = this.dataset.title

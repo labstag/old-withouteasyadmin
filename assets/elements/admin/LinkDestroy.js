@@ -1,4 +1,5 @@
-export class LinkDestroy extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class LinkDestroy extends ElementHTML {
   constructor () {
     super()
     const title = this.dataset.title

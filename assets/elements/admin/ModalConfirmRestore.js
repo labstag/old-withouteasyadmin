@@ -1,4 +1,5 @@
-export class ModalConfirmRestore extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class ModalConfirmRestore extends ElementHTML {
   constructor () {
     super()
     this.classList.add('confirm-restore')
@@ -20,12 +21,6 @@ export class ModalConfirmRestore extends HTMLElement {
       },
       body: urlSearchParams
     }
-    fetch(url, options)
-      .then((response) => {
-        window.location.href = redirect
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    this.fetchRedirect(url, options, redirect)
   }
 }
