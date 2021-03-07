@@ -251,11 +251,18 @@ ifeq ($(COMMAND_ARGS),all)
 	@make bdd migrate -i
 	@make assets -i
 	@make encore dev -i
-	@make linter all i
-	$(DOCKER_EXECPHP) symfony console labstag:install --all
+	@make linter all -i
 else ifeq ($(COMMAND_ARGS),dev)
-	@make install all
+	@make install all -i
 	@make bdd fixtures -i
+	@make commands -i
+	@make env dev -i
+else ifeq ($(COMMAND_ARGS),prod)
+	@make install all -i
+	@make bdd fixtures -i
+	@make commands -i
+	@make env prod -i
+	@make encore build -i
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -263,7 +270,13 @@ else
 	@echo "---"
 	@echo "all: common"
 	@echo "dev: dev"
+	@echo "prod: prod"
 endif
+
+.PHONY: commands
+commands:
+	$(DOCKER_EXECPHP) symfony console labstag:install --all
+	$(DOCKER_EXECPHP) symfony console labstag:guard-route
 
 .PHONY: linter
 linter: ## Scripts Linter
