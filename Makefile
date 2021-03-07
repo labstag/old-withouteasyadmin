@@ -252,10 +252,10 @@ ifeq ($(COMMAND_ARGS),all)
 	@make assets -i
 	@make encore dev -i
 	@make linter all i
+	$(DOCKER_EXECPHP) symfony console labstag:install --all
 else ifeq ($(COMMAND_ARGS),dev)
 	@make install all
 	@make bdd fixtures -i
-	$(DOCKER_EXECPHP) symfony console labstag:install --all
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
