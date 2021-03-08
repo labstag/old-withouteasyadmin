@@ -75,7 +75,6 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         LoggerInterface $logger
     )
     {
-        $this->user = $user;
         $this->logger           = $logger;
         $this->entityManager    = $entityManager;
         $this->urlGenerator     = $urlGenerator;
