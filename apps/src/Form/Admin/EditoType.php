@@ -23,11 +23,6 @@ class EditoType extends AbstractType
     {
         $builder->add('title');
         $builder->add('content', WysiwygType::class);
-        $choices = [];
-        if ($options['data']->getRefUser() instanceof User) {
-            $choices = [$options['data']->getRefUser()];
-        }
-
         $builder->add(
             'file',
             FileType::class,
@@ -41,8 +36,7 @@ class EditoType extends AbstractType
             'refuser',
             SelectRefUserType::class,
             [
-                'class'   => User::class,
-                'choices' => $choices,
+                'class' => User::class,
             ]
         );
     }

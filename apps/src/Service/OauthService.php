@@ -32,6 +32,26 @@ class OauthService
         $this->setConfigProvider();
     }
 
+    public function getData(): array
+    {
+        $types = [
+            'bitbucket' => "https://bitbucket.org/%USER%/workspace/settings/api",
+            'amazon' => '',
+            'discord' => 'https://discord.com/developers/applications',
+            'dropbox' => 'https://www.dropbox.com/developers/apps',
+            'github' => 'https://github.com/settings/developers',
+            'gitlab' => 'https://gitlab.com/oauth/applications/',
+            'google' => 'https://console.developers.google.com',
+            'instagram' => '',
+            'paypal' => '',
+            'reddit' => 'https://www.reddit.com/prefs/apps',
+            'twitch' => 'https://dev.twitch.tv/console/apps',
+        ];
+        ksort($types);
+
+        return $types;
+    }
+
     public function getTypes(): array
     {
         $types = [

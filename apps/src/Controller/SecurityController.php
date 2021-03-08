@@ -117,7 +117,7 @@ class SecurityController extends ControllerLib
             $referer = $url;
         }
 
-        if (!($provider instanceof GenericProviderLib)) {
+        if (!$provider instanceof GenericProviderLib) {
             $this->addFlash('warning', 'Connexion Oauh impossible');
 
             return $this->redirect($referer);
@@ -137,7 +137,7 @@ class SecurityController extends ControllerLib
      * because this is the "redirect_route" you configured
      * in config/packages/knpu_oauth2_client.yaml.
      *
-     * @Route("/oauth/connect/{oauthCode}/check", name="connect_check")
+     * @Route("/oauth/check/{oauthCode}", name="connect_check")
      */
     public function oauthConnectCheck(
         Request $request,
@@ -174,17 +174,16 @@ class SecurityController extends ControllerLib
             );
 
             $session->remove('oauth2state');
-            $session->remove('referer');
             /** @var UsageTrackingTokenStorage $tokenStorage */
             $tokenStorage = $this->get('security.token_storage');
             /** @var TokenInterface $token */
             $token = $tokenStorage->getToken();
-            if (!($token instanceof AnonymousToken)) {
+            if (!$token instanceof AnonymousToken) {
                 /** @var ResourceOwnerInterface $userOauth */
                 $userOauth = $provider->getResourceOwner($tokenProvider);
                 /** @var User $user */
                 $user = $token->getUser();
-                if (!($user instanceof User)) {
+                if (!$user instanceof User) {
                     $this->addFlash('warning', "Probleme d'identification");
 
                     return $this->redirect($referer);
@@ -197,6 +196,7 @@ class SecurityController extends ControllerLib
                 );
             }
 
+            $session->remove('referer');
             return $this->redirect($referer);
         } catch (Exception $exception) {
             $errorMsg = sprintf(

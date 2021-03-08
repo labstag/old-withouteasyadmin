@@ -126,10 +126,13 @@ class UserService
     public function ifBug(
         GenericProviderLib $provider,
         array $query,
-        string $oauth2state
+        ?string $oauth2state
     ): bool
     {
-        if (!($provider instanceof GenericProviderLib)) {
+        if (is_null($oauth2state)) {
+            return true;
+        }
+        if (!$provider instanceof GenericProviderLib) {
             return true;
         }
 
@@ -144,7 +147,7 @@ class UserService
 
         /** @var User $user */
         $user = $this->repository->findUserEnable($post['value']);
-        if (!($user instanceof User)) {
+        if (!$user instanceof User) {
             return;
         }
 

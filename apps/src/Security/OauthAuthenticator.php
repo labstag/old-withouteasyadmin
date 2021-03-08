@@ -16,15 +16,16 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\{
-    Exception\CustomUserMessageAuthenticationException
+    Exception\CustomUserMessageAuthenticationException,
+    Security
 };
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\{
     AbstractFormLoginAuthenticator
@@ -57,9 +58,9 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
     protected RequestStack $requestStack;
 
     /**
-     * @var TokenStorage|TokenStorageInterface
+     * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    protected TokenStorageInterface $token;
 
     protected LoggerInterface $logger;
 
@@ -70,10 +71,11 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         UserPasswordEncoderInterface $passwordEncoder,
         OauthService $oauthService,
         RequestStack $requestStack,
-        TokenStorageInterface $tokenStorage,
+        TokenStorageInterface $token,
         LoggerInterface $logger
     )
     {
+        $this->user = $user;
         $this->logger           = $logger;
         $this->entityManager    = $entityManager;
         $this->urlGenerator     = $urlGenerator;
@@ -85,7 +87,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
 
         $this->request      = $request;
         $this->oauthService = $oauthService;
-        $this->tokenStorage = $tokenStorage;
+        $this->token = $token;
 
         $attributes      = $this->request->attributes;
         $oauthCode       = $this->setOauthCode($attributes);
@@ -105,12 +107,9 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
     {
         $route       = $request->attributes->get('_route');
         $this->route = $route;
-        $user        = $this->tokenStorage->getToken();
+        $token       = $this->token->getToken();
 
-        $test1 = ('connect_check' === $route);
-        $test2 = (is_null($user) || !($user->getUser() instanceof User));
-
-        return $test1 && $test2;
+        return 'connect_check' === $route && (is_null($token) || !$token->getUser() instanceof User);
     }
 
     public function getCredentials(Request $request)
@@ -120,7 +119,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         $query       = $request->query->all();
         $session     = $request->getSession();
         $oauth2state = $session->get('oauth2state');
-        if (!($provider instanceof GenericProviderLib)) {
+        if (!$provider instanceof GenericProviderLib) {
             return [];
         } elseif (!isset($query['code']) || $oauth2state !== $query['state']) {
             return [];
@@ -176,13 +175,13 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         );
         /** @var OauthConnectUser $login */
         $login = $enm->login($identity, $this->oauthCode);
-        if (!($login instanceof OauthConnectUser) || '' == $identity) {
+        if (!$login instanceof OauthConnectUser || '' == $identity) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Username could not be found.');
         }
 
         $user = $login->getRefuser();
-        if (!($user instanceof User) || 'valider' != $user->getState()) {
+        if (!$user instanceof User || 'valider' != $user->getState()) {
             throw new CustomUserMessageAuthenticationException('Username not activate.');
         }
 

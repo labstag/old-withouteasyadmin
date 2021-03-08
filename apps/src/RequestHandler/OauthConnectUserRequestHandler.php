@@ -10,7 +10,7 @@ class OauthConnectUserRequestHandler extends RequestHandlerLib
 {
     public function handle($oldEntity, $entity)
     {
-        $this->setArrayCollection($entity);
+        $this->setArrayCollection($entity->getRefuser());
         $userCollectionEvent = new UserCollectionEvent();
         parent::handle($oldEntity, $entity);
         $userCollectionEvent->addOauthConnectUser($oldEntity, $entity);

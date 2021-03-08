@@ -29,6 +29,6 @@ export class SelectRefUser extends HTMLSelectElement {
   }
 
   optionItem (item, escape) {
-    return `<div class="py-2 d-flex">${escape(item.text)}</div>`
+    return `<span>${escape(item.text)}</span>`
   }
 }

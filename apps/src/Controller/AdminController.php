@@ -10,6 +10,7 @@ use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
+use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +31,21 @@ class AdminController extends AdminControllerLib
     {
         return $this->render(
             'admin/index.html.twig'
+        );
+    }
+    /**
+     * @Route("/oauth", name="admin_oauth")
+     */
+    public function oauth(OauthService $oauthService): Response
+    {
+        $this->headerTitle = 'Oauth';
+        $this->urlHome     = 'admin_oauth';
+        $types   = $oauthService->getData();
+        return $this->render(
+            'admin/oauth.html.twig',
+            [
+                'types' => $types
+            ]
         );
     }
 
@@ -118,15 +134,12 @@ class AdminController extends AdminControllerLib
             ];
         }
 
-        dump($config);
-
         $form = $this->createForm(ParamType::class, $config);
         $this->btnInstance->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $cache->delete('configuration');
             $post = $request->request->get($form->getName());
-            dump($post);
             $dispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
 
