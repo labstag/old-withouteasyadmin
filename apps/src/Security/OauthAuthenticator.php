@@ -104,6 +104,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
+        dump($request->getSession());
         $route       = $request->attributes->get('_route');
         $this->route = $route;
         $token       = $this->token->getToken();

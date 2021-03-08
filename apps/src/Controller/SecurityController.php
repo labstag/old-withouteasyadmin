@@ -259,6 +259,7 @@ class SecurityController extends ControllerLib
         OauthConnectUserRepository $repository
     ): Response
     {
+        $this->denyAccessUnlessGranted('IS_ANONYMOUS');
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
@@ -376,6 +377,7 @@ class SecurityController extends ControllerLib
      */
     public function lost(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_ANONYMOUS');
         $form = $this->createForm(LostPasswordType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
