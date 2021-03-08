@@ -7,6 +7,7 @@ use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
 
@@ -21,15 +22,19 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
+    protected Security $security;
+
     const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
 
     public function __construct(
         RouterInterface $router,
         Environment $twig,
         CsrfTokenManagerInterface $csrfTokenManager,
-        DataService $dataService
+        DataService $dataService,
+        Security $security
     )
     {
+        $this->security         = $security;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->router           = $router;
         $this->twig             = $twig;
@@ -93,7 +98,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
         $this->twig->addGlobal(
             'oauthActivated',
-            $this->dataService->getOauthActivated()
+            $this->dataService->getOauthActivated($this->security->getUser())
         );
     }
 

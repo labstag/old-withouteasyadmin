@@ -73,6 +73,7 @@ class UserService
             );
             if (is_null($oauthConnect)) {
                 $oauthConnect = new OauthConnectUser();
+                $oauthConnect->setIdentity($identity);
                 $oauthConnect->setRefuser($user);
                 $oauthConnect->setName($client);
             }
@@ -132,6 +133,7 @@ class UserService
         if (is_null($oauth2state)) {
             return true;
         }
+
         if (!$provider instanceof GenericProviderLib) {
             return true;
         }

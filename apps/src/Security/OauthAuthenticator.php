@@ -19,13 +19,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\{
-    Exception\CustomUserMessageAuthenticationException,
-    Security
-};
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\{
     AbstractFormLoginAuthenticator
@@ -57,9 +53,6 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
 
     protected RequestStack $requestStack;
 
-    /**
-     * @var TokenStorageInterface
-     */
     protected TokenStorageInterface $token;
 
     protected LoggerInterface $logger;
@@ -86,7 +79,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
 
         $this->request      = $request;
         $this->oauthService = $oauthService;
-        $this->token = $token;
+        $this->token        = $token;
 
         $attributes      = $this->request->attributes;
         $oauthCode       = $this->setOauthCode($attributes);
@@ -104,12 +97,14 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
-        dump($request->getSession());
+        $session     = $request->getSession()->all();
         $route       = $request->attributes->get('_route');
         $this->route = $route;
         $token       = $this->token->getToken();
+        $test1       = 'connect_check' === $route && !array_key_exists('link', $session);
+        $test2       = (is_null($token) || !$token->getUser() instanceof User);
 
-        return 'connect_check' === $route && (is_null($token) || !$token->getUser() instanceof User);
+        return $test1 && $test2;
     }
 
     public function getCredentials(Request $request)

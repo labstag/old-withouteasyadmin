@@ -33,6 +33,7 @@ class AdminController extends AdminControllerLib
             'admin/index.html.twig'
         );
     }
+
     /**
      * @Route("/oauth", name="admin_oauth")
      */
@@ -40,12 +41,11 @@ class AdminController extends AdminControllerLib
     {
         $this->headerTitle = 'Oauth';
         $this->urlHome     = 'admin_oauth';
-        $types   = $oauthService->getData();
+        $types             = $oauthService->getData();
+
         return $this->render(
             'admin/oauth.html.twig',
-            [
-                'types' => $types
-            ]
+            ['types' => $types]
         );
     }
 

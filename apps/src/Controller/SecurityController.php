@@ -110,6 +110,11 @@ class SecurityController extends ControllerLib
         $provider = $this->oauthService->setProvider($oauthCode);
         $session  = $request->getSession();
         /** @var string $referer */
+        $query = $request->query->all();
+        if (array_key_exists('link', $query)) {
+            $session->set('link', 1);
+        }
+
         $referer = $request->headers->get('referer');
         $session->set('referer', $referer);
         /** @var string $url */
@@ -160,6 +165,7 @@ class SecurityController extends ControllerLib
         if ($this->userService->ifBug($provider, $query, $oauth2state)) {
             $session->remove('oauth2state');
             $session->remove('referer');
+            $session->remove('link');
             $this->addFlash('warning', "Probleme d'identification");
 
             return $this->redirect($referer);
@@ -198,6 +204,8 @@ class SecurityController extends ControllerLib
             }
 
             $session->remove('referer');
+            $session->remove('link');
+
             return $this->redirect($referer);
         } catch (Exception $exception) {
             $errorMsg = sprintf(
@@ -209,6 +217,8 @@ class SecurityController extends ControllerLib
             );
             $this->logger->error($errorMsg);
             $this->addFlash('warning', "Probleme d'identification");
+            $session->remove('referer');
+            $session->remove('link');
 
             return $this->redirect($referer);
         }

@@ -73,6 +73,11 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
         $builder->where(
             'u.name = :name AND u.identity = :identity'
         );
+        $parameters = [
+            'name'     => $oauth,
+            'identity' => $identity,
+        ];
+        dump($parameters);
         $builder->setParameters(
             [
                 'name'     => $oauth,
