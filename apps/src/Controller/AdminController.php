@@ -110,7 +110,6 @@ class AdminController extends AdminControllerLib
         $config            = $dataService->getConfig();
         $tab               = [
             'disclaimer',
-            'language',
             'meta',
         ];
         foreach ($tab as $index) {
@@ -119,12 +118,15 @@ class AdminController extends AdminControllerLib
             ];
         }
 
+        dump($config);
+
         $form = $this->createForm(ParamType::class, $config);
         $this->btnInstance->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $cache->delete('configuration');
             $post = $request->request->get($form->getName());
+            dump($post);
             $dispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
 

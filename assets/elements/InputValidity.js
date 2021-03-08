@@ -13,6 +13,6 @@ export class InputValidity extends HTMLInputElement {
 
   onKeydown () {
     clearTimeout(this.timeout)
-    this.timeout = setTimeout(this.traitement.bind(this), 500)
+    this.timeout = setTimeout(() => { this.traitement() }, 500)
   }
 }

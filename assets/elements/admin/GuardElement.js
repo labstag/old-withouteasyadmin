@@ -1,7 +1,7 @@
 export class GuardElement extends HTMLTableElement {
   constructor () {
     super()
-    const observer = new MutationObserver(this.mutationObserver.bind(this))
+    const observer = new MutationObserver(mutations => { this.mutationObserver(mutations) })
     observer.observe(this, {
       attributes: true
     })
@@ -14,15 +14,13 @@ export class GuardElement extends HTMLTableElement {
     }
   }
 
-  fetchLaunch () {
-    fetch(this.dataset.url)
-      .then(response => response.json())
-      .then(this.fetchResponse.bind(this))
-      .catch(this.fetchCatch)
-  }
-
-  fetchCatch (err) {
-    console.log(err)
+  async fetchLaunch () {
+    try {
+      const response = await fetch(this.dataset.url).then(response => response.json())
+      this.fetchResponse(response)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   responseFetch (guardSet, refgroup, response) {

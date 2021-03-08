@@ -1,23 +1,22 @@
 export class ElementHTML extends HTMLElement {
   setMutations () {
     this.changeState()
-    const observer = new MutationObserver(this.mutationObserver.bind(this))
+    const observer = new MutationObserver(mutations => { this.mutationObserver(mutations) })
     observer.observe(this, {
       attributes: true
     })
   }
 
   mutationObserver (mutations) {
-    mutations.forEach(this.forEachMutationObserver.bind(this))
+    mutations.forEach(mutation => { this.forEachMutationObserver(mutation) })
   }
 
-  fetchRedirect (url, options, redirect) {
-    fetch(url, options)
-      .then((response) => {
-        window.location.href = redirect
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+  async fetchRedirect (url, options, redirect) {
+    try {
+      await fetch(url, options)
+      window.location.href = redirect
+    } catch (error) {
+      console.error(error)
+    }
   }
 }

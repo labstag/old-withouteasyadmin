@@ -15,7 +15,7 @@ export class GuardSet extends ElementHTML {
     const checkboxs = this.getElementsByTagName('input')
     this.checkbox = checkboxs[0]
     this.token = this.dataset.token
-    this.checkbox.addEventListener('change', this.onChange.bind(this))
+    this.checkbox.addEventListener('change', element => { this.onChange(element) })
     this.setMutations()
   }
 
@@ -30,7 +30,7 @@ export class GuardSet extends ElementHTML {
     input.checked = (this.dataset.state === '1')
   }
 
-  onChange (element) {
+  async onChange (element) {
     element.preventDefault()
     const urlSearchParams = new URLSearchParams()
     urlSearchParams.append('_token', this.dataset.token)
@@ -42,11 +42,12 @@ export class GuardSet extends ElementHTML {
       },
       body: urlSearchParams
     }
-    fetch(this.dataset.url, options).then(() => {
+    try {
+      await fetch(this.dataset.url, options)
       this.refresh()
-    }).catch((err) => {
-      console.log(err)
-    })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   refresh () {

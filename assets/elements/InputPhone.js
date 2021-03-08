@@ -5,7 +5,7 @@ export class InputPhone extends HTMLInputElement {
     const selects = this.row.getElementsByTagName('select')
     let select = null
     selects.forEach(
-      (element) => {
+      element => {
         const isValue = element.getAttribute('is')
         if (isValue === 'select-country') {
           select = element
@@ -28,23 +28,21 @@ export class InputPhone extends HTMLInputElement {
     this.classList.add(response.isvalid ? 'is-valid' : 'is-invalid')
   }
 
-  fetchCatch (err) {
-    console.log(err)
-  }
-
-  ajax () {
+  async ajax () {
     const params = {
       country: this.country.value,
       phone: this.value
     }
-    fetch(this.url + '?' + new URLSearchParams(params))
-      .then(response => response.json())
-      .then(this.fetchResponse.bind(this))
-      .catch(this.fetchCatch)
+    try {
+      const response = await fetch(this.url + '?' + new URLSearchParams(params)).then(response => response.json())
+      this.fetchResponse(response)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   onKeydown () {
     clearTimeout(this.timeout)
-    this.timeout = setTimeout(this.ajax.bind(this), 500)
+    this.timeout = setTimeout(() => { this.ajax() }, 500)
   }
 }

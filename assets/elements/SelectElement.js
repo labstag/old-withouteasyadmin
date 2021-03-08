@@ -11,7 +11,7 @@ export class SelectElement extends ElementHTML {
     }
     this.append(checkbox)
     checkbox.addEventListener('change', this.onChange)
-    const observer = new MutationObserver(this.mutationObserver.bind(this))
+    const observer = new MutationObserver(mutations => { this.mutationObserver(mutations) })
     observer.observe(this, {
       attributes: true
     })
