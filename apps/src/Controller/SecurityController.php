@@ -69,6 +69,7 @@ class SecurityController extends ControllerLib
         OauthConnectUserRepository $repository
     ): RedirectResponse
     {
+        $this->denyAccessUnlessGranted('IS_ANONYMOUS');
         /** @var User $user */
         $user = $security->getUser();
         /** @var string $referer */
