@@ -42,8 +42,11 @@ class OauthService
             'github'    => 'https://github.com/settings/developers',
             'gitlab'    => 'https://gitlab.com/oauth/applications/',
             'google'    => 'https://console.developers.google.com',
+            'linkedin'  => 'https://www.linkedin.com/developers/apps',
             'instagram' => '',
             'paypal'    => '',
+            'pinterest' => 'https://developers.pinterest.com/manage/',
+            'slack'     => 'https://api.slack.com/apps',
             'reddit'    => 'https://www.reddit.com/prefs/apps',
             'twitch'    => 'https://dev.twitch.tv/console/apps',
         ];
@@ -55,6 +58,7 @@ class OauthService
     public function getTypes(): array
     {
         $types = [
+            'linkedin',
             'bitbucket',
             'amazon',
             'discord',
