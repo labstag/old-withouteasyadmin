@@ -10,7 +10,6 @@ use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
-use Labstag\Service\InstallService;
 use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -42,7 +41,8 @@ class AdminController extends AdminControllerLib
     {
         $this->headerTitle = 'Oauth';
         $this->urlHome     = 'admin_oauth';
-        $types = $oauthService->getConfigProvider();
+        $types             = $oauthService->getConfigProvider();
+
         return $this->render(
             'admin/oauth.html.twig',
             ['types' => $types]

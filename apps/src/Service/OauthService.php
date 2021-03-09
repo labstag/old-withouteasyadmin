@@ -64,7 +64,6 @@ class OauthService
      */
     public function getIdentity($data, ?string $oauth)
     {
-        $entity = null;
         if (is_null($oauth)) {
             return;
         }
@@ -138,111 +137,123 @@ class OauthService
         return [];
     }
 
-    protected function initProvider(string $clientName): AbstractProvider
+    protected function generateStandardProvider($clientName, $params)
     {
-        $code  = strtoupper($clientName);
-        $oauth = $this->oauthActivated[strtolower($code)];
-        $url   = "https:".$this->router->generate(
-            'connect_check',
-            ['oauthCode' => $clientName],
-            UrlGeneratorInterface::NETWORK_PATH
-        );
         $provider = null;
+        $provider = $this->generateStandardProviderBitbucket($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderDiscord($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderDropbox($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderGithub($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderGitlab($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderGoogle($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderLinkedin($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderSlack($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderTwitch($clientName, $params, $provider);
+
+        return $provider;
+    }
+
+    protected function generateStandardProviderDiscord($clientName, $params, $provider)
+    {
+        $provider = ($clientName == 'discord') ? new Discord($params) : $provider;
+        
+        return $provider;
+    }
+
+    protected function generateStandardProviderGithub($clientName, $params, $provider)
+    {
+        $provider = ($clientName == 'github') ? new Github($params) : $provider;
+        
+        return $provider;
+    }
+
+    protected function generateStandardProviderGitlab($clientName, $params, $provider)
+    {
+        $provider = ($clientName == 'gitlab') ? new Gitlab($params) : $provider;
+        
+        return $provider;
+    }
+
+    protected function generateStandardProviderSlack($clientName, $params, $provider)
+    {
+        $provider = ($clientName == 'slack') ? new Slack($params) : $provider;
+        
+        return $provider;
+    }
+
+    protected function generateStandardProviderTwitch($clientName, $params, $provider)
+    {
+        $provider = ($clientName == 'twitch') ? new TwitchHelix($params) : $provider;
+        
+        return $provider;
+    }
+
+    protected function generateStandardProviderGoogle($clientName, $params, $provider)
+    {
+        $provider = ($clientName == 'google') ? new Google($params) : $provider;
+        
+        return $provider;
+    }
+
+    protected function generateStandardProviderBitbucket($clientName, $params, $provider)
+    {
+        $provider = ($clientName == 'bitbucket') ? new Bitbucket($params) : $provider;
+        
+        return $provider;
+    }
+
+    protected function generateStandardProviderDropbox($clientName, $params, $provider)
+    {
+        $provider = ($clientName == 'dropbox') ? new Dropbox($params) : $provider;
+        
+        return $provider;
+    }
+
+    protected function generateStandardProviderlinkedin($clientName, $params, $provider)
+    {
+        $provider = ($clientName == 'linkedin') ? new LinkedIn($params) : $provider;
+        
+        return $provider;
+    }
+
+    protected function generateProvider($clientName, $url, $oauth)
+    {
+        $params = [
+            'clientId'     => $oauth['id'],
+            'clientSecret' => $oauth['secret'],
+            'redirectUri'  => $url,
+        ];
+        $provider = $this->generateStandardProvider($clientName, $params);
         switch ($clientName) {
-            case "bitbucket":
-                $provider = new Bitbucket(
-                    [
-                        'clientId' => $oauth['id'],
-                        'clientSecret' => $oauth['secret'],
-                        'redirectUri' => $url
-                    ]
-                );
-                break;
-            case "discord":
-                $provider = new Discord(
-                    [
-                        'clientId' => $oauth['id'],
-                        'clientSecret' => $oauth['secret'],
-                        'redirectUri' => $url
-                    ]
-                );
-                break;
-            case "github":
-                $provider = new Github(
-                    [
-                        'clientId' => $oauth['id'],
-                        'clientSecret' => $oauth['secret'],
-                        'redirectUri' => $url
-                    ]
-                );
-                break;
-            case "gitlab":
-                $provider = new Gitlab(
-                    [
-                        'clientId' => $oauth['id'],
-                        'clientSecret' => $oauth['secret'],
-                        'redirectUri' => $url
-                    ]
-                );
-                break;
-            case "reddit":
+            case 'reddit':
                 $provider = new Reddit(
                     [
-                        'clientId' => $oauth['id'],
+                        'clientId'     => $oauth['id'],
                         'clientSecret' => $oauth['secret'],
-                        'redirectUri' => $url,
-                        'userAgent'     => 'platform:appid:version, (by /u/username)',
-                        'scopes'        => ['identity', 'read']
-                    ]
-                );
-                break;
-            case "slack":
-                $provider = new Slack(
-                    [
-                        'clientId' => $oauth['id'],
-                        'clientSecret' => $oauth['secret'],
-                        'redirectUri' => $url
-                    ]
-                );
-                break;
-            case "twitch":
-                $provider = new TwitchHelix(
-                    [
-                        'clientId' => $oauth['id'],
-                        'clientSecret' => $oauth['secret'],
-                        'redirectUri' => $url
-                    ]
-                );
-                break;
-            case "google":
-                $provider = new Google(
-                    [
-                        'clientId' => $oauth['id'],
-                        'clientSecret' => $oauth['secret'],
-                        'redirectUri' => $url
-                    ]
-                );
-                break;
-            case "dropbox":
-                $provider = new Dropbox(
-                    [
-                        'clientId' => $oauth['id'],
-                        'clientSecret' => $oauth['secret'],
-                        'redirectUri' => $url
-                    ]
-                );
-                break;
-            case "linkedin":
-                $provider = new LinkedIn(
-                    [
-                        'clientId' => $oauth['id'],
-                        'clientSecret' => $oauth['secret'],
-                        'redirectUri' => $url
+                        'redirectUri'  => $url,
+                        'userAgent'    => 'platform:appid:version, (by /u/username)',
+                        'scopes'       => [
+                            'identity',
+                            'read',
+                        ],
                     ]
                 );
                 break;
         }
 
         return $provider;
+    }
+
+    protected function initProvider(string $clientName): AbstractProvider
+    {
+        $code     = strtoupper($clientName);
+        $oauth    = $this->oauthActivated[strtolower($code)];
+        $url      = 'https:'.$this->router->generate(
+            'connect_check',
+            ['oauthCode' => $clientName],
+            UrlGeneratorInterface::NETWORK_PATH
+        );
+
+        return $this->generateProvider($clientName, $url, $oauth);
     }
 }

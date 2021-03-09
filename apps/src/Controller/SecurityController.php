@@ -205,6 +205,7 @@ class SecurityController extends ControllerLib
 
             $session->remove('referer');
             $session->remove('link');
+
             return $this->redirect($referer);
         } catch (Exception $exception) {
             $errorMsg = sprintf(
@@ -218,6 +219,7 @@ class SecurityController extends ControllerLib
             $this->addFlash('warning', "Probleme d'identification");
             $session->remove('referer');
             $session->remove('link');
+
             return $this->redirect($referer);
         }
     }
