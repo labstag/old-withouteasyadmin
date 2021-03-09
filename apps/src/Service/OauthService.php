@@ -155,90 +155,88 @@ class OauthService
 
     protected function generateStandardProviderDiscord($clientName, $params, $provider)
     {
-        $provider = ($clientName == 'discord') ? new Discord($params) : $provider;
-        
+        $provider = ('discord' == $clientName) ? new Discord($params) : $provider;
+
         return $provider;
     }
 
     protected function generateStandardProviderGithub($clientName, $params, $provider)
     {
-        $provider = ($clientName == 'github') ? new Github($params) : $provider;
-        
+        $provider = ('github' == $clientName) ? new Github($params) : $provider;
+
         return $provider;
     }
 
     protected function generateStandardProviderGitlab($clientName, $params, $provider)
     {
-        $provider = ($clientName == 'gitlab') ? new Gitlab($params) : $provider;
-        
+        $provider = ('gitlab' == $clientName) ? new Gitlab($params) : $provider;
+
         return $provider;
     }
 
     protected function generateStandardProviderSlack($clientName, $params, $provider)
     {
-        $provider = ($clientName == 'slack') ? new Slack($params) : $provider;
-        
+        $provider = ('slack' == $clientName) ? new Slack($params) : $provider;
+
         return $provider;
     }
 
     protected function generateStandardProviderTwitch($clientName, $params, $provider)
     {
-        $provider = ($clientName == 'twitch') ? new TwitchHelix($params) : $provider;
-        
+        $provider = ('twitch' == $clientName) ? new TwitchHelix($params) : $provider;
+
         return $provider;
     }
 
     protected function generateStandardProviderGoogle($clientName, $params, $provider)
     {
-        $provider = ($clientName == 'google') ? new Google($params) : $provider;
-        
+        $provider = ('google' == $clientName) ? new Google($params) : $provider;
+
         return $provider;
     }
 
     protected function generateStandardProviderBitbucket($clientName, $params, $provider)
     {
-        $provider = ($clientName == 'bitbucket') ? new Bitbucket($params) : $provider;
-        
+        $provider = ('bitbucket' == $clientName) ? new Bitbucket($params) : $provider;
+
         return $provider;
     }
 
     protected function generateStandardProviderDropbox($clientName, $params, $provider)
     {
-        $provider = ($clientName == 'dropbox') ? new Dropbox($params) : $provider;
-        
+        $provider = ('dropbox' == $clientName) ? new Dropbox($params) : $provider;
+
         return $provider;
     }
 
     protected function generateStandardProviderlinkedin($clientName, $params, $provider)
     {
-        $provider = ($clientName == 'linkedin') ? new LinkedIn($params) : $provider;
-        
+        $provider = ('linkedin' == $clientName) ? new LinkedIn($params) : $provider;
+
         return $provider;
     }
 
     protected function generateProvider($clientName, $url, $oauth)
     {
-        $params = [
+        $params   = [
             'clientId'     => $oauth['id'],
             'clientSecret' => $oauth['secret'],
             'redirectUri'  => $url,
         ];
         $provider = $this->generateStandardProvider($clientName, $params);
-        switch ($clientName) {
-            case 'reddit':
-                $provider = new Reddit(
-                    [
-                        'clientId'     => $oauth['id'],
-                        'clientSecret' => $oauth['secret'],
-                        'redirectUri'  => $url,
-                        'userAgent'    => 'platform:appid:version, (by /u/username)',
-                        'scopes'       => [
-                            'identity',
-                            'read',
-                        ],
-                    ]
-                );
-                break;
+        if ('reddit' == $clientName) {
+            $provider = new Reddit(
+                [
+                    'clientId'     => $oauth['id'],
+                    'clientSecret' => $oauth['secret'],
+                    'redirectUri'  => $url,
+                    'userAgent'    => 'platform:appid:version, (by /u/username)',
+                    'scopes'       => [
+                        'identity',
+                        'read',
+                    ],
+                ]
+            );
         }
 
         return $provider;
@@ -246,9 +244,9 @@ class OauthService
 
     protected function initProvider(string $clientName): AbstractProvider
     {
-        $code     = strtoupper($clientName);
-        $oauth    = $this->oauthActivated[strtolower($code)];
-        $url      = 'https:'.$this->router->generate(
+        $code  = strtoupper($clientName);
+        $oauth = $this->oauthActivated[strtolower($code)];
+        $url   = 'https:'.$this->router->generate(
             'connect_check',
             ['oauthCode' => $clientName],
             UrlGeneratorInterface::NETWORK_PATH
