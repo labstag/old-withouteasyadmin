@@ -2,10 +2,20 @@
 
 namespace Labstag\Service;
 
-use Labstag\Lib\GenericProviderLib;
+use AdamPaterson\OAuth2\Client\Provider\Slack;
+use League\OAuth2\Client\Provider\AbstractProvider;
+use League\OAuth2\Client\Provider\Github;
+use League\OAuth2\Client\Provider\Google;
+use League\OAuth2\Client\Provider\LinkedIn;
+use Omines\OAuth2\Client\Provider\Gitlab;
+use Rudolf\OAuth2\Client\Provider\Reddit;
+use Stevenmaguire\OAuth2\Client\Provider\Bitbucket;
+use Stevenmaguire\OAuth2\Client\Provider\Dropbox;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Vertisan\OAuth2\Client\Provider\TwitchHelix;
+use Wohali\OAuth2\Client\Provider\Discord;
 
 class OauthService
 {
@@ -32,47 +42,19 @@ class OauthService
         $this->setConfigProvider();
     }
 
-    public function getData(): array
+    public function getTypes(): array
     {
-        $types = [
-            'bitbucket' => 'https://bitbucket.org/%USER%/workspace/settings/api',
-            'amazon'    => '',
-            'discord'   => 'https://discord.com/developers/applications',
-            'dropbox'   => 'https://www.dropbox.com/developers/apps',
-            'github'    => 'https://github.com/settings/developers',
-            'gitlab'    => 'https://gitlab.com/oauth/applications/',
-            'google'    => 'https://console.developers.google.com',
-            'linkedin'  => 'https://www.linkedin.com/developers/apps',
-            'instagram' => '',
-            'paypal'    => '',
-            'pinterest' => 'https://developers.pinterest.com/manage/',
-            'slack'     => 'https://api.slack.com/apps',
-            'reddit'    => 'https://www.reddit.com/prefs/apps',
-            'twitch'    => 'https://dev.twitch.tv/console/apps',
-        ];
-        ksort($types);
+        $types = [];
+        foreach (array_keys($this->configProvider) as $key) {
+            $types[] = $key;
+        }
 
         return $types;
     }
 
-    public function getTypes(): array
+    public function getConfigProvider(): array
     {
-        $types = [
-            'linkedin',
-            'bitbucket',
-            'amazon',
-            'discord',
-            'dropbox',
-            'github',
-            'gitlab',
-            'google',
-            'instagram',
-            'paypal',
-            'reddit',
-            'twitch',
-        ];
-
-        return $types;
+        return $this->configProvider;
     }
 
     /**
@@ -87,29 +69,21 @@ class OauthService
             return;
         }
 
-        switch ($oauth) {
-            case 'gitlab':
-            case 'github':
-            case 'discord':
-                $this->caseDiscord($data, $entity);
-
-                break;
-            case 'google':
-                $this->caseGoogle($data, $entity);
-
-                break;
-            case 'bitbucket':
-                $this->caseBitbucket($data, $entity);
-                break;
-            default:
-                break;
+        $config = $this->getConfig($oauth);
+        if (!array_key_exists('identity', $config)) {
+            return;
         }
 
-        return $entity;
+        $identity = $config['identity'];
+        if (!array_key_exists($identity, $data)) {
+            return;
+        }
+
+        return $data[$identity];
     }
 
     /**
-     * @return GenericProviderLib|void
+     * @return AbstractProvider|void
      */
     public function setProvider(?string $clientName)
     {
@@ -144,108 +118,15 @@ class OauthService
         return array_key_exists($clientName, $this->configProvider);
     }
 
-    protected function setConfigProviderGitlab(): array
+    public function setConfigProvider(): void
     {
-        $urlAuthorize   = 'https://gitlab.com/oauth/authorize';
-        $urlAccessToken = 'https://gitlab.com/oauth/token';
-        $ownerDetails   = 'https://gitlab.com/api/v4/user';
+        $file = __DIR__.'/../../json/oauth.json';
+        $data = [];
+        if (is_file($file)) {
+            $data = json_decode(file_get_contents($file), true);
+        }
 
-        return [
-            'params'         => [
-                'urlAuthorize'            => $urlAuthorize,
-                'urlAccessToken'          => $urlAccessToken,
-                'urlResourceOwnerDetails' => $ownerDetails,
-            ],
-            'redirect'       => 1,
-            'scopeseparator' => ' ',
-            'scopes'         => ['read_user'],
-        ];
-    }
-
-    protected function setConfigProviderBitbucket(): array
-    {
-        $urlAuthorize   = 'https://bitbucket.org/site/oauth2/authorize';
-        $urlAccessToken = 'https://bitbucket.org/site/oauth2/access_token';
-        $ownerDetails   = 'https://api.bitbucket.org/2.0/user';
-
-        return [
-            'params' => [
-                'urlAuthorize'            => $urlAuthorize,
-                'urlAccessToken'          => $urlAccessToken,
-                'urlResourceOwnerDetails' => $ownerDetails,
-            ],
-        ];
-    }
-
-    protected function setConfigProviderGithub(): array
-    {
-        $urlAuthorize   = 'https://github.com/login/oauth/authorize';
-        $urlAccessToken = 'https://github.com/login/oauth/access_token';
-        $ownerDetails   = 'https://api.github.com/user';
-
-        return [
-            'params' => [
-                'urlAuthorize'            => $urlAuthorize,
-                'urlAccessToken'          => $urlAccessToken,
-                'urlResourceOwnerDetails' => $ownerDetails,
-            ],
-        ];
-    }
-
-    protected function setConfigProviderDiscord(): array
-    {
-        $urlAuthorize   = 'https://discordapp.com/api/v6/oauth2/authorize';
-        $urlAccessToken = 'https://discordapp.com/api/v6/oauth2/token';
-        $ownerDetails   = 'https://discordapp.com/api/v6/users/@me';
-
-        return [
-            'params'         => [
-                'urlAuthorize'            => $urlAuthorize,
-                'urlAccessToken'          => $urlAccessToken,
-                'urlResourceOwnerDetails' => $ownerDetails,
-            ],
-            'scopeseparator' => ' ',
-            'scopes'         => [
-                'identify',
-                'email',
-                'connections',
-                'guilds',
-                'guilds.join',
-            ],
-        ];
-    }
-
-    protected function setConfigProviderGoogle(): array
-    {
-        $urlAuthorize   = 'https://accounts.google.com/o/oauth2/v2/auth';
-        $urlAccessToken = 'https://www.googleapis.com/oauth2/v4/token';
-        $ownerDetails   = 'https://openidconnect.googleapis.com/v1/userinfo';
-
-        return [
-            'params'         => [
-                'urlAuthorize'            => $urlAuthorize,
-                'urlAccessToken'          => $urlAccessToken,
-                'urlResourceOwnerDetails' => $ownerDetails,
-            ],
-            'redirect'       => 1,
-            'scopeseparator' => ' ',
-            'scopes'         => [
-                'openid',
-                'email',
-                'profile',
-            ],
-        ];
-    }
-
-    protected function setConfigProvider(): void
-    {
-        $this->configProvider = [
-            'gitlab'    => $this->setConfigProviderGitlab(),
-            'bitbucket' => $this->setConfigProviderBitbucket(),
-            'github'    => $this->setConfigProviderGithub(),
-            'discord'   => $this->setConfigProviderDiscord(),
-            'google'    => $this->setConfigProviderGoogle(),
-        ];
+        $this->configProvider = $data;
     }
 
     protected function getConfig(string $clientName): array
@@ -257,70 +138,111 @@ class OauthService
         return [];
     }
 
-    protected function initProvider(string $clientName): GenericProviderLib
+    protected function initProvider(string $clientName): AbstractProvider
     {
-        $config = $this->getConfig($clientName);
-        if (isset($config['redirect'])) {
-            $config['params']['redirectUri'] = $this->router->generate(
-                'connect_check',
-                ['oauthCode' => $clientName],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
-        }
-
         $code  = strtoupper($clientName);
         $oauth = $this->oauthActivated[strtolower($code)];
-
-        $config['params']['clientId']     = $oauth['id'];
-        $config['params']['clientSecret'] = $oauth['secret'];
-
-        $provider = new GenericProviderLib(
-            $config['params']
+        $url   = "https:".$this->router->generate(
+            'connect_check',
+            ['oauthCode' => $clientName],
+            UrlGeneratorInterface::NETWORK_PATH
         );
-        if (isset($config['scopes'])) {
-            $provider->setDefaultScopes($config['scopes']);
-        }
-
-        if (isset($config['scopeseparator'])) {
-            $provider->setScopeSeparator($config['scopeseparator']);
+        $provider = null;
+        switch ($clientName) {
+            case "bitbucket":
+                $provider = new Bitbucket(
+                    [
+                        'clientId' => $oauth['id'],
+                        'clientSecret' => $oauth['secret'],
+                        'redirectUri' => $url
+                    ]
+                );
+                break;
+            case "discord":
+                $provider = new Discord(
+                    [
+                        'clientId' => $oauth['id'],
+                        'clientSecret' => $oauth['secret'],
+                        'redirectUri' => $url
+                    ]
+                );
+                break;
+            case "github":
+                $provider = new Github(
+                    [
+                        'clientId' => $oauth['id'],
+                        'clientSecret' => $oauth['secret'],
+                        'redirectUri' => $url
+                    ]
+                );
+                break;
+            case "gitlab":
+                $provider = new Gitlab(
+                    [
+                        'clientId' => $oauth['id'],
+                        'clientSecret' => $oauth['secret'],
+                        'redirectUri' => $url
+                    ]
+                );
+                break;
+            case "reddit":
+                $provider = new Reddit(
+                    [
+                        'clientId' => $oauth['id'],
+                        'clientSecret' => $oauth['secret'],
+                        'redirectUri' => $url,
+                        'userAgent'     => 'platform:appid:version, (by /u/username)',
+                        'scopes'        => ['identity', 'read']
+                    ]
+                );
+                break;
+            case "slack":
+                $provider = new Slack(
+                    [
+                        'clientId' => $oauth['id'],
+                        'clientSecret' => $oauth['secret'],
+                        'redirectUri' => $url
+                    ]
+                );
+                break;
+            case "twitch":
+                $provider = new TwitchHelix(
+                    [
+                        'clientId' => $oauth['id'],
+                        'clientSecret' => $oauth['secret'],
+                        'redirectUri' => $url
+                    ]
+                );
+                break;
+            case "google":
+                $provider = new Google(
+                    [
+                        'clientId' => $oauth['id'],
+                        'clientSecret' => $oauth['secret'],
+                        'redirectUri' => $url
+                    ]
+                );
+                break;
+            case "dropbox":
+                $provider = new Dropbox(
+                    [
+                        'clientId' => $oauth['id'],
+                        'clientSecret' => $oauth['secret'],
+                        'redirectUri' => $url
+                    ]
+                );
+                break;
+            case "linkedin":
+                $provider = new LinkedIn(
+                    [
+                        'clientId' => $oauth['id'],
+                        'clientSecret' => $oauth['secret'],
+                        'redirectUri' => $url
+                    ]
+                );
+                break;
         }
 
         return $provider;
-    }
-
-    /**
-     * @param mixed $entity
-     */
-    protected function caseBitbucket(array $data, &$entity): void
-    {
-        if (!isset($data['uuid'])) {
-            return;
-        }
-
-        $entity = $data['uuid'];
-    }
-
-    /**
-     * @param mixed $entity
-     */
-    protected function caseGoogle(array $data, &$entity): void
-    {
-        if (!isset($data['sub'])) {
-            return;
-        }
-
-        $entity = $data['sub'];
-    }
-
-    /**
-     * @param mixed $entity
-     */
-    protected function caseDiscord(array $data, &$entity): void
-    {
-        if (!isset($data['id'])) {
-            return;
-        }
-
-        $entity = $data['id'];
     }
 }

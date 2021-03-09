@@ -12,7 +12,6 @@ use Labstag\Form\Security\DisclaimerType;
 use Labstag\Form\Security\LoginType;
 use Labstag\Form\Security\LostPasswordType;
 use Labstag\Lib\ControllerLib;
-use Labstag\Lib\GenericProviderLib;
 use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\RequestHandler\EmailRequestHandler;
 use Labstag\RequestHandler\PhoneRequestHandler;
@@ -20,6 +19,7 @@ use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
 use Labstag\Service\UserService;
+use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Log\LoggerInterface;
@@ -69,7 +69,7 @@ class SecurityController extends ControllerLib
         OauthConnectUserRepository $repository
     ): RedirectResponse
     {
-        $this->denyAccessUnlessGranted('IS_ANONYMOUS');
+        $this->denyAccessUnlessGranted('ROLE_USER');
         /** @var User $user */
         $user = $security->getUser();
         /** @var string $referer */
@@ -106,7 +106,7 @@ class SecurityController extends ControllerLib
         string $oauthCode
     ): RedirectResponse
     {
-        /** @var GenericProviderLib $provider */
+        /** @var AbstractProvider $provider */
         $provider = $this->oauthService->setProvider($oauthCode);
         $session  = $request->getSession();
         /** @var string $referer */
@@ -123,7 +123,7 @@ class SecurityController extends ControllerLib
             $referer = $url;
         }
 
-        if (!$provider instanceof GenericProviderLib) {
+        if (!$provider instanceof AbstractProvider) {
             $this->addFlash('warning', 'Connexion Oauh impossible');
 
             return $this->redirect($referer);
@@ -150,7 +150,7 @@ class SecurityController extends ControllerLib
         string $oauthCode
     ): RedirectResponse
     {
-        /** @var GenericProviderLib $provider */
+        /** @var AbstractProvider $provider */
         $provider    = $this->oauthService->setProvider($oauthCode);
         $query       = $request->query->all();
         $session     = $request->getSession();
@@ -205,7 +205,6 @@ class SecurityController extends ControllerLib
 
             $session->remove('referer');
             $session->remove('link');
-
             return $this->redirect($referer);
         } catch (Exception $exception) {
             $errorMsg = sprintf(
@@ -219,7 +218,6 @@ class SecurityController extends ControllerLib
             $this->addFlash('warning', "Probleme d'identification");
             $session->remove('referer');
             $session->remove('link');
-
             return $this->redirect($referer);
         }
     }

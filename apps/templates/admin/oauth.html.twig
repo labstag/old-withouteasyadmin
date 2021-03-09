@@ -13,14 +13,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for service, url in types %}
-                {% if url != '' %}
+            {% for service, data in types %}
+                {% if data.config is defined %}
                 <tr>
                     <td>
                         {{ service }}
                     </td>
                     <td>
-                        <a href="{{ url }}">Y accéder</a>
+                        <a href="{{ data.config }}">Y accéder</a>
                     </td>
                     <td>
                         {{ config['site_url']}}/oauth/check/{{ service }}

@@ -77,7 +77,6 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
             'name'     => $oauth,
             'identity' => $identity,
         ];
-        dump($parameters);
         $builder->setParameters(
             [
                 'name'     => $oauth,

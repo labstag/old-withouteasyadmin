@@ -6,9 +6,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
-use Labstag\Lib\GenericProviderLib;
 use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\Service\OauthService;
+use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -109,12 +109,12 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getCredentials(Request $request)
     {
-        /** @var GenericProviderLib $provider */
+        /** @var AbstractProvider $provider */
         $provider    = $this->oauthService->setProvider($this->oauthCode);
         $query       = $request->query->all();
         $session     = $request->getSession();
         $oauth2state = $session->get('oauth2state');
-        if (!$provider instanceof GenericProviderLib) {
+        if (!$provider instanceof AbstractProvider) {
             return [];
         } elseif (!isset($query['code']) || $oauth2state !== $query['state']) {
             return [];

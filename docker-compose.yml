@@ -93,6 +93,7 @@ services:
         - "traefik.http.routers.labstag-tls.tls.domains[0].main=labstag.traefik.me"
         - "traefik.http.routers.labstag-tls.tls.domains[0].sans=labstag-*.traefik.me"
         - "traefik.http.services.labstag.loadbalancer.server.port=80"
+        - "traefik.http.routers.labstag.tls=true"
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.1.0
     environment:
