@@ -13,10 +13,10 @@ export class BtnAddCollection extends ElementHTML {
 
   onClick (element) {
     element.preventDefault()
-    const fieldset = element.currentTarget.closest('fieldset')
-    const counter = fieldset.querySelectorAll('.CollectionRow').length
-    const html = fieldset.dataset.prototype.replace(/__name__/g, counter)
-    const FieldRow = fieldset.querySelector('.FieldRow')
+    const fieldcollection = element.currentTarget.closest('.fieldcollection')
+    const counter = fieldcollection.querySelectorAll('.CollectionRow').length
+    const html = fieldcollection.dataset.prototype.replace(/__name__/g, counter)
+    const FieldRow = fieldcollection.querySelector('.FieldRow')
     if (FieldRow !== null) {
       FieldRow.innerHTML += html
     }
