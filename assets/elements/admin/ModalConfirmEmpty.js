@@ -1,4 +1,5 @@
-export class ModalConfirmEmpty extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class ModalConfirmEmpty extends ElementHTML {
   constructor () {
     super()
     this.classList.add('confirm-empty')
@@ -20,12 +21,6 @@ export class ModalConfirmEmpty extends HTMLElement {
       },
       body: urlSearchParams
     }
-    fetch(url, options)
-      .then((response) => {
-        window.location.href = redirect
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    this.fetchRedirect(url, options, redirect)
   }
 }

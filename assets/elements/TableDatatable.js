@@ -16,7 +16,7 @@ export class TableDatatable extends HTMLTableElement {
       thLast.classList.add('thactions')
       const tr = tbody.getElementsByTagName('tr')
       tr.forEach(
-        (element) => {
+        element => {
           const tds = element.getElementsByTagName('td')
           const tdLast = tds[tds.length - 1]
           tdLast.classList.add('text-center')

@@ -48,7 +48,7 @@
                 <div class="row">
                 {% for oauth in oauthActivated %}
                     <div class="itemConnect">
-                        <a href="{{ path('connect_start', {'oauthCode': oauth.type}) }}" title="{{ oauth.type|e }}">
+                        <a href="{{ path('connect_start', {'oauthCode': oauth.type, 'link': 1}) }}" title="{{ oauth.type|e }}">
                             <i class="fab fa-{{ oauth.type }}"></i>
                             {{ oauth.type }}
                         </a>

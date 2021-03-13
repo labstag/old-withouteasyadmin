@@ -1,4 +1,5 @@
-export class WorkflowAction extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class WorkflowAction extends ElementHTML {
   connectedCallback () {
     this.classList.add('workflow-action')
     const iElement = document.createElement('i')

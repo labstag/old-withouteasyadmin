@@ -5,6 +5,9 @@
   @extend .align-items-center;
   @extend .flex-column;
 
+  justify-content: center;
+  height: 100vh;
+
   h1 {
     @extend .h3;
     @extend .mb-3;
@@ -16,6 +19,9 @@
   @extend .d-flex;
   @extend .align-items-center;
   @extend .flex-column;
+
+  justify-content: center;
+  height: 100vh;
 
   h1 {
     @extend .h3;
@@ -40,4 +46,7 @@
   @extend .d-flex;
   @extend .align-items-center;
   @extend .flex-column;
+
+  justify-content: center;
+  height: 100vh;
 }

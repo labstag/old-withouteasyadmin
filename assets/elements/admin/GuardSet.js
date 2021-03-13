@@ -1,4 +1,5 @@
-export class GuardSet extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class GuardSet extends ElementHTML {
   constructor () {
     super()
     this.classList.add('guard-set')
@@ -14,16 +15,8 @@ export class GuardSet extends HTMLElement {
     const checkboxs = this.getElementsByTagName('input')
     this.checkbox = checkboxs[0]
     this.token = this.dataset.token
-    this.checkbox.addEventListener('change', this.onChange.bind(this))
-    this.changeState()
-    const observer = new MutationObserver(this.mutationObserver.bind(this))
-    observer.observe(this, {
-      attributes: true
-    })
-  }
-
-  mutationObserver (mutations) {
-    mutations.forEach(this.forEachMutationObserver.bind(this))
+    this.checkbox.addEventListener('change', element => { this.onChange(element) })
+    this.setMutations()
   }
 
   forEachMutationObserver (mutation) {
@@ -37,7 +30,7 @@ export class GuardSet extends HTMLElement {
     input.checked = (this.dataset.state === '1')
   }
 
-  onChange (element) {
+  async onChange (element) {
     element.preventDefault()
     const urlSearchParams = new URLSearchParams()
     urlSearchParams.append('_token', this.dataset.token)
@@ -49,11 +42,12 @@ export class GuardSet extends HTMLElement {
       },
       body: urlSearchParams
     }
-    fetch(this.dataset.url, options).then(() => {
+    try {
+      await fetch(this.dataset.url, options)
       this.refresh()
-    }).catch((err) => {
-      console.log(err)
-    })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   refresh () {
@@ -65,5 +59,23 @@ export class GuardSet extends HTMLElement {
       const r = Math.random() * 16 | 0; const v = c === 'x' ? r : (r & 0x3 | 0x8)
       return v.toString(16)
     })
+  }
+
+  checkChange (name) {
+    if (this.dataset.check === '1') {
+      const setRouteElement = this.closest('tr').querySelectorAll('guard-setworkflow')
+      let state = 0
+      setRouteElement.forEach(
+        element => {
+          state += parseInt(element.dataset.state)
+        }
+      )
+      if (state === setRouteElement.length) {
+        this.dataset.state = 1
+      } else {
+        this.dataset.state = 0
+      }
+      this.dataset.check = 0
+    }
   }
 }

@@ -83,7 +83,7 @@ class FormAuthenticator extends AbstractAuth implements PassAuthInterface
         }
 
         $user = $this->repository->findUserEnable(($credentials['username']));
-        if (!($user instanceof User)) {
+        if (!$user instanceof User) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Username could not be found.');
         }

@@ -1,4 +1,5 @@
-export class SelectElement extends HTMLElement {
+import { ElementHTML } from './ElementHTML'
+export class SelectElement extends ElementHTML {
   constructor () {
     super()
     const title = this.dataset.title
@@ -10,14 +11,10 @@ export class SelectElement extends HTMLElement {
     }
     this.append(checkbox)
     checkbox.addEventListener('change', this.onChange)
-    const observer = new MutationObserver(this.mutationObserver.bind(this))
+    const observer = new MutationObserver(mutations => { this.mutationObserver(mutations) })
     observer.observe(this, {
       attributes: true
     })
-  }
-
-  mutationObserver (mutations) {
-    mutations.forEach(this.forEachMutationObserver.bind(this))
   }
 
   forEachMutationObserver (mutation) {

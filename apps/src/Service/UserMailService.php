@@ -76,7 +76,7 @@ class UserMailService
         $template = $this->repository->findOneBy(
             ['code' => 'check-user']
         );
-        if (!($template instanceof Template)) {
+        if (!$template instanceof Template) {
             return;
         }
 
@@ -122,7 +122,7 @@ class UserMailService
         $template = $this->repository->findOneBy(
             ['code' => 'change-password']
         );
-        if (!($template instanceof Template)) {
+        if (!$template instanceof Template) {
             return;
         }
 
@@ -138,7 +138,7 @@ class UserMailService
         $template = $this->repository->findOneBy(
             ['code' => 'lost-password']
         );
-        if (!($template instanceof Template)) {
+        if (!$template instanceof Template) {
             return;
         }
 
@@ -164,7 +164,7 @@ class UserMailService
         $template = $this->repository->findOneBy(
             ['code' => 'change-email-principal']
         );
-        if (!($template instanceof Template)) {
+        if (!$template instanceof Template) {
             return;
         }
 
@@ -180,7 +180,7 @@ class UserMailService
         $template = $this->repository->findOneBy(
             ['code' => 'check-new-mail']
         );
-        if (!($template instanceof Template)) {
+        if (!$template instanceof Template) {
             return;
         }
 
@@ -210,7 +210,7 @@ class UserMailService
         $template = $this->repository->findOneBy(
             ['code' => 'check-new-oauthconnectuser']
         );
-        if (!($template instanceof Template)) {
+        if (!$template instanceof Template) {
             return;
         }
 
@@ -230,7 +230,7 @@ class UserMailService
         $template = $this->repository->findOneBy(
             ['code' => 'check-new-link']
         );
-        if (!($template instanceof Template)) {
+        if (!$template instanceof Template) {
             return;
         }
 
@@ -250,7 +250,7 @@ class UserMailService
         $template = $this->repository->findOneBy(
             ['code' => 'check-new-phone']
         );
-        if (!($template instanceof Template)) {
+        if (!$template instanceof Template) {
             return;
         }
 
@@ -277,7 +277,7 @@ class UserMailService
         $template = $this->repository->findOneBy(
             ['code' => 'check-new-adresse']
         );
-        if (!($template instanceof Template)) {
+        if (!$template instanceof Template) {
             return;
         }
 

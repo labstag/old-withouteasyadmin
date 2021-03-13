@@ -1,0 +1,56 @@
+{
+    "amazon": {
+
+    },
+    "bitbucket": {
+        "identity": "uuid",
+        "config": "https:\/\/bitbucket.org\/%USER%\/workspace\/settings\/api"
+    },
+    "discord": {
+        "identity": "id",
+        "config": "https:\/\/discord.com\/developers\/applications"
+    },
+    "dropbox": {
+        "identity": "account_id",
+        "config": "https:\/\/www.dropbox.com\/developers\/apps"
+    },
+    "facebook": {
+
+    },
+    "github": {
+        "identity": "id",
+        "config": "https:\/\/github.com\/settings\/developers"
+    },
+    "gitlab": {
+        "identity": "id",
+        "config": "https:\/\/gitlab.com\/oauth\/applications\/"
+    },
+    "google": {
+        "identity": "sub",
+        "config": "https:\/\/console.developers.google.com"
+    },
+    "instagram": {
+
+    },
+    "linkedin": {
+        "identity": "id",
+        "config": "https:\/\/www.linkedin.com\/developers\/apps"
+    },
+    "paypal": {
+
+    },
+    "pinterest": {
+        "config": "https:\/\/developers.pinterest.com\/manage\/"
+    },
+    "reddit": {
+        "identity": "oauth_client_id",
+        "config": "https:\/\/www.reddit.com\/prefs\/apps"
+    },
+    "slack": {
+        "config": "https:\/\/api.slack.com\/apps"
+    },
+    "twitch": {
+        "identity": "id",
+        "config": "https:\/\/dev.twitch.tv\/console\/apps"
+    }
+}

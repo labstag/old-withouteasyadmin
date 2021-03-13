@@ -1,4 +1,5 @@
-export class LinkBtnAdmin extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class LinkBtnAdmin extends ElementHTML {
   constructor () {
     super()
     const aElement = document.createElement('a')

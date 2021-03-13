@@ -1,4 +1,5 @@
-export class AttachmentImg extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class AttachmentImg extends ElementHTML {
   constructor () {
     super()
     const title = this.dataset.name

@@ -11,7 +11,7 @@ export class PostalCode extends HTMLInputElement {
     }
   }
 
-  ajax () {
+  async ajax () {
     const params = {
     }
     if (this.country.value !== '') {
@@ -24,15 +24,17 @@ export class PostalCode extends HTMLInputElement {
       params.postalCode = this.codepostal.value
     }
 
-    fetch(this.url + '?' + new URLSearchParams(params))
-      .then(response => response.json())
-      .then(this.fetchResponse.bind(this))
-      .catch(this.fetchCatch)
+    try {
+      const response = await fetch(this.url + '?' + new URLSearchParams(params)).then(response => response.json())
+      this.fetchResponse(response)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   onKeydown (element) {
     clearTimeout(this.timeout)
-    this.timeout = setTimeout(this.ajax.bind(this), 500)
+    this.timeout = setTimeout(() => { this.ajax() }, 500)
   }
 
   setData () {
@@ -44,7 +46,7 @@ export class PostalCode extends HTMLInputElement {
     this.ville = null
     this.gps = null
     selects.forEach(
-      (element) => {
+      element => {
         const isInput = element.getAttribute('is')
         if (isInput === 'select-country') {
           this.country = element
@@ -52,7 +54,7 @@ export class PostalCode extends HTMLInputElement {
       }
     )
     this.inputs.forEach(
-      (element) => {
+      element => {
         const isInput = element.getAttribute('is')
         if (isInput === 'input-codepostal') {
           this.codepostal = element

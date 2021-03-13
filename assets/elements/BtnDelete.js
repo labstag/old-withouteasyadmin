@@ -1,7 +1,10 @@
-export class BtnDelete extends HTMLElement {
+import { ElementHTML } from './ElementHTML'
+export class BtnDelete extends ElementHTML {
   connectedCallback () {
+    if (this.innerHTML.trim() == '') {
+      this.append(document.createElement('i'))
+    }
     this.classList.add('btn-delete')
-    this.append(document.createElement('i'))
     this.addEventListener('click', this.onClick)
   }
 

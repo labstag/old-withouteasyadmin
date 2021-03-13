@@ -1,21 +1,34 @@
-require('select2')
+import TomSelect from 'tom-select'
 export class SelectRefUser extends HTMLSelectElement {
   connectedCallback () {
-    console.log('select user')
-    const id = this.getAttribute('id')
-    $('#' + id).select2({
-      theme: 'bootstrap4',
-      ajax: {
-        url: this.dataset.url,
-        data: function (params) {
-          const query = {
-            name: params.term
+    const idElement = this.getAttribute('id')
+    this.url = this.dataset.url
+    this.select = new TomSelect(
+      `#${idElement}`,
+      {
+        valueField: 'id',
+        labelField: 'text',
+        searchField: 'text',
+        load: async (query, callback) => {
+          const params = {
+            name: query
           }
-
-          return query
+          const response = await fetch(this.url + '?' + new URLSearchParams(params)).then(response => response.json())
+          callback(response.results)
         },
-        dataType: 'json'
+        render: {
+          option: (item, escape) => {
+            return this.optionItem(item, escape)
+          },
+          item: (item, escape) => {
+            return this.optionItem(item, escape)
+          }
+        }
       }
-    })
+    )
+  }
+
+  optionItem (item, escape) {
+    return `<span>${escape(item.text)}</span>`
   }
 }

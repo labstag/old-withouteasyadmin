@@ -5,12 +5,11 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
-use Labstag\Lib\GenericProviderLib;
 use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\OauthConnectUserRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
-use League\OAuth2\Client\Provider\ResourceOwnerInterface;
+use League\OAuth2\Client\Provider\AbstractProvider;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -49,12 +48,12 @@ class UserService
     public function addOauthToUser(
         string $client,
         User $user,
-        ResourceOwnerInterface $userOauth
+        $userOauth
     ): void
     {
         /** @var Session $session */
         $session  = $this->session;
-        $data     = $userOauth->toArray();
+        $data     = !is_array($userOauth) ? $userOauth->toArray() : $userOauth;
         $identity = $this->oauthService->getIdentity($data, $client);
         $find     = $this->findOAuthIdentity(
             $user,
@@ -73,6 +72,7 @@ class UserService
             );
             if (is_null($oauthConnect)) {
                 $oauthConnect = new OauthConnectUser();
+                $oauthConnect->setIdentity($identity);
                 $oauthConnect->setRefuser($user);
                 $oauthConnect->setName($client);
             }
@@ -86,7 +86,7 @@ class UserService
 
         if ($oauthConnect instanceof OauthConnectUser) {
             $old = clone $oauthConnect;
-            $oauthConnect->setData($userOauth->toArray());
+            $oauthConnect->setData($data);
             $this->oauthConnectUserRH->handle($old, $oauthConnect);
             $session->getFlashBag()->add('success', 'Compte associé');
 
@@ -124,12 +124,16 @@ class UserService
     }
 
     public function ifBug(
-        GenericProviderLib $provider,
+        AbstractProvider $provider,
         array $query,
-        string $oauth2state
+        ?string $oauth2state
     ): bool
     {
-        if (!($provider instanceof GenericProviderLib)) {
+        if (is_null($oauth2state)) {
+            return true;
+        }
+
+        if (!$provider instanceof AbstractProvider) {
             return true;
         }
 
@@ -144,7 +148,7 @@ class UserService
 
         /** @var User $user */
         $user = $this->repository->findUserEnable($post['value']);
-        if (!($user instanceof User)) {
+        if (!$user instanceof User) {
             return;
         }
 

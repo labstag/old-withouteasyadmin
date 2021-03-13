@@ -1,4 +1,7 @@
 {
+    "adam-paterson/oauth2-slack": {
+        "version": "1.1.3"
+    },
     "api-platform/api-pack": {
         "version": "v1.3.0"
     },
@@ -179,6 +182,9 @@
     "imagine/imagine": {
         "version": "1.2.4"
     },
+    "jakeasmith/http_build_url": {
+        "version": "1.0.1"
+    },
     "jakub-onderka/php-console-color": {
         "version": "v0.2"
     },
@@ -206,8 +212,26 @@
     "league/oauth2-client": {
         "version": "2.6.0"
     },
+    "league/oauth2-facebook": {
+        "version": "2.0.5"
+    },
+    "league/oauth2-github": {
+        "version": "2.0.0"
+    },
+    "league/oauth2-google": {
+        "version": "4.0.0"
+    },
+    "league/oauth2-instagram": {
+        "version": "3.0.0"
+    },
+    "league/oauth2-linkedin": {
+        "version": "5.1.2"
+    },
     "mhujer/breadcrumbs-bundle": {
         "version": "1.5.3"
+    },
+    "michaelkaefer/oauth2-amazon": {
+        "version": "1.0.3"
     },
     "monolog/monolog": {
         "version": "2.1.1"
@@ -226,6 +250,9 @@
     },
     "nikic/php-parser": {
         "version": "v4.10.2"
+    },
+    "omines/oauth2-gitlab": {
+        "version": "3.4.0"
     },
     "php": {
         "version": "7.4.2"
@@ -296,6 +323,9 @@
             "config/packages/ramsey_uuid_doctrine.yaml"
         ]
     },
+    "rtheunissen/oauth2-reddit": {
+        "version": "v2.0.2"
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {
@@ -319,6 +349,15 @@
         "files": [
             "phpcs.xml.dist"
         ]
+    },
+    "stevenmaguire/oauth2-bitbucket": {
+        "version": "3.0.0"
+    },
+    "stevenmaguire/oauth2-dropbox": {
+        "version": "3.0.1"
+    },
+    "stevenmaguire/oauth2-paypal": {
+        "version": "2.0.0"
     },
     "stof/doctrine-extensions-bundle": {
         "version": "1.2",
@@ -799,6 +838,12 @@
     "twig/twig": {
         "version": "v3.0.5"
     },
+    "vantezzen/oauth2-pinterest": {
+        "version": "2.2.1"
+    },
+    "vertisan/oauth2-twitch-helix": {
+        "version": "1.0.1"
+    },
     "webmozart/assert": {
         "version": "1.9.1"
     },
@@ -807,5 +852,8 @@
     },
     "willdurand/negotiation": {
         "version": "v2.3.1"
+    },
+    "wohali/oauth2-discord-new": {
+        "version": "1.1.0"
     }
 }

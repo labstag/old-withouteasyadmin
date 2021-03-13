@@ -10,12 +10,14 @@ use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
+use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * @Route("/admin")
@@ -29,6 +31,21 @@ class AdminController extends AdminControllerLib
     {
         return $this->render(
             'admin/index.html.twig'
+        );
+    }
+
+    /**
+     * @Route("/oauth", name="admin_oauth")
+     */
+    public function oauth(OauthService $oauthService): Response
+    {
+        $this->headerTitle = 'Oauth';
+        $this->urlHome     = 'admin_oauth';
+        $types             = $oauthService->getConfigProvider();
+
+        return $this->render(
+            'admin/oauth.html.twig',
+            ['types' => $types]
         );
     }
 
@@ -100,22 +117,28 @@ class AdminController extends AdminControllerLib
     public function param(
         Request $request,
         EventDispatcherInterface $dispatcher,
-        DataService $dataService
+        DataService $dataService,
+        CacheInterface $cache
     ): Response
     {
-        $this->headerTitle    = 'Paramètres';
-        $this->urlHome        = 'admin_param';
-        $config               = $dataService->getConfig();
-        $config['disclaimer'] = [
-            $config['disclaimer'],
+        $this->headerTitle = 'Paramètres';
+        $this->urlHome     = 'admin_param';
+        $config            = $dataService->getConfig();
+        $tab               = [
+            'disclaimer',
+            'meta',
         ];
-        $config['meta']       = [
-            $config['meta'],
-        ];
-        $form                 = $this->createForm(ParamType::class, $config);
+        foreach ($tab as $index) {
+            $config[$index] = [
+                $config[$index],
+            ];
+        }
+
+        $form = $this->createForm(ParamType::class, $config);
         $this->btnInstance->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
+            $cache->delete('configuration');
             $post = $request->request->get($form->getName());
             $dispatcher->dispatch(new ConfigurationEntityEvent($post));
         }

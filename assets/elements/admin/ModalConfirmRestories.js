@@ -1,4 +1,5 @@
-export class ModalConfirmRestories extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class ModalConfirmRestories extends ElementHTML {
   constructor () {
     super()
     this.classList.add('confirm-restories')
@@ -28,12 +29,6 @@ export class ModalConfirmRestories extends HTMLElement {
       },
       body: urlSearchParams
     }
-    fetch(url, options)
-      .then((response) => {
-        window.location.href = redirect
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    this.fetchRedirect(url, options, redirect)
   }
 }

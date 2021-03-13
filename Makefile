@@ -38,6 +38,7 @@ endif
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
+.PHONY: node_modules
 node_modules:
 	@npm install
 
@@ -251,11 +252,18 @@ ifeq ($(COMMAND_ARGS),all)
 	@make bdd migrate -i
 	@make assets -i
 	@make encore dev -i
-	@make linter all i
-	$(DOCKER_EXECPHP) symfony console labstag:install --all
+	@make linter all -i
 else ifeq ($(COMMAND_ARGS),dev)
-	@make install all
+	@make install all -i
 	@make bdd fixtures -i
+	@make commands -i
+	@make env dev -i
+else ifeq ($(COMMAND_ARGS),prod)
+	@make install all -i
+	@make bdd fixtures -i
+	@make commands -i
+	@make env prod -i
+	@make encore build -i
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -263,7 +271,13 @@ else
 	@echo "---"
 	@echo "all: common"
 	@echo "dev: dev"
+	@echo "prod: prod"
 endif
+
+.PHONY: commands
+commands:
+	$(DOCKER_EXECPHP) symfony console labstag:install --all
+	$(DOCKER_EXECPHP) symfony console labstag:guard-route
 
 .PHONY: linter
 linter: ## Scripts Linter
@@ -487,5 +501,6 @@ upgrade: ## upgrade git
 	@make composer install -i
 	@make node_modules -i
 	@make encore build -i
+	@make commands -i
 	$(DOCKER_EXECPHP) symfony cache:clear
 	$(DOCKER_EXECPHP) symfony labstag:update --maintenanceoff

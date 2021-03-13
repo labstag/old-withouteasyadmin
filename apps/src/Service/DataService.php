@@ -3,6 +3,7 @@
 namespace Labstag\Service;
 
 use Labstag\Entity\Configuration;
+use Labstag\Entity\User;
 use Labstag\Repository\ConfigurationRepository;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -28,9 +29,29 @@ class DataService
         $this->setData();
     }
 
-    public function getOauthActivated(): array
+    public function getOauthActivated(?User $user = null): array
     {
-        return $this->oauthActivated;
+        if (is_null($user)) {
+            return $this->oauthActivated;
+        }
+
+        $oauthActivateds = $this->oauthActivated;
+        $oauthUsers      = $user->getOauthConnectUsers();
+        foreach ($oauthActivateds as $index => $oauthActivated) {
+            $trouver = 0;
+            foreach ($oauthUsers as $oauthUser) {
+                if ($oauthUser->getName() == $oauthActivated['type']) {
+                    $trouver = 1;
+                    break;
+                }
+            }
+
+            if (1 === $trouver) {
+                unset($oauthActivateds[$index]);
+            }
+        }
+
+        return $oauthActivateds;
     }
 
     public function getConfig(): array

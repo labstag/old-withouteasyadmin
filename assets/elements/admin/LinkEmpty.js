@@ -1,4 +1,5 @@
-export class LinkEmpty extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class LinkEmpty extends ElementHTML {
   constructor () {
     super()
     const title = this.getAttribute('title')

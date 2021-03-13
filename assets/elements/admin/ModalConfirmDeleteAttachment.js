@@ -1,4 +1,5 @@
-export class ModalConfirmDeleteAttachment extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class ModalConfirmDeleteAttachment extends ElementHTML {
   constructor () {
     super()
     this.classList.add('confirm-deleteattachment')
@@ -20,12 +21,6 @@ export class ModalConfirmDeleteAttachment extends HTMLElement {
       },
       body: urlSearchParams
     }
-    fetch(url, options)
-      .then((response) => {
-        window.location.href = redirect
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    this.fetchRedirect(url, options, redirect)
   }
 }

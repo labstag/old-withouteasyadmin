@@ -43,7 +43,7 @@ trait MenuTrait
             ]
         );
 
-        if (!($data instanceof Menu)) {
+        if (!$data instanceof Menu) {
             return $menu;
         }
 

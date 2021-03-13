@@ -57,7 +57,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
             }
 
             $configuration = $this->repository->findOneBy(['name' => $key]);
-            if (!($configuration instanceof Configuration)) {
+            if (!$configuration instanceof Configuration) {
                 $configuration = new Configuration();
                 $configuration->setName($key);
             }

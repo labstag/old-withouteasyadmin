@@ -1,4 +1,5 @@
-export class SelectAll extends HTMLElement {
+import { ElementHTML } from './ElementHTML'
+export class SelectAll extends ElementHTML {
   constructor () {
     super()
     this.classList.add('select-all')

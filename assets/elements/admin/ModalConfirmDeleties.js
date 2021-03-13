@@ -1,4 +1,5 @@
-export class ModalConfirmDeleties extends HTMLElement {
+import { ElementHTML } from './../ElementHTML'
+export class ModalConfirmDeleties extends ElementHTML {
   constructor () {
     super()
     this.classList.add('confirm-deleties')
@@ -28,12 +29,6 @@ export class ModalConfirmDeleties extends HTMLElement {
       },
       body: urlSearchParams
     }
-    fetch(url, options)
-      .then((response) => {
-        window.location.href = redirect
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    this.fetchRedirect(url, options, redirect)
   }
 }

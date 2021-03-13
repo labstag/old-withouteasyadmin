@@ -16,6 +16,7 @@ use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\RequestHandler\MenuRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
 
 class InstallService
@@ -43,6 +44,8 @@ class InstallService
 
     protected EntityManagerInterface $entityManager;
 
+    protected CacheInterface $cache;
+
     public function __construct(
         MenuRequestHandler $menuRH,
         GroupeRequestHandler $groupeRH,
@@ -54,9 +57,11 @@ class InstallService
         TemplateRequestHandler $templateRH,
         TemplateRepository $templateRepo,
         EntityManagerInterface $entityManager,
-        Environment $twig
+        Environment $twig,
+        CacheInterface $cache
     )
     {
+        $this->cache             = $cache;
         $this->oauthService      = $oauthService;
         $this->menuRepo          = $menuRepo;
         $this->twig              = $twig;
@@ -191,6 +196,8 @@ class InstallService
         foreach ($config as $key => $row) {
             $this->addConfig($key, $row);
         }
+
+        $this->cache->delete('configuration');
     }
 
     protected function setOauth(array $env, array &$data): void
@@ -229,12 +236,11 @@ class InstallService
     {
         $search        = ['name' => $key];
         $configuration = $this->configurationRepo->findOneBy($search);
-        if ($configuration instanceof Configuration) {
-            return;
+        if (!$configuration instanceof Configuration) {
+            $configuration = new Configuration();
         }
 
-        $configuration = new Configuration();
-        $old           = clone $configuration;
+        $old = clone $configuration;
         $configuration->setName($key);
         $configuration->setValue($value);
         $this->configurationRH->handle($old, $configuration);
