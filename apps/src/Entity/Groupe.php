@@ -40,7 +40,7 @@ class Groupe
     /**
      * @ORM\OneToMany(
      *  targetEntity=User::class,
-     *  mappedBy="groupe",
+     *  mappedBy="refgroupe",
      *  cascade={"persist"}
      * )
      */
