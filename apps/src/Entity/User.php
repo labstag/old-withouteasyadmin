@@ -61,7 +61,7 @@ class User implements UserInterface, Serializable
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
      */
-    protected Groupe $groupe;
+    protected Groupe $refgroupe;
 
     /**
      * @ORM\OneToMany(
