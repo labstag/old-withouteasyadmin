@@ -272,12 +272,12 @@ class User implements UserInterface, Serializable
 
     public function getGroupe(): ?Groupe
     {
-        return $this->groupe;
+        return $this->refgroupe;
     }
 
-    public function setGroupe(?Groupe $groupe): self
+    public function setRefgroupe(?Groupe $groupe): self
     {
-        $this->groupe = $groupe;
+        $this->refgroupe = $groupe;
 
         return $this;
     }

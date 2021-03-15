@@ -27,7 +27,7 @@
 {% macro guard(entity, url, title) %}
     {% set title = title|trans %}
     {% set state1 = guard_route(url) %}
-    {% if entity.groupe is defined %}
+    {% if entity.refgroupe is defined %}
         {% set state2 = guard_user_access(entity) %}
     {% else %}
         {% set state2 = guard_group_access(entity) %}
