@@ -73,7 +73,7 @@ class GuardRouteController extends ApiControllerLib
         if (array_key_exists('user', $get)) {
             $user = $userRepository->find($get['user']);
 
-            return $routeGroupeRepo->findEnable($user->getGroupe());
+            return $routeGroupeRepo->findEnable($user->getRefgroupe());
         }
 
         return $routeGroupeRepo->findEnable();
@@ -272,8 +272,8 @@ class GuardRouteController extends ApiControllerLib
             return $data;
         }
 
-        $enable = $guardService->guardRouteEnableGroupe($route->getName(), $user->getGroupe());
-        if ('superadmin' === $user->getGroupe()->getCode() || !$enable) {
+        $enable = $guardService->guardRouteEnableGroupe($route->getName(), $user->getRefgroupe());
+        if ('superadmin' === $user->getRefgroupe()->getCode() || !$enable) {
             return $data;
         }
 

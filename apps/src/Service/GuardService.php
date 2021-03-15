@@ -78,7 +78,7 @@ class GuardService
     public function getGuardRoutesForUser(User $user): array
     {
         $routes = $this->routesEnableUser($user);
-        if ('superadmin' == $user->getGroupe()->getCode()) {
+        if ('superadmin' == $user->getRefgroupe()->getCode()) {
             $routes = [];
         }
 
@@ -232,7 +232,7 @@ class GuardService
 
     protected function searchRouteUser(User $user, string $route): bool
     {
-        $stateGroupe = $this->searchRouteGroupe($user->getGroupe(), $route);
+        $stateGroupe = $this->searchRouteGroupe($user->getRefgroupe(), $route);
         $entity      = $this->routeUserRepo->findRoute($user, $route);
         $stateUser   = ($entity instanceof RouteUser) ? $entity->isState() : false;
 
@@ -254,7 +254,7 @@ class GuardService
 
         /** @var User $user */
         $user   = $token->getUser();
-        $groupe = $user->getGroupe();
+        $groupe = $user->getRefgroupe();
         if ('superadmin' == $groupe->getCode()) {
             return true;
         }
@@ -267,7 +267,7 @@ class GuardService
     public function guardRouteEnableUser(string $route, User $user): bool
     {
         return $this->isRouteGroupe(
-            $user->getGroupe(),
+            $user->getRefgroupe(),
             $route
         );
     }

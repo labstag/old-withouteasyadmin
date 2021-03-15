@@ -76,7 +76,7 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $groupe = $user->getGroupe();
+        $groupe = $user->getRefgroupe();
         if ('superadmin' === $groupe->getCode()) {
             return;
         }

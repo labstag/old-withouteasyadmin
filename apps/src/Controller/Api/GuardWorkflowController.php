@@ -74,7 +74,7 @@ class GuardWorkflowController extends ApiControllerLib
         if (array_key_exists('user', $get)) {
             $user = $userRepository->find($get['user']);
 
-            return $workflowGroupeRepo->findEnable($user->getGroupe());
+            return $workflowGroupeRepo->findEnable($user->getRefgroupe());
         }
 
         return $workflowGroupeRepo->findEnable();
@@ -293,7 +293,7 @@ class GuardWorkflowController extends ApiControllerLib
             return $data;
         }
 
-        if ('superadmin' === $user->getGroupe()->getCode()) {
+        if ('superadmin' === $user->getRefgroupe()->getCode()) {
             return $data;
         }
 

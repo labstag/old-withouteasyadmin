@@ -152,7 +152,7 @@ class LabstagUserCommand extends Command
             $table[] = [
                 'username' => $user->getUsername(),
                 'email'    => $user->getEmail(),
-                'groupe'   => $user->getGroupe()->getName(),
+                'groupe'   => $user->getRefgroupe()->getName(),
                 'state'    => $user->getState(),
             ];
         }
@@ -409,7 +409,7 @@ class LabstagUserCommand extends Command
                 [
                     'username' => $user->getUsername(),
                     'email'    => $user->getEmail(),
-                    'groupe'   => $user->getGroupe()->getName(),
+                    'groupe'   => $user->getRefgroupe()->getName(),
                     'state'    => $user->getState(),
                 ]
             );
