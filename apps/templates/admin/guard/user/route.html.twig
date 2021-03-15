@@ -12,7 +12,7 @@
                     Route
                 </th>
                 <th rowspan=2>
-                    Groupe {{ user.groupe.name }}
+                    Groupe {{ user.refgroupe.name }}
                 </th>
                 <th>
                     {{ user.username }}
@@ -37,7 +37,7 @@
                 <td>
                     <guard-refgrouproute
                         data-state=0
-                        data-group="{{ user.groupe.code|e }}"
+                        data-group="{{ user.refgroupe.code|e }}"
                         data-route="{{ route.name|e }}"
                     ></guard-refgrouproute>
                 </td>

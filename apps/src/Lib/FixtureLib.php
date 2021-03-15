@@ -213,7 +213,7 @@ abstract class FixtureLib extends Fixture
         $user = new User();
         $old  = clone $user;
 
-        $user->setGroupe($this->getGroupe($groupes, $dataUser['groupe']));
+        $user->setRefgroupe($this->getGroupe($groupes, $dataUser['groupe']));
         $user->setUsername($dataUser['username']);
         $user->setPlainPassword($dataUser['password']);
         $user->setEmail($dataUser['email']);

@@ -89,9 +89,9 @@ else ifeq ($(COMMAND_ARGS),prod)
 	$(DOCKER_EXECPHP) make composer prod
 else ifeq ($(COMMAND_ARGS),dev)
 	$(DOCKER_EXECPHP) make composer dev
-else ifeq ($(COMMAND_ARGS),update)
+else ifeq ($(COMMAND_ARGS),u)
 	$(DOCKER_EXECPHP) make composer update
-else ifeq ($(COMMAND_ARGS),install)
+else ifeq ($(COMMAND_ARGS),i)
 	$(DOCKER_EXECPHP) make composer install
 else ifeq ($(COMMAND_ARGS),validate)
 	$(DOCKER_EXECPHP) make composer validate
@@ -101,12 +101,12 @@ else
 	@echo "make composer ARGUMENT"
 	@echo "---"
 	@echo "suggests: suggestions package pour PHP"
-	@echo "install: install"
+	@echo "i: install"
 	@echo "outdated: Packet php outdated"
 	@echo "fund: Discover how to help fund the maintenance of your dependencies."
 	@echo "prod: Installation version de prod"
 	@echo "dev: Installation version de dev"
-	@echo "update: COMPOSER update"
+	@echo "u: COMPOSER update"
 	@echo "validate: COMPOSER validate"
 endif
 
@@ -190,8 +190,8 @@ geocode: ## Geocode
 
 .PHONY: git
 git: ## Scripts GIT
-ifeq ($(COMMAND_ARGS),update)
-	@git update
+ifeq ($(COMMAND_ARGS),u)
+	@git pull
 else ifeq ($(COMMAND_ARGS),status)
 	@git status
 else ifeq ($(COMMAND_ARGS),check)
@@ -206,7 +206,7 @@ else
 	@echo "---"
 	@echo "make git ARGUMENT"
 	@echo "---"
-	@echo "update: Update git"
+	@echo "u: Update git"
 	@echo "check: CHECK before"
 	@echo "status: status"
 endif
@@ -496,11 +496,12 @@ workflow-png: ## generate workflow png
 
 .PHONY: upgrade
 upgrade: ## upgrade git
-	$(DOCKER_EXECPHP) symfony labstag:update --maintenanceon
-	@make git update -i
-	@make composer install -i
+	$(DOCKER_EXECPHP) symfony console labstag:update --maintenanceon
+	@make git u -i
+	@make composer i -i
+	@make bdd migrate -i
 	@make node_modules -i
 	@make encore build -i
 	@make commands -i
-	$(DOCKER_EXECPHP) symfony cache:clear
-	$(DOCKER_EXECPHP) symfony labstag:update --maintenanceoff
+	$(DOCKER_EXECPHP) symfony console cache:clear
+	$(DOCKER_EXECPHP) symfony console labstag:update --maintenanceoff

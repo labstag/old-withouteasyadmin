@@ -212,7 +212,7 @@ class LabstagUserCommand extends Command
         foreach ($groupes as $groupe) {
             /** @var Groupe $groupe */
             if ($selection == $groupe->getCode()) {
-                $user->setGroupe($groupe);
+                $user->setRefgroupe($groupe);
             }
         }
 
