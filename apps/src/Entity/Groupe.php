@@ -116,7 +116,7 @@ class Groupe
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             // set the owning side to null (unless already changed)
-            if ($user->getGroupe() === $this) {
+            if ($user->getRefgroupe() === $this) {
                 $user->setRefgroupe(null);
             }
         }

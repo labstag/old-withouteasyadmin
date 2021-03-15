@@ -270,7 +270,7 @@ class User implements UserInterface, Serializable
         // $this->plainPassword = null;
     }
 
-    public function getGroupe(): ?Groupe
+    public function getRefGroupe(): ?Groupe
     {
         return $this->refgroupe;
     }

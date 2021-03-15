@@ -102,7 +102,7 @@ abstract class FixtureLib extends Fixture
         $this->emailUserRH      = $emailUserRH;
     }
 
-    protected function getGroupe(array $groupes, string $code): ?Groupe
+    protected function getRefgroupe(array $groupes, string $code): ?Groupe
     {
         foreach ($groupes as $groupe) {
             if ($groupe->getCode() == $code) {
@@ -213,7 +213,7 @@ abstract class FixtureLib extends Fixture
         $user = new User();
         $old  = clone $user;
 
-        $user->setRefgroupe($this->getGroupe($groupes, $dataUser['groupe']));
+        $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
         $user->setUsername($dataUser['username']);
         $user->setPlainPassword($dataUser['password']);
         $user->setEmail($dataUser['email']);
