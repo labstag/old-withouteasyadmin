@@ -5,6 +5,7 @@ export class TableDatatable extends HTMLTableElement {
     const multiple = this.dataset.multiple
     const multipleall = this.dataset.multipleall
     const multipleelement = this.dataset.multipleelement
+    const datalength = this.dataset.count
     const ths = this.getElementsByTagName('th')
     const tbodys = this.getElementsByTagName('tbody')
     const tbody = tbodys[tbodys.length - 1]
@@ -23,7 +24,18 @@ export class TableDatatable extends HTMLTableElement {
         }
       )
     }
-    if (multiple !== undefined) {
+    const tr = tbody.getElementsByTagName('tr')
+    if (datalength === 0) {
+      thLast.remove()
+      const trEmptyElement = document.createElement('tr')
+      const tdEmptyElement = document.createElement('td')
+      tdEmptyElement.setAttribute('colspan', ths.length)
+      tdEmptyElement.setAttribute('class', 'empty')
+      tdEmptyElement.innerHTML = this.dataset.empty
+      trEmptyElement.append(tdEmptyElement)
+      tbody.append(trEmptyElement)
+    }
+    if (multiple !== undefined && datalength !== 0) {
       const thElement = document.createElement('th')
       const selectAllElement = document.createElement('select-all')
       if (multipleall !== undefined) {
@@ -31,7 +43,6 @@ export class TableDatatable extends HTMLTableElement {
       }
       thElement.append(selectAllElement)
       thLast.closest('tr').prepend(thElement)
-      const tr = tbody.getElementsByTagName('tr')
       tr.forEach(
         (element) => {
           if (element.dataset.id === undefined) {

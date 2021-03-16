@@ -37,6 +37,10 @@ a {
   }
 }
 
+.empty {
+  text-align: center;
+}
+
 .btn-togglefieldset {
   @extend .btn;
   @extend .btn-info;

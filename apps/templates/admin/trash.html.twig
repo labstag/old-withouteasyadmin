@@ -8,6 +8,8 @@
         data-multiple
         data-multipleall="Tout sélectionner"
         data-multipleelement="Selection"
+        data-empty="No records found"
+        data-count={{ trash|length }}
     >
         <thead>
             <tr>
@@ -43,10 +45,6 @@
                         ></link-empty>
                     {% endif %}
                 </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3" class="text-center">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

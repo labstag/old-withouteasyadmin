@@ -7,6 +7,8 @@
         data-multiple
         data-multipleall="Tout sélectionner"
         data-multipleelement="Selection"
+        data-empty="No records found"
+        data-count={{ pagination|length }}
     >
         <thead>
             <tr>
@@ -23,10 +25,6 @@
                 <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3" class="text-center">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
