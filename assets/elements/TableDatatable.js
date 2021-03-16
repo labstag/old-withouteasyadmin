@@ -25,7 +25,7 @@ export class TableDatatable extends HTMLTableElement {
       )
     }
     const tr = tbody.getElementsByTagName('tr')
-    if (datalength == 0) {
+    if (datalength === 0) {
       thLast.remove()
       const trEmptyElement = document.createElement('tr')
       const tdEmptyElement = document.createElement('td')
@@ -35,7 +35,7 @@ export class TableDatatable extends HTMLTableElement {
       trEmptyElement.append(tdEmptyElement)
       tbody.append(trEmptyElement)
     }
-    if (multiple !== undefined && datalength != 0) {
+    if (multiple !== undefined && datalength !== 0) {
       const thElement = document.createElement('th')
       const selectAllElement = document.createElement('select-all')
       if (multipleall !== undefined) {
