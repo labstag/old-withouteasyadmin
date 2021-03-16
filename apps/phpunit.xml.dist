@@ -39,6 +39,13 @@
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
 
+    <!-- Run `composer require symfony/panther` before enabling this extension -->
+    <!--
+    <extensions>
+        <extension class="Symfony\Component\Panther\ServerExtension" />
+    </extensions>
+    -->
+
     <logging>
         <log type="coverage-html" target="var/coverage" lowUpperBound="35" highLowerBound="70"/>
         <log type="coverage-clover" target="var/clover.xml" lowUpperBound="35" highLowerBound="70"/>
