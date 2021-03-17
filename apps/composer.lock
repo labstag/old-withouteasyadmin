@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65d80a58ca335230fcccad179381c29e",
+    "content-hash": "5f9e15cd4bfe284b836bb61c2358d98d",
     "packages": [
         {
             "name": "adam-paterson/oauth2-slack",
@@ -2198,16 +2198,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.12.19",
+            "version": "8.12.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "f3c196dcb3e76e456783a38bab87d99b4d727918"
+                "reference": "743585979ef96f2be123518c0a58083cf678bd47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/f3c196dcb3e76e456783a38bab87d99b4d727918",
-                "reference": "f3c196dcb3e76e456783a38bab87d99b4d727918",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/743585979ef96f2be123518c0a58083cf678bd47",
+                "reference": "743585979ef96f2be123518c0a58083cf678bd47",
                 "shasum": ""
             },
             "require": {
@@ -2267,7 +2267,7 @@
                 "issues": "https://github.com/giggsey/libphonenumber-for-php/issues",
                 "source": "https://github.com/giggsey/libphonenumber-for-php"
             },
-            "time": "2021-03-01T16:07:56+00:00"
+            "time": "2021-03-17T11:05:55+00:00"
         },
         {
             "name": "giggsey/locale",
