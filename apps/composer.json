@@ -81,7 +81,7 @@
     "symfony/yaml": "5.2.*",
     "twig/cssinliner-extra": "3.2.1",
     "twig/extra-bundle": "^2.12|^3.0",
-    "twig/intl-extra": "3.2.1",
+    "twig/intl-extra": "3.3.0",
     "twig/twig": "^2.12|^3.0",
     "vantezzen/oauth2-pinterest": "^2.2",
     "vertisan/oauth2-twitch-helix": "^1.0",

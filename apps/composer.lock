@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a35de31bd92ba0ba3354e91499ea02c2",
+    "content-hash": "389ef02949f613ad66c2a0d58ddb64d2",
     "packages": [
         {
             "name": "adam-paterson/oauth2-slack",
@@ -10826,7 +10826,7 @@
         },
         {
             "name": "twig/intl-extra",
-            "version": "v3.2.1",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/intl-extra.git",
@@ -10879,7 +10879,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/intl-extra/tree/v3.2.1"
+                "source": "https://github.com/twigphp/intl-extra/tree/v3.3.0"
             },
             "funding": [
                 {
