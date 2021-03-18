@@ -151,6 +151,11 @@ class User implements UserInterface, Serializable
      */
     private $workflowUsers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser")
+     */
+    private $posts;
+
     public function __construct()
     {
         $this->editos            = new ArrayCollection();
@@ -163,6 +168,7 @@ class User implements UserInterface, Serializable
         $this->roles             = ['ROLE_USER'];
         $this->routes            = new ArrayCollection();
         $this->workflowUsers     = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     public function getState()
@@ -596,6 +602,36 @@ class User implements UserInterface, Serializable
             // set the owning side to null (unless already changed)
             if ($workflowUser->getRefuser() === $this) {
                 $workflowUser->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->removeElement($post)) {
+            // set the owning side to null (unless already changed)
+            if ($post->getRefuser() === $this) {
+                $post->setRefuser(null);
             }
         }
 
