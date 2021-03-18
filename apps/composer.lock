@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd391a8f368772f6ba3983d9a7a7945b",
+    "content-hash": "42ea0a073c998548d7d72a48ba2650e5",
     "packages": [
         {
             "name": "adam-paterson/oauth2-slack",
@@ -3508,16 +3508,16 @@
         },
         {
             "name": "mhujer/breadcrumbs-bundle",
-            "version": "1.5.4",
+            "version": "1.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mhujer/BreadcrumbsBundle.git",
-                "reference": "da063792cafe2ef7777ac1c0f47c2f5ea8a4d41c"
+                "reference": "55ae278af2107108a54056e6af993c97c7cd4fdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mhujer/BreadcrumbsBundle/zipball/da063792cafe2ef7777ac1c0f47c2f5ea8a4d41c",
-                "reference": "da063792cafe2ef7777ac1c0f47c2f5ea8a4d41c",
+                "url": "https://api.github.com/repos/mhujer/BreadcrumbsBundle/zipball/55ae278af2107108a54056e6af993c97c7cd4fdf",
+                "reference": "55ae278af2107108a54056e6af993c97c7cd4fdf",
                 "shasum": ""
             },
             "require": {
@@ -3559,9 +3559,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mhujer/BreadcrumbsBundle/issues",
-                "source": "https://github.com/mhujer/BreadcrumbsBundle/tree/1.5.4"
+                "source": "https://github.com/mhujer/BreadcrumbsBundle/tree/1.5.5"
             },
-            "time": "2021-01-02T19:02:12+00:00"
+            "time": "2021-02-13T09:23:44+00:00"
         },
         {
             "name": "michaelkaefer/oauth2-amazon",
