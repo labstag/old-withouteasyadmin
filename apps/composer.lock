@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "389ef02949f613ad66c2a0d58ddb64d2",
+    "content-hash": "ec7466c7ef02f83d53a7324761bffbed",
     "packages": [
         {
             "name": "adam-paterson/oauth2-slack",
@@ -10678,7 +10678,7 @@
         },
         {
             "name": "twig/cssinliner-extra",
-            "version": "v3.2.1",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/cssinliner-extra.git",
@@ -10732,7 +10732,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/cssinliner-extra/tree/v3.2.1"
+                "source": "https://github.com/twigphp/cssinliner-extra/tree/v3.3.0"
             },
             "funding": [
                 {
