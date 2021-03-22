@@ -1,25 +1,25 @@
-{% import "admin/macro.html.twig" as macro_admin %}
-{% extends 'admin/user/layout.html.twig' %}
-{% block body %}
+{%- import "admin/macro.html.twig" as macro_admin -%}
+{%- extends 'admin/user/layout.html.twig' -%}
+{%- block body -%}
     {{ form_start(form) }}
     {{ form_row(form.username) }}
     {{ form_row(form.plainPassword) }}
     {{ form_row(form.refgroupe) }}
-    {% if entity.id != null %}
+    {%- if entity.id != null -%}
         {{ macro_admin.form_img(
             entity,
             entity.avatar,
             "Avatar",
             path('api_attachment_useravatar', {'entity': entity.id})
         ) }}
-    {% endif %}
+    {%- endif -%}
     {{ form_row(form.file) }}
-    {% if form.email is defined %}
+    {%- if form.email is defined -%}
     {{ form_row(form.email) }}
-    {% endif %}
+    {%- endif -%}
     {{ form_row(form.emailUsers) }}
     {{ form_row(form.phoneUsers) }}
     {{ form_row(form.adresseUsers) }}
     {{ form_row(form.lienUsers) }}
     {{ form_end(form) }}
-{% endblock %}
+{%- endblock -%}

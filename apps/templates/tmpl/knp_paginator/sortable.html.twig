@@ -1,14 +1,14 @@
-<a{% for attr, value  in options %} {{ attr }}="{{ value }}"{% endfor %}>
+<a{%- for attr, value  in options -%} {{ attr }}="{{ value }}"{%- endfor -%}>
     <span class="float-right">
-        {% if sorted %}
-            {% if direction == 'desc' %}
+        {%- if sorted -%}
+            {%- if direction == 'desc' -%}
                 <i class="fa fa-sort-down"></i>
-            {% else %}
+            {%- else -%}
                 <i class="fa fa-sort-up"></i>
-            {% endif %}
-        {% else %}
+            {%- endif -%}
+        {%- else -%}
             <i class="fa fa-sort"></i>
-        {% endif %}
+        {%- endif -%}
     </span>
     {{ title }}
 </a>

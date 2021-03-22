@@ -1,27 +1,27 @@
-{% if btnadmin|length !=0 %}
+{%- if btnadmin|length !=0 -%}
 <div class="list-btn-admin" role="group">
-    {% for btn in btnadmin %}
-        {% if btn.attr.is is defined %}
-            {% set btnname = btn.attr.is %}
-        {% else %}
-            {% set btnname = 'link-btnadmin' %}
-        {% endif %}
+    {%- for btn in btnadmin -%}
+        {%- if btn.attr.is is defined -%}
+            {%- set btnname = btn.attr.is -%}
+        {%- else -%}
+            {%- set btnname = 'link-btnadmin' -%}
+        {%- endif -%}
         <{{ btnname }}
             {%- for attrname, attrvalue in btn.attr|sort -%}
-                {% if attrname != 'is' %}
+                {%- if attrname != 'is' -%}
                     {{- " " -}}
                     {%- if attrvalue is same as(true) -%}
                         {{- attrname }}="{{ attrname }}"
                     {%- elseif attrvalue is not same as(false) -%}
                         {{- attrname }}="{{ attrvalue }}"
                     {%- endif -%}
-                {% endif %}
+                {%- endif -%}
             {%- endfor -%}
-            {% if btn.icon is defined %}
+            {%- if btn.icon is defined -%}
                 icon="{{ btn.icon }}"
-            {% endif %}
+            {%- endif -%}
             text="{{ btn.text }}"
         ></{{ btnname }}>
-    {% endfor %}
+    {%- endfor -%}
 </div>
-{% endif %}
+{%- endif -%}

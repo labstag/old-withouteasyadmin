@@ -1,13 +1,13 @@
-{% import "macro.html.twig" as macro_site %}
-{% extends 'base.html.twig' %}
-{% block stylesheets %}
+{%- import "macro.html.twig" as macro_site -%}
+{%- extends 'base.html.twig' -%}
+{%- block stylesheets -%}
     {{ encore_entry_link_tags('admin') }}
-{% endblock %}
-{% block javascripts %}
+{%- endblock -%}
+{%- block javascripts -%}
     {{ encore_entry_script_tags('admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block content %}
+{%- block content -%}
     <header>
         <!-- Fixed navbar -->
         <div class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -23,23 +23,23 @@
     </header>
     <div class="container-fluid">
         <div class="row">
-            {% if headerTitle is defined %}
+            {%- if headerTitle is defined -%}
             <div class="col">
                 <h1>{{ headerTitle|trans }}</h1>
             </div>
-            {% endif %}
+            {%- endif -%}
             <div class="col text-right">
                 {{ include('admin/btn.html.twig') }}
             </div>
         </div>
         {{ wo_render_breadcrumbs() }}
         {{ macro_site.flashbag(app) }}
-        {% block body %}
-        {% endblock %}
+        {%- block body -%}
+        {%- endblock -%}
         <footer>
-            {% if pagination is defined %}
+            {%- if pagination is defined -%}
                 {{ knp_pagination_render(pagination) }}
-            {% endif %}
+            {%- endif -%}
         </footer>
     </div>
-{% endblock %}
+{%- endblock -%}

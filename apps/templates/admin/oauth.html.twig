@@ -1,5 +1,5 @@
-{% extends 'admin.html.twig' %}
-{% block body %}
+{%- extends 'admin.html.twig' -%}
+{%- block body -%}
     <div>
         <p>Vous êtes sur la page qui vous permet de retrouver les différentes routes permettant de parametrer les connexions Oauth.</p>
         <p>Pour chaque service proposé ci-dessous, merci de récupérer l'<b>identifiant</b> ainsi que la <b>clef secrète</b>.</p>
@@ -13,8 +13,8 @@
             </tr>
         </thead>
         <tbody>
-            {% for service, data in types %}
-                {% if data.config is defined %}
+            {%- for service, data in types -%}
+                {%- if data.config is defined -%}
                 <tr>
                     <td>
                         {{ service }}
@@ -26,8 +26,8 @@
                         {{ config['site_url']}}/oauth/check/{{ service }}
                     </td>
                 </tr>
-                {% endif %}
-            {% endfor %}
+                {%- endif -%}
+            {%- endfor -%}
         </tbody>
     </table>
-{% endblock %}
+{%- endblock -%}

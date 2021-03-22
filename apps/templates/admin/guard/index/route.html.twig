@@ -1,11 +1,11 @@
-{% set state1 = guard_route('api_guard_route') %}
-{% set state2 = guard_route('api_guard_routegroup') %}
-{% set state3 = guard_route('api_guard_routegroups') %}
-{% set state4 = guard_route('api_guard_routesetgroup') %}
-{% set state = state1 and state2 and state3 and state4 %}
-{% if state1 == false %}
+{%- set state1 = guard_route('api_guard_route') -%}
+{%- set state2 = guard_route('api_guard_routegroup') -%}
+{%- set state3 = guard_route('api_guard_routegroups') -%}
+{%- set state4 = guard_route('api_guard_routesetgroup') -%}
+{%- set state = state1 and state2 and state3 and state4 -%}
+{%- if state1 == false -%}
     Droit manquant
-{% else %}
+{%- else -%}
     <table is="guard-route" data-url="{{ path('api_guard_route') }}" data-refresh=0>
         <thead>
             <tr>
@@ -15,30 +15,30 @@
                 <th rowspan=2>
                     Actions
                 </th>
-                {% for group in groups %}
+                {%- for group in groups -%}
                     <th>
                         {{ group.name }}
                     </th>
-                {% endfor %}
+                {%- endfor -%}
             </tr>
             <tr>
-                {% for group in groups %}
+                {%- for group in groups -%}
                     <th>
-                        {% if 'superadmin' != group.code %}
+                        {%- if 'superadmin' != group.code -%}
                             <guard-changeroute
                                 data-state=0
                                 data-url="{{ path('api_guard_routegroup', {'group' : group.id}) }}"
                                 data-token="{{ csrf_token('guard') }}"
                             ></guard-changeroute>
-                        {% else %}
+                        {%- else -%}
                             ----
-                        {% endif %}
+                        {%- endif -%}
                     </th>
-                {% endfor %}
+                {%- endfor -%}
             </tr>
         </thead>
         <tbody>
-        {% for route in routes %}
+        {%- for route in routes -%}
             <tr>
                 <td>
                     {{ route.name }}
@@ -52,10 +52,10 @@
                         data-token="{{ csrf_token('guard') }}"
                     ></guard-allroute>
                 </td>
-                {% for group in groups %}
+                {%- for group in groups -%}
                     <td>
-                        {% set enable = guard_route_enable_group(route.name, group) %}
-                        {% if 'superadmin' != group.code and enable %}
+                        {%- set enable = guard_route_enable_group(route.name, group) -%}
+                        {%- if 'superadmin' != group.code and enable -%}
                             <guard-setroute
                                 title="{{ group.name|e }}"
                                 data-state=0
@@ -64,17 +64,17 @@
                                 data-url="{{ path('api_guard_routesetgroup', {'group' : group.id, 'route': route.id}) }}"
                                 data-token="{{ csrf_token('guard') }}"
                             ></guard-setroute>
-                        {% else %}
+                        {%- else -%}
                             ---
-                        {% endif %}
+                        {%- endif -%}
                     </td>
-                {% endfor %}
+                {%- endfor -%}
             </tr>
-        {% else %}
+        {%- else -%}
             <tr>
                 <td colspan="{{ groups|length+2 }}" class="text-center">no records found</td>
             </tr>
-        {% endfor %}
+        {%- endfor -%}
         </tbody>
     </table>
-{% endif %}
+{%- endif -%}

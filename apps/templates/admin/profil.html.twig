@@ -1,6 +1,6 @@
-{% import "admin/macro.html.twig" as macro_admin %}
-{% extends 'admin.html.twig' %}
-{% block body %}
+{%- import "admin/macro.html.twig" as macro_admin -%}
+{%- extends 'admin.html.twig' -%}
+{%- block body -%}
     {{ form_start(form) }}
     {{ form_row(form.username) }}
     {{ form_row(form.plainPassword) }}
@@ -11,54 +11,54 @@
         path('api_attachment_profilavatar')
     ) }}
     {{ form_row(form.file) }}
-    {% if form.email is defined %}
+    {%- if form.email is defined -%}
     {{ form_row(form.email) }}
-    {% endif %}
+    {%- endif -%}
     {{ form_row(form.emailUsers) }}
     {{ form_row(form.phoneUsers) }}
     {{ form_row(form.adresseUsers) }}
     {{ form_row(form.lienUsers) }}
     {{ form_end(form) }}
-    {% if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 %}
+    {%- if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 -%}
         <div class="row">
-    {% endif %}
-    {% set state = guard_route('connect_lost') %}
-    {% if state == true and entity.oauthconnectusers|length != 0 %}
+    {%- endif -%}
+    {%- set state = guard_route('connect_lost') -%}
+    {%- if state == true and entity.oauthconnectusers|length != 0 -%}
         <div class="col-auto">
             <fieldset>
                 <legend>Dissocier :</legend>
                 <div class="row">
-                    {% for oauth in entity.oauthconnectusers %}
+                    {%- for oauth in entity.oauthconnectusers -%}
                         <div class="itemConnect">
                             <a href="{{ path('connect_lost', {'oauthCode': oauth.name}) }}" title="{{ oauth.name|e }}">
                                 <i class="fab fa-{{ oauth.name }}"></i>
                                 {{ oauth.name }}
                             </a>
                         </div>
-                    {% endfor %}
+                    {%- endfor -%}
                 </div>
             </fieldset>
         </div>
-    {% endif %}
-    {% set state = guard_route('connect_start') %}
-    {% if state == true and oauthActivated|length != 0 %}
+    {%- endif -%}
+    {%- set state = guard_route('connect_start') -%}
+    {%- if state == true and oauthActivated|length != 0 -%}
         <div class="col-auto">
             <fieldset>
                 <legend>Se connecter avec :</legend>
                 <div class="row">
-                {% for oauth in oauthActivated %}
+                {%- for oauth in oauthActivated -%}
                     <div class="itemConnect">
                         <a href="{{ path('connect_start', {'oauthCode': oauth.type, 'link': 1}) }}" title="{{ oauth.type|e }}">
                             <i class="fab fa-{{ oauth.type }}"></i>
                             {{ oauth.type }}
                         </a>
                     </div>
-                {% endfor %}
+                {%- endfor -%}
                 </div>
             </fieldset>
         </div>
-    {% endif %}
-    {% if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 %}
+    {%- endif -%}
+    {%- if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 -%}
         </div>
-    {% endif %}
-{% endblock %}
+    {%- endif -%}
+{%- endblock -%}

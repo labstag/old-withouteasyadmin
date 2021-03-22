@@ -1,4 +1,4 @@
-{% apply inline_css(source('mails/theme.css')) %}
+{%- apply inline_css(source('mails/theme.css')) -%}
 <!DOCTYPE html PUBLIC "-//W3C//DTDXHTML1.0Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -58,9 +58,9 @@
 								<table class="footer" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
 									<tr>
 										<td class="content-cell" align="center">
-                                            {% if config['site_url'] is defined %}
+                                            {%- if config['site_url'] is defined -%}
                                                 <a href="{{ config['site_url'] }}">{{ config['site_title'] }}</a>
-                                            {% endif %}
+                                            {%- endif -%}
                                         </td>
 									</tr>
 								</table>
@@ -72,4 +72,4 @@
 		</table>
 	</body>
 </html>
-{% endapply %}
+{%- endapply -%}

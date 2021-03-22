@@ -1,5 +1,5 @@
-{% extends 'admin/lien_user/layout.html.twig' %}
-{% block body %}
+{%- extends 'admin/lien_user/layout.html.twig' -%}
+{%- block body -%}
     <table>
         <tbody>
             <tr>
@@ -13,19 +13,19 @@
             <tr>
                 <th>User</th>
                 <td>
-                    {% if entity.refuser.deletedAt != '' %}
-                        {% set url = 'admin_user_preview' %}
-                    {% else %}
-                        {% set url = 'admin_user_show' %}
-                    {% endif %}
-                    {% set state = guard_route(url) %}
-                    {% if state == true %}
+                    {%- if entity.refuser.deletedAt != '' -%}
+                        {%- set url = 'admin_user_preview' -%}
+                    {%- else -%}
+                        {%- set url = 'admin_user_show' -%}
+                    {%- endif -%}
+                    {%- set state = guard_route(url) -%}
+                    {%- if state == true -%}
                         <a href="{{ path(url, {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
-                    {% else %}
+                    {%- else -%}
                         {{ entity.refuser }}
-                    {% endif %}
+                    {%- endif -%}
                 </td>
             </tr>
         </tbody>
     </table>
-{% endblock %}
+{%- endblock -%}

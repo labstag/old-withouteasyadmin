@@ -1,6 +1,6 @@
-{% import "admin/macro.html.twig" as macro_admin %}
-{% extends 'admin/phone_user/layout.html.twig' %}
-{% block body %}
+{%- import "admin/macro.html.twig" as macro_admin -%}
+{%- extends 'admin/phone_user/layout.html.twig' -%}
+{%- block body -%}
     <table
         is="table-datatable"
         data-action="Actions"
@@ -23,7 +23,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for entity in pagination %}
+        {%- for entity in pagination -%}
             <tr data-id="{{ entity.id }}">
                 <td>{{ entity.numero }}</td>
                 <td>
@@ -31,15 +31,15 @@
                     {{ entity.country|country_name('fr') }}
                 </td>
                 <td>
-                    {% set check = verifPhone(entity.country, entity.numero)  ? 'OK' : 'KO' %}
+                    {%- set check = verifPhone(entity.country, entity.numero)  ? 'OK' : 'KO' -%}
                     <span class="check{{ check }}"></span>
                 </td>
                 <td>{{ entity.type }}</td>
                 <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
                 <td>
-                    {% for state in workflow_marked_places(entity) %}
+                    {%- for state in workflow_marked_places(entity) -%}
                         {{ state }}
-                    {% endfor %}
+                    {%- endfor -%}
                 </td>
                 <td>
                     {{ macro_admin.workflow(entity, actions) }}
@@ -48,7 +48,7 @@
                     {{ macro_admin.actions(entity, actions) }}
                 </td>
             </tr>
-        {% endfor %}
+        {%- endfor -%}
         </tbody>
     </table>
-{% endblock %}
+{%- endblock -%}

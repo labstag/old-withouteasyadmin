@@ -1,5 +1,5 @@
-{% extends 'admin/user/layout.html.twig' %}
-{% block body %}
+{%- extends 'admin/user/layout.html.twig' -%}
+{%- block body -%}
     <table>
         <tbody>
             <tr>
@@ -14,28 +14,28 @@
                 <th>Email</th>
                 <td><a href="mailto:{{ entity.email }}">{{ entity.email }}</a></td>
             </tr>
-            {% set avatar = attachment(entity.avatar) %}
-            {% if avatar != null %}
+            {%- set avatar = attachment(entity.avatar) -%}
+            {%- if avatar != null -%}
             <tr>
                 <th>Avatar</th>
                 <td>
                     <img src="{{ asset(avatar.name) }}" />
                 </td>
             </tr>
-            {% endif %}
+            {%- endif -%}
             <tr>
                 <th>State</th>
                 <td>
-                    {% for state in workflow_marked_places(entity) %}
+                    {%- for state in workflow_marked_places(entity) -%}
                         {{ state }}
-                    {% endfor %}
+                    {%- endfor -%}
                 </td>
             </tr>
         </tbody>
     </table>
-    {% set adresses = entity.adresseUsers %}
+    {%- set adresses = entity.adresseUsers -%}
     <div class="row">
-        {% if adresses|length !=0 %}
+        {%- if adresses|length !=0 -%}
             <div class="col-6">
                 <fieldset>
                     <legend>Adresses ({{ entity.adresseUsers|length }})</legend>
@@ -48,7 +48,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for adresse in adresses %}
+                            {%- for adresse in adresses -%}
                                 <tr>
                                     <td>
                                         {{ adresse.rue }}
@@ -65,14 +65,14 @@
                                     <td>{{ adresse.type }}</td>
                                     <td>{{ adresse.pmr ? 'Yes' : 'No' }}</td>
                                 </tr>
-                            {% endfor %}
+                            {%- endfor -%}
                         </tbody>
                     </table>
                 </fieldset>
             </div>
-        {% endif %}
-        {% set liens = entity.lienUsers %}
-        {% if liens|length !=0 %}
+        {%- endif -%}
+        {%- set liens = entity.lienUsers -%}
+        {%- if liens|length !=0 -%}
             <div class="col-6">
                 <fieldset>
                     <legend>Liens ({{ entity.lienUsers|length }})</legend>
@@ -84,19 +84,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for lien in liens %}
+                            {%- for lien in liens -%}
                                 <tr>
                                     <td>{{ lien.name }}</td>
                                     <td><a href="{{ lien.adresse }}" target="_blank">{{ lien.adresse }}</a></td>
                                 </tr>
-                            {% endfor %}
+                            {%- endfor -%}
                         </tbody>
                     </table>
                 </fieldset>
             </div>
-        {% endif %}
-        {% set emails = entity.emailUsers %}
-        {% if emails|length !=0 %}
+        {%- endif -%}
+        {%- set emails = entity.emailUsers -%}
+        {%- if emails|length !=0 -%}
             <div class="col-6">
                 <fieldset>
                     <legend>Emails ({{ entity.emailUsers|length }})</legend>
@@ -108,19 +108,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for email in emails %}
+                            {%- for email in emails -%}
                                 <tr>
                                     <td><a href="mailto:{{ email.adresse }}">{{ email.adresse }}</a></td>
                                     <td>{{ email.principal ? 'Yes' : 'No' }}</td>
                                 </tr>
-                            {% endfor %}
+                            {%- endfor -%}
                         </tbody>
                     </table>
                 </fieldset>
             </div>
-        {% endif %}
-        {% set phones = entity.phoneUsers %}
-        {% if phones|length !=0 %}
+        {%- endif -%}
+        {%- set phones = entity.phoneUsers -%}
+        {%- if phones|length !=0 -%}
             <div class="col-6">
                 <fieldset>
                     <legend>Téléphones ({{ entity.phoneUsers|length }})</legend>
@@ -135,11 +135,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for phone in phones %}
+                            {%- for phone in phones -%}
                                 <tr>
                                     <td><a href="tel:{{ phone.numero }}">{{ phone.numero }}</a></td>
                                     <td>
-                                        {% set check = verifPhone(phone.country, phone.numero)  ? 'OK' : 'KO' %}
+                                        {%- set check = verifPhone(phone.country, phone.numero)  ? 'OK' : 'KO' -%}
                                         <span class="check{{ check }}"></span>
                                     </td>
                                     <td>
@@ -149,11 +149,11 @@
                                     <td>{{ phone.type }}</td>
                                     <td>{{ phone.principal ? 'Yes' : 'No' }}</td>
                                 </tr>
-                            {% endfor %}
+                            {%- endfor -%}
                         </tbody>
                     </table>
                 </fieldset>
             </div>
-        {% endif %}
+        {%- endif -%}
     </div>
-{% endblock %}
+{%- endblock -%}

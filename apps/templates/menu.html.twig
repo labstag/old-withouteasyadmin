@@ -1,102 +1,102 @@
-{% extends 'knp_menu_base.html.twig' %}
-{% macro attributes(attributes) %}
-    {% for name, value in attributes %}
-        {% if value is not none and value is not same as(false) -%}
+{%- extends 'knp_menu_base.html.twig' -%}
+{%- macro attributes(attributes) -%}
+    {%- for name, value in attributes -%}
+        {%- if value is not none and value is not same as(false) -%}
             {{- ' %s="%s"'|format(name, value is same as(true) ? name|e : value|e)|raw -}}
-        {% endif -%}
-    {% endfor -%}
-{% endmacro %}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endmacro -%}
 
-{% block compressed_root %}
-    {% apply spaceless %}
+{%- block compressed_root -%}
+    {%- apply spaceless -%}
         {{ block('root') }}
-    {% endapply %}
-{% endblock %}
+    {%- endapply -%}
+{%- endblock -%}
 
-{% block root %}
-    {% set list_attributes = item.childrenAttributes %}
-    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
-        {% import _self as knp_menu %}
+{%- block root -%}
+    {%- set list_attributes = item.childrenAttributes -%}
+    {%- if item.hasChildren and options.depth is not same as(0) and item.displayChildren -%}
+        {%- import _self as knp_menu -%}
         <ul{{ knp_menu.attributes(list_attributes) }}>
             {{ block('children') }}
         </ul>
-    {% endif %}
-{% endblock %}
+    {%- endif -%}
+{%- endblock -%}
 
-{% block list %}
-    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
-        {% import _self as knp_menu %}
+{%- block list -%}
+    {%- if item.hasChildren and options.depth is not same as(0) and item.displayChildren -%}
+        {%- import _self as knp_menu -%}
         <ul{{ knp_menu.attributes(list_attributes) }}>
             {{ block('children') }}
         </ul>
-    {% endif %}
-{% endblock %}
+    {%- endif -%}
+{%- endblock -%}
 
-{% block children %}
+{%- block children -%}
     {# save current variables #}
-    {% set current_options = options %}
-    {% set current_item = item %}
+    {%- set current_options = options -%}
+    {%- set current_item = item -%}
     {# update the depth for children #}
-    {% if options.depth is not none %}
-        {% set options = options|merge({'depth': current_options.depth - 1}) %}
-    {% endif %}
+    {%- if options.depth is not none -%}
+        {%- set options = options|merge({'depth': current_options.depth - 1}) -%}
+    {%- endif -%}
 
     {# update the matchingDepth for children #}
-    {% if options.matchingDepth is not none and options.matchingDepth > 0 %}
-        {% set options = options|merge({'matchingDepth': current_options.matchingDepth - 1}) %}
-    {% endif %}
+    {%- if options.matchingDepth is not none and options.matchingDepth > 0 -%}
+        {%- set options = options|merge({'matchingDepth': current_options.matchingDepth - 1}) -%}
+    {%- endif -%}
 
-    {% for item in current_item.children %}
+    {%- for item in current_item.children -%}
         {{ block('item') }}
-    {% endfor %}
+    {%- endfor -%}
 
     {# restore current variables #}
-    {% set item = current_item %}
-    {% set options = current_options %}
-{% endblock %}
+    {%- set item = current_item -%}
+    {%- set options = current_options -%}
+{%- endblock -%}
 
-{% block item %}
-    {% if item.extra('divider') %}
+{%- block item -%}
+    {%- if item.extra('divider') -%}
         <div class="dropdown-divider"></div>
-    {% elseif item.displayed %}
+    {%- elseif item.displayed -%}
     {# building the class of the item #}
-        {% set classes = item.attribute('class') is not empty ? [item.attribute('class')] : [] %}
-        {% if matcher.isCurrent(item) %}
-            {% set classes = classes|merge([options.currentClass]) %}
-        {% elseif matcher.isAncestor(item, options.matchingDepth) %}
-            {% set classes = classes|merge([options.ancestorClass]) %}
-        {% endif %}
+        {%- set classes = item.attribute('class') is not empty ? [item.attribute('class')] : [] -%}
+        {%- if matcher.isCurrent(item) -%}
+            {%- set classes = classes|merge([options.currentClass]) -%}
+        {%- elseif matcher.isAncestor(item, options.matchingDepth) -%}
+            {%- set classes = classes|merge([options.ancestorClass]) -%}
+        {%- endif -%}
 
-        {% if item.actsLikeLast %}
-            {% set classes = classes|merge([options.lastClass]) %}
-        {% elseif item.actsLikeFirst %}
-            {% set classes = classes|merge([options.firstClass]) %}
-        {% endif %}
+        {%- if item.actsLikeLast -%}
+            {%- set classes = classes|merge([options.lastClass]) -%}
+        {%- elseif item.actsLikeFirst -%}
+            {%- set classes = classes|merge([options.firstClass]) -%}
+        {%- endif -%}
 
         {# Mark item as "leaf" (no children) or as "branch" (has children that are displayed) #}
-        {% if item.hasChildren and options.depth is not same as(0) %}
-            {% if options.branch_class is not empty and item.displayChildren %}
-                {% set classes = classes|merge([options.branch_class]) %}
-            {% endif %}
-        {% elseif options.leaf_class is not empty %}
-            {% set classes = classes|merge([options.leaf_class]) %}
-        {% endif %}
+        {%- if item.hasChildren and options.depth is not same as(0) -%}
+            {%- if options.branch_class is not empty and item.displayChildren -%}
+                {%- set classes = classes|merge([options.branch_class]) -%}
+            {%- endif -%}
+        {%- elseif options.leaf_class is not empty -%}
+            {%- set classes = classes|merge([options.leaf_class]) -%}
+        {%- endif -%}
 
-        {% set attributes = item.attributes %}
-        {% set classes = classes|merge(
+        {%- set attributes = item.attributes -%}
+        {%- set classes = classes|merge(
             [
                 'nav-item'
             ]
-        ) %}
-        {% if item.children|length >= 1 %}
-        {% set classes = classes|merge(
+        ) -%}
+        {%- if item.children|length >= 1 -%}
+        {%- set classes = classes|merge(
             [
                 'dropdown'
             ]
-        ) %}
-        {% endif %}
-        {% if classes is not empty %}
-            {% set attributes = attributes|merge(
+        ) -%}
+        {%- endif -%}
+        {%- if classes is not empty -%}
+            {%- set attributes = attributes|merge(
                 {
                     'class': classes|join(' ')|replace(
                         {
@@ -105,78 +105,78 @@
                         }
                     )|trim
                 }
-            ) %}
-        {% endif %}
+            ) -%}
+        {%- endif -%}
 
         {# displaying the item #}
-        {% import _self as knp_menu %}
+        {%- import _self as knp_menu -%}
         <li{{ knp_menu.attributes(attributes) }}>
-            {% if item.uri is not empty and (not matcher.isCurrent(item) or options.currentAsLink) %}
+            {%- if item.uri is not empty and (not matcher.isCurrent(item) or options.currentAsLink) -%}
             {{ block('linkElement') }}
-            {% else %}
+            {%- else -%}
             {{ block('spanElement') }}
-            {% endif %}
+            {%- endif -%}
 
             {# render the list of children#}
-            {% set children_classes = item.childrenAttribute('class') is not empty ? [item.childrenAttribute('class')] : [] %}
-            {% set children_classes = children_classes|merge(['admin_menu_level_' ~ item.level ~ ' dropdown-menu']) %}
-            {% set list_attributes = item.childrenAttributes|merge(
+            {%- set children_classes = item.childrenAttribute('class') is not empty ? [item.childrenAttribute('class')] : [] -%}
+            {%- set children_classes = children_classes|merge(['admin_menu_level_' ~ item.level ~ ' dropdown-menu']) -%}
+            {%- set list_attributes = item.childrenAttributes|merge(
                 {
                     'class': children_classes|join(' '),
                     'aria-labelledby': 'navbarDropdown' ~ item.level
-                }) %}
-            {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
-                {% import _self as knp_menu %}
+                }) -%}
+            {%- if item.hasChildren and options.depth is not same as(0) and item.displayChildren -%}
+                {%- import _self as knp_menu -%}
                 <ul{{ knp_menu.attributes(list_attributes) }}>
                     {{ block('children') }}
                 </ul>
-            {% endif %}
+            {%- endif -%}
         </li>
-    {% endif %}
-{% endblock %}
+    {%- endif -%}
+{%- endblock -%}
 
-{% block linkElement %}
-    {% import _self as knp_menu %}
-    {% set a_class = '' %}
-    {% if item.attribute('class') is not empty %}
-        {% set a_class = item.attribute('class') %}
-    {% endif %}
-    {% if item.children|length >= 1 %}
-        {% set a_class = a_class ~ 'nav-link' %}
-    {% elseif item.parent is not empty and item.parent.name != 'menulabstag' %}
-        {% set a_class = a_class ~ 'dropdown-item' %}
-    {% else %}
-        {% set a_class = a_class ~ 'nav-link' %}
-    {% endif %}
+{%- block linkElement -%}
+    {%- import _self as knp_menu -%}
+    {%- set a_class = '' -%}
+    {%- if item.attribute('class') is not empty -%}
+        {%- set a_class = item.attribute('class') -%}
+    {%- endif -%}
+    {%- if item.children|length >= 1 -%}
+        {%- set a_class = a_class ~ 'nav-link' -%}
+    {%- elseif item.parent is not empty and item.parent.name != 'menulabstag' -%}
+        {%- set a_class = a_class ~ 'dropdown-item' -%}
+    {%- else -%}
+        {%- set a_class = a_class ~ 'nav-link' -%}
+    {%- endif -%}
 
-    {% set a_attributes = item.labelAttributes|merge(
+    {%- set a_attributes = item.labelAttributes|merge(
         {
             'class': a_class,
             'href': item.uri
         }
-    ) %}
+    ) -%}
     <a{{ knp_menu.attributes(a_attributes) }}>{{ block('label') }}</a>
-{% endblock %}
+{%- endblock -%}
 
-{% block spanElement %}
-    {% import _self as knp_menu %}
-    {% set span_class = '' %}
-    {% if item.attribute('class') is not empty %}
-        {% set span_class = item.attribute('class') %}
-    {% endif %}
-    {% if item.children|length >= 1 %}
-    {% set span_class = span_class ~ 'nav-link dropdown-toggle' %}
-    {% else %}
-    {% set span_class = span_class ~ 'nav-link' %}
-    {% endif %}
+{%- block spanElement -%}
+    {%- import _self as knp_menu -%}
+    {%- set span_class = '' -%}
+    {%- if item.attribute('class') is not empty -%}
+        {%- set span_class = item.attribute('class') -%}
+    {%- endif -%}
+    {%- if item.children|length >= 1 -%}
+    {%- set span_class = span_class ~ 'nav-link dropdown-toggle' -%}
+    {%- else -%}
+    {%- set span_class = span_class ~ 'nav-link' -%}
+    {%- endif -%}
 
-    {% set span_attributes = item.labelAttributes|merge(
+    {%- set span_attributes = item.labelAttributes|merge(
         {
             'class': span_class
         }
-    ) %}
-    {% if item.children|length >= 1 %}
-        {% set span_attributes = item.labelAttributes|merge(
+    ) -%}
+    {%- if item.children|length >= 1 -%}
+        {%- set span_attributes = item.labelAttributes|merge(
             {
                 'class': span_class,
                 'href': '#',
@@ -186,16 +186,16 @@
                 'aria-haspopup': 'true',
                 'aria-expanded': 'false'
             }
-        ) %}
-    {% endif %}
+        ) -%}
+    {%- endif -%}
 
     <a{{ knp_menu.attributes(span_attributes) }}>{{ block('label') }}</a>
-{% endblock %}
+{%- endblock -%}
 
-{% block label %}
-    {% if options.allow_safe_labels and item.getExtra('safe_label', false) %}
+{%- block label -%}
+    {%- if options.allow_safe_labels and item.getExtra('safe_label', false) -%}
         {{ item.label|raw }}
-    {% else %}
+    {%- else -%}
         {{ item.label }}
-    {% endif %}
-{% endblock %}
+    {%- endif -%}
+{%- endblock -%}

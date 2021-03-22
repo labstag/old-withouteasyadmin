@@ -1,49 +1,49 @@
-{% import "modal.html.twig" as modal %}
+{%- import "modal.html.twig" as modal -%}
 <!DOCTYPE html>
 <html lang="{{ config.languagedefault|e }}">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}{% if config.site_title is defined %}{{ config.site_title|trim }}{% endif %}{% endblock %}</title>
-        {% if config.meta is defined %}
-            {% for key, value in config.meta %}
-                {% if value|trim != '' %}
+        <title>{%- block title -%}{%- if config.site_title is defined -%}{{ config.site_title|trim }}{%- endif -%}{%- endblock -%}</title>
+        {%- if config.meta is defined -%}
+            {%- for key, value in config.meta -%}
+                {%- if value|trim != '' -%}
                     <meta name="{{ key|e }}" content="{{ value|trim|e }}" />
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-        {% block stylesheets %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endif -%}
+        {%- block stylesheets -%}{%- endblock -%}
+        {%- block javascripts -%}{%- endblock -%}
     </head>
     <body>
-        {% block content %}{% endblock %}
-        {% block modal %}
-            {% if modalDelete is defined %}
+        {%- block content -%}{%- endblock -%}
+        {%- block modal -%}
+            {%- if modalDelete is defined -%}
                 {{ modal.delete() }}
-            {% endif %}
-            {% if modalEmpty is defined %}
+            {%- endif -%}
+            {%- if modalEmpty is defined -%}
                 {{ modal.empty() }}
-            {% endif %}
-            {% if modalEmpties is defined %}
+            {%- endif -%}
+            {%- if modalEmpties is defined -%}
                 {{ modal.empties() }}
-            {% endif %}
-            {% if modalDeleties is defined %}
+            {%- endif -%}
+            {%- if modalDeleties is defined -%}
                 {{ modal.deleties() }}
-            {% endif %}
-            {% if modalDestroy is defined %}
+            {%- endif -%}
+            {%- if modalDestroy is defined -%}
                 {{ modal.destroy() }}
-            {% endif %}
-            {% if modalRestore is defined %}
+            {%- endif -%}
+            {%- if modalRestore is defined -%}
                 {{ modal.restore() }}
-            {% endif %}
-            {% if modalRestories is defined %}
+            {%- endif -%}
+            {%- if modalRestories is defined -%}
                 {{ modal.restories() }}
-            {% endif %}
-            {% if modalWorkflow is defined %}
+            {%- endif -%}
+            {%- if modalWorkflow is defined -%}
                 {{ modal.Workflow() }}
-            {% endif %}
-            {% if modalAttachmentDelete is defined %}
+            {%- endif -%}
+            {%- if modalAttachmentDelete is defined -%}
                 {{ modal.attachmentDelete() }}
-            {% endif %}
-        {% endblock %}
+            {%- endif -%}
+        {%- endblock -%}
     </body>
 </html>

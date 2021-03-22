@@ -1,5 +1,5 @@
-{% extends 'admin/note_interne/layout.html.twig' %}
-{% block body %}
+{%- extends 'admin/note_interne/layout.html.twig' -%}
+{%- block body -%}
     <table>
         <tbody>
             <tr>
@@ -18,39 +18,39 @@
                 <th>Date_fin</th>
                 <td>{{ entity.dateFin ? entity.dateFin|format_datetime('full', 'full', locale='fr') : '' }}</td>
             </tr>
-            {% set fond = attachment(entity.fond) %}
-            {% if fond != null %}
+            {%- set fond = attachment(entity.fond) -%}
+            {%- if fond != null -%}
             <tr>
                 <th>Fond</th>
                 <td>
                     <img src="{{ asset(fond.name) }}" />
                 </td>
             </tr>
-            {% endif %}
+            {%- endif -%}
             <tr>
                 <th>User</th>
                 <td>
-                    {% if entity.refuser.deletedAt != '' %}
-                        {% set url = 'admin_user_preview' %}
-                    {% else %}
-                        {% set url = 'admin_user_show' %}
-                    {% endif %}
-                    {% set state = guard_route(url) %}
-                    {% if state == true %}
+                    {%- if entity.refuser.deletedAt != '' -%}
+                        {%- set url = 'admin_user_preview' -%}
+                    {%- else -%}
+                        {%- set url = 'admin_user_show' -%}
+                    {%- endif -%}
+                    {%- set state = guard_route(url) -%}
+                    {%- if state == true -%}
                         <a href="{{ path(url, {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
-                    {% else %}
+                    {%- else -%}
                         {{ entity.refuser }}
-                    {% endif %}
+                    {%- endif -%}
                 </td>
             </tr>
             <tr>
                 <th>State</th>
                 <td>
-                    {% for state in workflow_marked_places(entity) %}
+                    {%- for state in workflow_marked_places(entity) -%}
                         {{ state }}
-                    {% endfor %}
+                    {%- endfor -%}
                 </td>
             </tr>
         </tbody>
     </table>
-{% endblock %}
+{%- endblock -%}

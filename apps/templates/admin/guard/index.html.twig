@@ -1,5 +1,5 @@
-{% extends 'admin.html.twig' %}
-{% block body %}
+{%- extends 'admin.html.twig' -%}
+{%- block body -%}
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-route-tab" data-toggle="tab" href="#nav-route" role="tab" aria-controls="nav-route" aria-selected="true">
@@ -18,4 +18,4 @@
             {{ include('admin/guard/index/workflow.html.twig') }}
         </div>
     </div>
-{% endblock %}
+{%- endblock -%}
