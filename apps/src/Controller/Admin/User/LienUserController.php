@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Controller\Admin;
+namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\LienUser;

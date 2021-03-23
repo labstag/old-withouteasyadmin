@@ -2,8 +2,8 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\Libelle;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Entity\Libelle;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class LibelleRepository extends ServiceEntityRepositoryLib

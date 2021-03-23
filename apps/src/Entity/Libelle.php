@@ -4,14 +4,15 @@ namespace Labstag\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Labstag\Repository\LibelleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Repository\LibelleRepository;
 
 /**
  * @ORM\Entity(repositoryClass=LibelleRepository::class)
  */
 class Libelle
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")

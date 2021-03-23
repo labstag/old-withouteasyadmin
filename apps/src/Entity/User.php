@@ -168,7 +168,7 @@ class User implements UserInterface, Serializable
         $this->roles             = ['ROLE_USER'];
         $this->routes            = new ArrayCollection();
         $this->workflowUsers     = new ArrayCollection();
-        $this->posts = new ArrayCollection();
+        $this->posts             = new ArrayCollection();
     }
 
     public function getState()

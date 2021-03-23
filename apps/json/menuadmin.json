@@ -146,5 +146,19 @@
     "childs": []
 }, {
     "libelle": "Posts",
-    "childs": []
+    "childs": [{
+        "libelle": "Libelle",
+        "data": {
+            "attr": {
+                "data-href": "admin_postlibelle_index"
+            }
+        }
+    }, {
+        "libelle": "Liste",
+        "data": {
+            "attr": {
+                "data-href": "admin_post_index"
+            }
+        }
+    }]
 }]

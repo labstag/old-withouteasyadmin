@@ -4,14 +4,15 @@ namespace Labstag\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Labstag\Repository\PostRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Repository\PostRepository;
 
 /**
  * @ORM\Entity(repositoryClass=PostRepository::class)
  */
 class Post
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
