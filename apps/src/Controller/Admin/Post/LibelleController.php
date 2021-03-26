@@ -34,7 +34,7 @@ class LibelleController extends AdminControllerLib
                 'trash' => 'findTrashForAdmin',
                 'all'   => 'findAllForAdmin',
             ],
-            'admin/edito/index.html.twig',
+            'admin/post/libelle/index.html.twig',
             [
                 'new'   => 'admin_postlibelle_new',
                 'empty' => 'api_action_empty',
@@ -64,7 +64,7 @@ class LibelleController extends AdminControllerLib
             EditoType::class,
             $requestHandler,
             ['list' => 'admin_postlibelle_index'],
-            'admin/edito/form.html.twig'
+            'admin/post/libelle/form.html.twig'
         );
     }
 
@@ -77,7 +77,7 @@ class LibelleController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $edito,
-            'admin/edito/show.html.twig',
+            'admin/post/libelle/show.html.twig',
             [
                 'delete'  => 'api_action_delete',
                 'restore' => 'api_action_restore',
@@ -105,7 +105,7 @@ class LibelleController extends AdminControllerLib
                 'list'   => 'admin_postlibelle_index',
                 'show'   => 'admin_postlibelle_show',
             ],
-            'admin/edito/form.html.twig'
+            'admin/post/libelle/form.html.twig'
         );
     }
 }

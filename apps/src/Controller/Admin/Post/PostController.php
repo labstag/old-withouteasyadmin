@@ -34,7 +34,7 @@ class PostController extends AdminControllerLib
                 'trash' => 'findTrashForAdmin',
                 'all'   => 'findAllForAdmin',
             ],
-            'admin/edito/index.html.twig',
+            'admin/post/index.html.twig',
             [
                 'new'   => 'admin_post_new',
                 'empty' => 'api_action_empty',
@@ -64,7 +64,7 @@ class PostController extends AdminControllerLib
             EditoType::class,
             $requestHandler,
             ['list' => 'admin_post_index'],
-            'admin/edito/form.html.twig'
+            'admin/post/form.html.twig'
         );
     }
 
@@ -77,7 +77,7 @@ class PostController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $edito,
-            'admin/edito/show.html.twig',
+            'admin/post/show.html.twig',
             [
                 'delete'  => 'api_action_delete',
                 'restore' => 'api_action_restore',
@@ -105,7 +105,7 @@ class PostController extends AdminControllerLib
                 'list'   => 'admin_post_index',
                 'show'   => 'admin_post_show',
             ],
-            'admin/edito/form.html.twig'
+            'admin/post/form.html.twig'
         );
     }
 }
