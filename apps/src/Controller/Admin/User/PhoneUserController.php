@@ -34,7 +34,7 @@ class PhoneUserController extends AdminControllerLib
                 'trash' => 'findTrashForAdmin',
                 'all'   => 'findAllForAdmin',
             ],
-            'admin/phone_user/index.html.twig',
+            'admin/user/phone_user/index.html.twig',
             [
                 'new'   => 'admin_phoneuser_new',
                 'empty' => 'api_action_empty',
@@ -76,7 +76,7 @@ class PhoneUserController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $phoneUser,
-            'admin/phone_user/show.html.twig',
+            'admin/user/phone_user/show.html.twig',
             [
                 'delete'  => 'api_action_delete',
                 'restore' => 'api_action_restore',

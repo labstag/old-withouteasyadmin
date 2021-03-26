@@ -1,5 +1,5 @@
 {% import "admin/macro.html.twig" as macro_admin %}
-{% extends 'admin/email_user/layout.html.twig' %}
+{% extends 'admin/user/phone_user/layout.html.twig' %}
 {% block body %}
     <table
         is="table-datatable"
@@ -12,9 +12,11 @@
     >
         <thead>
             <tr>
-                <th>Adresse</th>
+                <th>Numero</th>
+                <th>Country</th>
+                <th>Verif</th>
+                <th>Type</th>
                 <th>Principal</th>
-                <th>User</th>
                 <th>State</th>
                 <th>Workflow</th>
                 <th></th>
@@ -23,9 +25,17 @@
         <tbody>
         {% for entity in pagination %}
             <tr data-id="{{ entity.id }}">
-                <td>{{ entity.adresse }}</td>
+                <td>{{ entity.numero }}</td>
+                <td>
+                    <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
+                    {{ entity.country|country_name('fr') }}
+                </td>
+                <td>
+                    {% set check = verifPhone(entity.country, entity.numero)  ? 'OK' : 'KO' %}
+                    <span class="check{{ check }}"></span>
+                </td>
+                <td>{{ entity.type }}</td>
                 <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
-                <td>{{ entity.refuser }}</td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

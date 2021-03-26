@@ -1,5 +1,5 @@
 {% import "admin/macro.html.twig" as macro_admin %}
-{% extends 'admin/phone_user/layout.html.twig' %}
+{% extends 'admin/user/adresse_user/layout.html.twig' %}
 {% block body %}
     <table
         is="table-datatable"
@@ -12,37 +12,32 @@
     >
         <thead>
             <tr>
-                <th>Numero</th>
+                <th>Rue</th>
                 <th>Country</th>
-                <th>Verif</th>
+                <th>Zipcode</th>
+                <th>Ville</th>
+                <th>Gps</th>
                 <th>Type</th>
-                <th>Principal</th>
-                <th>State</th>
-                <th>Workflow</th>
+                <th>Pmr</th>
+                <th>User</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
         {% for entity in pagination %}
             <tr data-id="{{ entity.id }}">
-                <td>{{ entity.numero }}</td>
+                <td>{{ entity.rue }}</td>
                 <td>
                     <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
                     {{ entity.country|country_name('fr') }}
                 </td>
-                <td>
-                    {% set check = verifPhone(entity.country, entity.numero)  ? 'OK' : 'KO' %}
-                    <span class="check{{ check }}"></span>
-                </td>
+                <td>{{ entity.zipcode }}</td>
+                <td>{{ entity.ville }}</td>
+                <td>{{ entity.gps }}</td>
                 <td>{{ entity.type }}</td>
-                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.pmr ? 'Yes' : 'No' }}</td>
                 <td>
-                    {% for state in workflow_marked_places(entity) %}
-                        {{ state }}
-                    {% endfor %}
-                </td>
-                <td>
-                    {{ macro_admin.workflow(entity, actions) }}
+                    {{ entity.refuser.username }}
                 </td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}

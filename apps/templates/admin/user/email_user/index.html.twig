@@ -1,5 +1,5 @@
 {% import "admin/macro.html.twig" as macro_admin %}
-{% extends 'admin/groupe/layout.html.twig' %}
+{% extends 'admin/user/email_user/layout.html.twig' %}
 {% block body %}
     <table
         is="table-datatable"
@@ -12,18 +12,28 @@
     >
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Code</th>
-                <th>Users</th>
+                <th>Adresse</th>
+                <th>Principal</th>
+                <th>User</th>
+                <th>State</th>
+                <th>Workflow</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
         {% for entity in pagination %}
             <tr data-id="{{ entity.id }}">
-                <td>{{ entity.name }}</td>
-                <td>{{ entity.code }}</td>
-                <td>{{ entity.users|length }}</td>
+                <td>{{ entity.adresse }}</td>
+                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.refuser }}</td>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ macro_admin.workflow(entity, actions) }}
+                </td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>

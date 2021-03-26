@@ -1,10 +1,17 @@
-{% extends 'admin/adresse_user/layout.html.twig' %}
+{% extends 'admin/user/phone_user/layout.html.twig' %}
 {% block body %}
     <table>
         <tbody>
             <tr>
-                <th>Rue</th>
-                <td>{{ entity.rue }}</td>
+                <th>Numero</th>
+                <td><a href="tel:{{ entity.numero }}">{{ entity.numero }}</a></td>
+            </tr>
+            <tr>
+                <th>Verif</th>
+                <td>
+                    {% set check = verifPhone(entity.country, entity.numero)  ? 'OK' : 'KO' %}
+                    <span class="check{{ check }}"></span>
+                </td>
             </tr>
             <tr>
                 <th>Country</th>
@@ -14,28 +21,12 @@
                 </td>
             </tr>
             <tr>
-                <th>Zipcode</th>
-                <td>{{ entity.zipcode }}</td>
-            </tr>
-            <tr>
-                <th>Ville</th>
-                <td>{{ entity.ville }}</td>
-            </tr>
-            <tr>
-                <th>Gps</th>
-                <td>
-                    <span class="GpsIcon">
-                        {{ entity.gps }}
-                    </span>
-                </td>
-            </tr>
-            <tr>
                 <th>Type</th>
                 <td>{{ entity.type }}</td>
             </tr>
             <tr>
-                <th>Pmr</th>
-                <td>{{ entity.pmr ? 'Yes' : 'No' }}</td>
+                <th>Principal</th>
+                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
                 <th>User</th>
@@ -51,6 +42,14 @@
                     {% else %}
                         {{ entity.refuser }}
                     {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
                 </td>
             </tr>
         </tbody>

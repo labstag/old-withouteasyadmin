@@ -34,7 +34,7 @@ class LienUserController extends AdminControllerLib
                 'trash' => 'findTrashForAdmin',
                 'all'   => 'findAllForAdmin',
             ],
-            'admin/lien_user/index.html.twig',
+            'admin/user/lien_user/index.html.twig',
             [
                 'new'   => 'admin_lienuser_new',
                 'empty' => 'api_action_empty',
@@ -75,7 +75,7 @@ class LienUserController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $lienUser,
-            'admin/lien_user/show.html.twig',
+            'admin/user/lien_user/show.html.twig',
             [
                 'delete'  => 'api_action_delete',
                 'restore' => 'api_action_restore',

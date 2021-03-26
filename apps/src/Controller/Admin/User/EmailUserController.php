@@ -34,7 +34,7 @@ class EmailUserController extends AdminControllerLib
                 'trash' => 'findTrashForAdmin',
                 'all'   => 'findAllForAdmin',
             ],
-            'admin/email_user/index.html.twig',
+            'admin/user/email_user/index.html.twig',
             [
                 'new'   => 'admin_emailuser_new',
                 'empty' => 'api_action_empty',
@@ -76,7 +76,7 @@ class EmailUserController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $emailUser,
-            'admin/email_user/show.html.twig',
+            'admin/user/email_user/show.html.twig',
             [
                 'delete'  => 'api_action_delete',
                 'restore' => 'api_action_restore',

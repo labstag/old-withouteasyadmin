@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Controller\Admin;
+namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
@@ -35,7 +35,7 @@ class GroupeController extends AdminControllerLib
                 'trash' => 'findTrashForAdmin',
                 'all'   => 'findAllForAdmin',
             ],
-            'admin/groupe/index.html.twig',
+            'admin/user/groupe/index.html.twig',
             [
                 'new'   => 'admin_groupuser_new',
                 'empty' => 'api_action_empty',
@@ -76,7 +76,7 @@ class GroupeController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $groupe,
-            'admin/groupe/show.html.twig',
+            'admin/user/groupe/show.html.twig',
             [
                 'delete'  => 'api_action_delete',
                 'restore' => 'api_action_restore',
@@ -137,7 +137,7 @@ class GroupeController extends AdminControllerLib
         }
 
         return $this->render(
-            'admin/guard/group.html.twig',
+            'admin/user/guard/group.html.twig',
             [
                 'group'     => $groupe,
                 'routes'    => $routes,

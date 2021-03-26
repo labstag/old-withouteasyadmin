@@ -1,28 +1,10 @@
-{% extends 'admin/phone_user/layout.html.twig' %}
+{% extends 'admin/user/email_user/layout.html.twig' %}
 {% block body %}
     <table>
         <tbody>
             <tr>
-                <th>Numero</th>
-                <td><a href="tel:{{ entity.numero }}">{{ entity.numero }}</a></td>
-            </tr>
-            <tr>
-                <th>Verif</th>
-                <td>
-                    {% set check = verifPhone(entity.country, entity.numero)  ? 'OK' : 'KO' %}
-                    <span class="check{{ check }}"></span>
-                </td>
-            </tr>
-            <tr>
-                <th>Country</th>
-                <td>
-                    <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
-                    {{ entity.country|country_name('fr') }}
-                </td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ entity.type }}</td>
+                <th>Adresse</th>
+                <td><a href="mailto:{{ entity.adresse }}">{{ entity.adresse }}</a></td>
             </tr>
             <tr>
                 <th>Principal</th>

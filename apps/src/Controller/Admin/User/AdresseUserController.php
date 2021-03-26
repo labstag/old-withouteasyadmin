@@ -34,7 +34,7 @@ class AdresseUserController extends AdminControllerLib
                 'trash' => 'findTrashForAdmin',
                 'all'   => 'findAllForAdmin',
             ],
-            'admin/adresse_user/index.html.twig',
+            'admin/user/adresse_user/index.html.twig',
             [
                 'new'   => 'admin_adresseuser_new',
                 'empty' => 'api_action_empty',
@@ -75,7 +75,7 @@ class AdresseUserController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $adresseUser,
-            'admin/adresse_user/show.html.twig',
+            'admin/user/adresse_user/show.html.twig',
             [
                 'delete'  => 'api_action_delete',
                 'restore' => 'api_action_restore',
