@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Form\Admin;
+namespace Labstag\Form\Admin\User;
 
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\User;

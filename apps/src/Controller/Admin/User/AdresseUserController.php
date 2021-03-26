@@ -4,7 +4,7 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\AdresseUser;
-use Labstag\Form\Admin\AdresseUserType;
+use Labstag\Form\Admin\User\AdresseUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\AdresseUserRepository;
 use Labstag\RequestHandler\AdresseUserRequestHandler;

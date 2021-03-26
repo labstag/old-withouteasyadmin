@@ -4,7 +4,7 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\EmailUser;
-use Labstag\Form\Admin\EmailUserType;
+use Labstag\Form\Admin\User\EmailUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\EmailUserRepository;
 use Labstag\RequestHandler\EmailUserRequestHandler;

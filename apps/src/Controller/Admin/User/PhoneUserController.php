@@ -4,7 +4,7 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\PhoneUser;
-use Labstag\Form\Admin\PhoneUserType;
+use Labstag\Form\Admin\User\PhoneUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\PhoneUserRepository;
 use Labstag\RequestHandler\PhoneUserRequestHandler;

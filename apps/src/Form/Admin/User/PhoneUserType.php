@@ -1,14 +1,15 @@
 <?php
 
-namespace Labstag\Form\Admin;
+namespace Labstag\Form\Admin\User;
 
-use Labstag\Entity\EmailUser;
+use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
+use Labstag\Form\Admin\PhoneType;
 use Labstag\FormType\SelectRefUserType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EmailUserType extends EmailType
+class PhoneUserType extends PhoneType
 {
     /**
      * {@inheritdoc}
@@ -33,7 +34,7 @@ class EmailUserType extends EmailType
     {
         $resolver->setDefaults(
             [
-                'data_class' => EmailUser::class,
+                'data_class' => PhoneUser::class,
             ]
         );
     }

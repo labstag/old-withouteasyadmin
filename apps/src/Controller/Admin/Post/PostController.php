@@ -3,11 +3,11 @@
 namespace Labstag\Controller\Admin\Post;
 
 use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\Entity\Edito;
-use Labstag\Form\Admin\EditoType;
+use Labstag\Entity\Post;
+use Labstag\Form\Admin\Post\PostType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\EditoRepository;
-use Labstag\RequestHandler\EditoRequestHandler;
+use Labstag\Repository\PostRepository;
+use Labstag\RequestHandler\PostRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,7 +26,7 @@ class PostController extends AdminControllerLib
      * @Route("/", name="admin_post_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(EditoRepository $repository): Response
+    public function indexOrTrash(PostRepository $repository): Response
     {
         return $this->listOrTrash(
             $repository,
@@ -57,14 +57,13 @@ class PostController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_post_new", methods={"GET","POST"})
      */
-    public function new(EditoRequestHandler $requestHandler): Response
+    public function new(PostRequestHandler $requestHandler): Response
     {
         return $this->create(
-            new Edito(),
-            EditoType::class,
+            new Post(),
+            PostType::class,
             $requestHandler,
-            ['list' => 'admin_post_index'],
-            'admin/post/form.html.twig'
+            ['list' => 'admin_post_index']
         );
     }
 
@@ -73,10 +72,10 @@ class PostController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_post_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(Edito $edito): Response
+    public function showOrPreview(Post $post): Response
     {
         return $this->renderShowOrPreview(
-            $edito,
+            $post,
             'admin/post/show.html.twig',
             [
                 'delete'  => 'api_action_delete',
@@ -92,20 +91,19 @@ class PostController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_post_edit", methods={"GET","POST"})
      */
-    public function edit(Edito $edito, EditoRequestHandler $requestHandler): Response
+    public function edit(Post $post, PostRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->update(
-            EditoType::class,
-            $edito,
+            PostType::class,
+            $post,
             $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_post_index',
                 'show'   => 'admin_post_show',
-            ],
-            'admin/post/form.html.twig'
+            ]
         );
     }
 }

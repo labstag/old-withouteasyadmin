@@ -4,7 +4,7 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\LienUser;
-use Labstag\Form\Admin\LienUserType;
+use Labstag\Form\Admin\User\LienUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\LienUserRepository;
 use Labstag\RequestHandler\LienUserRequestHandler;

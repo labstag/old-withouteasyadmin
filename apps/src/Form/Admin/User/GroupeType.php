@@ -1,14 +1,13 @@
 <?php
 
-namespace Labstag\Form\Admin;
+namespace Labstag\Form\Admin\User;
 
-use Labstag\Entity\LienUser;
-use Labstag\Entity\User;
-use Labstag\FormType\SelectRefUserType;
+use Labstag\Entity\Groupe;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LienUserType extends LienType
+class GroupeType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -18,22 +17,16 @@ class LienUserType extends LienType
         array $options
     ): void
     {
-        parent::buildForm($builder, $options);
-
-        $builder->add(
-            'refuser',
-            SelectRefUserType::class,
-            [
-                'class' => User::class,
-            ]
-        );
+        unset($options);
+        $builder->add('name');
+        $builder->add('code');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
-                'data_class' => LienUser::class,
+                'data_class' => Groupe::class,
             ]
         );
     }

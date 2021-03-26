@@ -3,11 +3,11 @@
 namespace Labstag\Controller\Admin\Post;
 
 use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\Entity\Edito;
-use Labstag\Form\Admin\EditoType;
+use Labstag\Entity\Libelle;
+use Labstag\Form\Admin\Post\LibelleType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\EditoRepository;
-use Labstag\RequestHandler\EditoRequestHandler;
+use Labstag\Repository\LibelleRepository;
+use Labstag\RequestHandler\LibelleRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,7 +26,7 @@ class LibelleController extends AdminControllerLib
      * @Route("/", name="admin_postlibelle_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(EditoRepository $repository): Response
+    public function indexOrTrash(LibelleRepository $repository): Response
     {
         return $this->listOrTrash(
             $repository,
@@ -57,14 +57,13 @@ class LibelleController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_postlibelle_new", methods={"GET","POST"})
      */
-    public function new(EditoRequestHandler $requestHandler): Response
+    public function new(LibelleRequestHandler $requestHandler): Response
     {
         return $this->create(
-            new Edito(),
-            EditoType::class,
+            new Libelle(),
+            LibelleType::class,
             $requestHandler,
-            ['list' => 'admin_postlibelle_index'],
-            'admin/post/libelle/form.html.twig'
+            ['list' => 'admin_postlibelle_index']
         );
     }
 
@@ -73,10 +72,10 @@ class LibelleController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_postlibelle_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(Edito $edito): Response
+    public function showOrPreview(Libelle $libelle): Response
     {
         return $this->renderShowOrPreview(
-            $edito,
+            $libelle,
             'admin/post/libelle/show.html.twig',
             [
                 'delete'  => 'api_action_delete',
@@ -92,20 +91,19 @@ class LibelleController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_postlibelle_edit", methods={"GET","POST"})
      */
-    public function edit(Edito $edito, EditoRequestHandler $requestHandler): Response
+    public function edit(Libelle $libelle, LibelleRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->update(
-            EditoType::class,
-            $edito,
+            LibelleType::class,
+            $libelle,
             $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_postlibelle_index',
                 'show'   => 'admin_postlibelle_show',
-            ],
-            'admin/post/libelle/form.html.twig'
+            ]
         );
     }
 }

@@ -4,7 +4,7 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
-use Labstag\Form\Admin\GroupeType;
+use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\WorkflowRepository;

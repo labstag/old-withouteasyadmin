@@ -1,14 +1,14 @@
 <?php
 
-namespace Labstag\Form\Admin;
+namespace Labstag\Form\Admin\Post;
 
-use Labstag\Entity\AdresseUser;
-use Labstag\Entity\User;
-use Labstag\FormType\SelectRefUserType;
+use Labstag\Entity\Libelle;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AdresseUserType extends AdresseType
+class LibelleType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -18,13 +18,11 @@ class AdresseUserType extends AdresseType
         array $options
     ): void
     {
-        parent::buildForm($builder, $options);
+        $builder->add('nom');
         $builder->add(
-            'refuser',
-            SelectRefUserType::class,
-            [
-                'class' => User::class,
-            ]
+            'slug',
+            TextType::class,
+            ['required' => false]
         );
     }
 
@@ -32,7 +30,7 @@ class AdresseUserType extends AdresseType
     {
         $resolver->setDefaults(
             [
-                'data_class' => AdresseUser::class,
+                'data_class' => Libelle::class,
             ]
         );
     }

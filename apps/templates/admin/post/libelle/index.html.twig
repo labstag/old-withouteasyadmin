@@ -12,26 +12,16 @@
     >
         <thead>
             <tr>
-                <th>Title</th>
-                <th>User</th>
-                <th>State</th>
-                <th>Workflow</th>
+                <th>Nom</th>
+                <th>Slug</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
         {% for entity in pagination %}
             <tr data-id="{{ entity.id }}">
-                <td>{{ entity.title }}</td>
-                <td>{{ entity.refuser }}</td>
-                <td>
-                    {% for state in workflow_marked_places(entity) %}
-                        {{ state }}
-                    {% endfor %}
-                </td>
-                <td>
-                    {{ macro_admin.workflow(entity, actions) }}
-                </td>
+                <td>{{ entity.nom }}</td>
+                <td>{{ entity.slug }}</td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>

@@ -4,7 +4,7 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
-use Labstag\Form\Admin\UserType;
+use Labstag\Form\Admin\User\UserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\UserRepository;
 use Labstag\Repository\WorkflowRepository;
