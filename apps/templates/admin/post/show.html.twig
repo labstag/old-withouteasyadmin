@@ -1,0 +1,48 @@
+{% extends 'admin/post/layout.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>Title</th>
+                <td>{{ entity.title }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ entity.content|raw }}</td>
+            </tr>
+            {% set fond = attachment(entity.fond) %}
+            {% if fond != null %}
+            <tr>
+                <th>Fond</th>
+                <td>
+                    <img src="{{ asset(fond.name) }}" />
+                </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>User</th>
+                <td>
+                    {% if entity.refuser.deletedAt != '' %}
+                        {% set url = 'admin_user_preview' %}
+                    {% else %}
+                        {% set url = 'admin_user_show' %}
+                    {% endif %}
+                    {% set state = guard_route(url) %}
+                    {% if state == true %}
+                        <a href="{{ path(url, {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
+                    {% else %}
+                        {{ entity.refuser }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
