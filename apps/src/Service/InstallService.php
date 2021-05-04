@@ -7,14 +7,17 @@ use Labstag\Entity\Configuration;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Menu;
 use Labstag\Entity\Template;
+use Labstag\Entity\User;
 use Labstag\Repository\ConfigurationRepository;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\MenuRepository;
 use Labstag\Repository\TemplateRepository;
+use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\ConfigurationRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\RequestHandler\MenuRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
+use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
@@ -40,11 +43,15 @@ class InstallService
 
     protected MenuRepository $menuRepo;
 
+    protected UserRepository $userRepo;
+
     protected OauthService $oauthService;
 
     protected EntityManagerInterface $entityManager;
 
     protected CacheInterface $cache;
+
+    protected UserRequestHandler $userRH;
 
     public function __construct(
         MenuRequestHandler $menuRH,
@@ -54,6 +61,8 @@ class InstallService
         ConfigurationRequestHandler $configurationRH,
         ConfigurationRepository $configurationRepo,
         MenuRepository $menuRepo,
+        UserRequestHandler $userRH,
+        UserRepository $userRepo,
         TemplateRequestHandler $templateRH,
         TemplateRepository $templateRepo,
         EntityManagerInterface $entityManager,
@@ -61,6 +70,8 @@ class InstallService
         CacheInterface $cache
     )
     {
+        $this->userRepo          = $userRepo;
+        $this->userRH            = $userRH;
         $this->cache             = $cache;
         $this->oauthService      = $oauthService;
         $this->menuRepo          = $menuRepo;
@@ -252,6 +263,50 @@ class InstallService
         foreach ($templates as $key => $row) {
             $this->addTemplate($key, $row);
         }
+    }
+
+    public function users()
+    {
+        $users   = $this->getData('user');
+        $groupes = $this->groupeRepo->findAll();
+        foreach ($users as $user) {
+            $this->addUser($groupes, $user);
+        }
+    }
+
+    protected function addUser(
+        array $groupes,
+        array $dataUser
+    ): void
+    {
+        $search = [
+            'username' => $dataUser['username'],
+        ];
+        $user   = $this->userRepo->findOneBy($search);
+        if ($user instanceof User) {
+            return;
+        }
+
+        $user = new User();
+        $old  = clone $user;
+
+        $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
+        $user->setUsername($dataUser['username']);
+        $user->setPlainPassword($dataUser['password']);
+        $user->setEmail($dataUser['email']);
+        $this->userRH->handle($old, $user);
+        $this->userRH->changeWorkflowState($user, $dataUser['state']);
+    }
+
+    protected function getRefgroupe(array $groupes, string $code): ?Groupe
+    {
+        foreach ($groupes as $groupe) {
+            if ($groupe->getCode() == $code) {
+                return $groupe;
+            }
+        }
+
+        return null;
     }
 
     protected function addTemplate(

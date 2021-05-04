@@ -50,6 +50,11 @@ class Attachment
     protected $users;
 
     /**
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img")
+     */
+    protected $posts;
+
+    /**
      * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond")
      */
     protected $editos;
@@ -67,6 +72,7 @@ class Attachment
     public function __construct()
     {
         $this->users        = new ArrayCollection();
+        $this->posts        = new ArrayCollection();
         $this->editos       = new ArrayCollection();
         $this->noteInternes = new ArrayCollection();
     }
@@ -158,6 +164,36 @@ class Attachment
             // set the owning side to null (unless already changed)
             if ($user->getAvatar() === $this) {
                 $user->setAvatar(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setImg($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->removeElement($post)) {
+            // set the owning side to null (unless already changed)
+            if ($post->getImg() === $this) {
+                $post->setImg(null);
             }
         }
 

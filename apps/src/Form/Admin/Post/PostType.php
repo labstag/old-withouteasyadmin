@@ -7,6 +7,7 @@ use Labstag\Entity\User;
 use Labstag\FormType\SelectRefUserType;
 use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,6 +30,14 @@ class PostType extends AbstractType
         );
         $builder->add('content', WysiwygType::class);
         $builder->add(
+            'file',
+            FileType::class,
+            [
+                'required' => false,
+                'attr'     => ['accept' => 'image/*'],
+            ]
+        );
+        $builder->add(
             'refuser',
             SelectRefUserType::class,
             [
@@ -36,6 +45,7 @@ class PostType extends AbstractType
             ]
         );
         $builder->add('commentaire');
+        $builder->add('libelles');
         unset($options);
     }
 

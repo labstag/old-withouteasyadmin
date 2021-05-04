@@ -5,10 +5,12 @@ namespace Labstag\Controller\Api;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Edito;
 use Labstag\Entity\NoteInterne;
+use Labstag\Entity\Post;
 use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\NoteInterneRequestHandler;
+use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,6 +60,16 @@ class AttachmentController extends ApiControllerLib
     public function userAvatar(User $entity, UserRequestHandler $userRequestHandler): JsonResponse
     {
         return $this->deleteFile($entity, $userRequestHandler, 'getAvatar', 'setAvatar');
+    }
+
+    /**
+     * @Route("/post/img/{entity}", name="api_attachment_postimg")
+     *
+     * @return Response
+     */
+    public function postImg(Post $entity, PostRequestHandler $postRequestHandler): JsonResponse
+    {
+        return $this->deleteFile($entity, $postRequestHandler, 'getImg', 'setImg');
     }
 
     private function deleteFile($entity, $requesthandler, $methodGet, $methodSet)

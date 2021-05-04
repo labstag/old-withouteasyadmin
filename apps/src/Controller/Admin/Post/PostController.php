@@ -63,7 +63,8 @@ class PostController extends AdminControllerLib
             new Post(),
             PostType::class,
             $requestHandler,
-            ['list' => 'admin_post_index']
+            ['list' => 'admin_post_index'],
+            'admin/post/form.html.twig'
         );
     }
 
@@ -103,7 +104,8 @@ class PostController extends AdminControllerLib
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_post_index',
                 'show'   => 'admin_post_show',
-            ]
+            ],
+            'admin/post/form.html.twig'
         );
     }
 }

@@ -50,7 +50,6 @@ class UserType extends AbstractType
             ]
         );
         $builder->add('groupe');
-
         $builder->add(
             'file',
             FileType::class,

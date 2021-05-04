@@ -32,6 +32,7 @@ class LabstagInstallCommand extends Command
         $this->addOption('group', null, InputOption::VALUE_NONE, 'group');
         $this->addOption('config', null, InputOption::VALUE_NONE, 'config');
         $this->addOption('templates', null, InputOption::VALUE_NONE, 'templates');
+        $this->addOption('users', null, InputOption::VALUE_NONE, 'users');
         $this->addOption('all', null, InputOption::VALUE_NONE, 'all');
     }
 
@@ -48,6 +49,8 @@ class LabstagInstallCommand extends Command
             $this->setConfig($inputOutput);
         } elseif ($input->getOption('templates')) {
             $this->setTemplates($inputOutput);
+        } elseif ($input->getOption('users')) {
+            $this->setUsers($inputOutput);
         } elseif ($input->getOption('all')) {
             $this->all($inputOutput);
         }
@@ -65,12 +68,19 @@ class LabstagInstallCommand extends Command
         $this->setGroup($inputOutput);
         $this->setConfig($inputOutput);
         $this->setTemplates($inputOutput);
+        $this->setUsers($inputOutput);
     }
 
     protected function setTemplates($inputOutput)
     {
         $inputOutput->note('Ajout des templates');
         $this->installService->templates();
+    }
+
+    protected function setUsers($inputOutput)
+    {
+        $inputOutput->note('Ajout des users');
+        $this->installService->users();
     }
 
     protected function setConfig($inputOutput)

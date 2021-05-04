@@ -5,11 +5,13 @@ namespace Labstag\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\LibelleRepository;
 
 /**
  * @ORM\Entity(repositoryClass=LibelleRepository::class)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Libelle
 {
@@ -28,6 +30,7 @@ class Libelle
     private $nom;
 
     /**
+     * @Gedmo\Slug(updatable=false, fields={"nom"})
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
@@ -40,6 +43,11 @@ class Libelle
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getNom();
     }
 
     public function getId(): ?string

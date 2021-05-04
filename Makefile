@@ -276,7 +276,6 @@ endif
 
 .PHONY: commands
 commands:
-	@make bdd fixtures -i
 	$(DOCKER_EXECPHP) symfony console labstag:install --all
 	$(DOCKER_EXECPHP) symfony console labstag:guard-route
 	$(DOCKER_EXECPHP) symfony console labstag:workflows-show

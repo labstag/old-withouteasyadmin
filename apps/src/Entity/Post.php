@@ -5,11 +5,16 @@ namespace Labstag\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Annotation\Uploadable;
+use Labstag\Annotation\UploadableField;
 use Labstag\Repository\PostRepository;
 
 /**
  * @ORM\Entity(repositoryClass=PostRepository::class)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Uploadable()
  */
 class Post
 {
@@ -28,14 +33,20 @@ class Post
     private $title;
 
     /**
+     * @Gedmo\Slug(updatable=false, fields={"title"})
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="posts")
      */
     private $img;
+
+    /**
+     * @UploadableField(filename="img", path="post/img")
+     */
+    protected $file;
 
     /**
      * @ORM\Column(type="text")
@@ -106,14 +117,26 @@ class Post
         return $this;
     }
 
-    public function getImg(): ?string
+    public function getImg(): ?Attachment
     {
         return $this->img;
     }
 
-    public function setImg(?string $img): self
+    public function setImg(?Attachment $img): self
     {
         $this->img = $img;
+
+        return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file): self
+    {
+        $this->file = $file;
 
         return $this;
     }

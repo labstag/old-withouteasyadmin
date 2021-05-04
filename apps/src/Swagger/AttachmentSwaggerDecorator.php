@@ -21,6 +21,49 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $this->decorated = $decorated;
     }
 
+    private function setPostImg(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'Post Img.',
+            'tags'       => ['Attachment'],
+            'parameters' => [
+                [
+                    'name'        => 'entity',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'entity',
+                    'schema'      => ['type' => 'string'],
+                ],
+                [
+                    'name'        => '_token',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'token',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'isvalid' => [
+                                        'type'    => 'boolean',
+                                        'example' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/attachment/post/img/{entity}']['delete'] = $statsEndpoint;
+    }
+
     private function setUserAvatar(&$docs)
     {
         $statsEndpoint = [
@@ -194,6 +237,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs = $this->decorated->normalize($object, $format, $context);
         $this->setProfilAvatar($docs);
         $this->setUserAvatar($docs);
+        $this->setPostImg($docs);
         $this->setNoteInterneFond($docs);
         $this->setEditoFond($docs);
 
