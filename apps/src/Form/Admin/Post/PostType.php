@@ -1,17 +1,17 @@
 <?php
 
-namespace Labstag\Form\Admin;
+namespace Labstag\Form\Admin\Post;
 
-use Labstag\Entity\Edito;
+use Labstag\Entity\Post;
 use Labstag\Entity\User;
 use Labstag\FormType\SelectRefUserType;
 use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditoType extends AbstractType
+class PostType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -22,16 +22,12 @@ class EditoType extends AbstractType
     ): void
     {
         $builder->add('title');
-        $builder->add('content', WysiwygType::class);
         $builder->add(
-            'file',
-            FileType::class,
-            [
-                'required' => false,
-                'attr'     => ['accept' => 'image/*'],
-            ]
+            'slug',
+            TextType::class,
+            ['required' => false]
         );
-
+        $builder->add('content', WysiwygType::class);
         $builder->add(
             'refuser',
             SelectRefUserType::class,
@@ -39,6 +35,7 @@ class EditoType extends AbstractType
                 'class' => User::class,
             ]
         );
+        $builder->add('commentaire');
         unset($options);
     }
 
@@ -46,7 +43,7 @@ class EditoType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => Edito::class,
+                'data_class' => Post::class,
             ]
         );
     }

@@ -1,17 +1,15 @@
 <?php
 
-namespace Labstag\Form\Admin;
+namespace Labstag\Form\Admin\User;
 
-use Labstag\Entity\Edito;
+use Labstag\Entity\LienUser;
 use Labstag\Entity\User;
+use Labstag\Form\Admin\LienType;
 use Labstag\FormType\SelectRefUserType;
-use Labstag\FormType\WysiwygType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditoType extends AbstractType
+class LienUserType extends LienType
 {
     /**
      * {@inheritdoc}
@@ -21,16 +19,7 @@ class EditoType extends AbstractType
         array $options
     ): void
     {
-        $builder->add('title');
-        $builder->add('content', WysiwygType::class);
-        $builder->add(
-            'file',
-            FileType::class,
-            [
-                'required' => false,
-                'attr'     => ['accept' => 'image/*'],
-            ]
-        );
+        parent::buildForm($builder, $options);
 
         $builder->add(
             'refuser',
@@ -39,14 +28,13 @@ class EditoType extends AbstractType
                 'class' => User::class,
             ]
         );
-        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
-                'data_class' => Edito::class,
+                'data_class' => LienUser::class,
             ]
         );
     }
