@@ -36,6 +36,7 @@ class PostType extends AbstractType
             ]
         );
         $builder->add('commentaire');
+        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -24,6 +24,7 @@ class LibelleType extends AbstractType
             TextType::class,
             ['required' => false]
         );
+        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

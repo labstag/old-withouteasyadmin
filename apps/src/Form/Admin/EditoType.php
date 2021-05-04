@@ -39,6 +39,7 @@ class EditoType extends AbstractType
                 'class' => User::class,
             ]
         );
+        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
