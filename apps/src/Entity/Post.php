@@ -73,6 +73,30 @@ class Post
      */
     protected $state;
 
+    /**
+     * @var \DateTime $stateChanged
+     *
+     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="change", field={"state"})
+     */
+    private $stateChanged;
+
+    /**
+     * @var \DateTime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updated;
+
     public function __construct()
     {
         $this->libelles = new ArrayCollection();
@@ -202,5 +226,20 @@ class Post
         }
 
         return $this;
+    }
+
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    public function getStateChanged()
+    {
+        return $this->stateChanged;
     }
 }

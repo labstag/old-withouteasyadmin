@@ -19,6 +19,7 @@ use Labstag\RequestHandler\AdresseUserRequestHandler;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
+use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\RequestHandler\LienUserRequestHandler;
 use Labstag\RequestHandler\NoteInterneRequestHandler;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
@@ -57,6 +58,8 @@ abstract class FixtureLib extends Fixture
 
     protected TemplateRequestHandler $templateRH;
 
+    protected LibelleRequestHandler $libelleRH;
+
     protected UserRequestHandler $userRH;
 
     protected GuardService $guardService;
@@ -64,6 +67,24 @@ abstract class FixtureLib extends Fixture
     protected CacheInterface $cache;
 
     protected InstallService $installService;
+
+    protected const NUMBER_ADRESSE = 25;
+
+    protected const NUMBER_EDITO = 25;
+
+    protected const NUMBER_EMAIL = 25;
+    
+    protected const NUMBER_LIBELLE = 10;
+
+    protected const NUMBER_LIEN = 25;
+
+    protected const NUMBER_NOTEINTERNE = 25;
+
+    protected const NUMBER_PHONE = 25;
+
+    protected const NUMBER_POST = 10;
+
+    protected const NUMBER_TEMPLATES = 10;
 
     public function __construct(
         InstallService $installService,
@@ -81,9 +102,11 @@ abstract class FixtureLib extends Fixture
         PhoneUserRequestHandler $phoneUserRH,
         AdresseUserRequestHandler $adresseUserRH,
         TemplateRequestHandler $templateRH,
+        LibelleRequestHandler $libelleRH,
         CacheInterface $cache
     )
     {
+        $this->libelleRH = $libelleRH;
         $this->installService   = $installService;
         $this->cache            = $cache;
         $this->guardService     = $guardService;
@@ -256,7 +279,7 @@ abstract class FixtureLib extends Fixture
         $longitude = $faker->longitude;
         $gps       = $latitude.','.$longitude;
         $adresse->setGps($gps);
-        $adresse->setPmr((bool) $faker->numberBetween(0, 1));
+        $adresse->setPmr((bool) rand(0, 1));
         $this->adresseUserRH->handle($old, $adresse);
     }
 }

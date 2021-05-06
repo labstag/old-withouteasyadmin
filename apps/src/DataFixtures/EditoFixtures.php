@@ -9,7 +9,6 @@ use Labstag\Lib\FixtureLib;
 
 class EditoFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    public const NUMBER = 25;
 
     public function load(ObjectManager $manager): void
     {
@@ -18,7 +17,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         $faker = Factory::create('fr_FR');
         /** @var resource $finfo */
         $statesTab = $this->getStates();
-        for ($index = 0; $index < self::NUMBER; ++$index) {
+        for ($index = 0; $index < self::NUMBER_EDITO; ++$index) {
             $stateId = array_rand($statesTab);
             $states  = $statesTab[$stateId];
             $this->addEdito($users, $faker, $index, $states);

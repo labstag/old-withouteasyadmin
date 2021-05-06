@@ -11,7 +11,6 @@ use Labstag\Lib\FixtureLib;
 
 class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    const NUMBER = 10;
 
     public function load(ObjectManager $manager): void
     {
@@ -22,7 +21,7 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
     {
         unset($manager);
         $faker = Factory::create('fr_FR');
-        for ($index = 0; $index < self::NUMBER; ++$index) {
+        for ($index = 0; $index < self::NUMBER_TEMPLATES; ++$index) {
             $this->addTemplate($faker);
         }
     }

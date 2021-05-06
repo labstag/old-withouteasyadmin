@@ -7,6 +7,7 @@ use Labstag\Entity\User;
 use Labstag\FormType\SelectRefUserType;
 use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,6 +36,22 @@ class PostType extends AbstractType
             [
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
+            ]
+        );
+        $builder->add('created',
+            DateTimeType::class,
+            [
+                'date_widget'  => 'single_text',
+                'time_widget'  => 'single_text',
+                'with_seconds' => true,
+            ]
+        );
+        $builder->add('updated',
+            DateTimeType::class,
+            [
+                'date_widget'  => 'single_text',
+                'time_widget'  => 'single_text',
+                'with_seconds' => true,
             ]
         );
         $builder->add(

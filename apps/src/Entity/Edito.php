@@ -50,6 +50,14 @@ class Edito
     protected $state;
 
     /**
+     * @var \DateTime $stateChanged
+     *
+     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="change", field={"state"})
+     */
+    private $stateChanged;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="editos")
      */
     protected $fond;
@@ -137,5 +145,10 @@ class Edito
         $this->file = $file;
 
         return $this;
+    }
+
+    public function getStateChanged()
+    {
+        return $this->stateChanged;
     }
 }

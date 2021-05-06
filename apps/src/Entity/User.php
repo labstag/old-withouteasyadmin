@@ -132,6 +132,14 @@ class User implements UserInterface, Serializable
     protected $state;
 
     /**
+     * @var \DateTime $stateChanged
+     *
+     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="change", field={"state"})
+     */
+    private $stateChanged;
+
+    /**
      * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser")
      */
     protected $routes;
@@ -636,5 +644,10 @@ class User implements UserInterface, Serializable
         }
 
         return $this;
+    }
+
+    public function getStateChanged()
+    {
+        return $this->stateChanged;
     }
 }

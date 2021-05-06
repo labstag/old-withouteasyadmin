@@ -11,7 +11,6 @@ use Labstag\Lib\FixtureLib;
 
 class LibelleFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    const NUMBER = 10;
 
     public function load(ObjectManager $manager): void
     {
@@ -22,8 +21,8 @@ class LibelleFixtures extends FixtureLib implements DependentFixtureInterface
     {
         unset($manager);
         $faker = Factory::create('fr_FR');
-        for ($index = 0; $index < self::NUMBER; ++$index) {
-            $this->addLibelle($faker);
+        for ($index = 0; $index < self::NUMBER_LIBELLE; ++$index) {
+            $this->addLibelle($faker, $index);
         }
     }
 
@@ -32,11 +31,12 @@ class LibelleFixtures extends FixtureLib implements DependentFixtureInterface
         return [DataFixtures::class];
     }
 
-    protected function addLibelle(Generator $faker): void
+    protected function addLibelle(Generator $faker, int $index): void
     {
         $libelle    = new Libelle();
         $oldLibelle = clone $libelle;
         $libelle->setNom($faker->unique()->colorName);
-        $this->templateRH->handle($oldLibelle, $libelle);
+        $this->addReference('libelle_'. $index, $libelle);
+        $this->libelleRH->handle($oldLibelle, $libelle);
     }
 }
