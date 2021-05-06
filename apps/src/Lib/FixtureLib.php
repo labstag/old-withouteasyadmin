@@ -73,7 +73,7 @@ abstract class FixtureLib extends Fixture
     protected const NUMBER_EDITO = 25;
 
     protected const NUMBER_EMAIL = 25;
-    
+
     protected const NUMBER_LIBELLE = 10;
 
     protected const NUMBER_LIEN = 25;
