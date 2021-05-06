@@ -9,7 +9,6 @@ use Labstag\Lib\FixtureLib;
 
 class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         unset($manager);

@@ -9,7 +9,6 @@ use Labstag\Lib\FixtureLib;
 
 class LienUserFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         unset($manager);

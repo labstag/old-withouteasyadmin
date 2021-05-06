@@ -9,7 +9,6 @@ use Labstag\Lib\FixtureLib;
 
 class NoteInterneFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         unset($manager);

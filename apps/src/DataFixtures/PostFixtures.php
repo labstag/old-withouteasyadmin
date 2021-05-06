@@ -11,7 +11,6 @@ use Labstag\Lib\FixtureLib;
 
 class PostFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         $this->add($manager);
@@ -42,8 +41,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $faker,
         int $index,
         array $states
-    ): void
-    {
+    ): void {
         $post    = new Post();
         $oldPost = clone $post;
         $post->setTitle($faker->unique()->colorName);

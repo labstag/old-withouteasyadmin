@@ -11,7 +11,6 @@ use Labstag\Lib\FixtureLib;
 
 class LibelleFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         $this->add($manager);

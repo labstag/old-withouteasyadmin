@@ -21,8 +21,7 @@ class PostType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add('title');
         $builder->add(
             'slug',
@@ -38,7 +37,8 @@ class PostType extends AbstractType
                 'attr'     => ['accept' => 'image/*'],
             ]
         );
-        $builder->add('created',
+        $builder->add(
+            'created',
             DateTimeType::class,
             [
                 'date_widget'  => 'single_text',
@@ -46,7 +46,8 @@ class PostType extends AbstractType
                 'with_seconds' => true,
             ]
         );
-        $builder->add('updated',
+        $builder->add(
+            'updated',
             DateTimeType::class,
             [
                 'date_widget'  => 'single_text',
