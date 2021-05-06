@@ -8,6 +8,10 @@ export class GuardElement extends HTMLTableElement {
     this.fetchLaunch()
   }
 
+  mutationObserver (mutations) {
+    mutations.forEach(mutation => { this.forEachMutationObserver(mutation) })
+  }
+
   forEachMutationObserver (mutation) {
     if (mutation.type === 'attributes' && mutation.attributeName === 'data-refresh') {
       this.fetchLaunch()
