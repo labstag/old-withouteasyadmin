@@ -4,14 +4,12 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
 use Faker\Generator;
 use Labstag\Entity\Template;
 use Labstag\Lib\FixtureLib;
 
 class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         $this->add($manager);
@@ -20,7 +18,7 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
     protected function add(ObjectManager $manager): void
     {
         unset($manager);
-        $faker = Factory::create('fr_FR');
+        $faker = $this->setFaker();
         for ($index = 0; $index < self::NUMBER_TEMPLATES; ++$index) {
             $this->addTemplate($faker);
         }

@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -132,7 +133,7 @@ class User implements UserInterface, Serializable
     protected $state;
 
     /**
-     * @var \DateTime $stateChanged
+     * @var DateTime
      *
      * @ORM\Column(name="state_changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"state"})

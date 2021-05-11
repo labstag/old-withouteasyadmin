@@ -2,10 +2,14 @@
 
 namespace Labstag\Lib;
 
+use bheller\ImagesGenerator\ImagesGeneratorProvider;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Exception;
+use Faker\Factory;
 use Faker\Generator;
 use Labstag\Entity\AdresseUser;
+use Labstag\Entity\Attachment;
 use Labstag\Entity\Edito;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\Groupe;
@@ -13,6 +17,7 @@ use Labstag\Entity\LienUser;
 use Labstag\Entity\NoteInterne;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
+use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AdresseUserRequestHandler;
@@ -28,6 +33,8 @@ use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\GuardService;
 use Labstag\Service\InstallService;
 use Labstag\Service\OauthService;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
 
@@ -68,12 +75,16 @@ abstract class FixtureLib extends Fixture
 
     protected InstallService $installService;
 
+    protected UploadAnnotationReader $uploadAnnotReader;
+
+    protected ContainerBagInterface $containerBagInterface;
+
     protected const NUMBER_ADRESSE = 25;
 
     protected const NUMBER_EDITO = 25;
 
     protected const NUMBER_EMAIL = 25;
-    
+
     protected const NUMBER_LIBELLE = 10;
 
     protected const NUMBER_LIEN = 25;
@@ -87,6 +98,8 @@ abstract class FixtureLib extends Fixture
     protected const NUMBER_TEMPLATES = 10;
 
     public function __construct(
+        ContainerBagInterface $containerBagInterface,
+        UploadAnnotationReader $uploadAnnotReader,
         InstallService $installService,
         OauthService $oauthService,
         UserRepository $userRepository,
@@ -106,23 +119,91 @@ abstract class FixtureLib extends Fixture
         CacheInterface $cache
     )
     {
-        $this->libelleRH = $libelleRH;
-        $this->installService   = $installService;
-        $this->cache            = $cache;
-        $this->guardService     = $guardService;
-        $this->twig             = $twig;
-        $this->userRepository   = $userRepository;
-        $this->oauthService     = $oauthService;
-        $this->groupeRepository = $groupeRepository;
-        $this->templateRH       = $templateRH;
-        $this->adresseUserRH    = $adresseUserRH;
-        $this->phoneUserRH      = $phoneUserRH;
-        $this->userRH           = $userRH;
-        $this->editoRH          = $editoRH;
-        $this->groupeRH         = $groupeRH;
-        $this->noteInterneRH    = $noteInterneRH;
-        $this->lienUserRH       = $lienUserRH;
-        $this->emailUserRH      = $emailUserRH;
+        $this->containerBagInterface = $containerBagInterface;
+        $this->libelleRH             = $libelleRH;
+        $this->uploadAnnotReader     = $uploadAnnotReader;
+        $this->installService        = $installService;
+        $this->cache                 = $cache;
+        $this->guardService          = $guardService;
+        $this->twig                  = $twig;
+        $this->userRepository        = $userRepository;
+        $this->oauthService          = $oauthService;
+        $this->groupeRepository      = $groupeRepository;
+        $this->templateRH            = $templateRH;
+        $this->adresseUserRH         = $adresseUserRH;
+        $this->phoneUserRH           = $phoneUserRH;
+        $this->userRH                = $userRH;
+        $this->editoRH               = $editoRH;
+        $this->groupeRH              = $groupeRH;
+        $this->noteInterneRH         = $noteInterneRH;
+        $this->lienUserRH            = $lienUserRH;
+        $this->emailUserRH           = $emailUserRH;
+    }
+
+    protected function getParameter(string $name)
+    {
+        return $this->containerBagInterface->get($name);
+    }
+
+    protected function setFaker()
+    {
+        $faker = Factory::create('fr_FR');
+        $faker->addProvider(new ImagesGeneratorProvider($faker));
+
+        return $faker;
+    }
+
+    protected function upload($entity, Generator $faker)
+    {
+        if (!$this->uploadAnnotReader->isUploadable($entity)) {
+            return;
+        }
+
+        /** @var resource $finfo */
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $annotations = $this->uploadAnnotReader->getUploadableFields($entity);
+        foreach ($annotations as $property => $annotation) {
+            echo $annotation->getPath().' '.$property."\n";
+            $path       = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $accessor   = PropertyAccess::createPropertyAccessor();
+            $attachment = new Attachment();
+            $old        = clone $attachment;
+            try {
+                $image   = $faker->imageGenerator(
+                    null,
+                    1920,
+                    1920,
+                    'jpg',
+                    true,
+                    $faker->word,
+                    $faker->hexColor,
+                    $faker->hexColor
+                );
+                $content = file_get_contents($image);
+                /** @var resource $tmpfile */
+                $tmpfile = tmpfile();
+                $data    = stream_get_meta_data($tmpfile);
+                file_put_contents($data['uri'], $content);
+            } catch (Exception $exception) {
+                $this->logger->error($exception->getMessage());
+                echo $exception->getMessage();
+            }
+
+            $file = $path.'/'.$filename;
+            $attachment->setMimeType(mime_content_type($file));
+            $attachment->setSize(filesize($file));
+            $size = getimagesize($file);
+            $attachment->setDimensions(is_array($size) ? $size : []);
+            $attachment->setName(
+                str_replace(
+                    $this->getParameter('kernel.project_dir').'/public/',
+                    '',
+                    $file
+                )
+            );
+            $this->attachmentRH->handle($old, $attachment);
+            $accessor->setValue($entity, $annotation->getFilename(), $attachment);
+        }
     }
 
     protected function getRefgroupe(array $groupes, string $code): ?Groupe
@@ -187,6 +268,7 @@ abstract class FixtureLib extends Fixture
         /** @var User $user */
         $user = $users[$tabIndex];
         $noteinterne->setRefuser($user);
+        $this->upload($noteinterne, $faker);
         $this->noteInterneRH->handle($old, $noteinterne);
         $this->noteInterneRH->changeWorkflowState($noteinterne, $states);
     }

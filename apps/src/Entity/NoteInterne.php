@@ -63,7 +63,7 @@ class NoteInterne
     protected $state;
 
     /**
-     * @var \DateTime $stateChanged
+     * @var DateTime
      *
      * @ORM\Column(name="state_changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"state"})

@@ -34,6 +34,9 @@
     "behat/transliterator": {
         "version": "v1.3.0"
     },
+    "bheller/images-generator": {
+        "version": "1.0.1"
+    },
     "brick/math": {
         "version": "0.9.1"
     },

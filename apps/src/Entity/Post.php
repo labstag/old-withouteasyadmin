@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -74,7 +75,7 @@ class Post
     protected $state;
 
     /**
-     * @var \DateTime $stateChanged
+     * @var DateTime
      *
      * @ORM\Column(name="state_changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"state"})
@@ -82,7 +83,7 @@ class Post
     private $stateChanged;
 
     /**
-     * @var \DateTime $created
+     * @var DateTime
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
@@ -90,7 +91,7 @@ class Post
     private $created;
 
     /**
-     * @var \DateTime $updated
+     * @var DateTime
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")

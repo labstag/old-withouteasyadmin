@@ -4,17 +4,15 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
 use Labstag\Lib\FixtureLib;
 
 class EditoFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         unset($manager);
         $users = $this->userRepository->findAll();
-        $faker = Factory::create('fr_FR');
+        $faker = $this->setFaker();
         /** @var resource $finfo */
         $statesTab = $this->getStates();
         for ($index = 0; $index < self::NUMBER_EDITO; ++$index) {
