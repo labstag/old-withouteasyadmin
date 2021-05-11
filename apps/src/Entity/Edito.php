@@ -28,7 +28,7 @@ class Edito
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      * @Assert\NotBlank
      */
     protected $title;
@@ -64,7 +64,7 @@ class Edito
     protected $fond;
 
     /**
-     * @UploadableField(filename="fond", path="edito/fond")
+     * @UploadableField(filename="fond", path="edito/fond", slug="title")
      */
     protected $file;
 

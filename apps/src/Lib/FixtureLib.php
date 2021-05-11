@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use bheller\ImagesGenerator\ImagesGeneratorProvider;
+use Cocur\Slugify\Slugify;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Exception;
@@ -21,6 +22,7 @@ use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AdresseUserRequestHandler;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
@@ -33,7 +35,9 @@ use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\GuardService;
 use Labstag\Service\InstallService;
 use Labstag\Service\OauthService;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
@@ -77,7 +81,11 @@ abstract class FixtureLib extends Fixture
 
     protected UploadAnnotationReader $uploadAnnotReader;
 
-    protected ContainerBagInterface $containerBagInterface;
+    protected ContainerBagInterface $containerBag;
+
+    protected LoggerInterface $logger;
+
+    protected AttachmentRequestHandler $attachmentRH;
 
     protected const NUMBER_ADRESSE = 25;
 
@@ -98,7 +106,8 @@ abstract class FixtureLib extends Fixture
     protected const NUMBER_TEMPLATES = 10;
 
     public function __construct(
-        ContainerBagInterface $containerBagInterface,
+        LoggerInterface $logger,
+        ContainerBagInterface $containerBag,
         UploadAnnotationReader $uploadAnnotReader,
         InstallService $installService,
         OauthService $oauthService,
@@ -113,36 +122,39 @@ abstract class FixtureLib extends Fixture
         EditoRequestHandler $editoRH,
         UserRequestHandler $userRH,
         PhoneUserRequestHandler $phoneUserRH,
+        AttachmentRequestHandler $attachmentRH,
         AdresseUserRequestHandler $adresseUserRH,
         TemplateRequestHandler $templateRH,
         LibelleRequestHandler $libelleRH,
         CacheInterface $cache
     )
     {
-        $this->containerBagInterface = $containerBagInterface;
-        $this->libelleRH             = $libelleRH;
-        $this->uploadAnnotReader     = $uploadAnnotReader;
-        $this->installService        = $installService;
-        $this->cache                 = $cache;
-        $this->guardService          = $guardService;
-        $this->twig                  = $twig;
-        $this->userRepository        = $userRepository;
-        $this->oauthService          = $oauthService;
-        $this->groupeRepository      = $groupeRepository;
-        $this->templateRH            = $templateRH;
-        $this->adresseUserRH         = $adresseUserRH;
-        $this->phoneUserRH           = $phoneUserRH;
-        $this->userRH                = $userRH;
-        $this->editoRH               = $editoRH;
-        $this->groupeRH              = $groupeRH;
-        $this->noteInterneRH         = $noteInterneRH;
-        $this->lienUserRH            = $lienUserRH;
-        $this->emailUserRH           = $emailUserRH;
+        $this->attachmentRH      = $attachmentRH;
+        $this->logger            = $logger;
+        $this->containerBag      = $containerBag;
+        $this->libelleRH         = $libelleRH;
+        $this->uploadAnnotReader = $uploadAnnotReader;
+        $this->installService    = $installService;
+        $this->cache             = $cache;
+        $this->guardService      = $guardService;
+        $this->twig              = $twig;
+        $this->userRepository    = $userRepository;
+        $this->oauthService      = $oauthService;
+        $this->groupeRepository  = $groupeRepository;
+        $this->templateRH        = $templateRH;
+        $this->adresseUserRH     = $adresseUserRH;
+        $this->phoneUserRH       = $phoneUserRH;
+        $this->userRH            = $userRH;
+        $this->editoRH           = $editoRH;
+        $this->groupeRH          = $groupeRH;
+        $this->noteInterneRH     = $noteInterneRH;
+        $this->lienUserRH        = $lienUserRH;
+        $this->emailUserRH       = $emailUserRH;
     }
 
     protected function getParameter(string $name)
     {
-        return $this->containerBagInterface->get($name);
+        return $this->containerBag->get($name);
     }
 
     protected function setFaker()
@@ -160,12 +172,14 @@ abstract class FixtureLib extends Fixture
         }
 
         /** @var resource $finfo */
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $finfo       = finfo_open(FILEINFO_MIME_TYPE);
         $annotations = $this->uploadAnnotReader->getUploadableFields($entity);
-        foreach ($annotations as $property => $annotation) {
-            echo $annotation->getPath().' '.$property."\n";
+        $slugify     = new Slugify();
+        foreach ($annotations as $annotation) {
             $path       = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $accessor   = PropertyAccess::createPropertyAccessor();
+            $title      = $accessor->getValue($entity, $annotation->getSlug());
+            $slug       = $slugify->slugify($title);
             $attachment = new Attachment();
             $old        = clone $attachment;
             try {
@@ -184,6 +198,19 @@ abstract class FixtureLib extends Fixture
                 $tmpfile = tmpfile();
                 $data    = stream_get_meta_data($tmpfile);
                 file_put_contents($data['uri'], $content);
+                $file     = new UploadedFile(
+                    $data['uri'],
+                    $slug.'.jpg',
+                    (string) finfo_file($finfo, $data['uri']),
+                    null,
+                    true
+                );
+                $filename = $file->getClientOriginalName();
+                $file->move(
+                    $path,
+                    $filename
+                );
+                $file = $path.'/'.$filename;
             } catch (Exception $exception) {
                 $this->logger->error($exception->getMessage());
                 echo $exception->getMessage();
@@ -253,7 +280,7 @@ abstract class FixtureLib extends Fixture
         $noteinterne = new NoteInterne();
         $old         = clone $noteinterne;
         $random      = $faker->numberBetween(5, 50);
-        $noteinterne->setTitle($faker->text($random));
+        $noteinterne->setTitle($faker->unique()->text($random));
         $dateDebut = $faker->dateTime($maxDate);
         $noteinterne->setDateDebut($dateDebut);
         $dateFin = clone $dateDebut;
@@ -296,7 +323,7 @@ abstract class FixtureLib extends Fixture
         $edito  = new Edito();
         $old    = clone $edito;
         $random = $faker->numberBetween(5, 50);
-        $edito->setTitle($faker->text($random));
+        $edito->setTitle($faker->unique()->text($random));
         /** @var string $content */
         $content = $faker->paragraphs(4, true);
         $edito->setContent(str_replace("\n\n", '<br />', $content));
@@ -305,6 +332,7 @@ abstract class FixtureLib extends Fixture
         /** @var User $user */
         $user = $users[$tabIndex];
         $edito->setRefuser($user);
+        $this->upload($edito, $faker);
         $this->editoRH->handle($old, $edito);
         $this->editoRH->changeWorkflowState($edito, $states);
     }
@@ -312,7 +340,8 @@ abstract class FixtureLib extends Fixture
     protected function addUser(
         array $groupes,
         int $index,
-        array $dataUser
+        array $dataUser,
+        Generator $faker
     ): void
     {
         $user = new User();
@@ -322,6 +351,7 @@ abstract class FixtureLib extends Fixture
         $user->setUsername($dataUser['username']);
         $user->setPlainPassword($dataUser['password']);
         $user->setEmail($dataUser['email']);
+        $this->upload($user, $faker);
         $this->addReference('user_'.$index, $user);
         $this->userRH->handle($old, $user);
         $this->userRH->changeWorkflowState($user, $dataUser['state']);

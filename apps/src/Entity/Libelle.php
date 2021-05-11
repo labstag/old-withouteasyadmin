@@ -36,7 +36,7 @@ class Libelle
     private $slug;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Post::class, inversedBy="libelles")
+     * @ORM\ManyToMany(targetEntity=Post::class, inversedBy="libelles", cascade={"persist"})
      */
     private $posts;
 

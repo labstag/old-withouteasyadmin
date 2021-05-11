@@ -54,6 +54,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $libelle      = $this->getReference('libelle_'.$indexLibelle);
         $post->addLibelle($libelle);
         $post->setCommentaire((bool) rand(0, 1));
+        $this->upload($post, $faker);
         $this->addReference('post_'.$index, $post);
         $this->templateRH->handle($oldPost, $post);
         $this->editoRH->changeWorkflowState($post, $states);

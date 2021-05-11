@@ -151,7 +151,7 @@ class User implements UserInterface, Serializable
     protected $avatar;
 
     /**
-     * @UploadableField(filename="avatar", path="user/avatar")
+     * @UploadableField(filename="avatar", path="user/avatar", slug="username")
      */
     protected $file;
 

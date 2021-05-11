@@ -4,7 +4,6 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
 use Labstag\Lib\FixtureLib;
 
 class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
@@ -12,7 +11,7 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         unset($manager);
-        $faker     = Factory::create('fr_FR');
+        $faker     = $this->setFaker();
         $statesTab = $this->getStates();
         $users     = $this->installService->getData('user');
         for ($index = 0; $index < self::NUMBER_PHONE; ++$index) {

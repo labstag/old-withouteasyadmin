@@ -4,7 +4,6 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
 use Labstag\Lib\FixtureLib;
 
 class NoteInterneFixtures extends FixtureLib implements DependentFixtureInterface
@@ -13,7 +12,7 @@ class NoteInterneFixtures extends FixtureLib implements DependentFixtureInterfac
     {
         unset($manager);
         $users     = $this->userRepository->findAll();
-        $faker     = Factory::create('fr_FR');
+        $faker     = $this->setFaker();
         $statesTab = $this->getStates();
         $maxDate   = $faker->unique()->dateTimeInInterval('now', '+30 years');
         for ($index = 0; $index < self::NUMBER_NOTEINTERNE; ++$index) {

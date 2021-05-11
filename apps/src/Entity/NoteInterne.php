@@ -28,7 +28,7 @@ class NoteInterne
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      * @Assert\NotBlank
      */
     protected $title;
@@ -76,7 +76,7 @@ class NoteInterne
     protected $fond;
 
     /**
-     * @UploadableField(filename="fond", path="noteinterne/fond")
+     * @UploadableField(filename="fond", path="noteinterne/fond", slug="title")
      */
     protected $file;
 

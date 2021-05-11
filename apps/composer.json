@@ -12,6 +12,7 @@
     "beberlei/assert": "3.3.0",
     "beberlei/doctrineextensions": "1.3.0",
     "bheller/images-generator": "^1.0",
+    "cocur/slugify": "^4.0",
     "composer/package-versions-deprecated": "1.11.99",
     "doctrine/annotations": "1.12.1",
     "doctrine/doctrine-bundle": "2.2.4",

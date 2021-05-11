@@ -22,6 +22,7 @@ class EditoType extends AbstractType
     ): void
     {
         $builder->add('title');
+        $builder->add('slug');
         $builder->add('content', WysiwygType::class);
         $builder->add(
             'file',

@@ -29,7 +29,7 @@ class Post
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      */
     private $title;
 
@@ -45,7 +45,7 @@ class Post
     private $img;
 
     /**
-     * @UploadableField(filename="img", path="post/img")
+     * @UploadableField(filename="img", path="post/img", slug="title")
      */
     protected $file;
 
@@ -65,7 +65,7 @@ class Post
     private $commentaire;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts")
+     * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"})
      */
     private $libelles;
 
@@ -101,6 +101,11 @@ class Post
     public function __construct()
     {
         $this->libelles = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle();
     }
 
     public function getState()
