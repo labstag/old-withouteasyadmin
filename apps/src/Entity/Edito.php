@@ -3,6 +3,7 @@
 namespace Labstag\Entity;
 
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -67,6 +68,11 @@ class Edito
      * @UploadableField(filename="fond", path="edito/fond", slug="title")
      */
     protected $file;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $published;
 
     public function __toString()
     {
@@ -151,5 +157,17 @@ class Edito
     public function getStateChanged()
     {
         return $this->stateChanged;
+    }
+
+    public function getPublished(): ?DateTimeInterface
+    {
+        return $this->published;
+    }
+
+    public function setPublished(DateTimeInterface $published): self
+    {
+        $this->published = $published;
+
+        return $this;
     }
 }

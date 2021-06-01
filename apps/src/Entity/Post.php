@@ -3,6 +3,7 @@
 namespace Labstag\Entity;
 
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -97,6 +98,11 @@ class Post
      * @ORM\Column(type="datetime")
      */
     private $updated;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $published;
 
     public function __construct()
     {
@@ -247,5 +253,17 @@ class Post
     public function getStateChanged()
     {
         return $this->stateChanged;
+    }
+
+    public function getPublished(): ?DateTimeInterface
+    {
+        return $this->published;
+    }
+
+    public function setPublished(DateTimeInterface $published): self
+    {
+        $this->published = $published;
+
+        return $this;
     }
 }

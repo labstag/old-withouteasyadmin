@@ -3,9 +3,8 @@
 {% block body %}
     {{ form_start(form) }}
     {{ form_row(form.title) }}
+    {{ form_row(form.published) }}
     {{ form_row(form.slug) }}
-    {{ form_row(form.created) }}
-    {{ form_row(form.updated) }}
     {{ form_row(form.content) }}
     {% if entity.id != null %}
         {{ macro_admin.form_img(

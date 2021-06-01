@@ -50,6 +50,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $indexUser = $faker->numberBetween(0, count($users) - 1);
         $user      = $this->getReference('user_'.$indexUser);
         $post->setRefuser($user);
+        $post->setPublished($faker->unique()->dateTime('now'));
         $indexLibelle = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
         $libelle      = $this->getReference('libelle_'.$indexLibelle);
         $post->addLibelle($libelle);

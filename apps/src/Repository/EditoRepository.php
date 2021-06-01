@@ -18,6 +18,21 @@ class EditoRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, Edito::class);
     }
 
+    public function findOnePublier()
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.state LIKE :state'
+        );
+        $query->setParameters(
+            ['state' => '%publie%']
+        );
+
+        $query->setMaxResults(1);
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
+
     public function findAllForAdmin(): Query
     {
         $queryBuilder = $this->createQueryBuilder('a');

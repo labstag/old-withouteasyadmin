@@ -1,4 +1,16 @@
 {% extends 'public.html.twig' %}
 {% block body %}
-    Prochainement ICI, mon futur SITE INTERNET
+	<div class="container">
+		<header>
+            {% include "front/header.html.twig" %}
+		</header>
+		<div class="menu">
+            {% include "front/menu.html.twig" %}
+		</div>
+        {% block header %}{% endblock %}
+	</div>
+    {% block main %}{% endblock %}
+	<footer>
+        {% include "front/footer.html.twig" %}
+	</footer>
 {% endblock %}

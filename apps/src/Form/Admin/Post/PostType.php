@@ -29,6 +29,15 @@ class PostType extends AbstractType
             TextType::class,
             ['required' => false]
         );
+        $builder->add(
+            'published',
+            DateTimeType::class,
+            [
+                'date_widget'  => 'single_text',
+                'time_widget'  => 'single_text',
+                'with_seconds' => true,
+            ]
+        );
         $builder->add('content', WysiwygType::class);
         $builder->add(
             'file',
@@ -36,24 +45,6 @@ class PostType extends AbstractType
             [
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
-            ]
-        );
-        $builder->add(
-            'created',
-            DateTimeType::class,
-            [
-                'date_widget'  => 'single_text',
-                'time_widget'  => 'single_text',
-                'with_seconds' => true,
-            ]
-        );
-        $builder->add(
-            'updated',
-            DateTimeType::class,
-            [
-                'date_widget'  => 'single_text',
-                'time_widget'  => 'single_text',
-                'with_seconds' => true,
             ]
         );
         $builder->add(

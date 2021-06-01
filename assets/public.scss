@@ -1,1 +1,46 @@
 @import "assets.scss";
+
+footer {
+  padding: 2.5rem 0;
+  color: #999;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-top: 0.05rem solid #e5e5e5;
+}
+
+.edito {
+  @extend .jumbotron;
+  @extend .p-4;
+  @extend .p-md-5;
+  @extend .text-white;
+  @extend .rounded;
+  @extend .bg-dark;
+}
+
+header {
+  @extend .py-3;
+
+  nav {
+    @extend .row;
+    @extend .flex-nowrap;
+    @extend .justify-content-between;
+    @extend .align-items-center;
+  }
+}
+
+.menu {
+  @extend .py-1;
+  @extend .mb-2;
+
+  nav {
+    @extend .nav;
+    @extend .d-flex;
+    @extend .justify-content-between;
+  }
+}
+
+.login {
+  @extend .btn;
+  @extend .btn-sm;
+  @extend .btn-outline-secondary;
+}

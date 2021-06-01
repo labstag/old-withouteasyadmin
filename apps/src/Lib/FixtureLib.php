@@ -327,6 +327,7 @@ abstract class FixtureLib extends Fixture
         /** @var string $content */
         $content = $faker->paragraphs(4, true);
         $edito->setContent(str_replace("\n\n", '<br />', $content));
+        $edito->setPublished($faker->unique()->dateTime('now'));
         $this->addReference('edito_'.$index, $edito);
         $tabIndex = array_rand($users);
         /** @var User $user */

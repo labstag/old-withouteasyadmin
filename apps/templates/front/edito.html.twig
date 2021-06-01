@@ -1,0 +1,12 @@
+{% extends 'front.html.twig' %}
+{% block main %}
+	<main role="main" class="container">
+		<div>
+            <div{% if edito.fond is defined %} style="background-image: url('{{ edito.fond.name }}');"{% endif %}>
+			    <h2>{{ edito.title }}</h2>
+            </div>
+            <div>{{ edito.content|raw }}</div>
+		</div>
+
+	</main>
+{% endblock %}

@@ -27,7 +27,7 @@ class EmailUserRepository extends EmailRepository
         $query->setParameters(
             [
                 'user'  => $user,
-                'state' => $verif ? 'valide' : 'averifier',
+                'state' => $verif ? '%valide%' : '%averifier%',
             ]
         );
 
