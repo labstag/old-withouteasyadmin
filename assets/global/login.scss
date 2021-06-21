@@ -1,0 +1,22 @@
+.body-login {
+  @extend .d-flex;
+  @extend .align-items-center;
+  @extend .flex-column;
+
+  justify-content: center;
+  height: 100vh;
+
+  h1 {
+    @extend .h3;
+    @extend .mb-3;
+    @extend .font-weight-normal;
+  }
+
+  .itemConnect {
+    @extend .col-md-4;
+  }
+
+  .oauth{
+    
+  }
+}

@@ -24,6 +24,7 @@ class EditoRepository extends ServiceEntityRepositoryLib
         $query        = $queryBuilder->where(
             'u.state LIKE :state'
         );
+        $query->orderBy('u.published', 'DESC');
         $query->setParameters(
             ['state' => '%publie%']
         );

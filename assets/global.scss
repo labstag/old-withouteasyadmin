@@ -1,19 +1,6 @@
 @import "assets.scss";
-
-.ShowGlobalLogin {
-  @extend .d-flex;
-  @extend .align-items-center;
-  @extend .flex-column;
-
-  justify-content: center;
-  height: 100vh;
-
-  h1 {
-    @extend .h3;
-    @extend .mb-3;
-    @extend .font-weight-normal;
-  }
-}
+@import "global/login.scss";
+@import "global/disclaimer.scss";
 
 .ShowGlobalLost {
   @extend .d-flex;
@@ -40,13 +27,4 @@
     @extend .mb-3;
     @extend .font-weight-normal;
   }
-}
-
-.ShowGlobalLDisclaimer {
-  @extend .d-flex;
-  @extend .align-items-center;
-  @extend .flex-column;
-
-  justify-content: center;
-  height: 100vh;
 }

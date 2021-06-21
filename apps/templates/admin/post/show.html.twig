@@ -10,12 +10,16 @@
                 <th>Content</th>
                 <td>{{ entity.content|raw }}</td>
             </tr>
+            <tr>
+                <th>Published</th>
+                <td>{{ entity.published|format_datetime('full', 'full', locale='fr') }}</td>
+            </tr>
             {% set img = attachment(entity.img) %}
             {% if img != null %}
             <tr>
                 <th>Image</th>
                 <td>
-                    <img src="{{ asset(img.name) }}" />
+                    <img src="{{ asset(img.name) }}" class="img-fluid" />
                 </td>
             </tr>
             {% endif %}
