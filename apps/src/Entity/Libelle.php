@@ -30,15 +30,15 @@ class Libelle
     private $nom;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Post::class, inversedBy="libelles", cascade={"persist"})
+     */
+    private $posts;
+
+    /**
      * @Gedmo\Slug(updatable=false, fields={"nom"})
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Post::class, inversedBy="libelles", cascade={"persist"})
-     */
-    private $posts;
 
     public function __construct()
     {
@@ -48,6 +48,15 @@ class Libelle
     public function __toString()
     {
         return $this->getNom();
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+        }
+
+        return $this;
     }
 
     public function getId(): ?string
@@ -60,25 +69,6 @@ class Libelle
         return $this->nom;
     }
 
-    public function setNom(string $nom): self
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Post[]
      */
@@ -87,18 +77,28 @@ class Libelle
         return $this->posts;
     }
 
-    public function addPost(Post $post): self
+    public function getSlug(): ?string
     {
-        if (!$this->posts->contains($post)) {
-            $this->posts[] = $post;
-        }
-
-        return $this;
+        return $this->slug;
     }
 
     public function removePost(Post $post): self
     {
         $this->posts->removeElement($post);
+
+        return $this;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

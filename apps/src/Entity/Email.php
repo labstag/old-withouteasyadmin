@@ -20,13 +20,6 @@ abstract class Email
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid", unique=true)
-     */
-    protected $id;
-
-    /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank
@@ -35,6 +28,13 @@ abstract class Email
      * )
      */
     protected $adresse;
+
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid", unique=true)
+     */
+    protected $id;
 
     /**
      * @ORM\Column(type="boolean")
@@ -64,14 +64,9 @@ abstract class Email
         return $this->getAdresse();
     }
 
-    public function getState()
+    public function getAdresse(): ?string
     {
-        return $this->state;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
+        return $this->adresse;
     }
 
     public function getId(): ?string
@@ -79,9 +74,19 @@ abstract class Email
         return $this->id;
     }
 
-    public function getAdresse(): ?string
+    public function getState()
     {
-        return $this->adresse;
+        return $this->state;
+    }
+
+    public function getStateChanged()
+    {
+        return $this->stateChanged;
+    }
+
+    public function isPrincipal(): ?bool
+    {
+        return $this->principal;
     }
 
     public function setAdresse(string $adresse): self
@@ -91,11 +96,6 @@ abstract class Email
         return $this;
     }
 
-    public function isPrincipal(): ?bool
-    {
-        return $this->principal;
-    }
-
     public function setPrincipal(bool $principal): self
     {
         $this->principal = $principal;
@@ -103,8 +103,8 @@ abstract class Email
         return $this;
     }
 
-    public function getStateChanged()
+    public function setState($state)
     {
-        return $this->stateChanged;
+        $this->state = $state;
     }
 }

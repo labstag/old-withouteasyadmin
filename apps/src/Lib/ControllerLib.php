@@ -11,11 +11,11 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 abstract class ControllerLib extends AbstractController
 {
 
-    protected DataService $dataService;
-
     protected Breadcrumbs $breadcrumbs;
 
     protected BreadcrumbsSingleton $breadcrumbsInstance;
+
+    protected DataService $dataService;
 
     public function __construct(
         DataService $dataService,
@@ -25,19 +25,6 @@ abstract class ControllerLib extends AbstractController
         $this->dataService = $dataService;
         $this->breadcrumbs = $breadcrumbs;
         $this->setSingletons();
-    }
-
-    protected function setSingletons()
-    {
-        $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
-    }
-
-    protected function setBreadcrumbs(): void
-    {
-        $data = $this->breadcrumbsInstance->get();
-        foreach ($data as $title => $route) {
-            $this->breadcrumbs->addItem($title, $route);
-        }
     }
 
     public function render(
@@ -52,5 +39,18 @@ abstract class ControllerLib extends AbstractController
         }
 
         return parent::render($view, $parameters, $response);
+    }
+
+    protected function setBreadcrumbs(): void
+    {
+        $data = $this->breadcrumbsInstance->get();
+        foreach ($data as $title => $route) {
+            $this->breadcrumbs->addItem($title, $route);
+        }
+    }
+
+    protected function setSingletons()
+    {
+        $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
     }
 }

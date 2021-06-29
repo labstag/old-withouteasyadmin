@@ -18,24 +18,22 @@ use Twig\TwigFunction;
 
 class LabstagExtension extends AbstractExtension
 {
-
-    protected PhoneService $phoneService;
-
-    protected Registry $workflows;
-
-    protected GuardService $guardService;
-
-    protected TokenStorageInterface $token;
-
-    protected GroupeRepository $groupeRepository;
-
-    protected LoggerInterface $logger;
+    const FOLDER_ENTITY          = 'Labstag\\Entity\\';
+    const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     protected AttachmentRepository $attachmentRepository;
 
-    const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
+    protected GroupeRepository $groupeRepository;
 
-    const FOLDER_ENTITY = 'Labstag\\Entity\\';
+    protected GuardService $guardService;
+
+    protected LoggerInterface $logger;
+
+    protected PhoneService $phoneService;
+
+    protected TokenStorageInterface $token;
+
+    protected Registry $workflows;
 
     public function __construct(
         PhoneService $phoneService,
@@ -54,6 +52,85 @@ class LabstagExtension extends AbstractExtension
         $this->workflows            = $workflows;
         $this->token                = $token;
         $this->phoneService         = $phoneService;
+    }
+
+    public function classEntity($entity)
+    {
+        $class = get_class($entity);
+
+        $class = substr($class, strpos($class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY));
+
+        return trim(strtolower($class));
+    }
+
+    public function formClass($class)
+    {
+        $file = '';
+
+        $methods = get_class_vars(get_class($class));
+        if (!array_key_exists('vars', $methods)) {
+            return $file;
+        }
+
+        $vars = $class->vars;
+
+        if (!array_key_exists('data', $vars) || is_null($vars['data'])) {
+            return $file;
+        }
+
+        $type = $this->setTypeformClass($vars);
+
+        $newFile = 'forms/'.$type.'.html.twig';
+        if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
+            $this->logger->info('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
+
+            return $file;
+        }
+
+        $file = $newFile;
+
+        return $file;
+    }
+
+    public function formPrototype(array $blockPrefixes): string
+    {
+        $file = '';
+        if ('collection_entry' != $blockPrefixes[1]) {
+            return $file;
+        }
+
+        $type = $blockPrefixes[2];
+
+        $newFile = 'prototype/'.$type.'.html.twig';
+        if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
+            $this->logger->info('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
+
+            return $file;
+        }
+
+        $file = $newFile;
+
+        return $file;
+    }
+
+    public function getAttachment($data): ?Attachment
+    {
+        if (is_null($data)) {
+            return null;
+        }
+
+        $id         = $data->getId();
+        $attachment = $this->attachmentRepository->findOneBy(['id' => $id]);
+        if (is_null($attachment)) {
+            return null;
+        }
+
+        $file = $attachment->getName();
+        if (!is_file($file)) {
+            return null;
+        }
+
+        return $attachment;
     }
 
     public function getFilters(): array
@@ -95,45 +172,11 @@ class LabstagExtension extends AbstractExtension
         ];
     }
 
-    public function isPhoneValid(string $number, string $country): bool
+    public function guardAccessGroupRoutes(Groupe $groupe): bool
     {
-        $verif = $this->phoneService->verif($number, $country);
+        $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
 
-        return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
-    }
-
-    public function getAttachment($data): ?Attachment
-    {
-        if (is_null($data)) {
-            return null;
-        }
-
-        $id         = $data->getId();
-        $attachment = $this->attachmentRepository->findOneBy(['id' => $id]);
-        if (is_null($attachment)) {
-            return null;
-        }
-
-        $file = $attachment->getName();
-        if (!is_file($file)) {
-            return null;
-        }
-
-        return $attachment;
-    }
-
-    public function guardRouteEnableUser(string $route, User $user): bool
-    {
-        return $this->guardService->guardRouteEnableUser($route, $user);
-    }
-
-    public function classEntity($entity)
-    {
-        $class = get_class($entity);
-
-        $class = substr($class, strpos($class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY));
-
-        return trim(strtolower($class));
+        return (0 != count($routes)) ? true : false;
     }
 
     public function guardAccessUserRoutes(User $user): bool
@@ -143,18 +186,6 @@ class LabstagExtension extends AbstractExtension
         return (0 != count($routes)) ? true : false;
     }
 
-    public function guardAccessGroupRoutes(Groupe $groupe): bool
-    {
-        $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
-
-        return (0 != count($routes)) ? true : false;
-    }
-
-    public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
-    {
-        return $this->guardService->guardRouteEnableGroupe($route, $groupe);
-    }
-
     public function guardRoute(string $route): bool
     {
         $token = $this->token->getToken();
@@ -162,9 +193,21 @@ class LabstagExtension extends AbstractExtension
         return $this->guardService->guardRoute($route, $token);
     }
 
-    public function workflowHas($entity)
+    public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
     {
-        return $this->workflows->has($entity);
+        return $this->guardService->guardRouteEnableGroupe($route, $groupe);
+    }
+
+    public function guardRouteEnableUser(string $route, User $user): bool
+    {
+        return $this->guardService->guardRouteEnableUser($route, $user);
+    }
+
+    public function isPhoneValid(string $number, string $country): bool
+    {
+        $verif = $this->phoneService->verif($number, $country);
+
+        return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
     }
 
     public function verifPhone(string $country, string $phone)
@@ -174,25 +217,9 @@ class LabstagExtension extends AbstractExtension
         return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
     }
 
-    public function formPrototype(array $blockPrefixes): string
+    public function workflowHas($entity)
     {
-        $file = '';
-        if ('collection_entry' != $blockPrefixes[1]) {
-            return $file;
-        }
-
-        $type = $blockPrefixes[2];
-
-        $newFile = 'prototype/'.$type.'.html.twig';
-        if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
-            $this->logger->info('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
-
-            return $file;
-        }
-
-        $file = $newFile;
-
-        return $file;
+        return $this->workflows->has($entity);
     }
 
     protected function setTypeformClass(array $class): string
@@ -207,34 +234,5 @@ class LabstagExtension extends AbstractExtension
         $type = $class['form']->vars['unique_block_prefix'];
 
         return $type;
-    }
-
-    public function formClass($class)
-    {
-        $file = '';
-
-        $methods = get_class_vars(get_class($class));
-        if (!array_key_exists('vars', $methods)) {
-            return $file;
-        }
-
-        $vars = $class->vars;
-
-        if (!array_key_exists('data', $vars) || is_null($vars['data'])) {
-            return $file;
-        }
-
-        $type = $this->setTypeformClass($vars);
-
-        $newFile = 'forms/'.$type.'.html.twig';
-        if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
-            $this->logger->info('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
-
-            return $file;
-        }
-
-        $file = $newFile;
-
-        return $file;
     }
 }

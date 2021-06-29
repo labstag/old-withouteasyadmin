@@ -9,9 +9,9 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 abstract class FrontControllerLib extends ControllerLib
 {
 
-    protected DataService $dataService;
-
     protected Breadcrumbs $breadcrumbs;
+
+    protected DataService $dataService;
 
     protected EditoRepository $editoRepository;
 

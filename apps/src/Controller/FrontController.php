@@ -9,6 +9,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class FrontController extends FrontControllerLib
 {
     /**
+     * @Route("/edito", name="edito")
+     */
+    public function edito(): Response
+    {
+        $edito = $this->editoData();
+
+        return $this->render(
+            'front/edito.html.twig',
+            ['edito' => $edito]
+        );
+    }
+
+    /**
      * @Route("/", name="front")
      */
     public function index(): Response
@@ -19,19 +32,6 @@ class FrontController extends FrontControllerLib
 
         return $this->render(
             'front/index.html.twig',
-            ['edito' => $edito]
-        );
-    }
-
-    /**
-     * @Route("/edito", name="edito")
-     */
-    public function edito(): Response
-    {
-        $edito = $this->editoData();
-
-        return $this->render(
-            'front/edito.html.twig',
             ['edito' => $edito]
         );
     }

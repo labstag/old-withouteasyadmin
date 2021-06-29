@@ -10,6 +10,11 @@ use Labstag\Lib\FixtureLib;
 
 class LibelleFixtures extends FixtureLib implements DependentFixtureInterface
 {
+    public function getDependencies()
+    {
+        return [DataFixtures::class];
+    }
+
     public function load(ObjectManager $manager): void
     {
         $this->add($manager);
@@ -22,11 +27,6 @@ class LibelleFixtures extends FixtureLib implements DependentFixtureInterface
         for ($index = 0; $index < self::NUMBER_LIBELLE; ++$index) {
             $this->addLibelle($faker, $index);
         }
-    }
-
-    public function getDependencies()
-    {
-        return [DataFixtures::class];
     }
 
     protected function addLibelle(Generator $faker, int $index): void

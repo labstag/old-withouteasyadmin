@@ -25,17 +25,27 @@ class User implements UserInterface, Serializable
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid", unique=true)
+     * @ORM\OneToMany(
+     *  targetEntity=AdresseUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
-    protected $id;
+    protected $adresseUsers;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true, nullable=false)
-     * @Assert\NotNull
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="users")
      */
-    protected $username;
+    protected $avatar;
+
+    /**
+     * @ORM\OneToMany(
+     *  targetEntity=Edito::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
+     */
+    protected $editos;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -43,15 +53,67 @@ class User implements UserInterface, Serializable
     protected $email;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\OneToMany(
+     *  targetEntity=EmailUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
      */
-    protected array $roles = [];
+    protected $emailUsers;
+
+    /**
+     * @UploadableField(filename="avatar", path="user/avatar", slug="username")
+     */
+    protected $file;
+
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid", unique=true)
+     */
+    protected $id;
+
+    /**
+     * @ORM\OneToMany(
+     *  targetEntity=LienUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
+     */
+    protected $lienUsers;
+
+    /**
+     * @ORM\OneToMany(
+     *  targetEntity=NoteInterne::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
+     */
+    protected $noteInternes;
+
+    /**
+     * @ORM\OneToMany(
+     *  targetEntity=OauthConnectUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
+     */
+    protected $oauthConnectUsers;
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string", nullable=true)
      */
     protected $password;
+
+    /**
+     * @ORM\OneToMany(
+     *  targetEntity=PhoneUser::class,
+     *  mappedBy="refuser",
+     *  cascade={"persist"}
+     * )
+     */
+    protected $phoneUsers;
 
     /**
      * @var string|null
@@ -65,72 +127,30 @@ class User implements UserInterface, Serializable
     protected Groupe $refgroupe;
 
     /**
-     * @ORM\OneToMany(
-     *  targetEntity=Edito::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
-     * )
+     * @ORM\Column(type="json")
      */
-    protected $editos;
+    protected array $roles = [];
 
     /**
-     * @ORM\OneToMany(
-     *  targetEntity=NoteInterne::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
-     * )
+     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser")
      */
-    protected $noteInternes;
-
-    /**
-     * @ORM\OneToMany(
-     *  targetEntity=LienUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
-     * )
-     */
-    protected $lienUsers;
-
-    /**
-     * @ORM\OneToMany(
-     *  targetEntity=EmailUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
-     * )
-     */
-    protected $emailUsers;
-
-    /**
-     * @ORM\OneToMany(
-     *  targetEntity=PhoneUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
-     * )
-     */
-    protected $phoneUsers;
-
-    /**
-     * @ORM\OneToMany(
-     *  targetEntity=AdresseUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
-     * )
-     */
-    protected $adresseUsers;
-
-    /**
-     * @ORM\OneToMany(
-     *  targetEntity=OauthConnectUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
-     * )
-     */
-    protected $oauthConnectUsers;
+    protected $routes;
 
     /**
      * @ORM\Column(type="array")
      */
     protected $state;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true, nullable=false)
+     * @Assert\NotNull
+     */
+    protected $username;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser")
+     */
+    private $posts;
 
     /**
      * @var DateTime
@@ -141,29 +161,9 @@ class User implements UserInterface, Serializable
     private $stateChanged;
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser")
-     */
-    protected $routes;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="users")
-     */
-    protected $avatar;
-
-    /**
-     * @UploadableField(filename="avatar", path="user/avatar", slug="username")
-     */
-    protected $file;
-
-    /**
      * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refuser")
      */
     private $workflowUsers;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser")
-     */
-    private $posts;
 
     public function __construct()
     {
@@ -180,19 +180,188 @@ class User implements UserInterface, Serializable
         $this->posts             = new ArrayCollection();
     }
 
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
-    }
-
     public function __toString()
     {
         return $this->getUsername();
+    }
+
+    public function addAdresseUser(AdresseUser $adresseUser): self
+    {
+        if (!$this->adresseUsers->contains($adresseUser)) {
+            $this->adresseUsers[] = $adresseUser;
+            $adresseUser->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addEdito(Edito $edito): self
+    {
+        if (!$this->editos->contains($edito)) {
+            $this->editos[] = $edito;
+            $edito->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addEmailUser(EmailUser $emailUser): self
+    {
+        if (!$this->emailUsers->contains($emailUser)) {
+            $emailUser->setRefuser($this);
+            $this->emailUsers[] = $emailUser;
+        }
+
+        return $this;
+    }
+
+    public function addLienUser(LienUser $lienUser): self
+    {
+        if (!$this->lienUsers->contains($lienUser)) {
+            $lienUser->setRefuser($this);
+            $this->lienUsers[] = $lienUser;
+        }
+
+        return $this;
+    }
+
+    public function addNoteInterne(NoteInterne $noteInterne): self
+    {
+        if (!$this->noteInternes->contains($noteInterne)) {
+            $this->noteInternes[] = $noteInterne;
+            $noteInterne->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addOauthConnectUsers(
+        OauthConnectUser $oauthConnectUser
+    ): self
+    {
+        if (!$this->oauthConnectUsers->contains($oauthConnectUser)) {
+            $this->oauthConnectUsers[] = $oauthConnectUser;
+            $oauthConnectUser->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addPhoneUser(PhoneUser $phoneUser): self
+    {
+        if (!$this->phoneUsers->contains($phoneUser)) {
+            $this->phoneUsers[] = $phoneUser;
+            $phoneUser->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addRoute(RouteUser $route): self
+    {
+        if (!$this->routes->contains($route)) {
+            $this->routes[] = $route;
+            $route->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addWorkflowUser(WorkflowUser $workflowUser): self
+    {
+        if (!$this->workflowUsers->contains($workflowUser)) {
+            $this->workflowUsers[] = $workflowUser;
+            $workflowUser->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function getAdresseUsers()
+    {
+        return $this->adresseUsers;
+    }
+
+    public function getAvatar(): ?Attachment
+    {
+        return $this->avatar;
+    }
+
+    public function getEditos()
+    {
+        return $this->editos;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getEmail(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getEmailUsers()
+    {
+        return $this->emailUsers;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function getLienUsers()
+    {
+        return $this->lienUsers;
+    }
+
+    public function getNoteInternes()
+    {
+        return $this->noteInternes;
+    }
+
+    public function getOauthConnectUsers()
+    {
+        return $this->oauthConnectUsers;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function getPhoneUsers()
+    {
+        return $this->phoneUsers;
     }
 
     /**
@@ -203,34 +372,17 @@ class User implements UserInterface, Serializable
         return $this->plainPassword;
     }
 
-    public function setPlainPassword(string $plainPassword): self
-    {
-        $this->setPassword('');
-        $this->plainPassword = $plainPassword;
-
-        return $this;
-    }
-
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
-
     /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
+     * @return Collection|Post[]
      */
-    public function getUsername(): string
+    public function getPosts(): Collection
     {
-        return (string) $this->username;
+        return $this->posts;
     }
 
-    public function setUsername(?string $username): self
+    public function getRefgroupe(): ?Groupe
     {
-        $this->username = $username;
-
-        return $this;
+        return $this->refgroupe;
     }
 
     /**
@@ -245,26 +397,12 @@ class User implements UserInterface, Serializable
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
     /**
-     * @see UserInterface
+     * @return Collection|RouteUser[]
      */
-    public function getPassword(): string
+    public function getRoutes(): Collection
     {
-        return (string) $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
+        return $this->routes;
     }
 
     /**
@@ -276,37 +414,42 @@ class User implements UserInterface, Serializable
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function getStateChanged()
+    {
+        return $this->stateChanged;
+    }
+
     /**
+     * A visual identifier that represents this user.
+     *
      * @see UserInterface
      */
-    public function eraseCredentials(): void
+    public function getUsername(): string
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        return (string) $this->username;
     }
 
-    public function getRefgroupe(): ?Groupe
+    /**
+     * @return Collection|WorkflowUser[]
+     */
+    public function getWorkflowUsers(): Collection
     {
-        return $this->refgroupe;
+        return $this->workflowUsers;
     }
 
-    public function setRefgroupe(?Groupe $groupe): self
+    public function removeAdresseUser(AdresseUser $adresseUser): self
     {
-        $this->refgroupe = $groupe;
-
-        return $this;
-    }
-
-    public function getEditos()
-    {
-        return $this->editos;
-    }
-
-    public function addEdito(Edito $edito): self
-    {
-        if (!$this->editos->contains($edito)) {
-            $this->editos[] = $edito;
-            $edito->setRefuser($this);
+        if ($this->adresseUsers->contains($adresseUser)) {
+            $this->adresseUsers->removeElement($adresseUser);
+            // set the owning side to null (unless already changed)
+            if ($adresseUser->getRefuser() === $this) {
+                $adresseUser->setRefuser(null);
+            }
         }
 
         return $this;
@@ -325,44 +468,14 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getNoteInternes()
+    public function removeEmailUser(EmailUser $emailUser): self
     {
-        return $this->noteInternes;
-    }
-
-    public function addNoteInterne(NoteInterne $noteInterne): self
-    {
-        if (!$this->noteInternes->contains($noteInterne)) {
-            $this->noteInternes[] = $noteInterne;
-            $noteInterne->setRefuser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeNoteInterne(NoteInterne $noteInterne): self
-    {
-        if ($this->noteInternes->contains($noteInterne)) {
-            $this->noteInternes->removeElement($noteInterne);
+        if ($this->emailUsers->contains($emailUser)) {
+            $this->emailUsers->removeElement($emailUser);
             // set the owning side to null (unless already changed)
-            if ($noteInterne->getRefuser() === $this) {
-                $noteInterne->setRefuser(null);
+            if ($emailUser->getRefuser() === $this) {
+                $emailUser->setRefuser(null);
             }
-        }
-
-        return $this;
-    }
-
-    public function getLienUsers()
-    {
-        return $this->lienUsers;
-    }
-
-    public function addLienUser(LienUser $lienUser): self
-    {
-        if (!$this->lienUsers->contains($lienUser)) {
-            $lienUser->setRefuser($this);
-            $this->lienUsers[] = $lienUser;
         }
 
         return $this;
@@ -381,119 +494,14 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getEmailUsers()
+    public function removeNoteInterne(NoteInterne $noteInterne): self
     {
-        return $this->emailUsers;
-    }
-
-    public function addEmailUser(EmailUser $emailUser): self
-    {
-        if (!$this->emailUsers->contains($emailUser)) {
-            $emailUser->setRefuser($this);
-            $this->emailUsers[] = $emailUser;
-        }
-
-        return $this;
-    }
-
-    public function removeEmailUser(EmailUser $emailUser): self
-    {
-        if ($this->emailUsers->contains($emailUser)) {
-            $this->emailUsers->removeElement($emailUser);
+        if ($this->noteInternes->contains($noteInterne)) {
+            $this->noteInternes->removeElement($noteInterne);
             // set the owning side to null (unless already changed)
-            if ($emailUser->getRefuser() === $this) {
-                $emailUser->setRefuser(null);
+            if ($noteInterne->getRefuser() === $this) {
+                $noteInterne->setRefuser(null);
             }
-        }
-
-        return $this;
-    }
-
-    public function getPhoneUsers()
-    {
-        return $this->phoneUsers;
-    }
-
-    public function addPhoneUser(PhoneUser $phoneUser): self
-    {
-        if (!$this->phoneUsers->contains($phoneUser)) {
-            $this->phoneUsers[] = $phoneUser;
-            $phoneUser->setRefuser($this);
-        }
-
-        return $this;
-    }
-
-    public function removePhoneUser(PhoneUser $phoneUser): self
-    {
-        if ($this->phoneUsers->contains($phoneUser)) {
-            $this->phoneUsers->removeElement($phoneUser);
-            // set the owning side to null (unless already changed)
-            if ($phoneUser->getRefuser() === $this) {
-                $phoneUser->setRefuser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getAdresseUsers()
-    {
-        return $this->adresseUsers;
-    }
-
-    public function addAdresseUser(AdresseUser $adresseUser): self
-    {
-        if (!$this->adresseUsers->contains($adresseUser)) {
-            $this->adresseUsers[] = $adresseUser;
-            $adresseUser->setRefuser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAdresseUser(AdresseUser $adresseUser): self
-    {
-        if ($this->adresseUsers->contains($adresseUser)) {
-            $this->adresseUsers->removeElement($adresseUser);
-            // set the owning side to null (unless already changed)
-            if ($adresseUser->getRefuser() === $this) {
-                $adresseUser->setRefuser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getEmail(): string
-    {
-        return (string) $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getOauthConnectUsers()
-    {
-        return $this->oauthConnectUsers;
-    }
-
-    public function addOauthConnectUsers(
-        OauthConnectUser $oauthConnectUser
-    ): self
-    {
-        if (!$this->oauthConnectUsers->contains($oauthConnectUser)) {
-            $this->oauthConnectUsers[] = $oauthConnectUser;
-            $oauthConnectUser->setRefuser($this);
         }
 
         return $this;
@@ -514,122 +522,14 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    /**
-     * @return Collection|RouteUser[]
-     */
-    public function getRoutes(): Collection
+    public function removePhoneUser(PhoneUser $phoneUser): self
     {
-        return $this->routes;
-    }
-
-    public function addRoute(RouteUser $route): self
-    {
-        if (!$this->routes->contains($route)) {
-            $this->routes[] = $route;
-            $route->setRefuser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRoute(RouteUser $route): self
-    {
-        if ($this->routes->removeElement($route)) {
+        if ($this->phoneUsers->contains($phoneUser)) {
+            $this->phoneUsers->removeElement($phoneUser);
             // set the owning side to null (unless already changed)
-            if ($route->getRefuser() === $this) {
-                $route->setRefuser(null);
+            if ($phoneUser->getRefuser() === $this) {
+                $phoneUser->setRefuser(null);
             }
-        }
-
-        return $this;
-    }
-
-    public function getAvatar(): ?Attachment
-    {
-        return $this->avatar;
-    }
-
-    public function setAvatar(?Attachment $avatar): self
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    public function setFile($file): self
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
-    public function serialize()
-    {
-        return serialize(
-            [
-                $this->id,
-                $this->username,
-                $this->password,
-            ]
-        );
-    }
-
-    public function unserialize($serialized)
-    {
-        list(
-            $this->id,
-            $this->username,
-            $this->password) = unserialize($serialized);
-    }
-
-    /**
-     * @return Collection|WorkflowUser[]
-     */
-    public function getWorkflowUsers(): Collection
-    {
-        return $this->workflowUsers;
-    }
-
-    public function addWorkflowUser(WorkflowUser $workflowUser): self
-    {
-        if (!$this->workflowUsers->contains($workflowUser)) {
-            $this->workflowUsers[] = $workflowUser;
-            $workflowUser->setRefuser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWorkflowUser(WorkflowUser $workflowUser): self
-    {
-        if ($this->workflowUsers->removeElement($workflowUser)) {
-            // set the owning side to null (unless already changed)
-            if ($workflowUser->getRefuser() === $this) {
-                $workflowUser->setRefuser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Post[]
-     */
-    public function getPosts(): Collection
-    {
-        return $this->posts;
-    }
-
-    public function addPost(Post $post): self
-    {
-        if (!$this->posts->contains($post)) {
-            $this->posts[] = $post;
-            $post->setRefuser($this);
         }
 
         return $this;
@@ -647,8 +547,108 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getStateChanged()
+    public function removeRoute(RouteUser $route): self
     {
-        return $this->stateChanged;
+        if ($this->routes->removeElement($route)) {
+            // set the owning side to null (unless already changed)
+            if ($route->getRefuser() === $this) {
+                $route->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeWorkflowUser(WorkflowUser $workflowUser): self
+    {
+        if ($this->workflowUsers->removeElement($workflowUser)) {
+            // set the owning side to null (unless already changed)
+            if ($workflowUser->getRefuser() === $this) {
+                $workflowUser->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function serialize()
+    {
+        return serialize(
+            [
+                $this->id,
+                $this->username,
+                $this->password,
+            ]
+        );
+    }
+
+    public function setAvatar(?Attachment $avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function setFile($file): self
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->setPassword('');
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function setRefgroupe(?Groupe $groupe): self
+    {
+        $this->refgroupe = $groupe;
+
+        return $this;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    public function setUsername(?string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->username,
+            $this->password) = unserialize($serialized);
     }
 }

@@ -23,52 +23,9 @@ class Post
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid", unique=true)
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
-     */
-    private $title;
-
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"title"})
-     * @ORM\Column(type="string", length=255)
-     */
-    private $slug;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="posts")
-     */
-    private $img;
-
-    /**
      * @UploadableField(filename="img", path="post/img", slug="title")
      */
     protected $file;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $content;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
-     */
-    private $refuser;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $commentaire;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"})
-     */
-    private $libelles;
 
     /**
      * @ORM\Column(type="array")
@@ -76,12 +33,14 @@ class Post
     protected $state;
 
     /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"state"})
+     * @ORM\Column(type="boolean")
      */
-    private $stateChanged;
+    private $commentaire;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $content;
 
     /**
      * @var DateTime
@@ -92,17 +51,58 @@ class Post
     private $created;
 
     /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid", unique=true)
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="posts")
+     */
+    private $img;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"})
+     */
+    private $libelles;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $published;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
+     */
+    private $refuser;
+
+    /**
+     * @Gedmo\Slug(updatable=false, fields={"title"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="change", field={"state"})
+     */
+    private $stateChanged;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
+     */
+    private $title;
+
+    /**
      * @var DateTime
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     private $updated;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $published;
 
     public function __construct()
     {
@@ -112,113 +112,6 @@ class Post
     public function __toString()
     {
         return $this->getTitle();
-    }
-
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
-    }
-
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getImg(): ?Attachment
-    {
-        return $this->img;
-    }
-
-    public function setImg(?Attachment $img): self
-    {
-        $this->img = $img;
-
-        return $this;
-    }
-
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    public function setFile($file): self
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    public function getRefuser(): ?User
-    {
-        return $this->refuser;
-    }
-
-    public function setRefuser(?User $refuser): self
-    {
-        $this->refuser = $refuser;
-
-        return $this;
-    }
-
-    public function getCommentaire(): ?bool
-    {
-        return $this->commentaire;
-    }
-
-    public function setCommentaire(bool $commentaire): self
-    {
-        $this->commentaire = $commentaire;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Libelle[]
-     */
-    public function getLibelles(): Collection
-    {
-        return $this->libelles;
     }
 
     public function addLibelle(Libelle $libelle): self
@@ -231,6 +124,79 @@ class Post
         return $this;
     }
 
+    public function getCommentaire(): ?bool
+    {
+        return $this->commentaire;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function getImg(): ?Attachment
+    {
+        return $this->img;
+    }
+
+    /**
+     * @return Collection|Libelle[]
+     */
+    public function getLibelles(): Collection
+    {
+        return $this->libelles;
+    }
+
+    public function getPublished(): ?DateTimeInterface
+    {
+        return $this->published;
+    }
+
+    public function getRefuser(): ?User
+    {
+        return $this->refuser;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function getStateChanged()
+    {
+        return $this->stateChanged;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
     public function removeLibelle(Libelle $libelle): self
     {
         if ($this->libelles->removeElement($libelle)) {
@@ -240,29 +206,63 @@ class Post
         return $this;
     }
 
-    public function getCreated()
+    public function setCommentaire(bool $commentaire): self
     {
-        return $this->created;
+        $this->commentaire = $commentaire;
+
+        return $this;
     }
 
-    public function getUpdated()
+    public function setContent(string $content): self
     {
-        return $this->updated;
+        $this->content = $content;
+
+        return $this;
     }
 
-    public function getStateChanged()
+    public function setFile($file): self
     {
-        return $this->stateChanged;
+        $this->file = $file;
+
+        return $this;
     }
 
-    public function getPublished(): ?DateTimeInterface
+    public function setImg(?Attachment $img): self
     {
-        return $this->published;
+        $this->img = $img;
+
+        return $this;
     }
 
     public function setPublished(DateTimeInterface $published): self
     {
         $this->published = $published;
+
+        return $this;
+    }
+
+    public function setRefuser(?User $refuser): self
+    {
+        $this->refuser = $refuser;
+
+        return $this;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }

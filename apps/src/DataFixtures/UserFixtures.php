@@ -8,6 +8,14 @@ use Labstag\Lib\FixtureLib;
 
 class UserFixtures extends FixtureLib implements DependentFixtureInterface
 {
+    public function getDependencies()
+    {
+        return [
+            DataFixtures::class,
+            GroupFixtures::class,
+        ];
+    }
+
     public function load(ObjectManager $manager): void
     {
         unset($manager);
@@ -17,13 +25,5 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
         foreach ($users as $index => $user) {
             $this->addUser($groupes, $index, $user, $faker);
         }
-    }
-
-    public function getDependencies()
-    {
-        return [
-            DataFixtures::class,
-            GroupFixtures::class,
-        ];
     }
 }

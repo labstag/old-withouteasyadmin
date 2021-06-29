@@ -18,6 +18,20 @@ class EditoRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, Edito::class);
     }
 
+    public function findAllForAdmin(): Query
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->leftJoin(
+            'a.refuser',
+            'u'
+        );
+        $query->where(
+            'u.id IS NOT NULL'
+        );
+
+        return $query->getQuery();
+    }
+
     public function findOnePublier()
     {
         $queryBuilder = $this->createQueryBuilder('u');
@@ -32,20 +46,6 @@ class EditoRepository extends ServiceEntityRepositoryLib
         $query->setMaxResults(1);
 
         return $query->getQuery()->getOneOrNullResult();
-    }
-
-    public function findAllForAdmin(): Query
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin(
-            'a.refuser',
-            'u'
-        );
-        $query->where(
-            'u.id IS NOT NULL'
-        );
-
-        return $query->getQuery();
     }
 
     public function findTrashForAdmin(): array

@@ -10,6 +10,15 @@ use Labstag\Lib\FixtureLib;
 
 class PostFixtures extends FixtureLib implements DependentFixtureInterface
 {
+    public function getDependencies()
+    {
+        return [
+            DataFixtures::class,
+            UserFixtures::class,
+            LibelleFixtures::class,
+        ];
+    }
+
     public function load(ObjectManager $manager): void
     {
         $this->add($manager);
@@ -25,15 +34,6 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
             $states  = $statesTab[$stateId];
             $this->addPost($faker, $index, $states);
         }
-    }
-
-    public function getDependencies()
-    {
-        return [
-            DataFixtures::class,
-            UserFixtures::class,
-            LibelleFixtures::class,
-        ];
     }
 
     protected function addPost(

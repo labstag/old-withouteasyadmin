@@ -10,6 +10,11 @@ use Labstag\Lib\FixtureLib;
 
 class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
 {
+    public function getDependencies()
+    {
+        return [DataFixtures::class];
+    }
+
     public function load(ObjectManager $manager): void
     {
         $this->add($manager);
@@ -22,11 +27,6 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
         for ($index = 0; $index < self::NUMBER_TEMPLATES; ++$index) {
             $this->addTemplate($faker);
         }
-    }
-
-    public function getDependencies()
-    {
-        return [DataFixtures::class];
     }
 
     protected function addTemplate(Generator $faker): void

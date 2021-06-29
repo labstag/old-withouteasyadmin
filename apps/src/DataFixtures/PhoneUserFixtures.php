@@ -8,6 +8,14 @@ use Labstag\Lib\FixtureLib;
 
 class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
 {
+    public function getDependencies()
+    {
+        return [
+            DataFixtures::class,
+            UserFixtures::class,
+        ];
+    }
+
     public function load(ObjectManager $manager): void
     {
         unset($manager);
@@ -31,14 +39,6 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
                 'submit',
                 'valider',
             ],
-        ];
-    }
-
-    public function getDependencies()
-    {
-        return [
-            DataFixtures::class,
-            UserFixtures::class,
         ];
     }
 }

@@ -25,31 +25,31 @@ use Twig\Environment;
 class InstallService
 {
 
-    protected MenuRequestHandler $menuRH;
-
-    protected GroupeRequestHandler $groupeRH;
-
-    protected ConfigurationRequestHandler $configurationRH;
-
-    protected TemplateRequestHandler $templateRH;
-
-    protected GroupeRepository $groupeRepo;
+    protected CacheInterface $cache;
 
     protected ConfigurationRepository $configurationRepo;
 
-    protected TemplateRepository $templateRepo;
-
-    protected Environment $twig;
-
-    protected MenuRepository $menuRepo;
-
-    protected UserRepository $userRepo;
-
-    protected OauthService $oauthService;
+    protected ConfigurationRequestHandler $configurationRH;
 
     protected EntityManagerInterface $entityManager;
 
-    protected CacheInterface $cache;
+    protected GroupeRepository $groupeRepo;
+
+    protected GroupeRequestHandler $groupeRH;
+
+    protected MenuRepository $menuRepo;
+
+    protected MenuRequestHandler $menuRH;
+
+    protected OauthService $oauthService;
+
+    protected TemplateRepository $templateRepo;
+
+    protected TemplateRequestHandler $templateRH;
+
+    protected Environment $twig;
+
+    protected UserRepository $userRepo;
 
     protected UserRequestHandler $userRH;
 
@@ -86,6 +86,18 @@ class InstallService
         $this->templateRH        = $templateRH;
     }
 
+    public function config()
+    {
+        $config = $this->getData('config');
+        $env    = $this->getEnv();
+        $this->setOauth($env, $config);
+        foreach ($config as $key => $row) {
+            $this->addConfig($key, $row);
+        }
+
+        $this->cache->delete('configuration');
+    }
+
     public function getData($file)
     {
         $file = __DIR__.'/../../json/'.$file.'.json';
@@ -111,6 +123,14 @@ class InstallService
         return $data;
     }
 
+    public function group()
+    {
+        $groupes = $this->getData('group');
+        foreach ($groupes as $row) {
+            $this->addGroupe($row);
+        }
+    }
+
     public function menuadmin()
     {
         $childs = $this->getData('menuadmin');
@@ -123,25 +143,20 @@ class InstallService
         $this->saveMenu('admin-profil', $childs);
     }
 
-    protected function saveMenu(string $key, array $childs): void
+    public function templates()
     {
-        // $this->entityManager->getFilters()->disable('softdeleteable');
-        $search = ['clef' => $key];
-        $menu   = $this->menuRepo->findOneBy($search);
-        if ($menu instanceof Menu) {
-            $this->entityManager->remove($menu);
-            $this->entityManager->flush();
+        $templates = $this->getData('template');
+        foreach ($templates as $key => $row) {
+            $this->addTemplate($key, $row);
         }
+    }
 
-        $menu = new Menu();
-        $menu->setPosition(0);
-        $menu->setClef($key);
-        $this->entityManager->persist($menu);
-        $this->entityManager->flush();
-        $indexChild = 0;
-        foreach ($childs as $attr) {
-            $this->addChild($indexChild, $menu, $attr);
-            ++$indexChild;
+    public function users()
+    {
+        $users   = $this->getData('user');
+        $groupes = $this->groupeRepo->findAll();
+        foreach ($users as $user) {
+            $this->addUser($groupes, $user);
         }
     }
 
@@ -174,12 +189,21 @@ class InstallService
         }
     }
 
-    public function group()
+    protected function addConfig(
+        string $key,
+        $value
+    ): void
     {
-        $groupes = $this->getData('group');
-        foreach ($groupes as $row) {
-            $this->addGroupe($row);
+        $search        = ['name' => $key];
+        $configuration = $this->configurationRepo->findOneBy($search);
+        if (!$configuration instanceof Configuration) {
+            $configuration = new Configuration();
         }
+
+        $old = clone $configuration;
+        $configuration->setName($key);
+        $configuration->setValue($value);
+        $this->configurationRH->handle($old, $configuration);
     }
 
     protected function addGroupe(
@@ -199,79 +223,32 @@ class InstallService
         $this->groupeRH->handle($old, $groupe);
     }
 
-    public function config()
-    {
-        $config = $this->getData('config');
-        $env    = $this->getEnv();
-        $this->setOauth($env, $config);
-        foreach ($config as $key => $row) {
-            $this->addConfig($key, $row);
-        }
-
-        $this->cache->delete('configuration');
-    }
-
-    protected function setOauth(array $env, array &$data): void
-    {
-        $oauth = [];
-        foreach ($env as $key => $val) {
-            if (0 != substr_count($key, 'OAUTH_')) {
-                $code    = str_replace('OAUTH_', '', $key);
-                $code    = strtolower($code);
-                $explode = explode('_', $code);
-                $type    = $explode[0];
-                $key     = $explode[1];
-                if (!isset($oauth[$type])) {
-                    $activate = $this->oauthService->getActivedProvider($type);
-
-                    $oauth[$type] = [
-                        'activate' => $activate,
-                        'type'     => $type,
-                    ];
-                }
-
-                $oauth[$type][$key] = $val;
-            }
-        }
-
-        /** @var mixed $row */
-        foreach ($oauth as $row) {
-            $data['oauth'][] = $row;
-        }
-    }
-
-    protected function addConfig(
+    protected function addTemplate(
         string $key,
-        $value
+        string $value
     ): void
     {
-        $search        = ['name' => $key];
-        $configuration = $this->configurationRepo->findOneBy($search);
-        if (!$configuration instanceof Configuration) {
-            $configuration = new Configuration();
+        $search   = ['code' => $key];
+        $template = $this->templateRepo->findOneBy($search);
+        if ($template instanceof Template) {
+            return;
         }
 
-        $old = clone $configuration;
-        $configuration->setName($key);
-        $configuration->setValue($value);
-        $this->configurationRH->handle($old, $configuration);
-    }
-
-    public function templates()
-    {
-        $templates = $this->getData('template');
-        foreach ($templates as $key => $row) {
-            $this->addTemplate($key, $row);
+        $template = new Template();
+        $old      = clone $template;
+        $template->setName($value);
+        $template->setCode($key);
+        $htmlfile = 'tpl/mail-'.$key.'.html.twig';
+        if (is_file('templates/'.$htmlfile)) {
+            $template->setHtml($this->twig->render($htmlfile));
         }
-    }
 
-    public function users()
-    {
-        $users   = $this->getData('user');
-        $groupes = $this->groupeRepo->findAll();
-        foreach ($users as $user) {
-            $this->addUser($groupes, $user);
+        $txtfile = 'tpl/mail-'.$key.'.txt.twig';
+        if (is_file('templates/'.$txtfile)) {
+            $template->setText($this->twig->render($txtfile));
         }
+
+        $this->templateRH->handle($old, $template);
     }
 
     protected function addUser(
@@ -309,31 +286,54 @@ class InstallService
         return null;
     }
 
-    protected function addTemplate(
-        string $key,
-        string $value
-    ): void
+    protected function saveMenu(string $key, array $childs): void
     {
-        $search   = ['code' => $key];
-        $template = $this->templateRepo->findOneBy($search);
-        if ($template instanceof Template) {
-            return;
+        // $this->entityManager->getFilters()->disable('softdeleteable');
+        $search = ['clef' => $key];
+        $menu   = $this->menuRepo->findOneBy($search);
+        if ($menu instanceof Menu) {
+            $this->entityManager->remove($menu);
+            $this->entityManager->flush();
         }
 
-        $template = new Template();
-        $old      = clone $template;
-        $template->setName($value);
-        $template->setCode($key);
-        $htmlfile = 'tpl/mail-'.$key.'.html.twig';
-        if (is_file('templates/'.$htmlfile)) {
-            $template->setHtml($this->twig->render($htmlfile));
+        $menu = new Menu();
+        $menu->setPosition(0);
+        $menu->setClef($key);
+        $this->entityManager->persist($menu);
+        $this->entityManager->flush();
+        $indexChild = 0;
+        foreach ($childs as $attr) {
+            $this->addChild($indexChild, $menu, $attr);
+            ++$indexChild;
+        }
+    }
+
+    protected function setOauth(array $env, array &$data): void
+    {
+        $oauth = [];
+        foreach ($env as $key => $val) {
+            if (0 != substr_count($key, 'OAUTH_')) {
+                $code    = str_replace('OAUTH_', '', $key);
+                $code    = strtolower($code);
+                $explode = explode('_', $code);
+                $type    = $explode[0];
+                $key     = $explode[1];
+                if (!isset($oauth[$type])) {
+                    $activate = $this->oauthService->getActivedProvider($type);
+
+                    $oauth[$type] = [
+                        'activate' => $activate,
+                        'type'     => $type,
+                    ];
+                }
+
+                $oauth[$type][$key] = $val;
+            }
         }
 
-        $txtfile = 'tpl/mail-'.$key.'.txt.twig';
-        if (is_file('templates/'.$txtfile)) {
-            $template->setText($this->twig->render($txtfile));
+        /** @var mixed $row */
+        foreach ($oauth as $row) {
+            $data['oauth'][] = $row;
         }
-
-        $this->templateRH->handle($old, $template);
     }
 }

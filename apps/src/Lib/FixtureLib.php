@@ -44,49 +44,6 @@ use Twig\Environment;
 
 abstract class FixtureLib extends Fixture
 {
-
-    protected UserRepository $userRepository;
-
-    protected OauthService $oauthService;
-
-    protected Environment $twig;
-
-    protected GroupeRepository $groupeRepository;
-
-    protected EmailUserRequestHandler $emailUserRH;
-
-    protected LienUserRequestHandler $lienUserRH;
-
-    protected NoteInterneRequestHandler $noteInterneRH;
-
-    protected GroupeRequestHandler $groupeRH;
-
-    protected EditoRequestHandler $editoRH;
-
-    protected PhoneUserRequestHandler $phoneUserRH;
-
-    protected AdresseUserRequestHandler $adresseUserRH;
-
-    protected TemplateRequestHandler $templateRH;
-
-    protected LibelleRequestHandler $libelleRH;
-
-    protected UserRequestHandler $userRH;
-
-    protected GuardService $guardService;
-
-    protected CacheInterface $cache;
-
-    protected InstallService $installService;
-
-    protected UploadAnnotationReader $uploadAnnotReader;
-
-    protected ContainerBagInterface $containerBag;
-
-    protected LoggerInterface $logger;
-
-    protected AttachmentRequestHandler $attachmentRH;
-
     protected const NUMBER_ADRESSE = 25;
 
     protected const NUMBER_EDITO = 25;
@@ -104,6 +61,48 @@ abstract class FixtureLib extends Fixture
     protected const NUMBER_POST = 10;
 
     protected const NUMBER_TEMPLATES = 10;
+
+    protected AdresseUserRequestHandler $adresseUserRH;
+
+    protected AttachmentRequestHandler $attachmentRH;
+
+    protected CacheInterface $cache;
+
+    protected ContainerBagInterface $containerBag;
+
+    protected EditoRequestHandler $editoRH;
+
+    protected EmailUserRequestHandler $emailUserRH;
+
+    protected GroupeRepository $groupeRepository;
+
+    protected GroupeRequestHandler $groupeRH;
+
+    protected GuardService $guardService;
+
+    protected InstallService $installService;
+
+    protected LibelleRequestHandler $libelleRH;
+
+    protected LienUserRequestHandler $lienUserRH;
+
+    protected LoggerInterface $logger;
+
+    protected NoteInterneRequestHandler $noteInterneRH;
+
+    protected OauthService $oauthService;
+
+    protected PhoneUserRequestHandler $phoneUserRH;
+
+    protected TemplateRequestHandler $templateRH;
+
+    protected Environment $twig;
+
+    protected UploadAnnotationReader $uploadAnnotReader;
+
+    protected UserRepository $userRepository;
+
+    protected UserRequestHandler $userRH;
 
     public function __construct(
         LoggerInterface $logger,
@@ -152,9 +151,172 @@ abstract class FixtureLib extends Fixture
         $this->emailUserRH       = $emailUserRH;
     }
 
+    protected function addAdresse(
+        Generator $faker,
+        User $user
+    ): void
+    {
+        $adresse = new AdresseUser();
+        $old     = clone $adresse;
+        $adresse->setRefuser($user);
+        $adresse->setRue($faker->streetAddress);
+        $adresse->setVille($faker->city);
+        $adresse->setCountry($faker->countryCode);
+        $adresse->setZipcode($faker->postcode);
+        $adresse->setType($faker->unique()->colorName);
+        $latitude  = $faker->latitude;
+        $longitude = $faker->longitude;
+        $gps       = $latitude.','.$longitude;
+        $adresse->setGps($gps);
+        $adresse->setPmr((bool) rand(0, 1));
+        $this->adresseUserRH->handle($old, $adresse);
+    }
+
+    protected function addEdito(
+        array $users,
+        Generator $faker,
+        int $index,
+        array $states
+    ): void
+    {
+        $edito  = new Edito();
+        $old    = clone $edito;
+        $random = $faker->numberBetween(5, 50);
+        $edito->setTitle($faker->unique()->text($random));
+        /** @var string $content */
+        $content = $faker->paragraphs(4, true);
+        $edito->setContent(str_replace("\n\n", '<br />', $content));
+        $edito->setPublished($faker->unique()->dateTime('now'));
+        $this->addReference('edito_'.$index, $edito);
+        $tabIndex = array_rand($users);
+        /** @var User $user */
+        $user = $users[$tabIndex];
+        $edito->setRefuser($user);
+        $this->upload($edito, $faker);
+        $this->editoRH->handle($old, $edito);
+        $this->editoRH->changeWorkflowState($edito, $states);
+    }
+
+    protected function addEmail(
+        Generator $faker,
+        User $user
+    ): void
+    {
+        $email = new EmailUser();
+        $old   = clone $email;
+        $email->setRefuser($user);
+        $email->setAdresse($faker->safeEmail);
+        $this->emailUserRH->handle($old, $email);
+    }
+
+    protected function addGroupe(
+        int $key,
+        string $row
+    ): void
+    {
+        $groupe = new Groupe();
+        $old    = clone $groupe;
+        $groupe->setCode($row);
+        $groupe->setName($row);
+        $this->addReference('groupe_'.$key, $groupe);
+        $this->groupeRH->handle($old, $groupe);
+    }
+
+    protected function addLink(
+        Generator $faker,
+        User $user
+    ): void
+    {
+        $lien = new LienUser();
+        $old  = clone $lien;
+        $lien->setRefUser($user);
+        $lien->setName($faker->word());
+        $lien->setAdresse($faker->url);
+        $this->lienUserRH->handle($old, $lien);
+    }
+
+    protected function addNoteInterne(
+        array $users,
+        Generator $faker,
+        int $index,
+        DateTime $maxDate,
+        array $states
+    ): void
+    {
+        $noteinterne = new NoteInterne();
+        $old         = clone $noteinterne;
+        $random      = $faker->numberBetween(5, 50);
+        $noteinterne->setTitle($faker->unique()->text($random));
+        $dateDebut = $faker->dateTime($maxDate);
+        $noteinterne->setDateDebut($dateDebut);
+        $dateFin = clone $dateDebut;
+        $dateFin->modify('+'.$faker->numberBetween(10, 50).' days');
+        $dateFin->modify('+'.$faker->numberBetween(2, 24).' hours');
+        $noteinterne->setDateFin($dateFin);
+        /** @var string $content */
+        $content = $faker->paragraphs(4, true);
+        $noteinterne->setContent(str_replace("\n\n", '<br />', $content));
+        $this->addReference('noteinterne_'.$index, $noteinterne);
+        $tabIndex = array_rand($users);
+        /** @var User $user */
+        $user = $users[$tabIndex];
+        $noteinterne->setRefuser($user);
+        $this->upload($noteinterne, $faker);
+        $this->noteInterneRH->handle($old, $noteinterne);
+        $this->noteInterneRH->changeWorkflowState($noteinterne, $states);
+    }
+
+    protected function addPhone(
+        Generator $faker,
+        User $user,
+        array $states
+    ): void
+    {
+        $number = $faker->e164PhoneNumber;
+        $phone  = new PhoneUser();
+        $old    = clone $phone;
+        $phone->setRefuser($user);
+        $phone->setNumero($number);
+        $phone->setType($faker->word());
+        $phone->setCountry($faker->countryCode);
+        $this->phoneUserRH->handle($old, $phone);
+        $this->phoneUserRH->changeWorkflowState($phone, $states);
+    }
+
+    protected function addUser(
+        array $groupes,
+        int $index,
+        array $dataUser,
+        Generator $faker
+    ): void
+    {
+        $user = new User();
+        $old  = clone $user;
+
+        $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
+        $user->setUsername($dataUser['username']);
+        $user->setPlainPassword($dataUser['password']);
+        $user->setEmail($dataUser['email']);
+        $this->upload($user, $faker);
+        $this->addReference('user_'.$index, $user);
+        $this->userRH->handle($old, $user);
+        $this->userRH->changeWorkflowState($user, $dataUser['state']);
+    }
+
     protected function getParameter(string $name)
     {
         return $this->containerBag->get($name);
+    }
+
+    protected function getRefgroupe(array $groupes, string $code): ?Groupe
+    {
+        foreach ($groupes as $groupe) {
+            if ($groupe->getCode() == $code) {
+                return $groupe;
+            }
+        }
+
+        return null;
     }
 
     protected function setFaker()
@@ -231,168 +393,5 @@ abstract class FixtureLib extends Fixture
             $this->attachmentRH->handle($old, $attachment);
             $accessor->setValue($entity, $annotation->getFilename(), $attachment);
         }
-    }
-
-    protected function getRefgroupe(array $groupes, string $code): ?Groupe
-    {
-        foreach ($groupes as $groupe) {
-            if ($groupe->getCode() == $code) {
-                return $groupe;
-            }
-        }
-
-        return null;
-    }
-
-    protected function addEmail(
-        Generator $faker,
-        User $user
-    ): void
-    {
-        $email = new EmailUser();
-        $old   = clone $email;
-        $email->setRefuser($user);
-        $email->setAdresse($faker->safeEmail);
-        $this->emailUserRH->handle($old, $email);
-    }
-
-    protected function addLink(
-        Generator $faker,
-        User $user
-    ): void
-    {
-        $lien = new LienUser();
-        $old  = clone $lien;
-        $lien->setRefUser($user);
-        $lien->setName($faker->word());
-        $lien->setAdresse($faker->url);
-        $this->lienUserRH->handle($old, $lien);
-    }
-
-    protected function addNoteInterne(
-        array $users,
-        Generator $faker,
-        int $index,
-        DateTime $maxDate,
-        array $states
-    ): void
-    {
-        $noteinterne = new NoteInterne();
-        $old         = clone $noteinterne;
-        $random      = $faker->numberBetween(5, 50);
-        $noteinterne->setTitle($faker->unique()->text($random));
-        $dateDebut = $faker->dateTime($maxDate);
-        $noteinterne->setDateDebut($dateDebut);
-        $dateFin = clone $dateDebut;
-        $dateFin->modify('+'.$faker->numberBetween(10, 50).' days');
-        $dateFin->modify('+'.$faker->numberBetween(2, 24).' hours');
-        $noteinterne->setDateFin($dateFin);
-        /** @var string $content */
-        $content = $faker->paragraphs(4, true);
-        $noteinterne->setContent(str_replace("\n\n", '<br />', $content));
-        $this->addReference('noteinterne_'.$index, $noteinterne);
-        $tabIndex = array_rand($users);
-        /** @var User $user */
-        $user = $users[$tabIndex];
-        $noteinterne->setRefuser($user);
-        $this->upload($noteinterne, $faker);
-        $this->noteInterneRH->handle($old, $noteinterne);
-        $this->noteInterneRH->changeWorkflowState($noteinterne, $states);
-    }
-
-    protected function addGroupe(
-        int $key,
-        string $row
-    ): void
-    {
-        $groupe = new Groupe();
-        $old    = clone $groupe;
-        $groupe->setCode($row);
-        $groupe->setName($row);
-        $this->addReference('groupe_'.$key, $groupe);
-        $this->groupeRH->handle($old, $groupe);
-    }
-
-    protected function addEdito(
-        array $users,
-        Generator $faker,
-        int $index,
-        array $states
-    ): void
-    {
-        $edito  = new Edito();
-        $old    = clone $edito;
-        $random = $faker->numberBetween(5, 50);
-        $edito->setTitle($faker->unique()->text($random));
-        /** @var string $content */
-        $content = $faker->paragraphs(4, true);
-        $edito->setContent(str_replace("\n\n", '<br />', $content));
-        $edito->setPublished($faker->unique()->dateTime('now'));
-        $this->addReference('edito_'.$index, $edito);
-        $tabIndex = array_rand($users);
-        /** @var User $user */
-        $user = $users[$tabIndex];
-        $edito->setRefuser($user);
-        $this->upload($edito, $faker);
-        $this->editoRH->handle($old, $edito);
-        $this->editoRH->changeWorkflowState($edito, $states);
-    }
-
-    protected function addUser(
-        array $groupes,
-        int $index,
-        array $dataUser,
-        Generator $faker
-    ): void
-    {
-        $user = new User();
-        $old  = clone $user;
-
-        $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
-        $user->setUsername($dataUser['username']);
-        $user->setPlainPassword($dataUser['password']);
-        $user->setEmail($dataUser['email']);
-        $this->upload($user, $faker);
-        $this->addReference('user_'.$index, $user);
-        $this->userRH->handle($old, $user);
-        $this->userRH->changeWorkflowState($user, $dataUser['state']);
-    }
-
-    protected function addPhone(
-        Generator $faker,
-        User $user,
-        array $states
-    ): void
-    {
-        $number = $faker->e164PhoneNumber;
-        $phone  = new PhoneUser();
-        $old    = clone $phone;
-        $phone->setRefuser($user);
-        $phone->setNumero($number);
-        $phone->setType($faker->word());
-        $phone->setCountry($faker->countryCode);
-        $this->phoneUserRH->handle($old, $phone);
-        $this->phoneUserRH->changeWorkflowState($phone, $states);
-    }
-
-    protected function addAdresse(
-        Generator $faker,
-        User $user
-    ): void
-    {
-        $adresse = new AdresseUser();
-        $old     = clone $adresse;
-        $adresse->setRefuser($user);
-        $adresse->setRue($faker->streetAddress);
-        $adresse->setVille($faker->city);
-        $adresse->setCountry($faker->countryCode);
-        $adresse->setZipcode($faker->postcode);
-        $adresse->setType($faker->unique()->colorName);
-        $latitude  = $faker->latitude;
-        $longitude = $faker->longitude;
-        $gps       = $latitude.','.$longitude;
-        $adresse->setGps($gps);
-        $adresse->setPmr((bool) rand(0, 1));
-        $this->adresseUserRH->handle($old, $adresse);
     }
 }

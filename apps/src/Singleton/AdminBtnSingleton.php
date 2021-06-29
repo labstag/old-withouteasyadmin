@@ -11,74 +11,25 @@ use Twig\Environment;
 class AdminBtnSingleton
 {
 
-    protected static $instance = null;
-
-    protected bool $init = false;
-
-    protected Environment $twig;
-
-    protected RouterInterface $router;
+    protected $bouton;
 
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
     protected GuardService $guardService;
 
+    protected bool $init = false;
+
+    protected static $instance = null;
+
+    protected RouterInterface $router;
+
     protected TokenStorageInterface $token;
 
-    protected $bouton;
+    protected Environment $twig;
 
     protected function __construct()
     {
         $this->bouton = [];
-    }
-
-    public static function getInstance()
-    {
-        if (is_null(self::$instance)) {
-            self::$instance = new AdminBtnSingleton();
-        }
-
-        return self::$instance;
-    }
-
-    public function isInit()
-    {
-        return $this->init;
-    }
-
-    public function setConf(
-        Environment $twig,
-        RouterInterface $router,
-        TokenStorageInterface $token,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        GuardService $guardService
-    )
-    {
-        $this->twig             = $twig;
-        $this->router           = $router;
-        $this->token            = $token;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->guardService     = $guardService;
-        $this->init             = true;
-    }
-
-    protected function isRouteEnable(string $route)
-    {
-        $token = $this->token->getToken();
-
-        return $this->guardService->guardRoute($route, $token);
-    }
-
-    protected function isRoutesEnable(array $routes): bool
-    {
-        foreach ($routes as $route) {
-            $state = $this->isRouteEnable($route);
-            if (!$state) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public function add(
@@ -105,59 +56,47 @@ class AdminBtnSingleton
         return $this;
     }
 
-    protected function classEntity($entity)
-    {
-        $class = get_class($entity);
-
-        $class = str_replace('Labstag\\Entity\\', '', $class);
-
-        return strtolower($class);
-    }
-
-    public function addBtnRestore(
+    public function addBtnDelete(
         object $entity,
         array $route,
-        string $text = 'Restore',
+        string $text = 'Supprimer',
         array $routeParam = []
     ): self
     {
-        if (!isset($route['restore']) || !isset($route['list'])) {
+        if (!isset($route['list']) || !isset($route['delete'])) {
             return $this;
         }
 
         $routes = [
-            $route['restore'],
             $route['list'],
+            $route['delete'],
         ];
+
         if (!$this->isRoutesEnable($routes)) {
             return $this;
         }
 
         $this->twig->addGlobal(
-            'modalRestore',
+            'modalDelete',
             true
         );
-        $code  = 'restore'.$entity->getId();
+        $code  = 'delete'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
-            'data-toggle'   => 'modal',
+            'id'            => 'DeleteForm',
+            'is'            => 'link-btnadmindelete',
             'data-token'    => $token,
-            'data-target'   => '#restoreModal',
-            'is'            => 'link-btnadminrestore',
-            'data-redirect' => $this->router->generate(
-                $route['list'],
-                [
-                    'entity' => $this->classEntity($entity),
-                ]
-            ),
+            'data-toggle'   => 'modal',
+            'data-target'   => '#deleteModal',
+            'data-redirect' => $this->router->generate($route['list']),
             'data-url'      => $this->router->generate(
-                $route['restore'],
+                $route['delete'],
                 $routeParam
             ),
         ];
 
         $this->add(
-            'btn-admin-header-restore',
+            'btn-admin-header-delete',
             $text,
             $attr
         );
@@ -211,27 +150,6 @@ class AdminBtnSingleton
         return $this;
     }
 
-    public function addBtnGuard(
-        string $route,
-        string $text = 'Editer',
-        array $routeParam = []
-    ): self
-    {
-        if ('' == $route || !$this->isRouteEnable($route)) {
-            return $this;
-        }
-
-        $this->add(
-            'btn-admin-header-guard',
-            $text,
-            [
-                'href' => $this->router->generate($route, $routeParam),
-            ]
-        );
-
-        return $this;
-    }
-
     public function addBtnEdit(
         string $route,
         string $text = 'Editer',
@@ -247,123 +165,6 @@ class AdminBtnSingleton
             $text,
             [
                 'href' => $this->router->generate($route, $routeParam),
-            ]
-        );
-
-        return $this;
-    }
-
-    public function addBtnShow(
-        string $route,
-        string $text = 'Show',
-        array $routeParam = []
-    ): self
-    {
-        if ('' == $route || !$this->isRouteEnable($route)) {
-            return $this;
-        }
-
-        $this->add(
-            'btn-admin-header-show',
-            $text,
-            [
-                'href' => $this->router->generate($route, $routeParam),
-            ]
-        );
-
-        return $this;
-    }
-
-    public function addBtnDelete(
-        object $entity,
-        array $route,
-        string $text = 'Supprimer',
-        array $routeParam = []
-    ): self
-    {
-        if (!isset($route['list']) || !isset($route['delete'])) {
-            return $this;
-        }
-
-        $routes = [
-            $route['list'],
-            $route['delete'],
-        ];
-
-        if (!$this->isRoutesEnable($routes)) {
-            return $this;
-        }
-
-        $this->twig->addGlobal(
-            'modalDelete',
-            true
-        );
-        $code  = 'delete'.$entity->getId();
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr  = [
-            'id'            => 'DeleteForm',
-            'is'            => 'link-btnadmindelete',
-            'data-token'    => $token,
-            'data-toggle'   => 'modal',
-            'data-target'   => '#deleteModal',
-            'data-redirect' => $this->router->generate($route['list']),
-            'data-url'      => $this->router->generate(
-                $route['delete'],
-                $routeParam
-            ),
-        ];
-
-        $this->add(
-            'btn-admin-header-delete',
-            $text,
-            $attr
-        );
-
-        return $this;
-    }
-
-    public function addBtnSave(string $form, string $text = 'Sauvegarder'): self
-    {
-        $this->add(
-            'btn-admin-header-save',
-            $text,
-            [
-                'id'        => 'SaveForm',
-                'data-form' => $form,
-            ]
-        );
-
-        return $this;
-    }
-
-    public function addBtnNew(string $route, string $text = 'Nouveau'): self
-    {
-        if ('' == $route || !$this->isRouteEnable($route)) {
-            return $this;
-        }
-
-        $this->add(
-            'btn-admin-header-new',
-            $text,
-            [
-                'href' => $this->router->generate($route),
-            ]
-        );
-
-        return $this;
-    }
-
-    public function addBtnTrash(string $route, string $text = 'Corbeille'): self
-    {
-        if ('' == $route || !$this->isRouteEnable($route)) {
-            return $this;
-        }
-
-        $this->add(
-            'btn-admin-header-trash',
-            $text,
-            [
-                'href' => $this->router->generate($route),
             ]
         );
 
@@ -411,62 +212,162 @@ class AdminBtnSingleton
         return $this;
     }
 
-    public function addSupprimerSelection(
-        array $routes,
-        string $code,
-        string $title = 'Supprimer'
+    public function addBtnGuard(
+        string $route,
+        string $text = 'Editer',
+        array $routeParam = []
     ): self
     {
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if (!array_key_exists('redirect', $routes)
-            || !array_key_exists('href', $routes['redirect'])
-            || !array_key_exists('params', $routes['redirect'])
-            || !$this->isRouteEnable($routes['redirect']['href'])
-            || !array_key_exists('url', $routes)
-            || !array_key_exists('href', $routes['url'])
-            || !array_key_exists('params', $routes['url'])
-            || !$this->isRouteEnable($routes['url']['href'])
-        ) {
+        if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
-        $this->twig->addGlobal(
-            'modalDeleties',
-            true
-        );
-        $this->setBtnAdd(
-            'btn-admin-header-deleties',
-            'link-btnadmindeleties',
-            'deletiesModal',
-            $title,
-            $token,
-            $routes
+        $this->add(
+            'btn-admin-header-guard',
+            $text,
+            [
+                'href' => $this->router->generate($route, $routeParam),
+            ]
         );
 
         return $this;
     }
 
-    private function setBtnAdd(
-        $name,
-        $isinput,
-        $target,
-        $title,
-        $token,
-        $routes
-    )
+    public function addBtnList(string $route, string $text = 'Liste'): self
     {
+        if ('' == $route || !$this->isRouteEnable($route)) {
+            return $this;
+        }
+
         $this->add(
-            $name,
-            $title,
+            'btn-admin-header-list',
+            $text,
             [
-                'is'            => $isinput,
-                'data-toggle'   => 'modal',
-                'data-target'   => '#'.$target,
-                'data-token'    => $token,
-                'data-redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
-                'data-url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+                'href' => $this->router->generate($route),
             ]
         );
+
+        return $this;
+    }
+
+    public function addBtnNew(string $route, string $text = 'Nouveau'): self
+    {
+        if ('' == $route || !$this->isRouteEnable($route)) {
+            return $this;
+        }
+
+        $this->add(
+            'btn-admin-header-new',
+            $text,
+            [
+                'href' => $this->router->generate($route),
+            ]
+        );
+
+        return $this;
+    }
+
+    public function addBtnRestore(
+        object $entity,
+        array $route,
+        string $text = 'Restore',
+        array $routeParam = []
+    ): self
+    {
+        if (!isset($route['restore']) || !isset($route['list'])) {
+            return $this;
+        }
+
+        $routes = [
+            $route['restore'],
+            $route['list'],
+        ];
+        if (!$this->isRoutesEnable($routes)) {
+            return $this;
+        }
+
+        $this->twig->addGlobal(
+            'modalRestore',
+            true
+        );
+        $code  = 'restore'.$entity->getId();
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        $attr  = [
+            'data-toggle'   => 'modal',
+            'data-token'    => $token,
+            'data-target'   => '#restoreModal',
+            'is'            => 'link-btnadminrestore',
+            'data-redirect' => $this->router->generate(
+                $route['list'],
+                [
+                    'entity' => $this->classEntity($entity),
+                ]
+            ),
+            'data-url'      => $this->router->generate(
+                $route['restore'],
+                $routeParam
+            ),
+        ];
+
+        $this->add(
+            'btn-admin-header-restore',
+            $text,
+            $attr
+        );
+
+        return $this;
+    }
+
+    public function addBtnSave(string $form, string $text = 'Sauvegarder'): self
+    {
+        $this->add(
+            'btn-admin-header-save',
+            $text,
+            [
+                'id'        => 'SaveForm',
+                'data-form' => $form,
+            ]
+        );
+
+        return $this;
+    }
+
+    public function addBtnShow(
+        string $route,
+        string $text = 'Show',
+        array $routeParam = []
+    ): self
+    {
+        if ('' == $route || !$this->isRouteEnable($route)) {
+            return $this;
+        }
+
+        $this->add(
+            'btn-admin-header-show',
+            $text,
+            [
+                'href' => $this->router->generate($route, $routeParam),
+            ]
+        );
+
+        return $this;
+    }
+
+    public function addBtnTrash(string $route, string $text = 'Corbeille'): self
+    {
+        if ('' == $route || !$this->isRouteEnable($route)) {
+            return $this;
+        }
+
+        $this->add(
+            'btn-admin-header-trash',
+            $text,
+            [
+                'href' => $this->router->generate($route),
+            ]
+        );
+
+        return $this;
     }
 
     public function addRestoreSelection(
@@ -508,6 +409,41 @@ class AdminBtnSingleton
         return $this;
     }
 
+    public function addSupprimerSelection(
+        array $routes,
+        string $code,
+        string $title = 'Supprimer'
+    ): self
+    {
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        if (!array_key_exists('redirect', $routes)
+            || !array_key_exists('href', $routes['redirect'])
+            || !array_key_exists('params', $routes['redirect'])
+            || !$this->isRouteEnable($routes['redirect']['href'])
+            || !array_key_exists('url', $routes)
+            || !array_key_exists('href', $routes['url'])
+            || !array_key_exists('params', $routes['url'])
+            || !$this->isRouteEnable($routes['url']['href'])
+        ) {
+            return $this;
+        }
+
+        $this->twig->addGlobal(
+            'modalDeleties',
+            true
+        );
+        $this->setBtnAdd(
+            'btn-admin-header-deleties',
+            'link-btnadmindeleties',
+            'deletiesModal',
+            $title,
+            $token,
+            $routes
+        );
+
+        return $this;
+    }
+
     public function addViderSelection(
         array $routes,
         string $code,
@@ -543,25 +479,89 @@ class AdminBtnSingleton
         return $this;
     }
 
-    public function addBtnList(string $route, string $text = 'Liste'): self
-    {
-        if ('' == $route || !$this->isRouteEnable($route)) {
-            return $this;
-        }
-
-        $this->add(
-            'btn-admin-header-list',
-            $text,
-            [
-                'href' => $this->router->generate($route),
-            ]
-        );
-
-        return $this;
-    }
-
     public function get(): array
     {
         return $this->bouton;
+    }
+
+    public static function getInstance()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new AdminBtnSingleton();
+        }
+
+        return self::$instance;
+    }
+
+    public function isInit()
+    {
+        return $this->init;
+    }
+
+    public function setConf(
+        Environment $twig,
+        RouterInterface $router,
+        TokenStorageInterface $token,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        GuardService $guardService
+    )
+    {
+        $this->twig             = $twig;
+        $this->router           = $router;
+        $this->token            = $token;
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->guardService     = $guardService;
+        $this->init             = true;
+    }
+
+    protected function classEntity($entity)
+    {
+        $class = get_class($entity);
+
+        $class = str_replace('Labstag\\Entity\\', '', $class);
+
+        return strtolower($class);
+    }
+
+    protected function isRouteEnable(string $route)
+    {
+        $token = $this->token->getToken();
+
+        return $this->guardService->guardRoute($route, $token);
+    }
+
+    protected function isRoutesEnable(array $routes): bool
+    {
+        foreach ($routes as $route) {
+            $state = $this->isRouteEnable($route);
+            if (!$state) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function setBtnAdd(
+        $name,
+        $isinput,
+        $target,
+        $title,
+        $token,
+        $routes
+    )
+    {
+        $this->add(
+            $name,
+            $title,
+            [
+                'is'            => $isinput,
+                'data-toggle'   => 'modal',
+                'data-target'   => '#'.$target,
+                'data-token'    => $token,
+                'data-redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
+                'data-url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+            ]
+        );
     }
 }

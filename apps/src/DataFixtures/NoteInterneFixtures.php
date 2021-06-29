@@ -8,6 +8,14 @@ use Labstag\Lib\FixtureLib;
 
 class NoteInterneFixtures extends FixtureLib implements DependentFixtureInterface
 {
+    public function getDependencies()
+    {
+        return [
+            DataFixtures::class,
+            UserFixtures::class,
+        ];
+    }
+
     public function load(ObjectManager $manager): void
     {
         unset($manager);
@@ -45,14 +53,6 @@ class NoteInterneFixtures extends FixtureLib implements DependentFixtureInterfac
                 'relire',
                 'rejeter',
             ],
-        ];
-    }
-
-    public function getDependencies()
-    {
-        return [
-            DataFixtures::class,
-            UserFixtures::class,
         ];
     }
 }

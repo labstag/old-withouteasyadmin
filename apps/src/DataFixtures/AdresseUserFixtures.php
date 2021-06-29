@@ -10,6 +10,14 @@ use Labstag\Lib\FixtureLib;
 
 class AdresseUserFixtures extends FixtureLib implements DependentInterface
 {
+    public function getDependencies()
+    {
+        return [
+            DataFixtures::class,
+            UserFixtures::class,
+        ];
+    }
+
     public function load(ObjectManager $manager): void
     {
         unset($manager);
@@ -20,13 +28,5 @@ class AdresseUserFixtures extends FixtureLib implements DependentInterface
             $user      = $this->getReference('user_'.$indexUser);
             $this->addAdresse($faker, $user);
         }
-    }
-
-    public function getDependencies()
-    {
-        return [
-            DataFixtures::class,
-            UserFixtures::class,
-        ];
     }
 }

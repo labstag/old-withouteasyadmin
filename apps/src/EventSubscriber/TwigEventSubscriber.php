@@ -13,18 +13,17 @@ use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
 {
-
-    protected DataService $dataService;
-
-    protected Environment $twig;
-
-    protected RouterInterface $router;
+    const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
 
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
+    protected DataService $dataService;
+
+    protected RouterInterface $router;
+
     protected Security $security;
 
-    const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
+    protected Environment $twig;
 
     public function __construct(
         RouterInterface $router,
@@ -41,28 +40,16 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->dataService      = $dataService;
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [ControllerEvent::class => 'onControllerEvent'];
+    }
+
     public function onControllerEvent(ControllerEvent $event): void
     {
         $this->setLoginPage($event);
         $this->setAdminPages($event);
         $this->setConfig($event);
-    }
-
-    protected function setConfig(ControllerEvent $event): void
-    {
-        $controller = $event->getRequest()->attributes->get('_controller');
-        $config     = $this->dataService->getConfig();
-        $matches    = [];
-        preg_match(self::ADMIN_CONTROLLER, $controller, $matches);
-        if (!array_key_exists('meta', $config)) {
-            $config['meta'] = [];
-        }
-
-        if (0 != count($matches)) {
-            $config['meta']['robots'] = 'noindex';
-        }
-
-        $this->twig->addGlobal('config', $config);
     }
 
     protected function setAdminPages(ControllerEvent $event): void
@@ -84,6 +71,23 @@ class TwigEventSubscriber implements EventSubscriberInterface
         BreadcrumbsSingleton::getInstance()->add($adminBreadcrumbs);
     }
 
+    protected function setConfig(ControllerEvent $event): void
+    {
+        $controller = $event->getRequest()->attributes->get('_controller');
+        $config     = $this->dataService->getConfig();
+        $matches    = [];
+        preg_match(self::ADMIN_CONTROLLER, $controller, $matches);
+        if (!array_key_exists('meta', $config)) {
+            $config['meta'] = [];
+        }
+
+        if (0 != count($matches)) {
+            $config['meta']['robots'] = 'noindex';
+        }
+
+        $this->twig->addGlobal('config', $config);
+    }
+
     protected function setLoginPage(ControllerEvent $event): void
     {
         $currentRoute = $event->getRequest()->attributes->get('_route');
@@ -100,10 +104,5 @@ class TwigEventSubscriber implements EventSubscriberInterface
             'oauthActivated',
             $this->dataService->getOauthActivated($this->security->getUser())
         );
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [ControllerEvent::class => 'onControllerEvent'];
     }
 }

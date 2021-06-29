@@ -19,6 +19,16 @@ class Attachment
     use SoftDeleteableEntity;
 
     /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    protected $dimensions = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond")
+     */
+    protected $editos;
+
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
@@ -28,37 +38,12 @@ class Attachment
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $name;
+    protected $mimeType;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $mimeType;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    protected $size;
-
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
-    protected $dimensions = [];
-
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar")
-     */
-    protected $users;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img")
-     */
-    protected $posts;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond")
-     */
-    protected $editos;
+    protected $name;
 
     /**
      * @ORM\OneToMany(targetEntity=NoteInterne::class, mappedBy="fond")
@@ -66,9 +51,24 @@ class Attachment
     protected $noteInternes;
 
     /**
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img")
+     */
+    protected $posts;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $size;
+
+    /**
      * @ORM\Column(type="array")
      */
     protected $state;
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar")
+     */
+    protected $users;
 
     /**
      * @var DateTime
@@ -86,105 +86,24 @@ class Attachment
         $this->noteInternes = new ArrayCollection();
     }
 
-    public function getState()
+    public function addEdito(Edito $edito): self
     {
-        return $this->state;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
-    }
-
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getMimeType(): ?string
-    {
-        return $this->mimeType;
-    }
-
-    public function setMimeType(?string $mimeType): self
-    {
-        $this->mimeType = $mimeType;
-
-        return $this;
-    }
-
-    public function getSize(): ?int
-    {
-        return $this->size;
-    }
-
-    public function setSize(?int $size): self
-    {
-        $this->size = $size;
-
-        return $this;
-    }
-
-    public function getDimensions(): ?array
-    {
-        return $this->dimensions;
-    }
-
-    public function setDimensions(?array $dimensions): self
-    {
-        $this->dimensions = $dimensions;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setAvatar($this);
+        if (!$this->editos->contains($edito)) {
+            $this->editos[] = $edito;
+            $edito->setFond($this);
         }
 
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function addNoteInterne(NoteInterne $noteInterne): self
     {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getAvatar() === $this) {
-                $user->setAvatar(null);
-            }
+        if (!$this->noteInternes->contains($noteInterne)) {
+            $this->noteInternes[] = $noteInterne;
+            $noteInterne->setFond($this);
         }
 
         return $this;
-    }
-
-    /**
-     * @return Collection|Post[]
-     */
-    public function getPosts(): Collection
-    {
-        return $this->posts;
     }
 
     public function addPost(Post $post): self
@@ -197,16 +116,19 @@ class Attachment
         return $this;
     }
 
-    public function removePost(Post $post): self
+    public function addUser(User $user): self
     {
-        if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
-            if ($post->getImg() === $this) {
-                $post->setImg(null);
-            }
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setAvatar($this);
         }
 
         return $this;
+    }
+
+    public function getDimensions(): ?array
+    {
+        return $this->dimensions;
     }
 
     /**
@@ -217,26 +139,19 @@ class Attachment
         return $this->editos;
     }
 
-    public function addEdito(Edito $edito): self
+    public function getId(): ?string
     {
-        if (!$this->editos->contains($edito)) {
-            $this->editos[] = $edito;
-            $edito->setFond($this);
-        }
-
-        return $this;
+        return $this->id;
     }
 
-    public function removeEdito(Edito $edito): self
+    public function getMimeType(): ?string
     {
-        if ($this->editos->removeElement($edito)) {
-            // set the owning side to null (unless already changed)
-            if ($edito->getFond() === $this) {
-                $edito->setFond(null);
-            }
-        }
+        return $this->mimeType;
+    }
 
-        return $this;
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
     /**
@@ -247,11 +162,44 @@ class Attachment
         return $this->noteInternes;
     }
 
-    public function addNoteInterne(NoteInterne $noteInterne): self
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPosts(): Collection
     {
-        if (!$this->noteInternes->contains($noteInterne)) {
-            $this->noteInternes[] = $noteInterne;
-            $noteInterne->setFond($this);
+        return $this->posts;
+    }
+
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function getStateChanged()
+    {
+        return $this->stateChanged;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function removeEdito(Edito $edito): self
+    {
+        if ($this->editos->removeElement($edito)) {
+            // set the owning side to null (unless already changed)
+            if ($edito->getFond() === $this) {
+                $edito->setFond(null);
+            }
         }
 
         return $this;
@@ -269,8 +217,60 @@ class Attachment
         return $this;
     }
 
-    public function getStateChanged()
+    public function removePost(Post $post): self
     {
-        return $this->stateChanged;
+        if ($this->posts->removeElement($post)) {
+            // set the owning side to null (unless already changed)
+            if ($post->getImg() === $this) {
+                $post->setImg(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getAvatar() === $this) {
+                $user->setAvatar(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setDimensions(?array $dimensions): self
+    {
+        $this->dimensions = $dimensions;
+
+        return $this;
+    }
+
+    public function setMimeType(?string $mimeType): self
+    {
+        $this->mimeType = $mimeType;
+
+        return $this;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function setSize(?int $size): self
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 }

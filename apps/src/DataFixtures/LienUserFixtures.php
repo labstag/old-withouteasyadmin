@@ -8,6 +8,14 @@ use Labstag\Lib\FixtureLib;
 
 class LienUserFixtures extends FixtureLib implements DependentFixtureInterface
 {
+    public function getDependencies()
+    {
+        return [
+            DataFixtures::class,
+            UserFixtures::class,
+        ];
+    }
+
     public function load(ObjectManager $manager): void
     {
         unset($manager);
@@ -18,13 +26,5 @@ class LienUserFixtures extends FixtureLib implements DependentFixtureInterface
             $user      = $this->getReference('user_'.$indexUser);
             $this->addLink($faker, $user);
         }
-    }
-
-    public function getDependencies()
-    {
-        return [
-            DataFixtures::class,
-            UserFixtures::class,
-        ];
     }
 }

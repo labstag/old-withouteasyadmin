@@ -24,6 +24,17 @@ class LabstagInstallCommand extends Command
         parent::__construct();
     }
 
+    protected function all($inputOutput)
+    {
+        $inputOutput->note('Installations');
+        $this->setMenuAdmin($inputOutput);
+        $this->setMenuAdminProfil($inputOutput);
+        $this->setGroup($inputOutput);
+        $this->setConfig($inputOutput);
+        $this->setTemplates($inputOutput);
+        $this->setUsers($inputOutput);
+    }
+
     protected function configure()
     {
         $this->setDescription('Add a short description for your command');
@@ -60,29 +71,6 @@ class LabstagInstallCommand extends Command
         return Command::SUCCESS;
     }
 
-    protected function all($inputOutput)
-    {
-        $inputOutput->note('Installations');
-        $this->setMenuAdmin($inputOutput);
-        $this->setMenuAdminProfil($inputOutput);
-        $this->setGroup($inputOutput);
-        $this->setConfig($inputOutput);
-        $this->setTemplates($inputOutput);
-        $this->setUsers($inputOutput);
-    }
-
-    protected function setTemplates($inputOutput)
-    {
-        $inputOutput->note('Ajout des templates');
-        $this->installService->templates();
-    }
-
-    protected function setUsers($inputOutput)
-    {
-        $inputOutput->note('Ajout des users');
-        $this->installService->users();
-    }
-
     protected function setConfig($inputOutput)
     {
         $inputOutput->note('Ajout de la configuration');
@@ -105,5 +93,17 @@ class LabstagInstallCommand extends Command
     {
         $inputOutput->note('Ajout du menu admin profil');
         $this->installService->menuadminprofil();
+    }
+
+    protected function setTemplates($inputOutput)
+    {
+        $inputOutput->note('Ajout des templates');
+        $this->installService->templates();
+    }
+
+    protected function setUsers($inputOutput)
+    {
+        $inputOutput->note('Ajout des users');
+        $this->installService->users();
     }
 }
