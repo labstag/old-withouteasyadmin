@@ -20,7 +20,7 @@
         </thead>
         <tbody>
         {% for data in trash %}
-            <tr data-id="{{ data.name }}">
+            <tr data-id="{{ data.name|e('html_attr') }}">
                 <td>
                     {{ data.entity }}
                 </td>

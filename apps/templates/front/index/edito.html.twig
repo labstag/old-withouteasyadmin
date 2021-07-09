@@ -1,9 +1,10 @@
-<div class="edito"{% if edito.fond is defined %} style="background-image: url('{{ edito.fond.name }}');"{% endif %}>
-	<div class="col-md-6 px-0">
-		<h1 class="display-4 font-italic">{{ edito.title }}</h1>
-		<p class="lead my-3">{{ edito.content|raw }}</p>
-		<p class="lead mb-0">
-			<a href="{{ path('edito') }}" class="text-white font-weight-bold">Continuer à lire...</a>
-		</p>
+<div class="header_edito"{% if edito.fond is defined %} style="background-image: url('{{ edito.fond.name }}');"{% endif %}>
+	<h1>{{ edito.title }}</h1>
+    <div class="edito_content">
+        {{ edito.content|raw }}
+    </p>
 	</div>
+    <div class="edito_more">
+        <a href="{{ path('edito') }}">Continuer à lire...</a>
+    </div>
 </div>

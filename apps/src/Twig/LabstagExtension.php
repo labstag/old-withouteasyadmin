@@ -135,41 +135,42 @@ class LabstagExtension extends AbstractExtension
 
     public function getFilters(): array
     {
+        $dataFilters = $this->getFiltersFunctions();
+        $filters     = [];
+        foreach ($dataFilters as $key => $function) {
+            $filters[] = new TwigFilter($key, [$this, $function]),
+        }
+
+        return $filters;
+    }
+
+    private function getFiltersFunctions()
+    {
         return [
-            // If your filter generates SAFE HTML, you should add a third
-            // parameter: ['is_safe' => ['html']]
-            // Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
-            new TwigFilter('workflow_has', [$this, 'workflowHas']),
-            new TwigFilter('guard_route', [$this, 'guardRoute']),
-            new TwigFilter('class_entity', [$this, 'classEntity']),
-            new TwigFilter('attachment', [$this, 'getAttachment']),
-            new TwigFilter('phone_valid', [$this, 'isPhoneValid']),
-            new TwigFilter('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
-            new TwigFilter('guard_route_enable_user', [$this, 'guardRouteEnableUser']),
-            new TwigFilter('guard_user_access', [$this, 'guardAccessUserRoutes']),
-            new TwigFilter('guard_group_access', [$this, 'guardAccessGroupRoutes']),
-            new TwigFilter('formClass', [$this, 'formClass']),
-            new TwigFilter('verifPhone', [$this, 'verifPhone']),
-            new TwigFilter('formPrototype', [$this, 'formPrototype']),
+            'workflow_has'             => 'workflowHas',
+            'guard_route'              => 'guardRoute',
+            'class_entity'             => 'classEntity',
+            'attachment'               => 'getAttachment',
+            'phone_valid'              => 'isPhoneValid',
+            'guard_route_enable_group' => 'guardRouteEnableGroupe',
+            'guard_route_enable_user'  => 'guardRouteEnableUser',
+            'guard_user_access'        => 'guardAccessUserRoutes',
+            'guard_group_access'       => 'guardAccessGroupRoutes',
+            'formClass'                => 'formClass',
+            'verifPhone'               => 'verifPhone',
+            'formPrototype'            => 'formPrototype',
         ];
     }
 
     public function getFunctions(): array
     {
-        return [
-            new TwigFunction('workflow_has', [$this, 'workflowHas']),
-            new TwigFunction('guard_route', [$this, 'guardRoute']),
-            new TwigFunction('class_entity', [$this, 'classEntity']),
-            new TwigFunction('attachment', [$this, 'getAttachment']),
-            new TwigFunction('phone_valid', [$this, 'isPhoneValid']),
-            new TwigFunction('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
-            new TwigFunction('guard_route_enable_user', [$this, 'guardRouteEnableUser']),
-            new TwigFunction('guard_user_access', [$this, 'guardAccessUserRoutes']),
-            new TwigFunction('guard_group_access', [$this, 'guardAccessGroupRoutes']),
-            new TwigFunction('formClass', [$this, 'formClass']),
-            new TwigFunction('verifPhone', [$this, 'verifPhone']),
-            new TwigFunction('formPrototype', [$this, 'formPrototype']),
-        ];
+        $dataFunctions = $this->getFiltersFunctions();
+        $functions     = [];
+        foreach ($dataFunctions as $key => $function) {
+            $functions[] = new TwigFunction($key, [$this, $function]),
+        }
+
+        return $functions;
     }
 
     public function guardAccessGroupRoutes(Groupe $groupe): bool

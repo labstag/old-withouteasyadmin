@@ -28,8 +28,6 @@ class FrontController extends FrontControllerLib
     {
         $edito = $this->editoData();
 
-        dump($edito);
-
         return $this->render(
             'front/index.html.twig',
             ['edito' => $edito]

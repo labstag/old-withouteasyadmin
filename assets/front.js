@@ -1,3 +1,3 @@
-import './assets'
+import './global'
 
 console.log('public')

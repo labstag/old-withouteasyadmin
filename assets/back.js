@@ -1,4 +1,4 @@
-import './assets'
+import './global'
 import './elements/admin/index'
 function clickFormSave (event) {
   event.preventDefault()

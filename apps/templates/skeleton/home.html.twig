@@ -1,0 +1,13 @@
+{% extends 'front.html.twig' %}
+{% block body %}
+    <header>
+        {% include "front/header.html.twig" %}
+        {% block header %}{% endblock %}
+    </header>
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+	<footer>
+        {% include "front/footer.html.twig" %}
+	</footer>
+{% endblock %}

@@ -1,5 +1,5 @@
 {% set bodyclass = "body-login" %}
-{% extends 'global.html.twig' %}
+{% extends 'front.html.twig' %}
 {% block page_title %}Log in!{% endblock %}
 {% block body %}
     <div class="form-login">
@@ -18,7 +18,7 @@
                 <div class="oauth-title">Se connecter avec :</div>
                 <div class="oauth-btns">
                 {% for oauth in oauths %}
-                    <a href="{{ path('connect_start', {'oauthCode': oauth.name}) }}" title="{{ oauth.name|e }}">
+                    <a href="{{ path('connect_start', {'oauthCode': oauth.name}) }}" title="{{ oauth.name|e('html_attr') }}">
                         <i class="fab fa-{{ oauth.name }}"></i>
                         {{ oauth.name }}
                     </a>
