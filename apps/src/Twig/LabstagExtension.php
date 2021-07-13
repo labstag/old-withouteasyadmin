@@ -138,7 +138,7 @@ class LabstagExtension extends AbstractExtension
         $dataFilters = $this->getFiltersFunctions();
         $filters     = [];
         foreach ($dataFilters as $key => $function) {
-            $filters[] = new TwigFilter($key, [$this, $function]),
+            $filters[] = new TwigFilter($key, [$this, $function]);
         }
 
         return $filters;
@@ -167,7 +167,7 @@ class LabstagExtension extends AbstractExtension
         $dataFunctions = $this->getFiltersFunctions();
         $functions     = [];
         foreach ($dataFunctions as $key => $function) {
-            $functions[] = new TwigFunction($key, [$this, $function]),
+            $functions[] = new TwigFunction($key, [$this, $function]);
         }
 
         return $functions;

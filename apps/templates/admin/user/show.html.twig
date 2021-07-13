@@ -139,8 +139,8 @@
                                 <tr>
                                     <td><a href="tel:{{ phone.numero }}">{{ phone.numero }}</a></td>
                                     <td>
-                                        {% set check = verifPhone(phone.country, phone.numero)  ? 'OK' : 'KO' %}
-                                        <span class="check{{ check }}"></span>
+                                        {% set check = verifPhone(phone.country, phone.numero)  ? 'ok' : 'ko' %}
+                                        <span class="check-{{ check }}"></span>
                                     </td>
                                     <td>
                                         <span class="flag-icon flag-icon-{{ phone.country|lower }}"></span>

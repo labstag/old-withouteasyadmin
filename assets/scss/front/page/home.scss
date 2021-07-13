@@ -1,0 +1,35 @@
+.header_edito{
+  padding: 20px;
+  min-height: 50vh;
+}
+.edito_more{
+  @extend .text-right;
+  a{
+    @extend .btn;
+    @extend .btn-primary;
+  }
+}
+section{
+  @include media-breakpoint-up(md) {
+    @include make-row();
+  }
+}
+.home_content{
+  @include media-breakpoint-up(md) {
+    @include make-col(9);
+  }
+}
+aside{
+  .aside-lists{
+    @extend .container;
+  }
+  .aside-list{
+    @extend .col-6;
+    @include media-breakpoint-up(md) {
+      @include make-col(1);
+    }
+  }
+  @include media-breakpoint-up(md) {
+    @include make-col(3);
+  }
+}

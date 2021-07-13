@@ -1,0 +1,37 @@
+footer{
+  background-color: $bg_footer;
+  color: $c_footer;
+  flex-shrink: 0;
+  padding: 20px;
+}
+
+.footer-container{
+  @extend .container;
+}
+.footer-text{
+  @extend .col;
+  @extend .text-center;
+}
+.footer-gotop{
+  @extend .fas;
+  @extend .fa-arrow-up;
+  @extend .text-center;
+  position: relative;
+  z-index: 1;
+  border-radius: 0 0 25% 25%;
+  background-color: $bg_gotop;
+  color: $c_gotop;
+  height: 40px;
+  width: 40px;
+  padding: 10px;
+  top: -40px;
+  left: 50%;
+  cursor: pointer;
+  &:hover{
+    color: $c_gotophover;
+    border: 2px solid $bg_gotophover;
+  }
+  @include media-breakpoint-up(lg) {
+    left: 90%;
+  }
+}
