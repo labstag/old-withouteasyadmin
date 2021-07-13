@@ -1,4 +1,3 @@
-{% import "modal.html.twig" as modal %}
 <!DOCTYPE html>
 <html lang="{{ config.languagedefault|e('html_attr') }}">
     <head>
@@ -13,36 +12,19 @@
         {% endif %}
         {% block stylesheets %}{% endblock %}
         {% block javascripts %}{% endblock %}
+        {% if app.environment == 'dev' %}
+            <script src="http://localhost:35729/livereload.js"></script>
+        {% endif %}
     </head>
     <body{% if bodyclass is defined %} class = "{{ bodyclass }}"{% endif %}>
         {% block content %}{% endblock %}
         {% block modal %}
-            {% if modalDelete is defined %}
-                {{ modal.delete() }}
-            {% endif %}
-            {% if modalEmpty is defined %}
-                {{ modal.empty() }}
-            {% endif %}
-            {% if modalEmpties is defined %}
-                {{ modal.empties() }}
-            {% endif %}
-            {% if modalDeleties is defined %}
-                {{ modal.deleties() }}
-            {% endif %}
-            {% if modalDestroy is defined %}
-                {{ modal.destroy() }}
-            {% endif %}
-            {% if modalRestore is defined %}
-                {{ modal.restore() }}
-            {% endif %}
-            {% if modalRestories is defined %}
-                {{ modal.restories() }}
-            {% endif %}
-            {% if modalWorkflow is defined %}
-                {{ modal.Workflow() }}
-            {% endif %}
-            {% if modalAttachmentDelete is defined %}
-                {{ modal.attachmentDelete() }}
+            {% if modal is defined %}
+                {% for key, value in modal %}
+                    {% if value== true %}
+                        {% include "modal/"~ key ~".html.twig" %}
+                    {% endif %}
+                {% endfor %}
             {% endif %}
         {% endblock %}
     </body>

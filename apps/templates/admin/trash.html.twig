@@ -1,5 +1,3 @@
-{% import "modal.html.twig" as modal %}
-{% import "modal.html.twig" as modal %}
 {% extends 'admin.html.twig' %}
 {% block body %}
     <table
@@ -52,5 +50,5 @@
 {% endblock %}
 {% block modal %}
     {{ parent() }}
-    {{ modal.emptyall() }}
+    {% include "modal/emptyall.html.twig" %}
 {% endblock %}

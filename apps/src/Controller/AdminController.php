@@ -150,16 +150,12 @@ class AdminController extends AdminControllerLib
             return $this->redirect($this->generateUrl('admin'));
         }
 
-        $this->twig->addGlobal(
-            'modalEmpty',
-            true
-        );
-        $token = $this->csrfTokenManager->getToken('emptyall')->getValue();
+        $globals        = $this->twig->getGlobals();
+        $modal          = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal['empty'] = true;
+        $token          = $this->csrfTokenManager->getToken('emptyall')->getValue();
         if ($this->isRouteEnable('api_action_emptyall')) {
-            $this->twig->addGlobal(
-                'modalEmptyAll',
-                true
-            );
+            $modal['emptyall'] = true;
             $this->btnInstance->add(
                 'btn-admin-header-emptyall',
                 'Tout vider',
@@ -174,6 +170,7 @@ class AdminController extends AdminControllerLib
             );
         }
 
+        $this->twig->addGlobal('modal', $modal);
         $this->btnInstance->addViderSelection(
             [
                 'redirect' => [

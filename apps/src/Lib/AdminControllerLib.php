@@ -216,10 +216,10 @@ abstract class AdminControllerLib extends ControllerLib
 
     public function modalAttachmentDelete(): void
     {
-        $this->twig->addGlobal(
-            'modalAttachmentDelete',
-            true
-        );
+        $globals                   = $this->twig->getGlobals();
+        $modal                     = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal['attachmentdelete'] = true;
+        $this->twig->addGlobal('modal', $modal);
     }
 
     public function render(
@@ -403,19 +403,11 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        if (isset($actions['destroy'])) {
-            $this->twig->addGlobal(
-                'modalDestroy',
-                true
-            );
-        }
-
-        if (isset($actions['restore'])) {
-            $this->twig->addGlobal(
-                'modalRestore',
-                true
-            );
-        }
+        $globals          = $this->twig->getGlobals();
+        $modal            = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal['destroy'] = (isset($actions['destroy']));
+        $modal['restore'] = (isset($actions['restore']));
+        $this->twig->addGlobal('modal', $modal);
 
         $this->btnInstance->addViderSelection(
             [
@@ -597,19 +589,12 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        if (isset($actions['delete'])) {
-            $this->twig->addGlobal(
-                'modalDelete',
-                true
-            );
-        }
+        $globals           = $this->twig->getGlobals();
+        $modal             = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal['delete']   = (isset($actions['delete']));
+        $modal['workflow'] = (isset($actions['workflow']));
 
-        if (isset($actions['workflow'])) {
-            $this->twig->addGlobal(
-                'modalWorkflow',
-                true
-            );
-        }
+        $this->twig->addGlobal('modal', $modal);
     }
 
     protected function showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity)

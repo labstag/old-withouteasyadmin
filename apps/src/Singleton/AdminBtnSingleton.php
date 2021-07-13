@@ -76,10 +76,10 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $this->twig->addGlobal(
-            'modalDelete',
-            true
-        );
+        $globals         = $this->twig->getGlobals();
+        $modal           = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal['delete'] = true;
+        $this->twig->addGlobal('modal', $modal);
         $code  = 'delete'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
@@ -123,10 +123,10 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $this->twig->addGlobal(
-            'modalDestroy',
-            true
-        );
+        $globals          = $this->twig->getGlobals();
+        $modal            = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal['destroy'] = true;
+        $this->twig->addGlobal('modal', $modal);
         $code  = 'destroy'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
@@ -185,10 +185,10 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $this->twig->addGlobal(
-            'modalEmpty',
-            true
-        );
+        $globals        = $this->twig->getGlobals();
+        $modal          = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal['empty'] = true;
+        $this->twig->addGlobal('modal', $modal);
         $code  = 'empty';
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
@@ -286,10 +286,10 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $this->twig->addGlobal(
-            'modalRestore',
-            true
-        );
+        $globals          = $this->twig->getGlobals();
+        $modal            = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal['restore'] = true;
+        $this->twig->addGlobal('modal', $modal);
         $code  = 'restore'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
@@ -389,10 +389,10 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $this->twig->addGlobal(
-            'modalRestories',
-            true
-        );
+        $globals            = $this->twig->getGlobals();
+        $modal              = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal['restories'] = true;
+        $this->twig->addGlobal('modal', $modal);
         $this->add(
             'btn-admin-header-restories',
             $title,
@@ -428,10 +428,10 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $this->twig->addGlobal(
-            'modalDeleties',
-            true
-        );
+        $globals           = $this->twig->getGlobals();
+        $modal             = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal['deleties'] = true;
+        $this->twig->addGlobal('modal', $modal);
         $this->setBtnAdd(
             'btn-admin-header-deleties',
             'link-btnadmindeleties',
@@ -463,10 +463,10 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $this->twig->addGlobal(
-            'modalEmpties',
-            true
-        );
+        $globals          = $this->twig->getGlobals();
+        $modal            = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal['empties'] = true;
+        $this->twig->addGlobal('modal', $modal);
         $this->setBtnAdd(
             'btn-admin-header-empties',
             'link-btnadminempties',

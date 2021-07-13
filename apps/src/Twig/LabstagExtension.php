@@ -144,24 +144,6 @@ class LabstagExtension extends AbstractExtension
         return $filters;
     }
 
-    private function getFiltersFunctions()
-    {
-        return [
-            'workflow_has'             => 'workflowHas',
-            'guard_route'              => 'guardRoute',
-            'class_entity'             => 'classEntity',
-            'attachment'               => 'getAttachment',
-            'phone_valid'              => 'isPhoneValid',
-            'guard_route_enable_group' => 'guardRouteEnableGroupe',
-            'guard_route_enable_user'  => 'guardRouteEnableUser',
-            'guard_user_access'        => 'guardAccessUserRoutes',
-            'guard_group_access'       => 'guardAccessGroupRoutes',
-            'formClass'                => 'formClass',
-            'verifPhone'               => 'verifPhone',
-            'formPrototype'            => 'formPrototype',
-        ];
-    }
-
     public function getFunctions(): array
     {
         $dataFunctions = $this->getFiltersFunctions();
@@ -235,5 +217,23 @@ class LabstagExtension extends AbstractExtension
         $type = $class['form']->vars['unique_block_prefix'];
 
         return $type;
+    }
+
+    private function getFiltersFunctions()
+    {
+        return [
+            'workflow_has'             => 'workflowHas',
+            'guard_route'              => 'guardRoute',
+            'class_entity'             => 'classEntity',
+            'attachment'               => 'getAttachment',
+            'phone_valid'              => 'isPhoneValid',
+            'guard_route_enable_group' => 'guardRouteEnableGroupe',
+            'guard_route_enable_user'  => 'guardRouteEnableUser',
+            'guard_user_access'        => 'guardAccessUserRoutes',
+            'guard_group_access'       => 'guardAccessGroupRoutes',
+            'formClass'                => 'formClass',
+            'verifPhone'               => 'verifPhone',
+            'formPrototype'            => 'formPrototype',
+        ];
     }
 }
