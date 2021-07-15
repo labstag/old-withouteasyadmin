@@ -1,33 +1,4 @@
+@import "front/_mixin.scss";
 @import "front/_variables.scss";
 @import "global.scss";
-@import "front/header.scss";
-@import "front/main.scss";
-@import "front/footer.scss";
-
-.body-lostpassword {
-  @extend .d-flex;
-  @extend .align-items-center;
-  @extend .flex-column;
-
-  justify-content: center;
-  height: 100vh;
-
-  h1 {
-    @extend .h3;
-    @extend .mb-3;
-    @extend .font-weight-normal;
-  }
-}
-
-.body-changepassword {
-  @extend .d-flex;
-  @extend .align-items-center;
-  @extend .flex-column;
-
-  h1 {
-    @extend .h3;
-    @extend .mb-3;
-    @extend .font-weight-normal;
-  }
-}
-
+@import "front/pages.scss";

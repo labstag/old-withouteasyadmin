@@ -1,0 +1,56 @@
+header{
+  @extend .container;
+}
+
+.header_row{
+  @extend .row;
+}
+
+.header_top-title{
+  @include make-col(12);
+  a{
+    
+  }
+  
+  @include media-breakpoint-up(sm) {
+    @include make-col(6);
+  }
+}
+
+.header_top-login{
+  @include make-col(12);
+  text-align: right;
+  a{
+    
+  }
+  
+  @include media-breakpoint-up(sm) {
+    @include make-col(6);
+    text-align: left;
+  }
+}
+
+.header_menu{
+  @extend .col-12;
+  @extend .flex-nowrap;
+  @extend .justify-content-between;
+  @extend .align-items-center;
+  a{
+    @extend .p-2;
+    @extend .text-muted;
+  }
+}
+
+.header_edito{
+  @extend .col-12;  
+}
+
+.edito_content{
+
+}
+
+.edito_more{
+  a{
+
+  }
+}

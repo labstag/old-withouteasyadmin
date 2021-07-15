@@ -1,0 +1,46 @@
+header{
+  @extend .container;
+  @import "main/header.scss";
+}
+
+main{
+  @extend .container;
+  section{
+    @extend .row;
+  }
+  .home_content{
+    @include make-col(12);
+    padding: 15px 15px 15px 15px;
+    @include media-breakpoint-up(md) {
+      @include make-col(9);
+    }
+  }
+  aside{
+    @include make-col(12);
+    padding: 15px 15px 15px 15px;
+    @include media-breakpoint-up(md) {
+      @include make-col(3);
+    }
+  }
+}
+
+.aside-lists{
+  @extend .row;
+  align-content: baseline;
+}
+
+.aside-list{
+  @include make-col(6);
+  padding: 15px;
+  @include media-breakpoint-up(md) {
+    @include make-col(12);
+  }
+}
+
+footer{
+  background-color: $bc_footer;
+  color: $c_footer;
+  min-height: 10vh;
+  bottom: 0;
+  @import "main/footer.scss";
+}

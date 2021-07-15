@@ -1,8 +1,10 @@
 {% extends 'front.html.twig' %}
 {% block body %}
     <header>
-        {% include "skeleton/home/header.html.twig" %}
-        {% block header %}{% endblock %}
+        <div class="header_row">
+            {% include "skeleton/home/header.html.twig" %}
+            {% block header %}{% endblock %}
+        </div>
     </header>
     <main>
         {% block main %}{% endblock %}

@@ -1,6 +1,0 @@
-header{
-  @include media-breakpoint-up(xl) {
-    max-width: map-get($grid-breakpoints, 'lg');
-    @include make-container($grid-gutter-width);
-  }
-}

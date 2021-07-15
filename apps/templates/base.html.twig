@@ -16,7 +16,7 @@
             <script src="http://localhost:35729/livereload.js"></script>
         {% endif %}
     </head>
-    <body{% if bodyclass is defined %} class = "{{ bodyclass }}"{% endif %}>
+    <body{% if bodyclass is defined %} class="{{ bodyclass }}"{% endif %}>
         {% block content %}{% endblock %}
         {% block modal %}
             {% if modal is defined %}

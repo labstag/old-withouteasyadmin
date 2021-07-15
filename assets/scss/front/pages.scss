@@ -1,0 +1,30 @@
+.body-changepassword{
+  @import "page/changepassword.scss";
+}
+
+.body-disclaimer{
+  @extend .d-flex;
+  @extend .align-items-center;
+  @extend .flex-column;
+
+  justify-content: center;
+  height: 100vh;
+  @import "page/disclaimer.scss";
+}
+
+.body-login {
+  @extend .d-flex;
+  @extend .align-items-center;
+  @extend .flex-column;
+
+  justify-content: center;
+  height: 100vh;
+
+  @import "page/login.scss";
+}
+
+.body-lostpassword{
+  @import "page/lostpassword.scss";
+}
+
+@import "page/main.scss";
