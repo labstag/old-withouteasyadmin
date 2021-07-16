@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use Labstag\Repository\EditoRepository;
+use Labstag\Repository\PostRepository;
 use Labstag\Service\DataService;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
@@ -15,13 +16,17 @@ abstract class FrontControllerLib extends ControllerLib
 
     protected EditoRepository $editoRepository;
 
+    protected PostRepository $postRepository;
+
     public function __construct(
         DataService $dataService,
         Breadcrumbs $breadcrumbs,
-        EditoRepository $editoRepository
+        EditoRepository $editoRepository,
+        PostRepository $postRepository
     )
     {
         $this->editoRepository = $editoRepository;
+        $this->postRepository = $postRepository;
         parent::__construct($dataService, $breadcrumbs);
     }
 
@@ -30,5 +35,12 @@ abstract class FrontControllerLib extends ControllerLib
         $edito = $this->editoRepository->findOnePublier();
 
         return $edito;
+    }
+
+    protected function postData()
+    {
+        $posts = $this->postRepository->findPublier();
+
+        return $posts;
     }
 }

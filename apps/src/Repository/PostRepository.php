@@ -12,4 +12,18 @@ class PostRepository extends ServiceEntityRepositoryLib
     {
         parent::__construct($registry, Post::class);
     }
+
+    public function findPublier()
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.state LIKE :state'
+        );
+        $query->orderBy('u.published', 'DESC');
+        $query->setParameters(
+            ['state' => '%publie%']
+        );
+
+        return $query->getQuery()->getResult();
+    }
 }

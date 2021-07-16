@@ -14,11 +14,11 @@ export class BtnAddCollection extends ElementHTML {
   onClick (element) {
     element.preventDefault()
     const fieldcollection = element.currentTarget.closest('.fieldcollection')
-    const counter = fieldcollection.querySelectorAll('.CollectionRow').length
+    const counter = fieldcollection.querySelectorAll('.collection-row').length
     const html = fieldcollection.dataset.prototype.replace(/__name__/g, counter)
-    const FieldRow = fieldcollection.querySelector('.FieldRow')
-    if (FieldRow !== null) {
-      FieldRow.innerHTML += html
+    const fieldRow = fieldcollection.querySelector('.field-row')
+    if (fieldRow !== null) {
+      fieldRow.innerHTML += html
     }
   }
 }

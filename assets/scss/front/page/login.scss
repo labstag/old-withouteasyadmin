@@ -4,10 +4,16 @@ h1 {
   @extend .font-weight-normal;
 }
 
-.itemConnect {
+.item-connect {
   @extend .col-md-4;
 }
 
 .oauth{
   
+}
+
+.form-login{
+  border: 1px solid grey;
+  border-radius: 5%;
+  padding: 2%;
 }

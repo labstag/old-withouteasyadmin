@@ -106,7 +106,7 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.phpmyadmin-labstag.rule=HostRegexp(`phpmyadmin-labstag.traefik.me`, `phpmyadmin-labstag.traefik.me`)"
+        - "traefik.http.routers.phpmyadmin-labstag.rule=HostRegexp(`phpmyadmin-labstag.traefik.me`, `phpmyadmin-labstag.{ip:.*}.traefik.me`)"
         - "traefik.http.routers.phpmyadmin-labstag-tls.tls.domains[0].main=phpmyadmin-labstag.traefik.me"
         - "traefik.http.routers.phpmyadmin-labstag-tls.tls.domains[0].sans=phpmyadmin-labstag-*.traefik.me"
         - "traefik.http.services.phpmyadmin-labstag.loadbalancer.server.port=80"

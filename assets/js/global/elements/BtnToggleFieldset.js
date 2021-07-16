@@ -16,7 +16,7 @@ export class BtnToggleFieldset extends ElementHTML {
     iElement.classList.remove('max')
     iElement.classList.add(contains ? 'max' : 'min')
     const fieldcollection = element.currentTarget.closest('.fieldcollection')
-    const fieldrow = fieldcollection.querySelector('.FieldRow')
+    const fieldrow = fieldcollection.querySelector('.field-row')
     const btnCollectionAdd = fieldcollection.querySelector('.BtnCollectionAdd')
     if (btnCollectionAdd != null) {
       if (

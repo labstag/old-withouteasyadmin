@@ -7,49 +7,49 @@ header{
 }
 
 .header_top-title{
-  @include make-col(12);
+  @include make-col(6);
+  padding: 0 0 0 15px;
   a{
     
-  }
-  
-  @include media-breakpoint-up(sm) {
-    @include make-col(6);
   }
 }
 
 .header_top-login{
-  @include make-col(12);
+  @include make-col(6);
   text-align: right;
+  padding: 0 15px 0 0;
   a{
     
-  }
-  
-  @include media-breakpoint-up(sm) {
-    @include make-col(6);
-    text-align: left;
   }
 }
 
 .header_menu{
   @extend .col-12;
-  @extend .flex-nowrap;
-  @extend .justify-content-between;
-  @extend .align-items-center;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 5vh;
+  padding: 1% 5% 0 5%;
+  text-align: center;
   a{
-    @extend .p-2;
-    @extend .text-muted;
+    flex: auto;
+    margin: 10px;
   }
 }
 
 .header_edito{
-  @extend .col-12;  
+  @extend .col-12;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  min-height: 50vh;
+  padding: 15px;
 }
 
 .edito_content{
-
 }
 
 .edito_more{
+  text-align: right;
   a{
 
   }

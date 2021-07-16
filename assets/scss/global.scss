@@ -5,3 +5,46 @@
 @import "@fortawesome/fontawesome-free/scss/solid.scss";
 @import "flag-icon-css/sass/flag-icon.scss";
 @import "tom-select/dist/css/tom-select.bootstrap4.css";
+
+
+a {
+  @extend .text-decoration-none;
+  &[href^="tel:"] {
+    &::before {
+      @extend .fas;
+      @extend .fa-phone;
+
+      color: #000;
+      padding-right: 5px;
+    }
+  }
+
+  &[href^="mailto:"] {
+    &::before {
+      @extend .fas;
+      @extend .fa-at;
+
+      color: #f00;
+      padding-right: 5px;
+    }
+  }
+}
+
+label {
+  &.required {
+    &::after {
+      content: " *";
+      color: red;
+    }
+  }
+}
+
+
+.require-form-info {
+  text-align: right;
+
+  span {
+    font-weight: bold;
+    color: red;
+  }
+}

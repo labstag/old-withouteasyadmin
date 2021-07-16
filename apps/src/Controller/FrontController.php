@@ -27,10 +27,14 @@ class FrontController extends FrontControllerLib
     public function index(): Response
     {
         $edito = $this->editoData();
+        $posts = $this->postData();
 
         return $this->render(
             'front/index.html.twig',
-            ['edito' => $edito]
+            [
+                'edito' => $edito,
+                'posts' => $posts,
+            ]
         );
     }
 }

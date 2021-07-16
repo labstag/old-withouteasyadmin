@@ -29,10 +29,6 @@ table {
   }
 }
 
-a {
-  @extend .text-decoration-none;
-}
-
 .pagination {
   @extend .justify-content-center;
 }
@@ -306,37 +302,6 @@ span {
   }
 }
 
-label {
-  &.required {
-    &::after {
-      content: " *";
-      color: red;
-    }
-  }
-}
-
-a {
-  &[href^="tel:"] {
-    &::before {
-      @extend .fas;
-      @extend .fa-phone;
-
-      color: #000;
-      padding-right: 5px;
-    }
-  }
-
-  &[href^="mailto:"] {
-    &::before {
-      @extend .fas;
-      @extend .fa-at;
-
-      color: #f00;
-      padding-right: 5px;
-    }
-  }
-}
-
 .empty {
   text-align: center;
 }
@@ -384,7 +349,7 @@ fieldset {
   @extend .bg-white;
 }
 
-.CollectionRow {
+.collection-row {
   @extend .shadow;
   @extend .p-3;
   @extend .mb-5;
@@ -393,15 +358,6 @@ fieldset {
 
 .form-group {
   @extend .mb-1;
-}
-
-.RequireFormInfo {
-  text-align: right;
-
-  span {
-    font-weight: bold;
-    color: red;
-  }
 }
 
 .form-control {

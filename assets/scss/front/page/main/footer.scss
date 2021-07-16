@@ -1,18 +1,14 @@
-footer{
-  @extend .container-fluid;
-}
-
 .footer-gotop{
-  background-color: $gc_gotop;
+  background-color: $gotop_gotop;
   position: relative;
   z-index: 1;
-  border-radius: 0 0 25% 25%;
-  height: 36px;
-  width: 36px;
-  top: -1em;
-  left: 45%;
+  border-radius: $gotop_border_radius;
+  height: $gotop_hw;
+  width: $gotop_hw;
+  transform: translateY(-50%);
+  left: calc(50% - #{$gotop_hw} /2);
   text-align: center;
-  padding-top: 10px;
+  padding: 10px 0 0 0;
 
   @extend .fas;
   @extend .fa-arrow-up;

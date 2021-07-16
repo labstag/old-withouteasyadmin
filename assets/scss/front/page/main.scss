@@ -1,10 +1,12 @@
 header{
   @extend .container;
+  min-height: $height_header;
   @import "main/header.scss";
 }
 
 main{
   @extend .container;
+  min-height: $height_main;
   section{
     @extend .row;
   }
@@ -40,7 +42,28 @@ main{
 footer{
   background-color: $bc_footer;
   color: $c_footer;
-  min-height: 10vh;
+  min-height: $height_footer;
   bottom: 0;
+  @extend .container-fluid;
+  margin: 2em 0 0 0;
   @import "main/footer.scss";
+}
+
+.post_data{
+
+}
+
+.post_title{
+
+}
+
+.post_date{
+
+}
+
+.post_content{
+  margin: 2% 0 5% 0;
+}
+.post_more{
+  text-align: right;
 }

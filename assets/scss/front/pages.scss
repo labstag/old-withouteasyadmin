@@ -24,7 +24,17 @@
 }
 
 .body-lostpassword{
+  @extend .d-flex;
+  @extend .align-items-center;
+  @extend .flex-column;
+
+  justify-content: center;
+  height: 100vh;
   @import "page/lostpassword.scss";
 }
 
 @import "page/main.scss";
+
+.body-edito{
+  @import "page/edito.scss";
+}

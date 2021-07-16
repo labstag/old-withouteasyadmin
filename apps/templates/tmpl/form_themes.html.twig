@@ -415,7 +415,7 @@
             {% endif %}
         {% endfor %}
         {% if required == true %}
-            <div class="RequireFormInfo">Les informations marquées d'un <span>*</span> sont obligatoires</div>
+            <div class="require-form-info">Les informations marquées d'un <span>*</span> sont obligatoires</div>
         {% endif %}
     </form>
 {% endblock form_end %}
@@ -467,7 +467,7 @@
 
 
 {% block collection_item_widget %}
-	<div class="CollectionRow">
+	<div class="collection-row">
         {% set template = formPrototype(prototype.vars.block_prefixes) %}
         {% if template == '' %}
             <div class="row">
@@ -496,11 +496,11 @@
 {% endblock %}
 
 {% block collection_widget %}
-    <div class="FieldRow">
+    <div class="field-row">
         {% for row in form %}
             {% set template = formClass(row) %}
             {% if prototype is defined %}
-                <div class="CollectionRow">
+                <div class="collection-row">
             {% endif %}
             {% if template == '' %}
                 <div class="row">

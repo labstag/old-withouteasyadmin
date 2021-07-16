@@ -10,7 +10,7 @@ export class BtnDelete extends ElementHTML {
 
   onClick (element) {
     element.preventDefault()
-    const CollectionRow = element.currentTarget.closest('.CollectionRow')
-    CollectionRow.parentNode.removeChild(CollectionRow)
+    const collectionRow = element.currentTarget.closest('.collection-row')
+    collectionRow.parentNode.removeChild(collectionRow)
   }
 }
