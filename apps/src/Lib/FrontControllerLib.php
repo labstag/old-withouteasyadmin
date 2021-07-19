@@ -26,7 +26,7 @@ abstract class FrontControllerLib extends ControllerLib
     )
     {
         $this->editoRepository = $editoRepository;
-        $this->postRepository = $postRepository;
+        $this->postRepository  = $postRepository;
         parent::__construct($dataService, $breadcrumbs);
     }
 
@@ -35,6 +35,13 @@ abstract class FrontControllerLib extends ControllerLib
         $edito = $this->editoRepository->findOnePublier();
 
         return $edito;
+    }
+
+    protected function findDateArchive()
+    {
+        $posts = $this->postRepository->findDateArchive();
+
+        return $posts;
     }
 
     protected function postData()

@@ -1,10 +1,8 @@
-{% set bodyclass = 'body-edito' %}
+{% set mainclass = "main-edito" %}
 {% extends 'skeleton/home.html.twig' %}
-{% block main %}
-    <section>
-        <div class="header_edito"{% if edito.fond is defined %} style="background-image: url('{{ edito.fond.name }}');"{% endif %}>
-            <h2>{{ edito.title }}</h2>
-        </div>
-        <div class="main_edito">{{ edito.content|raw }}</div>
-    </section>
+{% block section %}
+    <div class="header_edito"{% if edito.fond is defined %} style="background-image: url('{{ edito.fond.name }}');"{% endif %}>
+        <h2>{{ edito.title }}</h2>
+    </div>
+    <div class="main_edito">{{ edito.content|raw }}</div>
 {% endblock %}

@@ -1,7 +1,62 @@
+{% set showaside = true %}
+{% set mainclass = "main-home" %}
+{% import "macro.html.twig" as macro_site %}
 {% extends 'skeleton/home.html.twig' %}
-{% block header %}
-    {% include "front/index/edito.html.twig" %}
+{% block aside %}
+    <div class="aside-lists">
+        {% if archives|length != 0 %}
+        <div class="aside-list">
+            <h4>Archives</h4>
+            <ol>
+                {% for archive in archives %}
+                <li>
+                    <a href="{{ path('post_archive', {'code': archive.code}) }}">{{ archive.published|format_datetime(locale='fr', pattern="MMMM Y") }}</a>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+        {% endif %}
+        <div class="aside-list">
+            <h4>Elsewhere</h4>
+            <ol>
+                <li>
+                    <a href="#">GitHub</a>
+                </li>
+                <li>
+                    <a href="#">Twitter</a>
+                </li>
+                <li>
+                    <a href="#">Facebook</a>
+                </li>
+            </ol>
+        </div>
+    </div>
 {% endblock %}
-{% block main %}
-    {% include "front/posts.html.twig" %}
+{% block header %}
+    <div class="header_edito"{% if edito.fond is defined %} style="background-image: url('{{ edito.fond.name }}');"{% endif %}>
+        <h1>{{ edito.title }}</h1>
+        <div class="headeredito_content">
+            {{ edito.content|raw }}
+        </p>
+        </div>
+        <div class="headeredito_more">
+            <a href="{{ path('edito') }}">Continuer à lire...</a>
+        </div>
+    </div>
+{% endblock %}
+{% block section %}
+    {% for post in posts %}
+        <div class="post_data">
+            <h2 class="post_title">{{ post.title }}</h2>
+            <div class="post_date">{{ post.created|date }} by
+                {{ macro_site.user(post.refuser, path('post_user', {'username': post.refuser.username})) }}
+            </div>
+            <div class="post_content">
+                {{ post.content|raw }}
+                <div class="post_more">
+                    <a href="{{ path('post_show', {'slug': post.slug}) }}">More</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

@@ -1,8 +1,9 @@
-{% set bodyclass = 'body-disclaimer' %}
-{% extends 'front.html.twig' %}
+{% extends 'skeleton/landing.html.twig' %}
+
 {% import "macro.html.twig" as macro_site %}
 {% block content_title %}{{ title }}{% endblock %}
-{% block body %}
+{%block box_title %}{{ title }}{% endblock %}
+{% block box %}
     {{ form_start(form) }}
     {{ macro_site.flashbag(app) }}
     <div>

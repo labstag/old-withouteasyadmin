@@ -378,7 +378,7 @@ legend {
   font-weight: bold;
 }
 
-.GpsIcon {
+.gps-icon {
   &::before {
     @extend .fas;
     @extend .fa-map-marker-alt;
@@ -404,7 +404,7 @@ legend {
 .modal-dialog {
   @extend .modal-dialog-centered;
 
-  .BtnCancel {
+  .btn-cancel {
     @extend .btn;
     @extend .btn-outline-success;
 

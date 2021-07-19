@@ -58,7 +58,7 @@ abstract class FixtureLib extends Fixture
 
     protected const NUMBER_PHONE = 25;
 
-    protected const NUMBER_POST = 10;
+    protected const NUMBER_POST = 100;
 
     protected const NUMBER_TEMPLATES = 10;
 
