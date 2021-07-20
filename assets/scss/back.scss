@@ -21,6 +21,22 @@ table {
   @extend .table-striped;
 }
 
+span {
+  .check-ok {
+    @extend .fas;
+    @extend .fa-check;
+
+    color: green;
+  }
+
+  .check-ko {
+    @extend .fas;
+    @extend .fa-times;
+
+    color: red;
+  }
+}
+
 .thactions {
   @extend .text-center;
 
@@ -283,22 +299,6 @@ table {
 
   label {
     @extend .custom-control-label;
-  }
-}
-
-span {
-  .check-ok {
-    @extend .fas;
-    @extend .fa-check;
-
-    color: green;
-  }
-
-  .check-ko {
-    @extend .fas;
-    @extend .fa-times;
-
-    color: red;
   }
 }
 

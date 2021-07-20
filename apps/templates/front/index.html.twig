@@ -36,7 +36,7 @@
         <div class="post_data">
             <h2 class="post_title">{{ post.title }}</h2>
             <div class="post_img"{% if post.img is defined %} style="background-image: url('{{ asset(post.img.name) }}');"{% endif %}></div>
-            <div class="post_date">{{ post.created|date }} by
+            <div class="post_date">{{ post.published|date }} by
                 {{ macro_site.user(post.refuser, path('post_user', {'username': post.refuser.username})) }}
             </div>
             <div class="post_content">
