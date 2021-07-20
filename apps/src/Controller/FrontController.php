@@ -5,6 +5,7 @@ namespace Labstag\Controller;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\EditoRepository;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,14 +27,20 @@ class FrontController extends FrontControllerLib
     /**
      * @Route("/", name="front")
      */
-    public function index(EditoRepository $editoRepository, PostRepository $postRepository): Response
+    public function index(EditoRepository $editoRepository, Request $request, PostRepository $postRepository): Response
     {
+        $pagination = $this->paginator->paginate(
+            $postRepository->findPublier(),
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render(
             'front/index.html.twig',
             [
-                'edito'    => $editoRepository->findOnePublier(),
-                'posts'    => $postRepository->findPublier(),
-                'archives' => $postRepository->findDateArchive(),
+                'edito'      => $editoRepository->findOnePublier(),
+                'pagination' => $pagination,
+                'archives'   => $postRepository->findDateArchive(),
             ]
         );
     }

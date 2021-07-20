@@ -43,7 +43,7 @@ class PostRepository extends ServiceEntityRepositoryLib
             ['state' => '%publie%']
         );
 
-        return $query->getQuery()->getResult();
+        return $query->getQuery();
     }
 
     public function findPublierArchive($published)
@@ -59,7 +59,7 @@ class PostRepository extends ServiceEntityRepositoryLib
             ]
         );
 
-        return $query->getQuery()->getResult();
+        return $query->getQuery();
     }
 
     public function findPublierUsername($username)
@@ -76,6 +76,6 @@ class PostRepository extends ServiceEntityRepositoryLib
             ]
         );
 
-        return $query->getQuery()->getResult();
+        return $query->getQuery();
     }
 }

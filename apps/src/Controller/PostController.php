@@ -5,6 +5,7 @@ namespace Labstag\Controller;
 use Labstag\Entity\Post;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -15,13 +16,19 @@ class PostController extends FrontControllerLib
     /**
      * @Route("/archive/{code}", name="post_archive")
      */
-    public function archive(PostRepository $postRepository, string $code)
+    public function archive(PostRepository $postRepository, Request $request, string $code)
     {
+        $pagination = $this->paginator->paginate(
+            $postRepository->findPublierArchive($code),
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render(
             'front/posts/list.html.twig',
             [
-                'posts'    => $postRepository->findPublierArchive($code),
-                'archives' => $postRepository->findDateArchive(),
+                'pagination' => $pagination,
+                'archives'   => $postRepository->findDateArchive(),
             ]
         );
     }
@@ -43,13 +50,19 @@ class PostController extends FrontControllerLib
     /**
      * @Route("/user/{username}", name="post_user")
      */
-    public function user(PostRepository $postRepository, $username)
+    public function user(PostRepository $postRepository, Request $request, $username)
     {
+        $pagination = $this->paginator->paginate(
+            $postRepository->findPublierUsername($username),
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render(
             'front/posts/list.html.twig',
             [
-                'posts'    => $postRepository->findPublierUsername($username),
-                'archives' => $postRepository->findDateArchive(),
+                'pagination' => $pagination,
+                'archives'   => $postRepository->findDateArchive(),
             ]
         );
     }

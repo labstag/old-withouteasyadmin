@@ -20,7 +20,7 @@
     </div>
 {% endblock %}
 {% block section %}
-    {% for post in posts %}
+    {% for post in pagination %}
         <div class="post_data">
             <h2 class="post_title">{{ post.title }}</h2>
             <div class="post_img"{% if post.img is defined %} style="background-image: url('{{ asset(post.img.name) }}');"{% endif %}></div>
@@ -35,4 +35,7 @@
             </div>
         </div>
     {% endfor %}
+    {% if pagination is defined %}
+        {{ knp_pagination_render(pagination) }}
+    {% endif %}
 {% endblock %}
