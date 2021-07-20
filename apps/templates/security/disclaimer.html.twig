@@ -1,8 +1,12 @@
 {% extends 'skeleton/landing.html.twig' %}
 
 {% import "macro.html.twig" as macro_site %}
+{% set title = '' %}
+{% if config.site_title is defined %}
+    {% set title = config.site_title|trim %}
+{% endif %}
 {% block content_title %}{{ title }}{% endblock %}
-{%block box_title %}{{ title }}{% endblock %}
+{% block box_title %}{{ title }}{% endblock %}
 {% block box %}
     {{ form_start(form) }}
     {{ macro_site.flashbag(app) }}

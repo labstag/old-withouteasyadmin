@@ -3,6 +3,7 @@
 namespace Labstag\Controller;
 
 use Exception;
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Email;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\Phone;
@@ -48,13 +49,14 @@ class SecurityController extends ControllerLib
         LoggerInterface $logger,
         DataService $dataService,
         Breadcrumbs $breadcrumbs,
+        PaginatorInterface $paginator,
         UserService $userService
     )
     {
         $this->userService  = $userService;
         $this->logger       = $logger;
         $this->oauthService = $oauthService;
-        parent::__construct($dataService, $breadcrumbs);
+        parent::__construct($dataService, $breadcrumbs, $paginator);
     }
 
     /**

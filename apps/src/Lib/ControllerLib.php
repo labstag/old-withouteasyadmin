@@ -2,6 +2,7 @@
 
 namespace Labstag\Lib;
 
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Service\DataService;
 use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,13 +18,17 @@ abstract class ControllerLib extends AbstractController
 
     protected DataService $dataService;
 
+    protected PaginatorInterface $paginator;
+
     public function __construct(
         DataService $dataService,
-        Breadcrumbs $breadcrumbs
+        Breadcrumbs $breadcrumbs,
+        PaginatorInterface $paginator
     )
     {
         $this->dataService = $dataService;
         $this->breadcrumbs = $breadcrumbs;
+        $this->paginator   = $paginator;
         $this->setSingletons();
     }
 

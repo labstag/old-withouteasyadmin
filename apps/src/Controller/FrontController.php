@@ -3,6 +3,8 @@
 namespace Labstag\Controller;
 
 use Labstag\Lib\FrontControllerLib;
+use Labstag\Repository\EditoRepository;
+use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,9 +13,9 @@ class FrontController extends FrontControllerLib
     /**
      * @Route("/edito", name="edito")
      */
-    public function edito(): Response
+    public function edito(EditoRepository $editoRepository): Response
     {
-        $edito = $this->editoData();
+        $edito = $editoRepository->findOnePublier();
 
         return $this->render(
             'front/edito.html.twig',
@@ -24,18 +26,14 @@ class FrontController extends FrontControllerLib
     /**
      * @Route("/", name="front")
      */
-    public function index(): Response
+    public function index(EditoRepository $editoRepository, PostRepository $postRepository): Response
     {
-        $edito    = $this->editoData();
-        $posts    = $this->postData();
-        $archives = $this->findDateArchive();
-
         return $this->render(
             'front/index.html.twig',
             [
-                'edito'    => $edito,
-                'posts'    => $posts,
-                'archives' => $archives,
+                'edito'    => $editoRepository->findOnePublier(),
+                'posts'    => $postRepository->findPublier(),
+                'archives' => $postRepository->findDateArchive(),
             ]
         );
     }

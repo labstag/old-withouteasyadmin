@@ -44,8 +44,6 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected string $headerTitle = '';
 
-    protected PaginatorInterface $paginator;
-
     protected Request $request;
 
     protected RequestStack $requestStack;
@@ -87,7 +85,6 @@ abstract class AdminControllerLib extends ControllerLib
         /** @var Request $request */
         $request                 = $this->requestStack->getCurrentRequest();
         $this->request           = $request;
-        $this->paginator         = $paginator;
         $this->uploadAnnotReader = $uploadAnnotReader;
         $this->guardService      = $guardService;
         $this->twig              = $twig;
@@ -95,7 +92,7 @@ abstract class AdminControllerLib extends ControllerLib
         $this->token             = $token;
         $this->csrfTokenManager  = $csrfTokenManager;
         $this->setSingletonsAdmin();
-        parent::__construct($dataService, $breadcrumbs);
+        parent::__construct($dataService, $breadcrumbs, $paginator);
     }
 
     public function addBreadcrumbs(array $breadcrumbs): void

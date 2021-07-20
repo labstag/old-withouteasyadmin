@@ -19,18 +19,6 @@
         {% include "front/aside.html.twig" %}
     </div>
 {% endblock %}
-{% block header %}
-    <div class="header_edito"{% if edito.fond is defined %} style="background-image: url('{{ asset(edito.fond.name) }}');"{% endif %}>
-        <h1>{{ edito.title }}</h1>
-        <div class="headeredito_content">
-            {{ edito.content|raw }}
-        </p>
-        </div>
-        <div class="headeredito_more">
-            <a href="{{ path('edito') }}">Continuer à lire...</a>
-        </div>
-    </div>
-{% endblock %}
 {% block section %}
     {% for post in posts %}
         <div class="post_data">

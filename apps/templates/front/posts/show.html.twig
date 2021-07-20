@@ -1,0 +1,35 @@
+{% set showaside = true %}
+{% set mainclass = "main-home" %}
+{% import "macro.html.twig" as macro_site %}
+{% extends 'skeleton/home.html.twig' %}
+{% block aside %}
+    <div class="aside-lists">
+        {% if archives|length != 0 %}
+        <div class="aside-list">
+            <h4>Archives</h4>
+            <ol>
+                {% for archive in archives %}
+                <li>
+                    <a href="{{ path('post_archive', {'code': archive.code}) }}">{{ archive.published|format_datetime(locale='fr', pattern="MMMM Y") }}</a>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+        {% endif %}
+        {% include "front/aside.html.twig" %}
+    </div>
+{% endblock %}
+{% block header %}
+    <div class="header_post"{% if post.img is defined %} style="background-image: url('{{ asset(post.img.name) }}');"{% endif %}></div>
+{% endblock %}
+{% block section %}
+    <div class="post_data">
+        <h2 class="post_title">{{ post.title }}</h2>
+        <div class="post_date">{{ post.created|date }} by
+            {{ macro_site.user(post.refuser, path('post_user', {'username': post.refuser.username})) }}
+        </div>
+        <div class="post_content">
+            {{ post.content|raw }}
+        </div>
+    </div>
+{% endblock %}

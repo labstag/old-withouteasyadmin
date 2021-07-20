@@ -4,6 +4,7 @@ namespace Labstag\Controller;
 
 use Labstag\Entity\Post;
 use Labstag\Lib\FrontControllerLib;
+use Labstag\Repository\PostRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -14,27 +15,42 @@ class PostController extends FrontControllerLib
     /**
      * @Route("/archive/{code}", name="post_archive")
      */
-    public function archive($code)
+    public function archive(PostRepository $postRepository, string $code)
     {
-        echo $code;
-        exit();
+        return $this->render(
+            'front/posts/list.html.twig',
+            [
+                'posts'    => $postRepository->findPublierArchive($code),
+                'archives' => $postRepository->findDateArchive(),
+            ]
+        );
     }
 
     /**
      * @Route("/{slug}", name="post_show")
      */
-    public function show(string $slug)
+    public function show(PostRepository $postRepository, Post $post)
     {
-        echo $slug;
-        exit();
+        return $this->render(
+            'front/posts/show.html.twig',
+            [
+                'post'     => $post,
+                'archives' => $postRepository->findDateArchive(),
+            ]
+        );
     }
 
     /**
      * @Route("/user/{username}", name="post_user")
      */
-    public function user($username)
+    public function user(PostRepository $postRepository, $username)
     {
-        echo $username;
-        exit();
+        return $this->render(
+            'front/posts/list.html.twig',
+            [
+                'posts'    => $postRepository->findPublierUsername($username),
+                'archives' => $postRepository->findDateArchive(),
+            ]
+        );
     }
 }

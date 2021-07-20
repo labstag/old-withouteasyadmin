@@ -6,9 +6,9 @@
 @import "flag-icon-css/sass/flag-icon.scss";
 @import "tom-select/dist/css/tom-select.bootstrap4.css";
 
-
 a {
   @extend .text-decoration-none;
+
   &[href^="tel:"] {
     &::before {
       @extend .fas;
@@ -38,7 +38,6 @@ label {
     }
   }
 }
-
 
 .require-form-info {
   text-align: right;

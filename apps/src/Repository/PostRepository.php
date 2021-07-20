@@ -45,4 +45,37 @@ class PostRepository extends ServiceEntityRepositoryLib
 
         return $query->getQuery()->getResult();
     }
+
+    public function findPublierArchive($published)
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where('u.state LIKE :state');
+        $query->andWhere('date_format(u.published,\'%Y-%m\') = :published');
+        $query->orderBy('u.published', 'DESC');
+        $query->setParameters(
+            [
+                'state'     => '%publie%',
+                'published' => $published,
+            ]
+        );
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findPublierUsername($username)
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+        $query        = $queryBuilder->leftJoin('p.refuser', 'u');
+        $query        = $query->where('p.state LIKE :state');
+        $query->andWhere('u.username = :username');
+        $query->orderBy('p.published', 'DESC');
+        $query->setParameters(
+            [
+                'state'    => '%publie%',
+                'username' => $username,
+            ]
+        );
+
+        return $query->getQuery()->getResult();
+    }
 }
