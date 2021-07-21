@@ -5,7 +5,9 @@ namespace Labstag\EventSubscriber;
 use Labstag\Service\DataService;
 use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -13,7 +15,8 @@ use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
 {
-    const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
+    const ADMIN_CONTROLLER   = '/(Controller\\\Admin)/';
+    const LABSTAG_CONTROLLER = '/(Labstag)/';
 
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
@@ -25,15 +28,19 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     protected Environment $twig;
 
+    protected UrlGeneratorInterface $urlGenerator;
+
     public function __construct(
         RouterInterface $router,
         Environment $twig,
+        UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
         DataService $dataService,
         Security $security
     )
     {
         $this->security         = $security;
+        $this->urlGenerator     = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->router           = $router;
         $this->twig             = $twig;
@@ -47,9 +54,10 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     public function onControllerEvent(ControllerEvent $event): void
     {
+        $request = $event->getRequest();
         $this->setLoginPage($event);
         $this->setAdminPages($event);
-        $this->setConfig($event);
+        $this->setConfig($event, $request);
     }
 
     protected function setAdminPages(ControllerEvent $event): void
@@ -71,19 +79,27 @@ class TwigEventSubscriber implements EventSubscriberInterface
         BreadcrumbsSingleton::getInstance()->add($adminBreadcrumbs);
     }
 
-    protected function setConfig(ControllerEvent $event): void
+    protected function setConfig(ControllerEvent $event, Request $request): void
     {
         $controller = $event->getRequest()->attributes->get('_controller');
-        $config     = $this->dataService->getConfig();
         $matches    = [];
-        preg_match(self::ADMIN_CONTROLLER, $controller, $matches);
-        if (!array_key_exists('meta', $config)) {
-            $config['meta'] = [];
+        preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
+        if (0 == count($matches)) {
+            return;
         }
 
-        if (0 != count($matches)) {
+        $globals        = $this->twig->getGlobals();
+        $config         = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
+        $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
+        $this->setMetaTitleGlobal($config);
+        preg_match(self::ADMIN_CONTROLLER, $controller, $matches);
+        $state = (0 == count($matches));
+        $this->setConfigGlobal($state, $config, $request);
+        if (!$state) {
             $config['meta']['robots'] = 'noindex';
         }
+
+        ksort($config['meta']);
 
         $this->twig->addGlobal('config', $config);
     }
@@ -104,5 +120,53 @@ class TwigEventSubscriber implements EventSubscriberInterface
             'oauthActivated',
             $this->dataService->getOauthActivated($this->security->getUser())
         );
+    }
+
+    private function setConfigGlobal(bool $enable, array &$config, Request $request)
+    {
+        if (!$enable) {
+            return;
+        }
+
+        $this->setMetaTitle($config);
+        $this->setMetaDescription($config);
+        $url                            = $this->urlGenerator->generate(
+            $request->attributes->get('_route'),
+            $request->attributes->get('_route_params'),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+        $config['meta']['og:url']       = $url;
+        $config['meta']['twitter:url']  = $url;
+        $config['meta']['og:type']      = 'website';
+        $config['meta']['twitter:card'] = 'summary_large_image';
+    }
+
+    private function setMetaDescription(&$config)
+    {
+        if (!array_key_exists('description', $config['meta'])) {
+            return;
+        }
+
+        $config['meta']['og:description']      = $config['meta']['description'];
+        $config['meta']['twitter:description'] = $config['meta']['description'];
+    }
+
+    private function setMetaTitle(&$config)
+    {
+        if (!array_key_exists('site_title', $config)) {
+            return;
+        }
+
+        $config['meta']['og:title']      = $config['site_title'];
+        $config['meta']['twitter:title'] = $config['site_title'];
+    }
+
+    private function setMetaTitleGlobal(&$config)
+    {
+        if (!array_key_exists('site_title', $config)) {
+            return;
+        }
+
+        $config['meta']['title'] = $config['site_title'];
     }
 }

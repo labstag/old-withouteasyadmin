@@ -19,7 +19,9 @@
             <tr>
                 <th>Image</th>
                 <td>
-                    <img src="{{ asset(img.name) }}" class="img-fluid" />
+                    <picture>
+                        <img src="{{ asset(img.name) }}" class="img-fluid" loading="lazy" />
+                    </picture>
                 </td>
             </tr>
             {% endif %}

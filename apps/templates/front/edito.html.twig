@@ -1,8 +1,12 @@
 {% set mainclass = "main-edito" %}
 {% extends 'skeleton/home.html.twig' %}
 {% block section %}
-    <div class="header_edito"{% if edito.fond is defined %} style="background-image: url('{{ asset(edito.fond.name) }}');"{% endif %}>
-        <h2>{{ edito.title }}</h2>
-    </div>
-    <div class="main_edito">{{ edito.content|raw }}</div>
+    <h2 class="edito_title">{{ edito.title }}</h2>
+    {% set fond = attachment(edito.fond) %}
+    {% if fond != null %}
+        <picture>
+            <img src="{{ asset(fond.name) }}" class="edito_img img-fluid" loading="lazy" />
+        </picture>
+    {% endif %}
+    <div class="edito_content">{{ edito.content|raw }}</div>
 {% endblock %}

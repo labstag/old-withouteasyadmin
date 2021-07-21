@@ -2,8 +2,8 @@
 
 {% import "macro.html.twig" as macro_site %}
 {% set title = '' %}
-{% if config.site_title is defined %}
-    {% set title = config.site_title|trim %}
+{% if config.meta.title is defined %}
+    {% set title = config.meta.title|trim %}
 {% endif %}
 {% block content_title %}{{ title }}{% endblock %}
 {% block box_title %}{{ title }}{% endblock %}

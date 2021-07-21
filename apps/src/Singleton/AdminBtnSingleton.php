@@ -520,18 +520,18 @@ class AdminBtnSingleton
 
     private function arrayKeyExistsRedirect($routes)
     {
-        return (!array_key_exists('redirect', $routes)
+        return !array_key_exists('redirect', $routes)
         || !array_key_exists('href', $routes['redirect'])
         || !array_key_exists('params', $routes['redirect'])
-        || !$this->isRouteEnable($routes['redirect']['href']));
+        || !$this->isRouteEnable($routes['redirect']['href']);
     }
 
     private function arrayKeyExistsUrl($routes)
     {
-        return (!array_key_exists('url', $routes)
+        return !array_key_exists('url', $routes)
         || !array_key_exists('href', $routes['url'])
         || !array_key_exists('params', $routes['url'])
-        || !$this->isRouteEnable($routes['url']['href']));
+        || !$this->isRouteEnable($routes['url']['href']);
     }
 
     private function setBtnAdd(

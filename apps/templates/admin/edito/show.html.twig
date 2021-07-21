@@ -19,7 +19,9 @@
             <tr>
                 <th>Fond</th>
                 <td>
-                    <img src="{{ asset(fond.name) }}" class="img-fluid" />
+                    <picture>
+                        <img src="{{ asset(fond.name) }}" class="img-fluid" />
+                    </picture>
                 </td>
             </tr>
             {% endif %}

@@ -20,7 +20,12 @@
     </div>
 {% endblock %}
 {% block header %}
-    <div class="header_post"{% if post.img is defined %} style="background-image: url('{{ asset(post.img.name) }}');"{% endif %}></div>
+    {% set img = attachment(post.img) %}
+    {% if img != null %}
+        <picture>
+            <img src="{{ asset(img.name) }}" class="header_post img-fluid" loading="lazy" />
+        </picture>
+    {% endif %}
 {% endblock %}
 {% block section %}
     <div class="post_data">

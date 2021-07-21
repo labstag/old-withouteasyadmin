@@ -2,11 +2,11 @@
 <html lang="{{ config.languagedefault|e('html_attr') }}">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}{% if config.site_title is defined %}{{ config.site_title|trim }}{% endif %}{% endblock %}</title>
+        <title>{{ config.meta.title }}</title>
         {% if config.meta is defined %}
             {% for key, value in config.meta %}
                 {% if value|trim != '' %}
-                    <meta name="{{ key|e('html_attr') }}" content="{{ value|trim|e('html_attr') }}" />
+                    <meta name="{{ key }}" content="{{ value|trim|e }}" />
                 {% endif %}
             {% endfor %}
         {% endif %}

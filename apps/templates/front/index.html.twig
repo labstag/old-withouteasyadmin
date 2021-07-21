@@ -20,22 +20,31 @@
     </div>
 {% endblock %}
 {% block header %}
-    <div class="header_edito"{% if edito.fond is defined %} style="background-image: url('{{ asset(edito.fond.name) }}');"{% endif %}>
-        <h1>{{ edito.title }}</h1>
-        <div class="headeredito_content">
-            {{ edito.content|raw }}
-        </p>
-        </div>
-        <div class="headeredito_more">
-            <a href="{{ path('edito') }}">Continuer à lire...</a>
-        </div>
+    <h1 class="header_edito_title">{{ edito.title }}</h1>
+    {% set fond = attachment(edito.fond) %}
+    {% if fond != null %}
+        <picture>
+            <img src="{{ asset(fond.name) }}" class="header_edito_img img-fluid" loading="lazy" />
+        </picture>
+    {% endif %}
+    <div class="header_edito_content">
+        {{ edito.content|raw }}
+    </p>
+    </div>
+    <div class="header_edito_more">
+        <a href="{{ path('edito') }}">Continuer à lire...</a>
     </div>
 {% endblock %}
 {% block section %}
     {% for post in pagination %}
         <div class="post_data">
             <h2 class="post_title">{{ post.title }}</h2>
-            <div class="post_img"{% if post.img is defined %} style="background-image: url('{{ asset(post.img.name) }}');"{% endif %}></div>
+            {% set img = attachment(post.img) %}
+            {% if img != null %}
+                <picture>
+                    <img src="{{ asset(img.name) }}" class="post_img img-fluid" loading="lazy" />
+                </picture>
+            {% endif %}
             <div class="post_date">{{ post.published|date }} by
                 {{ macro_site.user(post.refuser, path('post_user', {'username': post.refuser.username})) }}
             </div>
