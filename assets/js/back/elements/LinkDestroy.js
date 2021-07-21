@@ -5,7 +5,7 @@ export class LinkDestroy extends ElementHTML {
     const title = this.dataset.title
     this.classList.add('link-destroy')
     this.dataset.toggle = 'modal'
-    this.dataset.target = '#destroyModal'
+    this.dataset.target = '#destroy-modal'
     const iElement = document.createElement('i')
     iElement.setAttribute('title', title)
     const spanElement = document.createElement('span')

@@ -5,7 +5,7 @@ export class LinkEmpty extends ElementHTML {
     const title = this.getAttribute('title')
     this.classList.add('link-empty')
     this.dataset.toggle = 'modal'
-    this.dataset.target = '#emptyModal'
+    this.dataset.target = '#empty-modal'
     const iElement = document.createElement('i')
     iElement.setAttribute('title', title)
     const spanElement = document.createElement('span')
