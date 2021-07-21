@@ -8,40 +8,11 @@ header {
   }
 }
 
-form {
-  background-color: #f1f1f1;
-  padding: 1em;
-  margin: 2em;
-}
-
-table {
-  @extend .table;
-  @extend .table-bordered;
-  @extend .table-hover;
-  @extend .table-striped;
-}
-
-span {
-  .check-ok {
-    @extend .fas;
-    @extend .fa-check;
-
-    color: green;
-  }
-
-  .check-ko {
-    @extend .fas;
-    @extend .fa-times;
-
-    color: red;
-  }
-}
-
 .thactions {
   @extend .text-center;
 
   i {
-    @extend .BtnAdminTableAction;
+    @extend .btn-admin-table-action;
   }
 }
 
@@ -126,7 +97,7 @@ span {
   @extend .fa-list;
 }
 
-.BtnAdminTableAction {
+.btn-admin-table-action {
   @extend .fas;
   @extend .fa-cog;
 
@@ -277,7 +248,7 @@ span {
   @extend .btn-group;
 }
 
-#navbarSupportedContent {
+#navbar-supported-content {
   .navbar-nav {
     &:last-child {
       li {
@@ -306,31 +277,6 @@ span {
   text-align: center;
 }
 
-.btn-togglefieldset {
-  @extend .btn;
-  @extend .btn-info;
-
-  .min {
-    @extend .fas;
-    @extend .fa-window-minimize;
-  }
-
-  .max {
-    @extend .far;
-    @extend .fa-window-maximize;
-  }
-}
-
-.btn-addcollection {
-  @extend .btn;
-  @extend .btn-primary;
-
-  i {
-    @extend .fas;
-    @extend .fa-plus;
-  }
-}
-
 .btn-delete,
 .attachment-delete {
   @extend .btn;
@@ -342,28 +288,6 @@ span {
   }
 }
 
-fieldset {
-  @extend .shadow;
-  @extend .p-3;
-  @extend .mb-5;
-  @extend .bg-white;
-}
-
-.collection-row {
-  @extend .shadow;
-  @extend .p-3;
-  @extend .mb-5;
-  @extend .bg-white;
-}
-
-.form-group {
-  @extend .mb-1;
-}
-
-.form-control {
-  appearance: revert;
-}
-
 .th-inner {
   .asc,
   .desc,
@@ -371,84 +295,6 @@ fieldset {
     @extend .text-decoration-none;
 
     background-image: none !important;
-  }
-}
-
-legend {
-  font-weight: bold;
-}
-
-.gps-icon {
-  &::before {
-    @extend .fas;
-    @extend .fa-map-marker-alt;
-
-    padding-right: 5px;
-  }
-}
-
-#deleteModal,
-#deletiesModal,
-#deleteAttachmentModal,
-#destroyModal,
-#emptyModal,
-#emptiesModal,
-#emptyallModal,
-#restoreModal,
-#restoriesModal,
-#workflowModal {
-  @extend .modal;
-  @extend .fade;
-}
-
-.modal-dialog {
-  @extend .modal-dialog-centered;
-
-  .btn-cancel {
-    @extend .btn;
-    @extend .btn-outline-success;
-
-    i {
-      @extend .fas;
-      @extend .fa-ban;
-    }
-  }
-
-  .confirm-delete,
-  .confirm-deleties,
-  .confirm-destroy,
-  .confirm-empty,
-  .confirm-empties,
-  .confirm-emptyall,
-  .confirm-deleteattachment {
-    @extend .btn;
-    @extend .btn-outline-danger;
-
-    i {
-      @extend .fas;
-      @extend .fa-trash-alt;
-    }
-  }
-
-  .confirm-restore,
-  .confirm-restories {
-    @extend .btn;
-    @extend .btn-outline-danger;
-
-    i {
-      @extend .fas;
-      @extend .fa-trash-restore;
-    }
-  }
-
-  .confirm-workflow {
-    @extend .btn;
-    @extend .btn-outline-danger;
-
-    i {
-      @extend .fas;
-      @extend .fa-sign-in-alt;
-    }
   }
 }
 
@@ -471,8 +317,16 @@ legend {
   }
 }
 
-.form-error {
-  @extend .badge;
-  @extend .badge-danger;
-  @extend .text-uppercase;
+.check-ok {
+  @extend .fas;
+  @extend .fa-check;
+
+  color: green;
+}
+
+.check-ko {
+  @extend .fas;
+  @extend .fa-times;
+
+  color: red;
 }
