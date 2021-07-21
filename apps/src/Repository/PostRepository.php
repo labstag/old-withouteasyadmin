@@ -24,7 +24,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         );
         $query->orderBy('u.published', 'DESC');
         $query->groupBy('code');
-        $query->orderBy('code', 'ASC');
+        $query->orderBy('code', 'DESC');
         $query->setParameters(
             ['state' => '%publie%']
         );
