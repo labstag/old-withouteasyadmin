@@ -87,7 +87,7 @@ class AdminBtnSingleton
             'is'            => 'link-btnadmindelete',
             'data-token'    => $token,
             'data-toggle'   => 'modal',
-            'data-target'   => '#deleteModal',
+            'data-target'   => '#delete-modal',
             'data-redirect' => $this->router->generate($route['list']),
             'data-url'      => $this->router->generate(
                 $route['delete'],
@@ -132,7 +132,7 @@ class AdminBtnSingleton
         $attr  = [
             'data-toggle'   => 'modal',
             'data-token'    => $token,
-            'data-target'   => '#destroyModal',
+            'data-target'   => '#destroy-modal',
             'is'            => 'link-btnadmindestroy',
             'data-redirect' => $this->router->generate($route['list']),
             'data-url'      => $this->router->generate(
@@ -195,7 +195,7 @@ class AdminBtnSingleton
             'is'            => 'link-btnadminempty',
             'data-toggle'   => 'modal',
             'data-token'    => $token,
-            'data-target'   => '#emptyModal',
+            'data-target'   => '#empty-modal',
             'data-redirect' => $this->router->generate($route['list']),
             'data-url'      => $this->router->generate(
                 $route['empty'],
@@ -295,7 +295,7 @@ class AdminBtnSingleton
         $attr  = [
             'data-toggle'   => 'modal',
             'data-token'    => $token,
-            'data-target'   => '#restoreModal',
+            'data-target'   => '#restore-modal',
             'is'            => 'link-btnadminrestore',
             'data-redirect' => $this->router->generate(
                 $route['list'],
@@ -377,9 +377,7 @@ class AdminBtnSingleton
     ): self
     {
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if (!$this->arrayKeyExistsRedirect($routes)
-            || !$this->arrayKeyExistsUrl($routes)
-        ) {
+        if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
             return $this;
         }
 
@@ -394,7 +392,7 @@ class AdminBtnSingleton
                 'is'            => 'link-btnadminrestories',
                 'data-toggle'   => 'modal',
                 'data-token'    => $token,
-                'data-target'   => '#restoriesModal',
+                'data-target'   => '#restories-modal',
                 'data-redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
                 'data-url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
             ]
@@ -410,9 +408,7 @@ class AdminBtnSingleton
     ): self
     {
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if (!$this->arrayKeyExistsRedirect($routes)
-            || !$this->arrayKeyExistsUrl($routes)
-        ) {
+        if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
             return $this;
         }
 
@@ -423,7 +419,7 @@ class AdminBtnSingleton
         $this->setBtnAdd(
             'btn-admin-header-deleties',
             'link-btnadmindeleties',
-            'deletiesModal',
+            'deleties-modal',
             $title,
             $token,
             $routes
@@ -439,7 +435,7 @@ class AdminBtnSingleton
     ): self
     {
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if (!$this->arrayKeyExistsRedirect($routes) || !$this->arrayKeyExistsUrl($routes)) {
+        if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
             return $this;
         }
 
@@ -450,7 +446,7 @@ class AdminBtnSingleton
         $this->setBtnAdd(
             'btn-admin-header-empties',
             'link-btnadminempties',
-            'emptiesModal',
+            'empties-modal',
             $title,
             $token,
             $routes
@@ -524,18 +520,18 @@ class AdminBtnSingleton
 
     private function arrayKeyExistsRedirect($routes)
     {
-        return !array_key_exists('redirect', $routes)
+        return (!array_key_exists('redirect', $routes)
         || !array_key_exists('href', $routes['redirect'])
         || !array_key_exists('params', $routes['redirect'])
-        || !$this->isRouteEnable($routes['redirect']['href']);
+        || !$this->isRouteEnable($routes['redirect']['href']));
     }
 
     private function arrayKeyExistsUrl($routes)
     {
-        return !array_key_exists('url', $routes)
+        return (!array_key_exists('url', $routes)
         || !array_key_exists('href', $routes['url'])
         || !array_key_exists('params', $routes['url'])
-        || !$this->isRouteEnable($routes['url']['href']);
+        || !$this->isRouteEnable($routes['url']['href']));
     }
 
     private function setBtnAdd(
