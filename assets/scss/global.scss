@@ -63,6 +63,15 @@ fieldset {
   @extend .bg-white;
 }
 
+picture{
+  img{
+    display: block;
+    object-fit: cover;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
 .form-error {
   @extend .badge;
   @extend .badge-danger;
@@ -190,4 +199,10 @@ fieldset {
 
 .form-control {
   appearance: revert;
+}
+
+.header_edito_img{
+  img{
+    height: 10vh;
+  }
 }

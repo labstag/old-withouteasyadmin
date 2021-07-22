@@ -22,8 +22,8 @@
 {% block header %}
     {% set img = attachment(post.img) %}
     {% if img != null %}
-        <picture>
-            <img src="{{ asset(img.name) }}" class="header_post img-fluid" loading="lazy" />
+        <picture class="header_post_img">
+            <img src="{{ asset(img.name) }}" />
         </picture>
     {% endif %}
 {% endblock %}

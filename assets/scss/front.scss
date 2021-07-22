@@ -211,10 +211,14 @@ footer {
   text-align: right;
 }
 
-.post_img {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  min-height: 20vh;
-  padding: 15px;
+.post_img{
+  img{
+    height: 20vh;
+  }
+}
+
+.header_post_img, .header_edito_img{
+  img{
+    height: 30vh;
+  }
 }

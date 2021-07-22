@@ -23,8 +23,8 @@
     <h1 class="header_edito_title">{{ edito.title }}</h1>
     {% set fond = attachment(edito.fond) %}
     {% if fond != null %}
-        <picture>
-            <img src="{{ asset(fond.name) }}" class="header_edito_img img-fluid" loading="lazy" />
+        <picture class="header_edito_img">
+            <img src="{{ asset(fond.name) }}" />
         </picture>
     {% endif %}
     <div class="header_edito_content">
@@ -41,8 +41,8 @@
             <h2 class="post_title">{{ post.title }}</h2>
             {% set img = attachment(post.img) %}
             {% if img != null %}
-                <picture>
-                    <img src="{{ asset(img.name) }}" class="post_img img-fluid" loading="lazy" />
+                <picture class="post_img">
+                    <img src="{{ asset(img.name) }}" />
                 </picture>
             {% endif %}
             <div class="post_date">{{ post.published|date }} by
