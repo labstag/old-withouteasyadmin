@@ -11,7 +11,6 @@ use Faker\Factory;
 use Faker\Generator;
 use Labstag\Entity\AdresseUser;
 use Labstag\Entity\Attachment;
-use Labstag\Entity\Edito;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\LienUser;
@@ -170,31 +169,6 @@ abstract class FixtureLib extends Fixture
         $adresse->setGps($gps);
         $adresse->setPmr((bool) rand(0, 1));
         $this->adresseUserRH->handle($old, $adresse);
-    }
-
-    protected function addEdito(
-        array $users,
-        Generator $faker,
-        int $index,
-        array $states
-    ): void
-    {
-        $edito  = new Edito();
-        $old    = clone $edito;
-        $random = $faker->numberBetween(5, 50);
-        $edito->setTitle($faker->unique()->text($random));
-        /** @var string $content */
-        $content = $faker->paragraphs(4, true);
-        $edito->setContent(str_replace("\n\n", '<br />', $content));
-        $edito->setPublished($faker->unique()->dateTime('now'));
-        $this->addReference('edito_'.$index, $edito);
-        $tabIndex = array_rand($users);
-        /** @var User $user */
-        $user = $users[$tabIndex];
-        $edito->setRefuser($user);
-        $this->upload($edito, $faker);
-        $this->editoRH->handle($old, $edito);
-        $this->editoRH->changeWorkflowState($edito, $states);
     }
 
     protected function addEmail(

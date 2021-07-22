@@ -4,6 +4,9 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Generator;
+use Labstag\Entity\Edito;
+use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
 
 class EditoFixtures extends FixtureLib implements DependentFixtureInterface
@@ -28,6 +31,32 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
             $states  = $statesTab[$stateId];
             $this->addEdito($users, $faker, $index, $states);
         }
+    }
+
+    protected function addEdito(
+        array $users,
+        Generator $faker,
+        int $index,
+        array $states
+    ): void
+    {
+        $edito  = new Edito();
+        $old    = clone $edito;
+        $random = $faker->numberBetween(5, 50);
+        $edito->setTitle($faker->unique()->text($random));
+        $edito->setMetaDescription($faker->unique()->sentence);
+        /** @var string $content */
+        $content = $faker->paragraphs(rand(4, 10), true);
+        $edito->setContent(str_replace("\n\n", '<br />', $content));
+        $edito->setPublished($faker->unique()->dateTime('now'));
+        $this->addReference('edito_'.$index, $edito);
+        $tabIndex = array_rand($users);
+        /** @var User $user */
+        $user = $users[$tabIndex];
+        $edito->setRefuser($user);
+        $this->upload($edito, $faker);
+        $this->editoRH->handle($old, $edito);
+        $this->editoRH->changeWorkflowState($edito, $states);
     }
 
     protected function getStates()

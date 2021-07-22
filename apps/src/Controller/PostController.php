@@ -40,7 +40,7 @@ class PostController extends FrontControllerLib
     {
         $this->setMetaOpenGraph(
             $post->getTitle(),
-            '',
+            $post->getMetaDescription(),
             $post->getImg()
         );
 

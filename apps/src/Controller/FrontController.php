@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller;
 
+use Labstag\Entity\Edito;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\EditoRepository;
 use Labstag\Repository\PostRepository;
@@ -16,10 +17,11 @@ class FrontController extends FrontControllerLib
      */
     public function edito(EditoRepository $editoRepository): Response
     {
+        /** @var Edito $edito */
         $edito = $editoRepository->findOnePublier();
         $this->setMetaOpenGraph(
             $edito->getTitle(),
-            '',
+            $edito->getMetaDescription(),
             $edito->getFond()
         );
 

@@ -62,6 +62,11 @@ class Edito
     protected $title;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $metaDescription;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $published;
@@ -97,6 +102,11 @@ class Edito
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function getMetaDescription(): ?string
+    {
+        return $this->metaDescription;
     }
 
     public function getPublished(): ?DateTimeInterface
@@ -141,6 +151,13 @@ class Edito
     public function setFond(?Attachment $fond): self
     {
         $this->fond = $fond;
+
+        return $this;
+    }
+
+    public function setMetaDescription(string $metaDescription): self
+    {
+        $this->metaDescription = $metaDescription;
 
         return $this;
     }

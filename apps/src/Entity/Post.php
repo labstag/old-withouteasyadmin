@@ -68,6 +68,11 @@ class Post
     private $libelles;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $metaDescription;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $published;
@@ -162,6 +167,11 @@ class Post
         return $this->libelles;
     }
 
+    public function getMetaDescription(): ?string
+    {
+        return $this->metaDescription;
+    }
+
     public function getPublished(): ?DateTimeInterface
     {
         return $this->published;
@@ -230,6 +240,13 @@ class Post
     public function setImg(?Attachment $img): self
     {
         $this->img = $img;
+
+        return $this;
+    }
+
+    public function setMetaDescription(string $metaDescription): self
+    {
+        $this->metaDescription = $metaDescription;
 
         return $this;
     }
