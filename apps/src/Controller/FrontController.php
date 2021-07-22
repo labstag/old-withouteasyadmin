@@ -17,6 +17,11 @@ class FrontController extends FrontControllerLib
     public function edito(EditoRepository $editoRepository): Response
     {
         $edito = $editoRepository->findOnePublier();
+        $this->setMetaOpenGraph(
+            $edito->getTitle(),
+            '',
+            $edito->getFond()
+        );
 
         return $this->render(
             'front/edito.html.twig',

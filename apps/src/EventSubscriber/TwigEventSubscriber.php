@@ -143,12 +143,15 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     private function setMetaDescription(&$config)
     {
-        if (!array_key_exists('description', $config['meta'])) {
+        $meta = $config['meta'];
+        if (!array_key_exists('description', $meta) || array_key_exists('og:description', $meta) || array_key_exists('twitter:description', $meta)) {
             return;
         }
 
-        $config['meta']['og:description']      = $config['meta']['description'];
-        $config['meta']['twitter:description'] = $config['meta']['description'];
+        $meta['og:description']      = $meta['description'];
+        $meta['twitter:description'] = $meta['description'];
+
+        $config['meta'] = $meta;
     }
 
     private function setMetaTitle(&$config)
@@ -157,13 +160,21 @@ class TwigEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $config['meta']['og:title']      = $config['site_title'];
-        $config['meta']['twitter:title'] = $config['site_title'];
+        $meta = $config['meta'];
+        if (array_key_exists('og:title', $meta) || array_key_exists('twitter:title', $meta)) {
+            return;
+        }
+
+        $meta['og:title']      = $config['site_title'];
+        $meta['twitter:title'] = $config['site_title'];
+
+        $config['meta'] = $meta;
     }
 
     private function setMetaTitleGlobal(&$config)
     {
-        if (!array_key_exists('site_title', $config)) {
+        $meta = $config['meta'];
+        if (!array_key_exists('site_title', $config) && array_key_exists('title', $meta)) {
             return;
         }
 

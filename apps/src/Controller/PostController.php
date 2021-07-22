@@ -38,6 +38,12 @@ class PostController extends FrontControllerLib
      */
     public function show(PostRepository $postRepository, Post $post)
     {
+        $this->setMetaOpenGraph(
+            $post->getTitle(),
+            '',
+            $post->getImg()
+        );
+
         return $this->render(
             'front/posts/show.html.twig',
             [
