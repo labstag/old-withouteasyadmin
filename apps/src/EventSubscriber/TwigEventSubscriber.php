@@ -101,7 +101,41 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
         ksort($config['meta']);
 
+        $this->setMetatags($config['meta']);
+
         $this->twig->addGlobal('config', $config);
+    }
+
+    private function setMetatags($meta)
+    {
+        $metatags = [];
+        foreach ($meta as $key => $value) {
+            if ('' == $value) {
+                continue;
+            }
+            if (0 != substr_count($key, 'og:')) {
+                $metatags[] = [
+                    'property' => $key,
+                    'content' => $value,
+                ];
+            }elseif ($key == 'description') {
+                $metatags[] = [
+                    'itemprop' => $key,
+                    'content' => $value,
+                ];
+                $metatags[] = [
+                    'name' => $key,
+                    'content' => $value,
+                ];
+            }else{
+                $metatags[] = [
+                    'name' => $key,
+                    'content' => $value,
+                ];
+            }
+        }
+        
+        $this->twig->addGlobal('sitemetatags', $metatags);
     }
 
     protected function setLoginPage(ControllerEvent $event): void
@@ -129,6 +163,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         }
 
         $this->setMetaTitle($config);
+        $this->setMetaImage($config);
         $this->setMetaDescription($config);
         $url                            = $this->urlGenerator->generate(
             $request->attributes->get('_route'),
@@ -139,6 +174,25 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $config['meta']['twitter:url']  = $url;
         $config['meta']['og:type']      = 'website';
         $config['meta']['twitter:card'] = 'summary_large_image';
+    }
+
+    private function setMetaImage(&$config)
+    {
+        $meta = $config['meta'];
+        if (!array_key_exists('image', $meta) || array_key_exists('og:image', $meta) || array_key_exists('twitter:image', $meta)) {
+            return;
+        }
+
+        $file = __DIR__.'/../../public'.$meta['image'];
+        if(is_file($file)) {
+
+            $meta['og:image']      = $meta['image'];
+            $meta['twitter:image'] = $meta['image'];
+        }else{
+            unset($meta['image']);
+        }
+
+        $config['meta'] = $meta;
     }
 
     private function setMetaDescription(&$config)

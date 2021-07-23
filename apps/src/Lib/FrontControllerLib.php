@@ -56,6 +56,7 @@ abstract class FrontControllerLib extends ControllerLib
         if (!is_null($image)) {
             $package               = new PathPackage('/', new EmptyVersionStrategy());
             $url                   = $package->getUrl($image->getName());
+            $meta['image']         = $url;
             $meta['og:image']      = $url;
             $meta['twitter:image'] = $url;
         }

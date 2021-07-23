@@ -20,19 +20,20 @@
     </div>
 {% endblock %}
 {% block header %}
-    <h1 class="header_edito_title">{{ edito.title }}</h1>
-    {% set fond = attachment(edito.fond) %}
-    {% if fond != null %}
-        <picture class="header_edito_img">
-            <img src="{{ asset(fond.name) }}" />
-        </picture>
-    {% endif %}
-    <div class="header_edito_content">
-        {{ edito.content|raw }}
-    </p>
-    </div>
-    <div class="header_edito_more">
-        <a href="{{ path('edito') }}">Continuer à lire...</a>
+    <div class="header_edito">
+        <h1 class="header_edito_title">{{ edito.title }}</h1>
+        {% set fond = attachment(edito.fond) %}
+        {% if fond != null %}
+            <picture class="header_edito_img">
+                <img src="{{ asset(fond.name) }}" />
+            </picture>
+        {% endif %}
+        <div class="header_edito_content">
+            {{ edito.content|raw }}
+        </div>
+        <div class="header_edito_more">
+            <a href="{{ path('edito') }}">Continuer à lire...</a>
+        </div>
     </div>
 {% endblock %}
 {% block section %}

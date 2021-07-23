@@ -91,8 +91,15 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         $session = $this->session;
         try {
             $value = $post['robotstxt'];
-            file_put_contents('robots.txt', $value);
-            $msg = 'fichier robots.txt modifié';
+            $file = 'robots.txt';
+            if (is_file($file)) {
+                unlink($file);
+            }
+            file_put_contents($file, $value);
+            $msg = sprintf(
+                'fichier %s modifié',
+                $file
+            );
             $this->logger->info($msg);
             $session->getFlashBag()->add('success', $msg);
         } catch (Exception $exception) {

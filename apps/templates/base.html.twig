@@ -3,11 +3,20 @@
     <head>
         <meta charset="UTF-8">
         <title>{{ config.meta.title }}</title>
-        {% if config.meta is defined %}
-            {% for key, value in config.meta %}
-                {% if value|trim != '' %}
-                    <meta name="{{ key }}" content="{{ value|trim|e }}" />
-                {% endif %}
+        {% if sitemetatags is defined %}
+            {% for attr in sitemetatags %}
+                <meta
+            {%- for attrname, attrvalue in attr -%}
+                {{- " " -}}
+                {%- if attrname in ['placeholder', 'title'] -%}
+                    {{- attrname }}="{{ translation_domain is same as(false) or attrvalue is null ? attrvalue : attrvalue|trans(attr_translation_parameters, translation_domain) }}"
+                {%- elseif attrvalue is same as(true) -%}
+                    {{- attrname }}="{{ attrname }}"
+                {%- elseif attrvalue is not same as(false) -%}
+                    {{- attrname }}="{{ attrvalue }}"
+                {%- endif -%}
+            {%- endfor -%}
+                >
             {% endfor %}
         {% endif %}
         {% block stylesheets %}{% endblock %}

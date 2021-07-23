@@ -214,12 +214,19 @@ footer {
 .post_img {
   img {
     height: 20vh;
+    margin: 0 0 2vh 0;
   }
 }
 
 .header_post_img,
 .header_edito_img {
+  @extend .col-12;
+
   img {
     height: 30vh;
   }
+}
+
+.header_edito {
+  @extend .col-12;
 }

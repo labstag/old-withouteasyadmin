@@ -32,8 +32,9 @@
         "viewport": "width=device-width, initial-scale=1",
         "author": "koromerzhin",
         "theme-color": "#ff0000",
-        "description": "",
-        "keywords": ""
+        "description": "Site Internet sous Lasbtag",
+        "keywords": "",
+        "image": "/uploads/social-default.png"
     },
     "disclaimer": {
         "activate": 1,
