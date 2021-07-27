@@ -5,6 +5,8 @@
     {{ form_row(form.title) }}
     {{ form_row(form.published) }}
     {{ form_row(form.content) }}
+    {{ form_row(form.metaDescription) }}
+    {{ form_row(form.metaKeywords) }}
     {% if entity.id != null %}
         {{ macro_admin.form_img(
             entity,

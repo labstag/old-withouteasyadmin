@@ -45,6 +45,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $post    = new Post();
         $oldPost = clone $post;
         $post->setTitle($faker->unique()->colorName);
+        $post->setMetaKeywords(implode(', ', $faker->unique()->words(rand(4, 10))));
         $post->setMetaDescription($faker->unique()->sentence);
         /** @var string $content */
         $content = $faker->paragraphs(rand(4, 10), true);

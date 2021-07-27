@@ -39,6 +39,8 @@ class PostType extends AbstractType
             ]
         );
         $builder->add('content', WysiwygType::class);
+        $builder->add('metaDescription', TextType::class);
+        $builder->add('metaKeywords', TextType::class);
         $builder->add(
             'file',
             FileType::class,

@@ -73,6 +73,11 @@ class Post
     private $metaDescription;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $metaKeywords;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $published;
@@ -172,6 +177,11 @@ class Post
         return $this->metaDescription;
     }
 
+    public function getMetaKeywords(): ?string
+    {
+        return $this->metaKeywords;
+    }
+
     public function getPublished(): ?DateTimeInterface
     {
         return $this->published;
@@ -247,6 +257,13 @@ class Post
     public function setMetaDescription(string $metaDescription): self
     {
         $this->metaDescription = $metaDescription;
+
+        return $this;
+    }
+
+    public function setMetaKeywords(string $metaKeywords): self
+    {
+        $this->metaKeywords = $metaKeywords;
 
         return $this;
     }

@@ -25,13 +25,23 @@ abstract class FrontControllerLib extends ControllerLib
         parent::__construct($dataService, $breadcrumbs, $paginator);
     }
 
-    protected function setMetaOpenGraph(string $title, string $description, $image)
+    protected function setMetaOpenGraph(
+        string $title,
+        string $keywords,
+        string $description,
+        $image
+    )
     {
-        $globals        = $this->twig->getGlobals();
-        $config         = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
+        $globals = $this->twig->getGlobals();
+        $config  = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
+
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
 
         $meta = $config['meta'];
+
+        if ('' != $keywords) {
+            $meta['keywords'] = $keywords;
+        }
 
         if ('' != $description) {
             $meta['description']         = $description;
@@ -66,5 +76,41 @@ abstract class FrontControllerLib extends ControllerLib
         ksort($config['meta']);
 
         $this->twig->addGlobal('config', $config);
+        $this->setMetatags($config['meta']);
+    }
+
+    private function setMetatags($meta)
+    {
+        $metatags = [];
+        foreach ($meta as $key => $value) {
+            if ('' == $value) {
+                continue;
+            }
+
+            if (0 != substr_count($key, 'og:')) {
+                $metatags[] = [
+                    'property' => $key,
+                    'content'  => $value,
+                ];
+                continue;
+            } elseif ('description' == $key) {
+                $metatags[] = [
+                    'itemprop' => $key,
+                    'content'  => $value,
+                ];
+                $metatags[] = [
+                    'name'    => $key,
+                    'content' => $value,
+                ];
+                continue;
+            }
+
+            $metatags[] = [
+                'name'    => $key,
+                'content' => $value,
+            ];
+        }
+
+        $this->twig->addGlobal('sitemetatags', $metatags);
     }
 }

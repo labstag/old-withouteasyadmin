@@ -88,8 +88,9 @@ class TwigEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $globals        = $this->twig->getGlobals();
-        $config         = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
+        $globals = $this->twig->getGlobals();
+        $config  = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
+
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
         $this->setMetaTitleGlobal($config);
         preg_match(self::ADMIN_CONTROLLER, $controller, $matches);
@@ -104,38 +105,6 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->setMetatags($config['meta']);
 
         $this->twig->addGlobal('config', $config);
-    }
-
-    private function setMetatags($meta)
-    {
-        $metatags = [];
-        foreach ($meta as $key => $value) {
-            if ('' == $value) {
-                continue;
-            }
-            if (0 != substr_count($key, 'og:')) {
-                $metatags[] = [
-                    'property' => $key,
-                    'content' => $value,
-                ];
-            }elseif ($key == 'description') {
-                $metatags[] = [
-                    'itemprop' => $key,
-                    'content' => $value,
-                ];
-                $metatags[] = [
-                    'name' => $key,
-                    'content' => $value,
-                ];
-            }else{
-                $metatags[] = [
-                    'name' => $key,
-                    'content' => $value,
-                ];
-            }
-        }
-        
-        $this->twig->addGlobal('sitemetatags', $metatags);
     }
 
     protected function setLoginPage(ControllerEvent $event): void
@@ -154,6 +123,16 @@ class TwigEventSubscriber implements EventSubscriberInterface
             'oauthActivated',
             $this->dataService->getOauthActivated($this->security->getUser())
         );
+    }
+
+    private function arrayKeyExists(array $var, $data)
+    {
+        $find = 0;
+        foreach ($var as $name) {
+            $find = (int) array_key_exists($name, $data);
+        }
+
+        return 0 != $find;
     }
 
     private function setConfigGlobal(bool $enable, array &$config, Request $request)
@@ -176,29 +155,14 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $config['meta']['twitter:card'] = 'summary_large_image';
     }
 
-    private function setMetaImage(&$config)
-    {
-        $meta = $config['meta'];
-        if (!array_key_exists('image', $meta) || array_key_exists('og:image', $meta) || array_key_exists('twitter:image', $meta)) {
-            return;
-        }
-
-        $file = __DIR__.'/../../public'.$meta['image'];
-        if(is_file($file)) {
-
-            $meta['og:image']      = $meta['image'];
-            $meta['twitter:image'] = $meta['image'];
-        }else{
-            unset($meta['image']);
-        }
-
-        $config['meta'] = $meta;
-    }
-
     private function setMetaDescription(&$config)
     {
-        $meta = $config['meta'];
-        if (!array_key_exists('description', $meta) || array_key_exists('og:description', $meta) || array_key_exists('twitter:description', $meta)) {
+        $meta  = $config['meta'];
+        $tests = [
+            'og:description',
+            'twitter:description',
+        ];
+        if (!array_key_exists('description', $meta) || $this->arrayKeyExists($tests, $meta)) {
             return;
         }
 
@@ -206,6 +170,66 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $meta['twitter:description'] = $meta['description'];
 
         $config['meta'] = $meta;
+    }
+
+    private function setMetaImage(&$config)
+    {
+        $meta  = $config['meta'];
+        $tests = [
+            'og:image',
+            'twitter:image',
+        ];
+        if (!array_key_exists('image', $meta) || $this->arrayKeyExists($tests, $meta)) {
+            return;
+        }
+
+        $file = __DIR__.'/../../public'.$meta['image'];
+        if (!is_file($file)) {
+            unset($meta['image']);
+            $config['meta'] = $meta;
+
+            return;
+        }
+
+        $meta['og:image']      = $meta['image'];
+        $meta['twitter:image'] = $meta['image'];
+
+        $config['meta'] = $meta;
+    }
+
+    private function setMetatags($meta)
+    {
+        $metatags = [];
+        foreach ($meta as $key => $value) {
+            if ('' == $value) {
+                continue;
+            }
+
+            if (0 != substr_count($key, 'og:')) {
+                $metatags[] = [
+                    'property' => $key,
+                    'content'  => $value,
+                ];
+                continue;
+            } elseif ('description' == $key) {
+                $metatags[] = [
+                    'itemprop' => $key,
+                    'content'  => $value,
+                ];
+                $metatags[] = [
+                    'name'    => $key,
+                    'content' => $value,
+                ];
+                continue;
+            }
+
+            $metatags[] = [
+                'name'    => $key,
+                'content' => $value,
+            ];
+        }
+
+        $this->twig->addGlobal('sitemetatags', $metatags);
     }
 
     private function setMetaTitle(&$config)

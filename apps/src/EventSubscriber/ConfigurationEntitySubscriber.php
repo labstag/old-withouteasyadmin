@@ -91,10 +91,11 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         $session = $this->session;
         try {
             $value = $post['robotstxt'];
-            $file = 'robots.txt';
+            $file  = 'robots.txt';
             if (is_file($file)) {
                 unlink($file);
             }
+
             file_put_contents($file, $value);
             $msg = sprintf(
                 'fichier %s modifié',

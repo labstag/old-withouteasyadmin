@@ -21,6 +21,7 @@ class FrontController extends FrontControllerLib
         $edito = $editoRepository->findOnePublier();
         $this->setMetaOpenGraph(
             $edito->getTitle(),
+            $edito->getMetaKeywords(),
             $edito->getMetaDescription(),
             $edito->getFond()
         );
