@@ -49,7 +49,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $post->setMetaDescription($faker->unique()->sentence);
         /** @var string $content */
         $content = $faker->paragraphs(rand(4, 10), true);
-        $post->setContent(str_replace("\n\n", '<br />', $content));
+        $post->setContent(str_replace("\n\n", "<br />\n", $content));
         $users     = $this->installService->getData('user');
         $indexUser = $faker->numberBetween(0, count($users) - 1);
         $user      = $this->getReference('user_'.$indexUser);

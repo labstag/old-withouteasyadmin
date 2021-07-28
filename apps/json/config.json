@@ -18,7 +18,8 @@
         "removeCredit": 0,
         "moreInfoLink": 1,
         "readmoreLink": "",
-        "mandatory": 1
+        "mandatory": 1,
+        "job": "tarteaucitron.job.push('youtube');"
     },
     "notification": [{
         "type": "oauthconnectuser",

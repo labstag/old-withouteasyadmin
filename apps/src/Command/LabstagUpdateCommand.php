@@ -22,16 +22,23 @@ class LabstagUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $inputOutput = new SymfonyStyle($input, $output);
-        if ($input->getOption('maintenanceon')) {
-            $maintanceFile = file_get_contents('maintenance.html');
-            file_put_contents('public/index.php', $maintanceFile);
+        $inputOutput     = new SymfonyStyle($input, $output);
+        $publicIndex     = 'public/index.php';
+        $maintenanceFile = 'maintenance.html';
+        $actifFile       = 'public.php';
+        if (!is_file($publicIndex)) {
+            return Command::FAILURE;
+        }
+
+        if ($input->getOption('maintenanceon') && is_file($maintenanceFile)) {
+            $maintanceFile = file_get_contents($maintenanceFile);
+            file_put_contents($publicIndex, $maintanceFile);
             $inputOutput->note('Maintenance activé');
         }
 
-        if ($input->getOption('maintenanceoff')) {
-            $publicFile = file_get_contents('public.php');
-            file_put_contents('public/index.php', $publicFile);
+        if ($input->getOption('maintenanceoff') && is_file($actifFile)) {
+            $publicFile = file_get_contents($actifFile);
+            file_put_contents($publicIndex, $publicFile);
             $inputOutput->note('Maintenance désactivé');
         }
 

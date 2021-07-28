@@ -229,7 +229,7 @@ abstract class FixtureLib extends Fixture
         $noteinterne->setDateFin($dateFin);
         /** @var string $content */
         $content = $faker->paragraphs(4, true);
-        $noteinterne->setContent(str_replace("\n\n", '<br />', $content));
+        $noteinterne->setContent(str_replace("\n\n", "<br />\n", $content));
         $this->addReference('noteinterne_'.$index, $noteinterne);
         $tabIndex = array_rand($users);
         /** @var User $user */

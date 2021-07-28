@@ -103,8 +103,41 @@ class TwigEventSubscriber implements EventSubscriberInterface
         ksort($config['meta']);
 
         $this->setMetatags($config['meta']);
+        $this->setConfigTac($config);
 
         $this->twig->addGlobal('config', $config);
+    }
+
+    protected function setConfigTac(array $config)
+    {
+        if (!array_key_exists('tarteaucitron', $config)) {
+            return;
+        }
+
+        $tab = [
+            'groupServices',
+            'showAlertSmall',
+            'cookieslist',
+            'closePopup',
+            'showIcon',
+            'adblocker',
+            'DenyAllCta',
+            'AcceptAllCta',
+            'highPrivacy',
+            'handleBrowserDNTRequest',
+            'removeCredit',
+            'moreInfoLink',
+            'mandatory',
+        ];
+
+        $tarteaucitron = $config['tarteaucitron'];
+        foreach ($tab as $id) {
+            $tarteaucitron[$id] = (bool) $tarteaucitron[$id];
+        }
+
+        unset($tarteaucitron['job']);
+
+        $this->twig->addGlobal('configtarteaucitron', $tarteaucitron);
     }
 
     protected function setLoginPage(ControllerEvent $event): void

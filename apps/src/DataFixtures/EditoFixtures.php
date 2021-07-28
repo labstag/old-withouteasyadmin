@@ -48,7 +48,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         $edito->setMetaDescription($faker->unique()->sentence);
         /** @var string $content */
         $content = $faker->paragraphs(rand(4, 10), true);
-        $edito->setContent(str_replace("\n\n", '<br />', $content));
+        $edito->setContent(str_replace("\n\n", "<br />\n", $content));
         $edito->setPublished($faker->unique()->dateTime('now'));
         $this->addReference('edito_'.$index, $edito);
         $tabIndex = array_rand($users);

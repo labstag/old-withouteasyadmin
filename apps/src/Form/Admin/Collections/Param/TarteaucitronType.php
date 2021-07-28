@@ -2,6 +2,7 @@
 
 namespace Labstag\Form\Admin\Collections\Param;
 
+use Labstag\FormType\CoreTextareaType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -87,6 +88,11 @@ class TarteaucitronType extends AbstractType
                     'Oui' => '1',
                 ],
             ]
+        );
+        $builder->add(
+            'job',
+            CoreTextareaType::class,
+            ['help' => 'help']
         );
         unset($options);
     }
