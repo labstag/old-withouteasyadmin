@@ -1,4 +1,25 @@
 {
+    "tarteaucitron": {
+        "privacyUrl": "",
+        "hashtag": "#tarteaucitron",
+        "cookieName": "tarteaucitron",
+        "orientation": "middle",
+        "groupServices": 0,
+        "showAlertSmall": 0,
+        "cookieslist": 0,
+        "closePopup": 0,
+        "showIcon": 1,
+        "iconPosition": "BottomRight",
+        "adblocker": 0,
+        "DenyAllCta" : 1,
+        "AcceptAllCta" : 1,
+        "highPrivacy": 1,
+        "handleBrowserDNTRequest": 0,
+        "removeCredit": 0,
+        "moreInfoLink": 1,
+        "readmoreLink": "",
+        "mandatory": 1
+    },
     "notification": [{
         "type": "oauthconnectuser",
         "mail": 1,

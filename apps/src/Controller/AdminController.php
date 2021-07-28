@@ -65,6 +65,7 @@ class AdminController extends AdminControllerLib
         $tab               = [
             'disclaimer',
             'meta',
+            'tarteaucitron',
         ];
         foreach ($tab as $index) {
             $config[$index] = [

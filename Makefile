@@ -293,6 +293,11 @@ ifeq ($(COMMAND_ARGS),all)
 	@make linter phpcs -i
 	@make linter phpmd -i
 	@make linter readme -i
+else ifeq ($(COMMAND_ARGS),phpaudit)
+	@make linter phpcs -i
+	@make linter phpmd -i
+	@make linter phpmnd -i
+	@make linter phpstan -i
 else ifeq ($(COMMAND_ARGS),phpfix)
 	@make linter php-cs-fixer -i
 	@make linter phpcbf -i
@@ -337,6 +342,7 @@ else
 	@echo "---"
 	@echo "all: ## Launch all linter"
 	@echo "readme: linter README.md"
+	@echo "phpaudit: AUDIT PHP"
 	@echo "phpfix: PHP-CS-FIXER & PHPCBF"
 	@echo "stylelint: indique les erreurs dans le code SCSS"
 	@echo "stylelint-fix: fix les erreurs dans le code SCSS"

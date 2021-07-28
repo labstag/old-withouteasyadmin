@@ -149,6 +149,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
             $request->attributes->get('_route_params'),
             UrlGeneratorInterface::ABSOLUTE_URL
         );
+        $config['meta']['og:locale']    = $config['languagedefault'];
         $config['meta']['og:url']       = $url;
         $config['meta']['twitter:url']  = $url;
         $config['meta']['og:type']      = 'website';

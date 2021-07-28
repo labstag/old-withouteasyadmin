@@ -6,6 +6,7 @@ use Labstag\Form\Admin\Collections\Param\DisclaimerType;
 use Labstag\Form\Admin\Collections\Param\MetaSiteType;
 use Labstag\Form\Admin\Collections\Param\NotificationType;
 use Labstag\Form\Admin\Collections\Param\OauthType;
+use Labstag\Form\Admin\Collections\Param\TarteaucitronType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
@@ -50,6 +51,15 @@ class ParamType extends AbstractType
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'entry_type'   => OauthType::class,
+            ]
+        );
+        $builder->add(
+            'tarteaucitron',
+            MinMaxCollectionType::class,
+            [
+                'allow_add'    => false,
+                'allow_delete' => false,
+                'entry_type'   => TarteaucitronType::class,
             ]
         );
         $builder->add(
