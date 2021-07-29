@@ -1,4 +1,55 @@
+{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin.html.twig' %}
 {% block body %}
-    {{ form(form) }}
+	{{ form_start(form) }}
+	{{ form_row(form['site_title']) }}
+	{# {{ macro_admin.form_img(
+	        entity,
+	        entity.fond,
+	        "Fond",
+	        path('api_attachment_editofond')
+	    ) }} #}
+	{{ form_row(form['file']) }}
+	{{ form_row(form['title_format']) }}
+	{{ form_row(form['robotstxt']) }}
+	{{ form_row(form['languagedefault']) }}
+	{{ form_row(form['site_no-reply']) }}
+	{{ form_row(form['site_url']) }}
+	{{ form_row(form['language']) }}
+	{{ form_row(form['site_copyright']) }}
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li class="nav-item" role="presentation">
+			<a class="nav-link active" id="notification-tab" data-toggle="tab" href="#notification" role="tab" aria-controls="notification" aria-selected="true">notification</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="oauth-tab" data-toggle="tab" href="#oauth" role="tab" aria-controls="oauth" aria-selected="false">oauth</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="tarteaucitron-tab" data-toggle="tab" href="#tarteaucitron" role="tab" aria-controls="tarteaucitron" aria-selected="false">tarteaucitron</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="meta-tab" data-toggle="tab" href="#meta" role="tab" aria-controls="meta" aria-selected="false">meta</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="disclaimer-tab" data-toggle="tab" href="#disclaimer" role="tab" aria-controls="disclaimer" aria-selected="false">disclaimer</a>
+		</li>
+	</ul>
+	<div class="tab-content" id="myTabContent">
+		<div class="tab-pane fade show active" id="notification" role="tabpanel" aria-labelledby="notification-tab">
+			{{ form_row(form['notification']) }}
+		</div>
+		<div class="tab-pane fade" id="oauth" role="tabpanel" aria-labelledby="oauth-tab">
+			{{ form_row(form['oauth']) }}
+		</div>
+		<div class="tab-pane fade" id="tarteaucitron" role="tabpanel" aria-labelledby="tarteaucitron-tab">
+			{{ form_row(form['tarteaucitron']) }}
+		</div>
+		<div class="tab-pane fade" id="meta" role="tabpanel" aria-labelledby="meta-tab">
+			{{ form_row(form['meta']) }}
+		</div>
+		<div class="tab-pane fade" id="disclaimer" role="tabpanel" aria-labelledby="disclaimer-tab">
+			{{ form_row(form['disclaimer']) }}
+		</div>
+	</div>
+	{{ form_end(form) }}
 {% endblock %}

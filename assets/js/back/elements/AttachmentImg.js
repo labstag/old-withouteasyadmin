@@ -8,8 +8,10 @@ export class AttachmentImg extends ElementHTML {
     const legendElement = document.createElement('legend')
     legendElement.append(document.createTextNode(title))
     fieldsetElement.append(legendElement)
+    const pictureElement = document.createElement('picture')
     const imgElement = document.createElement('img')
-    fieldsetElement.append(imgElement)
+    pictureElement.append(imgElement)
+    fieldsetElement.append(pictureElement)
     if (this.dataset.url !== '#') {
       const brElement = document.createElement('br')
       fieldsetElement.append(brElement)

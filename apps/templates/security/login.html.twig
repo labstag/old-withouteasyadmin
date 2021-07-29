@@ -6,7 +6,13 @@
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-    {{ form(formLogin) }}
+    {{ form_start(formLogin) }}
+    {{ form_row(formLogin.username) }}
+    {{ form_row(formLogin.password) }}
+    <div class="btns">
+        {{ form_row(formLogin.remember_me) }}
+        {{ form_row(formLogin.submit) }}
+    </div>
     {% set state = guard_route('app_lost') %}
     {% if state == true %}
         <div class="links">
@@ -27,4 +33,5 @@
             </div>
         </div>
     {% endif %}
+    {{ form_end(formLogin) }}
 {% endblock %}

@@ -50,6 +50,7 @@
     "site_title": "labstag",
     "site_copyright": "Copyright 2021",
     "oauth": [],
+    "title_format": "%titlesite% - %titlepost%",
     "meta": {
         "viewport": "width=device-width, initial-scale=1",
         "author": "koromerzhin",

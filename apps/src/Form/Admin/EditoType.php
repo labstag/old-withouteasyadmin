@@ -44,7 +44,6 @@ class EditoType extends AbstractType
                 'attr'     => ['accept' => 'image/*'],
             ]
         );
-
         $builder->add(
             'refuser',
             SelectRefUserType::class,

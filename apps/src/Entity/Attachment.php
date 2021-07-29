@@ -78,6 +78,11 @@ class Attachment
      */
     private $stateChanged;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $code;
+
     public function __construct()
     {
         $this->users        = new ArrayCollection();
@@ -272,5 +277,17 @@ class Attachment
     public function setState($state)
     {
         $this->state = $state;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): self
+    {
+        $this->code = $code;
+
+        return $this;
     }
 }

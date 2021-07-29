@@ -30,8 +30,13 @@
 {% block section %}
     <div class="post_data">
         <h2 class="post_title">{{ post.title }}</h2>
-        <div class="post_date">{{ post.published|date }} by
+        <div class="post_date">
+            {{ post.published|date }} by
             {{ macro_site.user(post.refuser, path('post_user', {'username': post.refuser.username})) }}
+            {% set state = guard_route('admin_post_edit') %}
+            {% if state == true %}
+                <a href="{{ path('admin_post_edit', {'id': post.id}) }}" target="_blank">Modifier</a>
+            {% endif %}
         </div>
         <div class="post_content">
             {{ post.content|raw }}

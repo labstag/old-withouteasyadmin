@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,6 +27,15 @@ class ParamType extends AbstractType
     ): void
     {
         $builder->add('site_title', TextType::class);
+        $builder->add(
+            'file',
+            FileType::class,
+            [
+                'required' => false,
+                'attr'     => ['accept' => 'image/*'],
+            ]
+        );
+        $builder->add('title_format', TextType::class);
         $builder->add('robotstxt', TextareaType::class);
         $builder->add('languagedefault', LanguageType::class);
         $builder->add('site_no-reply', EmailType::class);

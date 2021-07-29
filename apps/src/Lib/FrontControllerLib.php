@@ -50,11 +50,17 @@ abstract class FrontControllerLib extends ControllerLib
         }
 
         if ('' != $title) {
-            if (array_key_exists('site_title', $config)) {
-                $title = sprintf(
-                    '%s - %s',
-                    $config['site_title'],
-                    $title
+            if (array_key_exists('site_title', $config) && array_key_exists('title_format', $config)) {
+                $title = str_replace(
+                    [
+                        '%titlesite%',
+                        '%titlepost%'
+                    ],
+                    [
+                        $config['site_title'],
+                        $title
+                    ],
+                    $config['title_format']
                 );
             }
 
