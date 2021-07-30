@@ -18,6 +18,20 @@ class NoteInterneRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, NoteInterne::class);
     }
 
+    public function findAllForAdmin(): Query
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->leftJoin(
+            'a.refuser',
+            'u'
+        );
+        $query->where(
+            'u.id IS NOT NULL'
+        );
+
+        return $query->getQuery();
+    }
+
     public function findPublier()
     {
         $queryBuilder = $this->createQueryBuilder('u');
@@ -33,20 +47,6 @@ class NoteInterneRepository extends ServiceEntityRepositoryLib
         $query->setMaxResults(1);
 
         return $query->getQuery()->getResult();
-    }
-
-    public function findAllForAdmin(): Query
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin(
-            'a.refuser',
-            'u'
-        );
-        $query->where(
-            'u.id IS NOT NULL'
-        );
-
-        return $query->getQuery();
     }
 
     public function findTrashForAdmin(): array

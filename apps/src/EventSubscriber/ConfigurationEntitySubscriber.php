@@ -19,6 +19,8 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
 
     protected CacheInterface $cache;
 
+    protected ContainerBagInterface $containerBag;
+
     protected EntityManagerInterface $entityManager;
 
     protected LoggerInterface $logger;
@@ -26,8 +28,6 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
     protected ConfigurationRepository $repository;
 
     protected SessionInterface $session;
-
-    protected ContainerBagInterface $containerBag;
 
     public function __construct(
         SessionInterface $session,

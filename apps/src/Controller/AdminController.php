@@ -5,7 +5,6 @@ namespace Labstag\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
-use Labstag\Entity\NoteInterne;
 use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ParamType;
@@ -32,16 +31,13 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/", name="admin")
      */
-    public function index(NoteInterneRepository $noteInterneRepository): Response
+    public function index(NoteInterneRepository $noteInterneRepo): Response
     {
-        /** @var NoteInterne $noteInterne */
-        $noteInternes = $noteInterneRepository->findPublier();
-        dump($noteInternes);
+        $noteinternes = $noteInterneRepo->findPublier();
+
         return $this->render(
             'admin/index.html.twig',
-            [
-                'noteInternes' => $noteInternes
-            ]
+            ['noteinternes' => $noteinternes]
         );
     }
 
@@ -90,7 +86,7 @@ class AdminController extends AdminControllerLib
         $this->headerTitle = 'Paramètres';
         $this->urlHome     = 'admin_param';
         $config            = $dataService->getConfig();
-        $tab = $this->getParameter('metatags');
+        $tab               = $this->getParameter('metatags');
         foreach ($tab as $index) {
             $config[$index] = [
                 $config[$index],

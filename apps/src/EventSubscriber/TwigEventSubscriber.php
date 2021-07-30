@@ -21,6 +21,8 @@ class TwigEventSubscriber implements EventSubscriberInterface
     const ADMIN_CONTROLLER   = '/(Controller\\\Admin)/';
     const LABSTAG_CONTROLLER = '/(Labstag)/';
 
+    protected AttachmentRepository $attachmentRepo;
+
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
     protected DataService $dataService;
@@ -32,8 +34,6 @@ class TwigEventSubscriber implements EventSubscriberInterface
     protected Environment $twig;
 
     protected UrlGeneratorInterface $urlGenerator;
-
-    protected AttachmentRepository $attachmentRepo;
 
     public function __construct(
         RouterInterface $router,
@@ -88,7 +88,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     protected function setConfig(ControllerEvent $event, Request $request): void
     {
-        $favicon = $this->attachmentRepo->getFavicon();
+        $favicon    = $this->attachmentRepo->getFavicon();
         $controller = $event->getRequest()->attributes->get('_controller');
         $matches    = [];
         preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
@@ -96,9 +96,9 @@ class TwigEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $globals = $this->twig->getGlobals();
+        $globals   = $this->twig->getGlobals();
         $canonical = isset($globals['canonical']) ? $globals['canonical'] : $request->getUri();
-        $config  = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
+        $config    = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
 
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
         $this->setMetaTitleGlobal($config);
@@ -233,7 +233,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         if (is_null($image) || is_null($image->getName())) {
             return;
         }
-        
+
         $package = new PathPackage('/', new EmptyVersionStrategy());
         $url     = $package->getUrl($image->getName());
 
