@@ -16,4 +16,14 @@ class AttachmentRepository extends ServiceEntityRepositoryLib
     {
         parent::__construct($registry, Attachment::class);
     }
+
+    public function getFavicon()
+    {
+        return $this->findOneBy(['code' => 'favicon']);
+    }
+
+    public function getImageDefault()
+    {
+        return $this->findOneBy(['code' => 'image']);
+    }
 }

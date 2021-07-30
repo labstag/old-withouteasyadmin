@@ -1,4 +1,26 @@
 {
+    "tarteaucitron": {
+        "privacyUrl": "",
+        "hashtag": "#tarteaucitron",
+        "cookieName": "tarteaucitron",
+        "orientation": "middle",
+        "groupServices": 0,
+        "showAlertSmall": 0,
+        "cookieslist": 0,
+        "closePopup": 0,
+        "showIcon": 1,
+        "iconPosition": "BottomLeft",
+        "adblocker": 0,
+        "DenyAllCta" : 1,
+        "AcceptAllCta" : 1,
+        "highPrivacy": 1,
+        "handleBrowserDNTRequest": 0,
+        "removeCredit": 0,
+        "moreInfoLink": 1,
+        "readmoreLink": "",
+        "mandatory": 1,
+        "job": "tarteaucitron.job.push('youtube');\ntarteaucitron.job.push('twitterwidgetsapi');"
+    },
     "notification": [{
         "type": "oauthconnectuser",
         "mail": 1,
@@ -21,6 +43,7 @@
         "notify": 1
     }],
     "languagedefault": "fr",
+    "generator": 1,
     "language": ["en", "fr"],
     "site_email": "contact@labstag.traefik.me",
     "site_no-reply": "no-reply@labstag.traefik.me",
@@ -28,12 +51,13 @@
     "site_title": "labstag",
     "site_copyright": "Copyright 2021",
     "oauth": [],
+    "title_format": "%titlesite% - %titlepost%",
     "meta": {
         "viewport": "width=device-width, initial-scale=1",
         "author": "koromerzhin",
         "theme-color": "#ff0000",
-        "description": "",
-        "keywords": ""
+        "description": "Site Internet sous Lasbtag",
+        "keywords": "labstag, site, weblog"
     },
     "disclaimer": {
         "activate": 1,

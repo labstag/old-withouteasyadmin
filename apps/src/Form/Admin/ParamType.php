@@ -6,10 +6,13 @@ use Labstag\Form\Admin\Collections\Param\DisclaimerType;
 use Labstag\Form\Admin\Collections\Param\MetaSiteType;
 use Labstag\Form\Admin\Collections\Param\NotificationType;
 use Labstag\Form\Admin\Collections\Param\OauthType;
+use Labstag\Form\Admin\Collections\Param\TarteaucitronType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,6 +28,23 @@ class ParamType extends AbstractType
     ): void
     {
         $builder->add('site_title', TextType::class);
+        $builder->add(
+            'image',
+            FileType::class,
+            [
+                'required' => false,
+                'attr'     => ['accept' => 'image/*'],
+            ]
+        );
+        $builder->add(
+            'favicon',
+            FileType::class,
+            [
+                'required' => false,
+                'attr'     => ['accept' => 'image/*'],
+            ]
+        );
+        $builder->add('title_format', TextType::class);
         $builder->add('robotstxt', TextareaType::class);
         $builder->add('languagedefault', LanguageType::class);
         $builder->add('site_no-reply', EmailType::class);
@@ -33,6 +53,16 @@ class ParamType extends AbstractType
             'language',
             LanguageType::class,
             ['multiple' => true]
+        );
+        $builder->add(
+            'generator',
+            ChoiceType::class,
+            [
+                'choices' => [
+                    'Non' => '0',
+                    'Oui' => '1',
+                ],
+            ]
         );
         $builder->add(
             'notification',
@@ -50,6 +80,15 @@ class ParamType extends AbstractType
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'entry_type'   => OauthType::class,
+            ]
+        );
+        $builder->add(
+            'tarteaucitron',
+            MinMaxCollectionType::class,
+            [
+                'allow_add'    => false,
+                'allow_delete' => false,
+                'entry_type'   => TarteaucitronType::class,
             ]
         );
         $builder->add(

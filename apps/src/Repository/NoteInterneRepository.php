@@ -32,6 +32,23 @@ class NoteInterneRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
+    public function findPublier()
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.state LIKE :state'
+        );
+        $query->andWhere('u.dateDebut >= now()');
+        $query->orderBy('u.dateDebut', 'ASC');
+        $query->setParameters(
+            ['state' => '%publie%']
+        );
+
+        $query->setMaxResults(1);
+
+        return $query->getQuery()->getResult();
+    }
+
     public function findTrashForAdmin(): array
     {
         $queryBuilder = $this->createQueryBuilder('a');

@@ -1,4 +1,22 @@
 {% extends 'admin.html.twig' %}
 {% block body %}
-    Prochainement ICI le DASHBOARD
+    {% for noteinterne in noteinternes %}
+        <div class="noteinterne">
+            <h2 class="noteinterne-title">
+                {{ noteinterne.title }}
+            </h2>
+            {% set img = attachment(noteinterne.fond) %}
+            {% if img is not null and img.name is not null %}
+                <picture class="noteinterne_img">
+                    <img src="{{ asset(img.name) }}" />
+                </picture>
+            {% endif %}
+            <div class="noteinterne-date">
+                {{ noteinterne.datedebut|date }} by {{ noteinterne.refuser }}
+            </div>
+            <div class="noteinterne-content">
+                {{ noteinterne.content|raw }}
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
