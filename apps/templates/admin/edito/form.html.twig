@@ -3,8 +3,11 @@
 {% block body %}
     {{ form_start(form) }}
     {{ form_row(form.title) }}
+    {{ form_row(form.published) }}
     {{ form_row(form.content) }}
-    {% if entity.id != null %}
+    {{ form_row(form.metaDescription) }}
+    {{ form_row(form.metaKeywords) }}
+    {% if entity.id is not null %}
         {{ macro_admin.form_img(
             entity,
             entity.fond,

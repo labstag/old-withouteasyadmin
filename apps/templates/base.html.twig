@@ -1,48 +1,57 @@
-{% import "modal.html.twig" as modal %}
 <!DOCTYPE html>
-<html lang="{{ config.languagedefault|e }}">
+<html lang="{{ config.languagedefault|e('html_attr') }}">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}{% if config.site_title is defined %}{{ config.site_title|trim }}{% endif %}{% endblock %}</title>
-        {% if config.meta is defined %}
-            {% for key, value in config.meta %}
-                {% if value|trim != '' %}
-                    <meta name="{{ key|e }}" content="{{ value|trim|e }}" />
-                {% endif %}
+        <title>{{ config.meta.title }}</title>
+        {% if sitemetatags is defined %}
+            {% for attr in sitemetatags %}
+                <meta
+            {%- for attrname, attrvalue in attr -%}
+                {{- " " -}}
+                {%- if attrname in ['placeholder', 'title'] -%}
+                    {{- attrname }}="{{ translation_domain is same as(false) or attrvalue is null ? attrvalue : attrvalue|trans(attr_translation_parameters, translation_domain) }}"
+                {%- elseif attrvalue is same as(true) -%}
+                    {{- attrname }}="{{ attrname }}"
+                {%- elseif attrvalue is not same as(false) -%}
+                    {{- attrname }}="{{ attrvalue }}"
+                {%- endif -%}
+            {%- endfor -%}
+                 />
             {% endfor %}
+        {% endif %}
+        {% if favicon is not null and favicon.name is not null %}
+            <link rel="shortcut icon" href="{{ asset(favicon.name) }}" />
+            <link rel="icon" href="{{ asset(favicon.name) }}" />
+        {% endif %}
+        <link rel="canonical" href="{{ canonical }}" />
+        {% if config.generator is defined and config.generator == 1 %}
+            <link rel="generator" content="labstag" />
         {% endif %}
         {% block stylesheets %}{% endblock %}
         {% block javascripts %}{% endblock %}
+        {% if app.environment == 'dev' %}
+            <script src="http://localhost:35729/livereload.js"></script>
+        {% endif %}
+        {% if tarteaucitronenable is defined and config.tarteaucitron is defined %}
+            <script type="text/javascript" src="/tarteaucitron/tarteaucitron.js"></script>
+            <script type="text/javascript">
+                tarteaucitron.init({{ configtarteaucitron|json_encode|raw }});
+                {% if config.tarteaucitron.job is defined %}
+                    tarteaucitron.job = tarteaucitron.job || [];
+                    {{ config.tarteaucitron.job|raw }}
+                {% endif %}
+            </script>
+        {% endif %}
     </head>
-    <body>
+    <body{% if bodyclass is defined %} class="{{ bodyclass }}"{% endif %}>
         {% block content %}{% endblock %}
         {% block modal %}
-            {% if modalDelete is defined %}
-                {{ modal.delete() }}
-            {% endif %}
-            {% if modalEmpty is defined %}
-                {{ modal.empty() }}
-            {% endif %}
-            {% if modalEmpties is defined %}
-                {{ modal.empties() }}
-            {% endif %}
-            {% if modalDeleties is defined %}
-                {{ modal.deleties() }}
-            {% endif %}
-            {% if modalDestroy is defined %}
-                {{ modal.destroy() }}
-            {% endif %}
-            {% if modalRestore is defined %}
-                {{ modal.restore() }}
-            {% endif %}
-            {% if modalRestories is defined %}
-                {{ modal.restories() }}
-            {% endif %}
-            {% if modalWorkflow is defined %}
-                {{ modal.Workflow() }}
-            {% endif %}
-            {% if modalAttachmentDelete is defined %}
-                {{ modal.attachmentDelete() }}
+            {% if modal is defined %}
+                {% for key, value in modal %}
+                    {% if value== true %}
+                        {% include "modal/"~ key ~".html.twig" %}
+                    {% endif %}
+                {% endfor %}
             {% endif %}
         {% endblock %}
     </body>

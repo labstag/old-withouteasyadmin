@@ -8,6 +8,7 @@ use Labstag\Entity\Configuration;
 use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Repository\ConfigurationRepository;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -16,29 +17,38 @@ use Symfony\Contracts\Cache\CacheInterface;
 class ConfigurationEntitySubscriber implements EventSubscriberInterface
 {
 
-    protected SessionInterface $session;
+    protected CacheInterface $cache;
 
-    protected LoggerInterface $logger;
+    protected ContainerBagInterface $containerBag;
 
     protected EntityManagerInterface $entityManager;
 
+    protected LoggerInterface $logger;
+
     protected ConfigurationRepository $repository;
 
-    protected CacheInterface $cache;
+    protected SessionInterface $session;
 
     public function __construct(
         SessionInterface $session,
         LoggerInterface $logger,
+        ContainerBagInterface $containerBag,
         EntityManagerInterface $entityManager,
         ConfigurationRepository $repository,
         CacheInterface $cache
     )
     {
+        $this->containerBag  = $containerBag;
         $this->cache         = $cache;
         $this->entityManager = $entityManager;
         $this->repository    = $repository;
         $this->logger        = $logger;
         $this->session       = $session;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [ConfigurationEntityEvent::class => 'onEvent'];
     }
 
     public function onEvent(ConfigurationEntityEvent $event): void
@@ -62,7 +72,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
                 $configuration->setName($key);
             }
 
-            if (in_array($key, ['meta', 'disclaimer'])) {
+            if (in_array($key, $this->getParameter('metatags'))) {
                 $value = $value[0];
             }
 
@@ -76,6 +86,11 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         $session->getFlashBag()->add('success', 'Données sauvegardé');
     }
 
+    protected function getParameter(string $name)
+    {
+        return $this->containerBag->get($name);
+    }
+
     protected function setRobotsTxt(array $post): void
     {
         if (!isset($post['robotstxt'])) {
@@ -86,8 +101,16 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         $session = $this->session;
         try {
             $value = $post['robotstxt'];
-            file_put_contents('robots.txt', $value);
-            $msg = 'fichier robots.txt modifié';
+            $file  = 'robots.txt';
+            if (is_file($file)) {
+                unlink($file);
+            }
+
+            file_put_contents($file, $value);
+            $msg = sprintf(
+                'fichier %s modifié',
+                $file
+            );
             $this->logger->info($msg);
             $session->getFlashBag()->add('success', $msg);
         } catch (Exception $exception) {
@@ -101,10 +124,5 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
             $this->logger->error($errorMsg);
             $session->getFlashBag()->add('danger', $errorMsg);
         }
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [ConfigurationEntityEvent::class => 'onEvent'];
     }
 }
