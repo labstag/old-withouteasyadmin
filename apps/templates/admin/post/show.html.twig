@@ -15,11 +15,11 @@
                 <td>{{ entity.published|format_datetime('full', 'full', locale='fr') }}</td>
             </tr>
             {% set img = attachment(entity.img) %}
-            {% if img != null %}
+            {% if img is not null and img.name is not null %}
             <tr>
                 <th>Image</th>
                 <td>
-                    <picture class="img-fluid">
+                    <picture >
                         <img src="{{ asset(img.name) }}" />
                     </picture>
                 </td>

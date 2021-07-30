@@ -6,7 +6,7 @@
     {{ form_row(form.slug) }}
     {{ form_row(form.date_debut) }}
     {{ form_row(form.date_fin) }}
-    {% if entity.id != null %}
+    {% if entity.id is not null %}
         {{ macro_admin.form_img(
             entity,
             entity.fond,

@@ -3,13 +3,6 @@
 {% block body %}
 	{{ form_start(form) }}
 	{{ form_row(form['site_title']) }}
-	{# {{ macro_admin.form_img(
-	        entity,
-	        entity.fond,
-	        "Fond",
-	        path('api_attachment_editofond')
-	    ) }} #}
-	{{ form_row(form['file']) }}
 	{{ form_row(form['title_format']) }}
 	{{ form_row(form['robotstxt']) }}
 	{{ form_row(form['languagedefault']) }}
@@ -17,6 +10,7 @@
 	{{ form_row(form['site_url']) }}
 	{{ form_row(form['language']) }}
 	{{ form_row(form['site_copyright']) }}
+	{{ form_row(form['generator']) }}
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
 		<li class="nav-item" role="presentation">
 			<a class="nav-link active" id="notification-tab" data-toggle="tab" href="#notification" role="tab" aria-controls="notification" aria-selected="true">notification</a>
@@ -32,6 +26,12 @@
 		</li>
 		<li class="nav-item" role="presentation">
 			<a class="nav-link" id="disclaimer-tab" data-toggle="tab" href="#disclaimer" role="tab" aria-controls="disclaimer" aria-selected="false">disclaimer</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="image-tab" data-toggle="tab" href="#image" role="tab" aria-controls="image" aria-selected="false">image</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="favicon-tab" data-toggle="tab" href="#favicon" role="tab" aria-controls="favicon" aria-selected="false">favicon</a>
 		</li>
 	</ul>
 	<div class="tab-content" id="myTabContent">
@@ -49,6 +49,24 @@
 		</div>
 		<div class="tab-pane fade" id="disclaimer" role="tabpanel" aria-labelledby="disclaimer-tab">
 			{{ form_row(form['disclaimer']) }}
+		</div>
+		<div class="tab-pane fade" id="image" role="tabpanel" aria-labelledby="image-tab">
+            {{ macro_admin.form_img(
+                images['image'],
+                images['image'],
+                "Image",
+                path('api_attachment_image')
+            ) }}
+            {{ form_row(form['image']) }}
+		</div>
+		<div class="tab-pane fade" id="favicon" role="tabpanel" aria-labelledby="favicon-tab">
+            {{ macro_admin.form_img(
+                images['favicon'],
+                images['favicon'],
+                "Favicon",
+                path('api_attachment_favicon')
+            ) }}
+            {{ form_row(form['favicon']) }}
 		</div>
 	</div>
 	{{ form_end(form) }}

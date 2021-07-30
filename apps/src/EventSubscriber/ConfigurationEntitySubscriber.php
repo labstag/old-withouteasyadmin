@@ -8,6 +8,7 @@ use Labstag\Entity\Configuration;
 use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Repository\ConfigurationRepository;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -26,14 +27,18 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
 
     protected SessionInterface $session;
 
+    protected ContainerBagInterface $containerBag;
+
     public function __construct(
         SessionInterface $session,
         LoggerInterface $logger,
+        ContainerBagInterface $containerBag,
         EntityManagerInterface $entityManager,
         ConfigurationRepository $repository,
         CacheInterface $cache
     )
     {
+        $this->containerBag  = $containerBag;
         $this->cache         = $cache;
         $this->entityManager = $entityManager;
         $this->repository    = $repository;
@@ -67,7 +72,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
                 $configuration->setName($key);
             }
 
-            if (in_array($key, ['meta', 'disclaimer'])) {
+            if (in_array($key, $this->getParameter('metatags'))) {
                 $value = $value[0];
             }
 
@@ -79,6 +84,11 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         /** @var Session $session */
         $session = $this->session;
         $session->getFlashBag()->add('success', 'Données sauvegardé');
+    }
+
+    protected function getParameter(string $name)
+    {
+        return $this->containerBag->get($name);
     }
 
     protected function setRobotsTxt(array $post): void

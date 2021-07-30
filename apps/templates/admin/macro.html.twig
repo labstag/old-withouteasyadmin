@@ -4,7 +4,7 @@
     {% if state == false %}
         {% set url = '#' %}
     {% endif %}
-    {% if file != null %}
+    {% if file is not null and file.name is not null %}
         <attachment-img
             data-src="{{ asset(file.name) }}"
             data-name="{{ name|e('html_attr') }}"

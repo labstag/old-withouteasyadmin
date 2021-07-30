@@ -10,12 +10,13 @@ use Labstag\Form\Admin\Collections\Param\TarteaucitronType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,7 +29,15 @@ class ParamType extends AbstractType
     {
         $builder->add('site_title', TextType::class);
         $builder->add(
-            'file',
+            'image',
+            FileType::class,
+            [
+                'required' => false,
+                'attr'     => ['accept' => 'image/*'],
+            ]
+        );
+        $builder->add(
+            'favicon',
             FileType::class,
             [
                 'required' => false,
@@ -44,6 +53,16 @@ class ParamType extends AbstractType
             'language',
             LanguageType::class,
             ['multiple' => true]
+        );
+        $builder->add(
+            'generator',
+            ChoiceType::class,
+            [
+                'choices' => [
+                    'Non' => '0',
+                    'Oui' => '1',
+                ],
+            ]
         );
         $builder->add(
             'notification',

@@ -39,7 +39,7 @@
 			{{ form_row(form.lienUsers) }}
 		</div>
 		<div class="tab-pane fade" id="avatar" role="tabpanel" aria-labelledby="avatar-tab">
-            {% if entity.id != null %}
+            {% if entity.id is not null %}
                 {{ macro_admin.form_img(
                     entity,
                     entity.avatar,

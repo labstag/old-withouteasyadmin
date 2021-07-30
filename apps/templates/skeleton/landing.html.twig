@@ -7,7 +7,12 @@
 {% endblock %}
 {% block content %}
     <div class="box">
-        <h1>{% block box_title %}{% endblock %}</h1>
+        <h1>
+        {% if imageglobal is not null and imageglobal.name is not null %}
+            <picture>
+                <img src="{{ asset(imageglobal.name) }}" alt="{{ config.site_title|e('html_attr') }}" />
+            </picture>
+        {% endif %}{% block box_title %}{% endblock %}</h1>
         {{ macro_site.flashbag(app) }}
         {% block box %}{% endblock %}
     </div>

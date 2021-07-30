@@ -8,7 +8,7 @@
     {{ form_row(form.content) }}
     {{ form_row(form.metaDescription) }}
     {{ form_row(form.metaKeywords) }}
-    {% if entity.id != null %}
+    {% if entity.id is not null %}
         {{ macro_admin.form_img(
             entity,
             entity.img,

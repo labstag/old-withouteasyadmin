@@ -2,8 +2,11 @@
 
 namespace Labstag\EventSubscriber;
 
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\DataService;
 use Labstag\Singleton\BreadcrumbsSingleton;
+use Symfony\Component\Asset\PathPackage;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -30,8 +33,11 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     protected UrlGeneratorInterface $urlGenerator;
 
+    protected AttachmentRepository $attachmentRepo;
+
     public function __construct(
         RouterInterface $router,
+        AttachmentRepository $attachmentRepo,
         Environment $twig,
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
@@ -39,6 +45,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         Security $security
     )
     {
+        $this->attachmentRepo   = $attachmentRepo;
         $this->security         = $security;
         $this->urlGenerator     = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
@@ -81,6 +88,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     protected function setConfig(ControllerEvent $event, Request $request): void
     {
+        $favicon = $this->attachmentRepo->getFavicon();
         $controller = $event->getRequest()->attributes->get('_controller');
         $matches    = [];
         preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
@@ -89,6 +97,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         }
 
         $globals = $this->twig->getGlobals();
+        $canonical = isset($globals['canonical']) ? $globals['canonical'] : $request->getUri();
         $config  = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
 
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
@@ -106,6 +115,8 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->setConfigTac($config);
 
         $this->twig->addGlobal('config', $config);
+        $this->twig->addGlobal('favicon', $favicon);
+        $this->twig->addGlobal('canonical', $canonical);
     }
 
     protected function setConfigTac(array $config)
@@ -208,25 +219,26 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     private function setMetaImage(&$config)
     {
+        $image = $this->attachmentRepo->getImageDefault();
+        $this->twig->addGlobal('imageglobal', $image);
         $meta  = $config['meta'];
         $tests = [
             'og:image',
             'twitter:image',
         ];
-        if (!array_key_exists('image', $meta) || $this->arrayKeyExists($tests, $meta)) {
+        if ($this->arrayKeyExists($tests, $meta)) {
             return;
         }
 
-        $file = __DIR__.'/../../public'.$meta['image'];
-        if (!is_file($file)) {
-            unset($meta['image']);
-            $config['meta'] = $meta;
-
+        if (is_null($image) || is_null($image->getName())) {
             return;
         }
+        
+        $package = new PathPackage('/', new EmptyVersionStrategy());
+        $url     = $package->getUrl($image->getName());
 
-        $meta['og:image']      = $meta['image'];
-        $meta['twitter:image'] = $meta['image'];
+        $meta['og:image']      = $url;
+        $meta['twitter:image'] = $url;
 
         $config['meta'] = $meta;
     }

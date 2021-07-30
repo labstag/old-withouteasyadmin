@@ -2,12 +2,17 @@
 
 namespace Labstag\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\Entity\Attachment;
+use Labstag\Entity\NoteInterne;
 use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ParamType;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\AttachmentRepository;
+use Labstag\Repository\NoteInterneRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
@@ -27,10 +32,16 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/", name="admin")
      */
-    public function index(): Response
+    public function index(NoteInterneRepository $noteInterneRepository): Response
     {
+        /** @var NoteInterne $noteInterne */
+        $noteInternes = $noteInterneRepository->findPublier();
+        dump($noteInternes);
         return $this->render(
-            'admin/index.html.twig'
+            'admin/index.html.twig',
+            [
+                'noteInternes' => $noteInternes
+            ]
         );
     }
 
@@ -54,19 +65,32 @@ class AdminController extends AdminControllerLib
      */
     public function param(
         Request $request,
+        EntityManagerInterface $entityManager,
         EventDispatcherInterface $dispatcher,
+        AttachmentRepository $repository,
         DataService $dataService,
         CacheInterface $cache
     ): Response
     {
+        $this->modalAttachmentDelete();
+        $images = [
+            'image'   => $repository->getImageDefault(),
+            'favicon' => $repository->getFavicon(),
+        ];
+
+        foreach ($images as $key => $value) {
+            if (is_null($value)) {
+                $images[$key] = new Attachment();
+                $images[$key]->setCode($key);
+                $entityManager->persist($images[$key]);
+                $entityManager->flush();
+            }
+        }
+
         $this->headerTitle = 'Paramètres';
         $this->urlHome     = 'admin_param';
         $config            = $dataService->getConfig();
-        $tab               = [
-            'disclaimer',
-            'meta',
-            'tarteaucitron',
-        ];
+        $tab = $this->getParameter('metatags');
         foreach ($tab as $index) {
             $config[$index] = [
                 $config[$index],
@@ -77,6 +101,7 @@ class AdminController extends AdminControllerLib
         $this->btnInstance->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
+            $this->setUpload($request, $images);
             $cache->delete('configuration');
             $post = $request->request->get($form->getName());
             $dispatcher->dispatch(new ConfigurationEntityEvent($post));
@@ -85,7 +110,8 @@ class AdminController extends AdminControllerLib
         return $this->render(
             'admin/param.html.twig',
             [
-                'form' => $form->createView(),
+                'images' => $images,
+                'form'   => $form->createView(),
             ]
         );
     }
@@ -190,5 +216,43 @@ class AdminController extends AdminControllerLib
             'admin/trash.html.twig',
             ['trash' => $all]
         );
+    }
+
+    private function setUpload(Request $request, array $images)
+    {
+        $all   = $request->files->all();
+        $files = $all['param'];
+        $paths = [
+            'image'   => $this->getParameter('file_directory'),
+            'favicon' => $this->getParameter('kernel.project_dir').'/public',
+        ];
+        foreach ($files as $key => $file) {
+            if (is_null($file)) {
+                continue;
+            }
+
+            $attachment = $images[$key];
+            $old        = clone $attachment;
+            $filename   = $file->getClientOriginalName();
+            $path       = $paths[$key];
+            $filename   = ('favicon' == $key) ? 'favicon.ico' : $filename;
+            $file->move(
+                $path,
+                $filename
+            );
+            $file = $path.'/'.$filename;
+            $attachment->setMimeType(mime_content_type($file));
+            $attachment->setSize(filesize($file));
+            $size = getimagesize($file);
+            $attachment->setDimensions(is_array($size) ? $size : []);
+            $attachment->setName(
+                str_replace(
+                    $this->getParameter('kernel.project_dir').'/public/',
+                    '',
+                    $file
+                )
+            );
+            $this->attachmentRH->handle($old, $attachment);
+        }
     }
 }

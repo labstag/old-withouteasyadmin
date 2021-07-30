@@ -54,11 +54,11 @@ abstract class FrontControllerLib extends ControllerLib
                 $title = str_replace(
                     [
                         '%titlesite%',
-                        '%titlepost%'
+                        '%titlepost%',
                     ],
                     [
                         $config['site_title'],
-                        $title
+                        $title,
                     ],
                     $config['title_format']
                 );
@@ -69,7 +69,7 @@ abstract class FrontControllerLib extends ControllerLib
             $meta['twitter:title'] = $title;
         }
 
-        if (!is_null($image)) {
+        if (!is_null($image) && !is_null($image->getName())) {
             $package               = new PathPackage('/', new EmptyVersionStrategy());
             $url                   = $package->getUrl($image->getName());
             $meta['image']         = $url;

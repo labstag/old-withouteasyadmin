@@ -11,11 +11,11 @@
                 <td>{{ entity.content|raw }}</td>
             </tr>
             {% set fond = attachment(entity.fond) %}
-            {% if fond != null %}
+            {% if fond is not null and fond.name is not null %}
             <tr>
                 <th>Avatar</th>
                 <td>
-                    <picture class="img-fluid">
+                    <picture >
                         <img src="{{ asset(fond.name) }}" />
                     </picture>
                 </td>

@@ -2,7 +2,7 @@
 {% extends 'skeleton/home.html.twig' %}
 {% block header %}
     {% set fond = attachment(edito.fond) %}
-    {% if fond != null %}
+    {% if fond is not null and fond.name is not null %}
         <picture class="header_edito_img">
             <img src="{{ asset(fond.name) }}" />
         </picture>

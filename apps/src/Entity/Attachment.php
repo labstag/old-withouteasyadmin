@@ -71,17 +71,17 @@ class Attachment
     protected $users;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $code;
+
+    /**
      * @var DateTime
      *
      * @ORM\Column(name="state_changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"state"})
      */
     private $stateChanged;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $code;
 
     public function __construct()
     {
@@ -129,6 +129,11 @@ class Attachment
         }
 
         return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
     }
 
     public function getDimensions(): ?array
@@ -246,6 +251,13 @@ class Attachment
         return $this;
     }
 
+    public function setCode(?string $code): self
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
     public function setDimensions(?array $dimensions): self
     {
         $this->dimensions = $dimensions;
@@ -277,17 +289,5 @@ class Attachment
     public function setState($state)
     {
         $this->state = $state;
-    }
-
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    public function setCode(?string $code): self
-    {
-        $this->code = $code;
-
-        return $this;
     }
 }

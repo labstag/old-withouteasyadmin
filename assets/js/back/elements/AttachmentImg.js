@@ -15,8 +15,11 @@ export class AttachmentImg extends ElementHTML {
     if (this.dataset.url !== '#') {
       const brElement = document.createElement('br')
       fieldsetElement.append(brElement)
+      const divElement = document.createElement('div')
+      divElement.classList.add('text-center')
       const attachmentDeleteElement = document.createElement('attachment-delete')
-      fieldsetElement.append(attachmentDeleteElement)
+      divElement.append(attachmentDeleteElement)
+      fieldsetElement.append(divElement)
     }
 
     this.append(fieldsetElement)

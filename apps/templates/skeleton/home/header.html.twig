@@ -1,5 +1,13 @@
 <div class="header_top-title">
-    <a href="{{ path('front') }}">{{ config.site_title|e('html_attr') }}</a>
+    <a href="{{ path('front') }}">
+        {% if imageglobal is not null and imageglobal.name is not null %}
+            <picture class="home_logo">
+                <img src="{{ asset(imageglobal.name) }}" alt="{{ config.site_title|e('html_attr') }}" />
+            </picture>
+        {% else %}
+            {{ config.site_title }}
+        {% endif %}
+    </a>
 </div>
 {#
 <div class="header_top-login">

@@ -16,8 +16,16 @@
                     {{- attrname }}="{{ attrvalue }}"
                 {%- endif -%}
             {%- endfor -%}
-                >
+                 />
             {% endfor %}
+        {% endif %}
+        {% if favicon is not null and favicon.name is not null %}
+            <link rel="shortcut icon" href="{{ asset(favicon.name) }}" />
+            <link rel="icon" href="{{ asset(favicon.name) }}" />
+        {% endif %}
+        <link rel="canonical" href="{{ canonical }}" />
+        {% if config.generator is defined and config.generator == 1 %}
+            <link rel="generator" content="labstag" />
         {% endif %}
         {% block stylesheets %}{% endblock %}
         {% block javascripts %}{% endblock %}

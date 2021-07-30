@@ -8,16 +8,18 @@ header {
   }
 }
 
+picture {
+  img {
+    width: 20em;
+  }
+}
+
 .thactions {
   @extend .text-center;
 
   i {
     @extend .btn-admin-table-action;
   }
-}
-
-.pagination {
-  @extend .justify-content-center;
 }
 
 .list-btn-admin {
@@ -209,16 +211,6 @@ header {
   i {
     @extend .fas;
     @extend .fa-sign-in-alt;
-  }
-}
-
-.attachment-img {
-  img {
-    @extend .img-fluid;
-    @extend .img-thumbnail;
-    @extend .mx-auto;
-    @extend .d-block;
-    width: 20em;
   }
 }
 

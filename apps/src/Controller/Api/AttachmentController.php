@@ -8,6 +8,7 @@ use Labstag\Entity\NoteInterne;
 use Labstag\Entity\Post;
 use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\NoteInterneRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
@@ -30,6 +31,54 @@ class AttachmentController extends ApiControllerLib
     public function editoFond(Edito $entity, EditoRequestHandler $editoRH): JsonResponse
     {
         return $this->deleteFile($entity, $editoRH, 'getFond', 'setFond');
+    }
+
+    /**
+     * @Route("/favicon", name="api_attachment_favicon")
+     *
+     * @return Response
+     */
+    public function favicon(AttachmentRepository $repository): JsonResponse
+    {
+        $entity = $repository->getFavicon();
+        $return = [
+            'state' => false,
+            'error' => '',
+        ];
+        $token  = $this->verifToken($entity);
+        if (!$token) {
+            $return['error'] = 'Token incorrect';
+
+            return new JsonResponse($return);
+        }
+
+        $this->deleteAttachment($entity);
+
+        return new JsonResponse($return);
+    }
+
+    /**
+     * @Route("/imagedefault", name="api_attachment_image")
+     *
+     * @return Response
+     */
+    public function imageDefault(AttachmentRepository $repository): JsonResponse
+    {
+        $entity = $repository->getImageDefault();
+        $return = [
+            'state' => false,
+            'error' => '',
+        ];
+        $token  = $this->verifToken($entity);
+        if (!$token) {
+            $return['error'] = 'Token incorrect';
+
+            return new JsonResponse($return);
+        }
+
+        $this->deleteAttachment($entity);
+
+        return new JsonResponse($return);
     }
 
     /**

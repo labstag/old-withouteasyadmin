@@ -21,7 +21,7 @@
 {% endblock %}
 {% block header %}
     {% set img = attachment(post.img) %}
-    {% if img != null %}
+    {% if img is not null and img.name is not null %}
         <picture class="header_post_img">
             <img src="{{ asset(img.name) }}" />
         </picture>

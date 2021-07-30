@@ -18,6 +18,23 @@ class NoteInterneRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, NoteInterne::class);
     }
 
+    public function findPublier()
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.state LIKE :state'
+        );
+        $query->andWhere('u.dateDebut >= now()');
+        $query->orderBy('u.dateDebut', 'ASC');
+        $query->setParameters(
+            ['state' => '%publie%']
+        );
+
+        $query->setMaxResults(1);
+
+        return $query->getQuery()->getResult();
+    }
+
     public function findAllForAdmin(): Query
     {
         $queryBuilder = $this->createQueryBuilder('a');

@@ -15,11 +15,11 @@
                 <td><a href="mailto:{{ entity.email }}">{{ entity.email }}</a></td>
             </tr>
             {% set avatar = attachment(entity.avatar) %}
-            {% if avatar != null %}
+            {% if avatar is not null and avatar.name is not null %}
             <tr>
                 <th>Avatar</th>
                 <td>
-                    <picture class="img-fluid">
+                    <picture >
                         <img src="{{ asset(avatar.name) }}" />
                     </picture>
                 </td>

@@ -9,7 +9,7 @@
         "cookieslist": 0,
         "closePopup": 0,
         "showIcon": 1,
-        "iconPosition": "BottomRight",
+        "iconPosition": "BottomLeft",
         "adblocker": 0,
         "DenyAllCta" : 1,
         "AcceptAllCta" : 1,
@@ -19,7 +19,7 @@
         "moreInfoLink": 1,
         "readmoreLink": "",
         "mandatory": 1,
-        "job": "tarteaucitron.job.push('youtube');"
+        "job": "tarteaucitron.job.push('youtube');\ntarteaucitron.job.push('twitterwidgetsapi');"
     },
     "notification": [{
         "type": "oauthconnectuser",
@@ -43,6 +43,7 @@
         "notify": 1
     }],
     "languagedefault": "fr",
+    "generator": 1,
     "language": ["en", "fr"],
     "site_email": "contact@labstag.traefik.me",
     "site_no-reply": "no-reply@labstag.traefik.me",
@@ -56,8 +57,7 @@
         "author": "koromerzhin",
         "theme-color": "#ff0000",
         "description": "Site Internet sous Lasbtag",
-        "keywords": "labstag, site, weblog",
-        "image": "/uploads/social-default.png"
+        "keywords": "labstag, site, weblog"
     },
     "disclaimer": {
         "activate": 1,

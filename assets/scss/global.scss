@@ -206,3 +206,7 @@ picture {
     height: 10vh;
   }
 }
+
+.pagination {
+  @extend .justify-content-center;
+}
