@@ -8,7 +8,7 @@
             {% set img = attachment(noteinterne.fond) %}
             {% if img is not null and img.name is not null %}
                 <picture class="noteinterne_img">
-                    <img src="{{ asset(img.name) }}" />
+                    <img alt="{{ noteinterne.title|e('html_attr') }}" src="{{ asset(img.name) }}" />
                 </picture>
             {% endif %}
             <div class="noteinterne-date">
