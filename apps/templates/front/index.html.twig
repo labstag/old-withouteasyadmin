@@ -25,7 +25,7 @@
         {% set fond = attachment(edito.fond) %}
         {% if fond is not null and fond.name is not null %}
             <picture class="header_edito_img">
-                <img src="{{ asset(fond.name) }}" />
+                <img alt="{{ edito.title|e('html_attr') }}" src="{{ asset(fond.name) }}" />
             </picture>
         {% endif %}
         <div class="header_edito_content">
@@ -43,7 +43,7 @@
             {% set img = attachment(post.img) %}
             {% if img is not null and img.name is not null %}
                 <picture class="post_img">
-                    <img src="{{ asset(img.name) }}" />
+                    <img alt="{{ post.title|e('html_attr') }}" src="{{ asset(img.name) }}" />
                 </picture>
             {% endif %}
             <div class="post_date">

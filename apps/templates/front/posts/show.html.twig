@@ -23,7 +23,7 @@
     {% set img = attachment(post.img) %}
     {% if img is not null and img.name is not null %}
         <picture class="header_post_img">
-            <img src="{{ asset(img.name) }}" />
+            <img alt="{{ post.title|e('html_attr') }}" src="{{ asset(img.name) }}" />
         </picture>
     {% endif %}
 {% endblock %}
