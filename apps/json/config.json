@@ -1,80 +1,89 @@
 {
-    "tarteaucitron": {
-        "privacyUrl": "",
-        "hashtag": "#tarteaucitron",
-        "cookieName": "tarteaucitron",
-        "orientation": "middle",
-        "groupServices": 0,
-        "showAlertSmall": 0,
-        "cookieslist": 0,
-        "closePopup": 0,
-        "showIcon": 1,
-        "iconPosition": "BottomLeft",
-        "adblocker": 0,
-        "DenyAllCta" : 1,
-        "AcceptAllCta" : 1,
-        "highPrivacy": 1,
-        "handleBrowserDNTRequest": 0,
-        "removeCredit": 0,
-        "moreInfoLink": 1,
-        "readmoreLink": "",
-        "mandatory": 1,
-        "job": "tarteaucitron.job.push('youtube');\ntarteaucitron.job.push('twitterwidgetsapi');"
+  "tarteaucitron": {
+    "privacyUrl": "",
+    "hashtag": "#tarteaucitron",
+    "cookieName": "tarteaucitron",
+    "orientation": "middle",
+    "groupServices": 0,
+    "showAlertSmall": 0,
+    "cookieslist": 0,
+    "closePopup": 0,
+    "showIcon": 1,
+    "iconPosition": "BottomLeft",
+    "adblocker": 0,
+    "DenyAllCta": 1,
+    "AcceptAllCta": 1,
+    "highPrivacy": 1,
+    "handleBrowserDNTRequest": 0,
+    "removeCredit": 0,
+    "moreInfoLink": 1,
+    "readmoreLink": "",
+    "mandatory": 1,
+    "job": "tarteaucitron.job.push('youtube');\ntarteaucitron.job.push('twitterwidgetsapi');"
+  },
+  "format_datetime": {
+    "public": "d MMMM y HH:mm",
+    "admin": "d MMMM y HH:mm:ss"
+  },
+  "notification": [
+    {
+      "type": "oauthconnectuser",
+      "mail": 1,
+      "notify": 1
     },
-    "format_datetime": {
-        "public": "d MMMM y HH:mm",
-        "admin": "d MMMM y HH:mm:ss"
+    {
+      "type": "lienuser",
+      "mail": 1,
+      "notify": 1
     },
-    "notification": [{
-        "type": "oauthconnectuser",
-        "mail": 1,
-        "notify": 1
-    }, {
-        "type": "lienuser",
-        "mail": 1,
-        "notify": 1
-    }, {
-        "type": "emailuser",
-        "mail": 1,
-        "notify": 1
-    }, {
-        "type": "phoneuser",
-        "mail": 1,
-        "notify": 1
-    }, {
-        "type": "adresseuser",
-        "mail": 1,
-        "notify": 1
-    }],
-    "languagedefault": "fr",
-    "generator": 1,
-    "language": ["en", "fr"],
-    "site_email": "contact@labstag.traefik.me",
-    "site_no-reply": "no-reply@labstag.traefik.me",
-    "site_url": "http:\/\/labstag.traefik.me",
-    "site_title": "labstag",
-    "site_copyright": "Copyright 2021",
-    "oauth": [],
-    "title_format": "%titlesite% - %titlepost%",
-    "meta": {
-        "viewport": "width=device-width, initial-scale=1",
-        "author": "koromerzhin",
-        "theme-color": "#ff0000",
-        "description": "Site Internet sous Lasbtag",
-        "keywords": "labstag, site, weblog"
+    {
+      "type": "emailuser",
+      "mail": 1,
+      "notify": 1
     },
-    "disclaimer": {
-        "activate": 1,
-        "message": "Site en construction",
-        "title": "Site en construction",
-        "url-redirect": "http:\/\/www.google.fr"
+    {
+      "type": "phoneuser",
+      "mail": 1,
+      "notify": 1
     },
-    "moment": {
-        "format": "MMMM Do YYYY, H:mm:ss",
-        "lang": "fr"
-    },
-    "wysiwyg": {
-        "lang": "fr_FR"
-    },
-    "robotstxt": "User-agent: *\nAllow: \/"
+    {
+      "type": "adresseuser",
+      "mail": 1,
+      "notify": 1
+    }
+  ],
+  "languagedefault": "fr",
+  "generator": 1,
+  "language": [
+    "en",
+    "fr"
+  ],
+  "site_email": "contact@labstag.traefik.me",
+  "site_no-reply": "no-reply@labstag.traefik.me",
+  "site_url": "http://labstag.traefik.me",
+  "site_title": "labstag",
+  "site_copyright": "Copyright 2021",
+  "oauth": [],
+  "title_format": "%titlesite% - %titlepost%",
+  "meta": {
+    "viewport": "width=device-width, initial-scale=1",
+    "author": "koromerzhin",
+    "theme-color": "#ff0000",
+    "description": "Site Internet sous Lasbtag",
+    "keywords": "labstag, site, weblog"
+  },
+  "disclaimer": {
+    "activate": 1,
+    "message": "Site en construction",
+    "title": "Site en construction",
+    "url-redirect": "http://www.google.fr"
+  },
+  "moment": {
+    "format": "MMMM Do YYYY, H:mm:ss",
+    "lang": "fr"
+  },
+  "wysiwyg": {
+    "lang": "fr_FR"
+  },
+  "robotstxt": "User-agent: *\nAllow: /"
 }
