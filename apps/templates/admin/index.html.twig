@@ -12,7 +12,7 @@
                 </picture>
             {% endif %}
             <div class="noteinterne-date">
-                {{ noteinterne.datedebut|format_datetime('full', 'full', locale='fr') }} by {{ noteinterne.refuser }}
+                {{ noteinterne.datedebut|format_datetime(pattern=formatdatetime.admin) }} by {{ noteinterne.refuser }}
             </div>
             <div class="noteinterne-content">
                 {{ noteinterne.content|raw }}

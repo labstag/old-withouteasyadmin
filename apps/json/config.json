@@ -21,6 +21,10 @@
         "mandatory": 1,
         "job": "tarteaucitron.job.push('youtube');\ntarteaucitron.job.push('twitterwidgetsapi');"
     },
+    "format_datetime": {
+        "public": "d MMMM y HH:mm",
+        "admin": "d MMMM y HH:mm:ss"
+    },
     "notification": [{
         "type": "oauthconnectuser",
         "mail": 1,

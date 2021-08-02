@@ -3,6 +3,7 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Form\Admin\Collections\Param\DisclaimerType;
+use Labstag\Form\Admin\Collections\Param\FormatDateType;
 use Labstag\Form\Admin\Collections\Param\MetaSiteType;
 use Labstag\Form\Admin\Collections\Param\NotificationType;
 use Labstag\Form\Admin\Collections\Param\OauthType;
@@ -28,22 +29,21 @@ class ParamType extends AbstractType
     ): void
     {
         $builder->add('site_title', TextType::class);
-        $builder->add(
+        $images = [
             'image',
-            FileType::class,
-            [
-                'required' => false,
-                'attr'     => ['accept' => 'image/*'],
-            ]
-        );
-        $builder->add(
             'favicon',
-            FileType::class,
-            [
-                'required' => false,
-                'attr'     => ['accept' => 'image/*'],
-            ]
-        );
+        ];
+        foreach ($images as $key) {
+            $builder->add(
+                $key,
+                FileType::class,
+                [
+                    'required' => false,
+                    'attr'     => ['accept' => 'image/*'],
+                ]
+            );
+        }
+
         $builder->add('title_format', TextType::class);
         $builder->add('robotstxt', TextareaType::class);
         $builder->add('languagedefault', LanguageType::class);
@@ -64,13 +64,15 @@ class ParamType extends AbstractType
                 ],
             ]
         );
+        $url = 'https://unicode-org.github.io/icu/userguide/format_parse/datetime/';
         $builder->add(
-            'notification',
+            'format_datetime',
             MinMaxCollectionType::class,
             [
                 'allow_add'    => false,
                 'allow_delete' => false,
-                'entry_type'   => NotificationType::class,
+                'entry_type'   => FormatDateType::class,
+                'help'         => $url,
             ]
         );
         $builder->add(
@@ -82,33 +84,24 @@ class ParamType extends AbstractType
                 'entry_type'   => OauthType::class,
             ]
         );
-        $builder->add(
-            'tarteaucitron',
-            MinMaxCollectionType::class,
-            [
-                'allow_add'    => false,
-                'allow_delete' => false,
-                'entry_type'   => TarteaucitronType::class,
-            ]
-        );
-        $builder->add(
-            'meta',
-            MinMaxCollectionType::class,
-            [
-                'allow_add'    => false,
-                'allow_delete' => false,
-                'entry_type'   => MetaSiteType::class,
-            ]
-        );
-        $builder->add(
-            'disclaimer',
-            MinMaxCollectionType::class,
-            [
-                'allow_add'    => false,
-                'allow_delete' => false,
-                'entry_type'   => DisclaimerType::class,
-            ]
-        );
+        $mixmax = [
+            'tarteaucitron' => TarteaucitronType::class,
+            'meta'          => MetaSiteType::class,
+            'disclaimer'    => DisclaimerType::class,
+            'notification'  => NotificationType::class,
+        ];
+        foreach ($mixmax as $key => $entry) {
+            $builder->add(
+                $key,
+                MinMaxCollectionType::class,
+                [
+                    'allow_add'    => false,
+                    'allow_delete' => false,
+                    'entry_type'   => $entry,
+                ]
+            );
+        }
+
         $builder->add('site_copyright', WysiwygType::class);
         unset($options);
     }

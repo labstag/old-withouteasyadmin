@@ -16,6 +16,9 @@
 			<a class="nav-link active" id="notification-tab" data-toggle="tab" href="#notification" role="tab" aria-controls="notification" aria-selected="true">notification</a>
 		</li>
 		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="datetime-tab" data-toggle="tab" href="#datetime" role="tab" aria-controls="datetime" aria-selected="false">datetime</a>
+		</li>
+		<li class="nav-item" role="presentation">
 			<a class="nav-link" id="oauth-tab" data-toggle="tab" href="#oauth" role="tab" aria-controls="oauth" aria-selected="false">oauth</a>
 		</li>
 		<li class="nav-item" role="presentation">
@@ -37,6 +40,9 @@
 	<div class="tab-content" id="myTabContent">
 		<div class="tab-pane fade show active" id="notification" role="tabpanel" aria-labelledby="notification-tab">
 			{{ form_row(form['notification']) }}
+		</div>
+		<div class="tab-pane fade" id="datetime" role="tabpanel" aria-labelledby="datetime-tab">
+			{{ form_row(form['format_datetime']) }}
 		</div>
 		<div class="tab-pane fade" id="oauth" role="tabpanel" aria-labelledby="oauth-tab">
 			{{ form_row(form['oauth']) }}
