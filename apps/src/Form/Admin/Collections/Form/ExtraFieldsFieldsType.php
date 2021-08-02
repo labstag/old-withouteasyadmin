@@ -2,8 +2,8 @@
 
 namespace Labstag\Form\Admin\Collections\Form;
 
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\FormType\CoreTextareaType;
-use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,7 +21,7 @@ class ExtraFieldsFieldsType extends AbstractType
         unset($options);
         $builder->add(
             'html',
-            WysiwygType::class,
+            CKEditorType::class,
             ['help' => 'help']
         );
         $builder->add(

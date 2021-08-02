@@ -113,6 +113,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
         $this->setMetatags($config['meta']);
         $this->setConfigTac($config);
+        $this->setFormatDatetime($config);
 
         $this->twig->addGlobal('config', $config);
         $this->twig->addGlobal('favicon', $favicon);
@@ -198,6 +199,11 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $config['meta']['twitter:url']  = $url;
         $config['meta']['og:type']      = 'website';
         $config['meta']['twitter:card'] = 'summary_large_image';
+    }
+
+    private function setFormatDatetime($config)
+    {
+        $this->twig->addGlobal('formatdatetime', $config['format_datetime']);
     }
 
     private function setMetaDescription(&$config)

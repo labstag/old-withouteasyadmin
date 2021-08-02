@@ -6,6 +6,9 @@
     {% set title = config.meta.title|trim %}
 {% endif %}
 {% block content_title %}{{ title }}{% endblock %}
+{% if config['disclaimer']['title'] is defined %}
+    {% set title = config['disclaimer']['title'] %}
+{% endif %}
 {% block box_title %}{{ title }}{% endblock %}
 {% block box %}
     {{ form_start(form) }}

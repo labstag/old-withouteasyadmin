@@ -2,8 +2,8 @@
 
 namespace Labstag\Form\Admin;
 
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\NoteInterne;
-use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -30,7 +30,7 @@ class NoteInterneType extends AbstractType
             'slug',
             TextType::class
         );
-        $builder->add('content', WysiwygType::class);
+        $builder->add('content', CKEditorType::class);
         $builder->add(
             'date_debut',
             DateTimeType::class,

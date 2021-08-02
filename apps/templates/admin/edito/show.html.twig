@@ -12,7 +12,7 @@
             </tr>
             <tr>
                 <th>Published</th>
-                <td>{{ entity.published|format_datetime('full', 'full', locale='fr') }}</td>
+                <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
             </tr>
             {% set fond = attachment(entity.fond) %}
             {% if fond is not null and fond.name is not null %}

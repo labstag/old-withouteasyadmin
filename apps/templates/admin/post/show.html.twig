@@ -12,7 +12,7 @@
             </tr>
             <tr>
                 <th>Published</th>
-                <td>{{ entity.published|format_datetime('full', 'full', locale='fr') }}</td>
+                <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
             </tr>
             {% set img = attachment(entity.img) %}
             {% if img is not null and img.name is not null %}

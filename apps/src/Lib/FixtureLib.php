@@ -342,6 +342,10 @@ abstract class FixtureLib extends Fixture
                     true
                 );
                 $filename = $file->getClientOriginalName();
+                if (!is_dir($path)) {
+                    mkdir($path, 0777, true);
+                }
+
                 $file->move(
                     $path,
                     $filename

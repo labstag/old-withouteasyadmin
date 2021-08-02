@@ -727,6 +727,10 @@ abstract class AdminControllerLib extends ControllerLib
 
             $filename = $file->getClientOriginalName();
             $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            if (!is_dir($path)) {
+                mkdir($path, 0777, true);
+            }
+
             $file->move(
                 $path,
                 $filename

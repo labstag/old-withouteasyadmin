@@ -2,7 +2,7 @@
 
 namespace Labstag\Form\Admin\Collections\Param;
 
-use Labstag\FormType\WysiwygType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,7 +28,7 @@ class DisclaimerType extends AbstractType
             ]
         );
         $builder->add('title', TextType::class, ['required' => false]);
-        $builder->add('message', WysiwygType::class, ['required' => false]);
+        $builder->add('message', CKEditorType::class, ['required' => false]);
         $builder->add('url-redirect', UrlType::class, ['required' => false]);
         unset($options);
     }
