@@ -25,8 +25,8 @@
         {% for entity in pagination %}
             <tr data-id="{{ entity.id }}">
                 <td>{{ entity.title }}</td>
-                <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime('full', 'full', locale='fr') : '' }}</td>
-                <td>{{ entity.dateFin ? entity.dateFin|format_datetime('full', 'full', locale='fr') : '' }}</td>
+                <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
+                <td>{{ entity.dateFin ? entity.dateFin|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
                 <td>{{ entity.refuser }}</td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}

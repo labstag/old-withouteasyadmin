@@ -12,11 +12,11 @@
             </tr>
             <tr>
                 <th>Date_debut</th>
-                <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime('full', 'full', locale='fr') : '' }}</td>
+                <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
             </tr>
             <tr>
                 <th>Date_fin</th>
-                <td>{{ entity.dateFin ? entity.dateFin|format_datetime('full', 'full', locale='fr') : '' }}</td>
+                <td>{{ entity.dateFin ? entity.dateFin|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
             </tr>
             {% set fond = attachment(entity.fond) %}
             {% if fond is not null and fond.name is not null %}

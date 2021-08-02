@@ -5,7 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
   file_directory: '%kernel.project_dir%/public/uploads'
-  metatags: ['disclaimer', 'meta', 'tarteaucitron']
+  metatags: ['disclaimer', 'meta', 'tarteaucitron', 'format_datetime']
 
 services:
   # default configuration for services in *this* file

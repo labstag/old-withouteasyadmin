@@ -1,7 +1,6 @@
 import { BtnDelete } from './BtnDelete'
 import { BtnToggleFieldset } from './BtnToggleFieldset'
 import { BtnAddCollection } from './BtnAddCollection'
-import { Wysiwyg } from './Wysiwyg'
 import { SelectSelector } from './SelectSelector'
 import { SelectCountry } from './SelectCountry'
 import { SelectRefUser } from './SelectRefUser'
@@ -18,8 +17,6 @@ import { SelectElement } from './SelectElement'
 customElements.define('btn-addcollection', BtnAddCollection)
 customElements.define('btn-delete', BtnDelete)
 customElements.define('btn-togglefieldset', BtnToggleFieldset)
-
-customElements.define('textarea-wysiwyg', Wysiwyg, { extends: 'textarea' })
 
 customElements.define('select-country', SelectCountry, { extends: 'select' })
 customElements.define('select-selector', SelectSelector, { extends: 'select' })
