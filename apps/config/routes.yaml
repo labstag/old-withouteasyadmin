@@ -2,4 +2,4 @@
 #    path: /
 #    controller: Labstag\Controller\DefaultController::index
 elfinder:
-     resource: "@FMElfinderBundle/Resources/config/routing.yaml"
+  resource: "@FMElfinderBundle/Resources/config/routing.yaml"
