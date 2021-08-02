@@ -35,14 +35,6 @@
         }
       },
       {
-        "libelle": "Configuration",
-        "data": {
-          "attr": {
-            "data-href": "admin_configuration_index"
-          }
-        }
-      },
-      {
         "libelle": "Attachment",
         "data": {
           "attr": {
