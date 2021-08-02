@@ -12,8 +12,7 @@ class FormatDateType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add('admin', TextType::class);
         $builder->add('public', TextType::class);
         unset($options);

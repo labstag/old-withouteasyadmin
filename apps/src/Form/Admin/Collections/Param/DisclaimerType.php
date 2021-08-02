@@ -15,8 +15,7 @@ class DisclaimerType extends AbstractType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add(
             'activate',
             ChoiceType::class,
