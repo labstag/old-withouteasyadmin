@@ -222,6 +222,12 @@ class AdminController extends AdminControllerLib
             'image'   => $this->getParameter('file_directory'),
             'favicon' => $this->getParameter('kernel.project_dir').'/public',
         ];
+        foreach ($paths as $path) {
+            if (is_dir($path)) {
+                continue;
+            }
+            mkdir($path, 0777, true);
+        }
         foreach ($files as $key => $file) {
             if (is_null($file)) {
                 continue;
