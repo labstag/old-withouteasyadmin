@@ -18,8 +18,10 @@
     "doctrine/doctrine-bundle": "2.2.4",
     "doctrine/doctrine-migrations-bundle": "3.0.2",
     "doctrine/orm": "2.8.2",
+    "friendsofsymfony/ckeditor-bundle": "^2.3",
     "fzaninotto/faker": "1.9.2",
     "giggsey/libphonenumber-for-php": "8.12.20",
+    "helios-ag/fm-elfinder-bundle": "^10.1",
     "imagine/imagine": "1.2.4",
     "knplabs/knp-menu-bundle": "3.1.0",
     "knplabs/knp-paginator-bundle": "5.4.2",
@@ -149,7 +151,9 @@
     "simple-phpunit-unit-integration": "simple-phpunit --testsuite unit,integration --verbose",
     "auto-scripts": {
       "cache:clear": "symfony-cmd",
-      "assets:install %PUBLIC_DIR%": "symfony-cmd"
+      "assets:install %PUBLIC_DIR%": "symfony-cmd",
+      "ckeditor:install": "symfony-cmd",
+      "elfinder:install": "symfony-cmd"
     },
     "post-install-cmd": [
       "@auto-scripts"

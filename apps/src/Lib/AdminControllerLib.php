@@ -730,6 +730,7 @@ abstract class AdminControllerLib extends ControllerLib
             if (!is_dir($path)) {
                 mkdir($path, 0777, true);
             }
+
             $file->move(
                 $path,
                 $filename

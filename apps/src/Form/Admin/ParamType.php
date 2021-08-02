@@ -2,6 +2,7 @@
 
 namespace Labstag\Form\Admin;
 
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Form\Admin\Collections\Param\DisclaimerType;
 use Labstag\Form\Admin\Collections\Param\FormatDateType;
 use Labstag\Form\Admin\Collections\Param\MetaSiteType;
@@ -9,7 +10,6 @@ use Labstag\Form\Admin\Collections\Param\NotificationType;
 use Labstag\Form\Admin\Collections\Param\OauthType;
 use Labstag\Form\Admin\Collections\Param\TarteaucitronType;
 use Labstag\FormType\MinMaxCollectionType;
-use Labstag\FormType\WysiwygType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -102,7 +102,7 @@ class ParamType extends AbstractType
             );
         }
 
-        $builder->add('site_copyright', WysiwygType::class);
+        $builder->add('site_copyright', CKEditorType::class);
         unset($options);
     }
 
