@@ -54,10 +54,7 @@
   ],
   "languagedefault": "fr",
   "generator": 1,
-  "language": [
-    "en",
-    "fr"
-  ],
+  "language": ["en", "fr"],
   "site_email": "contact@labstag.traefik.me",
   "site_no-reply": "no-reply@labstag.traefik.me",
   "site_url": "http://labstag.traefik.me",
