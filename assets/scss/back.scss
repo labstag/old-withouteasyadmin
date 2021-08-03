@@ -89,6 +89,11 @@ picture {
   @extend .fa-save;
 }
 
+.btn-admin-header-export {
+  @extend .fas;
+  @extend .fa-file-export;
+}
+
 .btn-admin-header-new {
   @extend .fas;
   @extend .fa-plus;

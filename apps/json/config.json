@@ -1,4 +1,144 @@
 {
+    "disclaimer": {
+        "activate": 1,
+        "message": "Site en construction",
+        "title": "Site en construction",
+        "url-redirect": "http:\/\/www.google.fr"
+    },
+    "format_datetime": {
+        "public": "d MMMM y HH:mm",
+        "admin": "d MMMM y HH:mm:ss"
+    },
+    "generator": 1,
+    "language": [
+        "en",
+        "fr"
+    ],
+    "languagedefault": "fr",
+    "meta": {
+        "viewport": "width=device-width, initial-scale=1",
+        "author": "koromerzhin",
+        "theme-color": "#ff0000",
+        "description": "Site Internet sous Lasbtag",
+        "keywords": "labstag, site, weblog"
+    },
+    "moment": {
+        "format": "MMMM Do YYYY, H:mm:ss",
+        "lang": "fr"
+    },
+    "notification": [
+        {
+            "type": "oauthconnectuser",
+            "mail": 1,
+            "notify": 1
+        },
+        {
+            "type": "lienuser",
+            "mail": 1,
+            "notify": 1
+        },
+        {
+            "type": "emailuser",
+            "mail": 1,
+            "notify": 1
+        },
+        {
+            "type": "phoneuser",
+            "mail": 1,
+            "notify": 1
+        },
+        {
+            "type": "adresseuser",
+            "mail": 1,
+            "notify": 1
+        }
+    ],
+    "oauth": [
+        {
+            "activate": true,
+            "type": "amazon",
+            "id": "amzn1.application-oa2-client.3070fdd60f36492ea2af407494f628e4",
+            "secret": "f86328363076bffaeea69a6f29cca47ce219f6feefe9c9097f9e74a0de0e0f2a"
+        },
+        {
+            "activate": true,
+            "type": "bitbucket",
+            "id": "bBJRRuStcXgN55KEQy",
+            "secret": "P8EwqjMuSKYgJ5uF7aRyLCeWZAUdpPHg"
+        },
+        {
+            "activate": true,
+            "type": "discord",
+            "id": "563114122422779926",
+            "secret": "sCaZ-lrRIfm4nu0VTEwT4O1gglFYCyis"
+        },
+        {
+            "activate": true,
+            "type": "dropbox",
+            "id": "ntknjetse74banc",
+            "secret": "84pnaxka73i2dq8"
+        },
+        {
+            "activate": true,
+            "type": "github",
+            "id": "f6ed649a024f361d830a",
+            "secret": "89d5d0a7a469892800f7d770af067e4ad6622cb0"
+        },
+        {
+            "activate": true,
+            "type": "gitlab",
+            "id": "8a832a05db5baecc13fcfd9ddb8560e88a2a02470875ebc9a6c121340394cc34",
+            "secret": "102c8f70ebfac398b30fff255f94a1b417207d97ad3a6efeb69a548f07a1068d"
+        },
+        {
+            "activate": true,
+            "type": "google",
+            "id": "1001745499642-o3geqs3ca6meoe27kcdirgan7hg9ot4u.apps.googleusercontent.com",
+            "secret": "hPP5n0a2qSEpFbq_k2GzbAKv"
+        },
+        {
+            "activate": true,
+            "type": "instagram",
+            "id": "6fe1be5dda8940fe88a955ef36444d94",
+            "secret": "d297de3d2d8049dfbf6f9f39bd6e8919"
+        },
+        {
+            "activate": true,
+            "type": "linkedin",
+            "id": "861uld0z7efrac",
+            "secret": "D4UvacjCzstGmzUa"
+        },
+        {
+            "activate": true,
+            "type": "paypal",
+            "id": "ASdFXq0frrMmt0ENNi6Cq8Lfr8Dnhsz37_7zOUK7oo6uTxT2Qv4QfPU1GrKwte7wX80Ilr5AAeXqO7WC",
+            "secret": "EJ0KaPKPSV1A-NcAhFPvtmFWqdm6bsxbI6pj290cOFrgMWcMh6ZU5Uuu0NTP2XlZIRLIehNmWJ4a6Nui"
+        },
+        {
+            "activate": true,
+            "type": "reddit",
+            "id": "5a6cs77zdHQEkg",
+            "secret": "YYbeQj0XnWgydf8GCn-AjDJ42U8"
+        },
+        {
+            "activate": true,
+            "type": "slack",
+            "id": "913647251888.1821276634551",
+            "secret": "14d55c017a446122b96cb37b099944d1"
+        },
+        {
+            "activate": true,
+            "type": "twitch",
+            "id": "gzf0u4mmzq51z6v8oy77r2gxi4q8oz",
+            "secret": "uw5dloy2wvcujxfktyu9bmuv4aocos"
+        }
+    ],
+    "robotstxt": "User-agent: *\nAllow: \/",
+    "site_copyright": "Copyright 2021",
+    "site_email": "contact@labstag.traefik.me",
+    "site_no-reply": "no-reply@labstag.traefik.me",
+    "site_title": "labstag",
+    "site_url": "http:\/\/labstag.traefik.me",
     "tarteaucitron": {
         "privacyUrl": "",
         "hashtag": "#tarteaucitron",
@@ -11,8 +151,8 @@
         "showIcon": 1,
         "iconPosition": "BottomLeft",
         "adblocker": 0,
-        "DenyAllCta" : 1,
-        "AcceptAllCta" : 1,
+        "DenyAllCta": 1,
+        "AcceptAllCta": 1,
         "highPrivacy": 1,
         "handleBrowserDNTRequest": 0,
         "removeCredit": 0,
@@ -21,60 +161,8 @@
         "mandatory": 1,
         "job": "tarteaucitron.job.push('youtube');\ntarteaucitron.job.push('twitterwidgetsapi');"
     },
-    "format_datetime": {
-        "public": "d MMMM y HH:mm",
-        "admin": "d MMMM y HH:mm:ss"
-    },
-    "notification": [{
-        "type": "oauthconnectuser",
-        "mail": 1,
-        "notify": 1
-    }, {
-        "type": "lienuser",
-        "mail": 1,
-        "notify": 1
-    }, {
-        "type": "emailuser",
-        "mail": 1,
-        "notify": 1
-    }, {
-        "type": "phoneuser",
-        "mail": 1,
-        "notify": 1
-    }, {
-        "type": "adresseuser",
-        "mail": 1,
-        "notify": 1
-    }],
-    "languagedefault": "fr",
-    "generator": 1,
-    "language": ["en", "fr"],
-    "site_email": "contact@labstag.traefik.me",
-    "site_no-reply": "no-reply@labstag.traefik.me",
-    "site_url": "http:\/\/labstag.traefik.me",
-    "site_title": "labstag",
-    "site_copyright": "Copyright 2021",
-    "oauth": [],
     "title_format": "%titlesite% - %titlepost%",
-    "meta": {
-        "viewport": "width=device-width, initial-scale=1",
-        "author": "koromerzhin",
-        "theme-color": "#ff0000",
-        "description": "Site Internet sous Lasbtag",
-        "keywords": "labstag, site, weblog"
-    },
-    "disclaimer": {
-        "activate": 1,
-        "message": "Site en construction",
-        "title": "Site en construction",
-        "url-redirect": "http:\/\/www.google.fr"
-    },
-    "moment": {
-        "format": "MMMM Do YYYY, H:mm:ss",
-        "lang": "fr"
-    },
     "wysiwyg": {
         "lang": "fr_FR"
-    },
-    "robotstxt": "User-agent: *\nAllow: \/"
+    }
 }

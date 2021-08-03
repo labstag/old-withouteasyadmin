@@ -17,8 +17,10 @@ use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -28,6 +30,26 @@ use Symfony\Contracts\Cache\CacheInterface;
  */
 class AdminController extends AdminControllerLib
 {
+    /**
+     * @Route("/export", name="admin_export")
+     */
+    public function export(DataService $dataService, SessionInterface $session): RedirectResponse
+    {
+        $config = $dataService->getConfig();
+        ksort($config);
+        $content = json_encode($config, JSON_PRETTY_PRINT);
+        $file    = '../json/config.json';
+        if (is_file($file)) {
+            file_put_contents($file, $content);
+            $session->getFlashBag()->add(
+                'success',
+                'Données exporté'
+            );
+        }
+
+        return $this->redirect($this->generateUrl('admin_param'));
+    }
+
     /**
      * @Route("/", name="admin")
      */
@@ -102,6 +124,14 @@ class AdminController extends AdminControllerLib
             $post = $request->request->get($form->getName());
             $dispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
+
+        $this->btnInstance->add(
+            'btn-admin-header-export',
+            'Exporter',
+            [
+                'href' => $this->router->generate('admin_export'),
+            ]
+        );
 
         return $this->render(
             'admin/param.html.twig',
