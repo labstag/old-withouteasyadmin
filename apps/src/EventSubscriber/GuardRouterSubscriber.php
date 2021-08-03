@@ -57,7 +57,7 @@ class GuardRouterSubscriber implements EventSubscriberInterface
         /** @var Session $session */
         $session = $this->session;
         $session->getFlashBag()->add(
-            'note',
+            'warning',
             "Vous n'avez pas les droits nécessaires"
         );
         throw new AccessDeniedException();
