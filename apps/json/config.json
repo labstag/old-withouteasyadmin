@@ -10,10 +10,7 @@
     "admin": "d MMMM y HH:mm:ss"
   },
   "generator": 1,
-  "language": [
-    "en",
-    "fr"
-  ],
+  "language": ["en", "fr"],
   "languagedefault": "fr",
   "meta": {
     "viewport": "width=device-width, initial-scale=1",
