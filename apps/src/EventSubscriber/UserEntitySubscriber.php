@@ -9,7 +9,7 @@ use Labstag\Event\UserEntityEvent;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -20,6 +20,8 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     protected EntityManagerInterface $entityManager;
 
+    protected FlashBagInterface $flashbag;
+
     protected UserPasswordEncoderInterface $passwordEncoder;
 
     protected SessionInterface $session;
@@ -27,6 +29,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
     protected UserMailService $userMailService;
 
     public function __construct(
+        FlashBagInterface $flashbag,
         SessionInterface $session,
         EntityManagerInterface $entityManager,
         UserPasswordEncoderInterface $passwordEncoder,
@@ -34,6 +37,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         EmailUserRequestHandler $emailUserRH
     )
     {
+        $this->flashbag        = $flashbag;
         $this->emailUserRH     = $emailUserRH;
         $this->userMailService = $userMailService;
         $this->entityManager   = $entityManager;
@@ -65,10 +69,8 @@ class UserEntitySubscriber implements EventSubscriberInterface
             return;
         }
 
-        /** @var Session $session */
-        $session = $this->session;
         $this->userMailService->changePassword($newEntity);
-        $session->getFlashBag()->add(
+        $this->flashbag->add(
             'success',
             'Changement de mot de passe effectué'
         );
@@ -93,9 +95,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
+        $this->flashbag->add(
             'success',
             'Mot de passe changé'
         );
@@ -126,9 +126,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         }
 
         $this->entityManager->flush();
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
+        $this->flashbag->add(
             'success',
             'Email principal changé'
         );

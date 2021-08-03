@@ -10,7 +10,7 @@ use Labstag\Repository\ConfigurationRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
@@ -23,6 +23,8 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
 
     protected EntityManagerInterface $entityManager;
 
+    protected FlashBagInterface $flashbag;
+
     protected LoggerInterface $logger;
 
     protected ConfigurationRepository $repository;
@@ -30,6 +32,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
     protected SessionInterface $session;
 
     public function __construct(
+        FlashBagInterface $flashbag,
         SessionInterface $session,
         LoggerInterface $logger,
         ContainerBagInterface $containerBag,
@@ -38,6 +41,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         CacheInterface $cache
     )
     {
+        $this->flashbag      = $flashbag;
         $this->containerBag  = $containerBag;
         $this->cache         = $cache;
         $this->entityManager = $entityManager;
@@ -81,9 +85,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         }
 
         $this->entityManager->flush();
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add('success', 'Données sauvegardé');
+        $this->flashbag->add('success', 'Données sauvegardé');
     }
 
     protected function getParameter(string $name)
@@ -97,8 +99,6 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
             return;
         }
 
-        /** @var Session $session */
-        $session = $this->session;
         try {
             $value = $post['robotstxt'];
             $file  = 'robots.txt';
@@ -112,7 +112,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
                 $file
             );
             $this->logger->info($msg);
-            $session->getFlashBag()->add('success', $msg);
+            $this->flashbag->add('success', $msg);
         } catch (Exception $exception) {
             $errorMsg = sprintf(
                 'Exception : Erreur %s dans %s L.%s : %s',
@@ -122,7 +122,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
                 $exception->getMessage()
             );
             $this->logger->error($errorMsg);
-            $session->getFlashBag()->add('danger', $errorMsg);
+            $this->flashbag->add('danger', $errorMsg);
         }
     }
 }

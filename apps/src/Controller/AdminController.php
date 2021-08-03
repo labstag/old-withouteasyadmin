@@ -20,7 +20,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -33,7 +32,7 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/export", name="admin_export")
      */
-    public function export(DataService $dataService, SessionInterface $session): RedirectResponse
+    public function export(DataService $dataService): RedirectResponse
     {
         $config = $dataService->getConfig();
         ksort($config);
@@ -41,7 +40,7 @@ class AdminController extends AdminControllerLib
         $file    = '../json/config.json';
         if (is_file($file)) {
             file_put_contents($file, $content);
-            $session->getFlashBag()->add(
+            $this->flashbag->add(
                 'success',
                 'Données exporté'
             );
