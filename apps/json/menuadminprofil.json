@@ -1,18 +1,23 @@
-[{
+[
+  {
     "libelle": "Mon compte",
-    "childs": [{
+    "childs": [
+      {
         "libelle": "Mon profil",
         "data": {
-            "attr": {
-                "data-href": "admin_profil"
-            }
+          "attr": {
+            "data-href": "admin_profil"
+          }
         }
-    }, {
+      },
+      {
         "libelle": "Logout",
         "data": {
-            "attr": {
-                "data-href": "app_logout"
-            }
+          "attr": {
+            "data-href": "app_logout"
+          }
         }
-    }]
-}]
+      }
+    ]
+  }
+]

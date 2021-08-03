@@ -1,1 +1,6 @@
-["visiteur", "admin", "superadmin", "user"]
+[
+  "visiteur",
+  "admin",
+  "superadmin",
+  "user"
+]
