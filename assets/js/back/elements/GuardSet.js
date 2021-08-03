@@ -63,7 +63,7 @@ export class GuardSet extends ElementHTML {
 
   checkChange (name) {
     if (this.dataset.check === '1') {
-      const setRouteElement = this.closest('tr').querySelectorAll('guard-setworkflow')
+      const setRouteElement = this.closest('tr').querySelectorAll(name)
       let state = 0
       setRouteElement.forEach(
         element => {
