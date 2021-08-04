@@ -88,6 +88,7 @@ main {
     justify-content: space-evenly;
     flex-direction: column;
     align-items: center;
+    margin: auto;
   }
 
   .item-connect {
@@ -105,6 +106,12 @@ main {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
+    flex-direction: column;
+    text-align: center;
+
+    @include media-breakpoint-up(md) {
+      flex-direction: row;
+    }
   }
 
   .links {
