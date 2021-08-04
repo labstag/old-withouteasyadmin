@@ -56,12 +56,12 @@
             <div class="row">
                 {% set state = guard_route('connect_lost') %}
                 {% if state == true and entity.oauthconnectusers|length != 0 %}
-                    <div class="col-auto">
+                    <div class="col-12">
                         <fieldset>
                             <legend>Dissocier :</legend>
                             <div class="row">
                                 {% for oauth in entity.oauthconnectusers %}
-                                    <div class="item-connect">
+                                    <div class="col-3">
                                         <a href="{{ path('connect_lost', {'oauthCode': oauth.name}) }}" title="{{ oauth.name|e('html_attr') }}">
                                             <i class="fab fa-{{ oauth.name }}"></i>
                                             {{ oauth.name }}
@@ -74,12 +74,12 @@
                 {% endif %}
                 {% set state = guard_route('connect_start') %}
                 {% if state == true and oauthActivated|length != 0 %}
-                    <div class="col-auto">
+                    <div class="col-12">
                         <fieldset>
                             <legend>Se connecter avec :</legend>
                             <div class="row">
                                 {% for oauth in oauthActivated %}
-                                    <div class="item-connect">
+                                    <div class="col-3">
                                         <a href="{{ path('connect_start', {'oauthCode': oauth.type, 'link': 1}) }}" title="{{ oauth.type|e('html_attr') }}">
                                             <i class="fab fa-{{ oauth.type }}"></i>
                                             {{ oauth.type }}
