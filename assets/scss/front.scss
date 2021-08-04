@@ -108,6 +108,7 @@ main {
     width: 100%;
     flex-direction: column;
     text-align: center;
+
     @include media-breakpoint-up(md) {
       flex-direction: row;
     }
