@@ -2,27 +2,25 @@
 # Files in the packages/ subdirectory configure your dependencies.
 
 # Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
   file_directory: '%kernel.project_dir%/public/uploads'
   metatags: ['disclaimer', 'meta', 'tarteaucitron', 'format_datetime']
-
 services:
-  # default configuration for services in *this* file
+    # default configuration for services in *this* file
   _defaults:
-    autowire: true # Automatically injects dependencies in your services.
+    autowire: true      # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-  # makes classes in src/ available to be used as services
-  # this creates a service per class whose id is the fully-qualified class name
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
   Labstag\:
-    resource: "../src/"
+    resource: '../src/'
     exclude:
-      - "../src/Reader/"
-      - "../src/DependencyInjection/"
-      - "../src/Entity/"
-      - "../src/Kernel.php"
-      - "../src/Tests/"
+      - '../src/DependencyInjection/'
+      - '../src/Entity/'
+      - '../src/Kernel.php'
+      - '../src/Tests/'
 
   # controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class
@@ -36,8 +34,8 @@ services:
     resource: "../src/Controller/"
     tags: ["controller.service_arguments"]
 
-  # add more service definitions when explicit configuration is needed
-  # please note that last definitions always *replace* previous ones
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
 
   app.admin_menu_builder:
     class: Labstag\Menu\AdminMenuBuilder
@@ -72,3 +70,4 @@ services:
     decorates: 'api_platform.swagger.normalizer.api_gateway'
   Labstag\Reader\UploadAnnotationReader:
     arguments: ["@annotations.reader"]
+
