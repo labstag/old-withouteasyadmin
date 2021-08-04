@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
@@ -40,6 +40,8 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected EntityManagerInterface $entityManager;
 
+    protected FlashBagInterface $flashbag;
+
     protected GuardService $guardService;
 
     protected string $headerTitle = '';
@@ -61,6 +63,7 @@ abstract class AdminControllerLib extends ControllerLib
     protected string $urlHome = '';
 
     public function __construct(
+        FlashBagInterface $flashbag,
         UploadAnnotationReader $uploadAnnotReader,
         PaginatorInterface $paginator,
         RequestStack $requestStack,
@@ -77,6 +80,7 @@ abstract class AdminControllerLib extends ControllerLib
         SessionInterface $session
     )
     {
+        $this->flashbag             = $flashbag;
         $this->session              = $session;
         $this->attachmentRH         = $attachmentRH;
         $this->attachmentRepository = $attachmentRepository;
@@ -313,9 +317,7 @@ abstract class AdminControllerLib extends ControllerLib
         if ($form->isSubmitted() && $form->isValid()) {
             $this->upload($entity);
             $handler->handle($oldEntity, $entity);
-            /** @var Session $session */
-            $session = $this->session;
-            $session->getFlashBag()->add(
+            $this->flashbag->add(
                 'success',
                 'Données sauvegardé'
             );

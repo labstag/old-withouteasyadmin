@@ -5,6 +5,7 @@ namespace Labstag\EventSubscriber;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Service\GuardService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\RouterInterface;
@@ -13,6 +14,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class GuardRouterSubscriber implements EventSubscriberInterface
 {
+
+    protected FlashBagInterface $flashbag;
 
     protected GroupeRepository $groupeRepository;
 
@@ -26,12 +29,14 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
     public function __construct(
         SessionInterface $session,
+        FlashBagInterface $flashbag,
         RouterInterface $router,
         TokenStorageInterface $token,
         GroupeRepository $groupeRepository,
         GuardService $guardService
     )
     {
+        $this->flashbag         = $flashbag;
         $this->groupeRepository = $groupeRepository;
         $this->session          = $session;
         $this->token            = $token;
@@ -54,10 +59,8 @@ class GuardRouterSubscriber implements EventSubscriberInterface
             return;
         }
 
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
-            'note',
+        $this->flashbag->add(
+            'warning',
             "Vous n'avez pas les droits nécessaires"
         );
         throw new AccessDeniedException();

@@ -32,7 +32,7 @@
         {% if app.environment == 'dev' %}
             <script src="http://localhost:35729/livereload.js"></script>
         {% endif %}
-        {% if tarteaucitronenable is defined and config.tarteaucitron is defined %}
+        {% if config.tarteaucitron is defined %}
             <script type="text/javascript" src="/tarteaucitron/tarteaucitron.js"></script>
             <script type="text/javascript">
                 tarteaucitron.init({{ configtarteaucitron|json_encode|raw }});
