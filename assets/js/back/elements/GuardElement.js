@@ -31,8 +31,8 @@ export class GuardElement extends HTMLTableElement {
     const guardsets = document.getElementsByTagName(guardSet)
     const refgroups = document.getElementsByTagName(refgroup)
     console.log(guardSet, refgroup)
-    if (response.user != undefined && response.group != undefined) {
-      if (response.user.length == 0) {
+    if (response.user !== undefined && response.group !== undefined) {
+      if (response.user.length === 0) {
         guardsets.forEach(
           guardset => {
             guardset.dataset.state = 0
@@ -46,7 +46,7 @@ export class GuardElement extends HTMLTableElement {
           }
         )
       }
-      if (response.group.length == 0) {
+      if (response.group.length === 0) {
         refgroups.forEach(
           guardset => {
             guardset.dataset.state = 0
@@ -60,8 +60,8 @@ export class GuardElement extends HTMLTableElement {
           }
         )
       }
-    } else if (response.group != undefined) {
-      if (response.group.length == 0) {
+    } else if (response.group !== undefined) {
+      if (response.group.length === 0) {
         guardsets.forEach(
           guardset => {
             guardset.dataset.state = 0
