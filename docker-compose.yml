@@ -17,6 +17,9 @@ services:
     volumes:
       - ${PWD}/apps:/var/www/
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    environment:
+        MAILER_DSN: "smtp://mailhog:1025"
+        DATABASE_URL: "mysqli://siteinternet:password@mariadb:3306/core"
     deploy:
       restart_policy:
         condition: none
@@ -117,6 +120,9 @@ services:
       - mercure
       - mailhog
       - redis
+    environment:
+        MAILER_DSN: "smtp://mailhog:1025"
+        DATABASE_URL: "mysqli://siteinternet:password@mariadb:3306/core"
     volumes:
       - ${PWD}/apps:/var/www/
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
