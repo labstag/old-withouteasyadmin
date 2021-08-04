@@ -187,8 +187,8 @@ class GuardRouteController extends ApiControllerLib
         $data  = $this->setRouteUser(
             $data,
             $routeUserRepo,
-            $guardService,
             $user,
+            $guardService,
             $state,
             $route,
             $routeUserRH
@@ -220,8 +220,8 @@ class GuardRouteController extends ApiControllerLib
             $data = $this->setRouteUser(
                 $data,
                 $routeUserRepo,
-                $guardService,
                 $user,
+                $guardService,
                 $state,
                 $route,
                 $routeUserRH
@@ -283,13 +283,13 @@ class GuardRouteController extends ApiControllerLib
     }
 
     private function setRouteUser(
-        $data,
-        $routeUserRepo,
+        array $data,
+        RouteUserRepository $routeUserRepo,
         $user,
         $guardService,
         $state,
-        $route,
-        $routeUserRH
+        EntityRoute $route,
+        RouteUserRequestHandler $routeUserRH
     )
     {
         $routeUser = $routeUserRepo->findOneBy(['refuser' => $user, 'refroute' => $route]);

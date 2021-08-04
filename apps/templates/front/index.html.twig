@@ -21,7 +21,11 @@
 {% endblock %}
 {% block header %}
     <div class="header_edito">
-        <h1 class="header_edito_title">{{ edito.title }}</h1>
+        <h1 class="header_edito_title">
+            <a href="{{ path('edito') }}">
+                {{ edito.title }}
+            </a>
+        </h1>
         {% set fond = attachment(edito.fond) %}
         {% if fond is not null and fond.name is not null %}
             <picture class="header_edito_img">
@@ -31,15 +35,16 @@
         <div class="header_edito_content">
             {{ edito.content|raw }}
         </div>
-        <div class="header_edito_more">
-            <a href="{{ path('edito') }}">Continuer à lire...</a>
-        </div>
     </div>
 {% endblock %}
 {% block section %}
     {% for post in pagination %}
         <div class="post_data">
-            <h2 class="post_title">{{ post.title }}</h2>
+            <h2 class="post_title">
+                <a href="{{ path('post_show', {'slug': post.slug}) }}">
+                    {{ post.title }}
+                </a>
+            </h2>
             {% set img = attachment(post.img) %}
             {% if img is not null and img.name is not null %}
                 <picture class="post_img">
@@ -56,9 +61,6 @@
             </div>
             <div class="post_content">
                 {{ post.content|raw }}
-            </div>
-            <div class="post_more">
-                <a href="{{ path('post_show', {'slug': post.slug}) }}">More</a>
             </div>
         </div>
     {% endfor %}

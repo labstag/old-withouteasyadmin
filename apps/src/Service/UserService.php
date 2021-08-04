@@ -10,13 +10,15 @@ use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\OauthConnectUserRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use League\OAuth2\Client\Provider\AbstractProvider;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class UserService
 {
 
     protected EntityManagerInterface $entityManager;
+
+    protected FlashBagInterface $flashbag;
 
     protected OauthConnectUserRequestHandler $oauthConnectUserRH;
 
@@ -30,6 +32,7 @@ class UserService
 
     public function __construct(
         SessionInterface $session,
+        FlashBagInterface $flashbag,
         EntityManagerInterface $entityManager,
         UserRepository $repository,
         OauthService $oauthService,
@@ -37,6 +40,7 @@ class UserService
         OauthConnectUserRequestHandler $oauthConnectUserRH
     )
     {
+        $this->flashbag           = $flashbag;
         $this->userRH             = $userRH;
         $this->oauthService       = $oauthService;
         $this->session            = $session;
@@ -51,8 +55,6 @@ class UserService
         $userOauth
     ): void
     {
-        /** @var Session $session */
-        $session  = $this->session;
         $data     = !is_array($userOauth) ? $userOauth->toArray() : $userOauth;
         $identity = $this->oauthService->getIdentity($data, $client);
         $find     = $this->findOAuthIdentity(
@@ -88,12 +90,12 @@ class UserService
             $old = clone $oauthConnect;
             $oauthConnect->setData($data);
             $this->oauthConnectUserRH->handle($old, $oauthConnect);
-            $session->getFlashBag()->add('success', 'Compte associé');
+            $this->flashbag->add('success', 'Compte associé');
 
             return;
         }
 
-        $session->getFlashBag()->add(
+        $this->flashbag->add(
             'warning',
             "Impossible d'associer le compte"
         );

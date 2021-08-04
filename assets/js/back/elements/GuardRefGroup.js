@@ -12,6 +12,6 @@ export class GuardRefGroup extends ElementHTML {
   }
 
   changeState () {
-    this.setAttribute('class', (this.dataset.state === '1') ? 'checkOK' : 'checkKO')
+    this.setAttribute('class', (this.dataset.state === '1') ? 'check-ok' : 'check-ko')
   }
 }

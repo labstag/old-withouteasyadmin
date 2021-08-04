@@ -4,21 +4,26 @@ namespace Labstag\EventSubscriber;
 
 use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class UserWorkflowSubscriber implements EventSubscriberInterface
 {
 
+    protected FlashBagInterface $flashbag;
+
     protected SessionInterface $session;
 
     protected UserMailService $userMailService;
 
     public function __construct(
+        FlashBagInterface $flashbag,
         UserMailService $userMailService,
         SessionInterface $session
     )
     {
+        $this->flashbag        = $flashbag;
         $this->session         = $session;
         $this->userMailService = $userMailService;
     }
@@ -46,9 +51,7 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getSubject();
         $this->userMailService->lostPassword($entity);
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
+        $this->flashbag->add(
             'success',
             'Demande de nouveau mot de passe envoyé'
         );
@@ -58,9 +61,7 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getSubject();
         $this->userMailService->newUser($entity);
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
+        $this->flashbag->add(
             'success',
             'Nouveau compte utilisateur créer'
         );
