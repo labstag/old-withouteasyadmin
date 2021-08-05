@@ -34,8 +34,8 @@
     "behat/transliterator": {
         "version": "v1.3.0"
     },
-    "bheller/images-generator": {
-        "version": "1.0.1"
+    "bluemmb/faker-picsum-photos-provider": {
+        "version": "v2.0"
     },
     "brick/math": {
         "version": "0.9.1"
@@ -149,6 +149,9 @@
     "egulias/email-validator": {
         "version": "2.1.22"
     },
+    "fakerphp/faker": {
+        "version": "v1.15.0"
+    },
     "fig/link-util": {
         "version": "1.1.1"
     },
@@ -178,9 +181,6 @@
         "files": [
             "config/packages/fos_ckeditor.yaml"
         ]
-    },
-    "fzaninotto/faker": {
-        "version": "v1.9.1"
     },
     "gedmo/doctrine-extensions": {
         "version": "v3.0.0"
@@ -304,10 +304,10 @@
         "version": "0.12.50"
     },
     "phpunit/php-timer": {
-        "version": "3.1.4"
+        "version": "5.0.3"
     },
     "povils/phpmnd": {
-        "version": "v2.3.0"
+        "version": "v2.4.0"
     },
     "psr/cache": {
         "version": "1.0.1"
