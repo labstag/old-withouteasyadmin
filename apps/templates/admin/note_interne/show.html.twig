@@ -24,7 +24,7 @@
                 <th>Fond</th>
                 <td>
                     <picture >
-                        <img alt="Note Interne fond" src="{{ asset(fond.name) }}" />
+                        <img alt="Note Interne fond" src="{{ app.request.getSchemeAndHttpHost() ~ asset(fond.name) }}" />
                     </picture>
                 </td>
             </tr>

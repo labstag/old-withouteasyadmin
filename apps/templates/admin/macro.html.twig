@@ -6,7 +6,7 @@
     {% endif %}
     {% if file is not null and file.name is not null %}
         <attachment-img
-            data-src="{{ asset(file.name) }}"
+            data-src="{{ app.request.getSchemeAndHttpHost() ~ asset(file.name) }}"
             data-name="{{ name|e('html_attr') }}"
             data-url="{{ url }}"
             data-token="{{ csrf_token('attachment-img-' ~ entity.id) }}"

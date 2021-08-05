@@ -2,7 +2,7 @@
     <a href="{{ path('front') }}">
         {% if imageglobal is not null and imageglobal.name is not null %}
             <picture class="home_logo">
-                <img alt="{{ config.site_title|e('html_attr') }}" src="{{ asset(imageglobal.name) }}" />
+                <img alt="{{ config.site_title|e('html_attr') }}" src="{{ app.request.getSchemeAndHttpHost() ~ asset(imageglobal.name) }}" />
             </picture>
         {% else %}
             {{ config.site_title }}
