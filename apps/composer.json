@@ -24,7 +24,7 @@
     "helios-ag/fm-elfinder-bundle": "10.1",
     "imagine/imagine": "1.2.4",
     "knplabs/knp-menu-bundle": "3.1.0",
-    "knplabs/knp-paginator-bundle": "5.4.2",
+    "knplabs/knp-paginator-bundle": "5.6.0",
     "league/oauth2-client": "2.6.0",
     "league/oauth2-facebook": "2.0.5",
     "league/oauth2-github": "2.0.0",
