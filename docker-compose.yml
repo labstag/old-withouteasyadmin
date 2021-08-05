@@ -12,14 +12,14 @@ volumes:
 
 services:
   phpfpmexec:
-    image: koromerzhin/phpfpm:7.4.12-symfony-xdebug
+    image: koromerzhin/phpfpm:8.0.9-symfony-xdebug
     command: sh -c "composer install"
     volumes:
       - ${PWD}/apps:/var/www/
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     environment:
-        MAILER_DSN: "smtp://mailhog:1025"
-        DATABASE_URL: "mysqli://siteinternet:password@mariadb:3306/core"
+      MAILER_DSN: "smtp://mailhog:1025"
+      DATABASE_URL: "mysqli://siteinternet:password@mariadb:3306/core"
     deploy:
       restart_policy:
         condition: none
@@ -114,15 +114,15 @@ services:
         - "traefik.http.routers.phpmyadmin-labstag-tls.tls.domains[0].sans=phpmyadmin-labstag-*.traefik.me"
         - "traefik.http.services.phpmyadmin-labstag.loadbalancer.server.port=80"
   phpfpm:
-    image: koromerzhin/phpfpm:7.4.12-symfony-xdebug
+    image: koromerzhin/phpfpm:8.0.9-symfony-xdebug
     depends_on:
       - mariadb
       - mercure
       - mailhog
       - redis
     environment:
-        MAILER_DSN: "smtp://mailhog:1025"
-        DATABASE_URL: "mysqli://siteinternet:password@mariadb:3306/core"
+      MAILER_DSN: "smtp://mailhog:1025"
+      DATABASE_URL: "mysqli://siteinternet:password@mariadb:3306/core"
     volumes:
       - ${PWD}/apps:/var/www/
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
