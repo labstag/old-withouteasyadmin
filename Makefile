@@ -141,6 +141,7 @@ else
 	@echo "---"
 	@echo "create-network: create network"
 	@echo "deploy: deploy"
+	@echo "image-pull: image-pull"
 	@echo "ls: docker service"
 	@echo "stop: docker stop"
 endif
