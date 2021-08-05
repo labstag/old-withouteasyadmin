@@ -45,7 +45,7 @@ services:
         - "traefik.http.routers.mailhog-labstag-tls.tls.domains[0].sans=mailhog-labstag-*.traefik.me"
         - "traefik.http.services.mailhog-labstag.loadbalancer.server.port=8025"
   mercure:
-    image: dunglas/mercure:v0.11
+    image: dunglas/mercure:v0.12
     environment:
       MERCURE_PUBLISHER_JWT_KEY: "MyJwtSecret"
       MERCURE_SUBSCRIBER_JWT_KEY: "MyJwtSecret"
