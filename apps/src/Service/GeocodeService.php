@@ -11,6 +11,7 @@ use ZipArchive;
 
 class GeocodeService
 {
+    const HTTP_OK = 200;
 
     protected HttpClientInterface $client;
 
@@ -71,7 +72,7 @@ class GeocodeService
             $file
         );
         $statusCode = $response->getStatusCode();
-        if (200 != $statusCode) {
+        if (self::HTTP_OK != $statusCode) {
             return [];
         }
 

@@ -2,7 +2,7 @@
 
 namespace Labstag\Lib;
 
-use bheller\ImagesGenerator\ImagesGeneratorProvider;
+use Bluemmb\Faker\PicsumPhotosProvider;
 use Cocur\Slugify\Slugify;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -296,7 +296,7 @@ abstract class FixtureLib extends Fixture
     protected function setFaker()
     {
         $faker = Factory::create('fr_FR');
-        $faker->addProvider(new ImagesGeneratorProvider($faker));
+        $faker->addProvider(new PicsumPhotosProvider($faker));
 
         return $faker;
     }
@@ -319,15 +319,10 @@ abstract class FixtureLib extends Fixture
             $attachment = new Attachment();
             $old        = clone $attachment;
             try {
-                $image   = $faker->imageGenerator(
-                    null,
+                $image   = $faker->imageUrl(
                     1920,
                     1920,
-                    'jpg',
-                    true,
-                    $faker->word,
-                    $faker->hexColor,
-                    $faker->hexColor
+                    true
                 );
                 $content = file_get_contents($image);
                 /** @var resource $tmpfile */
