@@ -6,6 +6,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Service\DataService;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
+use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
@@ -26,6 +27,7 @@ abstract class FrontControllerLib extends ControllerLib
     }
 
     protected function setMetaOpenGraph(
+        Request $request,
         string $title,
         string $keywords,
         string $description,
@@ -45,7 +47,7 @@ abstract class FrontControllerLib extends ControllerLib
 
         $this->setMetaOpenGraphDescription($description, $meta);
         $this->setMetaOpenGraphTitle($title, $config, $meta);
-        $this->setMetaOpenGraphImage($image, $meta);
+        $this->setMetaOpenGraphImage($request, $image, $meta);
         $config['meta'] = $meta;
         ksort($config['meta']);
 
@@ -64,13 +66,20 @@ abstract class FrontControllerLib extends ControllerLib
         $meta['twitter:description'] = $description;
     }
 
-    private function setMetaOpenGraphImage($image, &$meta)
+    private function setMetaOpenGraphImage(
+        Request $request,
+        $image,
+        &$meta
+    )
     {
         if (is_null($image) || is_null($image->getName())) {
             return;
         }
 
-        $package               = new PathPackage('/', new EmptyVersionStrategy());
+        $package               = new PathPackage(
+            $request->getSchemeAndHttpHost().'/',
+            new EmptyVersionStrategy()
+        );
         $url                   = $package->getUrl($image->getName());
         $meta['image']         = $url;
         $meta['og:image']      = $url;

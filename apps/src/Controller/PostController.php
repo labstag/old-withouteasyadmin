@@ -36,9 +36,10 @@ class PostController extends FrontControllerLib
     /**
      * @Route("/{slug}", name="post_show")
      */
-    public function show(PostRepository $postRepository, Post $post)
+    public function show(PostRepository $postRepository, Post $post, Request $request)
     {
         $this->setMetaOpenGraph(
+            $request,
             $post->getTitle(),
             $post->getMetaKeywords(),
             $post->getMetaDescription(),

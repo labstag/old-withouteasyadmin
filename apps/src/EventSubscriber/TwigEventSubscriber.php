@@ -187,7 +187,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         }
 
         $this->setMetaTitle($config);
-        $this->setMetaImage($config);
+        $this->setMetaImage($config, $request);
         $this->setMetaDescription($config);
         $url                            = $this->urlGenerator->generate(
             $request->attributes->get('_route'),
@@ -223,7 +223,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $config['meta'] = $meta;
     }
 
-    private function setMetaImage(&$config)
+    private function setMetaImage(&$config, $request)
     {
         $image = $this->attachmentRepo->getImageDefault();
         $this->twig->addGlobal('imageglobal', $image);
@@ -240,7 +240,10 @@ class TwigEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $package = new PathPackage('/', new EmptyVersionStrategy());
+        $package = new PathPackage(
+            $request->getSchemeAndHttpHost().'/',
+            new EmptyVersionStrategy()
+        );
         $url     = $package->getUrl($image->getName());
 
         $meta['og:image']      = $url;
