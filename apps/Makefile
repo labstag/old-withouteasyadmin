@@ -26,10 +26,10 @@ vendor: composer.json
 	cp .env.dist .env
 
 phploc.phar:
-	wget https://phar.phpunit.de/phploc-7.0.1.phar -O phploc.phar
+	wget https://phar.phpunit.de/phploc-7.0.2.phar -O phploc.phar
 
 phpmd.phar:
-	wget https://github.com/phpmd/phpmd/releases/download/2.9.1/phpmd.phar
+	wget https://github.com/phpmd/phpmd/releases/download/2.10.2/phpmd.phar
 
 assets: ## Ajouts assets
 	${SYMFONY_EXEC} assets:install public --symlink --relative
@@ -128,7 +128,7 @@ else ifeq ($(COMMAND_ARGS),phpcs-onlyerror)
 else ifeq ($(COMMAND_ARGS),phploc)
 	@php phploc.phar src
 else ifeq ($(COMMAND_ARGS),phpmd)
-	@php phpmd.phar src,features/bootstrap,tests ansi phpmd.xml
+	@php -d error_reporting=24575 phpmd.phar src,features/bootstrap,tests ansi phpmd.xml
 else ifeq ($(COMMAND_ARGS),phpmnd)
 	${COMPOSER_EXEC} run phpmnd
 else ifeq ($(COMMAND_ARGS),phpstan)
