@@ -18,8 +18,14 @@ use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
 {
-    const ADMIN_CONTROLLER   = '/(Controller\\\Admin)/';
-    const LABSTAG_CONTROLLER = '/(Labstag)/';
+    public const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
+
+    public const LABSTAG_CONTROLLER = '/(Labstag)/';
+
+    public const ERROR_CONTROLLER = [
+        'error_controller',
+        'error_controller::preview',
+    ];
 
     protected AttachmentRepository $attachmentRepo;
 
@@ -92,13 +98,14 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $controller = $event->getRequest()->attributes->get('_controller');
         $matches    = [];
         preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
-        if (0 == count($matches)) {
+        if (0 == count($matches) && !in_array($controller, self::ERROR_CONTROLLER)) {
             return;
         }
 
         $globals   = $this->twig->getGlobals();
         $canonical = isset($globals['canonical']) ? $globals['canonical'] : $request->getUri();
-        $config    = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
+
+        $config = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
 
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
         $this->setMetaTitleGlobal($config);
@@ -189,11 +196,15 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->setMetaTitle($config);
         $this->setMetaImage($config, $request);
         $this->setMetaDescription($config);
-        $url                            = $this->urlGenerator->generate(
-            $request->attributes->get('_route'),
-            $request->attributes->get('_route_params'),
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
+        $url = $request->getSchemeAndHttpHost();
+        if ('' != $request->attributes->get('_route')) {
+            $url = $this->urlGenerator->generate(
+                $request->attributes->get('_route'),
+                $request->attributes->get('_route_params'),
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+        }
+
         $config['meta']['og:locale']    = $config['languagedefault'];
         $config['meta']['og:url']       = $url;
         $config['meta']['twitter:url']  = $url;

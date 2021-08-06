@@ -1,0 +1,17 @@
+{% set sitemetatags = sitemetatags|merge([
+    {
+        'name': 'robots',
+        'content': 'noindex,nofollow'
+    }
+]) %}
+{% extends 'skeleton/landing.html.twig' %}
+{% block box %}
+    <div>
+        {% block message %}{% endblock %}
+    </div>
+    <div class="btns">
+        <a href="{{ path('front') }}" class="btn btn-success">
+            Revenir sur le site
+        </a>
+    </div>
+{% endblock %}

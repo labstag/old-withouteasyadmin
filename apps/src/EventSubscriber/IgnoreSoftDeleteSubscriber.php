@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 {
-    const ANNOTATION = 'Labstag\Annotation\IgnoreSoftDelete';
+    public const ANNOTATION = 'Labstag\Annotation\IgnoreSoftDelete';
 
     protected EntityManagerInterface $entityManager;
 
