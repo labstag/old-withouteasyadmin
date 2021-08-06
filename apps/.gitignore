@@ -4,6 +4,7 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/public/robots.txt
 /public/tarteaucitron/
 /var/
 /vendor/
@@ -14,6 +15,7 @@
 ###< squizlabs/php_codesniffer ###
 
 ###> symfony/phpunit-bridge ###
+.phpunit
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
