@@ -29,7 +29,7 @@
                 <td>{{ entity.mimeType }}</td>
                 <td>{{ entity.size }}</td>
                 <td>{{ entity.dimensions|json_encode }}</td>
-                <td><a href="{{ app.request.getSchemeAndHttpHost() ~ asset(entity.name) }}" target="_blank">Voir le fichier</a></td>
+                <td><a href="{{ asset(entity.name) }}" target="_blank">Voir le fichier</a></td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}
