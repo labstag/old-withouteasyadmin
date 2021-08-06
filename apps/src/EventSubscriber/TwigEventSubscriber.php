@@ -22,7 +22,10 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
-    public const ERROR_CONTROLLER = ['error_controller', 'error_controller::preview'];
+    public const ERROR_CONTROLLER = [
+        'error_controller',
+        'error_controller::preview',
+    ];
 
     protected AttachmentRepository $attachmentRepo;
 
@@ -195,7 +198,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->setMetaDescription($config);
         $url = $request->getSchemeAndHttpHost();
         if ('' != $request->attributes->get('_route')) {
-            $url                            = $this->urlGenerator->generate(
+            $url = $this->urlGenerator->generate(
                 $request->attributes->get('_route'),
                 $request->attributes->get('_route_params'),
                 UrlGeneratorInterface::ABSOLUTE_URL
