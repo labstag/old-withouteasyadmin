@@ -11,6 +11,8 @@ SYMFONY_EXEC := @symfony console
 
 COMPOSER_EXEC := @COMPOSER_MEMORY_LIMIT=-1 composer
 
+PHP_EXEC := @php
+
 .PHONY: translations tests
 
 help:
@@ -132,7 +134,7 @@ else ifeq ($(COMMAND_ARGS),phpmd)
 else ifeq ($(COMMAND_ARGS),phpmnd)
 	${COMPOSER_EXEC} run phpmnd
 else ifeq ($(COMMAND_ARGS),phpstan)
-	${COMPOSER_EXEC} run phpstan
+	${PHP_EXEC} -n ./bin/phpstan analyse src
 else ifeq ($(COMMAND_ARGS),container)
 	${SYMFONY_EXEC} lint:container
 else ifeq ($(COMMAND_ARGS),twig)

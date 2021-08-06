@@ -24,3 +24,4 @@ apps/phpmd.phar
 apps/twigcs.phar
 apps/bin/phpunit
 apps/bin/php-cs-fixer
+report

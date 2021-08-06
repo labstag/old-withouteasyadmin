@@ -145,7 +145,6 @@
     "phpcs-onlywarning": "phpcs --report=full --extensions=php --error-severity=0",
     "phpcs-onlyerror": "phpcs --report=full --extensions=php --warning-severity=0",
     "phpcs": "phpcs --report=full --extensions=php",
-    "phpstan": "phpstan analyse src --ansi",
     "phpmnd": "phpmnd src features/bootstrap tests",
     "behat": "behat --config behat.yaml",
     "simple-phpunit": "simple-phpunit --verbose",

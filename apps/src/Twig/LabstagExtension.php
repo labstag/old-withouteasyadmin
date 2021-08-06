@@ -18,8 +18,9 @@ use Twig\TwigFunction;
 
 class LabstagExtension extends AbstractExtension
 {
-    const FOLDER_ENTITY          = 'Labstag\\Entity\\';
-    const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
+    public const FOLDER_ENTITY = 'Labstag\\Entity\\';
+
+    public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     protected AttachmentRepository $attachmentRepository;
 

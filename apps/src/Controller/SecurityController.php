@@ -24,9 +24,11 @@ use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage;
@@ -155,7 +157,7 @@ class SecurityController extends ControllerLib
      *
      * @return RedirectResponse|Response
      */
-    public function disclaimer(Request $request)
+    public function disclaimer(Request $request, DataService $dataService)
     {
         $form = $this->createForm(DisclaimerType::class, []);
         $form->handleRequest($request);
@@ -173,7 +175,9 @@ class SecurityController extends ControllerLib
             $this->addFlash('danger', "Veuillez accepter l'énoncé");
         }
 
-        if (1 == $session->get('disclaimer', 0)) {
+        $config = $dataService->getConfig();
+
+        if (1 == $session->get('disclaimer', 0) || !isset($config['disclaimer']) || !isset($config['disclaimer']['activate']) || 1 != $config['disclaimer']['activate']) {
             return $this->redirect(
                 $this->generateUrl('front')
             );

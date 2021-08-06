@@ -1,0 +1,10 @@
+{% extends 'skeleton/error.html.twig' %}
+{% set title = '' %}
+{% if config.meta.title is defined %}
+    {% set title = config.meta.title|trim %}
+{% endif %}
+{% block content_title %}{{ title }}{% endblock %}
+{% block box_title %}Error 400 : Bad request{% endblock %}
+{% block message %}
+	La syntaxe de la requête est erronée.
+{% endblock %}
