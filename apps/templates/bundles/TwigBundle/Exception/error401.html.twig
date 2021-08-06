@@ -1,10 +1,10 @@
-{% extends 'skeleton/landing.html.twig' %}
+{% extends 'skeleton/error.html.twig' %}
 {% set title = '' %}
 {% if config.meta.title is defined %}
     {% set title = config.meta.title|trim %}
 {% endif %}
 {% block content_title %}{{ title }}{% endblock %}
-{% block box_title %}Error 401{% endblock %}
-{% block box %}
-error 401
+{% block box_title %}Error 401 : Unauthorized{% endblock %}
+{% block message %}
+	Une authentification est nécessaire pour accéder à la ressource.
 {% endblock %}
