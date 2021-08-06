@@ -133,7 +133,8 @@ return PhpCsFixer\Config::create()
         'whitespace_after_comma_in_array' => true,
         'yoda_style' => true,
     ])
-    ->setFinder(PhpCsFixer\Finder::create()
+    ->setFinder(
+        PhpCsFixer\Finder::create()
         ->exclude('vendor')
         ->in(__DIR__)
     )
