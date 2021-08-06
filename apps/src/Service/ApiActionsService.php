@@ -11,8 +11,9 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class ApiActionsService
 {
-    const REPOSITORY     = 'Repository';
-    const REQUESTHANDLER = 'RequestHandler';
+    public const REPOSITORY = 'Repository';
+
+    public const REQUESTHANDLER = 'RequestHandler';
 
     protected ContainerInterface $container;
 

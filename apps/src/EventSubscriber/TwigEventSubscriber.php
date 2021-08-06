@@ -18,8 +18,9 @@ use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
 {
-    const ADMIN_CONTROLLER   = '/(Controller\\\Admin)/';
-    const LABSTAG_CONTROLLER = '/(Labstag)/';
+    public const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
+
+    public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
     protected AttachmentRepository $attachmentRepo;
 

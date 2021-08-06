@@ -17,16 +17,16 @@ use Symfony\Component\Workflow\Registry;
 
 class GuardService
 {
-    const GROUPE_ENABLE = ['visiteur'];
+    public const GROUPE_ENABLE = ['visiteur'];
 
-    const REGEX = [
+    public const REGEX = [
         '/(SecurityController)/',
         '/(web_profiler.controller)/',
         '/(error_controller)/',
         '/(api_platform)/',
     ];
 
-    const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
+    public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     protected EntityManagerInterface $entityManager;
 
