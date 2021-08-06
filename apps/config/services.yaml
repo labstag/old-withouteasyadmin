@@ -17,6 +17,7 @@ services:
   Labstag\:
     resource: '../src/'
     exclude:
+      - "../src/Reader/"
       - '../src/DependencyInjection/'
       - '../src/Entity/'
       - '../src/Kernel.php'
