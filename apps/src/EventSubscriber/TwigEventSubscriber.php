@@ -251,10 +251,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $package = new PathPackage(
-            $request->getSchemeAndHttpHost().'/',
-            new EmptyVersionStrategy()
-        );
+        $package = new PathPackage('/', new EmptyVersionStrategy());
         $url     = $package->getUrl($image->getName());
 
         $meta['og:image']      = $url;

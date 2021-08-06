@@ -76,10 +76,7 @@ abstract class FrontControllerLib extends ControllerLib
             return;
         }
 
-        $package               = new PathPackage(
-            $request->getSchemeAndHttpHost().'/',
-            new EmptyVersionStrategy()
-        );
+        $package               = new PathPackage('/', new EmptyVersionStrategy());
         $url                   = $package->getUrl($image->getName());
         $meta['image']         = $url;
         $meta['og:image']      = $url;
