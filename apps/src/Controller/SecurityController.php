@@ -157,7 +157,7 @@ class SecurityController extends ControllerLib
      *
      * @return RedirectResponse|Response
      */
-    public function disclaimer(Request $request)
+    public function disclaimer(Request $request, DataService $dataService)
     {
         $form = $this->createForm(DisclaimerType::class, []);
         $form->handleRequest($request);
@@ -175,7 +175,9 @@ class SecurityController extends ControllerLib
             $this->addFlash('danger', "Veuillez accepter l'énoncé");
         }
 
-        if (1 == $session->get('disclaimer', 0)) {
+        $config = $dataService->getConfig();
+
+        if (1 == $session->get('disclaimer', 0) || !isset($config['disclaimer']) || !isset($config['disclaimer']['activate']) || 1 != $config['disclaimer']['activate']) {
             return $this->redirect(
                 $this->generateUrl('front')
             );

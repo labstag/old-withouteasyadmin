@@ -308,6 +308,10 @@ else ifeq ($(COMMAND_ARGS),stylelint)
 	@npm run stylelint
 else ifeq ($(COMMAND_ARGS),stylelint-fix)
 	@npm run stylelint-fix
+else ifeq ($(COMMAND_ARGS),jscpd)
+	@npm run jscpd
+else ifeq ($(COMMAND_ARGS),jscpd-report)
+	@npm run jscpd-report
 else ifeq ($(COMMAND_ARGS),eslint)
 	@npm run eslint
 else ifeq ($(COMMAND_ARGS),eslint-fix)
@@ -361,6 +365,8 @@ else
 	@echo "twig: indique les erreurs de code de twig"
 	@echo "container: indique les erreurs de code de container"
 	@echo "yaml: indique les erreurs de code de yaml"
+	@echo "jscpd: Copy paste detector"
+	@echo "jscpd-report: Copy paste detector report"
 endif
 
 .PHONY: logs
