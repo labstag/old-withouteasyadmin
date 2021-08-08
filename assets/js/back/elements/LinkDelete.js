@@ -4,8 +4,8 @@ export class LinkDelete extends ElementHTML {
     super()
     const title = this.dataset.title
     this.classList.add('link-delete')
-    this.dataset.toggle = 'modal'
-    this.dataset.target = '#delete-modal'
+    this.dataset.bsToggle = 'modal'
+    this.dataset.bsTarget = '#delete-modal'
     const iElement = document.createElement('i')
     iElement.setAttribute('title', title)
     const spanElement = document.createElement('span')

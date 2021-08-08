@@ -63,7 +63,6 @@ main {
   h1 {
     @extend .h3;
     @extend .mb-3;
-    @extend .font-weight-normal;
 
     text-align: center;
   }
@@ -71,7 +70,6 @@ main {
   picture {
     @extend .h3;
     @extend .mb-3;
-    @extend .font-weight-normal;
 
     img {
       display: block;
