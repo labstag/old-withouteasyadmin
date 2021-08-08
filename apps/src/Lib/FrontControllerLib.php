@@ -67,7 +67,6 @@ abstract class FrontControllerLib extends ControllerLib
     }
 
     private function setMetaOpenGraphImage(
-        Request $request,
         $image,
         &$meta
     )
