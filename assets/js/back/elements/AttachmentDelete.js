@@ -4,8 +4,8 @@ export class AttachmentDelete extends ElementHTML {
     super()
     this.classList.add('attachment-delete')
     this.append(document.createElement('i'))
-    this.dataset.toggle = 'modal'
-    this.dataset.target = '#delete-attachment-modal'
+    this.dataset.bsToggle = 'modal'
+    this.dataset.bsTarget = '#delete-attachment-modal'
 
     this.addEventListener('click', this.onClick)
     const btnConfirm = document.querySelector('confirm-deleteattachment')

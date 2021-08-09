@@ -212,12 +212,12 @@ class AdminController extends AdminControllerLib
                 'btn-admin-header-emptyall',
                 'Tout vider',
                 [
-                    'is'            => 'link-btnadminemptyall',
-                    'data-toggle'   => 'modal',
-                    'data-target'   => '#emptyall-modal',
-                    'data-token'    => $token,
-                    'data-redirect' => $this->router->generate('admin_trash'),
-                    'data-url'      => $this->router->generate('api_action_emptyall'),
+                    'is'             => 'link-btnadminemptyall',
+                    'data-bs-toggle' => 'modal',
+                    'data-bs-target' => '#emptyall-modal',
+                    'data-token'     => $token,
+                    'data-redirect'  => $this->router->generate('admin_trash'),
+                    'data-url'       => $this->router->generate('api_action_emptyall'),
                 ]
             );
         }

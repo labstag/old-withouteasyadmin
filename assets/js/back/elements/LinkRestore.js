@@ -4,8 +4,8 @@ export class LinkRestore extends ElementHTML {
     super()
     const title = this.dataset.title
     this.classList.add('link-restore')
-    this.dataset.toggle = 'modal'
-    this.dataset.target = '#restore-modal'
+    this.dataset.bsToggle = 'modal'
+    this.dataset.bsTarget = '#restore-modal'
     const iElement = document.createElement('i')
     iElement.setAttribute('title', title)
     const spanElement = document.createElement('span')
