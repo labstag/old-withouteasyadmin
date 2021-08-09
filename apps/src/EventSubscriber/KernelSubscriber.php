@@ -67,7 +67,6 @@ class KernelSubscriber implements EventSubscriberInterface
 
     public function onKernelResponse($event)
     {
-        $request  = $event->getRequest();
         $response = $event->getResponse();
         $content  = $response->getContent();
         $config   = [
