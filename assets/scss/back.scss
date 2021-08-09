@@ -261,6 +261,7 @@ picture {
 .guard-set {
   @extend .form-check;
   @extend .form-switch;
+
   input {
     @extend .form-check-input;
   }
