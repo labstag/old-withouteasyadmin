@@ -177,7 +177,11 @@ class SecurityController extends ControllerLib
 
         $config = $dataService->getConfig();
 
-        if (1 == $session->get('disclaimer', 0) || !isset($config['disclaimer']) || !isset($config['disclaimer']['activate']) || 1 != $config['disclaimer']['activate']) {
+        if (1 == $session->get('disclaimer', 0)
+            || !isset($config['disclaimer'])
+            || !isset($config['disclaimer']['activate'])
+            || 1 != $config['disclaimer']['activate']
+        ) {
             return $this->redirect(
                 $this->generateUrl('front')
             );
