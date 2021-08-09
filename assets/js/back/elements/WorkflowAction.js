@@ -6,8 +6,8 @@ export class WorkflowAction extends ElementHTML {
     this.innerHTML = '&nbsp;'
     this.prepend(iElement)
     this.append(document.createTextNode(this.dataset.name))
-    this.dataset.toggle = 'modal'
-    this.dataset.target = '#workflow-modal'
+    this.dataset.bsToggle = 'modal'
+    this.dataset.bsTarget = '#workflow-modal'
     this.addEventListener('click', this.onClick)
     const btnConfirm = document.querySelector('confirm-workflow')
     if (btnConfirm !== null) {

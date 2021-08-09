@@ -237,8 +237,8 @@ picture {
 
 .breadcrumb {
   .separator {
-    @extend .mr-1;
-    @extend .ml-1;
+    @extend .me-1;
+    @extend .ms-1;
   }
 }
 
@@ -259,15 +259,11 @@ picture {
 }
 
 .guard-set {
-  @extend .custom-control;
-  @extend .custom-switch;
+  @extend .form-check;
+  @extend .form-switch;
 
   input {
-    @extend .custom-control-input;
-  }
-
-  label {
-    @extend .custom-control-label;
+    @extend .form-check-input;
   }
 }
 

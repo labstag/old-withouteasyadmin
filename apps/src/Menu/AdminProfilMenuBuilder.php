@@ -13,7 +13,7 @@ class AdminProfilMenuBuilder
     {
         unset($requestStack);
         $menu = $this->factory->createItem('menulabstag');
-        $menu->setChildrenAttribute('class', 'navbar-nav ml-auto');
+        $menu->setChildrenAttribute('class', 'navbar-nav ms-auto');
         $menu = $this->setData($menu, 'admin-profil');
 
         return $menu;

@@ -73,8 +73,6 @@ picture {
 }
 
 .form-error {
-  @extend .badge;
-  @extend .badge-danger;
   @extend .text-uppercase;
 }
 

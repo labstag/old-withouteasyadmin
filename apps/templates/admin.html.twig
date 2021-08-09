@@ -15,13 +15,15 @@
 {% block content %}
     <header>
         <div class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">{{ config.meta.title }}</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-supported-content" aria-controls="navbar-supported-content" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbar-supported-content">
-                {{ knp_menu_render('admin_menu', {'style': 'navbar', 'currentClass': 'active'}) }}
-                {{ knp_menu_render('admin_profilmenu', {'style': 'navbar', 'currentClass': 'active'}) }}
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">{{ config.meta.title }}</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbar-supported-content" aria-controls="navbar-supported-content" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbar-supported-content">
+                    {{ knp_menu_render('admin_menu', {'style': 'navbar', 'currentClass': 'active'}) }}
+                    {{ knp_menu_render('admin_profilmenu', {'style': 'navbar', 'currentClass': 'active'}) }}
+                </div>
             </div>
         </div>
     </header>
@@ -32,7 +34,7 @@
                 <h1>{{ headerTitle|trans }}</h1>
             </div>
             {% endif %}
-            <div class="col text-right">
+            <div class="col text-end">
                 {{ include('admin/btn.html.twig') }}
             </div>
         </div>
