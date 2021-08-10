@@ -166,7 +166,7 @@ class SecurityController extends ControllerLib
         $form = $this->createForm(DisclaimerType::class, []);
         $form->handleRequest($request);
         $session = $request->getSession();
-        $front = $this->generateUrl('front');
+        $front   = $this->generateUrl('front');
         if ($form->isSubmitted()) {
             $post = $request->request->get($form->getName());
             if (isset($post['confirm'])) {
