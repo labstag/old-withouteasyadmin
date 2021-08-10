@@ -101,7 +101,7 @@ class SecurityController extends ControllerLib
         EmailRequestHandler $emailRequestHandler
     ): RedirectResponse
     {
-        $fronts = $this->generateUrl('front');
+        $front = $this->generateUrl('front');
         if ('averifier' != $email->getState()) {
             $this->addFlash('danger', 'Courriel déjà confirmé');
 
