@@ -7,7 +7,7 @@ use tidy;
 
 class KernelSubscriber implements EventSubscriberInterface
 {
-    public const TAGS = [
+    public const TAGS               = [
         'workflow-action',
         'link-show',
         'link-guard',
@@ -64,12 +64,20 @@ class KernelSubscriber implements EventSubscriberInterface
         'select-all',
         'select-element',
     ];
+    public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
     public function onKernelResponse($event)
     {
-        $response = $event->getResponse();
-        $content  = $response->getContent();
-        $config   = [
+        $response   = $event->getResponse();
+        $request    = $event->getRequest();
+        $controller = $request->attributes->get('_controller');
+        preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
+        if (0 == count($matches)) {
+            return;
+        }
+
+        $content = $response->getContent();
+        $config  = [
             'indent'                      => true,
             'indent-spaces'               => 2,
             'output-xhtml'                => true,
@@ -78,7 +86,7 @@ class KernelSubscriber implements EventSubscriberInterface
             'new-inline-tags'             => implode(' ', self::TAGS),
             'wrap'                        => 200,
         ];
-        $tidy     = new tidy();
+        $tidy    = new tidy();
         $tidy->parseString($content, $config, 'utf8');
         $tidy->cleanRepair();
         $response->setContent($tidy);

@@ -31,10 +31,12 @@ a {
 }
 
 label {
-  &.required {
-    &::after {
-      content: " *";
-      color: red;
+  &:not(.float-end label) {
+    &.required {
+      &::after {
+        content: " *";
+        color: red;
+      }
     }
   }
 }
