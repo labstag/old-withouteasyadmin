@@ -70,10 +70,11 @@ class SecurityController extends ControllerLib
         UserRequestHandler $requestHandler
     ): Response
     {
+        $front = $this->generateUrl('front');
         if ('lostpassword' != $user->getState()) {
             $this->addFlash('danger', 'Demande de mot de passe non envoyé');
 
-            return $this->redirect($this->generateUrl('front'), 302);
+            return $this->redirect($front);
         }
 
         $form = $this->createForm(ChangePasswordType::class, $user);
@@ -81,7 +82,7 @@ class SecurityController extends ControllerLib
         if ($form->isSubmitted() && $form->isValid()) {
             $requestHandler->changeWorkflowState($user, ['valider']);
 
-            return $this->redirect($this->generateUrl('front'), 302);
+            return $this->redirect($front);
         }
 
         return $this->render(
@@ -100,16 +101,17 @@ class SecurityController extends ControllerLib
         EmailRequestHandler $emailRequestHandler
     ): RedirectResponse
     {
+        $fronts = $this->generateUrl('front');
         if ('averifier' != $email->getState()) {
             $this->addFlash('danger', 'Courriel déjà confirmé');
 
-            return $this->redirect($this->generateUrl('front'), 302);
+            return $this->redirect($front);
         }
 
         $emailRequestHandler->changeWorkflowState($email, ['valider']);
         $this->addFlash('success', 'Courriel confirmé');
 
-        return $this->redirect($this->generateUrl('front'), 302);
+        return $this->redirect($front);
     }
 
     /**
@@ -120,16 +122,17 @@ class SecurityController extends ControllerLib
         PhoneRequestHandler $emailRequestHandler
     ): RedirectResponse
     {
+        $front = $this->generateUrl('front');
         if ('averifier' != $phone->getState()) {
             $this->addFlash('danger', 'Phone déjà confirmé');
 
-            return $this->redirect($this->generateUrl('front'), 302);
+            return $this->redirect($front);
         }
 
         $emailRequestHandler->changeWorkflowState($phone, ['valider']);
         $this->addFlash('success', 'Phone confirmé');
 
-        return $this->redirect($this->generateUrl('front'), 302);
+        return $this->redirect($front);
     }
 
     /**
@@ -140,16 +143,17 @@ class SecurityController extends ControllerLib
         UserRequestHandler $userRequestHandler
     ): RedirectResponse
     {
+        $front = $this->generateUrl('front');
         if ('avalider' != $user->getState()) {
             $this->addFlash('danger', 'Utilisation déjà activé');
 
-            return $this->redirect($this->generateUrl('front'), 302);
+            return $this->redirect($front);
         }
 
         $userRequestHandler->changeWorkflowState($user, ['validation']);
         $this->addFlash('success', 'Utilisation activé');
 
-        return $this->redirect($this->generateUrl('front'), 302);
+        return $this->redirect($front);
     }
 
     /**
@@ -162,14 +166,13 @@ class SecurityController extends ControllerLib
         $form = $this->createForm(DisclaimerType::class, []);
         $form->handleRequest($request);
         $session = $request->getSession();
+        $front = $this->generateUrl('front');
         if ($form->isSubmitted()) {
             $post = $request->request->get($form->getName());
             if (isset($post['confirm'])) {
                 $session->set('disclaimer', 1);
 
-                return $this->redirect(
-                    $this->generateUrl('front')
-                );
+                return $this->redirect($front);
             }
 
             $this->addFlash('danger', "Veuillez accepter l'énoncé");
@@ -182,9 +185,7 @@ class SecurityController extends ControllerLib
             || !isset($config['disclaimer']['activate'])
             || 1 != $config['disclaimer']['activate']
         ) {
-            return $this->redirect(
-                $this->generateUrl('front')
-            );
+            return $this->redirect($front);
         }
 
         return $this->render(
@@ -245,7 +246,7 @@ class SecurityController extends ControllerLib
             $post = $request->request->get($form->getName());
             $this->userService->postLostPassword($post);
 
-            return $this->redirect($this->generateUrl('app_login'), 302);
+            return $this->redirect($this->generateUrl('app_login'));
         }
 
         return $this->render(
