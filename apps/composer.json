@@ -37,7 +37,7 @@
     "omines/oauth2-gitlab": "3.4.0",
     "phpdocumentor/reflection-docblock": "5.2.2",
     "psr/http-message": "1.0.1",
-    "ramsey/uuid": "4.2.0",
+    "ramsey/uuid": "4.2.1",
     "ramsey/uuid-doctrine": "1.7.0",
     "rtheunissen/oauth2-reddit": "2.0.2",
     "sensio/framework-extra-bundle": "6.1.5",
