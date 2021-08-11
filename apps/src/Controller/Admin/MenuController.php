@@ -2,13 +2,9 @@
 
 namespace Labstag\Controller\Admin;
 
-use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
-use Labstag\Form\Admin\MenuType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\MenuRepository;
-use Labstag\RequestHandler\MenuRequestHandler;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -51,7 +47,8 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/update/{id}", name="admin_menu_update", methods={"GET"})
      */
-    public function edit(MenuRepository $repository)
+    public function edit(Menu $menu)
     {
+        dump($menu);
     }
 }

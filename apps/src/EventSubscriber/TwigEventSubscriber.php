@@ -237,7 +237,6 @@ class TwigEventSubscriber implements EventSubscriberInterface
     private function setMetaImage(&$config)
     {
         $image   = $this->attachmentRepo->getImageDefault();
-        $globals = $this->twig->getGlobals();
         $this->twig->addGlobal('imageglobal', $image);
         $meta  = $config['meta'];
         $tests = [
