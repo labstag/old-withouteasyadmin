@@ -1,0 +1,11 @@
+{% macro show (children, position) %}
+    <ul{% if 0==position %} class="tree"{% endif %}>
+        {% for child in children %}
+        <li>{{ child.libelle }} -- {{ position }}
+            {% if 0 != child.children|length %}
+                {{ _self.show(child.children, position+1) }}
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}

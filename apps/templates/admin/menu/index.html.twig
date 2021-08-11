@@ -1,40 +1,31 @@
-{% import "admin/macro.html.twig" as macro_admin %}
+{% import "admin/menu/macro.html.twig" as macro_menu %}
 {% extends 'admin/menu/layout.html.twig' %}
 {% block body %}
-    <table
-        is="table-datatable"
-        data-action="Actions"
-        data-multiple
-        data-multipleall="Tout sélectionner"
-        data-multipleelement="Selection"
-        data-empty="No records found"
-        data-count={{ pagination|length }}
-    >
-        <thead>
-            <tr>
-                <th>Libelle</th>
-                <th>Icon</th>
-                <th>Position</th>
-                <th>Data</th>
-                <th>Separateur</th>
-                <th>Clef</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in pagination %}
-            <tr data-id="{{ entity.id }}">
-                <td>{{ entity.libelle }}</td>
-                <td>{{ entity.icon }}</td>
-                <td>{{ entity.position }}</td>
-                <td>{{ entity.data ? entity.data|json_encode : '' }}</td>
-                <td>{{ entity.separateur ? 'Yes' : 'No' }}</td>
-                <td>{{ entity.clef }}</td>
-                <td>
-                    {{ macro_admin.actions(entity, actions) }}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="row">
+    {% for menu in all %}
+        <div class="col-6">
+            <fieldset>
+                <legend>{{ menu.clef }} --</legend>
+                {{ macro_menu.show(menu.children, 0) }}
+            </fieldset>
+        </div>
+    {% endfor %}
+    {#
+	{% for menu in menus %}
+		<fieldset>
+			<legend></legend>
+			<div class="navbar navbar-expand-lg">
+				<div class="container-fluid">
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbar-supported-content" aria-controls="navbar-supported-content" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbar-supported-content">
+						{{ knp_menu_render(menu, {'style': 'navbar', 'currentClass': 'active'}) }}
+					</div>
+				</div>
+			</div>
+			Ajouter | Supprimer | Classer
+		</fieldset>
+	{% endfor %}
+    #}
 {% endblock %}

@@ -66,13 +66,18 @@ class KernelSubscriber implements EventSubscriberInterface
     ];
     public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
+    public const ERROR_CONTROLLER = [
+        'error_controller',
+        'error_controller::preview',
+    ];
+
     public function onKernelResponse($event)
     {
         $response   = $event->getResponse();
         $request    = $event->getRequest();
         $controller = $request->attributes->get('_controller');
         preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
-        if (0 == count($matches)) {
+        if (0 == count($matches) || !in_array($controller, self::ERROR_CONTROLLER)) {
             return;
         }
 
