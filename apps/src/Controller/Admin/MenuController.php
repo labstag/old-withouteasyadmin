@@ -30,9 +30,7 @@ class MenuController extends AdminControllerLib
 
         return $this->render(
             'admin/menu/index.html.twig',
-            [
-                'all' => $all
-            ]
+            ['all' => $all]
         );
     }
 
@@ -41,7 +39,6 @@ class MenuController extends AdminControllerLib
      */
     public function new()
     {
-
     }
 
     /**
@@ -49,7 +46,6 @@ class MenuController extends AdminControllerLib
      */
     public function link()
     {
-
     }
 
     /**
@@ -57,6 +53,5 @@ class MenuController extends AdminControllerLib
      */
     public function edit(MenuRepository $repository)
     {
-
     }
 }
