@@ -1,3 +1,4 @@
+{% import "admin/macro.html.twig" as macro_admin %}
 {% import "admin/menu/macro.html.twig" as macro_menu %}
 {% extends 'admin/menu/layout.html.twig' %}
 {% block body %}
@@ -5,7 +6,10 @@
     {% for menu in all %}
         <div class="col-6">
             <fieldset>
-                <legend>{{ menu.clef }} --</legend>
+                <legend>
+                    {{ menu.clef }}
+                    {{ macro_menu.link(menu, 0) }}
+                </legend>
                 {{ macro_menu.show(menu.children, 0) }}
             </fieldset>
         </div>

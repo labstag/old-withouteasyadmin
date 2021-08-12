@@ -41,8 +41,6 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.mailhog-labstag.rule=HostRegexp(`mailhog-labstag.traefik.me`, `mailhog-labstag.{ip:.*}.traefik.me`)"
-        - "traefik.http.routers.mailhog-labstag-tls.tls.domains[0].main=mailhog-labstag.traefik.me"
-        - "traefik.http.routers.mailhog-labstag-tls.tls.domains[0].sans=mailhog-labstag-*.traefik.me"
         - "traefik.http.services.mailhog-labstag.loadbalancer.server.port=8025"
   mercure:
     image: dunglas/mercure:v0.12
@@ -60,8 +58,6 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.mercure-labstag.rule=HostRegexp(`mercure-labstag.traefik.me`, `mercure-labstag.{ip:.*}.traefik.me`)"
-        - "traefik.http.routers.mercure-labstag-tls.tls.domains[0].main=mercure-labstag.traefik.me"
-        - "traefik.http.routers.mercure-labstag-tls.tls.domains[0].sans=mercure-labstag-*.traefik.me"
         - "traefik.http.services.mercure-labstag.loadbalancer.server.port=80"
   mariadb:
     image: mariadb:10.6.4
@@ -93,8 +89,6 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.labstag.rule=HostRegexp(`labstag.traefik.me`, `labstag.{ip:.*}.traefik.me`)"
-        - "traefik.http.routers.labstag-tls.tls.domains[0].main=labstag.traefik.me"
-        - "traefik.http.routers.labstag-tls.tls.domains[0].sans=labstag-*.traefik.me"
         - "traefik.http.services.labstag.loadbalancer.server.port=80"
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.1.1
@@ -110,8 +104,6 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.phpmyadmin-labstag.rule=HostRegexp(`phpmyadmin-labstag.traefik.me`, `phpmyadmin-labstag.{ip:.*}.traefik.me`)"
-        - "traefik.http.routers.phpmyadmin-labstag-tls.tls.domains[0].main=phpmyadmin-labstag.traefik.me"
-        - "traefik.http.routers.phpmyadmin-labstag-tls.tls.domains[0].sans=phpmyadmin-labstag-*.traefik.me"
         - "traefik.http.services.phpmyadmin-labstag.loadbalancer.server.port=80"
   phpfpm:
     image: koromerzhin/phpfpm:8.0.9-symfony-xdebug

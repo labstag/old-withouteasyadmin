@@ -1,11 +1,32 @@
 {% macro show (children, position) %}
     <ul{% if 0==position %} class="tree"{% endif %}>
         {% for child in children %}
-        <li>{{ child.libelle }} -- {{ position }}
+        <li>{{ child.libelle }} {{ _self.link(child, position) }}
             {% if 0 != child.children|length %}
                 {{ _self.show(child.children, position+1) }}
             {% endif %}
         </li>
         {% endfor %}
     </ul>
+{% endmacro %}
+{% macro add(entity, url) %}
+    {% set title = "Add"|trans %}
+    {% set state1 = guard_route(url) %}
+    {% set state2 = is_granted('add', entity) %}
+    {% if state1 == true and state2 == true %}
+        <link-add
+            href="{{ path(url, {'id': entity.id}) }}"
+            title="{{ title|e('html_attr') }}"
+        ></link-add>
+    {% endif %}
+{% endmacro %}
+{% macro link (child, position) %}
+    {% import "admin/macro.html.twig" as macro_admin %}
+    <div class="btngrouptable" role="group">
+        {{ macro_admin.edit(child, 'admin_menu_update') }}
+        {{ macro_admin.delete(child, 'api_action_delete', 'admin_menu_index') }}
+        {% if position == 0 %}
+            {{ _self.add(child, 'admin_menu_add') }}
+        {% endif %}
+    </div>
 {% endmacro %}

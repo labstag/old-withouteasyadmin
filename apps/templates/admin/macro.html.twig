@@ -46,7 +46,7 @@
     {% if state1 == true and state2 == true %}
         <link-edit
             href="{{ path(url, {'id': entity.id}) }}"
-            title="#{{ title|e('html_attr') }}"
+            title="{{ title|e('html_attr') }}"
         ></link-edit>
     {% endif %}
 {% endmacro %}

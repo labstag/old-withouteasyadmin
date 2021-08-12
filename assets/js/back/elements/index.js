@@ -1,4 +1,5 @@
 import { LinkShow } from './LinkShow'
+import { LinkAdd } from './LinkAdd'
 import { LinkGuard } from './LinkGuard'
 import { LinkEdit } from './LinkEdit'
 import { LinkRestore } from './LinkRestore'
@@ -42,6 +43,7 @@ import { LinkEmpty } from './LinkEmpty'
 customElements.define('workflow-action', WorkflowAction)
 
 customElements.define('link-show', LinkShow)
+customElements.define('link-add', LinkAdd)
 customElements.define('link-guard', LinkGuard)
 customElements.define('link-edit', LinkEdit)
 customElements.define('link-delete', LinkDelete)

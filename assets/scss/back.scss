@@ -190,6 +190,21 @@ picture {
   }
 }
 
+.link-add {
+  @extend .btn;
+  @extend .btn-outline-info;
+  @extend .btn-sm;
+
+  i {
+    @extend .fas;
+    @extend .fa-plus;
+  }
+
+  span {
+    display: none;
+  }
+}
+
 .link-show {
   @extend .btn;
   @extend .btn-outline-primary;

@@ -24,10 +24,21 @@ class MenuController extends AdminControllerLib
     {
         $all = $repository->findAllCode();
 
+        $globals          = $this->twig->getGlobals();
+        $modal            = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal['delete'] = true;
+        $this->twig->addGlobal('modal', $modal);
         return $this->render(
             'admin/menu/index.html.twig',
             ['all' => $all]
         );
+    }
+
+    /**
+     * @Route("/add", name="admin_menu_add", methods={"GET"})
+     */
+    public function add()
+    {
     }
 
     /**

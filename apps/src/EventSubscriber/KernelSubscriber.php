@@ -11,6 +11,7 @@ class KernelSubscriber implements EventSubscriberInterface
         'workflow-action',
         'link-show',
         'link-guard',
+        'link-add',
         'link-edit',
         'link-delete',
         'link-restore',
