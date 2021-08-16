@@ -4,10 +4,7 @@ isDocker := $(shell docker info > /dev/null 2>&1 && echo 1)
 STACK         := labstag
 NETWORK       := proxynetwork
 
-PHPFPM         := $(STACK)_phpfpm
-PHPFPMFULLNAME := $(STACK)_phpfpm.1.$$(docker service ps -f 'name=$(STACK)_phpfpm' $(STACK)_phpfpm -q --no-trunc | head -n1)
-
-DOCKER_EXECPHP := @docker exec $(PHPFPMFULLNAME)
+DOCKER_EXECPHP := @docker exec $(STACK)_phpfpm.1.$$(docker service ps -f 'name=$(STACK)_phpfpm' $(STACK)_phpfpm -q --no-trunc | head -n1)
 
 SUPPORTED_COMMANDS := bdd composer contributors docker encore env geocode git inspect install linter logs messenger sleep ssh tests workflow-png update inspect libraries
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
