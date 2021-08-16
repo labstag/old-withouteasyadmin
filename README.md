@@ -39,7 +39,7 @@ Hosts:
 ## Init
 
 ```sh
-make init
+git submodule update --init --recursive --remote
 ```
 
 ## Récupérer les images docker
