@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: 'Init project'
-        run: make init
+        run: git submodule update --init --recursive --remote
       - name: 'Create folders'
         run: make folders
       - name: Cache Composer packages
