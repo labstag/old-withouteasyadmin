@@ -3,6 +3,18 @@ STACK   := labstag
 NETWORK := proxynetwork
 include make/docker/Makefile
 
+DOCKER_EXECPHP := @docker exec $(STACK)_phpfpm.1.$$(docker service ps -f 'name=$(STACK)_phpfpm' $(STACK)_phpfpm -q --no-trunc | head -n1)
+
+COMMANDS_SUPPORTED_COMMANDS := libraries workflow-png tests messenger linter install git env encore composer bdd
+COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
+ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
+  COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(COMMANDS_ARGS):;@:)
+endif
+
+init: ## Init project
+	@git submodule update --init --recursive --remote
+
 dump:
 	@mkdir dump
 
