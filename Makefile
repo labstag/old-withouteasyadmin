@@ -4,26 +4,8 @@ isDocker := $(shell docker info > /dev/null 2>&1 && echo 1)
 STACK         := labstag
 NETWORK       := proxynetwork
 
-REDIS         := $(STACK)_redis
-REDISFULLNAME := $(REDIS).1.$$(docker service ps -f 'name=$(REDIS)' $(REDIS) -q --no-trunc | head -n1)
-
-MAILHOG         := $(STACK)_mailhog
-MAILHOGFULLNAME := $(MAILHOG).1.$$(docker service ps -f 'name=$(MAILHOG)' $(MAILHOG) -q --no-trunc | head -n1)
-
-MERCURE         := $(STACK)_mercure
-MERCUREFULLNAME := $(MERCURE).1.$$(docker service ps -f 'name=$(MERCURE)' $(MERCURE) -q --no-trunc | head -n1)
-
-MARIADB         := $(STACK)_mariadb
-MARIADBFULLNAME := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $(MARIADB) -q --no-trunc | head -n1)
-
-APACHE         := $(STACK)_apache
-APACHEFULLNAME := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
-
-PHPMYADMIN         := $(STACK)_phpmyadmin
-PHPMYADMINFULLNAME := $(PHPMYADMIN).1.$$(docker service ps -f 'name=$(PHPMYADMIN)' $(PHPMYADMIN) -q --no-trunc | head -n1)
-
 PHPFPM         := $(STACK)_phpfpm
-PHPFPMFULLNAME := $(PHPFPM).1.$$(docker service ps -f 'name=$(PHPFPM)' $(PHPFPM) -q --no-trunc | head -n1)
+PHPFPMFULLNAME := $(STACK)_phpfpm.1.$$(docker service ps -f 'name=$(STACK)_phpfpm' $(STACK)_phpfpm -q --no-trunc | head -n1)
 
 DOCKER_EXECPHP := @docker exec $(PHPFPMFULLNAME)
 
@@ -214,33 +196,14 @@ endif
 
 .PHONY: inspect
 inspect: ## docker service inspect
-ifeq ($(COMMAND_ARGS),redis)
-	@docker service inspect $(REDIS)
-else ifeq ($(COMMAND_ARGS),mailhog)
-	@docker service inspect $(MAILHOG)
-else ifeq ($(COMMAND_ARGS),mercure)
-	@docker service inspect $(MERCURE)
-else ifeq ($(COMMAND_ARGS),mariadb)
-	@docker service inspect $(MARIADB)
-else ifeq ($(COMMAND_ARGS),apache)
-	@docker service inspect $(APACHE)
-else ifeq ($(COMMAND_ARGS),phpmyadmin)
-	@docker service inspect $(PHPMYADMIN)
-else ifeq ($(COMMAND_ARGS),phpfpm)
-	@docker service inspect $(PHPFPM)
-else
+ifeq ($(COMMAND_ARGS),)
 	@echo "ARGUMENT missing"
 	@echo "---"
 	@echo "make inspect ARGUMENT"
 	@echo "---"
-	@echo "stack: inspect stack"
-	@echo "redis: REDIS"
-	@echo "mailhog: MAILHOG"
-	@echo "mercure: MERCURE"
-	@echo "mariadb: MARIADB"
-	@echo "apache: APACHE"
-	@echo "phpmyadmin: PHPMYADMIN"
-	@echo "phpfpm: PHPFPM"
+	@docker stack services $(STACK) --format "{{.Name}}" | sed -e "s/^.*$(STACK)_//" | while read i; do printf "\033[32m%-20s\033[0m %s\n" $$i $$i; done
+else
+	@docker service inspect $(STACK)_$(COMMAND_ARGS)
 endif
 
 .PHONY: install
@@ -371,40 +334,19 @@ endif
 
 .PHONY: logs
 logs: ## Scripts logs
-ifeq ($(COMMAND_ARGS),stack)
-	@docker service logs -f --tail 100 --raw $(STACK)
-else ifeq ($(COMMAND_ARGS),redis)
-	@docker service logs -f --tail 100 --raw $(REDISFULLNAME)
-else ifeq ($(COMMAND_ARGS),mailhog)
-	@docker service logs -f --tail 100 --raw $(MAILHOGFULLNAME)
-else ifeq ($(COMMAND_ARGS),mercure)
-	@docker service logs -f --tail 100 --raw $(MERCUREFULLNAME)
-else ifeq ($(COMMAND_ARGS),mariadb)
-	@docker service logs -f --tail 100 --raw $(MARIADBFULLNAME)
-else ifeq ($(COMMAND_ARGS),apache)
-	@docker service logs -f --tail 100 --raw $(APACHEFULLNAME)
-else ifeq ($(COMMAND_ARGS),phpmyadmin)
-	@docker service logs -f --tail 100 --raw $(PHPMYADMINFULLNAME)
-else ifeq ($(COMMAND_ARGS),phpfpm)
-	@docker service logs -f --tail 100 --raw $(PHPFPMFULLNAME)
-else
+ifeq ($(COMMAND_ARGS),)
 	@echo "ARGUMENT missing"
 	@echo "---"
 	@echo "make logs ARGUMENT"
 	@echo "---"
-	@echo "stack: logs stack"
-	@echo "redis: REDIS"
-	@echo "mailhog: MAILHOG"
-	@echo "mercure: MERCURE"
-	@echo "mariadb: MARIADB"
-	@echo "apache: APACHE"
-	@echo "phpmyadmin: PHPMYADMIN"
-	@echo "phpfpm: PHPFPM"
+	@docker stack services $(STACK) --format "{{.Name}}" | sed -e "s/^.*$(STACK)_//" | while read i; do printf "\033[32m%-20s\033[0m %s\n" $$i $$i; done
+else
+	@docker service logs -f --tail 100 --raw $(STACK)_$(COMMAND_ARGS).1.$$(docker service ps -f 'name=$(STACK)_$(COMMAND_ARGS)' $(STACK)_$(COMMAND_ARGS) -q --no-trunc | head -n1)
 endif
 
 .PHONY: messenger
 messenger: ## Scripts messenger
-ifeq ($(COMMAND_ARGS),consule)
+ifeq ($(COMMAND_ARGS),consume)
 	$(DOCKER_EXECPHP) make messenger consume
 else
 	@echo "ARGUMENT missing"
@@ -416,33 +358,14 @@ endif
 
 .PHONY: update
 update: ## docker service update
-ifeq ($(COMMAND_ARGS),redis)
-	@docker service update $(REDIS)
-else ifeq ($(COMMAND_ARGS),mailhog)
-	@docker service update $(MAILHOG)
-else ifeq ($(COMMAND_ARGS),mercure)
-	@docker service update $(MERCURE)
-else ifeq ($(COMMAND_ARGS),mariadb)
-	@docker service update $(MARIADB)
-else ifeq ($(COMMAND_ARGS),apache)
-	@docker service update $(APACHE)
-else ifeq ($(COMMAND_ARGS),phpmyadmin)
-	@docker service update $(PHPMYADMIN)
-else ifeq ($(COMMAND_ARGS),phpfpm)
-	@docker service update $(PHPFPM)
-else
+ifeq ($(COMMAND_ARGS),)
 	@echo "ARGUMENT missing"
 	@echo "---"
-	@echo "make service-update ARGUMENT"
+	@echo "make update ARGUMENT"
 	@echo "---"
-	@echo "stack: logs stack"
-	@echo "redis: REDIS"
-	@echo "mailhog: MAILHOG"
-	@echo "mercure: MERCURE"
-	@echo "mariadb: MARIADB"
-	@echo "apache: APACHE"
-	@echo "phpmyadmin: PHPMYADMIN"
-	@echo "phpfpm: PHPFPM"
+	@docker stack services $(STACK) --format "{{.Name}}" | sed -e "s/^.*$(STACK)_//" | while read i; do printf "\033[32m%-20s\033[0m %s\n" $$i $$i; done
+else
+	@docker service update $(STACK)_$(COMMAND_ARGS)
 endif
 
 .PHONY: sleep
@@ -451,44 +374,26 @@ sleep: ## sleep
 
 .PHONY: ssh
 ssh: ## SSH
-ifeq ($(COMMAND_ARGS),redis)
-	@docker exec -it $(REDISFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),mailhog)
-	@docker exec -it $(MAILHOGFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),mercure)
-	@docker exec -it $(MERCUREFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),mariadb)
-	@docker exec -it $(MARIADBFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),apache)
-	@docker exec -it $(APACHEFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),phpmyadmin)
-	@docker exec -it $(PHPMYADMINFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),phpfpm)
-	@docker exec -it $(PHPFPMFULLNAME) /bin/bash
-else
+ifeq ($(COMMAND_ARGS),)
 	@echo "ARGUMENT missing"
 	@echo "---"
 	@echo "make ssh ARGUMENT"
 	@echo "---"
-	@echo "redis: REDIS"
-	@echo "mailhog: MAILHOG"
-	@echo "mercure: MERCURE"
-	@echo "mariadb: MARIADB"
-	@echo "apache: APACHE"
-	@echo "phpmyadmin: PHPMYADMIN"
-	@echo "phpfpm: PHPFPM"
+	@docker stack services $(STACK) --format "{{.Name}}" | sed -e "s/^.*$(STACK)_//" | while read i; do printf "\033[32m%-20s\033[0m %s\n" $$i $$i; done
+else
+	@docker exec -it $(STACK)_$(COMMAND_ARGS).1.$$(docker service ps -f 'name=$(STACK)_$(COMMAND_ARGS)' $(STACK)_$(COMMAND_ARGS) -q --no-trunc | head -n1) sh
 endif
 
 .PHONY: tests
 tests: ## Scripts tests
 ifeq ($(COMMAND_ARGS),launch)
-	@docker exec $(PHPFPMFULLNAME) make tests all
+	@$(DOCKER_EXECPHP) make tests all
 else ifeq ($(COMMAND_ARGS),behat)
-	@docker exec $(PHPFPMFULLNAME) make tests behat
+	@$(DOCKER_EXECPHP) make tests behat
 else ifeq ($(COMMAND_ARGS),simple-phpunit-unit-integration)
-	@docker exec $(PHPFPMFULLNAME) make tests simple-phpunit-unit-integration
+	@$(DOCKER_EXECPHP) make tests simple-phpunit-unit-integration
 else ifeq ($(COMMAND_ARGS),simple-phpunit)
-	@docker exec $(PHPFPMFULLNAME) make tests simple-phpunit
+	@$(DOCKER_EXECPHP) make tests simple-phpunit
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
