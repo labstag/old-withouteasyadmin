@@ -1,35 +1,10 @@
-isDocker := $(shell docker info > /dev/null 2>&1 && echo 1)
-
-.DEFAULT_GOAL := help
-STACK         := labstag
-NETWORK       := proxynetwork
-
-DOCKER_EXECPHP := @docker exec $(STACK)_phpfpm.1.$$(docker service ps -f 'name=$(STACK)_phpfpm' $(STACK)_phpfpm -q --no-trunc | head -n1)
-
-SUPPORTED_COMMANDS := bdd composer contributors docker encore env geocode git inspect install linter logs messenger sleep ssh tests workflow-png update inspect libraries
-SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
-ifneq "$(SUPPORTS_MAKE_ARGS)" ""
-  COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  $(eval $(COMMAND_ARGS):;@:)
-endif
-
-.PHONY: help
-help:
-	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
-
-.PHONY: node_modules
-node_modules:
-	@npm install
+include make/general/Makefile
+STACK   := labstag
+NETWORK := proxynetwork
+include make/docker/Makefile
 
 dump:
 	@mkdir dump
-
-.PHONY: isdocker
-isdocker: ## Docker is launch
-ifeq ($(isDocker), 0)
-	@echo "Docker is not launch"
-	exit 1
-endif
 
 apps/.env: apps/.env.dist ## Install .env
 	@cp apps/.env.dist apps/.env
@@ -39,7 +14,7 @@ assets:
 	$(DOCKER_EXECPHP) make assets
 
 .PHONY: bdd
-bdd: ## Scripts for BDD
+bdd: ## Scripts for BDD *
 ifeq ($(COMMAND_ARGS),fixtures)
 	$(DOCKER_EXECPHP) make bdd fixtures
 else ifeq ($(COMMAND_ARGS),migrate)
@@ -57,7 +32,7 @@ else
 endif
 
 .PHONY: composer
-composer: ## Scripts for composer
+composer: ## Scripts for composer *
 ifeq ($(COMMAND_ARGS),suggests)
 	$(DOCKER_EXECPHP) make composer suggests
 else ifeq ($(COMMAND_ARGS),outdated)
@@ -89,44 +64,8 @@ else
 	@echo "validate: COMPOSER validate"
 endif
 
-.PHONY: contributors
-contributors: ## Contributors
-ifeq ($(COMMAND_ARGS),add)
-	@npm run contributors add
-else ifeq ($(COMMAND_ARGS),check)
-	@npm run contributors check
-else ifeq ($(COMMAND_ARGS),generate)
-	@npm run contributors generate
-else
-	@npm run contributors
-endif
-
-.PHONY: docker
-docker: ## Scripts docker
-ifeq ($(COMMAND_ARGS),create-network)
-	@docker network create --driver=overlay $(NETWORK)
-else ifeq ($(COMMAND_ARGS),image-pull)
-	@more docker-compose.yml | grep image: | sed -e "s/^.*image:[[:space:]]//" | while read i; do docker pull $$i; done
-else ifeq ($(COMMAND_ARGS),deploy)
-	@docker stack deploy -c docker-compose.yml $(STACK)
-else ifeq ($(COMMAND_ARGS),ls)
-	@docker stack services $(STACK)
-else ifeq ($(COMMAND_ARGS),stop)
-	@docker stack rm $(STACK)
-else
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make docker ARGUMENT"
-	@echo "---"
-	@echo "create-network: create network"
-	@echo "deploy: deploy"
-	@echo "image-pull: image-pull"
-	@echo "ls: docker service"
-	@echo "stop: docker stop"
-endif
-
 .PHONY: encore
-encore: ## Script for Encore
+encore: ## Script for Encore *
 ifeq ($(COMMAND_ARGS),dev)
 	@npm rebuild node-sass
 	@npm run encore-dev
@@ -148,7 +87,7 @@ endif
 folders: dump ## Create folder
 
 .PHONY: env
-env: apps/.env ## Scripts Installation environnement
+env: apps/.env ## Scripts Installation environnement *
 ifeq ($(COMMAND_ARGS),dev)
 	@sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
 else ifeq ($(COMMAND_ARGS),prod)
@@ -165,11 +104,11 @@ else
 endif
 
 .PHONY: geocode
-geocode: ## Geocode
+geocode: ## Geocode *
 	$(DOCKER_EXECPHP) make geocode $(COMMAND_ARGS)
 
 .PHONY: git
-git: ## Scripts GIT
+git: ## Scripts GIT *
 ifeq ($(COMMAND_ARGS),u)
 	@git pull
 else ifeq ($(COMMAND_ARGS),status)
@@ -191,20 +130,8 @@ else
 	@echo "status: status"
 endif
 
-.PHONY: inspect
-inspect: ## docker service inspect
-ifeq ($(COMMAND_ARGS),)
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make inspect ARGUMENT"
-	@echo "---"
-	@docker stack services $(STACK) --format "{{.Name}}" | sed -e "s/^.*$(STACK)_//" | while read i; do printf "\033[32m%-20s\033[0m %s\n" $$i $$i; done
-else
-	@docker service inspect $(STACK)_$(COMMAND_ARGS)
-endif
-
 .PHONY: install
-install: folders apps/.env ## installation
+install: folders apps/.env ## installation *
 ifeq ($(COMMAND_ARGS),all)
 	@make node_modules -i
 	@make docker image-pull -i
@@ -242,7 +169,7 @@ commands:
 	$(DOCKER_EXECPHP) symfony console labstag:workflows-show
 
 .PHONY: linter
-linter: ## Scripts Linter
+linter: ## Scripts Linter *
 ifeq ($(COMMAND_ARGS),all)
 	@make linter phpfix -i
 	@make linter eslint -i
@@ -329,20 +256,8 @@ else
 	@echo "jscpd-report: Copy paste detector report"
 endif
 
-.PHONY: logs
-logs: ## Scripts logs
-ifeq ($(COMMAND_ARGS),)
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make logs ARGUMENT"
-	@echo "---"
-	@docker stack services $(STACK) --format "{{.Name}}" | sed -e "s/^.*$(STACK)_//" | while read i; do printf "\033[32m%-20s\033[0m %s\n" $$i $$i; done
-else
-	@docker service logs -f --tail 100 --raw $(STACK)_$(COMMAND_ARGS).1.$$(docker service ps -f 'name=$(STACK)_$(COMMAND_ARGS)' $(STACK)_$(COMMAND_ARGS) -q --no-trunc | head -n1)
-endif
-
 .PHONY: messenger
-messenger: ## Scripts messenger
+messenger: ## Scripts messenger *
 ifeq ($(COMMAND_ARGS),consume)
 	$(DOCKER_EXECPHP) make messenger consume
 else
@@ -353,36 +268,8 @@ else
 	@echo "consume: Messenger Consume"
 endif
 
-.PHONY: update
-update: ## docker service update
-ifeq ($(COMMAND_ARGS),)
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make update ARGUMENT"
-	@echo "---"
-	@docker stack services $(STACK) --format "{{.Name}}" | sed -e "s/^.*$(STACK)_//" | while read i; do printf "\033[32m%-20s\033[0m %s\n" $$i $$i; done
-else
-	@docker service update $(STACK)_$(COMMAND_ARGS)
-endif
-
-.PHONY: sleep
-sleep: ## sleep
-	@sleep  $(COMMAND_ARGS)
-
-.PHONY: ssh
-ssh: ## SSH
-ifeq ($(COMMAND_ARGS),)
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make ssh ARGUMENT"
-	@echo "---"
-	@docker stack services $(STACK) --format "{{.Name}}" | sed -e "s/^.*$(STACK)_//" | while read i; do printf "\033[32m%-20s\033[0m %s\n" $$i $$i; done
-else
-	@docker exec -it $(STACK)_$(COMMAND_ARGS).1.$$(docker service ps -f 'name=$(STACK)_$(COMMAND_ARGS)' $(STACK)_$(COMMAND_ARGS) -q --no-trunc | head -n1) sh
-endif
-
 .PHONY: tests
-tests: ## Scripts tests
+tests: ## Scripts tests *
 ifeq ($(COMMAND_ARGS),launch)
 	@$(DOCKER_EXECPHP) make tests all
 else ifeq ($(COMMAND_ARGS),behat)
@@ -407,11 +294,11 @@ translations: ## update translation
 	$(DOCKER_EXECPHP) make translations
 
 .PHONY: workflow-png
-workflow-png: ## generate workflow png
+workflow-png: ## generate workflow png *
 	$(DOCKER_EXECPHP) make workflow-png $(COMMAND_ARGS)
 
 .PHONY: libraries
-libraries: ## Add libraries
+libraries: ## Add libraries *
 ifeq ($(COMMAND_ARGS),tarteaucitron)
 	wget https://github.com/AmauriC/tarteaucitron.js/archive/refs/tags/v1.9.3.zip
 	unzip v1.9.3.zip
@@ -424,15 +311,3 @@ else
 	@echo "---"
 	@echo "tarteaucitron: tarteaucitron"
 endif
-
-.PHONY: upgrade
-upgrade: ## upgrade git
-	$(DOCKER_EXECPHP) symfony console labstag:update --maintenanceon
-	@make git u -i
-	@make composer i -i
-	@make bdd migrate -i
-	@make node_modules -i
-	@make encore build -i
-	@make commands -i
-	$(DOCKER_EXECPHP) symfony console cache:clear
-	$(DOCKER_EXECPHP) symfony console labstag:update --maintenanceoff

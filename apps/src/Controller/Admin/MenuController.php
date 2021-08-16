@@ -3,8 +3,11 @@
 namespace Labstag\Controller\Admin;
 
 use Labstag\Entity\Menu;
+use Labstag\Form\Admin\Menu\PrincipalType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\MenuRepository;
+use Labstag\RequestHandler\MenuRequestHandler;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,10 +25,10 @@ class MenuController extends AdminControllerLib
      */
     public function index(MenuRepository $repository)
     {
-        $all = $repository->findAllCode();
+        $all     = $repository->findAllCode();
+        $globals = $this->twig->getGlobals();
+        $modal   = isset($globals['modal']) ? $globals['modal'] : [];
 
-        $globals          = $this->twig->getGlobals();
-        $modal            = isset($globals['modal']) ? $globals['modal'] : [];
         $modal['delete'] = true;
         $this->twig->addGlobal('modal', $modal);
         return $this->render(
@@ -37,22 +40,37 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/add", name="admin_menu_add", methods={"GET"})
      */
-    public function add()
+    public function add(MenuRequestHandler $requestHandler): Response
     {
+        return $this->create(
+            new Menu(),
+            PrincipalType::class,
+            $requestHandler,
+            ['list' => 'admin_menu_index'],
+            'admin/menu/form.html.twig'
+        );
+    }
+
+    /**
+     * @Route("/divider/{id}", name="admin_menu_divider")
+     */
+    public function divider(Menu $menu): Response
+    {
+        dump($menu);
     }
 
     /**
      * @Route("/new", name="admin_menu_new", methods={"GET"})
      */
-    public function new()
+    public function new(MenuRequestHandler $requestHandler): Response
     {
-    }
-
-    /**
-     * @Route("/link", name="admin_menu_link", methods={"GET"})
-     */
-    public function link()
-    {
+        return $this->create(
+            new Menu(),
+            PrincipalType::class,
+            $requestHandler,
+            ['list' => 'admin_menu_index'],
+            'admin/menu/form.html.twig'
+        );
     }
 
     /**

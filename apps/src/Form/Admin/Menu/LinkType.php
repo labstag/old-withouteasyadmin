@@ -1,13 +1,13 @@
 <?php
 
-namespace Labstag\Form\Admin;
+namespace Labstag\Form\Admin\Menu;
 
 use Labstag\Entity\Menu;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MenuType extends AbstractType
+class LinkType extends AbstractType
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -17,10 +17,6 @@ class MenuType extends AbstractType
         unset($options);
         $builder->add('libelle');
         $builder->add('icon');
-        $builder->add('position');
-        // $builder->add('data');
-        $builder->add('separateur');
-        $builder->add('clef');
         $builder->add('parent');
     }
 
