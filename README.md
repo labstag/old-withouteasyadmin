@@ -36,6 +36,12 @@ Hosts:
 - phpmyadmin-labstag.traefik.me
 - phpldapadmin-labstag.traefik.me
 
+## Init
+
+```sh
+make init
+```
+
 ## Récupérer les images docker
 
 ```sh

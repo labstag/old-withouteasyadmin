@@ -3,6 +3,9 @@ STACK   := labstag
 NETWORK := proxynetwork
 include make/docker/Makefile
 
+init: ## Init project
+	@git submodule update --init --recursive --remote
+
 dump:
 	@mkdir dump
 
