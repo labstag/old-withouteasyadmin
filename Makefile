@@ -119,28 +119,9 @@ endif
 geocode: ## Geocode *
 	$(DOCKER_EXECPHP) make geocode $(COMMAND_ARGS)
 
-.PHONY: git
-git: ## Scripts GIT *
-ifeq ($(COMMAND_ARGS),u)
-	@git pull
-else ifeq ($(COMMAND_ARGS),status)
-	@git status
-else ifeq ($(COMMAND_ARGS),check)
-	@make composer validate -i
-	@make composer outdated -i
+.PHONY: check
+check: ## check
 	@make bdd validate -i
-	@make contributors check -i
-	@make linter all -i
-	@make git status -i
-else
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make git ARGUMENT"
-	@echo "---"
-	@echo "u: Update git"
-	@echo "check: CHECK before"
-	@echo "status: status"
-endif
 
 .PHONY: install
 install: folders apps/.env ## installation *
@@ -198,6 +179,9 @@ else ifeq ($(COMMAND_ARGS),phpaudit)
 	@make linter phpmd -i
 	@make linter phpmnd -i
 	@make linter phpstan -i
+else ifeq ($(COMMAND_ARGS),composer)
+	@make composer validate -i
+	@make composer outdated -i
 else ifeq ($(COMMAND_ARGS),phpfix)
 	@make linter php-cs-fixer -i
 	@make linter phpcbf -i
@@ -245,6 +229,7 @@ else
 	@echo "make linter ARGUMENT"
 	@echo "---"
 	@echo "all: ## Launch all linter"
+	@echo "composer: composer"
 	@echo "readme: linter README.md"
 	@echo "phpaudit: AUDIT PHP"
 	@echo "phpfix: PHP-CS-FIXER & PHPCBF"
