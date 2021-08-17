@@ -26,7 +26,7 @@ assets:
 	$(DOCKER_EXECPHP) make assets
 
 .PHONY: bdd
-bdd: ## Scripts for BDD *
+bdd: ### Scripts for BDD
 ifeq ($(COMMAND_ARGS),fixtures)
 	$(DOCKER_EXECPHP) make bdd fixtures
 else ifeq ($(COMMAND_ARGS),migrate)
@@ -44,7 +44,7 @@ else
 endif
 
 .PHONY: composer
-composer: ## Scripts for composer *
+composer: ### Scripts for composer
 ifeq ($(COMMAND_ARGS),suggests)
 	$(DOCKER_EXECPHP) make composer suggests
 else ifeq ($(COMMAND_ARGS),outdated)
@@ -77,7 +77,7 @@ else
 endif
 
 .PHONY: encore
-encore: ## Script for Encore *
+encore: ### Script for Encore
 ifeq ($(COMMAND_ARGS),dev)
 	@npm rebuild node-sass
 	@npm run encore-dev
@@ -99,7 +99,7 @@ endif
 folders: dump ## Create folder
 
 .PHONY: env
-env: apps/.env ## Scripts Installation environnement *
+env: apps/.env ### Scripts Installation environnement
 ifeq ($(COMMAND_ARGS),dev)
 	@sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
 else ifeq ($(COMMAND_ARGS),prod)
@@ -116,7 +116,7 @@ else
 endif
 
 .PHONY: geocode
-geocode: ## Geocode *
+geocode: ### Geocode
 	$(DOCKER_EXECPHP) make geocode $(COMMAND_ARGS)
 
 .PHONY: check
@@ -124,7 +124,7 @@ check: ## check
 	@make bdd validate -i
 
 .PHONY: install
-install: folders apps/.env ## installation *
+install: folders apps/.env ### installation
 ifeq ($(COMMAND_ARGS),all)
 	@make node_modules -i
 	@make docker image-pull -i
@@ -162,7 +162,7 @@ commands:
 	$(DOCKER_EXECPHP) symfony console labstag:workflows-show
 
 .PHONY: linter
-linter: ## Scripts Linter *
+linter: ### Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
 	@make linter phpfix -i
 	@make linter eslint -i
@@ -254,7 +254,7 @@ else
 endif
 
 .PHONY: messenger
-messenger: ## Scripts messenger *
+messenger: ### Scripts messenger
 ifeq ($(COMMAND_ARGS),consume)
 	$(DOCKER_EXECPHP) make messenger consume
 else
@@ -266,7 +266,7 @@ else
 endif
 
 .PHONY: tests
-tests: ## Scripts tests *
+tests: ### Scripts tests
 ifeq ($(COMMAND_ARGS),launch)
 	@$(DOCKER_EXECPHP) make tests all
 else ifeq ($(COMMAND_ARGS),behat)
@@ -291,11 +291,11 @@ translations: ## update translation
 	$(DOCKER_EXECPHP) make translations
 
 .PHONY: workflow-png
-workflow-png: ## generate workflow png *
+workflow-png: ### generate workflow png
 	$(DOCKER_EXECPHP) make workflow-png $(COMMAND_ARGS)
 
 .PHONY: libraries
-libraries: ## Add libraries *
+libraries: ### Add libraries
 ifeq ($(COMMAND_ARGS),tarteaucitron)
 	wget https://github.com/AmauriC/tarteaucitron.js/archive/refs/tags/v1.9.3.zip
 	unzip v1.9.3.zip
