@@ -36,6 +36,8 @@ jobs:
         run: make node_modules
       - name: 'Docker swarm init'
         run: make docker swarm-init
+      - name: 'Launch Lampy'
+        run: make lampy
       - name: 'Create proxy network'
         run: make docker create-network
       - name: 'Image pull'
