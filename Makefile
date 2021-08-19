@@ -116,10 +116,6 @@ endif
 geocode: ### Geocode
 	$(DOCKER_EXECPHP) make geocode $(COMMANDS_ARGS)
 
-.PHONY: check
-check: ## check
-	@make bdd validate -i
-
 .PHONY: install
 install: apps/.env ### installation
 ifeq ($(COMMANDS_ARGS),all)
