@@ -22,7 +22,7 @@ Software:
 - make
 - npm
 - docker
-- repository koromerzhin/traefik
+- repository koromerzhin/lampy
 
 Config:
 
