@@ -16,6 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
+          submodules: recursive
           repository: koromerzhin/lampy
           path: lampy
       - name: Cache Composer packages
