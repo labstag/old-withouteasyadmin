@@ -185,6 +185,11 @@ class User implements UserInterface, Serializable
         return $this->getUsername();
     }
 
+    public function getUserIdentifier()
+    {
+        return $this->getUsername();
+    }
+
     public function addAdresseUser(AdresseUser $adresseUser): self
     {
         if (!$this->adresseUsers->contains($adresseUser)) {

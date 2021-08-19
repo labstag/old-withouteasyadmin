@@ -52,8 +52,6 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected RouterInterface $router;
 
-    protected SessionInterface $session;
-
     protected TokenStorageInterface $token;
 
     protected Environment $twig;
@@ -76,16 +74,15 @@ abstract class AdminControllerLib extends ControllerLib
         AttachmentRequestHandler $attachmentRH,
         AttachmentRepository $attachmentRepository,
         GuardService $guardService,
-        RouterInterface $router,
-        SessionInterface $session
+        RouterInterface $router
     )
     {
         $this->flashbag             = $flashbag;
-        $this->session              = $session;
         $this->attachmentRH         = $attachmentRH;
         $this->attachmentRepository = $attachmentRepository;
         $this->entityManager        = $entityManager;
         $this->requestStack         = $requestStack;
+        $this->session              = $requestStack->getSession();
         /** @var Request $request */
         $request                 = $this->requestStack->getCurrentRequest();
         $this->request           = $request;

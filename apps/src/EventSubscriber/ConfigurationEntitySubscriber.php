@@ -13,6 +13,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ConfigurationEntitySubscriber implements EventSubscriberInterface
 {
@@ -31,14 +32,16 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
 
     protected SessionInterface $session;
 
+    protected RequestStack $requestStack;
+
     public function __construct(
         FlashBagInterface $flashbag,
-        SessionInterface $session,
         LoggerInterface $logger,
         ContainerBagInterface $containerBag,
         EntityManagerInterface $entityManager,
         ConfigurationRepository $repository,
-        CacheInterface $cache
+        CacheInterface $cache,
+        RequestStack $requestStack
     )
     {
         $this->flashbag      = $flashbag;
@@ -47,7 +50,8 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         $this->entityManager = $entityManager;
         $this->repository    = $repository;
         $this->logger        = $logger;
-        $this->session       = $session;
+        $this->requestStack  = $requestStack;
+        $this->session       = $requestStack->getSession();
     }
 
     public static function getSubscribedEvents()

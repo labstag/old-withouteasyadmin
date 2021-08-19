@@ -17,7 +17,6 @@ class LinkType extends AbstractType
         unset($options);
         $builder->add('libelle');
         $builder->add('icon');
-        $builder->add('parent');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

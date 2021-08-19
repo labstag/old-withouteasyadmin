@@ -3,7 +3,7 @@
         {% for child in children %}
         <li>
             {% if child.separateur %}
-                {{ child.libelle }} {{ _self.link(child, position) }}
+                [[DIVIDER]] {{ _self.link(child, position) }}
             {% else %}
                 {{ child.libelle }} {{ _self.link(child, position) }}
                 {% if 0 != child.children|length %}
@@ -39,13 +39,13 @@
 {% macro link (child, position) %}
     {% import "admin/macro.html.twig" as macro_admin %}
     <div class="btngrouptable" role="group">
-        {% if child.separateur != false %}
+        {% if child.separateur != true %}
             {{ macro_admin.edit(child, 'admin_menu_update') }}
         {% endif %}
         {{ macro_admin.delete(child, 'api_action_delete', 'admin_menu_index') }}
-        {% if position == 0 && child.separateur != false %}
+        {% if position == 0 and child.separateur == false %}
             {{ _self.addlink(child, 'admin_menu_add') }}
-            {{ _self.addlink(child, 'admin_menu_divider') }}
+            {{ _self.adddivider(child, 'admin_menu_divider') }}
         {% endif %}
     </div>
 {% endmacro %}

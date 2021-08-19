@@ -7,9 +7,9 @@ use Labstag\Entity\User;
 use Labstag\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
@@ -30,7 +30,7 @@ class FormAuthenticator extends AbstractAuth implements PassAuthInterface
 
     protected EntityManagerInterface $entityManager;
 
-    protected UserPasswordEncoderInterface $passwordEncoder;
+    protected UserPasswordHasherInterface $passwordEncoder;
 
     protected UserRepository $repository;
 
@@ -40,7 +40,7 @@ class FormAuthenticator extends AbstractAuth implements PassAuthInterface
         EntityManagerInterface $entityManager,
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordEncoder,
         UserRepository $repository
     )
     {

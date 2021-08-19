@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\Event\Event;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class UserWorkflowSubscriber implements EventSubscriberInterface
 {
@@ -17,14 +18,17 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
 
     protected UserMailService $userMailService;
 
+    protected RequestStack $requestStack;
+
     public function __construct(
         FlashBagInterface $flashbag,
         UserMailService $userMailService,
-        SessionInterface $session
+        RequestStack $requestStack
     )
     {
         $this->flashbag        = $flashbag;
-        $this->session         = $session;
+        $this->requestStack    = $requestStack;
+        $this->session         = $requestStack->getSession();
         $this->userMailService = $userMailService;
     }
 

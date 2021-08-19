@@ -13,8 +13,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: 'Create folders'
-        run: make folders
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v2

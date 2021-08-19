@@ -10,8 +10,7 @@ use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserEntitySubscriber implements EventSubscriberInterface
 {
@@ -22,17 +21,14 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     protected FlashBagInterface $flashbag;
 
-    protected UserPasswordEncoderInterface $passwordEncoder;
-
-    protected SessionInterface $session;
+    protected UserPasswordHasherInterface $passwordEncoder;
 
     protected UserMailService $userMailService;
 
     public function __construct(
         FlashBagInterface $flashbag,
-        SessionInterface $session,
         EntityManagerInterface $entityManager,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordEncoder,
         UserMailService $userMailService,
         EmailUserRequestHandler $emailUserRH
     )
@@ -41,7 +37,6 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $this->emailUserRH     = $emailUserRH;
         $this->userMailService = $userMailService;
         $this->entityManager   = $entityManager;
-        $this->session         = $session;
         $this->passwordEncoder = $passwordEncoder;
     }
 

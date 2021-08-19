@@ -27,11 +27,11 @@ assets:
 
 .PHONY: bdd
 bdd: ### Scripts for BDD
-ifeq ($(COMMAND_ARGS),fixtures)
+ifeq ($(COMMANDS_ARGS),fixtures)
 	$(DOCKER_EXECPHP) make bdd fixtures
-else ifeq ($(COMMAND_ARGS),migrate)
+else ifeq ($(COMMANDS_ARGS),migrate)
 	$(DOCKER_EXECPHP) make bdd migrate
-else ifeq ($(COMMAND_ARGS),validate)
+else ifeq ($(COMMANDS_ARGS),validate)
 	$(DOCKER_EXECPHP) make bdd validate
 else
 	@echo "ARGUMENT missing"
@@ -45,21 +45,21 @@ endif
 
 .PHONY: composer
 composer: ### Scripts for composer
-ifeq ($(COMMAND_ARGS),suggests)
+ifeq ($(COMMANDS_ARGS),suggests)
 	$(DOCKER_EXECPHP) make composer suggests
-else ifeq ($(COMMAND_ARGS),outdated)
+else ifeq ($(COMMANDS_ARGS),outdated)
 	$(DOCKER_EXECPHP) make composer outdated
-else ifeq ($(COMMAND_ARGS),fund)
+else ifeq ($(COMMANDS_ARGS),fund)
 	$(DOCKER_EXECPHP) make composer fund
-else ifeq ($(COMMAND_ARGS),prod)
+else ifeq ($(COMMANDS_ARGS),prod)
 	$(DOCKER_EXECPHP) make composer prod
-else ifeq ($(COMMAND_ARGS),dev)
+else ifeq ($(COMMANDS_ARGS),dev)
 	$(DOCKER_EXECPHP) make composer dev
-else ifeq ($(COMMAND_ARGS),u)
+else ifeq ($(COMMANDS_ARGS),u)
 	$(DOCKER_EXECPHP) make composer update
-else ifeq ($(COMMAND_ARGS),i)
+else ifeq ($(COMMANDS_ARGS),i)
 	$(DOCKER_EXECPHP) make composer install
-else ifeq ($(COMMAND_ARGS),validate)
+else ifeq ($(COMMANDS_ARGS),validate)
 	$(DOCKER_EXECPHP) make composer validate
 else
 	@echo "ARGUMENT missing"
@@ -78,12 +78,12 @@ endif
 
 .PHONY: encore
 encore: ### Script for Encore
-ifeq ($(COMMAND_ARGS),dev)
+ifeq ($(COMMANDS_ARGS),dev)
 	@npm rebuild node-sass
 	@npm run encore-dev
-else ifeq ($(COMMAND_ARGS),watch)
+else ifeq ($(COMMANDS_ARGS),watch)
 	@npm run encore-watch
-else ifeq ($(COMMAND_ARGS),build)
+else ifeq ($(COMMANDS_ARGS),build)
 	@npm run encore-build
 else
 	@echo "ARGUMENT missing"
@@ -95,14 +95,11 @@ else
 	@echo "build: créer les assets en version prod"
 endif
 
-.PHONY: folders
-folders: dump ## Create folder
-
 .PHONY: env
 env: apps/.env ### Scripts Installation environnement
-ifeq ($(COMMAND_ARGS),dev)
+ifeq ($(COMMANDS_ARGS),dev)
 	@sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
-else ifeq ($(COMMAND_ARGS),prod)
+else ifeq ($(COMMANDS_ARGS),prod)
 	@sed -i 's/APP_ENV=dev/APP_ENV=prod/g' apps/.env
 	@rm -rf apps/vendor
 	@make composer prod -i
@@ -117,15 +114,15 @@ endif
 
 .PHONY: geocode
 geocode: ### Geocode
-	$(DOCKER_EXECPHP) make geocode $(COMMAND_ARGS)
+	$(DOCKER_EXECPHP) make geocode $(COMMANDS_ARGS)
 
 .PHONY: check
 check: ## check
 	@make bdd validate -i
 
 .PHONY: install
-install: folders apps/.env ### installation
-ifeq ($(COMMAND_ARGS),all)
+install: apps/.env ### installation
+ifeq ($(COMMANDS_ARGS),all)
 	@make node_modules -i
 	@make docker image-pull -i
 	@make docker deploy -i
@@ -134,12 +131,12 @@ ifeq ($(COMMAND_ARGS),all)
 	@make assets -i
 	@make encore dev -i
 	@make linter all -i
-else ifeq ($(COMMAND_ARGS),dev)
+else ifeq ($(COMMANDS_ARGS),dev)
 	@make install all -i
 	@make bdd fixtures -i
 	@make commands -i
 	@make env dev -i
-else ifeq ($(COMMAND_ARGS),prod)
+else ifeq ($(COMMANDS_ARGS),prod)
 	@make install all -i
 	@make bdd fixtures -i
 	@make commands -i
@@ -163,7 +160,7 @@ commands:
 
 .PHONY: linter
 linter: ### Scripts Linter
-ifeq ($(COMMAND_ARGS),all)
+ifeq ($(COMMANDS_ARGS),all)
 	@make linter phpfix -i
 	@make linter eslint -i
 	@make linter stylelint-fix -i
@@ -174,54 +171,54 @@ ifeq ($(COMMAND_ARGS),all)
 	@make linter phpcs -i
 	@make linter phpmd -i
 	@make linter readme -i
-else ifeq ($(COMMAND_ARGS),phpaudit)
+else ifeq ($(COMMANDS_ARGS),phpaudit)
 	@make linter phpcs -i
 	@make linter phpmd -i
 	@make linter phpmnd -i
 	@make linter phpstan -i
-else ifeq ($(COMMAND_ARGS),composer)
+else ifeq ($(COMMANDS_ARGS),composer)
 	@make composer validate -i
 	@make composer outdated -i
-else ifeq ($(COMMAND_ARGS),phpfix)
+else ifeq ($(COMMANDS_ARGS),phpfix)
 	@make linter php-cs-fixer -i
 	@make linter phpcbf -i
-else ifeq ($(COMMAND_ARGS),readme)
+else ifeq ($(COMMANDS_ARGS),readme)
 	@npm run linter-markdown README.md
-else ifeq ($(COMMAND_ARGS),stylelint)
+else ifeq ($(COMMANDS_ARGS),stylelint)
 	@npm run stylelint
-else ifeq ($(COMMAND_ARGS),stylelint-fix)
+else ifeq ($(COMMANDS_ARGS),stylelint-fix)
 	@npm run stylelint-fix
-else ifeq ($(COMMAND_ARGS),jscpd)
+else ifeq ($(COMMANDS_ARGS),jscpd)
 	@npm run jscpd
-else ifeq ($(COMMAND_ARGS),jscpd-report)
+else ifeq ($(COMMANDS_ARGS),jscpd-report)
 	@npm run jscpd-report
-else ifeq ($(COMMAND_ARGS),eslint)
+else ifeq ($(COMMANDS_ARGS),eslint)
 	@npm run eslint
-else ifeq ($(COMMAND_ARGS),eslint-fix)
+else ifeq ($(COMMANDS_ARGS),eslint-fix)
 	@npm run eslint-fix
-else ifeq ($(COMMAND_ARGS),php-cs-fixer)
+else ifeq ($(COMMANDS_ARGS),php-cs-fixer)
 	$(DOCKER_EXECPHP) make linter php-cs-fixer
-else ifeq ($(COMMAND_ARGS),phpcbf)
+else ifeq ($(COMMANDS_ARGS),phpcbf)
 	$(DOCKER_EXECPHP) make linter phpcbf
-else ifeq ($(COMMAND_ARGS),phpcs)
+else ifeq ($(COMMANDS_ARGS),phpcs)
 	$(DOCKER_EXECPHP) make linter phpcs
-else ifeq ($(COMMAND_ARGS),phpcs-onlywarning)
+else ifeq ($(COMMANDS_ARGS),phpcs-onlywarning)
 	$(DOCKER_EXECPHP) make linter phpcs-onlywarning
-else ifeq ($(COMMAND_ARGS),phpcs-onlyerror)
+else ifeq ($(COMMANDS_ARGS),phpcs-onlyerror)
 	$(DOCKER_EXECPHP) make linter phpcs-onlyerror
-else ifeq ($(COMMAND_ARGS),phploc)
+else ifeq ($(COMMANDS_ARGS),phploc)
 	$(DOCKER_EXECPHP) make linter phploc
-else ifeq ($(COMMAND_ARGS),phpmd)
+else ifeq ($(COMMANDS_ARGS),phpmd)
 	$(DOCKER_EXECPHP) make linter phpmd
-else ifeq ($(COMMAND_ARGS),phpmnd)
+else ifeq ($(COMMANDS_ARGS),phpmnd)
 	$(DOCKER_EXECPHP) make linter phpmnd
-else ifeq ($(COMMAND_ARGS),phpstan)
+else ifeq ($(COMMANDS_ARGS),phpstan)
 	$(DOCKER_EXECPHP) make linter phpstan
-else ifeq ($(COMMAND_ARGS),twig)
+else ifeq ($(COMMANDS_ARGS),twig)
 	$(DOCKER_EXECPHP) make linter twig
-else ifeq ($(COMMAND_ARGS),container)
+else ifeq ($(COMMANDS_ARGS),container)
 	$(DOCKER_EXECPHP) make linter container
-else ifeq ($(COMMAND_ARGS),yaml)
+else ifeq ($(COMMANDS_ARGS),yaml)
 	$(DOCKER_EXECPHP) make linter yaml
 else
 	@echo "ARGUMENT missing"
@@ -255,7 +252,7 @@ endif
 
 .PHONY: messenger
 messenger: ### Scripts messenger
-ifeq ($(COMMAND_ARGS),consume)
+ifeq ($(COMMANDS_ARGS),consume)
 	$(DOCKER_EXECPHP) make messenger consume
 else
 	@echo "ARGUMENT missing"
@@ -267,13 +264,13 @@ endif
 
 .PHONY: tests
 tests: ### Scripts tests
-ifeq ($(COMMAND_ARGS),launch)
+ifeq ($(COMMANDS_ARGS),launch)
 	@$(DOCKER_EXECPHP) make tests all
-else ifeq ($(COMMAND_ARGS),behat)
+else ifeq ($(COMMANDS_ARGS),behat)
 	@$(DOCKER_EXECPHP) make tests behat
-else ifeq ($(COMMAND_ARGS),simple-phpunit-unit-integration)
+else ifeq ($(COMMANDS_ARGS),simple-phpunit-unit-integration)
 	@$(DOCKER_EXECPHP) make tests simple-phpunit-unit-integration
-else ifeq ($(COMMAND_ARGS),simple-phpunit)
+else ifeq ($(COMMANDS_ARGS),simple-phpunit)
 	@$(DOCKER_EXECPHP) make tests simple-phpunit
 else
 	@echo "ARGUMENT missing"
@@ -292,11 +289,11 @@ translations: ## update translation
 
 .PHONY: workflow-png
 workflow-png: ### generate workflow png
-	$(DOCKER_EXECPHP) make workflow-png $(COMMAND_ARGS)
+	$(DOCKER_EXECPHP) make workflow-png $(COMMANDS_ARGS)
 
 .PHONY: libraries
 libraries: ### Add libraries
-ifeq ($(COMMAND_ARGS),tarteaucitron)
+ifeq ($(COMMANDS_ARGS),tarteaucitron)
 	wget https://github.com/AmauriC/tarteaucitron.js/archive/refs/tags/v1.9.3.zip
 	unzip v1.9.3.zip
 	rm v1.9.3.zip

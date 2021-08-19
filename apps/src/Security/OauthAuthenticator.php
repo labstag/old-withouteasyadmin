@@ -15,10 +15,10 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -42,7 +42,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
 
     protected OauthService $oauthService;
 
-    protected UserPasswordEncoderInterface $passwordEncoder;
+    protected UserPasswordHasherInterface $passwordEncoder;
 
     protected Request $request;
 
@@ -61,7 +61,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         EntityManagerInterface $entityManager,
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordEncoder,
         OauthService $oauthService,
         RequestStack $requestStack,
         TokenStorageInterface $token,

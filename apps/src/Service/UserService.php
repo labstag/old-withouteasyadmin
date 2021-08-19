@@ -12,6 +12,7 @@ use Labstag\RequestHandler\UserRequestHandler;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class UserService
 {
@@ -26,12 +27,12 @@ class UserService
 
     protected UserRepository $repository;
 
-    protected SessionInterface $session;
+    protected RequestStack $requestStack;
 
     protected UserRequestHandler $userRH;
 
     public function __construct(
-        SessionInterface $session,
+        RequestStack $requestStack,
         FlashBagInterface $flashbag,
         EntityManagerInterface $entityManager,
         UserRepository $repository,
@@ -43,7 +44,8 @@ class UserService
         $this->flashbag           = $flashbag;
         $this->userRH             = $userRH;
         $this->oauthService       = $oauthService;
-        $this->session            = $session;
+        $this->requestStack       = $requestStack;
+        $this->session            = $requestStack->getSession();
         $this->entityManager      = $entityManager;
         $this->repository         = $repository;
         $this->oauthConnectUserRH = $oauthConnectUserRH;
