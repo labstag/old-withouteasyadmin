@@ -38,13 +38,7 @@ class GuardRouterSubscriber implements EventSubscriberInterface
         GuardService $guardService
     )
     {
-        $this->requestStack = $requestStack;
-        $request            = $requestStack->getCurrentRequest();
-        if (!is_null($request)) {
-            $session        = $requestStack->getSession();
-            $this->flashbag = $session->getFlashBag();
-        }
-
+        $this->requestStack     = $requestStack;
         $this->groupeRepository = $groupeRepository;
         $this->token            = $token;
         $this->router           = $router;
@@ -75,10 +69,14 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
     private function flashBagAdd(string $type, $message)
     {
-        if (!isset($this->flashbag) || !$this->flashbag instanceof FlashBagInterface) {
+        $requestStack = $this->requestStack;
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
             return;
         }
 
-        $this->flashbag->add($type, $message);
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 }

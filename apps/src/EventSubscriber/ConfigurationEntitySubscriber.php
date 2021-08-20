@@ -49,20 +49,19 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         $this->repository    = $repository;
         $this->logger        = $logger;
         $this->requestStack  = $requestStack;
-        $request             = $requestStack->getCurrentRequest();
-        if (!is_null($request)) {
-            $session        = $requestStack->getSession();
-            $this->flashbag = $session->getFlashBag();
-        }
     }
 
     private function flashBagAdd(string $type, $message)
     {
-        if (!isset($this->flashbag) || !$this->flashbag instanceof FlashBagInterface) {
+        $requestStack = $this->requestStack;
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
             return;
         }
 
-        $this->flashbag->add($type, $message);
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 
     public static function getSubscribedEvents()

@@ -80,9 +80,6 @@ abstract class AdminControllerLib extends ControllerLib
         $this->attachmentRepository = $attachmentRepository;
         $this->entityManager        = $entityManager;
         $this->requestStack         = $requestStack;
-        $session                    = $requestStack->getSession();
-        $this->session              = $session;
-        $this->flashbag             = $session->getFlashBag();
         /** @var Request $request */
         $request                 = $this->requestStack->getCurrentRequest();
         $this->request           = $request;
@@ -94,6 +91,18 @@ abstract class AdminControllerLib extends ControllerLib
         $this->csrfTokenManager  = $csrfTokenManager;
         $this->setSingletonsAdmin();
         parent::__construct($dataService, $breadcrumbs, $paginator);
+    }
+
+    private function flashBagAdd(string $type, $message)
+    {
+        $requestStack = $this->requestStack;
+        if (is_null($this->request)) {
+            return;
+        }
+
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 
     public function addBreadcrumbs(array $breadcrumbs): void
@@ -314,7 +323,7 @@ abstract class AdminControllerLib extends ControllerLib
         if ($form->isSubmitted() && $form->isValid()) {
             $this->upload($entity);
             $handler->handle($oldEntity, $entity);
-            $this->flashbag->add(
+            $this->flashBagAdd(
                 'success',
                 'Données sauvegardé'
             );

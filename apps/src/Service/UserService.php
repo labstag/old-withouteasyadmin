@@ -43,12 +43,21 @@ class UserService
         $this->userRH             = $userRH;
         $this->oauthService       = $oauthService;
         $this->requestStack       = $requestStack;
-        $session                  = $requestStack->getSession();
-        $this->session            = $session;
-        $this->flashbag           = $session->getFlashBag();
         $this->entityManager      = $entityManager;
         $this->repository         = $repository;
         $this->oauthConnectUserRH = $oauthConnectUserRH;
+    }
+
+    private function flashBagAdd(string $type, $message)
+    {
+        $requestStack = $this->requestStack;
+        if (is_null($this->request)) {
+            return;
+        }
+
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 
     public function addOauthToUser(
@@ -92,12 +101,12 @@ class UserService
             $old = clone $oauthConnect;
             $oauthConnect->setData($data);
             $this->oauthConnectUserRH->handle($old, $oauthConnect);
-            $this->flashbag->add('success', 'Compte associé');
+            $this->flashBagAdd('success', 'Compte associé');
 
             return;
         }
 
-        $this->flashbag->add(
+        $this->flashBagAdd(
             'warning',
             "Impossible d'associer le compte"
         );

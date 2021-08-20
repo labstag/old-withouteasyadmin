@@ -34,13 +34,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         EmailUserRequestHandler $emailUserRH
     )
     {
-        $this->requestStack = $requestStack;
-        $request            = $requestStack->getCurrentRequest();
-        if (!is_null($request)) {
-            $session        = $requestStack->getSession();
-            $this->flashbag = $session->getFlashBag();
-        }
-
+        $this->requestStack    = $requestStack;
         $this->emailUserRH     = $emailUserRH;
         $this->userMailService = $userMailService;
         $this->entityManager   = $entityManager;
@@ -80,11 +74,15 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     private function flashBagAdd(string $type, $message)
     {
-        if (!isset($this->flashbag) || !$this->flashbag instanceof FlashBagInterface) {
+        $requestStack = $this->requestStack;
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
             return;
         }
 
-        $this->flashbag->add($type, $message);
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 
     protected function setPassword(User $user): void
