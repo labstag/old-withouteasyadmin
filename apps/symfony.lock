@@ -695,6 +695,9 @@
     "symfony/property-info": {
         "version": "v5.1.7"
     },
+    "symfony/rate-limiter": {
+        "version": "v5.3.4"
+    },
     "symfony/redis-messenger": {
         "version": "v5.1.7"
     },
