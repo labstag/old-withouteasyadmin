@@ -35,7 +35,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
     {
         $this->requestStack = $requestStack;
         /** @var Request $request */
-        $request             = $this->requestStack->getCurrentRequest();
+        $request             = $this->requestStack->getSession();
         $this->request       = $request;
         $this->reader        = $reader;
         $this->entityManager = $entityManager;

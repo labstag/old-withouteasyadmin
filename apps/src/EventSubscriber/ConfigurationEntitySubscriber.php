@@ -35,7 +35,6 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
     protected RequestStack $requestStack;
 
     public function __construct(
-        FlashBagInterface $flashbag,
         LoggerInterface $logger,
         ContainerBagInterface $containerBag,
         EntityManagerInterface $entityManager,
@@ -44,14 +43,26 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         RequestStack $requestStack
     )
     {
-        $this->flashbag      = $flashbag;
         $this->containerBag  = $containerBag;
         $this->cache         = $cache;
         $this->entityManager = $entityManager;
         $this->repository    = $repository;
         $this->logger        = $logger;
         $this->requestStack  = $requestStack;
-        $this->session       = $requestStack->getSession();
+        $request             = $requestStack->getCurrentRequest();
+        if (!is_null($request)) {
+            $session        = $requestStack->getSession();
+            $this->flashbag = $session->getFlashBag();
+        }
+    }
+
+    private function flashBagAdd(string $type, $message)
+    {
+        if (!isset($this->flashbag) || !$this->flashbag instanceof FlashBagInterface) {
+            return;
+        }
+
+        $this->flashbag->add($type, $message);
     }
 
     public static function getSubscribedEvents()
@@ -89,7 +100,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         }
 
         $this->entityManager->flush();
-        $this->flashbag->add('success', 'Données sauvegardé');
+        $this->flashBagAdd('success', 'Données sauvegardé');
     }
 
     protected function getParameter(string $name)
@@ -116,7 +127,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
                 $file
             );
             $this->logger->info($msg);
-            $this->flashbag->add('success', $msg);
+            $this->flashBagAdd('success', $msg);
         } catch (Exception $exception) {
             $errorMsg = sprintf(
                 'Exception : Erreur %s dans %s L.%s : %s',
@@ -126,7 +137,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
                 $exception->getMessage()
             );
             $this->logger->error($errorMsg);
-            $this->flashbag->add('danger', $errorMsg);
+            $this->flashBagAdd('danger', $errorMsg);
         }
     }
 }

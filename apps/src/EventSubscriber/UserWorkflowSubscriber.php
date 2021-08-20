@@ -21,14 +21,17 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
     protected RequestStack $requestStack;
 
     public function __construct(
-        FlashBagInterface $flashbag,
         UserMailService $userMailService,
         RequestStack $requestStack
     )
     {
-        $this->flashbag        = $flashbag;
-        $this->requestStack    = $requestStack;
-        $this->session         = $requestStack->getSession();
+        $this->requestStack = $requestStack;
+        $request            = $requestStack->getCurrentRequest();
+        if (!is_null($request)) {
+            $session        = $requestStack->getSession();
+            $this->flashbag = $session->getFlashBag();
+        }
+
         $this->userMailService = $userMailService;
     }
 
@@ -55,17 +58,26 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getSubject();
         $this->userMailService->lostPassword($entity);
-        $this->flashbag->add(
+        $this->flashBagAdd(
             'success',
             'Demande de nouveau mot de passe envoyé'
         );
+    }
+
+    private function flashBagAdd(string $type, $message)
+    {
+        if (!isset($this->flashbag) || !$this->flashbag instanceof FlashBagInterface) {
+            return;
+        }
+
+        $this->flashbag->add($type, $message);
     }
 
     public function transitionSubmit(Event $event)
     {
         $entity = $event->getSubject();
         $this->userMailService->newUser($entity);
-        $this->flashbag->add(
+        $this->flashBagAdd(
             'success',
             'Nouveau compte utilisateur créer'
         );

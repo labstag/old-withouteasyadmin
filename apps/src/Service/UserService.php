@@ -33,7 +33,6 @@ class UserService
 
     public function __construct(
         RequestStack $requestStack,
-        FlashBagInterface $flashbag,
         EntityManagerInterface $entityManager,
         UserRepository $repository,
         OauthService $oauthService,
@@ -41,11 +40,12 @@ class UserService
         OauthConnectUserRequestHandler $oauthConnectUserRH
     )
     {
-        $this->flashbag           = $flashbag;
         $this->userRH             = $userRH;
         $this->oauthService       = $oauthService;
         $this->requestStack       = $requestStack;
-        $this->session            = $requestStack->getSession();
+        $session                  = $requestStack->getSession();
+        $this->session            = $session;
+        $this->flashbag           = $session->getFlashBag();
         $this->entityManager      = $entityManager;
         $this->repository         = $repository;
         $this->oauthConnectUserRH = $oauthConnectUserRH;

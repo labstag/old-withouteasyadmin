@@ -61,7 +61,6 @@ abstract class AdminControllerLib extends ControllerLib
     protected string $urlHome = '';
 
     public function __construct(
-        FlashBagInterface $flashbag,
         UploadAnnotationReader $uploadAnnotReader,
         PaginatorInterface $paginator,
         RequestStack $requestStack,
@@ -77,12 +76,13 @@ abstract class AdminControllerLib extends ControllerLib
         RouterInterface $router
     )
     {
-        $this->flashbag             = $flashbag;
         $this->attachmentRH         = $attachmentRH;
         $this->attachmentRepository = $attachmentRepository;
         $this->entityManager        = $entityManager;
         $this->requestStack         = $requestStack;
-        $this->session              = $requestStack->getSession();
+        $session                    = $requestStack->getSession();
+        $this->session              = $session;
+        $this->flashbag             = $session->getFlashBag();
         /** @var Request $request */
         $request                 = $this->requestStack->getCurrentRequest();
         $this->request           = $request;
