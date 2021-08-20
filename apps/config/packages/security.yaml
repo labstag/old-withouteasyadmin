@@ -20,7 +20,10 @@ security:
       switch_user: true
       lazy: true
       provider: labstag_user_provider
-      custom_authenticator: Labstag\Security\LoginFormAuthenticator
+      custom_authenticator:
+        - Labstag\Security\LoginFormAuthenticator
+        - Labstag\Security\OauthAuthenticator
+
       # guard:
       #   authenticators:
       #     - Labstag\Security\OauthAuthenticator
