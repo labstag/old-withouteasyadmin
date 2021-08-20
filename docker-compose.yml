@@ -1,14 +1,13 @@
 version: "3.4"
 
 networks:
-  proxynetwork:
+  proxylampy:
+    external: true
+  serverlampy:
     external: true
   net:
     driver: overlay
     attachable: true
-
-volumes:
-  mariadb_data:
 
 services:
   phpfpmexec:
@@ -19,60 +18,12 @@ services:
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     environment:
       MAILER_DSN: "smtp://mailhog:1025"
-      DATABASE_URL: "mysqli://siteinternet:password@mariadb:3306/core"
+      DATABASE_URL: "mysqli://labstag:password@mariadb:3306/labstag_bdd"
+    networks:
+      - serverlampy
     deploy:
       restart_policy:
         condition: none
-      labels:
-        - "traefik.enable=false"
-  redis:
-    image: redis:6.2.5
-    networks:
-      - net
-    deploy:
-      labels:
-        - "traefik.enable=false"
-  mailhog:
-    image: mailhog/mailhog:v1.0.1
-    networks:
-      - net
-      - proxynetwork
-    deploy:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.mailhog-labstag.rule=HostRegexp(`mailhog-labstag.traefik.me`, `mailhog-labstag.{ip:.*}.traefik.me`)"
-        - "traefik.http.services.mailhog-labstag.loadbalancer.server.port=8025"
-  mercure:
-    image: dunglas/mercure:v0.12
-    environment:
-      MERCURE_PUBLISHER_JWT_KEY: "MyJwtSecret"
-      MERCURE_SUBSCRIBER_JWT_KEY: "MyJwtSecret"
-      ALLOW_ANONYMOUS: 1
-      PUBLISH_ALLOWED_ORIGINS: "*"
-      CORS_ALLOWED_ORIGINS: "*"
-    networks:
-      - net
-    depends_on:
-      - redis
-    deploy:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.mercure-labstag.rule=HostRegexp(`mercure-labstag.traefik.me`, `mercure-labstag.{ip:.*}.traefik.me`)"
-        - "traefik.http.services.mercure-labstag.loadbalancer.server.port=80"
-  mariadb:
-    image: mariadb:10.6.4
-    environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: core
-      MYSQL_USER: siteinternet
-      MYSQL_PASSWORD: password
-      TZ: Europe/Paris
-    networks:
-      - net
-    volumes:
-      - mariadb_data:/var/lib/mysql
-      - ${PWD}/dump:/dump
-    deploy:
       labels:
         - "traefik.enable=false"
   apache:
@@ -84,27 +35,12 @@ services:
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     networks:
       - net
-      - proxynetwork
+      - proxylampy
     deploy:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.labstag.rule=HostRegexp(`labstag.traefik.me`, `labstag.{ip:.*}.traefik.me`)"
         - "traefik.http.services.labstag.loadbalancer.server.port=80"
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.1.1
-    environment:
-      PMA_HOST: mariadb
-      MYSQL_ROOT_PASSWORD: example
-    depends_on:
-      - mariadb
-    networks:
-      - net
-      - proxynetwork
-    deploy:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.phpmyadmin-labstag.rule=HostRegexp(`phpmyadmin-labstag.traefik.me`, `phpmyadmin-labstag.{ip:.*}.traefik.me`)"
-        - "traefik.http.services.phpmyadmin-labstag.loadbalancer.server.port=80"
   phpfpm:
     image: koromerzhin/phpfpm:8.0.9-symfony-xdebug
     depends_on:
@@ -114,11 +50,12 @@ services:
       - redis
     environment:
       MAILER_DSN: "smtp://mailhog:1025"
-      DATABASE_URL: "mysqli://siteinternet:password@mariadb:3306/core"
+      DATABASE_URL: "mysqli://labstag:password@mariadb:3306/labstag_bdd"
     volumes:
       - ${PWD}/apps:/var/www/
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     networks:
+      - serverlampy
       - net
     deploy:
       labels:
