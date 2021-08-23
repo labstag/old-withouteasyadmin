@@ -107,6 +107,7 @@ class OauthAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): PassportInterface
     {
+        unset($request);
         // TODO: Implement authenticate() method.
     }
 
@@ -140,6 +141,7 @@ class OauthAuthenticator extends AbstractAuthenticator
 
     protected function getLoginUrl(Request $request): string
     {
+        unset($request);
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 

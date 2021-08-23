@@ -20,7 +20,7 @@
                 <th>Image</th>
                 <td>
                     <picture >
-                        <img alt="Post Image" src="{{ asset(img.name) }}" />
+                        <img alt="Post Image" src="{{ asset(img.name) | imagine_filter('my_thumb') }}" />
                     </picture>
                 </td>
             </tr>

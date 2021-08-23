@@ -67,6 +67,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     protected function getLoginUrl(Request $request): string
     {
+        unset($request);
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 }

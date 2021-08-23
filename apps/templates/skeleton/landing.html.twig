@@ -9,7 +9,7 @@
         <h1>
         {% if imageglobal is not null and imageglobal.name is not null %}
             <picture>
-                <img alt="{{ config.site_title|e('html_attr') }}" src="{{ asset(imageglobal.name) }}" />
+                <img alt="{{ config.site_title|e('html_attr') }}" src="{{ asset(imageglobal.name) | imagine_filter('my_thumb') }}" />
             </picture>
         {% endif %}{% block box_title %}{% endblock %}</h1>
         {{ macro_site.flashbag(app) }}
