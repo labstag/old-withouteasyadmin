@@ -5,7 +5,6 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Repository\RouteRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
-use Labstag\Service\ApiActionsService;
 use Labstag\Service\PhoneService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +15,6 @@ use Symfony\Component\Workflow\Registry;
 
 class ApiControllerLib extends AbstractController
 {
-
-    protected ApiActionsService $apiActionsService;
 
     protected AttachmentRequestHandler $attachmentRH;
 
@@ -45,8 +42,7 @@ class ApiControllerLib extends AbstractController
         RouteRepository $routeRepo,
         EntityManagerInterface $entityManager,
         AttachmentRequestHandler $attachmentRH,
-        Registry $workflows,
-        ApiActionsService $apiActionsService
+        Registry $workflows
     )
     {
         $this->routeRepo        = $routeRepo;
@@ -56,10 +52,9 @@ class ApiControllerLib extends AbstractController
         $this->entityManager    = $entityManager;
         $this->csrfTokenManager = $csrfTokenManager;
         /** @var Request $request */
-        $request                 = $this->requestStack->getCurrentRequest();
-        $this->request           = $request;
-        $this->phoneService      = $phoneService;
-        $this->workflows         = $workflows;
-        $this->apiActionsService = $apiActionsService;
+        $request            = $this->requestStack->getCurrentRequest();
+        $this->request      = $request;
+        $this->phoneService = $phoneService;
+        $this->workflows    = $workflows;
     }
 }

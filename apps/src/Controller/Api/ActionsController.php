@@ -6,11 +6,13 @@ use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
 use Labstag\Lib\ApiControllerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\TrashService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 /**
  * @Route("/api/actions")
@@ -35,7 +37,7 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $tokenValid = $this->apiActionsService->verifToken('delete', $entity);
+        $tokenValid = $this->tokenVerif('delete', $entity);
         if (!$tokenValid) {
             $data['error'] = 'token incorrect';
 
@@ -69,6 +71,41 @@ class ActionsController extends ApiControllerLib
         return $this->deleteOrRestore($entity, $request, 'destroies');
     }
 
+    protected function getRepoByEntity(string $entity): ?ServiceEntityRepositoryLib
+    {
+        $repositories = $this->setRepository();
+        if (isset($repositories[$entity])) {
+            return $this->entityManager->getRepository($repositories[$entity]);
+        }
+
+        return null;
+    }
+
+    protected function setRepository(): array
+    {
+        $files        = glob(__DIR__.'/../Entity/*.php');
+        $repositories = [];
+        foreach ($files as $file) {
+            $path                                = pathinfo($file);
+            $filename                            = $path['filename'];
+            $repositories[strtolower($filename)] = 'Labstag\\Entity\\'.$filename;
+        }
+
+        return $repositories;
+    }
+
+    private function tokenVerif(string $action, $entity = null): bool
+    {
+        $token = $this->request->request->get('_token');
+
+        $csrfToken = new CsrfToken(
+            $action.(is_null($entity) ? '' : $entity->getId()),
+            $token
+        );
+
+        return $this->csrfTokenManager->isTokenValid($csrfToken);
+    }
+
     /**
      * @Route("/destroy/{entity}/{id}", name="api_action_destroy", methods={"DELETE"})
      * @IgnoreSoftDelete
@@ -81,7 +118,7 @@ class ActionsController extends ApiControllerLib
             'action' => false,
             'error'  => '',
         ];
-        $repository = $this->apiActionsService->getRepository($entity);
+        $repository = $this->getRepoByEntity($entity);
         $entity     = $repository->find($id);
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
             $data['error'] = 'entité inconnu';
@@ -89,7 +126,7 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $tokenValid = $this->apiActionsService->verifToken('destroy', $entity);
+        $tokenValid = $this->tokenVerif('destroy', $entity);
         if (!$tokenValid) {
             $data['error'] = 'token incorrect';
 
@@ -114,7 +151,7 @@ class ActionsController extends ApiControllerLib
             'action' => false,
             'error'  => '',
         ];
-        $tokenValid = $this->apiActionsService->verifToken('empties');
+        $tokenValid = $this->tokenVerif('empties');
         if (!$tokenValid) {
             $data['error'] = 'token incorrect';
 
@@ -124,7 +161,7 @@ class ActionsController extends ApiControllerLib
         $entities = explode(',', $request->request->get('entities'));
         $error    = [];
         foreach ($entities as $entity) {
-            $repository = $this->apiActionsService->getRepository($entity);
+            $repository = $this->getRepoByEntity($entity);
             try {
                 $this->deleteEntityByRepository($repository);
             } catch (Exception $exception) {
@@ -152,8 +189,8 @@ class ActionsController extends ApiControllerLib
             'action' => false,
             'error'  => '',
         ];
-        $repository = $this->apiActionsService->getRepository($entity);
-        $tokenValid = $this->apiActionsService->verifToken('empty');
+        $repository = $this->getRepoByEntity($entity);
+        $tokenValid = $this->tokenVerif('empty');
         if (!$tokenValid) {
             $data['error'] = 'token incorrect';
 
@@ -183,7 +220,7 @@ class ActionsController extends ApiControllerLib
      */
     public function emptyall(TrashService $trashService): JsonResponse
     {
-        $tokenValid = $this->apiActionsService->verifToken('emptyall');
+        $tokenValid = $this->tokenVerif('emptyall');
 
         $data = [
             'action' => false,
@@ -223,7 +260,7 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $tokenValid = $this->apiActionsService->verifToken('restore', $entity);
+        $tokenValid = $this->tokenVerif('restore', $entity);
         if (!$tokenValid) {
             $data['error'] = 'token incorrect';
 
@@ -256,7 +293,7 @@ class ActionsController extends ApiControllerLib
             'action' => false,
             'error'  => '',
         ];
-        $repository = $this->apiActionsService->getRepository($entity);
+        $repository = $this->getRepoByEntity($entity);
         $entity     = $repository->find($id);
         $this->denyAccessUnlessGranted('workflow-'.$state, $entity);
         if (is_null($entity)) {
@@ -265,7 +302,7 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $tokenValid = $this->apiActionsService->verifToken('workflow-'.$state, $entity);
+        $tokenValid = $this->tokenVerif('workflow-'.$state, $entity);
         if (!$tokenValid) {
             $data['error'] = 'token incorrect';
 
@@ -288,7 +325,7 @@ class ActionsController extends ApiControllerLib
         $error = [];
         foreach ($all as $data) {
             $entity     = $data['name'];
-            $repository = $this->apiActionsService->getRepository($entity);
+            $repository = $this->getRepoByEntity($entity);
             try {
                 $this->deleteEntityByRepository($repository);
             } catch (Exception $exception) {
@@ -335,7 +372,7 @@ class ActionsController extends ApiControllerLib
             'error'  => '',
         ];
 
-        $tokenValid = $this->apiActionsService->verifToken($token);
+        $tokenValid = $this->tokenVerif($token);
         if (!$tokenValid) {
             $data['error'] = 'token incorrect';
 
@@ -344,7 +381,7 @@ class ActionsController extends ApiControllerLib
 
         $entities   = explode(',', $request->request->get('entities'));
         $error      = [];
-        $repository = $this->apiActionsService->getRepository($entity);
+        $repository = $this->getRepoByEntity($entity);
         $method     = ('deleties' == $token) ? 'deleteEntity' : 'restoreEntity';
         $method     = ('destroies' == $token) ? 'destroyEntity' : $method;
         foreach ($entities as $id) {
@@ -386,7 +423,7 @@ class ActionsController extends ApiControllerLib
 
     private function getDataRestoreDelete($entity, $id)
     {
-        $repository = $this->apiActionsService->getRepository($entity);
+        $repository = $this->getRepoByEntity($entity);
 
         return $repository->find($id);
     }

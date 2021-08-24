@@ -31,6 +31,9 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\{
     AbstractFormLoginAuthenticator
 };
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class OauthAuthenticator extends AbstractAuthenticator
@@ -107,8 +110,43 @@ class OauthAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): PassportInterface
     {
-        unset($request);
-        // TODO: Implement authenticate() method.
+        /** @var AbstractProvider $provider */
+        $provider    = $this->oauthService->setProvider($this->oauthCode);
+        $query       = $request->query->all();
+        $session     = $request->getSession();
+        $oauth2state = $session->get('oauth2state');
+        if (!$provider instanceof AbstractProvider) {
+            throw new CustomUserMessageAuthenticationException('No API token provided');
+        } elseif (!isset($query['code']) || $oauth2state !== $query['state']) {
+            throw new CustomUserMessageAuthenticationException('No API token provided');
+        }
+
+        try {
+            /** @var AccessToken $tokenProvider */
+            $tokenProvider = $provider->getAccessToken(
+                'authorization_code',
+                [
+                    'code' => $query['code'],
+                ]
+            );
+            /** @var mixed $userOauth */
+            $userOauth = $provider->getResourceOwner($tokenProvider);
+
+            return new SelfValidatingPassport(
+                new UserBadge($userOauth->getUserName())
+            );
+        } catch (Exception $exception) {
+            $errorMsg = sprintf(
+                'Exception : Erreur %s dans %s L.%s : %s',
+                $exception->getCode(),
+                $exception->getFile(),
+                $exception->getLine(),
+                $exception->getMessage()
+            );
+            $this->logger->error($errorMsg);
+
+            throw new CustomUserMessageAuthenticationException('No API token provided');
+        }
     }
 
     public function onAuthenticationSuccess(

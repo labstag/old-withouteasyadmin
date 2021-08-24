@@ -26,6 +26,8 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     protected UserMailService $userMailService;
 
+    protected RequestStack $requestStack;
+
     public function __construct(
         RequestStack $requestStack,
         EntityManagerInterface $entityManager,
