@@ -42,16 +42,8 @@ jobs:
         run: make node_modules
       - name: 'Docker swarm init'
         run: make docker swarm-init
-      - name: 'Launch Lampy network'
-        run: make lampy network
-      - name: 'Launch Lampy image-pull'
-        run: make lampy image-pull
-      - name: 'Launch Lampy deploy'
-        run: make lampy deploy
-      - name: 'Launch Lampy sleep'
-        run: make lampy sleep
-      - name: 'Launch Lampy docker-ls'
-        run: make lampy docker-ls
+      - name: 'Launch Lampy'
+        run: make lampy
       - name: 'SET BDD'
         run: make bddset
       - name: 'Create proxy network'
