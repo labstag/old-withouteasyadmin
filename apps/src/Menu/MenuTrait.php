@@ -78,6 +78,11 @@ trait MenuTrait
             unset($dataChild['route']);
         }
 
+        if (isset($dataChild['url'])) {
+            $data['uri'] = $dataChild['url'];
+            unset($dataChild['url']);
+        }
+
         if (isset($dataChild['params'])) {
             $data['routeParameters'] = $dataChild['params'];
             unset($dataChild['params']);
@@ -87,7 +92,7 @@ trait MenuTrait
             $data['linkAttributes'] = $dataChild;
         }
 
-        $menu = $parent->addChild(
+        $menu      = $parent->addChild(
             $child->getLibelle(),
             $data
         );

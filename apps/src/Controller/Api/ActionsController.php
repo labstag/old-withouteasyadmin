@@ -83,7 +83,7 @@ class ActionsController extends ApiControllerLib
 
     protected function setRepository(): array
     {
-        $files        = glob(__DIR__.'/../Entity/*.php');
+        $files        = glob($this->getParameter('kernel.project_dir').'/src/Entity/*.php');
         $repositories = [];
         foreach ($files as $file) {
             $path                                = pathinfo($file);

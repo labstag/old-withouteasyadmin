@@ -99,7 +99,7 @@ class Menu
 
     public function getData(): ?array
     {
-        return $this->data;
+        return is_array($this->data) ? $this->data : [];
     }
 
     public function getIcon(): ?string
@@ -132,7 +132,7 @@ class Menu
         return $this->separateur;
     }
 
-    public function setClef(string $clef): self
+    public function setClef(?string $clef): self
     {
         $this->clef = $clef;
 
@@ -146,7 +146,7 @@ class Menu
         return $this;
     }
 
-    public function setIcon(string $icon): self
+    public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
 

@@ -43,7 +43,7 @@ class MenuController extends AdminControllerLib
     }
 
     /**
-     * @Route("/add", name="admin_menu_add", methods={"GET"})
+     * @Route("/add", name="admin_menu_add", methods={"GET", "POST"})
      */
     public function add(
         Request $request,
@@ -53,7 +53,7 @@ class MenuController extends AdminControllerLib
     {
         $get = $request->query->all();
         $url = $this->router->generate('admin_menu_index');
-        if (isset($get['id'])) {
+        if (!isset($get['id'])) {
             return new RedirectResponse($url);
         }
 
@@ -63,6 +63,11 @@ class MenuController extends AdminControllerLib
         }
 
         $menu = new Menu();
+        $data = [$menu->getData()];
+        $menu->setClef(null);
+        $menu->setData($data);
+        $menu->setSeparateur(false);
+        $menu->setPosition(count($parent->getChildren()));
         $menu->setParent($parent);
 
         return $this->create(
@@ -93,7 +98,7 @@ class MenuController extends AdminControllerLib
     }
 
     /**
-     * @Route("/new", name="admin_menu_new", methods={"GET"})
+     * @Route("/new", name="admin_menu_new", methods={"GET", "POST"})
      */
     public function new(MenuRequestHandler $requestHandler): Response
     {
@@ -107,12 +112,14 @@ class MenuController extends AdminControllerLib
     }
 
     /**
-     * @Route("/update/{id}", name="admin_menu_update", methods={"GET"})
+     * @Route("/update/{id}", name="admin_menu_update", methods={"GET", "POST"})
      */
     public function edit(Menu $menu, MenuRequestHandler $requestHandler)
     {
         $this->modalAttachmentDelete();
         $form = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
+        $data = [$menu->getData()];
+        $menu->setData($data);
 
         return $this->update(
             $form,
