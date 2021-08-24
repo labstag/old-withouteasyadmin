@@ -55,7 +55,7 @@ jobs:
       - name: 'docker ls'
         run: make docker ls
       - name: 'SET BDD'
-        run: make setbdd
+        run: make bddset
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2
         with:
