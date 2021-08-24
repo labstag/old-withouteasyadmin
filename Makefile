@@ -302,10 +302,10 @@ else
 	@echo "tarteaucitron: tarteaucitron"
 endif
 
-DATABASE_BDD := $(shell more docker-compose.yml | grep DATABASE_BDD: | sort --unique | sed -e "s/^.*DATABASE_BDD:[[:space:]]//")
-DATABASE_USER := $(shell more docker-compose.yml | grep DATABASE_USER: | sort --unique | sed -e "s/^.*DATABASE_USER:[[:space:]]//")
-DATABASE_PASSWORD := $(shell more docker-compose.yml | grep DATABASE_PASSWORD: | sort --unique | sed -e "s/^.*DATABASE_PASSWORD:[[:space:]]//")
-SETBDD := cd lampy && make setbdd USERNAME=\"${DATABASE_USER}\" BDD=\"${DATABASE_BDD}\" PASSWORD=\"${DATABASE_PASSWORD}\"
+DATABASE_BDD := $(shell more docker-compose.yml | grep DATABASE_BDD: | sed -e "s/^.*DATABASE_BDD:[[:space:]]//")
+DATABASE_USER := $(shell more docker-compose.yml | grep DATABASE_USER: | sed -e "s/^.*DATABASE_USER:[[:space:]]//")
+DATABASE_PASSWORD := $(shell more docker-compose.yml | grep DATABASE_PASSWORD: | sed -e "s/^.*DATABASE_PASSWORD:[[:space:]]//")
+SETBDD := cd lampy && make setbdd USERNAME="${DATABASE_USER}" BDD="${DATABASE_BDD}" PASSWORD="${DATABASE_PASSWORD}"
 
 bddset: ## Set bdd
 	@echo "$(SETBDD)"
