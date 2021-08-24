@@ -308,4 +308,5 @@ DATABASE_PASSWORD := $(shell more docker-compose.yml | grep DATABASE_PASSWORD: |
 SETBDD := cd lampy && make setbdd USERNAME=\"${DATABASE_USER}\" BDD=\"${DATABASE_BDD}\" PASSWORD=\"${DATABASE_PASSWORD}\"
 
 bddset: ## Set bdd
+	@echo "$(SETBDD)"
 	$(shell $(SETBDD))
