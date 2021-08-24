@@ -5,7 +5,7 @@ include make/docker/Makefile
 
 DOCKER_EXECPHP := @docker exec $(STACK)_phpfpm.1.$$(docker service ps -f 'name=$(STACK)_phpfpm' $(STACK)_phpfpm -q --no-trunc | head -n1)
 
-COMMANDS_SUPPORTED_COMMANDS := libraries workflow-png tests messenger linter install git env encore composer bdd
+COMMANDS_SUPPORTED_COMMANDS := libraries workflow-png tests messenger linter install git env encore composer bdd setbdd
 COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
 ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -301,3 +301,11 @@ else
 	@echo "---"
 	@echo "tarteaucitron: tarteaucitron"
 endif
+
+DATABASE_BDD := $(shell more docker-compose.yml | grep DATABASE_BDD: | sort --unique | sed -e "s/^.*DATABASE_BDD:[[:space:]]//")
+DATABASE_USER := $(shell more docker-compose.yml | grep DATABASE_USER: | sort --unique | sed -e "s/^.*DATABASE_USER:[[:space:]]//")
+DATABASE_PASSWORD := $(shell more docker-compose.yml | grep DATABASE_PASSWORD: | sort --unique | sed -e "s/^.*DATABASE_PASSWORD:[[:space:]]//")
+SETBDD := cd lampy && make setbdd USERNAME=\"${DATABASE_USER}\" BDD=\"${DATABASE_BDD}\" PASSWORD=\"${DATABASE_PASSWORD}\"
+
+bddset: ## Set bdd
+	$(shell $(SETBDD))

@@ -18,6 +18,9 @@ services:
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     environment:
       MAILER_DSN: "smtp://mailhog:1025"
+      DATABASE_BDD: labstag_bdd
+      DATABASE_USER: labstag
+      DATABASE_PASSWORD: password
       DATABASE_URL: "mysqli://labstag:password@mariadb:3306/labstag_bdd"
     networks:
       - serverlampy
