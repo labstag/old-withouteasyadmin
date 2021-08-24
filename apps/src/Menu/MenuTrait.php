@@ -67,21 +67,27 @@ trait MenuTrait
             return;
         }
 
-        if (isset($dataChild['attr']['data-href'])) {
+        if (isset($dataChild['route'])) {
             $token = $this->token->getToken();
-            $state = $this->guardService->guardRoute($dataChild['attr']['data-href'], $token);
+            $state = $this->guardService->guardRoute($dataChild['route'], $token);
             if (!$state) {
                 return;
             }
 
-            $data['route'] = $dataChild['attr']['data-href'];
+            $data['route'] = $dataChild['route'];
+            unset($dataChild['route']);
         }
 
-        if (isset($dataChild['attr']['data-href-params'])) {
-            $data['routeParameters'] = $dataChild['attr']['data-href-params'];
+        if (isset($dataChild['params'])) {
+            $data['routeParameters'] = $dataChild['params'];
+            unset($dataChild['params']);
         }
 
-        $menu      = $parent->addChild(
+        if (0 != count($dataChild)) {
+            $data['linkAttributes'] = $dataChild;
+        }
+
+        $menu = $parent->addChild(
             $child->getLibelle(),
             $data
         );
