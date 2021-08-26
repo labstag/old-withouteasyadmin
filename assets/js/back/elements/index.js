@@ -1,10 +1,12 @@
 import { LinkShow } from './LinkShow'
 import { LinkAdd } from './LinkAdd'
+import { LinkMove } from './LinkMove'
 import { LinkGuard } from './LinkGuard'
 import { LinkEdit } from './LinkEdit'
 import { LinkRestore } from './LinkRestore'
 import { LinkDelete } from './LinkDelete'
 import { LinkDestroy } from './LinkDestroy'
+import { MenuMove } from './MenuMove'
 import { LinkBtnAdminEmpty } from './LinkBtnAdminEmpty'
 import { LinkBtnAdminEmpties } from './LinkBtnAdminEmpties'
 import { LinkBtnAdminDeleties } from './LinkBtnAdminDeleties'
@@ -14,6 +16,7 @@ import { LinkBtnAdminRestories } from './LinkBtnAdminRestories'
 import { LinkBtnAdminDestroy } from './LinkBtnAdminDestroy'
 import { LinkBtnAdmin } from './LinkBtnAdmin'
 import { LinkBtnAdminDelete } from './LinkBtnAdminDelete'
+import { LinkBtnAdminMove } from './LinkBtnAdminMove'
 import { ModalConfirmDelete } from './ModalConfirmDelete'
 import { ModalConfirmDeleteAttachment } from './ModalConfirmDeleteAttachment'
 import { ModalConfirmDestroy } from './ModalConfirmDestroy'
@@ -44,6 +47,7 @@ customElements.define('workflow-action', WorkflowAction)
 
 customElements.define('link-show', LinkShow)
 customElements.define('link-add', LinkAdd)
+customElements.define('link-move', LinkMove)
 customElements.define('link-guard', LinkGuard)
 customElements.define('link-edit', LinkEdit)
 customElements.define('link-delete', LinkDelete)
@@ -51,6 +55,8 @@ customElements.define('link-restore', LinkRestore)
 customElements.define('link-destroy', LinkDestroy)
 customElements.define('link-trash', LinkTrash)
 customElements.define('link-btnadmin', LinkBtnAdmin)
+
+customElements.define('menu-move', MenuMove, { extends: 'ul' })
 
 customElements.define('link-empty', LinkEmpty)
 customElements.define('link-btnadminempty', LinkBtnAdminEmpty)
@@ -61,6 +67,7 @@ customElements.define('link-btnadminrestore', LinkBtnAdminRestore)
 customElements.define('link-btnadminrestories', LinkBtnAdminRestories)
 customElements.define('link-btnadmindestroy', LinkBtnAdminDestroy)
 customElements.define('link-btnadmindelete', LinkBtnAdminDelete)
+customElements.define('link-btnadminmove', LinkBtnAdminMove)
 
 customElements.define('guard-route', GuardRoute, { extends: 'table' })
 customElements.define('guard-workflow', GuardWorkflow, { extends: 'table' })

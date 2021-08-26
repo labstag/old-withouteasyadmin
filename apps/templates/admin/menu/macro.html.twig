@@ -36,11 +36,25 @@
         ></link-add>
     {% endif %}
 {% endmacro %}
+{% macro move(entity, url) %}
+    {% set title = "Move"|trans %}
+    {% set state1 = guard_route(url) %}
+    {% set state2 = is_granted('add', entity) %}
+    {% if state1 == true and state2 == true %}
+        <link-move
+            href="{{ path(url, {'id': entity.id}) }}"
+            title="{{ title|e('html_attr') }}"
+        ></link-move>
+    {% endif %}
+{% endmacro %}
 {% macro link (child, position) %}
     {% import "admin/macro.html.twig" as macro_admin %}
     <div class="btngrouptable" role="group">
         {% if child.separateur != true %}
             {{ macro_admin.edit(child, 'admin_menu_update') }}
+        {% endif %}
+        {% if child.children|length >= 2 %}
+            {{ _self.move(child, 'admin_menu_move') }}
         {% endif %}
         {{ macro_admin.delete(child, 'api_action_delete', 'admin_menu_index') }}
         {% if position == 0 and child.separateur == false %}

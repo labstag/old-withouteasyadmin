@@ -19,6 +19,7 @@ class KernelSubscriber implements EventSubscriberInterface
         'link-trash',
         'link-btnadmin',
         'link-empty',
+        'link-move',
         'link-btnadminempty',
         'link-btnadminempties',
         'link-btnadmindeleties',
@@ -27,6 +28,7 @@ class KernelSubscriber implements EventSubscriberInterface
         'link-btnadminrestories',
         'link-btnadmindestroy',
         'link-btnadmindelete',
+        'link-btnadminmove',
         'guard-route',
         'guard-workflow',
         'guard-setworkflow',
@@ -67,6 +69,8 @@ class KernelSubscriber implements EventSubscriberInterface
     ];
     public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
+    public const ERRORNUMBER = 500;
+
     public const ERROR_CONTROLLER = [
         'error_controller',
         'error_controller::preview',
@@ -78,7 +82,11 @@ class KernelSubscriber implements EventSubscriberInterface
         $request    = $event->getRequest();
         $controller = $request->attributes->get('_controller');
         preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
-        if (0 == count($matches) || !in_array($controller, self::ERROR_CONTROLLER)) {
+        if (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER)) {
+            return;
+        }
+
+        if ('html' != $request->getRequestFormat() || self::ERRORNUMBER == $response->getStatusCode()) {
             return;
         }
 

@@ -51,7 +51,8 @@ class UserService
     private function flashBagAdd(string $type, $message)
     {
         $requestStack = $this->requestStack;
-        if (is_null($this->request)) {
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
             return;
         }
 

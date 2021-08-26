@@ -43,6 +43,59 @@ class MenuController extends AdminControllerLib
     }
 
     /**
+     * @Route("/move/{id}", name="admin_menu_move", methods={"GET", "POST"})
+     */
+    public function move(Menu $menu, Request $request, MenuRepository $repository)
+    {
+        $currentUrl = $this->router->generate(
+            'admin_menu_move',
+            [
+                'id' => $menu->getId(),
+            ]
+        );
+
+        if ('POST' == $request->getMethod()) {
+            $data = $request->request->get('position');
+            if (!empty($data)) {
+                $data = json_decode($data, true);
+            }
+
+            if (is_array($data)) {
+                foreach ($data as $row) {
+                    $id       = $row['id'];
+                    $position = $row['position'];
+                    $entity   = $repository->find($id);
+                    $entity->setPosition($position);
+                    $this->entityManager->persist($entity);
+                }
+
+                $this->entityManager->flush();
+            }
+        }
+
+        $breadcrumb = ['Move' => $currentUrl];
+        $this->addBreadcrumbs($breadcrumb);
+        $this->btnInstance->addBtnList(
+            'admin_menu_index',
+            'Liste',
+        );
+
+        $this->btnInstance->add(
+            'btn-admin-save-move',
+            'Enregistrer',
+            [
+                'is'   => 'link-btnadminmove',
+                'href' => $currentUrl,
+            ]
+        );
+
+        return $this->render(
+            'admin/menu/move.html.twig',
+            ['menu' => $menu]
+        );
+    }
+
+    /**
      * @Route("/add", name="admin_menu_add", methods={"GET", "POST"})
      */
     public function add(

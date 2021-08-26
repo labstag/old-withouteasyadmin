@@ -11,7 +11,7 @@ SYMFONY_EXEC := @symfony console
 
 COMPOSER_EXEC := @COMPOSER_MEMORY_LIMIT=-1 composer
 
-PHP_EXEC := @php
+PHP_EXEC := @php -d memory_limit=-1
 
 .PHONY: translations tests
 

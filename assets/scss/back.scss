@@ -14,6 +14,21 @@ picture {
   }
 }
 
+.menu-move {
+  @extend .list-group;
+
+  li {
+    @extend .list-group-item;
+
+    cursor: move;
+    &::before {
+      @extend .fas;
+      @extend .fa-expand-arrows-alt;
+      width: 2rem;
+    }
+  }
+}
+
 .tree {
   list-style: none;
   margin: 0;
@@ -136,6 +151,11 @@ picture {
   @extend .fa-file-export;
 }
 
+.btn-admin-save-move {
+  @extend .fas;
+  @extend .fa-save;
+}
+
 .btn-admin-header-new {
   @extend .fas;
   @extend .fa-plus;
@@ -198,6 +218,21 @@ picture {
   i {
     @extend .fas;
     @extend .fa-plus;
+  }
+
+  span {
+    display: none;
+  }
+}
+
+.link-move {
+  @extend .btn;
+  @extend .btn-outline-dark;
+  @extend .btn-sm;
+
+  i {
+    @extend .fas;
+    @extend .fa-expand-arrows-alt;
   }
 
   span {
@@ -349,6 +384,20 @@ picture {
   }
 }
 
+.check-ok {
+  @extend .fas;
+  @extend .fa-check;
+
+  color: green;
+}
+
+.check-ko {
+  @extend .fas;
+  @extend .fa-times;
+
+  color: red;
+}
+
 @media all and (min-width: 992px) {
   .nav-item {
     .dropdown-menu {
@@ -366,18 +415,4 @@ picture {
       }
     }
   }
-}
-
-.check-ok {
-  @extend .fas;
-  @extend .fa-check;
-
-  color: green;
-}
-
-.check-ko {
-  @extend .fas;
-  @extend .fa-times;
-
-  color: red;
 }
