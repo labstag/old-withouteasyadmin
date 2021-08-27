@@ -20,7 +20,7 @@
     "doctrine/orm": "2.9.4",
     "fakerphp/faker": "1.15.0",
     "friendsofsymfony/ckeditor-bundle": "2.3.0",
-    "giggsey/libphonenumber-for-php": "8.12.29",
+    "giggsey/libphonenumber-for-php": "8.12.31",
     "helios-ag/fm-elfinder-bundle": "10.1",
     "imagine/imagine": "1.2.4",
     "knplabs/knp-menu-bundle": "3.1.0",
