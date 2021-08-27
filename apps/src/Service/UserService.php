@@ -12,6 +12,7 @@ use Labstag\RequestHandler\UserRequestHandler;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class UserService
 {
@@ -26,13 +27,12 @@ class UserService
 
     protected UserRepository $repository;
 
-    protected SessionInterface $session;
+    protected RequestStack $requestStack;
 
     protected UserRequestHandler $userRH;
 
     public function __construct(
-        SessionInterface $session,
-        FlashBagInterface $flashbag,
+        RequestStack $requestStack,
         EntityManagerInterface $entityManager,
         UserRepository $repository,
         OauthService $oauthService,
@@ -40,13 +40,25 @@ class UserService
         OauthConnectUserRequestHandler $oauthConnectUserRH
     )
     {
-        $this->flashbag           = $flashbag;
         $this->userRH             = $userRH;
         $this->oauthService       = $oauthService;
-        $this->session            = $session;
+        $this->requestStack       = $requestStack;
         $this->entityManager      = $entityManager;
         $this->repository         = $repository;
         $this->oauthConnectUserRH = $oauthConnectUserRH;
+    }
+
+    private function flashBagAdd(string $type, $message)
+    {
+        $requestStack = $this->requestStack;
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
+            return;
+        }
+
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 
     public function addOauthToUser(
@@ -90,12 +102,12 @@ class UserService
             $old = clone $oauthConnect;
             $oauthConnect->setData($data);
             $this->oauthConnectUserRH->handle($old, $oauthConnect);
-            $this->flashbag->add('success', 'Compte associé');
+            $this->flashBagAdd('success', 'Compte associé');
 
             return;
         }
 
-        $this->flashbag->add(
+        $this->flashBagAdd(
             'warning',
             "Impossible d'associer le compte"
         );

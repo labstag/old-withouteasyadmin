@@ -1,7 +1,7 @@
 import { LinkElement } from './LinkElement'
-export class LinkTrash extends LinkElement {
+export class LinkAdd extends LinkElement {
   constructor () {
     super()
-    this.init('link-trash')
+    this.init('link-add')
   }
 }

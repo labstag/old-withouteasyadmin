@@ -12,6 +12,7 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Repository\UserRepository;
 use Serializable;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Uploadable()
  */
-class User implements UserInterface, Serializable
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use SoftDeleteableEntity;
 
@@ -181,6 +182,11 @@ class User implements UserInterface, Serializable
     }
 
     public function __toString()
+    {
+        return $this->getUsername();
+    }
+
+    public function getUserIdentifier()
     {
         return $this->getUsername();
     }
@@ -408,9 +414,9 @@ class User implements UserInterface, Serializable
     /**
      * @see UserInterface
      */
-    public function getSalt(): string
+    public function getSalt(): ?string
     {
-        return '';
+        return null;
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 

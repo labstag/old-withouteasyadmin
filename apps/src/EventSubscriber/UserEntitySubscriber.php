@@ -9,9 +9,9 @@ use Labstag\Event\UserEntityEvent;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserEntitySubscriber implements EventSubscriberInterface
 {
@@ -22,26 +22,24 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     protected FlashBagInterface $flashbag;
 
-    protected UserPasswordEncoderInterface $passwordEncoder;
-
-    protected SessionInterface $session;
+    protected UserPasswordHasherInterface $passwordEncoder;
 
     protected UserMailService $userMailService;
 
+    protected RequestStack $requestStack;
+
     public function __construct(
-        FlashBagInterface $flashbag,
-        SessionInterface $session,
+        RequestStack $requestStack,
         EntityManagerInterface $entityManager,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordEncoder,
         UserMailService $userMailService,
         EmailUserRequestHandler $emailUserRH
     )
     {
-        $this->flashbag        = $flashbag;
+        $this->requestStack    = $requestStack;
         $this->emailUserRH     = $emailUserRH;
         $this->userMailService = $userMailService;
         $this->entityManager   = $entityManager;
-        $this->session         = $session;
         $this->passwordEncoder = $passwordEncoder;
     }
 
@@ -70,10 +68,23 @@ class UserEntitySubscriber implements EventSubscriberInterface
         }
 
         $this->userMailService->changePassword($newEntity);
-        $this->flashbag->add(
+        $this->flashBagAdd(
             'success',
             'Changement de mot de passe effectué'
         );
+    }
+
+    private function flashBagAdd(string $type, $message)
+    {
+        $requestStack = $this->requestStack;
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
+            return;
+        }
+
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 
     protected function setPassword(User $user): void
@@ -83,7 +94,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
             return;
         }
 
-        $encodePassword = $this->passwordEncoder->encodePassword(
+        $encodePassword = $this->passwordEncoder->hashPassword(
             $user,
             $plainPassword
         );
@@ -95,7 +106,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-        $this->flashbag->add(
+        $this->flashBagAdd(
             'success',
             'Mot de passe changé'
         );
@@ -126,7 +137,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         }
 
         $this->entityManager->flush();
-        $this->flashbag->add(
+        $this->flashBagAdd(
             'success',
             'Email principal changé'
         );

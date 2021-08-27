@@ -2,23 +2,28 @@
 
 namespace Labstag\Security;
 
+use Labstag\Entity\User;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\OauthConnectUser;
-use Labstag\Entity\User;
 use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\Service\OauthService;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
+use Symfony\Component\Security\Core\Security;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -26,11 +31,16 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\{
     AbstractFormLoginAuthenticator
 };
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class OauthAuthenticator extends AbstractFormLoginAuthenticator
+class OauthAuthenticator extends AbstractAuthenticator
 {
     use TargetPathTrait;
+
+    public const LOGIN_ROUTE = 'app_login';
 
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
@@ -42,7 +52,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
 
     protected OauthService $oauthService;
 
-    protected UserPasswordEncoderInterface $passwordEncoder;
+    protected UserPasswordHasherInterface $passwordEncoder;
 
     protected Request $request;
 
@@ -61,7 +71,7 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         EntityManagerInterface $entityManager,
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordEncoder,
         OauthService $oauthService,
         RequestStack $requestStack,
         TokenStorageInterface $token,
@@ -86,14 +96,19 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         $this->oauthCode = $oauthCode;
     }
 
-    public function checkCredentials($credentials, UserInterface $user)
+    public function supports(Request $request): ?bool
     {
-        unset($credentials, $user);
+        $session     = $request->getSession()->all();
+        $route       = $request->attributes->get('_route');
+        $this->route = $route;
+        $token       = $this->token->getToken();
+        $test1       = 'connect_check' === $route && !array_key_exists('link', $session);
+        $test2       = (is_null($token) || !$token->getUser() instanceof User);
 
-        return true;
+        return $test1 && $test2;
     }
 
-    public function getCredentials(Request $request)
+    public function authenticate(Request $request): PassportInterface
     {
         /** @var AbstractProvider $provider */
         $provider    = $this->oauthService->setProvider($this->oauthCode);
@@ -101,9 +116,9 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
         $session     = $request->getSession();
         $oauth2state = $session->get('oauth2state');
         if (!$provider instanceof AbstractProvider) {
-            return [];
+            throw new CustomUserMessageAuthenticationException('No API token provided');
         } elseif (!isset($query['code']) || $oauth2state !== $query['state']) {
-            return [];
+            throw new CustomUserMessageAuthenticationException('No API token provided');
         }
 
         try {
@@ -117,7 +132,9 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
             /** @var mixed $userOauth */
             $userOauth = $provider->getResourceOwner($tokenProvider);
 
-            return ['user' => $userOauth];
+            return new SelfValidatingPassport(
+                new UserBadge($userOauth->getUserName())
+            );
         } catch (Exception $exception) {
             $errorMsg = sprintf(
                 'Exception : Erreur %s dans %s L.%s : %s',
@@ -128,82 +145,42 @@ class OauthAuthenticator extends AbstractFormLoginAuthenticator
             );
             $this->logger->error($errorMsg);
 
-            return [];
+            throw new CustomUserMessageAuthenticationException('No API token provided');
         }
     }
 
-    public function getLoginUrl()
-    {
-        return $this->urlGenerator->generate('app_login');
-    }
-
-    /**
-     * @param mixed $credentials credentials
-     *
-     * @throws CustomUserMessageAuthenticationException
-     */
-    public function getUser(
-        $credentials,
-        UserProviderInterface $userProvider
-    ): User
-    {
-        unset($userProvider);
-        if (!isset($credentials['user'])) {
-            throw new CustomUserMessageAuthenticationException('Connexion impossible avec ce service.');
-        }
-
-        /** @var OauthConnectUserRepository $enm */
-        $enm = $this->entityManager->getRepository(OauthConnectUser::class);
-
-        $identity = $this->oauthService->getIdentity(
-            $credentials['user']->toArray(),
-            $this->oauthCode
-        );
-        /** @var OauthConnectUser $login */
-        $login = $enm->login($identity, $this->oauthCode);
-        if (!$login instanceof OauthConnectUser || '' == $identity) {
-            // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Username could not be found.');
-        }
-
-        $user = $login->getRefuser();
-        if (!$user instanceof User || 'valider' != $user->getState()) {
-            throw new CustomUserMessageAuthenticationException('Username not activate.');
-        }
-
-        return $user;
-    }
-
-    /**
-     * @param string $providerKey
-     *
-     * @return RedirectResponse
-     */
     public function onAuthenticationSuccess(
         Request $request,
         TokenInterface $token,
-        $providerKey
-    )
+        string $firewallName
+    ): ?Response
     {
         unset($token);
-        $getTargetPath = (string) $this->getTargetPath(
-            $request->getSession(),
-            $providerKey
-        );
+        $targetPath = $this->getTargetPath($request->getSession(), $firewallName);
+        if ($targetPath) {
+            return new RedirectResponse($targetPath);
+        }
 
-        return new RedirectResponse($getTargetPath);
+        // For example:
+        //return new RedirectResponse($this->urlGenerator->generate('some_route'));
+        throw new Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
-    public function supports(Request $request)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $session     = $request->getSession()->all();
-        $route       = $request->attributes->get('_route');
-        $this->route = $route;
-        $token       = $this->token->getToken();
-        $test1       = 'connect_check' === $route && !array_key_exists('link', $session);
-        $test2       = (is_null($token) || !$token->getUser() instanceof User);
+        if ($request->hasSession()) {
+            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
+        }
 
-        return $test1 && $test2;
+        $url = $this->getLoginUrl($request);
+
+        return new RedirectResponse($url);
+    }
+
+    protected function getLoginUrl(Request $request): string
+    {
+        unset($request);
+        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 
     protected function setOauthCode(ParameterBag $attributes): string

@@ -148,8 +148,7 @@
     {% else %}
         {% set a_class = a_class ~ 'nav-link' %}
     {% endif %}
-
-    {% set a_attributes = item.labelAttributes|merge(
+    {% set a_attributes = item.linkAttributes|merge(
         {
             'class': a_class,
             'href': item.uri

@@ -14,6 +14,65 @@ picture {
   }
 }
 
+.menu-move {
+  @extend .list-group;
+
+  li {
+    @extend .list-group-item;
+
+    cursor: move;
+
+    &::before {
+      @extend .fas;
+      @extend .fa-expand-arrows-alt;
+
+      width: 2rem;
+    }
+  }
+}
+
+.tree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 10px;
+  }
+
+  li {
+    margin: 0;
+    padding: 0 7px;
+    line-height: 20px;
+    color: #369;
+    font-weight: bold;
+    border-left: 1px solid rgb(100, 100, 100);
+
+    &::before {
+      position: relative;
+      top: -0.3em;
+      height: 1em;
+      width: 12px;
+      color: white;
+      border-bottom: 1px solid rgb(100, 100, 100);
+      content: "";
+      display: inline-block;
+      left: -7px;
+    }
+
+    &:last-child {
+      border-left: none;
+
+      &::before {
+        border-left: 1px solid rgb(100, 100, 100);
+      }
+    }
+  }
+}
+
 .thactions {
   @extend .text-center;
 
@@ -94,6 +153,11 @@ picture {
   @extend .fa-file-export;
 }
 
+.btn-admin-save-move {
+  @extend .fas;
+  @extend .fa-save;
+}
+
 .btn-admin-header-new {
   @extend .fas;
   @extend .fa-plus;
@@ -141,6 +205,36 @@ picture {
   i {
     @extend .fas;
     @extend .fa-trash;
+  }
+
+  span {
+    display: none;
+  }
+}
+
+.link-add {
+  @extend .btn;
+  @extend .btn-outline-info;
+  @extend .btn-sm;
+
+  i {
+    @extend .fas;
+    @extend .fa-plus;
+  }
+
+  span {
+    display: none;
+  }
+}
+
+.link-move {
+  @extend .btn;
+  @extend .btn-outline-dark;
+  @extend .btn-sm;
+
+  i {
+    @extend .fas;
+    @extend .fa-expand-arrows-alt;
   }
 
   span {
@@ -292,6 +386,20 @@ picture {
   }
 }
 
+.check-ok {
+  @extend .fas;
+  @extend .fa-check;
+
+  color: green;
+}
+
+.check-ko {
+  @extend .fas;
+  @extend .fa-times;
+
+  color: red;
+}
+
 @media all and (min-width: 992px) {
   .nav-item {
     .dropdown-menu {
@@ -309,18 +417,4 @@ picture {
       }
     }
   }
-}
-
-.check-ok {
-  @extend .fas;
-  @extend .fa-check;
-
-  color: green;
-}
-
-.check-ko {
-  @extend .fas;
-  @extend .fa-times;
-
-  color: red;
 }

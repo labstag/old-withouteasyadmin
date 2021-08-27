@@ -3,16 +3,12 @@
     "childs": [{
         "libelle": "Mon profil",
         "data": {
-            "attr": {
-                "data-href": "admin_profil"
-            }
+            "route": "admin_profil"
         }
     }, {
         "libelle": "Logout",
         "data": {
-            "attr": {
-                "data-href": "app_logout"
-            }
+            "route": "app_logout"
         }
     }]
 }]

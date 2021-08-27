@@ -98,7 +98,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $controller = $event->getRequest()->attributes->get('_controller');
         $matches    = [];
         preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
-        if (0 == count($matches) && !in_array($controller, self::ERROR_CONTROLLER)) {
+        if (0 == count($matches)) {
             return;
         }
 
