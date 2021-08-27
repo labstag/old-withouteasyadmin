@@ -28,7 +28,7 @@ jobs:
             apps/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/apps/composer.lock') }}-${{ hashFiles('**/apps/composer.json') }}
           restore-keys: |
-            ${{ runner.os }}-composer-
+            ${{ runner.os }}-composer-${{ hashFiles('**/apps/composer.lock') }}-${{ hashFiles('**/apps/composer.json') }}
       - name: Cache npm packages
         id: npm-cache
         uses: actions/cache@v2
@@ -36,7 +36,7 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
       - name: Install npm dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: make node_modules
