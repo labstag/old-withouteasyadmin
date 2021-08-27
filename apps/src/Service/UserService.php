@@ -5,56 +5,71 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
-use Labstag\Event\UserCollectionEvent;
-use Labstag\Event\UserEntityEvent;
-use Labstag\Lib\GenericProviderLib;
 use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\Repository\UserRepository;
-use League\OAuth2\Client\Provider\ResourceOwnerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Labstag\RequestHandler\OauthConnectUserRequestHandler;
+use Labstag\RequestHandler\UserRequestHandler;
+use League\OAuth2\Client\Provider\AbstractProvider;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class UserService
 {
 
-    private EventDispatcherInterface $dispatcher;
+    protected EntityManagerInterface $entityManager;
 
-    private UserRepository $repository;
+    protected FlashBagInterface $flashbag;
 
-    private EntityManagerInterface $entityManager;
+    protected OauthConnectUserRequestHandler $oauthConnectUserRH;
 
-    private SessionInterface $session;
+    protected OauthService $oauthService;
 
-    private OauthService $oauthService;
+    protected UserRepository $repository;
+
+    protected RequestStack $requestStack;
+
+    protected UserRequestHandler $userRH;
 
     public function __construct(
-        EventDispatcherInterface $dispatcher,
-        SessionInterface $session,
+        RequestStack $requestStack,
         EntityManagerInterface $entityManager,
         UserRepository $repository,
-        OauthService $oauthService
+        OauthService $oauthService,
+        UserRequestHandler $userRH,
+        OauthConnectUserRequestHandler $oauthConnectUserRH
     )
     {
-        $this->oauthService  = $oauthService;
-        $this->session       = $session;
-        $this->entityManager = $entityManager;
-        $this->repository    = $repository;
-        $this->dispatcher    = $dispatcher;
+        $this->userRH             = $userRH;
+        $this->oauthService       = $oauthService;
+        $this->requestStack       = $requestStack;
+        $this->entityManager      = $entityManager;
+        $this->repository         = $repository;
+        $this->oauthConnectUserRH = $oauthConnectUserRH;
+    }
+
+    private function flashBagAdd(string $type, $message)
+    {
+        $requestStack = $this->requestStack;
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
+            return;
+        }
+
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 
     public function addOauthToUser(
         string $client,
         User $user,
-        ResourceOwnerInterface $userOauth
+        $userOauth
     ): void
     {
-        /** @var Session $session */
-        $session             = $this->session;
-        $userCollectionEvent = new UserCollectionEvent();
-        $data                = $userOauth->toArray();
-        $identity            = $this->oauthService->getIdentity($data, $client);
-        $find                = $this->findOAuthIdentity(
+        $data     = !is_array($userOauth) ? $userOauth->toArray() : $userOauth;
+        $identity = $this->oauthService->getIdentity($data, $client);
+        $find     = $this->findOAuthIdentity(
             $user,
             $identity,
             $client,
@@ -71,6 +86,7 @@ class UserService
             );
             if (is_null($oauthConnect)) {
                 $oauthConnect = new OauthConnectUser();
+                $oauthConnect->setIdentity($identity);
                 $oauthConnect->setRefuser($user);
                 $oauthConnect->setName($client);
             }
@@ -84,26 +100,55 @@ class UserService
 
         if ($oauthConnect instanceof OauthConnectUser) {
             $old = clone $oauthConnect;
-            $oauthConnect->setData($userOauth->toArray());
-            $this->entityManager->persist($oauthConnect);
-            $this->entityManager->flush();
-            $userCollectionEvent->addOauthConnectUser($old, $oauthConnect);
-            $this->dispatcher->dispatch($userCollectionEvent);
-            $session->getFlashBag()->add('success', 'Compte associé');
+            $oauthConnect->setData($data);
+            $this->oauthConnectUserRH->handle($old, $oauthConnect);
+            $this->flashBagAdd('success', 'Compte associé');
 
             return;
         }
 
-        $session->getFlashBag()->add(
+        $this->flashBagAdd(
             'warning',
             "Impossible d'associer le compte"
         );
     }
 
+    public function ifBug(
+        AbstractProvider $provider,
+        array $query,
+        ?string $oauth2state
+    ): bool
+    {
+        if (is_null($oauth2state)) {
+            return true;
+        }
+
+        if (!$provider instanceof AbstractProvider) {
+            return true;
+        }
+
+        return (bool) (!isset($query['code']) || $oauth2state !== $query['state']);
+    }
+
+    public function postLostPassword(array $post): void
+    {
+        if ('' === $post['value']) {
+            return;
+        }
+
+        /** @var User $user */
+        $user = $this->repository->findUserEnable($post['value']);
+        if (!$user instanceof User) {
+            return;
+        }
+
+        $this->userRH->changeWorkflowState($user, ['lostpassword']);
+    }
+
     /**
      * @param mixed $oauthConnect
      */
-    private function findOAuthIdentity(
+    protected function findOAuthIdentity(
         User $user,
         string $identity,
         string $client,
@@ -122,43 +167,5 @@ class UserService
         $oauthConnect = null;
 
         return false;
-    }
-
-    public function ifBug(
-        GenericProviderLib $provider,
-        array $query,
-        string $oauth2state
-    ): bool
-    {
-        if (!($provider instanceof GenericProviderLib)) {
-            return true;
-        }
-
-        if (!isset($query['code']) || $oauth2state !== $query['state']) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function postLostPassword(array $post): void
-    {
-        if ('' === $post['value']) {
-            return;
-        }
-
-        /** @var User $user */
-        $user = $this->repository->findUserEnable($post['value']);
-        if (!($user instanceof User)) {
-            return;
-        }
-
-        $old = clone $user;
-        $user->setLost(true);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-        $this->dispatcher->dispatch(
-            new UserEntityEvent($old, $user, [])
-        );
     }
 }

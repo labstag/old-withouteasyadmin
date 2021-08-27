@@ -2,15 +2,16 @@
 
 namespace Labstag\Controller\Admin;
 
-use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Menu;
-use Labstag\Form\Admin\MenuType;
-use Labstag\Repository\MenuRepository;
+use Labstag\Form\Admin\Menu\LinkType;
+use Labstag\Form\Admin\Menu\PrincipalType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\MenuRepository;
+use Labstag\RequestHandler\MenuRequestHandler;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/menu")
@@ -21,98 +22,167 @@ class MenuController extends AdminControllerLib
     protected string $headerTitle = 'Menu';
 
     protected string $urlHome = 'admin_menu_index';
+
     /**
      * @Route("/", name="admin_menu_index", methods={"GET"})
      */
-    public function index(MenuRepository $menuRepository): Response
+    public function index(MenuRepository $repository)
     {
-        return $this->adminCrudService->list(
-            $menuRepository,
-            'findAllForAdmin',
+        $all     = $repository->findAllCode();
+        $globals = $this->twig->getGlobals();
+        $modal   = isset($globals['modal']) ? $globals['modal'] : [];
+
+        $modal['delete'] = true;
+        $this->twig->addGlobal('modal', $modal);
+        $this->btnInstance->addBtnNew('admin_menu_new');
+
+        return $this->render(
             'admin/menu/index.html.twig',
-            ['new' => 'admin_menu_new'],
-            [
-                'list'   => 'admin_menu_index',
-                'show'   => 'admin_menu_show',
-                'edit'   => 'admin_menu_edit',
-                'delete' => 'admin_menu_delete',
-            ]
+            ['all' => $all]
         );
     }
 
     /**
-     * @Route("/new", name="admin_menu_new", methods={"GET","POST"})
+     * @Route("/move/{id}", name="admin_menu_move", methods={"GET", "POST"})
      */
-    public function new(RouterInterface $router): Response
+    public function move(Menu $menu, Request $request, MenuRepository $repository)
     {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_menu_new'
-            ),
-        ];
-        $this->setBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->create(
+        $currentUrl = $this->router->generate(
+            'admin_menu_move',
+            [
+                'id' => $menu->getId(),
+            ]
+        );
+
+        if ('POST' == $request->getMethod()) {
+            $data = $request->request->get('position');
+            if (!empty($data)) {
+                $data = json_decode($data, true);
+            }
+
+            if (is_array($data)) {
+                foreach ($data as $row) {
+                    $id       = $row['id'];
+                    $position = $row['position'];
+                    $entity   = $repository->find($id);
+                    $entity->setPosition($position);
+                    $this->entityManager->persist($entity);
+                }
+
+                $this->entityManager->flush();
+            }
+        }
+
+        $breadcrumb = ['Move' => $currentUrl];
+        $this->addBreadcrumbs($breadcrumb);
+        $this->btnInstance->addBtnList(
+            'admin_menu_index',
+            'Liste',
+        );
+
+        $this->btnInstance->add(
+            'btn-admin-save-move',
+            'Enregistrer',
+            [
+                'is'   => 'link-btnadminmove',
+                'href' => $currentUrl,
+            ]
+        );
+
+        return $this->render(
+            'admin/menu/move.html.twig',
+            ['menu' => $menu]
+        );
+    }
+
+    /**
+     * @Route("/add", name="admin_menu_add", methods={"GET", "POST"})
+     */
+    public function add(
+        Request $request,
+        MenuRequestHandler $requestHandler,
+        MenuRepository $repository
+    ): Response
+    {
+        $get = $request->query->all();
+        $url = $this->router->generate('admin_menu_index');
+        if (!isset($get['id'])) {
+            return new RedirectResponse($url);
+        }
+
+        $parent = $repository->find($get['id']);
+        if (!$parent instanceof Menu) {
+            return new RedirectResponse($url);
+        }
+
+        $menu = new Menu();
+        $data = [$menu->getData()];
+        $menu->setClef(null);
+        $menu->setData($data);
+        $menu->setSeparateur(false);
+        $menu->setPosition(count($parent->getChildren()));
+        $menu->setParent($parent);
+
+        return $this->create(
+            $menu,
+            LinkType::class,
+            $requestHandler,
+            ['list' => 'admin_menu_index'],
+            'admin/menu/form.html.twig'
+        );
+    }
+
+    /**
+     * @Route("/divider/{id}", name="admin_menu_divider")
+     */
+    public function divider(Menu $menu, MenuRequestHandler $requestHandler): RedirectResponse
+    {
+        $entity    = new Menu();
+        $oldEntity = clone $entity;
+        $position  = count($entity->getChildren());
+        $entity->setPosition($position + 1);
+        $entity->setSeparateur(true);
+        $entity->setParent($menu);
+        $requestHandler->handle($oldEntity, $entity);
+
+        return new RedirectResponse(
+            $this->router->generate('admin_menu_index')
+        );
+    }
+
+    /**
+     * @Route("/new", name="admin_menu_new", methods={"GET", "POST"})
+     */
+    public function new(MenuRequestHandler $requestHandler): Response
+    {
+        return $this->create(
             new Menu(),
-            MenuType::class,
-            ['list' => 'admin_menu_index']
+            PrincipalType::class,
+            $requestHandler,
+            ['list' => 'admin_menu_index'],
+            'admin/menu/form.html.twig'
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_menu_show", methods={"GET"})
+     * @Route("/update/{id}", name="admin_menu_update", methods={"GET", "POST"})
      */
-    public function show(Menu $menu, RouterInterface $router): Response
+    public function edit(Menu $menu, MenuRequestHandler $requestHandler)
     {
-        $breadcrumb = [
-            'Show' => $router->generate(
-                'admin_menu_show',
-                [
-                    'id' => $menu->getId(),
-                ]
-            ),
-        ];
-        $this->setBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->read(
+        $this->modalAttachmentDelete();
+        $form = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
+        $data = [$menu->getData()];
+        $menu->setData($data);
+
+        return $this->update(
+            $form,
             $menu,
-            'admin/menu/show.html.twig',
+            $requestHandler,
             [
-                'delete' => 'admin_menu_delete',
+                'delete' => 'api_action_delete',
                 'list'   => 'admin_menu_index',
-                'edit'   => 'admin_menu_edit',
-            ]
+            ],
+            'admin/menu/form.html.twig'
         );
-    }
-
-    /**
-     * @Route("/{id}/edit", name="admin_menu_edit", methods={"GET","POST"})
-     */
-    public function edit(Menu $menu, RouterInterface $router): Response
-    {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_menu_edit',
-                [
-                    'id' => $menu->getId(),
-                ]
-            ),
-        ];
-        $this->setBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->update(
-            MenuType::class,
-            $menu,
-            [
-                'delete' => 'admin_menu_delete',
-                'list'   => 'admin_menu_index',
-                'show'   => 'admin_menu_show',
-            ]
-        );
-    }
-
-    /**
-     * @Route("/delete/{id}", name="admin_menu_delete", methods={"POST"})
-     */
-    public function delete(Menu $menu): Response
-    {
-        return $this->adminCrudService->delete($menu);
     }
 }

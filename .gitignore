@@ -16,9 +16,12 @@ apps/bin/sql-formatter
 apps/bin/var-dump-server
 apps/bin/yaml-lint
 /apps/.env
+apps/public/uploads
 apps/public/assets
 apps/phploc.phar
 apps/phpcpd.phar
 apps/phpmd.phar
 apps/twigcs.phar
 apps/bin/phpunit
+apps/bin/php-cs-fixer
+report

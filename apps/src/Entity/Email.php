@@ -2,8 +2,10 @@
 
 namespace Labstag\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Labstag\Entity\Traits\VerifEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -11,17 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"user": "EmailUser"})
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 abstract class Email
 {
-    use VerifEntity;
-
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid", unique=true)
-     */
-    protected $id;
+    use SoftDeleteableEntity;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -34,13 +30,32 @@ abstract class Email
     protected $adresse;
 
     /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid", unique=true)
+     */
+    protected $id;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     protected $principal;
 
+    /**
+     * @ORM\Column(type="array")
+     */
+    protected $state;
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="change", field={"state"})
+     */
+    private $stateChanged;
+
     public function __construct()
     {
-        $this->verif     = false;
         $this->principal = false;
     }
 
@@ -49,14 +64,29 @@ abstract class Email
         return $this->getAdresse();
     }
 
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
     public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function getAdresse(): ?string
+    public function getState()
     {
-        return $this->adresse;
+        return $this->state;
+    }
+
+    public function getStateChanged()
+    {
+        return $this->stateChanged;
+    }
+
+    public function isPrincipal(): ?bool
+    {
+        return $this->principal;
     }
 
     public function setAdresse(string $adresse): self
@@ -66,15 +96,15 @@ abstract class Email
         return $this;
     }
 
-    public function isPrincipal(): ?bool
-    {
-        return $this->principal;
-    }
-
     public function setPrincipal(bool $principal): self
     {
         $this->principal = $principal;
 
         return $this;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 }

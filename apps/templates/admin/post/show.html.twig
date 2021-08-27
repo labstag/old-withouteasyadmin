@@ -1,0 +1,54 @@
+{% extends 'admin/post/layout.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>Title</th>
+                <td>{{ entity.title }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ entity.content|raw }}</td>
+            </tr>
+            <tr>
+                <th>Published</th>
+                <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
+            </tr>
+            {% set img = attachment(entity.img) %}
+            {% if img is not null and img.name is not null %}
+            <tr>
+                <th>Image</th>
+                <td>
+                    <picture >
+                        <img alt="Post Image" src="{{ asset(img.name) | imagine_filter('my_thumb') }}" />
+                    </picture>
+                </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>User</th>
+                <td>
+                    {% if entity.refuser.deletedAt != '' %}
+                        {% set url = 'admin_user_preview' %}
+                    {% else %}
+                        {% set url = 'admin_user_show' %}
+                    {% endif %}
+                    {% set state = guard_route(url) %}
+                    {% if state == true %}
+                        <a href="{{ path(url, {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
+                    {% else %}
+                        {{ entity.refuser }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

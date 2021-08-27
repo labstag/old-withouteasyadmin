@@ -1,0 +1,49 @@
+{% import "admin/macro.html.twig" as macro_admin %}
+{% extends 'admin/user/adresse_user/layout.html.twig' %}
+{% block body %}
+    <table
+        is="table-datatable"
+        data-action="Actions"
+        data-multiple
+        data-multipleall="Tout sélectionner"
+        data-multipleelement="Selection"
+        data-empty="No records found"
+        data-count={{ pagination|length }}
+    >
+        <thead>
+            <tr>
+                <th>Rue</th>
+                <th>Country</th>
+                <th>Zipcode</th>
+                <th>Ville</th>
+                <th>Gps</th>
+                <th>Type</th>
+                <th>Pmr</th>
+                <th>User</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in pagination %}
+            <tr data-id="{{ entity.id }}">
+                <td>{{ entity.rue }}</td>
+                <td>
+                    <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
+                    {{ entity.country|country_name('fr') }}
+                </td>
+                <td>{{ entity.zipcode }}</td>
+                <td>{{ entity.ville }}</td>
+                <td>{{ entity.gps }}</td>
+                <td>{{ entity.type }}</td>
+                <td>{{ entity.pmr ? 'Yes' : 'No' }}</td>
+                <td>
+                    {{ entity.refuser.username }}
+                </td>
+                <td>
+                    {{ macro_admin.actions(entity, actions) }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

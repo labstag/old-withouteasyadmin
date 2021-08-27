@@ -1,0 +1,60 @@
+{% set state1 = guard_route('api_guard_route') %}
+{% set state2 = guard_route('api_guard_routeuser') %}
+{% set state3 = guard_route('api_guard_routesetuser') %}
+{% set state = state1 and state2 and state3 %}
+{% if state1 == false %}
+    Droit manquant
+{% else %}
+    <table is="guard-route" data-url="{{ path('api_guard_route', {'user' : user.id}) }}" data-refresh=0>
+        <thead>
+            <tr>
+                <th rowspan=2>
+                    Route
+                </th>
+                <th rowspan=2>
+                    Groupe {{ user.refgroupe.name }}
+                </th>
+                <th>
+                    {{ user.username }}
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <guard-changeroute
+                        data-state=0
+                        data-url="{{ path('api_guard_routeuser', {'user' : user.id}) }}"
+                        data-token="{{ csrf_token('guard') }}"
+                    ></guard-changeroute>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for route in routes %}
+            <tr>
+                <td>
+                    {{ route.name }}
+                </td>
+                <td>
+                    <guard-refgrouproute
+                        data-state=0
+                        data-group="{{ user.refgroupe.code|e('html_attr') }}"
+                        data-route="{{ route.name|e('html_attr') }}"
+                    ></guard-refgrouproute>
+                </td>
+                <td>
+                    <guard-setroute
+                        data-state=0
+                        data-route="{{ route.name|e('html_attr') }}"
+                        data-url="{{ path('api_guard_routesetuser', {'user' : user.id, 'route': route.id}) }}"
+                        data-token="{{ csrf_token('guard') }}"
+                    ></guard-setroute>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3" class="text-center">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

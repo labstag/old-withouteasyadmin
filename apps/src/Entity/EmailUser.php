@@ -2,9 +2,9 @@
 
 namespace Labstag\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\EmailUserRepository;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=EmailUserRepository::class)
@@ -16,7 +16,7 @@ class EmailUser extends Email
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="emailUsers")
      * @Assert\NotBlank
      */
-    private $refuser;
+    protected $refuser;
 
     public function getRefuser(): ?User
     {

@@ -1,115 +1,36 @@
 version: "3.4"
 
 networks:
-  proxynetwork:
+  proxylampy:
+    external: true
+  serverlampy:
     external: true
   net:
     driver: overlay
     attachable: true
 
-volumes:
-  mariadb_data:
-
 services:
-  redis:
-    image: redis:6.0.9
-    networks:
-      - net
-  mailhog:
-    image: mailhog/mailhog:v1.0.1
-    networks:
-      - net
-      - proxynetwork
-    depends_on:
-      - proxynetwork
-    deploy:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.mailhog-labstag.rule=Host(`mailhog.labstag.lxc`)"
-        - "traefik.http.routers.mailhog-labstag.entrypoints=web"
-        - "traefik.http.services.mailhog-labstag.loadbalancer.server.port=8025"
-  mercure:
-    image: dunglas/mercure:v0.10
-    environment:
-      JWT_KEY: "MyJwtSecret"
-      ALLOW_ANONYMOUS: 1
-      PUBLISH_ALLOWED_ORIGINS: "*"
-      CORS_ALLOWED_ORIGINS: "*"
-    networks:
-      - net
-      - proxynetwork
-    depends_on:
-      - proxynetwork
-      - redis
-    deploy:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.mercure-labstag.rule=Host(`mercure.labstag.lxc`)"
-        - "traefik.http.routers.mercure-labstag.entrypoints=web"
-        - "traefik.http.services.mercure-labstag.loadbalancer.server.port=80"
-  phpldapadmin:
-    image: osixia/phpldapadmin:0.9.0
-    networks:
-      - net
-      - proxynetwork
-    depends_on:
-      - openldap
-      - proxynetwork
-    deploy:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.phpldapadmin-labstag.rule=Host(`phpldapadmin.labstag.lxc`)"
-        - "traefik.http.routers.phpldapadmin-labstag.entrypoints=web"
-        - "traefik.http.services.phpldapadmin-labstag.loadbalancer.server.port=80"
-    environment:
-      PHPLDAPADMIN_LDAP_HOSTS: "openldap"
-      PHPLDAPADMIN_HTTPS: "false"
-  openldap:
-    image: osixia/openldap:1.4.0
-    networks:
-      - net
-    environment:
-      LDAP_LOG_LEVEL: "256"
-      LDAP_ORGANISATION: "Symfony Inc."
-      LDAP_DOMAIN: "labstag.lxc"
-      LDAP_BASE_DN: "dc=labstag,dc=lxc"
-      LDAP_ADMIN_PASSWORD: "admin"
-      LDAP_CONFIG_PASSWORD: "config"
-      LDAP_READONLY_USER: "false"
-      LDAP_READONLY_USER_USERNAME: "readonly"
-      LDAP_READONLY_USER_PASSWORD: "readonly"
-      LDAP_RFC2307BIS_SCHEMA: "false"
-      LDAP_BACKEND: "mdb"
-      LDAP_TLS: "true"
-      LDAP_TLS_CRT_FILENAME: "ldap.crt"
-      LDAP_TLS_KEY_FILENAME: "ldap.key"
-      LDAP_TLS_CA_CRT_FILENAME: "ca.crt"
-      LDAP_TLS_ENFORCE: "false"
-      LDAP_TLS_CIPHER_SUITE: "SECURE256:-VERS-SSL3.0"
-      LDAP_TLS_PROTOCOL_MIN: "3.1"
-      LDAP_TLS_VERIFY_CLIENT: "demand"
-      LDAP_REPLICATION: "false"
-      #LDAP_REPLICATION_CONFIG_SYNCPROV: "binddn="cn=admin,cn=config" bindmethod=simple credentials=$LDAP_CONFIG_PASSWORD searchbase="cn=config" type=refreshAndPersist retry="60 +" timeout=1 starttls=critical"
-      #LDAP_REPLICATION_DB_SYNCPROV: "binddn="cn=admin,$LDAP_BASE_DN" bindmethod=simple credentials=$LDAP_ADMIN_PASSWORD searchbase="$LDAP_BASE_DN" type=refreshAndPersist interval=00:00:00:10 retry="60 +" timeout=1 starttls=critical"
-      #docker-compose.ymlLDAP_REPLICATION_HOSTS: "#PYTHON2BASH:['ldap://ldap.labstag.lxc','ldap://ldap2.labstag.lxc']"
-      KEEP_EXISTING_CONFIG: "false"
-      LDAP_REMOVE_CONFIG_AFTER_SETUP: "true"
-      LDAP_SSL_HELPER_PREFIX: "ldap"
-  mariadb:
-    image: mariadb:10.5.1
-    environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: core
-      MYSQL_USER: siteinternet
-      MYSQL_PASSWORD: password
-      TZ: Europe/Paris
-    networks:
-      - net
+  phpfpmexec:
+    image: koromerzhin/phpfpm:8.0.9-symfony-xdebug
+    command: sh -c "composer install"
     volumes:
-      - mariadb_data:/var/lib/mysql
-      - ${PWD}/dump:/dump
+      - ${PWD}/apps:/var/www/
+      - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    environment:
+      MAILER_DSN: "smtp://mailhog:1025"
+      DATABASE_BDD: labstag_bdd
+      DATABASE_USER: labstag
+      DATABASE_PASSWORD: password
+      DATABASE_URL: "mysqli://labstag:password@mariadb:3306/labstag_bdd"
+    networks:
+      - serverlampy
+    deploy:
+      restart_policy:
+        condition: none
+      labels:
+        - "traefik.enable=false"
   apache:
-    image: httpd:2.4.46
+    image: httpd:2.4.48
     depends_on:
       - phpfpm
     volumes:
@@ -117,54 +38,28 @@ services:
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     networks:
       - net
-      - proxynetwork
+      - proxylampy
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.www-labstag.rule=Host(`labstag.lxc`, `www.labstag.lxc`)"
-        - "traefik.http.middlewares.wwwredirectregex.redirectregex.regex=^http://labstag.lxc/(.*)"
-        - "traefik.http.middlewares.wwwredirectregex.redirectregex.replacement=http://www.labstag.lxc/$${1}"
-        - "traefik.http.routers.www-labstag.entrypoints=web"
-        - "traefik.http.services.www-labstag.loadbalancer.server.port=80"
-  phpmyadmin:
-    image: phpmyadmin:5.0.2
-    environment:
-      PMA_HOST: mariadb
-      MYSQL_ROOT_PASSWORD: example
-    depends_on:
-      - mariadb
-    networks:
-      - net
-      - proxynetwork
-    deploy:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.phpmyadmin-labstag.rule=Host(`phpmyadmin.labstag.lxc`)"
-        - "traefik.http.routers.phpmyadmin-labstag.entrypoints=web"
-        - "traefik.http.services.phpmyadmin-labstag.loadbalancer.server.port=80"
+        - "traefik.http.routers.labstag.rule=HostRegexp(`labstag.traefik.me`, `labstag.{ip:.*}.traefik.me`)"
+        - "traefik.http.services.labstag.loadbalancer.server.port=80"
   phpfpm:
-    image: koromerzhin/phpfpm:7.4.12-symfony
+    image: koromerzhin/phpfpm:8.0.9-symfony-xdebug
     depends_on:
       - mariadb
-      - openldap
       - mercure
       - mailhog
       - redis
+    environment:
+      MAILER_DSN: "smtp://mailhog:1025"
+      DATABASE_URL: "mysqli://labstag:password@mariadb:3306/labstag_bdd"
     volumes:
       - ${PWD}/apps:/var/www/
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     networks:
+      - serverlampy
       - net
-  phpfpm-xdebug:
-    image: koromerzhin/phpfpm:7.4.12-symfony-xdebug
-    depends_on:
-      - mariadb
-      - openldap
-      - mercure
-      - mailhog
-      - redis
-    volumes:
-      - ${PWD}/apps:/var/www/
-      - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
-    networks:
-      - net
+    deploy:
+      labels:
+        - "traefik.enable=false"

@@ -1,0 +1,54 @@
+{% import "admin/macro.html.twig" as macro_admin %}
+{% extends 'admin/user/phone_user/layout.html.twig' %}
+{% block body %}
+    <table
+        is="table-datatable"
+        data-action="Actions"
+        data-multiple
+        data-multipleall="Tout sélectionner"
+        data-multipleelement="Selection"
+        data-empty="No records found"
+        data-count={{ pagination|length }}
+    >
+        <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Country</th>
+                <th>Verif</th>
+                <th>Type</th>
+                <th>Principal</th>
+                <th>State</th>
+                <th>Workflow</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in pagination %}
+            <tr data-id="{{ entity.id }}">
+                <td>{{ entity.numero }}</td>
+                <td>
+                    <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
+                    {{ entity.country|country_name('fr') }}
+                </td>
+                <td>
+                    {% set check = verifPhone(entity.country, entity.numero)  ? 'ok' : 'ko' %}
+                    <span class="check-{{ check }}"></span>
+                </td>
+                <td>{{ entity.type }}</td>
+                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ macro_admin.workflow(entity, actions) }}
+                </td>
+                <td>
+                    {{ macro_admin.actions(entity, actions) }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

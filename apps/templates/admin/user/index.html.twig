@@ -2,40 +2,49 @@
 {% extends 'admin/user/layout.html.twig' %}
 {% block body %}
     <table
-  data-locale="fr-FR"
-  data-toggle="table"
-  data-show-columns="true">
+        is="table-datatable"
+        data-action="Actions"
+        data-multiple
+        data-multipleall="Tout sélectionner"
+        data-multipleelement="Selection"
+        data-empty="No records found"
+        data-count={{ pagination|length }}
+    >
         <thead>
             <tr>
                 <th>Username</th>
                 <th>Groupe</th>
                 <th>Email</th>
-                <th>Enable</th>
                 <th>Adresses</th>
                 <th>Liens</th>
                 <th>Emails</th>
                 <th>Téléphones</th>
-                <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
+                <th>State</th>
+                <th>Workflow</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
         {% for entity in pagination %}
-            <tr>
+            <tr data-id="{{ entity.id }}">
                 <td>{{ entity.username }}</td>
-                <td>{{ entity.groupe }}</td>
+                <td>{{ entity.refgroupe }}</td>
                 <td>{{ entity.email }}</td>
-                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
                 <td>{{ entity.adresseUsers|length }}</td>
                 <td>{{ entity.lienUsers|length }}</td>
                 <td>{{ entity.emailUsers|length }}</td>
                 <td>{{ entity.phoneUsers|length }}</td>
                 <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ macro_admin.workflow(entity, actions) }}
+                </td>
+                <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

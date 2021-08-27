@@ -5,7 +5,7 @@ namespace Labstag\Event;
 class ConfigurationEntityEvent
 {
 
-    private array $post;
+    protected array $post;
 
     public function __construct(array $post)
     {

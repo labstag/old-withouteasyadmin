@@ -1,12 +1,14 @@
 security:
-  encoders:
+  # https://symfony.com/doc/current/security/experimental_authenticators.html
+  enable_authenticator_manager: true
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     Labstag\Entity\User:
-      algorithm: auto
-
+            algorithm: auto
   # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
   providers:
     # used to reload user from session & other features (e.g. switch_user)
-    app_user_provider:
+    labstag_user_provider:
       entity:
         class: Labstag\Entity\User
         property: username
@@ -16,19 +18,17 @@ security:
       security: false
     main:
       switch_user: true
-      remember_me:
-        secret: "%kernel.secret%"
-        lifetime: 604800 # 1 week in seconds
-        path: /
-        remember_me_parameter: login[rembember_me]
-      anonymous: true
       lazy: true
-      provider: app_user_provider
-      guard:
-        authenticators:
-          - Labstag\Security\OauthAuthenticator
-          - Labstag\Security\FormAuthenticator
-        entry_point: Labstag\Security\FormAuthenticator
+      provider: labstag_user_provider
+      custom_authenticator:
+        - Labstag\Security\LoginFormAuthenticator
+        - Labstag\Security\OauthAuthenticator
+
+      # guard:
+      #   authenticators:
+      #     - Labstag\Security\OauthAuthenticator
+      #     - Labstag\Security\FormAuthenticator
+      #   entry_point: Labstag\Security\FormAuthenticator
       logout:
         path: app_logout
         # where to redirect after logout
@@ -42,5 +42,7 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
-    - { path: ^/admin, roles: ROLE_USER }
+    - { path: ^/admin, roles: PUBLIC_ACCESS  }
+    - { path: ^/efconnect, role: ROLE_USER }
+    - { path: ^/elfinder, role: ROLE_USER }
     # - { path: ^/profile, roles: ROLE_USER }

@@ -2,51 +2,64 @@
 
 namespace Labstag\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\TemplateRepository;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=TemplateRepository::class)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Template
 {
+    use SoftDeleteableEntity;
+
+    /**
+     * @Gedmo\Slug(updatable=false, fields={"name"})
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $code;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank
+     */
+    protected $html;
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      */
-    private $name;
-
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"name"})
-     * @ORM\Column(type="string", length=255)
-     */
-    private $code;
+    protected $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\NotBlank
      */
-    private $html;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Assert\NotBlank
-     */
-    private $text;
+    protected $text;
 
     public function __toString()
     {
         return $this->getName();
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function getHtml(): ?string
+    {
+        return $this->html;
     }
 
     public function getId(): ?string
@@ -59,16 +72,9 @@ class Template
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function getText(): ?string
     {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getCode(): ?string
-    {
-        return $this->code;
+        return $this->text;
     }
 
     public function setCode(string $code): self
@@ -78,11 +84,6 @@ class Template
         return $this;
     }
 
-    public function getHtml(): ?string
-    {
-        return $this->html;
-    }
-
     public function setHtml(string $html): self
     {
         $this->html = $html;
@@ -90,9 +91,11 @@ class Template
         return $this;
     }
 
-    public function getText(): ?string
+    public function setName(string $name): self
     {
-        return $this->text;
+        $this->name = $name;
+
+        return $this;
     }
 
     public function setText(string $text): self

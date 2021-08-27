@@ -25,11 +25,16 @@ class DisclaimerSubscriber implements EventSubscriberInterface
         $this->router      = $router;
     }
 
+    public static function getSubscribedEvents()
+    {
+        return ['kernel.request' => 'onKernelRequest'];
+    }
+
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
         $state   = $this->disclaimerActivate($request);
-        if (! $state) {
+        if (!$state) {
             return;
         }
 
@@ -40,36 +45,35 @@ class DisclaimerSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function disclaimerActivate(Request $request): bool
+    protected function disclaimerActivate(Request $request): bool
     {
         $config     = $this->dataService->getConfig();
         $controller = $request->attributes->get('_controller');
         $key        = 'disclaimer';
         $session    = $request->getSession();
-        if (! isset($config[$key]) || ! isset($config[$key][0])) {
+        if (!isset($config[$key]) || !isset($config[$key])) {
             return false;
         }
 
-        if (substr_count($controller, 'Labstag') === 0) {
+        if (0 === substr_count($controller, 'Labstag')) {
             return false;
         }
 
-        if (substr_count($controller, 'Controller\\Admin') !== 0) {
+        if (0 !== substr_count($controller, 'Controller\\Api')) {
             return false;
         }
 
-        if (substr_count($controller, 'SecurityController') !== 0) {
+        if (0 !== substr_count($controller, 'Controller\\Admin')) {
             return false;
         }
 
-        $disclaimer = $config[$key][0];
+        if (0 !== substr_count($controller, 'SecurityController')) {
+            return false;
+        }
+
+        $disclaimer = $config[$key];
         $activate   = (bool) $disclaimer['activate'];
 
-        return $session->get($key, 0) !== 1 && $activate === true;
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return ['kernel.request' => 'onKernelRequest'];
+        return 1 !== $session->get($key, 0) && true === $activate;
     }
 }

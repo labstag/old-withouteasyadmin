@@ -2,9 +2,9 @@
 
 namespace Labstag\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\PhoneUserRepository;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PhoneUserRepository::class)
@@ -16,7 +16,7 @@ class PhoneUser extends Phone
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="phoneUsers")
      * @Assert\NotBlank
      */
-    private $refuser;
+    protected $refuser;
 
     public function getRefuser(): ?User
     {

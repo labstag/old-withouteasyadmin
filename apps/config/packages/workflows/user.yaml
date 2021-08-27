@@ -1,0 +1,37 @@
+framework:
+  workflows:
+    user:
+      type: 'state_machine' # or 'state_machine'
+      audit_trail:
+        enabled: true
+      marking_store:
+        type: 'method'
+        property: 'state'
+      supports:
+        - Labstag\Entity\User
+      initial_marking: start
+      places:
+        - start
+        - nonverifier
+        - valider
+        - lostpassword
+        - disable
+      transitions:
+        submit:
+            from: start
+            to: nonverifier
+        validation:
+            from: nonverifier
+            to: valider
+        passwordlost:
+            from: valider
+            to: lostpassword
+        changepassword:
+            from: lostpassword
+            to: valider
+        desactiver:
+            from: valider
+            to: disable
+        activer:
+            from: disable
+            to: valider

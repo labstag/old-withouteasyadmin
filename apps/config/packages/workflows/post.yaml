@@ -1,0 +1,34 @@
+framework:
+  workflows:
+    post:
+      type: "state_machine" # or 'state_machine'
+      audit_trail:
+        enabled: true
+      marking_store:
+        type: "method"
+        property: "state"
+      supports:
+        - Labstag\Entity\Post
+      initial_marking: start
+      places:
+        - start
+        - brouillon
+        - relecture
+        - publie
+        - rejete
+      transitions:
+        submit:
+          from: start
+          to: brouillon
+        relire:
+          from: brouillon
+          to: relecture
+        corriger:
+          from: relecture
+          to: brouillon
+        publier:
+          from: relecture
+          to: publie
+        rejeter:
+          from: relecture
+          to: rejete

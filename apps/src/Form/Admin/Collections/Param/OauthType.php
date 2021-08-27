@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class OauthType extends AbstractType
 {
 
-    private OauthService $oauthService;
+    protected OauthService $oauthService;
 
     public function __construct(OauthService $oauthService)
     {

@@ -25,6 +25,10 @@ doctrine:
         dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Tree/Entity"
         alias: GedmoTree # (optional) it will default to the name set for the mapping
         is_bundle: false
+    filters:
+      softdeleteable:
+        class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+        enabled: true
     dql:
       datetime_functions:
         addtime: DoctrineExtensions\Query\Mysql\AddTime

@@ -6,23 +6,9 @@
     <rule ref="rulesets/cleancode.xml">
 		<exclude name="StaticAccess" />
     </rule>
-    <rule ref="rulesets/cleancode.xml/StaticAccess">
-		<properties>
-            <property name="exceptions">
-              <value>
-                \Symfony\Component\Intl\Locale,
-                \Symfony\Component\Intl\Countries,
-                \Symfony\Component\HttpFoundation\Response,
-                \Faker\Factory,
-                \libphonenumber\PhoneNumberToTimeZonesMapper,
-                \libphonenumber\PhoneNumberUtil,
-                \libphonenumber\PhoneNumberToCarrierMapper
-              </value>
-            </property>
-		</properties>
-    </rule>
 	<rule ref="rulesets/codesize.xml">
 		<exclude name="TooManyPublicMethods" />
+        <exclude name="ExcessivePublicCount" />
 		<exclude name="TooManyMethods" />
 		<exclude name="TooManyFields" />
         <exclude name="ExcessiveParameterList" />>
@@ -31,6 +17,7 @@
 	<rule ref="rulesets/controversial.xml" />
 	<rule ref="rulesets/design.xml">
 		<exclude name="CouplingBetweenObjects" />
+        <exclude name="NumberOfChildren" />
 	</rule>
 	<rule ref="rulesets/naming.xml">
 		<exclude name="ShortVariable" />

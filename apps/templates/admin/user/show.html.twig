@@ -7,12 +7,31 @@
                 <td>{{ entity.username }}</td>
             </tr>
             <tr>
+                <th>Groupe</th>
+                <td>{{ entity.refgroupe }}</td>
+            </tr>
+            <tr>
                 <th>Email</th>
                 <td><a href="mailto:{{ entity.email }}">{{ entity.email }}</a></td>
             </tr>
+            {% set avatar = attachment(entity.avatar) %}
+            {% if avatar is not null and avatar.name is not null %}
             <tr>
-                <th>Enable</th>
-                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
+                <th>Avatar</th>
+                <td>
+                    <picture >
+                        <img alt="User avatar" src="{{ asset(avatar.name) | imagine_filter('my_thumb') }}" />
+                    </picture>
+                </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>State</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>
@@ -41,7 +60,9 @@
                                         <span class="flag-icon flag-icon-{{ adresse.country|lower }}"></span>
                                         {{ adresse.country|country_name('fr') }}
                                         <br />
-                                        <span class="GpsIcon"></span>{{ adresse.gps }}
+                                        <span class="gps-icon">
+                                            {{ adresse.gps }}
+                                        </span>
                                     </td>
                                     <td>{{ adresse.type }}</td>
                                     <td>{{ adresse.pmr ? 'Yes' : 'No' }}</td>
@@ -86,7 +107,6 @@
                             <tr>
                                 <th>Adresse</th>
                                 <th>Principal</th>
-                                <th>Verif</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,7 +114,6 @@
                                 <tr>
                                     <td><a href="mailto:{{ email.adresse }}">{{ email.adresse }}</a></td>
                                     <td>{{ email.principal ? 'Yes' : 'No' }}</td>
-                                    <td>{{ email.verif ? 'Yes' : 'No' }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -111,6 +130,7 @@
                         <thead>
                             <tr>
                                 <th>Numero</th>
+                                <th>Verif</th>
                                 <th>Country</th>
                                 <th>Type</th>
                                 <th>Principal</th>
@@ -120,6 +140,10 @@
                             {% for phone in phones %}
                                 <tr>
                                     <td><a href="tel:{{ phone.numero }}">{{ phone.numero }}</a></td>
+                                    <td>
+                                        {% set check = verifPhone(phone.country, phone.numero)  ? 'ok' : 'ko' %}
+                                        <span class="check-{{ check }}"></span>
+                                    </td>
                                     <td>
                                         <span class="flag-icon flag-icon-{{ phone.country|lower }}"></span>
                                         {{ phone.country|country_name('fr') }}

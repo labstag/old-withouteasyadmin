@@ -1,2 +1,4 @@
+imports:
+  - { resource: workflows/* }
 framework:
-    workflows: null
+  workflows: null

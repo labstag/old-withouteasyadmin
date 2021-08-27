@@ -1,0 +1,85 @@
+{% set state1 = guard_route('api_guard_workflow') %}
+{% set state2 = guard_route('api_guard_workflowgroup') %}
+{% set state3 = guard_route('api_guard_workflowgroups') %}
+{% set state4 = guard_route('api_guard_workflowsetgroup') %}
+{% set state = state1 and state2 and state3 and state4 %}
+{% if state1 == false %}
+    Droit manquant
+{% else %}
+    <table is="guard-workflow" data-url="{{ path('api_guard_workflow') }}" data-refresh=0>
+        <thead>
+            <tr>
+                <th rowspan=2>
+                    Entité
+                </th>
+                <th rowspan=2>
+                    Transition
+                </th>
+                <th rowspan=2>
+                    Actions
+                </th>
+                {% for group in groups %}
+                    <th>
+                        {{ group.name }}
+                    </th>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for group in groups %}
+                    <th>
+                        {% if 'superadmin' != group.code %}
+                            <guard-changeworkflow
+                                data-state=0
+                                data-url="{{ path('api_guard_workflowgroup', {'group' : group.id}) }}"
+                                data-token="{{ csrf_token('guard') }}"
+                            ></guard-changeworkflow>
+                        {% else %}
+                            ----
+                        {% endif %}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for workflow in workflows %}
+            <tr>
+                <td>
+                    {{ workflow.entity }}
+                </td>
+                <td>
+                    {{ workflow.transition }}
+                </td>
+                <td>
+                    <guard-allworkflow
+                        data-state=0
+                        data-check=0
+                        data-url="{{ path('api_guard_workflowgroups', {'workflow' : workflow.id}) }}"
+                        data-token="{{ csrf_token('guard') }}"
+                    ></guard-allworkflow>
+                </td>
+                {% for group in groups %}
+                    <td>
+                        {% if 'superadmin' != group.code %}
+                            <guard-setworkflow
+                                title="{{ group.name|e('html_attr') }}"
+                                data-state=0
+                                data-groupe="{{ group.code|e('html_attr') }}"
+                                data-entity="{{ workflow.entity|e('html_attr') }}"
+                                data-transition="{{ workflow.transition|e('html_attr') }}"
+                                data-url="{{ path('api_guard_workflowsetgroup', {'group' : group.id, 'workflow' : workflow.id}) }}"
+                                data-token="{{ csrf_token('guard') }}"
+                            ></guard-setworkflow>
+                        {% else %}
+                            ---
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% else %}
+                <tr>
+                    <td colspan="{{ groups|length+3 }}" class="text-center">no records found</td>
+                </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
