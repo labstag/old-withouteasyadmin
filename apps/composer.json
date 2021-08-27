@@ -17,7 +17,7 @@
     "doctrine/annotations": "1.13.2",
     "doctrine/doctrine-bundle": "2.4.2",
     "doctrine/doctrine-migrations-bundle": "3.1.1",
-    "doctrine/orm": "2.9.4",
+    "doctrine/orm": "2.9.5",
     "fakerphp/faker": "1.15.0",
     "friendsofsymfony/ckeditor-bundle": "2.3.0",
     "giggsey/libphonenumber-for-php": "8.12.31",
