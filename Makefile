@@ -1,56 +1,22 @@
-isDocker := $(shell docker info > /dev/null 2>&1 && echo 1)
+include make/general/Makefile
+STACK   := labstag
+NETWORK := proxynetwork
+include make/docker/Makefile
 
-.DEFAULT_GOAL := help
-STACK         := labstag
-NETWORK       := proxynetwork
+DOCKER_EXECPHP := @docker exec $(STACK)_phpfpm.1.$$(docker service ps -f 'name=$(STACK)_phpfpm' $(STACK)_phpfpm -q --no-trunc | head -n1)
 
-REDIS         := $(STACK)_redis
-REDISFULLNAME := $(REDIS).1.$$(docker service ps -f 'name=$(REDIS)' $(REDIS) -q --no-trunc | head -n1)
-
-MAILHOG         := $(STACK)_mailhog
-MAILHOGFULLNAME := $(MAILHOG).1.$$(docker service ps -f 'name=$(MAILHOG)' $(MAILHOG) -q --no-trunc | head -n1)
-
-MERCURE         := $(STACK)_mercure
-MERCUREFULLNAME := $(MERCURE).1.$$(docker service ps -f 'name=$(MERCURE)' $(MERCURE) -q --no-trunc | head -n1)
-
-MARIADB         := $(STACK)_mariadb
-MARIADBFULLNAME := $(MARIADB).1.$$(docker service ps -f 'name=$(MARIADB)' $(MARIADB) -q --no-trunc | head -n1)
-
-APACHE         := $(STACK)_apache
-APACHEFULLNAME := $(APACHE).1.$$(docker service ps -f 'name=$(APACHE)' $(APACHE) -q --no-trunc | head -n1)
-
-PHPMYADMIN         := $(STACK)_phpmyadmin
-PHPMYADMINFULLNAME := $(PHPMYADMIN).1.$$(docker service ps -f 'name=$(PHPMYADMIN)' $(PHPMYADMIN) -q --no-trunc | head -n1)
-
-PHPFPM         := $(STACK)_phpfpm
-PHPFPMFULLNAME := $(PHPFPM).1.$$(docker service ps -f 'name=$(PHPFPM)' $(PHPFPM) -q --no-trunc | head -n1)
-
-DOCKER_EXECPHP := @docker exec $(PHPFPMFULLNAME)
-
-SUPPORTED_COMMANDS := bdd composer contributors docker encore env geocode git inspect install linter logs messenger sleep ssh tests workflow-png update inspect libraries
-SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
-ifneq "$(SUPPORTS_MAKE_ARGS)" ""
-  COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  $(eval $(COMMAND_ARGS):;@:)
+COMMANDS_SUPPORTED_COMMANDS := libraries workflow-png tests messenger linter install git env encore composer bdd setbdd
+COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
+ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
+  COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(COMMANDS_ARGS):;@:)
 endif
 
-.PHONY: help
-help:
-	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
-
-.PHONY: node_modules
-node_modules:
-	@npm install
+init: ## Init project
+	@git submodule update --init --recursive --remote
 
 dump:
 	@mkdir dump
-
-.PHONY: isdocker
-isdocker: ## Docker is launch
-ifeq ($(isDocker), 0)
-	@echo "Docker is not launch"
-	exit 1
-endif
 
 apps/.env: apps/.env.dist ## Install .env
 	@cp apps/.env.dist apps/.env
@@ -60,12 +26,12 @@ assets:
 	$(DOCKER_EXECPHP) make assets
 
 .PHONY: bdd
-bdd: ## Scripts for BDD
-ifeq ($(COMMAND_ARGS),fixtures)
+bdd: ### Scripts for BDD
+ifeq ($(COMMANDS_ARGS),fixtures)
 	$(DOCKER_EXECPHP) make bdd fixtures
-else ifeq ($(COMMAND_ARGS),migrate)
+else ifeq ($(COMMANDS_ARGS),migrate)
 	$(DOCKER_EXECPHP) make bdd migrate
-else ifeq ($(COMMAND_ARGS),validate)
+else ifeq ($(COMMANDS_ARGS),validate)
 	$(DOCKER_EXECPHP) make bdd validate
 else
 	@echo "ARGUMENT missing"
@@ -78,22 +44,22 @@ else
 endif
 
 .PHONY: composer
-composer: ## Scripts for composer
-ifeq ($(COMMAND_ARGS),suggests)
+composer: ### Scripts for composer
+ifeq ($(COMMANDS_ARGS),suggests)
 	$(DOCKER_EXECPHP) make composer suggests
-else ifeq ($(COMMAND_ARGS),outdated)
+else ifeq ($(COMMANDS_ARGS),outdated)
 	$(DOCKER_EXECPHP) make composer outdated
-else ifeq ($(COMMAND_ARGS),fund)
+else ifeq ($(COMMANDS_ARGS),fund)
 	$(DOCKER_EXECPHP) make composer fund
-else ifeq ($(COMMAND_ARGS),prod)
+else ifeq ($(COMMANDS_ARGS),prod)
 	$(DOCKER_EXECPHP) make composer prod
-else ifeq ($(COMMAND_ARGS),dev)
+else ifeq ($(COMMANDS_ARGS),dev)
 	$(DOCKER_EXECPHP) make composer dev
-else ifeq ($(COMMAND_ARGS),u)
+else ifeq ($(COMMANDS_ARGS),u)
 	$(DOCKER_EXECPHP) make composer update
-else ifeq ($(COMMAND_ARGS),i)
+else ifeq ($(COMMANDS_ARGS),i)
 	$(DOCKER_EXECPHP) make composer install
-else ifeq ($(COMMAND_ARGS),validate)
+else ifeq ($(COMMANDS_ARGS),validate)
 	$(DOCKER_EXECPHP) make composer validate
 else
 	@echo "ARGUMENT missing"
@@ -110,50 +76,14 @@ else
 	@echo "validate: COMPOSER validate"
 endif
 
-.PHONY: contributors
-contributors: ## Contributors
-ifeq ($(COMMAND_ARGS),add)
-	@npm run contributors add
-else ifeq ($(COMMAND_ARGS),check)
-	@npm run contributors check
-else ifeq ($(COMMAND_ARGS),generate)
-	@npm run contributors generate
-else
-	@npm run contributors
-endif
-
-.PHONY: docker
-docker: ## Scripts docker
-ifeq ($(COMMAND_ARGS),create-network)
-	@docker network create --driver=overlay $(NETWORK)
-else ifeq ($(COMMAND_ARGS),image-pull)
-	@more docker-compose.yml | grep image: | sed -e "s/^.*image:[[:space:]]//" | while read i; do docker pull $$i; done
-else ifeq ($(COMMAND_ARGS),deploy)
-	@docker stack deploy -c docker-compose.yml $(STACK)
-else ifeq ($(COMMAND_ARGS),ls)
-	@docker stack services $(STACK)
-else ifeq ($(COMMAND_ARGS),stop)
-	@docker stack rm $(STACK)
-else
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make docker ARGUMENT"
-	@echo "---"
-	@echo "create-network: create network"
-	@echo "deploy: deploy"
-	@echo "image-pull: image-pull"
-	@echo "ls: docker service"
-	@echo "stop: docker stop"
-endif
-
 .PHONY: encore
-encore: ## Script for Encore
-ifeq ($(COMMAND_ARGS),dev)
+encore: ### Script for Encore
+ifeq ($(COMMANDS_ARGS),dev)
 	@npm rebuild node-sass
 	@npm run encore-dev
-else ifeq ($(COMMAND_ARGS),watch)
+else ifeq ($(COMMANDS_ARGS),watch)
 	@npm run encore-watch
-else ifeq ($(COMMAND_ARGS),build)
+else ifeq ($(COMMANDS_ARGS),build)
 	@npm run encore-build
 else
 	@echo "ARGUMENT missing"
@@ -165,14 +95,11 @@ else
 	@echo "build: créer les assets en version prod"
 endif
 
-.PHONY: folders
-folders: dump ## Create folder
-
 .PHONY: env
-env: apps/.env ## Scripts Installation environnement
-ifeq ($(COMMAND_ARGS),dev)
+env: apps/.env ### Scripts Installation environnement
+ifeq ($(COMMANDS_ARGS),dev)
 	@sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
-else ifeq ($(COMMAND_ARGS),prod)
+else ifeq ($(COMMANDS_ARGS),prod)
 	@sed -i 's/APP_ENV=dev/APP_ENV=prod/g' apps/.env
 	@rm -rf apps/vendor
 	@make composer prod -i
@@ -186,66 +113,12 @@ else
 endif
 
 .PHONY: geocode
-geocode: ## Geocode
-	$(DOCKER_EXECPHP) make geocode $(COMMAND_ARGS)
-
-.PHONY: git
-git: ## Scripts GIT
-ifeq ($(COMMAND_ARGS),u)
-	@git pull
-else ifeq ($(COMMAND_ARGS),status)
-	@git status
-else ifeq ($(COMMAND_ARGS),check)
-	@make composer validate -i
-	@make composer outdated -i
-	@make bdd validate -i
-	@make contributors check -i
-	@make linter all -i
-	@make git status -i
-else
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make git ARGUMENT"
-	@echo "---"
-	@echo "u: Update git"
-	@echo "check: CHECK before"
-	@echo "status: status"
-endif
-
-.PHONY: inspect
-inspect: ## docker service inspect
-ifeq ($(COMMAND_ARGS),redis)
-	@docker service inspect $(REDIS)
-else ifeq ($(COMMAND_ARGS),mailhog)
-	@docker service inspect $(MAILHOG)
-else ifeq ($(COMMAND_ARGS),mercure)
-	@docker service inspect $(MERCURE)
-else ifeq ($(COMMAND_ARGS),mariadb)
-	@docker service inspect $(MARIADB)
-else ifeq ($(COMMAND_ARGS),apache)
-	@docker service inspect $(APACHE)
-else ifeq ($(COMMAND_ARGS),phpmyadmin)
-	@docker service inspect $(PHPMYADMIN)
-else ifeq ($(COMMAND_ARGS),phpfpm)
-	@docker service inspect $(PHPFPM)
-else
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make inspect ARGUMENT"
-	@echo "---"
-	@echo "stack: inspect stack"
-	@echo "redis: REDIS"
-	@echo "mailhog: MAILHOG"
-	@echo "mercure: MERCURE"
-	@echo "mariadb: MARIADB"
-	@echo "apache: APACHE"
-	@echo "phpmyadmin: PHPMYADMIN"
-	@echo "phpfpm: PHPFPM"
-endif
+geocode: ### Geocode
+	$(DOCKER_EXECPHP) make geocode $(COMMANDS_ARGS)
 
 .PHONY: install
-install: folders apps/.env ## installation
-ifeq ($(COMMAND_ARGS),all)
+install: apps/.env ### installation
+ifeq ($(COMMANDS_ARGS),all)
 	@make node_modules -i
 	@make docker image-pull -i
 	@make docker deploy -i
@@ -254,12 +127,12 @@ ifeq ($(COMMAND_ARGS),all)
 	@make assets -i
 	@make encore dev -i
 	@make linter all -i
-else ifeq ($(COMMAND_ARGS),dev)
+else ifeq ($(COMMANDS_ARGS),dev)
 	@make install all -i
 	@make bdd fixtures -i
 	@make commands -i
 	@make env dev -i
-else ifeq ($(COMMAND_ARGS),prod)
+else ifeq ($(COMMANDS_ARGS),prod)
 	@make install all -i
 	@make bdd fixtures -i
 	@make commands -i
@@ -282,8 +155,8 @@ commands:
 	$(DOCKER_EXECPHP) symfony console labstag:workflows-show
 
 .PHONY: linter
-linter: ## Scripts Linter
-ifeq ($(COMMAND_ARGS),all)
+linter: ### Scripts Linter
+ifeq ($(COMMANDS_ARGS),all)
 	@make linter phpfix -i
 	@make linter eslint -i
 	@make linter stylelint-fix -i
@@ -294,51 +167,54 @@ ifeq ($(COMMAND_ARGS),all)
 	@make linter phpcs -i
 	@make linter phpmd -i
 	@make linter readme -i
-else ifeq ($(COMMAND_ARGS),phpaudit)
+else ifeq ($(COMMANDS_ARGS),phpaudit)
 	@make linter phpcs -i
 	@make linter phpmd -i
 	@make linter phpmnd -i
 	@make linter phpstan -i
-else ifeq ($(COMMAND_ARGS),phpfix)
+else ifeq ($(COMMANDS_ARGS),composer)
+	@make composer validate -i
+	@make composer outdated -i
+else ifeq ($(COMMANDS_ARGS),phpfix)
 	@make linter php-cs-fixer -i
 	@make linter phpcbf -i
-else ifeq ($(COMMAND_ARGS),readme)
+else ifeq ($(COMMANDS_ARGS),readme)
 	@npm run linter-markdown README.md
-else ifeq ($(COMMAND_ARGS),stylelint)
+else ifeq ($(COMMANDS_ARGS),stylelint)
 	@npm run stylelint
-else ifeq ($(COMMAND_ARGS),stylelint-fix)
+else ifeq ($(COMMANDS_ARGS),stylelint-fix)
 	@npm run stylelint-fix
-else ifeq ($(COMMAND_ARGS),jscpd)
+else ifeq ($(COMMANDS_ARGS),jscpd)
 	@npm run jscpd
-else ifeq ($(COMMAND_ARGS),jscpd-report)
+else ifeq ($(COMMANDS_ARGS),jscpd-report)
 	@npm run jscpd-report
-else ifeq ($(COMMAND_ARGS),eslint)
+else ifeq ($(COMMANDS_ARGS),eslint)
 	@npm run eslint
-else ifeq ($(COMMAND_ARGS),eslint-fix)
+else ifeq ($(COMMANDS_ARGS),eslint-fix)
 	@npm run eslint-fix
-else ifeq ($(COMMAND_ARGS),php-cs-fixer)
+else ifeq ($(COMMANDS_ARGS),php-cs-fixer)
 	$(DOCKER_EXECPHP) make linter php-cs-fixer
-else ifeq ($(COMMAND_ARGS),phpcbf)
+else ifeq ($(COMMANDS_ARGS),phpcbf)
 	$(DOCKER_EXECPHP) make linter phpcbf
-else ifeq ($(COMMAND_ARGS),phpcs)
+else ifeq ($(COMMANDS_ARGS),phpcs)
 	$(DOCKER_EXECPHP) make linter phpcs
-else ifeq ($(COMMAND_ARGS),phpcs-onlywarning)
+else ifeq ($(COMMANDS_ARGS),phpcs-onlywarning)
 	$(DOCKER_EXECPHP) make linter phpcs-onlywarning
-else ifeq ($(COMMAND_ARGS),phpcs-onlyerror)
+else ifeq ($(COMMANDS_ARGS),phpcs-onlyerror)
 	$(DOCKER_EXECPHP) make linter phpcs-onlyerror
-else ifeq ($(COMMAND_ARGS),phploc)
+else ifeq ($(COMMANDS_ARGS),phploc)
 	$(DOCKER_EXECPHP) make linter phploc
-else ifeq ($(COMMAND_ARGS),phpmd)
+else ifeq ($(COMMANDS_ARGS),phpmd)
 	$(DOCKER_EXECPHP) make linter phpmd
-else ifeq ($(COMMAND_ARGS),phpmnd)
+else ifeq ($(COMMANDS_ARGS),phpmnd)
 	$(DOCKER_EXECPHP) make linter phpmnd
-else ifeq ($(COMMAND_ARGS),phpstan)
+else ifeq ($(COMMANDS_ARGS),phpstan)
 	$(DOCKER_EXECPHP) make linter phpstan
-else ifeq ($(COMMAND_ARGS),twig)
+else ifeq ($(COMMANDS_ARGS),twig)
 	$(DOCKER_EXECPHP) make linter twig
-else ifeq ($(COMMAND_ARGS),container)
+else ifeq ($(COMMANDS_ARGS),container)
 	$(DOCKER_EXECPHP) make linter container
-else ifeq ($(COMMAND_ARGS),yaml)
+else ifeq ($(COMMANDS_ARGS),yaml)
 	$(DOCKER_EXECPHP) make linter yaml
 else
 	@echo "ARGUMENT missing"
@@ -346,6 +222,7 @@ else
 	@echo "make linter ARGUMENT"
 	@echo "---"
 	@echo "all: ## Launch all linter"
+	@echo "composer: composer"
 	@echo "readme: linter README.md"
 	@echo "phpaudit: AUDIT PHP"
 	@echo "phpfix: PHP-CS-FIXER & PHPCBF"
@@ -369,42 +246,9 @@ else
 	@echo "jscpd-report: Copy paste detector report"
 endif
 
-.PHONY: logs
-logs: ## Scripts logs
-ifeq ($(COMMAND_ARGS),stack)
-	@docker service logs -f --tail 100 --raw $(STACK)
-else ifeq ($(COMMAND_ARGS),redis)
-	@docker service logs -f --tail 100 --raw $(REDISFULLNAME)
-else ifeq ($(COMMAND_ARGS),mailhog)
-	@docker service logs -f --tail 100 --raw $(MAILHOGFULLNAME)
-else ifeq ($(COMMAND_ARGS),mercure)
-	@docker service logs -f --tail 100 --raw $(MERCUREFULLNAME)
-else ifeq ($(COMMAND_ARGS),mariadb)
-	@docker service logs -f --tail 100 --raw $(MARIADBFULLNAME)
-else ifeq ($(COMMAND_ARGS),apache)
-	@docker service logs -f --tail 100 --raw $(APACHEFULLNAME)
-else ifeq ($(COMMAND_ARGS),phpmyadmin)
-	@docker service logs -f --tail 100 --raw $(PHPMYADMINFULLNAME)
-else ifeq ($(COMMAND_ARGS),phpfpm)
-	@docker service logs -f --tail 100 --raw $(PHPFPMFULLNAME)
-else
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make logs ARGUMENT"
-	@echo "---"
-	@echo "stack: logs stack"
-	@echo "redis: REDIS"
-	@echo "mailhog: MAILHOG"
-	@echo "mercure: MERCURE"
-	@echo "mariadb: MARIADB"
-	@echo "apache: APACHE"
-	@echo "phpmyadmin: PHPMYADMIN"
-	@echo "phpfpm: PHPFPM"
-endif
-
 .PHONY: messenger
-messenger: ## Scripts messenger
-ifeq ($(COMMAND_ARGS),consule)
+messenger: ### Scripts messenger
+ifeq ($(COMMANDS_ARGS),consume)
 	$(DOCKER_EXECPHP) make messenger consume
 else
 	@echo "ARGUMENT missing"
@@ -414,81 +258,16 @@ else
 	@echo "consume: Messenger Consume"
 endif
 
-.PHONY: update
-update: ## docker service update
-ifeq ($(COMMAND_ARGS),redis)
-	@docker service update $(REDIS)
-else ifeq ($(COMMAND_ARGS),mailhog)
-	@docker service update $(MAILHOG)
-else ifeq ($(COMMAND_ARGS),mercure)
-	@docker service update $(MERCURE)
-else ifeq ($(COMMAND_ARGS),mariadb)
-	@docker service update $(MARIADB)
-else ifeq ($(COMMAND_ARGS),apache)
-	@docker service update $(APACHE)
-else ifeq ($(COMMAND_ARGS),phpmyadmin)
-	@docker service update $(PHPMYADMIN)
-else ifeq ($(COMMAND_ARGS),phpfpm)
-	@docker service update $(PHPFPM)
-else
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make service-update ARGUMENT"
-	@echo "---"
-	@echo "stack: logs stack"
-	@echo "redis: REDIS"
-	@echo "mailhog: MAILHOG"
-	@echo "mercure: MERCURE"
-	@echo "mariadb: MARIADB"
-	@echo "apache: APACHE"
-	@echo "phpmyadmin: PHPMYADMIN"
-	@echo "phpfpm: PHPFPM"
-endif
-
-.PHONY: sleep
-sleep: ## sleep
-	@sleep  $(COMMAND_ARGS)
-
-.PHONY: ssh
-ssh: ## SSH
-ifeq ($(COMMAND_ARGS),redis)
-	@docker exec -it $(REDISFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),mailhog)
-	@docker exec -it $(MAILHOGFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),mercure)
-	@docker exec -it $(MERCUREFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),mariadb)
-	@docker exec -it $(MARIADBFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),apache)
-	@docker exec -it $(APACHEFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),phpmyadmin)
-	@docker exec -it $(PHPMYADMINFULLNAME) /bin/bash
-else ifeq ($(COMMAND_ARGS),phpfpm)
-	@docker exec -it $(PHPFPMFULLNAME) /bin/bash
-else
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make ssh ARGUMENT"
-	@echo "---"
-	@echo "redis: REDIS"
-	@echo "mailhog: MAILHOG"
-	@echo "mercure: MERCURE"
-	@echo "mariadb: MARIADB"
-	@echo "apache: APACHE"
-	@echo "phpmyadmin: PHPMYADMIN"
-	@echo "phpfpm: PHPFPM"
-endif
-
 .PHONY: tests
-tests: ## Scripts tests
-ifeq ($(COMMAND_ARGS),launch)
-	@docker exec $(PHPFPMFULLNAME) make tests all
-else ifeq ($(COMMAND_ARGS),behat)
-	@docker exec $(PHPFPMFULLNAME) make tests behat
-else ifeq ($(COMMAND_ARGS),simple-phpunit-unit-integration)
-	@docker exec $(PHPFPMFULLNAME) make tests simple-phpunit-unit-integration
-else ifeq ($(COMMAND_ARGS),simple-phpunit)
-	@docker exec $(PHPFPMFULLNAME) make tests simple-phpunit
+tests: ### Scripts tests
+ifeq ($(COMMANDS_ARGS),launch)
+	@$(DOCKER_EXECPHP) make tests all
+else ifeq ($(COMMANDS_ARGS),behat)
+	@$(DOCKER_EXECPHP) make tests behat
+else ifeq ($(COMMANDS_ARGS),simple-phpunit-unit-integration)
+	@$(DOCKER_EXECPHP) make tests simple-phpunit-unit-integration
+else ifeq ($(COMMANDS_ARGS),simple-phpunit)
+	@$(DOCKER_EXECPHP) make tests simple-phpunit
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -505,12 +284,12 @@ translations: ## update translation
 	$(DOCKER_EXECPHP) make translations
 
 .PHONY: workflow-png
-workflow-png: ## generate workflow png
-	$(DOCKER_EXECPHP) make workflow-png $(COMMAND_ARGS)
+workflow-png: ### generate workflow png
+	$(DOCKER_EXECPHP) make workflow-png $(COMMANDS_ARGS)
 
 .PHONY: libraries
-libraries: ## Add libraries
-ifeq ($(COMMAND_ARGS),tarteaucitron)
+libraries: ### Add libraries
+ifeq ($(COMMANDS_ARGS),tarteaucitron)
 	wget https://github.com/AmauriC/tarteaucitron.js/archive/refs/tags/v1.9.3.zip
 	unzip v1.9.3.zip
 	rm v1.9.3.zip
@@ -523,14 +302,11 @@ else
 	@echo "tarteaucitron: tarteaucitron"
 endif
 
-.PHONY: upgrade
-upgrade: ## upgrade git
-	$(DOCKER_EXECPHP) symfony console labstag:update --maintenanceon
-	@make git u -i
-	@make composer i -i
-	@make bdd migrate -i
-	@make node_modules -i
-	@make encore build -i
-	@make commands -i
-	$(DOCKER_EXECPHP) symfony console cache:clear
-	$(DOCKER_EXECPHP) symfony console labstag:update --maintenanceoff
+DATABASE_BDD := $(shell more docker-compose.yml | grep DATABASE_BDD: | sed -e "s/^.*DATABASE_BDD:[[:space:]]//")
+DATABASE_USER := $(shell more docker-compose.yml | grep DATABASE_USER: | sed -e "s/^.*DATABASE_USER:[[:space:]]//")
+DATABASE_PASSWORD := $(shell more docker-compose.yml | grep DATABASE_PASSWORD: | sed -e "s/^.*DATABASE_PASSWORD:[[:space:]]//")
+SETBDD := cd lampy && make setbdd USERNAME="${DATABASE_USER}" BDD="${DATABASE_BDD}" PASSWORD="${DATABASE_PASSWORD}"
+
+bddset: ## Set bdd
+	@echo "$(SETBDD)"
+	$(shell $(SETBDD))

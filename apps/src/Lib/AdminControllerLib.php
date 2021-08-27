@@ -52,8 +52,6 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected RouterInterface $router;
 
-    protected SessionInterface $session;
-
     protected TokenStorageInterface $token;
 
     protected Environment $twig;
@@ -63,7 +61,6 @@ abstract class AdminControllerLib extends ControllerLib
     protected string $urlHome = '';
 
     public function __construct(
-        FlashBagInterface $flashbag,
         UploadAnnotationReader $uploadAnnotReader,
         PaginatorInterface $paginator,
         RequestStack $requestStack,
@@ -76,12 +73,9 @@ abstract class AdminControllerLib extends ControllerLib
         AttachmentRequestHandler $attachmentRH,
         AttachmentRepository $attachmentRepository,
         GuardService $guardService,
-        RouterInterface $router,
-        SessionInterface $session
+        RouterInterface $router
     )
     {
-        $this->flashbag             = $flashbag;
-        $this->session              = $session;
         $this->attachmentRH         = $attachmentRH;
         $this->attachmentRepository = $attachmentRepository;
         $this->entityManager        = $entityManager;
@@ -97,6 +91,18 @@ abstract class AdminControllerLib extends ControllerLib
         $this->csrfTokenManager  = $csrfTokenManager;
         $this->setSingletonsAdmin();
         parent::__construct($dataService, $breadcrumbs, $paginator);
+    }
+
+    private function flashBagAdd(string $type, $message)
+    {
+        $requestStack = $this->requestStack;
+        if (is_null($this->request)) {
+            return;
+        }
+
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 
     public function addBreadcrumbs(array $breadcrumbs): void
@@ -317,7 +323,7 @@ abstract class AdminControllerLib extends ControllerLib
         if ($form->isSubmitted() && $form->isValid()) {
             $this->upload($entity);
             $handler->handle($oldEntity, $entity);
-            $this->flashbag->add(
+            $this->flashBagAdd(
                 'success',
                 'Données sauvegardé'
             );

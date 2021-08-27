@@ -16,4 +16,18 @@ class MenuRepository extends ServiceEntityRepositoryLib
     {
         parent::__construct($registry, Menu::class);
     }
+
+    public function findAllCode()
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->select('u');
+        $query        = $queryBuilder->where(
+            'u.position=0'
+        );
+        $query->andWhere(
+            'u.clef IS NOT NULL'
+        );
+
+        return $query->getQuery()->getResult();
+    }
 }

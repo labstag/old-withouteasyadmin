@@ -22,7 +22,7 @@ Software:
 - make
 - npm
 - docker
-- repository koromerzhin/traefikproxy
+- repository koromerzhin/lampy
 
 Config:
 
@@ -35,6 +35,12 @@ Hosts:
 - mercure-labstag.traefik.me
 - phpmyadmin-labstag.traefik.me
 - phpldapadmin-labstag.traefik.me
+
+## Init
+
+```sh
+git submodule update --init --recursive --remote
+```
 
 ## Récupérer les images docker
 

@@ -23,6 +23,7 @@ use Labstag\Service\UserService;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
+use LogicException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -232,6 +233,9 @@ class SecurityController extends ControllerLib
      */
     public function logout(): void
     {
+        throw new LogicException(
+            'This method can be blank - it will be intercepted by the logout key on your firewall.'
+        );
     }
 
     /**

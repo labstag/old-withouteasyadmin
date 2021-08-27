@@ -1,0 +1,12 @@
+{% import "admin/macro.html.twig" as macro_admin %}
+{% extends 'admin/menu/layout.html.twig' %}
+{% block body %}
+    {{ form_start(form) }}
+    {% if form.clef is defined %}
+        {{ form_row(form.clef) }}
+    {% else %}
+        {{ form_row(form.libelle) }}
+        {{ form_row(form.icon) }}
+    {% endif %}
+    {{ form_end(form) }}
+{% endblock %}

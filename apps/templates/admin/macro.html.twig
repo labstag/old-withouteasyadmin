@@ -6,7 +6,7 @@
     {% endif %}
     {% if file is not null and file.name is not null %}
         <attachment-img
-            data-src="{{ asset(file.name) }}"
+            data-src="{{ asset(file.name) | imagine_filter('my_thumb') }}"
             data-name="{{ name|e('html_attr') }}"
             data-url="{{ url }}"
             data-token="{{ csrf_token('attachment-img-' ~ entity.id) }}"
@@ -46,7 +46,7 @@
     {% if state1 == true and state2 == true %}
         <link-edit
             href="{{ path(url, {'id': entity.id}) }}"
-            title="#{{ title|e('html_attr') }}"
+            title="{{ title|e('html_attr') }}"
         ></link-edit>
     {% endif %}
 {% endmacro %}
