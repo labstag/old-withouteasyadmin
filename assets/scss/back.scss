@@ -21,9 +21,11 @@ picture {
     @extend .list-group-item;
 
     cursor: move;
+
     &::before {
       @extend .fas;
       @extend .fa-expand-arrows-alt;
+
       width: 2rem;
     }
   }
