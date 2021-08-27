@@ -3,6 +3,8 @@
 namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -10,9 +12,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"user": "LienUser"})
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 abstract class Lien
 {
+    use SoftDeleteableEntity;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Url
+     */
+    protected $adresse;
 
     /**
      * @ORM\Id
@@ -27,13 +38,6 @@ abstract class Lien
      */
     protected $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * @Assert\Url
-     */
-    protected $adresse;
-
     public function __toString()
     {
         return implode(
@@ -43,6 +47,11 @@ abstract class Lien
                 $this->getAdresse(),
             ]
         );
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
     }
 
     public function getId(): ?string
@@ -55,21 +64,16 @@ abstract class Lien
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setAdresse(string $adresse): self
     {
-        $this->name = $name;
+        $this->adresse = $adresse;
 
         return $this;
     }
 
-    public function getAdresse(): ?string
+    public function setName(string $name): self
     {
-        return $this->adresse;
-    }
-
-    public function setAdresse(string $adresse): self
-    {
-        $this->adresse = $adresse;
+        $this->name = $name;
 
         return $this;
     }

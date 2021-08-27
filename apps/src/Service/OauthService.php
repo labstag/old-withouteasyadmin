@@ -2,24 +2,34 @@
 
 namespace Labstag\Service;
 
-use Labstag\Lib\GenericProviderLib;
+use AdamPaterson\OAuth2\Client\Provider\Slack;
+use League\OAuth2\Client\Provider\AbstractProvider;
+use League\OAuth2\Client\Provider\Github;
+use League\OAuth2\Client\Provider\Google;
+use League\OAuth2\Client\Provider\LinkedIn;
+use Omines\OAuth2\Client\Provider\Gitlab;
+use Rudolf\OAuth2\Client\Provider\Reddit;
+use Stevenmaguire\OAuth2\Client\Provider\Bitbucket;
+use Stevenmaguire\OAuth2\Client\Provider\Dropbox;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Vertisan\OAuth2\Client\Provider\TwitchHelix;
+use Wohali\OAuth2\Client\Provider\Discord;
 
 class OauthService
 {
 
-    private array $configProvider;
+    protected array $configProvider;
+
+    protected DataService $dataService;
+
+    protected array $oauthActivated;
 
     /**
      * @var Router|RouterInterface
      */
-    private $router;
-
-    private DataService $dataService;
-
-    private array $oauthActivated;
+    protected $router;
 
     public function __construct(
         RouterInterface $router,
@@ -32,23 +42,18 @@ class OauthService
         $this->setConfigProvider();
     }
 
-    public function getTypes(): array
+    public function getActivedProvider(?string $clientName): bool
     {
-        $types = [
-            'bitbucket',
-            'amazon',
-            'discord',
-            'dropbox',
-            'github',
-            'gitlab',
-            'google',
-            'instagram',
-            'paypal',
-            'reddit',
-            'twitch',
-        ];
+        if (is_null($clientName)) {
+            return false;
+        }
 
-        return $types;
+        return array_key_exists($clientName, $this->configProvider);
+    }
+
+    public function getConfigProvider(): array
+    {
+        return $this->configProvider;
     }
 
     /**
@@ -58,44 +63,31 @@ class OauthService
      */
     public function getIdentity($data, ?string $oauth)
     {
-        $entity = null;
         if (is_null($oauth)) {
             return;
         }
 
-        switch ($oauth) {
-            case 'gitlab':
-            case 'github':
-            case 'discord':
-                $this->caseDiscord($data, $entity);
-
-                break;
-            case 'google':
-                $this->caseGoogle($data, $entity);
-
-                break;
-            case 'bitbucket':
-                $this->caseBitbucket($data, $entity);
-                break;
-            default:
-                break;
-        }
-
-        return $entity;
-    }
-
-    /**
-     * @return GenericProviderLib|void
-     */
-    public function setProvider(?string $clientName)
-    {
-        if (is_null($clientName)) {
+        $config = $this->getConfig($oauth);
+        if (!array_key_exists('identity', $config)) {
             return;
         }
 
-        if ($this->ifConfigProviderEnable($clientName)) {
-            return $this->initProvider($clientName);
+        $identity = $config['identity'];
+        if (!array_key_exists($identity, $data)) {
+            return;
         }
+
+        return $data[$identity];
+    }
+
+    public function getTypes(): array
+    {
+        $types = [];
+        foreach (array_keys($this->configProvider) as $key) {
+            $types[] = $key;
+        }
+
+        return $types;
     }
 
     public function ifConfigProviderEnable(string $clientName): bool
@@ -111,120 +103,137 @@ class OauthService
         return $this->oauthActivated[$clientName]['activate'];
     }
 
-    public function getActivedProvider(?string $clientName): bool
+    public function setConfigProvider(): void
     {
-        if (is_null($clientName)) {
-            return false;
+        $file = __DIR__.'/../../json/oauth.json';
+        $data = [];
+        if (is_file($file)) {
+            $data = json_decode(file_get_contents($file), true);
         }
 
-        return array_key_exists($clientName, $this->configProvider);
+        $this->configProvider = $data;
     }
 
-    private function setConfigProviderGitlab(): array
+    /**
+     * @return AbstractProvider|void
+     */
+    public function setProvider(?string $clientName)
     {
-        $urlAuthorize   = 'https://gitlab.com/oauth/authorize';
-        $urlAccessToken = 'https://gitlab.com/oauth/token';
-        $ownerDetails   = 'https://gitlab.com/api/v4/user';
+        if (is_null($clientName)) {
+            return;
+        }
 
-        return [
-            'params'         => [
-                'urlAuthorize'            => $urlAuthorize,
-                'urlAccessToken'          => $urlAccessToken,
-                'urlResourceOwnerDetails' => $ownerDetails,
-            ],
-            'redirect'       => 1,
-            'scopeseparator' => ' ',
-            'scopes'         => ['read_user'],
-        ];
+        if ($this->ifConfigProviderEnable($clientName)) {
+            return $this->initProvider($clientName);
+        }
     }
 
-    private function setConfigProviderBitbucket(): array
+    protected function generateProvider($clientName, $url, $oauth)
     {
-        $urlAuthorize   = 'https://bitbucket.org/site/oauth2/authorize';
-        $urlAccessToken = 'https://bitbucket.org/site/oauth2/access_token';
-        $ownerDetails   = 'https://api.bitbucket.org/2.0/user';
-
-        return [
-            'params' => [
-                'urlAuthorize'            => $urlAuthorize,
-                'urlAccessToken'          => $urlAccessToken,
-                'urlResourceOwnerDetails' => $ownerDetails,
-            ],
+        $params   = [
+            'clientId'     => $oauth['id'],
+            'clientSecret' => $oauth['secret'],
+            'redirectUri'  => $url,
         ];
+        $provider = $this->generateStandardProvider($clientName, $params);
+        if ('reddit' == $clientName) {
+            $provider = new Reddit(
+                [
+                    'clientId'     => $oauth['id'],
+                    'clientSecret' => $oauth['secret'],
+                    'redirectUri'  => $url,
+                    'userAgent'    => 'platform:appid:version, (by /u/username)',
+                    'scopes'       => [
+                        'identity',
+                        'read',
+                    ],
+                ]
+            );
+        }
+
+        return $provider;
     }
 
-    private function setConfigProviderGithub(): array
+    protected function generateStandardProvider($clientName, $params)
     {
-        $urlAuthorize   = 'https://github.com/login/oauth/authorize';
-        $urlAccessToken = 'https://github.com/login/oauth/access_token';
-        $ownerDetails   = 'https://api.github.com/user';
+        $provider = null;
+        $provider = $this->generateStandardProviderBitbucket($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderDiscord($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderDropbox($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderGithub($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderGitlab($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderGoogle($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderLinkedin($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderSlack($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderTwitch($clientName, $params, $provider);
 
-        return [
-            'params' => [
-                'urlAuthorize'            => $urlAuthorize,
-                'urlAccessToken'          => $urlAccessToken,
-                'urlResourceOwnerDetails' => $ownerDetails,
-            ],
-        ];
+        return $provider;
     }
 
-    private function setConfigProviderDiscord(): array
+    protected function generateStandardProviderBitbucket($clientName, $params, $provider)
     {
-        $urlAuthorize   = 'https://discordapp.com/api/v6/oauth2/authorize';
-        $urlAccessToken = 'https://discordapp.com/api/v6/oauth2/token';
-        $ownerDetails   = 'https://discordapp.com/api/v6/users/@me';
+        $provider = ('bitbucket' == $clientName) ? new Bitbucket($params) : $provider;
 
-        return [
-            'params'         => [
-                'urlAuthorize'            => $urlAuthorize,
-                'urlAccessToken'          => $urlAccessToken,
-                'urlResourceOwnerDetails' => $ownerDetails,
-            ],
-            'scopeseparator' => ' ',
-            'scopes'         => [
-                'identify',
-                'email',
-                'connections',
-                'guilds',
-                'guilds.join',
-            ],
-        ];
+        return $provider;
     }
 
-    private function setConfigProviderGoogle(): array
+    protected function generateStandardProviderDiscord($clientName, $params, $provider)
     {
-        $urlAuthorize   = 'https://accounts.google.com/o/oauth2/v2/auth';
-        $urlAccessToken = 'https://www.googleapis.com/oauth2/v4/token';
-        $ownerDetails   = 'https://openidconnect.googleapis.com/v1/userinfo';
+        $provider = ('discord' == $clientName) ? new Discord($params) : $provider;
 
-        return [
-            'params'         => [
-                'urlAuthorize'            => $urlAuthorize,
-                'urlAccessToken'          => $urlAccessToken,
-                'urlResourceOwnerDetails' => $ownerDetails,
-            ],
-            'redirect'       => 1,
-            'scopeseparator' => ' ',
-            'scopes'         => [
-                'openid',
-                'email',
-                'profile',
-            ],
-        ];
+        return $provider;
     }
 
-    private function setConfigProvider(): void
+    protected function generateStandardProviderDropbox($clientName, $params, $provider)
     {
-        $this->configProvider = [
-            'gitlab'    => $this->setConfigProviderGitlab(),
-            'bitbucket' => $this->setConfigProviderBitbucket(),
-            'github'    => $this->setConfigProviderGithub(),
-            'discord'   => $this->setConfigProviderDiscord(),
-            'google'    => $this->setConfigProviderGoogle(),
-        ];
+        $provider = ('dropbox' == $clientName) ? new Dropbox($params) : $provider;
+
+        return $provider;
     }
 
-    private function getConfig(string $clientName): array
+    protected function generateStandardProviderGithub($clientName, $params, $provider)
+    {
+        $provider = ('github' == $clientName) ? new Github($params) : $provider;
+
+        return $provider;
+    }
+
+    protected function generateStandardProviderGitlab($clientName, $params, $provider)
+    {
+        $provider = ('gitlab' == $clientName) ? new Gitlab($params) : $provider;
+
+        return $provider;
+    }
+
+    protected function generateStandardProviderGoogle($clientName, $params, $provider)
+    {
+        $provider = ('google' == $clientName) ? new Google($params) : $provider;
+
+        return $provider;
+    }
+
+    protected function generateStandardProviderlinkedin($clientName, $params, $provider)
+    {
+        $provider = ('linkedin' == $clientName) ? new LinkedIn($params) : $provider;
+
+        return $provider;
+    }
+
+    protected function generateStandardProviderSlack($clientName, $params, $provider)
+    {
+        $provider = ('slack' == $clientName) ? new Slack($params) : $provider;
+
+        return $provider;
+    }
+
+    protected function generateStandardProviderTwitch($clientName, $params, $provider)
+    {
+        $provider = ('twitch' == $clientName) ? new TwitchHelix($params) : $provider;
+
+        return $provider;
+    }
+
+    protected function getConfig(string $clientName): array
     {
         if (isset($this->configProvider[$clientName])) {
             return $this->configProvider[$clientName];
@@ -233,70 +242,16 @@ class OauthService
         return [];
     }
 
-    private function initProvider(string $clientName): GenericProviderLib
+    protected function initProvider(string $clientName): AbstractProvider
     {
-        $config = $this->getConfig($clientName);
-        if (isset($config['redirect'])) {
-            $config['params']['redirectUri'] = $this->router->generate(
-                'connect_check',
-                ['oauthCode' => $clientName],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
-        }
-
         $code  = strtoupper($clientName);
         $oauth = $this->oauthActivated[strtolower($code)];
-
-        $config['params']['clientId']     = $oauth['id'];
-        $config['params']['clientSecret'] = $oauth['secret'];
-
-        $provider = new GenericProviderLib(
-            $config['params']
+        $url   = 'https:'.$this->router->generate(
+            'connect_check',
+            ['oauthCode' => $clientName],
+            UrlGeneratorInterface::NETWORK_PATH
         );
-        if (isset($config['scopes'])) {
-            $provider->setDefaultScopes($config['scopes']);
-        }
 
-        if (isset($config['scopeseparator'])) {
-            $provider->setScopeSeparator($config['scopeseparator']);
-        }
-
-        return $provider;
-    }
-
-    /**
-     * @param mixed $entity
-     */
-    private function caseBitbucket(array $data, &$entity): void
-    {
-        if (!isset($data['uuid'])) {
-            return;
-        }
-
-        $entity = $data['uuid'];
-    }
-
-    /**
-     * @param mixed $entity
-     */
-    private function caseGoogle(array $data, &$entity): void
-    {
-        if (!isset($data['sub'])) {
-            return;
-        }
-
-        $entity = $data['sub'];
-    }
-
-    /**
-     * @param mixed $entity
-     */
-    private function caseDiscord(array $data, &$entity): void
-    {
-        if (!isset($data['id'])) {
-            return;
-        }
-
-        $entity = $data['id'];
+        return $this->generateProvider($clientName, $url, $oauth);
     }
 }

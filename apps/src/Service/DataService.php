@@ -3,6 +3,7 @@
 namespace Labstag\Service;
 
 use Labstag\Entity\Configuration;
+use Labstag\Entity\User;
 use Labstag\Repository\ConfigurationRepository;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -10,13 +11,13 @@ use Symfony\Contracts\Cache\ItemInterface;
 class DataService
 {
 
-    private array $oauthActivated = [];
+    protected CacheInterface $cache;
 
-    private array $config = [];
+    protected array $config = [];
 
-    private ConfigurationRepository $repository;
+    protected array $oauthActivated = [];
 
-    private CacheInterface $cache;
+    protected ConfigurationRepository $repository;
 
     public function __construct(
         ConfigurationRepository $repository,
@@ -28,9 +29,11 @@ class DataService
         $this->setData();
     }
 
-    public function getOauthActivated(): array
+    public function compute(ItemInterface $item): array
     {
-        return $this->oauthActivated;
+        $item->expiresAfter(1800);
+
+        return $this->getConfiguration();
     }
 
     public function getConfig(): array
@@ -38,24 +41,33 @@ class DataService
         return $this->config;
     }
 
-    private function setData(): void
+    public function getOauthActivated(?User $user = null): array
     {
-        $config = $this->cache->get(
-            'configuration',
-            [
-                $this,
-                'compute',
-            ]
-        );
+        if (is_null($user)) {
+            return $this->oauthActivated;
+        }
 
-        $this->config = $config;
+        $oauthActivateds = $this->oauthActivated;
+        $oauthUsers      = $user->getOauthConnectUsers();
+        foreach ($oauthActivateds as $index => $oauthActivated) {
+            $trouver = 0;
+            foreach ($oauthUsers as $oauthUser) {
+                if ($oauthUser->getName() == $oauthActivated['type']) {
+                    $trouver = 1;
+                    break;
+                }
+            }
 
-        $this->setOauth($config);
+            if (1 === $trouver) {
+                unset($oauthActivateds[$index]);
+            }
+        }
+
+        return $oauthActivateds;
     }
 
-    public function compute(ItemInterface $item): array
+    protected function getConfiguration()
     {
-        $item->expiresAfter(1800);
         $data   = $this->repository->findAll();
         $config = [];
         /** @var Configuration $row */
@@ -68,7 +80,25 @@ class DataService
         return $config;
     }
 
-    private function setOauth(array $config): void
+    protected function setData(): void
+    {
+        $config = $this->cache->get(
+            'configuration',
+            [
+                $this,
+                'compute',
+            ]
+        );
+        if (0 === count($config)) {
+            $config = $this->getConfiguration();
+        }
+
+        $this->config = $config;
+
+        $this->setOauth($config);
+    }
+
+    protected function setOauth(array $config): void
     {
         if (!isset($config['oauth']) || !is_array($config['oauth'])) {
             return;

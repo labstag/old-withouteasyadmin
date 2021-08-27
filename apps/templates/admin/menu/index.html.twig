@@ -1,39 +1,18 @@
 {% import "admin/macro.html.twig" as macro_admin %}
+{% import "admin/menu/macro.html.twig" as macro_menu %}
 {% extends 'admin/menu/layout.html.twig' %}
 {% block body %}
-    <table
-  data-locale="fr-FR"
-  data-toggle="table"
-  data-show-columns="true">
-        <thead>
-            <tr>
-                <th>Libelle</th>
-                <th>Icon</th>
-                <th>Position</th>
-                <th>Data</th>
-                <th>Separateur</th>
-                <th>Clef</th>
-                <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in pagination %}
-            <tr>
-                <td>{{ entity.libelle }}</td>
-                <td>{{ entity.icon }}</td>
-                <td>{{ entity.position }}</td>
-                <td>{{ entity.data ? entity.data|json_encode : '' }}</td>
-                <td>{{ entity.separateur ? 'Yes' : 'No' }}</td>
-                <td>{{ entity.clef }}</td>
-                <td>
-                    {{ macro_admin.actions(entity, actions) }}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="row">
+    {% for menu in all %}
+        <div class="col-6">
+            <fieldset>
+                <legend>
+                    {{ menu.clef }}
+                </legend>
+                {{ macro_menu.link(menu, 0) }}
+                {{ macro_menu.show(menu.children, 0) }}
+            </fieldset>
+        </div>
+    {% endfor %}
+    </div>
 {% endblock %}

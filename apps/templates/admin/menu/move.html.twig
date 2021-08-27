@@ -1,0 +1,21 @@
+{% import "admin/macro.html.twig" as macro_admin %}
+{% import "admin/menu/macro.html.twig" as macro_menu %}
+{% extends 'admin/menu/layout.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-6">
+            <ul is="menu-move">
+            {% for child in menu.children %}
+                <li data-id="{{ child.id }}">
+                    {% if child.separateur %}
+                        [[DIVIDER]]
+                    {% else %}
+                        {{ child.libelle }}
+                    {% endif %}
+                </li>
+
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

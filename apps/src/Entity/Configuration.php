@@ -2,31 +2,35 @@
 
 namespace Labstag\Entity;
 
-use Labstag\Repository\ConfigurationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Repository\ConfigurationRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ConfigurationRepository::class)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Configuration
 {
+    use SoftDeleteableEntity;
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="object", nullable=true)
      */
-    private $value;
+    protected $value;
 
     public function __toString()
     {
@@ -43,16 +47,16 @@ class Configuration
         return $this->name;
     }
 
+    public function getValue()
+    {
+        return $this->value;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
-    }
-
-    public function getValue()
-    {
-        return $this->value;
     }
 
     public function setValue($value): self

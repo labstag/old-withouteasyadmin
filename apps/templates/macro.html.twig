@@ -1,7 +1,7 @@
 {% macro flashbag(app) %}
     {% for label, messages in app.flashes %}
         <div class="alert alert-{{ label }}">
-            <button class="close" data-dismiss="alert">×</button>
+            <button class="btn-close" data-bs-dismiss="alert">×</button>
             <ul>
             {% for message in messages %}
                 <li>{{ message|trans|raw }}</li>
@@ -10,7 +10,9 @@
         </div>
     {% endfor %}
 {% endmacro %}
-{% macro user(user) %}
+{% macro user(user, url) %}
     <i class="fas fa-user"></i>
-    {{ user }}
+    <a href="{{ url }}">
+        {{ user }}
+    </a>
 {% endmacro %}

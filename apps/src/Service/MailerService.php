@@ -10,13 +10,13 @@ use Twig\Environment;
 class MailerService
 {
 
-    private Environment $twig;
+    protected DataService $dataService;
 
-    private EnqueueMethod $enqueue;
+    protected EnqueueMethod $enqueue;
 
-    private MailerInterface $mailer;
+    protected MailerInterface $mailer;
 
-    private DataService $dataService;
+    protected Environment $twig;
 
     public function __construct(
         Environment $twig,
@@ -57,7 +57,11 @@ class MailerService
             $email->text($text);
         }
 
-        return $email->from($config['site_no-reply']);
+        if (isset($config['site_no-reply'])) {
+            $email->from($config['site_no-reply']);
+        }
+
+        return $email;
     }
 
     public function send(Email $email): void

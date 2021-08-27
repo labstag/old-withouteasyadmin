@@ -1,0 +1,147 @@
+[{
+        "libelle": "Home",
+        "data": {
+            "route": "admin"
+        }
+    },
+    {
+        "libelle": "Général",
+        "childs": [{
+                "libelle": "Trash",
+                "data": {
+                    "route": "admin_trash"
+                }
+            },
+            {
+                "libelle": "Param",
+                "data": {
+                    "route": "admin_param"
+                }
+            },
+            {
+                "libelle": "Oauth",
+                "data": {
+                    "route": "admin_oauth"
+                }
+            },
+            {
+                "libelle": "Attachment",
+                "data": {
+                    "route": "admin_attachment_index"
+                }
+            },
+            {
+                "libelle": "Geocode",
+                "data": {
+                    "route": "admin_geocode_index"
+                }
+            },
+            {
+                "libelle": "Note Interne",
+                "data": {
+                    "route": "admin_noteinterne_index"
+                }
+            },
+            {
+                "libelle": "Edito",
+                "data": {
+                    "route": "admin_edito_index"
+                }
+            },
+            {
+                "libelle": "Template",
+                "data": {
+                    "route": "admin_template_index"
+                }
+            },
+            {
+                "libelle": "Menu",
+                "data": {
+                    "route": "admin_menu_index"
+                }
+            }
+        ]
+    },
+    {
+        "libelle": "Utilisateurs",
+        "childs": [{
+                "libelle": "Adresses",
+                "data": {
+                    "route": "admin_adresseuser_index"
+                }
+            },
+            {
+                "libelle": "Emails",
+                "data": {
+                    "route": "admin_emailuser_index"
+                }
+            },
+            {
+                "libelle": "Liens",
+                "data": {
+                    "route": "admin_lienuser_index"
+                }
+            },
+            {
+                "libelle": "Phones",
+                "data": {
+                    "route": "admin_phoneuser_index"
+                }
+            },
+            {
+                "libelle": "Groupes",
+                "data": {
+                    "route": "admin_groupuser_index"
+                }
+            },
+            {
+                "separator": 1
+            },
+            {
+                "libelle": "Droits",
+                "data": {
+                    "route": "admin_guard_index"
+                }
+            },
+            {
+                "libelle": "Liste",
+                "data": {
+                    "route": "admin_user_index"
+                }
+            }
+        ]
+    },
+    {
+        "libelle": "Etablissements",
+        "childs": []
+    },
+    {
+        "libelle": "Histoires",
+        "childs": []
+    },
+    {
+        "libelle": "Bookmarks",
+        "childs": []
+    },
+    {
+        "libelle": "Partenaires",
+        "childs": []
+    },
+    {
+        "libelle": "Posts",
+        "childs": [{
+                "libelle": "Libelle",
+                "data": {
+                    "route": "admin_postlibelle_index"
+                }
+            },
+            {
+                "libelle": "Liste",
+                "data": {
+                    "route": "admin_post_index",
+                    "target": "_blank"
+                }
+            }
+        ]
+    }
+]

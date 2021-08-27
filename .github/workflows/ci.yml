@@ -6,17 +6,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ubuntu-latest]
-        php-versions: ["7.4"]
+        operating-system: [ubuntu-20.04]
+        php-versions: ["8.0"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, xml, ctype, iconv, intl
-          coverage: xdebug
+          submodules: recursive
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          repository: koromerzhin/lampy
+          path: lampy
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v2
@@ -24,40 +26,74 @@ jobs:
           path: |
             apps/bin
             apps/vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/apps/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/apps/composer.lock') }}-${{ hashFiles('**/apps/composer.json') }}
           restore-keys: |
-            ${{ runner.os }}-composer-
+            ${{ runner.os }}-composer-${{ hashFiles('**/apps/composer.lock') }}-${{ hashFiles('**/apps/composer.json') }}
       - name: Cache npm packages
         id: npm-cache
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
       - name: Install npm dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: make node_modules
-      - name: Validate composer.json
-        run: make composer-validate-ci
+      - name: 'Docker swarm init'
+        run: make docker swarm-init
+      - name: 'Launch Lampy'
+        run: make lampy
+      - name: 'SET BDD'
+        run: make bddset
+      - name: 'Create proxy network'
+        run: make docker create-network
+      - name: 'Image pull'
+        run: make docker image-pull
+      - name: 'Build containers'
+        run: make docker deploy
+      - name: 'sleep'
+        run: make sleep 60
+      - name: 'docker ls'
+        run: make docker ls
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, xml, ctype, iconv, intl
+          coverage: xdebug
+      - name: 'Installation variable environnement'
+        run: make env dev
+      - name: 'Create file .env'
+        run: make env dev
       - name: Install Composer dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: make composer-dev-ci
+        run: make composer dev
       - name: linter readme.md
-        run: make linter-readme
+        run: make linter readme
+      - name: linter SCSS
+        run: make linter stylelint
       - name: linter PHP Code Sniffer
-        run: make linter-phpcs-onlyerror-ci
+        run: make linter phpcs-onlyerror
       - name: linter PHP MD
-        run: make linter-phpmd-ci
+        run: make linter phpmd
       - name: linter PHPMND
-        run: make linter-phpmnd-ci
+        run: make linter phpmnd
       - name: Add assets
-        run: make assets-ci
+        run: make assets
       - name: Test lancement bootstrap
-        run: make encore-dev
+        run: make encore dev
       - name: Linter twig
-        run: make linter-twig-ci
+        run: make linter twig
       - name: Linter yaml
-        run: make linter-yaml-ci
-      - name: linter phpstan
-        run: make linter-phpstan-ci
+        run: make linter yaml
+      # - name: linter phpstan
+      #   run: make linter phpstan
+      - name: 'Composer install'
+        run: make composer dev
+      - name: 'BDD MIGRATE'
+        run: make bdd migrate
+      - name: 'Run the fixtures'
+        run: make bdd fixtures
+      - name: Run Acceptance Tests
+        run: make tests behat

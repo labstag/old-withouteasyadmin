@@ -2,16 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
-use DateTime;
-use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\NoteInterne;
 use Labstag\Form\Admin\NoteInterneType;
-use Labstag\Repository\NoteInterneRepository;
 use Labstag\Lib\AdminControllerLib;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Repository\NoteInterneRepository;
+use Labstag\RequestHandler\NoteInterneRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/admin/noteinterne")
@@ -22,70 +20,6 @@ class NoteInterneController extends AdminControllerLib
     protected string $headerTitle = 'Note interne';
 
     protected string $urlHome = 'admin_noteinterne_index';
-    /**
-     * @Route("/", name="admin_noteinterne_index", methods={"GET"})
-     */
-    public function index(NoteInterneRepository $repository): Response
-    {
-        return $this->adminCrudService->list(
-            $repository,
-            'findAllForAdmin',
-            'admin/note_interne/index.html.twig',
-            ['new' => 'admin_noteinterne_new'],
-            [
-                'list'   => 'admin_noteinterne_index',
-                'show'   => 'admin_noteinterne_show',
-                'edit'   => 'admin_noteinterne_edit',
-                'delete' => 'admin_noteinterne_delete',
-            ]
-        );
-    }
-
-    /**
-     * @Route("/new", name="admin_noteinterne_new", methods={"GET","POST"})
-     */
-    public function new(RouterInterface $router): Response
-    {
-        $breadcrumb = [
-            'New' => $router->generate(
-                'admin_noteinterne_new'
-            ),
-        ];
-        $this->setBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->create(
-            new NoteInterne(),
-            NoteInterneType::class,
-            ['list' => 'admin_noteinterne_index']
-        );
-    }
-
-    /**
-     * @Route("/{id}", name="admin_noteinterne_show", methods={"GET"})
-     */
-    public function show(
-        NoteInterne $noteInterne,
-        RouterInterface $router
-    ): Response
-    {
-        $breadcrumb = [
-            'Show' => $router->generate(
-                'admin_noteinterne_show',
-                [
-                    'id' => $noteInterne->getId(),
-                ]
-            ),
-        ];
-        $this->setBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->read(
-            $noteInterne,
-            'admin/note_interne/show.html.twig',
-            [
-                'delete' => 'admin_noteinterne_delete',
-                'list'   => 'admin_noteinterne_index',
-                'edit'   => 'admin_noteinterne_edit',
-            ]
-        );
-    }
 
     /**
      * @Route(
@@ -94,36 +28,88 @@ class NoteInterneController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(
-        NoteInterne $noteInterne,
-        RouterInterface $router
-    ): Response
+    public function edit(NoteInterne $noteInterne, NoteInterneRequestHandler $requestHandler): Response
     {
-        $breadcrumb = [
-            'Edit' => $router->generate(
-                'admin_noteinterne_edit',
-                [
-                    'id' => $noteInterne->getId(),
-                ]
-            ),
-        ];
-        $this->setBreadcrumbs($breadcrumb);
-        return $this->adminCrudService->update(
+        $this->modalAttachmentDelete();
+
+        return $this->update(
             NoteInterneType::class,
             $noteInterne,
+            $requestHandler,
             [
-                'delete' => 'admin_noteinterne_delete',
+                'delete' => 'api_action_delete',
                 'list'   => 'admin_noteinterne_index',
                 'show'   => 'admin_noteinterne_show',
+            ],
+            'admin/note_interne/form.html.twig'
+        );
+    }
+
+    /**
+     * @Route("/trash", name="admin_noteinterne_trash", methods={"GET"})
+     * @Route("/", name="admin_noteinterne_index", methods={"GET"})
+     * @IgnoreSoftDelete
+     */
+    public function indexOrTrash(NoteInterneRepository $repository): Response
+    {
+        return $this->listOrTrash(
+            $repository,
+            [
+                'trash' => 'findTrashForAdmin',
+                'all'   => 'findAllForAdmin',
+            ],
+            'admin/note_interne/index.html.twig',
+            [
+                'new'   => 'admin_noteinterne_new',
+                'empty' => 'api_action_empty',
+                'trash' => 'admin_noteinterne_trash',
+                'list'  => 'admin_noteinterne_index',
+            ],
+            [
+                'list'     => 'admin_noteinterne_index',
+                'show'     => 'admin_noteinterne_show',
+                'preview'  => 'admin_noteinterne_preview',
+                'edit'     => 'admin_noteinterne_edit',
+                'delete'   => 'api_action_delete',
+                'destroy'  => 'api_action_destroy',
+                'restore'  => 'api_action_restore',
+                'workflow' => 'api_action_workflow',
             ]
         );
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_noteinterne_delete", methods={"POST"})
+     * @Route("/new", name="admin_noteinterne_new", methods={"GET","POST"})
      */
-    public function delete(NoteInterne $noteInterne): Response
+    public function new(NoteInterneRequestHandler $requestHandler): Response
     {
-        return $this->adminCrudService->delete($noteInterne);
+        return $this->create(
+            new NoteInterne(),
+            NoteInterneType::class,
+            $requestHandler,
+            ['list' => 'admin_noteinterne_index'],
+            'admin/note_interne/form.html.twig'
+        );
+    }
+
+    /**
+     * @Route("/{id}", name="admin_noteinterne_show", methods={"GET"})
+     * @Route("/preview/{id}", name="admin_noteinterne_preview", methods={"GET"})
+     * @IgnoreSoftDelete
+     */
+    public function showOrPreview(NoteInterne $noteInterne): Response
+    {
+        return $this->renderShowOrPreview(
+            $noteInterne,
+            'admin/note_interne/show.html.twig',
+            [
+                'delete'  => 'api_action_delete',
+                'restore' => 'api_action_restore',
+                'destroy' => 'api_action_destroy',
+                'list'    => 'admin_noteinterne_index',
+                'edit'    => 'admin_noteinterne_edit',
+                'trash'   => 'admin_noteinterne_trash',
+            ]
+        );
     }
 }

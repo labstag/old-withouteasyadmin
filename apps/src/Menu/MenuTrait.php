@@ -7,21 +7,31 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuItem;
 use Labstag\Entity\Menu;
 use Labstag\Repository\MenuRepository;
+use Labstag\Service\GuardService;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 trait MenuTrait
 {
 
-    private FactoryInterface $factory;
+    protected FactoryInterface $factory;
 
-    private MenuRepository $repository;
+    protected GuardService $guardService;
+
+    protected MenuRepository $repository;
+
+    protected TokenStorageInterface $token;
 
     public function __construct(
         FactoryInterface $factory,
-        MenuRepository $repository
+        MenuRepository $repository,
+        TokenStorageInterface $token,
+        GuardService $guardService
     )
     {
-        $this->factory    = $factory;
-        $this->repository = $repository;
+        $this->token        = $token;
+        $this->guardService = $guardService;
+        $this->factory      = $factory;
+        $this->repository   = $repository;
     }
 
     public function setData(ItemInterface $menu, string $clef): ItemInterface
@@ -33,7 +43,7 @@ trait MenuTrait
             ]
         );
 
-        if (!($data instanceof Menu)) {
+        if (!$data instanceof Menu) {
             return $menu;
         }
 
@@ -42,24 +52,44 @@ trait MenuTrait
             $this->addMenu($menu, $child);
         }
 
+        $this->correctionMenu($menu);
+
         return $menu;
     }
 
-    private function addMenu(MenuItem &$parent, Menu $child): void
+    protected function addMenu(MenuItem &$parent, Menu $child): void
     {
         $data      = [];
         $dataChild = $child->getData();
         if ($child->isSeparateur()) {
             $parent->addChild('')->setExtra('divider', true);
+
             return;
         }
 
-        if (isset($dataChild['attr']['data-href'])) {
-            $data['route'] = $dataChild['attr']['data-href'];
+        if (isset($dataChild['route'])) {
+            $token = $this->token->getToken();
+            $state = $this->guardService->guardRoute($dataChild['route'], $token);
+            if (!$state) {
+                return;
+            }
+
+            $data['route'] = $dataChild['route'];
+            unset($dataChild['route']);
         }
 
-        if (isset($dataChild['attr']['data-href-params'])) {
-            $data['routeParameters'] = $dataChild['attr']['data-href-params'];
+        if (isset($dataChild['url'])) {
+            $data['uri'] = $dataChild['url'];
+            unset($dataChild['url']);
+        }
+
+        if (isset($dataChild['params'])) {
+            $data['routeParameters'] = $dataChild['params'];
+            unset($dataChild['params']);
+        }
+
+        if (0 != count($dataChild)) {
+            $data['linkAttributes'] = $dataChild;
         }
 
         $menu      = $parent->addChild(
@@ -69,6 +99,40 @@ trait MenuTrait
         $childrens = $child->getChildren();
         foreach ($childrens as $child) {
             $this->addMenu($menu, $child);
+        }
+    }
+
+    protected function correctionMenu(MenuItem $menu)
+    {
+        $data = $menu->getChildren();
+        foreach ($data as $key => $row) {
+            $extras = $row->getExtras();
+            if (0 != count($extras)) {
+                continue;
+            }
+
+            $children = $row->getChildren();
+            if (0 == count($children)) {
+                $menu->removeChild($key);
+                continue;
+            }
+
+            $this->deleteParent($children, $key, $menu);
+        }
+    }
+
+    protected function deleteParent($children, $key, $menu)
+    {
+        $divider = 0;
+        foreach ($children as $child) {
+            $extras = $child->getExtras();
+            if (array_key_exists('divider', $extras) && true == $extras['divider']) {
+                ++$divider;
+            }
+        }
+
+        if ($divider == count($children)) {
+            $menu->removeChild($key);
         }
     }
 }

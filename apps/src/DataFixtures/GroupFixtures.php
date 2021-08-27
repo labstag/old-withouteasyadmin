@@ -8,28 +8,17 @@ use Labstag\Lib\FixtureLib;
 
 class GroupFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    private function getGroupes(): array
+    public function getDependencies()
     {
-        return [
-            'visiteur',
-            'admin',
-            'superadmin',
-            'user',
-        ];
+        return [DataFixtures::class];
     }
 
     public function load(ObjectManager $manager): void
     {
-        $groupes = $this->getGroupes();
+        unset($manager);
+        $groupes = $this->installService->getData('group');
         foreach ($groupes as $key => $row) {
-            $this->addGroupe($manager, $key, $row);
+            $this->addGroupe($key, $row);
         }
-
-        $manager->flush();
-    }
-
-    public function getDependencies()
-    {
-        return [CacheFixtures::class];
     }
 }

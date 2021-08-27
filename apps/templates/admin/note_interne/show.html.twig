@@ -11,20 +11,47 @@
                 <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
-                <th>Enable</th>
-                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
                 <th>Date_debut</th>
-                <td>{{ entity.dateDebut ? entity.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
             </tr>
             <tr>
                 <th>Date_fin</th>
-                <td>{{ entity.dateFin ? entity.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ entity.dateFin ? entity.dateFin|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
             </tr>
+            {% set fond = attachment(entity.fond) %}
+            {% if fond is not null and fond.name is not null %}
+            <tr>
+                <th>Fond</th>
+                <td>
+                    <picture >
+                        <img alt="Note Interne fond" src="{{ asset(fond.name) | imagine_filter('my_thumb') }}" />
+                    </picture>
+                </td>
+            </tr>
+            {% endif %}
             <tr>
                 <th>User</th>
-                <td>{{ entity.refuser }}</td>
+                <td>
+                    {% if entity.refuser.deletedAt != '' %}
+                        {% set url = 'admin_user_preview' %}
+                    {% else %}
+                        {% set url = 'admin_user_show' %}
+                    {% endif %}
+                    {% set state = guard_route(url) %}
+                    {% if state == true %}
+                        <a href="{{ path(url, {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
+                    {% else %}
+                        {{ entity.refuser }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>

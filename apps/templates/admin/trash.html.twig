@@ -1,0 +1,54 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    <table
+        is="table-datatable"
+        data-action="Actions"
+        data-multiple
+        data-multipleall="Tout sélectionner"
+        data-multipleelement="Selection"
+        data-empty="No records found"
+        data-count={{ trash|length }}
+    >
+        <thead>
+            <tr>
+                <th>Entité</th>
+                <th>Count</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for data in trash %}
+            <tr data-id="{{ data.name|e('html_attr') }}">
+                <td>
+                    {{ data.entity }}
+                </td>
+                <td>
+                    {{ data.total }}
+                </td>
+                <td>
+                    {% set state = guard_route(data.properties.url) %}
+                    {% if state == true %}
+                    <link-trash
+                        href="{{ path(data.properties.url) }}"
+                        title="Aller sur cette corbeille"
+                    ></link-trash>
+                    {% endif %}
+                    {% set state = guard_route('api_action_empty') %}
+                    {% if state == true %}
+                        <link-empty
+                            data-redirect="{{ path(app.request.attributes.get('_route')) }}"
+                            data-url="{{ path('api_action_empty', {'entity': data.name}) }}"
+                            data-token="{{ data.token }}"
+                            data-title="Vider"
+                        ></link-empty>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% block modal %}
+    {{ parent() }}
+    {% include "modal/emptyall.html.twig" %}
+{% endblock %}

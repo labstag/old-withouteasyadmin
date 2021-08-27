@@ -2,30 +2,41 @@
 {% extends 'admin/edito/layout.html.twig' %}
 {% block body %}
     <table
-  data-locale="fr-FR"
-  data-toggle="table"
-  data-show-columns="true">
+        is="table-datatable"
+        data-action="Actions"
+        data-multiple
+        data-multipleall="Tout sélectionner"
+        data-multipleelement="Selection"
+        data-empty="No records found"
+        data-count={{ pagination|length }}
+    >
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Enable</th>
                 <th>User</th>
-                <th class="text-center" data-events="operateEvents"><i class="BtnAdminTableAction" title="Actions"></i></th>
+                <th>Published</th>
+                <th>State</th>
+                <th>Workflow</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
         {% for entity in pagination %}
-            <tr>
+            <tr data-id="{{ entity.id }}">
                 <td>{{ entity.title }}</td>
-                <td>{{ entity.enable ? 'Yes' : 'No' }}</td>
                 <td>{{ entity.refuser }}</td>
+                <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ macro_admin.workflow(entity, actions) }}
+                </td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

@@ -3,17 +3,15 @@
 namespace Labstag\Queue\Handler;
 
 use Labstag\Queue\Message\ServiceMethodMessage;
-use Symfony\Component\Mailer\MailerInterface;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
-class ServiceMethodMessageHandler implements
-    MessageHandlerInterface,
-    ServiceSubscriberInterface
+class ServiceMethodMessageHandler implements MessageHandlerInterface, ServiceSubscriberInterface
 {
 
-    private ContainerInterface $container;
+    protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {

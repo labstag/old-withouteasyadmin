@@ -6,34 +6,46 @@ use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\User;
 use Labstag\Event\UserEntityEvent;
+use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserEntitySubscriber implements EventSubscriberInterface
 {
 
-    private SessionInterface $session;
+    protected EmailUserRequestHandler $emailUserRH;
 
-    private EntityManagerInterface $entityManager;
+    protected EntityManagerInterface $entityManager;
 
-    private UserPasswordEncoderInterface $passwordEncoder;
+    protected FlashBagInterface $flashbag;
 
-    private UserMailService $userMailService;
+    protected UserPasswordHasherInterface $passwordEncoder;
+
+    protected UserMailService $userMailService;
+
+    protected RequestStack $requestStack;
 
     public function __construct(
-        SessionInterface $session,
+        RequestStack $requestStack,
         EntityManagerInterface $entityManager,
-        UserPasswordEncoderInterface $passwordEncoder,
-        UserMailService $userMailService
+        UserPasswordHasherInterface $passwordEncoder,
+        UserMailService $userMailService,
+        EmailUserRequestHandler $emailUserRH
     )
     {
+        $this->requestStack    = $requestStack;
+        $this->emailUserRH     = $emailUserRH;
         $this->userMailService = $userMailService;
         $this->entityManager   = $entityManager;
-        $this->session         = $session;
         $this->passwordEncoder = $passwordEncoder;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [UserEntityEvent::class => 'onUserEntityEvent'];
     }
 
     public function onUserEntityEvent(UserEntityEvent $event): void
@@ -42,69 +54,65 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $newEntity = $event->getNewEntity();
         $this->setPassword($newEntity);
         $this->setPrincipalMail($oldEntity, $newEntity);
-        $this->setLost($oldEntity, $newEntity);
-        $this->setEnable($oldEntity, $newEntity);
         $this->setChangePassword($oldEntity, $newEntity);
     }
 
-    private function setChangePassword(User $oldEntity, User $newEntity): void
+    protected function setChangePassword(User $oldEntity, User $newEntity): void
     {
-        if ($oldEntity->isLost() == $newEntity->isLost()) {
+        if ($oldEntity->getState() == $newEntity->getState()) {
             return;
         }
 
-        if (!$oldEntity->isLost()) {
+        if ('lostpassword' != $oldEntity->getState()) {
             return;
         }
 
-        /** @var Session $session */
-        $session = $this->session;
         $this->userMailService->changePassword($newEntity);
-        $session->getFlashBag()->add(
+        $this->flashBagAdd(
             'success',
             'Changement de mot de passe effectué'
         );
     }
 
-    private function setLost(User $oldEntity, User $newEntity): void
+    private function flashBagAdd(string $type, $message)
     {
-        if ($oldEntity->isLost() == $newEntity->isLost()) {
+        $requestStack = $this->requestStack;
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
             return;
         }
 
-        if (!$newEntity->isLost()) {
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
+    }
+
+    protected function setPassword(User $user): void
+    {
+        $plainPassword = $user->getPlainPassword();
+        if ('' === $plainPassword || is_null($plainPassword)) {
             return;
         }
 
-        $this->userMailService->lostPassword($newEntity);
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
+        $encodePassword = $this->passwordEncoder->hashPassword(
+            $user,
+            $plainPassword
+        );
+
+        $user->setPassword($encodePassword);
+        if ('valider' == $user->getState()) {
+            $this->userMailService->changePassword($user);
+        }
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        $this->flashBagAdd(
             'success',
-            'Demande de nouveau mot de passe envoyé'
+            'Mot de passe changé'
         );
     }
 
-    private function setEnable(User $oldEntity, User $newEntity): void
-    {
-        if ($oldEntity->isVerif() == $newEntity->isVerif()) {
-            return;
-        }
-
-        if ($newEntity->isVerif()) {
-            return;
-        }
-
-        $this->userMailService->newUser($newEntity);
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
-            'success',
-            'Nouveau compte utilisateur créer'
-        );
-    }
-
-    private function setPrincipalMail(User $oldEntity, User $newEntity): void
+    protected function setPrincipalMail(User $oldEntity, User $newEntity): void
     {
         if ($oldEntity->getEmail() == $newEntity->getEmail()) {
             return;
@@ -114,7 +122,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $emails  = $newEntity->getEmailUsers();
         $trouver = false;
         foreach ($emails as $emailUser) {
-            /** @var EmailUser $emailUser */
+            /* @var EmailUser $emailUser */
             $emailUser->setPrincipal(false);
             if ($emailUser->getAdresse() === $adresse) {
                 $emailUser->setPrincipal(true);
@@ -124,14 +132,12 @@ class UserEntitySubscriber implements EventSubscriberInterface
             $this->entityManager->persist($emailUser);
         }
 
-        if ($newEntity->isEnable()) {
+        if ('valider' == $newEntity->getState()) {
             $this->userMailService->changeEmailPrincipal($newEntity);
         }
 
         $this->entityManager->flush();
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
+        $this->flashBagAdd(
             'success',
             'Email principal changé'
         );
@@ -141,43 +147,11 @@ class UserEntitySubscriber implements EventSubscriberInterface
         }
 
         $emailUser = new EmailUser();
+        $old       = clone $emailUser;
         $emailUser->setRefuser($newEntity);
-        $emailUser->setVerif(true);
         $emailUser->setPrincipal(true);
         $emailUser->setAdresse($adresse);
-        $this->entityManager->persist($emailUser);
-        $this->entityManager->flush();
-    }
-
-    private function setPassword(User $user): void
-    {
-        $plainPassword = $user->getPlainPassword();
-        if ($plainPassword === '' || is_null($plainPassword)) {
-            return;
-        }
-
-        $encodePassword = $this->passwordEncoder->encodePassword(
-            $user,
-            $plainPassword
-        );
-
-        $user->setPassword($encodePassword);
-        if ($user->isEnable()) {
-            $this->userMailService->changePassword($user);
-        }
-
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->add(
-            'success',
-            'Mot de passe changé'
-        );
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [UserEntityEvent::class => 'onUserEntityEvent'];
+        $this->emailUserRH->handle($old, $emailUser);
+        $this->emailUserRH->changeWorkflowState($emailUser, ['submit', 'valider']);
     }
 }

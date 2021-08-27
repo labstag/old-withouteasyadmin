@@ -2,100 +2,28 @@
 
 namespace Labstag\DataFixtures;
 
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 use Labstag\Lib\FixtureLib;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\UserRepository;
-use Psr\EventDispatcher\EventDispatcherInterface;
 
 class UserFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
-    private GroupeRepository $groupeRepository;
-
-    public function __construct(
-        GroupeRepository $groupeRepository,
-        UserRepository $userRepository,
-        EventDispatcherInterface $dispatcher
-    )
+    public function getDependencies()
     {
-        $this->groupeRepository = $groupeRepository;
-        parent::__construct($userRepository, $dispatcher);
-    }
-
-    private function getUsers(): array
-    {
-        $users = [
-            [
-                'username' => 'admin',
-                'password' => 'password',
-                'enable'   => true,
-                'verif'    => true,
-                'lost'     => false,
-                'email'    => 'admin@email.fr',
-                'groupe'   => 'admin',
-            ],
-            [
-                'username' => 'superadmin',
-                'password' => 'password',
-                'enable'   => true,
-                'verif'    => true,
-                'lost'     => false,
-                'email'    => 'superadmin@email.fr',
-                'groupe'   => 'superadmin',
-            ],
-            [
-                'username' => 'lost',
-                'password' => 'password',
-                'enable'   => false,
-                'verif'    => true,
-                'lost'     => true,
-                'email'    => 'lost@email.fr',
-                'groupe'   => 'user',
-            ],
-            [
-                'username' => 'disable',
-                'password' => 'password',
-                'enable'   => false,
-                'verif'    => true,
-                'lost'     => false,
-                'email'    => 'disable@email.fr',
-                'groupe'   => 'user',
-            ],
-            [
-                'username' => 'unverif',
-                'password' => 'password',
-                'enable'   => false,
-                'verif'    => false,
-                'lost'     => false,
-                'email'    => 'unverif@email.fr',
-                'groupe'   => 'user',
-            ],
+        return [
+            DataFixtures::class,
+            GroupFixtures::class,
         ];
-
-        return $users;
     }
 
     public function load(ObjectManager $manager): void
     {
-        $users   = $this->getUsers();
+        unset($manager);
+        $faker   = $this->setFaker();
+        $users   = $this->installService->getData('user');
         $groupes = $this->groupeRepository->findAll();
         foreach ($users as $index => $user) {
-            $this->addUser(
-                $groupes,
-                $index,
-                $user,
-                $manager
-            );
+            $this->addUser($groupes, $index, $user, $faker);
         }
-    }
-
-    public function getDependencies()
-    {
-        return [
-            CacheFixtures::class,
-            GroupFixtures::class,
-        ];
     }
 }

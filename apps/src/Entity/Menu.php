@@ -4,53 +4,18 @@ namespace Labstag\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\MenuRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MenuRepository::class)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Menu
 {
-
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid", unique=true)
-     */
-    private $id;
-
-    /** @ORM\Column(type="string", length=255, nullable=true) */
-    private $libelle;
-
-    /** @ORM\Column(type="string", length=255, nullable=true) */
-    private $icon;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotNull
-     */
-    private int $position;
-
-    /** @ORM\Column(type="json", nullable=true) */
-    private array $data = [];
-
-    /** @ORM\Column(type="boolean") */
-    private $separateur;
-
-    /** @ORM\Column(type="string", length=255, nullable=true) */
-    private $clef;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Menu", inversedBy="children")
-     * @ORM\JoinColumn(
-     *  name="parent_id",
-     *  referencedColumnName="id",
-     *  onDelete="SET NULL"
-     * )
-     * @var Menu|null
-     */
-    private $parent;
+    use SoftDeleteableEntity;
 
     /**
      * @ORM\OneToMany(
@@ -60,7 +25,53 @@ class Menu
      * )
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $children;
+    protected $children;
+
+    /** @ORM\Column(type="string", length=255, nullable=true) */
+    protected $clef;
+
+    /** @ORM\Column(type="json", nullable=true) */
+    protected array $data = [];
+
+    /** @ORM\Column(type="string", length=255, nullable=true) */
+    protected $icon;
+
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid", unique=true)
+     */
+    protected $id;
+
+    /** @ORM\Column(type="string", length=255, nullable=true) */
+    protected $libelle;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Menu", inversedBy="children")
+     * @ORM\JoinColumn(
+     *  name="parent_id",
+     *  referencedColumnName="id",
+     *  onDelete="SET NULL"
+     * )
+     *
+     * @var Menu|null
+     */
+    protected $parent;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotNull
+     */
+    protected int $position;
+
+    /** @ORM\Column(type="boolean") */
+    protected $separateur;
+
+    public function __construct()
+    {
+        $this->children   = new ArrayCollection();
+        $this->separateur = false;
+    }
 
     public function __toString()
     {
@@ -69,17 +80,31 @@ class Menu
             [
                 $this->getId(),
                 '-',
-                '(' . $this->getClef() . ')',
+                '('.$this->getClef().')',
                 '-',
                 $this->getLibelle(),
             ]
         );
     }
 
-    public function __construct()
+    public function getChildren()
     {
-        $this->children   = new ArrayCollection();
-        $this->separateur = false;
+        return $this->children;
+    }
+
+    public function getClef(): ?string
+    {
+        return $this->clef;
+    }
+
+    public function getData(): ?array
+    {
+        return is_array($this->data) ? $this->data : [];
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
     }
 
     public function getId(): ?string
@@ -92,23 +117,9 @@ class Menu
         return $this->libelle;
     }
 
-    public function setLibelle(string $libelle): self
+    public function getParent(): ?Menu
     {
-        $this->libelle = $libelle;
-
-        return $this;
-    }
-
-    public function getIcon(): ?string
-    {
-        return $this->icon;
-    }
-
-    public function setIcon(string $icon): self
-    {
-        $this->icon = $icon;
-
-        return $this;
+        return $this->parent;
     }
 
     public function getPosition(): ?int
@@ -116,16 +127,16 @@ class Menu
         return $this->position;
     }
 
-    public function setPosition(int $position): self
+    public function isSeparateur(): ?bool
     {
-        $this->position = $position;
-
-        return $this;
+        return $this->separateur;
     }
 
-    public function getData(): ?array
+    public function setClef(?string $clef): self
     {
-        return $this->data;
+        $this->clef = $clef;
+
+        return $this;
     }
 
     public function setData(?array $data): self
@@ -135,33 +146,18 @@ class Menu
         return $this;
     }
 
-    public function isSeparateur(): ?bool
+    public function setIcon(?string $icon): self
     {
-        return $this->separateur;
-    }
-
-    public function setSeparateur(bool $separateur): self
-    {
-        $this->separateur = $separateur;
+        $this->icon = $icon;
 
         return $this;
     }
 
-    public function getClef(): ?string
+    public function setLibelle(string $libelle): self
     {
-        return $this->clef;
-    }
-
-    public function setClef(string $clef): self
-    {
-        $this->clef = $clef;
+        $this->libelle = $libelle;
 
         return $this;
-    }
-
-    public function getChildren()
-    {
-        return $this->children;
     }
 
     public function setParent(Menu $parent): void
@@ -169,8 +165,17 @@ class Menu
         $this->parent = $parent;
     }
 
-    public function getParent(): ?Menu
+    public function setPosition(int $position): self
     {
-        return $this->parent;
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function setSeparateur(bool $separateur): self
+    {
+        $this->separateur = $separateur;
+
+        return $this;
     }
 }
