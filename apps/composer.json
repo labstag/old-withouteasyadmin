@@ -31,7 +31,7 @@
     "league/oauth2-google": "4.0.0",
     "league/oauth2-instagram": "3.0.0",
     "league/oauth2-linkedin": "5.1.2",
-    "liip/imagine-bundle": "^2.6",
+    "liip/imagine-bundle": "2.6.1",
     "mhujer/breadcrumbs-bundle": "1.5.5",
     "michaelkaefer/oauth2-amazon": "1.0.3",
     "nelmio/cors-bundle": "2.1.1",
