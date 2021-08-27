@@ -16,8 +16,8 @@ export class LinkBtnAdminMove extends LinkBtnAdmin {
         ul.getElementsByTagName('li').forEach(
           function (li, index) {
             position.push({
-              'id': li.dataset.id,
-              'position': index
+              id: li.dataset.id,
+              position: index
             })
           }
         )
