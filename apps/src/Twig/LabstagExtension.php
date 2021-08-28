@@ -13,6 +13,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Registry;
 use Twig\Extension\AbstractExtension;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
@@ -36,8 +38,11 @@ class LabstagExtension extends AbstractExtension
 
     protected Registry $workflows;
 
+    protected CacheManager $cache;
+
     public function __construct(
         PhoneService $phoneService,
+        CacheManager $cache,
         Registry $workflows,
         TokenStorageInterface $token,
         LoggerInterface $logger,
@@ -46,6 +51,7 @@ class LabstagExtension extends AbstractExtension
         GuardService $guardService
     )
     {
+        $this->cache                = $cache;
         $this->attachmentRepository = $attachmentRepository;
         $this->logger               = $logger;
         $this->guardService         = $guardService;
@@ -220,9 +226,39 @@ class LabstagExtension extends AbstractExtension
         return $type;
     }
 
+    /**
+     * Gets the browser path for the image and filter to apply.
+     *
+     * @param string      $path
+     * @param string      $filter
+     * @param string|null $resolver
+     * @param int         $referenceType
+     *
+     * @return string
+     */
+    public function imagefilter(
+        $path,
+        $filter,
+        array $config = [],
+        $resolver = null,
+        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+    )
+    {
+        $url = $this->cache->getBrowserPath(
+            parse_url($path, PHP_URL_PATH),
+            $filter,
+            $config,
+            $resolver,
+            $referenceType
+        );
+
+        return parse_url($url, PHP_URL_PATH);
+    }
+
     private function getFiltersFunctions()
     {
         return [
+            'imagefilter'              => 'imagefilter',
             'workflow_has'             => 'workflowHas',
             'guard_route'              => 'guardRoute',
             'class_entity'             => 'classEntity',
