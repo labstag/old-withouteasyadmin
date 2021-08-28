@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Menu\LinkType;
 use Labstag\Form\Admin\Menu\PrincipalType;
@@ -22,6 +23,39 @@ class MenuController extends AdminControllerLib
     protected string $headerTitle = 'Menu';
 
     protected string $urlHome = 'admin_menu_index';
+
+
+    /**
+     * @Route("/trash", name="admin_menu_trash", methods={"GET"})
+     *
+     * @param MenuRepository $repository
+     * @return Response
+     * @IgnoreSoftDelete
+     */
+    public function trash(MenuRepository $repository): Response
+    {
+        return $this->listOrTrash(
+            $repository,
+            [
+                'trash' => 'findTrashForAdmin',
+                'all'   => 'findAllForAdmin',
+            ],
+            'admin/menu/trash.html.twig',
+            [
+                'new'   => 'admin_menu_new',
+                'empty' => 'api_action_empty',
+                'trash' => 'admin_menu_trash',
+                'list'  => 'admin_menu_index',
+            ],
+            [
+                'list'    => 'admin_menu_index',
+                'edit'    => 'admin_menu_edit',
+                'delete'  => 'api_action_delete',
+                'destroy' => 'api_action_destroy',
+                'restore' => 'api_action_restore',
+            ]
+        );
+    }
 
     /**
      * @Route("/", name="admin_menu_index", methods={"GET"})
