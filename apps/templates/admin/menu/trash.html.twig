@@ -1,0 +1,40 @@
+{% import "admin/macro.html.twig" as macro_admin %}
+{% extends 'admin/menu/layout.html.twig' %}
+{% block body %}
+    <table
+        is="table-datatable"
+        data-action="Actions"
+        data-multiple
+        data-multipleall="Tout sélectionner"
+        data-multipleelement="Selection"
+        data-empty="No records found"
+        data-count={{ pagination|length }}
+    >
+        <thead>
+            <tr>
+                <th>Libelle</th>
+                <th>Icon</th>
+                <th>Position</th>
+                <th>Data</th>
+                <th>Separateur</th>
+                <th>Clef</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in pagination %}
+            <tr data-id="{{ entity.id }}">
+                <td>{{ entity.libelle }}</td>
+                <td>{{ entity.icon }}</td>
+                <td>{{ entity.position }}</td>
+                <td>{{ entity.data ? entity.data|json_encode : '' }}</td>
+                <td>{{ entity.separateur ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.clef }}</td>
+                <td>
+                    {{ macro_admin.actions(entity, actions) }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
