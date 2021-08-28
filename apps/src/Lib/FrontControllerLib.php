@@ -71,7 +71,6 @@ abstract class FrontControllerLib extends ControllerLib
         &$meta
     )
     {
-        dump($image);
         if (is_null($image) || !$image instanceof Attachment) {
             return;
         }
