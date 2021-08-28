@@ -15,12 +15,11 @@ class FrontController extends FrontControllerLib
     /**
      * @Route("/edito", name="edito")
      */
-    public function edito(EditoRepository $editoRepository, Request $request): Response
+    public function edito(EditoRepository $editoRepository): Response
     {
         /** @var Edito $edito */
         $edito = $editoRepository->findOnePublier();
         $this->setMetaOpenGraph(
-            $request,
             $edito->getTitle(),
             $edito->getMetaKeywords(),
             $edito->getMetaDescription(),

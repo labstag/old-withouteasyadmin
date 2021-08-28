@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Entity\Attachment;
 use Labstag\Service\DataService;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
@@ -27,7 +28,6 @@ abstract class FrontControllerLib extends ControllerLib
     }
 
     protected function setMetaOpenGraph(
-        Request $request,
         string $title,
         string $keywords,
         string $description,
@@ -47,7 +47,7 @@ abstract class FrontControllerLib extends ControllerLib
 
         $this->setMetaOpenGraphDescription($description, $meta);
         $this->setMetaOpenGraphTitle($title, $config, $meta);
-        $this->setMetaOpenGraphImage($request, $image, $meta);
+        $this->setMetaOpenGraphImage($image, $meta);
         $config['meta'] = $meta;
         ksort($config['meta']);
 
@@ -71,7 +71,8 @@ abstract class FrontControllerLib extends ControllerLib
         &$meta
     )
     {
-        if (is_null($image) || is_null($image->getName())) {
+        dump($image);
+        if (is_null($image) || !$image instanceof Attachment) {
             return;
         }
 
