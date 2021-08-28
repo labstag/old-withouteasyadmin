@@ -69,7 +69,7 @@ class KernelSubscriber implements EventSubscriberInterface
     ];
     public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
-    public const ERRORNUMBER = 500;
+    public const CLIENTNUMBER = 400;
 
     public const ERROR_CONTROLLER = [
         'error_controller',
@@ -86,7 +86,7 @@ class KernelSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ('html' != $request->getRequestFormat() || self::ERRORNUMBER == $response->getStatusCode()) {
+        if ('html' != $request->getRequestFormat() || $response->getStatusCode() >= self::CLIENTNUMBER) {
             return;
         }
 
