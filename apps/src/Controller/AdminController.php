@@ -49,7 +49,7 @@ class AdminController extends AdminControllerLib
                 );
             } catch (Exception $exception) {
                 $this->setErrorLogger($exception, $logger);
-                $this->addFlash(
+                $this->flashBagAdd(
                     'danger',
                     sprintf(
                         "Problème d'enregistrement du fichier %s",
@@ -207,7 +207,7 @@ class AdminController extends AdminControllerLib
         $this->urlHome     = 'admin_trash';
         $all               = $trashService->all();
         if (0 == count($all)) {
-            $this->addFlash(
+            $this->flashBagAdd(
                 'danger',
                 'La corbeille est vide'
             );

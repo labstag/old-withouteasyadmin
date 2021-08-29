@@ -90,19 +90,7 @@ abstract class AdminControllerLib extends ControllerLib
         $this->token             = $token;
         $this->csrfTokenManager  = $csrfTokenManager;
         $this->setSingletonsAdmin();
-        parent::__construct($dataService, $breadcrumbs, $paginator);
-    }
-
-    private function flashBagAdd(string $type, $message)
-    {
-        $requestStack = $this->requestStack;
-        if (is_null($this->request)) {
-            return;
-        }
-
-        $session  = $requestStack->getSession();
-        $flashbag = $session->getFlashBag();
-        $flashbag->add($type, $message);
+        parent::__construct($requestStack, $dataService, $breadcrumbs, $paginator);
     }
 
     public function addBreadcrumbs(array $breadcrumbs): void

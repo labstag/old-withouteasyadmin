@@ -79,7 +79,7 @@ class GroupeController extends AdminControllerLib
 
         $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
         if (0 == count($routes)) {
-            $this->addFlash(
+            $this->flashBagAdd(
                 'danger',
                 "Le groupe superadmin n'est pas un groupe qui peut avoir des droits spécifique"
             );
