@@ -10,10 +10,7 @@
     "public": "d MMMM y HH:mm"
   },
   "generator": "1",
-  "language": [
-    "en",
-    "fr"
-  ],
+  "language": ["en", "fr"],
   "languagedefault": "fr",
   "meta": {
     "theme-color": "#ff0000",
