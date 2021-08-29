@@ -8,6 +8,7 @@ use Labstag\Service\DataService;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
@@ -16,7 +17,10 @@ abstract class FrontControllerLib extends ControllerLib
 
     protected Environment $twig;
 
+    protected RequestStack $requestStack;
+
     public function __construct(
+        RequestStack $requestStack,
         DataService $dataService,
         Breadcrumbs $breadcrumbs,
         Environment $twig,
@@ -24,7 +28,7 @@ abstract class FrontControllerLib extends ControllerLib
     )
     {
         $this->twig = $twig;
-        parent::__construct($dataService, $breadcrumbs, $paginator);
+        parent::__construct($requestStack, $dataService, $breadcrumbs, $paginator);
     }
 
     protected function setMetaOpenGraph(

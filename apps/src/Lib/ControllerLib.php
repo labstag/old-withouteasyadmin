@@ -6,6 +6,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Service\DataService;
 use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
@@ -20,16 +21,33 @@ abstract class ControllerLib extends AbstractController
 
     protected PaginatorInterface $paginator;
 
+    protected RequestStack $requestStack;
+
     public function __construct(
+        RequestStack $requestStack,
         DataService $dataService,
         Breadcrumbs $breadcrumbs,
         PaginatorInterface $paginator
     )
     {
-        $this->dataService = $dataService;
-        $this->breadcrumbs = $breadcrumbs;
-        $this->paginator   = $paginator;
+        $this->requestStack = $requestStack;
+        $this->dataService  = $dataService;
+        $this->breadcrumbs  = $breadcrumbs;
+        $this->paginator    = $paginator;
         $this->setSingletons();
+    }
+
+    protected function flashBagAdd(string $type, $message)
+    {
+        $requestStack = $this->requestStack;
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
+            return;
+        }
+
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 
     public function render(

@@ -81,7 +81,7 @@ class UserController extends AdminControllerLib
         if (0 == count($routes)) {
             $msg  = "L'utilisateur fait partie du groupe superadmin, qui n'est pas";
             $msg .= ' un groupe qui peut avoir des droits spécifique';
-            $this->addFlash('danger', $msg);
+            $this->flashBagAdd('danger', $msg);
 
             return $this->redirect($this->generateUrl('admin_user_index'));
         }
