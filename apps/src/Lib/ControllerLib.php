@@ -30,9 +30,10 @@ abstract class ControllerLib extends AbstractController
         PaginatorInterface $paginator
     )
     {
-        $this->dataService = $dataService;
-        $this->breadcrumbs = $breadcrumbs;
-        $this->paginator   = $paginator;
+        $this->requestStack = $requestStack;
+        $this->dataService  = $dataService;
+        $this->breadcrumbs  = $breadcrumbs;
+        $this->paginator    = $paginator;
         $this->setSingletons();
     }
 
