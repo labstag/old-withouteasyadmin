@@ -373,14 +373,7 @@ class SecurityController extends ControllerLib
 
             return $this->redirect($referer);
         } catch (Exception $exception) {
-            $errorMsg = sprintf(
-                'Exception : Erreur %s dans %s L.%s : %s',
-                $exception->getCode(),
-                $exception->getFile(),
-                $exception->getLine(),
-                $exception->getMessage()
-            );
-            $this->logger->error($errorMsg);
+            $this->setErrorLogger($exception, $this->logger);
             $this->addFlash('warning', "Probleme d'identification");
             $session->remove('referer');
             $session->remove('link');
