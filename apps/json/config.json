@@ -1,88 +1,88 @@
 {
-    "disclaimer": {
-        "activate": "1",
-        "title": "Site en construction",
-        "message": "<p>Site en construction<\/p>\r\n",
-        "url-redirect": "http:\/\/www.google.fr"
+  "disclaimer": {
+    "activate": "1",
+    "title": "Site en construction",
+    "message": "<p>Site en construction</p>\r\n",
+    "url-redirect": "http://www.google.fr"
+  },
+  "format_datetime": {
+    "admin": "d MMMM y HH:mm:ss",
+    "public": "d MMMM y HH:mm"
+  },
+  "generator": "1",
+  "language": [
+    "en",
+    "fr"
+  ],
+  "languagedefault": "fr",
+  "meta": {
+    "theme-color": "#ff0000",
+    "viewport": "width=device-width, initial-scale=1",
+    "description": "Site Internet sous Lasbtag",
+    "keywords": "labstag, site, weblog"
+  },
+  "moment": {
+    "format": "MMMM Do YYYY, H:mm:ss",
+    "lang": "fr"
+  },
+  "notification": [
+    {
+      "type": "oauthconnectuser",
+      "mail": "1",
+      "notify": "1"
     },
-    "format_datetime": {
-        "admin": "d MMMM y HH:mm:ss",
-        "public": "d MMMM y HH:mm"
+    {
+      "type": "lienuser",
+      "mail": "1",
+      "notify": "1"
     },
-    "generator": "1",
-    "language": [
-        "en",
-        "fr"
-    ],
-    "languagedefault": "fr",
-    "meta": {
-        "theme-color": "#ff0000",
-        "viewport": "width=device-width, initial-scale=1",
-        "description": "Site Internet sous Lasbtag",
-        "keywords": "labstag, site, weblog"
+    {
+      "type": "emailuser",
+      "mail": "1",
+      "notify": "1"
     },
-    "moment": {
-        "format": "MMMM Do YYYY, H:mm:ss",
-        "lang": "fr"
+    {
+      "type": "phoneuser",
+      "mail": "1",
+      "notify": "1"
     },
-    "notification": [
-        {
-            "type": "oauthconnectuser",
-            "mail": "1",
-            "notify": "1"
-        },
-        {
-            "type": "lienuser",
-            "mail": "1",
-            "notify": "1"
-        },
-        {
-            "type": "emailuser",
-            "mail": "1",
-            "notify": "1"
-        },
-        {
-            "type": "phoneuser",
-            "mail": "1",
-            "notify": "1"
-        },
-        {
-            "type": "adresseuser",
-            "mail": "1",
-            "notify": "1"
-        }
-    ],
-    "oauth": [],
-    "robotstxt": "User-agent: *\r\nAllow: \/",
-    "site_copyright": "<p>Copyright 2021<\/p>\r\n",
-    "site_email": "contact@labstag.traefik.me",
-    "site_no-reply": "no-reply@labstag.traefik.me",
-    "site_title": "labstag",
-    "site_url": "http:\/\/labstag.traefik.me",
-    "tarteaucitron": {
-        "privacyUrl": "",
-        "hashtag": "#tarteaucitron",
-        "cookieName": "tarteaucitron",
-        "orientation": "middle",
-        "groupServices": "0",
-        "showAlertSmall": "0",
-        "cookieslist": "0",
-        "closePopup": "0",
-        "showIcon": "1",
-        "iconPosition": "BottomLeft",
-        "adblocker": "0",
-        "DenyAllCta": "1",
-        "AcceptAllCta": "1",
-        "highPrivacy": "1",
-        "handleBrowserDNTRequest": "0",
-        "removeCredit": "0",
-        "moreInfoLink": "1",
-        "readmoreLink": "",
-        "mandatory": "1",
-        "job": "tarteaucitron.job.push('youtube');\r\ntarteaucitron.job.push('twitterwidgetsapi');"
-    },
-    "title_format": "%titlesite% - %titlepost%",
-    "wysiwyg": {
-        "lang": "fr_FR"
+    {
+      "type": "adresseuser",
+      "mail": "1",
+      "notify": "1"
     }
+  ],
+  "oauth": [],
+  "robotstxt": "User-agent: *\r\nAllow: /",
+  "site_copyright": "<p>Copyright 2021</p>\r\n",
+  "site_email": "contact@labstag.traefik.me",
+  "site_no-reply": "no-reply@labstag.traefik.me",
+  "site_title": "labstag",
+  "site_url": "http://labstag.traefik.me",
+  "tarteaucitron": {
+    "privacyUrl": "",
+    "hashtag": "#tarteaucitron",
+    "cookieName": "tarteaucitron",
+    "orientation": "middle",
+    "groupServices": "0",
+    "showAlertSmall": "0",
+    "cookieslist": "0",
+    "closePopup": "0",
+    "showIcon": "1",
+    "iconPosition": "BottomLeft",
+    "adblocker": "0",
+    "DenyAllCta": "1",
+    "AcceptAllCta": "1",
+    "highPrivacy": "1",
+    "handleBrowserDNTRequest": "0",
+    "removeCredit": "0",
+    "moreInfoLink": "1",
+    "readmoreLink": "",
+    "mandatory": "1",
+    "job": "tarteaucitron.job.push('youtube');\r\ntarteaucitron.job.push('twitterwidgetsapi');"
+  },
+  "title_format": "%titlesite% - %titlepost%",
+  "wysiwyg": {
+    "lang": "fr_FR"
+  }
 }
