@@ -3,6 +3,7 @@
 namespace Labstag\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
 use Labstag\Event\ConfigurationEntityEvent;
@@ -17,6 +18,7 @@ use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,18 +34,29 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/export", name="admin_export")
      */
-    public function export(DataService $dataService): RedirectResponse
+    public function export(DataService $dataService, LoggerInterface $logger): RedirectResponse
     {
         $config = $dataService->getConfig();
         ksort($config);
         $content = json_encode($config, JSON_PRETTY_PRINT);
         $file    = '../json/config.json';
         if (is_file($file)) {
-            file_put_contents($file, $content);
-            $this->flashbag->add(
-                'success',
-                'Données exporté'
-            );
+            try {
+                file_put_contents($file, $content);
+                $this->flashbag->add(
+                    'success',
+                    'Données exporté'
+                );
+            } catch (Exception $exception) {
+                $this->setErrorLogger($exception, $logger);
+                $this->addFlash(
+                    'danger',
+                    sprintf(
+                        "Problème d'enregistrement du fichier %s",
+                        $file
+                    )
+                );
+            }
         }
 
         return $this->redirect($this->generateUrl('admin_param'));

@@ -347,7 +347,14 @@ abstract class FixtureLib extends Fixture
                 );
                 $file = $path.'/'.$filename;
             } catch (Exception $exception) {
-                $this->logger->error($exception->getMessage());
+                $errorMsg = sprintf(
+                    'Exception : Erreur %s dans %s L.%s : %s',
+                    $exception->getCode(),
+                    $exception->getFile(),
+                    $exception->getLine(),
+                    $exception->getMessage()
+                );
+                $this->logger->error($errorMsg);
                 echo $exception->getMessage();
             }
 

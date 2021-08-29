@@ -58,4 +58,16 @@ abstract class ControllerLib extends AbstractController
     {
         $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
     }
+
+    protected function setErrorLogger($exception, $logger)
+    {
+        $errorMsg = sprintf(
+            'Exception : Erreur %s dans %s L.%s : %s',
+            $exception->getCode(),
+            $exception->getFile(),
+            $exception->getLine(),
+            $exception->getMessage()
+        );
+        $logger->error($errorMsg);
+    }
 }

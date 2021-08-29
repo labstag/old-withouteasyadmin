@@ -48,8 +48,6 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
             $name = $this->getClassMetadata()->getName();
         }
 
-        $dql = 'SELECT a FROM '.$name.' a';
-
         $entityManager = $this->getEntityManager();
         $dql           = $entityManager->createQueryBuilder();
         $dql->select('a');
