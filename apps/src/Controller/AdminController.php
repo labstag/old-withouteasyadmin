@@ -43,7 +43,7 @@ class AdminController extends AdminControllerLib
         if (is_file($file)) {
             try {
                 file_put_contents($file, $content);
-                $this->flashbag->add(
+                $this->flashBagAdd(
                     'success',
                     'Données exporté'
                 );
