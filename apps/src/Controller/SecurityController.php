@@ -28,6 +28,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,7 +48,10 @@ class SecurityController extends ControllerLib
 
     protected UserService $userService;
 
+    protected RequestStack $requestStack;
+
     public function __construct(
+        RequestStack $requestStack,
         OauthService $oauthService,
         LoggerInterface $logger,
         DataService $dataService,
@@ -59,7 +63,7 @@ class SecurityController extends ControllerLib
         $this->userService  = $userService;
         $this->logger       = $logger;
         $this->oauthService = $oauthService;
-        parent::__construct($dataService, $breadcrumbs, $paginator);
+        parent::__construct($requestStack, $dataService, $breadcrumbs, $paginator);
     }
 
     /**
@@ -73,7 +77,7 @@ class SecurityController extends ControllerLib
     {
         $front = $this->generateUrl('front');
         if ('lostpassword' != $user->getState()) {
-            $this->addFlash('danger', 'Demande de mot de passe non envoyé');
+            $this->flashBagAdd('danger', 'Demande de mot de passe non envoyé');
 
             return $this->redirect($front);
         }
@@ -104,13 +108,13 @@ class SecurityController extends ControllerLib
     {
         $front = $this->generateUrl('front');
         if ('averifier' != $email->getState()) {
-            $this->addFlash('danger', 'Courriel déjà confirmé');
+            $this->flashBagAdd('danger', 'Courriel déjà confirmé');
 
             return $this->redirect($front);
         }
 
         $emailRequestHandler->changeWorkflowState($email, ['valider']);
-        $this->addFlash('success', 'Courriel confirmé');
+        $this->flashBagAdd('success', 'Courriel confirmé');
 
         return $this->redirect($front);
     }
@@ -125,13 +129,13 @@ class SecurityController extends ControllerLib
     {
         $front = $this->generateUrl('front');
         if ('averifier' != $phone->getState()) {
-            $this->addFlash('danger', 'Phone déjà confirmé');
+            $this->flashBagAdd('danger', 'Phone déjà confirmé');
 
             return $this->redirect($front);
         }
 
         $emailRequestHandler->changeWorkflowState($phone, ['valider']);
-        $this->addFlash('success', 'Phone confirmé');
+        $this->flashBagAdd('success', 'Phone confirmé');
 
         return $this->redirect($front);
     }
@@ -146,13 +150,13 @@ class SecurityController extends ControllerLib
     {
         $front = $this->generateUrl('front');
         if ('avalider' != $user->getState()) {
-            $this->addFlash('danger', 'Utilisation déjà activé');
+            $this->flashBagAdd('danger', 'Utilisation déjà activé');
 
             return $this->redirect($front);
         }
 
         $userRequestHandler->changeWorkflowState($user, ['validation']);
-        $this->addFlash('success', 'Utilisation activé');
+        $this->flashBagAdd('success', 'Utilisation activé');
 
         return $this->redirect($front);
     }
@@ -176,7 +180,7 @@ class SecurityController extends ControllerLib
                 return $this->redirect($front);
             }
 
-            $this->addFlash('danger', "Veuillez accepter l'énoncé");
+            $this->flashBagAdd('danger', "Veuillez accepter l'énoncé");
         }
 
         $config = $dataService->getConfig();
@@ -289,7 +293,7 @@ class SecurityController extends ControllerLib
         }
 
         if (!$provider instanceof AbstractProvider) {
-            $this->addFlash('warning', 'Connexion Oauh impossible');
+            $this->flashBagAdd('warning', 'Connexion Oauh impossible');
 
             return $this->redirect($referer);
         }
@@ -331,7 +335,7 @@ class SecurityController extends ControllerLib
             $session->remove('oauth2state');
             $session->remove('referer');
             $session->remove('link');
-            $this->addFlash('warning', "Probleme d'identification");
+            $this->flashBagAdd('warning', "Probleme d'identification");
 
             return $this->redirect($referer);
         }
@@ -356,7 +360,7 @@ class SecurityController extends ControllerLib
                 /** @var User $user */
                 $user = $token->getUser();
                 if (!$user instanceof User) {
-                    $this->addFlash('warning', "Probleme d'identification");
+                    $this->flashBagAdd('warning', "Probleme d'identification");
 
                     return $this->redirect($referer);
                 }
@@ -374,7 +378,7 @@ class SecurityController extends ControllerLib
             return $this->redirect($referer);
         } catch (Exception $exception) {
             $this->setErrorLogger($exception, $this->logger);
-            $this->addFlash('warning', "Probleme d'identification");
+            $this->flashBagAdd('warning', "Probleme d'identification");
             $session->remove('referer');
             $session->remove('link');
 
@@ -412,7 +416,7 @@ class SecurityController extends ControllerLib
         if ($entity instanceof OauthConnectUser) {
             $manager->remove($entity);
             $manager->flush();
-            $this->addFlash(
+            $this->flashBagAdd(
                 'success',
                 'Connexion Oauh '.$oauthCode.' dissocié'
             );
