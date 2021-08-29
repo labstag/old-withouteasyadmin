@@ -100,8 +100,7 @@ class AdminController extends AdminControllerLib
         AttachmentRepository $repository,
         DataService $dataService,
         CacheInterface $cache
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
         $images = [
             'image'   => $repository->getImageDefault(),
