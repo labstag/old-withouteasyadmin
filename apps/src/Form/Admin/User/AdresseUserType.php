@@ -5,7 +5,7 @@ namespace Labstag\Form\Admin\User;
 use Labstag\Entity\AdresseUser;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\AdresseType;
-use Labstag\FormType\SelectRefUserType;
+use Labstag\FormType\SearchableType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,9 +22,11 @@ class AdresseUserType extends AdresseType
         parent::buildForm($builder, $options);
         $builder->add(
             'refuser',
-            SelectRefUserType::class,
+            SearchableType::class,
             [
-                'class' => User::class,
+                'multiple' => false,
+                'class'    => User::class,
+                'route'    => 'api_search_user',
             ]
         );
     }

@@ -5,7 +5,7 @@ namespace Labstag\Form\Admin;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Edito;
 use Labstag\Entity\User;
-use Labstag\FormType\SelectRefUserType;
+use Labstag\FormType\SearchableType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -46,9 +46,11 @@ class EditoType extends AbstractType
         );
         $builder->add(
             'refuser',
-            SelectRefUserType::class,
+            SearchableType::class,
             [
-                'class' => User::class,
+                'multiple' => false,
+                'class'    => User::class,
+                'route'    => 'api_search_user',
             ]
         );
         unset($options);

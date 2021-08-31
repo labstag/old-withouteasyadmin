@@ -12,4 +12,19 @@ class LibelleRepository extends ServiceEntityRepositoryLib
     {
         parent::__construct($registry, Libelle::class);
     }
+
+    public function findNom(string $field)
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.nom LIKE :nom'
+        );
+        $query->setParameters(
+            [
+                'nom' => '%'.$field.'%',
+            ]
+        );
+
+        return $query->getQuery()->getResult();
+    }
 }

@@ -5,7 +5,7 @@ namespace Labstag\Form\Admin\User;
 use Labstag\Entity\LienUser;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\LienType;
-use Labstag\FormType\SelectRefUserType;
+use Labstag\FormType\SearchableType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,9 +23,11 @@ class LienUserType extends LienType
 
         $builder->add(
             'refuser',
-            SelectRefUserType::class,
+            SearchableType::class,
             [
-                'class' => User::class,
+                'multiple' => false,
+                'class'    => User::class,
+                'route'    => 'api_search_user',
             ]
         );
     }
