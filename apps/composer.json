@@ -165,7 +165,8 @@
     ]
   },
   "conflict": {
-    "symfony/symfony": "*"
+    "symfony/symfony": "*",
+    "symfony/dependency-injection": "5.3.7"
   },
   "extra": {
     "symfony": {
