@@ -110,7 +110,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
         $this->setMetaTitleGlobal($config);
         preg_match(self::ADMIN_CONTROLLER, $controller, $matches);
-        $state = (0 == count($matches));
+        $state = (0 == count($matches) || !in_array($controller, self::ERROR_CONTROLLER));
         $this->setConfigGlobal($state, $config, $request);
         if (!$state) {
             $config['meta']['robots'] = 'noindex';
@@ -122,9 +122,9 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->setConfigTac($config);
         $this->setFormatDatetime($config);
 
-        $this->twig->addGlobal('config', $config);
-        $this->twig->addGlobal('favicon', $favicon);
-        $this->twig->addGlobal('canonical', $canonical);
+        $this->twig->AddGlobal('config', $config);
+        $this->twig->AddGlobal('favicon', $favicon);
+        $this->twig->AddGlobal('canonical', $canonical);
     }
 
     protected function setConfigTac(array $config)
@@ -156,7 +156,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
         unset($tarteaucitron['job']);
 
-        $this->twig->addGlobal('configtarteaucitron', $tarteaucitron);
+        $this->twig->AddGlobal('configtarteaucitron', $tarteaucitron);
     }
 
     protected function setLoginPage(ControllerEvent $event): void
@@ -171,10 +171,8 @@ class TwigEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->twig->addGlobal(
-            'oauthActivated',
-            $this->dataService->getOauthActivated($this->security->getUser())
-        );
+        $oauthActivated = $this->dataService->getOauthActivated($this->security->getUser());
+        $this->twig->AddGlobal('oauthActivated', $oauthActivated);
     }
 
     private function arrayKeyExists(array $var, $data)
@@ -214,7 +212,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     private function setFormatDatetime($config)
     {
-        $this->twig->addGlobal('formatdatetime', $config['format_datetime']);
+        $this->twig->AddGlobal('formatdatetime', $config['format_datetime']);
     }
 
     private function setMetaDescription(&$config)
@@ -237,7 +235,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
     private function setMetaImage(&$config)
     {
         $image = $this->attachmentRepo->getImageDefault();
-        $this->twig->addGlobal('imageglobal', $image);
+        $this->twig->AddGlobal('imageglobal', $image);
         $meta  = $config['meta'];
         $tests = [
             'og:image',
@@ -292,7 +290,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
             ];
         }
 
-        $this->twig->addGlobal('sitemetatags', $metatags);
+        $this->twig->AddGlobal('sitemetatags', $metatags);
     }
 
     private function setMetaTitle(&$config)

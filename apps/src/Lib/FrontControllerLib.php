@@ -55,7 +55,7 @@ abstract class FrontControllerLib extends ControllerLib
         $config['meta'] = $meta;
         ksort($config['meta']);
 
-        $this->twig->addGlobal('config', $config);
+        $this->twig->AddGlobal('config', $config);
         $this->setMetatags($config['meta']);
     }
 
@@ -143,6 +143,6 @@ abstract class FrontControllerLib extends ControllerLib
             ];
         }
 
-        $this->twig->addGlobal('sitemetatags', $metatags);
+        $this->twig->AddGlobal('sitemetatags', $metatags);
     }
 }

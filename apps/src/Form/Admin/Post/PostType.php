@@ -3,9 +3,10 @@
 namespace Labstag\Form\Admin\Post;
 
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Labstag\Entity\Libelle;
 use Labstag\Entity\Post;
 use Labstag\Entity\User;
-use Labstag\FormType\SelectRefUserType;
+use Labstag\FormType\SearchableType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -51,13 +52,22 @@ class PostType extends AbstractType
         );
         $builder->add(
             'refuser',
-            SelectRefUserType::class,
+            SearchableType::class,
             [
-                'class' => User::class,
+                'multiple' => false,
+                'class'    => User::class,
+                'route'    => 'api_search_user',
             ]
         );
         $builder->add('commentaire');
-        $builder->add('libelles');
+        $builder->add(
+            'libelles',
+            SearchableType::class,
+            [
+                'class' => Libelle::class,
+                'route' => 'api_search_postlibelle',
+            ]
+        );
         unset($options);
     }
 

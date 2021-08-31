@@ -56,7 +56,6 @@ class KernelSubscriber implements EventSubscriberInterface
         'btn-togglefieldset',
         'select-country',
         'select-selector',
-        'select-refuser',
         'input-phone',
         'input-email',
         'input-url',
@@ -68,6 +67,7 @@ class KernelSubscriber implements EventSubscriberInterface
         'select-element',
     ];
     public const LABSTAG_CONTROLLER = '/(Labstag)/';
+    public const API_CONTROLLER     = '/(Api)/';
 
     public const CLIENTNUMBER = 400;
 
@@ -82,7 +82,8 @@ class KernelSubscriber implements EventSubscriberInterface
         $request    = $event->getRequest();
         $controller = $request->attributes->get('_controller');
         preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
-        if (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER)) {
+        preg_match(self::API_CONTROLLER, $controller, $apis);
+        if (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER) || 0 != count($apis)) {
             return;
         }
 
