@@ -5,7 +5,7 @@ namespace Labstag\Form\Admin\User;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\EmailType;
-use Labstag\FormType\SelectRefUserType;
+use Labstag\FormType\SearchableType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,9 +23,11 @@ class EmailUserType extends EmailType
         $builder->add('principal');
         $builder->add(
             'refuser',
-            SelectRefUserType::class,
+            SearchableType::class,
             [
-                'class' => User::class,
+                'multiple' => false,
+                'class'    => User::class,
+                'route'    => 'api_search_user',
             ]
         );
     }
