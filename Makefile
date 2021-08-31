@@ -12,6 +12,14 @@ ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   $(eval $(COMMANDS_ARGS):;@:)
 endif
 
+GREEN := \033[0;32m
+RED := \033[0;31m
+YELLOW := \033[0;33m
+NC := \033[0m
+NEED := ${GREEN}%-20s${NC}: %s\n
+MISSING :=${RED}ARGUMENT missing${NC}\n
+ARGUMENTS := make ${PURPLE}%s${NC} ${YELLOW}ARGUMENT${NC}\n
+
 init: ## Init project
 	@git submodule update --init --recursive --remote
 
@@ -34,13 +42,13 @@ else ifeq ($(COMMANDS_ARGS),migrate)
 else ifeq ($(COMMANDS_ARGS),validate)
 	$(DOCKER_EXECPHP) make bdd validate
 else
-	@echo "ARGUMENT missing"
+	@printf "${MISSING}"
 	@echo "---"
-	@echo "make bdd ARGUMENT"
+	@printf "${ARGUMENTS}" "bdd"
 	@echo "---"
-	@echo "fixtures: fixtures"
-	@echo "migrate: migrate database"
-	@echo "validate: bdd validate"
+	@printf "${NEED}" "fixtures" "fixtures"
+	@printf "${NEED}" "migrate" "migrate database"
+	@printf "${NEED}" "validate" "bdd validate"
 endif
 
 .PHONY: composer
@@ -62,18 +70,18 @@ else ifeq ($(COMMANDS_ARGS),i)
 else ifeq ($(COMMANDS_ARGS),validate)
 	$(DOCKER_EXECPHP) make composer validate
 else
-	@echo "ARGUMENT missing"
+	@printf "${MISSING}"
 	@echo "---"
-	@echo "make composer ARGUMENT"
+	@printf "${ARGUMENTS}" "composer"
 	@echo "---"
-	@echo "suggests: suggestions package pour PHP"
-	@echo "i: install"
-	@echo "outdated: Packet php outdated"
-	@echo "fund: Discover how to help fund the maintenance of your dependencies."
-	@echo "prod: Installation version de prod"
-	@echo "dev: Installation version de dev"
-	@echo "u: COMPOSER update"
-	@echo "validate: COMPOSER validate"
+	@printf "${NEED}" "suggests" "suggestions package pour PHP"
+	@printf "${NEED}" "i" "install"
+	@printf "${NEED}" "outdated" "Packet php outdated"
+	@printf "${NEED}" "fund" "Discover how to help fund the maintenance of your dependencies."
+	@printf "${NEED}" "prod" "Installation version de prod"
+	@printf "${NEED}" "dev" "Installation version de dev"
+	@printf "${NEED}" "u" "COMPOSER update"
+	@printf "${NEED}" "validate" "COMPOSER validate"
 endif
 
 .PHONY: encore
@@ -86,13 +94,13 @@ else ifeq ($(COMMANDS_ARGS),watch)
 else ifeq ($(COMMANDS_ARGS),build)
 	@npm run encore-build
 else
-	@echo "ARGUMENT missing"
+	@printf "${MISSING}"
 	@echo "---"
-	@echo "make encore ARGUMENT"
+	@printf "${ARGUMENTS}" "encore"
 	@echo "---"
-	@echo "dev: créer les assets en version dev"
-	@echo "watch: créer les assets en version watch"
-	@echo "build: créer les assets en version prod"
+	@printf "${NEED}" "dev" "créer les assets en version dev"
+	@printf "${NEED}" "watch" "créer les assets en version watch"
+	@printf "${NEED}" "build" "créer les assets en version prod"
 endif
 
 .PHONY: env
@@ -104,12 +112,12 @@ else ifeq ($(COMMANDS_ARGS),prod)
 	@rm -rf apps/vendor
 	@make composer prod -i
 else
-	@echo "ARGUMENT missing"
+	@printf "${MISSING}"
 	@echo "---"
-	@echo "make env ARGUMENT"
+	@printf "${ARGUMENTS}" "env"
 	@echo "---"
-	@echo "dev: environnement dev"
-	@echo "prod: environnement prod"
+	@printf "${NEED}" "dev" "environnement dev"
+	@printf "${NEED}" "prod" "environnement prod"
 endif
 
 .PHONY: geocode
@@ -139,13 +147,13 @@ else ifeq ($(COMMANDS_ARGS),prod)
 	@make env prod -i
 	@make encore build -i
 else
-	@echo "ARGUMENT missing"
+	@printf "${MISSING}"
 	@echo "---"
-	@echo "make install ARGUMENT"
+	@printf "${ARGUMENTS}" "install"
 	@echo "---"
-	@echo "all: common"
-	@echo "dev: dev"
-	@echo "prod: prod"
+	@printf "${NEED}" "all" "common"
+	@printf "${NEED}" "dev" "dev"
+	@printf "${NEED}" "prod" "prod"
 endif
 
 .PHONY: commands
@@ -217,33 +225,33 @@ else ifeq ($(COMMANDS_ARGS),container)
 else ifeq ($(COMMANDS_ARGS),yaml)
 	$(DOCKER_EXECPHP) make linter yaml
 else
-	@echo "ARGUMENT missing"
+	@printf "${MISSING}"
 	@echo "---"
-	@echo "make linter ARGUMENT"
+	@printf "${ARGUMENTS}" "linter"
 	@echo "---"
-	@echo "all: ## Launch all linter"
-	@echo "composer: composer"
-	@echo "readme: linter README.md"
-	@echo "phpaudit: AUDIT PHP"
-	@echo "phpfix: PHP-CS-FIXER & PHPCBF"
-	@echo "stylelint: indique les erreurs dans le code SCSS"
-	@echo "stylelint-fix: fix les erreurs dans le code SCSS"
-	@echo "eslint: indique les erreurs sur le code JavaScript à partir d'un standard"
-	@echo "eslint-fix: fixe le code JavaScript à partir d'un standard"
-	@echo "phpcbf: fixe le code PHP à partir d'un standard"
-	@echo "php-cs-fixer: fixe le code PHP à partir d'un standard"
-	@echo "phpcs: indique les erreurs de code non corrigé par PHPCBF"
-	@echo "phpcs-onlywarning: indique les erreurs de code non corrigé par PHPCBF"
-	@echo "phpcs-onlyerror: indique les erreurs de code non corrigé par PHPCBF"
-	@echo "phploc: phploc"
-	@echo "phpmd: indique quand le code PHP contient des erreurs de syntaxes ou des erreurs"
-	@echo "phpmnd: Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes"
-	@echo "phpstan: regarde si le code PHP ne peux pas être optimisé"
-	@echo "twig: indique les erreurs de code de twig"
-	@echo "container: indique les erreurs de code de container"
-	@echo "yaml: indique les erreurs de code de yaml"
-	@echo "jscpd: Copy paste detector"
-	@echo "jscpd-report: Copy paste detector report"
+	@printf "${NEED}" "all" "## Launch all linter"
+	@printf "${NEED}" "composer" "composer"
+	@printf "${NEED}" "readme" "linter README.md"
+	@printf "${NEED}" "phpaudit" "AUDIT PHP"
+	@printf "${NEED}" "phpfix" "PHP-CS-FIXER & PHPCBF"
+	@printf "${NEED}" "stylelint" "indique les erreurs dans le code SCSS"
+	@printf "${NEED}" "stylelint-fix" "fix les erreurs dans le code SCSS"
+	@printf "${NEED}" "eslint" "indique les erreurs sur le code JavaScript à partir d'un standard"
+	@printf "${NEED}" "eslint-fix" "fixe le code JavaScript à partir d'un standard"
+	@printf "${NEED}" "phpcbf" "fixe le code PHP à partir d'un standard"
+	@printf "${NEED}" "php-cs-fixer" "fixe le code PHP à partir d'un standard"
+	@printf "${NEED}" "phpcs" "indique les erreurs de code non corrigé par PHPCBF"
+	@printf "${NEED}" "phpcs-onlywarning" "indique les erreurs de code non corrigé par PHPCBF"
+	@printf "${NEED}" "phpcs-onlyerror" "indique les erreurs de code non corrigé par PHPCBF"
+	@printf "${NEED}" "phploc" "phploc"
+	@printf "${NEED}" "phpmd" "indique quand le code PHP contient des erreurs de syntaxes ou des erreurs"
+	@printf "${NEED}" "phpmnd" "Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes"
+	@printf "${NEED}" "phpstan" "regarde si le code PHP ne peux pas être optimisé"
+	@printf "${NEED}" "twig" "indique les erreurs de code de twig"
+	@printf "${NEED}" "container" "indique les erreurs de code de container"
+	@printf "${NEED}" "yaml" "indique les erreurs de code de yaml"
+	@printf "${NEED}" "jscpd" "Copy paste detector"
+	@printf "${NEED}" "jscpd-report" "Copy paste detector report"
 endif
 
 .PHONY: messenger
@@ -251,11 +259,11 @@ messenger: ### Scripts messenger
 ifeq ($(COMMANDS_ARGS),consume)
 	$(DOCKER_EXECPHP) make messenger consume
 else
-	@echo "ARGUMENT missing"
+	@printf "${MISSING}"
 	@echo "---"
-	@echo "make messenger ARGUMENT"
+	@printf "${ARGUMENTS}" "messenger"
 	@echo "---"
-	@echo "consume: Messenger Consume"
+	@printf "${NEED}" "consume" "Messenger Consume"
 endif
 
 .PHONY: tests
@@ -269,14 +277,14 @@ else ifeq ($(COMMANDS_ARGS),simple-phpunit-unit-integration)
 else ifeq ($(COMMANDS_ARGS),simple-phpunit)
 	@$(DOCKER_EXECPHP) make tests simple-phpunit
 else
-	@echo "ARGUMENT missing"
+	@printf "${MISSING}"
 	@echo "---"
-	@echo "make tests ARGUMENT"
+	@printf "${ARGUMENTS}" "tests"
 	@echo "---"
-	@echo "launch: Launch all tests"
-	@echo "behat: Lance les tests behat"
-	@echo "simple-phpunit-unit-integration: lance les tests phpunit"
-	@echo "simple-phpunit: lance les tests phpunit"
+	@printf "${NEED}" "launch" "Launch all tests"
+	@printf "${NEED}" "behat" "Lance les tests behat"
+	@printf "${NEED}" "simple-phpunit-unit-integration" "lance les tests phpunit"
+	@printf "${NEED}" "simple-phpunit" "lance les tests phpunit"
 endif
 
 .PHONY: translations
@@ -295,11 +303,11 @@ ifeq ($(COMMANDS_ARGS),tarteaucitron)
 	rm v1.9.3.zip
 	mv tarteaucitron.js-1.9.3 apps/public/tarteaucitron
 else
-	@echo "ARGUMENT missing"
+	@printf "${MISSING}"
 	@echo "---"
-	@echo "make libraries ARGUMENT"
+	@printf "${ARGUMENTS}" "libraries"
 	@echo "---"
-	@echo "tarteaucitron: tarteaucitron"
+	@printf "${NEED}" "tarteaucitron" "tarteaucitron"
 endif
 
 DATABASE_BDD := $(shell more docker-compose.yml | grep DATABASE_BDD: | sed -e "s/^.*DATABASE_BDD:[[:space:]]//")
