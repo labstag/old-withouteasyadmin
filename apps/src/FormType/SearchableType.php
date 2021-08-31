@@ -105,7 +105,7 @@ class SearchableType extends AbstractType
         if ($values instanceof Collection) {
             return $values->map(fn ($d) => new ChoiceView($d, (string) $d->getId(), (string) $d))->toArray();
         }
-        
+
         return [new ChoiceView($values, (string) $values->getId(), (string) $values)];
     }
 }
