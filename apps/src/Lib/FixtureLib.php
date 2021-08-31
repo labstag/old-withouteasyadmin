@@ -3,7 +3,6 @@
 namespace Labstag\Lib;
 
 use Bluemmb\Faker\PicsumPhotosProvider;
-use Cocur\Slugify\Slugify;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Exception;
@@ -38,6 +37,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
 
@@ -310,12 +310,12 @@ abstract class FixtureLib extends Fixture
         /** @var resource $finfo */
         $finfo       = finfo_open(FILEINFO_MIME_TYPE);
         $annotations = $this->uploadAnnotReader->getUploadableFields($entity);
-        $slugify     = new Slugify();
+        $slugger     = new AsciiSlugger();
         foreach ($annotations as $annotation) {
             $path       = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $accessor   = PropertyAccess::createPropertyAccessor();
             $title      = $accessor->getValue($entity, $annotation->getSlug());
-            $slug       = $slugify->slugify($title);
+            $slug       = $slugger->slug($title);
             $attachment = new Attachment();
             $old        = clone $attachment;
             try {
