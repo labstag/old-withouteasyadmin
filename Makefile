@@ -5,6 +5,10 @@ include make/docker/Makefile
 
 DOCKER_EXECPHP := @docker exec $(STACK)_phpfpm.1.$$(docker service ps -f 'name=$(STACK)_phpfpm' $(STACK)_phpfpm -q --no-trunc | head -n1)
 
+SYMFONY_EXEC := ${DOCKER_EXECPHP} symfony console
+COMPOSER_EXEC := ${DOCKER_EXECPHP} symfony composer
+PHP_EXEC := ${DOCKER_EXECPHP} php
+
 COMMANDS_SUPPORTED_COMMANDS := libraries workflow-png tests messenger linter install git env encore composer bdd setbdd
 COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
 ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
@@ -12,35 +16,36 @@ ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   $(eval $(COMMANDS_ARGS):;@:)
 endif
 
-GREEN := \033[0;32m
-RED := \033[0;31m
-YELLOW := \033[0;33m
-NC := \033[0m
-NEED := ${GREEN}%-20s${NC}: %s\n
-MISSING :=${RED}ARGUMENT missing${NC}\n
-ARGUMENTS := make ${PURPLE}%s${NC} ${YELLOW}ARGUMENT${NC}\n
-
 init: ## Init project
 	@git submodule update --init --recursive --remote
-
-dump:
-	@mkdir dump
 
 apps/.env: apps/.env.dist ## Install .env
 	@cp apps/.env.dist apps/.env
 
+apps/phploc.phar:
+	$(DOCKER_EXECPHP) wget https://phar.phpunit.de/phploc-7.0.2.phar -O phploc.phar
+
+apps/phpmd.phar:
+	$(DOCKER_EXECPHP) wget https://github.com/phpmd/phpmd/releases/download/2.10.2/phpmd.phar
+
+apps/composer.lock: isdocker apps/composer.json
+	${COMPOSER_EXEC} update
+
+apps/vendor: isdocker apps/composer.json
+	${COMPOSER_EXEC} install --no-progress --prefer-dist --optimize-autoloader
+	
 .PHONY: assets
-assets:
-	$(DOCKER_EXECPHP) make assets
+assets: isdocker
+	${SYMFONY_EXEC} assets:install public --symlink --relative
 
 .PHONY: bdd
-bdd: ### Scripts for BDD
+bdd: isdocker ### Scripts for BDD
 ifeq ($(COMMANDS_ARGS),fixtures)
-	$(DOCKER_EXECPHP) make bdd fixtures
+	${SYMFONY_EXEC} doctrine:fixtures:load -n
 else ifeq ($(COMMANDS_ARGS),migrate)
-	$(DOCKER_EXECPHP) make bdd migrate
+	${SYMFONY_EXEC} doctrine:migrations:migrate -n
 else ifeq ($(COMMANDS_ARGS),validate)
-	$(DOCKER_EXECPHP) make bdd validate
+	${SYMFONY_EXEC} doctrine:schema:validate
 else
 	@printf "${MISSING_ARGUMENTS}" "bdd"
 	@printf "${NEED}" "fixtures" "fixtures"
@@ -49,23 +54,23 @@ else
 endif
 
 .PHONY: composer
-composer: ### Scripts for composer
+composer: isdocker ### Scripts for composer
 ifeq ($(COMMANDS_ARGS),suggests)
-	$(DOCKER_EXECPHP) make composer suggests
+	${COMPOSER_EXEC} suggests --by-suggestion
 else ifeq ($(COMMANDS_ARGS),outdated)
-	$(DOCKER_EXECPHP) make composer outdated
+	${COMPOSER_EXEC} outdated
 else ifeq ($(COMMANDS_ARGS),fund)
-	$(DOCKER_EXECPHP) make composer fund
+	${COMPOSER_EXEC} fund
 else ifeq ($(COMMANDS_ARGS),prod)
-	$(DOCKER_EXECPHP) make composer prod
+	${COMPOSER_EXEC} install --no-dev --no-progress --prefer-dist --optimize-autoloader
 else ifeq ($(COMMANDS_ARGS),dev)
-	$(DOCKER_EXECPHP) make composer dev
+	${COMPOSER_EXEC} install --no-progress --prefer-dist --optimize-autoloader
 else ifeq ($(COMMANDS_ARGS),u)
-	$(DOCKER_EXECPHP) make composer update
+	${COMPOSER_EXEC} update
 else ifeq ($(COMMANDS_ARGS),i)
-	$(DOCKER_EXECPHP) make composer install
+	${COMPOSER_EXEC} install
 else ifeq ($(COMMANDS_ARGS),validate)
-	$(DOCKER_EXECPHP) make composer validate
+	${COMPOSER_EXEC} validate
 else
 	@printf "${MISSING_ARGUMENTS}" "composer"
 	@printf "${NEED}" "suggests" "suggestions package pour PHP"
@@ -109,8 +114,8 @@ else
 endif
 
 .PHONY: geocode
-geocode: ### Geocode
-	$(DOCKER_EXECPHP) make geocode $(COMMANDS_ARGS)
+geocode: isdocker ### Geocode
+	$(SYMFONY_EXEC) $(COMMANDS_ARGS)
 
 .PHONY: install
 install: apps/.env ### installation
@@ -142,13 +147,13 @@ else
 endif
 
 .PHONY: commands
-commands:
-	$(DOCKER_EXECPHP) symfony console labstag:install --all
-	$(DOCKER_EXECPHP) symfony console labstag:guard-route
-	$(DOCKER_EXECPHP) symfony console labstag:workflows-show
+commands: isdocker
+	$(SYMFONY_EXEC) labstag:install --all
+	$(SYMFONY_EXEC) labstag:guard-route
+	$(SYMFONY_EXEC) labstag:workflows-show
 
 .PHONY: linter
-linter: ### Scripts Linter
+linter: isdocker apps/phploc.phar apps/phpmd.phar node_modules ### Scripts Linter
 ifeq ($(COMMANDS_ARGS),all)
 	@make linter phpfix -i
 	@make linter eslint -i
@@ -186,29 +191,29 @@ else ifeq ($(COMMANDS_ARGS),eslint)
 else ifeq ($(COMMANDS_ARGS),eslint-fix)
 	@npm run eslint-fix
 else ifeq ($(COMMANDS_ARGS),php-cs-fixer)
-	$(DOCKER_EXECPHP) make linter php-cs-fixer
+	${COMPOSER_EXEC} run php-cs-fixer
 else ifeq ($(COMMANDS_ARGS),phpcbf)
-	$(DOCKER_EXECPHP) make linter phpcbf
+	${COMPOSER_EXEC} run phpcbf
 else ifeq ($(COMMANDS_ARGS),phpcs)
-	$(DOCKER_EXECPHP) make linter phpcs
+	${COMPOSER_EXEC} run phpcs
 else ifeq ($(COMMANDS_ARGS),phpcs-onlywarning)
-	$(DOCKER_EXECPHP) make linter phpcs-onlywarning
+	${COMPOSER_EXEC} run phpcs-onlywarning
 else ifeq ($(COMMANDS_ARGS),phpcs-onlyerror)
-	$(DOCKER_EXECPHP) make linter phpcs-onlyerror
+	${COMPOSER_EXEC} run phpcs-onlyerror
 else ifeq ($(COMMANDS_ARGS),phploc)
-	$(DOCKER_EXECPHP) make linter phploc
+	$(PHP_EXEC) phploc.phar src
 else ifeq ($(COMMANDS_ARGS),phpmd)
-	$(DOCKER_EXECPHP) make linter phpmd
+	$(PHP_EXEC) -d error_reporting=24575 phpmd.phar src,features/bootstrap,tests ansi phpmd.xml
 else ifeq ($(COMMANDS_ARGS),phpmnd)
-	$(DOCKER_EXECPHP) make linter phpmnd
+	${COMPOSER_EXEC} run phpmnd
 else ifeq ($(COMMANDS_ARGS),phpstan)
-	$(DOCKER_EXECPHP) make linter phpstan
+	${PHP_EXEC} -d memory_limit=-1 -n ./bin/phpstan analyse src
 else ifeq ($(COMMANDS_ARGS),twig)
-	$(DOCKER_EXECPHP) make linter twig
+	${SYMFONY_EXEC} lint:twig templates
 else ifeq ($(COMMANDS_ARGS),container)
-	$(DOCKER_EXECPHP) make linter container
+	${SYMFONY_EXEC} lint:container
 else ifeq ($(COMMANDS_ARGS),yaml)
-	$(DOCKER_EXECPHP) make linter yaml
+	${SYMFONY_EXEC} lint:yaml config
 else
 	@printf "${MISSING_ARGUMENTS}" "linter"
 	@printf "${NEED}" "all" "## Launch all linter"
@@ -237,24 +242,24 @@ else
 endif
 
 .PHONY: messenger
-messenger: ### Scripts messenger
+messenger: isdocker ### Scripts messenger
 ifeq ($(COMMANDS_ARGS),consume)
-	$(DOCKER_EXECPHP) make messenger consume
+	${SYMFONY_EXEC} messenger:consume async -vv
 else
 	@printf "${MISSING_ARGUMENTS}" "messenger"
 	@printf "${NEED}" "consume" "Messenger Consume"
 endif
 
 .PHONY: tests
-tests: ### Scripts tests
+tests: isdocker ### Scripts tests
 ifeq ($(COMMANDS_ARGS),launch)
 	@$(DOCKER_EXECPHP) make tests all
 else ifeq ($(COMMANDS_ARGS),behat)
-	@$(DOCKER_EXECPHP) make tests behat
+	${COMPOSER_EXEC} run behat
 else ifeq ($(COMMANDS_ARGS),simple-phpunit-unit-integration)
-	@$(DOCKER_EXECPHP) make tests simple-phpunit-unit-integration
+	${COMPOSER_EXEC} run simple-phpunit-unit-integration
 else ifeq ($(COMMANDS_ARGS),simple-phpunit)
-	@$(DOCKER_EXECPHP) make tests simple-phpunit
+	${COMPOSER_EXEC} run simple-phpunit
 else
 	@printf "${MISSING_ARGUMENTS}" "tests"
 	@printf "${NEED}" "launch" "Launch all tests"
@@ -264,12 +269,12 @@ else
 endif
 
 .PHONY: translations
-translations: ## update translation
-	$(DOCKER_EXECPHP) make translations
+translations: isdocker ## update translation
+	${SYMFONY_EXEC} translation:update --force --format=yml fr
 
 .PHONY: workflow-png
-workflow-png: ### generate workflow png
-	$(DOCKER_EXECPHP) make workflow-png $(COMMANDS_ARGS)
+workflow-png: isdocker ### generate workflow png
+	${SYMFONY_EXEC} workflow:dump $(COMMAND_ARGS) | dot -Tpng -o $(COMMAND_ARGS).png
 
 .PHONY: libraries
 libraries: ### Add libraries
