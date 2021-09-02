@@ -33,59 +33,16 @@ class ParamType extends AbstractType
             'image',
             'favicon',
         ];
-        foreach ($images as $key) {
-            $builder->add(
-                $key,
-                FileType::class,
-                [
-                    'label'    => 'admin.form.param.'.$key.'.label',
-                    'help'     => 'admin.form.param.'.$key.'.help',
-                    'required' => false,
-                    'attr'     => ['accept' => 'image/*'],
-                ]
-            );
-        }
+        $this->setFileType($builder, $images);
 
-        $builder->add(
-            'title_format',
-            TextType::class,
-            [
-                'label' => 'admin.form.param.title_format.label',
-                'help'  => 'admin.form.param.title_format.help',
-            ]
-        );
-        $builder->add(
-            'robotstxt',
-            TextareaType::class,
-            [
-                'label' => 'admin.form.param.robotstxt.label',
-                'help'  => 'admin.form.param.robotstxt.help',
-            ]
-        );
-        $builder->add(
-            'languagedefault',
-            LanguageType::class,
-            [
-                'label' => 'admin.form.param.languagedefault.label',
-                'help'  => 'admin.form.param.languagedefault.help',
-            ]
-        );
-        $builder->add(
-            'site_no-reply',
-            EmailType::class,
-            [
-                'label' => 'admin.form.param.site_no-reply.label',
-                'help'  => 'admin.form.param.site_no-reply.help',
-            ]
-        );
-        $builder->add(
-            'site_url',
-            UrlType::class,
-            [
-                'label' => 'admin.form.param.site_url.label',
-                'help'  => 'admin.form.param.site_url.help',
-            ]
-        );
+        $inputs = [
+            'title_format'    => TextType::class,
+            'robotstxt'       => TextareaType::class,
+            'languagedefault' => LanguageType::class,
+            'site_no-reply'   => EmailType::class,
+            'site_url'        => UrlType::class,
+        ];
+        $this->setInputs($builder, $inputs);
         $builder->add(
             'language',
             LanguageType::class,
@@ -133,6 +90,21 @@ class ParamType extends AbstractType
             'disclaimer'    => DisclaimerType::class,
             'notification'  => NotificationType::class,
         ];
+        $this->setMinMaxCollectionType($builder, $mixmax);
+
+        $builder->add(
+            'site_copyright',
+            CKEditorType::class,
+            [
+                'label' => 'admin.form.param.site_copyright.label',
+                'help'  => 'admin.form.param.site_copyright.help',
+            ]
+        );
+        unset($options);
+    }
+
+    private function setMinMaxCollectionType($builder, $mixmax)
+    {
         foreach ($mixmax as $key => $entry) {
             $builder->add(
                 $key,
@@ -144,16 +116,36 @@ class ParamType extends AbstractType
                 ]
             );
         }
+    }
 
-        $builder->add(
-            'site_copyright',
-            CKEditorType::class,
-            [
-                'label' => 'admin.form.param.site_copyright.label',
-                'help'  => 'admin.form.param.site_copyright.help',
-            ]
-        );
-        unset($options);
+    private function setInputs($builder, $inputs)
+    {
+        foreach ($inputs as $key => $class) {
+            $builder->add(
+                $key,
+                $class,
+                [
+                    'label' => 'admin.form.param.'.$key.'.label',
+                    'help'  => 'admin.form.param.'.$key.'.help',
+                ]
+            );
+        }
+    }
+
+    private function setFileType($builder, $images)
+    {
+        foreach ($images as $key) {
+            $builder->add(
+                $key,
+                FileType::class,
+                [
+                    'label'    => 'admin.form.param.'.$key.'.label',
+                    'help'     => 'admin.form.param.'.$key.'.help',
+                    'required' => false,
+                    'attr'     => ['accept' => 'image/*'],
+                ]
+            );
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

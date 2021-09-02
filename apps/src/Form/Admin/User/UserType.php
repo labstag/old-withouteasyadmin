@@ -113,42 +113,24 @@ class UserType extends AbstractType
             }
         }
 
-        $builder->add(
-            'emailUsers',
-            MinMaxCollectionType::class,
-            [
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'entry_type'   => EmailType::class,
-            ]
-        );
-        $builder->add(
-            'phoneUsers',
-            MinMaxCollectionType::class,
-            [
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'entry_type'   => PhoneType::class,
-            ]
-        );
-        $builder->add(
-            'adresseUsers',
-            MinMaxCollectionType::class,
-            [
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'entry_type'   => AdresseType::class,
-            ]
-        );
-        $builder->add(
-            'lienUsers',
-            MinMaxCollectionType::class,
-            [
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'entry_type'   => LienType::class,
-            ]
-        );
+        $tab = [
+            'emailUsers'   => EmailType::class,
+            'phoneUsers'   => PhoneType::class,
+            'adresseUsers' => AdresseType::class,
+            'lienUsers'    => LienType::class,
+        ];
+
+        foreach ($tab as $key => $type) {
+            $builder->add(
+                $key,
+                MinMaxCollectionType::class,
+                [
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                    'entry_type'   => $type,
+                ]
+            );
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

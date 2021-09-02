@@ -26,30 +26,13 @@ class TarteaucitronType extends AbstractType
                 'required' => false,
             ]
         );
-        $builder->add(
+        $tab = [
             'hashtag',
-            TextType::class,
-            [
-                'label' => 'admin.param.param.tarteaucitron.hashtag.label',
-                'help'  => 'admin.param.param.tarteaucitron.hashtag.help',
-            ]
-        );
-        $builder->add(
             'cookieName',
-            TextType::class,
-            [
-                'label' => 'admin.param.param.tarteaucitron.cookieName.label',
-                'help'  => 'admin.param.param.tarteaucitron.cookieName.help',
-            ]
-        );
-        $builder->add(
             'orientation',
-            TextType::class,
-            [
-                'label' => 'admin.param.param.tarteaucitron.orientation.label',
-                'help'  => 'admin.param.param.tarteaucitron.orientation.help',
-            ]
-        );
+        ];
+
+        $this->setInputText($builder, $tab);
         $tab = [
             'groupServices',
             'showAlertSmall',
@@ -135,6 +118,20 @@ class TarteaucitronType extends AbstractType
                         'Non' => '0',
                         'Oui' => '1',
                     ],
+                ]
+            );
+        }
+    }
+
+    private function setInputText($builder, $tab)
+    {
+        foreach (array_keys($tab) as $id) {
+            $builder->add(
+                $id,
+                TextType::class,
+                [
+                    'label' => 'admin.form.param.tarteaucitron.'.$id.'.label',
+                    'help'  => 'admin.form.param.tarteaucitron.'.$id.'.help',
                 ]
             );
         }

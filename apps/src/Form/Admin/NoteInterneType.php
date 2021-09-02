@@ -4,6 +4,7 @@ namespace Labstag\Form\Admin;
 
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\NoteInterne;
+use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
