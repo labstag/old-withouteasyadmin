@@ -22,14 +22,22 @@ class ChangePasswordType extends AbstractType
             [
                 'type'           => PasswordType::class,
                 'label'          => 'password',
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'first_options'  => [
+                    'label' => 'security.form.changepassword.password.label',
+                    'help' => 'security.form.changepassword.password.help',
+                ],
+                'second_options' => [
+                    'label' => 'security.form.changepassword.repeatpassword.label',
+                    'help' => 'security.form.changepassword.repeatpassword.help',
+                ],
             ]
         );
         $builder->add(
             'submit',
             SubmitType::class,
-            ['label' => 'Change password']
+            [
+                'label' => 'security.form.changepassword.password.label',
+            ]
         );
         unset($options);
     }

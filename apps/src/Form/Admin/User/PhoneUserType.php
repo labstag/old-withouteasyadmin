@@ -6,6 +6,7 @@ use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\PhoneType;
 use Labstag\FormType\SearchableType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,11 +21,20 @@ class PhoneUserType extends PhoneType
     ): void
     {
         parent::buildForm($builder, $options);
-        $builder->add('principal');
+        $builder->add(
+            'principal',
+            CheckboxType::class,
+            [
+                'label' => 'admin.form.phoneuser.principal.label',
+                'help' => 'admin.form.phoneuser.principal.help',
+            ]
+        );
         $builder->add(
             'refuser',
             SearchableType::class,
             [
+                'label' => 'admin.form.phoneuser.refuser.label',
+                'help' => 'admin.form.phoneuser.refuser.help',
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

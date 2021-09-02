@@ -20,25 +20,34 @@ class LoginType extends AbstractType
         $builder->add(
             'username',
             TextType::class,
-            ['label' => 'Username']
+            [
+                'label' => 'security.form.login.username.label',
+                'help' => 'security.form.login.username.help',
+            ]
         );
         $builder->add(
             'password',
             PasswordType::class,
-            ['label' => 'Password']
+            [
+                'label' => 'security.form.login.password.label',
+                'help' => 'security.form.login.password.help',
+            ]
         );
         $builder->add(
             'remember_me',
             CheckboxType::class,
             [
-                'label'    => 'Keep me logged in',
+                'label' => 'security.form.login.remember_me.label',
+                'help' => 'security.form.login.remember_me.help',
                 'required' => false,
             ]
         );
         $builder->add(
             'submit',
             SubmitType::class,
-            ['label' => 'Sign in']
+            [
+                'label' => 'security.form.login.username.label',
+            ]
         );
         unset($options);
     }

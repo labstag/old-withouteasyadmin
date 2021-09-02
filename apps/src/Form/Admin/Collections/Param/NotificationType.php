@@ -15,11 +15,20 @@ class NotificationType extends AbstractType
         array $options
     ): void
     {
-        $builder->add('type', TextType::class);
+        $builder->add(
+            'type',
+            TextType::class,
+            [
+                'label' => 'admin.form.param.notification.type.label',
+                'help' => 'admin.form.param.notification.type.help',
+            ]
+        );
         $builder->add(
             'mail',
             ChoiceType::class,
             [
+                'label' => 'admin.form.param.notification.mail.label',
+                'help' => 'admin.form.param.notification.mail.help',
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -30,6 +39,8 @@ class NotificationType extends AbstractType
             'notify',
             ChoiceType::class,
             [
+                'label' => 'admin.form.param.notification.notify.label',
+                'help' => 'admin.form.param.notification.notify.help',
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',

@@ -14,8 +14,22 @@ class FormatDateType extends AbstractType
         array $options
     ): void
     {
-        $builder->add('admin', TextType::class);
-        $builder->add('public', TextType::class);
+        $builder->add(
+            'admin',
+            TextType::class,
+            [
+                'label' => 'admin.form.param.formatdate.admin.label',
+                'help' => 'admin.form.param.formatdate.admin.help',
+            ]
+        );
+        $builder->add(
+            'public',
+            TextType::class,
+            [
+                'label' => 'admin.form.param.formatdate.public.label',
+                'help' => 'admin.form.param.formatdate.public.help',
+            ]
+        );
         unset($options);
     }
 

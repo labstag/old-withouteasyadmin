@@ -28,6 +28,8 @@ class OauthType extends AbstractType
             'activate',
             ChoiceType::class,
             [
+                'label' => 'admin.form.param.oauth.activate.label',
+                'help' => 'admin.form.param.oauth.activate.help',
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -44,10 +46,30 @@ class OauthType extends AbstractType
         $builder->add(
             'type',
             ChoiceType::class,
-            ['choices' => $choices]
+            [
+                'label' => 'admin.form.param.oauth.type.label',
+                'help' => 'admin.form.param.oauth.type.help',
+                'choices' => $choices
+            ]
         );
-        $builder->add('id', TextType::class, ['required' => false]);
-        $builder->add('secret', TextType::class, ['required' => false]);
+        $builder->add(
+            'id',
+            TextType::class,
+            [
+                'label' => 'admin.form.param.oauth.id.label',
+                'help' => 'admin.form.param.oauth.id.help',
+                'required' => false
+            ]
+        );
+        $builder->add(
+            'secret',
+            TextType::class,
+            [
+                'label' => 'admin.form.param.oauth.secret.label',
+                'help' => 'admin.form.param.oauth.secret.help',
+                'required' => false
+            ]
+        );
         unset($options);
     }
 

@@ -3,18 +3,21 @@
 namespace Labstag\Form\Admin\User;
 
 use Labstag\Entity\EmailUser;
+use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Collections\User\AdresseType;
 use Labstag\Form\Admin\Collections\User\EmailType;
 use Labstag\Form\Admin\Collections\User\LienType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
 use Labstag\FormType\MinMaxCollectionType;
+use Labstag\FormType\SearchableType;
 use Labstag\Repository\EmailUserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -36,7 +39,14 @@ class UserType extends AbstractType
         array $options
     ): void
     {
-        $builder->add('username');
+        $builder->add(
+            'username',
+            TextType::class,
+            [
+                'label' => 'admin.form.user.username.label',
+                'help' => 'admin.form.user.username.help',
+            ]
+        );
         $builder->add(
             'plainPassword',
             RepeatedType::class,
@@ -45,15 +55,33 @@ class UserType extends AbstractType
                 'invalid_message' => 'The password fields must match.',
                 'options'         => ['attr' => ['class' => 'password-field']],
                 'required'        => false,
-                'first_options'   => ['label' => 'Password'],
-                'second_options'  => ['label' => 'Repeat Password'],
+                'first_options'   => [
+                    'label' => 'admin.form.user.password.label',
+                    'help' => 'admin.form.user.password.help',
+                ],
+                'second_options'  => [
+                    'label' => 'admin.form.user.repeatpassword.label',
+                    'help' => 'admin.form.user.repeatpassword.help',
+                ],
             ]
         );
-        $builder->add('refgroupe');
+        $builder->add(
+            'refgroupe',
+            SearchableType::class,
+            [
+                'label' => 'admin.form.user.refgroupe.label',
+                'help' => 'admin.form.user.refgroupe.help',
+                'multiple' => false,
+                'class'    => Groupe::class,
+                'route'    => 'api_search_group',
+            ]
+        );
         $builder->add(
             'file',
             FileType::class,
             [
+                'label' => 'admin.form.user.file.label',
+                'help' => 'admin.form.user.file.help',
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]
@@ -76,7 +104,11 @@ class UserType extends AbstractType
                 $builder->add(
                     'email',
                     ChoiceType::class,
-                    ['choices' => $emails]
+                    [
+                        'label' => 'admin.form.user.email.label',
+                        'help' => 'admin.form.user.email.help',
+                        'choices' => $emails
+                    ]
                 );
             }
         }

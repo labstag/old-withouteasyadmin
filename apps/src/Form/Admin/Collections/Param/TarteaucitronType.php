@@ -21,37 +21,49 @@ class TarteaucitronType extends AbstractType
             'privacyUrl',
             UrlType::class,
             [
+                'label' => 'admin.param.param.tarteaucitron.privacyUrl.label',
+                'help' => 'admin.param.param.tarteaucitron.privacyUrl.help',
                 'required' => false,
-                'help'     => 'Privacy policy url',
             ]
         );
         $builder->add(
             'hashtag',
             TextType::class,
-            ['help' => 'Open the panel with this hashtag']
+            [
+                'label' => 'admin.param.param.tarteaucitron.hashtag.label',
+                'help' => 'admin.param.param.tarteaucitron.hashtag.help',
+            ]
         );
         $builder->add(
             'cookieName',
             TextType::class,
-            ['help' => 'Cookie name']
+            [
+                'label' => 'admin.param.param.tarteaucitron.cookieName.label',
+                'help' => 'admin.param.param.tarteaucitron.cookieName.help',
+            ]
         );
         $builder->add(
             'orientation',
             TextType::class,
-            ['help' => 'Banner position (top - bottom)']
+            [
+                'label' => 'admin.param.param.tarteaucitron.orientation.label',
+                'help' => 'admin.param.param.tarteaucitron.orientation.help',
+            ]
         );
         $tab = [
-            'groupServices'  => 'Group services by category',
-            'showAlertSmall' => 'Show the small banner on bottom right',
-            'cookieslist'    => 'Show the cookie list',
-            'closePopup'     => 'Show a close X on the banner',
-            'showIcon'       => 'Show cookie icon to manage cookies',
+            'groupServices',
+            'showAlertSmall',
+            'cookieslist',
+            'closePopup',
+            'showIcon',
         ];
         $this->setInputTrueFalse($builder, $tab);
         $builder->add(
             'iconPosition',
             ChoiceType::class,
             [
+                'label' => 'admin.form.param.tarteaucitron.iconPosition.label',
+                'help' => 'admin.form.param.tarteaucitron.iconPosition.help',
                 'choices' => [
                     'BottomRight' => 'BottomRight',
                     'BottomLeft'  => 'BottomLeft',
@@ -61,20 +73,21 @@ class TarteaucitronType extends AbstractType
             ]
         );
         $tab = [
-            'adblocker'               => 'Show a Warning if an adblocker is detected',
-            'DenyAllCta'              => 'Show the deny all button',
-            'AcceptAllCta'            => 'Show the accept all button when highPrivacy on',
-            'highPrivacy'             => 'HIGHLY RECOMMANDED Disable auto consent',
-            'handleBrowserDNTRequest' => 'If Do Not Track == 1, disallow all',
-            'removeCredit'            => 'Remove credit link',
-            'moreInfoLink'            => 'Show more info link',
+            'adblocker',
+            'DenyAllCta',
+            'AcceptAllCta',
+            'highPrivacy',
+            'handleBrowserDNTRequest',
+            'removeCredit',
+            'moreInfoLink',
         ];
         $this->setInputTrueFalse($builder, $tab);
         $builder->add(
             'readmoreLink',
             UrlType::class,
             [
-                'help'     => 'Change the default readmore link',
+                'label' => 'admin.form.param.tarteaucitron.readmoreLink.label',
+                'help' => 'admin.form.param.tarteaucitron.readmoreLink.help',
                 'required' => false,
             ]
         );
@@ -82,7 +95,8 @@ class TarteaucitronType extends AbstractType
             'mandatory',
             ChoiceType::class,
             [
-                'help'    => 'Show a message about mandatory cookies',
+                'label' => 'admin.form.param.tarteaucitron.mandatory.label',
+                'help' => 'admin.form.param.tarteaucitron.mandatory.help',
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -92,7 +106,10 @@ class TarteaucitronType extends AbstractType
         $builder->add(
             'job',
             CoreTextareaType::class,
-            ['help' => 'help']
+            [
+                'label' => 'admin.form.param.tarteaucitron.job.label',
+                'help' => 'admin.form.param.tarteaucitron.job.help',
+            ]
         );
         unset($options);
     }
@@ -107,12 +124,13 @@ class TarteaucitronType extends AbstractType
 
     private function setInputTrueFalse($builder, $tab)
     {
-        foreach ($tab as $id => $help) {
+        foreach (array_keys($tab) as $id) {
             $builder->add(
                 $id,
                 ChoiceType::class,
-                [
-                    'help'    => $help,
+                [   
+                    'label' => 'admin.form.param.tarteaucitron.'.$id.'.label',
+                    'help' => 'admin.form.param.tarteaucitron.'.$id.'.help',
                     'choices' => [
                         'Non' => '0',
                         'Oui' => '1',

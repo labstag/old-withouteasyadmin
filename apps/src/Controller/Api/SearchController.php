@@ -3,6 +3,7 @@
 namespace Labstag\Controller\Api;
 
 use Labstag\Lib\ApiControllerLib;
+use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\LibelleRepository;
 use Labstag\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,20 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SearchController extends ApiControllerLib
 {
+
+    /**
+     * @Route("/group", name="api_search_group")
+     *
+     * @param Request $request
+     * @param GroupeRepository $repository
+     * @return Response
+     */
+    public function groupe(Request $request, GroupeRepository $repository): Response
+    {
+        $return = ['isvalid' => false];
+        return $this->json($return);
+    }
+
     /**
      * @Route("/libelle", name="api_search_postlibelle")
      *

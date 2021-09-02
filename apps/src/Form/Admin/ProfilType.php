@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -35,17 +36,32 @@ class ProfilType extends AbstractType
         array $options
     ): void
     {
-        $builder->add('username');
+        $builder->add(
+            'username',
+            TextType::class,
+            [
+                'label' => 'admin.form.profil.username.label',
+                'help' => 'admin.form.profil.username.help',
+            ]
+        );
         $builder->add(
             'plainPassword',
             RepeatedType::class,
             [
                 'type'            => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
-                'options'         => ['attr' => ['class' => 'password-field']],
+                'options'         => [
+                    'attr' => ['class' => 'password-field'],
+                ],
                 'required'        => false,
-                'first_options'   => ['label' => 'Password'],
-                'second_options'  => ['label' => 'Repeat Password'],
+                'first_options'   => [
+                    'label' => 'admin.form.profil.password.label',
+                    'help' => 'admin.form.profil.password.help',
+                ],
+                'second_options'  => [
+                    'label' => 'admin.form.profil.repeatpassword.label',
+                    'help' => 'admin.form.profil.repeatpassword.help',
+                ],
             ]
         );
         if (isset($options['data']) && !is_null($options['data']->getId())) {
@@ -65,7 +81,11 @@ class ProfilType extends AbstractType
                 $builder->add(
                     'email',
                     ChoiceType::class,
-                    ['choices' => $emails]
+                    [
+                        'label' => 'admin.form.profil.email.label',
+                        'help' => 'admin.form.profil.email.help',
+                        'choices' => $emails
+                    ]
                 );
             }
         }
@@ -74,6 +94,8 @@ class ProfilType extends AbstractType
             'file',
             FileType::class,
             [
+                'label' => 'admin.form.profil.file.label',
+                'help' => 'admin.form.profil.file.help',
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]

@@ -18,11 +18,22 @@ class LibelleType extends AbstractType
         array $options
     ): void
     {
-        $builder->add('nom');
+        $builder->add(
+            'nom',
+            TextType::class,
+            [
+                'label' => 'admin.form.libelle.nom.label',
+                'help' => 'admin.form.libelle.nom.help',
+            ]
+        );
         $builder->add(
             'slug',
             TextType::class,
-            ['required' => false]
+            [
+                'label' => 'admin.form.libelle.nom.label',
+                'help' => 'admin.form.libelle.nom.help',
+                'required' => false
+            ]
         );
         unset($options);
     }

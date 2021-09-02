@@ -38,26 +38,69 @@ class ParamType extends AbstractType
                 $key,
                 FileType::class,
                 [
+                    'label' => 'admin.form.param.'.$key.'.label',
+                    'help' => 'admin.form.param.'.$key.'.help',
                     'required' => false,
                     'attr'     => ['accept' => 'image/*'],
                 ]
             );
         }
 
-        $builder->add('title_format', TextType::class);
-        $builder->add('robotstxt', TextareaType::class);
-        $builder->add('languagedefault', LanguageType::class);
-        $builder->add('site_no-reply', EmailType::class);
-        $builder->add('site_url', UrlType::class);
+        $builder->add(
+            'title_format',
+            TextType::class,
+            [
+                'label' => 'admin.form.param.title_format.label',
+                'help' => 'admin.form.param.title_format.help',
+            ]
+        );
+        $builder->add(
+            'robotstxt',
+            TextareaType::class,
+            [
+                'label' => 'admin.form.param.robotstxt.label',
+                'help' => 'admin.form.param.robotstxt.help',
+            ]
+        );
+        $builder->add(
+            'languagedefault',
+            LanguageType::class,
+            [
+                'label' => 'admin.form.param.languagedefault.label',
+                'help' => 'admin.form.param.languagedefault.help',
+            ]
+        );
+        $builder->add(
+            'site_no-reply',
+            EmailType::class,
+            [
+                'label' => 'admin.form.param.site_no-reply.label',
+                'help' => 'admin.form.param.site_no-reply.help',
+            ]
+        );
+        $builder->add(
+            'site_url',
+            UrlType::class,
+            [
+                'label' => 'admin.form.param.site_url.label',
+                'help' => 'admin.form.param.site_url.help',
+            ]
+        );
         $builder->add(
             'language',
             LanguageType::class,
-            ['multiple' => true]
+            [
+                'multiple' => true,
+                'label' => 'admin.form.param.language.label',
+                'help' => 'admin.form.param.language.help',
+            ]
         );
         $builder->add(
             'generator',
             ChoiceType::class,
             [
+                'label' => 'admin.form.param.generator.label',
+                'help' => 'admin.form.param.generator.help',
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -102,7 +145,14 @@ class ParamType extends AbstractType
             );
         }
 
-        $builder->add('site_copyright', CKEditorType::class);
+        $builder->add(
+            'site_copyright',
+            CKEditorType::class,
+            [
+                'label' => 'admin.form.param.site_copyright.label',
+                'help' => 'admin.form.param.site_copyright.help',
+            ]
+        );
         unset($options);
     }
 

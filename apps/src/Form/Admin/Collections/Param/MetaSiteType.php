@@ -15,10 +15,41 @@ class MetaSiteType extends AbstractType
         array $options
     ): void
     {
-        $builder->add('theme-color', ColorType::class);
-        $builder->add('viewport', TextType::class, ['required' => false]);
-        $builder->add('description', TextType::class, ['required' => false]);
-        $builder->add('keywords', TextType::class, ['required' => false]);
+        $builder->add(
+            'theme-color',
+            ColorType::class,
+            [
+                'label' => 'admin.form.param.metasite.theme-color.label',
+                'help' => 'admin.form.param.metasite.theme-color.help',
+            ]
+        );
+        $builder->add(
+            'viewport',
+            TextType::class,
+            [
+                'label' => 'admin.form.param.metasite.viewport.label',
+                'help' => 'admin.form.param.metasite.viewport.help',
+                'required' => false
+            ]
+        );
+        $builder->add(
+            'description',
+            TextType::class,
+            [
+                'label' => 'admin.form.param.metasite.description.label',
+                'help' => 'admin.form.param.metasite.description.help',
+                'required' => false
+            ]
+        );
+        $builder->add(
+            'keywords',
+            TextType::class,
+            [
+                'label' => 'admin.form.param.metasite.keywords.label',
+                'help' => 'admin.form.param.metasite.keywords.help',
+                'required' => false
+            ]
+        );
         unset($options);
     }
 
