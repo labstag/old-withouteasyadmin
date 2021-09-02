@@ -2,18 +2,18 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="Actions"
+        data-action="{{ "Actions"|trans|e('html_attr') }}"
         data-multiple
-        data-multipleall="Tout sélectionner"
-        data-multipleelement="Selection"
-        data-empty="No records found"
+        data-multipleall="{{ "Tout sélectionner"|trans|e('html_attr') }}"
+        data-multipleelement="{{ "Selection"|trans|e('html_attr') }}"
+        data-empty="{{ "No records found"|trans|e('html_attr') }}"
         data-count={{ trash|length }}
     >
         <thead>
             <tr>
-                <th>Entité</th>
-                <th>Count</th>
-                <th></th>
+                <th>{{ "Entité"|trans }}</th>
+                <th>{{ "Count"|trans }}</th>
+                <th>{{ ""|trans }}</th>
             </tr>
         </thead>
         <tbody>

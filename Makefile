@@ -42,10 +42,7 @@ else ifeq ($(COMMANDS_ARGS),migrate)
 else ifeq ($(COMMANDS_ARGS),validate)
 	$(DOCKER_EXECPHP) make bdd validate
 else
-	@printf "${MISSING}"
-	@echo "---"
-	@printf "${ARGUMENTS}" "bdd"
-	@echo "---"
+	@printf "${MISSING_ARGUMENTS}" "bdd"
 	@printf "${NEED}" "fixtures" "fixtures"
 	@printf "${NEED}" "migrate" "migrate database"
 	@printf "${NEED}" "validate" "bdd validate"
@@ -70,10 +67,7 @@ else ifeq ($(COMMANDS_ARGS),i)
 else ifeq ($(COMMANDS_ARGS),validate)
 	$(DOCKER_EXECPHP) make composer validate
 else
-	@printf "${MISSING}"
-	@echo "---"
-	@printf "${ARGUMENTS}" "composer"
-	@echo "---"
+	@printf "${MISSING_ARGUMENTS}" "composer"
 	@printf "${NEED}" "suggests" "suggestions package pour PHP"
 	@printf "${NEED}" "i" "install"
 	@printf "${NEED}" "outdated" "Packet php outdated"
@@ -94,10 +88,7 @@ else ifeq ($(COMMANDS_ARGS),watch)
 else ifeq ($(COMMANDS_ARGS),build)
 	@npm run encore-build
 else
-	@printf "${MISSING}"
-	@echo "---"
-	@printf "${ARGUMENTS}" "encore"
-	@echo "---"
+	@printf "${MISSING_ARGUMENTS}" "encore"
 	@printf "${NEED}" "dev" "créer les assets en version dev"
 	@printf "${NEED}" "watch" "créer les assets en version watch"
 	@printf "${NEED}" "build" "créer les assets en version prod"
@@ -112,10 +103,7 @@ else ifeq ($(COMMANDS_ARGS),prod)
 	@rm -rf apps/vendor
 	@make composer prod -i
 else
-	@printf "${MISSING}"
-	@echo "---"
-	@printf "${ARGUMENTS}" "env"
-	@echo "---"
+	@printf "${MISSING_ARGUMENTS}" "env"
 	@printf "${NEED}" "dev" "environnement dev"
 	@printf "${NEED}" "prod" "environnement prod"
 endif
@@ -147,10 +135,7 @@ else ifeq ($(COMMANDS_ARGS),prod)
 	@make env prod -i
 	@make encore build -i
 else
-	@printf "${MISSING}"
-	@echo "---"
-	@printf "${ARGUMENTS}" "install"
-	@echo "---"
+	@printf "${MISSING_ARGUMENTS}" "install"
 	@printf "${NEED}" "all" "common"
 	@printf "${NEED}" "dev" "dev"
 	@printf "${NEED}" "prod" "prod"
@@ -225,10 +210,7 @@ else ifeq ($(COMMANDS_ARGS),container)
 else ifeq ($(COMMANDS_ARGS),yaml)
 	$(DOCKER_EXECPHP) make linter yaml
 else
-	@printf "${MISSING}"
-	@echo "---"
-	@printf "${ARGUMENTS}" "linter"
-	@echo "---"
+	@printf "${MISSING_ARGUMENTS}" "linter"
 	@printf "${NEED}" "all" "## Launch all linter"
 	@printf "${NEED}" "composer" "composer"
 	@printf "${NEED}" "readme" "linter README.md"
@@ -259,10 +241,7 @@ messenger: ### Scripts messenger
 ifeq ($(COMMANDS_ARGS),consume)
 	$(DOCKER_EXECPHP) make messenger consume
 else
-	@printf "${MISSING}"
-	@echo "---"
-	@printf "${ARGUMENTS}" "messenger"
-	@echo "---"
+	@printf "${MISSING_ARGUMENTS}" "messenger"
 	@printf "${NEED}" "consume" "Messenger Consume"
 endif
 
@@ -277,10 +256,7 @@ else ifeq ($(COMMANDS_ARGS),simple-phpunit-unit-integration)
 else ifeq ($(COMMANDS_ARGS),simple-phpunit)
 	@$(DOCKER_EXECPHP) make tests simple-phpunit
 else
-	@printf "${MISSING}"
-	@echo "---"
-	@printf "${ARGUMENTS}" "tests"
-	@echo "---"
+	@printf "${MISSING_ARGUMENTS}" "tests"
 	@printf "${NEED}" "launch" "Launch all tests"
 	@printf "${NEED}" "behat" "Lance les tests behat"
 	@printf "${NEED}" "simple-phpunit-unit-integration" "lance les tests phpunit"
@@ -303,10 +279,7 @@ ifeq ($(COMMANDS_ARGS),tarteaucitron)
 	rm v1.9.3.zip
 	mv tarteaucitron.js-1.9.3 apps/public/tarteaucitron
 else
-	@printf "${MISSING}"
-	@echo "---"
-	@printf "${ARGUMENTS}" "libraries"
-	@echo "---"
+	@printf "${MISSING_ARGUMENTS}" "libraries"
 	@printf "${NEED}" "tarteaucitron" "tarteaucitron"
 endif
 

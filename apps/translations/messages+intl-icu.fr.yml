@@ -1,0 +1,86 @@
+Edit: __Edit
+Delete: __Delete
+Destroy: __Destroy
+Restaurer: __Restaurer
+Add: __Add
+'Add divideur': '__Add divideur'
+Move: __Move
+'Tout sélectionner': '__Tout sélectionner'
+Selection: __Selection
+Actions: __Actions
+'No records found': '__No records found'
+CountryCode: __CountryCode
+PostalCode: __PostalCode
+PlaceName: __PlaceName
+StateName: __StateName
+StateCode: __StateCode
+ProvinceName: __ProvinceName
+ProvinceCode: __ProvinceCode
+CommunityName: __CommunityName
+CommunityCode: __CommunityCode
+Latitude: __Latitude
+Longitude: __Longitude
+Accuracy: __Accuracy
+actions: __actions
+State: __State
+Province: __Province
+Community: __Community
+Coordonnées: __Coordonnées
+Title: __Title
+User: __User
+Published: __Published
+Workflow: __Workflow
+'': __
+Content: __Content
+Fond: __Fond
+Numero: __Numero
+Country: __Country
+Verif: __Verif
+Type: __Type
+Principal: __Principal
+Adresse: __Adresse
+Username: __Username
+Groupe: __Groupe
+Email: __Email
+Adresses: __Adresses
+Liens: __Liens
+Emails: __Emails
+Téléphones: __Téléphones
+Rue: __Rue
+Zipcode: __Zipcode
+Ville: __Ville
+Gps: __Gps
+Pmr: __Pmr
+Name: __Name
+Code: __Code
+Users: __Users
+Avatar: __Avatar
+Date_debut: __Date_debut
+Date_fin: __Date_fin
+'Mime type': '__Mime type'
+Size: __Size
+Dimensions: __Dimensions
+Download: __Download
+Libelle: __Libelle
+Icon: __Icon
+Position: __Position
+Data: __Data
+Separateur: __Separateur
+Clef: __Clef
+Nom: __Nom
+Html: __Html
+Text: __Text
+Slug: __Slug
+Image: __Image
+Service: __Service
+Url: __Url
+'Url à indiquer': '__Url à indiquer'
+Entité: __Entité
+Count: __Count
+'Edito Fond': '__Edito Fond'
+'User avatar': '__User avatar'
+'Note Interne fond': '__Note Interne fond'
+Show: __Show
+Preview: __Preview
+'Voir le fichier': '__Voir le fichier'
+'Post Image': '__Post Image'

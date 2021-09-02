@@ -3,26 +3,26 @@
     <table>
         <tbody>
             <tr>
-                <th>Rue</th>
+                <th>{{ "Rue"|trans }}</th>
                 <td>{{ entity.rue }}</td>
             </tr>
             <tr>
-                <th>Country</th>
+                <th>{{ "Country"|trans }}</th>
                 <td>
                     <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
                     {{ entity.country|country_name('fr') }}
                 </td>
             </tr>
             <tr>
-                <th>Zipcode</th>
+                <th>{{ "Zipcode"|trans }}</th>
                 <td>{{ entity.zipcode }}</td>
             </tr>
             <tr>
-                <th>Ville</th>
+                <th>{{ "Ville"|trans }}</th>
                 <td>{{ entity.ville }}</td>
             </tr>
             <tr>
-                <th>Gps</th>
+                <th>{{ "Gps"|trans }}</th>
                 <td>
                     <span class="gps-icon">
                         {{ entity.gps }}
@@ -30,15 +30,15 @@
                 </td>
             </tr>
             <tr>
-                <th>Type</th>
+                <th>{{ "Type"|trans }}</th>
                 <td>{{ entity.type }}</td>
             </tr>
             <tr>
-                <th>Pmr</th>
+                <th>{{ "Pmr"|trans }}</th>
                 <td>{{ entity.pmr ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
-                <th>User</th>
+                <th>{{ "User"|trans }}</th>
                 <td>
                     {% if entity.refuser.deletedAt != '' %}
                         {% set url = 'admin_user_preview' %}

@@ -3,30 +3,30 @@
     <table>
         <tbody>
             <tr>
-                <th>Username</th>
+                <th>{{ "Username"|trans }}</th>
                 <td>{{ entity.username }}</td>
             </tr>
             <tr>
-                <th>Groupe</th>
+                <th>{{ "Groupe"|trans }}</th>
                 <td>{{ entity.refgroupe }}</td>
             </tr>
             <tr>
-                <th>Email</th>
+                <th>{{ "Email"|trans }}</th>
                 <td><a href="mailto:{{ entity.email }}">{{ entity.email }}</a></td>
             </tr>
             {% set avatar = attachment(entity.avatar) %}
             {% if avatar is not null and avatar.name is not null %}
             <tr>
-                <th>Avatar</th>
+                <th>{{ "Avatar"|trans }}</th>
                 <td>
                     <picture >
-                        <img alt="User avatar" src="{{ asset(avatar.name) | imagefilter('my_thumb') }}" />
+                        <img alt="{{ "User avatar"|trans|e("html_attr") }}" src="{{ asset(avatar.name) | imagefilter('my_thumb') }}" />
                     </picture>
                 </td>
             </tr>
             {% endif %}
             <tr>
-                <th>State</th>
+                <th>{{ "State"|trans }}</th>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}
@@ -44,9 +44,9 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Adresse</th>
-                                <th>Type</th>
-                                <th>Pmr</th>
+                                <th>{{ "Adresse"|trans }}</th>
+                                <th>{{ "Type"|trans }}</th>
+                                <th>{{ "Pmr"|trans }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,8 +81,8 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Adresse</th>
+                                <th>{{ "Name"|trans }}</th>
+                                <th>{{ "Adresse"|trans }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -105,8 +105,8 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Adresse</th>
-                                <th>Principal</th>
+                                <th>{{ "Adresse"|trans }}</th>
+                                <th>{{ "Principal"|trans }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -129,11 +129,11 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Numero</th>
-                                <th>Verif</th>
-                                <th>Country</th>
-                                <th>Type</th>
-                                <th>Principal</th>
+                                <th>{{ "Numero"|trans }}</th>
+                                <th>{{ "Verif"|trans }}</th>
+                                <th>{{ "Country"|trans }}</th>
+                                <th>{{ "Type"|trans }}</th>
+                                <th>{{ "Principal"|trans }}</th>
                             </tr>
                         </thead>
                         <tbody>

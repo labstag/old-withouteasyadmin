@@ -5,38 +5,38 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>CountryCode</th>
+                <th>{{ "CountryCode"|trans }}</th>
                 <td>
                     <span class="flag-icon flag-icon-{{ entity.countryCode|lower }}"></span>
                     {{ entity.countryCode|country_name('fr') }}
                 </td>
             </tr>
             <tr>
-                <th>PostalCode</th>
+                <th>{{ "PostalCode"|trans }}</th>
                 <td>{{ entity.postalCode }}</td>
             </tr>
             <tr>
-                <th>PlaceName</th>
+                <th>{{ "PlaceName"|trans }}</th>
                 <td>{{ entity.placeName }}</td>
             </tr>
             <tr>
-                <th>State</th>
+                <th>{{ "State"|trans }}</th>
                 <td>{{ entity.stateName }} ({{ entity.stateCode }})</td>
             </tr>
             <tr>
-                <th>Province</th>
+                <th>{{ "Province"|trans }}</th>
                 <td>{{ entity.provinceName }} ({{ entity.provinceCode }})</td>
             </tr>
             <tr>
-                <th>Community</th>
+                <th>{{ "Community"|trans }}</th>
                 <td>{{ entity.communityName }} ({{ entity.communityCode }})</td>
             </tr>
             <tr>
-                <th>Coordonnées</th>
+                <th>{{ "Coordonnées"|trans }}</th>
                 <td>{{ entity.latitude }} , {{ entity.longitude }}</td>
             </tr>
             <tr>
-                <th>Accuracy</th>
+                <th>{{ "Accuracy"|trans }}</th>
                 <td>{{ entity.accuracy }}</td>
             </tr>
         </tbody>

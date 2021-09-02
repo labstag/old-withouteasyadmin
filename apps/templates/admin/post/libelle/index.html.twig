@@ -3,18 +3,18 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="Actions"
+        data-action="{{ "Actions"|trans|e('html_attr') }}"
         data-multiple
-        data-multipleall="Tout sélectionner"
-        data-multipleelement="Selection"
-        data-empty="No records found"
+        data-multipleall="{{ "Tout sélectionner"|trans|e('html_attr') }}"
+        data-multipleelement="{{ "Selection"|trans|e('html_attr') }}"
+        data-empty="{{ "No records found"|trans|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>Nom</th>
-                <th>Slug</th>
-                <th></th>
+                <th>{{ "Nom"|trans }}</th>
+                <th>{{ "Slug"|trans }}</th>
+                <th>{{ ""|trans }}</th>
             </tr>
         </thead>
         <tbody>

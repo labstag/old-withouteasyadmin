@@ -194,7 +194,7 @@ else
 endif
 
 translations: ## update translation
-	${SYMFONY_EXEC} translation:update --force fr
+	${SYMFONY_EXEC} translation:update --force --format=yml fr
 
 workflow-png: ## generate workflow png
 	${SYMFONY_EXEC} workflow:dump $(COMMAND_ARGS) | dot -Tpng -o $(COMMAND_ARGS).png

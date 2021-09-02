@@ -3,30 +3,30 @@
     <table>
         <tbody>
             <tr>
-                <th>Title</th>
+                <th>{{ "Title"|trans }}</th>
                 <td>{{ entity.title }}</td>
             </tr>
             <tr>
-                <th>Content</th>
+                <th>{{ "Content"|trans }}</th>
                 <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
-                <th>Published</th>
+                <th>{{ "Published"|trans }}</th>
                 <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
             </tr>
             {% set fond = attachment(entity.fond) %}
             {% if fond is not null and fond.name is not null %}
             <tr>
-                <th>Fond</th>
+                <th>{{ "Fond"|trans }}</th>
                 <td>
                     <picture >
-                        <img alt="Edito Fond" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
+                        <img alt="{{ "Edito Fond"|trans|e("html_attr") }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
                     </picture>
                 </td>
             </tr>
             {% endif %}
             <tr>
-                <th>User</th>
+                <th>{{ "User"|trans }}</th>
                 <td>
                     {% if entity.refuser.deletedAt != '' %}
                         {% set url = 'admin_user_preview' %}
@@ -42,7 +42,7 @@
                 </td>
             </tr>
             <tr>
-                <th>State</th>
+                <th>{{ "State"|trans }}</th>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}
