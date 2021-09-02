@@ -40,7 +40,7 @@
         {% if adresses|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>{{ "user.adresses"|trans("{%nbr%": entity.adresseUsers|length}) }}</legend>
+                    <legend>{{ "user.adresses"|trans({"%nbr%": entity.adresseUsers|length}) }}</legend>
                     <table>
                         <thead>
                             <tr>
@@ -77,7 +77,7 @@
         {% if liens|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>{{ "user.liens"|trans("{%nbr%": entity.lienUsers|length}) }}</legend>
+                    <legend>{{ "user.liens"|trans({"%nbr%": entity.lienUsers|length}) }}</legend>
                     <table>
                         <thead>
                             <tr>
@@ -101,7 +101,7 @@
         {% if emails|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>{{ "user.emails"|trans("{%nbr%": entity.emailUsers|length}) }}</legend>
+                    <legend>{{ "user.emails"|trans({"%nbr%": entity.emailUsers|length}) }}</legend>
                     <table>
                         <thead>
                             <tr>
@@ -125,7 +125,7 @@
         {% if phones|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>{{ "user.telephones"|trans("{%nbr%": entity.emailUsers|length}) }}</legend>
+                    <legend>{{ "user.telephones"|trans({"%nbr%": entity.emailUsers|length}) }}</legend>
                     <table>
                         <thead>
                             <tr>
