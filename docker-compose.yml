@@ -17,7 +17,6 @@ services:
       - ${PWD}/apps:/var/www/
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     environment:
-      COMPOSER_MEMORY_LIMIT: -1
       MAILER_DSN: "smtp://mailhog:1025"
       DATABASE_BDD: labstag_bdd
       DATABASE_USER: labstag
