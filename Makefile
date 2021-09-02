@@ -6,7 +6,7 @@ include make/docker/Makefile
 DOCKER_EXECPHP := @docker exec $(STACK)_phpfpm.1.$$(docker service ps -f 'name=$(STACK)_phpfpm' $(STACK)_phpfpm -q --no-trunc | head -n1)
 
 SYMFONY_EXEC := ${DOCKER_EXECPHP} php -d memory_limit=-1 bin/console
-COMPOSER_EXEC := ${DOCKER_EXECPHP} symfony composer
+COMPOSER_EXEC := ${DOCKER_EXECPHP} COMPOSER_MEMORY_LIMIT=-1 composer
 PHP_EXEC := ${DOCKER_EXECPHP} php
 
 COMMANDS_SUPPORTED_COMMANDS := libraries workflow-png tests messenger linter install git env encore composer bdd setbdd
