@@ -4,7 +4,7 @@
     {% set title = config.meta.title|trim %}
 {% endif %}
 {% block content_title %}{{ title }}{% endblock %}
-{% block box_title %}Error 401 : Unauthorized{% endblock %}
+{% block box_title %}{{ "Error 401 : Unauthorized"|trans }}{% endblock %}
 {% block message %}
-	Une authentification est nécessaire pour accéder à la ressource.
+	{{ "Une authentification est nécessaire pour accéder à la ressource."|trans }}
 {% endblock %}

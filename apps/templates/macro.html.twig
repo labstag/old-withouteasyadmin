@@ -4,7 +4,7 @@
             <button class="btn-close" data-bs-dismiss="alert"></button>
             <ul>
             {% for message in messages %}
-                <li>{{ message|trans|raw }}</li>
+                <li>{{ message|raw }}</li>
             {% endfor %}
             </ul>
         </div>

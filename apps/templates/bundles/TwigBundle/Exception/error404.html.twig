@@ -4,7 +4,7 @@
     {% set title = config.meta.title|trim %}
 {% endif %}
 {% block content_title %}{{ title }}{% endblock %}
-{% block box_title %}Error 404 : Not Found{% endblock %}
+{% block box_title %}{{ "Error 404 : Not Found"|trans }}{% endblock %}
 {% block message %}
-    Ressource non trouvée.
+    {{ "Ressource non trouvée."|trans }}
 {% endblock %}

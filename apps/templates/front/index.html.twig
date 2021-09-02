@@ -6,7 +6,7 @@
     <div class="aside-lists">
         {% if archives|length != 0 %}
         <div class="aside-list">
-            <h4>Archives</h4>
+            <h4>{{ "Archives"|trans }}</h4>
             <ol>
                 {% for archive in archives %}
                 <li>
@@ -56,7 +56,7 @@
                 {{ macro_site.user(post.refuser, path('post_user', {'username': post.refuser.username})) }}
                 {% set state = guard_route('admin_post_edit') %}
                 {% if state == true %}
-                    <a href="{{ path('admin_post_edit', {'id': post.id}) }}" target="_blank">Modifier</a>
+                    <a href="{{ path('admin_post_edit', {'id': post.id}) }}" target="_blank">{{ "Modifier"|trans }}</a>
                 {% endif %}
             </div>
             <div class="post_content">

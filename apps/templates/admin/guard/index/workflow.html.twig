@@ -4,19 +4,19 @@
 {% set state4 = guard_route('api_guard_workflowsetgroup') %}
 {% set state = state1 and state2 and state3 and state4 %}
 {% if state1 == false %}
-    Droit manquant
+    {{ "Droit manquant"|trans }}
 {% else %}
     <table is="guard-workflow" data-url="{{ path('api_guard_workflow') }}" data-refresh=0>
         <thead>
             <tr>
                 <th rowspan=2>
-                    Entité
+                    {{ "Entité"|trans }}
                 </th>
                 <th rowspan=2>
-                    Transition
+                    {{ "Transition"|trans }}
                 </th>
                 <th rowspan=2>
-                    Actions
+                    {{ "Actions"|trans }}
                 </th>
                 {% for group in groups %}
                     <th>
@@ -77,7 +77,7 @@
             </tr>
         {% else %}
                 <tr>
-                    <td colspan="{{ groups|length+3 }}" class="text-center">no records found</td>
+                    <td colspan="{{ groups|length+3 }}" class="text-center">{{ "no records found"|trans }}</td>
                 </tr>
         {% endfor %}
         </tbody>

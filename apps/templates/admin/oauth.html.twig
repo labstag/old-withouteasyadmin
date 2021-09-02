@@ -1,8 +1,8 @@
 {% extends 'admin.html.twig' %}
 {% block body %}
     <div>
-        <p>Vous êtes sur la page qui vous permet de retrouver les différentes routes permettant de parametrer les connexions Oauth.</p>
-        <p>Pour chaque service proposé ci-dessous, merci de récupérer l'<b>identifiant</b> ainsi que la <b>clef secrète</b>.</p>
+        <p>{{ "Vous êtes sur la page qui vous permet de retrouver les différentes routes permettant de parametrer les connexions Oauth."|trans }}</p>
+        <p>{{ "Pour chaque service proposé ci-dessous, merci de récupérer l'<b>identifiant</b> ainsi que la <b>clef secrète</b>."|trans }}</p>
     </div>
     <table>
         <thead>
@@ -20,10 +20,10 @@
                         {{ service }}
                     </td>
                     <td>
-                        <a href="{{ data.config }}">Y accéder</a>
+                        <a href="{{ data.config }}">{{ "Y accéder"|trans }}</a>
                     </td>
                     <td>
-                        {{ config['site_url']}}/oauth/check/{{ service }}
+                        {{ "%url%/oauth/check/%service%"|trans({"%url%": config['site_url'], "%service%": service}) }}
                     </td>
                 </tr>
                 {% endif %}

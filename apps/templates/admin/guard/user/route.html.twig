@@ -3,16 +3,16 @@
 {% set state3 = guard_route('api_guard_routesetuser') %}
 {% set state = state1 and state2 and state3 %}
 {% if state1 == false %}
-    Droit manquant
+    {{ "Droit manquant"|trans }}
 {% else %}
     <table is="guard-route" data-url="{{ path('api_guard_route', {'user' : user.id}) }}" data-refresh=0>
         <thead>
             <tr>
                 <th rowspan=2>
-                    Route
+                    {{ "Route"|trans }}
                 </th>
                 <th rowspan=2>
-                    Groupe {{ user.refgroupe.name }}
+                    {{ "Groupe %name%"|trans({"%name%": user.refgroupe.name}) }}
                 </th>
                 <th>
                     {{ user.username }}
@@ -52,7 +52,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="3" class="text-center">no records found</td>
+                <td colspan="3" class="text-center">{{ "no records found"|trans }}</td>
             </tr>
         {% endfor %}
         </tbody>

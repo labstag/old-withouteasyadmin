@@ -1,13 +1,24 @@
-Edit: __Edit
-Delete: __Delete
-Destroy: __Destroy
-Restaurer: __Restaurer
-Add: __Add
-'Add divideur': '__Add divideur'
-Move: __Move
+Archives: __Archives
+Modifier: __Modifier
+'Error 401 : Unauthorized': '__Error 401 : Unauthorized'
+'Une authentification est nécessaire pour accéder à la ressource.': '__Une authentification est nécessaire pour accéder à la ressource.'
+'Error 403 : Forbidden': '__Error 403 : Forbidden'
+'Le serveur a compris la requête, mais refuse de l''exécuter. Contrairement à l''erreur 401, s''authentifier ne fera aucune différence. Sur les serveurs où l''authentification est requise, cela signifie généralement que l''authentification a été acceptée mais que les droits d''accès ne permettent pas au client d''accéder à la ressource.': '__Le serveur a compris la requête, mais refuse de l''exécuter. Contrairement à l''erreur 401, s''authentifier ne fera aucune différence. Sur les serveurs où l''authentification est requise, cela signifie généralement que l''authentification a été acceptée mais que les droits d''accès ne permettent pas au client d''accéder à la ressource.'
+'Error 404 : Not Found': '__Error 404 : Not Found'
+'Ressource non trouvée.': '__Ressource non trouvée.'
+'Error 400 : Bad request': '__Error 400 : Bad request'
+'La syntaxe de la requête est erronée.': '__La syntaxe de la requête est erronée.'
+error: __error
+Route: __Route
+Workflow: __Workflow
+'Droit manquant': '__Droit manquant'
+'Groupe %name%': '__Groupe %name%'
+'no records found': '__no records found'
+Entité: __Entité
+Transition: __Transition
+Actions: __Actions
 'Tout sélectionner': '__Tout sélectionner'
 Selection: __Selection
-Actions: __Actions
 'No records found': '__No records found'
 CountryCode: __CountryCode
 PostalCode: __PostalCode
@@ -22,6 +33,7 @@ Latitude: __Latitude
 Longitude: __Longitude
 Accuracy: __Accuracy
 actions: __actions
+GeoCode: __GeoCode
 State: __State
 Province: __Province
 Community: __Community
@@ -29,10 +41,9 @@ Coordonnées: __Coordonnées
 Title: __Title
 User: __User
 Published: __Published
-Workflow: __Workflow
-'': __
 Content: __Content
 Fond: __Fond
+'Edito Fond': '__Edito Fond'
 Numero: __Numero
 Country: __Country
 Verif: __Verif
@@ -55,32 +66,80 @@ Name: __Name
 Code: __Code
 Users: __Users
 Avatar: __Avatar
+'User avatar': '__User avatar'
+Phones: __Phones
+Address: __Address
+Links: __Links
+avatar: __avatar
 Date_debut: __Date_debut
 Date_fin: __Date_fin
+'Note Interne fond': '__Note Interne fond'
+Edit: __Edit
+Delete: __Delete
+Destroy: __Destroy
+Restaurer: __Restaurer
+Show: __Show
+Preview: __Preview
 'Mime type': '__Mime type'
 Size: __Size
 Dimensions: __Dimensions
 Download: __Download
+'Voir le fichier': '__Voir le fichier'
+'[[DIVIDER]]': '__[[DIVIDER]]'
+Add: __Add
+'Add divideur': '__Add divideur'
+Move: __Move
 Libelle: __Libelle
 Icon: __Icon
 Position: __Position
 Data: __Data
 Separateur: __Separateur
 Clef: __Clef
+notification: __notification
+datetime: __datetime
+oauth: __oauth
+tarteaucitron: __tarteaucitron
+meta: __meta
+disclaimer: __disclaimer
+image: __image
+favicon: __favicon
 Nom: __Nom
 Html: __Html
 Text: __Text
 Slug: __Slug
 Image: __Image
+'Post Image': '__Post Image'
+'Dissocier :': '__Dissocier :'
+'Se connecter avec :': '__Se connecter avec :'
+'Vous êtes sur la page qui vous permet de retrouver les différentes routes permettant de parametrer les connexions Oauth.': '__Vous êtes sur la page qui vous permet de retrouver les différentes routes permettant de parametrer les connexions Oauth.'
+'Pour chaque service proposé ci-dessous, merci de récupérer l''<b>identifiant</b> ainsi que la <b>clef secrète</b>.': '__Pour chaque service proposé ci-dessous, merci de récupérer l''<b>identifiant</b> ainsi que la <b>clef secrète</b>.'
 Service: __Service
 Url: __Url
 'Url à indiquer': '__Url à indiquer'
-Entité: __Entité
+'Y accéder': '__Y accéder'
+'%url%/oauth/check/%service%': __%url%/oauth/check/%service%
 Count: __Count
-'Edito Fond': '__Edito Fond'
-'User avatar': '__User avatar'
-'Note Interne fond': '__Note Interne fond'
-Show: __Show
-Preview: __Preview
-'Voir le fichier': '__Voir le fichier'
-'Post Image': '__Post Image'
+Vider: __Vider
+'J''ai perdu mon mot de passe': '__J''ai perdu mon mot de passe'
+'Lost password': '__Lost password'
+'Toggle navigation': '__Toggle navigation'
+First: __First
+Previous: __Previous
+(current): __(current)
+Next: __Next
+Last: __Last
+'Les informations marquées d''un %span% sont obligatoires': '__Les informations marquées d''un %span% sont obligatoires'
+'Revenir sur le site': '__Revenir sur le site'
+'Supprimer ?': '__Supprimer ?'
+'Êtes-vous sûr de vouloir supprimer cette donnée (elle sera supprimé de la base de données définivement) ?': '__Êtes-vous sûr de vouloir supprimer cette donnée (elle sera supprimé de la base de données définivement) ?'
+Annuler: __Annuler
+Supprimer: __Supprimer
+'Êtes-vous sûr de vouloir supprimer cette donnée ?': '__Êtes-vous sûr de vouloir supprimer cette donnée ?'
+'Restaurer ?': '__Restaurer ?'
+'Êtes-vous sûr de vouloir restaurer la sélection ?': '__Êtes-vous sûr de vouloir restaurer la sélection ?'
+'Êtes-vous sûr de vouloir supprimer la sélection ?': '__Êtes-vous sûr de vouloir supprimer la sélection ?'
+'Êtes-vous sûr de vouloir vider la corbeille ?': '__Êtes-vous sûr de vouloir vider la corbeille ?'
+'Êtes-vous sûr de vouloir vider la sélection ?': '__Êtes-vous sûr de vouloir vider la sélection ?'
+'Êtes-vous sûr de vouloir changer d''état cette donnée ?': '__Êtes-vous sûr de vouloir changer d''état cette donnée ?'
+Confirmer: __Confirmer
+'Êtes-vous sûr de vouloir restaurer cette donnée ?': '__Êtes-vous sûr de vouloir restaurer cette donnée ?'

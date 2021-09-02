@@ -13,7 +13,7 @@
             <tr>
                 <th>{{ "Entité"|trans }}</th>
                 <th>{{ "Count"|trans }}</th>
-                <th>{{ ""|trans }}</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -39,7 +39,7 @@
                             data-redirect="{{ path(app.request.attributes.get('_route')) }}"
                             data-url="{{ path('api_action_empty', {'entity': data.name}) }}"
                             data-token="{{ data.token }}"
-                            data-title="Vider"
+                            data-title="{{ "Vider"|trans|e('html_attr') }}"
                         ></link-empty>
                     {% endif %}
                 </td>
