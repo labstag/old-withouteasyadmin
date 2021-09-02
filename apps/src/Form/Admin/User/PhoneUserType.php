@@ -26,15 +26,15 @@ class PhoneUserType extends PhoneType
             CheckboxType::class,
             [
                 'label' => 'admin.form.phoneuser.principal.label',
-                'help' => 'admin.form.phoneuser.principal.help',
+                'help'  => 'admin.form.phoneuser.principal.help',
             ]
         );
         $builder->add(
             'refuser',
             SearchableType::class,
             [
-                'label' => 'admin.form.phoneuser.refuser.label',
-                'help' => 'admin.form.phoneuser.refuser.help',
+                'label'    => 'admin.form.phoneuser.refuser.label',
+                'help'     => 'admin.form.phoneuser.refuser.help',
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

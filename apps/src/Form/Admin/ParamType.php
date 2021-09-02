@@ -38,8 +38,8 @@ class ParamType extends AbstractType
                 $key,
                 FileType::class,
                 [
-                    'label' => 'admin.form.param.'.$key.'.label',
-                    'help' => 'admin.form.param.'.$key.'.help',
+                    'label'    => 'admin.form.param.'.$key.'.label',
+                    'help'     => 'admin.form.param.'.$key.'.help',
                     'required' => false,
                     'attr'     => ['accept' => 'image/*'],
                 ]
@@ -51,7 +51,7 @@ class ParamType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.param.title_format.label',
-                'help' => 'admin.form.param.title_format.help',
+                'help'  => 'admin.form.param.title_format.help',
             ]
         );
         $builder->add(
@@ -59,7 +59,7 @@ class ParamType extends AbstractType
             TextareaType::class,
             [
                 'label' => 'admin.form.param.robotstxt.label',
-                'help' => 'admin.form.param.robotstxt.help',
+                'help'  => 'admin.form.param.robotstxt.help',
             ]
         );
         $builder->add(
@@ -67,7 +67,7 @@ class ParamType extends AbstractType
             LanguageType::class,
             [
                 'label' => 'admin.form.param.languagedefault.label',
-                'help' => 'admin.form.param.languagedefault.help',
+                'help'  => 'admin.form.param.languagedefault.help',
             ]
         );
         $builder->add(
@@ -75,7 +75,7 @@ class ParamType extends AbstractType
             EmailType::class,
             [
                 'label' => 'admin.form.param.site_no-reply.label',
-                'help' => 'admin.form.param.site_no-reply.help',
+                'help'  => 'admin.form.param.site_no-reply.help',
             ]
         );
         $builder->add(
@@ -83,7 +83,7 @@ class ParamType extends AbstractType
             UrlType::class,
             [
                 'label' => 'admin.form.param.site_url.label',
-                'help' => 'admin.form.param.site_url.help',
+                'help'  => 'admin.form.param.site_url.help',
             ]
         );
         $builder->add(
@@ -91,16 +91,16 @@ class ParamType extends AbstractType
             LanguageType::class,
             [
                 'multiple' => true,
-                'label' => 'admin.form.param.language.label',
-                'help' => 'admin.form.param.language.help',
+                'label'    => 'admin.form.param.language.label',
+                'help'     => 'admin.form.param.language.help',
             ]
         );
         $builder->add(
             'generator',
             ChoiceType::class,
             [
-                'label' => 'admin.form.param.generator.label',
-                'help' => 'admin.form.param.generator.help',
+                'label'   => 'admin.form.param.generator.label',
+                'help'    => 'admin.form.param.generator.help',
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -150,7 +150,7 @@ class ParamType extends AbstractType
             CKEditorType::class,
             [
                 'label' => 'admin.form.param.site_copyright.label',
-                'help' => 'admin.form.param.site_copyright.help',
+                'help'  => 'admin.form.param.site_copyright.help',
             ]
         );
         unset($options);

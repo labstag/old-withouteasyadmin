@@ -24,8 +24,8 @@ class AdresseUserType extends AdresseType
             'refuser',
             SearchableType::class,
             [
-                'label' => 'admin.form.adresseuser.refuser.label',
-                'help' => 'admin.form.adresseuser.refuser.help',
+                'label'    => 'admin.form.adresseuser.refuser.label',
+                'help'     => 'admin.form.adresseuser.refuser.help',
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

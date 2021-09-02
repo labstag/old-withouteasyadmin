@@ -44,7 +44,7 @@ class UserType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.user.username.label',
-                'help' => 'admin.form.user.username.help',
+                'help'  => 'admin.form.user.username.help',
             ]
         );
         $builder->add(
@@ -57,11 +57,11 @@ class UserType extends AbstractType
                 'required'        => false,
                 'first_options'   => [
                     'label' => 'admin.form.user.password.label',
-                    'help' => 'admin.form.user.password.help',
+                    'help'  => 'admin.form.user.password.help',
                 ],
                 'second_options'  => [
                     'label' => 'admin.form.user.repeatpassword.label',
-                    'help' => 'admin.form.user.repeatpassword.help',
+                    'help'  => 'admin.form.user.repeatpassword.help',
                 ],
             ]
         );
@@ -69,8 +69,8 @@ class UserType extends AbstractType
             'refgroupe',
             SearchableType::class,
             [
-                'label' => 'admin.form.user.refgroupe.label',
-                'help' => 'admin.form.user.refgroupe.help',
+                'label'    => 'admin.form.user.refgroupe.label',
+                'help'     => 'admin.form.user.refgroupe.help',
                 'multiple' => false,
                 'class'    => Groupe::class,
                 'route'    => 'api_search_group',
@@ -80,8 +80,8 @@ class UserType extends AbstractType
             'file',
             FileType::class,
             [
-                'label' => 'admin.form.user.file.label',
-                'help' => 'admin.form.user.file.help',
+                'label'    => 'admin.form.user.file.label',
+                'help'     => 'admin.form.user.file.help',
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]
@@ -105,9 +105,9 @@ class UserType extends AbstractType
                     'email',
                     ChoiceType::class,
                     [
-                        'label' => 'admin.form.user.email.label',
-                        'help' => 'admin.form.user.email.help',
-                        'choices' => $emails
+                        'label'   => 'admin.form.user.email.label',
+                        'help'    => 'admin.form.user.email.help',
+                        'choices' => $emails,
                     ]
                 );
             }

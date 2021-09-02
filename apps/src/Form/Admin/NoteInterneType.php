@@ -28,7 +28,7 @@ class NoteInterneType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.noteinterne.title.label',
-                'help' => 'admin.form.noteinterne.title.help',
+                'help'  => 'admin.form.noteinterne.title.help',
             ]
         );
         $builder->add(
@@ -36,7 +36,7 @@ class NoteInterneType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.noteinterne.slug.label',
-                'help' => 'admin.form.noteinterne.slug.help',
+                'help'  => 'admin.form.noteinterne.slug.help',
             ]
         );
         $builder->add(
@@ -44,15 +44,15 @@ class NoteInterneType extends AbstractType
             CKEditorType::class,
             [
                 'label' => 'admin.form.noteinterne.content.label',
-                'help' => 'admin.form.noteinterne.content.help',
+                'help'  => 'admin.form.noteinterne.content.help',
             ]
         );
         $builder->add(
             'date_debut',
             DateTimeType::class,
             [
-                'label' => 'admin.form.noteinterne.date_debut.label',
-                'help' => 'admin.form.noteinterne.date_debut.help',
+                'label'        => 'admin.form.noteinterne.date_debut.label',
+                'help'         => 'admin.form.noteinterne.date_debut.help',
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
@@ -62,8 +62,8 @@ class NoteInterneType extends AbstractType
             'date_fin',
             DateTimeType::class,
             [
-                'label' => 'admin.form.noteinterne.date_fin.label',
-                'help' => 'admin.form.noteinterne.date_fin.help',
+                'label'        => 'admin.form.noteinterne.date_fin.label',
+                'help'         => 'admin.form.noteinterne.date_fin.help',
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
@@ -74,8 +74,8 @@ class NoteInterneType extends AbstractType
             'file',
             FileType::class,
             [
-                'label' => 'admin.form.noteinterne.file.label',
-                'help' => 'admin.form.noteinterne.file.help',
+                'label'    => 'admin.form.noteinterne.file.label',
+                'help'     => 'admin.form.noteinterne.file.help',
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]
@@ -84,8 +84,8 @@ class NoteInterneType extends AbstractType
             'refuser',
             SearchableType::class,
             [
-                'label' => 'admin.form.noteinterne.refuser.label',
-                'help' => 'admin.form.noteinterne.refuser.help',
+                'label'    => 'admin.form.noteinterne.refuser.label',
+                'help'     => 'admin.form.noteinterne.refuser.help',
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

@@ -23,16 +23,16 @@ class LibelleType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.libelle.nom.label',
-                'help' => 'admin.form.libelle.nom.help',
+                'help'  => 'admin.form.libelle.nom.help',
             ]
         );
         $builder->add(
             'slug',
             TextType::class,
             [
-                'label' => 'admin.form.libelle.nom.label',
-                'help' => 'admin.form.libelle.nom.help',
-                'required' => false
+                'label'    => 'admin.form.libelle.nom.label',
+                'help'     => 'admin.form.libelle.nom.help',
+                'required' => false,
             ]
         );
         unset($options);

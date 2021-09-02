@@ -21,7 +21,7 @@ class PrincipalType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.menu.principal.clef.label',
-                'help' => 'admin.form.menu.principal.clef.help',
+                'help'  => 'admin.form.menu.principal.clef.help',
             ]
         );
     }

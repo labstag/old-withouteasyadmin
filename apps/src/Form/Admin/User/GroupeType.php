@@ -24,7 +24,7 @@ class GroupeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.groupe.name.label',
-                'help' => 'admin.form.groupe.name.help',
+                'help'  => 'admin.form.groupe.name.help',
             ]
         );
         $builder->add(
@@ -32,7 +32,7 @@ class GroupeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.groupe.code.label',
-                'help' => 'admin.form.groupe.code.help',
+                'help'  => 'admin.form.groupe.code.help',
             ]
         );
     }

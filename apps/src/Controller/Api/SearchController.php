@@ -15,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SearchController extends ApiControllerLib
 {
-
     /**
      * @Route("/group", name="api_search_group")
      *
@@ -25,8 +24,25 @@ class SearchController extends ApiControllerLib
      */
     public function groupe(Request $request, GroupeRepository $repository): Response
     {
+        $get    = $request->query->all();
         $return = ['isvalid' => false];
-        return $this->json($return);
+        if (!array_key_exists('name', $get)) {
+            return $this->json($return);
+        }
+
+        $data   = $repository->findName($get['name']);
+        $result = [
+            'results' => [],
+        ];
+
+        foreach ($data as $user) {
+            $result['results'][] = [
+                'id'   => $user->getId(),
+                'text' => (string) $user,
+            ];
+        }
+
+        return $this->json($result);
     }
 
     /**

@@ -18,7 +18,7 @@ class GeoCodeType extends AbstractType
             CountryType::class,
             [
                 'label' => 'admin.form.geocode.countryCode.label',
-                'help' => 'admin.form.geocode.countryCode.help',
+                'help'  => 'admin.form.geocode.countryCode.help',
             ]
         );
         $builder->add(
@@ -26,7 +26,7 @@ class GeoCodeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.geocode.postalCode.label',
-                'help' => 'admin.form.geocode.postalCode.help',
+                'help'  => 'admin.form.geocode.postalCode.help',
             ]
         );
         $builder->add(
@@ -34,7 +34,7 @@ class GeoCodeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.geocode.placeName.label',
-                'help' => 'admin.form.geocode.placeName.help',
+                'help'  => 'admin.form.geocode.placeName.help',
             ]
         );
         $builder->add(
@@ -42,7 +42,7 @@ class GeoCodeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.geocode.stateName.label',
-                'help' => 'admin.form.geocode.stateName.help',
+                'help'  => 'admin.form.geocode.stateName.help',
             ]
         );
         $builder->add(
@@ -50,7 +50,7 @@ class GeoCodeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.geocode.stateCode.label',
-                'help' => 'admin.form.geocode.stateCode.help',
+                'help'  => 'admin.form.geocode.stateCode.help',
             ]
         );
         $builder->add(
@@ -58,7 +58,7 @@ class GeoCodeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.geocode.provinceName.label',
-                'help' => 'admin.form.geocode.provinceName.help',
+                'help'  => 'admin.form.geocode.provinceName.help',
             ]
         );
         $builder->add(
@@ -66,7 +66,7 @@ class GeoCodeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.geocode.provinceCode.label',
-                'help' => 'admin.form.geocode.provinceCode.help',
+                'help'  => 'admin.form.geocode.provinceCode.help',
             ]
         );
         $builder->add(
@@ -74,7 +74,7 @@ class GeoCodeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.geocode.communityName.label',
-                'help' => 'admin.form.geocode.communityName.help',
+                'help'  => 'admin.form.geocode.communityName.help',
             ]
         );
         $builder->add(
@@ -82,7 +82,7 @@ class GeoCodeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.geocode.communityCode.label',
-                'help' => 'admin.form.geocode.communityCode.help',
+                'help'  => 'admin.form.geocode.communityCode.help',
             ]
         );
         $builder->add(
@@ -90,7 +90,7 @@ class GeoCodeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.geocode.latitude.label',
-                'help' => 'admin.form.geocode.latitude.help',
+                'help'  => 'admin.form.geocode.latitude.help',
             ]
         );
         $builder->add(
@@ -98,7 +98,7 @@ class GeoCodeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.geocode.longitude.label',
-                'help' => 'admin.form.geocode.longitude.help',
+                'help'  => 'admin.form.geocode.longitude.help',
             ]
         );
         $builder->add(
@@ -106,9 +106,10 @@ class GeoCodeType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.geocode.accuracy.label',
-                'help' => 'admin.form.geocode.accuracy.help',
+                'help'  => 'admin.form.geocode.accuracy.help',
             ]
         );
+        
     }
 
     public function configureOptions(OptionsResolver $resolver)

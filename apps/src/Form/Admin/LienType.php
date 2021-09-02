@@ -23,7 +23,7 @@ abstract class LienType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.lien.name.label',
-                'help' => 'admin.form.lien.name.help',
+                'help'  => 'admin.form.lien.name.help',
             ]
         );
         $builder->add(
@@ -31,7 +31,7 @@ abstract class LienType extends AbstractType
             UrlType::class,
             [
                 'label' => 'admin.form.lien.adresse.label',
-                'help' => 'admin.form.lien.adresse.help',
+                'help'  => 'admin.form.lien.adresse.help',
             ]
         );
     }

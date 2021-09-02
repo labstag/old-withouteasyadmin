@@ -19,17 +19,15 @@ class LostPasswordType extends AbstractType
             'value',
             TextType::class,
             [
-                'label' => 'security.form.lostpassword.value.label',
-                'help' => 'security.form.lostpassword.value.help',
+                'label'    => 'security.form.lostpassword.value.label',
+                'help'     => 'security.form.lostpassword.value.help',
                 'required' => false,
             ]
         );
         $builder->add(
             'submit',
             SubmitType::class,
-            [
-                'label' => 'security.form.lostpassword.submit.label',
-            ]
+            ['label' => 'security.form.lostpassword.submit.label']
         );
         unset($options);
     }

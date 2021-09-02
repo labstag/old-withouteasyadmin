@@ -21,8 +21,8 @@ class DisclaimerType extends AbstractType
             'activate',
             ChoiceType::class,
             [
-                'label' => 'admin.form.param.disclaimer.activate.label',
-                'help' => 'admin.form.param.disclaimer.activate.help',
+                'label'   => 'admin.form.param.disclaimer.activate.label',
+                'help'    => 'admin.form.param.disclaimer.activate.help',
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -33,27 +33,27 @@ class DisclaimerType extends AbstractType
             'title',
             TextType::class,
             [
-                'label' => 'admin.form.param.disclaimer.title.label',
-                'help' => 'admin.form.param.disclaimer.title.help',
-                'required' => false
+                'label'    => 'admin.form.param.disclaimer.title.label',
+                'help'     => 'admin.form.param.disclaimer.title.help',
+                'required' => false,
             ]
         );
         $builder->add(
             'message',
             CKEditorType::class,
             [
-                'label' => 'admin.form.param.disclaimer.message.label',
-                'help' => 'admin.form.param.disclaimer.message.help',
-                'required' => false
+                'label'    => 'admin.form.param.disclaimer.message.label',
+                'help'     => 'admin.form.param.disclaimer.message.help',
+                'required' => false,
             ]
         );
         $builder->add(
             'url-redirect',
             UrlType::class,
             [
-                'label' => 'admin.form.param.disclaimer.url-redirect.label',
-                'help' => 'admin.form.param.disclaimer.url-redirect.help',
-                'required' => false
+                'label'    => 'admin.form.param.disclaimer.url-redirect.label',
+                'help'     => 'admin.form.param.disclaimer.url-redirect.help',
+                'required' => false,
             ]
         );
         unset($options);

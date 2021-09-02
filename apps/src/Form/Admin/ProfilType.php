@@ -41,7 +41,7 @@ class ProfilType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.profil.username.label',
-                'help' => 'admin.form.profil.username.help',
+                'help'  => 'admin.form.profil.username.help',
             ]
         );
         $builder->add(
@@ -56,11 +56,11 @@ class ProfilType extends AbstractType
                 'required'        => false,
                 'first_options'   => [
                     'label' => 'admin.form.profil.password.label',
-                    'help' => 'admin.form.profil.password.help',
+                    'help'  => 'admin.form.profil.password.help',
                 ],
                 'second_options'  => [
                     'label' => 'admin.form.profil.repeatpassword.label',
-                    'help' => 'admin.form.profil.repeatpassword.help',
+                    'help'  => 'admin.form.profil.repeatpassword.help',
                 ],
             ]
         );
@@ -82,9 +82,9 @@ class ProfilType extends AbstractType
                     'email',
                     ChoiceType::class,
                     [
-                        'label' => 'admin.form.profil.email.label',
-                        'help' => 'admin.form.profil.email.help',
-                        'choices' => $emails
+                        'label'   => 'admin.form.profil.email.label',
+                        'help'    => 'admin.form.profil.email.help',
+                        'choices' => $emails,
                     ]
                 );
             }
@@ -94,8 +94,8 @@ class ProfilType extends AbstractType
             'file',
             FileType::class,
             [
-                'label' => 'admin.form.profil.file.label',
-                'help' => 'admin.form.profil.file.help',
+                'label'    => 'admin.form.profil.file.label',
+                'help'     => 'admin.form.profil.file.help',
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]

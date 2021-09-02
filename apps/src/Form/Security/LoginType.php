@@ -22,7 +22,7 @@ class LoginType extends AbstractType
             TextType::class,
             [
                 'label' => 'security.form.login.username.label',
-                'help' => 'security.form.login.username.help',
+                'help'  => 'security.form.login.username.help',
             ]
         );
         $builder->add(
@@ -30,24 +30,22 @@ class LoginType extends AbstractType
             PasswordType::class,
             [
                 'label' => 'security.form.login.password.label',
-                'help' => 'security.form.login.password.help',
+                'help'  => 'security.form.login.password.help',
             ]
         );
         $builder->add(
             'remember_me',
             CheckboxType::class,
             [
-                'label' => 'security.form.login.remember_me.label',
-                'help' => 'security.form.login.remember_me.help',
+                'label'    => 'security.form.login.remember_me.label',
+                'help'     => 'security.form.login.remember_me.help',
                 'required' => false,
             ]
         );
         $builder->add(
             'submit',
             SubmitType::class,
-            [
-                'label' => 'security.form.login.username.label',
-            ]
+            ['label' => 'security.form.login.username.label']
         );
         unset($options);
     }

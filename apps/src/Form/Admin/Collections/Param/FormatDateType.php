@@ -19,7 +19,7 @@ class FormatDateType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.param.formatdate.admin.label',
-                'help' => 'admin.form.param.formatdate.admin.help',
+                'help'  => 'admin.form.param.formatdate.admin.help',
             ]
         );
         $builder->add(
@@ -27,7 +27,7 @@ class FormatDateType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.param.formatdate.public.label',
-                'help' => 'admin.form.param.formatdate.public.help',
+                'help'  => 'admin.form.param.formatdate.public.help',
             ]
         );
         unset($options);

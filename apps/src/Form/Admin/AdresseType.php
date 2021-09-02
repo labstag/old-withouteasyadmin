@@ -24,7 +24,7 @@ abstract class AdresseType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.adresse.rue.label',
-                'help' => 'admin.form.adresse.rue.help',
+                'help'  => 'admin.form.adresse.rue.help',
             ]
         );
         $builder->add(
@@ -32,8 +32,8 @@ abstract class AdresseType extends AbstractType
             CountryType::class,
             [
                 'label' => 'admin.form.adresse.country.label',
-                'help' => 'admin.form.adresse.country.help',
-                'attr' => [
+                'help'  => 'admin.form.adresse.country.help',
+                'attr'  => [
                     'is'      => 'select-country',
                     'choices' => 'true',
                 ],
@@ -44,8 +44,8 @@ abstract class AdresseType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.adresse.zipcode.label',
-                'help' => 'admin.form.adresse.zipcode.help',
-                'attr' => ['is' => 'input-codepostal'],
+                'help'  => 'admin.form.adresse.zipcode.help',
+                'attr'  => ['is' => 'input-codepostal'],
             ]
         );
         $builder->add(
@@ -53,8 +53,8 @@ abstract class AdresseType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.adresse.ville.label',
-                'help' => 'admin.form.adresse.ville.help',
-                'attr' => ['is' => 'input-ville'],
+                'help'  => 'admin.form.adresse.ville.help',
+                'attr'  => ['is' => 'input-ville'],
             ]
         );
         $builder->add(
@@ -62,8 +62,8 @@ abstract class AdresseType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.adresse.gps.label',
-                'help' => 'admin.form.adresse.gps.help',
-                'attr' => ['is' => 'input-gps'],
+                'help'  => 'admin.form.adresse.gps.help',
+                'attr'  => ['is' => 'input-gps'],
             ]
         );
         $builder->add(
@@ -71,7 +71,7 @@ abstract class AdresseType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.adresse.type.label',
-                'help' => 'admin.form.adresse.type.help',
+                'help'  => 'admin.form.adresse.type.help',
             ]
         );
         $builder->add(
@@ -79,7 +79,7 @@ abstract class AdresseType extends AbstractType
             CheckboxType::class,
             [
                 'label' => 'admin.form.adresse.pmr.label',
-                'help' => 'admin.form.adresse.pmr.help',
+                'help'  => 'admin.form.adresse.pmr.help',
             ]
         );
     }

@@ -22,7 +22,7 @@ abstract class EmailType extends AbstractType
             TypeEmailType::class,
             [
                 'label' => 'admin.form.email.adresse.label',
-                'help' => 'admin.form.email.adresse.help',
+                'help'  => 'admin.form.email.adresse.help',
             ]
         );
     }

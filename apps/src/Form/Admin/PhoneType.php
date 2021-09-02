@@ -29,7 +29,7 @@ abstract class PhoneType extends AbstractType
     {
         $optionsInput = [
             'label' => 'admin.form.phone.numero.label',
-            'help' => 'admin.form.phone.numero.help',
+            'help'  => 'admin.form.phone.numero.help',
         ];
         if (array_key_exists('data', $options)) {
             /* @var PhoneUser $phoneuser */
@@ -52,8 +52,8 @@ abstract class PhoneType extends AbstractType
             CountryType::class,
             [
                 'label' => 'admin.form.phone.country.label',
-                'help' => 'admin.form.phone.country.help',
-                'attr' => [
+                'help'  => 'admin.form.phone.country.help',
+                'attr'  => [
                     'is'      => 'select-country',
                     'choices' => 'true',
                 ],

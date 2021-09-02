@@ -30,24 +30,24 @@ class PostType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.post.title.label',
-                'help' => 'admin.form.post.title.help',
+                'help'  => 'admin.form.post.title.help',
             ]
         );
         $builder->add(
             'slug',
             TextType::class,
             [
-                'label' => 'admin.form.post.slug.label',
-                'help' => 'admin.form.post.slug.help',
-                'required' => false
+                'label'    => 'admin.form.post.slug.label',
+                'help'     => 'admin.form.post.slug.help',
+                'required' => false,
             ]
         );
         $builder->add(
             'published',
             DateTimeType::class,
             [
-                'label' => 'admin.form.post.published.label',
-                'help' => 'admin.form.post.published.help',
+                'label'        => 'admin.form.post.published.label',
+                'help'         => 'admin.form.post.published.help',
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
@@ -58,7 +58,7 @@ class PostType extends AbstractType
             CKEditorType::class,
             [
                 'label' => 'admin.form.post.content.label',
-                'help' => 'admin.form.post.content.help',
+                'help'  => 'admin.form.post.content.help',
             ]
         );
         $builder->add(
@@ -66,7 +66,7 @@ class PostType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.post.metaDescription.label',
-                'help' => 'admin.form.post.metaDescription.help',
+                'help'  => 'admin.form.post.metaDescription.help',
             ]
         );
         $builder->add(
@@ -74,15 +74,15 @@ class PostType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.post.metaKeywords.label',
-                'help' => 'admin.form.post.metaKeywords.help',
+                'help'  => 'admin.form.post.metaKeywords.help',
             ]
         );
         $builder->add(
             'file',
             FileType::class,
             [
-                'label' => 'admin.form.post.file.label',
-                'help' => 'admin.form.post.file.help',
+                'label'    => 'admin.form.post.file.label',
+                'help'     => 'admin.form.post.file.help',
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]
@@ -91,8 +91,8 @@ class PostType extends AbstractType
             'refuser',
             SearchableType::class,
             [
-                'label' => 'admin.form.post.refuser.label',
-                'help' => 'admin.form.post.refuser.help',
+                'label'    => 'admin.form.post.refuser.label',
+                'help'     => 'admin.form.post.refuser.help',
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
@@ -103,7 +103,7 @@ class PostType extends AbstractType
             CheckboxType::class,
             [
                 'label' => 'admin.form.post.commentaire.label',
-                'help' => 'admin.form.post.commentaire.help',
+                'help'  => 'admin.form.post.commentaire.help',
             ]
         );
         $builder->add(
@@ -111,7 +111,7 @@ class PostType extends AbstractType
             SearchableType::class,
             [
                 'label' => 'admin.form.post.libelles.label',
-                'help' => 'admin.form.post.libelles.help',
+                'help'  => 'admin.form.post.libelles.help',
                 'class' => Libelle::class,
                 'route' => 'api_search_postlibelle',
             ]

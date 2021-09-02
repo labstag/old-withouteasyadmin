@@ -22,16 +22,16 @@ class LinkType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.menu.link.libelle.label',
-                'help' => 'admin.form.menu.link.libelle.help',
+                'help'  => 'admin.form.menu.link.libelle.help',
             ]
         );
         $builder->add(
             'icon',
             TextType::class,
             [
-                'label' => 'admin.form.menu.link.icon.label',
-                'help' => 'admin.form.menu.link.icon.help',
-                'required' => false
+                'label'    => 'admin.form.menu.link.icon.label',
+                'help'     => 'admin.form.menu.link.icon.help',
+                'required' => false,
             ]
         );
         $builder->add(

@@ -26,15 +26,15 @@ class EmailUserType extends EmailType
             CheckboxType::class,
             [
                 'label' => 'admin.form.emailuser.principal.label',
-                'help' => 'admin.form.emailuser.principal.help',
+                'help'  => 'admin.form.emailuser.principal.help',
             ]
         );
         $builder->add(
             'refuser',
             SearchableType::class,
             [
-                'label' => 'admin.form.emailuser.refuser.label',
-                'help' => 'admin.form.emailuser.refuser.help',
+                'label'    => 'admin.form.emailuser.refuser.label',
+                'help'     => 'admin.form.emailuser.refuser.help',
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

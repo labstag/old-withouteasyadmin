@@ -20,24 +20,20 @@ class DisclaimerType extends AbstractType
             'confirm',
             CheckboxType::class,
             [
-                'label' => 'security.form.disclaimer.confirm.label',
-                'help' => 'security.form.disclaimer.confirm.help',
+                'label'    => 'security.form.disclaimer.confirm.label',
+                'help'     => 'security.form.disclaimer.confirm.help',
                 'required' => false,
             ]
         );
         $builder->add(
             'submit',
             SubmitType::class,
-            [
-                'label' => 'security.form.disclaimer.submit.label',
-            ]
+            ['label' => 'security.form.disclaimer.submit.label']
         );
         $builder->add(
             'reset',
             ResetType::class,
-            [
-                'label' => 'security.form.disclaimer.reset.label',
-            ]
+            ['label' => 'security.form.disclaimer.reset.label']
         );
         unset($options);
     }

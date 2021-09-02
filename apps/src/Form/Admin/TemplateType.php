@@ -26,7 +26,7 @@ class TemplateType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.template.name.label',
-                'help' => 'admin.form.template.name.help',
+                'help'  => 'admin.form.template.name.help',
             ]
         );
         $builder->add(
@@ -34,7 +34,7 @@ class TemplateType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.form.template.code.label',
-                'help' => 'admin.form.template.code.help',
+                'help'  => 'admin.form.template.code.help',
             ]
         );
         $builder->add(
@@ -42,7 +42,7 @@ class TemplateType extends AbstractType
             CKEditorType::class,
             [
                 'label' => 'admin.form.template.html.label',
-                'help' => 'admin.form.template.html.help',
+                'help'  => 'admin.form.template.html.help',
             ]
         );
         $builder->add(
@@ -50,7 +50,7 @@ class TemplateType extends AbstractType
             CoreTextareaType::class,
             [
                 'label' => 'admin.form.template.text.label',
-                'help' => 'admin.form.template.text.help',
+                'help'  => 'admin.form.template.text.help',
             ]
         );
     }

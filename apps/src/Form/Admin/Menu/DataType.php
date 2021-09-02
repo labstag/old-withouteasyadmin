@@ -19,35 +19,35 @@ class DataType extends AbstractType
             'route',
             TextType::class,
             [
-                'label' => 'admin.form.menu.data.route.name.label',
-                'help' => 'admin.form.menu.data.route.name.help',
-                'required' => false
+                'label'    => 'admin.form.menu.data.route.name.label',
+                'help'     => 'admin.form.menu.data.route.name.help',
+                'required' => false,
             ]
         );
         $builder->add(
             'param',
             TextType::class,
             [
-                'label' => 'admin.form.menu.data.route.param.label',
-                'help' => 'admin.form.menu.data.route.param.help',
-                'required' => false
+                'label'    => 'admin.form.menu.data.route.param.label',
+                'help'     => 'admin.form.menu.data.route.param.help',
+                'required' => false,
             ]
         );
         $builder->add(
             'url',
             TextType::class,
             [
-                'label' => 'admin.form.menu.data.route.url.label',
-                'help' => 'admin.form.menu.data.route.url.help',
-                'required' => false
+                'label'    => 'admin.form.menu.data.route.url.label',
+                'help'     => 'admin.form.menu.data.route.url.help',
+                'required' => false,
             ]
         );
         $builder->add(
             'target',
             ChoiceType::class,
             [
-                'label' => 'admin.form.menu.data.route.target.label',
-                'help' => 'admin.form.menu.data.route.target.help',
+                'label'    => 'admin.form.menu.data.route.target.label',
+                'help'     => 'admin.form.menu.data.route.target.help',
                 'required' => false,
                 'choices'  => [
                     ''        => '',

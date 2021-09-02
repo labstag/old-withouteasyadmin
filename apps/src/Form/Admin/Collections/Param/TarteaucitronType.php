@@ -21,8 +21,8 @@ class TarteaucitronType extends AbstractType
             'privacyUrl',
             UrlType::class,
             [
-                'label' => 'admin.param.param.tarteaucitron.privacyUrl.label',
-                'help' => 'admin.param.param.tarteaucitron.privacyUrl.help',
+                'label'    => 'admin.param.param.tarteaucitron.privacyUrl.label',
+                'help'     => 'admin.param.param.tarteaucitron.privacyUrl.help',
                 'required' => false,
             ]
         );
@@ -31,7 +31,7 @@ class TarteaucitronType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.param.param.tarteaucitron.hashtag.label',
-                'help' => 'admin.param.param.tarteaucitron.hashtag.help',
+                'help'  => 'admin.param.param.tarteaucitron.hashtag.help',
             ]
         );
         $builder->add(
@@ -39,7 +39,7 @@ class TarteaucitronType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.param.param.tarteaucitron.cookieName.label',
-                'help' => 'admin.param.param.tarteaucitron.cookieName.help',
+                'help'  => 'admin.param.param.tarteaucitron.cookieName.help',
             ]
         );
         $builder->add(
@@ -47,7 +47,7 @@ class TarteaucitronType extends AbstractType
             TextType::class,
             [
                 'label' => 'admin.param.param.tarteaucitron.orientation.label',
-                'help' => 'admin.param.param.tarteaucitron.orientation.help',
+                'help'  => 'admin.param.param.tarteaucitron.orientation.help',
             ]
         );
         $tab = [
@@ -62,8 +62,8 @@ class TarteaucitronType extends AbstractType
             'iconPosition',
             ChoiceType::class,
             [
-                'label' => 'admin.form.param.tarteaucitron.iconPosition.label',
-                'help' => 'admin.form.param.tarteaucitron.iconPosition.help',
+                'label'   => 'admin.form.param.tarteaucitron.iconPosition.label',
+                'help'    => 'admin.form.param.tarteaucitron.iconPosition.help',
                 'choices' => [
                     'BottomRight' => 'BottomRight',
                     'BottomLeft'  => 'BottomLeft',
@@ -86,8 +86,8 @@ class TarteaucitronType extends AbstractType
             'readmoreLink',
             UrlType::class,
             [
-                'label' => 'admin.form.param.tarteaucitron.readmoreLink.label',
-                'help' => 'admin.form.param.tarteaucitron.readmoreLink.help',
+                'label'    => 'admin.form.param.tarteaucitron.readmoreLink.label',
+                'help'     => 'admin.form.param.tarteaucitron.readmoreLink.help',
                 'required' => false,
             ]
         );
@@ -95,8 +95,8 @@ class TarteaucitronType extends AbstractType
             'mandatory',
             ChoiceType::class,
             [
-                'label' => 'admin.form.param.tarteaucitron.mandatory.label',
-                'help' => 'admin.form.param.tarteaucitron.mandatory.help',
+                'label'   => 'admin.form.param.tarteaucitron.mandatory.label',
+                'help'    => 'admin.form.param.tarteaucitron.mandatory.help',
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -108,7 +108,7 @@ class TarteaucitronType extends AbstractType
             CoreTextareaType::class,
             [
                 'label' => 'admin.form.param.tarteaucitron.job.label',
-                'help' => 'admin.form.param.tarteaucitron.job.help',
+                'help'  => 'admin.form.param.tarteaucitron.job.help',
             ]
         );
         unset($options);
@@ -128,9 +128,9 @@ class TarteaucitronType extends AbstractType
             $builder->add(
                 $id,
                 ChoiceType::class,
-                [   
-                    'label' => 'admin.form.param.tarteaucitron.'.$id.'.label',
-                    'help' => 'admin.form.param.tarteaucitron.'.$id.'.help',
+                [
+                    'label'   => 'admin.form.param.tarteaucitron.'.$id.'.label',
+                    'help'    => 'admin.form.param.tarteaucitron.'.$id.'.help',
                     'choices' => [
                         'Non' => '0',
                         'Oui' => '1',
