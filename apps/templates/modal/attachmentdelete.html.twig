@@ -3,23 +3,23 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="delete-attachment-modalLabel">
-                    {{ "Supprimer ?"|trans }}
+                    {{ "modal.attachmentdelete.title"|trans }}
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                {{ "Êtes-vous sûr de vouloir supprimer cette donnée ?"|trans }}
+                {{ "modal.attachmentdelete.message"|trans }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn-cancel" data-bs-dismiss="modal">
                     <i></i>
-                    <span>{{ "Annuler"|trans }}</span>
+                    <span>{{ "modal.button.cancel"|trans }}</span>
                 </button>
                 <confirm-deleteattachment>
                     <i></i>
-                    <span>{{ "Supprimer"|trans }}</span>
+                    <span>{{ "modal.button.delete"|trans }}</span>
                 </confirm-deleteattachment>
             </div>
         </div>
