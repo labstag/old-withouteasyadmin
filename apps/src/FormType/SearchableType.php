@@ -79,7 +79,7 @@ class SearchableType extends AbstractType
         $view->vars['placeholder_in_choices']    = false;
         $view->vars['multiple']                  = $options['multiple'];
         $view->vars['preferred_choices']         = [];
-        $view->vars['choices']                   = $this->choices($form->getData());
+        $view->vars['choices']                   = $this->choices($form->getData(), $options);
         $view->vars['choice_translation_domain'] = false;
         if ($options['multiple']) {
             $view->vars['full_name'] .= '[]';
@@ -100,12 +100,23 @@ class SearchableType extends AbstractType
         return 'choice';
     }
 
-    private function choices($values)
+    private function choices($values, array $options)
     {
+        if (is_null($values)) {
+            return ($options['multiple']) ? [] : null;
+
+        }
+
+
         if ($values instanceof Collection) {
             return $values->map(fn ($d) => new ChoiceView($d, (string) $d->getId(), (string) $d))->toArray();
         }
 
-        return [new ChoiceView($values, (string) $values->getId(), (string) $values)];
+        if ($options['multiple']) {
+
+            return [new ChoiceView($values, (string) $values->getId(), (string) $values)];
+        }
+
+        return new ChoiceView($values, (string) $values->getId(), (string) $values);
     }
 }
