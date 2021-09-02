@@ -16,13 +16,13 @@
     {% set state = guard_route('app_lost') %}
     {% if state == true %}
         <div class="links">
-            <a href="{{ path("app_lost") }}">{{ "J'ai perdu mon mot de passe"|trans }}</a>
+            <a href="{{ path("app_lost") }}">{{ "user.lostpassword.link"|trans }}</a>
         </div>
     {% endif %}
     {% set state = guard_route('connect_start') %}
     {% if state == true and oauths|length != 0 %}
         <div class="oauth">
-            <div class="oauth-title">{{ "Se connecter avec :"|trans }}</div>
+            <div class="oauth-title">{{ "user.login.oauth"|trans }}</div>
             <div class="oauth-btns">
             {% for oauth in oauths %}
                 <a href="{{ path('connect_start', {'oauthCode': oauth.name}) }}" title="{{ oauth.name|e('html_attr') }}">

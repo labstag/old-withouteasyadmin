@@ -3,22 +3,22 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="{{ "Actions"|trans|e('html_attr') }}"
+        data-action="{{ "table.admin.action"|trans|e('html_attr') }}"
         data-multiple
-        data-multipleall="{{ "Tout sélectionner"|trans|e('html_attr') }}"
-        data-multipleelement="{{ "Selection"|trans|e('html_attr') }}"
-        data-empty="{{ "No records found"|trans|e('html_attr') }}"
+        data-multipleall="{{ "table.admin.multipleall"|trans|e('html_attr') }}"
+        data-multipleelement="{{ "table.admin.mutipleelement"|trans|e('html_attr') }}"
+        data-empty="{{ "table.admin.empty"|trans|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>{{ "Name"|trans }}</th>
-                <th>{{ "Mime type"|trans }}</th>
-                <th>{{ "Size"|trans }}</th>
-                <th>{{ "Dimensions"|trans }}</th>
-                <th>{{ "Download"|trans }}</th>
-                <th>{{ "State"|trans }}</th>
-                <th>{{ "Workflow"|trans }}</th>
+                <th>{{ "attachment.name"|trans }}</th>
+                <th>{{ "attachment.mimetype"|trans }}</th>
+                <th>{{ "attachment.size"|trans }}</th>
+                <th>{{ "attachment.dimensions"|trans }}</th>
+                <th>{{ "attachment.download"|trans }}</th>
+                <th>{{ "attachment.state"|trans }}</th>
+                <th>{{ "attachment.workflow"|trans }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -29,7 +29,7 @@
                 <td>{{ entity.mimeType }}</td>
                 <td>{{ entity.size }}</td>
                 <td>{{ entity.dimensions|json_encode }}</td>
-                <td><a href="{{ asset(entity.name) }}" target="_blank">{{ "Voir le fichier"|trans }}</a></td>
+                <td><a href="{{ asset(entity.name) }}" target="_blank">{{ "attachment.seefile"|trans }}</a></td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

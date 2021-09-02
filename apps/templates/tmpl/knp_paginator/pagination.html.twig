@@ -6,13 +6,13 @@
             {% if first is defined and current != first %}
                 {% set url = path(route, query|merge({(pageParameterName): first})) %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ url }}" tabindex="-1">{{ "First"|trans }}</a>
+                    <a class="page-link" href="{{ url }}" tabindex="-1">{{ "pagination.first"|trans }}</a>
                 </li>
             {% endif %}
             {% if previous is defined %}
                 {% set url = path(route, query|merge({(pageParameterName): previous})) %}
                 <li class="page-item">
-                    <a class="page-link" rel="prev" href="{{ url }}" tabindex="-1">{{ "Previous"|trans }}</a>
+                    <a class="page-link" rel="prev" href="{{ url }}" tabindex="-1">{{ "pagination.previous"|trans }}</a>
                 </li>
             {% endif %}
             {% for page in pagesInRange %}
@@ -24,7 +24,7 @@
                     <li class="page-item active">
                         <span class="page-link">
                             {{ page }}
-                            <span class="sr-only">{{ "(current)"|trans }}</span>
+                            <span class="sr-only">{{ "pagination.current"|trans }}</span>
                         </span>
                     </li>
                 {% endif %}
@@ -32,13 +32,13 @@
             {% if next is defined %}
                 {% set url = path(route, query|merge({(pageParameterName): next})) %}
                 <li class="page-item">
-                    <a class="page-link" rel="next" href="{{ url }}">{{ "Next"|trans }}</a>
+                    <a class="page-link" rel="next" href="{{ url }}">{{ "pagination.next"|trans }}</a>
                 </li>
             {% endif %}
             {% if last is defined and current != last %}
                 {% set url = path(route, query|merge({(pageParameterName): last})) %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ url }}">{{ "Last"|trans }}</a>
+                    <a class="page-link" href="{{ url }}">{{ "pagination.last"|trans }}</a>
                 </li>
             {% endif %}
         </ul>

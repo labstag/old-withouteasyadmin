@@ -1,42 +1,40 @@
 {% extends 'admin/geocode/layout.html.twig' %}
 {% block body %}
-    <h1>{{ "GeoCode"|trans }}</h1>
-
-    <table class="table">
+    <table>
         <tbody>
             <tr>
-                <th>{{ "CountryCode"|trans }}</th>
+                <th>{{ "geocode.countrycode"|trans }}</th>
                 <td>
                     <span class="flag-icon flag-icon-{{ entity.countryCode|lower }}"></span>
                     {{ entity.countryCode|country_name('fr') }}
                 </td>
             </tr>
             <tr>
-                <th>{{ "PostalCode"|trans }}</th>
+                <th>{{ "geocode.postalcode"|trans }}</th>
                 <td>{{ entity.postalCode }}</td>
             </tr>
             <tr>
-                <th>{{ "PlaceName"|trans }}</th>
+                <th>{{ "geocode.placename"|trans }}</th>
                 <td>{{ entity.placeName }}</td>
             </tr>
             <tr>
-                <th>{{ "State"|trans }}</th>
+                <th>{{ "admin.workflow.state"|trans }}</th>
                 <td>{{ entity.stateName }} ({{ entity.stateCode }})</td>
             </tr>
             <tr>
-                <th>{{ "Province"|trans }}</th>
+                <th>{{ "geocode.province"|trans }}</th>
                 <td>{{ entity.provinceName }} ({{ entity.provinceCode }})</td>
             </tr>
             <tr>
-                <th>{{ "Community"|trans }}</th>
+                <th>{{ "geocode.community"|trans }}</th>
                 <td>{{ entity.communityName }} ({{ entity.communityCode }})</td>
             </tr>
             <tr>
-                <th>{{ "Coordonnées"|trans }}</th>
+                <th>{{ "geocode.coordonnees"|trans }}</th>
                 <td>{{ entity.latitude }} , {{ entity.longitude }}</td>
             </tr>
             <tr>
-                <th>{{ "Accuracy"|trans }}</th>
+                <th>{{ "geocode.accuracy"|trans }}</th>
                 <td>{{ entity.accuracy }}</td>
             </tr>
         </tbody>

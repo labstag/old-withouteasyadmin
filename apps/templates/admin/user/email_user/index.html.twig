@@ -3,20 +3,20 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="{{ "Actions"|trans|e('html_attr') }}"
+        data-action="{{ "table.admin.action"|trans|e('html_attr') }}"
         data-multiple
-        data-multipleall="{{ "Tout sélectionner"|trans|e('html_attr') }}"
-        data-multipleelement="{{ "Selection"|trans|e('html_attr') }}"
-        data-empty="{{ "No records found"|trans|e('html_attr') }}"
+        data-multipleall="{{ "table.admin.multipleall"|trans|e('html_attr') }}"
+        data-multipleelement="{{ "table.admin.mutipleelement"|trans|e('html_attr') }}"
+        data-empty="{{ "table.admin.empty"|trans|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>{{ "Adresse"|trans }}</th>
-                <th>{{ "Principal"|trans }}</th>
-                <th>{{ "User"|trans }}</th>
-                <th>{{ "State"|trans }}</th>
-                <th>{{ "Workflow"|trans }}</th>
+                <th>{{ "user.email.adresse"|trans }}</th>
+                <th>{{ "user.email.principal"|trans }}</th>
+                <th>{{ "user.email.user"|trans }}</th>
+                <th>{{ "admin.workflow.state"|trans }}</th>
+                <th>{{ "user.email.workflow"|trans }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -24,7 +24,7 @@
         {% for entity in pagination %}
             <tr data-id="{{ entity.id }}">
                 <td>{{ entity.adresse }}</td>
-                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.principal ? 'admin.state.yes'|trans : 'admin.state.no'|trans }}</td>
                 <td>{{ entity.refuser }}</td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}

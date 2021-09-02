@@ -3,22 +3,22 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="{{ "Actions"|trans|e('html_attr') }}"
+        data-action="{{ "table.admin.action"|trans|e('html_attr') }}"
         data-multiple
-        data-multipleall="{{ "Tout sélectionner"|trans|e('html_attr') }}"
-        data-multipleelement="{{ "Selection"|trans|e('html_attr') }}"
-        data-empty="{{ "No records found"|trans|e('html_attr') }}"
+        data-multipleall="{{ "table.admin.multipleall"|trans|e('html_attr') }}"
+        data-multipleelement="{{ "table.admin.mutipleelement"|trans|e('html_attr') }}"
+        data-empty="{{ "table.admin.empty"|trans|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>{{ "Numero"|trans }}</th>
-                <th>{{ "Country"|trans }}</th>
-                <th>{{ "Verif"|trans }}</th>
-                <th>{{ "Type"|trans }}</th>
-                <th>{{ "Principal"|trans }}</th>
-                <th>{{ "State"|trans }}</th>
-                <th>{{ "Workflow"|trans }}</th>
+                <th>{{ "user.phone.numero"|trans }}</th>
+                <th>{{ "user.phone.country"|trans }}</th>
+                <th>{{ "user.phone.verif"|trans }}</th>
+                <th>{{ "user.phone.type"|trans }}</th>
+                <th>{{ "user.phone.principal"|trans }}</th>
+                <th>{{ "admin.workflow.state"|trans }}</th>
+                <th>{{ "user.phone.workflow"|trans }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -35,7 +35,7 @@
                     <span class="check-{{ check }}"></span>
                 </td>
                 <td>{{ entity.type }}</td>
-                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.principal ? 'admin.state.yes'|trans : 'admin.state.no'|trans }}</td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

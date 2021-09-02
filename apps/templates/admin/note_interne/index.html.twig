@@ -3,21 +3,21 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="{{ "Actions"|trans|e('html_attr') }}"
+        data-action="{{ "table.admin.action"|trans|e('html_attr') }}"
         data-multiple
-        data-multipleall="{{ "Tout sélectionner"|trans|e('html_attr') }}"
-        data-multipleelement="{{ "Selection"|trans|e('html_attr') }}"
-        data-empty="{{ "No records found"|trans|e('html_attr') }}"
+        data-multipleall="{{ "table.admin.multipleall"|trans|e('html_attr') }}"
+        data-multipleelement="{{ "table.admin.mutipleelement"|trans|e('html_attr') }}"
+        data-empty="{{ "table.admin.empty"|trans|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>{{ "Title"|trans }}</th>
-                <th>{{ "Date_debut"|trans }}</th>
-                <th>{{ "Date_fin"|trans }}</th>
-                <th>{{ "User"|trans }}</th>
-                <th>{{ "State"|trans }}</th>
-                <th>{{ "Workflow"|trans }}</th>
+                <th>{{ "noteinterne.title"|trans }}</th>
+                <th>{{ "noteinterne.date_debut"|trans }}</th>
+                <th>{{ "noteinterne.date_fin"|trans }}</th>
+                <th>{{ "noteinterne.user"|trans }}</th>
+                <th>{{ "admin.workflow.state"|trans }}</th>
+                <th>{{ "noteinterne.workflow"|trans }}</th>
                 <th></th>
             </tr>
         </thead>

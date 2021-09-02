@@ -362,7 +362,7 @@
             {% endif %}
         {% endfor %}
         {% if required == true %}
-            <div class="require-form-info">{{ "Les informations marquées d'un %span% sont obligatoires"|trans({"%span%": "<span>*</span>"}) }}</div>
+            <div class="require-form-info">{{ "form.requireinfo"|trans({"%span%": "<span>*</span>"}) }}</div>
         {% endif %}
     </form>
 {% endblock form_end %}

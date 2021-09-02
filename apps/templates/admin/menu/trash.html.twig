@@ -3,21 +3,21 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="{{ "Actions"|trans|e('html_attr') }}"
+        data-action="{{ "table.admin.action"|trans|e('html_attr') }}"
         data-multiple
-        data-multipleall="{{ "Tout sélectionner"|trans|e('html_attr') }}"
-        data-multipleelement="{{ "Selection"|trans|e('html_attr') }}"
-        data-empty="{{ "No records found"|trans|e('html_attr') }}"
+        data-multipleall="{{ "table.admin.multipleall"|trans|e('html_attr') }}"
+        data-multipleelement="{{ "table.admin.mutipleelement"|trans|e('html_attr') }}"
+        data-empty="{{ "table.admin.empty"|trans|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>{{ "Libelle"|trans }}</th>
-                <th>{{ "Icon"|trans }}</th>
-                <th>{{ "Position"|trans }}</th>
-                <th>{{ "Data"|trans }}</th>
-                <th>{{ "Separateur"|trans }}</th>
-                <th>{{ "Clef"|trans }}</th>
+                <th>{{ "menu.libelle"|trans }}</th>
+                <th>{{ "menu.icon"|trans }}</th>
+                <th>{{ "menu.position"|trans }}</th>
+                <th>{{ "menu.data"|trans }}</th>
+                <th>{{ "menu.separateur"|trans }}</th>
+                <th>{{ "menu.clef"|trans }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -28,7 +28,7 @@
                 <td>{{ entity.icon }}</td>
                 <td>{{ entity.position }}</td>
                 <td>{{ entity.data ? entity.data|json_encode : '' }}</td>
-                <td>{{ entity.separateur ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.separateur ? 'admin.state.yes'|trans : 'admin.state.no'|trans }}</td>
                 <td>{{ entity.clef }}</td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}

@@ -3,34 +3,34 @@
     <table>
         <tbody>
             <tr>
-                <th>{{ "Title"|trans }}</th>
+                <th>{{ "noteinterne.title"|trans }}</th>
                 <td>{{ entity.title }}</td>
             </tr>
             <tr>
-                <th>{{ "Content"|trans }}</th>
+                <th>{{ "noteinterne.content"|trans }}</th>
                 <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
-                <th>{{ "Date_debut"|trans }}</th>
+                <th>{{ "noteinterne.date_debut"|trans }}</th>
                 <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
             </tr>
             <tr>
-                <th>{{ "Date_fin"|trans }}</th>
+                <th>{{ "noteinterne.date_fin"|trans }}</th>
                 <td>{{ entity.dateFin ? entity.dateFin|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
             </tr>
             {% set fond = attachment(entity.fond) %}
             {% if fond is not null and fond.name is not null %}
             <tr>
-                <th>{{ "Fond"|trans }}</th>
+                <th>{{ "noteinterne.fond"|trans }}</th>
                 <td>
                     <picture >
-                        <img alt="{{ "Note Interne fond"|trans|e("html_attr") }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
+                        <img alt="{{ "noteinterne.fond"|trans|e("html_attr") }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
                     </picture>
                 </td>
             </tr>
             {% endif %}
             <tr>
-                <th>{{ "User"|trans }}</th>
+                <th>{{ "noteinterne.user"|trans }}</th>
                 <td>
                     {% if entity.refuser.deletedAt != '' %}
                         {% set url = 'admin_user_preview' %}
@@ -46,7 +46,7 @@
                 </td>
             </tr>
             <tr>
-                <th>{{ "State"|trans }}</th>
+                <th>{{ "admin.workflow.state"|trans }}</th>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

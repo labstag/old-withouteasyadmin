@@ -3,30 +3,30 @@
     <table>
         <tbody>
             <tr>
-                <th>{{ "Title"|trans }}</th>
+                <th>{{ "edito.title"|trans }}</th>
                 <td>{{ entity.title }}</td>
             </tr>
             <tr>
-                <th>{{ "Content"|trans }}</th>
+                <th>{{ "edito.content"|trans }}</th>
                 <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
-                <th>{{ "Published"|trans }}</th>
+                <th>{{ "edito.published"|trans }}</th>
                 <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
             </tr>
             {% set fond = attachment(entity.fond) %}
             {% if fond is not null and fond.name is not null %}
             <tr>
-                <th>{{ "Fond"|trans }}</th>
+                <th>{{ "edito.fond"|trans }}</th>
                 <td>
                     <picture >
-                        <img alt="{{ "Edito Fond"|trans|e("html_attr") }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
+                        <img alt="{{ "edito.fond"|trans|e("html_attr") }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
                     </picture>
                 </td>
             </tr>
             {% endif %}
             <tr>
-                <th>{{ "User"|trans }}</th>
+                <th>{{ "edito.user"|trans }}</th>
                 <td>
                     {% if entity.refuser.deletedAt != '' %}
                         {% set url = 'admin_user_preview' %}
@@ -42,7 +42,7 @@
                 </td>
             </tr>
             <tr>
-                <th>{{ "State"|trans }}</th>
+                <th>{{ "admin.workflow.state"|trans }}</th>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}
