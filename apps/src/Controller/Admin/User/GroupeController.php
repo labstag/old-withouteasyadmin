@@ -6,11 +6,16 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
 use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\WorkflowRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
+use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/admin/user/groupe")
@@ -25,12 +30,23 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET","POST"})
      */
-    public function edit(Groupe $groupe, GroupeRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guarService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        Groupe $groupe,
+        GroupeRequestHandler $requestHandler
+    ): Response
     {
         return $this->update(
+            $uploadAnnotReader,
+            $guarService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             GroupeType::class,
             $groupe,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_groupuser_index',
@@ -81,7 +97,7 @@ class GroupeController extends AdminControllerLib
         if (0 == count($routes)) {
             $this->flashBagAdd(
                 'danger',
-                "Le groupe superadmin n'est pas un groupe qui peut avoir des droits spécifique"
+                $this->translator->trans("Le groupe superadmin n'est pas un groupe qui peut avoir des droits spécifique")
             );
 
             return $this->redirect($this->generateUrl('admin_groupuser_index'));
@@ -132,12 +148,20 @@ class GroupeController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_groupuser_new", methods={"GET","POST"})
      */
-    public function new(GroupeRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        GroupeRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new Groupe(),
             GroupeType::class,
-            $requestHandler,
             ['list' => 'admin_groupuser_index']
         );
     }

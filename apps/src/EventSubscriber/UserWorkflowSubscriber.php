@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserWorkflowSubscriber implements EventSubscriberInterface
 {
@@ -20,11 +21,15 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
 
     protected RequestStack $requestStack;
 
+    protected TranslatorInterface $translator;
+
     public function __construct(
         UserMailService $userMailService,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        TranslatorInterface $translator
     )
     {
+        $this->translator      = $translator;
         $this->requestStack    = $requestStack;
         $this->userMailService = $userMailService;
     }
@@ -54,7 +59,7 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
         $this->userMailService->lostPassword($entity);
         $this->flashBagAdd(
             'success',
-            'Demande de nouveau mot de passe envoyé'
+            $this->translator->trans('Demande de nouveau mot de passe envoyé')
         );
     }
 
@@ -77,7 +82,7 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
         $this->userMailService->newUser($entity);
         $this->flashBagAdd(
             'success',
-            'Nouveau compte utilisateur créer'
+            $this->translator->trans('Nouveau compte utilisateur créer')
         );
     }
 }

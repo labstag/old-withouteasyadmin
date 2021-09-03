@@ -13,8 +13,10 @@ use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\NoteInterneRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
+use Labstag\Service\GuardService;
 use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -23,8 +25,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/admin")
@@ -34,7 +38,10 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/export", name="admin_export")
      */
-    public function export(DataService $dataService, LoggerInterface $logger): RedirectResponse
+    public function export(
+        DataService $dataService,
+        LoggerInterface $logger
+    ): RedirectResponse
     {
         $config = $dataService->getConfig();
         ksort($config);
@@ -45,15 +52,15 @@ class AdminController extends AdminControllerLib
                 file_put_contents($file, $content);
                 $this->flashBagAdd(
                     'success',
-                    'Données exporté'
+                    $this->translator->trans('Données exporté')
                 );
             } catch (Exception $exception) {
                 $this->setErrorLogger($exception, $logger);
                 $this->flashBagAdd(
                     'danger',
-                    sprintf(
-                        "Problème d'enregistrement du fichier %s",
-                        $file
+                    $this->translator->trans(
+                        "Problème d'enregistrement du fichier %file%",
+                        ['%file%' => $file]
                     )
                 );
             }
@@ -157,16 +164,25 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/profil", name="admin_profil", methods={"GET","POST"})
      */
-    public function profil(Security $security, UserRequestHandler $requestHandler): Response
+    public function profil(
+        GuardService $guardService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        Security $security,
+        UserRequestHandler $requestHandler
+    ): Response
     {
         $this->headerTitle = 'Profil';
         $this->urlHome     = 'admin_profil';
         $this->modalAttachmentDelete();
 
         return $this->update(
+            $guardService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             ProfilType::class,
             $security->getUser(),
-            $requestHandler,
             [],
             'admin/profil.html.twig'
         );
@@ -201,7 +217,11 @@ class AdminController extends AdminControllerLib
      * @Route("/trash", name="admin_trash")
      * @IgnoreSoftDelete
      */
-    public function trash(TrashService $trashService): Response
+    public function trash(
+        GuardService $guardService,
+        TokenStorageInterface $token,
+        TrashService $trashService
+    ): Response
     {
         $this->headerTitle = 'Trash';
         $this->urlHome     = 'admin_trash';
@@ -209,7 +229,7 @@ class AdminController extends AdminControllerLib
         if (0 == count($all)) {
             $this->flashBagAdd(
                 'danger',
-                'La corbeille est vide'
+                $this->translator->trans('La corbeille est vide')
             );
 
             return $this->redirect($this->generateUrl('admin'));
@@ -218,8 +238,8 @@ class AdminController extends AdminControllerLib
         $globals        = $this->twig->getGlobals();
         $modal          = isset($globals['modal']) ? $globals['modal'] : [];
         $modal['empty'] = true;
-        $token          = $this->csrfTokenManager->getToken('emptyall')->getValue();
-        if ($this->isRouteEnable('api_action_emptyall')) {
+        if ($this->isRouteEnable($guardService, $token, 'api_action_emptyall')) {
+            $token             = $this->csrfTokenManager->getToken('emptyall')->getValue();
             $modal['emptyall'] = true;
             $this->btnInstance->add(
                 'btn-admin-header-emptyall',

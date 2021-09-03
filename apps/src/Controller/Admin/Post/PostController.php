@@ -6,8 +6,12 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Post\PostType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\PostRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
+use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,14 +28,25 @@ class PostController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_post_edit", methods={"GET","POST"})
      */
-    public function edit(Post $post, PostRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guarService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        Post $post,
+        PostRequestHandler $requestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->update(
+            $uploadAnnotReader,
+            $guarService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             PostType::class,
             $post,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_post_index',
@@ -77,12 +92,20 @@ class PostController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_post_new", methods={"GET","POST"})
      */
-    public function new(PostRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        PostRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new Post(),
             PostType::class,
-            $requestHandler,
             ['list' => 'admin_post_index'],
             'admin/post/form.html.twig'
         );

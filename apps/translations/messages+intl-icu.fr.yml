@@ -194,3 +194,36 @@ user.phone.workflow: __user.phone.workflow
 user.telephones: __user.telephones
 user.username: __user.username
 user.workflow: __user.workflow
+'Données exporté': '__Données exporté'
+user.avatar: __user.avatar
+user.adresse.adresse: __user.adresse.adresse
+user.telephone.numero: __user.telephone.numero
+user.telephone.verif: __user.telephone.verif
+user.telephone.country: __user.telephone.country
+user.telephone.type: __user.telephone.type
+user.telephone.principal: __user.telephone.principal
+'Le groupe superadmin n''est pas un groupe qui peut avoir des droits spécifique': '__Le groupe superadmin n''est pas un groupe qui peut avoir des droits spécifique'
+'Problème d''enregistrement du fichier %s': '__Problème d''enregistrement du fichier %s'
+'La corbeille est vide': '__La corbeille est vide'
+'Demande de mot de passe non envoyé': '__Demande de mot de passe non envoyé'
+'Courriel déjà confirmé': '__Courriel déjà confirmé'
+'Courriel confirmé': '__Courriel confirmé'
+'Phone déjà confirmé': '__Phone déjà confirmé'
+'Phone confirmé': '__Phone confirmé'
+'Utilisation déjà activé': '__Utilisation déjà activé'
+'Utilisation activé': '__Utilisation activé'
+'Veuillez accepter l''énoncé': '__Veuillez accepter l''énoncé'
+'Connexion Oauh impossible': '__Connexion Oauh impossible'
+'Probleme d''identification': '__Probleme d''identification'
+'Connexion Oauh %string% dissocié': '__Connexion Oauh %string% dissocié'
+'L''utilisateur fait partie du groupe superadmin, qui n''est pas un groupe qui peut avoir des droits spécifique': '__L''utilisateur fait partie du groupe superadmin, qui n''est pas un groupe qui peut avoir des droits spécifique'
+'Problème d''enregistrement du fichier %file%': '__Problème d''enregistrement du fichier %file%'
+'Compte associé': '__Compte associé'
+'Impossible d''associer le compte': '__Impossible d''associer le compte'
+'Données sauvegardé': '__Données sauvegardé'
+'fichier %file% modifié': '__fichier %file% modifié'
+'Vous n''avez pas les droits nécessaires': '__Vous n''avez pas les droits nécessaires'
+'Mot de passe changé': '__Mot de passe changé'
+'Email principal changé': '__Email principal changé'
+'Demande de nouveau mot de passe envoyé': '__Demande de nouveau mot de passe envoyé'
+'Nouveau compte utilisateur créer': '__Nouveau compte utilisateur créer'

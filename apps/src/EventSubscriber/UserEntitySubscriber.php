@@ -12,6 +12,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserEntitySubscriber implements EventSubscriberInterface
 {
@@ -28,14 +29,18 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     protected RequestStack $requestStack;
 
+    protected TranslatorInterface $translator;
+
     public function __construct(
         RequestStack $requestStack,
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordEncoder,
         UserMailService $userMailService,
-        EmailUserRequestHandler $emailUserRH
+        EmailUserRequestHandler $emailUserRH,
+        TranslatorInterface $translator
     )
     {
+        $this->translator      = $translator;
         $this->requestStack    = $requestStack;
         $this->emailUserRH     = $emailUserRH;
         $this->userMailService = $userMailService;
@@ -108,7 +113,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $this->entityManager->flush();
         $this->flashBagAdd(
             'success',
-            'Mot de passe changé'
+            $this->translator->trans('Mot de passe changé')
         );
     }
 
@@ -139,7 +144,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $this->entityManager->flush();
         $this->flashBagAdd(
             'success',
-            'Email principal changé'
+            $this->translator->trans('Email principal changé')
         );
 
         if ($trouver) {

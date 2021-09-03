@@ -6,8 +6,12 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\GeoCode;
 use Labstag\Form\Admin\GeoCodeType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\GeoCodeRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\GeoCodeRequestHandler;
+use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,12 +28,23 @@ class GeoCodeController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_geocode_edit", methods={"GET","POST"})
      */
-    public function edit(GeoCode $geoCode, GeoCodeRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guarService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        GeoCode $geoCode,
+        GeoCodeRequestHandler $requestHandler
+    ): Response
     {
         return $this->update(
+            $uploadAnnotReader,
+            $guarService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             GeoCodeType::class,
             $geoCode,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_geocode_index',
@@ -71,12 +86,20 @@ class GeoCodeController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_geocode_new", methods={"GET","POST"})
      */
-    public function new(GeoCodeRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        GeoCodeRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new GeoCode(),
             GeoCodeType::class,
-            $requestHandler,
             ['list' => 'admin_geocode_index']
         );
     }

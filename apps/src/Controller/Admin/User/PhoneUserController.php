@@ -6,8 +6,12 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\PhoneUser;
 use Labstag\Form\Admin\User\PhoneUserType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\PhoneUserRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
+use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,12 +32,23 @@ class PhoneUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(PhoneUser $phoneUser, PhoneUserRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guarService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        PhoneUser $phoneUser,
+        PhoneUserRequestHandler $requestHandler
+    ): Response
     {
         return $this->update(
+            $uploadAnnotReader,
+            $guarService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             PhoneUserType::class,
             $phoneUser,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_phoneuser_index',
@@ -78,12 +93,20 @@ class PhoneUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
      */
-    public function new(PhoneUserRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        PhoneUserRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new PhoneUser(),
             PhoneUserType::class,
-            $requestHandler,
             ['list' => 'admin_phoneuser_index']
         );
     }

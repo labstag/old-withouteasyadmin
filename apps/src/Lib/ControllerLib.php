@@ -6,8 +6,11 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Service\DataService;
 use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 abstract class ControllerLib extends AbstractController
@@ -23,17 +26,30 @@ abstract class ControllerLib extends AbstractController
 
     protected RequestStack $requestStack;
 
+    protected TranslatorInterface $translator;
+
+    protected Environment $twig;
+
+    protected Request $request;
+
     public function __construct(
+        Environment $twig,
         RequestStack $requestStack,
         DataService $dataService,
         Breadcrumbs $breadcrumbs,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        TranslatorInterface $translator
     )
     {
+        $this->twig         = $twig;
+        $this->translator   = $translator;
         $this->requestStack = $requestStack;
-        $this->dataService  = $dataService;
-        $this->breadcrumbs  = $breadcrumbs;
-        $this->paginator    = $paginator;
+        /** @var Request $request */
+        $request           = $this->requestStack->getCurrentRequest();
+        $this->request     = $request;
+        $this->dataService = $dataService;
+        $this->breadcrumbs = $breadcrumbs;
+        $this->paginator   = $paginator;
         $this->setSingletons();
     }
 

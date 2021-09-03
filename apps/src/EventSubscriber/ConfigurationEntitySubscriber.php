@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConfigurationEntitySubscriber implements EventSubscriberInterface
 {
@@ -34,15 +35,19 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
 
     protected RequestStack $requestStack;
 
+    protected TranslatorInterface $translator;
+
     public function __construct(
         LoggerInterface $logger,
         ContainerBagInterface $containerBag,
         EntityManagerInterface $entityManager,
         ConfigurationRepository $repository,
         CacheInterface $cache,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        TranslatorInterface $translator
     )
     {
+        $this->translator    = $translator;
         $this->containerBag  = $containerBag;
         $this->cache         = $cache;
         $this->entityManager = $entityManager;
@@ -99,7 +104,10 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         }
 
         $this->entityManager->flush();
-        $this->flashBagAdd('success', 'Données sauvegardé');
+        $this->flashBagAdd(
+            'success',
+            $this->translator->trans('Données sauvegardé')
+        );
     }
 
     protected function getParameter(string $name)
@@ -126,7 +134,13 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
                 $file
             );
             $this->logger->info($msg);
-            $this->flashBagAdd('success', $msg);
+            $this->flashBagAdd(
+                'success',
+                $this->translator->trans(
+                    'fichier %file% modifié',
+                    ['%file%' => $file]
+                )
+            );
         } catch (Exception $exception) {
             $errorMsg = sprintf(
                 'Exception : Erreur %s dans %s L.%s : %s',

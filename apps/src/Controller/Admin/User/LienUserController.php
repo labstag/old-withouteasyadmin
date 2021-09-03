@@ -6,8 +6,12 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\LienUser;
 use Labstag\Form\Admin\User\LienUserType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\LienUserRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\LienUserRequestHandler;
+use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,12 +28,23 @@ class LienUserController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_lienuser_edit", methods={"GET","POST"})
      */
-    public function edit(LienUser $lienUser, LienUserRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guarService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        LienUser $lienUser,
+        LienUserRequestHandler $requestHandler
+    ): Response
     {
         return $this->update(
+            $uploadAnnotReader,
+            $guarService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             LienUserType::class,
             $lienUser,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_lienuser_index',
@@ -73,12 +88,20 @@ class LienUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_lienuser_new", methods={"GET","POST"})
      */
-    public function new(LienUserRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        LienUserRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new LienUser(),
             LienUserType::class,
-            $requestHandler,
             ['list' => 'admin_lienuser_index']
         );
     }

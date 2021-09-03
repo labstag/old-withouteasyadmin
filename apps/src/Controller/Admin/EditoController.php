@@ -6,8 +6,12 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
 use Labstag\Form\Admin\EditoType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\EditoRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\EditoRequestHandler;
+use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,14 +28,25 @@ class EditoController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_edito_edit", methods={"GET","POST"})
      */
-    public function edit(Edito $edito, EditoRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guarService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        Edito $edito,
+        EditoRequestHandler $requestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->update(
+            $uploadAnnotReader,
+            $guarService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             EditoType::class,
             $edito,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_edito_index',
@@ -77,12 +92,20 @@ class EditoController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_edito_new", methods={"GET","POST"})
      */
-    public function new(EditoRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        EditoRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new Edito(),
             EditoType::class,
-            $requestHandler,
             ['list' => 'admin_edito_index'],
             'admin/edito/form.html.twig'
         );

@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GuardRouterSubscriber implements EventSubscriberInterface
 {
@@ -30,14 +31,18 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
     protected RequestStack $requestStack;
 
+    protected TranslatorInterface $translator;
+
     public function __construct(
         RequestStack $requestStack,
         RouterInterface $router,
         TokenStorageInterface $token,
         GroupeRepository $groupeRepository,
-        GuardService $guardService
+        GuardService $guardService,
+        TranslatorInterface $translator
     )
     {
+        $this->translator       = $translator;
         $this->requestStack     = $requestStack;
         $this->groupeRepository = $groupeRepository;
         $this->token            = $token;
@@ -62,7 +67,7 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
         $this->flashBagAdd(
             'warning',
-            "Vous n'avez pas les droits nécessaires"
+            $this->translator->trans("Vous n'avez pas les droits nécessaires")
         );
         throw new AccessDeniedException();
     }

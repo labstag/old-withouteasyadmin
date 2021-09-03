@@ -7,8 +7,12 @@ use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Menu\LinkType;
 use Labstag\Form\Admin\Menu\PrincipalType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\MenuRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\MenuRequestHandler;
+use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,7 +85,8 @@ class MenuController extends AdminControllerLib
      */
     public function move(Menu $menu, Request $request, MenuRepository $repository)
     {
-        $currentUrl = $this->router->generate(
+        $entityManager = $this->getDoctrine()->getManager();
+        $currentUrl    = $this->router->generate(
             'admin_menu_move',
             [
                 'id' => $menu->getId(),
@@ -100,10 +105,10 @@ class MenuController extends AdminControllerLib
                     $position = $row['position'];
                     $entity   = $repository->find($id);
                     $entity->setPosition($position);
-                    $this->entityManager->persist($entity);
+                    $entityManager->persist($entity);
                 }
 
-                $this->entityManager->flush();
+                $entityManager->flush();
             }
         }
 
@@ -133,6 +138,9 @@ class MenuController extends AdminControllerLib
      * @Route("/add", name="admin_menu_add", methods={"GET", "POST"})
      */
     public function add(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
         Request $request,
         MenuRequestHandler $requestHandler,
         MenuRepository $repository
@@ -158,9 +166,12 @@ class MenuController extends AdminControllerLib
         $menu->setParent($parent);
 
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             $menu,
             LinkType::class,
-            $requestHandler,
             ['list' => 'admin_menu_index'],
             'admin/menu/form.html.twig'
         );
@@ -187,12 +198,20 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_menu_new", methods={"GET", "POST"})
      */
-    public function new(MenuRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        MenuRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new Menu(),
             PrincipalType::class,
-            $requestHandler,
             ['list' => 'admin_menu_index'],
             'admin/menu/form.html.twig'
         );
@@ -201,7 +220,14 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/update/{id}", name="admin_menu_update", methods={"GET", "POST"})
      */
-    public function edit(Menu $menu, MenuRequestHandler $requestHandler)
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guarService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        Menu $menu,
+        MenuRequestHandler $requestHandler
+    )
     {
         $this->modalAttachmentDelete();
         $form = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
@@ -209,9 +235,13 @@ class MenuController extends AdminControllerLib
         $menu->setData($data);
 
         return $this->update(
+            $uploadAnnotReader,
+            $guarService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             $form,
             $menu,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_menu_index',

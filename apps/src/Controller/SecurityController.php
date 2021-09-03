@@ -37,35 +37,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTo
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class SecurityController extends ControllerLib
 {
-
-    protected LoggerInterface $logger;
-
-    protected OauthService $oauthService;
-
-    protected UserService $userService;
-
-    protected RequestStack $requestStack;
-
-    public function __construct(
-        RequestStack $requestStack,
-        OauthService $oauthService,
-        LoggerInterface $logger,
-        DataService $dataService,
-        Breadcrumbs $breadcrumbs,
-        PaginatorInterface $paginator,
-        UserService $userService
-    )
-    {
-        $this->userService  = $userService;
-        $this->logger       = $logger;
-        $this->oauthService = $oauthService;
-        parent::__construct($requestStack, $dataService, $breadcrumbs, $paginator);
-    }
-
     /**
      * @Route("/change-password/{id}", name="app_changepassword")
      */
@@ -77,7 +54,10 @@ class SecurityController extends ControllerLib
     {
         $front = $this->generateUrl('front');
         if ('lostpassword' != $user->getState()) {
-            $this->flashBagAdd('danger', 'Demande de mot de passe non envoyé');
+            $this->flashBagAdd(
+                'danger',
+                $this->translator->trans('Demande de mot de passe non envoyé')
+            );
 
             return $this->redirect($front);
         }
@@ -108,13 +88,19 @@ class SecurityController extends ControllerLib
     {
         $front = $this->generateUrl('front');
         if ('averifier' != $email->getState()) {
-            $this->flashBagAdd('danger', 'Courriel déjà confirmé');
+            $this->flashBagAdd(
+                'danger',
+                $this->translator->trans('Courriel déjà confirmé')
+            );
 
             return $this->redirect($front);
         }
 
         $emailRequestHandler->changeWorkflowState($email, ['valider']);
-        $this->flashBagAdd('success', 'Courriel confirmé');
+        $this->flashBagAdd(
+            'success',
+            $this->translator->trans('Courriel confirmé')
+        );
 
         return $this->redirect($front);
     }
@@ -129,13 +115,19 @@ class SecurityController extends ControllerLib
     {
         $front = $this->generateUrl('front');
         if ('averifier' != $phone->getState()) {
-            $this->flashBagAdd('danger', 'Phone déjà confirmé');
+            $this->flashBagAdd(
+                'danger',
+                $this->translator->trans('Phone déjà confirmé')
+            );
 
             return $this->redirect($front);
         }
 
         $emailRequestHandler->changeWorkflowState($phone, ['valider']);
-        $this->flashBagAdd('success', 'Phone confirmé');
+        $this->flashBagAdd(
+            'success',
+            $this->translator->trans('Phone confirmé')
+        );
 
         return $this->redirect($front);
     }
@@ -150,13 +142,19 @@ class SecurityController extends ControllerLib
     {
         $front = $this->generateUrl('front');
         if ('avalider' != $user->getState()) {
-            $this->flashBagAdd('danger', 'Utilisation déjà activé');
+            $this->flashBagAdd(
+                'danger',
+                $this->translator->trans('Utilisation déjà activé')
+            );
 
             return $this->redirect($front);
         }
 
         $userRequestHandler->changeWorkflowState($user, ['validation']);
-        $this->flashBagAdd('success', 'Utilisation activé');
+        $this->flashBagAdd(
+            'success',
+            $this->translator->trans('Utilisation activé')
+        );
 
         return $this->redirect($front);
     }
@@ -180,7 +178,10 @@ class SecurityController extends ControllerLib
                 return $this->redirect($front);
             }
 
-            $this->flashBagAdd('danger', "Veuillez accepter l'énoncé");
+            $this->flashBagAdd(
+                'danger',
+                $this->translator->trans("Veuillez accepter l'énoncé")
+            );
         }
 
         $config = $dataService->getConfig();
@@ -245,14 +246,17 @@ class SecurityController extends ControllerLib
     /**
      * @Route("/lost", name="app_lost")
      */
-    public function lost(Request $request): Response
+    public function lost(
+        Request $request,
+        UserService $userService
+    ): Response
     {
         $this->denyAccessUnlessGranted('IS_ANONYMOUS');
         $form = $this->createForm(LostPasswordType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $post = $request->request->get($form->getName());
-            $this->userService->postLostPassword($post);
+            $userService->postLostPassword($post);
 
             return $this->redirect($this->generateUrl('app_login'));
         }
@@ -272,11 +276,12 @@ class SecurityController extends ControllerLib
      */
     public function oauthConnect(
         Request $request,
-        string $oauthCode
+        string $oauthCode,
+        OauthService $oauthService
     ): RedirectResponse
     {
         /** @var AbstractProvider $provider */
-        $provider = $this->oauthService->setProvider($oauthCode);
+        $provider = $oauthService->setProvider($oauthCode);
         $session  = $request->getSession();
         /** @var string $referer */
         $query = $request->query->all();
@@ -293,7 +298,10 @@ class SecurityController extends ControllerLib
         }
 
         if (!$provider instanceof AbstractProvider) {
-            $this->flashBagAdd('warning', 'Connexion Oauh impossible');
+            $this->flashBagAdd(
+                'warning',
+                $this->translator->trans('Connexion Oauh impossible')
+            );
 
             return $this->redirect($referer);
         }
@@ -316,11 +324,14 @@ class SecurityController extends ControllerLib
      */
     public function oauthConnectCheck(
         Request $request,
-        string $oauthCode
+        string $oauthCode,
+        LoggerInterface $logger,
+        OauthService $oauthService,
+        UserService $userService
     ): RedirectResponse
     {
         /** @var AbstractProvider $provider */
-        $provider    = $this->oauthService->setProvider($oauthCode);
+        $provider    = $oauthService->setProvider($oauthCode);
         $query       = $request->query->all();
         $session     = $request->getSession();
         $referer     = $session->get('referer');
@@ -331,11 +342,14 @@ class SecurityController extends ControllerLib
             $referer = $url;
         }
 
-        if ($this->userService->ifBug($provider, $query, $oauth2state)) {
+        if ($userService->ifBug($provider, $query, $oauth2state)) {
             $session->remove('oauth2state');
             $session->remove('referer');
             $session->remove('link');
-            $this->flashBagAdd('warning', "Probleme d'identification");
+            $this->flashBagAdd(
+                'warning',
+                $this->translator->trans("Probleme d'identification")
+            );
 
             return $this->redirect($referer);
         }
@@ -360,12 +374,15 @@ class SecurityController extends ControllerLib
                 /** @var User $user */
                 $user = $token->getUser();
                 if (!$user instanceof User) {
-                    $this->flashBagAdd('warning', "Probleme d'identification");
+                    $this->flashBagAdd(
+                        'warning',
+                        $this->translator->trans("Probleme d'identification")
+                    );
 
                     return $this->redirect($referer);
                 }
 
-                $this->userService->addOauthToUser(
+                $userService->addOauthToUser(
                     $oauthCode,
                     $user,
                     $userOauth
@@ -377,8 +394,11 @@ class SecurityController extends ControllerLib
 
             return $this->redirect($referer);
         } catch (Exception $exception) {
-            $this->setErrorLogger($exception, $this->logger);
-            $this->flashBagAdd('warning', "Probleme d'identification");
+            $this->setErrorLogger($exception, $logger);
+            $this->flashBagAdd(
+                'warning',
+                $this->translator->trans("Probleme d'identification")
+            );
             $session->remove('referer');
             $session->remove('link');
 
@@ -418,7 +438,10 @@ class SecurityController extends ControllerLib
             $manager->flush();
             $this->flashBagAdd(
                 'success',
-                'Connexion Oauh '.$oauthCode.' dissocié'
+                $this->translator->trans(
+                    'Connexion Oauh %string% dissocié',
+                    ['%string%' => $oauthCode]
+                )
             );
         }
 

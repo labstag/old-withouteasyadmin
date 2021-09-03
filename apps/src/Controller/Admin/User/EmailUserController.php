@@ -6,8 +6,12 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\EmailUser;
 use Labstag\Form\Admin\User\EmailUserType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\EmailUserRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
+use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,12 +32,23 @@ class EmailUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(EmailUser $emailUser, EmailUserRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guarService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        EmailUser $emailUser,
+        EmailUserRequestHandler $requestHandler
+    ): Response
     {
         return $this->update(
+            $uploadAnnotReader,
+            $guarService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             EmailUserType::class,
             $emailUser,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_emailuser_index',
@@ -78,12 +93,20 @@ class EmailUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_emailuser_new", methods={"GET","POST"})
      */
-    public function new(EmailUserRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        EmailUserRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new EmailUser(),
             EmailUserType::class,
-            $requestHandler,
             ['list' => 'admin_emailuser_index']
         );
     }

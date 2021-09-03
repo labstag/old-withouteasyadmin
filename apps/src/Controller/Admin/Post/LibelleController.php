@@ -6,8 +6,12 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Libelle;
 use Labstag\Form\Admin\Post\LibelleType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\LibelleRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\LibelleRequestHandler;
+use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,14 +28,25 @@ class LibelleController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_postlibelle_edit", methods={"GET","POST"})
      */
-    public function edit(Libelle $libelle, LibelleRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guarService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        Libelle $libelle,
+        LibelleRequestHandler $requestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->update(
+            $uploadAnnotReader,
+            $guarService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             LibelleType::class,
             $libelle,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_postlibelle_index',
@@ -76,12 +91,20 @@ class LibelleController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_postlibelle_new", methods={"GET","POST"})
      */
-    public function new(LibelleRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        LibelleRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new Libelle(),
             LibelleType::class,
-            $requestHandler,
             ['list' => 'admin_postlibelle_index']
         );
     }

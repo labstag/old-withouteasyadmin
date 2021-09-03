@@ -6,8 +6,12 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Template;
 use Labstag\Form\Admin\TemplateType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\TemplateRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
+use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,12 +28,23 @@ class TemplateController extends AdminControllerLib
     /**
      * @Route("/{id}/edit", name="admin_template_edit", methods={"GET","POST"})
      */
-    public function edit(Template $template, TemplateRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guarService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        Template $template,
+        TemplateRequestHandler $requestHandler
+    ): Response
     {
         return $this->update(
+            $uploadAnnotReader,
+            $guarService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             TemplateType::class,
             $template,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_template_index',
@@ -73,12 +88,20 @@ class TemplateController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_template_new", methods={"GET","POST"})
      */
-    public function new(TemplateRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        TemplateRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new Template(),
             TemplateType::class,
-            $requestHandler,
             ['list' => 'admin_template_index']
         );
     }

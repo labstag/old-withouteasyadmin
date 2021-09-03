@@ -24,13 +24,12 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 abstract class AdminControllerLib extends ControllerLib
 {
-
-    protected AttachmentRepository $attachmentRepository;
 
     protected AttachmentRequestHandler $attachmentRH;
 
@@ -38,59 +37,44 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
-    protected EntityManagerInterface $entityManager;
-
     protected FlashBagInterface $flashbag;
 
-    protected GuardService $guardService;
-
     protected string $headerTitle = '';
-
-    protected Request $request;
-
-    protected RequestStack $requestStack;
 
     protected RouterInterface $router;
 
     protected TokenStorageInterface $token;
 
-    protected Environment $twig;
-
-    protected UploadAnnotationReader $uploadAnnotReader;
-
     protected string $urlHome = '';
 
+    protected GuardService $guardService;
+
     public function __construct(
-        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guardService,
         PaginatorInterface $paginator,
         RequestStack $requestStack,
         DataService $dataService,
-        EntityManagerInterface $entityManager,
         Breadcrumbs $breadcrumbs,
         Environment $twig,
         TokenStorageInterface $token,
         CsrfTokenManagerInterface $csrfTokenManager,
-        AttachmentRequestHandler $attachmentRH,
-        AttachmentRepository $attachmentRepository,
-        GuardService $guardService,
-        RouterInterface $router
+        RouterInterface $router,
+        TranslatorInterface $translator
     )
     {
-        $this->attachmentRH         = $attachmentRH;
-        $this->attachmentRepository = $attachmentRepository;
-        $this->entityManager        = $entityManager;
-        $this->requestStack         = $requestStack;
-        /** @var Request $request */
-        $request                 = $this->requestStack->getCurrentRequest();
-        $this->request           = $request;
-        $this->uploadAnnotReader = $uploadAnnotReader;
-        $this->guardService      = $guardService;
-        $this->twig              = $twig;
-        $this->router            = $router;
-        $this->token             = $token;
-        $this->csrfTokenManager  = $csrfTokenManager;
+        $this->guardService     = $guardService;
+        $this->router           = $router;
+        $this->token            = $token;
+        $this->csrfTokenManager = $csrfTokenManager;
+        parent::__construct(
+            $twig,
+            $requestStack,
+            $dataService,
+            $breadcrumbs,
+            $paginator,
+            $translator
+        );
         $this->setSingletonsAdmin();
-        parent::__construct($requestStack, $dataService, $breadcrumbs, $paginator);
     }
 
     public function addBreadcrumbs(array $breadcrumbs): void
@@ -99,16 +83,19 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     public function create(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        RequestHandlerLib $handler,
         object $entity,
         string $formType,
-        RequestHandlerLib $handler,
         array $url = [],
         string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
         $routeCurrent = $this->request->get('_route');
         $breadcrumb   = [
-            'New' => $this->router->generate(
+            'New' => $this->generateUrl(
                 $routeCurrent
             ),
         ];
@@ -124,11 +111,11 @@ abstract class AdminControllerLib extends ControllerLib
         $this->btnInstance->addBtnSave($form->getName(), 'Ajouter');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->upload($entity);
+            $this->upload($uploadAnnotReader, $attachmentRepository, $attachmentRH, $entity);
             $handler->handle($oldEntity, $entity);
             if (isset($url['list'])) {
                 return new RedirectResponse(
-                    $this->router->generate($url['list'])
+                    $this->generateUrl($url['list'])
                 );
             }
         }
@@ -235,6 +222,7 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     public function renderShowOrPreview(
+        GuardService $guardService,
         object $entity,
         string $twigShow,
         array $url = []
@@ -244,7 +232,7 @@ abstract class AdminControllerLib extends ControllerLib
         $routeType    = (0 != substr_count($routeCurrent, 'preview')) ? 'preview' : 'show';
         $this->showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity);
         $this->showOrPreviewaddBtnList($url, $routeType);
-        $this->showOrPreviewaddBtnGuard($url, $routeType, $entity);
+        $this->showOrPreviewaddBtnGuard($guardService, $url, $routeType, $entity);
         $this->showOrPreviewaddBtnTrash($url, $routeType);
         $this->showOrPreviewaddBtnEdit($url, $routeType, $entity);
         $this->showOrPreviewaddBtnRestore($url, $routeType, $entity);
@@ -285,9 +273,13 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     public function update(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guardService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        RequestHandlerLib $handler,
         string $formType,
         object $entity,
-        RequestHandlerLib $handler,
         array $url = [],
         string $twig = 'admin/crud/form.html.twig'
     ): Response
@@ -295,7 +287,7 @@ abstract class AdminControllerLib extends ControllerLib
         $this->denyAccessUnlessGranted('edit', $entity);
         $routeCurrent = $this->request->get('_route');
         $breadcrumb   = [
-            'edit' => $this->router->generate(
+            'edit' => $this->generateUrl(
                 $routeCurrent,
                 [
                     'id' => $entity->getId(),
@@ -303,21 +295,21 @@ abstract class AdminControllerLib extends ControllerLib
             ),
         ];
         $this->addBreadcrumbs($breadcrumb);
-        $this->setBtnViewUpdate($url, $entity);
+        $this->setBtnViewUpdate($guardService, $url, $entity);
         $oldEntity = clone $entity;
         $form      = $this->createForm($formType, $entity);
         $this->btnInstance->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->upload($entity);
+            $this->upload($uploadAnnotReader, $attachmentRepository, $attachmentRH, $entity);
             $handler->handle($oldEntity, $entity);
             $this->flashBagAdd(
                 'success',
-                'Données sauvegardé'
+                $this->translator->trans('Données sauvegardé')
             );
             if (isset($url['list'])) {
                 return new RedirectResponse(
-                    $this->router->generate($url['list'])
+                    $this->generateUrl($url['list'])
                 );
             }
         }
@@ -340,24 +332,26 @@ abstract class AdminControllerLib extends ControllerLib
         return strtolower($class);
     }
 
-    protected function enableBtnGuard($entity): bool
+    protected function enableBtnGuard(GuardService $guardService, $entity): bool
     {
         if ($entity instanceof User) {
-            $routes = $this->guardService->getGuardRoutesForUser($entity);
+            $routes = $guardService->getGuardRoutesForUser($entity);
 
             return (0 != count($routes)) ? true : false;
         }
 
-        $routes = $this->guardService->getGuardRoutesForGroupe($entity);
+        $routes = $guardService->getGuardRoutesForGroupe($entity);
 
         return (0 != count($routes)) ? true : false;
     }
 
-    protected function isRouteEnable(string $route)
+    protected function isRouteEnable(
+        GuardService $guardService,
+        TokenStorageInterface $token,
+        string $route
+    )
     {
-        $token = $this->token->getToken();
-
-        return $this->guardService->guardRoute($route, $token);
+        return $guardService->guardRoute($route, $token->getToken());
     }
 
     protected function listOrTrashRouteTrash(
@@ -375,7 +369,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
 
         $breadcrumb = [
-            'Trash' => $this->router->generate(
+            'Trash' => $this->generateUrl(
                 'admin_adresseuser_trash'
             ),
         ];
@@ -447,7 +441,12 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function setAttachment($accessor, $entity, $annotation): Attachment
+    protected function setAttachment(
+        AttachmentRepository $attachmentRepository,
+        $accessor,
+        $entity,
+        $annotation
+    ): Attachment
     {
         $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
         if (is_null($attachmentField)) {
@@ -456,7 +455,7 @@ abstract class AdminControllerLib extends ControllerLib
             return $attachment;
         }
 
-        $attachment = $this->attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
+        $attachment = $attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
         if (!$attachment instanceof Attachment) {
             $attachment = new Attachment();
         }
@@ -504,9 +503,9 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function setBtnGuard(array $url, object $entity): void
+    protected function setBtnGuard(GuardService $guardService, array $url, object $entity): void
     {
-        if (!isset($url['guard']) || !$this->enableBtnGuard($entity)) {
+        if (!isset($url['guard']) || !$this->enableBtnGuard($guardService, $entity)) {
             return;
         }
 
@@ -546,11 +545,15 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function setBtnViewUpdate(array $url, object $entity): void
+    protected function setBtnViewUpdate(
+        GuardService $guardService,
+        array $url,
+        object $entity
+    ): void
     {
         $this->setBtnList($url);
         $this->setBtnShow($url, $entity);
-        $this->setBtnGuard($url, $entity);
+        $this->setBtnGuard($guardService, $url, $entity);
         $this->setBtnDelete($url, $entity);
     }
 
@@ -570,12 +573,18 @@ abstract class AdminControllerLib extends ControllerLib
         $this->btnInstance = $btnInstance;
     }
 
-    protected function setTrashIcon($methods, $repository, $url, $actions)
+    protected function setTrashIcon(
+        $methods,
+        $repository,
+        $url,
+        $actions
+    )
     {
-        $methodTrash = $methods['trash'];
-        $this->entityManager->getFilters()->disable('softdeleteable');
+        $entityManager = $this->getDoctrine()->getManager();
+        $methodTrash   = $methods['trash'];
+        $entityManager->getFilters()->disable('softdeleteable');
         $total = $repository->$methodTrash();
-        $this->entityManager->getFilters()->enable('softdeleteable');
+        $entityManager->getFilters()->enable('softdeleteable');
         if (0 != count($total)) {
             $this->btnInstance->addBtnTrash(
                 $url['trash']
@@ -594,7 +603,7 @@ abstract class AdminControllerLib extends ControllerLib
     {
         if ('preview' == $routeType && isset($url['trash'])) {
             $breadcrumb = [
-                'Trash' => $this->router->generate(
+                'Trash' => $this->generateUrl(
                     $url['trash']
                 ),
             ];
@@ -602,7 +611,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
 
         $breadcrumb = [
-            $routeType => $this->router->generate(
+            $routeType => $this->generateUrl(
                 $routeCurrent,
                 [
                     'id' => $entity->getId(),
@@ -647,9 +656,14 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function showOrPreviewaddBtnGuard($url, $routeType, $entity)
+    protected function showOrPreviewaddBtnGuard(
+        GuardService $guardService,
+        $url,
+        $routeType,
+        $entity
+    )
     {
-        if (!(isset($url['guard']) && 'show' == $routeType) || !$this->enableBtnGuard($entity)) {
+        if (!(isset($url['guard']) && 'show' == $routeType) || !$this->enableBtnGuard($guardService, $entity)) {
             return;
         }
 
@@ -704,13 +718,18 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function upload($entity)
+    protected function upload(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        $entity
+    )
     {
-        if (!$this->uploadAnnotReader->isUploadable($entity)) {
+        if (!$uploadAnnotReader->isUploadable($entity)) {
             return;
         }
 
-        $annotations = $this->uploadAnnotReader->getUploadableFields($entity);
+        $annotations = $uploadAnnotReader->getUploadableFields($entity);
         foreach ($annotations as $property => $annotation) {
             $accessor = PropertyAccess::createPropertyAccessor();
             $file     = $accessor->getValue($entity, $property);
@@ -718,7 +737,12 @@ abstract class AdminControllerLib extends ControllerLib
                 continue;
             }
 
-            $attachment = $this->setAttachment($accessor, $entity, $annotation);
+            $attachment = $this->setAttachment(
+                $attachmentRepository,
+                $accessor,
+                $entity,
+                $annotation
+            );
             $old        = clone $attachment;
 
             $filename = $file->getClientOriginalName();
@@ -743,7 +767,7 @@ abstract class AdminControllerLib extends ControllerLib
                     $file
                 )
             );
-            $this->attachmentRH->handle($old, $attachment);
+            $attachmentRH->handle($old, $attachment);
             $accessor->setValue($entity, $annotation->getFilename(), $attachment);
         }
     }

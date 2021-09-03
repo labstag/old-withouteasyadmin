@@ -9,28 +9,12 @@ use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 abstract class FrontControllerLib extends ControllerLib
 {
-
-    protected Environment $twig;
-
-    protected RequestStack $requestStack;
-
-    public function __construct(
-        RequestStack $requestStack,
-        DataService $dataService,
-        Breadcrumbs $breadcrumbs,
-        Environment $twig,
-        PaginatorInterface $paginator
-    )
-    {
-        $this->twig = $twig;
-        parent::__construct($requestStack, $dataService, $breadcrumbs, $paginator);
-    }
-
     protected function setMetaOpenGraph(
         string $title,
         string $keywords,

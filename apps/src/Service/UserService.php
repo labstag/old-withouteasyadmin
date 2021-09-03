@@ -13,6 +13,7 @@ use League\OAuth2\Client\Provider\AbstractProvider;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserService
 {
@@ -31,15 +32,19 @@ class UserService
 
     protected UserRequestHandler $userRH;
 
+    protected TranslatorInterface $translator;
+
     public function __construct(
         RequestStack $requestStack,
         EntityManagerInterface $entityManager,
         UserRepository $repository,
         OauthService $oauthService,
         UserRequestHandler $userRH,
-        OauthConnectUserRequestHandler $oauthConnectUserRH
+        OauthConnectUserRequestHandler $oauthConnectUserRH,
+        TranslatorInterface $translator
     )
     {
+        $this->translator         = $translator;
         $this->userRH             = $userRH;
         $this->oauthService       = $oauthService;
         $this->requestStack       = $requestStack;
@@ -102,14 +107,17 @@ class UserService
             $old = clone $oauthConnect;
             $oauthConnect->setData($data);
             $this->oauthConnectUserRH->handle($old, $oauthConnect);
-            $this->flashBagAdd('success', 'Compte associé');
+            $this->flashBagAdd(
+                'success',
+                $this->translator->trans('Compte associé')
+            );
 
             return;
         }
 
         $this->flashBagAdd(
             'warning',
-            "Impossible d'associer le compte"
+            $this->translator->trans("Impossible d'associer le compte")
         );
     }
 

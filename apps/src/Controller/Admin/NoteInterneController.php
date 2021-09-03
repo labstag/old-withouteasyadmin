@@ -6,8 +6,12 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\NoteInterne;
 use Labstag\Form\Admin\NoteInterneType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\NoteInterneRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\NoteInterneRequestHandler;
+use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,14 +32,25 @@ class NoteInterneController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(NoteInterne $noteInterne, NoteInterneRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guarService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        NoteInterne $noteInterne,
+        NoteInterneRequestHandler $requestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->update(
+            $uploadAnnotReader,
+            $guarService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             NoteInterneType::class,
             $noteInterne,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_noteinterne_index',
@@ -81,12 +96,20 @@ class NoteInterneController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_noteinterne_new", methods={"GET","POST"})
      */
-    public function new(NoteInterneRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        NoteInterneRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new NoteInterne(),
             NoteInterneType::class,
-            $requestHandler,
             ['list' => 'admin_noteinterne_index'],
             'admin/note_interne/form.html.twig'
         );
