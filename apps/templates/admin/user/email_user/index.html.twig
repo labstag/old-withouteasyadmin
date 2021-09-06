@@ -3,20 +3,20 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="{{ "table.admin.action"|trans|e('html_attr') }}"
+        data-action="{{ 'table.admin.action'|trans|e('html_attr') }}"
         data-multiple
-        data-multipleall="{{ "table.admin.multipleall"|trans|e('html_attr') }}"
-        data-multipleelement="{{ "table.admin.mutipleelement"|trans|e('html_attr') }}"
-        data-empty="{{ "table.admin.empty"|trans|e('html_attr') }}"
+        data-multipleall="{{ 'table.admin.multipleall'|trans|e('html_attr') }}"
+        data-multipleelement="{{ 'table.admin.mutipleelement'|trans|e('html_attr') }}"
+        data-empty="{{ 'table.admin.empty'|trans|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>{{ "user.email.adresse"|trans }}</th>
-                <th>{{ "user.email.principal"|trans }}</th>
-                <th>{{ "user.email.user"|trans }}</th>
-                <th>{{ "admin.workflow.state"|trans }}</th>
-                <th>{{ "user.email.workflow"|trans }}</th>
+                <th>{{ 'user.email.adresse'|trans }}</th>
+                <th>{{ 'user.email.principal'|trans }}</th>
+                <th>{{ 'user.email.user'|trans }}</th>
+                <th>{{ 'admin.workflow.state'|trans }}</th>
+                <th>{{ 'user.email.workflow'|trans }}</th>
                 <th></th>
             </tr>
         </thead>

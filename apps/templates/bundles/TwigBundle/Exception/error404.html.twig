@@ -4,7 +4,7 @@
     {% set title = config.meta.title|trim %}
 {% endif %}
 {% block content_title %}{{ title }}{% endblock %}
-{% block box_title %}{{ "error.page.404.title"|trans }}{% endblock %}
+{% block box_title %}{{ 'error.page.404.title'|trans }}{% endblock %}
 {% block message %}
-	{{ "error.page.404.message"|trans }}
+	{{ 'error.page.404.message'|trans }}
 {% endblock %}

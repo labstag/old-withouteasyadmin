@@ -50,7 +50,7 @@
         <span class="{% if form is not rootform %}invalid-feedback{% else %}alert alert-danger{% endif %} d-block">
             {% for error in errors %}
                 {# <span class="d-block"> #}
-                    <span class="form-error">{{ 'Error'|trans({}, 'validators') }}</span> <span class="form-error-message">{{ error.message }}</span>
+                    <span class="form-error">{{ 'form.icon.error'|trans({}, 'validators') }}</span> <span class="form-error-message">{{ error.message }}</span>
                 {# </span> #}
             {% endfor %}
         </span>
@@ -362,7 +362,7 @@
             {% endif %}
         {% endfor %}
         {% if required == true %}
-            <div class="require-form-info">{{ "form.requireinfo"|trans({"%span%": "<span>*</span>"}) }}</div>
+            <div class="require-form-info">{{ 'form.requireinfo'|trans({"%span%": "<span>*</span>"}) }}</div>
         {% endif %}
     </form>
 {% endblock form_end %}

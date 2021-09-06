@@ -3,7 +3,7 @@
         {% for child in children %}
         <li>
             {% if child.separateur %}
-                {{ "admin.menu.divider"|trans }} {{ _self.link(child, position) }}
+                {{ 'admin.menu.divider'|trans }} {{ _self.link(child, position) }}
             {% else %}
                 {{ child.libelle }} {{ _self.link(child, position) }}
                 {% if 0 != child.children|length %}

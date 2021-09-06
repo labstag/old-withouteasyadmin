@@ -4,16 +4,16 @@
 {% set state4 = guard_route('api_guard_routesetgroup') %}
 {% set state = state1 and state2 and state3 and state4 %}
 {% if state1 == false %}
-    {{ "admin.guard.lost"|trans }}
+    {{ 'admin.guard.lost'|trans }}
 {% else %}
     <table is="guard-route" data-url="{{ path('api_guard_route') }}" data-refresh=0>
         <thead>
             <tr>
                 <th rowspan=2>
-                    {{ "admin.guard.route"|trans }}
+                    {{ 'admin.guard.route'|trans }}
                 </th>
                 <th rowspan=2>
-                    {{ "admin.guard.actions"|trans }}
+                    {{ 'admin.guard.actions'|trans }}
                 </th>
                 {% for group in groups %}
                     <th>
@@ -72,7 +72,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="{{ groups|length+2 }}" class="text-center">{{ "admin.norecord"|trans }}</td>
+                <td colspan="{{ groups|length+2 }}" class="text-center">{{ 'admin.norecord'|trans }}</td>
             </tr>
         {% endfor %}
         </tbody>

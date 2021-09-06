@@ -3,21 +3,21 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="{{ "table.admin.action"|trans|e('html_attr') }}"
+        data-action="{{ 'table.admin.action'|trans|e('html_attr') }}"
         data-multiple
-        data-multipleall="{{ "table.admin.multipleall"|trans|e('html_attr') }}"
-        data-multipleelement="{{ "table.admin.mutipleelement"|trans|e('html_attr') }}"
-        data-empty="{{ "table.admin.empty"|trans|e('html_attr') }}"
+        data-multipleall="{{ 'table.admin.multipleall'|trans|e('html_attr') }}"
+        data-multipleelement="{{ 'table.admin.mutipleelement'|trans|e('html_attr') }}"
+        data-empty="{{ 'table.admin.empty'|trans|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>{{ "menu.libelle"|trans }}</th>
-                <th>{{ "menu.icon"|trans }}</th>
-                <th>{{ "menu.position"|trans }}</th>
-                <th>{{ "menu.data"|trans }}</th>
-                <th>{{ "menu.separateur"|trans }}</th>
-                <th>{{ "menu.clef"|trans }}</th>
+                <th>{{ 'menu.libelle'|trans }}</th>
+                <th>{{ 'menu.icon'|trans }}</th>
+                <th>{{ 'menu.position'|trans }}</th>
+                <th>{{ 'menu.data'|trans }}</th>
+                <th>{{ 'menu.separateur'|trans }}</th>
+                <th>{{ 'menu.clef'|trans }}</th>
                 <th></th>
             </tr>
         </thead>

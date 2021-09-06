@@ -2,17 +2,17 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="{{ "table.admin.action"|trans|e('html_attr') }}"
+        data-action="{{ 'table.admin.action'|trans|e('html_attr') }}"
         data-multiple
-        data-multipleall="{{ "table.admin.multipleall"|trans|e('html_attr') }}"
-        data-multipleelement="{{ "table.admin.mutipleelement"|trans|e('html_attr') }}"
-        data-empty="{{ "table.admin.empty"|trans|e('html_attr') }}"
+        data-multipleall="{{ 'table.admin.multipleall'|trans|e('html_attr') }}"
+        data-multipleelement="{{ 'table.admin.mutipleelement'|trans|e('html_attr') }}"
+        data-empty="{{ 'table.admin.empty'|trans|e('html_attr') }}"
         data-count={{ trash|length }}
     >
         <thead>
             <tr>
-                <th>{{ "trash.entite"|trans }}</th>
-                <th>{{ "trash.count"|trans }}</th>
+                <th>{{ 'trash.entite'|trans }}</th>
+                <th>{{ 'trash.count'|trans }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -30,7 +30,7 @@
                     {% if state == true %}
                     <link-trash
                         href="{{ path(data.properties.url) }}"
-                        title="{{ "trash.go"|trans }}"
+                        title="{{ 'trash.go'|trans }}"
                     ></link-trash>
                     {% endif %}
                     {% set state = guard_route('api_action_empty') %}
@@ -39,7 +39,7 @@
                             data-redirect="{{ path(app.request.attributes.get('_route')) }}"
                             data-url="{{ path('api_action_empty', {'entity': data.name}) }}"
                             data-token="{{ data.token }}"
-                            data-title="{{ "trash.empty"|trans|e('html_attr') }}"
+                            data-title="{{ 'trash.empty'|trans|e('html_attr') }}"
                         ></link-empty>
                     {% endif %}
                 </td>

@@ -3,19 +3,19 @@
 {% set state3 = guard_route('api_guard_workflowsetuser') %}
 {% set state = state1 and state2 and state3 %}
 {% if state1 == false %}
-    {{ "admin.guard.lost"|trans }}
+    {{ 'admin.guard.lost'|trans }}
 {% else %}
     <table is="guard-workflow" data-url="{{ path('api_guard_workflow', {'user' : user.id}) }}" data-refresh=0>
         <thead>
             <tr>
                 <th rowspan=2>
-                    {{ "admin.guard.entite"|trans }}
+                    {{ 'admin.guard.entite'|trans }}
                 </th>
                 <th rowspan=2>
-                    {{ "admin.guard.transition"|trans }}
+                    {{ 'admin.guard.transition'|trans }}
                 </th>
                 <th rowspan=2>
-                    {{ "admin.guard.groupe"|trans({"%name%": user.refgroupe.name}) }}
+                    {{ 'admin.guard.groupe'|trans({"%name%": user.refgroupe.name}) }}
                 </th>
                 <th>
                     {{ user.username }}
@@ -60,7 +60,7 @@
             </tr>
         {% else %}
                 <tr>
-                    <td colspan="4" class="text-center">{{ "admin.norecord"|trans }}</td>
+                    <td colspan="4" class="text-center">{{ 'admin.norecord'|trans }}</td>
                 </tr>
         {% endfor %}
         </tbody>

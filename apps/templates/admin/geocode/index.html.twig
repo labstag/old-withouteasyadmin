@@ -3,28 +3,28 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="{{ "table.admin.action"|trans|e('html_attr') }}"
+        data-action="{{ 'table.admin.action'|trans|e('html_attr') }}"
         data-multiple
-        data-multipleall="{{ "table.admin.multipleall"|trans|e('html_attr') }}"
-        data-multipleelement="{{ "table.admin.mutipleelement"|trans|e('html_attr') }}"
-        data-empty="{{ "table.admin.empty"|trans|e('html_attr') }}"
+        data-multipleall="{{ 'table.admin.multipleall'|trans|e('html_attr') }}"
+        data-multipleelement="{{ 'table.admin.mutipleelement'|trans|e('html_attr') }}"
+        data-empty="{{ 'table.admin.empty'|trans|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>{{ "geocode.countrycode"|trans }}</th>
-                <th>{{ "geocode.postalcode"|trans }}</th>
-                <th>{{ "geocode.placename"|trans }}</th>
-                <th>{{ "geocode.statename"|trans }}</th>
-                <th>{{ "geocode.statecode"|trans }}</th>
-                <th>{{ "geocode.provincename"|trans }}</th>
-                <th>{{ "geocode.provincecode"|trans }}</th>
-                <th>{{ "geocode.communityname"|trans }}</th>
-                <th>{{ "geocode.communitycode"|trans }}</th>
-                <th>{{ "geocode.latitude"|trans }}</th>
-                <th>{{ "geocode.longitude"|trans }}</th>
-                <th>{{ "geocode.accuracy"|trans }}</th>
-                <th>{{ "geocode.actions"|trans }}</th>
+                <th>{{ 'geocode.countrycode'|trans }}</th>
+                <th>{{ 'geocode.postalcode'|trans }}</th>
+                <th>{{ 'geocode.placename'|trans }}</th>
+                <th>{{ 'geocode.statename'|trans }}</th>
+                <th>{{ 'geocode.statecode'|trans }}</th>
+                <th>{{ 'geocode.provincename'|trans }}</th>
+                <th>{{ 'geocode.provincecode'|trans }}</th>
+                <th>{{ 'geocode.communityname'|trans }}</th>
+                <th>{{ 'geocode.communitycode'|trans }}</th>
+                <th>{{ 'geocode.latitude'|trans }}</th>
+                <th>{{ 'geocode.longitude'|trans }}</th>
+                <th>{{ 'geocode.accuracy'|trans }}</th>
+                <th>{{ 'geocode.actions'|trans }}</th>
             </tr>
         </thead>
         <tbody>

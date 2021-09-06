@@ -43,7 +43,7 @@
     {% if state1 == true and state2 == true %}
         <link-edit
             href="{{ path(url, {'id': entity.id}) }}"
-            title="{{ "admin.link.edit"|trans|e('html_attr') }}"
+            title="{{ 'admin.link.edit'|trans|e('html_attr') }}"
         ></link-edit>
     {% endif %}
 {% endmacro %}
@@ -54,7 +54,7 @@
         <link-delete
             data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
             data-token="{{ csrf_token('delete' ~ entity.id) }}"
-            data-title="{{ "admin.link.delete"|trans|e('html_attr') }}"
+            data-title="{{ 'admin.link.delete'|trans|e('html_attr') }}"
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
@@ -68,7 +68,7 @@
         <link-destroy
             data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
             data-token="{{ csrf_token('destroy' ~ entity.id) }}"
-            data-title="{{ "admin.link.destroy"|trans|e('html_attr') }}"
+            data-title="{{ 'admin.link.destroy'|trans|e('html_attr') }}"
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
@@ -82,7 +82,7 @@
         <link-restore
             data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
             data-token="{{ csrf_token('restore' ~ entity.id) }}"
-            data-title="{{ "admin.link.restore"|trans|e('html_attr') }}"
+            data-title="{{ 'admin.link.restore'|trans|e('html_attr') }}"
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}

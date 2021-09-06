@@ -3,26 +3,26 @@
     <table>
         <tbody>
             <tr>
-                <th>{{ "user.adresse.rue"|trans }}</th>
+                <th>{{ 'user.adresse.rue'|trans }}</th>
                 <td>{{ entity.rue }}</td>
             </tr>
             <tr>
-                <th>{{ "user.adresse.country"|trans }}</th>
+                <th>{{ 'user.adresse.country'|trans }}</th>
                 <td>
                     <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
                     {{ entity.country|country_name('fr') }}
                 </td>
             </tr>
             <tr>
-                <th>{{ "user.adresse.zipcode"|trans }}</th>
+                <th>{{ 'user.adresse.zipcode'|trans }}</th>
                 <td>{{ entity.zipcode }}</td>
             </tr>
             <tr>
-                <th>{{ "user.adresse.ville"|trans }}</th>
+                <th>{{ 'user.adresse.ville'|trans }}</th>
                 <td>{{ entity.ville }}</td>
             </tr>
             <tr>
-                <th>{{ "user.adresse.gps"|trans }}</th>
+                <th>{{ 'user.adresse.gps'|trans }}</th>
                 <td>
                     <span class="gps-icon">
                         {{ entity.gps }}
@@ -30,15 +30,15 @@
                 </td>
             </tr>
             <tr>
-                <th>{{ "user.adresse.type"|trans }}</th>
+                <th>{{ 'user.adresse.type'|trans }}</th>
                 <td>{{ entity.type }}</td>
             </tr>
             <tr>
-                <th>{{ "user.adresse.pmr"|trans }}</th>
+                <th>{{ 'user.adresse.pmr'|trans }}</th>
                 <td>{{ entity.pmr ? 'admin.state.yes'|trans : 'admin.state.no'|trans }}</td>
             </tr>
             <tr>
-                <th>{{ "user.adresse.user"|trans }}</th>
+                <th>{{ 'user.adresse.user'|trans }}</th>
                 <td>
                     {% if entity.refuser.deletedAt != '' %}
                         {% set url = 'admin_user_preview' %}
