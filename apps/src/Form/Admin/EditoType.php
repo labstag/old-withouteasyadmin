@@ -27,16 +27,16 @@ class EditoType extends AbstractTypeLib
             'title',
             TextType::class,
             [
-                'label' => $this->translator->trans('edito.title.label', [], 'form'),
-                'help'  => $this->translator->trans('edito.title.help', [], 'form'),
+                'label' => $this->translator->trans('edito.title.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('edito.title.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'published',
             DateTimeType::class,
             [
-                'label'        => $this->translator->trans('edito.published.label', [], 'form'),
-                'help'         => $this->translator->trans('edito.published.help', [], 'form'),
+                'label'        => $this->translator->trans('edito.published.label', [], 'admin.form'),
+                'help'         => $this->translator->trans('edito.published.help', [], 'admin.form'),
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
@@ -46,32 +46,32 @@ class EditoType extends AbstractTypeLib
             'content',
             CKEditorType::class,
             [
-                'label' => $this->translator->trans('edito.content.label', [], 'form'),
-                'help'  => $this->translator->trans('edito.content.help', [], 'form'),
+                'label' => $this->translator->trans('edito.content.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('edito.content.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'metaDescription',
             TextType::class,
             [
-                'label' => $this->translator->trans('edito.metaDescription.label', [], 'form'),
-                'help'  => $this->translator->trans('edito.metaDescription.help', [], 'form'),
+                'label' => $this->translator->trans('edito.metaDescription.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('edito.metaDescription.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'metaKeywords',
             TextType::class,
             [
-                'label' => $this->translator->trans('edito.metaKeywords.label', [], 'form'),
-                'help'  => $this->translator->trans('edito.metaKeywords.help', [], 'form'),
+                'label' => $this->translator->trans('edito.metaKeywords.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('edito.metaKeywords.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'file',
             FileType::class,
             [
-                'label'    => $this->translator->trans('edito.file.label', [], 'form'),
-                'help'     => $this->translator->trans('edito.file.help', [], 'form'),
+                'label'    => $this->translator->trans('edito.file.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('edito.file.help', [], 'admin.form'),
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]
@@ -80,8 +80,8 @@ class EditoType extends AbstractTypeLib
             'refuser',
             SearchableType::class,
             [
-                'label'    => $this->translator->trans('edito.refuser.label', [], 'form'),
-                'help'     => $this->translator->trans('edito.refuser.help', [], 'form'),
+                'label'    => $this->translator->trans('edito.refuser.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('edito.refuser.help', [], 'admin.form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

@@ -19,8 +19,8 @@ class LostPasswordType extends AbstractTypeLib
             'value',
             TextType::class,
             [
-                'label'    => $this->translator->trans('lostpassword.value.label', [], 'form'),
-                'help'     => $this->translator->trans('lostpassword.value.help', [], 'form'),
+                'label'    => $this->translator->trans('lostpassword.value.label', [], 'security.form'),
+                'help'     => $this->translator->trans('lostpassword.value.help', [], 'security.form'),
                 'required' => false,
             ]
         );

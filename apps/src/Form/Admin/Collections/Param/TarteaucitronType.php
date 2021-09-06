@@ -21,8 +21,8 @@ class TarteaucitronType extends AbstractTypeLib
             'privacyUrl',
             UrlType::class,
             [
-                'label'    => $this->translator->trans('admin.param.param.tarteaucitron.privacyUrl.label', [], 'form'),
-                'help'     => $this->translator->trans('admin.param.param.tarteaucitron.privacyUrl.help', [], 'form'),
+                'label'    => $this->translator->trans('admin.param.param.tarteaucitron.privacyUrl.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('admin.param.param.tarteaucitron.privacyUrl.help', [], 'admin.form'),
                 'required' => false,
             ]
         );
@@ -45,8 +45,8 @@ class TarteaucitronType extends AbstractTypeLib
             'iconPosition',
             ChoiceType::class,
             [
-                'label'   => $this->translator->trans('param.tarteaucitron.iconPosition.label', [], 'form'),
-                'help'    => $this->translator->trans('param.tarteaucitron.iconPosition.help', [], 'form'),
+                'label'   => $this->translator->trans('param.tarteaucitron.iconPosition.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('param.tarteaucitron.iconPosition.help', [], 'admin.form'),
                 'choices' => [
                     'BottomRight' => 'BottomRight',
                     'BottomLeft'  => 'BottomLeft',
@@ -69,8 +69,8 @@ class TarteaucitronType extends AbstractTypeLib
             'readmoreLink',
             UrlType::class,
             [
-                'label'    => $this->translator->trans('param.tarteaucitron.readmoreLink.label', [], 'form'),
-                'help'     => $this->translator->trans('param.tarteaucitron.readmoreLink.help', [], 'form'),
+                'label'    => $this->translator->trans('param.tarteaucitron.readmoreLink.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.tarteaucitron.readmoreLink.help', [], 'admin.form'),
                 'required' => false,
             ]
         );
@@ -78,8 +78,8 @@ class TarteaucitronType extends AbstractTypeLib
             'mandatory',
             ChoiceType::class,
             [
-                'label'   => $this->translator->trans('param.tarteaucitron.mandatory.label', [], 'form'),
-                'help'    => $this->translator->trans('param.tarteaucitron.mandatory.help', [], 'form'),
+                'label'   => $this->translator->trans('param.tarteaucitron.mandatory.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('param.tarteaucitron.mandatory.help', [], 'admin.form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -90,8 +90,8 @@ class TarteaucitronType extends AbstractTypeLib
             'job',
             CoreTextareaType::class,
             [
-                'label' => $this->translator->trans('param.tarteaucitron.job.label', [], 'form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.job.help', [], 'form'),
+                'label' => $this->translator->trans('param.tarteaucitron.job.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.job.help', [], 'admin.form'),
             ]
         );
         unset($options);
@@ -112,8 +112,8 @@ class TarteaucitronType extends AbstractTypeLib
                 $id,
                 ChoiceType::class,
                 [
-                    'label'   => $this->translator->trans('param.tarteaucitron.'.$id.'.label', [], 'form'),
-                    'help'    => $this->translator->trans('param.tarteaucitron.'.$id.'.help', [], 'form'),
+                    'label'   => $this->translator->trans('param.tarteaucitron.'.$id.'.label', [], 'admin.form'),
+                    'help'    => $this->translator->trans('param.tarteaucitron.'.$id.'.help', [], 'admin.form'),
                     'choices' => [
                         'Non' => '0',
                         'Oui' => '1',
@@ -130,8 +130,8 @@ class TarteaucitronType extends AbstractTypeLib
                 $id,
                 TextType::class,
                 [
-                    'label' => $this->translator->trans('param.tarteaucitron.'.$id.'.label', [], 'form'),
-                    'help'  => $this->translator->trans('param.tarteaucitron.'.$id.'.help', [], 'form'),
+                    'label' => $this->translator->trans('param.tarteaucitron.'.$id.'.label', [], 'admin.form'),
+                    'help'  => $this->translator->trans('param.tarteaucitron.'.$id.'.help', [], 'admin.form'),
                 ]
             );
         }

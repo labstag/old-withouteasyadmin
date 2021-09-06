@@ -20,8 +20,8 @@ class DisclaimerType extends AbstractTypeLib
             'confirm',
             CheckboxType::class,
             [
-                'label'    => $this->translator->trans('disclaimer.confirm.label', [], 'form'),
-                'help'     => $this->translator->trans('disclaimer.confirm.help', [], 'form'),
+                'label'    => $this->translator->trans('disclaimer.confirm.label', [], 'security.form'),
+                'help'     => $this->translator->trans('disclaimer.confirm.help', [], 'security.form'),
                 'required' => false,
             ]
         );

@@ -28,32 +28,32 @@ class NoteInterneType extends AbstractTypeLib
             'title',
             TextType::class,
             [
-                'label' => $this->translator->trans('noteinterne.title.label', [], 'form'),
-                'help'  => $this->translator->trans('noteinterne.title.help', [], 'form'),
+                'label' => $this->translator->trans('noteinterne.title.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('noteinterne.title.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'slug',
             TextType::class,
             [
-                'label' => $this->translator->trans('noteinterne.slug.label', [], 'form'),
-                'help'  => $this->translator->trans('noteinterne.slug.help', [], 'form'),
+                'label' => $this->translator->trans('noteinterne.slug.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('noteinterne.slug.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'content',
             CKEditorType::class,
             [
-                'label' => $this->translator->trans('noteinterne.content.label', [], 'form'),
-                'help'  => $this->translator->trans('noteinterne.content.help', [], 'form'),
+                'label' => $this->translator->trans('noteinterne.content.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('noteinterne.content.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'date_debut',
             DateTimeType::class,
             [
-                'label'        => $this->translator->trans('noteinterne.date_debut.label', [], 'form'),
-                'help'         => $this->translator->trans('noteinterne.date_debut.help', [], 'form'),
+                'label'        => $this->translator->trans('noteinterne.date_debut.label', [], 'admin.form'),
+                'help'         => $this->translator->trans('noteinterne.date_debut.help', [], 'admin.form'),
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
@@ -63,8 +63,8 @@ class NoteInterneType extends AbstractTypeLib
             'date_fin',
             DateTimeType::class,
             [
-                'label'        => $this->translator->trans('noteinterne.date_fin.label', [], 'form'),
-                'help'         => $this->translator->trans('noteinterne.date_fin.help', [], 'form'),
+                'label'        => $this->translator->trans('noteinterne.date_fin.label', [], 'admin.form'),
+                'help'         => $this->translator->trans('noteinterne.date_fin.help', [], 'admin.form'),
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
@@ -75,8 +75,8 @@ class NoteInterneType extends AbstractTypeLib
             'file',
             FileType::class,
             [
-                'label'    => $this->translator->trans('noteinterne.file.label', [], 'form'),
-                'help'     => $this->translator->trans('noteinterne.file.help', [], 'form'),
+                'label'    => $this->translator->trans('noteinterne.file.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('noteinterne.file.help', [], 'admin.form'),
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]
@@ -85,8 +85,8 @@ class NoteInterneType extends AbstractTypeLib
             'refuser',
             SearchableType::class,
             [
-                'label'    => $this->translator->trans('noteinterne.refuser.label', [], 'form'),
-                'help'     => $this->translator->trans('noteinterne.refuser.help', [], 'form'),
+                'label'    => $this->translator->trans('noteinterne.refuser.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('noteinterne.refuser.help', [], 'admin.form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

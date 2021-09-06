@@ -19,8 +19,8 @@ class DataType extends AbstractTypeLib
             'route',
             TextType::class,
             [
-                'label'    => $this->translator->trans('menu.data.route.name.label', [], 'form'),
-                'help'     => $this->translator->trans('menu.data.route.name.help', [], 'form'),
+                'label'    => $this->translator->trans('menu.data.route.name.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('menu.data.route.name.help', [], 'admin.form'),
                 'required' => false,
             ]
         );
@@ -28,8 +28,8 @@ class DataType extends AbstractTypeLib
             'param',
             TextType::class,
             [
-                'label'    => $this->translator->trans('menu.data.route.param.label', [], 'form'),
-                'help'     => $this->translator->trans('menu.data.route.param.help', [], 'form'),
+                'label'    => $this->translator->trans('menu.data.route.param.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('menu.data.route.param.help', [], 'admin.form'),
                 'required' => false,
             ]
         );
@@ -37,8 +37,8 @@ class DataType extends AbstractTypeLib
             'url',
             TextType::class,
             [
-                'label'    => $this->translator->trans('menu.data.route.url.label', [], 'form'),
-                'help'     => $this->translator->trans('menu.data.route.url.help', [], 'form'),
+                'label'    => $this->translator->trans('menu.data.route.url.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('menu.data.route.url.help', [], 'admin.form'),
                 'required' => false,
             ]
         );
@@ -46,8 +46,8 @@ class DataType extends AbstractTypeLib
             'target',
             ChoiceType::class,
             [
-                'label'    => $this->translator->trans('menu.data.route.target.label', [], 'form'),
-                'help'     => $this->translator->trans('menu.data.route.target.help', [], 'form'),
+                'label'    => $this->translator->trans('menu.data.route.target.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('menu.data.route.target.help', [], 'admin.form'),
                 'required' => false,
                 'choices'  => [
                     ''        => '',

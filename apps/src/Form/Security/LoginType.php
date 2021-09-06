@@ -21,24 +21,24 @@ class LoginType extends AbstractTypeLib
             'username',
             TextType::class,
             [
-                'label' => $this->translator->trans('login.username.label', [], 'form'),
-                'help'  => $this->translator->trans('login.username.help', [], 'form'),
+                'label' => $this->translator->trans('login.username.label', [], 'security.form'),
+                'help'  => $this->translator->trans('login.username.help', [], 'security.form'),
             ]
         );
         $builder->add(
             'password',
             PasswordType::class,
             [
-                'label' => $this->translator->trans('login.password.label', [], 'form'),
-                'help'  => $this->translator->trans('login.password.help', [], 'form'),
+                'label' => $this->translator->trans('login.password.label', [], 'security.form'),
+                'help'  => $this->translator->trans('login.password.help', [], 'security.form'),
             ]
         );
         $builder->add(
             'remember_me',
             CheckboxType::class,
             [
-                'label'    => $this->translator->trans('login.remember_me.label', [], 'form'),
-                'help'     => $this->translator->trans('login.remember_me.help', [], 'form'),
+                'label'    => $this->translator->trans('login.remember_me.label', [], 'security.form'),
+                'help'     => $this->translator->trans('login.remember_me.help', [], 'security.form'),
                 'required' => false,
             ]
         );

@@ -28,8 +28,8 @@ class OauthType extends AbstractTypeLib
             'activate',
             ChoiceType::class,
             [
-                'label'   => $this->translator->trans('param.oauth.activate.label', [], 'form'),
-                'help'    => $this->translator->trans('param.oauth.activate.help', [], 'form'),
+                'label'   => $this->translator->trans('param.oauth.activate.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('param.oauth.activate.help', [], 'admin.form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -47,8 +47,8 @@ class OauthType extends AbstractTypeLib
             'type',
             ChoiceType::class,
             [
-                'label'   => $this->translator->trans('param.oauth.type.label', [], 'form'),
-                'help'    => $this->translator->trans('param.oauth.type.help', [], 'form'),
+                'label'   => $this->translator->trans('param.oauth.type.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('param.oauth.type.help', [], 'admin.form'),
                 'choices' => $choices,
             ]
         );
@@ -56,8 +56,8 @@ class OauthType extends AbstractTypeLib
             'id',
             TextType::class,
             [
-                'label'    => $this->translator->trans('param.oauth.id.label', [], 'form'),
-                'help'     => $this->translator->trans('param.oauth.id.help', [], 'form'),
+                'label'    => $this->translator->trans('param.oauth.id.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.oauth.id.help', [], 'admin.form'),
                 'required' => false,
             ]
         );
@@ -65,8 +65,8 @@ class OauthType extends AbstractTypeLib
             'secret',
             TextType::class,
             [
-                'label'    => $this->translator->trans('param.oauth.secret.label', [], 'form'),
-                'help'     => $this->translator->trans('param.oauth.secret.help', [], 'form'),
+                'label'    => $this->translator->trans('param.oauth.secret.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.oauth.secret.help', [], 'admin.form'),
                 'required' => false,
             ]
         );

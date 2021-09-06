@@ -38,7 +38,7 @@ class TextFieldsType extends AbstractTypeLib
             'email',
             EmailType::class,
             [
-                'help' => $this->translator->trans('help', [], 'form'),
+                'help' => $this->translator->trans('help', [], 'admin.form'),
                 'attr' => ['placeholder' => 'aa'],
             ]
         );
@@ -81,7 +81,7 @@ class TextFieldsType extends AbstractTypeLib
             'range',
             RangeType::class,
             [
-                'help' => $this->translator->trans('help', [], 'form'),
+                'help' => $this->translator->trans('help', [], 'admin.form'),
                 'attr' => [
                     'min' => 5,
                     'max' => 50,

@@ -40,8 +40,8 @@ class ProfilType extends AbstractTypeLib
             'username',
             TextType::class,
             [
-                'label' => $this->translator->trans('profil.username.label', [], 'form'),
-                'help'  => $this->translator->trans('profil.username.help', [], 'form'),
+                'label' => $this->translator->trans('profil.username.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('profil.username.help', [], 'admin.form'),
             ]
         );
         $builder->add(
@@ -55,12 +55,12 @@ class ProfilType extends AbstractTypeLib
                 ],
                 'required'        => false,
                 'first_options'   => [
-                    'label' => $this->translator->trans('profil.password.label', [], 'form'),
-                    'help'  => $this->translator->trans('profil.password.help', [], 'form'),
+                    'label' => $this->translator->trans('profil.password.label', [], 'admin.form'),
+                    'help'  => $this->translator->trans('profil.password.help', [], 'admin.form'),
                 ],
                 'second_options'  => [
-                    'label' => $this->translator->trans('profil.repeatpassword.label', [], 'form'),
-                    'help'  => $this->translator->trans('profil.repeatpassword.help', [], 'form'),
+                    'label' => $this->translator->trans('profil.repeatpassword.label', [], 'admin.form'),
+                    'help'  => $this->translator->trans('profil.repeatpassword.help', [], 'admin.form'),
                 ],
             ]
         );
@@ -82,8 +82,8 @@ class ProfilType extends AbstractTypeLib
                     'email',
                     ChoiceType::class,
                     [
-                        'label'   => $this->translator->trans('profil.email.label', [], 'form'),
-                        'help'    => $this->translator->trans('profil.email.help', [], 'form'),
+                        'label'   => $this->translator->trans('profil.email.label', [], 'admin.form'),
+                        'help'    => $this->translator->trans('profil.email.help', [], 'admin.form'),
                         'choices' => $emails,
                     ]
                 );
@@ -94,8 +94,8 @@ class ProfilType extends AbstractTypeLib
             'file',
             FileType::class,
             [
-                'label'    => $this->translator->trans('profil.file.label', [], 'form'),
-                'help'     => $this->translator->trans('profil.file.help', [], 'form'),
+                'label'    => $this->translator->trans('profil.file.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('profil.file.help', [], 'admin.form'),
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]

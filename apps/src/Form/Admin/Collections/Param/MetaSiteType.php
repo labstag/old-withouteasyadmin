@@ -19,16 +19,16 @@ class MetaSiteType extends AbstractTypeLib
             'theme-color',
             ColorType::class,
             [
-                'label' => $this->translator->trans('param.metasite.theme-color.label', [], 'form'),
-                'help'  => $this->translator->trans('param.metasite.theme-color.help', [], 'form'),
+                'label' => $this->translator->trans('param.metasite.theme-color.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.metasite.theme-color.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'viewport',
             TextType::class,
             [
-                'label'    => $this->translator->trans('param.metasite.viewport.label', [], 'form'),
-                'help'     => $this->translator->trans('param.metasite.viewport.help', [], 'form'),
+                'label'    => $this->translator->trans('param.metasite.viewport.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.metasite.viewport.help', [], 'admin.form'),
                 'required' => false,
             ]
         );
@@ -36,8 +36,8 @@ class MetaSiteType extends AbstractTypeLib
             'description',
             TextType::class,
             [
-                'label'    => $this->translator->trans('param.metasite.description.label', [], 'form'),
-                'help'     => $this->translator->trans('param.metasite.description.help', [], 'form'),
+                'label'    => $this->translator->trans('param.metasite.description.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.metasite.description.help', [], 'admin.form'),
                 'required' => false,
             ]
         );
@@ -45,8 +45,8 @@ class MetaSiteType extends AbstractTypeLib
             'keywords',
             TextType::class,
             [
-                'label'    => $this->translator->trans('param.metasite.keywords.label', [], 'form'),
-                'help'     => $this->translator->trans('param.metasite.keywords.help', [], 'form'),
+                'label'    => $this->translator->trans('param.metasite.keywords.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.metasite.keywords.help', [], 'admin.form'),
                 'required' => false,
             ]
         );

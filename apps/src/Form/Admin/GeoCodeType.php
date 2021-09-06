@@ -18,8 +18,8 @@ class GeoCodeType extends AbstractTypeLib
             'countryCode',
             CountryType::class,
             [
-                'label' => $this->translator->trans('geocode.countryCode.label', [], 'form'),
-                'help'  => $this->translator->trans('geocode.countryCode.help', [], 'form'),
+                'label' => $this->translator->trans('geocode.countryCode.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('geocode.countryCode.help', [], 'admin.form'),
             ]
         );
         $tab = [
@@ -46,8 +46,8 @@ class GeoCodeType extends AbstractTypeLib
                 $id,
                 TextType::class,
                 [
-                    'label' => $this->translator->trans('param.tarteaucitron.'.$id.'.label', [], 'form'),
-                    'help'  => $this->translator->trans('param.tarteaucitron.'.$id.'.help', [], 'form'),
+                    'label' => $this->translator->trans('param.tarteaucitron.'.$id.'.label', [], 'admin.form'),
+                    'help'  => $this->translator->trans('param.tarteaucitron.'.$id.'.help', [], 'admin.form'),
                 ]
             );
         }

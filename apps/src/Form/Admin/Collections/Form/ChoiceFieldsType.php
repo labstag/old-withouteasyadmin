@@ -32,7 +32,7 @@ class ChoiceFieldsType extends AbstractTypeLib
             'choice',
             ChoiceType::class,
             [
-                'help'    => $this->translator->trans('help', [], 'form'),
+                'help'    => $this->translator->trans('help', [], 'admin.form'),
                 'choices' => $choices,
             ]
         );
@@ -40,7 +40,7 @@ class ChoiceFieldsType extends AbstractTypeLib
             'choice_expanded',
             ChoiceType::class,
             [
-                'help'     => $this->translator->trans('help', [], 'form'),
+                'help'     => $this->translator->trans('help', [], 'admin.form'),
                 'choices'  => $choices,
                 'expanded' => true,
             ]
@@ -49,7 +49,7 @@ class ChoiceFieldsType extends AbstractTypeLib
             'choice_multiple',
             ChoiceType::class,
             [
-                'help'     => $this->translator->trans('help', [], 'form'),
+                'help'     => $this->translator->trans('help', [], 'admin.form'),
                 'choices'  => $choices,
                 'multiple' => true,
             ]
@@ -58,7 +58,7 @@ class ChoiceFieldsType extends AbstractTypeLib
             'choice_multiple_expanded',
             ChoiceType::class,
             [
-                'help'     => $this->translator->trans('help', [], 'form'),
+                'help'     => $this->translator->trans('help', [], 'admin.form'),
                 'choices'  => $choices,
                 'multiple' => true,
                 'expanded' => true,

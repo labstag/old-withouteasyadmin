@@ -25,16 +25,16 @@ class PhoneUserType extends PhoneType
             'principal',
             CheckboxType::class,
             [
-                'label' => $this->translator->trans('phoneuser.principal.label', [], 'form'),
-                'help'  => $this->translator->trans('phoneuser.principal.help', [], 'form'),
+                'label' => $this->translator->trans('phoneuser.principal.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('phoneuser.principal.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'refuser',
             SearchableType::class,
             [
-                'label'    => $this->translator->trans('phoneuser.refuser.label', [], 'form'),
-                'help'     => $this->translator->trans('phoneuser.refuser.help', [], 'form'),
+                'label'    => $this->translator->trans('phoneuser.refuser.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('phoneuser.refuser.help', [], 'admin.form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

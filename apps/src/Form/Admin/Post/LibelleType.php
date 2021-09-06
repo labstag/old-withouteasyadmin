@@ -22,16 +22,16 @@ class LibelleType extends AbstractTypeLib
             'nom',
             TextType::class,
             [
-                'label' => $this->translator->trans('libelle.nom.label', [], 'form'),
-                'help'  => $this->translator->trans('libelle.nom.help', [], 'form'),
+                'label' => $this->translator->trans('libelle.nom.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('libelle.nom.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'slug',
             TextType::class,
             [
-                'label'    => $this->translator->trans('libelle.nom.label', [], 'form'),
-                'help'     => $this->translator->trans('libelle.nom.help', [], 'form'),
+                'label'    => $this->translator->trans('libelle.nom.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('libelle.nom.help', [], 'admin.form'),
                 'required' => false,
             ]
         );

@@ -23,16 +23,16 @@ class GroupeType extends AbstractTypeLib
             'name',
             TextType::class,
             [
-                'label' => $this->translator->trans('groupe.name.label', [], 'form'),
-                'help'  => $this->translator->trans('groupe.name.help', [], 'form'),
+                'label' => $this->translator->trans('groupe.name.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('groupe.name.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'code',
             TextType::class,
             [
-                'label' => $this->translator->trans('groupe.code.label', [], 'form'),
-                'help'  => $this->translator->trans('groupe.code.help', [], 'form'),
+                'label' => $this->translator->trans('groupe.code.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('groupe.code.help', [], 'admin.form'),
             ]
         );
     }

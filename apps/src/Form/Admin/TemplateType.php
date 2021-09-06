@@ -25,32 +25,32 @@ class TemplateType extends AbstractTypeLib
             'name',
             TextType::class,
             [
-                'label' => $this->translator->trans('template.name.label', [], 'form'),
-                'help'  => $this->translator->trans('template.name.help', [], 'form'),
+                'label' => $this->translator->trans('template.name.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('template.name.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'code',
             TextType::class,
             [
-                'label' => $this->translator->trans('template.code.label', [], 'form'),
-                'help'  => $this->translator->trans('template.code.help', [], 'form'),
+                'label' => $this->translator->trans('template.code.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('template.code.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'html',
             CKEditorType::class,
             [
-                'label' => $this->translator->trans('template.html.label', [], 'form'),
-                'help'  => $this->translator->trans('template.html.help', [], 'form'),
+                'label' => $this->translator->trans('template.html.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('template.html.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'text',
             CoreTextareaType::class,
             [
-                'label' => $this->translator->trans('template.text.label', [], 'form'),
-                'help'  => $this->translator->trans('template.text.help', [], 'form'),
+                'label' => $this->translator->trans('template.text.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('template.text.help', [], 'admin.form'),
             ]
         );
     }

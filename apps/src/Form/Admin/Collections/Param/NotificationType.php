@@ -19,16 +19,16 @@ class NotificationType extends AbstractTypeLib
             'type',
             TextType::class,
             [
-                'label' => $this->translator->trans('param.notification.type.label', [], 'form'),
-                'help'  => $this->translator->trans('param.notification.type.help', [], 'form'),
+                'label' => $this->translator->trans('param.notification.type.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.notification.type.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'mail',
             ChoiceType::class,
             [
-                'label'   => $this->translator->trans('param.notification.mail.label', [], 'form'),
-                'help'    => $this->translator->trans('param.notification.mail.help', [], 'form'),
+                'label'   => $this->translator->trans('param.notification.mail.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('param.notification.mail.help', [], 'admin.form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -39,8 +39,8 @@ class NotificationType extends AbstractTypeLib
             'notify',
             ChoiceType::class,
             [
-                'label'   => $this->translator->trans('param.notification.notify.label', [], 'form'),
-                'help'    => $this->translator->trans('param.notification.notify.help', [], 'form'),
+                'label'   => $this->translator->trans('param.notification.notify.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('param.notification.notify.help', [], 'admin.form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',

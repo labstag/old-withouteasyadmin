@@ -48,16 +48,16 @@ class ParamType extends AbstractTypeLib
             LanguageType::class,
             [
                 'multiple' => true,
-                'label'    => $this->translator->trans('param.language.label', [], 'form'),
-                'help'     => $this->translator->trans('param.language.help', [], 'form'),
+                'label'    => $this->translator->trans('param.language.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.language.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'generator',
             ChoiceType::class,
             [
-                'label'   => $this->translator->trans('param.generator.label', [], 'form'),
-                'help'    => $this->translator->trans('param.generator.help', [], 'form'),
+                'label'   => $this->translator->trans('param.generator.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('param.generator.help', [], 'admin.form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -96,8 +96,8 @@ class ParamType extends AbstractTypeLib
             'site_copyright',
             CKEditorType::class,
             [
-                'label' => $this->translator->trans('param.site_copyright.label', [], 'form'),
-                'help'  => $this->translator->trans('param.site_copyright.help', [], 'form'),
+                'label' => $this->translator->trans('param.site_copyright.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.site_copyright.help', [], 'admin.form'),
             ]
         );
         unset($options);
@@ -125,8 +125,8 @@ class ParamType extends AbstractTypeLib
                 $key,
                 $class,
                 [
-                    'label' => $this->translator->trans('param.'.$key.'.label', [], 'form'),
-                    'help'  => $this->translator->trans('param.'.$key.'.help', [], 'form'),
+                    'label' => $this->translator->trans('param.'.$key.'.label', [], 'admin.form'),
+                    'help'  => $this->translator->trans('param.'.$key.'.help', [], 'admin.form'),
                 ]
             );
         }
@@ -139,8 +139,8 @@ class ParamType extends AbstractTypeLib
                 $key,
                 FileType::class,
                 [
-                    'label'    => $this->translator->trans('param.'.$key.'.label', [], 'form'),
-                    'help'     => $this->translator->trans('param.'.$key.'.help', [], 'form'),
+                    'label'    => $this->translator->trans('param.'.$key.'.label', [], 'admin.form'),
+                    'help'     => $this->translator->trans('param.'.$key.'.help', [], 'admin.form'),
                     'required' => false,
                     'attr'     => ['accept' => 'image/*'],
                 ]

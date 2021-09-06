@@ -21,16 +21,16 @@ class LinkType extends AbstractTypeLib
             'libelle',
             TextType::class,
             [
-                'label' => $this->translator->trans('menu.link.libelle.label', [], 'form'),
-                'help'  => $this->translator->trans('menu.link.libelle.help', [], 'form'),
+                'label' => $this->translator->trans('menu.link.libelle.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('menu.link.libelle.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'icon',
             TextType::class,
             [
-                'label'    => $this->translator->trans('menu.link.icon.label', [], 'form'),
-                'help'     => $this->translator->trans('menu.link.icon.help', [], 'form'),
+                'label'    => $this->translator->trans('menu.link.icon.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('menu.link.icon.help', [], 'admin.form'),
                 'required' => false,
             ]
         );

@@ -22,16 +22,16 @@ abstract class LienType extends AbstractTypeLib
             'name',
             TextType::class,
             [
-                'label' => $this->translator->trans('lien.name.label', [], 'form'),
-                'help'  => $this->translator->trans('lien.name.help', [], 'form'),
+                'label' => $this->translator->trans('lien.name.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('lien.name.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'adresse',
             UrlType::class,
             [
-                'label' => $this->translator->trans('lien.adresse.label', [], 'form'),
-                'help'  => $this->translator->trans('lien.adresse.help', [], 'form'),
+                'label' => $this->translator->trans('lien.adresse.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('lien.adresse.help', [], 'admin.form'),
             ]
         );
     }

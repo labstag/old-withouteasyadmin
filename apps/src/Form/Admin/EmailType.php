@@ -21,8 +21,8 @@ abstract class EmailType extends AbstractTypeLib
             'adresse',
             TypeEmailType::class,
             [
-                'label' => $this->translator->trans('email.adresse.label', [], 'form'),
-                'help'  => $this->translator->trans('email.adresse.help', [], 'form'),
+                'label' => $this->translator->trans('email.adresse.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('email.adresse.help', [], 'admin.form'),
             ]
         );
     }

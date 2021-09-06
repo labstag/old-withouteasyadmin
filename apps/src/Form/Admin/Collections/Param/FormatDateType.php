@@ -18,16 +18,16 @@ class FormatDateType extends AbstractTypeLib
             'admin',
             TextType::class,
             [
-                'label' => $this->translator->trans('param.formatdate.admin.label', [], 'form'),
-                'help'  => $this->translator->trans('param.formatdate.admin.help', [], 'form'),
+                'label' => $this->translator->trans('param.formatdate.admin.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.formatdate.admin.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'public',
             TextType::class,
             [
-                'label' => $this->translator->trans('param.formatdate.public.label', [], 'form'),
-                'help'  => $this->translator->trans('param.formatdate.public.help', [], 'form'),
+                'label' => $this->translator->trans('param.formatdate.public.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.formatdate.public.help', [], 'admin.form'),
             ]
         );
         unset($options);

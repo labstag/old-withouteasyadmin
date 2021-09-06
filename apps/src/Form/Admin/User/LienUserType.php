@@ -25,8 +25,8 @@ class LienUserType extends LienType
             'refuser',
             SearchableType::class,
             [
-                'label'    => $this->translator->trans('lienuser.refuser.label', [], 'form'),
-                'help'     => $this->translator->trans('lienuser.refuser.help', [], 'form'),
+                'label'    => $this->translator->trans('lienuser.refuser.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('lienuser.refuser.help', [], 'admin.form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

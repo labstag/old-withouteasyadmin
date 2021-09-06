@@ -43,8 +43,8 @@ class UserType extends AbstractTypeLib
             'username',
             TextType::class,
             [
-                'label' => $this->translator->trans('user.username.label', [], 'form'),
-                'help'  => $this->translator->trans('user.username.help', [], 'form'),
+                'label' => $this->translator->trans('user.username.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('user.username.help', [], 'admin.form'),
             ]
         );
         $builder->add(
@@ -56,12 +56,12 @@ class UserType extends AbstractTypeLib
                 'options'         => ['attr' => ['class' => 'password-field']],
                 'required'        => false,
                 'first_options'   => [
-                    'label' => $this->translator->trans('user.password.label', [], 'form'),
-                    'help'  => $this->translator->trans('user.password.help', [], 'form'),
+                    'label' => $this->translator->trans('user.password.label', [], 'admin.form'),
+                    'help'  => $this->translator->trans('user.password.help', [], 'admin.form'),
                 ],
                 'second_options'  => [
-                    'label' => $this->translator->trans('user.repeatpassword.label', [], 'form'),
-                    'help'  => $this->translator->trans('user.repeatpassword.help', [], 'form'),
+                    'label' => $this->translator->trans('user.repeatpassword.label', [], 'admin.form'),
+                    'help'  => $this->translator->trans('user.repeatpassword.help', [], 'admin.form'),
                 ],
             ]
         );
@@ -69,8 +69,8 @@ class UserType extends AbstractTypeLib
             'refgroupe',
             SearchableType::class,
             [
-                'label'    => $this->translator->trans('user.refgroupe.label', [], 'form'),
-                'help'     => $this->translator->trans('user.refgroupe.help', [], 'form'),
+                'label'    => $this->translator->trans('user.refgroupe.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('user.refgroupe.help', [], 'admin.form'),
                 'multiple' => false,
                 'class'    => Groupe::class,
                 'route'    => 'api_search_group',
@@ -80,8 +80,8 @@ class UserType extends AbstractTypeLib
             'file',
             FileType::class,
             [
-                'label'    => $this->translator->trans('user.file.label', [], 'form'),
-                'help'     => $this->translator->trans('user.file.help', [], 'form'),
+                'label'    => $this->translator->trans('user.file.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('user.file.help', [], 'admin.form'),
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]
@@ -105,8 +105,8 @@ class UserType extends AbstractTypeLib
                     'email',
                     ChoiceType::class,
                     [
-                        'label'   => $this->translator->trans('user.email.label', [], 'form'),
-                        'help'    => $this->translator->trans('user.email.help', [], 'form'),
+                        'label'   => $this->translator->trans('user.email.label', [], 'admin.form'),
+                        'help'    => $this->translator->trans('user.email.help', [], 'admin.form'),
                         'choices' => $emails,
                     ]
                 );

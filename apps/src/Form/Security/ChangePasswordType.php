@@ -17,19 +17,19 @@ class ChangePasswordType extends AbstractTypeLib
     ): void
     {
         $first  = [
-            'label' => $this->translator->trans('changepassword.password.label', [], 'form'),
-            'help'  => $this->translator->trans('changepassword.password.help', [], 'form'),
+            'label' => $this->translator->trans('changepassword.password.label', [], 'security.form'),
+            'help'  => $this->translator->trans('changepassword.password.help', [], 'security.form'),
         ];
         $second = [
-            'label' => $this->translator->trans('changepassword.repeatpassword.label', [], 'form'),
-            'help'  => $this->translator->trans('changepassword.repeatpassword.help', [], 'form'),
+            'label' => $this->translator->trans('changepassword.repeatpassword.label', [], 'security.form'),
+            'help'  => $this->translator->trans('changepassword.repeatpassword.help', [], 'security.form'),
         ];
         $builder->add(
             'plainPassword',
             RepeatedType::class,
             [
                 'type'           => PasswordType::class,
-                'label'          => $this->translator->trans('password', [], 'form'),
+                'label'          => $this->translator->trans('password', [], 'security.form'),
                 'first_options'  => $first,
                 'second_options' => $second,
             ]

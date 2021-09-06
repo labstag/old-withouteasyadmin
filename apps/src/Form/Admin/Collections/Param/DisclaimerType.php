@@ -21,8 +21,8 @@ class DisclaimerType extends AbstractTypeLib
             'activate',
             ChoiceType::class,
             [
-                'label'   => $this->translator->trans('param.disclaimer.activate.label', [], 'form'),
-                'help'    => $this->translator->trans('param.disclaimer.activate.help', [], 'form'),
+                'label'   => $this->translator->trans('param.disclaimer.activate.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('param.disclaimer.activate.help', [], 'admin.form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -33,8 +33,8 @@ class DisclaimerType extends AbstractTypeLib
             'title',
             TextType::class,
             [
-                'label'    => $this->translator->trans('param.disclaimer.title.label', [], 'form'),
-                'help'     => $this->translator->trans('param.disclaimer.title.help', [], 'form'),
+                'label'    => $this->translator->trans('param.disclaimer.title.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.disclaimer.title.help', [], 'admin.form'),
                 'required' => false,
             ]
         );
@@ -42,8 +42,8 @@ class DisclaimerType extends AbstractTypeLib
             'message',
             CKEditorType::class,
             [
-                'label'    => $this->translator->trans('param.disclaimer.message.label', [], 'form'),
-                'help'     => $this->translator->trans('param.disclaimer.message.help', [], 'form'),
+                'label'    => $this->translator->trans('param.disclaimer.message.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.disclaimer.message.help', [], 'admin.form'),
                 'required' => false,
             ]
         );
@@ -51,8 +51,8 @@ class DisclaimerType extends AbstractTypeLib
             'url-redirect',
             UrlType::class,
             [
-                'label'    => $this->translator->trans('param.disclaimer.url-redirect.label', [], 'form'),
-                'help'     => $this->translator->trans('param.disclaimer.url-redirect.help', [], 'form'),
+                'label'    => $this->translator->trans('param.disclaimer.url-redirect.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.disclaimer.url-redirect.help', [], 'admin.form'),
                 'required' => false,
             ]
         );
