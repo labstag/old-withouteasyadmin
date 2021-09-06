@@ -247,7 +247,7 @@ else
 		["phpcs-onlyerror"]="indique les erreurs de code non corrigé par PHPCBF" \
 		["phploc"]="phploc" \
 		["phpmd"]="indique quand le code PHP contient des erreurs de syntaxes ou des erreurs" \
-		["phpmnd"]="Si des chiffres sont utilisé dans le code PHP, il est conseillé d'utiliser des constantes" \
+		["phpmnd"]="Si des chiffres sont utilisé dans le code PHP" \
 		["phpstan"]="regarde si le code PHP ne peux pas être optimisé" \
 		["twig"]="indique les erreurs de code de twig" \
 		["container"]="indique les erreurs de code de container" \

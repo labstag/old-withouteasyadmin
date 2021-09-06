@@ -57,8 +57,6 @@ jobs:
         run: make docker ls
       - name: 'Installation variable environnement'
         run: make env dev
-      - name: 'Create file .env'
-        run: make env dev
       - name: linter readme.md
         run: make linter readme
       - name: linter SCSS
