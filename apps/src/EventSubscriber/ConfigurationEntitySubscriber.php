@@ -106,7 +106,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         $this->entityManager->flush();
         $this->flashBagAdd(
             'success',
-            $this->translator->trans('Données sauvegardé')
+            $this->translator->trans('param.change')
         );
     }
 
@@ -129,18 +129,12 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
             }
 
             file_put_contents($file, $value);
-            $msg = sprintf(
-                'fichier %s modifié',
-                $file
+            $msg = $this->translator->trans(
+                'admin.robotstxt.file',
+                ['%file%' => $file]
             );
             $this->logger->info($msg);
-            $this->flashBagAdd(
-                'success',
-                $this->translator->trans(
-                    'fichier %file% modifié',
-                    ['%file%' => $file]
-                )
-            );
+            $this->flashBagAdd('success', $msg);
         } catch (Exception $exception) {
             $errorMsg = sprintf(
                 'Exception : Erreur %s dans %s L.%s : %s',

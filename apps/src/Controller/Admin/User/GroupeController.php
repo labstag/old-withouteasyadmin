@@ -97,7 +97,7 @@ class GroupeController extends AdminControllerLib
         if (0 == count($routes)) {
             $this->flashBagAdd(
                 'danger',
-                $this->translator->trans("Le groupe superadmin n'est pas un groupe qui peut avoir des droits spécifique")
+                $this->translator->trans('admin.group.guard.superadmin.nope')
             );
 
             return $this->redirect($this->generateUrl('admin_groupuser_index'));

@@ -56,7 +56,7 @@ class SecurityController extends ControllerLib
         if ('lostpassword' != $user->getState()) {
             $this->flashBagAdd(
                 'danger',
-                $this->translator->trans('Demande de mot de passe non envoyé')
+                $this->translator->trans('security.user.sendlostpassword.fail')
             );
 
             return $this->redirect($front);
@@ -90,7 +90,7 @@ class SecurityController extends ControllerLib
         if ('averifier' != $email->getState()) {
             $this->flashBagAdd(
                 'danger',
-                $this->translator->trans('Courriel déjà confirmé')
+                $this->translator->trans('security.email.activate.fail')
             );
 
             return $this->redirect($front);
@@ -99,7 +99,7 @@ class SecurityController extends ControllerLib
         $emailRequestHandler->changeWorkflowState($email, ['valider']);
         $this->flashBagAdd(
             'success',
-            $this->translator->trans('Courriel confirmé')
+            $this->translator->trans('security.email.activate.win')
         );
 
         return $this->redirect($front);
@@ -117,7 +117,7 @@ class SecurityController extends ControllerLib
         if ('averifier' != $phone->getState()) {
             $this->flashBagAdd(
                 'danger',
-                $this->translator->trans('Phone déjà confirmé')
+                $this->translator->trans('security.phone.activate.fail')
             );
 
             return $this->redirect($front);
@@ -126,7 +126,7 @@ class SecurityController extends ControllerLib
         $emailRequestHandler->changeWorkflowState($phone, ['valider']);
         $this->flashBagAdd(
             'success',
-            $this->translator->trans('Phone confirmé')
+            $this->translator->trans('security.phone.activate.win')
         );
 
         return $this->redirect($front);
@@ -144,7 +144,7 @@ class SecurityController extends ControllerLib
         if ('avalider' != $user->getState()) {
             $this->flashBagAdd(
                 'danger',
-                $this->translator->trans('Utilisation déjà activé')
+                $this->translator->trans('security.user.activate.fail')
             );
 
             return $this->redirect($front);
@@ -153,7 +153,7 @@ class SecurityController extends ControllerLib
         $userRequestHandler->changeWorkflowState($user, ['validation']);
         $this->flashBagAdd(
             'success',
-            $this->translator->trans('Utilisation activé')
+            $this->translator->trans('security.user.activate.win')
         );
 
         return $this->redirect($front);
@@ -180,7 +180,7 @@ class SecurityController extends ControllerLib
 
             $this->flashBagAdd(
                 'danger',
-                $this->translator->trans("Veuillez accepter l'énoncé")
+                $this->translator->trans('security.disclaimer.doaccept')
             );
         }
 
@@ -300,7 +300,7 @@ class SecurityController extends ControllerLib
         if (!$provider instanceof AbstractProvider) {
             $this->flashBagAdd(
                 'warning',
-                $this->translator->trans('Connexion Oauh impossible')
+                $this->translator->trans('security.user.oauth.fail')
             );
 
             return $this->redirect($referer);
@@ -348,7 +348,7 @@ class SecurityController extends ControllerLib
             $session->remove('link');
             $this->flashBagAdd(
                 'warning',
-                $this->translator->trans("Probleme d'identification")
+                $this->translator->trans('security.user.connect.fail')
             );
 
             return $this->redirect($referer);
@@ -376,7 +376,7 @@ class SecurityController extends ControllerLib
                 if (!$user instanceof User) {
                     $this->flashBagAdd(
                         'warning',
-                        $this->translator->trans("Probleme d'identification")
+                        $this->translator->trans('security.user.connect.fail')
                     );
 
                     return $this->redirect($referer);
@@ -397,7 +397,7 @@ class SecurityController extends ControllerLib
             $this->setErrorLogger($exception, $logger);
             $this->flashBagAdd(
                 'warning',
-                $this->translator->trans("Probleme d'identification")
+                $this->translator->trans('security.user.connect.fail')
             );
             $session->remove('referer');
             $session->remove('link');
@@ -439,7 +439,7 @@ class SecurityController extends ControllerLib
             $this->flashBagAdd(
                 'success',
                 $this->translator->trans(
-                    'Connexion Oauh %string% dissocié',
+                    'security.user.oauth.dissociated',
                     ['%string%' => $oauthCode]
                 )
             );

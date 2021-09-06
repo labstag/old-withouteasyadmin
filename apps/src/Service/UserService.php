@@ -109,7 +109,7 @@ class UserService
             $this->oauthConnectUserRH->handle($old, $oauthConnect);
             $this->flashBagAdd(
                 'success',
-                $this->translator->trans('Compte associé')
+                $this->translator->trans('service.user.oauth.sucess')
             );
 
             return;
@@ -117,7 +117,7 @@ class UserService
 
         $this->flashBagAdd(
             'warning',
-            $this->translator->trans("Impossible d'associer le compte")
+            $this->translator->trans('service.user.oauth.fail')
         );
     }
 

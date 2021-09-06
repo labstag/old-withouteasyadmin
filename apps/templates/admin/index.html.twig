@@ -12,7 +12,12 @@
                 </picture>
             {% endif %}
             <div class="noteinterne-date">
-                {{ noteinterne.datedebut|format_datetime(pattern=formatdatetime.admin) }} by {{ noteinterne.refuser }}
+                {{ 'noteinterne.infodateuser'|trans(
+                    {
+                        '%date%': noteinterne.datedebut|format_datetime(pattern=formatdatetime.admin),
+                        '%user%': noteinterne.refuser
+                    }
+                )}}
             </div>
             <div class="noteinterne-content">
                 {{ noteinterne.content|raw }}

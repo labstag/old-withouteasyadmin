@@ -59,7 +59,7 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
         $this->userMailService->lostPassword($entity);
         $this->flashBagAdd(
             'success',
-            $this->translator->trans('Demande de nouveau mot de passe envoyé')
+            $this->translator->trans('user.workflow.sendpasswordlink')
         );
     }
 
@@ -82,7 +82,7 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
         $this->userMailService->newUser($entity);
         $this->flashBagAdd(
             'success',
-            $this->translator->trans('Nouveau compte utilisateur créer')
+            $this->translator->trans('user.workflow.new')
         );
     }
 }

@@ -67,7 +67,7 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
         $this->flashBagAdd(
             'warning',
-            $this->translator->trans("Vous n'avez pas les droits nécessaires")
+            $this->translator->trans('user.guard.nope')
         );
         throw new AccessDeniedException();
     }

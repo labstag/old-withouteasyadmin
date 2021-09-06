@@ -113,7 +113,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $this->entityManager->flush();
         $this->flashBagAdd(
             'success',
-            $this->translator->trans('Mot de passe changé')
+            $this->translator->trans('user.subscriber.password.change')
         );
     }
 
@@ -144,7 +144,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $this->entityManager->flush();
         $this->flashBagAdd(
             'success',
-            $this->translator->trans('Email principal changé')
+            $this->translator->trans('user.subscriber.emailprincal.change')
         );
 
         if ($trouver) {

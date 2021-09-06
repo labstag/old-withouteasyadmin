@@ -1,3 +1,6 @@
+admin.flashbag.data.export.fail: __admin.flashbag.data.export.fail
+admin.flashbag.data.export.success: __admin.flashbag.data.export.success
+admin.flashbag.trash.empty: __admin.flashbag.trash.empty
 admin.form.param.datetime: __admin.form.param.datetime
 admin.form.param.disclaimer: __admin.form.param.disclaimer
 admin.form.param.favicon: __admin.form.param.favicon
@@ -17,6 +20,7 @@ admin.form.user.avatar: __admin.form.user.avatar
 admin.form.user.emails: __admin.form.user.emails
 admin.form.user.links: __admin.form.user.links
 admin.form.user.phones: __admin.form.user.phones
+admin.group.guard.superadmin.nope: __admin.group.guard.superadmin.nope
 admin.guard.actions: __admin.guard.actions
 admin.guard.entite: __admin.guard.entite
 admin.guard.groupe: __admin.guard.groupe
@@ -42,9 +46,11 @@ admin.oauth.message: __admin.oauth.message
 admin.oauth.service: __admin.oauth.service
 admin.oauth.url: __admin.oauth.url
 admin.oauth.urltoshare: __admin.oauth.urltoshare
+admin.robotstxt.file: __admin.robotstxt.file
 admin.state.no: __admin.state.no
 admin.state.yes: __admin.state.yes
 admin.togglenavigation: __admin.togglenavigation
+admin.user.guard.superadmin.nope: __admin.user.guard.superadmin.nope
 admin.workflow.state: __admin.workflow.state
 attachment.dimensions: __attachment.dimensions
 attachment.download: __attachment.download
@@ -54,6 +60,7 @@ attachment.seefile: __attachment.seefile
 attachment.size: __attachment.size
 attachment.state: __attachment.state
 attachment.workflow: __attachment.workflow
+data.save: __data.save
 edito.content: __edito.content
 edito.fond: __edito.fond
 edito.published: __edito.published
@@ -72,7 +79,6 @@ error.page.404.title: __error.page.404.title
 error.page.errors: __error.page.errors
 error.page.gotosite: __error.page.gotosite
 form.requireinfo: __form.requireinfo
-GeoCode: __GeoCode
 geocode.accuracy: __geocode.accuracy
 geocode.actions: __geocode.actions
 geocode.community: __geocode.community
@@ -124,6 +130,7 @@ noteinterne.content: __noteinterne.content
 noteinterne.date_debut: __noteinterne.date_debut
 noteinterne.date_fin: __noteinterne.date_fin
 noteinterne.fond: __noteinterne.fond
+noteinterne.infodateuser: __noteinterne.infodateuser
 noteinterne.title: __noteinterne.title
 noteinterne.user: __noteinterne.user
 noteinterne.workflow: __noteinterne.workflow
@@ -132,9 +139,11 @@ pagination.first: __pagination.first
 pagination.last: __pagination.last
 pagination.next: __pagination.next
 pagination.previous: __pagination.previous
+param.change: __param.change
 post.archives: __post.archives
 post.content: __post.content
 post.image: __post.image
+post.infodateuser: __post.infodateuser
 post.libelle.nom: __post.libelle.nom
 post.libelle.slug: __post.libelle.slug
 post.published: __post.published
@@ -142,8 +151,21 @@ post.title: __post.title
 post.update: __post.update
 post.user: __post.user
 post.workflow: __post.workflow
+security.disclaimer.doaccept: __security.disclaimer.doaccept
+security.email.activate.fail: __security.email.activate.fail
+security.email.activate.win: __security.email.activate.win
 security.page.changepassword.title: __security.page.changepassword.title
 security.page.lostpassword.title: __security.page.lostpassword.title
+security.phone.activate.fail: __security.phone.activate.fail
+security.phone.activate.win: __security.phone.activate.win
+security.user.activate.fail: __security.user.activate.fail
+security.user.activate.win: __security.user.activate.win
+security.user.connect.fail: __security.user.connect.fail
+security.user.oauth.dissociated: __security.user.oauth.dissociated
+security.user.oauth.fail: __security.user.oauth.fail
+security.user.sendlostpassword.fail: __security.user.sendlostpassword.fail
+service.user.oauth.fail: __service.user.oauth.fail
+service.user.oauth.sucess: __service.user.oauth.sucess
 table.admin.action: __table.admin.action
 table.admin.empty: __table.admin.empty
 table.admin.multipleall: __table.admin.multipleall
@@ -157,6 +179,7 @@ trash.count: __trash.count
 trash.empty: __trash.empty
 trash.entite: __trash.entite
 trash.go: __trash.go
+user.adresse.adresse: __user.adresse.adresse
 user.adresse.country: __user.adresse.country
 user.adresse.gps: __user.adresse.gps
 user.adresse.pmr: __user.adresse.pmr
@@ -166,6 +189,7 @@ user.adresse.user: __user.adresse.user
 user.adresse.ville: __user.adresse.ville
 user.adresse.zipcode: __user.adresse.zipcode
 user.adresses: __user.adresses
+user.avatar: __user.avatar
 user.email: __user.email
 user.email.adresse: __user.email.adresse
 user.email.principal: __user.email.principal
@@ -176,6 +200,7 @@ user.groupe: __user.groupe
 user.groupe.code: __user.groupe.code
 user.groupe.name: __user.groupe.name
 user.groupe.users: __user.groupe.users
+user.guard.nope: __user.guard.nope
 user.lien.adresse: __user.lien.adresse
 user.lien.name: __user.lien.name
 user.lien.user: __user.lien.user
@@ -191,39 +216,15 @@ user.phone.type: __user.phone.type
 user.phone.user: __user.phone.user
 user.phone.verif: __user.phone.verif
 user.phone.workflow: __user.phone.workflow
+user.subscriber.emailprincal.change: __user.subscriber.emailprincal.change
+user.subscriber.password.change: __user.subscriber.password.change
+user.telephone.country: __user.telephone.country
+user.telephone.numero: __user.telephone.numero
+user.telephone.principal: __user.telephone.principal
+user.telephone.type: __user.telephone.type
+user.telephone.verif: __user.telephone.verif
 user.telephones: __user.telephones
 user.username: __user.username
 user.workflow: __user.workflow
-'Données exporté': '__Données exporté'
-user.avatar: __user.avatar
-user.adresse.adresse: __user.adresse.adresse
-user.telephone.numero: __user.telephone.numero
-user.telephone.verif: __user.telephone.verif
-user.telephone.country: __user.telephone.country
-user.telephone.type: __user.telephone.type
-user.telephone.principal: __user.telephone.principal
-'Le groupe superadmin n''est pas un groupe qui peut avoir des droits spécifique': '__Le groupe superadmin n''est pas un groupe qui peut avoir des droits spécifique'
-'Problème d''enregistrement du fichier %s': '__Problème d''enregistrement du fichier %s'
-'La corbeille est vide': '__La corbeille est vide'
-'Demande de mot de passe non envoyé': '__Demande de mot de passe non envoyé'
-'Courriel déjà confirmé': '__Courriel déjà confirmé'
-'Courriel confirmé': '__Courriel confirmé'
-'Phone déjà confirmé': '__Phone déjà confirmé'
-'Phone confirmé': '__Phone confirmé'
-'Utilisation déjà activé': '__Utilisation déjà activé'
-'Utilisation activé': '__Utilisation activé'
-'Veuillez accepter l''énoncé': '__Veuillez accepter l''énoncé'
-'Connexion Oauh impossible': '__Connexion Oauh impossible'
-'Probleme d''identification': '__Probleme d''identification'
-'Connexion Oauh %string% dissocié': '__Connexion Oauh %string% dissocié'
-'L''utilisateur fait partie du groupe superadmin, qui n''est pas un groupe qui peut avoir des droits spécifique': '__L''utilisateur fait partie du groupe superadmin, qui n''est pas un groupe qui peut avoir des droits spécifique'
-'Problème d''enregistrement du fichier %file%': '__Problème d''enregistrement du fichier %file%'
-'Compte associé': '__Compte associé'
-'Impossible d''associer le compte': '__Impossible d''associer le compte'
-'Données sauvegardé': '__Données sauvegardé'
-'fichier %file% modifié': '__fichier %file% modifié'
-'Vous n''avez pas les droits nécessaires': '__Vous n''avez pas les droits nécessaires'
-'Mot de passe changé': '__Mot de passe changé'
-'Email principal changé': '__Email principal changé'
-'Demande de nouveau mot de passe envoyé': '__Demande de nouveau mot de passe envoyé'
-'Nouveau compte utilisateur créer': '__Nouveau compte utilisateur créer'
+user.workflow.new: __user.workflow.new
+user.workflow.sendpasswordlink: __user.workflow.sendpasswordlink

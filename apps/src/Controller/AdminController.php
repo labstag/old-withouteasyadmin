@@ -52,14 +52,14 @@ class AdminController extends AdminControllerLib
                 file_put_contents($file, $content);
                 $this->flashBagAdd(
                     'success',
-                    $this->translator->trans('Données exporté')
+                    $this->translator->trans('admin.flashbag.data.export.success')
                 );
             } catch (Exception $exception) {
                 $this->setErrorLogger($exception, $logger);
                 $this->flashBagAdd(
                     'danger',
                     $this->translator->trans(
-                        "Problème d'enregistrement du fichier %file%",
+                        'admin.flashbag.data.export.fail',
                         ['%file%' => $file]
                     )
                 );
@@ -229,7 +229,7 @@ class AdminController extends AdminControllerLib
         if (0 == count($all)) {
             $this->flashBagAdd(
                 'danger',
-                $this->translator->trans('La corbeille est vide')
+                $this->translator->trans('admin.flashbag.trash.empty')
             );
 
             return $this->redirect($this->generateUrl('admin'));

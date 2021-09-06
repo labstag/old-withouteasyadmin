@@ -305,7 +305,7 @@ abstract class AdminControllerLib extends ControllerLib
             $handler->handle($oldEntity, $entity);
             $this->flashBagAdd(
                 'success',
-                $this->translator->trans('Données sauvegardé')
+                $this->translator->trans('data.save')
             );
             if (isset($url['list'])) {
                 return new RedirectResponse(

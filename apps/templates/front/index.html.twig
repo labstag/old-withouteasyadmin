@@ -3,68 +3,72 @@
 {% import "macro.html.twig" as macro_site %}
 {% extends 'skeleton/home.html.twig' %}
 {% block aside %}
-    <div class="aside-lists">
-        {% if archives|length != 0 %}
-        <div class="aside-list">
-            <h4>{{ "post.archives"|trans }}</h4>
-            <ol>
-                {% for archive in archives %}
-                <li>
-                    <a href="{{ path('post_archive', {'code': archive.code}) }}">{{ archive.published|format_datetime(pattern="MMMM Y") }}</a>
-                </li>
-                {% endfor %}
-            </ol>
-        </div>
-        {% endif %}
-        {% include "front/aside.html.twig" %}
-    </div>
+	<div class="aside-lists">
+		{% if archives|length != 0 %}
+			<div class="aside-list">
+				<h4>{{ "post.archives"|trans }}</h4>
+				<ol>
+					{% for archive in archives %}
+						<li>
+							<a href="{{ path('post_archive', {'code': archive.code}) }}">{{ archive.published|format_datetime(pattern="MMMM Y") }}</a>
+						</li>
+					{% endfor %}
+				</ol>
+			</div>
+		{% endif %}
+		{% include "front/aside.html.twig" %}
+	</div>
 {% endblock %}
 {% block header %}
-    <div class="header_edito">
-        <h1 class="header_edito_title">
-            <a href="{{ path('edito') }}">
-                {{ edito.title }}
-            </a>
-        </h1>
-        {% set fond = attachment(edito.fond) %}
-        {% if fond is not null and fond.name is not null %}
-            <picture class="header_edito_img">
-                <img alt="{{ edito.title|e('html_attr') }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
-            </picture>
-        {% endif %}
-        <div class="header_edito_content">
-            {{ edito.content|raw }}
-        </div>
-    </div>
+	<div class="header_edito">
+		<h1 class="header_edito_title">
+			<a href="{{ path('edito') }}">
+				{{ edito.title }}
+			</a>
+		</h1>
+		{% set fond = attachment(edito.fond) %}
+		{% if fond is not null and fond.name is not null %}
+			<picture class="header_edito_img">
+				<img alt="{{ edito.title|e('html_attr') }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}"/>
+			</picture>
+		{% endif %}
+		<div class="header_edito_content">
+			{{ edito.content|raw }}
+		</div>
+	</div>
 {% endblock %}
 {% block section %}
-    {% for post in pagination %}
-        <div class="post_data">
-            <h2 class="post_title">
-                <a href="{{ path('post_show', {'slug': post.slug}) }}">
-                    {{ post.title }}
-                </a>
-            </h2>
-            {% set img = attachment(post.img) %}
-            {% if img is not null and img.name is not null %}
-                <picture class="post_img">
-                    <img alt="{{ post.title|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}" />
-                </picture>
-            {% endif %}
-            <div class="post_date">
-                {{ post.published|format_datetime(pattern=formatdatetime.public) }} by
-                {{ macro_site.user(post.refuser, path('post_user', {'username': post.refuser.username})) }}
-                {% set state = guard_route('admin_post_edit') %}
-                {% if state == true %}
-                    <a href="{{ path('admin_post_edit', {'id': post.id}) }}" target="_blank">{{ "post.update"|trans }}</a>
-                {% endif %}
-            </div>
-            <div class="post_content">
-                {{ post.content|raw }}
-            </div>
-        </div>
-    {% endfor %}
-    {% if pagination is defined %}
-        {{ knp_pagination_render(pagination) }}
-    {% endif %}
+	{% for post in pagination %}
+		<div class="post_data">
+			<h2 class="post_title">
+				<a href="{{ path('post_show', {'slug': post.slug}) }}">
+					{{ post.title }}
+				</a>
+			</h2>
+			{% set img = attachment(post.img) %}
+			{% if img is not null and img.name is not null %}
+				<picture class="post_img">
+					<img alt="{{ post.title|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}"/>
+				</picture>
+			{% endif %}
+			<div class="post_date">
+				{{ 'post.infodateuser'|trans(
+                    {
+                        '%date%': post.post|format_datetime(pattern=formatdatetime.admin),
+                        '%user%': macro_site.user(post.refuser, path('post_user', {'username': post.refuser.username}))
+                    }
+                )}}
+				{% set state = guard_route('admin_post_edit') %}
+				{% if state == true %}
+					<a href="{{ path('admin_post_edit', {'id': post.id}) }}" target="_blank">{{ "post.update"|trans }}</a>
+				{% endif %}
+			</div>
+			<div class="post_content">
+				{{ post.content|raw }}
+			</div>
+		</div>
+	{% endfor %}
+	{% if pagination is defined %}
+		{{ knp_pagination_render(pagination) }}
+	{% endif %}
 {% endblock %}
