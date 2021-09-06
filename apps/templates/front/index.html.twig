@@ -54,7 +54,7 @@
 			<div class="post_date">
 				{{ 'post.infodateuser'|trans(
                     {
-                        '%date%': post.post|format_datetime(pattern=formatdatetime.admin),
+                        '%date%': post.published|format_datetime(pattern=formatdatetime.public),
                         '%user%': macro_site.user(post.refuser, path('post_user', {'username': post.refuser.username}))
                     }
                 )}}
