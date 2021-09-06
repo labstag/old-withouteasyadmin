@@ -2,13 +2,13 @@
 
 namespace Labstag\Form\Admin\Collections\Param;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NotificationType extends AbstractType
+class NotificationType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -19,16 +19,16 @@ class NotificationType extends AbstractType
             'type',
             TextType::class,
             [
-                'label' => 'admin.form.param.notification.type.label',
-                'help'  => 'admin.form.param.notification.type.help',
+                'label' => $this->translator->trans('param.notification.type.label', [], 'form'),
+                'help'  => $this->translator->trans('param.notification.type.help', [], 'form'),
             ]
         );
         $builder->add(
             'mail',
             ChoiceType::class,
             [
-                'label'   => 'admin.form.param.notification.mail.label',
-                'help'    => 'admin.form.param.notification.mail.help',
+                'label'   => $this->translator->trans('param.notification.mail.label', [], 'form'),
+                'help'    => $this->translator->trans('param.notification.mail.help', [], 'form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -39,8 +39,8 @@ class NotificationType extends AbstractType
             'notify',
             ChoiceType::class,
             [
-                'label'   => 'admin.form.param.notification.notify.label',
-                'help'    => 'admin.form.param.notification.notify.help',
+                'label'   => $this->translator->trans('param.notification.notify.label', [], 'form'),
+                'help'    => $this->translator->trans('param.notification.notify.help', [], 'form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',

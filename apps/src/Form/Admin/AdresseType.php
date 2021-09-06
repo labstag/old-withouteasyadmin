@@ -2,13 +2,13 @@
 
 namespace Labstag\Form\Admin;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-abstract class AdresseType extends AbstractType
+abstract class AdresseType extends AbstractTypeLib
 {
     /**
      * {@inheritdoc}
@@ -23,16 +23,16 @@ abstract class AdresseType extends AbstractType
             'rue',
             TextType::class,
             [
-                'label' => 'admin.form.adresse.rue.label',
-                'help'  => 'admin.form.adresse.rue.help',
+                'label' => $this->translator->trans('adresse.rue.label', [], 'form'),
+                'help'  => $this->translator->trans('adresse.rue.help', [], 'form'),
             ]
         );
         $builder->add(
             'country',
             CountryType::class,
             [
-                'label' => 'admin.form.adresse.country.label',
-                'help'  => 'admin.form.adresse.country.help',
+                'label' => $this->translator->trans('adresse.country.label', [], 'form'),
+                'help'  => $this->translator->trans('adresse.country.help', [], 'form'),
                 'attr'  => [
                     'is'      => 'select-country',
                     'choices' => 'true',
@@ -43,8 +43,8 @@ abstract class AdresseType extends AbstractType
             'zipcode',
             TextType::class,
             [
-                'label' => 'admin.form.adresse.zipcode.label',
-                'help'  => 'admin.form.adresse.zipcode.help',
+                'label' => $this->translator->trans('adresse.zipcode.label', [], 'form'),
+                'help'  => $this->translator->trans('adresse.zipcode.help', [], 'form'),
                 'attr'  => ['is' => 'input-codepostal'],
             ]
         );
@@ -52,8 +52,8 @@ abstract class AdresseType extends AbstractType
             'ville',
             TextType::class,
             [
-                'label' => 'admin.form.adresse.ville.label',
-                'help'  => 'admin.form.adresse.ville.help',
+                'label' => $this->translator->trans('adresse.ville.label', [], 'form'),
+                'help'  => $this->translator->trans('adresse.ville.help', [], 'form'),
                 'attr'  => ['is' => 'input-ville'],
             ]
         );
@@ -61,8 +61,8 @@ abstract class AdresseType extends AbstractType
             'gps',
             TextType::class,
             [
-                'label' => 'admin.form.adresse.gps.label',
-                'help'  => 'admin.form.adresse.gps.help',
+                'label' => $this->translator->trans('adresse.gps.label', [], 'form'),
+                'help'  => $this->translator->trans('adresse.gps.help', [], 'form'),
                 'attr'  => ['is' => 'input-gps'],
             ]
         );
@@ -70,16 +70,16 @@ abstract class AdresseType extends AbstractType
             'type',
             TextType::class,
             [
-                'label' => 'admin.form.adresse.type.label',
-                'help'  => 'admin.form.adresse.type.help',
+                'label' => $this->translator->trans('adresse.type.label', [], 'form'),
+                'help'  => $this->translator->trans('adresse.type.help', [], 'form'),
             ]
         );
         $builder->add(
             'pmr',
             CheckboxType::class,
             [
-                'label' => 'admin.form.adresse.pmr.label',
-                'help'  => 'admin.form.adresse.pmr.help',
+                'label' => $this->translator->trans('adresse.pmr.label', [], 'form'),
+                'help'  => $this->translator->trans('adresse.pmr.help', [], 'form'),
             ]
         );
     }

@@ -3,14 +3,14 @@
 namespace Labstag\Form\Admin\Collections\Param;
 
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DisclaimerType extends AbstractType
+class DisclaimerType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -21,8 +21,8 @@ class DisclaimerType extends AbstractType
             'activate',
             ChoiceType::class,
             [
-                'label'   => 'admin.form.param.disclaimer.activate.label',
-                'help'    => 'admin.form.param.disclaimer.activate.help',
+                'label'   => $this->translator->trans('param.disclaimer.activate.label', [], 'form'),
+                'help'    => $this->translator->trans('param.disclaimer.activate.help', [], 'form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -33,8 +33,8 @@ class DisclaimerType extends AbstractType
             'title',
             TextType::class,
             [
-                'label'    => 'admin.form.param.disclaimer.title.label',
-                'help'     => 'admin.form.param.disclaimer.title.help',
+                'label'    => $this->translator->trans('param.disclaimer.title.label', [], 'form'),
+                'help'     => $this->translator->trans('param.disclaimer.title.help', [], 'form'),
                 'required' => false,
             ]
         );
@@ -42,8 +42,8 @@ class DisclaimerType extends AbstractType
             'message',
             CKEditorType::class,
             [
-                'label'    => 'admin.form.param.disclaimer.message.label',
-                'help'     => 'admin.form.param.disclaimer.message.help',
+                'label'    => $this->translator->trans('param.disclaimer.message.label', [], 'form'),
+                'help'     => $this->translator->trans('param.disclaimer.message.help', [], 'form'),
                 'required' => false,
             ]
         );
@@ -51,8 +51,8 @@ class DisclaimerType extends AbstractType
             'url-redirect',
             UrlType::class,
             [
-                'label'    => 'admin.form.param.disclaimer.url-redirect.label',
-                'help'     => 'admin.form.param.disclaimer.url-redirect.help',
+                'label'    => $this->translator->trans('param.disclaimer.url-redirect.label', [], 'form'),
+                'help'     => $this->translator->trans('param.disclaimer.url-redirect.help', [], 'form'),
                 'required' => false,
             ]
         );

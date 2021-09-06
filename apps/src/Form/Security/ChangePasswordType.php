@@ -2,40 +2,42 @@
 
 namespace Labstag\Form\Security;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ChangePasswordType extends AbstractType
+class ChangePasswordType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
     ): void
     {
+        $first  = [
+            'label' => $this->translator->trans('changepassword.password.label', [], 'form'),
+            'help'  => $this->translator->trans('changepassword.password.help', [], 'form'),
+        ];
+        $second = [
+            'label' => $this->translator->trans('changepassword.repeatpassword.label', [], 'form'),
+            'help'  => $this->translator->trans('changepassword.repeatpassword.help', [], 'form'),
+        ];
         $builder->add(
             'plainPassword',
             RepeatedType::class,
             [
                 'type'           => PasswordType::class,
-                'label'          => 'password',
-                'first_options'  => [
-                    'label' => 'security.form.changepassword.password.label',
-                    'help'  => 'security.form.changepassword.password.help',
-                ],
-                'second_options' => [
-                    'label' => 'security.form.changepassword.repeatpassword.label',
-                    'help'  => 'security.form.changepassword.repeatpassword.help',
-                ],
+                'label'          => $this->translator->trans('password', [], 'form'),
+                'first_options'  => $first,
+                'second_options' => $second,
             ]
         );
         $builder->add(
             'submit',
             SubmitType::class,
-            ['label' => 'security.form.changepassword.password.label']
+            ['label' => '.changepassword.password.label']
         );
         unset($options);
     }

@@ -7,7 +7,7 @@ use Labstag\Entity\Libelle;
 use Labstag\Entity\Post;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PostType extends AbstractType
+class PostType extends AbstractTypeLib
 {
     /**
      * {@inheritdoc}
@@ -29,16 +29,16 @@ class PostType extends AbstractType
             'title',
             TextType::class,
             [
-                'label' => 'admin.form.post.title.label',
-                'help'  => 'admin.form.post.title.help',
+                'label' => $this->translator->trans('post.title.label', [], 'form'),
+                'help'  => $this->translator->trans('post.title.help', [], 'form'),
             ]
         );
         $builder->add(
             'slug',
             TextType::class,
             [
-                'label'    => 'admin.form.post.slug.label',
-                'help'     => 'admin.form.post.slug.help',
+                'label'    => $this->translator->trans('post.slug.label', [], 'form'),
+                'help'     => $this->translator->trans('post.slug.help', [], 'form'),
                 'required' => false,
             ]
         );
@@ -46,8 +46,8 @@ class PostType extends AbstractType
             'published',
             DateTimeType::class,
             [
-                'label'        => 'admin.form.post.published.label',
-                'help'         => 'admin.form.post.published.help',
+                'label'        => $this->translator->trans('post.published.label', [], 'form'),
+                'help'         => $this->translator->trans('post.published.help', [], 'form'),
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
@@ -57,32 +57,32 @@ class PostType extends AbstractType
             'content',
             CKEditorType::class,
             [
-                'label' => 'admin.form.post.content.label',
-                'help'  => 'admin.form.post.content.help',
+                'label' => $this->translator->trans('post.content.label', [], 'form'),
+                'help'  => $this->translator->trans('post.content.help', [], 'form'),
             ]
         );
         $builder->add(
             'metaDescription',
             TextType::class,
             [
-                'label' => 'admin.form.post.metaDescription.label',
-                'help'  => 'admin.form.post.metaDescription.help',
+                'label' => $this->translator->trans('post.metaDescription.label', [], 'form'),
+                'help'  => $this->translator->trans('post.metaDescription.help', [], 'form'),
             ]
         );
         $builder->add(
             'metaKeywords',
             TextType::class,
             [
-                'label' => 'admin.form.post.metaKeywords.label',
-                'help'  => 'admin.form.post.metaKeywords.help',
+                'label' => $this->translator->trans('post.metaKeywords.label', [], 'form'),
+                'help'  => $this->translator->trans('post.metaKeywords.help', [], 'form'),
             ]
         );
         $builder->add(
             'file',
             FileType::class,
             [
-                'label'    => 'admin.form.post.file.label',
-                'help'     => 'admin.form.post.file.help',
+                'label'    => $this->translator->trans('post.file.label', [], 'form'),
+                'help'     => $this->translator->trans('post.file.help', [], 'form'),
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]
@@ -91,8 +91,8 @@ class PostType extends AbstractType
             'refuser',
             SearchableType::class,
             [
-                'label'    => 'admin.form.post.refuser.label',
-                'help'     => 'admin.form.post.refuser.help',
+                'label'    => $this->translator->trans('post.refuser.label', [], 'form'),
+                'help'     => $this->translator->trans('post.refuser.help', [], 'form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
@@ -102,16 +102,16 @@ class PostType extends AbstractType
             'commentaire',
             CheckboxType::class,
             [
-                'label' => 'admin.form.post.commentaire.label',
-                'help'  => 'admin.form.post.commentaire.help',
+                'label' => $this->translator->trans('post.commentaire.label', [], 'form'),
+                'help'  => $this->translator->trans('post.commentaire.help', [], 'form'),
             ]
         );
         $builder->add(
             'libelles',
             SearchableType::class,
             [
-                'label' => 'admin.form.post.libelles.label',
-                'help'  => 'admin.form.post.libelles.help',
+                'label' => $this->translator->trans('post.libelles.label', [], 'form'),
+                'help'  => $this->translator->trans('post.libelles.help', [], 'form'),
                 'class' => Libelle::class,
                 'route' => 'api_search_postlibelle',
             ]

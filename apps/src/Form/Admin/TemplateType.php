@@ -5,12 +5,12 @@ namespace Labstag\Form\Admin;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Template;
 use Labstag\FormType\CoreTextareaType;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TemplateType extends AbstractType
+class TemplateType extends AbstractTypeLib
 {
     /**
      * {@inheritdoc}
@@ -25,32 +25,32 @@ class TemplateType extends AbstractType
             'name',
             TextType::class,
             [
-                'label' => 'admin.form.template.name.label',
-                'help'  => 'admin.form.template.name.help',
+                'label' => $this->translator->trans('template.name.label', [], 'form'),
+                'help'  => $this->translator->trans('template.name.help', [], 'form'),
             ]
         );
         $builder->add(
             'code',
             TextType::class,
             [
-                'label' => 'admin.form.template.code.label',
-                'help'  => 'admin.form.template.code.help',
+                'label' => $this->translator->trans('template.code.label', [], 'form'),
+                'help'  => $this->translator->trans('template.code.help', [], 'form'),
             ]
         );
         $builder->add(
             'html',
             CKEditorType::class,
             [
-                'label' => 'admin.form.template.html.label',
-                'help'  => 'admin.form.template.html.help',
+                'label' => $this->translator->trans('template.html.label', [], 'form'),
+                'help'  => $this->translator->trans('template.html.help', [], 'form'),
             ]
         );
         $builder->add(
             'text',
             CoreTextareaType::class,
             [
-                'label' => 'admin.form.template.text.label',
-                'help'  => 'admin.form.template.text.help',
+                'label' => $this->translator->trans('template.text.label', [], 'form'),
+                'help'  => $this->translator->trans('template.text.help', [], 'form'),
             ]
         );
     }

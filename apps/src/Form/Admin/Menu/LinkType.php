@@ -3,13 +3,13 @@
 namespace Labstag\Form\Admin\Menu;
 
 use Labstag\Entity\Menu;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LinkType extends AbstractType
+class LinkType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -21,16 +21,16 @@ class LinkType extends AbstractType
             'libelle',
             TextType::class,
             [
-                'label' => 'admin.form.menu.link.libelle.label',
-                'help'  => 'admin.form.menu.link.libelle.help',
+                'label' => $this->translator->trans('menu.link.libelle.label', [], 'form'),
+                'help'  => $this->translator->trans('menu.link.libelle.help', [], 'form'),
             ]
         );
         $builder->add(
             'icon',
             TextType::class,
             [
-                'label'    => 'admin.form.menu.link.icon.label',
-                'help'     => 'admin.form.menu.link.icon.help',
+                'label'    => $this->translator->trans('menu.link.icon.label', [], 'form'),
+                'help'     => $this->translator->trans('menu.link.icon.help', [], 'form'),
                 'required' => false,
             ]
         );

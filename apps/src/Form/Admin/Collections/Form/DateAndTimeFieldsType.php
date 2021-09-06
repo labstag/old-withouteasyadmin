@@ -2,7 +2,7 @@
 
 namespace Labstag\Form\Admin\Collections\Form;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\WeekType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DateAndTimeFieldsType extends AbstractType
+class DateAndTimeFieldsType extends AbstractTypeLib
 {
     /**
      * {@inheritdoc}
@@ -27,7 +27,7 @@ class DateAndTimeFieldsType extends AbstractType
             'date',
             DateType::class,
             [
-                'help'   => 'help',
+                'help'   => $this->translator->trans('help', [], 'form'),
                 'widget' => 'single_text',
             ]
         );
@@ -35,7 +35,7 @@ class DateAndTimeFieldsType extends AbstractType
             'dateintervale',
             DateIntervalType::class,
             [
-                'help'        => 'help',
+                'help'        => $this->translator->trans('help', [], 'form'),
                 'placeholder' => [
                     'years'  => 'Years',
                     'months' => 'Months',
@@ -47,7 +47,7 @@ class DateAndTimeFieldsType extends AbstractType
             'datetimedate',
             DateTimeType::class,
             [
-                'help'         => 'help',
+                'help'         => $this->translator->trans('help', [], 'form'),
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
@@ -57,7 +57,7 @@ class DateAndTimeFieldsType extends AbstractType
             'time',
             TimeType::class,
             [
-                'help'         => 'help',
+                'help'         => $this->translator->trans('help', [], 'form'),
                 'with_seconds' => true,
                 'widget'       => 'single_text',
             ]
@@ -66,7 +66,7 @@ class DateAndTimeFieldsType extends AbstractType
             'birthday',
             BirthdayType::class,
             [
-                'help'   => 'help',
+                'help'   => $this->translator->trans('help', [], 'form'),
                 'widget' => 'single_text',
             ]
         );
@@ -75,7 +75,7 @@ class DateAndTimeFieldsType extends AbstractType
             WeekType::class,
             [
                 'widget' => 'single_text',
-                'help'   => 'help',
+                'help'   => $this->translator->trans('help', [], 'form'),
             ]
         );
     }

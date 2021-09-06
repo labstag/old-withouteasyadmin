@@ -3,13 +3,13 @@
 namespace Labstag\Form\Admin\Collections\Param;
 
 use Labstag\Service\OauthService;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OauthType extends AbstractType
+class OauthType extends AbstractTypeLib
 {
 
     protected OauthService $oauthService;
@@ -28,8 +28,8 @@ class OauthType extends AbstractType
             'activate',
             ChoiceType::class,
             [
-                'label'   => 'admin.form.param.oauth.activate.label',
-                'help'    => 'admin.form.param.oauth.activate.help',
+                'label'   => $this->translator->trans('param.oauth.activate.label', [], 'form'),
+                'help'    => $this->translator->trans('param.oauth.activate.help', [], 'form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -47,8 +47,8 @@ class OauthType extends AbstractType
             'type',
             ChoiceType::class,
             [
-                'label'   => 'admin.form.param.oauth.type.label',
-                'help'    => 'admin.form.param.oauth.type.help',
+                'label'   => $this->translator->trans('param.oauth.type.label', [], 'form'),
+                'help'    => $this->translator->trans('param.oauth.type.help', [], 'form'),
                 'choices' => $choices,
             ]
         );
@@ -56,8 +56,8 @@ class OauthType extends AbstractType
             'id',
             TextType::class,
             [
-                'label'    => 'admin.form.param.oauth.id.label',
-                'help'     => 'admin.form.param.oauth.id.help',
+                'label'    => $this->translator->trans('param.oauth.id.label', [], 'form'),
+                'help'     => $this->translator->trans('param.oauth.id.help', [], 'form'),
                 'required' => false,
             ]
         );
@@ -65,8 +65,8 @@ class OauthType extends AbstractType
             'secret',
             TextType::class,
             [
-                'label'    => 'admin.form.param.oauth.secret.label',
-                'help'     => 'admin.form.param.oauth.secret.help',
+                'label'    => $this->translator->trans('param.oauth.secret.label', [], 'form'),
+                'help'     => $this->translator->trans('param.oauth.secret.help', [], 'form'),
                 'required' => false,
             ]
         );

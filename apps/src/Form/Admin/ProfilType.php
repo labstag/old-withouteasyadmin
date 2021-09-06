@@ -9,7 +9,7 @@ use Labstag\Form\Admin\Collections\User\LienType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\Repository\EmailUserRepository;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProfilType extends AbstractType
+class ProfilType extends AbstractTypeLib
 {
 
     protected EmailUserRepository $repository;
@@ -40,8 +40,8 @@ class ProfilType extends AbstractType
             'username',
             TextType::class,
             [
-                'label' => 'admin.form.profil.username.label',
-                'help'  => 'admin.form.profil.username.help',
+                'label' => $this->translator->trans('profil.username.label', [], 'form'),
+                'help'  => $this->translator->trans('profil.username.help', [], 'form'),
             ]
         );
         $builder->add(
@@ -55,12 +55,12 @@ class ProfilType extends AbstractType
                 ],
                 'required'        => false,
                 'first_options'   => [
-                    'label' => 'admin.form.profil.password.label',
-                    'help'  => 'admin.form.profil.password.help',
+                    'label' => $this->translator->trans('profil.password.label', [], 'form'),
+                    'help'  => $this->translator->trans('profil.password.help', [], 'form'),
                 ],
                 'second_options'  => [
-                    'label' => 'admin.form.profil.repeatpassword.label',
-                    'help'  => 'admin.form.profil.repeatpassword.help',
+                    'label' => $this->translator->trans('profil.repeatpassword.label', [], 'form'),
+                    'help'  => $this->translator->trans('profil.repeatpassword.help', [], 'form'),
                 ],
             ]
         );
@@ -82,8 +82,8 @@ class ProfilType extends AbstractType
                     'email',
                     ChoiceType::class,
                     [
-                        'label'   => 'admin.form.profil.email.label',
-                        'help'    => 'admin.form.profil.email.help',
+                        'label'   => $this->translator->trans('profil.email.label', [], 'form'),
+                        'help'    => $this->translator->trans('profil.email.help', [], 'form'),
                         'choices' => $emails,
                     ]
                 );
@@ -94,8 +94,8 @@ class ProfilType extends AbstractType
             'file',
             FileType::class,
             [
-                'label'    => 'admin.form.profil.file.label',
-                'help'     => 'admin.form.profil.file.help',
+                'label'    => $this->translator->trans('profil.file.label', [], 'form'),
+                'help'     => $this->translator->trans('profil.file.help', [], 'form'),
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]

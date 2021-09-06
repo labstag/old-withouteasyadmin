@@ -10,14 +10,14 @@ use Labstag\Form\Admin\Collections\Form\HiddenFieldsType;
 use Labstag\Form\Admin\Collections\Form\OtherFieldsType;
 use Labstag\Form\Admin\Collections\Form\TextFieldsType;
 use Labstag\FormType\MinMaxCollectionType;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FormType extends AbstractType
+class FormType extends AbstractTypeLib
 {
     /**
      * {@inheritdoc}

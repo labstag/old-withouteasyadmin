@@ -10,7 +10,7 @@ use Labstag\Form\Admin\Collections\Param\NotificationType;
 use Labstag\Form\Admin\Collections\Param\OauthType;
 use Labstag\Form\Admin\Collections\Param\TarteaucitronType;
 use Labstag\FormType\MinMaxCollectionType;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -21,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ParamType extends AbstractType
+class ParamType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -48,16 +48,16 @@ class ParamType extends AbstractType
             LanguageType::class,
             [
                 'multiple' => true,
-                'label'    => 'admin.form.param.language.label',
-                'help'     => 'admin.form.param.language.help',
+                'label'    => $this->translator->trans('param.language.label', [], 'form'),
+                'help'     => $this->translator->trans('param.language.help', [], 'form'),
             ]
         );
         $builder->add(
             'generator',
             ChoiceType::class,
             [
-                'label'   => 'admin.form.param.generator.label',
-                'help'    => 'admin.form.param.generator.help',
+                'label'   => $this->translator->trans('param.generator.label', [], 'form'),
+                'help'    => $this->translator->trans('param.generator.help', [], 'form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -96,8 +96,8 @@ class ParamType extends AbstractType
             'site_copyright',
             CKEditorType::class,
             [
-                'label' => 'admin.form.param.site_copyright.label',
-                'help'  => 'admin.form.param.site_copyright.help',
+                'label' => $this->translator->trans('param.site_copyright.label', [], 'form'),
+                'help'  => $this->translator->trans('param.site_copyright.help', [], 'form'),
             ]
         );
         unset($options);
@@ -125,8 +125,8 @@ class ParamType extends AbstractType
                 $key,
                 $class,
                 [
-                    'label' => 'admin.form.param.'.$key.'.label',
-                    'help'  => 'admin.form.param.'.$key.'.help',
+                    'label' => $this->translator->trans('param.'.$key.'.label', [], 'form'),
+                    'help'  => $this->translator->trans('param.'.$key.'.help', [], 'form'),
                 ]
             );
         }
@@ -139,8 +139,8 @@ class ParamType extends AbstractType
                 $key,
                 FileType::class,
                 [
-                    'label'    => 'admin.form.param.'.$key.'.label',
-                    'help'     => 'admin.form.param.'.$key.'.help',
+                    'label'    => $this->translator->trans('param.'.$key.'.label', [], 'form'),
+                    'help'     => $this->translator->trans('param.'.$key.'.help', [], 'form'),
                     'required' => false,
                     'attr'     => ['accept' => 'image/*'],
                 ]

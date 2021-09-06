@@ -6,14 +6,14 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\NoteInterne;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NoteInterneType extends AbstractType
+class NoteInterneType extends AbstractTypeLib
 {
     /**
      * {@inheritdoc}
@@ -28,32 +28,32 @@ class NoteInterneType extends AbstractType
             'title',
             TextType::class,
             [
-                'label' => 'admin.form.noteinterne.title.label',
-                'help'  => 'admin.form.noteinterne.title.help',
+                'label' => $this->translator->trans('noteinterne.title.label', [], 'form'),
+                'help'  => $this->translator->trans('noteinterne.title.help', [], 'form'),
             ]
         );
         $builder->add(
             'slug',
             TextType::class,
             [
-                'label' => 'admin.form.noteinterne.slug.label',
-                'help'  => 'admin.form.noteinterne.slug.help',
+                'label' => $this->translator->trans('noteinterne.slug.label', [], 'form'),
+                'help'  => $this->translator->trans('noteinterne.slug.help', [], 'form'),
             ]
         );
         $builder->add(
             'content',
             CKEditorType::class,
             [
-                'label' => 'admin.form.noteinterne.content.label',
-                'help'  => 'admin.form.noteinterne.content.help',
+                'label' => $this->translator->trans('noteinterne.content.label', [], 'form'),
+                'help'  => $this->translator->trans('noteinterne.content.help', [], 'form'),
             ]
         );
         $builder->add(
             'date_debut',
             DateTimeType::class,
             [
-                'label'        => 'admin.form.noteinterne.date_debut.label',
-                'help'         => 'admin.form.noteinterne.date_debut.help',
+                'label'        => $this->translator->trans('noteinterne.date_debut.label', [], 'form'),
+                'help'         => $this->translator->trans('noteinterne.date_debut.help', [], 'form'),
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
@@ -63,8 +63,8 @@ class NoteInterneType extends AbstractType
             'date_fin',
             DateTimeType::class,
             [
-                'label'        => 'admin.form.noteinterne.date_fin.label',
-                'help'         => 'admin.form.noteinterne.date_fin.help',
+                'label'        => $this->translator->trans('noteinterne.date_fin.label', [], 'form'),
+                'help'         => $this->translator->trans('noteinterne.date_fin.help', [], 'form'),
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
@@ -75,8 +75,8 @@ class NoteInterneType extends AbstractType
             'file',
             FileType::class,
             [
-                'label'    => 'admin.form.noteinterne.file.label',
-                'help'     => 'admin.form.noteinterne.file.help',
+                'label'    => $this->translator->trans('noteinterne.file.label', [], 'form'),
+                'help'     => $this->translator->trans('noteinterne.file.help', [], 'form'),
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]
@@ -85,8 +85,8 @@ class NoteInterneType extends AbstractType
             'refuser',
             SearchableType::class,
             [
-                'label'    => 'admin.form.noteinterne.refuser.label',
-                'help'     => 'admin.form.noteinterne.refuser.help',
+                'label'    => $this->translator->trans('noteinterne.refuser.label', [], 'form'),
+                'help'     => $this->translator->trans('noteinterne.refuser.help', [], 'form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

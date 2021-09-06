@@ -56,13 +56,10 @@ class AdminController extends AdminControllerLib
                 );
             } catch (Exception $exception) {
                 $this->setErrorLogger($exception, $logger);
-                $this->flashBagAdd(
-                    'danger',
-                    $this->translator->trans(
-                        'admin.flashbag.data.export.fail',
-                        ['%file%' => $file]
-                    )
-                );
+                $paramtrans = ['%file%' => $file];
+
+                $msg = $this->translator->trans('admin.flashbag.data.export.fail', $paramtrans);
+                $this->flashBagAdd('danger', $msg);
             }
         }
 

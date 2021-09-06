@@ -3,13 +3,13 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\GeoCode;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class GeoCodeType extends AbstractType
+class GeoCodeType extends AbstractTypeLib
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -18,8 +18,8 @@ class GeoCodeType extends AbstractType
             'countryCode',
             CountryType::class,
             [
-                'label' => 'admin.form.geocode.countryCode.label',
-                'help'  => 'admin.form.geocode.countryCode.help',
+                'label' => $this->translator->trans('geocode.countryCode.label', [], 'form'),
+                'help'  => $this->translator->trans('geocode.countryCode.help', [], 'form'),
             ]
         );
         $tab = [
@@ -46,8 +46,8 @@ class GeoCodeType extends AbstractType
                 $id,
                 TextType::class,
                 [
-                    'label' => 'admin.form.param.tarteaucitron.'.$id.'.label',
-                    'help'  => 'admin.form.param.tarteaucitron.'.$id.'.help',
+                    'label' => $this->translator->trans('param.tarteaucitron.'.$id.'.label', [], 'form'),
+                    'help'  => $this->translator->trans('param.tarteaucitron.'.$id.'.help', [], 'form'),
                 ]
             );
         }

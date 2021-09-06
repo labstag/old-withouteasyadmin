@@ -2,11 +2,11 @@
 
 namespace Labstag\Form\Admin;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\EmailType as TypeEmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-abstract class EmailType extends AbstractType
+abstract class EmailType extends AbstractTypeLib
 {
     /**
      * {@inheritdoc}
@@ -21,8 +21,8 @@ abstract class EmailType extends AbstractType
             'adresse',
             TypeEmailType::class,
             [
-                'label' => 'admin.form.email.adresse.label',
-                'help'  => 'admin.form.email.adresse.help',
+                'label' => $this->translator->trans('email.adresse.label', [], 'form'),
+                'help'  => $this->translator->trans('email.adresse.help', [], 'form'),
             ]
         );
     }

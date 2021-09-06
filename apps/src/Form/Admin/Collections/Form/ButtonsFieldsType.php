@@ -2,13 +2,13 @@
 
 namespace Labstag\Form\Admin\Collections\Form;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ButtonsFieldsType extends AbstractType
+class ButtonsFieldsType extends AbstractTypeLib
 {
     /**
      * {@inheritdoc}

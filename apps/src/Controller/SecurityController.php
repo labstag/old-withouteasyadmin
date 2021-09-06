@@ -436,13 +436,10 @@ class SecurityController extends ControllerLib
         if ($entity instanceof OauthConnectUser) {
             $manager->remove($entity);
             $manager->flush();
-            $this->flashBagAdd(
-                'success',
-                $this->translator->trans(
-                    'security.user.oauth.dissociated',
-                    ['%string%' => $oauthCode]
-                )
-            );
+            $paramtrans = ['%string%' => $oauthCode];
+
+            $msg = $this->translator->trans('security.user.oauth.dissociated', $paramtrans);
+            $this->flashBagAdd('success', $msg);
         }
 
         return $this->redirect($referer);

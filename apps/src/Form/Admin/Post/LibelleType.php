@@ -3,12 +3,12 @@
 namespace Labstag\Form\Admin\Post;
 
 use Labstag\Entity\Libelle;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LibelleType extends AbstractType
+class LibelleType extends AbstractTypeLib
 {
     /**
      * {@inheritdoc}
@@ -22,16 +22,16 @@ class LibelleType extends AbstractType
             'nom',
             TextType::class,
             [
-                'label' => 'admin.form.libelle.nom.label',
-                'help'  => 'admin.form.libelle.nom.help',
+                'label' => $this->translator->trans('libelle.nom.label', [], 'form'),
+                'help'  => $this->translator->trans('libelle.nom.help', [], 'form'),
             ]
         );
         $builder->add(
             'slug',
             TextType::class,
             [
-                'label'    => 'admin.form.libelle.nom.label',
-                'help'     => 'admin.form.libelle.nom.help',
+                'label'    => $this->translator->trans('libelle.nom.label', [], 'form'),
+                'help'     => $this->translator->trans('libelle.nom.help', [], 'form'),
                 'required' => false,
             ]
         );

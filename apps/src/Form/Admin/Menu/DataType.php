@@ -2,12 +2,12 @@
 
 namespace Labstag\Form\Admin\Menu;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class DataType extends AbstractType
+class DataType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -19,8 +19,8 @@ class DataType extends AbstractType
             'route',
             TextType::class,
             [
-                'label'    => 'admin.form.menu.data.route.name.label',
-                'help'     => 'admin.form.menu.data.route.name.help',
+                'label'    => $this->translator->trans('menu.data.route.name.label', [], 'form'),
+                'help'     => $this->translator->trans('menu.data.route.name.help', [], 'form'),
                 'required' => false,
             ]
         );
@@ -28,8 +28,8 @@ class DataType extends AbstractType
             'param',
             TextType::class,
             [
-                'label'    => 'admin.form.menu.data.route.param.label',
-                'help'     => 'admin.form.menu.data.route.param.help',
+                'label'    => $this->translator->trans('menu.data.route.param.label', [], 'form'),
+                'help'     => $this->translator->trans('menu.data.route.param.help', [], 'form'),
                 'required' => false,
             ]
         );
@@ -37,8 +37,8 @@ class DataType extends AbstractType
             'url',
             TextType::class,
             [
-                'label'    => 'admin.form.menu.data.route.url.label',
-                'help'     => 'admin.form.menu.data.route.url.help',
+                'label'    => $this->translator->trans('menu.data.route.url.label', [], 'form'),
+                'help'     => $this->translator->trans('menu.data.route.url.help', [], 'form'),
                 'required' => false,
             ]
         );
@@ -46,8 +46,8 @@ class DataType extends AbstractType
             'target',
             ChoiceType::class,
             [
-                'label'    => 'admin.form.menu.data.route.target.label',
-                'help'     => 'admin.form.menu.data.route.target.help',
+                'label'    => $this->translator->trans('menu.data.route.target.label', [], 'form'),
+                'help'     => $this->translator->trans('menu.data.route.target.help', [], 'form'),
                 'required' => false,
                 'choices'  => [
                     ''        => '',

@@ -2,13 +2,13 @@
 
 namespace Labstag\Form\Admin\Collections\Param;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MetaSiteType extends AbstractType
+class MetaSiteType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -19,16 +19,16 @@ class MetaSiteType extends AbstractType
             'theme-color',
             ColorType::class,
             [
-                'label' => 'admin.form.param.metasite.theme-color.label',
-                'help'  => 'admin.form.param.metasite.theme-color.help',
+                'label' => $this->translator->trans('param.metasite.theme-color.label', [], 'form'),
+                'help'  => $this->translator->trans('param.metasite.theme-color.help', [], 'form'),
             ]
         );
         $builder->add(
             'viewport',
             TextType::class,
             [
-                'label'    => 'admin.form.param.metasite.viewport.label',
-                'help'     => 'admin.form.param.metasite.viewport.help',
+                'label'    => $this->translator->trans('param.metasite.viewport.label', [], 'form'),
+                'help'     => $this->translator->trans('param.metasite.viewport.help', [], 'form'),
                 'required' => false,
             ]
         );
@@ -36,8 +36,8 @@ class MetaSiteType extends AbstractType
             'description',
             TextType::class,
             [
-                'label'    => 'admin.form.param.metasite.description.label',
-                'help'     => 'admin.form.param.metasite.description.help',
+                'label'    => $this->translator->trans('param.metasite.description.label', [], 'form'),
+                'help'     => $this->translator->trans('param.metasite.description.help', [], 'form'),
                 'required' => false,
             ]
         );
@@ -45,8 +45,8 @@ class MetaSiteType extends AbstractType
             'keywords',
             TextType::class,
             [
-                'label'    => 'admin.form.param.metasite.keywords.label',
-                'help'     => 'admin.form.param.metasite.keywords.help',
+                'label'    => $this->translator->trans('param.metasite.keywords.label', [], 'form'),
+                'help'     => $this->translator->trans('param.metasite.keywords.help', [], 'form'),
                 'required' => false,
             ]
         );

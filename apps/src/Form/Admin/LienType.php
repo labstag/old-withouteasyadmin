@@ -2,12 +2,12 @@
 
 namespace Labstag\Form\Admin;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-abstract class LienType extends AbstractType
+abstract class LienType extends AbstractTypeLib
 {
     /**
      * {@inheritdoc}
@@ -22,16 +22,16 @@ abstract class LienType extends AbstractType
             'name',
             TextType::class,
             [
-                'label' => 'admin.form.lien.name.label',
-                'help'  => 'admin.form.lien.name.help',
+                'label' => $this->translator->trans('lien.name.label', [], 'form'),
+                'help'  => $this->translator->trans('lien.name.help', [], 'form'),
             ]
         );
         $builder->add(
             'adresse',
             UrlType::class,
             [
-                'label' => 'admin.form.lien.adresse.label',
-                'help'  => 'admin.form.lien.adresse.help',
+                'label' => $this->translator->trans('lien.adresse.label', [], 'form'),
+                'help'  => $this->translator->trans('lien.adresse.help', [], 'form'),
             ]
         );
     }

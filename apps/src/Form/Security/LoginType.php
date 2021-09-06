@@ -2,7 +2,7 @@
 
 namespace Labstag\Form\Security;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LoginType extends AbstractType
+class LoginType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -21,31 +21,31 @@ class LoginType extends AbstractType
             'username',
             TextType::class,
             [
-                'label' => 'security.form.login.username.label',
-                'help'  => 'security.form.login.username.help',
+                'label' => $this->translator->trans('login.username.label', [], 'form'),
+                'help'  => $this->translator->trans('login.username.help', [], 'form'),
             ]
         );
         $builder->add(
             'password',
             PasswordType::class,
             [
-                'label' => 'security.form.login.password.label',
-                'help'  => 'security.form.login.password.help',
+                'label' => $this->translator->trans('login.password.label', [], 'form'),
+                'help'  => $this->translator->trans('login.password.help', [], 'form'),
             ]
         );
         $builder->add(
             'remember_me',
             CheckboxType::class,
             [
-                'label'    => 'security.form.login.remember_me.label',
-                'help'     => 'security.form.login.remember_me.help',
+                'label'    => $this->translator->trans('login.remember_me.label', [], 'form'),
+                'help'     => $this->translator->trans('login.remember_me.help', [], 'form'),
                 'required' => false,
             ]
         );
         $builder->add(
             'submit',
             SubmitType::class,
-            ['label' => 'security.form.login.username.label']
+            ['label' => '.login.username.label']
         );
         unset($options);
     }

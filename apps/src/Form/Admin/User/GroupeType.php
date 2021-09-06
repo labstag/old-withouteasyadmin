@@ -4,11 +4,11 @@ namespace Labstag\Form\Admin\User;
 
 use Doctrine\DBAL\Types\TextType;
 use Labstag\Entity\Groupe;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class GroupeType extends AbstractType
+class GroupeType extends AbstractTypeLib
 {
     /**
      * {@inheritdoc}
@@ -23,16 +23,16 @@ class GroupeType extends AbstractType
             'name',
             TextType::class,
             [
-                'label' => 'admin.form.groupe.name.label',
-                'help'  => 'admin.form.groupe.name.help',
+                'label' => $this->translator->trans('groupe.name.label', [], 'form'),
+                'help'  => $this->translator->trans('groupe.name.help', [], 'form'),
             ]
         );
         $builder->add(
             'code',
             TextType::class,
             [
-                'label' => 'admin.form.groupe.code.label',
-                'help'  => 'admin.form.groupe.code.help',
+                'label' => $this->translator->trans('groupe.code.label', [], 'form'),
+                'help'  => $this->translator->trans('groupe.code.help', [], 'form'),
             ]
         );
     }

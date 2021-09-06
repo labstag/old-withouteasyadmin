@@ -12,7 +12,7 @@ use Labstag\Form\Admin\Collections\User\PhoneType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\FormType\SearchableType;
 use Labstag\Repository\EmailUserRepository;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -21,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class UserType extends AbstractTypeLib
 {
 
     protected EmailUserRepository $repository;
@@ -43,8 +43,8 @@ class UserType extends AbstractType
             'username',
             TextType::class,
             [
-                'label' => 'admin.form.user.username.label',
-                'help'  => 'admin.form.user.username.help',
+                'label' => $this->translator->trans('user.username.label', [], 'form'),
+                'help'  => $this->translator->trans('user.username.help', [], 'form'),
             ]
         );
         $builder->add(
@@ -56,12 +56,12 @@ class UserType extends AbstractType
                 'options'         => ['attr' => ['class' => 'password-field']],
                 'required'        => false,
                 'first_options'   => [
-                    'label' => 'admin.form.user.password.label',
-                    'help'  => 'admin.form.user.password.help',
+                    'label' => $this->translator->trans('user.password.label', [], 'form'),
+                    'help'  => $this->translator->trans('user.password.help', [], 'form'),
                 ],
                 'second_options'  => [
-                    'label' => 'admin.form.user.repeatpassword.label',
-                    'help'  => 'admin.form.user.repeatpassword.help',
+                    'label' => $this->translator->trans('user.repeatpassword.label', [], 'form'),
+                    'help'  => $this->translator->trans('user.repeatpassword.help', [], 'form'),
                 ],
             ]
         );
@@ -69,8 +69,8 @@ class UserType extends AbstractType
             'refgroupe',
             SearchableType::class,
             [
-                'label'    => 'admin.form.user.refgroupe.label',
-                'help'     => 'admin.form.user.refgroupe.help',
+                'label'    => $this->translator->trans('user.refgroupe.label', [], 'form'),
+                'help'     => $this->translator->trans('user.refgroupe.help', [], 'form'),
                 'multiple' => false,
                 'class'    => Groupe::class,
                 'route'    => 'api_search_group',
@@ -80,8 +80,8 @@ class UserType extends AbstractType
             'file',
             FileType::class,
             [
-                'label'    => 'admin.form.user.file.label',
-                'help'     => 'admin.form.user.file.help',
+                'label'    => $this->translator->trans('user.file.label', [], 'form'),
+                'help'     => $this->translator->trans('user.file.help', [], 'form'),
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]
@@ -105,8 +105,8 @@ class UserType extends AbstractType
                     'email',
                     ChoiceType::class,
                     [
-                        'label'   => 'admin.form.user.email.label',
-                        'help'    => 'admin.form.user.email.help',
+                        'label'   => $this->translator->trans('user.email.label', [], 'form'),
+                        'help'    => $this->translator->trans('user.email.help', [], 'form'),
                         'choices' => $emails,
                     ]
                 );

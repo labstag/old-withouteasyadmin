@@ -4,12 +4,12 @@ namespace Labstag\Form\Admin;
 
 use Labstag\Entity\PhoneUser;
 use Labstag\Service\PhoneService;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-abstract class PhoneType extends AbstractType
+abstract class PhoneType extends AbstractTypeLib
 {
 
     protected PhoneService $phoneService;
@@ -28,8 +28,8 @@ abstract class PhoneType extends AbstractType
     ): void
     {
         $optionsInput = [
-            'label' => 'admin.form.phone.numero.label',
-            'help'  => 'admin.form.phone.numero.help',
+            'label' => $this->translator->trans('phone.numero.label', [], 'form'),
+            'help'  => $this->translator->trans('phone.numero.help', [], 'form'),
         ];
         if (array_key_exists('data', $options)) {
             /* @var PhoneUser $phoneuser */
@@ -51,8 +51,8 @@ abstract class PhoneType extends AbstractType
             'country',
             CountryType::class,
             [
-                'label' => 'admin.form.phone.country.label',
-                'help'  => 'admin.form.phone.country.help',
+                'label' => $this->translator->trans('phone.country.label', [], 'form'),
+                'help'  => $this->translator->trans('phone.country.help', [], 'form'),
                 'attr'  => [
                     'is'      => 'select-country',
                     'choices' => 'true',
