@@ -12,14 +12,14 @@
     >
         <thead>
             <tr>
-                <th>{{ 'user.adresse.rue'|trans }}</th>
-                <th>{{ 'user.adresse.country'|trans }}</th>
-                <th>{{ 'user.adresse.zipcode'|trans }}</th>
-                <th>{{ 'user.adresse.ville'|trans }}</th>
-                <th>{{ 'user.adresse.gps'|trans }}</th>
-                <th>{{ 'user.adresse.type'|trans }}</th>
-                <th>{{ 'user.adresse.pmr'|trans }}</th>
-                <th>{{ 'user.adresse.user'|trans }}</th>
+                <th>{{ 'user.adresse.rue'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.adresse.country'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.adresse.zipcode'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.adresse.ville'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.adresse.gps'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.adresse.type'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.adresse.pmr'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.adresse.user'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -35,7 +35,7 @@
                 <td>{{ entity.ville }}</td>
                 <td>{{ entity.gps }}</td>
                 <td>{{ entity.type }}</td>
-                <td>{{ entity.pmr ? 'admin.state.yes'|trans : 'admin.state.no'|trans }}</td>
+                <td>{{ entity.pmr ? 'state.yes'|trans : 'state.no'|trans({}, 'admin.messages') }}</td>
                 <td>
                     {{ entity.refuser.username }}
                 </td>

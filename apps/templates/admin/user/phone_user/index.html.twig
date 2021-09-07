@@ -12,13 +12,13 @@
     >
         <thead>
             <tr>
-                <th>{{ 'user.phone.numero'|trans }}</th>
-                <th>{{ 'user.phone.country'|trans }}</th>
-                <th>{{ 'user.phone.verif'|trans }}</th>
-                <th>{{ 'user.phone.type'|trans }}</th>
-                <th>{{ 'user.phone.principal'|trans }}</th>
-                <th>{{ 'admin.workflow.state'|trans }}</th>
-                <th>{{ 'user.phone.workflow'|trans }}</th>
+                <th>{{ 'user.phone.numero'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.phone.country'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.phone.verif'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.phone.type'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.phone.principal'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.phone.workflow'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -35,7 +35,7 @@
                     <span class="check-{{ check }}"></span>
                 </td>
                 <td>{{ entity.type }}</td>
-                <td>{{ entity.principal ? 'admin.state.yes'|trans : 'admin.state.no'|trans }}</td>
+                <td>{{ entity.principal ? 'state.yes'|trans : 'state.no'|trans({}, 'admin.messages') }}</td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

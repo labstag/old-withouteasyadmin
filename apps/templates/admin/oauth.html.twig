@@ -1,14 +1,14 @@
 {% extends 'admin.html.twig' %}
 {% block body %}
     <div>
-        <p>{{ 'admin.oauth.message'|trans }}</p>
+        <p>{{ 'oauth.message'|trans({}, 'admin.messages') }}</p>
     </div>
     <table>
         <thead>
             <tr>
-                <th>{{ 'admin.oauth.service'|trans }}</th>
-                <th>{{ 'admin.oauth.url'|trans }}</th>
-                <th>{{ 'admin.oauth.urltoshare'|trans }}</th>
+                <th>{{ 'oauth.service'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'oauth.url'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'oauth.urltoshare'|trans({}, 'admin.messages') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +19,7 @@
                         {{ service }}
                     </td>
                     <td>
-                        <a href="{{ data.config }}">{{ 'admin.oauth.go'|trans }}</a>
+                        <a href="{{ data.config }}">{{ 'oauth.go'|trans({}, 'admin.messages') }}</a>
                     </td>
                     <td>
                         {{ "%url%/oauth/check/%service%"|replace({"%url%": config['site_url'], "%service%": service}) }}

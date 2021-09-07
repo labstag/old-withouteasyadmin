@@ -3,11 +3,11 @@
     <table>
         <tbody>
             <tr>
-                <th>{{ 'post.libelle.nom'|trans }}</th>
+                <th>{{ 'post.libelle.nom'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.nom }}</td>
             </tr>
             <tr>
-                <th>{{ 'post.libelle.slug'|trans }}</th>
+                <th>{{ 'post.libelle.slug'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.slug }}</td>
             </tr>
         </tbody>

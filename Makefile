@@ -290,7 +290,7 @@ endif
 
 .PHONY: translations
 translations: isdocker ## update translation
-	${SYMFONY_EXEC} translation:update --force --format=yml fr
+	${SYMFONY_EXEC} translation:update --force --format=yaml --clean fr 
 
 .PHONY: workflow-png
 workflow-png: isdocker ### generate workflow png

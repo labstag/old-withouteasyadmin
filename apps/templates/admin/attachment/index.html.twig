@@ -12,13 +12,13 @@
     >
         <thead>
             <tr>
-                <th>{{ 'attachment.name'|trans }}</th>
-                <th>{{ 'attachment.mimetype'|trans }}</th>
-                <th>{{ 'attachment.size'|trans }}</th>
-                <th>{{ 'attachment.dimensions'|trans }}</th>
-                <th>{{ 'attachment.download'|trans }}</th>
-                <th>{{ 'attachment.state'|trans }}</th>
-                <th>{{ 'attachment.workflow'|trans }}</th>
+                <th>{{ 'attachment.name'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'attachment.mimetype'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'attachment.size'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'attachment.dimensions'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'attachment.download'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'attachment.state'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'attachment.workflow'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -29,7 +29,7 @@
                 <td>{{ entity.mimeType }}</td>
                 <td>{{ entity.size }}</td>
                 <td>{{ entity.dimensions|json_encode }}</td>
-                <td><a href="{{ asset(entity.name) }}" target="_blank">{{ 'attachment.seefile'|trans }}</a></td>
+                <td><a href="{{ asset(entity.name) }}" target="_blank">{{ 'attachment.seefile'|trans({}, 'admin.messages') }}</a></td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

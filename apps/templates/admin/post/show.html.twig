@@ -3,21 +3,21 @@
     <table>
         <tbody>
             <tr>
-                <th>{{ 'post.title'|trans }}</th>
+                <th>{{ 'post.title'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.title }}</td>
             </tr>
             <tr>
-                <th>{{ 'post.content'|trans }}</th>
+                <th>{{ 'post.content'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
-                <th>{{ 'post.published'|trans }}</th>
+                <th>{{ 'post.published'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
             </tr>
             {% set img = attachment(entity.img) %}
             {% if img is not null and img.name is not null %}
             <tr>
-                <th>{{ 'post.image'|trans }}</th>
+                <th>{{ 'post.image'|trans({}, 'admin.messages') }}</th>
                 <td>
                     <picture >
                         <img alt="{{ 'post.image'|trans|e("html_attr") }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}" />
@@ -26,7 +26,7 @@
             </tr>
             {% endif %}
             <tr>
-                <th>{{ 'post.user'|trans }}</th>
+                <th>{{ 'post.user'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% if entity.refuser.deletedAt != '' %}
                         {% set url = 'admin_user_preview' %}
@@ -42,7 +42,7 @@
                 </td>
             </tr>
             <tr>
-                <th>{{ 'admin.workflow.state'|trans }}</th>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

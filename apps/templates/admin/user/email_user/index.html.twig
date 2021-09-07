@@ -12,11 +12,11 @@
     >
         <thead>
             <tr>
-                <th>{{ 'user.email.adresse'|trans }}</th>
-                <th>{{ 'user.email.principal'|trans }}</th>
-                <th>{{ 'user.email.user'|trans }}</th>
-                <th>{{ 'admin.workflow.state'|trans }}</th>
-                <th>{{ 'user.email.workflow'|trans }}</th>
+                <th>{{ 'user.email.adresse'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.email.principal'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.email.user'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.email.workflow'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -24,7 +24,7 @@
         {% for entity in pagination %}
             <tr data-id="{{ entity.id }}">
                 <td>{{ entity.adresse }}</td>
-                <td>{{ entity.principal ? 'admin.state.yes'|trans : 'admin.state.no'|trans }}</td>
+                <td>{{ entity.principal ? 'state.yes'|trans : 'state.no'|trans({}, 'admin.messages') }}</td>
                 <td>{{ entity.refuser }}</td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}

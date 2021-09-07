@@ -11,8 +11,8 @@
     >
         <thead>
             <tr>
-                <th>{{ 'trash.entite'|trans }}</th>
-                <th>{{ 'trash.count'|trans }}</th>
+                <th>{{ 'trash.entite'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'trash.count'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -30,7 +30,7 @@
                     {% if state == true %}
                     <link-trash
                         href="{{ path(data.properties.url) }}"
-                        title="{{ 'trash.go'|trans }}"
+                        title="{{ 'trash.go'|trans({}, 'admin.messages') }}"
                     ></link-trash>
                     {% endif %}
                     {% set state = guard_route('api_action_empty') %}

@@ -12,11 +12,11 @@
     >
         <thead>
             <tr>
-                <th>{{ 'post.title'|trans }}</th>
-                <th>{{ 'post.user'|trans }}</th>
-                <th>{{ 'post.published'|trans }}</th>
-                <th>{{ 'admin.workflow.state'|trans }}</th>
-                <th>{{ 'post.workflow'|trans }}</th>
+                <th>{{ 'post.title'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'post.user'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'post.published'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'post.workflow'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>
