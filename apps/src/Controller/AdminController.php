@@ -11,6 +11,7 @@ use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ParamType;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\NoteInterneRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
@@ -162,6 +163,7 @@ class AdminController extends AdminControllerLib
      * @Route("/profil", name="admin_profil", methods={"GET","POST"})
      */
     public function profil(
+        UploadAnnotationReader $uploadAnnotReader,
         GuardService $guardService,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
@@ -174,6 +176,7 @@ class AdminController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->update(
+            $uploadAnnotReader,
             $guardService,
             $attachmentRepository,
             $attachmentRH,
