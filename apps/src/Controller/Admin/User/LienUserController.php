@@ -111,9 +111,13 @@ class LienUserController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_lienuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(LienUser $lienUser): Response
+    public function showOrPreview(
+        GuardService $guardService,
+        LienUser $lienUser
+    ): Response
     {
         return $this->renderShowOrPreview(
+            $guardService,
             $lienUser,
             'admin/user/lien_user/show.html.twig',
             [

@@ -114,9 +114,13 @@ class LibelleController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_postlibelle_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(Libelle $libelle): Response
+    public function showOrPreview(
+        GuardService $guardService,
+        Libelle $libelle
+    ): Response
     {
         return $this->renderShowOrPreview(
+            $guardService,
             $libelle,
             'admin/post/libelle/show.html.twig',
             [

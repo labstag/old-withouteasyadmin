@@ -120,9 +120,13 @@ class NoteInterneController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_noteinterne_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(NoteInterne $noteInterne): Response
+    public function showOrPreview(
+        GuardService $guardService,
+        NoteInterne $noteInterne
+    ): Response
     {
         return $this->renderShowOrPreview(
+            $guardService,
             $noteInterne,
             'admin/note_interne/show.html.twig',
             [

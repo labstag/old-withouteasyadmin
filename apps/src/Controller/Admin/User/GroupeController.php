@@ -171,9 +171,13 @@ class GroupeController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_groupuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(Groupe $groupe): Response
+    public function showOrPreview(
+        GuardService $guardService,
+        Groupe $groupe
+    ): Response
     {
         return $this->renderShowOrPreview(
+            $guardService,
             $groupe,
             'admin/user/groupe/show.html.twig',
             [

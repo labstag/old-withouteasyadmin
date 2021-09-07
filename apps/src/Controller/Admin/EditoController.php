@@ -116,9 +116,13 @@ class EditoController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_edito_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(Edito $edito): Response
+    public function showOrPreview(
+        GuardService $guardService,
+        Edito $edito
+    ): Response
     {
         return $this->renderShowOrPreview(
+            $guardService,
             $edito,
             'admin/edito/show.html.twig',
             [

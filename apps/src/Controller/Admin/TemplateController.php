@@ -111,9 +111,13 @@ class TemplateController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_template_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(Template $template): Response
+    public function showOrPreview(
+        GuardService $guardService,
+        Template $template
+    ): Response
     {
         return $this->renderShowOrPreview(
+            $guardService,
             $template,
             'admin/template/show.html.twig',
             [

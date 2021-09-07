@@ -116,9 +116,13 @@ class EmailUserController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_emailuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(EmailUser $emailUser): Response
+    public function showOrPreview(
+        GuardService $guardService,
+        EmailUser $emailUser
+    ): Response
     {
         return $this->renderShowOrPreview(
+            $guardService,
             $emailUser,
             'admin/user/email_user/show.html.twig',
             [

@@ -177,11 +177,15 @@ class UserController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_user_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(User $user): Response
+    public function showOrPreview(
+        GuardService $guardService,
+        User $user
+    ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->renderShowOrPreview(
+            $guardService,
             $user,
             'admin/user/show.html.twig',
             [

@@ -116,9 +116,13 @@ class PhoneUserController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_phoneuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(PhoneUser $phoneUser): Response
+    public function showOrPreview(
+        GuardService $guardService,
+        PhoneUser $phoneUser
+    ): Response
     {
         return $this->renderShowOrPreview(
+            $guardService,
             $phoneUser,
             'admin/user/phone_user/show.html.twig',
             [

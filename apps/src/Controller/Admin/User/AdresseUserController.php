@@ -115,9 +115,13 @@ class AdresseUserController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_adresseuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(AdresseUser $adresseUser): Response
+    public function showOrPreview(
+        GuardService $guardService,
+        AdresseUser $adresseUser
+    ): Response
     {
         return $this->renderShowOrPreview(
+            $guardService,
             $adresseUser,
             'admin/user/adresse_user/show.html.twig',
             [

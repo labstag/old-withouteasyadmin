@@ -109,9 +109,13 @@ class GeoCodeController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_geocode_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(GeoCode $geoCode): Response
+    public function showOrPreview(
+        GuardService $guardService,
+        GeoCode $geoCode
+    ): Response
     {
         return $this->renderShowOrPreview(
+            $guardService,
             $geoCode,
             'admin/geocode/show.html.twig',
             [

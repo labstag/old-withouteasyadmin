@@ -116,9 +116,13 @@ class PostController extends AdminControllerLib
      * @Route("/preview/{id}", name="admin_post_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(Post $post): Response
+    public function showOrPreview(
+        GuardService $guardService,
+        Post $post
+    ): Response
     {
         return $this->renderShowOrPreview(
+            $guardService,
             $post,
             'admin/post/show.html.twig',
             [
