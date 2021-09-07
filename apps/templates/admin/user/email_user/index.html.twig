@@ -24,7 +24,7 @@
         {% for entity in pagination %}
             <tr data-id="{{ entity.id }}">
                 <td>{{ entity.adresse }}</td>
-                <td>{{ entity.principal ? 'state.yes'|trans : 'state.no'|trans({}, 'admin.messages') }}</td>
+                <td>{{ entity.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                 <td>{{ entity.refuser }}</td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}

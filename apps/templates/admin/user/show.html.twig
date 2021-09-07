@@ -65,7 +65,7 @@
                                         </span>
                                     </td>
                                     <td>{{ adresse.type }}</td>
-                                    <td>{{ adresse.pmr ? 'state.yes'|trans : 'state.no'|trans({}, 'admin.messages') }}</td>
+                                    <td>{{ adresse.pmr ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -113,7 +113,7 @@
                             {% for email in emails %}
                                 <tr>
                                     <td><a href="mailto:{{ email.adresse }}">{{ email.adresse }}</a></td>
-                                    <td>{{ email.principal ? 'state.yes'|trans : 'state.no'|trans({}, 'admin.messages') }}</td>
+                                    <td>{{ email.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -149,7 +149,7 @@
                                         {{ phone.country|country_name('fr') }}
                                     </td>
                                     <td>{{ phone.type }}</td>
-                                    <td>{{ phone.principal ? 'state.yes'|trans : 'state.no'|trans({}, 'admin.messages') }}</td>
+                                    <td>{{ phone.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

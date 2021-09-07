@@ -4,9 +4,6 @@ admin.flashbag.trash.empty: __admin.flashbag.trash.empty
 admin.group.guard.superadmin.nope: __admin.group.guard.superadmin.nope
 admin.guard.entite: __admin.guard.entite
 admin.guard.transition: __admin.guard.transition
-admin.menu.add: __admin.menu.add
-admin.menu.adddivider: __admin.menu.adddivider
-admin.menu.move: __admin.menu.move
 admin.robotstxt.file: __admin.robotstxt.file
 admin.togglenavigation: __admin.togglenavigation
 admin.user.guard.superadmin.nope: __admin.user.guard.superadmin.nope
@@ -23,8 +20,6 @@ error.page.errors: 'Erreur interne du serveur.'
 error.page.gotosite: __error.page.gotosite
 form.icon.error: __form.icon.error
 form.requireinfo: __form.requireinfo
-link.preview: __link.preview
-link.show: __link.show
 modal.attachmentdelete.message: __modal.attachmentdelete.message
 modal.attachmentdelete.title: __modal.attachmentdelete.title
 modal.button.cancel: __modal.button.cancel

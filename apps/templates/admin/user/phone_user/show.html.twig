@@ -26,7 +26,7 @@
             </tr>
             <tr>
                 <th>{{ 'user.phone.principal'|trans({}, 'admin.messages') }}</th>
-                <td>{{ entity.principal ? 'state.yes'|trans : 'state.no'|trans({}, 'admin.messages') }}</td>
+                <td>{{ entity.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
             </tr>
             <tr>
                 <th>{{ 'user.phone.user'|trans({}, 'admin.messages') }}</th>

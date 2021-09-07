@@ -116,13 +116,13 @@
                 {{ _self.show(
                     entity,
                     actions['show'],
-                    'link.show'|trans
+                    'link.show'|trans({}, 'admin.messages')
                 ) }}
             {% elseif trash != 0 %}
                 {{ _self.show(
                     entity,
                     actions['preview'],
-                    'link.preview'|trans
+                    'link.preview'|trans({}, 'admin.messages')
                 ) }}
             {% endif %}
         {% endif %}

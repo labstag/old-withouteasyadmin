@@ -35,7 +35,7 @@
                     <span class="check-{{ check }}"></span>
                 </td>
                 <td>{{ entity.type }}</td>
-                <td>{{ entity.principal ? 'state.yes'|trans : 'state.no'|trans({}, 'admin.messages') }}</td>
+                <td>{{ entity.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

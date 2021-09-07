@@ -35,7 +35,7 @@
                 <td>{{ entity.ville }}</td>
                 <td>{{ entity.gps }}</td>
                 <td>{{ entity.type }}</td>
-                <td>{{ entity.pmr ? 'state.yes'|trans : 'state.no'|trans({}, 'admin.messages') }}</td>
+                <td>{{ entity.pmr ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                 <td>
                     {{ entity.refuser.username }}
                 </td>

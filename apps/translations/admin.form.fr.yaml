@@ -42,6 +42,8 @@ groupe.name.help: ''
 groupe.name.label: Nom
 libelle.name.help: ''
 libelle.name.label: Nom
+libelle.slug.help: ""
+libelle.slug.label: "Slug"
 lien.adresse.help: ''
 lien.adresse.label: 'Adresse URL'
 lien.name.help: ''
