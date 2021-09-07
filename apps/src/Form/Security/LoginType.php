@@ -47,7 +47,7 @@ class LoginType extends AbstractTypeLib
             'submit',
             SubmitType::class,
             [
-                'label' => $this->translator->trans('login.username.label', [], 'security.form'),
+                'label' => $this->translator->trans('login.submit.label', [], 'security.form'),
             ]
         );
         unset($options);

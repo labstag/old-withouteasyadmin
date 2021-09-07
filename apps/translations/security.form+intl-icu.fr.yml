@@ -1,17 +1,18 @@
-changepassword.password.help: ""
-changepassword.password.label: __changepassword.password.label
-changepassword.repeatpassword.help: ""
-changepassword.repeatpassword.label: __changepassword.repeatpassword.label
-disclaimer.confirm.help: ""
-disclaimer.confirm.label: __disclaimer.confirm.label
-disclaimer.reset.label: __disclaimer.reset.label
-disclaimer.submit.label: __disclaimer.submit.label
-login.password.help: ""
-login.password.label: __login.password.label
-login.remember_me.help: ""
-login.remember_me.label: __login.remember_me.label
-login.username.help: ""
-login.username.label: __login.username.label
-lostpassword.submit.label: __lostpassword.submit.label
-lostpassword.value.help: ""
-lostpassword.value.label: __lostpassword.value.label
+changepassword.password.help: ''
+changepassword.password.label: "Mot de passe"
+changepassword.repeatpassword.help: ''
+changepassword.repeatpassword.label: "Répéter le mot de passe"
+disclaimer.confirm.help: ''
+disclaimer.confirm.label: "J'ai lu l'avis et en comprends l'énoncé"
+disclaimer.reset.label: "Je désire quitter dès maintenant"
+disclaimer.submit.label: "Je désire accéder au site"
+login.password.help: ''
+login.password.label: "Mot de passe"
+login.remember_me.help: ''
+login.remember_me.label: "Rester connecté"
+login.username.help: ''
+login.username.label: "Pseudo / Courriel"
+lostpassword.submit.label: 'Obtenir le mot de passe'
+lostpassword.value.help: ''
+lostpassword.value.label: 'Pseudo / Courriel'
+login.submit.label: "S'identifier"
