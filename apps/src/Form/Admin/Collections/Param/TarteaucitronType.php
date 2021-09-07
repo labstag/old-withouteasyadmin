@@ -21,8 +21,8 @@ class TarteaucitronType extends AbstractTypeLib
             'privacyUrl',
             UrlType::class,
             [
-                'label'    => $this->translator->trans('admin.param.param.tarteaucitron.privacyUrl.label', [], 'admin.form'),
-                'help'     => $this->translator->trans('admin.param.param.tarteaucitron.privacyUrl.help', [], 'admin.form'),
+                'label'    => $this->translator->trans('admin.param.tarteaucitron.privacyUrl.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('admin.param.tarteaucitron.privacyUrl.help', [], 'admin.form'),
                 'required' => false,
             ]
         );

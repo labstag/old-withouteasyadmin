@@ -52,7 +52,7 @@ class UserType extends AbstractTypeLib
             RepeatedType::class,
             [
                 'type'            => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => $this->translator->trans('profil.password.match', [], 'admin.form'),
                 'options'         => ['attr' => ['class' => 'password-field']],
                 'required'        => false,
                 'first_options'   => [

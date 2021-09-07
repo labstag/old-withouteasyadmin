@@ -12,4 +12,3 @@ login.username.help: ""
 login.username.label: __login.username.label
 lostpassword.value.help: ""
 lostpassword.value.label: __lostpassword.value.label
-password: __password

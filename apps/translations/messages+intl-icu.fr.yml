@@ -139,7 +139,6 @@ pagination.first: __pagination.first
 pagination.last: __pagination.last
 pagination.next: __pagination.next
 pagination.previous: __pagination.previous
-param.: __param.
 param.change: __param.change
 param.tarteaucitron.: __param.tarteaucitron.
 post.archives: __post.archives

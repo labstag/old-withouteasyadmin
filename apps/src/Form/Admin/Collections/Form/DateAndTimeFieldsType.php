@@ -27,7 +27,7 @@ class DateAndTimeFieldsType extends AbstractTypeLib
             'date',
             DateType::class,
             [
-                'help'   => $this->translator->trans('help', [], 'admin.form'),
+                'help'   => 'help',
                 'widget' => 'single_text',
             ]
         );
@@ -35,7 +35,7 @@ class DateAndTimeFieldsType extends AbstractTypeLib
             'dateintervale',
             DateIntervalType::class,
             [
-                'help'        => $this->translator->trans('help', [], 'admin.form'),
+                'help'        => 'help',
                 'placeholder' => [
                     'years'  => 'Years',
                     'months' => 'Months',
@@ -47,7 +47,7 @@ class DateAndTimeFieldsType extends AbstractTypeLib
             'datetimedate',
             DateTimeType::class,
             [
-                'help'         => $this->translator->trans('help', [], 'admin.form'),
+                'help'         => 'help',
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
@@ -57,7 +57,7 @@ class DateAndTimeFieldsType extends AbstractTypeLib
             'time',
             TimeType::class,
             [
-                'help'         => $this->translator->trans('help', [], 'admin.form'),
+                'help'         => 'help',
                 'with_seconds' => true,
                 'widget'       => 'single_text',
             ]
@@ -66,7 +66,7 @@ class DateAndTimeFieldsType extends AbstractTypeLib
             'birthday',
             BirthdayType::class,
             [
-                'help'   => $this->translator->trans('help', [], 'admin.form'),
+                'help'   => 'help',
                 'widget' => 'single_text',
             ]
         );
@@ -75,7 +75,7 @@ class DateAndTimeFieldsType extends AbstractTypeLib
             WeekType::class,
             [
                 'widget' => 'single_text',
-                'help'   => $this->translator->trans('help', [], 'admin.form'),
+                'help'   => 'help',
             ]
         );
     }

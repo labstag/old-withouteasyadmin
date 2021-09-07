@@ -29,7 +29,6 @@ class ChangePasswordType extends AbstractTypeLib
             RepeatedType::class,
             [
                 'type'           => PasswordType::class,
-                'label'          => $this->translator->trans('password', [], 'security.form'),
                 'first_options'  => $first,
                 'second_options' => $second,
             ]

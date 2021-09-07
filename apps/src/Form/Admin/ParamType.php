@@ -121,12 +121,14 @@ class ParamType extends AbstractTypeLib
     private function setInputs($builder, $inputs)
     {
         foreach ($inputs as $key => $class) {
+            $label = 'param.'.$key.'.label';
+            $help = 'param.'.$key.'.help';
             $builder->add(
                 $key,
                 $class,
                 [
-                    'label' => $this->translator->trans('param.'.$key.'.label', [], 'admin.form'),
-                    'help'  => $this->translator->trans('param.'.$key.'.help', [], 'admin.form'),
+                    'label' => $this->translator->trans($label, [], 'admin.form'),
+                    'help'  => $this->translator->trans($help, [], 'admin.form'),
                 ]
             );
         }
@@ -135,12 +137,14 @@ class ParamType extends AbstractTypeLib
     private function setFileType($builder, $images)
     {
         foreach ($images as $key) {
+            $label = 'param.'.$key.'.label';
+            $help = 'param.'.$key.'.help';
             $builder->add(
                 $key,
                 FileType::class,
                 [
-                    'label'    => $this->translator->trans('param.'.$key.'.label', [], 'admin.form'),
-                    'help'     => $this->translator->trans('param.'.$key.'.help', [], 'admin.form'),
+                    'label' => $this->translator->trans($label, [], 'admin.form'),
+                    'help'  => $this->translator->trans($help, [], 'admin.form'),
                     'required' => false,
                     'attr'     => ['accept' => 'image/*'],
                 ]

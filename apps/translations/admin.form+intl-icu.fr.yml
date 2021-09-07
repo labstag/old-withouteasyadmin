@@ -1,5 +1,5 @@
-admin.param.param.tarteaucitron.privacyUrl.help: ""
-admin.param.param.tarteaucitron.privacyUrl.label: __admin.param.param.tarteaucitron.privacyUrl.label
+admin.param.tarteaucitron.privacyUrl.help: ""
+admin.param.tarteaucitron.privacyUrl.label: __admin.param.tarteaucitron.privacyUrl.label
 adresse.country.help: ""
 adresse.country.label: __adresse.country.label
 adresse.gps.help: ""
@@ -42,7 +42,6 @@ groupe.code.help: ""
 groupe.code.label: __groupe.code.label
 groupe.name.help: ""
 groupe.name.label: __groupe.name.label
-help: __help
 libelle.nom.help: ""
 libelle.nom.label: __libelle.nom.label
 lien.adresse.help: ""
@@ -161,6 +160,7 @@ profil.file.help: ""
 profil.file.label: __profil.file.label
 profil.password.help: ""
 profil.password.label: __profil.password.label
+profil.password.match: __profil.password.match
 profil.repeatpassword.help: ""
 profil.repeatpassword.label: __profil.repeatpassword.label
 profil.username.help: ""
