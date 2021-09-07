@@ -3,26 +3,26 @@
     <table>
         <tbody>
             <tr>
-                <th>{{ 'user.adresse.rue'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.rue'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.rue }}</td>
             </tr>
             <tr>
-                <th>{{ 'user.adresse.country'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.country'|trans({}, 'admin.messages') }}</th>
                 <td>
                     <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
                     {{ entity.country|country_name('fr') }}
                 </td>
             </tr>
             <tr>
-                <th>{{ 'user.adresse.zipcode'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.zipcode'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.zipcode }}</td>
             </tr>
             <tr>
-                <th>{{ 'user.adresse.ville'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.ville'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.ville }}</td>
             </tr>
             <tr>
-                <th>{{ 'user.adresse.gps'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.gps'|trans({}, 'admin.messages') }}</th>
                 <td>
                     <span class="gps-icon">
                         {{ entity.gps }}
@@ -30,15 +30,15 @@
                 </td>
             </tr>
             <tr>
-                <th>{{ 'user.adresse.type'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.type'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.type }}</td>
             </tr>
             <tr>
-                <th>{{ 'user.adresse.pmr'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.pmr'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.pmr ? 'state.yes'|trans : 'state.no'|trans({}, 'admin.messages') }}</td>
             </tr>
             <tr>
-                <th>{{ 'user.adresse.user'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.user'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% if entity.refuser.deletedAt != '' %}
                         {% set url = 'admin_user_preview' %}

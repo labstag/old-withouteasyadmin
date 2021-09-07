@@ -3,15 +3,15 @@
     <table>
         <tbody>
             <tr>
-                <th>{{ 'user.lien.name'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.link.name'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.name }}</td>
             </tr>
             <tr>
-                <th>{{ 'user.lien.adresse'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.link.adresse'|trans({}, 'admin.messages') }}</th>
                 <td><a href="{{ entity.adresse }}" target="_blank">{{ entity.adresse }}</a></td>
             </tr>
             <tr>
-                <th>{{ 'user.lien.user'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.link.user'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% if entity.refuser.deletedAt != '' %}
                         {% set url = 'admin_user_preview' %}

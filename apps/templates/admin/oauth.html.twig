@@ -1,7 +1,7 @@
 {% extends 'admin.html.twig' %}
 {% block body %}
     <div>
-        <p>{{ 'oauth.message'|trans({}, 'admin.messages') }}</p>
+        <p>{{ 'oauth.message'|trans({}, 'admin.messages')|raw }}</p>
     </div>
     <table>
         <thead>

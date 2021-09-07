@@ -40,13 +40,13 @@
         {% if adresses|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>{{ 'user.adresses'|trans({"%nbr%": entity.adresseUsers|length}, 'admin.messages') }}</legend>
+                    <legend>{{ 'user.addresss'|trans({"%nbr%": entity.adresseUsers|length}, 'admin.messages') }}</legend>
                     <table>
                         <thead>
                             <tr>
-                                <th>{{ 'user.adresse.adresse'|trans({}, 'admin.messages') }}</th>
-                                <th>{{ 'user.adresse.type'|trans({}, 'admin.messages') }}</th>
-                                <th>{{ 'user.adresse.pmr'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.address.adresse'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.address.type'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.address.pmr'|trans({}, 'admin.messages') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,12 +77,12 @@
         {% if liens|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>{{ 'user.liens'|trans({"%nbr%": entity.lienUsers|length}, 'admin.messages') }}</legend>
+                    <legend>{{ 'user.links'|trans({"%nbr%": entity.lienUsers|length}, 'admin.messages') }}</legend>
                     <table>
                         <thead>
                             <tr>
-                                <th>{{ 'user.lien.name'|trans({}, 'admin.messages') }}</th>
-                                <th>{{ 'user.lien.adresse'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.link.name'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.link.adresse'|trans({}, 'admin.messages') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -125,15 +125,15 @@
         {% if phones|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>{{ 'user.telephones'|trans({"%nbr%": entity.emailUsers|length}, 'admin.messages') }}</legend>
+                    <legend>{{ 'user.phones'|trans({"%nbr%": entity.emailUsers|length}, 'admin.messages') }}</legend>
                     <table>
                         <thead>
                             <tr>
-                                <th>{{ 'user.telephone.numero'|trans({}, 'admin.messages') }}</th>
-                                <th>{{ 'user.telephone.verif'|trans({}, 'admin.messages') }}</th>
-                                <th>{{ 'user.telephone.country'|trans({}, 'admin.messages') }}</th>
-                                <th>{{ 'user.telephone.type'|trans({}, 'admin.messages') }}</th>
-                                <th>{{ 'user.telephone.principal'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.phone.numero'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.phone.verif'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.phone.country'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.phone.type'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.phone.principal'|trans({}, 'admin.messages') }}</th>
                             </tr>
                         </thead>
                         <tbody>

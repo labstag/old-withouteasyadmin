@@ -7,143 +7,137 @@ attachment.size: Taille
 attachment.state: Étape
 attachment.workflow: Workflow
 edito.content: Contenu
-edito.fond: __edito.fond
+edito.fond: Fond
 edito.published: 'Publié ?'
 edito.state: Étape
 edito.title: Titre
 edito.user: Utilisateur
 edito.workflow: Workflow
-form.param.datetime: __form.param.datetime
-form.param.disclaimer: __form.param.disclaimer
-form.param.favicon: __form.param.favicon
-form.param.image: __form.param.image
-form.param.meta: __form.param.meta
-form.param.notification: __form.param.notification
-form.param.oauth: __form.param.oauth
-form.param.tarteaucitron: __form.param.tarteaucitron
-form.profil.address: __form.profil.address
-form.profil.avatar: __form.profil.avatar
-form.profil.emails: __form.profil.emails
-form.profil.links: __form.profil.links
-form.profil.oauth: __form.profil.oauth
-form.profil.phones: __form.profil.phones
-form.user.address: __form.user.address
-form.user.avatar: __form.user.avatar
-form.user.emails: __form.user.emails
-form.user.links: __form.user.links
-form.user.phones: __form.user.phones
-geocode.accuracy: __geocode.accuracy
-geocode.actions: __geocode.actions
-geocode.community: __geocode.community
-geocode.communitycode: __geocode.communitycode
-geocode.communityname: __geocode.communityname
-geocode.coordonnees: __geocode.coordonnees
-geocode.countrycode: __geocode.countrycode
-geocode.latitude: __geocode.latitude
-geocode.longitude: __geocode.longitude
-geocode.placename: __geocode.placename
-geocode.postalcode: __geocode.postalcode
-geocode.province: __geocode.province
-geocode.provincecode: __geocode.provincecode
-geocode.provincename: __geocode.provincename
-geocode.statecode: __geocode.statecode
-geocode.statename: __geocode.statename
-guard.actions: __guard.actions
-guard.entite: __guard.entite
-guard.groupe: __guard.groupe
-guard.lost: __guard.lost
-guard.route: __guard.route
-guard.transition: __guard.transition
+form.param.datetime: "Format de la date"
+form.param.disclaimer: "Clause de non-responsabilité"
+form.param.favicon: Favicon
+form.param.image: Image
+form.param.meta: SEO
+form.param.notification: Notification
+form.param.oauth: Oauth
+form.param.tarteaucitron: Tarteaucitron
+form.profil.address: Adresses
+form.profil.avatar: Avatar
+form.profil.emails: Emails
+form.profil.links: Liens
+form.profil.oauth: Oauth
+form.profil.phones: Téléphones
+form.user.address: Adresses
+form.user.avatar: Avatar
+form.user.emails: Emails
+form.user.links: Liens
+form.user.phones: Téléphones
+geocode.accuracy: "Accuracy"
+geocode.actions: "Actions"
+geocode.community: "Community"
+geocode.communitycode: "Communitycode"
+geocode.communityname: "Communityname"
+geocode.coordonnees: "Coordonnees"
+geocode.countrycode: "Countrycode"
+geocode.latitude: "Latitude"
+geocode.longitude: "Longitude"
+geocode.placename: "Placename"
+geocode.postalcode: "Postalcode"
+geocode.province: "Province"
+geocode.provincecode: "Provincecode"
+geocode.provincename: "Provincename"
+geocode.statecode: "Statecode"
+geocode.statename: "Statename"
+guard.actions: Actions
+guard.entite: Table
+guard.groupe: Groupe
+guard.lost: "Droit manquant"
+guard.route: Route
+guard.transition: Transition
 guard.workflow: Workflow
-guardroute: __guardroute
-guardworkflow: __guardworkflow
-link.delete: __link.delete
-link.destroy: __link.destroy
-link.edit: __link.edit
-link.restore: __link.restore
-menu.clef: __menu.clef
-menu.data: __menu.data
-menu.divider: __menu.divider
-menu.icon: __menu.icon
-menu.libelle: __menu.libelle
-menu.position: __menu.position
-menu.separateur: __menu.separateur
-norecord: __norecord
+link.delete: "Supprimer"
+link.destroy: "Détruire"
+link.edit: "Éditer"
+link.restore: "Restaurer"
+menu.clef: Clef
+menu.data: Data
+menu.divider: "Diviseur"
+menu.icon: Icone
+menu.libelle: Libellé
+menu.position: Position
+menu.separateur: "Séparateur ?"
+norecord: "Aucun enregistrement trouvé"
 noteinterne.content: Contenu
-noteinterne.date_debut: __noteinterne.date_debut
-noteinterne.date_fin: __noteinterne.date_fin
-noteinterne.fond: __noteinterne.fond
-noteinterne.infodateuser: __noteinterne.infodateuser
+noteinterne.date_debut: "Date de début"
+noteinterne.date_fin: "Date de fin"
+noteinterne.fond: "Fond"
+noteinterne.infodateuser: "%date% par %user%"
 noteinterne.title: Titre
 noteinterne.user: Utilisateur
 noteinterne.workflow: Workflow
-oauth.go: __oauth.go
-oauth.message: __oauth.message
-oauth.service: __oauth.service
-oauth.url: __oauth.url
-oauth.urltoshare: __oauth.urltoshare
+oauth.go: "Y accéder"
+oauth.message: "Vous êtes sur la page qui vous permet de retrouver les différentes routes permettant de parametrer les connexions Oauth.</p>
+        <p>Pour chaque service proposé ci-dessous, merci de récupérer l'<b>identifiant</b> ainsi que la <b>clef secrète</b>."
+oauth.service: Service
+oauth.url: Adresse URL
+oauth.urltoshare: "Url à indiquer"
 post.content: Contenu
-post.image: __post.image
-post.libelle.name: __post.libelle.nom
-post.libelle.slug: __post.libelle.slug
+post.image: Image
+post.libelle.name: "Nom"
+post.libelle.slug: "Slug"
 post.published: 'Publié ?'
 post.title: Titre
 post.user: Utilisateur
 post.workflow: Workflow
 state.no: Non
 state.yes: Oui
-table.admin.action: __table.admin.action
-table.admin.empty: __table.admin.empty
-table.admin.multipleall: __table.admin.multipleall
-table.admin.mutipleelement: __table.admin.mutipleelement
+table.admin.action: Actions
+table.admin.empty: Aucune données
+table.admin.multipleall: Tout sélectionner
+table.admin.mutipleelement: Selection
 template.code: Code
 template.html: Html
 template.name: Nom
 template.text: Texte
-trash.count: __trash.count
-trash.empty: __trash.empty
-trash.entite: __trash.entite
-trash.go: __trash.go
-user.adresse.adresse: __user.adresse.adresse
-user.adresse.country: __user.adresse.country
-user.adresse.gps: __user.adresse.gps
-user.adresse.pmr: __user.adresse.pmr
-user.adresse.rue: __user.adresse.rue
-user.adresse.type: __user.adresse.type
-user.adresse.user: Utilisateur
-user.adresse.ville: __user.adresse.ville
-user.adresse.zipcode: __user.adresse.zipcode
-user.adresses: __user.adresses
-user.avatar: __user.avatar
-user.email: __user.email
+trash.count: Total
+trash.empty: Vider
+trash.entite: Table
+trash.go: "Aller sur cette corbeille"
+user.address.adresse: Adresse
+user.address.country: "Pays"
+user.address.gps: Gps
+user.address.pmr: Accès PMR
+user.address.rue: Rue
+user.address.type: "Type"
+user.address.user: Utilisateur
+user.address.ville: Ville
+user.address.zipcode: "Code postal"
+user.addresss: "Adresses"
+user.avatar: "Avatar"
+user.email: Email
 user.email.adresse: Courriel
 user.email.principal: 'Principal ?'
 user.email.user: Utilisateur
 user.email.workflow: Workflow
-user.emails: __user.emails
-user.groupe: __user.groupe
-user.groupe.code: __user.groupe.code
-user.groupe.name: __user.groupe.name
-user.groupe.users: __user.groupe.users
-user.lien.adresse: __user.lien.adresse
-user.lien.name: __user.lien.name
-user.lien.user: __user.lien.user
-user.liens: __user.liens
-user.oauth.associer: __user.oauth.associer
-user.oauth.lost: __user.oauth.lost
-user.phone.country: __user.phone.country
-user.phone.numero: __user.phone.numero
-user.phone.principal: __user.phone.principal
-user.phone.type: __user.phone.type
-user.phone.user: __user.phone.user
-user.phone.verif: __user.phone.verif
+user.emails: Emails
+user.groupe: Groupe
+user.groupe.code: Code
+user.groupe.name: "Nom"
+user.groupe.users: Utilisateurs
+user.link.adresse: "Adresse URL"
+user.link.name: "Nom"
+user.link.user: Utilisateur
+user.links: Liens
+user.oauth.associer: Associer
+user.oauth.lost: Dissocier
+user.phone.country: "Pays"
+user.phone.numero: "Numéro"
+user.phone.principal: "Principal ?"
+user.phone.type: "Type"
+user.phone.user: Utilisateur
+user.phone.verif: "Correct ?"
 user.phone.workflow: Workflow
-user.telephone.country: __user.telephone.country
-user.telephone.numero: __user.telephone.numero
-user.telephone.principal: __user.telephone.principal
-user.telephone.type: __user.telephone.type
-user.telephone.verif: __user.telephone.verif
-user.telephones: Téléphones
+user.phones: Téléphones
 user.username: Pseudo
 user.workflow: Workflow
 workflow.state: Étape
