@@ -43,7 +43,7 @@
                 {{ macro_admin.form_img(
                     entity,
                     entity.avatar,
-                    "user.avatar",
+                    "user.avatar"|trans({}, 'admin.messages'),
                     path('api_attachment_useravatar', {'entity': entity.id})
                 ) }}
             {% endif %}

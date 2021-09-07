@@ -10,7 +10,7 @@
         {{ macro_admin.form_img(
             entity,
             entity.fond,
-            "noteinterne.fond",
+            "noteinterne.fond"|trans({}, 'admin.messages'),
             path('api_attachment_noteinternefond', {'entity': entity.id})
         ) }}
     {% endif %}

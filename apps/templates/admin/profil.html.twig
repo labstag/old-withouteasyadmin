@@ -46,7 +46,7 @@
 			{{ macro_admin.form_img(
                 entity,
                 entity.avatar,
-                "admin.form.profil.avatar",
+                "form.profil.avatar"|trans({}, 'admin.messages'),
                 path('api_attachment_profilavatar')
             ) }}
 			{{ form_row(form.file) }}

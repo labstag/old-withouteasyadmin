@@ -60,7 +60,7 @@
             {{ macro_admin.form_img(
                 images['image'],
                 images['image'],
-                "admin.form.param.image",
+                "form.param.image"|trans({}, 'admin.messages'),
                 path('api_attachment_image')
             ) }}
             {{ form_row(form['image']) }}
@@ -69,7 +69,7 @@
             {{ macro_admin.form_img(
                 images['favicon'],
                 images['favicon'],
-                "admin.form.param.favicon",
+                "form.param.favicon"|trans({}, 'admin.messages'),
                 path('api_attachment_favicon')
             ) }}
             {{ form_row(form['favicon']) }}
