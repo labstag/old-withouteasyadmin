@@ -122,7 +122,7 @@ class ParamType extends AbstractTypeLib
     {
         foreach ($inputs as $key => $class) {
             $label = 'param.'.$key.'.label';
-            $help = 'param.'.$key.'.help';
+            $help  = 'param.'.$key.'.help';
             $builder->add(
                 $key,
                 $class,
@@ -138,13 +138,13 @@ class ParamType extends AbstractTypeLib
     {
         foreach ($images as $key) {
             $label = 'param.'.$key.'.label';
-            $help = 'param.'.$key.'.help';
+            $help  = 'param.'.$key.'.help';
             $builder->add(
                 $key,
                 FileType::class,
                 [
-                    'label' => $this->translator->trans($label, [], 'admin.form'),
-                    'help'  => $this->translator->trans($help, [], 'admin.form'),
+                    'label'    => $this->translator->trans($label, [], 'admin.form'),
+                    'help'     => $this->translator->trans($help, [], 'admin.form'),
                     'required' => false,
                     'attr'     => ['accept' => 'image/*'],
                 ]

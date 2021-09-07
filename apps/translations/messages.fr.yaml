@@ -13,13 +13,13 @@ admin.user.guard.superadmin.nope: __admin.user.guard.superadmin.nope
 data.save: __data.save
 edito.fond: __edito.fond
 error.page.400.message: __error.page.400.message
-error.page.400.title: __error.page.400.title
+error.page.400.title: 'Erreur 400'
 error.page.401.message: __error.page.401.message
-error.page.401.title: __error.page.401.title
+error.page.401.title: 'Erreur 401'
 error.page.403.message: __error.page.403.message
-error.page.403.title: __error.page.403.title
+error.page.403.title: 'Erreur 403'
 error.page.404.message: __error.page.404.message
-error.page.404.title: __error.page.404.title
+error.page.404.title: 'Erreur 404'
 error.page.errors: __error.page.errors
 error.page.gotosite: __error.page.gotosite
 form.icon.error: __form.icon.error

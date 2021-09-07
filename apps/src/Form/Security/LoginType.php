@@ -33,7 +33,7 @@ class LoginType extends AbstractTypeLib
                 'help'  => $this->translator->trans('login.password.help', [], 'security.form'),
             ]
         );
-        
+
         $builder->add(
             'remember_me',
             CheckboxType::class,
