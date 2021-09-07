@@ -12,7 +12,7 @@
         {{ macro_admin.form_img(
             entity,
             entity.img,
-            "post.image",|trans({}, 'admin.messages')
+            "post.image"|trans({}, 'admin.messages'),
             path('api_attachment_postimg', {'entity': entity.id})
         ) }}
     {% endif %}
