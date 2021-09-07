@@ -49,14 +49,14 @@ jobs:
         run: make docker create-network
       - name: 'Image pull'
         run: make docker image-pull
+      - name: 'Installation variable environnement'
+        run: make env dev
       - name: 'Build containers'
         run: make docker deploy
       - name: 'sleep'
         run: make sleep 60
       - name: 'docker ls'
         run: make docker ls
-      - name: 'Installation variable environnement'
-        run: make env dev
       - name: linter readme.md
         run: make linter readme
       - name: linter SCSS
