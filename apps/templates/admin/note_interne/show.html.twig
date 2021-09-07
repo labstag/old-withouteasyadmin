@@ -24,7 +24,7 @@
                 <th>{{ 'noteinterne.fond'|trans({}, 'admin.messages') }}</th>
                 <td>
                     <picture >
-                        <img alt="{{ 'noteinterne.fond'|trans|e("html_attr") }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
+                        <img alt="{{ 'noteinterne.fond'|trans({}, 'admin.messages')|e("html_attr") }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
                     </picture>
                 </td>
             </tr>
