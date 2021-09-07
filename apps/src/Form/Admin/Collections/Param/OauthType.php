@@ -8,15 +8,20 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OauthType extends AbstractTypeLib
 {
 
     protected OauthService $oauthService;
 
-    public function __construct(OauthService $oauthService)
+    public function __construct(
+        TranslatorInterface $translator,
+        OauthService $oauthService
+    )
     {
         $this->oauthService = $oauthService;
+        parent::__construct($translator);
     }
 
     public function buildForm(

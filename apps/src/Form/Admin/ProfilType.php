@@ -17,15 +17,20 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProfilType extends AbstractTypeLib
 {
 
     protected EmailUserRepository $repository;
 
-    public function __construct(EmailUserRepository $repository)
+    public function __construct(
+        EmailUserRepository $repository,
+        TranslatorInterface $translator
+    )
     {
         $this->repository = $repository;
+        parent::__construct($translator);
     }
 
     /**

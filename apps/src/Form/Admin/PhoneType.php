@@ -8,15 +8,20 @@ use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class PhoneType extends AbstractTypeLib
 {
 
     protected PhoneService $phoneService;
 
-    public function __construct(PhoneService $phoneService)
+    public function __construct(
+        TranslatorInterface $translator,
+        PhoneService $phoneService
+    )
     {
         $this->phoneService = $phoneService;
+        parent::__construct($translator);
     }
 
     /**
