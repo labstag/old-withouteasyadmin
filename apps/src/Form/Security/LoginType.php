@@ -33,6 +33,7 @@ class LoginType extends AbstractTypeLib
                 'help'  => $this->translator->trans('login.password.help', [], 'security.form'),
             ]
         );
+        
         $builder->add(
             'remember_me',
             CheckboxType::class,
@@ -45,7 +46,9 @@ class LoginType extends AbstractTypeLib
         $builder->add(
             'submit',
             SubmitType::class,
-            ['label' => '.login.username.label']
+            [
+                'label' => $this->translator->trans('login.username.label', [], 'security.form'),
+            ]
         );
         unset($options);
     }

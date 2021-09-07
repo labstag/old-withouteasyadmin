@@ -4,11 +4,14 @@ changepassword.repeatpassword.help: ""
 changepassword.repeatpassword.label: __changepassword.repeatpassword.label
 disclaimer.confirm.help: ""
 disclaimer.confirm.label: __disclaimer.confirm.label
+disclaimer.reset.label: __disclaimer.reset.label
+disclaimer.submit.label: __disclaimer.submit.label
 login.password.help: ""
 login.password.label: __login.password.label
 login.remember_me.help: ""
 login.remember_me.label: __login.remember_me.label
 login.username.help: ""
 login.username.label: __login.username.label
+lostpassword.submit.label: __lostpassword.submit.label
 lostpassword.value.help: ""
 lostpassword.value.label: __lostpassword.value.label

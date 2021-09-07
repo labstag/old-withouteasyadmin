@@ -227,7 +227,7 @@ else ifeq ($(COMMANDS_ARGS),twig)
 else ifeq ($(COMMANDS_ARGS),container)
 	${SYMFONY_EXEC} lint:container
 else ifeq ($(COMMANDS_ARGS),yaml)
-	${SYMFONY_EXEC} lint:yaml config
+	${SYMFONY_EXEC} lint:yaml config translations
 else
 	@printf "${MISSING_ARGUMENTS}" "linter"
 	$(call array_arguments, \

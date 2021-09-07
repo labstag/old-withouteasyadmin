@@ -28,12 +28,16 @@ class DisclaimerType extends AbstractTypeLib
         $builder->add(
             'submit',
             SubmitType::class,
-            ['label' => '.disclaimer.submit.label']
+            [
+                'label' => $this->translator->trans('disclaimer.submit.label', [], 'security.form'),
+            ]
         );
         $builder->add(
             'reset',
             ResetType::class,
-            ['label' => '.disclaimer.reset.label']
+            [
+                'label' => $this->translator->trans('disclaimer.reset.label', [], 'security.form'),
+            ]
         );
         unset($options);
     }

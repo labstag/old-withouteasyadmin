@@ -27,7 +27,9 @@ class LostPasswordType extends AbstractTypeLib
         $builder->add(
             'submit',
             SubmitType::class,
-            ['label' => '.lostpassword.submit.label']
+            [
+                'label' => $this->translator->trans('lostpassword.submit.label', [], 'security.form'),
+            ]
         );
         unset($options);
     }

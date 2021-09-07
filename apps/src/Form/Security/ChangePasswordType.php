@@ -36,7 +36,9 @@ class ChangePasswordType extends AbstractTypeLib
         $builder->add(
             'submit',
             SubmitType::class,
-            ['label' => '.changepassword.password.label']
+            [
+                'label' => $this->translator->trans('changepassword.password.label', [], 'security.form'),
+            ]
         );
         unset($options);
     }
