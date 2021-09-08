@@ -32,7 +32,6 @@ class GroupeController extends AdminControllerLib
      */
     public function edit(
         UploadAnnotationReader $uploadAnnotReader,
-        GuardService $guarService,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         Groupe $groupe,
@@ -41,7 +40,6 @@ class GroupeController extends AdminControllerLib
     {
         return $this->update(
             $uploadAnnotReader,
-            $guarService,
             $attachmentRepository,
             $attachmentRH,
             $requestHandler,
@@ -73,11 +71,11 @@ class GroupeController extends AdminControllerLib
             ),
         ];
         $this->addBreadcrumbs($breadcrumb);
-        $this->btnInstance->addBtnList(
+        $this->btnInstance()->addBtnList(
             'admin_groupuser_index',
             'Liste',
         );
-        $this->btnInstance->addBtnShow(
+        $this->btnInstance()->addBtnShow(
             'admin_groupuser_show',
             'Show',
             [
@@ -85,7 +83,7 @@ class GroupeController extends AdminControllerLib
             ]
         );
 
-        $this->btnInstance->addBtnEdit(
+        $this->btnInstance()->addBtnEdit(
             'admin_groupuser_edit',
             'Editer',
             [
@@ -172,12 +170,10 @@ class GroupeController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        GuardService $guardService,
         Groupe $groupe
     ): Response
     {
         return $this->renderShowOrPreview(
-            $guardService,
             $groupe,
             'admin/user/groupe/show.html.twig',
             [

@@ -121,12 +121,10 @@ class NoteInterneController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        GuardService $guardService,
         NoteInterne $noteInterne
     ): Response
     {
         return $this->renderShowOrPreview(
-            $guardService,
             $noteInterne,
             'admin/note_interne/show.html.twig',
             [

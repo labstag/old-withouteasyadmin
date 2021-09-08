@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
@@ -41,6 +42,8 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     protected UrlGeneratorInterface $urlGenerator;
 
+    protected TranslatorInterface $translator;
+
     public function __construct(
         RouterInterface $router,
         AttachmentRepository $attachmentRepo,
@@ -48,9 +51,11 @@ class TwigEventSubscriber implements EventSubscriberInterface
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
         DataService $dataService,
-        Security $security
+        Security $security,
+        TranslatorInterface $translator
     )
     {
+        $this->translator       = $translator;
         $this->attachmentRepo   = $attachmentRepo;
         $this->security         = $security;
         $this->urlGenerator     = $urlGenerator;
@@ -85,8 +90,9 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     protected function setBreadCrumbsAdmin()
     {
+        $code             = $this->translator->trans('home', [], 'admin.breadcrumb');
         $adminBreadcrumbs = [
-            'Home' => $this->router->generate('admin'),
+            $code => $this->router->generate('admin'),
         ];
 
         BreadcrumbsSingleton::getInstance()->add($adminBreadcrumbs);

@@ -22,7 +22,7 @@ abstract class FrontControllerLib extends ControllerLib
         $image
     )
     {
-        $globals = $this->twig->getGlobals();
+        $globals = $this->get('twig')->getGlobals();
         $config  = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
 
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
@@ -39,7 +39,7 @@ abstract class FrontControllerLib extends ControllerLib
         $config['meta'] = $meta;
         ksort($config['meta']);
 
-        $this->twig->AddGlobal('config', $config);
+        $this->get('twig')->AddGlobal('config', $config);
         $this->setMetatags($config['meta']);
     }
 
@@ -127,6 +127,6 @@ abstract class FrontControllerLib extends ControllerLib
             ];
         }
 
-        $this->twig->AddGlobal('sitemetatags', $metatags);
+        $this->get('twig')->AddGlobal('sitemetatags', $metatags);
     }
 }

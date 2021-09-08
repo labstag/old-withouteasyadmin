@@ -117,12 +117,10 @@ class PhoneUserController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        GuardService $guardService,
         PhoneUser $phoneUser
     ): Response
     {
         return $this->renderShowOrPreview(
-            $guardService,
             $phoneUser,
             'admin/user/phone_user/show.html.twig',
             [

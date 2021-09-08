@@ -55,7 +55,7 @@ class GuardController extends ApiControllerLib
         RouteGroupeRepository $routeGroupeRepo
     ): JsonResponse
     {
-        $post   = $this->request->request->all();
+        $post   = $this->get('request_stack')->getCurrentRequest()->request->all();
         $data   = ['ok' => false];
         $groupe = $groupeRepo->findOneBy(['code' => $groupe]);
         $route  = $this->routeRepo->findOneBy(['name' => $route]);
@@ -111,7 +111,7 @@ class GuardController extends ApiControllerLib
     ): JsonResponse
     {
         $data  = ['ok' => false];
-        $post  = $this->request->request->all();
+        $post  = $this->get('request_stack')->getCurrentRequest()->request->all();
         $user  = $userRepo->findOneBy(['username' => $user]);
         $route = $this->routeRepo->findOneBy(['name' => $route]);
         if (empty($user) || empty($route) || !array_key_exists('_token', $post)) {

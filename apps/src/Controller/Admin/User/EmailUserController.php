@@ -117,12 +117,10 @@ class EmailUserController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        GuardService $guardService,
         EmailUser $emailUser
     ): Response
     {
         return $this->renderShowOrPreview(
-            $guardService,
             $emailUser,
             'admin/user/email_user/show.html.twig',
             [

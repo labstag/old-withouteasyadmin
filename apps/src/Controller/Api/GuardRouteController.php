@@ -45,8 +45,8 @@ class GuardRouteController extends ApiControllerLib
         /** @var EntityRoute $route */
         foreach ($routes as $route) {
             $data = $this->setRouteGroupe(
-                $data,
                 $guardService,
+                $data,
                 $routeGroupeRepo,
                 $group,
                 $route,
@@ -62,8 +62,8 @@ class GuardRouteController extends ApiControllerLib
      * @Route("/groups/{route}", name="api_guard_routegroups", methods={"POST"})
      */
     public function groups(
-        EntityRoute $route,
         GuardService $guardService,
+        EntityRoute $route,
         GroupeRepository $groupeRepo,
         RouteGroupeRepository $routeGroupeRepo,
         RouteGroupeRequestHandler $routeGroupeRH,
@@ -79,8 +79,8 @@ class GuardRouteController extends ApiControllerLib
         $groupes = $groupeRepo->findAll();
         foreach ($groupes as $group) {
             $data = $this->setRouteGroupe(
-                $data,
                 $guardService,
+                $data,
                 $routeGroupeRepo,
                 $group,
                 $route,
@@ -139,9 +139,9 @@ class GuardRouteController extends ApiControllerLib
      * @Route("/setgroup/{group}/{route}", name="api_guard_routesetgroup", methods={"POST"})
      */
     public function setgroup(
+        GuardService $guardService,
         Groupe $group,
         EntityRoute $route,
-        GuardService $guardService,
         Request $request,
         RouteGroupeRepository $routeGroupeRepo,
         RouteGroupeRequestHandler $routeGroupeRH
@@ -154,8 +154,8 @@ class GuardRouteController extends ApiControllerLib
         ];
         $state = $request->request->get('state');
         $data  = $this->setRouteGroupe(
-            $data,
             $guardService,
+            $data,
             $routeGroupeRepo,
             $group,
             $route,
@@ -170,10 +170,10 @@ class GuardRouteController extends ApiControllerLib
      * @Route("/setuser/{user}/{route}", name="api_guard_routesetuser", methods={"POST"})
      */
     public function setuser(
+        GuardService $guardService,
         User $user,
         EntityRoute $route,
         Request $request,
-        GuardService $guardService,
         RouteUserRepository $routeUserRepo,
         RouteUserRequestHandler $routeUserRH
     )
@@ -185,10 +185,10 @@ class GuardRouteController extends ApiControllerLib
         ];
         $state = $request->request->get('state');
         $data  = $this->setRouteUser(
+            $guardService,
             $data,
             $routeUserRepo,
             $user,
-            $guardService,
             $state,
             $route,
             $routeUserRH
@@ -201,9 +201,9 @@ class GuardRouteController extends ApiControllerLib
      * @Route("/user/{user}", name="api_guard_routeuser", methods={"POST"})
      */
     public function user(
+        GuardService $guardService,
         User $user,
         Request $request,
-        GuardService $guardService,
         RouteUserRepository $routeUserRepo,
         RouteUserRequestHandler $routeUserRH
     )
@@ -218,10 +218,10 @@ class GuardRouteController extends ApiControllerLib
         /** @var EntityRoute $route */
         foreach ($routes as $route) {
             $data = $this->setRouteUser(
+                $guardService,
                 $data,
                 $routeUserRepo,
                 $user,
-                $guardService,
                 $state,
                 $route,
                 $routeUserRH
@@ -244,8 +244,8 @@ class GuardRouteController extends ApiControllerLib
     }
 
     private function setRouteGroupe(
+        GuardService $guardService,
         $data,
-        $guardService,
         $routeGroupeRepo,
         $group,
         $route,
@@ -283,10 +283,10 @@ class GuardRouteController extends ApiControllerLib
     }
 
     private function setRouteUser(
+        guardService $guardService,
         array $data,
         RouteUserRepository $routeUserRepo,
         $user,
-        $guardService,
         $state,
         EntityRoute $route,
         RouteUserRequestHandler $routeUserRH

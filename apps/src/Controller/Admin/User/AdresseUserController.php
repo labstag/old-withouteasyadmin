@@ -34,7 +34,6 @@ class AdresseUserController extends AdminControllerLib
      */
     public function edit(
         UploadAnnotationReader $uploadAnnotReader,
-        GuardService $guarService,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         AdresseUser $adresseUser,
@@ -43,7 +42,6 @@ class AdresseUserController extends AdminControllerLib
     {
         return $this->update(
             $uploadAnnotReader,
-            $guarService,
             $attachmentRepository,
             $attachmentRH,
             $requestHandler,
@@ -116,12 +114,10 @@ class AdresseUserController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        GuardService $guardService,
         AdresseUser $adresseUser
     ): Response
     {
         return $this->renderShowOrPreview(
-            $guardService,
             $adresseUser,
             'admin/user/adresse_user/show.html.twig',
             [

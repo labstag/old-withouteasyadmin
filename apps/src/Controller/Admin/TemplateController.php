@@ -112,12 +112,10 @@ class TemplateController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        GuardService $guardService,
         Template $template
     ): Response
     {
         return $this->renderShowOrPreview(
-            $guardService,
             $template,
             'admin/template/show.html.twig',
             [

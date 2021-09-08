@@ -4,6 +4,7 @@ namespace Labstag\Lib;
 
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Service\DataService;
+use Labstag\Service\GuardService;
 use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,30 +33,27 @@ abstract class ControllerLib extends AbstractController
 
     protected Request $request;
 
+    protected GuardService $guardService;
+
     public function __construct(
-        Environment $twig,
-        RequestStack $requestStack,
+        GuardService $guardService,
         DataService $dataService,
         Breadcrumbs $breadcrumbs,
         PaginatorInterface $paginator,
         TranslatorInterface $translator
     )
     {
-        $this->twig         = $twig;
+        $this->guardService = $guardService;
         $this->translator   = $translator;
-        $this->requestStack = $requestStack;
-        /** @var Request $request */
-        $request           = $this->requestStack->getCurrentRequest();
-        $this->request     = $request;
-        $this->dataService = $dataService;
-        $this->breadcrumbs = $breadcrumbs;
-        $this->paginator   = $paginator;
+        $this->dataService  = $dataService;
+        $this->breadcrumbs  = $breadcrumbs;
+        $this->paginator    = $paginator;
         $this->setSingletons();
     }
 
     protected function flashBagAdd(string $type, $message)
     {
-        $requestStack = $this->requestStack;
+        $requestStack = $this->get('request_stack');
         $request      = $requestStack->getCurrentRequest();
         if (is_null($request)) {
             return;

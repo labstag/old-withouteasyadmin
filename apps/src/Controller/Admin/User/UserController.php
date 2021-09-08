@@ -61,7 +61,6 @@ class UserController extends AdminControllerLib
      * @Route("/{id}/guard", name="admin_user_guard")
      */
     public function guard(
-        GuardService $guardService,
         User $user,
         WorkflowRepository $workflowRepo
     ): Response
@@ -75,11 +74,11 @@ class UserController extends AdminControllerLib
             ),
         ];
         $this->addBreadcrumbs($breadcrumb);
-        $this->btnInstance->addBtnList(
+        $this->btnInstance()->addBtnList(
             'admin_user_index',
             'Liste',
         );
-        $this->btnInstance->addBtnShow(
+        $this->btnInstance()->addBtnShow(
             'admin_user_show',
             'Show',
             [
@@ -87,14 +86,14 @@ class UserController extends AdminControllerLib
             ]
         );
 
-        $this->btnInstance->addBtnEdit(
+        $this->btnInstance()->addBtnEdit(
             'admin_user_edit',
             'Editer',
             [
                 'id' => $user->getId(),
             ]
         );
-        $routes = $guardService->getGuardRoutesForUser($user);
+        $routes = $this->guardService->getGuardRoutesForUser($user);
         if (0 == count($routes)) {
             $this->flashBagAdd(
                 'danger',
@@ -178,14 +177,12 @@ class UserController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        GuardService $guardService,
         User $user
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->renderShowOrPreview(
-            $guardService,
             $user,
             'admin/user/show.html.twig',
             [

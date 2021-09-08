@@ -117,12 +117,10 @@ class EditoController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        GuardService $guardService,
         Edito $edito
     ): Response
     {
         return $this->renderShowOrPreview(
-            $guardService,
             $edito,
             'admin/edito/show.html.twig',
             [

@@ -112,12 +112,10 @@ class LienUserController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        GuardService $guardService,
         LienUser $lienUser
     ): Response
     {
         return $this->renderShowOrPreview(
-            $guardService,
             $lienUser,
             'admin/user/lien_user/show.html.twig',
             [

@@ -176,16 +176,16 @@ class TarteaucitronType extends AbstractTypeLib
     {
         $tab = [
             'hashtag'     => [
-                'label' => $this->translator->trans('param.tarteaucitron.hashtag.label', [], 'admin'),
-                'help'  => $this->translator->trans('param.tarteaucitron.hashtag.help', [], 'admin'),
+                'label' => $this->translator->trans('param.tarteaucitron.hashtag.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.hashtag.help', [], 'admin.form'),
             ],
             'cookieName'  => [
-                'label' => $this->translator->trans('param.tarteaucitron.cookieName.label', [], 'admin'),
-                'help'  => $this->translator->trans('param.tarteaucitron.cookieName.help', [], 'admin'),
+                'label' => $this->translator->trans('param.tarteaucitron.cookieName.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.cookieName.help', [], 'admin.form'),
             ],
             'orientation' => [
-                'label' => $this->translator->trans('param.tarteaucitron.orientation.label', [], 'admin'),
-                'help'  => $this->translator->trans('param.tarteaucitron.orientation.help', [], 'admin'),
+                'label' => $this->translator->trans('param.tarteaucitron.orientation.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.orientation.help', [], 'admin.form'),
             ],
         ];
         foreach ($tab as $id => $row) {

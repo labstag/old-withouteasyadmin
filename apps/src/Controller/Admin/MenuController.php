@@ -64,7 +64,9 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/", name="admin_menu_index", methods={"GET"})
      */
-    public function index(MenuRepository $repository)
+    public function index(
+        MenuRepository $repository
+    )
     {
         $all     = $repository->findAllCode();
         $globals = $this->twig->getGlobals();
@@ -72,7 +74,7 @@ class MenuController extends AdminControllerLib
 
         $modal['delete'] = true;
         $this->twig->addGlobal('modal', $modal);
-        $this->btnInstance->addBtnNew('admin_menu_new');
+        $this->btnInstance()->addBtnNew('admin_menu_new');
 
         return $this->render(
             'admin/menu/index.html.twig',
@@ -83,7 +85,11 @@ class MenuController extends AdminControllerLib
     /**
      * @Route("/move/{id}", name="admin_menu_move", methods={"GET", "POST"})
      */
-    public function move(Menu $menu, Request $request, MenuRepository $repository)
+    public function move(
+        Menu $menu,
+        Request $request,
+        MenuRepository $repository
+    )
     {
         $entityManager = $this->getDoctrine()->getManager();
         $currentUrl    = $this->router->generate(
@@ -114,12 +120,12 @@ class MenuController extends AdminControllerLib
 
         $breadcrumb = ['Move' => $currentUrl];
         $this->addBreadcrumbs($breadcrumb);
-        $this->btnInstance->addBtnList(
+        $this->btnInstance()->addBtnList(
             'admin_menu_index',
             'Liste',
         );
 
-        $this->btnInstance->add(
+        $this->btnInstance()->add(
             'btn-admin-save-move',
             'Enregistrer',
             [

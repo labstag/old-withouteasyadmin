@@ -115,12 +115,10 @@ class LibelleController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        GuardService $guardService,
         Libelle $libelle
     ): Response
     {
         return $this->renderShowOrPreview(
-            $guardService,
             $libelle,
             'admin/post/libelle/show.html.twig',
             [

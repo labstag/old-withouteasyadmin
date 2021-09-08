@@ -2,10 +2,10 @@ admin.flashbag.data.export.fail: 'Problème d''enregistrement du fichier %file%'
 admin.flashbag.data.export.success: 'Données exporté'
 admin.flashbag.trash.empty: 'La corbeille est vide'
 admin.group.guard.superadmin.nope: 'Le groupe superadmin n''est pas un groupe qui peut avoir des droits spécifique'
-admin.robotstxt.file: "Fichier %file% modifié"
-admin.togglenavigation: "Basculer la navigation"
-admin.user.guard.superadmin.nope: "L'utilisateur fait partie du groupe superadmin, qui n'est pas un groupe qui peut avoir des droits spécifique"
-data.save: "Données sauvegardé"
+admin.robotstxt.file: 'Fichier %file% modifié'
+admin.togglenavigation: 'Basculer la navigation'
+admin.user.guard.superadmin.nope: 'L''utilisateur fait partie du groupe superadmin, qui n''est pas un groupe qui peut avoir des droits spécifique'
+data.save: 'Données sauvegardé'
 error.page.400.message: 'La syntaxe de la requête est erronée.'
 error.page.400.title: 'Erreur 400'
 error.page.401.message: 'Une authentification est nécessaire pour accéder à la ressource.'

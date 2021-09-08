@@ -133,7 +133,7 @@ class AdminController extends AdminControllerLib
         }
 
         $form = $this->createForm(ParamType::class, $config);
-        $this->btnInstance->addBtnSave($form->getName(), 'Sauvegarder');
+        $this->btnInstance()->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $this->setUpload($request, $images);
@@ -142,7 +142,7 @@ class AdminController extends AdminControllerLib
             $dispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
 
-        $this->btnInstance->add(
+        $this->btnInstance()->add(
             'btn-admin-header-export',
             'Exporter',
             [
@@ -164,7 +164,6 @@ class AdminController extends AdminControllerLib
      */
     public function profil(
         UploadAnnotationReader $uploadAnnotReader,
-        GuardService $guardService,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         Security $security,
@@ -177,7 +176,6 @@ class AdminController extends AdminControllerLib
 
         return $this->update(
             $uploadAnnotReader,
-            $guardService,
             $attachmentRepository,
             $attachmentRH,
             $requestHandler,
@@ -218,8 +216,6 @@ class AdminController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function trash(
-        GuardService $guardService,
-        TokenStorageInterface $token,
         TrashService $trashService
     ): Response
     {
@@ -238,10 +234,10 @@ class AdminController extends AdminControllerLib
         $globals        = $this->twig->getGlobals();
         $modal          = isset($globals['modal']) ? $globals['modal'] : [];
         $modal['empty'] = true;
-        if ($this->isRouteEnable($guardService, $token, 'api_action_emptyall')) {
-            $token             = $this->csrfTokenManager->getToken('emptyall')->getValue();
+        if ($this->isRouteEnable('api_action_emptyall')) {
+            $token             = $this->get('security.csrf.token_manager')->getToken('emptyall')->getValue();
             $modal['emptyall'] = true;
-            $this->btnInstance->add(
+            $this->btnInstance()->add(
                 'btn-admin-header-emptyall',
                 'Tout vider',
                 [
@@ -256,7 +252,7 @@ class AdminController extends AdminControllerLib
         }
 
         $this->twig->addGlobal('modal', $modal);
-        $this->btnInstance->addViderSelection(
+        $this->btnInstance()->addViderSelection(
             [
                 'redirect' => [
                     'href'   => 'admin_trash',

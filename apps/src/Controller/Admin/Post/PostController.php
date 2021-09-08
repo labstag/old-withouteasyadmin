@@ -117,12 +117,10 @@ class PostController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        GuardService $guardService,
         Post $post
     ): Response
     {
         return $this->renderShowOrPreview(
-            $guardService,
             $post,
             'admin/post/show.html.twig',
             [

@@ -110,12 +110,10 @@ class GeoCodeController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        GuardService $guardService,
         GeoCode $geoCode
     ): Response
     {
         return $this->renderShowOrPreview(
-            $guardService,
             $geoCode,
             'admin/geocode/show.html.twig',
             [
