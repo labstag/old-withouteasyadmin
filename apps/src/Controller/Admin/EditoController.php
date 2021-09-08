@@ -57,8 +57,8 @@ class EditoController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_edito_trash", methods={"GET"})
-     * @Route("/", name="admin_edito_index", methods={"GET"})
+     * @Route("/trash",  name="admin_edito_trash", methods={"GET"})
+     * @Route("/",       name="admin_edito_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(EditoRepository $repository): Response
@@ -112,7 +112,7 @@ class EditoController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}", name="admin_edito_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_edito_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_edito_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

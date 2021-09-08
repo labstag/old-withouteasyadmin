@@ -21,12 +21,12 @@ class TwigEventSubscriber implements EventSubscriberInterface
 {
     public const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
 
-    public const LABSTAG_CONTROLLER = '/(Labstag)/';
-
     public const ERROR_CONTROLLER = [
         'error_controller',
         'error_controller::preview',
     ];
+
+    public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
     protected AttachmentRepository $attachmentRepo;
 
@@ -38,11 +38,11 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     protected Security $security;
 
+    protected TranslatorInterface $translator;
+
     protected Environment $twig;
 
     protected UrlGeneratorInterface $urlGenerator;
-
-    protected TranslatorInterface $translator;
 
     public function __construct(
         RouterInterface $router,
@@ -109,9 +109,9 @@ class TwigEventSubscriber implements EventSubscriberInterface
         }
 
         $globals   = $this->twig->getGlobals();
-        $canonical = isset($globals['canonical']) ? $globals['canonical'] : $request->getUri();
+        $canonical = $globals['canonical'] ?? $request->getUri();
 
-        $config = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
+        $config = $globals['config'] ?? $this->dataService->getConfig();
 
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
         $this->setMetaTitleGlobal($config);
@@ -277,8 +277,11 @@ class TwigEventSubscriber implements EventSubscriberInterface
                     'property' => $key,
                     'content'  => $value,
                 ];
+
                 continue;
-            } elseif ('description' == $key) {
+            }
+
+            if ('description' == $key) {
                 $metatags[] = [
                     'itemprop' => $key,
                     'content'  => $value,
@@ -287,6 +290,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
                     'name'    => $key,
                     'content' => $value,
                 ];
+
                 continue;
             }
 

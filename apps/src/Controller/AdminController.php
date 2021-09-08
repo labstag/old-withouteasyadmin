@@ -17,7 +17,6 @@ use Labstag\Repository\NoteInterneRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
-use Labstag\Service\GuardService;
 use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -26,10 +25,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/admin")
@@ -212,7 +209,7 @@ class AdminController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_trash")
+     * @Route("/trash",  name="admin_trash")
      * @IgnoreSoftDelete
      */
     public function trash(
@@ -232,7 +229,7 @@ class AdminController extends AdminControllerLib
         }
 
         $globals        = $this->twig->getGlobals();
-        $modal          = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
         if ($this->isRouteEnable('api_action_emptyall')) {
             $token             = $this->get('security.csrf.token_manager')->getToken('emptyall')->getValue();

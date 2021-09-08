@@ -51,7 +51,9 @@ class ApiControllerLib extends AbstractController
         $this->requestStack     = $requestStack;
         $this->entityManager    = $entityManager;
         $this->csrfTokenManager = $csrfTokenManager;
-        /** @var Request $request */
+        /**
+         * @var Request $request
+         */
         $request            = $this->requestStack->getCurrentRequest();
         $this->request      = $request;
         $this->phoneService = $phoneService;

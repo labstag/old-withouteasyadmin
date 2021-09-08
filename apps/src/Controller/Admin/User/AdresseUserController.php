@@ -11,7 +11,6 @@ use Labstag\Repository\AdresseUserRepository;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\AdresseUserRequestHandler;
 use Labstag\RequestHandler\AttachmentRequestHandler;
-use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -56,8 +55,8 @@ class AdresseUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_adresseuser_trash", methods={"GET"})
-     * @Route("/", name="admin_adresseuser_index", methods={"GET"})
+     * @Route("/trash",  name="admin_adresseuser_trash", methods={"GET"})
+     * @Route("/",       name="admin_adresseuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(AdresseUserRepository $repository): Response
@@ -109,7 +108,7 @@ class AdresseUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}", name="admin_adresseuser_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_adresseuser_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_adresseuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

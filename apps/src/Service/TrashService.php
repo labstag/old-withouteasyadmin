@@ -74,9 +74,8 @@ class TrashService
 
         $reflection = $this->setReflection($repository);
         $properties = $reader->getClassAnnotations($reflection);
-        $properties = $properties[0];
 
-        return $properties;
+        return $properties[0];
     }
 
     public function isTrashable(string $repository): bool

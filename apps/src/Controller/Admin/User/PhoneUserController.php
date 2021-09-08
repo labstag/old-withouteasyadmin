@@ -58,8 +58,8 @@ class PhoneUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_phoneuser_trash", methods={"GET"})
-     * @Route("/", name="admin_phoneuser_index", methods={"GET"})
+     * @Route("/trash",  name="admin_phoneuser_trash", methods={"GET"})
+     * @Route("/",       name="admin_phoneuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(PhoneUserRepository $repository): Response
@@ -112,7 +112,7 @@ class PhoneUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}", name="admin_phoneuser_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_phoneuser_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_phoneuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

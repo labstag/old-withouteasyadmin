@@ -177,9 +177,9 @@ class AttachmentController extends ApiControllerLib
         }
 
         $old        = clone $entity;
-        $attachment = $entity->$methodGet();
+        $attachment = $entity->{$methodGet}();
         $this->deleteAttachment($attachment);
-        $entity->$methodSet(null);
+        $entity->{$methodSet}(null);
         $requesthandler->handle($old, $entity);
         $return['state'] = true;
 

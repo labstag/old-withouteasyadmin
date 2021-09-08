@@ -28,6 +28,7 @@ class EditoVoter extends Voter
         switch ($attribute) {
             case 'edit':
                 $return = $this->canEdit($subject, $token);
+
                 break;
             default:
                 $return = true;

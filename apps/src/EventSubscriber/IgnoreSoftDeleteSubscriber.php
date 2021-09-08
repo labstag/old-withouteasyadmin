@@ -21,7 +21,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
     protected Reader $reader;
 
     /**
-     * @var Request|null
+     * @var null|Request
      */
     protected $request;
 
@@ -34,7 +34,9 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
     )
     {
         $this->requestStack = $requestStack;
-        /** @var Request $request */
+        /**
+         * @var Request $request
+         */
         $request             = $this->requestStack->getCurrentRequest();
         $this->request       = $request;
         $this->reader        = $reader;
@@ -53,7 +55,10 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
             return;
         }
 
-        list($controller, $method) = $controller;
+        [
+            $controller,
+            $method,
+        ] = $controller;
 
         $this->ignoreSoftDeleteAnnotation($controller, $method);
     }
@@ -78,6 +83,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
         foreach ($routes as $route) {
             if (0 != substr_count($routeCurrent, $route)) {
                 $find = 1;
+
                 break;
             }
         }

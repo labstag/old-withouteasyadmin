@@ -58,8 +58,8 @@ class EmailUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_emailuser_trash", methods={"GET"})
-     * @Route("/", name="admin_emailuser_index", methods={"GET"})
+     * @Route("/trash",  name="admin_emailuser_trash", methods={"GET"})
+     * @Route("/",       name="admin_emailuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(EmailUserRepository $repository): Response
@@ -112,7 +112,7 @@ class EmailUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}", name="admin_emailuser_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_emailuser_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_emailuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

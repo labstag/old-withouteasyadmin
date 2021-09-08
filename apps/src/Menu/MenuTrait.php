@@ -114,6 +114,7 @@ trait MenuTrait
             $children = $row->getChildren();
             if (0 == count($children)) {
                 $menu->removeChild($key);
+
                 continue;
             }
 

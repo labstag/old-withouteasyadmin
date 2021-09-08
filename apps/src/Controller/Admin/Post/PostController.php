@@ -57,8 +57,8 @@ class PostController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_post_trash", methods={"GET"})
-     * @Route("/", name="admin_post_index", methods={"GET"})
+     * @Route("/trash",  name="admin_post_trash", methods={"GET"})
+     * @Route("/",       name="admin_post_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(PostRepository $repository): Response
@@ -112,7 +112,7 @@ class PostController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}", name="admin_post_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_post_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_post_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

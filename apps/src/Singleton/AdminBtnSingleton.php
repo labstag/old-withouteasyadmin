@@ -77,7 +77,7 @@ class AdminBtnSingleton
         }
 
         $globals         = $this->twig->getGlobals();
-        $modal           = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal           = $globals['modal'] ?? [];
         $modal['delete'] = true;
         $this->twig->addGlobal('modal', $modal);
         $code  = 'delete'.$entity->getId();
@@ -124,7 +124,7 @@ class AdminBtnSingleton
         }
 
         $globals          = $this->twig->getGlobals();
-        $modal            = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal            = $globals['modal'] ?? [];
         $modal['destroy'] = true;
         $this->twig->addGlobal('modal', $modal);
         $code  = 'destroy'.$entity->getId();
@@ -186,7 +186,7 @@ class AdminBtnSingleton
         }
 
         $globals        = $this->twig->getGlobals();
-        $modal          = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
         $this->twig->addGlobal('modal', $modal);
         $code  = 'empty';
@@ -287,7 +287,7 @@ class AdminBtnSingleton
         }
 
         $globals          = $this->twig->getGlobals();
-        $modal            = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal            = $globals['modal'] ?? [];
         $modal['restore'] = true;
         $this->twig->addGlobal('modal', $modal);
         $code  = 'restore'.$entity->getId();
@@ -382,7 +382,7 @@ class AdminBtnSingleton
         }
 
         $globals            = $this->twig->getGlobals();
-        $modal              = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal              = $globals['modal'] ?? [];
         $modal['restories'] = true;
         $this->twig->addGlobal('modal', $modal);
         $this->add(
@@ -413,7 +413,7 @@ class AdminBtnSingleton
         }
 
         $globals           = $this->twig->getGlobals();
-        $modal             = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal             = $globals['modal'] ?? [];
         $modal['deleties'] = true;
         $this->twig->addGlobal('modal', $modal);
         $this->setBtnAdd(
@@ -440,7 +440,7 @@ class AdminBtnSingleton
         }
 
         $globals          = $this->twig->getGlobals();
-        $modal            = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal            = $globals['modal'] ?? [];
         $modal['empties'] = true;
         $this->twig->addGlobal('modal', $modal);
         $this->setBtnAdd(

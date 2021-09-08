@@ -2,31 +2,20 @@
 
 namespace Labstag\Lib;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
-use Labstag\Service\DataService;
-use Labstag\Service\GuardService;
 use Labstag\Singleton\AdminBtnSingleton;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
-use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 abstract class AdminControllerLib extends ControllerLib
 {
@@ -146,7 +135,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
 
         $pagination = $this->paginator->paginate(
-            $repository->$method(),
+            $repository->{$method}(),
             $this->get('request_stack')->getCurrentRequest()->query->getInt('page', 1),
             10
         );
@@ -168,7 +157,7 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $twig                      = $this->get('twig');
         $globals                   = $twig->getGlobals();
-        $modal                     = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal                     = $globals['modal'] ?? [];
         $modal['attachmentdelete'] = true;
         $twig->addGlobal('modal', $modal);
     }
@@ -285,6 +274,25 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
+    protected function btnInstance()
+    {
+        if (is_null($this->btns)) {
+            $this->btns = AdminBtnSingleton::getInstance();
+        }
+
+        if (!$this->btns->isInit()) {
+            $this->btns->setConf(
+                $this->get('twig'),
+                $this->get('router'),
+                $this->get('security.token_storage'),
+                $this->get('security.csrf.token_manager'),
+                $this->guardService
+            );
+        }
+
+        return $this->btns;
+    }
+
     protected function classEntity($entity)
     {
         $class = get_class($entity);
@@ -312,6 +320,7 @@ abstract class AdminControllerLib extends ControllerLib
     )
     {
         $token = $this->get('security.token_storage');
+
         return $this->guardService->guardRoute($route, $token->getToken());
     }
 
@@ -353,7 +362,7 @@ abstract class AdminControllerLib extends ControllerLib
 
         $twig             = $this->get('twig');
         $globals          = $twig->getGlobals();
-        $modal            = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal            = $globals['modal'] ?? [];
         $modal['destroy'] = (isset($actions['destroy']));
         $modal['restore'] = (isset($actions['restore']));
         $twig->addGlobal('modal', $modal);
@@ -412,9 +421,7 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
         if (is_null($attachmentField)) {
-            $attachment = new Attachment();
-
-            return $attachment;
+            return new Attachment();
         }
 
         $attachment = $attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
@@ -518,25 +525,6 @@ abstract class AdminControllerLib extends ControllerLib
         $this->setBtnDelete($url, $entity);
     }
 
-    protected function btnInstance()
-    {
-        if (is_null($this->btns)) {
-            $this->btns = AdminBtnSingleton::getInstance();
-        }
-
-        if (!$this->btns->isInit()) {
-            $this->btns->setConf(
-                $this->get('twig'),
-                $this->get('router'),
-                $this->get('security.token_storage'),
-                $this->get('security.csrf.token_manager'),
-                $this->guardService
-            );
-        }
-
-        return $this->btns;
-    }
-
     protected function setTrashIcon(
         $methods,
         $repository,
@@ -547,7 +535,7 @@ abstract class AdminControllerLib extends ControllerLib
         $entityManager = $this->getDoctrine()->getManager();
         $methodTrash   = $methods['trash'];
         $entityManager->getFilters()->disable('softdeleteable');
-        $total = $repository->$methodTrash();
+        $total = $repository->{$methodTrash}();
         $entityManager->getFilters()->enable('softdeleteable');
         if (0 != count($total)) {
             $this->btnInstance()->addBtnTrash(
@@ -557,7 +545,7 @@ abstract class AdminControllerLib extends ControllerLib
 
         $twig              = $this->get('twig');
         $globals           = $twig->getGlobals();
-        $modal             = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal             = $globals['modal'] ?? [];
         $modal['delete']   = (isset($actions['delete']));
         $modal['workflow'] = (isset($actions['workflow']));
 

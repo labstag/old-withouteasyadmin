@@ -64,7 +64,9 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
             return;
         }
 
-        /** @var User $user */
+        /**
+         * @var User $user
+         */
         $user = $token->getUser();
         if (!$user instanceof User) {
             $groupe         = $this->groupeRepo->findOneBy(['code' => 'visiteur']);

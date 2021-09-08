@@ -54,8 +54,8 @@ class GeoCodeController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_geocode_trash", methods={"GET"})
-     * @Route("/", name="admin_geocode_index", methods={"GET"})
+     * @Route("/trash",  name="admin_geocode_trash", methods={"GET"})
+     * @Route("/",       name="admin_geocode_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function index(GeoCodeRepository $repository): Response
@@ -105,7 +105,7 @@ class GeoCodeController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}", name="admin_geocode_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_geocode_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_geocode_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

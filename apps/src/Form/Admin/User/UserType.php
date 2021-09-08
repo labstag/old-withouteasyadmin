@@ -11,8 +11,8 @@ use Labstag\Form\Admin\Collections\User\LienType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\FormType\SearchableType;
-use Labstag\Repository\EmailUserRepository;
 use Labstag\Lib\AbstractTypeLib;
+use Labstag\Repository\EmailUserRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -37,7 +37,7 @@ class UserType extends AbstractTypeLib
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -98,7 +98,9 @@ class UserType extends AbstractTypeLib
                 true
             );
             foreach ($data as $email) {
-                /** @var EmailUser $email */
+                /**
+                 * @var EmailUser $email
+                 */
                 $adresse          = $email->getAdresse();
                 $emails[$adresse] = $adresse;
             }

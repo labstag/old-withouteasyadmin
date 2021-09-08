@@ -3,8 +3,8 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\PhoneUser;
-use Labstag\Service\PhoneService;
 use Labstag\Lib\AbstractTypeLib;
+use Labstag\Service\PhoneService;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,7 +25,7 @@ abstract class PhoneType extends AbstractTypeLib
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -37,7 +37,7 @@ abstract class PhoneType extends AbstractTypeLib
             'help'  => $this->translator->trans('phone.numero.help', [], 'admin.form'),
         ];
         if (array_key_exists('data', $options)) {
-            /* @var PhoneUser $phoneuser */
+            // @var PhoneUser $phoneuser
             $phoneUser = $options['data'];
             $country   = $phoneUser->getCountry();
             $number    = $phoneUser->getNumero();

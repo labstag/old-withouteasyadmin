@@ -91,16 +91,35 @@ class ParamType extends AbstractTypeLib
         unset($options);
     }
 
-    private function setMinMaxCollectionType($builder, $mixmax)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        foreach ($mixmax as $key => $entry) {
+        // Configure your form options here
+        $resolver->setDefaults(
+            []
+        );
+    }
+
+    private function setFileType($builder)
+    {
+        $images = [
+            'image'   => [
+                'label' => $this->translator->trans('param.image.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.image.help', [], 'admin.form'),
+            ],
+            'favicon' => [
+                'label' => $this->translator->trans('param.favicon.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.favicon.help', [], 'admin.form'),
+            ],
+        ];
+        foreach ($images as $key => $row) {
             $builder->add(
                 $key,
-                MinMaxCollectionType::class,
+                FileType::class,
                 [
-                    'allow_add'    => false,
-                    'allow_delete' => false,
-                    'entry_type'   => $entry,
+                    'label'    => $row['label'],
+                    'help'     => $row['help'],
+                    'required' => false,
+                    'attr'     => ['accept' => 'image/*'],
                 ]
             );
         }
@@ -147,37 +166,18 @@ class ParamType extends AbstractTypeLib
         }
     }
 
-    private function setFileType($builder)
+    private function setMinMaxCollectionType($builder, $mixmax)
     {
-        $images = [
-            'image'   => [
-                'label' => $this->translator->trans('param.image.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.image.help', [], 'admin.form'),
-            ],
-            'favicon' => [
-                'label' => $this->translator->trans('param.favicon.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.favicon.help', [], 'admin.form'),
-            ],
-        ];
-        foreach ($images as $key => $row) {
+        foreach ($mixmax as $key => $entry) {
             $builder->add(
                 $key,
-                FileType::class,
+                MinMaxCollectionType::class,
                 [
-                    'label'    => $row['label'],
-                    'help'     => $row['help'],
-                    'required' => false,
-                    'attr'     => ['accept' => 'image/*'],
+                    'allow_add'    => false,
+                    'allow_delete' => false,
+                    'entry_type'   => $entry,
                 ]
             );
         }
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        // Configure your form options here
-        $resolver->setDefaults(
-            []
-        );
     }
 }

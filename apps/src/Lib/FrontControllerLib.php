@@ -2,16 +2,9 @@
 
 namespace Labstag\Lib;
 
-use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Attachment;
-use Labstag\Service\DataService;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
-use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 abstract class FrontControllerLib extends ControllerLib
 {
@@ -23,7 +16,7 @@ abstract class FrontControllerLib extends ControllerLib
     )
     {
         $globals = $this->get('twig')->getGlobals();
-        $config  = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
+        $config  = $globals['config'] ?? $this->dataService->getConfig();
 
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
 
@@ -108,8 +101,11 @@ abstract class FrontControllerLib extends ControllerLib
                     'property' => $key,
                     'content'  => $value,
                 ];
+
                 continue;
-            } elseif ('description' == $key) {
+            }
+
+            if ('description' == $key) {
                 $metatags[] = [
                     'itemprop' => $key,
                     'content'  => $value,
@@ -118,6 +114,7 @@ abstract class FrontControllerLib extends ControllerLib
                     'name'    => $key,
                     'content' => $value,
                 ];
+
                 continue;
             }
 

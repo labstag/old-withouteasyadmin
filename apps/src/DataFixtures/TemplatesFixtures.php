@@ -34,7 +34,9 @@ class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
         $template    = new Template();
         $oldTemplate = clone $template;
         $template->setName($faker->unique()->colorName);
-        /** @var string $content */
+        /**
+         * @var string $content
+         */
         $content = $faker->unique()->paragraphs(10, true);
         $template->setHtml(str_replace("\n\n", "<br />\n", $content));
         $template->setText($content);

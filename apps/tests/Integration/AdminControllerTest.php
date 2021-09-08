@@ -28,7 +28,7 @@ class AdminControllerTest extends WebTestCase
 
     /**
      * @dataProvider provideAllUrlWithoutParams
-     * @param string $route
+     * @param        string $route
      */
     public function testUrl($route, $groupe)
     {
@@ -61,7 +61,9 @@ class AdminControllerTest extends WebTestCase
         $repository    = $entityManager->getRepository(Configuration::class);
         $data          = $repository->findAll();
         $config        = [];
-        /** @var Configuration $row */
+        /**
+ * @var Configuration $row
+*/
         foreach ($data as $row) {
             $key          = $row->getName();
             $value        = $row->getValue();

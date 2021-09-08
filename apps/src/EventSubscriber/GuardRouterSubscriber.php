@@ -23,13 +23,13 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
     protected GuardService $guardService;
 
+    protected RequestStack $requestStack;
+
     protected RouterInterface $router;
 
     protected SessionInterface $session;
 
     protected TokenStorageInterface $token;
-
-    protected RequestStack $requestStack;
 
     protected TranslatorInterface $translator;
 
@@ -69,6 +69,7 @@ class GuardRouterSubscriber implements EventSubscriberInterface
             'warning',
             $this->translator->trans('user.guard.nope')
         );
+
         throw new AccessDeniedException();
     }
 

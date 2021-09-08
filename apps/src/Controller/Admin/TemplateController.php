@@ -54,8 +54,8 @@ class TemplateController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_template_trash", methods={"GET"})
-     * @Route("/", name="admin_template_index", methods={"GET"})
+     * @Route("/trash",  name="admin_template_trash", methods={"GET"})
+     * @Route("/",       name="admin_template_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(TemplateRepository $repository): Response
@@ -107,7 +107,7 @@ class TemplateController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}", name="admin_template_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_template_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_template_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

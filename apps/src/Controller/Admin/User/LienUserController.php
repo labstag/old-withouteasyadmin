@@ -54,8 +54,8 @@ class LienUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_lienuser_trash", methods={"GET"})
-     * @Route("/", name="admin_lienuser_index", methods={"GET"})
+     * @Route("/trash",  name="admin_lienuser_trash", methods={"GET"})
+     * @Route("/",       name="admin_lienuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(LienUserRepository $lienUserRepository): Response
@@ -107,7 +107,7 @@ class LienUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}", name="admin_lienuser_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_lienuser_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_lienuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

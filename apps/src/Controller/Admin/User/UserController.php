@@ -15,7 +15,6 @@ use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/admin/user")
@@ -114,8 +113,8 @@ class UserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_user_trash", methods={"GET"})
-     * @Route("/", name="admin_user_index", methods={"GET"})
+     * @Route("/trash",  name="admin_user_trash", methods={"GET"})
+     * @Route("/",       name="admin_user_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(UserRepository $repository): Response
@@ -172,7 +171,7 @@ class UserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}", name="admin_user_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_user_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_user_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

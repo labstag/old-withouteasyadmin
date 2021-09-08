@@ -84,6 +84,52 @@ class TarteaucitronType extends AbstractTypeLib
         );
     }
 
+    private function setInputText($builder)
+    {
+        $tab = [
+            'hashtag'     => [
+                'label' => $this->translator->trans('param.tarteaucitron.hashtag.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.hashtag.help', [], 'admin.form'),
+            ],
+            'cookieName'  => [
+                'label' => $this->translator->trans('param.tarteaucitron.cookieName.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.cookieName.help', [], 'admin.form'),
+            ],
+            'orientation' => [
+                'label' => $this->translator->trans('param.tarteaucitron.orientation.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.orientation.help', [], 'admin.form'),
+            ],
+        ];
+        foreach ($tab as $id => $row) {
+            $builder->add(
+                $id,
+                TextType::class,
+                [
+                    'label' => $row['label'],
+                    'help'  => $row['help'],
+                ]
+            );
+        }
+    }
+
+    private function setInputTrueFalse($builder, $tab)
+    {
+        foreach ($tab as $id => $row) {
+            $builder->add(
+                $id,
+                ChoiceType::class,
+                [
+                    'label'   => $row['label'],
+                    'help'    => $row['help'],
+                    'choices' => [
+                        'Non' => '0',
+                        'Oui' => '1',
+                    ],
+                ]
+            );
+        }
+    }
+
     private function setInputTrueFalsePartie1($builder)
     {
         $tab = [
@@ -152,51 +198,5 @@ class TarteaucitronType extends AbstractTypeLib
             ],
         ];
         $this->setInputTrueFalse($builder, $tab);
-    }
-
-    private function setInputTrueFalse($builder, $tab)
-    {
-        foreach ($tab as $id => $row) {
-            $builder->add(
-                $id,
-                ChoiceType::class,
-                [
-                    'label'   => $row['label'],
-                    'help'    => $row['help'],
-                    'choices' => [
-                        'Non' => '0',
-                        'Oui' => '1',
-                    ],
-                ]
-            );
-        }
-    }
-
-    private function setInputText($builder)
-    {
-        $tab = [
-            'hashtag'     => [
-                'label' => $this->translator->trans('param.tarteaucitron.hashtag.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.hashtag.help', [], 'admin.form'),
-            ],
-            'cookieName'  => [
-                'label' => $this->translator->trans('param.tarteaucitron.cookieName.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.cookieName.help', [], 'admin.form'),
-            ],
-            'orientation' => [
-                'label' => $this->translator->trans('param.tarteaucitron.orientation.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.orientation.help', [], 'admin.form'),
-            ],
-        ];
-        foreach ($tab as $id => $row) {
-            $builder->add(
-                $id,
-                TextType::class,
-                [
-                    'label' => $row['label'],
-                    'help'  => $row['help'],
-                ]
-            );
-        }
     }
 }

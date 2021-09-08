@@ -27,8 +27,16 @@ apps/.env: apps/.env.dist ## Install .env
 apps/phploc.phar:
 	$(DOCKER_EXECPHP) wget https://phar.phpunit.de/phploc-7.0.2.phar -O phploc.phar
 
+apps/php-cs-fixer.phar:
+	$(DOCKER_EXECPHP) wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.1.0/php-cs-fixer.phar
 apps/phpmd.phar:
 	$(DOCKER_EXECPHP) wget https://github.com/phpmd/phpmd/releases/download/2.10.2/phpmd.phar
+
+apps/phpcbf.phar:
+	$(DOCKER_EXECPHP) wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.0/phpcbf.phar
+
+apps/phpcs.phar:
+	$(DOCKER_EXECPHP) wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.0/phpcs.phar
 
 apps/composer.lock: isdocker apps/composer.json
 	${COMPOSER_EXEC} update
@@ -167,7 +175,7 @@ commands: isdocker
 	$(SYMFONY_EXEC) labstag:workflows-show
 
 .PHONY: linter
-linter: isdocker apps/phploc.phar apps/phpmd.phar node_modules ### Scripts Linter
+linter: isdocker apps/phploc.phar apps/phpmd.phar apps/php-cs-fixer.phar apps/phpcbf.phar apps/phpcs.phar node_modules ### Scripts Linter
 ifeq ($(COMMANDS_ARGS),all)
 	@make linter phpfix -i
 	@make linter eslint -i
@@ -205,15 +213,15 @@ else ifeq ($(COMMANDS_ARGS),eslint)
 else ifeq ($(COMMANDS_ARGS),eslint-fix)
 	@npm run eslint-fix
 else ifeq ($(COMMANDS_ARGS),php-cs-fixer)
-	${COMPOSER_EXEC} run php-cs-fixer
+	${PHP_EXEC} php-cs-fixer.phar fix src
 else ifeq ($(COMMANDS_ARGS),phpcbf)
-	${COMPOSER_EXEC} run phpcbf
+	${PHP_EXEC} phpcbf.phar -d memory_limit=-1 --report=diff -p --extensions=php
 else ifeq ($(COMMANDS_ARGS),phpcs)
-	${COMPOSER_EXEC} run phpcs
+	${PHP_EXEC} phpcs.phar --report=full --extensions=php
 else ifeq ($(COMMANDS_ARGS),phpcs-onlywarning)
-	${COMPOSER_EXEC} run phpcs-onlywarning
+	${PHP_EXEC} phpcs.phar  --report=full --extensions=php --error-severity=0
 else ifeq ($(COMMANDS_ARGS),phpcs-onlyerror)
-	${COMPOSER_EXEC} run phpcs-onlyerror
+	${PHP_EXEC} phpcs.phar  --report=full --extensions=php --warning-severity=0
 else ifeq ($(COMMANDS_ARGS),phploc)
 	$(PHP_EXEC) phploc.phar src
 else ifeq ($(COMMANDS_ARGS),phpmd)

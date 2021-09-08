@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 abstract class EmailType extends AbstractTypeLib
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

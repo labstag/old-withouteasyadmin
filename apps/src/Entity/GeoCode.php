@@ -21,8 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get"
  *     }
  * )
- * @ApiFilter(SearchFilter::class, properties={"countryCode": "exact", "postalCode": "exact", "placeName": "partial"})
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @ApiFilter(SearchFilter::class,                       properties={"countryCode": "exact", "postalCode": "exact", "placeName": "partial"})
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt",          timeAware=false)
  */
 class GeoCode
 {
@@ -52,7 +52,7 @@ class GeoCode
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid", unique=true)
+     * @ORM\Column(type="guid",             unique=true)
      */
     protected $id;
 

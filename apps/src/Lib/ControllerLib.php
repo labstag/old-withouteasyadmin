@@ -23,17 +23,17 @@ abstract class ControllerLib extends AbstractController
 
     protected DataService $dataService;
 
+    protected GuardService $guardService;
+
     protected PaginatorInterface $paginator;
+
+    protected Request $request;
 
     protected RequestStack $requestStack;
 
     protected TranslatorInterface $translator;
 
     protected Environment $twig;
-
-    protected Request $request;
-
-    protected GuardService $guardService;
 
     public function __construct(
         GuardService $guardService,
@@ -51,19 +51,6 @@ abstract class ControllerLib extends AbstractController
         $this->setSingletons();
     }
 
-    protected function flashBagAdd(string $type, $message)
-    {
-        $requestStack = $this->get('request_stack');
-        $request      = $requestStack->getCurrentRequest();
-        if (is_null($request)) {
-            return;
-        }
-
-        $session  = $requestStack->getSession();
-        $flashbag = $session->getFlashBag();
-        $flashbag->add($type, $message);
-    }
-
     public function render(
         string $view,
         array $parameters = [],
@@ -78,17 +65,25 @@ abstract class ControllerLib extends AbstractController
         return parent::render($view, $parameters, $response);
     }
 
+    protected function flashBagAdd(string $type, $message)
+    {
+        $requestStack = $this->get('request_stack');
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
+            return;
+        }
+
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
+    }
+
     protected function setBreadcrumbs(): void
     {
         $data = $this->breadcrumbsInstance->get();
         foreach ($data as $title => $route) {
             $this->breadcrumbs->addItem($title, $route);
         }
-    }
-
-    protected function setSingletons()
-    {
-        $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
     }
 
     protected function setErrorLogger($exception, $logger)
@@ -101,5 +96,10 @@ abstract class ControllerLib extends AbstractController
             $exception->getMessage()
         );
         $logger->error($errorMsg);
+    }
+
+    protected function setSingletons()
+    {
+        $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
     }
 }

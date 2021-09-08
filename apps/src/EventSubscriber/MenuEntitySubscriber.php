@@ -3,15 +3,9 @@
 namespace Labstag\EventSubscriber;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Labstag\Entity\EmailMenu;
 use Labstag\Entity\Menu;
 use Labstag\Event\MenuEntityEvent;
-use Labstag\RequestHandler\EmailMenuRequestHandler;
-use Labstag\Service\MenuMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\PasswordHasher\Hasher\MenuPasswordHasherInterface;
 
 class MenuEntitySubscriber implements EventSubscriberInterface
 {
@@ -48,11 +42,11 @@ class MenuEntitySubscriber implements EventSubscriberInterface
             }
         }
 
-        if (isset($data['url']) && isset($data['route'])) {
+        if (isset($data['url'], $data['route'])) {
             unset($data['route']);
         }
 
-        if (isset($data['url']) && isset($data['param'])) {
+        if (isset($data['url'], $data['param'])) {
             unset($data['param']);
         }
 

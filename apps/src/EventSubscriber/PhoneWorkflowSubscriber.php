@@ -28,6 +28,7 @@ class PhoneWorkflowSubscriber implements EventSubscriberInterface
         switch ($name) {
             case 'submit':
                 $this->transitionSubmit($event);
+
                 break;
         }
     }

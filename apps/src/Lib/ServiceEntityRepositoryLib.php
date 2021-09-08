@@ -34,9 +34,8 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         $query         = $entityManager->createQuery($dql);
         $query         = $query->setMaxResults(1);
-        $result        = $query->getOneOrNullResult();
 
-        return $result;
+        return $query->getOneOrNullResult();
     }
 
     public function findTrashForAdmin(): array

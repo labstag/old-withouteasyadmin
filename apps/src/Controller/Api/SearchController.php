@@ -17,10 +17,6 @@ class SearchController extends ApiControllerLib
 {
     /**
      * @Route("/group", name="api_search_group")
-     *
-     * @param Request $request
-     * @param GroupeRepository $repository
-     * @return Response
      */
     public function groupe(Request $request, GroupeRepository $repository): Response
     {
@@ -48,7 +44,6 @@ class SearchController extends ApiControllerLib
     /**
      * @Route("/libelle", name="api_search_postlibelle")
      *
-     * @param Request $request
      * @return void
      */
     public function libelle(Request $request, LibelleRepository $repository): Response

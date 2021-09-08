@@ -10,9 +10,8 @@ use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\OauthConnectUserRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use League\OAuth2\Client\Provider\AbstractProvider;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserService
@@ -30,9 +29,9 @@ class UserService
 
     protected RequestStack $requestStack;
 
-    protected UserRequestHandler $userRH;
-
     protected TranslatorInterface $translator;
+
+    protected UserRequestHandler $userRH;
 
     public function __construct(
         RequestStack $requestStack,
@@ -53,19 +52,6 @@ class UserService
         $this->oauthConnectUserRH = $oauthConnectUserRH;
     }
 
-    private function flashBagAdd(string $type, $message)
-    {
-        $requestStack = $this->requestStack;
-        $request      = $requestStack->getCurrentRequest();
-        if (is_null($request)) {
-            return;
-        }
-
-        $session  = $requestStack->getSession();
-        $flashbag = $session->getFlashBag();
-        $flashbag->add($type, $message);
-    }
-
     public function addOauthToUser(
         string $client,
         User $user,
@@ -80,10 +66,14 @@ class UserService
             $client,
             $oauthConnect
         );
-        /** @var OauthConnectUserRepository $repository */
+        /**
+         * @var OauthConnectUserRepository $repository
+         */
         $repository = $this->entityManager->getRepository(OauthConnectUser::class);
         if (false === $find) {
-            /** @var OauthConnectUser|null $oauthConnect */
+            /**
+             * @var null|OauthConnectUser $oauthConnect
+             */
             $oauthConnect = $repository->findOauthNotUser(
                 $user,
                 $identity,
@@ -96,7 +86,9 @@ class UserService
                 $oauthConnect->setName($client);
             }
 
-            /** @var User $refuser */
+            /**
+             * @var User $refuser
+             */
             $refuser = $oauthConnect->getRefuser();
             if ($refuser->getId() !== $user->getId()) {
                 $oauthConnect = null;
@@ -144,7 +136,9 @@ class UserService
             return;
         }
 
-        /** @var User $user */
+        /**
+         * @var User $user
+         */
         $user = $this->repository->findUserEnable($post['value']);
         if (!$user instanceof User) {
             return;
@@ -153,9 +147,6 @@ class UserService
         $this->userRH->changeWorkflowState($user, ['lostpassword']);
     }
 
-    /**
-     * @param mixed $oauthConnect
-     */
     protected function findOAuthIdentity(
         User $user,
         string $identity,
@@ -175,5 +166,18 @@ class UserService
         $oauthConnect = null;
 
         return false;
+    }
+
+    private function flashBagAdd(string $type, $message)
+    {
+        $requestStack = $this->requestStack;
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
+            return;
+        }
+
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 }

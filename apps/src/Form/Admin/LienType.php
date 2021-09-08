@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 abstract class LienType extends AbstractTypeLib
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

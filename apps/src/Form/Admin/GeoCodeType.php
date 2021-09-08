@@ -72,6 +72,15 @@ class GeoCodeType extends AbstractTypeLib
         $this->setInputText($builder, $tab);
     }
 
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'data_class' => GeoCode::class,
+            ]
+        );
+    }
+
     private function setInputText($builder, $tab)
     {
         foreach ($tab as $id => $row) {
@@ -84,14 +93,5 @@ class GeoCodeType extends AbstractTypeLib
                 ]
             );
         }
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(
-            [
-                'data_class' => GeoCode::class,
-            ]
-        );
     }
 }

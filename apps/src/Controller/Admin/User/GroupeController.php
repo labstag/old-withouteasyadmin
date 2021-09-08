@@ -12,10 +12,8 @@ use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
-use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/admin/user/groupe")
@@ -112,8 +110,8 @@ class GroupeController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_groupuser_trash", methods={"GET"})
-     * @Route("/", name="admin_groupuser_index", methods={"GET"})
+     * @Route("/trash",  name="admin_groupuser_trash", methods={"GET"})
+     * @Route("/",       name="admin_groupuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function index(GroupeRepository $repository): Response
@@ -165,7 +163,7 @@ class GroupeController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}", name="admin_groupuser_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_groupuser_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_groupuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

@@ -27,7 +27,7 @@ class AdminTemplateControllerTest extends WebTestCase
 
     /**
      * @dataProvider provideAllUrlWithoutParams
-     * @param string $route
+     * @param        string $route
      */
     public function testUrl($route, $groupe)
     {
@@ -110,7 +110,9 @@ class AdminTemplateControllerTest extends WebTestCase
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(Template::class);
-        /** @var TemplateRepository $repository */
+        /**
+ * @var TemplateRepository $repository
+*/
         $data = $repository->findOneRandom();
 
         return $data;
@@ -121,7 +123,9 @@ class AdminTemplateControllerTest extends WebTestCase
         $faker    = Factory::create('fr_FR');
         $template = new Template();
         $template->setName($faker->unique()->colorName);
-        /** @var string $content */
+        /**
+ * @var string $content
+*/
         $content = $faker->unique()->paragraphs(10, true);
         $template->setHtml(str_replace("\n\n", '<br />', $content));
         $template->setText($content);

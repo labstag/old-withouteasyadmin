@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 abstract class AdresseType extends AbstractTypeLib
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

@@ -19,8 +19,8 @@ class AttachmentController extends AdminControllerLib
     protected string $urlHome = 'admin_attachment_index';
 
     /**
-     * @Route("/trash", name="admin_attachment_trash", methods={"GET"})
-     * @Route("/", name="admin_attachment_index", methods={"GET"})
+     * @Route("/trash",  name="admin_attachment_trash", methods={"GET"})
+     * @Route("/",       name="admin_attachment_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(AttachmentRepository $repository): Response

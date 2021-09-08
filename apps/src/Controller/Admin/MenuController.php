@@ -28,36 +28,97 @@ class MenuController extends AdminControllerLib
 
     protected string $urlHome = 'admin_menu_index';
 
+    /**
+     * @Route("/add", name="admin_menu_add", methods={"GET", "POST"})
+     */
+    public function add(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        Request $request,
+        MenuRequestHandler $requestHandler,
+        MenuRepository $repository
+    ): Response
+    {
+        $get = $request->query->all();
+        $url = $this->router->generate('admin_menu_index');
+        if (!isset($get['id'])) {
+            return new RedirectResponse($url);
+        }
+
+        $parent = $repository->find($get['id']);
+        if (!$parent instanceof Menu) {
+            return new RedirectResponse($url);
+        }
+
+        $menu = new Menu();
+        $data = [$menu->getData()];
+        $menu->setClef(null);
+        $menu->setData($data);
+        $menu->setSeparateur(false);
+        $menu->setPosition(count($parent->getChildren()));
+        $menu->setParent($parent);
+
+        return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
+            $menu,
+            LinkType::class,
+            ['list' => 'admin_menu_index'],
+            'admin/menu/form.html.twig'
+        );
+    }
 
     /**
-     * @Route("/trash", name="admin_menu_trash", methods={"GET"})
-     *
-     * @param MenuRepository $repository
-     * @return Response
-     * @IgnoreSoftDelete
+     * @Route("/divider/{id}", name="admin_menu_divider")
      */
-    public function trash(MenuRepository $repository): Response
+    public function divider(Menu $menu, MenuRequestHandler $requestHandler): RedirectResponse
     {
-        return $this->listOrTrash(
-            $repository,
+        $entity    = new Menu();
+        $oldEntity = clone $entity;
+        $position  = count($entity->getChildren());
+        $entity->setPosition($position + 1);
+        $entity->setSeparateur(true);
+        $entity->setParent($menu);
+        $requestHandler->handle($oldEntity, $entity);
+
+        return new RedirectResponse(
+            $this->router->generate('admin_menu_index')
+        );
+    }
+
+    /**
+     * @Route("/update/{id}", name="admin_menu_update", methods={"GET", "POST"})
+     */
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        GuardService $guarService,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        Menu $menu,
+        MenuRequestHandler $requestHandler
+    )
+    {
+        $this->modalAttachmentDelete();
+        $form = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
+        $data = [$menu->getData()];
+        $menu->setData($data);
+
+        return $this->update(
+            $uploadAnnotReader,
+            $guarService,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
+            $form,
+            $menu,
             [
-                'trash' => 'findTrashForAdmin',
-                'all'   => 'findAllForAdmin',
+                'delete' => 'api_action_delete',
+                'list'   => 'admin_menu_index',
             ],
-            'admin/menu/trash.html.twig',
-            [
-                'new'   => 'admin_menu_new',
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_menu_trash',
-                'list'  => 'admin_menu_index',
-            ],
-            [
-                'list'    => 'admin_menu_index',
-                'edit'    => 'admin_menu_edit',
-                'delete'  => 'api_action_delete',
-                'destroy' => 'api_action_destroy',
-                'restore' => 'api_action_restore',
-            ]
+            'admin/menu/form.html.twig'
         );
     }
 
@@ -70,7 +131,7 @@ class MenuController extends AdminControllerLib
     {
         $all     = $repository->findAllCode();
         $globals = $this->twig->getGlobals();
-        $modal   = isset($globals['modal']) ? $globals['modal'] : [];
+        $modal   = $globals['modal'] ?? [];
 
         $modal['delete'] = true;
         $this->twig->addGlobal('modal', $modal);
@@ -141,67 +202,6 @@ class MenuController extends AdminControllerLib
     }
 
     /**
-     * @Route("/add", name="admin_menu_add", methods={"GET", "POST"})
-     */
-    public function add(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        Request $request,
-        MenuRequestHandler $requestHandler,
-        MenuRepository $repository
-    ): Response
-    {
-        $get = $request->query->all();
-        $url = $this->router->generate('admin_menu_index');
-        if (!isset($get['id'])) {
-            return new RedirectResponse($url);
-        }
-
-        $parent = $repository->find($get['id']);
-        if (!$parent instanceof Menu) {
-            return new RedirectResponse($url);
-        }
-
-        $menu = new Menu();
-        $data = [$menu->getData()];
-        $menu->setClef(null);
-        $menu->setData($data);
-        $menu->setSeparateur(false);
-        $menu->setPosition(count($parent->getChildren()));
-        $menu->setParent($parent);
-
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
-            $requestHandler,
-            $menu,
-            LinkType::class,
-            ['list' => 'admin_menu_index'],
-            'admin/menu/form.html.twig'
-        );
-    }
-
-    /**
-     * @Route("/divider/{id}", name="admin_menu_divider")
-     */
-    public function divider(Menu $menu, MenuRequestHandler $requestHandler): RedirectResponse
-    {
-        $entity    = new Menu();
-        $oldEntity = clone $entity;
-        $position  = count($entity->getChildren());
-        $entity->setPosition($position + 1);
-        $entity->setSeparateur(true);
-        $entity->setParent($menu);
-        $requestHandler->handle($oldEntity, $entity);
-
-        return new RedirectResponse(
-            $this->router->generate('admin_menu_index')
-        );
-    }
-
-    /**
      * @Route("/new", name="admin_menu_new", methods={"GET", "POST"})
      */
     public function new(
@@ -224,35 +224,32 @@ class MenuController extends AdminControllerLib
     }
 
     /**
-     * @Route("/update/{id}", name="admin_menu_update", methods={"GET", "POST"})
+     * @Route("/trash", name="admin_menu_trash", methods={"GET"})
+     *
+     * @IgnoreSoftDelete
      */
-    public function edit(
-        UploadAnnotationReader $uploadAnnotReader,
-        GuardService $guarService,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        Menu $menu,
-        MenuRequestHandler $requestHandler
-    )
+    public function trash(MenuRepository $repository): Response
     {
-        $this->modalAttachmentDelete();
-        $form = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
-        $data = [$menu->getData()];
-        $menu->setData($data);
-
-        return $this->update(
-            $uploadAnnotReader,
-            $guarService,
-            $attachmentRepository,
-            $attachmentRH,
-            $requestHandler,
-            $form,
-            $menu,
+        return $this->listOrTrash(
+            $repository,
             [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_menu_index',
+                'trash' => 'findTrashForAdmin',
+                'all'   => 'findAllForAdmin',
             ],
-            'admin/menu/form.html.twig'
+            'admin/menu/trash.html.twig',
+            [
+                'new'   => 'admin_menu_new',
+                'empty' => 'api_action_empty',
+                'trash' => 'admin_menu_trash',
+                'list'  => 'admin_menu_index',
+            ],
+            [
+                'list'    => 'admin_menu_index',
+                'edit'    => 'admin_menu_edit',
+                'delete'  => 'api_action_delete',
+                'destroy' => 'api_action_destroy',
+                'restore' => 'api_action_restore',
+            ]
         );
     }
 }
