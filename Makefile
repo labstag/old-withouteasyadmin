@@ -215,17 +215,17 @@ else ifeq ($(COMMANDS_ARGS),eslint-fix)
 else ifeq ($(COMMANDS_ARGS),php-cs-fixer)
 	${PHP_EXEC} php-cs-fixer.phar fix src
 else ifeq ($(COMMANDS_ARGS),phpcbf)
-	${PHP_EXEC} phpcbf.phar -d memory_limit=-1 --report=diff -p --extensions=php
+	${PHP_EXEC} phpcbf.phar -d memory_limit=-1 --report=diff -p --extensions=php --standard=phpcs.xml
 else ifeq ($(COMMANDS_ARGS),phpcs)
-	${PHP_EXEC} phpcs.phar --report=full --extensions=php
+	${PHP_EXEC} phpcs.phar --report=full --extensions=php src --standard=phpcs.xml
 else ifeq ($(COMMANDS_ARGS),phpcs-onlywarning)
-	${PHP_EXEC} phpcs.phar  --report=full --extensions=php --error-severity=0
+	${PHP_EXEC} phpcs.phar  --report=full --extensions=php --error-severity=0 --standard=phpcs.xml
 else ifeq ($(COMMANDS_ARGS),phpcs-onlyerror)
-	${PHP_EXEC} phpcs.phar  --report=full --extensions=php --warning-severity=0
+	${PHP_EXEC} phpcs.phar  --report=full --extensions=php --warning-severity=0 --standard=phpcs.xml
 else ifeq ($(COMMANDS_ARGS),phploc)
 	$(PHP_EXEC) phploc.phar src
 else ifeq ($(COMMANDS_ARGS),phpmd)
-	$(PHP_EXEC) -d error_reporting=24575 phpmd.phar src,features/bootstrap,tests ansi phpmd.xml
+	$(PHP_EXEC) -d error_reporting=24575 phpmd.phar src,features/bootstrap ansi phpmd.xml
 else ifeq ($(COMMANDS_ARGS),phpmnd)
 	${COMPOSER_EXEC} run phpmnd
 else ifeq ($(COMMANDS_ARGS),phpstan)
