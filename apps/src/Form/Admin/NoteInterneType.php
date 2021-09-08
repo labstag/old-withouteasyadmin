@@ -33,14 +33,6 @@ class NoteInterneType extends AbstractTypeLib
             ]
         );
         $builder->add(
-            'slug',
-            TextType::class,
-            [
-                'label' => $this->translator->trans('noteinterne.slug.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('noteinterne.slug.help', [], 'admin.form'),
-            ]
-        );
-        $builder->add(
             'content',
             CKEditorType::class,
             [

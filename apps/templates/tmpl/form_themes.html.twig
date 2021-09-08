@@ -298,9 +298,9 @@
                     {% endif %}
                 {% else %}
                     {% if label_html is same as(false) %}
-                        {{ label|trans(label_translation_parameters, translation_domain) }}
+                        {{ label }}
                     {% else %}
-                        {{ label|trans(label_translation_parameters, translation_domain)|raw }}
+                        {{ label|raw }}
                     {% endif %}
                 {% endif %}
             {% endif %}

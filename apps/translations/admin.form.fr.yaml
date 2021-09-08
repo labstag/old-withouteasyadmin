@@ -74,8 +74,6 @@ noteinterne.file.help: ''
 noteinterne.file.label: Image
 noteinterne.refuser.help: ''
 noteinterne.refuser.label: Utilisateur
-noteinterne.slug.help: ''
-noteinterne.slug.label: Slug
 noteinterne.title.help: ''
 noteinterne.title.label: Titre
 param.disclaimer.activate.help: ''
@@ -86,14 +84,42 @@ param.disclaimer.title.help: ''
 param.disclaimer.title.label: Titre
 param.disclaimer.url-redirect.help: ''
 param.disclaimer.url-redirect.label: 'Url de redirection'
+param.favicon.help: ''
+param.favicon.label: Favicon
 param.formatdate.admin.help: ''
 param.formatdate.admin.label: Backend
 param.formatdate.public.help: ''
 param.formatdate.public.label: Front
 param.generator.help: ''
 param.generator.label: 'Site générateur'
+param.geocode.accuracy.help: ''
+param.geocode.accuracy.label: Accuracy
+param.geocode.communityCode.help: ''
+param.geocode.communityCode.label: 'Code communauté'
+param.geocode.communityName.help: ''
+param.geocode.communityName.label: Communauté
+param.geocode.latitude.help: ''
+param.geocode.latitude.label: Latitude
+param.geocode.longitude.help: ''
+param.geocode.longitude.label: Longitude
+param.geocode.placeName.help: ''
+param.geocode.placeName.label: Nom
+param.geocode.postalCode.help: ''
+param.geocode.postalCode.label: 'Code postal'
+param.geocode.provinceCode.help: ''
+param.geocode.provinceCode.label: 'Code prinvince'
+param.geocode.provinceName.help: ''
+param.geocode.provinceName.label: Province
+param.geocode.stateCode.help: ''
+param.geocode.stateCode.label: 'Code Etat'
+param.geocode.stateName.help: ''
+param.geocode.stateName.label: Etat
+param.image.help: ''
+param.image.label: Image
 param.language.help: ''
 param.language.label: Langues
+param.languagedefault.help: ''
+param.languagedefault.label: 'Langue par défaut'
 param.metasite.description.help: ''
 param.metasite.description.label: 'SEO description'
 param.metasite.keywords.help: ''
@@ -116,18 +142,56 @@ param.oauth.secret.help: ''
 param.oauth.secret.label: Secret
 param.oauth.type.help: ''
 param.oauth.type.label: Type
+param.robotstxt.help: ''
+param.robotstxt.label: Robotstxt
 param.site_copyright.help: ''
 param.site_copyright.label: Copyright
+param.site_no-reply.help: ''
+param.site_no-reply.label: 'Courriel d''envoie'
+param.site_url.help: ''
+param.site_url.label: 'Url du site'
+param.tarteaucitron.AcceptAllCta.help: ''
+param.tarteaucitron.AcceptAllCta.label: AcceptAllCta
+param.tarteaucitron.adblocker.help: ''
+param.tarteaucitron.adblocker.label: Adblocker
+param.tarteaucitron.closePopup.help: ''
+param.tarteaucitron.closePopup.label: ClosePopup
+param.tarteaucitron.cookieName.help: ''
+param.tarteaucitron.cookieName.label: CookieName
+param.tarteaucitron.cookieslist.help: ''
+param.tarteaucitron.cookieslist.label: Cookieslist
+param.tarteaucitron.DenyAllCta.help: ''
+param.tarteaucitron.DenyAllCta.label: DenyAllCta
+param.tarteaucitron.groupServices.help: ''
+param.tarteaucitron.groupServices.label: GroupServices
+param.tarteaucitron.handleBrowserDNTRequest.help: ''
+param.tarteaucitron.handleBrowserDNTRequest.label: HandleBrowserDNTRequest
+param.tarteaucitron.hashtag.help: ''
+param.tarteaucitron.hashtag.label: Hashtag
+param.tarteaucitron.highPrivacy.help: ''
+param.tarteaucitron.highPrivacy.label: HighPrivacy
 param.tarteaucitron.iconPosition.help: ''
 param.tarteaucitron.iconPosition.label: IconPosition
 param.tarteaucitron.job.help: ''
 param.tarteaucitron.job.label: Jobs
 param.tarteaucitron.mandatory.help: ''
 param.tarteaucitron.mandatory.label: Mandatory
+param.tarteaucitron.moreInfoLink.help: ''
+param.tarteaucitron.moreInfoLink.label: MoreInfoLink
+param.tarteaucitron.orientation.help: ''
+param.tarteaucitron.orientation.label: Orientation
 param.tarteaucitron.privacyUrl.help: ''
 param.tarteaucitron.privacyUrl.label: PrivacyUrl
 param.tarteaucitron.readmoreLink.help: ''
 param.tarteaucitron.readmoreLink.label: readmoreLink
+param.tarteaucitron.removeCredit.help: ''
+param.tarteaucitron.removeCredit.label: RemoveCredit
+param.tarteaucitron.showAlertSmall.help: ''
+param.tarteaucitron.showAlertSmall.label: ShowAlertSmall
+param.tarteaucitron.showIcon.help: ''
+param.tarteaucitron.showIcon.label: ShowIcon
+param.title_format.help: ''
+param.title_format.label: 'Format du titre du site'
 phone.country.help: ''
 phone.country.label: Pays
 phone.numero.help: ''
@@ -159,7 +223,6 @@ post.title.label: Titre
 profil.email.help: ''
 profil.email.label: Courriel
 profil.file.help: ''
-profil.file.label: Avatar
 profil.password.help: ''
 profil.password.label: 'Mot de passe'
 profil.password.match: 'Les champs de mot de passe doivent correspondre.'
@@ -178,7 +241,6 @@ template.text.label: Texte
 user.email.help: ''
 user.email.label: Courriel
 user.file.help: ''
-user.file.label: Avatar
 user.password.help: ''
 user.password.label: 'Mot de passe'
 user.refgroupe.help: ''
@@ -187,69 +249,3 @@ user.repeatpassword.help: ''
 user.repeatpassword.label: 'Répéter le mot de passe'
 user.username.help: ''
 user.username.label: Pseudo
-param.tarteaucitron.groupServices.label: "GroupServices"
-param.tarteaucitron.groupServices.help: ""
-param.tarteaucitron.showAlertSmall.label: "ShowAlertSmall"
-param.tarteaucitron.showAlertSmall.help: ""
-param.tarteaucitron.cookieslist.label: "Cookieslist"
-param.tarteaucitron.cookieslist.help: ""
-param.tarteaucitron.closePopup.label: "ClosePopup"
-param.tarteaucitron.closePopup.help: ""
-param.tarteaucitron.showIcon.label: "ShowIcon"
-param.tarteaucitron.showIcon.help: ""
-param.tarteaucitron.adblocker.label: "Adblocker"
-param.tarteaucitron.adblocker.help: ""
-param.tarteaucitron.DenyAllCta.label: "DenyAllCta"
-param.tarteaucitron.DenyAllCta.help: ""
-param.tarteaucitron.AcceptAllCta.label: "AcceptAllCta"
-param.tarteaucitron.AcceptAllCta.help: ""
-param.tarteaucitron.highPrivacy.label: "HighPrivacy"
-param.tarteaucitron.highPrivacy.help: ""
-param.tarteaucitron.handleBrowserDNTRequest.label: "HandleBrowserDNTRequest"
-param.tarteaucitron.handleBrowserDNTRequest.help: ""
-param.tarteaucitron.removeCredit.label: "RemoveCredit"
-param.tarteaucitron.removeCredit.help: ""
-param.tarteaucitron.moreInfoLink.label: "MoreInfoLink"
-param.tarteaucitron.moreInfoLink.help: ""
-param.geocode.postalCode.label: "Code postal"
-param.geocode.postalCode.help: ""
-param.geocode.placeName.label: "Nom"
-param.geocode.placeName.help: ""
-param.geocode.stateName.label: "Etat"
-param.geocode.stateName.help: ""
-param.geocode.stateCode.label: "Code Etat"
-param.geocode.stateCode.help: ""
-param.geocode.provinceName.label: "Province"
-param.geocode.provinceName.help: ""
-param.geocode.provinceCode.label: "Code prinvince"
-param.geocode.provinceCode.help: ""
-param.geocode.communityName.label: "Communauté"
-param.geocode.communityName.help: ""
-param.geocode.communityCode.label: "Code communauté"
-param.geocode.communityCode.help: ""
-param.geocode.latitude.label: Latitude
-param.geocode.latitude.help: ""
-param.geocode.longitude.label: Longitude
-param.geocode.longitude.help: ""
-param.geocode.accuracy.label: Accuracy
-param.geocode.accuracy.help: ""
-param.title_format.label: "Format du titre du site"
-param.title_format.help: ""
-param.robotstxt.label: Robotstxt
-param.robotstxt.help: ""
-param.languagedefault.label: "Langue par défaut"
-param.languagedefault.help: ""
-param.site_no-reply.label: "Courriel d'envoie"
-param.site_no-reply.help: ""
-param.site_url.label: 'Url du site'
-param.site_url.help: ""
-param.image.label: Image
-param.image.help: ""
-param.favicon.label: Favicon
-param.favicon.help: ""
-param.tarteaucitron.hashtag.label: "Hashtag"
-param.tarteaucitron.hashtag.help: ""
-param.tarteaucitron.cookieName.label: "CookieName"
-param.tarteaucitron.cookieName.help: ""
-param.tarteaucitron.orientation.label: "Orientation"
-param.tarteaucitron.orientation.help: ""
