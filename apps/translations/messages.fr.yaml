@@ -1,80 +1,76 @@
-admin.flashbag.data.export.fail: __admin.flashbag.data.export.fail
-admin.flashbag.data.export.success: __admin.flashbag.data.export.success
-admin.flashbag.trash.empty: __admin.flashbag.trash.empty
-admin.group.guard.superadmin.nope: __admin.group.guard.superadmin.nope
-admin.guard.entite: __admin.guard.entite
-admin.guard.transition: __admin.guard.transition
-admin.robotstxt.file: __admin.robotstxt.file
-admin.togglenavigation: __admin.togglenavigation
-admin.user.guard.superadmin.nope: __admin.user.guard.superadmin.nope
-data.save: __data.save
+admin.flashbag.data.export.fail: 'Problème d''enregistrement du fichier %file%'
+admin.flashbag.data.export.success: 'Données exporté'
+admin.flashbag.trash.empty: 'La corbeille est vide'
+admin.group.guard.superadmin.nope: 'Le groupe superadmin n''est pas un groupe qui peut avoir des droits spécifique'
+admin.robotstxt.file: "Fichier %file% modifié"
+admin.togglenavigation: "Basculer la navigation"
+admin.user.guard.superadmin.nope: "L'utilisateur fait partie du groupe superadmin, qui n'est pas un groupe qui peut avoir des droits spécifique"
+data.save: "Données sauvegardé"
 error.page.400.message: 'La syntaxe de la requête est erronée.'
 error.page.400.title: 'Erreur 400'
 error.page.401.message: 'Une authentification est nécessaire pour accéder à la ressource.'
 error.page.401.title: 'Erreur 401'
 error.page.403.message: 'Le serveur a compris la requête, mais refuse de l''exécuter. Contrairement à l''erreur 401, s''authentifier ne fera aucune différence. Sur les serveurs où l''authentification est requise, cela signifie généralement que l''authentification a été acceptée mais que les droits d''accès ne permettent pas au client d''accéder à la ressource.'
 error.page.403.title: 'Erreur 403'
-error.page.404.message: "\tRessource non trouvée."
+error.page.404.message: 'Ressource non trouvée.'
 error.page.404.title: 'Erreur 404'
 error.page.errors: 'Erreur interne du serveur.'
-error.page.gotosite: __error.page.gotosite
-form.icon.error: __form.icon.error
-form.requireinfo: __form.requireinfo
-modal.attachmentdelete.message: __modal.attachmentdelete.message
-modal.attachmentdelete.title: __modal.attachmentdelete.title
-modal.button.cancel: __modal.button.cancel
-modal.button.confirm: __modal.button.confirm
-modal.button.delete: __modal.button.delete
-modal.button.empty: __modal.button.empty
-modal.button.restore: __modal.button.restore
-modal.delete.message: __modal.delete.message
-modal.delete.title: __modal.delete.title
-modal.deleties.title: __modal.deleties.title
-modal.deletites.message: __modal.deletites.message
-modal.destroy.message: __modal.destroy.message
-modal.destroy.title: __modal.destroy.title
-modal.empties.message: __modal.empties.message
-modal.empties.title: __modal.empties.title
-modal.empty.message: __modal.empty.message
-modal.empty.title: __modal.empty.title
-modal.emptyall.message: __modal.emptyall.message
-modal.emptyall.title: __modal.emptyall.title
-modal.restore.message: __modal.restore.message
-modal.restore.title: __modal.restore.title
-modal.restories.message: __modal.restories.message
-modal.restories.title: __modal.restories.title
-modal.workflow.message: __modal.workflow.message
-modal.workflow.title: __modal.workflow.title
-pagination.current: __pagination.current
-pagination.first: __pagination.first
-pagination.last: __pagination.last
-pagination.next: __pagination.next
-pagination.previous: __pagination.previous
-param.change: __param.change
-param.tarteaucitron.: __param.tarteaucitron.
-post.archives: __post.archives
-post.infodateuser: __post.infodateuser
-post.update: __post.update
-security.disclaimer.doaccept: __security.disclaimer.doaccept
-security.email.activate.fail: __security.email.activate.fail
-security.email.activate.win: __security.email.activate.win
-security.page.changepassword.title: __security.page.changepassword.title
-security.page.lostpassword.title: __security.page.lostpassword.title
-security.phone.activate.fail: __security.phone.activate.fail
-security.phone.activate.win: __security.phone.activate.win
-security.user.activate.fail: __security.user.activate.fail
-security.user.activate.win: __security.user.activate.win
-security.user.connect.fail: __security.user.connect.fail
-security.user.oauth.dissociated: __security.user.oauth.dissociated
-security.user.oauth.fail: __security.user.oauth.fail
-security.user.sendlostpassword.fail: __security.user.sendlostpassword.fail
-service.user.oauth.fail: __service.user.oauth.fail
-service.user.oauth.sucess: __service.user.oauth.sucess
-state.yes: __state.yes
-user.guard.nope: __user.guard.nope
-user.login.oauth: __user.login.oauth
-user.lostpassword.link: __user.lostpassword.link
-user.subscriber.emailprincal.change: __user.subscriber.emailprincal.change
-user.subscriber.password.change: __user.subscriber.password.change
-user.workflow.new: __user.workflow.new
-user.workflow.sendpasswordlink: __user.workflow.sendpasswordlink
+error.page.gotosite: 'Revenir sur le site'
+form.icon.error: Erreur
+form.requireinfo: 'Les informations marquées d''un %span%'
+modal.attachmentdelete.message: 'Êtes-vous sûr de vouloir supprimer cette donnée ?'
+modal.attachmentdelete.title: 'Supprimer ?'
+modal.button.cancel: Annuler
+modal.button.confirm: Confirmer
+modal.button.delete: Supprimer
+modal.button.empty: Vider
+modal.button.restore: Restaurer
+modal.delete.message: 'Êtes-vous sûr de vouloir supprimer cette donnée ?'
+modal.delete.title: 'Supprimer ?'
+modal.deleties.message: 'Êtes-vous sûr de vouloir supprimer la sélection ?'
+modal.deleties.title: 'Supprimer ?'
+modal.destroy.message: 'Êtes-vous sûr de vouloir supprimer cette donnée (elle sera supprimé de la base de données définivement) ?'
+modal.destroy.title: 'Supprimer ?'
+modal.empties.message: 'Êtes-vous sûr de vouloir vider la sélection ?'
+modal.empties.title: 'Supprimer ?'
+modal.empty.message: 'Êtes-vous sûr de vouloir vider la corbeille ?'
+modal.empty.title: 'Supprimer ?'
+modal.emptyall.message: 'Êtes-vous sûr de vouloir vider la corbeille ?'
+modal.emptyall.title: 'Supprimer ?'
+modal.restore.message: 'Êtes-vous sûr de vouloir restaurer cette donnée ?'
+modal.restore.title: 'Restaurer ?'
+modal.restories.message: 'Êtes-vous sûr de vouloir restaurer la sélection ?'
+modal.restories.title: 'Restaurer ?'
+modal.workflow.message: 'Êtes-vous sûr de vouloir changer d''état cette donnée ?'
+modal.workflow.title: Workflow
+pagination.current: Actuel
+pagination.first: Premier
+pagination.last: Dernier
+pagination.next: Suivant
+pagination.previous: Précédent
+param.change: 'Données sauvegardé'
+post.archives: Archives
+post.infodateuser: '%date% par %user%'
+post.update: Modifier
+security.disclaimer.doaccept: 'Veuillez accepter l''énoncé'
+security.email.activate.fail: 'Courriel déjà confirmé'
+security.email.activate.win: 'Courriel confirmé'
+security.page.changepassword.title: 'Changement du mot de passe'
+security.page.lostpassword.title: 'Mot de passe perdu'
+security.phone.activate.fail: 'Téléphone déjà confirmé'
+security.phone.activate.win: 'Téléphone confirmé'
+security.user.activate.fail: 'Utilisateur déjà activé'
+security.user.activate.win: 'Utilisateur activé'
+security.user.connect.fail: 'Problème d''identification'
+security.user.oauth.dissociated: 'Connection Oauth %string% dissocié'
+security.user.oauth.fail: 'Connection Oauth impossible'
+security.user.sendlostpassword.fail: 'Demande de mot de passe non envoyé'
+service.user.oauth.fail: 'Impossible d''associer le compte'
+service.user.oauth.sucess: 'Compte associé'
+user.guard.nope: 'Vous n''avez pas les droits nécessaires'
+user.login.oauth: 'Se connecter avec :'
+user.lostpassword.link: 'J''ai perdu mon mot de passe'
+user.subscriber.emailprincal.change: 'Email principal changé'
+user.subscriber.password.change: 'Mot de passe changé'
+user.workflow.new: 'Nouveau compte utilisateur créer'
+user.workflow.sendpasswordlink: 'Demande de nouveau mot de passe envoyé'

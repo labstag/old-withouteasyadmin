@@ -42,12 +42,14 @@ class GeoCodeType extends AbstractTypeLib
     private function setInputText($builder, $tab)
     {
         foreach (array_keys($tab) as $id) {
+            $label = 'param.geocode.'.$id.'.label';
+            $help = 'param.geocode.'.$id.'.help';
             $builder->add(
                 $id,
                 TextType::class,
                 [
-                    'label' => $this->translator->trans('param.tarteaucitron.'.$id.'.label', [], 'admin.form'),
-                    'help'  => $this->translator->trans('param.tarteaucitron.'.$id.'.help', [], 'admin.form'),
+                    'label' => $this->translator->trans($label, [], 'admin.form'),
+                    'help'  => $this->translator->trans($help, [], 'admin.form'),
                 ]
             );
         }

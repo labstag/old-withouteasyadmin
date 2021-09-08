@@ -108,12 +108,14 @@ class TarteaucitronType extends AbstractTypeLib
     private function setInputTrueFalse($builder, $tab)
     {
         foreach (array_keys($tab) as $id) {
+            $label = 'param.tarteaucitron.'.$id.'.label';
+            $help = 'param.tarteaucitron.'.$id.'.help';
             $builder->add(
                 $id,
                 ChoiceType::class,
                 [
-                    'label'   => $this->translator->trans('param.tarteaucitron.'.$id.'.label', [], 'admin.form'),
-                    'help'    => $this->translator->trans('param.tarteaucitron.'.$id.'.help', [], 'admin.form'),
+                    'label'   => $this->translator->trans($label, [], 'admin.form'),
+                    'help'    => $this->translator->trans($help, [], 'admin.form'),
                     'choices' => [
                         'Non' => '0',
                         'Oui' => '1',
@@ -126,12 +128,14 @@ class TarteaucitronType extends AbstractTypeLib
     private function setInputText($builder, $tab)
     {
         foreach (array_keys($tab) as $id) {
+            $label = 'param.tarteaucitron.'.$id.'.label';
+            $help = 'param.tarteaucitron.'.$id.'.help';
             $builder->add(
                 $id,
                 TextType::class,
                 [
-                    'label' => $this->translator->trans('param.tarteaucitron.'.$id.'.label', [], 'admin.form'),
-                    'help'  => $this->translator->trans('param.tarteaucitron.'.$id.'.help', [], 'admin.form'),
+                    'label' => $this->translator->trans($ilabel, [], 'admin.form'),
+                    'help'  => $this->translator->trans($ihelp, [], 'admin.form'),
                 ]
             );
         }
