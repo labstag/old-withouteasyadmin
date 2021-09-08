@@ -4,7 +4,11 @@
 {% block box_title %}Please sign in{% endblock %}
 {% block box %}
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class="alert alert-danger" role="alert">
+            <p>
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </p>
+        </div>
     {% endif %}
     {{ form_start(formLogin) }}
     {{ form_row(formLogin.username) }}

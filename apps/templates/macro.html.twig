@@ -1,18 +1,20 @@
 {% macro flashbag(app) %}
-    {% for label, messages in app.flashes %}
-        <div class="alert alert-{{ label }}">
+	{% for label, messages in app.flashes %}
+		<div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+			<p>
+				<ul>
+					{% for message in messages %}
+						<li>{{ message|raw }}</li>
+					{% endfor %}
+				</ul>
+			</p>
             <button class="btn-close" data-bs-dismiss="alert"></button>
-            <ul>
-            {% for message in messages %}
-                <li>{{ message|raw }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-    {% endfor %}
+		</div>
+	{% endfor %}
 {% endmacro %}
 {% macro user(user, url) %}
-    <i class="fas fa-user"></i>
-    <a href="{{ url }}">
-        {{ user }}
-    </a>
+	<i class="fas fa-user"></i>
+	<a href="{{ url }}">
+		{{ user }}
+	</a>
 {% endmacro %}
