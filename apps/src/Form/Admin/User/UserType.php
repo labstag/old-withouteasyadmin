@@ -120,13 +120,26 @@ class UserType extends AbstractTypeLib
             }
         }
 
+        $this->setCollectionType($builder);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults(
+            [
+                'data_class' => User::class,
+            ]
+        );
+    }
+
+    protected function setCollectionType(FormBuilderInterface $builder)
+    {
         $tab = [
             'emailUsers'   => EmailType::class,
             'phoneUsers'   => PhoneType::class,
             'adresseUsers' => AdresseType::class,
             'lienUsers'    => LienType::class,
         ];
-
         foreach ($tab as $key => $type) {
             $builder->add(
                 $key,
@@ -138,14 +151,5 @@ class UserType extends AbstractTypeLib
                 ]
             );
         }
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults(
-            [
-                'data_class' => User::class,
-            ]
-        );
     }
 }
