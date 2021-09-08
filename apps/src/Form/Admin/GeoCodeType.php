@@ -23,17 +23,50 @@ class GeoCodeType extends AbstractTypeLib
             ]
         );
         $tab = [
-            'postalCode',
-            'placeName',
-            'stateName',
-            'stateCode',
-            'provinceName',
-            'provinceCode',
-            'communityName',
-            'communityCode',
-            'latitude',
-            'longitude',
-            'accuracy',
+            'postalCode'    => [
+                'label' => $this->translator->trans('param.geocode.postalCode.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.geocode.postalCode.help', [], 'admin.form'),
+            ],
+            'placeName'     => [
+                'label' => $this->translator->trans('param.geocode.placeName.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.geocode.placeName.help', [], 'admin.form'),
+            ],
+            'stateName'     => [
+                'label' => $this->translator->trans('param.geocode.stateName.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.geocode.stateName.help', [], 'admin.form'),
+            ],
+            'stateCode'     => [
+                'label' => $this->translator->trans('param.geocode.stateCode.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.geocode.stateCode.help', [], 'admin.form'),
+            ],
+            'provinceName'  => [
+                'label' => $this->translator->trans('param.geocode.provinceName.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.geocode.provinceName.help', [], 'admin.form'),
+            ],
+            'provinceCode'  => [
+                'label' => $this->translator->trans('param.geocode.provinceCode.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.geocode.provinceCode.help', [], 'admin.form'),
+            ],
+            'communityName' => [
+                'label' => $this->translator->trans('param.geocode.communityName.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.geocode.communityName.help', [], 'admin.form'),
+            ],
+            'communityCode' => [
+                'label' => $this->translator->trans('param.geocode.communityCode.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.geocode.communityCode.help', [], 'admin.form'),
+            ],
+            'latitude'      => [
+                'label' => $this->translator->trans('param.geocode.latitude.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.geocode.latitude.help', [], 'admin.form'),
+            ],
+            'longitude'     => [
+                'label' => $this->translator->trans('param.geocode.longitude.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.geocode.longitude.help', [], 'admin.form'),
+            ],
+            'accuracy'      => [
+                'label' => $this->translator->trans('param.geocode.accuracy.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.geocode.accuracy.help', [], 'admin.form'),
+            ],
         ];
 
         $this->setInputText($builder, $tab);
@@ -41,15 +74,13 @@ class GeoCodeType extends AbstractTypeLib
 
     private function setInputText($builder, $tab)
     {
-        foreach (array_keys($tab) as $id) {
-            $label = 'param.geocode.'.$id.'.label';
-            $help = 'param.geocode.'.$id.'.help';
+        foreach ($tab as $id => $row) {
             $builder->add(
                 $id,
                 TextType::class,
                 [
-                    'label' => $this->translator->trans($label, [], 'admin.form'),
-                    'help'  => $this->translator->trans($help, [], 'admin.form'),
+                    'label' => $row['label'],
+                    'help'  => $row['help'],
                 ]
             );
         }

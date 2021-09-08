@@ -26,21 +26,9 @@ class TarteaucitronType extends AbstractTypeLib
                 'required' => false,
             ]
         );
-        $tab = [
-            'hashtag',
-            'cookieName',
-            'orientation',
-        ];
 
-        $this->setInputText($builder, $tab);
-        $tab = [
-            'groupServices',
-            'showAlertSmall',
-            'cookieslist',
-            'closePopup',
-            'showIcon',
-        ];
-        $this->setInputTrueFalse($builder, $tab);
+        $this->setInputText($builder);
+        $this->setInputTrueFalsePartie1($builder);
         $builder->add(
             'iconPosition',
             ChoiceType::class,
@@ -55,16 +43,7 @@ class TarteaucitronType extends AbstractTypeLib
                 ],
             ]
         );
-        $tab = [
-            'adblocker',
-            'DenyAllCta',
-            'AcceptAllCta',
-            'highPrivacy',
-            'handleBrowserDNTRequest',
-            'removeCredit',
-            'moreInfoLink',
-        ];
-        $this->setInputTrueFalse($builder, $tab);
+        $this->setInputTrueFalsePartie2($builder);
         $builder->add(
             'readmoreLink',
             UrlType::class,
@@ -105,17 +84,85 @@ class TarteaucitronType extends AbstractTypeLib
         );
     }
 
+    private function setInputTrueFalsePartie1($builder)
+    {
+        $tab = [
+            'groupServices'  => [
+                'label' => $this->translator->trans('param.tarteaucitron.groupServices.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.groupServices.help', [], 'admin.form'),
+            ],
+            'showAlertSmall' => [
+                'label' => $this->translator->trans('param.tarteaucitron.showAlertSmall.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.showAlertSmall.help', [], 'admin.form'),
+            ],
+            'cookieslist'    => [
+                'label' => $this->translator->trans('param.tarteaucitron.cookieslist.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.cookieslist.help', [], 'admin.form'),
+            ],
+            'closePopup'     => [
+                'label' => $this->translator->trans('param.tarteaucitron.closePopup.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.closePopup.help', [], 'admin.form'),
+            ],
+            'showIcon'       => [
+                'label' => $this->translator->trans('param.tarteaucitron.showIcon.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.showIcon.help', [], 'admin.form'),
+            ],
+        ];
+        $this->setInputTrueFalse($builder, $tab);
+    }
+
+    private function setInputTrueFalsePartie2($builder)
+    {
+        $tab = [
+            'adblocker'               => [
+                'label' => $this->translator->trans('param.tarteaucitron.adblocker.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.adblocker.help', [], 'admin.form'),
+            ],
+            'DenyAllCta'              => [
+                'label' => $this->translator->trans('param.tarteaucitron.DenyAllCta.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.DenyAllCta.help', [], 'admin.form'),
+            ],
+            'AcceptAllCta'            => [
+                'label' => $this->translator->trans('param.tarteaucitron.AcceptAllCta.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.AcceptAllCta.help', [], 'admin.form'),
+            ],
+            'highPrivacy'             => [
+                'label' => $this->translator->trans('param.tarteaucitron.highPrivacy.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.highPrivacy.help', [], 'admin.form'),
+            ],
+            'handleBrowserDNTRequest' => [
+                'label' => $this->translator->trans(
+                    'param.tarteaucitron.handleBrowserDNTRequest.label',
+                    [],
+                    'admin.form'
+                ),
+                'help'  => $this->translator->trans(
+                    'param.tarteaucitron.handleBrowserDNTRequest.help',
+                    [],
+                    'admin.form'
+                ),
+            ],
+            'removeCredit'            => [
+                'label' => $this->translator->trans('param.tarteaucitron.removeCredit.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.removeCredit.help', [], 'admin.form'),
+            ],
+            'moreInfoLink'            => [
+                'label' => $this->translator->trans('param.tarteaucitron.moreInfoLink.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.tarteaucitron.moreInfoLink.help', [], 'admin.form'),
+            ],
+        ];
+        $this->setInputTrueFalse($builder, $tab);
+    }
+
     private function setInputTrueFalse($builder, $tab)
     {
-        foreach (array_keys($tab) as $id) {
-            $label = 'param.tarteaucitron.'.$id.'.label';
-            $help = 'param.tarteaucitron.'.$id.'.help';
+        foreach ($tab as $id => $row) {
             $builder->add(
                 $id,
                 ChoiceType::class,
                 [
-                    'label'   => $this->translator->trans($label, [], 'admin.form'),
-                    'help'    => $this->translator->trans($help, [], 'admin.form'),
+                    'label'   => $row['label'],
+                    'help'    => $row['help'],
                     'choices' => [
                         'Non' => '0',
                         'Oui' => '1',
@@ -125,17 +172,29 @@ class TarteaucitronType extends AbstractTypeLib
         }
     }
 
-    private function setInputText($builder, $tab)
+    private function setInputText($builder)
     {
-        foreach (array_keys($tab) as $id) {
-            $label = 'param.tarteaucitron.'.$id.'.label';
-            $help = 'param.tarteaucitron.'.$id.'.help';
+        $tab = [
+            'hashtag'     => [
+                'label' => $this->translator->trans('param.tarteaucitron.hashtag.label', [], 'admin'),
+                'help'  => $this->translator->trans('param.tarteaucitron.hashtag.help', [], 'admin'),
+            ],
+            'cookieName'  => [
+                'label' => $this->translator->trans('param.tarteaucitron.cookieName.label', [], 'admin'),
+                'help'  => $this->translator->trans('param.tarteaucitron.cookieName.help', [], 'admin'),
+            ],
+            'orientation' => [
+                'label' => $this->translator->trans('param.tarteaucitron.orientation.label', [], 'admin'),
+                'help'  => $this->translator->trans('param.tarteaucitron.orientation.help', [], 'admin'),
+            ],
+        ];
+        foreach ($tab as $id => $row) {
             $builder->add(
                 $id,
                 TextType::class,
                 [
-                    'label' => $this->translator->trans($ilabel, [], 'admin.form'),
-                    'help'  => $this->translator->trans($ihelp, [], 'admin.form'),
+                    'label' => $row['label'],
+                    'help'  => $row['help'],
                 ]
             );
         }

@@ -29,20 +29,8 @@ class ParamType extends AbstractTypeLib
     ): void
     {
         $builder->add('site_title', TextType::class);
-        $images = [
-            'image',
-            'favicon',
-        ];
-        $this->setFileType($builder, $images);
-
-        $inputs = [
-            'title_format'    => TextType::class,
-            'robotstxt'       => TextareaType::class,
-            'languagedefault' => LanguageType::class,
-            'site_no-reply'   => EmailType::class,
-            'site_url'        => UrlType::class,
-        ];
-        $this->setInputs($builder, $inputs);
+        $this->setFileType($builder);
+        $this->setInputs($builder);
         $builder->add(
             'language',
             LanguageType::class,
@@ -118,33 +106,66 @@ class ParamType extends AbstractTypeLib
         }
     }
 
-    private function setInputs($builder, $inputs)
+    private function setInputs($builder)
     {
-        foreach ($inputs as $key => $class) {
-            $label = 'param.'.$key.'.label';
-            $help  = 'param.'.$key.'.help';
+        $inputs = [
+            'title_format'    => [
+                'class' => TextType::class,
+                'label' => $this->translator->trans('param.title_format.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.title_format.help', [], 'admin.form'),
+            ],
+            'robotstxt'       => [
+                'class' => TextareaType::class,
+                'label' => $this->translator->trans('param.robotstxt.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.robotstxt.help', [], 'admin.form'),
+            ],
+            'languagedefault' => [
+                'class' => LanguageType::class,
+                'label' => $this->translator->trans('param.languagedefault.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.languagedefault.help', [], 'admin.form'),
+            ],
+            'site_no-reply'   => [
+                'class' => EmailType::class,
+                'label' => $this->translator->trans('param.site_no-reply.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.site_no-reply.help', [], 'admin.form'),
+            ],
+            'site_url'        => [
+                'class' => UrlType::class,
+                'label' => $this->translator->trans('param.site_url.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.site_url.help', [], 'admin.form'),
+            ],
+        ];
+        foreach ($inputs as $key => $row) {
             $builder->add(
                 $key,
-                $class,
+                $row['class'],
                 [
-                    'label' => $this->translator->trans($label, [], 'admin.form'),
-                    'help'  => $this->translator->trans($help, [], 'admin.form'),
+                    'label' => $row['label'],
+                    'help'  => $row['help'],
                 ]
             );
         }
     }
 
-    private function setFileType($builder, $images)
+    private function setFileType($builder)
     {
-        foreach ($images as $key) {
-            $label = 'param.'.$key.'.label';
-            $help  = 'param.'.$key.'.help';
+        $images = [
+            'image'   => [
+                'label' => $this->translator->trans('param.image.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.image.help', [], 'admin.form'),
+            ],
+            'favicon' => [
+                'label' => $this->translator->trans('param.favicon.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.favicon.help', [], 'admin.form'),
+            ],
+        ];
+        foreach ($images as $key => $row) {
             $builder->add(
                 $key,
                 FileType::class,
                 [
-                    'label'    => $this->translator->trans($label, [], 'admin.form'),
-                    'help'     => $this->translator->trans($help, [], 'admin.form'),
+                    'label'    => $row['label'],
+                    'help'     => $row['help'],
                     'required' => false,
                     'attr'     => ['accept' => 'image/*'],
                 ]
