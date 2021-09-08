@@ -11,7 +11,6 @@ use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\GeoCodeRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\GeoCodeRequestHandler;
-use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,7 +29,6 @@ class GeoCodeController extends AdminControllerLib
      */
     public function edit(
         UploadAnnotationReader $uploadAnnotReader,
-        GuardService $guarService,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         GeoCode $geoCode,
@@ -39,7 +37,6 @@ class GeoCodeController extends AdminControllerLib
     {
         return $this->update(
             $uploadAnnotReader,
-            $guarService,
             $attachmentRepository,
             $attachmentRH,
             $requestHandler,

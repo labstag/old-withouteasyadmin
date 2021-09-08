@@ -11,7 +11,6 @@ use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\PostRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
-use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,7 +29,6 @@ class PostController extends AdminControllerLib
      */
     public function edit(
         UploadAnnotationReader $uploadAnnotReader,
-        GuardService $guarService,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         Post $post,
@@ -41,7 +39,6 @@ class PostController extends AdminControllerLib
 
         return $this->update(
             $uploadAnnotReader,
-            $guarService,
             $attachmentRepository,
             $attachmentRH,
             $requestHandler,

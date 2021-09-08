@@ -11,7 +11,6 @@ use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\TemplateRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
-use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,7 +29,6 @@ class TemplateController extends AdminControllerLib
      */
     public function edit(
         UploadAnnotationReader $uploadAnnotReader,
-        GuardService $guarService,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         Template $template,
@@ -39,7 +37,6 @@ class TemplateController extends AdminControllerLib
     {
         return $this->update(
             $uploadAnnotReader,
-            $guarService,
             $attachmentRepository,
             $attachmentRH,
             $requestHandler,

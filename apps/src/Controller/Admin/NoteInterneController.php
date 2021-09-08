@@ -11,7 +11,6 @@ use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\NoteInterneRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\NoteInterneRequestHandler;
-use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -34,7 +33,6 @@ class NoteInterneController extends AdminControllerLib
      */
     public function edit(
         UploadAnnotationReader $uploadAnnotReader,
-        GuardService $guarService,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         NoteInterne $noteInterne,
@@ -45,7 +43,6 @@ class NoteInterneController extends AdminControllerLib
 
         return $this->update(
             $uploadAnnotReader,
-            $guarService,
             $attachmentRepository,
             $attachmentRH,
             $requestHandler,

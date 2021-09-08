@@ -72,13 +72,7 @@ class ParamType extends AbstractTypeLib
                 'entry_type'   => OauthType::class,
             ]
         );
-        $mixmax = [
-            'tarteaucitron' => TarteaucitronType::class,
-            'meta'          => MetaSiteType::class,
-            'disclaimer'    => DisclaimerType::class,
-            'notification'  => NotificationType::class,
-        ];
-        $this->setMinMaxCollectionType($builder, $mixmax);
+        $this->setMinMaxCollectionType($builder);
 
         $builder->add(
             'site_copyright',
@@ -166,13 +160,20 @@ class ParamType extends AbstractTypeLib
         }
     }
 
-    private function setMinMaxCollectionType($builder, $mixmax)
+    private function setMinMaxCollectionType($builder)
     {
+        $mixmax = [
+            'tarteaucitron' => TarteaucitronType::class,
+            'meta'          => MetaSiteType::class,
+            'disclaimer'    => DisclaimerType::class,
+            'notification'  => NotificationType::class,
+        ];
         foreach ($mixmax as $key => $entry) {
             $builder->add(
                 $key,
                 MinMaxCollectionType::class,
                 [
+                    'label'        => ' ',
                     'allow_add'    => false,
                     'allow_delete' => false,
                     'entry_type'   => $entry,

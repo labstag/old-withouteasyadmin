@@ -99,7 +99,7 @@ class ProfilType extends AbstractTypeLib
             'file',
             FileType::class,
             [
-                'label'    => $this->translator->trans('profil.file.label', [], 'admin.form'),
+                'label'    => ' ',
                 'help'     => $this->translator->trans('profil.file.help', [], 'admin.form'),
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
@@ -118,6 +118,7 @@ class ProfilType extends AbstractTypeLib
                 $key,
                 MinMaxCollectionType::class,
                 [
+                    'label'        => ' ',
                     'allow_add'    => true,
                     'allow_delete' => true,
                     'entry_type'   => $type,
