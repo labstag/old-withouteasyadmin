@@ -17,9 +17,7 @@ class FrontController extends FrontControllerLib
      */
     public function edito(EditoRepository $editoRepository): Response
     {
-        /**
-         * @var Edito $edito
-         */
+        // @var Edito $edito
         $edito = $editoRepository->findOnePublier();
         $this->setMetaOpenGraph(
             $edito->getTitle(),

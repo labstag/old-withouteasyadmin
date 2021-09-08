@@ -96,7 +96,7 @@ class GroupeController extends AdminControllerLib
                 $this->translator->trans('admin.group.guard.superadmin.nope')
             );
 
-            return $this->redirect($this->generateUrl('admin_groupuser_index'));
+            return $this->redirectToRoute('admin_groupuser_index');
         }
 
         return $this->render(

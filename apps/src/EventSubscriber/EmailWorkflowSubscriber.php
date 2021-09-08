@@ -36,9 +36,7 @@ class EmailWorkflowSubscriber implements EventSubscriberInterface
 
     public function transitionSubmit(Event $event)
     {
-        /**
-         * @var EmailUser $entity
-         */
+        // @var EmailUser $entity
         $entity = $event->getSubject();
         $user   = $entity->getRefuser();
         if ($entity->getAdresse() == $user->getEmail()) {

@@ -26,9 +26,7 @@ class OauthService
 
     protected array $oauthActivated;
 
-    /**
-     * @var Router|RouterInterface
-     */
+    // @var Router|RouterInterface
     protected $router;
 
     public function __construct(

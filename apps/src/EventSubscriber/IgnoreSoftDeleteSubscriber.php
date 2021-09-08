@@ -20,9 +20,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 
     protected Reader $reader;
 
-    /**
-     * @var null|Request
-     */
+    // @var null|Request
     protected $request;
 
     protected RequestStack $requestStack;
@@ -34,9 +32,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
     )
     {
         $this->requestStack = $requestStack;
-        /**
-         * @var Request $request
-         */
+        // @var Request $request
         $request             = $this->requestStack->getCurrentRequest();
         $this->request       = $request;
         $this->reader        = $reader;

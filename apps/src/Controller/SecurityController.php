@@ -45,14 +45,13 @@ class SecurityController extends ControllerLib
         UserRequestHandler $requestHandler
     ): Response
     {
-        $front = $this->generateUrl('front');
         if ('lostpassword' != $user->getState()) {
             $this->flashBagAdd(
                 'danger',
                 $this->translator->trans('security.user.sendlostpassword.fail')
             );
 
-            return $this->redirect($front);
+            return $this->redirectToRoute('front');
         }
 
         $form = $this->createForm(ChangePasswordType::class, $user);
@@ -60,7 +59,7 @@ class SecurityController extends ControllerLib
         if ($form->isSubmitted() && $form->isValid()) {
             $requestHandler->changeWorkflowState($user, ['valider']);
 
-            return $this->redirect($front);
+            return $this->redirectToRoute('front');
         }
 
         return $this->render(
@@ -79,14 +78,13 @@ class SecurityController extends ControllerLib
         EmailRequestHandler $emailRequestHandler
     ): RedirectResponse
     {
-        $front = $this->generateUrl('front');
         if ('averifier' != $email->getState()) {
             $this->flashBagAdd(
                 'danger',
                 $this->translator->trans('security.email.activate.fail')
             );
 
-            return $this->redirect($front);
+            return $this->redirectToRoute('front');
         }
 
         $emailRequestHandler->changeWorkflowState($email, ['valider']);
@@ -95,7 +93,7 @@ class SecurityController extends ControllerLib
             $this->translator->trans('security.email.activate.win')
         );
 
-        return $this->redirect($front);
+        return $this->redirectToRoute('front');
     }
 
     /**
@@ -106,14 +104,13 @@ class SecurityController extends ControllerLib
         PhoneRequestHandler $emailRequestHandler
     ): RedirectResponse
     {
-        $front = $this->generateUrl('front');
         if ('averifier' != $phone->getState()) {
             $this->flashBagAdd(
                 'danger',
                 $this->translator->trans('security.phone.activate.fail')
             );
 
-            return $this->redirect($front);
+            return $this->redirectToRoute('front');
         }
 
         $emailRequestHandler->changeWorkflowState($phone, ['valider']);
@@ -122,7 +119,7 @@ class SecurityController extends ControllerLib
             $this->translator->trans('security.phone.activate.win')
         );
 
-        return $this->redirect($front);
+        return $this->redirectToRoute('front');
     }
 
     /**
@@ -133,14 +130,13 @@ class SecurityController extends ControllerLib
         UserRequestHandler $userRequestHandler
     ): RedirectResponse
     {
-        $front = $this->generateUrl('front');
         if ('avalider' != $user->getState()) {
             $this->flashBagAdd(
                 'danger',
                 $this->translator->trans('security.user.activate.fail')
             );
 
-            return $this->redirect($front);
+            return $this->redirectToRoute('front');
         }
 
         $userRequestHandler->changeWorkflowState($user, ['validation']);
@@ -149,7 +145,7 @@ class SecurityController extends ControllerLib
             $this->translator->trans('security.user.activate.win')
         );
 
-        return $this->redirect($front);
+        return $this->redirectToRoute('front');
     }
 
     /**
@@ -162,13 +158,12 @@ class SecurityController extends ControllerLib
         $form = $this->createForm(DisclaimerType::class, []);
         $form->handleRequest($request);
         $session = $request->getSession();
-        $front   = $this->generateUrl('front');
         if ($form->isSubmitted()) {
             $post = $request->request->get($form->getName());
             if (isset($post['confirm'])) {
                 $session->set('disclaimer', 1);
 
-                return $this->redirect($front);
+                return $this->redirectToRoute('front');
             }
 
             $this->flashBagAdd(
@@ -184,7 +179,7 @@ class SecurityController extends ControllerLib
             || !isset($config['disclaimer']['activate'])
             || 1 != $config['disclaimer']['activate']
         ) {
-            return $this->redirect($front);
+            return $this->redirectToRoute('front');
         }
 
         return $this->render(
@@ -251,7 +246,7 @@ class SecurityController extends ControllerLib
             $post = $request->request->get($form->getName());
             $userService->postLostPassword($post);
 
-            return $this->redirect($this->generateUrl('app_login'));
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render(
@@ -273,14 +268,10 @@ class SecurityController extends ControllerLib
         OauthService $oauthService
     ): RedirectResponse
     {
-        /**
-         * @var AbstractProvider $provider
-         */
+        // @var AbstractProvider $provider
         $provider = $oauthService->setProvider($oauthCode);
         $session  = $request->getSession();
-        /**
-         * @var string $referer
-         */
+        // @var string $referer
         $query = $request->query->all();
         if (array_key_exists('link', $query)) {
             $session->set('link', 1);
@@ -288,9 +279,7 @@ class SecurityController extends ControllerLib
 
         $referer = $request->headers->get('referer');
         $session->set('referer', $referer);
-        /**
-         * @var string $url
-         */
+        // @var string $url
         $url = $this->generateUrl('front');
         if ('' == $referer) {
             $referer = $url;
@@ -329,17 +318,13 @@ class SecurityController extends ControllerLib
         UserService $userService
     ): RedirectResponse
     {
-        /**
-         * @var AbstractProvider $provider
-         */
+        // @var AbstractProvider $provider
         $provider    = $oauthService->setProvider($oauthCode);
         $query       = $request->query->all();
         $session     = $request->getSession();
         $referer     = $session->get('referer');
         $oauth2state = $session->get('oauth2state');
-        /**
-         * @var string $url
-         */
+        // @var string $url
         $url = $this->generateUrl('front');
         if ('' == $referer) {
             $referer = $url;
@@ -358,9 +343,7 @@ class SecurityController extends ControllerLib
         }
 
         try {
-            /**
-             * @var AccessToken $tokenProvider
-             */
+            // @var AccessToken $tokenProvider
             $tokenProvider = $provider->getAccessToken(
                 'authorization_code',
                 [
@@ -369,22 +352,14 @@ class SecurityController extends ControllerLib
             );
 
             $session->remove('oauth2state');
-            /**
-             * @var UsageTrackingTokenStorage $tokenStorage
-             */
+            // @var UsageTrackingTokenStorage $tokenStorage
             $tokenStorage = $this->get('security.token_storage');
-            /**
-             * @var TokenInterface $token
-             */
+            // @var TokenInterface $token
             $token = $tokenStorage->getToken();
             if (!$token instanceof AnonymousToken) {
-                /**
-                 * @var ResourceOwnerInterface $userOauth
-                 */
+                // @var ResourceOwnerInterface $userOauth
                 $userOauth = $provider->getResourceOwner($tokenProvider);
-                /**
-                 * @var User $user
-                 */
+                // @var User $user
                 $user = $token->getUser();
                 if (!$user instanceof User) {
                     $this->flashBagAdd(
@@ -432,19 +407,13 @@ class SecurityController extends ControllerLib
     ): RedirectResponse
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
-        /**
-         * @var User $user
-         */
+        // @var User $user
         $user = $security->getUser();
-        /**
-         * @var string $referer
-         */
+        // @var string $referer
         $referer = $request->headers->get('referer');
         $session = $request->getSession();
         $session->set('referer', $referer);
-        /**
-         * @var string $url
-         */
+        // @var string $url
         $url = $this->generateUrl('front');
         if ('' == $referer) {
             $referer = $url;

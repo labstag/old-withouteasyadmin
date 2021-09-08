@@ -129,9 +129,7 @@ class LabstagUserCommand extends Command
         $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
         $data    = [];
         foreach ($groupes as $groupe) {
-            /**
-             * @var Groupe $groupe
-             */
+            // @var Groupe $groupe
             if ('visiteur' == $groupe->getCode()) {
                 continue;
             }
@@ -145,9 +143,7 @@ class LabstagUserCommand extends Command
         );
         $selection = $helper->ask($input, $output, $question);
         foreach ($groupes as $groupe) {
-            /**
-             * @var Groupe $groupe
-             */
+            // @var Groupe $groupe
             if ($selection == $groupe->getCode()) {
                 $user->setRefgroupe($groupe);
             }

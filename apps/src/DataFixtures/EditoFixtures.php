@@ -24,9 +24,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         unset($manager);
         $users = $this->userRepository->findAll();
         $faker = $this->setFaker();
-        /**
-         * @var resource $finfo
-         */
+        // @var resource $finfo
         $statesTab = $this->getStates();
         for ($index = 0; $index < self::NUMBER_EDITO; ++$index) {
             $stateId = array_rand($statesTab);
@@ -48,17 +46,13 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         $edito->setTitle($faker->unique()->text($random));
         $edito->setMetaKeywords(implode(', ', $faker->unique()->words(rand(4, 10))));
         $edito->setMetaDescription($faker->unique()->sentence);
-        /**
-         * @var string $content
-         */
+        // @var string $content
         $content = $faker->paragraphs(rand(4, 10), true);
         $edito->setContent(str_replace("\n\n", "<br />\n", $content));
         $edito->setPublished($faker->unique()->dateTime('now'));
         $this->addReference('edito_'.$index, $edito);
         $tabIndex = array_rand($users);
-        /**
-         * @var User $user
-         */
+        // @var User $user
         $user = $users[$tabIndex];
         $edito->setRefuser($user);
         $this->upload($edito, $faker);

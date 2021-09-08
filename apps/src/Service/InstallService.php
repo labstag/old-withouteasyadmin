@@ -331,9 +331,7 @@ class InstallService
             }
         }
 
-        /**
-         * @var mixed $row
-         */
+        // @var mixed $row
         foreach ($oauth as $row) {
             $data['oauth'][] = $row;
         }

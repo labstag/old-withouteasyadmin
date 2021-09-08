@@ -53,9 +53,7 @@ class OauthAuthenticator extends AbstractAuthenticator
 
     protected RequestStack $requestStack;
 
-    /**
-     * @var string
-     */
+    // @var string
     protected $route;
 
     protected TokenStorageInterface $token;
@@ -79,9 +77,7 @@ class OauthAuthenticator extends AbstractAuthenticator
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder  = $passwordEncoder;
         $this->requestStack     = $requestStack;
-        /**
-         * @var Request $request
-         */
+        // @var Request $request
         $request = $this->requestStack->getCurrentRequest();
 
         $this->request      = $request;
@@ -95,9 +91,7 @@ class OauthAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): PassportInterface
     {
-        /**
-         * @var AbstractProvider $provider
-         */
+        // @var AbstractProvider $provider
         $provider    = $this->oauthService->setProvider($this->oauthCode);
         $query       = $request->query->all();
         $session     = $request->getSession();
@@ -111,18 +105,14 @@ class OauthAuthenticator extends AbstractAuthenticator
         }
 
         try {
-            /**
-             * @var AccessToken $tokenProvider
-             */
+            // @var AccessToken $tokenProvider
             $tokenProvider = $provider->getAccessToken(
                 'authorization_code',
                 [
                     'code' => $query['code'],
                 ]
             );
-            /**
-             * @var mixed $userOauth
-             */
+            // @var mixed $userOauth
             $userOauth = $provider->getResourceOwner($tokenProvider);
 
             return new SelfValidatingPassport(

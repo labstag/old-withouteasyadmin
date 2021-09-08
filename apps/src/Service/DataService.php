@@ -71,9 +71,7 @@ class DataService
     {
         $data   = $this->repository->findAll();
         $config = [];
-        /**
-         * @var Configuration $row
-         */
+        // @var Configuration $row
         foreach ($data as $row) {
             $key          = $row->getName();
             $value        = $row->getValue();

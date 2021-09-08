@@ -99,7 +99,7 @@ class UserController extends AdminControllerLib
                 $this->translator->trans('admin.user.guard.superadmin.nope')
             );
 
-            return $this->redirect($this->generateUrl('admin_user_index'));
+            return $this->redirectToRoute('admin_user_index');
         }
 
         return $this->render(

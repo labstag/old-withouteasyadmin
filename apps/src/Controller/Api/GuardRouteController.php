@@ -42,9 +42,7 @@ class GuardRouteController extends ApiControllerLib
         ];
         $state  = $request->request->get('state');
         $routes = $guardService->getGuardRoutesForGroupe($group);
-        /**
-         * @var EntityRoute $route
-         */
+        // @var EntityRoute $route
         foreach ($routes as $route) {
             $data = $this->setRouteGroupe(
                 $guardService,
@@ -217,9 +215,7 @@ class GuardRouteController extends ApiControllerLib
         ];
         $state  = $request->request->get('state');
         $routes = $guardService->getGuardRoutesForUser($user);
-        /**
-         * @var EntityRoute $route
-         */
+        // @var EntityRoute $route
         foreach ($routes as $route) {
             $data = $this->setRouteUser(
                 $guardService,

@@ -61,7 +61,7 @@ class AdminController extends AdminControllerLib
             }
         }
 
-        return $this->redirect($this->generateUrl('admin_param'));
+        return $this->redirectToRoute('admin_param');
     }
 
     /**
@@ -225,7 +225,7 @@ class AdminController extends AdminControllerLib
                 $this->translator->trans('admin.flashbag.trash.empty')
             );
 
-            return $this->redirect($this->generateUrl('admin'));
+            return $this->redirectToRoute('admin');
         }
 
         $globals        = $this->twig->getGlobals();
