@@ -2,11 +2,17 @@
 	{% for label, messages in app.flashes %}
 		<div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
 			<p>
+                {% if messages|length >= 2%}
 				<ul>
 					{% for message in messages %}
 						<li>{{ message|raw }}</li>
 					{% endfor %}
 				</ul>
+                {% else %}
+					{% for message in messages %}
+						{{ message|raw }}
+					{% endfor %}
+                {% endif %}
 			</p>
             <button class="btn-close" data-bs-dismiss="alert"></button>
 		</div>
