@@ -25,8 +25,6 @@ class MenuController extends AdminControllerLib
 
     protected string $headerTitle = 'Menu';
 
-    protected string $urlHome = 'admin_menu_index';
-
     /**
      * @Route("/add", name="admin_menu_add", methods={"GET", "POST"})
      */
@@ -246,5 +244,94 @@ class MenuController extends AdminControllerLib
                 'restore' => 'api_action_restore',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminMenu(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('menu.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminMenuAdd(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('menu.add', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_add',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminMenuDivider(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('menu.divider', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_divider',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminMenuMove(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('menu.move', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_move',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminMenuNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('menu.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminMenuTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('menu.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_trash',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminMenuUpdate(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('menu.update', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_update',
+                'route_params' => $routeParams,
+            ],
+        ];
     }
 }

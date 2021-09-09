@@ -22,8 +22,6 @@ class GeoCodeController extends AdminControllerLib
 
     protected string $headerTitle = 'Gecode';
 
-    protected string $urlHome = 'admin_geocode_index';
-
     /**
      * @Route("/{id}/edit", name="admin_geocode_edit", methods={"GET","POST"})
      */
@@ -122,5 +120,88 @@ class GeoCodeController extends AdminControllerLib
                 'trash'   => 'admin_geocode_trash',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminGeocode(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('geocode.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGeocodeEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('geocode.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGeocodeNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('geocode.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGeocodePreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('geocode.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('geocode.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGeocodeShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('geocode.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGeocodeTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('geocode.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 }

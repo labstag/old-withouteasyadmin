@@ -23,8 +23,6 @@ class UserController extends AdminControllerLib
 
     protected string $headerTitle = 'Utilisateurs';
 
-    protected string $urlHome = 'admin_user_index';
-
     /**
      * @Route("/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
      */
@@ -182,5 +180,103 @@ class UserController extends AdminControllerLib
                 'trash'   => 'admin_user_trash',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminUser(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_user_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminUserEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('user.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_user_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminUserGuard(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('user.guard', [], 'admin.breadcrumb'),
+                'route'        => 'admin_user_guard',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminUserNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('user.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_user_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminUserPreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_user_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('user.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_user_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminUserShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('user.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_user_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminUserTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_user_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 }

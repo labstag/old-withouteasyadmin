@@ -22,8 +22,6 @@ class TemplateController extends AdminControllerLib
 
     protected string $headerTitle = 'Template';
 
-    protected string $urlHome = 'admin_template_index';
-
     /**
      * @Route("/{id}/edit", name="admin_template_edit", methods={"GET","POST"})
      */
@@ -124,5 +122,88 @@ class TemplateController extends AdminControllerLib
                 'trash'   => 'admin_template_trash',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminTemplace(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('template.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_template_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminTemplaceEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('template.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_template_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminTemplaceNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('template.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_template_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminTemplacePreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_template_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('template.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_template_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminTemplaceShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('template.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_template_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminTemplaceTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_template_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 }

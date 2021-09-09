@@ -22,8 +22,6 @@ class EmailUserController extends AdminControllerLib
 
     protected string $headerTitle = 'Email utilisateurs';
 
-    protected string $urlHome = 'admin_emailuser_index';
-
     /**
      * @Route(
      *  "/{id}/edit",
@@ -129,5 +127,88 @@ class EmailUserController extends AdminControllerLib
                 'trash'   => 'admin_emailuser_trash',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminEmailuser(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('emailuser.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_emailuser_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminEmailuserEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('emailuser.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_emailuser_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminEmailuserNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('emailuser.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_emailuser_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminEmailuserPreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('emailuser.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_emailuser_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('emailuser.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_emailuser_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminEmailuserShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('emailuser.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_emailuser_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminEmailuserTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('emailuser.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_emailuser_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 }

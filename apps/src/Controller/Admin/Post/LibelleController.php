@@ -22,8 +22,6 @@ class LibelleController extends AdminControllerLib
 
     protected string $headerTitle = 'Libellé';
 
-    protected string $urlHome = 'admin_postlibelle_index';
-
     /**
      * @Route("/{id}/edit", name="admin_postlibelle_edit", methods={"GET","POST"})
      */
@@ -127,5 +125,88 @@ class LibelleController extends AdminControllerLib
                 'trash'   => 'admin_postlibelle_trash',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminPostlibelle(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('postlibelle.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_postlibelle_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostlibelleEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('postlibelle.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_postlibelle_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostlibelleNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('postlibelle.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_postlibelle_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostlibellePreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('postlibelle.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_postlibelle_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('postlibelle.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_postlibelle_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostlibelleShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('postlibelle.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_postlibelle_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostlibelleTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('postlibelle.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_postlibelle_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 }

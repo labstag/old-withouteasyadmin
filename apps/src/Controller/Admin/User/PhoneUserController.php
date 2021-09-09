@@ -22,8 +22,6 @@ class PhoneUserController extends AdminControllerLib
 
     protected string $headerTitle = "Téléphone d'utilisateurs";
 
-    protected string $urlHome = 'admin_phoneuser_index';
-
     /**
      * @Route(
      *  "/{id}/edit",
@@ -129,5 +127,88 @@ class PhoneUserController extends AdminControllerLib
                 'trash'   => 'admin_phoneuser_trash',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminPhoneuser(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('phoneuser.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPhoneuserEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('phoneuser.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPhoneuserNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('phoneuser.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPhoneuserPreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('phoneuser.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('phoneuser.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPhoneuserShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('phoneuser.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPhoneuserTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('phoneuser.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 }

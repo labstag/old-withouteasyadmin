@@ -22,8 +22,6 @@ class LienUserController extends AdminControllerLib
 
     protected string $headerTitle = 'Lien utilisateurs';
 
-    protected string $urlHome = 'admin_lienuser_index';
-
     /**
      * @Route("/{id}/edit", name="admin_lienuser_edit", methods={"GET","POST"})
      */
@@ -124,5 +122,88 @@ class LienUserController extends AdminControllerLib
                 'trash'   => 'admin_lienuser_trash',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminLienuser(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('lienuser.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_lienuser_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminLienuserEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('lienuser.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_lienuser_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminLienuserNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('lienuser.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_lienuser_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminLienuserPreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('lienuser.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_lienuser_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('lienuser.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_lienuser_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminLienuserShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('lienuser.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_lienuser_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminLienuserTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('lienuser.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_lienuser_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 }

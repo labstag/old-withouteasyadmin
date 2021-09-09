@@ -23,8 +23,6 @@ class GroupeController extends AdminControllerLib
 
     protected string $headerTitle = "Groupe d'utilisateurs";
 
-    protected string $urlHome = 'admin_groupuser_index';
-
     /**
      * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET","POST"})
      */
@@ -175,5 +173,103 @@ class GroupeController extends AdminControllerLib
                 'trash'   => 'admin_groupuser_trash',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminGroupuser(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('groupuser.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_groupuser_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGroupuserEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('groupuser.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_groupuser_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGroupuserGuard(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('groupuser.guard', [], 'admin.breadcrumb'),
+                'route'        => 'admin_groupuser_guard',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGroupuserNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('groupuser.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_groupuser_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGroupuserPreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_groupuser_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('groupuser.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_groupuser_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGroupuserShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('groupuser.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_groupuser_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGroupuserTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_groupuser_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 }

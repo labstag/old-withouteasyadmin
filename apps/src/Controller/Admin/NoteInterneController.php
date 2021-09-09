@@ -22,8 +22,6 @@ class NoteInterneController extends AdminControllerLib
 
     protected string $headerTitle = 'Note interne';
 
-    protected string $urlHome = 'admin_noteinterne_index';
-
     /**
      * @Route(
      *  "/{id}/edit",
@@ -133,5 +131,88 @@ class NoteInterneController extends AdminControllerLib
                 'trash'   => 'admin_noteinterne_trash',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminNoteinterne(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('noteinterne.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminNoteinterneEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('noteinterne.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminNoteinterneNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('noteinterne.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminNoteinternePreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('noteinterne.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('noteinterne.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminNoteinterneShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('noteinterne.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminNoteinterneTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('noteinterne.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 }

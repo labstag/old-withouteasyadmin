@@ -22,8 +22,6 @@ class PostController extends AdminControllerLib
 
     protected string $headerTitle = 'Post';
 
-    protected string $urlHome = 'admin_post_index';
-
     /**
      * @Route("/{id}/edit", name="admin_post_edit", methods={"GET","POST"})
      */
@@ -129,5 +127,88 @@ class PostController extends AdminControllerLib
                 'trash'   => 'admin_post_trash',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminPost(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('post.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('post.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('post.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostPreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('post.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('post.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 }

@@ -16,8 +16,6 @@ class AttachmentController extends AdminControllerLib
 
     protected string $headerTitle = 'Attachment';
 
-    protected string $urlHome = 'admin_attachment_index';
-
     /**
      * @Route("/trash",  name="admin_attachment_trash", methods={"GET"})
      * @Route("/",       name="admin_attachment_index", methods={"GET"})
@@ -45,5 +43,16 @@ class AttachmentController extends AdminControllerLib
                 'workflow' => 'api_action_workflow',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminAttachment(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_attachment_index',
+                'route_params' => [],
+            ],
+        ];
     }
 }

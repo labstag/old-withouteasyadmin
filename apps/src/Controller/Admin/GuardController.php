@@ -24,7 +24,6 @@ class GuardController extends AdminControllerLib
     ): Response
     {
         $this->headerTitle = 'Droits';
-        $this->urlHome     = 'admin_guard_index';
 
         return $this->render(
             'admin/guard/index.html.twig',
@@ -34,5 +33,16 @@ class GuardController extends AdminControllerLib
                 'workflows' => $workflowRepo->findBy([], ['entity' => 'ASC', 'transition' => 'ASC']),
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminGuard(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('guard.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_guard_index',
+                'route_params' => [],
+            ],
+        ];
     }
 }

@@ -22,8 +22,6 @@ class AdresseUserController extends AdminControllerLib
 
     protected string $headerTitle = 'Adresse utilisateurs';
 
-    protected string $urlHome = 'admin_adresseuser_index';
-
     /**
      * @Route(
      *  "/{id}/edit",
@@ -128,5 +126,88 @@ class AdresseUserController extends AdminControllerLib
                 'trash'   => 'admin_adresseuser_trash',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminAdresseuser(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('adresseuser.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_adresseuser_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminAdresseuserEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('adresseuser.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_adresseuser_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminAdresseuserNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('adresseuser.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_adresseuser_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminAdresseuserPreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('adresseuser.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_adresseuser_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('adresseuser.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_adresseuser_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminAdresseuserShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('adresseuser.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_adresseuser_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminAdresseuserTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('adresseuser.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_adresseuser_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 }

@@ -83,7 +83,6 @@ class AdminController extends AdminControllerLib
     public function oauth(OauthService $oauthService): Response
     {
         $this->headerTitle = 'Oauth';
-        $this->urlHome     = 'admin_oauth';
         $types             = $oauthService->getConfigProvider();
 
         return $this->render(
@@ -120,7 +119,6 @@ class AdminController extends AdminControllerLib
         }
 
         $this->headerTitle = 'Paramètres';
-        $this->urlHome     = 'admin_param';
         $config            = $dataService->getConfig();
         $tab               = $this->getParameter('metatags');
         foreach ($tab as $index) {
@@ -168,7 +166,6 @@ class AdminController extends AdminControllerLib
     ): Response
     {
         $this->headerTitle = 'Profil';
-        $this->urlHome     = 'admin_profil';
         $this->modalAttachmentDelete();
 
         return $this->update(
@@ -217,7 +214,6 @@ class AdminController extends AdminControllerLib
     ): Response
     {
         $this->headerTitle = 'Trash';
-        $this->urlHome     = 'admin_trash';
         $all               = $trashService->all();
         if (0 == count($all)) {
             $this->flashBagAdd(
@@ -267,6 +263,50 @@ class AdminController extends AdminControllerLib
             'admin/trash.html.twig',
             ['trash' => $all]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminOauth(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('oauth.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_oauth',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminParam(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('param.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_param',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminProfil(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('profil.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_profil',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('trash.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 
     private function setUpload(Request $request, array $images)
