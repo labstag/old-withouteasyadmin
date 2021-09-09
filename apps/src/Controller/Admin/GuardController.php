@@ -23,8 +23,6 @@ class GuardController extends AdminControllerLib
         WorkflowRepository $workflowRepo
     ): Response
     {
-        $this->headerTitle = 'Droits';
-
         return $this->render(
             'admin/guard/index.html.twig',
             [
@@ -44,5 +42,17 @@ class GuardController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_guard' => $this->translator->trans('guard.title', [], 'admin.header'),
+            ]
+        );
     }
 }

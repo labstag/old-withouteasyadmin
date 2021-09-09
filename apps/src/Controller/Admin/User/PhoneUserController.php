@@ -19,9 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PhoneUserController extends AdminControllerLib
 {
-
-    protected string $headerTitle = "Téléphone d'utilisateurs";
-
     /**
      * @Route(
      *  "/{id}/edit",
@@ -210,5 +207,17 @@ class PhoneUserController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_phoneuser' => $this->translator->trans('phoneuser.title', [], 'admin.header'),
+            ]
+        );
     }
 }

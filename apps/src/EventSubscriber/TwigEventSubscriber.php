@@ -180,7 +180,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->setMetaDescription($config);
         $url = $request->getSchemeAndHttpHost();
         $all = $request->attributes->all();
-        if ('' != $all['_route']) {
+        if (isset($all['_route']) && '' != $all['_route']) {
             $url = $this->urlGenerator->generate(
                 $all['_route'],
                 $all['_route_params'],

@@ -19,9 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EmailUserController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Email utilisateurs';
-
     /**
      * @Route(
      *  "/{id}/edit",
@@ -210,5 +207,17 @@ class EmailUserController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_emailuser' => $this->translator->trans('emailuser.title', [], 'admin.header'),
+            ]
+        );
     }
 }

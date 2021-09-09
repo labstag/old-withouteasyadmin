@@ -13,9 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AttachmentController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Attachment';
-
     /**
      * @Route("/trash",  name="admin_attachment_trash", methods={"GET"})
      * @Route("/",       name="admin_attachment_index", methods={"GET"})
@@ -54,5 +51,17 @@ class AttachmentController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_attachment' => $this->translator->trans('attachment.title', [], 'admin.header'),
+            ]
+        );
     }
 }

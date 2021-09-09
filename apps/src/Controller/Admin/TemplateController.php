@@ -19,9 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class TemplateController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Template';
-
     /**
      * @Route("/{id}/edit", name="admin_template_edit", methods={"GET","POST"})
      */
@@ -205,5 +202,17 @@ class TemplateController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_template' => $this->translator->trans('template.title', [], 'admin.header'),
+            ]
+        );
     }
 }

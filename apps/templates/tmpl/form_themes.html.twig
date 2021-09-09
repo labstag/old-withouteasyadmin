@@ -39,7 +39,7 @@
 {% block fieldset_widget %}
     <fieldset {{ block('widget_container_attributes') }}>
         {% if legend is defined and legend is not empty %}
-            <legend>{{ legend|trans({}, translation_domain) }}</legend>
+            <legend>{{ legend }}</legend>
 		{% endif %}
         {{ form_widget(form) }}
     </fieldset>
@@ -399,7 +399,7 @@
             {% endif %}
         {% endif %}
 		<{{ element|default('label') }}{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
-			{{ label|trans }}
+			{{ label }}
             <div class="btn-group float-end" role="group">
                 {% if allow_add is defined and allow_add == true %}
                     <btn-addcollection title="Ajouter"></btn-addcollection>

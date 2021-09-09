@@ -19,9 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LienUserController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Lien utilisateurs';
-
     /**
      * @Route("/{id}/edit", name="admin_lienuser_edit", methods={"GET","POST"})
      */
@@ -205,5 +202,17 @@ class LienUserController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_lienuser' => $this->translator->trans('lienuser.title', [], 'admin.header'),
+            ]
+        );
     }
 }

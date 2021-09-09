@@ -22,9 +22,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MenuController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Menu';
-
     /**
      * @Route("/add", name="admin_menu_add", methods={"GET", "POST"})
      */
@@ -333,5 +330,17 @@ class MenuController extends AdminControllerLib
                 'route_params' => $routeParams,
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_menu' => $this->translator->trans('menu.title', [], 'admin.header'),
+            ]
+        );
     }
 }

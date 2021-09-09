@@ -19,9 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class NoteInterneController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Note interne';
-
     /**
      * @Route(
      *  "/{id}/edit",
@@ -214,5 +211,17 @@ class NoteInterneController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_noteinterne' => $this->translator->trans('noteinterne.title', [], 'admin.header'),
+            ]
+        );
     }
 }

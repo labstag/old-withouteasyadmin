@@ -19,9 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LibelleController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Libellé';
-
     /**
      * @Route("/{id}/edit", name="admin_postlibelle_edit", methods={"GET","POST"})
      */
@@ -208,5 +205,17 @@ class LibelleController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_postlibelle' => $this->translator->trans('postlibelle.title', [], 'admin.header'),
+            ]
+        );
     }
 }

@@ -82,8 +82,7 @@ class AdminController extends AdminControllerLib
      */
     public function oauth(OauthService $oauthService): Response
     {
-        $this->headerTitle = 'Oauth';
-        $types             = $oauthService->getConfigProvider();
+        $types = $oauthService->getConfigProvider();
 
         return $this->render(
             'admin/oauth.html.twig',
@@ -118,9 +117,8 @@ class AdminController extends AdminControllerLib
             }
         }
 
-        $this->headerTitle = 'Paramètres';
-        $config            = $dataService->getConfig();
-        $tab               = $this->getParameter('metatags');
+        $config = $dataService->getConfig();
+        $tab    = $this->getParameter('metatags');
         foreach ($tab as $index) {
             $config[$index] = [
                 $config[$index],
@@ -165,7 +163,6 @@ class AdminController extends AdminControllerLib
         UserRequestHandler $requestHandler
     ): Response
     {
-        $this->headerTitle = 'Profil';
         $this->modalAttachmentDelete();
 
         return $this->update(
@@ -213,8 +210,7 @@ class AdminController extends AdminControllerLib
         TrashService $trashService
     ): Response
     {
-        $this->headerTitle = 'Trash';
-        $all               = $trashService->all();
+        $all = $trashService->all();
         if (0 == count($all)) {
             $this->flashBagAdd(
                 'danger',
@@ -307,6 +303,21 @@ class AdminController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_oauth'  => $this->translator->trans('oauth.title', [], 'admin.header'),
+                'admin_param'  => $this->translator->trans('param.title', [], 'admin.header'),
+                'admin_profil' => $this->translator->trans('profil.title', [], 'admin.header'),
+                'admin_trash'  => $this->translator->trans('trash.title', [], 'admin.header'),
+            ]
+        );
     }
 
     private function setUpload(Request $request, array $images)

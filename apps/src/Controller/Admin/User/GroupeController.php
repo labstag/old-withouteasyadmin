@@ -20,9 +20,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class GroupeController extends AdminControllerLib
 {
-
-    protected string $headerTitle = "Groupe d'utilisateurs";
-
     /**
      * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET","POST"})
      */
@@ -271,5 +268,17 @@ class GroupeController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_groupuser' => $this->translator->trans('groupuser.title', [], 'admin.header'),
+            ]
+        );
     }
 }

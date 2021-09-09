@@ -20,9 +20,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UserController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Utilisateurs';
-
     /**
      * @Route("/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
      */
@@ -278,5 +275,17 @@ class UserController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_user' => $this->translator->trans('user.title', [], 'admin.header'),
+            ]
+        );
     }
 }

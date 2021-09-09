@@ -26,8 +26,6 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected FlashBagInterface $flashbag;
 
-    protected string $headerTitle = '';
-
     protected RouterInterface $router;
 
     protected TokenStorageInterface $token;
@@ -160,6 +158,27 @@ abstract class AdminControllerLib extends ControllerLib
     ): Response
     {
         $this->setBreadcrumbsPage();
+        $request = $this->get('request_stack')->getCurrentRequest();
+        $all     = $request->attributes->all();
+        $route   = $all['_route'];
+        $headers = $this->setHeaderTitle();
+        $header  = '';
+        foreach ($headers as $key => $title) {
+            if ($key == $route) {
+                $header = $title;
+
+                break;
+            }
+
+            if (0 != substr_count($route, $key)) {
+                $header = $title;
+            }
+        }
+
+        if (!empty($header)) {
+            $parameters['headerTitle'] = $header;
+        }
+
         $parameters = array_merge(
             $parameters,
             [
@@ -436,6 +455,11 @@ abstract class AdminControllerLib extends ControllerLib
                 $this->setSingletons()->add($breadcrumbs);
             }
         }
+
+        $data = $this->setSingletons()->get();
+        foreach ($data as $title => $route) {
+            $this->breadcrumbs->addItem($title, $route);
+        }
     }
 
     protected function setBreadcrumbsPageAdmin(): array
@@ -524,6 +548,13 @@ abstract class AdminControllerLib extends ControllerLib
         $this->setBtnShow($url, $entity);
         $this->setBtnGuard($url, $entity);
         $this->setBtnDelete($url, $entity);
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        return [
+            'admin' => $this->translator->trans('admin.title', [], 'admin.header'),
+        ];
     }
 
     protected function setTrashIcon(

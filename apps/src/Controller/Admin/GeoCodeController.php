@@ -19,9 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class GeoCodeController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Gecode';
-
     /**
      * @Route("/{id}/edit", name="admin_geocode_edit", methods={"GET","POST"})
      */
@@ -203,5 +200,17 @@ class GeoCodeController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_geocode' => $this->translator->trans('geocode.title', [], 'admin.header'),
+            ]
+        );
     }
 }

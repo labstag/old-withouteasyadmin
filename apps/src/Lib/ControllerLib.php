@@ -9,7 +9,6 @@ use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
@@ -51,20 +50,6 @@ abstract class ControllerLib extends AbstractController
         $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
     }
 
-    public function render(
-        string $view,
-        array $parameters = [],
-        ?Response $response = null
-    ): Response
-    {
-        $this->setBreadcrumbs();
-        if (isset($this->headerTitle) && '' != $this->headerTitle) {
-            $parameters['headerTitle'] = $this->headerTitle;
-        }
-
-        return parent::render($view, $parameters, $response);
-    }
-
     protected function flashBagAdd(string $type, $message)
     {
         $requestStack = $this->get('request_stack');
@@ -76,14 +61,6 @@ abstract class ControllerLib extends AbstractController
         $session  = $requestStack->getSession();
         $flashbag = $session->getFlashBag();
         $flashbag->add($type, $message);
-    }
-
-    protected function setBreadcrumbs(): void
-    {
-        $data = $this->setSingletons()->get();
-        foreach ($data as $title => $route) {
-            $this->breadcrumbs->addItem($title, $route);
-        }
     }
 
     protected function setErrorLogger($exception, $logger)

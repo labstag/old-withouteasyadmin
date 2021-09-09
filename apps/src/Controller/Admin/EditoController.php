@@ -19,9 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EditoController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Edito';
-
     /**
      * @Route("/{id}/edit", name="admin_edito_edit", methods={"GET","POST"})
      */
@@ -210,5 +207,17 @@ class EditoController extends AdminControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_edito' => $this->translator->trans('edito.title', [], 'admin.header'),
+            ]
+        );
     }
 }
