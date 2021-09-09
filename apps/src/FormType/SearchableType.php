@@ -110,10 +110,6 @@ class SearchableType extends AbstractType
             return $values->map(fn ($d) => new ChoiceView($d, (string) $d->getId(), (string) $d))->toArray();
         }
 
-        if ($options['multiple']) {
-            return [new ChoiceView($values, (string) $values->getId(), (string) $values)];
-        }
-
-        return new ChoiceView($values, (string) $values->getId(), (string) $values);
+        return [new ChoiceView($values, (string) $values->getId(), (string) $values)];
     }
 }
