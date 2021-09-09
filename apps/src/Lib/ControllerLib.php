@@ -43,12 +43,12 @@ abstract class ControllerLib extends AbstractController
         TranslatorInterface $translator
     )
     {
-        $this->guardService = $guardService;
-        $this->translator   = $translator;
-        $this->dataService  = $dataService;
-        $this->breadcrumbs  = $breadcrumbs;
-        $this->paginator    = $paginator;
-        $this->setSingletons();
+        $this->guardService        = $guardService;
+        $this->translator          = $translator;
+        $this->dataService         = $dataService;
+        $this->breadcrumbs         = $breadcrumbs;
+        $this->paginator           = $paginator;
+        $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
     }
 
     public function render(
@@ -80,7 +80,7 @@ abstract class ControllerLib extends AbstractController
 
     protected function setBreadcrumbs(): void
     {
-        $data = $this->breadcrumbsInstance->get();
+        $data = $this->setSingletons()->get();
         foreach ($data as $title => $route) {
             $this->breadcrumbs->addItem($title, $route);
         }
@@ -100,6 +100,6 @@ abstract class ControllerLib extends AbstractController
 
     protected function setSingletons()
     {
-        $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
+        return $this->breadcrumbsInstance;
     }
 }

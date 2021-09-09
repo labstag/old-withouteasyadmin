@@ -4,7 +4,6 @@ namespace Labstag\EventSubscriber;
 
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\DataService;
-use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -74,28 +73,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         $this->setLoginPage($event);
-        $this->setAdminPages($event);
         $this->setConfig($event, $request);
-    }
-
-    protected function setAdminPages(ControllerEvent $event): void
-    {
-        $controller = $event->getRequest()->attributes->get('_controller');
-        if (0 == substr_count($controller, 'Controller\Admin')) {
-            return;
-        }
-
-        $this->setBreadCrumbsAdmin();
-    }
-
-    protected function setBreadCrumbsAdmin()
-    {
-        $code             = $this->translator->trans('home', [], 'admin.breadcrumb');
-        $adminBreadcrumbs = [
-            $code => $this->router->generate('admin'),
-        ];
-
-        BreadcrumbsSingleton::getInstance()->add($adminBreadcrumbs);
     }
 
     protected function setConfig(ControllerEvent $event, Request $request): void
@@ -201,10 +179,11 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->setMetaImage($config, $request);
         $this->setMetaDescription($config);
         $url = $request->getSchemeAndHttpHost();
-        if ('' != $request->attributes->get('_route')) {
+        $all = $request->attributes->all();
+        if ('' != $all['_route']) {
             $url = $this->urlGenerator->generate(
-                $request->attributes->get('_route'),
-                $request->attributes->get('_route_params'),
+                $all['_route'],
+                $all['_route_params'],
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
         }

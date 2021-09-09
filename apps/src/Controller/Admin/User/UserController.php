@@ -61,15 +61,6 @@ class UserController extends AdminControllerLib
         WorkflowRepository $workflowRepo
     ): Response
     {
-        $breadcrumb = [
-            'Guard' => $this->generateUrl(
-                'admin_user_guard',
-                [
-                    'id' => $user->getId(),
-                ]
-            ),
-        ];
-        $this->addBreadcrumbs($breadcrumb);
         $this->btnInstance()->addBtnList(
             'admin_user_index',
             'Liste',

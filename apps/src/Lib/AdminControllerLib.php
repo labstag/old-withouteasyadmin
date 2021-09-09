@@ -34,11 +34,6 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected string $urlHome = '';
 
-    public function addBreadcrumbs(array $breadcrumbs): void
-    {
-        $this->breadcrumbsInstance->add($breadcrumbs);
-    }
-
     public function create(
         UploadAnnotationReader $uploadAnnotReader,
         AttachmentRepository $attachmentRepository,
@@ -50,13 +45,6 @@ abstract class AdminControllerLib extends ControllerLib
         string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
-        $routeCurrent = $this->get('request_stack')->getCurrentRequest()->get('_route');
-        $breadcrumb   = [
-            'New' => $this->generateUrl(
-                $routeCurrent
-            ),
-        ];
-        $this->addBreadcrumbs($breadcrumb);
         if (isset($url['list'])) {
             $this->btnInstance()->addBtnList(
                 $url['list']
@@ -94,9 +82,12 @@ abstract class AdminControllerLib extends ControllerLib
         array $actions = []
     ): Response
     {
-        $routeCurrent = $this->get('request_stack')->getCurrentRequest()->get('_route');
-        $routeType    = (0 != substr_count($routeCurrent, 'trash')) ? 'trash' : 'all';
-        $method       = $methods[$routeType];
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $route       = $all['_route'];
+        $routeParams = $all['_route_params'];
+        $routeType   = (0 != substr_count($route, 'trash')) ? 'trash' : 'all';
+        $method      = $methods[$routeType];
 
         if ('trash' == $routeType) {
             $this->listOrTrashRouteTrash($url, $actions, $repository);
@@ -114,8 +105,8 @@ abstract class AdminControllerLib extends ControllerLib
             $this->btnInstance()->addSupprimerSelection(
                 [
                     'redirect' => [
-                        'href'   => $this->get('request_stack')->getCurrentRequest()->get('_route'),
-                        'params' => [],
+                        'href'   => $route,
+                        'params' => $routeParams,
                     ],
                     'url'      => [
                         'href'   => 'api_action_deleties',
@@ -187,7 +178,6 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $routeCurrent = $this->get('request_stack')->getCurrentRequest()->get('_route');
         $routeType    = (0 != substr_count($routeCurrent, 'preview')) ? 'preview' : 'show';
-        $this->showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity);
         $this->showOrPreviewaddBtnList($url, $routeType);
         $this->showOrPreviewaddBtnGuard($url, $routeType, $entity);
         $this->showOrPreviewaddBtnTrash($url, $routeType);
@@ -236,16 +226,6 @@ abstract class AdminControllerLib extends ControllerLib
     ): Response
     {
         $this->denyAccessUnlessGranted('edit', $entity);
-        $routeCurrent = $this->get('request_stack')->getCurrentRequest()->get('_route');
-        $breadcrumb   = [
-            'edit' => $this->generateUrl(
-                $routeCurrent,
-                [
-                    'id' => $entity->getId(),
-                ]
-            ),
-        ];
-        $this->addBreadcrumbs($breadcrumb);
         $this->setBtnViewUpdate($url, $entity);
         $oldEntity = clone $entity;
         $form      = $this->createForm($formType, $entity);
@@ -337,13 +317,6 @@ abstract class AdminControllerLib extends ControllerLib
                 $repository->getClassName()
             )
         );
-
-        $breadcrumb = [
-            'Trash' => $this->generateUrl(
-                'admin_adresseuser_trash'
-            ),
-        ];
-        $this->addBreadcrumbs($breadcrumb);
         if (isset($url['list'])) {
             $this->btnInstance()->addBtnList(
                 $url['list']
@@ -367,11 +340,16 @@ abstract class AdminControllerLib extends ControllerLib
         $modal['restore'] = (isset($actions['restore']));
         $twig->addGlobal('modal', $modal);
 
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $route       = $all['_route'];
+        $routeParams = $all['_route_params'];
+
         $this->btnInstance()->addViderSelection(
             [
                 'redirect' => [
-                    'href'   => $this->get('request_stack')->getCurrentRequest()->get('_route'),
-                    'params' => [],
+                    'href'   => $route,
+                    'params' => $routeParams,
                 ],
                 'url'      => [
                     'href'   => 'api_action_destroies',
@@ -392,8 +370,8 @@ abstract class AdminControllerLib extends ControllerLib
         $this->btnInstance()->addRestoreSelection(
             [
                 'redirect' => [
-                    'href'   => $this->get('request_stack')->getCurrentRequest()->get('_route'),
-                    'params' => [],
+                    'href'   => $route,
+                    'params' => $routeParams,
                 ],
                 'url'      => [
                     'href'   => 'api_action_restories',
@@ -434,18 +412,41 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function setBreadcrumbsPage()
     {
-        if ('' == $this->headerTitle && '' == $this->urlHome) {
-            return;
+        $request   = $this->get('request_stack')->getCurrentRequest();
+        $all       = $request->attributes->all();
+        $route     = $all['_route'];
+        $data      = explode('_', $route);
+        $method    = 'setBreadcrumbsPage';
+        $callables = get_class_methods($this);
+        $router    = $this->get('router');
+        foreach ($data as $row) {
+            $method .= ucfirst($row);
+            if (!in_array($method, $callables)) {
+                continue;
+            }
+
+            $infos = $this->{$method}();
+            foreach ($infos as $breadcrumb) {
+                $breadcrumbs = [
+                    $breadcrumb['title'] => $router->generate(
+                        $breadcrumb['route'],
+                        $breadcrumb['route_params'],
+                    ),
+                ];
+                $this->setSingletons()->add($breadcrumbs);
+            }
         }
+    }
 
-        $router      = $this->get('router');
-        $breadcrumbs = [
-            $this->headerTitle => $router->generate(
-                $this->urlHome
-            ),
+    protected function setBreadcrumbsPageAdmin(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('admin.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin',
+                'route_params' => [],
+            ],
         ];
-
-        $this->breadcrumbsInstance->addPosition($breadcrumbs, 0);
     }
 
     protected function setBtnDelete(array $url, object $entity): void
@@ -550,28 +551,6 @@ abstract class AdminControllerLib extends ControllerLib
         $modal['workflow'] = (isset($actions['workflow']));
 
         $twig->addGlobal('modal', $modal);
-    }
-
-    protected function showOrPreviewaddBreadcrumbs($url, $routeType, $routeCurrent, $entity)
-    {
-        if ('preview' == $routeType && isset($url['trash'])) {
-            $breadcrumb = [
-                'Trash' => $this->generateUrl(
-                    $url['trash']
-                ),
-            ];
-            $this->addBreadcrumbs($breadcrumb);
-        }
-
-        $breadcrumb = [
-            $routeType => $this->generateUrl(
-                $routeCurrent,
-                [
-                    'id' => $entity->getId(),
-                ]
-            ),
-        ];
-        $this->addBreadcrumbs($breadcrumb);
     }
 
     protected function showOrPreviewaddBtnDestroy($url, $routeType, $entity)

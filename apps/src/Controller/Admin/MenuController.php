@@ -176,8 +176,6 @@ class MenuController extends AdminControllerLib
             }
         }
 
-        $breadcrumb = ['Move' => $currentUrl];
-        $this->addBreadcrumbs($breadcrumb);
         $this->btnInstance()->addBtnList(
             'admin_menu_index',
             'Liste',

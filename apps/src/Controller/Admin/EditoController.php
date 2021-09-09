@@ -22,8 +22,6 @@ class EditoController extends AdminControllerLib
 
     protected string $headerTitle = 'Edito';
 
-    protected string $urlHome = 'admin_edito_index';
-
     /**
      * @Route("/{id}/edit", name="admin_edito_edit", methods={"GET","POST"})
      */
@@ -129,5 +127,88 @@ class EditoController extends AdminControllerLib
                 'trash'   => 'admin_edito_trash',
             ]
         );
+    }
+
+    protected function setBreadcrumbsPageAdminEdito(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('edito.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_edito_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminEditoEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('edito.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_edito_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminEditoNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('edito.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_edito_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminEditoPreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('edito.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_edito_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('edito.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_edito_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminEditoShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('edito.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_edito_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminEditoTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('edito.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_edito_trash',
+                'route_params' => [],
+            ],
+        ];
     }
 }

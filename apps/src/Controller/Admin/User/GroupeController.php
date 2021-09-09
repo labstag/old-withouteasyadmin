@@ -60,15 +60,6 @@ class GroupeController extends AdminControllerLib
         WorkflowRepository $workflowRepo
     ): Response
     {
-        $breadcrumb = [
-            'Guard' => $this->generateUrl(
-                'admin_groupuser_guard',
-                [
-                    'id' => $groupe->getId(),
-                ]
-            ),
-        ];
-        $this->addBreadcrumbs($breadcrumb);
         $this->btnInstance()->addBtnList(
             'admin_groupuser_index',
             'Liste',
