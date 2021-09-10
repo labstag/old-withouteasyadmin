@@ -10,6 +10,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Application;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class LabstagWorkflowsShowCommand extends Command
@@ -39,7 +40,7 @@ class LabstagWorkflowsShowCommand extends Command
         $this->dispatcher         = $dispatcher;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Ajout des workflows en base de données');
     }
@@ -48,7 +49,9 @@ class LabstagWorkflowsShowCommand extends Command
     {
         $inputOutput = new SymfonyStyle($input, $output);
         $inputOutput->title('Ajout des workflows dans la base de données');
-        $container = $this->getApplication()->getKernel()->getContainer();
+        /** @var Application $application */
+        $application = $this->getApplication();
+        $container = $application->getKernel()->getContainer();
         $list      = $container->getServiceIds();
         $workflows = [];
         foreach ($list as $name) {

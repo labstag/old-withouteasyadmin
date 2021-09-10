@@ -66,10 +66,10 @@ class UserService
             $client,
             $oauthConnect
         );
-        // @var OauthConnectUserRepository $repository
+        /** @var OauthConnectUserRepository $repository */
         $repository = $this->entityManager->getRepository(OauthConnectUser::class);
         if (false === $find) {
-            // @var null|OauthConnectUser $oauthConnect
+            /** @var null|OauthConnectUser $oauthConnect */
             $oauthConnect = $repository->findOauthNotUser(
                 $user,
                 $identity,
@@ -82,7 +82,7 @@ class UserService
                 $oauthConnect->setName($client);
             }
 
-            // @var User $refuser
+            /** @var User $refuser */
             $refuser = $oauthConnect->getRefuser();
             if ($refuser->getId() !== $user->getId()) {
                 $oauthConnect = null;
@@ -130,7 +130,7 @@ class UserService
             return;
         }
 
-        // @var User $user
+        /** @var User $user */
         $user = $this->repository->findUserEnable($post['value']);
         if (!$user instanceof User) {
             return;

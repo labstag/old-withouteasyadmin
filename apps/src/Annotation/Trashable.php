@@ -16,14 +16,14 @@ class Trashable
 
     public function __construct(array $options)
     {
-        if (empty($options['url'])) {
+        if (empty($options['url']) && is_string($options['url'])) {
             throw new InvalidArgumentException("L'annotation Trashable doit avoir un attribut 'url'");
         }
 
         $this->url = $options['url'];
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }

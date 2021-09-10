@@ -98,7 +98,7 @@ class UserType extends AbstractTypeLib
                 true
             );
             foreach ($data as $email) {
-                // @var EmailUser $email
+                /** @var EmailUser $email */
                 $adresse          = $email->getAdresse();
                 $emails[$adresse] = $adresse;
             }

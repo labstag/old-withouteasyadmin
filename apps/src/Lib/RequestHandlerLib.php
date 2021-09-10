@@ -84,7 +84,7 @@ abstract class RequestHandlerLib
         $userCollectionEvent = new UserCollectionEvent();
         $oauthConnectUsers   = $entity->getOauthConnectUsers();
         foreach ($oauthConnectUsers as $row) {
-            // @var OauthConnectUser $row
+            /** @var OauthConnectUser $row */
             $old = clone $row;
             $row->setRefuser($entity);
             $userCollectionEvent->addOauthConnectUser($old, $row);
@@ -92,7 +92,7 @@ abstract class RequestHandlerLib
 
         $liensUsers = $entity->getLienUsers();
         foreach ($liensUsers as $row) {
-            // @var LienUser $row
+            /** @var LienUser $row */
             $old = clone $row;
             $row->setRefuser($entity);
             $userCollectionEvent->addLienUser($old, $row);
@@ -100,7 +100,7 @@ abstract class RequestHandlerLib
 
         $emailUsers = $entity->getEmailUsers();
         foreach ($emailUsers as $row) {
-            // @var EmailUser $row
+            /** @var EmailUser $row */
             $old = clone $row;
             $row->setRefuser($entity);
             $userCollectionEvent->addEmailUser($old, $row);
@@ -108,7 +108,7 @@ abstract class RequestHandlerLib
 
         $phoneUsers = $entity->getPhoneUsers();
         foreach ($phoneUsers as $row) {
-            // @var PhoneUser $row
+            /** @var PhoneUser $row */
             $old = clone $row;
             $row->setRefuser($entity);
             $userCollectionEvent->addPhoneUser($old, $row);
@@ -116,7 +116,7 @@ abstract class RequestHandlerLib
 
         $adresseUsers = $entity->getAdresseUsers();
         foreach ($adresseUsers as $row) {
-            // @var AdresseUser $row
+            /** @var AdresseUser $row */
             $old = clone $row;
             $row->setRefuser($entity);
             $userCollectionEvent->addAdresseUser($old, $row);

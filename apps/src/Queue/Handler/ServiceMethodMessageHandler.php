@@ -20,7 +20,7 @@ class ServiceMethodMessageHandler implements MessageHandlerInterface, ServiceSub
 
     public function __invoke(ServiceMethodMessage $message): void
     {
-        // @var callable $callable
+        /** @var callable $callable */
         $callable = [
             $this->container->get($message->getServiceName()),
             $message->getMethod(),

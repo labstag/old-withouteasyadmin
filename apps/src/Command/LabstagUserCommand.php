@@ -51,7 +51,7 @@ class LabstagUserCommand extends Command
         parent::__construct();
     }
 
-    protected function actionEnableDisableDelete($input, $output, $inputOutput, $action)
+    protected function actionEnableDisableDelete($input, $output, $inputOutput, $action): void
     {
         $helper   = $this->getHelper('question');
         $question = new ChoiceQuestion(
@@ -75,7 +75,7 @@ class LabstagUserCommand extends Command
         }
     }
 
-    protected function actionState($input, $output, $inputOutput)
+    protected function actionState($input, $output, $inputOutput): void
     {
         $helper   = $this->getHelper('question');
         $question = new ChoiceQuestion(
@@ -86,7 +86,7 @@ class LabstagUserCommand extends Command
         $this->state($helper, $username, $inputOutput, $input, $output);
     }
 
-    protected function actionUpdatePassword($input, $output, $inputOutput)
+    protected function actionUpdatePassword($input, $output, $inputOutput): void
     {
         $helper   = $this->getHelper('question');
         $question = new ChoiceQuestion(
@@ -97,12 +97,12 @@ class LabstagUserCommand extends Command
         $this->updatePassword($helper, $username, $inputOutput, $input, $output);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('command for admin user');
     }
 
-    protected function create($helper, $inputOutput, InputInterface $input, OutputInterface $output)
+    protected function create($helper, $inputOutput, InputInterface $input, OutputInterface $output): void
     {
         $inputOutput = new SymfonyStyle($input, $output);
         $user        = new User();
@@ -129,7 +129,7 @@ class LabstagUserCommand extends Command
         $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
         $data    = [];
         foreach ($groupes as $groupe) {
-            // @var Groupe $groupe
+            /** @var Groupe $groupe */
             if ('visiteur' == $groupe->getCode()) {
                 continue;
             }
@@ -143,7 +143,7 @@ class LabstagUserCommand extends Command
         );
         $selection = $helper->ask($input, $output, $question);
         foreach ($groupes as $groupe) {
-            // @var Groupe $groupe
+            /** @var Groupe $groupe */
             if ($selection != $groupe->getCode()) {
                 continue;
             }
@@ -314,12 +314,12 @@ class LabstagUserCommand extends Command
         return Command::SUCCESS;
     }
 
-    protected function list($inputOutput, OutputInterface $output)
+    protected function list($inputOutput, OutputInterface $output): void
     {
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
-            // @var User $user
+            /** @var User $user */
             $table[] = [
                 'username' => $user->getUsername(),
                 'email'    => $user->getEmail(),
@@ -382,7 +382,7 @@ class LabstagUserCommand extends Command
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
-            // @var User $user
+            /** @var User $user */
             $table[$user->getUsername()] = json_encode(
                 [
                     'username' => $user->getUsername(),

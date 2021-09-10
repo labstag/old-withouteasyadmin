@@ -29,7 +29,7 @@ class LabstagGuardRouteCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Enregistre les routes pour le système de GUARD');
     }

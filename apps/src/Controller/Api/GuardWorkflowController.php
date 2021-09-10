@@ -42,7 +42,7 @@ class GuardWorkflowController extends ApiControllerLib
         ];
         $state     = $request->request->get('state');
         $workflows = $workflowRepo->findAll();
-        // @var EntityRoute $route
+        /** @var EntityRoute $route */
         foreach ($workflows as $workflow) {
             $data = $this->setWorkflowGroupe(
                 $data,
@@ -112,7 +112,7 @@ class GuardWorkflowController extends ApiControllerLib
 
             $results = $workflowUserRepo->findEnable($user);
             foreach ($results as $row) {
-                // @var WorkflowUser $row
+                /** @var WorkflowUser $row */
                 $data['user'][] = [
                     'entity'     => $row->getRefworkflow()->getEntity(),
                     'transition' => $row->getRefworkflow()->getTransition(),
@@ -122,7 +122,7 @@ class GuardWorkflowController extends ApiControllerLib
 
         $results = $this->getResultWorkflow($request, $workflowGroupeRepo, $userRepository);
         foreach ($results as $row) {
-            // @var WorkflowGroupe $row
+            /** @var WorkflowGroupe $row */
             $data['group'][] = [
                 'groupe'     => $row->getRefgroupe()->getCode(),
                 'entity'     => $row->getRefworkflow()->getEntity(),
@@ -209,7 +209,7 @@ class GuardWorkflowController extends ApiControllerLib
         ];
         $state     = $request->request->get('state');
         $workflows = $workflowRepo->findAll();
-        // @var WorkflowUser $route
+        /** @var WorkflowUser $route */
         foreach ($workflows as $workflow) {
             $data = $this->setWorkflowUser(
                 $data,
