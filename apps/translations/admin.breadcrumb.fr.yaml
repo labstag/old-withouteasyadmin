@@ -39,12 +39,12 @@ lienuser.show: Voir
 lienuser.title: Lienuser
 lienuser.trash: Corbeille
 menu.add: Ajouter
-menu.divider: 'Ajouter un séparateur'
+menu.divider: "Ajouter un séparateur"
 menu.move: Déplacer
 menu.new: Nouveau
 menu.title: Menu
 menu.trash: Corbeille
-menu.update: 'Mise à jour'
+menu.update: "Mise à jour"
 noteinterne.edit: Éditer
 noteinterne.new: Nouveau
 noteinterne.preview: Aperçu
