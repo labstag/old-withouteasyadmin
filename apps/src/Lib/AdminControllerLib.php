@@ -179,12 +179,7 @@ abstract class AdminControllerLib extends ControllerLib
             $parameters['headerTitle'] = $header;
         }
 
-        $parameters = array_merge(
-            $parameters,
-            [
-                'btnadmin' => $this->btnInstance()->get(),
-            ]
-        );
+        $parameters['btnadmin'] = $this->btnInstance()->get();
 
         return parent::render($view, $parameters, $response);
     }
