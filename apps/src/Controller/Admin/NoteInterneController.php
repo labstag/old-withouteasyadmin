@@ -6,7 +6,10 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\NoteInterne;
 use Labstag\Form\Admin\NoteInterneType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\NoteInterneRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\NoteInterneRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,11 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class NoteInterneController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Note interne';
-
-    protected string $urlHome = 'admin_noteinterne_index';
-
     /**
      * @Route(
      *  "/{id}/edit",
@@ -28,14 +26,23 @@ class NoteInterneController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(NoteInterne $noteInterne, NoteInterneRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        NoteInterne $noteInterne,
+        NoteInterneRequestHandler $requestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->update(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             NoteInterneType::class,
             $noteInterne,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_noteinterne_index',
@@ -46,8 +53,8 @@ class NoteInterneController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_noteinterne_trash", methods={"GET"})
-     * @Route("/", name="admin_noteinterne_index", methods={"GET"})
+     * @Route("/trash",  name="admin_noteinterne_trash", methods={"GET"})
+     * @Route("/",       name="admin_noteinterne_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(NoteInterneRepository $repository): Response
@@ -81,23 +88,33 @@ class NoteInterneController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_noteinterne_new", methods={"GET","POST"})
      */
-    public function new(NoteInterneRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        NoteInterneRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new NoteInterne(),
             NoteInterneType::class,
-            $requestHandler,
             ['list' => 'admin_noteinterne_index'],
             'admin/note_interne/form.html.twig'
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_noteinterne_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_noteinterne_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_noteinterne_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(NoteInterne $noteInterne): Response
+    public function showOrPreview(
+        NoteInterne $noteInterne
+    ): Response
     {
         return $this->renderShowOrPreview(
             $noteInterne,
@@ -109,6 +126,101 @@ class NoteInterneController extends AdminControllerLib
                 'list'    => 'admin_noteinterne_index',
                 'edit'    => 'admin_noteinterne_edit',
                 'trash'   => 'admin_noteinterne_trash',
+            ]
+        );
+    }
+
+    protected function setBreadcrumbsPageAdminNoteinterne(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('noteinterne.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminNoteinterneEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('noteinterne.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminNoteinterneNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('noteinterne.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminNoteinternePreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('noteinterne.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('noteinterne.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminNoteinterneShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('noteinterne.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminNoteinterneTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('noteinterne.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_noteinterne_trash',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_noteinterne' => $this->translator->trans('noteinterne.title', [], 'admin.header'),
             ]
         );
     }

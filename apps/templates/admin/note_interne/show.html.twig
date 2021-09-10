@@ -3,34 +3,34 @@
     <table>
         <tbody>
             <tr>
-                <th>Title</th>
+                <th>{{ 'noteinterne.title'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.title }}</td>
             </tr>
             <tr>
-                <th>Content</th>
+                <th>{{ 'noteinterne.content'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
-                <th>Date_debut</th>
+                <th>{{ 'noteinterne.date_debut'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
             </tr>
             <tr>
-                <th>Date_fin</th>
+                <th>{{ 'noteinterne.date_fin'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.dateFin ? entity.dateFin|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
             </tr>
             {% set fond = attachment(entity.fond) %}
             {% if fond is not null and fond.name is not null %}
             <tr>
-                <th>Fond</th>
+                <th>{{ 'noteinterne.fond'|trans({}, 'admin.messages') }}</th>
                 <td>
                     <picture >
-                        <img alt="Note Interne fond" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
+                        <img alt="{{ 'noteinterne.fond'|trans({}, 'admin.messages')|e("html_attr") }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
                     </picture>
                 </td>
             </tr>
             {% endif %}
             <tr>
-                <th>User</th>
+                <th>{{ 'noteinterne.user'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% if entity.refuser.deletedAt != '' %}
                         {% set url = 'admin_user_preview' %}
@@ -46,7 +46,7 @@
                 </td>
             </tr>
             <tr>
-                <th>State</th>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

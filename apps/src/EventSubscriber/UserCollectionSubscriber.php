@@ -41,9 +41,9 @@ class UserCollectionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        /** @var AdresseUser $old */
+        // @var AdresseUser $old
         $old = $data['old'];
-        /** @var AdresseUser $new */
+        // @var AdresseUser $new
         $new = $data['new'];
         if ($old->getId() == $new->getId()) {
             return;
@@ -58,9 +58,9 @@ class UserCollectionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        /** @var LienUser $old */
+        // @var LienUser $old
         $old = $data['old'];
-        /** @var LienUser $new */
+        // @var LienUser $new
         $new = $data['new'];
         if ($old->getId() == $new->getId()) {
             return;
@@ -75,9 +75,9 @@ class UserCollectionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        /** @var OauthConnectUser $old */
+        // @var OauthConnectUser $old
         $old = $data['old'];
-        /** @var OauthConnectUser $new */
+        // @var OauthConnectUser $new
         $new = $data['new'];
         if ($old->getId() == $new->getId()) {
             return;

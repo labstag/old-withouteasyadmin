@@ -3,33 +3,41 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\PhoneUser;
+use Labstag\Lib\AbstractTypeLib;
 use Labstag\Service\PhoneService;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-abstract class PhoneType extends AbstractType
+abstract class PhoneType extends AbstractTypeLib
 {
 
     protected PhoneService $phoneService;
 
-    public function __construct(PhoneService $phoneService)
+    public function __construct(
+        TranslatorInterface $translator,
+        PhoneService $phoneService
+    )
     {
         $this->phoneService = $phoneService;
+        parent::__construct($translator);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
     ): void
     {
-        $optionsInput = [];
+        $optionsInput = [
+            'label' => $this->translator->trans('phone.numero.label', [], 'admin.form'),
+            'help'  => $this->translator->trans('phone.numero.help', [], 'admin.form'),
+        ];
         if (array_key_exists('data', $options)) {
-            /* @var PhoneUser $phoneuser */
+            // @var PhoneUser $phoneuser
             $phoneUser = $options['data'];
             $country   = $phoneUser->getCountry();
             $number    = $phoneUser->getNumero();
@@ -48,7 +56,9 @@ abstract class PhoneType extends AbstractType
             'country',
             CountryType::class,
             [
-                'attr' => [
+                'label' => $this->translator->trans('phone.country.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('phone.country.help', [], 'admin.form'),
+                'attr'  => [
                     'is'      => 'select-country',
                     'choices' => 'true',
                 ],

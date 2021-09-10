@@ -2,20 +2,34 @@
 
 namespace Labstag\Form\Admin\Collections\Param;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FormatDateType extends AbstractType
+class FormatDateType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
     ): void
     {
-        $builder->add('admin', TextType::class);
-        $builder->add('public', TextType::class);
+        $builder->add(
+            'admin',
+            TextType::class,
+            [
+                'label' => $this->translator->trans('param.formatdate.admin.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.formatdate.admin.help', [], 'admin.form'),
+            ]
+        );
+        $builder->add(
+            'public',
+            TextType::class,
+            [
+                'label' => $this->translator->trans('param.formatdate.public.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.formatdate.public.help', [], 'admin.form'),
+            ]
+        );
         unset($options);
     }
 

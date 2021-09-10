@@ -3,24 +3,24 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="Actions"
+        data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
         data-multiple
-        data-multipleall="Tout sélectionner"
-        data-multipleelement="Selection"
-        data-empty="No records found"
+        data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
+        data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
+        data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>Username</th>
-                <th>Groupe</th>
-                <th>Email</th>
-                <th>Adresses</th>
-                <th>Liens</th>
-                <th>Emails</th>
-                <th>Téléphones</th>
-                <th>State</th>
-                <th>Workflow</th>
+                <th>{{ 'user.username'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.groupe'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.email'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.addresss'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.links'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.emails'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.phones'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.workflow'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>

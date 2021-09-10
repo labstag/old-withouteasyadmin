@@ -2,21 +2,26 @@
 
 namespace Labstag\Form\Admin\Collections\Param;
 
+use Labstag\Lib\AbstractTypeLib;
 use Labstag\Service\OauthService;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class OauthType extends AbstractType
+class OauthType extends AbstractTypeLib
 {
 
     protected OauthService $oauthService;
 
-    public function __construct(OauthService $oauthService)
+    public function __construct(
+        TranslatorInterface $translator,
+        OauthService $oauthService
+    )
     {
         $this->oauthService = $oauthService;
+        parent::__construct($translator);
     }
 
     public function buildForm(
@@ -28,6 +33,8 @@ class OauthType extends AbstractType
             'activate',
             ChoiceType::class,
             [
+                'label'   => $this->translator->trans('param.oauth.activate.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('param.oauth.activate.help', [], 'admin.form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -44,10 +51,30 @@ class OauthType extends AbstractType
         $builder->add(
             'type',
             ChoiceType::class,
-            ['choices' => $choices]
+            [
+                'label'   => $this->translator->trans('param.oauth.type.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('param.oauth.type.help', [], 'admin.form'),
+                'choices' => $choices,
+            ]
         );
-        $builder->add('id', TextType::class, ['required' => false]);
-        $builder->add('secret', TextType::class, ['required' => false]);
+        $builder->add(
+            'id',
+            TextType::class,
+            [
+                'label'    => $this->translator->trans('param.oauth.id.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.oauth.id.help', [], 'admin.form'),
+                'required' => false,
+            ]
+        );
+        $builder->add(
+            'secret',
+            TextType::class,
+            [
+                'label'    => $this->translator->trans('param.oauth.secret.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.oauth.secret.help', [], 'admin.form'),
+                'required' => false,
+            ]
+        );
         unset($options);
     }
 

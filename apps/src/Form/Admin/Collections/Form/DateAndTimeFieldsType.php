@@ -2,7 +2,7 @@
 
 namespace Labstag\Form\Admin\Collections\Form;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -12,10 +12,10 @@ use Symfony\Component\Form\Extension\Core\Type\WeekType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DateAndTimeFieldsType extends AbstractType
+class DateAndTimeFieldsType extends AbstractTypeLib
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

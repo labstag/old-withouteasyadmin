@@ -6,7 +6,10 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Post\PostType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\PostRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,22 +19,26 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PostController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Post';
-
-    protected string $urlHome = 'admin_post_index';
-
     /**
      * @Route("/{id}/edit", name="admin_post_edit", methods={"GET","POST"})
      */
-    public function edit(Post $post, PostRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        Post $post,
+        PostRequestHandler $requestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->update(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             PostType::class,
             $post,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_post_index',
@@ -42,8 +49,8 @@ class PostController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_post_trash", methods={"GET"})
-     * @Route("/", name="admin_post_index", methods={"GET"})
+     * @Route("/trash",  name="admin_post_trash", methods={"GET"})
+     * @Route("/",       name="admin_post_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(PostRepository $repository): Response
@@ -77,23 +84,33 @@ class PostController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_post_new", methods={"GET","POST"})
      */
-    public function new(PostRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        PostRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new Post(),
             PostType::class,
-            $requestHandler,
             ['list' => 'admin_post_index'],
             'admin/post/form.html.twig'
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_post_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_post_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_post_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(Post $post): Response
+    public function showOrPreview(
+        Post $post
+    ): Response
     {
         return $this->renderShowOrPreview(
             $post,
@@ -105,6 +122,101 @@ class PostController extends AdminControllerLib
                 'edit'    => 'admin_post_edit',
                 'list'    => 'admin_post_index',
                 'trash'   => 'admin_post_trash',
+            ]
+        );
+    }
+
+    protected function setBreadcrumbsPageAdminPost(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('post.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('post.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('post.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostPreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('post.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('post.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPostTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_post_trash',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_post' => $this->translator->trans('post.title', [], 'admin.header'),
             ]
         );
     }

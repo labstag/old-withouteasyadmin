@@ -9,12 +9,12 @@ use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Service\GuardService;
 use Labstag\Service\PhoneService;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Registry;
 use Twig\Extension\AbstractExtension;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
@@ -25,6 +25,8 @@ class LabstagExtension extends AbstractExtension
     public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     protected AttachmentRepository $attachmentRepository;
+
+    protected CacheManager $cache;
 
     protected GroupeRepository $groupeRepository;
 
@@ -37,8 +39,6 @@ class LabstagExtension extends AbstractExtension
     protected TokenStorageInterface $token;
 
     protected Registry $workflows;
-
-    protected CacheManager $cache;
 
     public function __construct(
         PhoneService $phoneService,
@@ -94,9 +94,7 @@ class LabstagExtension extends AbstractExtension
             return $file;
         }
 
-        $file = $newFile;
-
-        return $file;
+        return $newFile;
     }
 
     public function formPrototype(array $blockPrefixes): string
@@ -115,9 +113,7 @@ class LabstagExtension extends AbstractExtension
             return $file;
         }
 
-        $file = $newFile;
-
-        return $file;
+        return $newFile;
     }
 
     public function getAttachment($data): ?Attachment
@@ -193,6 +189,35 @@ class LabstagExtension extends AbstractExtension
         return $this->guardService->guardRouteEnableUser($route, $user);
     }
 
+    /**
+     * Gets the browser path for the image and filter to apply.
+     *
+     * @param string      $path
+     * @param string      $filter
+     * @param null|string $resolver
+     * @param int         $referenceType
+     *
+     * @return string
+     */
+    public function imagefilter(
+        $path,
+        $filter,
+        array $config = [],
+        $resolver = null,
+        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+    )
+    {
+        $url = $this->cache->getBrowserPath(
+            parse_url($path, PHP_URL_PATH),
+            $filter,
+            $config,
+            $resolver,
+            $referenceType
+        );
+
+        return parse_url($url, PHP_URL_PATH);
+    }
+
     public function isPhoneValid(string $number, string $country): bool
     {
         $verif = $this->phoneService->verif($number, $country);
@@ -216,43 +241,11 @@ class LabstagExtension extends AbstractExtension
     {
         if (is_object($class['data'])) {
             $tabClass = explode('\\', get_class($class['data']));
-            $type     = end($tabClass);
 
-            return $type;
+            return end($tabClass);
         }
 
-        $type = $class['form']->vars['unique_block_prefix'];
-
-        return $type;
-    }
-
-    /**
-     * Gets the browser path for the image and filter to apply.
-     *
-     * @param string      $path
-     * @param string      $filter
-     * @param string|null $resolver
-     * @param int         $referenceType
-     *
-     * @return string
-     */
-    public function imagefilter(
-        $path,
-        $filter,
-        array $config = [],
-        $resolver = null,
-        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
-    )
-    {
-        $url = $this->cache->getBrowserPath(
-            parse_url($path, PHP_URL_PATH),
-            $filter,
-            $config,
-            $resolver,
-            $referenceType
-        );
-
-        return parse_url($url, PHP_URL_PATH);
+        return $class['form']->vars['unique_block_prefix'];
     }
 
     private function getFiltersFunctions()

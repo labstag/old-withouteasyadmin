@@ -29,7 +29,7 @@ class AdminEditoControllerTest extends WebTestCase
 
     /**
      * @dataProvider provideAllUrlWithoutParams
-     * @param string $route
+     * @param        string $route
      */
     public function testUrl($route, $groupe)
     {
@@ -112,7 +112,9 @@ class AdminEditoControllerTest extends WebTestCase
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(Edito::class);
-        /** @var EditoRepository $repository */
+        /**
+ * @var EditoRepository $repository
+*/
         $data = $repository->findOneRandom();
 
         return $data;
@@ -124,7 +126,9 @@ class AdminEditoControllerTest extends WebTestCase
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(User::class);
-        /** @var UserRepository $repository */
+        /**
+ * @var UserRepository $repository
+*/
         $user = $repository->findOneRandom();
         if (!($user instanceof User)) {
             return;
@@ -135,7 +139,9 @@ class AdminEditoControllerTest extends WebTestCase
         $edito->setRefuser($user);
         $edito->setTitle($faker->unique()->text($faker->numberBetween(5, 50)));
         $edito->setEnable($faker->numberBetween(0, 1));
-        /** @var string $content */
+        /**
+ * @var string $content
+*/
         $content = $faker->unique()->paragraphs(4, true);
         $edito->setContent(str_replace("\n\n", '<br />', $content));
 

@@ -47,7 +47,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $post->setTitle($faker->unique()->colorName);
         $post->setMetaKeywords(implode(', ', $faker->unique()->words(rand(4, 10))));
         $post->setMetaDescription($faker->unique()->sentence);
-        /** @var string $content */
+        // @var string $content
         $content = $faker->paragraphs(rand(4, 10), true);
         $post->setContent(str_replace("\n\n", "<br />\n", $content));
         $users     = $this->installService->getData('user');

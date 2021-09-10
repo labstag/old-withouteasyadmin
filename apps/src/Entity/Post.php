@@ -15,7 +15,7 @@ use Labstag\Repository\PostRepository;
 
 /**
  * @ORM\Entity(repositoryClass=PostRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt",       timeAware=false)
  * @Uploadable()
  */
 class Post
@@ -53,7 +53,7 @@ class Post
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid", unique=true)
+     * @ORM\Column(type="guid",             unique=true)
      */
     private $id;
 
@@ -89,7 +89,7 @@ class Post
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string",   length=255)
      */
     private $slug;
 

@@ -4,7 +4,6 @@ namespace Labstag\EventSubscriber;
 
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\DataService;
-use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -14,18 +13,19 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
 {
     public const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
 
-    public const LABSTAG_CONTROLLER = '/(Labstag)/';
-
     public const ERROR_CONTROLLER = [
         'error_controller',
         'error_controller::preview',
     ];
+
+    public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
     protected AttachmentRepository $attachmentRepo;
 
@@ -36,6 +36,8 @@ class TwigEventSubscriber implements EventSubscriberInterface
     protected RouterInterface $router;
 
     protected Security $security;
+
+    protected TranslatorInterface $translator;
 
     protected Environment $twig;
 
@@ -48,9 +50,11 @@ class TwigEventSubscriber implements EventSubscriberInterface
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
         DataService $dataService,
-        Security $security
+        Security $security,
+        TranslatorInterface $translator
     )
     {
+        $this->translator       = $translator;
         $this->attachmentRepo   = $attachmentRepo;
         $this->security         = $security;
         $this->urlGenerator     = $urlGenerator;
@@ -69,27 +73,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         $this->setLoginPage($event);
-        $this->setAdminPages($event);
         $this->setConfig($event, $request);
-    }
-
-    protected function setAdminPages(ControllerEvent $event): void
-    {
-        $controller = $event->getRequest()->attributes->get('_controller');
-        if (0 == substr_count($controller, 'Controller\Admin')) {
-            return;
-        }
-
-        $this->setBreadCrumbsAdmin();
-    }
-
-    protected function setBreadCrumbsAdmin()
-    {
-        $adminBreadcrumbs = [
-            'Home' => $this->router->generate('admin'),
-        ];
-
-        BreadcrumbsSingleton::getInstance()->add($adminBreadcrumbs);
     }
 
     protected function setConfig(ControllerEvent $event, Request $request): void
@@ -103,9 +87,9 @@ class TwigEventSubscriber implements EventSubscriberInterface
         }
 
         $globals   = $this->twig->getGlobals();
-        $canonical = isset($globals['canonical']) ? $globals['canonical'] : $request->getUri();
+        $canonical = $globals['canonical'] ?? $request->getUri();
 
-        $config = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
+        $config = $globals['config'] ?? $this->dataService->getConfig();
 
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
         $this->setMetaTitleGlobal($config);
@@ -195,10 +179,11 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->setMetaImage($config, $request);
         $this->setMetaDescription($config);
         $url = $request->getSchemeAndHttpHost();
-        if ('' != $request->attributes->get('_route')) {
+        $all = $request->attributes->all();
+        if (isset($all['_route']) && '' != $all['_route']) {
             $url = $this->urlGenerator->generate(
-                $request->attributes->get('_route'),
-                $request->attributes->get('_route_params'),
+                $all['_route'],
+                $all['_route_params'],
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
         }
@@ -271,8 +256,11 @@ class TwigEventSubscriber implements EventSubscriberInterface
                     'property' => $key,
                     'content'  => $value,
                 ];
+
                 continue;
-            } elseif ('description' == $key) {
+            }
+
+            if ('description' == $key) {
                 $metatags[] = [
                     'itemprop' => $key,
                     'content'  => $value,
@@ -281,6 +269,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
                     'name'    => $key,
                     'content' => $value,
                 ];
+
                 continue;
             }
 

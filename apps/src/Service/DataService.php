@@ -54,6 +54,7 @@ class DataService
             foreach ($oauthUsers as $oauthUser) {
                 if ($oauthUser->getName() == $oauthActivated['type']) {
                     $trouver = 1;
+
                     break;
                 }
             }
@@ -70,7 +71,7 @@ class DataService
     {
         $data   = $this->repository->findAll();
         $config = [];
-        /** @var Configuration $row */
+        // @var Configuration $row
         foreach ($data as $row) {
             $key          = $row->getName();
             $value        = $row->getValue();
@@ -107,10 +108,12 @@ class DataService
         $oauth = [];
         $data  = $config['oauth'];
         foreach ($data as $row) {
-            if (1 == $row['activate']) {
-                $type         = $row['type'];
-                $oauth[$type] = $row;
+            if (1 != $row['activate']) {
+                continue;
             }
+
+            $type         = $row['type'];
+            $oauth[$type] = $row;
         }
 
         $this->oauthActivated = $oauth;

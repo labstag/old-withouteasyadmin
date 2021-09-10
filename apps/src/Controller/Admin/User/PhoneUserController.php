@@ -6,7 +6,10 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\PhoneUser;
 use Labstag\Form\Admin\User\PhoneUserType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\PhoneUserRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,11 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PhoneUserController extends AdminControllerLib
 {
-
-    protected string $headerTitle = "Téléphone d'utilisateurs";
-
-    protected string $urlHome = 'admin_phoneuser_index';
-
     /**
      * @Route(
      *  "/{id}/edit",
@@ -28,12 +26,21 @@ class PhoneUserController extends AdminControllerLib
      *  methods={"GET","POST"}
      * )
      */
-    public function edit(PhoneUser $phoneUser, PhoneUserRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        PhoneUser $phoneUser,
+        PhoneUserRequestHandler $requestHandler
+    ): Response
     {
         return $this->update(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             PhoneUserType::class,
             $phoneUser,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_phoneuser_index',
@@ -43,8 +50,8 @@ class PhoneUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_phoneuser_trash", methods={"GET"})
-     * @Route("/", name="admin_phoneuser_index", methods={"GET"})
+     * @Route("/trash",  name="admin_phoneuser_trash", methods={"GET"})
+     * @Route("/",       name="admin_phoneuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(PhoneUserRepository $repository): Response
@@ -78,22 +85,32 @@ class PhoneUserController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
      */
-    public function new(PhoneUserRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        PhoneUserRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new PhoneUser(),
             PhoneUserType::class,
-            $requestHandler,
             ['list' => 'admin_phoneuser_index']
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_phoneuser_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_phoneuser_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_phoneuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(PhoneUser $phoneUser): Response
+    public function showOrPreview(
+        PhoneUser $phoneUser
+    ): Response
     {
         return $this->renderShowOrPreview(
             $phoneUser,
@@ -105,6 +122,101 @@ class PhoneUserController extends AdminControllerLib
                 'list'    => 'admin_phoneuser_index',
                 'edit'    => 'admin_phoneuser_edit',
                 'trash'   => 'admin_phoneuser_trash',
+            ]
+        );
+    }
+
+    protected function setBreadcrumbsPageAdminPhoneuser(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('phoneuser.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPhoneuserEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('phoneuser.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPhoneuserNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('phoneuser.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPhoneuserPreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('phoneuser.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('phoneuser.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPhoneuserShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('phoneuser.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminPhoneuserTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('phoneuser.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_phoneuser_trash',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_phoneuser' => $this->translator->trans('phoneuser.title', [], 'admin.header'),
             ]
         );
     }

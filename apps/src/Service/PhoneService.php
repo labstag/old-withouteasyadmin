@@ -12,14 +12,10 @@ use Psr\Log\LoggerInterface;
 class PhoneService
 {
 
-    /**
-     * @var LoggerInterface
-     */
+    // @var LoggerInterface
     protected $logger;
 
-    /**
-     * @var PhoneNumberUtil
-     */
+    // @var PhoneNumberUtil
     protected $phoneUtil;
 
     public function __construct(LoggerInterface $logger)

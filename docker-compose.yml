@@ -52,6 +52,7 @@ services:
       - mailhog
       - redis
     environment:
+      COMPOSER_MEMORY_LIMIT: -1
       MAILER_DSN: "smtp://mailhog:1025"
       DATABASE_URL: "mysqli://labstag:password@mariadb:3306/labstag_bdd"
     volumes:

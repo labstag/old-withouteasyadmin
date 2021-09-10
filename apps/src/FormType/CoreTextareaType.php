@@ -25,7 +25,7 @@ class CoreTextareaType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getParent(): string
     {

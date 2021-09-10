@@ -110,9 +110,13 @@ class SecurityControllerTest extends WebTestCase
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
-        /** @var UserRepository $repository */
+        /**
+ * @var UserRepository $repository
+*/
         $repository = $entityManager->getRepository(User::class);
-        /** @var User $user */
+        /**
+ * @var User $user
+*/
         $user = $repository->findOneRandomToLost(0);
         if (!($user instanceof User)) {
             $this->markTestSkipped('test désactivé');
@@ -137,9 +141,13 @@ class SecurityControllerTest extends WebTestCase
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
-        /** @var UserRepository $repository */
+        /**
+ * @var UserRepository $repository
+*/
         $repository = $entityManager->getRepository(User::class);
-        /** @var User $user */
+        /**
+ * @var User $user
+*/
         $user = $repository->findOneRandomToLost(1);
         if (!($user instanceof User)) {
             $this->markTestSkipped('test désactivé');
@@ -171,9 +179,13 @@ class SecurityControllerTest extends WebTestCase
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
-        /** @var UserRepository $repository */
+        /**
+ * @var UserRepository $repository
+*/
         $repository = $entityManager->getRepository(User::class);
-        /** @var User $user */
+        /**
+ * @var User $user
+*/
         $user = $repository->findOneRandomToVerif(0);
         if (!($user instanceof User)) {
             $this->markTestSkipped('test désactivé');
@@ -198,9 +210,13 @@ class SecurityControllerTest extends WebTestCase
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
-        /** @var UserRepository $repository */
+        /**
+ * @var UserRepository $repository
+*/
         $repository = $entityManager->getRepository(User::class);
-        /** @var User $user */
+        /**
+ * @var User $user
+*/
         $user = $repository->findOneRandomToVerif(1);
         if (!($user instanceof User)) {
             $this->markTestSkipped('test désactivé');
@@ -225,9 +241,13 @@ class SecurityControllerTest extends WebTestCase
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
-        /** @var EmailUserRepository $repository */
+        /**
+ * @var EmailUserRepository $repository
+*/
         $repository = $entityManager->getRepository(EmailUser::class);
-        /** @var Email $email */
+        /**
+ * @var Email $email
+*/
         $email = $repository->findOneRandomToVerif(0);
         if (!($email instanceof Email)) {
             $this->markTestSkipped('test désactivé');
@@ -252,9 +272,13 @@ class SecurityControllerTest extends WebTestCase
         $container     = $client->getContainer();
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
-        /** @var EmailUserRepository $repository */
+        /**
+ * @var EmailUserRepository $repository
+*/
         $repository = $entityManager->getRepository(EmailUser::class);
-        /** @var Email $email */
+        /**
+ * @var Email $email
+*/
         $email = $repository->findOneRandomToVerif(1);
         if (!($email instanceof Email)) {
             $this->markTestSkipped('test désactivé');

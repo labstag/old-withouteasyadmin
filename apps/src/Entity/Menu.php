@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MenuRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt",       timeAware=false)
  */
 class Menu
 {
@@ -27,23 +27,31 @@ class Menu
      */
     protected $children;
 
-    /** @ORM\Column(type="string", length=255, nullable=true) */
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     protected $clef;
 
-    /** @ORM\Column(type="json", nullable=true) */
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
     protected array $data = [];
 
-    /** @ORM\Column(type="string", length=255, nullable=true) */
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     protected $icon;
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid", unique=true)
+     * @ORM\Column(type="guid",             unique=true)
      */
     protected $id;
 
-    /** @ORM\Column(type="string", length=255, nullable=true) */
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     protected $libelle;
 
     /**
@@ -54,7 +62,7 @@ class Menu
      *  onDelete="SET NULL"
      * )
      *
-     * @var Menu|null
+     * @var null|Menu
      */
     protected $parent;
 
@@ -64,7 +72,9 @@ class Menu
      */
     protected int $position;
 
-    /** @ORM\Column(type="boolean") */
+    /**
+     * @ORM\Column(type="boolean")
+     */
     protected $separateur;
 
     public function __construct()

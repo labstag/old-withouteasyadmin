@@ -1,42 +1,40 @@
 {% extends 'admin/geocode/layout.html.twig' %}
 {% block body %}
-    <h1>GeoCode</h1>
-
-    <table class="table">
+    <table>
         <tbody>
             <tr>
-                <th>CountryCode</th>
+                <th>{{ 'geocode.countrycode'|trans({}, 'admin.messages') }}</th>
                 <td>
                     <span class="flag-icon flag-icon-{{ entity.countryCode|lower }}"></span>
                     {{ entity.countryCode|country_name('fr') }}
                 </td>
             </tr>
             <tr>
-                <th>PostalCode</th>
+                <th>{{ 'geocode.postalcode'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.postalCode }}</td>
             </tr>
             <tr>
-                <th>PlaceName</th>
+                <th>{{ 'geocode.placename'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.placeName }}</td>
             </tr>
             <tr>
-                <th>State</th>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.stateName }} ({{ entity.stateCode }})</td>
             </tr>
             <tr>
-                <th>Province</th>
+                <th>{{ 'geocode.province'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.provinceName }} ({{ entity.provinceCode }})</td>
             </tr>
             <tr>
-                <th>Community</th>
+                <th>{{ 'geocode.community'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.communityName }} ({{ entity.communityCode }})</td>
             </tr>
             <tr>
-                <th>Coordonnées</th>
+                <th>{{ 'geocode.coordonnees'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.latitude }} , {{ entity.longitude }}</td>
             </tr>
             <tr>
-                <th>Accuracy</th>
+                <th>{{ 'geocode.accuracy'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.accuracy }}</td>
             </tr>
         </tbody>

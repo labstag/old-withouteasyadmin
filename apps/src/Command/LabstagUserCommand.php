@@ -129,7 +129,7 @@ class LabstagUserCommand extends Command
         $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
         $data    = [];
         foreach ($groupes as $groupe) {
-            /** @var Groupe $groupe */
+            // @var Groupe $groupe
             if ('visiteur' == $groupe->getCode()) {
                 continue;
             }
@@ -143,10 +143,12 @@ class LabstagUserCommand extends Command
         );
         $selection = $helper->ask($input, $output, $question);
         foreach ($groupes as $groupe) {
-            /** @var Groupe $groupe */
-            if ($selection == $groupe->getCode()) {
-                $user->setRefgroupe($groupe);
+            // @var Groupe $groupe
+            if ($selection != $groupe->getCode()) {
+                continue;
             }
+
+            $user->setRefgroupe($groupe);
         }
 
         $this->userRequestHandler->handle($old, $user);
@@ -287,20 +289,25 @@ class LabstagUserCommand extends Command
         switch ($action) {
             case 'list':
                 $this->list($inputOutput, $output);
+
                 break;
             case 'create':
                 $this->create($helper, $inputOutput, $input, $output);
+
                 break;
             case 'updatepassword':
                 $this->actionUpdatePassword($input, $output, $inputOutput);
+
                 break;
             case 'state':
                 $this->actionState($input, $output, $inputOutput);
+
                 break;
             case 'enable':
             case 'disable':
             case 'delete':
                 $this->actionEnableDisableDelete($input, $output, $inputOutput, $action);
+
                 break;
         }
 
@@ -312,7 +319,7 @@ class LabstagUserCommand extends Command
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
-            /* @var User $user */
+            // @var User $user
             $table[] = [
                 'username' => $user->getUsername(),
                 'email'    => $user->getEmail(),
@@ -375,7 +382,7 @@ class LabstagUserCommand extends Command
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
-            /* @var User $user */
+            // @var User $user
             $table[$user->getUsername()] = json_encode(
                 [
                     'username' => $user->getUsername(),

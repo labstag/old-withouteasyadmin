@@ -3,30 +3,30 @@
     <table>
         <tbody>
             <tr>
-                <th>Username</th>
+                <th>{{ 'user.username'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.username }}</td>
             </tr>
             <tr>
-                <th>Groupe</th>
+                <th>{{ 'user.groupe'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.refgroupe }}</td>
             </tr>
             <tr>
-                <th>Email</th>
+                <th>{{ 'user.email'|trans({}, 'admin.messages') }}</th>
                 <td><a href="mailto:{{ entity.email }}">{{ entity.email }}</a></td>
             </tr>
             {% set avatar = attachment(entity.avatar) %}
             {% if avatar is not null and avatar.name is not null %}
             <tr>
-                <th>Avatar</th>
+                <th>{{ 'user.avatar'|trans({}, 'admin.messages') }}</th>
                 <td>
                     <picture >
-                        <img alt="User avatar" src="{{ asset(avatar.name) | imagefilter('my_thumb') }}" />
+                        <img alt="{{ 'user.avatar'|trans({}, 'admin.messages')|e("html_attr") }}" src="{{ asset(avatar.name) | imagefilter('my_thumb') }}" />
                     </picture>
                 </td>
             </tr>
             {% endif %}
             <tr>
-                <th>State</th>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}
@@ -40,13 +40,13 @@
         {% if adresses|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>Adresses ({{ entity.adresseUsers|length }})</legend>
+                    <legend>{{ 'user.addresss'|trans({"%nbr%": entity.adresseUsers|length}, 'admin.messages') }}</legend>
                     <table>
                         <thead>
                             <tr>
-                                <th>Adresse</th>
-                                <th>Type</th>
-                                <th>Pmr</th>
+                                <th>{{ 'user.address.adresse'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.address.type'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.address.pmr'|trans({}, 'admin.messages') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,7 +65,7 @@
                                         </span>
                                     </td>
                                     <td>{{ adresse.type }}</td>
-                                    <td>{{ adresse.pmr ? 'Yes' : 'No' }}</td>
+                                    <td>{{ adresse.pmr ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -77,12 +77,12 @@
         {% if liens|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>Liens ({{ entity.lienUsers|length }})</legend>
+                    <legend>{{ 'user.links'|trans({"%nbr%": entity.lienUsers|length}, 'admin.messages') }}</legend>
                     <table>
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Adresse</th>
+                                <th>{{ 'user.link.name'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.link.adresse'|trans({}, 'admin.messages') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -101,19 +101,19 @@
         {% if emails|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>Emails ({{ entity.emailUsers|length }})</legend>
+                    <legend>{{ 'user.emails'|trans({"%nbr%": entity.emailUsers|length}, 'admin.messages') }}</legend>
                     <table>
                         <thead>
                             <tr>
-                                <th>Adresse</th>
-                                <th>Principal</th>
+                                <th>{{ 'user.email.adresse'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.email.principal'|trans({}, 'admin.messages') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for email in emails %}
                                 <tr>
                                     <td><a href="mailto:{{ email.adresse }}">{{ email.adresse }}</a></td>
-                                    <td>{{ email.principal ? 'Yes' : 'No' }}</td>
+                                    <td>{{ email.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -125,15 +125,15 @@
         {% if phones|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>Téléphones ({{ entity.phoneUsers|length }})</legend>
+                    <legend>{{ 'user.phones'|trans({"%nbr%": entity.emailUsers|length}, 'admin.messages') }}</legend>
                     <table>
                         <thead>
                             <tr>
-                                <th>Numero</th>
-                                <th>Verif</th>
-                                <th>Country</th>
-                                <th>Type</th>
-                                <th>Principal</th>
+                                <th>{{ 'user.phone.numero'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.phone.verif'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.phone.country'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.phone.type'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.phone.principal'|trans({}, 'admin.messages') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -149,7 +149,7 @@
                                         {{ phone.country|country_name('fr') }}
                                     </td>
                                     <td>{{ phone.type }}</td>
-                                    <td>{{ phone.principal ? 'Yes' : 'No' }}</td>
+                                    <td>{{ phone.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

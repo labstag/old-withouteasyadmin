@@ -2,7 +2,7 @@
 
 namespace Labstag\Form\Admin\Collections\Form;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -18,10 +18,10 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TextFieldsType extends AbstractType
+class TextFieldsType extends AbstractTypeLib
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

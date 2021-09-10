@@ -2,7 +2,7 @@
 
 namespace Labstag\Form\Admin\Collections\Form;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
@@ -12,10 +12,10 @@ use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ChoiceFieldsType extends AbstractType
+class ChoiceFieldsType extends AbstractTypeLib
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

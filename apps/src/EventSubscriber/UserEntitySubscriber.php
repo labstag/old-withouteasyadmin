@@ -12,6 +12,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserEntitySubscriber implements EventSubscriberInterface
 {
@@ -24,18 +25,22 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     protected UserPasswordHasherInterface $passwordEncoder;
 
-    protected UserMailService $userMailService;
-
     protected RequestStack $requestStack;
+
+    protected TranslatorInterface $translator;
+
+    protected UserMailService $userMailService;
 
     public function __construct(
         RequestStack $requestStack,
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordEncoder,
         UserMailService $userMailService,
-        EmailUserRequestHandler $emailUserRH
+        EmailUserRequestHandler $emailUserRH,
+        TranslatorInterface $translator
     )
     {
+        $this->translator      = $translator;
         $this->requestStack    = $requestStack;
         $this->emailUserRH     = $emailUserRH;
         $this->userMailService = $userMailService;
@@ -74,19 +79,6 @@ class UserEntitySubscriber implements EventSubscriberInterface
         );
     }
 
-    private function flashBagAdd(string $type, $message)
-    {
-        $requestStack = $this->requestStack;
-        $request      = $requestStack->getCurrentRequest();
-        if (is_null($request)) {
-            return;
-        }
-
-        $session  = $requestStack->getSession();
-        $flashbag = $session->getFlashBag();
-        $flashbag->add($type, $message);
-    }
-
     protected function setPassword(User $user): void
     {
         $plainPassword = $user->getPlainPassword();
@@ -108,7 +100,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $this->entityManager->flush();
         $this->flashBagAdd(
             'success',
-            'Mot de passe changé'
+            $this->translator->trans('user.subscriber.password.change')
         );
     }
 
@@ -122,7 +114,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $emails  = $newEntity->getEmailUsers();
         $trouver = false;
         foreach ($emails as $emailUser) {
-            /* @var EmailUser $emailUser */
+            // @var EmailUser $emailUser
             $emailUser->setPrincipal(false);
             if ($emailUser->getAdresse() === $adresse) {
                 $emailUser->setPrincipal(true);
@@ -139,7 +131,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $this->entityManager->flush();
         $this->flashBagAdd(
             'success',
-            'Email principal changé'
+            $this->translator->trans('user.subscriber.emailprincal.change')
         );
 
         if ($trouver) {
@@ -153,5 +145,18 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $emailUser->setAdresse($adresse);
         $this->emailUserRH->handle($old, $emailUser);
         $this->emailUserRH->changeWorkflowState($emailUser, ['submit', 'valider']);
+    }
+
+    private function flashBagAdd(string $type, $message)
+    {
+        $requestStack = $this->requestStack;
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
+            return;
+        }
+
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 }
