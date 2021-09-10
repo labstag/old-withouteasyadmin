@@ -38,6 +38,9 @@ apps/phpcbf.phar:
 apps/phpcs.phar:
 	$(DOCKER_EXECPHP) wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.0/phpcs.phar
 
+apps/phpstan.phar:
+	$(DOCKER_EXECPHP) wget https://github.com/phpstan/phpstan/releases/download/0.12.98/phpstan.phar
+
 apps/composer.lock: isdocker apps/composer.json
 	${COMPOSER_EXEC} update
 
@@ -175,7 +178,7 @@ commands: isdocker
 	$(SYMFONY_EXEC) labstag:workflows-show
 
 .PHONY: linter
-linter: isdocker apps/phploc.phar apps/phpmd.phar apps/php-cs-fixer.phar apps/phpcbf.phar apps/phpcs.phar node_modules ### Scripts Linter
+linter: isdocker apps/phploc.phar apps/phpmd.phar apps/php-cs-fixer.phar apps/phpcbf.phar apps/phpcs.phar apps/phpstan.phar node_modules ### Scripts Linter
 ifeq ($(COMMANDS_ARGS),all)
 	@make linter phpfix -i
 	@make linter eslint -i
@@ -229,7 +232,7 @@ else ifeq ($(COMMANDS_ARGS),phpmd)
 else ifeq ($(COMMANDS_ARGS),phpmnd)
 	${COMPOSER_EXEC} run phpmnd
 else ifeq ($(COMMANDS_ARGS),phpstan)
-	${PHP_EXEC} -d memory_limit=-1 -n ./bin/phpstan analyse src
+	${PHP_EXEC} phpstan.phar analyse src
 else ifeq ($(COMMANDS_ARGS),twig)
 	${SYMFONY_EXEC} lint:twig templates
 else ifeq ($(COMMANDS_ARGS),container)
