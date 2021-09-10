@@ -144,9 +144,11 @@ class LabstagUserCommand extends Command
         $selection = $helper->ask($input, $output, $question);
         foreach ($groupes as $groupe) {
             // @var Groupe $groupe
-            if ($selection == $groupe->getCode()) {
-                $user->setRefgroupe($groupe);
+            if ($selection != $groupe->getCode()) {
+                continue;
             }
+
+            $user->setRefgroupe($groupe);
         }
 
         $this->userRequestHandler->handle($old, $user);

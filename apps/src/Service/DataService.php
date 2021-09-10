@@ -108,10 +108,12 @@ class DataService
         $oauth = [];
         $data  = $config['oauth'];
         foreach ($data as $row) {
-            if (1 == $row['activate']) {
-                $type         = $row['type'];
-                $oauth[$type] = $row;
+            if (1 != $row['activate']) {
+                continue;
             }
+
+            $type         = $row['type'];
+            $oauth[$type] = $row;
         }
 
         $this->oauthActivated = $oauth;

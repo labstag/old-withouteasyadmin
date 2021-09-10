@@ -192,12 +192,7 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $routeCurrent = $this->get('request_stack')->getCurrentRequest()->get('_route');
         $routeType    = (0 != substr_count($routeCurrent, 'preview')) ? 'preview' : 'show';
-        $this->showOrPreviewaddBtnList($url, $routeType);
-        $this->showOrPreviewaddBtnGuard($url, $routeType, $entity);
-        $this->showOrPreviewaddBtnTrash($url, $routeType);
-        $this->showOrPreviewaddBtnEdit($url, $routeType, $entity);
-        $this->showOrPreviewaddBtnRestore($url, $routeType, $entity);
-        $this->showOrPreviewaddBtnDestroy($url, $routeType, $entity);
+        $this->showOrPreviewadd($url, $routeType, $entity);
 
         if (isset($url['delete']) && 'show' == $routeType) {
             $urlsDelete = [
@@ -577,6 +572,16 @@ abstract class AdminControllerLib extends ControllerLib
         $modal['workflow'] = (isset($actions['workflow']));
 
         $twig->addGlobal('modal', $modal);
+    }
+
+    protected function showOrPreviewadd(array $url, string $routeType, $entity): void
+    {
+        $this->showOrPreviewaddBtnList($url, $routeType);
+        $this->showOrPreviewaddBtnGuard($url, $routeType, $entity);
+        $this->showOrPreviewaddBtnTrash($url, $routeType);
+        $this->showOrPreviewaddBtnEdit($url, $routeType, $entity);
+        $this->showOrPreviewaddBtnRestore($url, $routeType, $entity);
+        $this->showOrPreviewaddBtnDestroy($url, $routeType, $entity);
     }
 
     protected function showOrPreviewaddBtnDestroy($url, $routeType, $entity)

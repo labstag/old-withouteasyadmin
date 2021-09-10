@@ -146,18 +146,20 @@ class UserService
         &$oauthConnect = null
     ): bool
     {
+        $return        = false;
+        $oauthConnect  = null;
         $oauthConnects = $user->getOauthConnectUsers();
         foreach ($oauthConnects as $oauthConnect) {
             $test1 = ($oauthConnect->getName() == $client);
             $test2 = ($oauthConnect->getIdentity() == $identity);
             if ($test1 && $test2) {
-                return true;
+                $return = true;
+
+                break;
             }
         }
 
-        $oauthConnect = null;
-
-        return false;
+        return $return;
     }
 
     private function flashBagAdd(string $type, $message)

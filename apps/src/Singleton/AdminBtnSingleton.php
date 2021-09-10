@@ -508,14 +508,19 @@ class AdminBtnSingleton
 
     protected function isRoutesEnable(array $routes): bool
     {
+        $return = true;
         foreach ($routes as $route) {
             $state = $this->isRouteEnable($route);
-            if (!$state) {
-                return false;
+            if ($state) {
+                continue;
             }
+
+            $return = false;
+
+            break;
         }
 
-        return true;
+        return $return;
     }
 
     private function arrayKeyExistsRedirect($routes)

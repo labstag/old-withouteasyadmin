@@ -109,12 +109,14 @@ class AdminController extends AdminControllerLib
         ];
 
         foreach ($images as $key => $value) {
-            if (is_null($value)) {
-                $images[$key] = new Attachment();
-                $images[$key]->setCode($key);
-                $entityManager->persist($images[$key]);
-                $entityManager->flush();
+            if (!is_null($value)) {
+                continue;
             }
+
+            $images[$key] = new Attachment();
+            $images[$key]->setCode($key);
+            $entityManager->persist($images[$key]);
+            $entityManager->flush();
         }
 
         $config = $dataService->getConfig();

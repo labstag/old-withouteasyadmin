@@ -37,9 +37,11 @@ class MenuEntitySubscriber implements EventSubscriberInterface
 
         $data = $data[0];
         foreach ($data as $key => $value) {
-            if (is_null($value)) {
-                unset($data[$key]);
+            if (!is_null($value)) {
+                continue;
             }
+
+            unset($data[$key]);
         }
 
         if (isset($data['url'], $data['route'])) {

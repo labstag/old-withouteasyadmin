@@ -36,9 +36,11 @@ abstract class RequestHandlerLib
 
         $workflow = $this->workflows->get($entity);
         foreach ($states as $state) {
-            if ($workflow->can($entity, $state)) {
-                $workflow->apply($entity, $state);
+            if (!$workflow->can($entity, $state)) {
+                continue;
             }
+
+            $workflow->apply($entity, $state);
         }
 
         $this->entityManager->persist($entity);
@@ -65,13 +67,15 @@ abstract class RequestHandlerLib
         $transitions = $definition->getTransitions();
         foreach ($transitions as $transition) {
             $name = $transition->getName();
-            if ($workflow->can($entity, $name)) {
-                $workflow->apply($entity, $name);
-                $this->entityManager->persist($entity);
-                $this->entityManager->flush();
-
-                break;
+            if (!$workflow->can($entity, $name)) {
+                continue;
             }
+
+            $workflow->apply($entity, $name);
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush();
+
+            break;
         }
     }
 

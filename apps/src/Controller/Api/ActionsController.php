@@ -343,16 +343,20 @@ class ActionsController extends ApiControllerLib
         $files = [];
         foreach ($all as $entity) {
             $this->entityManager->remove($entity);
-            if ($entity instanceof Attachment) {
-                $files[] = $entity->getName();
+            if (!$entity instanceof Attachment) {
+                continue;
             }
+
+            $files[] = $entity->getName();
         }
 
         $this->entityManager->flush();
         foreach ($files as $file) {
-            if ('' != $file && is_file($file)) {
-                unlink($file);
+            if ('' == $file && is_file($file)) {
+                continue;
             }
+
+            unlink($file);
         }
     }
 

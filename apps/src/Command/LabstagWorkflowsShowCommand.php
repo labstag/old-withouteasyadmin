@@ -52,9 +52,11 @@ class LabstagWorkflowsShowCommand extends Command
         $list      = $container->getServiceIds();
         $workflows = [];
         foreach ($list as $name) {
-            if (0 != substr_count($name, 'state_machine')) {
-                $workflows[$name] = $container->get($name);
+            if (0 == substr_count($name, 'state_machine')) {
+                continue;
             }
+
+            $workflows[$name] = $container->get($name);
         }
 
         $data     = [];
@@ -74,14 +76,21 @@ class LabstagWorkflowsShowCommand extends Command
         $this->entityManager->flush();
         foreach ($data as $name => $transitions) {
             foreach ($transitions as $transition) {
-                $workflow = $this->workflowRepository->findOneBy(['entity' => $name, 'transition' => $transition]);
-                if (!$workflow instanceof Workflow) {
-                    $workflow = new Workflow();
-                    $workflow->setEntity($name);
-                    $workflow->setTransition($transition);
-                    $old = clone $workflow;
-                    $this->workflowRH->handle($old, $workflow);
+                $workflow = $this->workflowRepository->findOneBy(
+                    [
+                        'entity'     => $name,
+                        'transition' => $transition,
+                    ]
+                );
+                if ($workflow instanceof Workflow) {
+                    continue;
                 }
+
+                $workflow = new Workflow();
+                $workflow->setEntity($name);
+                $workflow->setTransition($transition);
+                $old = clone $workflow;
+                $this->workflowRH->handle($old, $workflow);
             }
         }
 

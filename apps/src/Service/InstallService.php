@@ -277,13 +277,18 @@ class InstallService
 
     protected function getRefgroupe(array $groupes, string $code): ?Groupe
     {
+        $return = null;
         foreach ($groupes as $groupe) {
-            if ($groupe->getCode() == $code) {
-                return $groupe;
+            if ($groupe->getCode() != $code) {
+                continue;
             }
+
+            $return = $groupe;
+
+            break;
         }
 
-        return null;
+        return $return;
     }
 
     protected function saveMenu(string $key, array $childs): void
@@ -312,23 +317,25 @@ class InstallService
     {
         $oauth = [];
         foreach ($env as $key => $val) {
-            if (0 != substr_count($key, 'OAUTH_')) {
-                $code    = str_replace('OAUTH_', '', $key);
-                $code    = strtolower($code);
-                $explode = explode('_', $code);
-                $type    = $explode[0];
-                $key     = $explode[1];
-                if (!isset($oauth[$type])) {
-                    $activate = $this->oauthService->getActivedProvider($type);
-
-                    $oauth[$type] = [
-                        'activate' => $activate,
-                        'type'     => $type,
-                    ];
-                }
-
-                $oauth[$type][$key] = $val;
+            if (0 == substr_count($key, 'OAUTH_')) {
+                continue;
             }
+
+            $code    = str_replace('OAUTH_', '', $key);
+            $code    = strtolower($code);
+            $explode = explode('_', $code);
+            $type    = $explode[0];
+            $key     = $explode[1];
+            if (!isset($oauth[$type])) {
+                $activate = $this->oauthService->getActivedProvider($type);
+
+                $oauth[$type] = [
+                    'activate' => $activate,
+                    'type'     => $type,
+                ];
+            }
+
+            $oauth[$type][$key] = $val;
         }
 
         // @var mixed $row
