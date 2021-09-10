@@ -21,8 +21,7 @@ class GuardController extends AdminControllerLib
         RouteRepository $routeRepo,
         GroupeRepository $groupeRepo,
         WorkflowRepository $workflowRepo
-    ): Response
-    {
+    ): Response {
         return $this->render(
             'admin/guard/index.html.twig',
             [

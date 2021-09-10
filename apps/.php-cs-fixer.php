@@ -5,6 +5,7 @@
  * you can change this configuration by importing this file.
  */
 $config = new PhpCsFixer\Config();
+
 return $config
     ->setRules([
         // Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.
@@ -178,7 +179,7 @@ return $config
         // There should not be space before or after object operators `->` and `?->`.
         'object_operator_without_whitespace' => true,
         // Orders the elements of classes/interfaces/traits.
-        'ordered_class_elements' => ['sort_algorithm'=>'alpha'],
+        'ordered_class_elements' => ['sort_algorithm' => 'alpha'],
         // Ordering `use` statements.
         'ordered_imports' => true,
         // PHPUnit annotations should be a FQCNs including a root namespace.
@@ -296,8 +297,8 @@ return $config
         // Write conditions in Yoda style (`true`), non-Yoda style (`['equal' => false, 'identical' => false, 'less_and_greater' => false]`) or ignore those conditions (`null`) based on configuration.
         'yoda_style' => true,
     ])
-    ->setFinder(PhpCsFixer\Finder::create()
-        ->exclude('vendor')
-        ->in(__DIR__)
-    )
-;
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+    ->exclude('vendor')
+    ->in(__DIR__)
+    );

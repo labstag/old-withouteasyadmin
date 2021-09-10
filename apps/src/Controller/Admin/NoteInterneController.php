@@ -32,8 +32,7 @@ class NoteInterneController extends AdminControllerLib
         AttachmentRequestHandler $attachmentRH,
         NoteInterne $noteInterne,
         NoteInterneRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
 
         return $this->update(
@@ -93,8 +92,7 @@ class NoteInterneController extends AdminControllerLib
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         NoteInterneRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->create(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -114,8 +112,7 @@ class NoteInterneController extends AdminControllerLib
      */
     public function showOrPreview(
         NoteInterne $noteInterne
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $noteInterne,
             'admin/note_interne/show.html.twig',

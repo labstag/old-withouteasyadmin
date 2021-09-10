@@ -53,8 +53,7 @@ class GuardController extends ApiControllerLib
         GroupeRepository $groupeRepo,
         RouteGroupeRequestHandler $routeGroupeRH,
         RouteGroupeRepository $routeGroupeRepo
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $post   = $this->get('request_stack')->getCurrentRequest()->request->all();
         $data   = ['ok' => false];
         $groupe = $groupeRepo->findOneBy(['code' => $groupe]);
@@ -108,8 +107,7 @@ class GuardController extends ApiControllerLib
         UserRepository $userRepo,
         RouteUserRepository $routeUserRepo,
         RouteUserRequestHandler $routeUserRH
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data  = ['ok' => false];
         $post  = $this->get('request_stack')->getCurrentRequest()->request->all();
         $user  = $userRepo->findOneBy(['username' => $user]);
@@ -161,8 +159,7 @@ class GuardController extends ApiControllerLib
         User $user,
         RouteGroupeRepository $routeGroupeRepo,
         RouteUserRepository $routeUserRepo
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data    = [
             'groups' => [],
             'user'   => [],

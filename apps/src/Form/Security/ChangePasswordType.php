@@ -14,8 +14,7 @@ class ChangePasswordType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $first  = [
             'label' => $this->translator->trans('changepassword.password.label', [], 'security.form'),
             'help'  => $this->translator->trans('changepassword.password.help', [], 'security.form'),

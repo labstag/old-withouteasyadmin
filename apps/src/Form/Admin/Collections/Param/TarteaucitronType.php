@@ -15,8 +15,7 @@ class TarteaucitronType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add(
             'privacyUrl',
             UrlType::class,

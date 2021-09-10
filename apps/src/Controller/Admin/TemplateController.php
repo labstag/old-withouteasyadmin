@@ -28,8 +28,7 @@ class TemplateController extends AdminControllerLib
         AttachmentRequestHandler $attachmentRH,
         Template $template,
         TemplateRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->update(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -85,8 +84,7 @@ class TemplateController extends AdminControllerLib
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         TemplateRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->create(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -105,8 +103,7 @@ class TemplateController extends AdminControllerLib
      */
     public function showOrPreview(
         Template $template
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $template,
             'admin/template/show.html.twig',

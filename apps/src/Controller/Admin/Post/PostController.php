@@ -28,8 +28,7 @@ class PostController extends AdminControllerLib
         AttachmentRequestHandler $attachmentRH,
         Post $post,
         PostRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
 
         return $this->update(
@@ -89,8 +88,7 @@ class PostController extends AdminControllerLib
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         PostRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->create(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -110,8 +108,7 @@ class PostController extends AdminControllerLib
      */
     public function showOrPreview(
         Post $post
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $post,
             'admin/post/show.html.twig',

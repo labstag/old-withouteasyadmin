@@ -32,8 +32,7 @@ class AdresseUserController extends AdminControllerLib
         AttachmentRequestHandler $attachmentRH,
         AdresseUser $adresseUser,
         AdresseUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->update(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -89,8 +88,7 @@ class AdresseUserController extends AdminControllerLib
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         AdresseUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->create(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -109,8 +107,7 @@ class AdresseUserController extends AdminControllerLib
      */
     public function showOrPreview(
         AdresseUser $adresseUser
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $adresseUser,
             'admin/user/adresse_user/show.html.twig',

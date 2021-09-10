@@ -12,7 +12,6 @@ use Labstag\Repository\WorkflowRepository;
  */
 class Workflow
 {
-
     /**
      * @ORM\Column(type="string", length=255)
      */

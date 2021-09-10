@@ -28,8 +28,7 @@ class GeoCodeController extends AdminControllerLib
         AttachmentRequestHandler $attachmentRH,
         GeoCode $geoCode,
         GeoCodeRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->update(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -83,8 +82,7 @@ class GeoCodeController extends AdminControllerLib
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         GeoCodeRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->create(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -103,8 +101,7 @@ class GeoCodeController extends AdminControllerLib
      */
     public function showOrPreview(
         GeoCode $geoCode
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $geoCode,
             'admin/geocode/show.html.twig',

@@ -32,8 +32,7 @@ class PhoneUserController extends AdminControllerLib
         AttachmentRequestHandler $attachmentRH,
         PhoneUser $phoneUser,
         PhoneUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->update(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -90,8 +89,7 @@ class PhoneUserController extends AdminControllerLib
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         PhoneUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->create(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -110,8 +108,7 @@ class PhoneUserController extends AdminControllerLib
      */
     public function showOrPreview(
         PhoneUser $phoneUser
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $phoneUser,
             'admin/user/phone_user/show.html.twig',

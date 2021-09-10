@@ -33,8 +33,7 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowRepository $workflowRepo,
         WorkflowGroupeRepository $workflowGroupeRepo,
         WorkflowGroupeRequestHandler $workflowGroupeRH
-    )
-    {
+    ) {
         $data      = [
             'delete' => 0,
             'add'    => 0,
@@ -66,8 +65,7 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowGroupeRepository $workflowGroupeRepo,
         WorkflowGroupeRequestHandler $workflowGroupeRH,
         Request $request
-    )
-    {
+    ) {
         $data    = [
             'delete' => 0,
             'add'    => 0,
@@ -97,8 +95,7 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowUserRepository $workflowUserRepo,
         UserRepository $userRepository,
         Request $request
-    )
-    {
+    ) {
         $data = [
             'group' => [],
         ];
@@ -142,8 +139,7 @@ class GuardWorkflowController extends ApiControllerLib
         Request $request,
         WorkflowGroupeRepository $workflowGroupeRepo,
         WorkflowGroupeRequestHandler $workflowGroupeRH
-    )
-    {
+    ) {
         $data  = [
             'delete' => 0,
             'add'    => 0,
@@ -171,8 +167,7 @@ class GuardWorkflowController extends ApiControllerLib
         Request $request,
         WorkflowUserRepository $workflowUserRepo,
         WorkflowUserRequestHandler $workflowUserRH
-    )
-    {
+    ) {
         $data  = [
             'delete' => 0,
             'add'    => 0,
@@ -200,8 +195,7 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowRepository $workflowRepo,
         WorkflowUserRepository $workflowUserRepo,
         WorkflowUserRequestHandler $workflowUserRH
-    )
-    {
+    ) {
         $data      = [
             'delete' => 0,
             'add'    => 0,
@@ -243,8 +237,7 @@ class GuardWorkflowController extends ApiControllerLib
         $workflow,
         $state,
         $workflowGroupeRH
-    )
-    {
+    ) {
         $workflowGroupe = $workflowGroupeRepo->findOneBy(['refgroupe' => $group, 'refworkflow' => $workflow]);
         if ('0' === $state) {
             if ($workflowGroupe instanceof WorkflowGroupe) {
@@ -280,8 +273,7 @@ class GuardWorkflowController extends ApiControllerLib
         $workflow,
         $state,
         $workflowUserRH
-    )
-    {
+    ) {
         $workflowUser = $workflowUserRepo->findOneBy(['refuser' => $user, 'refworkflow' => $workflow]);
         if ('0' === $state) {
             if ($workflowUser instanceof WorkflowUser) {

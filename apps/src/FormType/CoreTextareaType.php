@@ -13,8 +13,7 @@ class CoreTextareaType extends AbstractType
         FormView $view,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         $attr = $options['attr'];
         if (!isset($attr['rows'])) {
             $attr['rows'] = 20;

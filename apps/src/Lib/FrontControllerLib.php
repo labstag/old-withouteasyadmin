@@ -13,8 +13,7 @@ abstract class FrontControllerLib extends ControllerLib
         string $keywords,
         string $description,
         $image
-    )
-    {
+    ) {
         $globals = $this->get('twig')->getGlobals();
         $config  = $globals['config'] ?? $this->dataService->getConfig();
 
@@ -50,8 +49,7 @@ abstract class FrontControllerLib extends ControllerLib
     private function setMetaOpenGraphImage(
         $image,
         &$meta
-    )
-    {
+    ) {
         if (is_null($image) || !$image instanceof Attachment) {
             return;
         }

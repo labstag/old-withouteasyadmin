@@ -33,8 +33,7 @@ class GuardRouteController extends ApiControllerLib
         RouteGroupeRepository $routeGroupeRepo,
         RouteGroupeRequestHandler $routeGroupeRH,
         Request $request
-    )
-    {
+    ) {
         $data   = [
             'delete' => 0,
             'add'    => 0,
@@ -68,8 +67,7 @@ class GuardRouteController extends ApiControllerLib
         RouteGroupeRepository $routeGroupeRepo,
         RouteGroupeRequestHandler $routeGroupeRH,
         Request $request
-    )
-    {
+    ) {
         $data    = [
             'delete' => 0,
             'add'    => 0,
@@ -100,8 +98,7 @@ class GuardRouteController extends ApiControllerLib
         RouteUserRepository $routeUserRepo,
         UserRepository $userRepository,
         Request $request
-    )
-    {
+    ) {
         $data = [
             'group' => [],
         ];
@@ -145,8 +142,7 @@ class GuardRouteController extends ApiControllerLib
         Request $request,
         RouteGroupeRepository $routeGroupeRepo,
         RouteGroupeRequestHandler $routeGroupeRH
-    )
-    {
+    ) {
         $data  = [
             'delete' => 0,
             'add'    => 0,
@@ -176,8 +172,7 @@ class GuardRouteController extends ApiControllerLib
         Request $request,
         RouteUserRepository $routeUserRepo,
         RouteUserRequestHandler $routeUserRH
-    )
-    {
+    ) {
         $data  = [
             'delete' => 0,
             'add'    => 0,
@@ -206,8 +201,7 @@ class GuardRouteController extends ApiControllerLib
         Request $request,
         RouteUserRepository $routeUserRepo,
         RouteUserRequestHandler $routeUserRH
-    )
-    {
+    ) {
         $data   = [
             'delete' => 0,
             'add'    => 0,
@@ -251,8 +245,7 @@ class GuardRouteController extends ApiControllerLib
         $route,
         $state,
         $routeGroupeRH
-    )
-    {
+    ) {
         $routeGroupe = $routeGroupeRepo->findOneBy(['refgroupe' => $group, 'refroute' => $route]);
         if ('0' === $state) {
             if ($routeGroupe instanceof RouteGroupe) {
@@ -290,8 +283,7 @@ class GuardRouteController extends ApiControllerLib
         $state,
         EntityRoute $route,
         RouteUserRequestHandler $routeUserRH
-    )
-    {
+    ) {
         $routeUser = $routeUserRepo->findOneBy(['refuser' => $user, 'refroute' => $route]);
         if ('0' === $state) {
             if ($routeUser instanceof RouteUser) {

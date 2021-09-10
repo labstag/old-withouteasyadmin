@@ -28,8 +28,7 @@ class EditoController extends AdminControllerLib
         AttachmentRequestHandler $attachmentRH,
         Edito $edito,
         EditoRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
 
         return $this->update(
@@ -89,8 +88,7 @@ class EditoController extends AdminControllerLib
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         EditoRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->create(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -110,8 +108,7 @@ class EditoController extends AdminControllerLib
      */
     public function showOrPreview(
         Edito $edito
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $edito,
             'admin/edito/show.html.twig',

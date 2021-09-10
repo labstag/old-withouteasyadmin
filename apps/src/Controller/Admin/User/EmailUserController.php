@@ -32,8 +32,7 @@ class EmailUserController extends AdminControllerLib
         AttachmentRequestHandler $attachmentRH,
         EmailUser $emailUser,
         EmailUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->update(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -90,8 +89,7 @@ class EmailUserController extends AdminControllerLib
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         EmailUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->create(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -110,8 +108,7 @@ class EmailUserController extends AdminControllerLib
      */
     public function showOrPreview(
         EmailUser $emailUser
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $emailUser,
             'admin/user/email_user/show.html.twig',

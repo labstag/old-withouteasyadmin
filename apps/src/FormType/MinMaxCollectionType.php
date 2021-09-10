@@ -13,8 +13,7 @@ class MinMaxCollectionType extends AbstractType
         FormView $view,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         $view->vars['row_attr'] = 'minmax';
         unset($form, $options);
     }

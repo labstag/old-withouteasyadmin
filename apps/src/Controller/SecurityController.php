@@ -43,8 +43,7 @@ class SecurityController extends ControllerLib
         User $user,
         Request $request,
         UserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         if ('lostpassword' != $user->getState()) {
             $this->flashBagAdd(
                 'danger',
@@ -76,8 +75,7 @@ class SecurityController extends ControllerLib
     public function confirmEmail(
         Email $email,
         EmailRequestHandler $emailRequestHandler
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         if ('averifier' != $email->getState()) {
             $this->flashBagAdd(
                 'danger',
@@ -102,8 +100,7 @@ class SecurityController extends ControllerLib
     public function confirmPhone(
         Phone $phone,
         PhoneRequestHandler $emailRequestHandler
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         if ('averifier' != $phone->getState()) {
             $this->flashBagAdd(
                 'danger',
@@ -128,8 +125,7 @@ class SecurityController extends ControllerLib
     public function confirmUser(
         User $user,
         UserRequestHandler $userRequestHandler
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         if ('avalider' != $user->getState()) {
             $this->flashBagAdd(
                 'danger',
@@ -197,8 +193,7 @@ class SecurityController extends ControllerLib
     public function login(
         AuthenticationUtils $authenticationUtils,
         OauthConnectUserRepository $repository
-    ): Response
-    {
+    ): Response {
         $this->denyAccessUnlessGranted('IS_ANONYMOUS');
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -237,8 +232,7 @@ class SecurityController extends ControllerLib
     public function lost(
         Request $request,
         UserService $userService
-    ): Response
-    {
+    ): Response {
         $this->denyAccessUnlessGranted('IS_ANONYMOUS');
         $form = $this->createForm(LostPasswordType::class);
         $form->handleRequest($request);
@@ -266,8 +260,7 @@ class SecurityController extends ControllerLib
         Request $request,
         string $oauthCode,
         OauthService $oauthService
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         // @var AbstractProvider $provider
         $provider = $oauthService->setProvider($oauthCode);
         $session  = $request->getSession();
@@ -316,8 +309,7 @@ class SecurityController extends ControllerLib
         LoggerInterface $logger,
         OauthService $oauthService,
         UserService $userService
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         // @var AbstractProvider $provider
         $provider    = $oauthService->setProvider($oauthCode);
         $query       = $request->query->all();
@@ -404,8 +396,7 @@ class SecurityController extends ControllerLib
         string $oauthCode,
         Security $security,
         OauthConnectUserRepository $repository
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $this->denyAccessUnlessGranted('ROLE_USER');
         // @var User $user
         $user = $security->getUser();

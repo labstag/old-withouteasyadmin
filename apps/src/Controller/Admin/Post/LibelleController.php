@@ -28,8 +28,7 @@ class LibelleController extends AdminControllerLib
         AttachmentRequestHandler $attachmentRH,
         Libelle $libelle,
         LibelleRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
 
         return $this->update(
@@ -88,8 +87,7 @@ class LibelleController extends AdminControllerLib
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         LibelleRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->create(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -108,8 +106,7 @@ class LibelleController extends AdminControllerLib
      */
     public function showOrPreview(
         Libelle $libelle
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $libelle,
             'admin/post/libelle/show.html.twig',

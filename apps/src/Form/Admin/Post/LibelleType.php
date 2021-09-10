@@ -16,8 +16,7 @@ class LibelleType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add(
             'nom',
             TextType::class,

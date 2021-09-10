@@ -28,8 +28,7 @@ class LienUserController extends AdminControllerLib
         AttachmentRequestHandler $attachmentRH,
         LienUser $lienUser,
         LienUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->update(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -85,8 +84,7 @@ class LienUserController extends AdminControllerLib
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         LienUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->create(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -105,8 +103,7 @@ class LienUserController extends AdminControllerLib
      */
     public function showOrPreview(
         LienUser $lienUser
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $lienUser,
             'admin/user/lien_user/show.html.twig',

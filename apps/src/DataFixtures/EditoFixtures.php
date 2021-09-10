@@ -38,8 +38,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $faker,
         int $index,
         array $states
-    ): void
-    {
+    ): void {
         $edito  = new Edito();
         $old    = clone $edito;
         $random = $faker->numberBetween(5, 50);
