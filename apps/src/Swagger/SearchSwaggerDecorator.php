@@ -22,7 +22,7 @@ final class SearchSwaggerDecorator implements NormalizerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function normalize($object, ?string $format = null, array $context = [])
     {
@@ -68,7 +68,7 @@ final class SearchSwaggerDecorator implements NormalizerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function supportsNormalization($data, ?string $format = null): bool
     {

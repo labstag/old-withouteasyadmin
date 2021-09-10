@@ -6,7 +6,10 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\GeoCode;
 use Labstag\Form\Admin\GeoCodeType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\GeoCodeRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\GeoCodeRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,20 +19,24 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class GeoCodeController extends AdminControllerLib
 {
-
-    protected string $headerTitle = 'Gecode';
-
-    protected string $urlHome = 'admin_geocode_index';
-
     /**
      * @Route("/{id}/edit", name="admin_geocode_edit", methods={"GET","POST"})
      */
-    public function edit(GeoCode $geoCode, GeoCodeRequestHandler $requestHandler): Response
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        GeoCode $geoCode,
+        GeoCodeRequestHandler $requestHandler
+    ): Response
     {
         return $this->update(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             GeoCodeType::class,
             $geoCode,
-            $requestHandler,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_geocode_index',
@@ -39,8 +46,8 @@ class GeoCodeController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_geocode_trash", methods={"GET"})
-     * @Route("/", name="admin_geocode_index", methods={"GET"})
+     * @Route("/trash",  name="admin_geocode_trash", methods={"GET"})
+     * @Route("/",       name="admin_geocode_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function index(GeoCodeRepository $repository): Response
@@ -71,22 +78,32 @@ class GeoCodeController extends AdminControllerLib
     /**
      * @Route("/new", name="admin_geocode_new", methods={"GET","POST"})
      */
-    public function new(GeoCodeRequestHandler $requestHandler): Response
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        GeoCodeRequestHandler $requestHandler
+    ): Response
     {
         return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
             new GeoCode(),
             GeoCodeType::class,
-            $requestHandler,
             ['list' => 'admin_geocode_index']
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_geocode_show", methods={"GET"})
+     * @Route("/{id}",         name="admin_geocode_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_geocode_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(GeoCode $geoCode): Response
+    public function showOrPreview(
+        GeoCode $geoCode
+    ): Response
     {
         return $this->renderShowOrPreview(
             $geoCode,
@@ -98,6 +115,101 @@ class GeoCodeController extends AdminControllerLib
                 'list'    => 'admin_geocode_index',
                 'edit'    => 'admin_geocode_edit',
                 'trash'   => 'admin_geocode_trash',
+            ]
+        );
+    }
+
+    protected function setBreadcrumbsPageAdminGeocode(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('geocode.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_index',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGeocodeEdit(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('geocode.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGeocodeNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('geocode.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGeocodePreview(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('geocode.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('geocode.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_preview',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGeocodeShow(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('geocode.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_show',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminGeocodeTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('geocode.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_geocode_trash',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_geocode' => $this->translator->trans('geocode.title', [], 'admin.header'),
             ]
         );
     }

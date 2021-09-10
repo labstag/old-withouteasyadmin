@@ -11,14 +11,13 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Repository\UserRepository;
-use Serializable;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt",       timeAware=false)
  * @Uploadable()
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -70,7 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid", unique=true)
+     * @ORM\Column(type="guid",             unique=true)
      */
     protected $id;
 
@@ -117,7 +116,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected $phoneUsers;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $plainPassword;
 
@@ -182,11 +181,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function __toString()
-    {
-        return $this->getUsername();
-    }
-
-    public function getUserIdentifier()
     {
         return $this->getUsername();
     }
@@ -371,7 +365,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getPlainPassword()
     {
@@ -428,6 +422,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getStateChanged()
     {
         return $this->stateChanged;
+    }
+
+    public function getUserIdentifier()
+    {
+        return $this->getUsername();
     }
 
     /**
@@ -652,9 +651,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function unserialize($serialized)
     {
-        list(
+        [
             $this->id,
             $this->username,
-            $this->password) = unserialize($serialized);
+            $this->password,
+        ] = unserialize($serialized);
     }
 }

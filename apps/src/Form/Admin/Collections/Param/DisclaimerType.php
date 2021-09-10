@@ -3,14 +3,14 @@
 namespace Labstag\Form\Admin\Collections\Param;
 
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DisclaimerType extends AbstractType
+class DisclaimerType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -21,15 +21,41 @@ class DisclaimerType extends AbstractType
             'activate',
             ChoiceType::class,
             [
+                'label'   => $this->translator->trans('param.disclaimer.activate.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('param.disclaimer.activate.help', [], 'admin.form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
                 ],
             ]
         );
-        $builder->add('title', TextType::class, ['required' => false]);
-        $builder->add('message', CKEditorType::class, ['required' => false]);
-        $builder->add('url-redirect', UrlType::class, ['required' => false]);
+        $builder->add(
+            'title',
+            TextType::class,
+            [
+                'label'    => $this->translator->trans('param.disclaimer.title.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.disclaimer.title.help', [], 'admin.form'),
+                'required' => false,
+            ]
+        );
+        $builder->add(
+            'message',
+            CKEditorType::class,
+            [
+                'label'    => $this->translator->trans('param.disclaimer.message.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.disclaimer.message.help', [], 'admin.form'),
+                'required' => false,
+            ]
+        );
+        $builder->add(
+            'url-redirect',
+            UrlType::class,
+            [
+                'label'    => $this->translator->trans('param.disclaimer.url-redirect.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.disclaimer.url-redirect.help', [], 'admin.form'),
+                'required' => false,
+            ]
+        );
         unset($options);
     }
 

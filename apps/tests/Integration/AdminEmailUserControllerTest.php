@@ -28,7 +28,7 @@ class AdminEmailUserControllerTest extends WebTestCase
 
     /**
      * @dataProvider provideAllUrlWithoutParams
-     * @param string $route
+     * @param        string $route
      */
     public function testUrl($route, $groupe)
     {
@@ -111,7 +111,9 @@ class AdminEmailUserControllerTest extends WebTestCase
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(EmailUser::class);
-        /** @var EmailUserRepository $repository */
+        /**
+ * @var EmailUserRepository $repository
+*/
         $data = $repository->findOneRandom();
 
         return $data;
@@ -123,7 +125,9 @@ class AdminEmailUserControllerTest extends WebTestCase
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(User::class);
-        /** @var UserRepository $repository */
+        /**
+ * @var UserRepository $repository
+*/
         $user = $repository->findOneRandom();
         if (!($user instanceof User)) {
             return;

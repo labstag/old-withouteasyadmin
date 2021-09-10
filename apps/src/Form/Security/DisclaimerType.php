@@ -2,14 +2,14 @@
 
 namespace Labstag\Form\Security;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DisclaimerType extends AbstractType
+class DisclaimerType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -20,19 +20,24 @@ class DisclaimerType extends AbstractType
             'confirm',
             CheckboxType::class,
             [
-                'label'    => "j'ai lu l'avis et en comprends l'énoncé",
+                'label'    => $this->translator->trans('disclaimer.confirm.label', [], 'security.form'),
+                'help'     => $this->translator->trans('disclaimer.confirm.help', [], 'security.form'),
                 'required' => false,
             ]
         );
         $builder->add(
             'submit',
             SubmitType::class,
-            ['label' => 'Je désire accéder au site']
+            [
+                'label' => $this->translator->trans('disclaimer.submit.label', [], 'security.form'),
+            ]
         );
         $builder->add(
             'reset',
             ResetType::class,
-            ['label' => 'Je désire quitter dès maintenant']
+            [
+                'label' => $this->translator->trans('disclaimer.reset.label', [], 'security.form'),
+            ]
         );
         unset($options);
     }

@@ -10,9 +10,9 @@ use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\OauthConnectUserRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use League\OAuth2\Client\Provider\AbstractProvider;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserService
 {
@@ -29,6 +29,8 @@ class UserService
 
     protected RequestStack $requestStack;
 
+    protected TranslatorInterface $translator;
+
     protected UserRequestHandler $userRH;
 
     public function __construct(
@@ -37,28 +39,17 @@ class UserService
         UserRepository $repository,
         OauthService $oauthService,
         UserRequestHandler $userRH,
-        OauthConnectUserRequestHandler $oauthConnectUserRH
+        OauthConnectUserRequestHandler $oauthConnectUserRH,
+        TranslatorInterface $translator
     )
     {
+        $this->translator         = $translator;
         $this->userRH             = $userRH;
         $this->oauthService       = $oauthService;
         $this->requestStack       = $requestStack;
         $this->entityManager      = $entityManager;
         $this->repository         = $repository;
         $this->oauthConnectUserRH = $oauthConnectUserRH;
-    }
-
-    private function flashBagAdd(string $type, $message)
-    {
-        $requestStack = $this->requestStack;
-        $request      = $requestStack->getCurrentRequest();
-        if (is_null($request)) {
-            return;
-        }
-
-        $session  = $requestStack->getSession();
-        $flashbag = $session->getFlashBag();
-        $flashbag->add($type, $message);
     }
 
     public function addOauthToUser(
@@ -75,10 +66,10 @@ class UserService
             $client,
             $oauthConnect
         );
-        /** @var OauthConnectUserRepository $repository */
+        // @var OauthConnectUserRepository $repository
         $repository = $this->entityManager->getRepository(OauthConnectUser::class);
         if (false === $find) {
-            /** @var OauthConnectUser|null $oauthConnect */
+            // @var null|OauthConnectUser $oauthConnect
             $oauthConnect = $repository->findOauthNotUser(
                 $user,
                 $identity,
@@ -91,7 +82,7 @@ class UserService
                 $oauthConnect->setName($client);
             }
 
-            /** @var User $refuser */
+            // @var User $refuser
             $refuser = $oauthConnect->getRefuser();
             if ($refuser->getId() !== $user->getId()) {
                 $oauthConnect = null;
@@ -102,14 +93,17 @@ class UserService
             $old = clone $oauthConnect;
             $oauthConnect->setData($data);
             $this->oauthConnectUserRH->handle($old, $oauthConnect);
-            $this->flashBagAdd('success', 'Compte associé');
+            $this->flashBagAdd(
+                'success',
+                $this->translator->trans('service.user.oauth.sucess')
+            );
 
             return;
         }
 
         $this->flashBagAdd(
             'warning',
-            "Impossible d'associer le compte"
+            $this->translator->trans('service.user.oauth.fail')
         );
     }
 
@@ -136,7 +130,7 @@ class UserService
             return;
         }
 
-        /** @var User $user */
+        // @var User $user
         $user = $this->repository->findUserEnable($post['value']);
         if (!$user instanceof User) {
             return;
@@ -145,9 +139,6 @@ class UserService
         $this->userRH->changeWorkflowState($user, ['lostpassword']);
     }
 
-    /**
-     * @param mixed $oauthConnect
-     */
     protected function findOAuthIdentity(
         User $user,
         string $identity,
@@ -155,17 +146,32 @@ class UserService
         &$oauthConnect = null
     ): bool
     {
+        $return        = false;
+        $oauthConnect  = null;
         $oauthConnects = $user->getOauthConnectUsers();
         foreach ($oauthConnects as $oauthConnect) {
             $test1 = ($oauthConnect->getName() == $client);
             $test2 = ($oauthConnect->getIdentity() == $identity);
             if ($test1 && $test2) {
-                return true;
+                $return = true;
+
+                break;
             }
         }
 
-        $oauthConnect = null;
+        return $return;
+    }
 
-        return false;
+    private function flashBagAdd(string $type, $message)
+    {
+        $requestStack = $this->requestStack;
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
+            return;
+        }
+
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 }

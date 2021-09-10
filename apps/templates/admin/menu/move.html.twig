@@ -8,7 +8,7 @@
             {% for child in menu.children %}
                 <li data-id="{{ child.id }}">
                     {% if child.separateur %}
-                        [[DIVIDER]]
+                        {{ 'menu.divider'|trans({}, 'admin.messages') }}
                     {% else %}
                         {{ child.libelle }}
                     {% endif %}

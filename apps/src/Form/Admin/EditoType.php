@@ -6,40 +6,72 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Edito;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditoType extends AbstractType
+class EditoType extends AbstractTypeLib
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
     ): void
     {
-        $builder->add('title');
+        $builder->add(
+            'title',
+            TextType::class,
+            [
+                'label' => $this->translator->trans('edito.title.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('edito.title.help', [], 'admin.form'),
+            ]
+        );
         $builder->add(
             'published',
             DateTimeType::class,
             [
+                'label'        => $this->translator->trans('edito.published.label', [], 'admin.form'),
+                'help'         => $this->translator->trans('edito.published.help', [], 'admin.form'),
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
             ]
         );
-        $builder->add('content', CKEditorType::class);
-        $builder->add('metaDescription', TextType::class);
-        $builder->add('metaKeywords', TextType::class);
+        $builder->add(
+            'content',
+            CKEditorType::class,
+            [
+                'label' => $this->translator->trans('edito.content.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('edito.content.help', [], 'admin.form'),
+            ]
+        );
+        $builder->add(
+            'metaDescription',
+            TextType::class,
+            [
+                'label' => $this->translator->trans('edito.metaDescription.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('edito.metaDescription.help', [], 'admin.form'),
+            ]
+        );
+        $builder->add(
+            'metaKeywords',
+            TextType::class,
+            [
+                'label' => $this->translator->trans('edito.metaKeywords.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('edito.metaKeywords.help', [], 'admin.form'),
+            ]
+        );
         $builder->add(
             'file',
             FileType::class,
             [
+                'label'    => $this->translator->trans('edito.file.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('edito.file.help', [], 'admin.form'),
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]
@@ -48,6 +80,8 @@ class EditoType extends AbstractType
             'refuser',
             SearchableType::class,
             [
+                'label'    => $this->translator->trans('edito.refuser.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('edito.refuser.help', [], 'admin.form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

@@ -55,7 +55,7 @@ class GuardController extends ApiControllerLib
         RouteGroupeRepository $routeGroupeRepo
     ): JsonResponse
     {
-        $post   = $this->request->request->all();
+        $post   = $this->get('request_stack')->getCurrentRequest()->request->all();
         $data   = ['ok' => false];
         $groupe = $groupeRepo->findOneBy(['code' => $groupe]);
         $route  = $this->routeRepo->findOneBy(['name' => $route]);
@@ -111,7 +111,7 @@ class GuardController extends ApiControllerLib
     ): JsonResponse
     {
         $data  = ['ok' => false];
-        $post  = $this->request->request->all();
+        $post  = $this->get('request_stack')->getCurrentRequest()->request->all();
         $user  = $userRepo->findOneBy(['username' => $user]);
         $route = $this->routeRepo->findOneBy(['name' => $route]);
         if (empty($user) || empty($route) || !array_key_exists('_token', $post)) {
@@ -169,7 +169,7 @@ class GuardController extends ApiControllerLib
         ];
         $results = $routeGroupeRepo->findEnable($user->getRefgroupe());
         foreach ($results as $row) {
-            /* @var RouteGroupe $row */
+            // @var RouteGroupe $row
             $data['groups'][] = [
                 'route' => $row->getRefroute()->getName(),
             ];
@@ -177,7 +177,7 @@ class GuardController extends ApiControllerLib
 
         $results = $routeUserRepo->findEnable($user);
         foreach ($results as $row) {
-            /* @var RouteUser $row */
+            // @var RouteUser $row
             $data['user'][] = [
                 'route' => $row->getRefroute()->getName(),
             ];
@@ -191,7 +191,7 @@ class GuardController extends ApiControllerLib
         $results = $routeGroupeRepo->findEnable($groupe);
         $data    = [];
         foreach ($results as $row) {
-            /* @var RouteGroupe $row */
+            // @var RouteGroupe $row
             $data[] = [
                 'groupe' => $row->getRefgroupe()->getCode(),
                 'route'  => $row->getRefroute()->getName(),

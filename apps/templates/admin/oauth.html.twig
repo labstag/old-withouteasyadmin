@@ -1,15 +1,14 @@
 {% extends 'admin.html.twig' %}
 {% block body %}
     <div>
-        <p>Vous êtes sur la page qui vous permet de retrouver les différentes routes permettant de parametrer les connexions Oauth.</p>
-        <p>Pour chaque service proposé ci-dessous, merci de récupérer l'<b>identifiant</b> ainsi que la <b>clef secrète</b>.</p>
+        <p>{{ 'oauth.message'|trans({}, 'admin.messages')|raw }}</p>
     </div>
     <table>
         <thead>
             <tr>
-                <th>Service</th>
-                <th>Url</th>
-                <th>Url à indiquer</th>
+                <th>{{ 'oauth.service'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'oauth.url'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'oauth.urltoshare'|trans({}, 'admin.messages') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -20,10 +19,10 @@
                         {{ service }}
                     </td>
                     <td>
-                        <a href="{{ data.config }}">Y accéder</a>
+                        <a href="{{ data.config }}">{{ 'oauth.go'|trans({}, 'admin.messages') }}</a>
                     </td>
                     <td>
-                        {{ config['site_url']}}/oauth/check/{{ service }}
+                        {{ "%url%/oauth/check/%service%"|replace({"%url%": config['site_url'], "%service%": service}) }}
                     </td>
                 </tr>
                 {% endif %}

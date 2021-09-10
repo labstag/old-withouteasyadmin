@@ -19,15 +19,19 @@ class AttachmentWorkflowSubscriber implements EventSubscriberInterface
         switch ($name) {
             case 'submit':
                 $this->transitionSubmit($event);
+
                 break;
             case 'valider':
                 $this->transitionValider($event);
+
                 break;
             case 'annuler':
                 $this->transitionAnnuler($event);
+
                 break;
             case 'reenvoyer':
                 $this->transitionReEnvoyer($event);
+
                 break;
         }
     }

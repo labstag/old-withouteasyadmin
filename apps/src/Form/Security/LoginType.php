@@ -2,7 +2,7 @@
 
 namespace Labstag\Form\Security;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LoginType extends AbstractType
+class LoginType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -20,25 +20,35 @@ class LoginType extends AbstractType
         $builder->add(
             'username',
             TextType::class,
-            ['label' => 'Username']
+            [
+                'label' => $this->translator->trans('login.username.label', [], 'security.form'),
+                'help'  => $this->translator->trans('login.username.help', [], 'security.form'),
+            ]
         );
         $builder->add(
             'password',
             PasswordType::class,
-            ['label' => 'Password']
+            [
+                'label' => $this->translator->trans('login.password.label', [], 'security.form'),
+                'help'  => $this->translator->trans('login.password.help', [], 'security.form'),
+            ]
         );
+
         $builder->add(
             'remember_me',
             CheckboxType::class,
             [
-                'label'    => 'Keep me logged in',
+                'label'    => $this->translator->trans('login.remember_me.label', [], 'security.form'),
+                'help'     => $this->translator->trans('login.remember_me.help', [], 'security.form'),
                 'required' => false,
             ]
         );
         $builder->add(
             'submit',
             SubmitType::class,
-            ['label' => 'Sign in']
+            [
+                'label' => $this->translator->trans('login.submit.label', [], 'security.form'),
+            ]
         );
         unset($options);
     }

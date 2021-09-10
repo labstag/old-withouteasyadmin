@@ -2,15 +2,16 @@
 
 namespace Labstag\Form\Admin\User;
 
+use Doctrine\DBAL\Types\TextType;
 use Labstag\Entity\Groupe;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class GroupeType extends AbstractType
+class GroupeType extends AbstractTypeLib
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -18,8 +19,22 @@ class GroupeType extends AbstractType
     ): void
     {
         unset($options);
-        $builder->add('name');
-        $builder->add('code');
+        $builder->add(
+            'name',
+            TextType::class,
+            [
+                'label' => $this->translator->trans('groupe.name.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('groupe.name.help', [], 'admin.form'),
+            ]
+        );
+        $builder->add(
+            'code',
+            TextType::class,
+            [
+                'label' => $this->translator->trans('groupe.code.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('groupe.code.help', [], 'admin.form'),
+            ]
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

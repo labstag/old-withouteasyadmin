@@ -12,7 +12,7 @@ use Labstag\Repository\AttachmentRepository;
 
 /**
  * @ORM\Entity(repositoryClass=AttachmentRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt",             timeAware=false)
  */
 class Attachment
 {
@@ -31,7 +31,7 @@ class Attachment
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid", unique=true)
+     * @ORM\Column(type="guid",             unique=true)
      */
     protected $id;
 

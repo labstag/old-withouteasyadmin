@@ -10,10 +10,11 @@ use Labstag\Repository\ConfigurationRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConfigurationEntitySubscriber implements EventSubscriberInterface
 {
@@ -30,9 +31,11 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
 
     protected ConfigurationRepository $repository;
 
+    protected RequestStack $requestStack;
+
     protected SessionInterface $session;
 
-    protected RequestStack $requestStack;
+    protected TranslatorInterface $translator;
 
     public function __construct(
         LoggerInterface $logger,
@@ -40,28 +43,17 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         EntityManagerInterface $entityManager,
         ConfigurationRepository $repository,
         CacheInterface $cache,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        TranslatorInterface $translator
     )
     {
+        $this->translator    = $translator;
         $this->containerBag  = $containerBag;
         $this->cache         = $cache;
         $this->entityManager = $entityManager;
         $this->repository    = $repository;
         $this->logger        = $logger;
         $this->requestStack  = $requestStack;
-    }
-
-    private function flashBagAdd(string $type, $message)
-    {
-        $requestStack = $this->requestStack;
-        $request      = $requestStack->getCurrentRequest();
-        if (is_null($request)) {
-            return;
-        }
-
-        $session  = $requestStack->getSession();
-        $flashbag = $session->getFlashBag();
-        $flashbag->add($type, $message);
     }
 
     public static function getSubscribedEvents()
@@ -99,7 +91,10 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         }
 
         $this->entityManager->flush();
-        $this->flashBagAdd('success', 'Données sauvegardé');
+        $this->flashBagAdd(
+            'success',
+            $this->translator->trans('param.change')
+        );
     }
 
     protected function getParameter(string $name)
@@ -121,10 +116,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
             }
 
             file_put_contents($file, $value);
-            $msg = sprintf(
-                'fichier %s modifié',
-                $file
-            );
+            $msg = $this->translator->trans('admin.robotstxt.file', ['%file%' => $file]);
             $this->logger->info($msg);
             $this->flashBagAdd('success', $msg);
         } catch (Exception $exception) {
@@ -138,5 +130,18 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
             $this->logger->error($errorMsg);
             $this->flashBagAdd('danger', $errorMsg);
         }
+    }
+
+    private function flashBagAdd(string $type, $message)
+    {
+        $requestStack = $this->requestStack;
+        $request      = $requestStack->getCurrentRequest();
+        if (is_null($request)) {
+            return;
+        }
+
+        $session  = $requestStack->getSession();
+        $flashbag = $session->getFlashBag();
+        $flashbag->add($type, $message);
     }
 }

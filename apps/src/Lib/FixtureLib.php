@@ -227,12 +227,12 @@ abstract class FixtureLib extends Fixture
         $dateFin->modify('+'.$faker->numberBetween(10, 50).' days');
         $dateFin->modify('+'.$faker->numberBetween(2, 24).' hours');
         $noteinterne->setDateFin($dateFin);
-        /** @var string $content */
+        // @var string $content
         $content = $faker->paragraphs(4, true);
         $noteinterne->setContent(str_replace("\n\n", "<br />\n", $content));
         $this->addReference('noteinterne_'.$index, $noteinterne);
         $tabIndex = array_rand($users);
-        /** @var User $user */
+        // @var User $user
         $user = $users[$tabIndex];
         $noteinterne->setRefuser($user);
         $this->upload($noteinterne, $faker);
@@ -307,7 +307,7 @@ abstract class FixtureLib extends Fixture
             return;
         }
 
-        /** @var resource $finfo */
+        // @var resource $finfo
         $finfo       = finfo_open(FILEINFO_MIME_TYPE);
         $annotations = $this->uploadAnnotReader->getUploadableFields($entity);
         $slugger     = new AsciiSlugger();
@@ -318,6 +318,7 @@ abstract class FixtureLib extends Fixture
             $slug       = $slugger->slug($title);
             $attachment = new Attachment();
             $old        = clone $attachment;
+
             try {
                 $image   = $faker->imageUrl(
                     1920,
@@ -325,7 +326,7 @@ abstract class FixtureLib extends Fixture
                     true
                 );
                 $content = file_get_contents($image);
-                /** @var resource $tmpfile */
+                // @var resource $tmpfile
                 $tmpfile = tmpfile();
                 $data    = stream_get_meta_data($tmpfile);
                 file_put_contents($data['uri'], $content);

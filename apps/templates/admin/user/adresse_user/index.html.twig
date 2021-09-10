@@ -3,23 +3,23 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="Actions"
+        data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
         data-multiple
-        data-multipleall="Tout sélectionner"
-        data-multipleelement="Selection"
-        data-empty="No records found"
+        data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
+        data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
+        data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>Rue</th>
-                <th>Country</th>
-                <th>Zipcode</th>
-                <th>Ville</th>
-                <th>Gps</th>
-                <th>Type</th>
-                <th>Pmr</th>
-                <th>User</th>
+                <th>{{ 'user.address.rue'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.country'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.zipcode'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.ville'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.gps'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.type'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.pmr'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.address.user'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -35,7 +35,7 @@
                 <td>{{ entity.ville }}</td>
                 <td>{{ entity.gps }}</td>
                 <td>{{ entity.type }}</td>
-                <td>{{ entity.pmr ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.pmr ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                 <td>
                     {{ entity.refuser.username }}
                 </td>

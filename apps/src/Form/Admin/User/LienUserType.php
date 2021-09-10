@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class LienUserType extends LienType
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -25,6 +25,8 @@ class LienUserType extends LienType
             'refuser',
             SearchableType::class,
             [
+                'label'    => $this->translator->trans('lienuser.refuser.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('lienuser.refuser.help', [], 'admin.form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

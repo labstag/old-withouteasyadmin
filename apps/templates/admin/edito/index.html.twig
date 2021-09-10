@@ -3,20 +3,20 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="Actions"
+        data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
         data-multiple
-        data-multipleall="Tout sélectionner"
-        data-multipleelement="Selection"
-        data-empty="No records found"
+        data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
+        data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
+        data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>Title</th>
-                <th>User</th>
-                <th>Published</th>
-                <th>State</th>
-                <th>Workflow</th>
+                <th>{{ 'edito.title'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'edito.user'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'edito.published'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'edito.state'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'edito.workflow'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>

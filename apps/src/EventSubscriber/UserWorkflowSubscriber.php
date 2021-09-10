@@ -4,27 +4,32 @@ namespace Labstag\EventSubscriber;
 
 use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\Event\Event;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserWorkflowSubscriber implements EventSubscriberInterface
 {
 
     protected FlashBagInterface $flashbag;
 
+    protected RequestStack $requestStack;
+
     protected SessionInterface $session;
+
+    protected TranslatorInterface $translator;
 
     protected UserMailService $userMailService;
 
-    protected RequestStack $requestStack;
-
     public function __construct(
         UserMailService $userMailService,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        TranslatorInterface $translator
     )
     {
+        $this->translator      = $translator;
         $this->requestStack    = $requestStack;
         $this->userMailService = $userMailService;
     }
@@ -41,9 +46,11 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
         switch ($name) {
             case 'submit':
                 $this->transitionSubmit($event);
+
                 break;
             case 'passwordlost':
                 $this->transitionPasswordLost($event);
+
                 break;
         }
     }
@@ -54,7 +61,17 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
         $this->userMailService->lostPassword($entity);
         $this->flashBagAdd(
             'success',
-            'Demande de nouveau mot de passe envoyé'
+            $this->translator->trans('user.workflow.sendpasswordlink')
+        );
+    }
+
+    public function transitionSubmit(Event $event)
+    {
+        $entity = $event->getSubject();
+        $this->userMailService->newUser($entity);
+        $this->flashBagAdd(
+            'success',
+            $this->translator->trans('user.workflow.new')
         );
     }
 
@@ -69,15 +86,5 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
         $session  = $requestStack->getSession();
         $flashbag = $session->getFlashBag();
         $flashbag->add($type, $message);
-    }
-
-    public function transitionSubmit(Event $event)
-    {
-        $entity = $event->getSubject();
-        $this->userMailService->newUser($entity);
-        $this->flashBagAdd(
-            'success',
-            'Nouveau compte utilisateur créer'
-        );
     }
 }

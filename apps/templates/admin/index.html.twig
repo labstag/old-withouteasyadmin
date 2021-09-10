@@ -1,22 +1,32 @@
 {% extends 'admin.html.twig' %}
 {% block body %}
-    {% for noteinterne in noteinternes %}
-        <div class="noteinterne">
-            <h2 class="noteinterne-title">
-                {{ noteinterne.title }}
-            </h2>
-            {% set img = attachment(noteinterne.fond) %}
-            {% if img is not null and img.name is not null %}
-                <picture class="noteinterne_img">
-                    <img alt="{{ noteinterne.title|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}" />
-                </picture>
-            {% endif %}
-            <div class="noteinterne-date">
-                {{ noteinterne.datedebut|format_datetime(pattern=formatdatetime.admin) }} by {{ noteinterne.refuser }}
-            </div>
-            <div class="noteinterne-content">
-                {{ noteinterne.content|raw }}
-            </div>
-        </div>
-    {% endfor %}
+	<div class="row">
+		{% for noteinterne in noteinternes %}
+			<div class="col-6">
+				<div class="card">
+					{% set img = attachment(noteinterne.fond) %}
+					{% if img is not null and img.name is not null %}
+						<picture class="noteinterne_img">
+							<img alt="{{ noteinterne.title|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}"/>
+						</picture>
+					{% endif %}
+					<div class="card-body">
+						<h2 class="card-title">
+							{{ noteinterne.title }}
+							{{ 'noteinterne.infodateuser'|trans(
+                    {
+                        '%date%': noteinterne.datedebut|format_datetime(pattern=formatdatetime.admin),
+                        '%user%': noteinterne.refuser
+                    },
+                    'admin.messages'
+                )}}
+						</h2>
+						<div class="card-text">
+							{{ noteinterne.content|raw }}
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 {% endblock %}

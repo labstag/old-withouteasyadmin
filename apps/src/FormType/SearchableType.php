@@ -17,9 +17,9 @@ use Symfony\Component\Routing\RouterInterface;
 class SearchableType extends AbstractType
 {
 
-    protected RouterInterface $router;
-
     protected EntityManagerInterface $entityManager;
+
+    protected RouterInterface $router;
 
     public function __construct(
         RouterInterface $router,
@@ -28,19 +28,6 @@ class SearchableType extends AbstractType
     {
         $this->entityManager = $entityManager;
         $this->router        = $router;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setRequired('class');
-        $resolver->setRequired('route');
-        $resolver->setDefaults(
-            [
-                'compound' => false,
-                'multiple' => true,
-                'attr'     => ['is' => 'select-selector'],
-            ]
-        );
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -73,7 +60,7 @@ class SearchableType extends AbstractType
     {
         $view->vars['expanded'] = false;
 
-        $placeholder = isset($options['placeholder']) ? $options['placeholder'] : null;
+        $placeholder = $options['placeholder'] ?? null;
 
         $view->vars['placeholder']               = $placeholder;
         $view->vars['placeholder_in_choices']    = false;
@@ -89,10 +76,23 @@ class SearchableType extends AbstractType
 
         $attr['data-url'] = $this->router->generate(
             $options['route'],
-            isset($options['route_param']) ? $options['route_param'] : []
+            $options['route_param'] ?? []
         );
 
         $view->vars['attr'] = $attr;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('class');
+        $resolver->setRequired('route');
+        $resolver->setDefaults(
+            [
+                'compound' => false,
+                'multiple' => true,
+                'attr'     => ['is' => 'select-selector'],
+            ]
+        );
     }
 
     public function getBlockPrefix()
@@ -110,10 +110,6 @@ class SearchableType extends AbstractType
             return $values->map(fn ($d) => new ChoiceView($d, (string) $d->getId(), (string) $d))->toArray();
         }
 
-        if ($options['multiple']) {
-            return [new ChoiceView($values, (string) $values->getId(), (string) $values)];
-        }
-
-        return new ChoiceView($values, (string) $values->getId(), (string) $values);
+        return [new ChoiceView($values, (string) $values->getId(), (string) $values)];
     }
 }

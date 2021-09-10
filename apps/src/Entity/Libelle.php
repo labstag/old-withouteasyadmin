@@ -11,7 +11,7 @@ use Labstag\Repository\LibelleRepository;
 
 /**
  * @ORM\Entity(repositoryClass=LibelleRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt",          timeAware=false)
  */
 class Libelle
 {
@@ -20,7 +20,7 @@ class Libelle
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid", unique=true)
+     * @ORM\Column(type="guid",             unique=true)
      */
     private $id;
 
@@ -36,7 +36,7 @@ class Libelle
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"nom"})
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string",   length=255)
      */
     private $slug;
 

@@ -4,7 +4,11 @@
 {% block box_title %}Please sign in{% endblock %}
 {% block box %}
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class="alert alert-danger" role="alert">
+            <p>
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </p>
+        </div>
     {% endif %}
     {{ form_start(formLogin) }}
     {{ form_row(formLogin.username) }}
@@ -16,13 +20,13 @@
     {% set state = guard_route('app_lost') %}
     {% if state == true %}
         <div class="links">
-            <a href="{{ path("app_lost") }}">J'ai perdu mon mot de passe</a>
+            <a href="{{ path("app_lost") }}">{{ 'user.lostpassword.link'|trans }}</a>
         </div>
     {% endif %}
     {% set state = guard_route('connect_start') %}
     {% if state == true and oauths|length != 0 %}
         <div class="oauth">
-            <div class="oauth-title">Se connecter avec :</div>
+            <div class="oauth-title">{{ 'user.login.oauth'|trans }}</div>
             <div class="oauth-btns">
             {% for oauth in oauths %}
                 <a href="{{ path('connect_start', {'oauthCode': oauth.name}) }}" title="{{ oauth.name|e('html_attr') }}">
