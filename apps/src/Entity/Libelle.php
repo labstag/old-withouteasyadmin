@@ -102,4 +102,9 @@ class Libelle
 
         return $this;
     }
+
+    public function setString(string $nom): self
+    {
+        return $this->setNom($nom);
+    }
 }

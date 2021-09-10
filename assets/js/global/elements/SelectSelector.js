@@ -3,12 +3,17 @@ export class SelectSelector extends HTMLSelectElement {
   connectedCallback () {
     const idElement = this.getAttribute('id')
     this.url = this.dataset.url
-    console.log(this.url)
+    this.noresult = this.dataset.noresult
+    this.addmessage = this.dataset.addmessage
+    this.add = (this.dataset.add === '1')
+    console.log(this.dataset.add)
     if (this.classList.contains('tomselected') === false) {
       if (undefined !== this.url) {
         this.select = new TomSelect(
           `#${idElement}`,
           {
+            plugins: ['remove_button'],
+            create: this.add,
             valueField: 'id',
             labelField: 'text',
             searchField: 'text',
@@ -20,11 +25,17 @@ export class SelectSelector extends HTMLSelectElement {
               callback(response.results)
             },
             render: {
+              option_create: (data, escape) => {
+                return this.optionCreate(data, escape)
+              },
               option: (item, escape) => {
                 return this.optionItem(item, escape)
               },
               item: (item, escape) => {
                 return this.optionItem(item, escape)
+              },
+              no_results: (data, escape) => {
+                return this.noResults(data, escape)
               }
             }
           }
@@ -42,7 +53,15 @@ export class SelectSelector extends HTMLSelectElement {
     }
   }
 
+  optionCreate (data, escape) {
+    return `<div class="create">${this.addmessage.replace('%result%', `<b>${escape(data.input)}</b>`)}</div>`
+  }
+
+  noResults (data, escape) {
+    return `<div class="no-results">${this.noresult.replace('%result%', `<b>${escape(data.input)}</b>`)}</div>`
+  }
+
   optionItem (item, escape) {
-    return `<span>${escape(item.text)}</span>`
+    return `<div>${escape(item.text)}</div>`
   }
 }
