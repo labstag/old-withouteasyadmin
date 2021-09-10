@@ -61,22 +61,7 @@ class PostType extends AbstractTypeLib
                 'help'  => $this->translator->trans('post.content.help', [], 'admin.form'),
             ]
         );
-        $builder->add(
-            'metaDescription',
-            TextType::class,
-            [
-                'label' => $this->translator->trans('post.metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('post.metaDescription.help', [], 'admin.form'),
-            ]
-        );
-        $builder->add(
-            'metaKeywords',
-            TextType::class,
-            [
-                'label' => $this->translator->trans('post.metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('post.metaKeywords.help', [], 'admin.form'),
-            ]
-        );
+        $this->setMeta($builder);
         $builder->add(
             'file',
             FileType::class,
@@ -113,6 +98,8 @@ class PostType extends AbstractTypeLib
                 'label' => $this->translator->trans('post.libelles.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('post.libelles.help', [], 'admin.form'),
                 'class' => Libelle::class,
+                'new'   => new Libelle(),
+                'add'   => true,
                 'route' => 'api_search_postlibelle',
             ]
         );
@@ -126,5 +113,23 @@ class PostType extends AbstractTypeLib
                 'data_class' => Post::class,
             ]
         );
+    }
+
+    protected function setMeta($builder)
+    {
+        $meta = [
+            'metaDescription' => [
+                'label' => $this->translator->trans('post.metaDescription.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('post.metaDescription.help', [], 'admin.form'),
+            ],
+            'metaKeywords'    => [
+                'label' => $this->translator->trans('post.metaKeywords.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('post.metaKeywords.help', [], 'admin.form'),
+            ],
+        ];
+
+        foreach ($meta as $key => $values) {
+            $builder->add($key, TextType::class, $values);
+        }
     }
 }
