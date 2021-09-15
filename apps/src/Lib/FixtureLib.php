@@ -21,6 +21,7 @@ use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AdresseUserRequestHandler;
 use Labstag\RequestHandler\AttachmentRequestHandler;
+use Labstag\RequestHandler\CategoryRequestHandler;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
@@ -50,6 +51,8 @@ abstract class FixtureLib extends Fixture
     protected const NUMBER_EMAIL = 25;
 
     protected const NUMBER_LIBELLE = 10;
+
+    protected const NUMBER_CATEGORY = 50;
 
     protected const NUMBER_LIEN = 25;
 
@@ -103,6 +106,8 @@ abstract class FixtureLib extends Fixture
 
     protected UserRequestHandler $userRH;
 
+    protected CategoryRequestHandler $categoryRH;
+
     public function __construct(
         LoggerInterface $logger,
         ContainerBagInterface $containerBag,
@@ -124,9 +129,11 @@ abstract class FixtureLib extends Fixture
         AdresseUserRequestHandler $adresseUserRH,
         TemplateRequestHandler $templateRH,
         LibelleRequestHandler $libelleRH,
-        CacheInterface $cache
+        CacheInterface $cache,
+        CategoryRequestHandler $categoryRH,
     )
     {
+        $this->categoryRH        = $categoryRH;
         $this->attachmentRH      = $attachmentRH;
         $this->logger            = $logger;
         $this->containerBag      = $containerBag;
