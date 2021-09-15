@@ -114,7 +114,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $emails  = $newEntity->getEmailUsers();
         $trouver = false;
         foreach ($emails as $emailUser) {
-            /** @var EmailUser $emailUser */
+            // @var EmailUser $emailUser
             $emailUser->setPrincipal(false);
             if ($emailUser->getAdresse() === $adresse) {
                 $emailUser->setPrincipal(true);

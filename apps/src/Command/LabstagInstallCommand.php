@@ -24,7 +24,7 @@ class LabstagInstallCommand extends Command
         parent::__construct();
     }
 
-    protected function all(SymfonyStyle $inputOutput): void
+    protected function all($inputOutput)
     {
         $inputOutput->note('Installations');
         $this->setMenuAdmin($inputOutput);
@@ -35,7 +35,7 @@ class LabstagInstallCommand extends Command
         $this->setUsers($inputOutput);
     }
 
-    protected function configure(): void
+    protected function configure()
     {
         $this->setDescription('Add a short description for your command');
         $this->addOption('menuadmin', null, InputOption::VALUE_NONE, 'menuadmin');
@@ -71,37 +71,37 @@ class LabstagInstallCommand extends Command
         return Command::SUCCESS;
     }
 
-    protected function setConfig(SymfonyStyle $inputOutput): void
+    protected function setConfig($inputOutput)
     {
         $inputOutput->note('Ajout de la configuration');
         $this->installService->config();
     }
 
-    protected function setGroup(SymfonyStyle $inputOutput): void
+    protected function setGroup($inputOutput)
     {
         $inputOutput->note('Ajout des groupes');
         $this->installService->group();
     }
 
-    protected function setMenuAdmin(SymfonyStyle $inputOutput): void
+    protected function setMenuAdmin($inputOutput)
     {
         $inputOutput->note('Ajout du menu admin');
         $this->installService->menuadmin();
     }
 
-    protected function setMenuAdminProfil(SymfonyStyle $inputOutput): void
+    protected function setMenuAdminProfil($inputOutput)
     {
         $inputOutput->note('Ajout du menu admin profil');
         $this->installService->menuadminprofil();
     }
 
-    protected function setTemplates(SymfonyStyle $inputOutput): void
+    protected function setTemplates($inputOutput)
     {
         $inputOutput->note('Ajout des templates');
         $this->installService->templates();
     }
 
-    protected function setUsers(SymfonyStyle $inputOutput): void
+    protected function setUsers($inputOutput)
     {
         $inputOutput->note('Ajout des users');
         $this->installService->users();

@@ -37,7 +37,7 @@ abstract class PhoneType extends AbstractTypeLib
             'help'  => $this->translator->trans('phone.numero.help', [], 'admin.form'),
         ];
         if (array_key_exists('data', $options)) {
-            /** @var PhoneUser $phoneuser */
+            // @var PhoneUser $phoneuser
             $phoneUser = $options['data'];
             $country   = $phoneUser->getCountry();
             $number    = $phoneUser->getNumero();
