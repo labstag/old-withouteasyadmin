@@ -41,6 +41,11 @@ apps/phpcs.phar:
 apps/phpstan.phar:
 	$(DOCKER_EXECPHP) wget https://github.com/phpstan/phpstan/releases/download/0.12.98/phpstan.phar
 
+apps/phpDocumentor.phar:
+	$(DOCKER_EXECPHP) wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.1.2/phpDocumentor.phar
+
+phar: apps/phploc.phar apps/phpmd.phar apps/php-cs-fixer.phar apps/phpcbf.phar apps/phpcs.phar apps/phpstan.phar apps/phpDocumentor.phar
+
 apps/composer.lock: isdocker apps/composer.json
 	${COMPOSER_EXEC} update
 
@@ -178,7 +183,7 @@ commands: isdocker
 	$(SYMFONY_EXEC) labstag:workflows-show
 
 .PHONY: linter
-linter: isdocker apps/phploc.phar apps/phpmd.phar apps/php-cs-fixer.phar apps/phpcbf.phar apps/phpcs.phar apps/phpstan.phar node_modules ### Scripts Linter
+linter: isdocker phar node_modules ### Scripts Linter
 ifeq ($(COMMANDS_ARGS),all)
 	@make linter phpfix -i
 	@make linter eslint -i
@@ -227,6 +232,8 @@ else ifeq ($(COMMANDS_ARGS),phpcs-onlyerror)
 	${PHP_EXEC} phpcs.phar  --report=full --extensions=php --warning-severity=0 --standard=phpcs.xml
 else ifeq ($(COMMANDS_ARGS),phploc)
 	$(PHP_EXEC) phploc.phar src
+else ifeq ($(COMMANDS_ARGS),phpdoc)
+	$(PHP_EXEC) phpDocumentor.phar -d src -t public/docs
 else ifeq ($(COMMANDS_ARGS),phpmd)
 	$(PHP_EXEC) -d error_reporting=24575 phpmd.phar src,features/bootstrap ansi phpmd.xml
 else ifeq ($(COMMANDS_ARGS),phpmnd)
@@ -246,6 +253,7 @@ else
 		["composer"]="composer" \
 		["readme"]="linter README.md" \
 		["phpaudit"]="AUDIT PHP" \
+		["phpdoc"]="php doc" \
 		["phpfix"]="PHP-CS-FIXER & PHPCBF" \
 		["stylelint"]="indique les erreurs dans le code SCSS" \
 		["stylelint-fix"]="fix les erreurs dans le code SCSS" \
