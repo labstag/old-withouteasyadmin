@@ -1,0 +1,22 @@
+{% import "admin/macro.html.twig" as macro_admin %}
+{% macro show (children, position, actions) %}
+    {% for entity in children %}
+        <tr data-id="{{ entity.id }}">
+            <td>{{ _self.position(position) }} {{ entity.name }}</td>
+            <td>{{ entity.slug }}</td>
+            <td>
+                {{ macro_admin.actions(entity, actions) }}
+            </td>
+        </tr>
+        {{ _self.show(entity.children, position+1, actions) }}
+    {% endfor %}
+{% endmacro %}
+{% macro position(chiffre) %}
+    {% for i in range(0, chiffre) %}
+        {% if i == 1 %}
+            |—
+        {% elseif i >= 2 %}
+            —
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

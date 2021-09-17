@@ -1,14 +1,8 @@
-{% import "admin/macro.html.twig" as macro_admin %}
+{% import "admin/post/category/macro.html.twig" as macro_post %}
 {% extends 'admin/post/category/layout.html.twig' %}
 {% block body %}
     <table
         is="table-datatable"
-        data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-multiple
-        data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-count={{ pagination|length }}
     >
         <thead>
             <tr>
@@ -18,15 +12,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for entity in pagination %}
-            <tr data-id="{{ entity.id }}">
-                <td>{{ entity.name }}</td>
-                <td>{{ entity.slug }}</td>
-                <td>
-                    {{ macro_admin.actions(entity, actions) }}
-                </td>
-            </tr>
-        {% endfor %}
+        {{ macro_post.show(pagination, 0, actions) }}
         </tbody>
     </table>
 {% endblock %}
