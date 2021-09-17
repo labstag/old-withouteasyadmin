@@ -26,7 +26,7 @@ class CategoryController extends AdminControllerLib
         UploadAnnotationReader $uploadAnnotReader,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
-        Category $Category,
+        Category $category,
         CategoryRequestHandler $requestHandler
     ): Response
     {
@@ -38,7 +38,7 @@ class CategoryController extends AdminControllerLib
             $attachmentRH,
             $requestHandler,
             CategoryType::class,
-            $Category,
+            $category,
             [
                 'delete' => 'api_action_delete',
                 'list'   => 'admin_category_index',
@@ -107,11 +107,11 @@ class CategoryController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        Category $Category
+        Category $category
     ): Response
     {
         return $this->renderShowOrPreview(
-            $Category,
+            $category,
             'admin/post/category/show.html.twig',
             [
                 'delete'  => 'api_action_delete',

@@ -24,7 +24,7 @@ class CategoryFixtures extends FixtureLib implements DependentFixtureInterface
     {
         unset($manager);
         $faker = $this->setFaker();
-        $data = [];
+        $data  = [];
         for ($index = 0; $index < self::NUMBER_CATEGORY; ++$index) {
             $data[] = $this->addCategory($faker, $index, $data);
         }
@@ -39,6 +39,7 @@ class CategoryFixtures extends FixtureLib implements DependentFixtureInterface
             $dateId = array_rand($data);
             $category->setParent($data[$dateId]);
         }
+
         $this->addReference('Category_'.$index, $category);
         $this->categoryRH->handle($oldCategory, $category);
 

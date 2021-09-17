@@ -21,124 +21,26 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         $this->decorated = $decorated;
     }
 
-    private function setUsers(&$docs)
+    /**
+     * @inheritdoc
+     */
+    public function normalize($object, ?string $format = null, array $context = [])
     {
-        $statsEndpoint = [
-            'summary'    => 'get Users.',
-            'tags'       => ['Search'],
-            'parameters' => [
-                [
-                    'name'        => 'name',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'name',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'id'   => [
-                                        'type'    => 'string',
-                                        'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
-                                    ],
-                                    'name' => [
-                                        'type'    => 'string',
-                                        'example' => 'name',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $docs = $this->decorated->normalize($object, $format, $context);
+        $this->setUsers($docs);
+        $this->setLibelles($docs);
+        $this->setGroupes($docs);
+        $this->setCategories($docs);
 
-        $docs['paths']['/api/search/user']['get'] = $statsEndpoint;
+        return $docs;
     }
 
-    private function setLibelles(&$docs)
+    /**
+     * @inheritdoc
+     */
+    public function supportsNormalization($data, ?string $format = null): bool
     {
-        $statsEndpoint = [
-            'summary'    => 'get Libelle.',
-            'tags'       => ['Search'],
-            'parameters' => [
-                [
-                    'name'        => 'name',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'name',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'id'   => [
-                                        'type'    => 'string',
-                                        'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
-                                    ],
-                                    'name' => [
-                                        'type'    => 'string',
-                                        'example' => 'name',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $docs['paths']['/api/search/libelle']['get'] = $statsEndpoint;
-    }
-
-    private function setGroupes(&$docs)
-    {
-        $statsEndpoint = [
-            'summary'    => 'get Groupe.',
-            'tags'       => ['Search'],
-            'parameters' => [
-                [
-                    'name'        => 'name',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'name',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'id'   => [
-                                        'type'    => 'string',
-                                        'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
-                                    ],
-                                    'name' => [
-                                        'type'    => 'string',
-                                        'example' => 'name',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $docs['paths']['/api/search/group']['get'] = $statsEndpoint;
+        return $this->decorated->supportsNormalization($data, $format);
     }
 
     private function setCategories(&$docs)
@@ -181,25 +83,123 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/search/category']['get'] = $statsEndpoint;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function normalize($object, ?string $format = null, array $context = [])
+    private function setGroupes(&$docs)
     {
-        $docs          = $this->decorated->normalize($object, $format, $context);
-        $this->setUsers($docs);
-        $this->setLibelles($docs);
-        $this->setGroupes($docs);
-        $this->setCategories($docs);
+        $statsEndpoint = [
+            'summary'    => 'get Groupe.',
+            'tags'       => ['Search'],
+            'parameters' => [
+                [
+                    'name'        => 'name',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'name',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'id'   => [
+                                        'type'    => 'string',
+                                        'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
+                                    ],
+                                    'name' => [
+                                        'type'    => 'string',
+                                        'example' => 'name',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
-        return $docs;
+        $docs['paths']['/api/search/group']['get'] = $statsEndpoint;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsNormalization($data, ?string $format = null): bool
+    private function setLibelles(&$docs)
     {
-        return $this->decorated->supportsNormalization($data, $format);
+        $statsEndpoint = [
+            'summary'    => 'get Libelle.',
+            'tags'       => ['Search'],
+            'parameters' => [
+                [
+                    'name'        => 'name',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'name',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'id'   => [
+                                        'type'    => 'string',
+                                        'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
+                                    ],
+                                    'name' => [
+                                        'type'    => 'string',
+                                        'example' => 'name',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/search/libelle']['get'] = $statsEndpoint;
+    }
+
+    private function setUsers(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'get Users.',
+            'tags'       => ['Search'],
+            'parameters' => [
+                [
+                    'name'        => 'name',
+                    'in'          => 'query',
+                    'required'    => true,
+                    'description' => 'name',
+                    'schema'      => ['type' => 'string'],
+                ],
+            ],
+            'responses'  => [
+                Response::HTTP_OK => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'id'   => [
+                                        'type'    => 'string',
+                                        'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
+                                    ],
+                                    'name' => [
+                                        'type'    => 'string',
+                                        'example' => 'name',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $docs['paths']['/api/search/user']['get'] = $statsEndpoint;
     }
 }

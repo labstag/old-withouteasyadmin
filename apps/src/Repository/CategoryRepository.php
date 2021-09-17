@@ -2,11 +2,11 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\Category;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Labstag\Annotation\Trashable;
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Annotation\Trashable;
+use Labstag\Entity\Category;
 use Labstag\Lib\ServiceEntityRepositoryLib;
+
 /**
  * @Trashable(url="admin_category_trash")
  */

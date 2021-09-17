@@ -41,6 +41,7 @@ class SearchController extends ApiControllerLib
 
         return $this->json($result);
     }
+
     /**
      * @Route("/group", name="api_search_group")
      */

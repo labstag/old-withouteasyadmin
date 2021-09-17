@@ -46,13 +46,13 @@ abstract class FixtureLib extends Fixture
 {
     protected const NUMBER_ADRESSE = 25;
 
+    protected const NUMBER_CATEGORY = 50;
+
     protected const NUMBER_EDITO = 25;
 
     protected const NUMBER_EMAIL = 25;
 
     protected const NUMBER_LIBELLE = 10;
-
-    protected const NUMBER_CATEGORY = 50;
 
     protected const NUMBER_LIEN = 25;
 
@@ -69,6 +69,8 @@ abstract class FixtureLib extends Fixture
     protected AttachmentRequestHandler $attachmentRH;
 
     protected CacheInterface $cache;
+
+    protected CategoryRequestHandler $categoryRH;
 
     protected ContainerBagInterface $containerBag;
 
@@ -105,8 +107,6 @@ abstract class FixtureLib extends Fixture
     protected UserRepository $userRepository;
 
     protected UserRequestHandler $userRH;
-
-    protected CategoryRequestHandler $categoryRH;
 
     public function __construct(
         LoggerInterface $logger,
