@@ -18,7 +18,7 @@ class Category
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="parent")
+     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="parent", cascade={"persist"})
      */
     private $children;
 
@@ -35,9 +35,19 @@ class Category
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="children")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="children", cascade={"persist"})
+     * @ORM\JoinColumn(
+     *  name="parent_id",
+     *  referencedColumnName="id",
+     *  onDelete="SET NULL"
+     * )
      */
     private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refcategory")
+     */
+    private $posts;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
@@ -48,6 +58,7 @@ class Category
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->posts    = new ArrayCollection();
     }
 
     public function __toString()
@@ -63,6 +74,16 @@ class Category
         if (!$this->children->contains($child)) {
             $this->children[] = $child;
             $child->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setRefcategory($this);
         }
 
         return $this;
@@ -91,6 +112,14 @@ class Category
         return $this->parent;
     }
 
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -102,6 +131,18 @@ class Category
             // set the owning side to null (unless already changed)
             if ($child->getParent() === $this) {
                 $child->setParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->removeElement($post)) {
+            // set the owning side to null (unless already changed)
+            if ($post->getRefcategory() === $this) {
+                $post->setRefcategory(null);
             }
         }
 

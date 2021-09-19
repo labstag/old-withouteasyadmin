@@ -3,6 +3,7 @@
 namespace Labstag\Form\Admin\Post;
 
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\Post;
 use Labstag\Entity\User;
@@ -81,6 +82,17 @@ class PostType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
+            ]
+        );
+        $builder->add(
+            'refcategory',
+            SearchableType::class,
+            [
+                'label'    => $this->translator->trans('post.refcategory.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('post.refcategory.help', [], 'admin.form'),
+                'multiple' => false,
+                'class'    => Category::class,
+                'route'    => 'api_search_category',
             ]
         );
         $builder->add(

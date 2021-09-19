@@ -16,6 +16,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
             DataFixtures::class,
             UserFixtures::class,
             LibelleFixtures::class,
+            CategoryFixtures::class,
         ];
     }
 
@@ -55,9 +56,18 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $user      = $this->getReference('user_'.$indexUser);
         $post->setRefuser($user);
         $post->setPublished($faker->unique()->dateTime('now'));
-        $indexLibelle = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
-        $libelle      = $this->getReference('libelle_'.$indexLibelle);
-        $post->addLibelle($libelle);
+        if (1 == rand(0, 1)) {
+            $nbr = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
+            for ($i = 0; $i < $nbr; ++$i) {
+                $indexLibelle = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
+                $libelle      = $this->getReference('libelle_'.$indexLibelle);
+                $post->addLibelle($libelle);
+            }
+        }
+
+        $indexLibelle = $faker->numberBetween(0, self::NUMBER_CATEGORY - 1);
+        $category     = $this->getReference('category_'.$indexLibelle);
+        $post->setRefcategory($category);
         $post->setCommentaire((bool) rand(0, 1));
         $this->upload($post, $faker);
         $this->addReference('post_'.$index, $post);

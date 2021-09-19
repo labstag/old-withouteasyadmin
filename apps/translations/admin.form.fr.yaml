@@ -220,6 +220,8 @@ post.metaKeywords.help: ''
 post.metaKeywords.label: 'SEO mot clef'
 post.published.help: ''
 post.published.label: 'Publié ?'
+post.refcategory.help: ''
+post.refcategory.label: Catégorie
 post.refuser.help: ''
 post.refuser.label: Utilisateur
 post.slug.help: ''

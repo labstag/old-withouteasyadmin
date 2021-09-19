@@ -24,23 +24,24 @@ class CategoryFixtures extends FixtureLib implements DependentFixtureInterface
     {
         unset($manager);
         $faker = $this->setFaker();
-        $data  = [];
         for ($index = 0; $index < self::NUMBER_CATEGORY; ++$index) {
-            $data[] = $this->addCategory($faker, $index, $data);
+            $this->addCategory($faker, $index);
         }
     }
 
-    protected function addCategory(Generator $faker, int $index, array $data = []): Category
+    protected function addCategory(Generator $faker, int $index): Category
     {
         $category    = new Category();
         $oldCategory = clone $category;
         $category->setName($faker->unique()->colorName);
-        if (0 != count($data) && 1 == rand(0, 1)) {
-            $dateId = array_rand($data);
-            $category->setParent($data[$dateId]);
+        $indexCategory = $faker->numberBetween(0, $index);
+        $code          = 'category_'.$indexCategory;
+        if ($this->hasReference($code) && 1 == rand(0, 1)) {
+            $parent = $this->getReference($code);
+            $category->setParent($parent);
         }
 
-        $this->addReference('Category_'.$index, $category);
+        $this->addReference('category_'.$index, $category);
         $this->categoryRH->handle($oldCategory, $category);
 
         return $category;
