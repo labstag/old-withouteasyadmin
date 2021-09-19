@@ -85,6 +85,8 @@ oauth.message: 'Vous êtes sur la page qui vous permet de retrouver les différe
 oauth.service: Service
 oauth.url: 'Adresse URL'
 oauth.urltoshare: 'Url à indiquer'
+post.category.name: Nom
+post.category.slug: Slug
 post.content: Contenu
 post.image: Image
 post.libelle.name: Nom

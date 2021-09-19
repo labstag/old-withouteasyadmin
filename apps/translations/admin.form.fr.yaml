@@ -14,6 +14,12 @@ adresse.zipcode.help: ''
 adresse.zipcode.label: 'Code postal'
 adresseuser.refuser.help: ''
 adresseuser.refuser.label: Utilisateur
+category.name.help: ''
+category.name.label: Nom
+category.parent.help: ''
+category.parent.label: Parent
+category.slug.help: ''
+category.slug.label: Slug
 edito.content.help: ''
 edito.content.label: Contenu
 edito.file.help: ''

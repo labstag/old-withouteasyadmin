@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +13,6 @@ use Labstag\Repository\CategoryRepository;
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-#[ApiResource]
 class Category
 {
     use SoftDeleteableEntity;
@@ -54,7 +52,10 @@ class Category
 
     public function __toString()
     {
-        return $this->getName();
+        $parent = $this->getParent();
+        $text   = is_null($parent) ? '' : $parent.' - ';
+
+        return $text.$this->getName();
     }
 
     public function addChild(self $child): self

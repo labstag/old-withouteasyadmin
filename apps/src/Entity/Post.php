@@ -15,7 +15,7 @@ use Labstag\Repository\PostRepository;
 
 /**
  * @ORM\Entity(repositoryClass=PostRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt",       timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Uploadable()
  */
 class Post

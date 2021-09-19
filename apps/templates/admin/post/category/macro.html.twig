@@ -1,14 +1,14 @@
-{% import "admin/macro.html.twig" as macro_admin %}
-{% macro show (children, position, actions) %}
+{% macro show (children, position, actionsurls) %}
+    {% import "admin/macro.html.twig" as macro_admin %}
     {% for entity in children %}
         <tr data-id="{{ entity.id }}">
             <td>{{ _self.position(position) }} {{ entity.name }}</td>
             <td>{{ entity.slug }}</td>
             <td>
-                {{ macro_admin.actions(entity, actions) }}
+                {{ macro_admin.actions(entity, actionsurls) }}
             </td>
         </tr>
-        {{ _self.show(entity.children, position+1, actions) }}
+        {{ _self.show(entity.children, position+1, actionsurls) }}
     {% endfor %}
 {% endmacro %}
 {% macro position(chiffre) %}
