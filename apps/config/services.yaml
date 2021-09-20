@@ -72,4 +72,3 @@ services:
     Labstag\Reader\UploadAnnotationReader:
       arguments: ["@annotations.reader"]
 
-
