@@ -3,22 +3,22 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="Actions"
+        data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
         data-multiple
-        data-multipleall="Tout sélectionner"
-        data-multipleelement="Selection"
-        data-empty="No records found"
+        data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
+        data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
+        data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>Numero</th>
-                <th>Country</th>
-                <th>Verif</th>
-                <th>Type</th>
-                <th>Principal</th>
-                <th>State</th>
-                <th>Workflow</th>
+                <th>{{ 'user.phone.numero'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.phone.country'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.phone.verif'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.phone.type'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.phone.principal'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'user.phone.workflow'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -35,7 +35,7 @@
                     <span class="check-{{ check }}"></span>
                 </td>
                 <td>{{ entity.type }}</td>
-                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
+                <td>{{ entity.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

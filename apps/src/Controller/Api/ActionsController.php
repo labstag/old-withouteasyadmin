@@ -71,41 +71,6 @@ class ActionsController extends ApiControllerLib
         return $this->deleteOrRestore($entity, $request, 'destroies');
     }
 
-    protected function getRepoByEntity(string $entity): ?ServiceEntityRepositoryLib
-    {
-        $repositories = $this->setRepository();
-        if (isset($repositories[$entity])) {
-            return $this->entityManager->getRepository($repositories[$entity]);
-        }
-
-        return null;
-    }
-
-    protected function setRepository(): array
-    {
-        $files        = glob($this->getParameter('kernel.project_dir').'/src/Entity/*.php');
-        $repositories = [];
-        foreach ($files as $file) {
-            $path                                = pathinfo($file);
-            $filename                            = $path['filename'];
-            $repositories[strtolower($filename)] = 'Labstag\\Entity\\'.$filename;
-        }
-
-        return $repositories;
-    }
-
-    private function tokenVerif(string $action, $entity = null): bool
-    {
-        $token = $this->request->request->get('_token');
-
-        $csrfToken = new CsrfToken(
-            $action.(is_null($entity) ? '' : $entity->getId()),
-            $token
-        );
-
-        return $this->csrfTokenManager->isTokenValid($csrfToken);
-    }
-
     /**
      * @Route("/destroy/{entity}/{id}", name="api_action_destroy", methods={"DELETE"})
      * @IgnoreSoftDelete
@@ -162,6 +127,7 @@ class ActionsController extends ApiControllerLib
         $error    = [];
         foreach ($entities as $entity) {
             $repository = $this->getRepoByEntity($entity);
+
             try {
                 $this->deleteEntityByRepository($repository);
             } catch (Exception $exception) {
@@ -198,6 +164,7 @@ class ActionsController extends ApiControllerLib
         }
 
         $error = [];
+
         try {
             $this->deleteEntityByRepository($repository);
         } catch (Exception $exception) {
@@ -319,6 +286,29 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
+    protected function getRepoByEntity(string $entity): ?ServiceEntityRepositoryLib
+    {
+        $repositories = $this->setRepository();
+        if (isset($repositories[$entity])) {
+            return $this->entityManager->getRepository($repositories[$entity]);
+        }
+
+        return null;
+    }
+
+    protected function setRepository(): array
+    {
+        $files        = glob($this->getParameter('kernel.project_dir').'/src/Entity/*.php');
+        $repositories = [];
+        foreach ($files as $file) {
+            $path                                = pathinfo($file);
+            $filename                            = $path['filename'];
+            $repositories[strtolower($filename)] = 'Labstag\\Entity\\'.$filename;
+        }
+
+        return $repositories;
+    }
+
     private function deleteAll(TrashService $trashService)
     {
         $all   = $trashService->all();
@@ -326,6 +316,7 @@ class ActionsController extends ApiControllerLib
         foreach ($all as $data) {
             $entity     = $data['name'];
             $repository = $this->getRepoByEntity($entity);
+
             try {
                 $this->deleteEntityByRepository($repository);
             } catch (Exception $exception) {
@@ -352,16 +343,20 @@ class ActionsController extends ApiControllerLib
         $files = [];
         foreach ($all as $entity) {
             $this->entityManager->remove($entity);
-            if ($entity instanceof Attachment) {
-                $files[] = $entity->getName();
+            if (!$entity instanceof Attachment) {
+                continue;
             }
+
+            $files[] = $entity->getName();
         }
 
         $this->entityManager->flush();
         foreach ($files as $file) {
-            if ('' != $file && is_file($file)) {
-                unlink($file);
+            if ('' == $file && is_file($file)) {
+                continue;
             }
+
+            unlink($file);
         }
     }
 
@@ -387,7 +382,7 @@ class ActionsController extends ApiControllerLib
         foreach ($entities as $id) {
             try {
                 $entity = $repository->find($id);
-                $this->$method($entity);
+                $this->{$method}($entity);
             } catch (Exception $exception) {
                 $error[] = $exception->getMessage();
             }
@@ -437,5 +432,17 @@ class ActionsController extends ApiControllerLib
         $entity->setDeletedAt(null);
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
+    }
+
+    private function tokenVerif(string $action, $entity = null): bool
+    {
+        $token = $this->get('request_stack')->getCurrentRequest()->get('_token');
+
+        $csrfToken = new CsrfToken(
+            $action.(is_null($entity) ? '' : $entity->getId()),
+            $token
+        );
+
+        return $this->csrfTokenManager->isTokenValid($csrfToken);
     }
 }

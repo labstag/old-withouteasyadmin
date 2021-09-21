@@ -29,7 +29,7 @@ class AdminNoteInterneControllerTest extends WebTestCase
 
     /**
      * @dataProvider provideAllUrlWithoutParams
-     * @param string $route
+     * @param        string $route
      */
     public function testUrl($route, $groupe)
     {
@@ -112,7 +112,9 @@ class AdminNoteInterneControllerTest extends WebTestCase
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(NoteInterne::class);
-        /** @var NoteInterneRepository $repository */
+        /**
+ * @var NoteInterneRepository $repository
+*/
         $data = $repository->findOneRandom();
 
         return $data;
@@ -124,7 +126,9 @@ class AdminNoteInterneControllerTest extends WebTestCase
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(User::class);
-        /** @var UserRepository $repository */
+        /**
+ * @var UserRepository $repository
+*/
         $user = $repository->findOneRandom();
         if (!($user instanceof User)) {
             return;
@@ -145,7 +149,9 @@ class AdminNoteInterneControllerTest extends WebTestCase
         $random = $faker->numberBetween(2, 24);
         $dateFin->modify('+' . $random . ' hours');
         $noteinterne->setDateFin($dateFin);
-        /** @var string $content */
+        /**
+ * @var string $content
+*/
         $content = $faker->unique()->paragraphs(4, true);
         $noteinterne->setContent(str_replace("\n\n", '<br />', $content));
 

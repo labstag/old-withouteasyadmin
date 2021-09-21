@@ -2,17 +2,17 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="Actions"
+        data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
         data-multiple
-        data-multipleall="Tout sélectionner"
-        data-multipleelement="Selection"
-        data-empty="No records found"
+        data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
+        data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
+        data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
         data-count={{ trash|length }}
     >
         <thead>
             <tr>
-                <th>Entité</th>
-                <th>Count</th>
+                <th>{{ 'trash.entite'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'trash.count'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -30,7 +30,7 @@
                     {% if state == true %}
                     <link-trash
                         href="{{ path(data.properties.url) }}"
-                        title="Aller sur cette corbeille"
+                        title="{{ 'trash.go'|trans({}, 'admin.messages') }}"
                     ></link-trash>
                     {% endif %}
                     {% set state = guard_route('api_action_empty') %}
@@ -39,7 +39,7 @@
                             data-redirect="{{ path(app.request.attributes.get('_route')) }}"
                             data-url="{{ path('api_action_empty', {'entity': data.name}) }}"
                             data-token="{{ data.token }}"
-                            data-title="Vider"
+                            data-title="{{ 'trash.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
                         ></link-empty>
                     {% endif %}
                 </td>

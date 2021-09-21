@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class AdresseUserType extends AdresseType
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -24,6 +24,8 @@ class AdresseUserType extends AdresseType
             'refuser',
             SearchableType::class,
             [
+                'label'    => $this->translator->trans('adresseuser.refuser.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('adresseuser.refuser.help', [], 'admin.form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

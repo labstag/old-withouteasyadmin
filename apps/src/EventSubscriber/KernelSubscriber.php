@@ -7,7 +7,18 @@ use tidy;
 
 class KernelSubscriber implements EventSubscriberInterface
 {
-    public const TAGS               = [
+    public const API_CONTROLLER = '/(Api)/';
+
+    public const CLIENTNUMBER = 400;
+
+    public const ERROR_CONTROLLER = [
+        'error_controller',
+        'error_controller::preview',
+    ];
+
+    public const LABSTAG_CONTROLLER = '/(Labstag)/';
+
+    public const TAGS = [
         'workflow-action',
         'link-show',
         'link-guard',
@@ -66,15 +77,11 @@ class KernelSubscriber implements EventSubscriberInterface
         'select-all',
         'select-element',
     ];
-    public const LABSTAG_CONTROLLER = '/(Labstag)/';
-    public const API_CONTROLLER     = '/(Api)/';
 
-    public const CLIENTNUMBER = 400;
-
-    public const ERROR_CONTROLLER = [
-        'error_controller',
-        'error_controller::preview',
-    ];
+    public static function getSubscribedEvents()
+    {
+        return ['kernel.response' => 'onKernelResponse'];
+    }
 
     public function onKernelResponse($event)
     {
@@ -106,10 +113,5 @@ class KernelSubscriber implements EventSubscriberInterface
         $tidy->cleanRepair();
         $response->setContent($tidy);
         $event->setResponse($response);
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return ['kernel.response' => 'onKernelResponse'];
     }
 }

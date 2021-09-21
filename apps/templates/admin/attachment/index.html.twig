@@ -3,22 +3,22 @@
 {% block body %}
     <table
         is="table-datatable"
-        data-action="Actions"
+        data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
         data-multiple
-        data-multipleall="Tout sélectionner"
-        data-multipleelement="Selection"
-        data-empty="No records found"
+        data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
+        data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
+        data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
         data-count={{ pagination|length }}
     >
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Mime type</th>
-                <th>Size</th>
-                <th>Dimensions</th>
-                <th>Download</th>
-                <th>State</th>
-                <th>Workflow</th>
+                <th>{{ 'attachment.name'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'attachment.mimetype'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'attachment.size'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'attachment.dimensions'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'attachment.download'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'attachment.state'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'attachment.workflow'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>
@@ -29,7 +29,7 @@
                 <td>{{ entity.mimeType }}</td>
                 <td>{{ entity.size }}</td>
                 <td>{{ entity.dimensions|json_encode }}</td>
-                <td><a href="{{ asset(entity.name) }}" target="_blank">Voir le fichier</a></td>
+                <td><a href="{{ asset(entity.name) }}" target="_blank">{{ 'attachment.seefile'|trans({}, 'admin.messages') }}</a></td>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

@@ -30,9 +30,11 @@ class UploadAnnotationReader
         $reflection = $this->setReflection($entity);
         foreach ($reflection->getProperties() as $property) {
             $annotation = $this->reader->getPropertyAnnotation($property, UploadableField::class);
-            if (!is_null($annotation)) {
-                $properties[$property->getName()] = $annotation;
+            if (is_null($annotation)) {
+                continue;
             }
+
+            $properties[$property->getName()] = $annotation;
         }
 
         return $properties;

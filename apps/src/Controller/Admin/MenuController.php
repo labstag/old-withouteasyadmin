@@ -7,7 +7,10 @@ use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Menu\LinkType;
 use Labstag\Form\Admin\Menu\PrincipalType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\MenuRepository;
+use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\MenuRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,17 +22,200 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MenuController extends AdminControllerLib
 {
+    /**
+     * @Route("/add", name="admin_menu_add", methods={"GET", "POST"})
+     */
+    public function add(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        Request $request,
+        MenuRequestHandler $requestHandler,
+        MenuRepository $repository
+    ): Response
+    {
+        $get = $request->query->all();
+        $url = $this->generateUrl('admin_menu_index');
+        if (!isset($get['id'])) {
+            return new RedirectResponse($url);
+        }
 
-    protected string $headerTitle = 'Menu';
+        $parent = $repository->find($get['id']);
+        if (!$parent instanceof Menu) {
+            return new RedirectResponse($url);
+        }
 
-    protected string $urlHome = 'admin_menu_index';
+        $menu = new Menu();
+        $data = [$menu->getData()];
+        $menu->setClef(null);
+        $menu->setData($data);
+        $menu->setSeparateur(false);
+        $menu->setPosition(count($parent->getChildren()));
+        $menu->setParent($parent);
 
+        return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
+            $menu,
+            LinkType::class,
+            ['list' => 'admin_menu_index'],
+            'admin/menu/form.html.twig'
+        );
+    }
+
+    /**
+     * @Route("/divider/{id}", name="admin_menu_divider")
+     */
+    public function divider(Menu $menu, MenuRequestHandler $requestHandler): RedirectResponse
+    {
+        $entity    = new Menu();
+        $oldEntity = clone $entity;
+        $position  = count($entity->getChildren());
+        $entity->setPosition($position + 1);
+        $entity->setSeparateur(true);
+        $entity->setParent($menu);
+        $requestHandler->handle($oldEntity, $entity);
+
+        return new RedirectResponse(
+            $this->generateUrl('admin_menu_index')
+        );
+    }
+
+    /**
+     * @Route("/update/{id}", name="admin_menu_update", methods={"GET", "POST"})
+     */
+    public function edit(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        Menu $menu,
+        MenuRequestHandler $requestHandler
+    )
+    {
+        $this->modalAttachmentDelete();
+        $form = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
+        $data = [$menu->getData()];
+        $menu->setData($data);
+
+        return $this->update(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
+            $form,
+            $menu,
+            [
+                'delete' => 'api_action_delete',
+                'list'   => 'admin_menu_index',
+            ],
+            'admin/menu/form.html.twig'
+        );
+    }
+
+    /**
+     * @Route("/", name="admin_menu_index", methods={"GET"})
+     */
+    public function index(
+        MenuRepository $repository
+    )
+    {
+        $all     = $repository->findAllCode();
+        $globals = $this->get('twig')->getGlobals();
+        $modal   = $globals['modal'] ?? [];
+
+        $modal['delete'] = true;
+        $this->get('twig')->addGlobal('modal', $modal);
+        $this->btnInstance()->addBtnNew('admin_menu_new');
+
+        return $this->render(
+            'admin/menu/index.html.twig',
+            ['all' => $all]
+        );
+    }
+
+    /**
+     * @Route("/move/{id}", name="admin_menu_move", methods={"GET", "POST"})
+     */
+    public function move(
+        Menu $menu,
+        Request $request,
+        MenuRepository $repository
+    )
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $currentUrl    = $this->generateUrl(
+            'admin_menu_move',
+            [
+                'id' => $menu->getId(),
+            ]
+        );
+
+        if ('POST' == $request->getMethod()) {
+            $data = $request->request->get('position');
+            if (!empty($data)) {
+                $data = json_decode($data, true);
+            }
+
+            if (is_array($data)) {
+                foreach ($data as $row) {
+                    $id       = $row['id'];
+                    $position = $row['position'];
+                    $entity   = $repository->find($id);
+                    $entity->setPosition($position);
+                    $entityManager->persist($entity);
+                }
+
+                $entityManager->flush();
+            }
+        }
+
+        $this->btnInstance()->addBtnList(
+            'admin_menu_index',
+            'Liste',
+        );
+
+        $this->btnInstance()->add(
+            'btn-admin-save-move',
+            'Enregistrer',
+            [
+                'is'   => 'link-btnadminmove',
+                'href' => $currentUrl,
+            ]
+        );
+
+        return $this->render(
+            'admin/menu/move.html.twig',
+            ['menu' => $menu]
+        );
+    }
+
+    /**
+     * @Route("/new", name="admin_menu_new", methods={"GET", "POST"})
+     */
+    public function new(
+        UploadAnnotationReader $uploadAnnotReader,
+        AttachmentRepository $attachmentRepository,
+        AttachmentRequestHandler $attachmentRH,
+        MenuRequestHandler $requestHandler
+    ): Response
+    {
+        return $this->create(
+            $uploadAnnotReader,
+            $attachmentRepository,
+            $attachmentRH,
+            $requestHandler,
+            new Menu(),
+            PrincipalType::class,
+            ['list' => 'admin_menu_index'],
+            'admin/menu/form.html.twig'
+        );
+    }
 
     /**
      * @Route("/trash", name="admin_menu_trash", methods={"GET"})
      *
-     * @param MenuRepository $repository
-     * @return Response
      * @IgnoreSoftDelete
      */
     public function trash(MenuRepository $repository): Response
@@ -57,166 +243,104 @@ class MenuController extends AdminControllerLib
         );
     }
 
-    /**
-     * @Route("/", name="admin_menu_index", methods={"GET"})
-     */
-    public function index(MenuRepository $repository)
+    protected function setBreadcrumbsPageAdminMenu(): array
     {
-        $all     = $repository->findAllCode();
-        $globals = $this->twig->getGlobals();
-        $modal   = isset($globals['modal']) ? $globals['modal'] : [];
-
-        $modal['delete'] = true;
-        $this->twig->addGlobal('modal', $modal);
-        $this->btnInstance->addBtnNew('admin_menu_new');
-
-        return $this->render(
-            'admin/menu/index.html.twig',
-            ['all' => $all]
-        );
-    }
-
-    /**
-     * @Route("/move/{id}", name="admin_menu_move", methods={"GET", "POST"})
-     */
-    public function move(Menu $menu, Request $request, MenuRepository $repository)
-    {
-        $currentUrl = $this->router->generate(
-            'admin_menu_move',
+        return [
             [
-                'id' => $menu->getId(),
-            ]
-        );
-
-        if ('POST' == $request->getMethod()) {
-            $data = $request->request->get('position');
-            if (!empty($data)) {
-                $data = json_decode($data, true);
-            }
-
-            if (is_array($data)) {
-                foreach ($data as $row) {
-                    $id       = $row['id'];
-                    $position = $row['position'];
-                    $entity   = $repository->find($id);
-                    $entity->setPosition($position);
-                    $this->entityManager->persist($entity);
-                }
-
-                $this->entityManager->flush();
-            }
-        }
-
-        $breadcrumb = ['Move' => $currentUrl];
-        $this->addBreadcrumbs($breadcrumb);
-        $this->btnInstance->addBtnList(
-            'admin_menu_index',
-            'Liste',
-        );
-
-        $this->btnInstance->add(
-            'btn-admin-save-move',
-            'Enregistrer',
-            [
-                'is'   => 'link-btnadminmove',
-                'href' => $currentUrl,
-            ]
-        );
-
-        return $this->render(
-            'admin/menu/move.html.twig',
-            ['menu' => $menu]
-        );
-    }
-
-    /**
-     * @Route("/add", name="admin_menu_add", methods={"GET", "POST"})
-     */
-    public function add(
-        Request $request,
-        MenuRequestHandler $requestHandler,
-        MenuRepository $repository
-    ): Response
-    {
-        $get = $request->query->all();
-        $url = $this->router->generate('admin_menu_index');
-        if (!isset($get['id'])) {
-            return new RedirectResponse($url);
-        }
-
-        $parent = $repository->find($get['id']);
-        if (!$parent instanceof Menu) {
-            return new RedirectResponse($url);
-        }
-
-        $menu = new Menu();
-        $data = [$menu->getData()];
-        $menu->setClef(null);
-        $menu->setData($data);
-        $menu->setSeparateur(false);
-        $menu->setPosition(count($parent->getChildren()));
-        $menu->setParent($parent);
-
-        return $this->create(
-            $menu,
-            LinkType::class,
-            $requestHandler,
-            ['list' => 'admin_menu_index'],
-            'admin/menu/form.html.twig'
-        );
-    }
-
-    /**
-     * @Route("/divider/{id}", name="admin_menu_divider")
-     */
-    public function divider(Menu $menu, MenuRequestHandler $requestHandler): RedirectResponse
-    {
-        $entity    = new Menu();
-        $oldEntity = clone $entity;
-        $position  = count($entity->getChildren());
-        $entity->setPosition($position + 1);
-        $entity->setSeparateur(true);
-        $entity->setParent($menu);
-        $requestHandler->handle($oldEntity, $entity);
-
-        return new RedirectResponse(
-            $this->router->generate('admin_menu_index')
-        );
-    }
-
-    /**
-     * @Route("/new", name="admin_menu_new", methods={"GET", "POST"})
-     */
-    public function new(MenuRequestHandler $requestHandler): Response
-    {
-        return $this->create(
-            new Menu(),
-            PrincipalType::class,
-            $requestHandler,
-            ['list' => 'admin_menu_index'],
-            'admin/menu/form.html.twig'
-        );
-    }
-
-    /**
-     * @Route("/update/{id}", name="admin_menu_update", methods={"GET", "POST"})
-     */
-    public function edit(Menu $menu, MenuRequestHandler $requestHandler)
-    {
-        $this->modalAttachmentDelete();
-        $form = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
-        $data = [$menu->getData()];
-        $menu->setData($data);
-
-        return $this->update(
-            $form,
-            $menu,
-            $requestHandler,
-            [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_menu_index',
+                'title'        => $this->translator->trans('menu.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_index',
+                'route_params' => [],
             ],
-            'admin/menu/form.html.twig'
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminMenuAdd(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('menu.add', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_add',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminMenuDivider(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('menu.divider', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_divider',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminMenuMove(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('menu.move', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_move',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminMenuNew(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('menu.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_new',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminMenuTrash(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('menu.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_trash',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminMenuUpdate(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('menu.update', [], 'admin.breadcrumb'),
+                'route'        => 'admin_menu_update',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setHeaderTitle(): array
+    {
+        $headers = parent::setHeaderTitle();
+
+        return array_merge(
+            $headers,
+            [
+                'admin_menu' => $this->translator->trans('menu.title', [], 'admin.header'),
+            ]
         );
     }
 }

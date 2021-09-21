@@ -19,18 +19,23 @@ class EditoWorkflowSubscriber implements EventSubscriberInterface
         switch ($name) {
             case 'submit':
                 $this->transitionSubmit($event);
+
                 break;
             case 'relire':
                 $this->transitionRelire($event);
+
                 break;
             case 'corriger':
                 $this->transitionCorriger($event);
+
                 break;
             case 'publier':
                 $this->transitionPublier($event);
+
                 break;
             case 'rejeter':
                 $this->transitionRejeter($event);
+
                 break;
         }
     }

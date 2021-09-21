@@ -3,7 +3,6 @@
 namespace Labstag\Lib;
 
 use Bluemmb\Faker\PicsumPhotosProvider;
-use Cocur\Slugify\Slugify;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Exception;
@@ -22,6 +21,7 @@ use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AdresseUserRequestHandler;
 use Labstag\RequestHandler\AttachmentRequestHandler;
+use Labstag\RequestHandler\CategoryRequestHandler;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
@@ -38,12 +38,15 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
 
 abstract class FixtureLib extends Fixture
 {
     protected const NUMBER_ADRESSE = 25;
+
+    protected const NUMBER_CATEGORY = 50;
 
     protected const NUMBER_EDITO = 25;
 
@@ -66,6 +69,8 @@ abstract class FixtureLib extends Fixture
     protected AttachmentRequestHandler $attachmentRH;
 
     protected CacheInterface $cache;
+
+    protected CategoryRequestHandler $categoryRH;
 
     protected ContainerBagInterface $containerBag;
 
@@ -124,9 +129,11 @@ abstract class FixtureLib extends Fixture
         AdresseUserRequestHandler $adresseUserRH,
         TemplateRequestHandler $templateRH,
         LibelleRequestHandler $libelleRH,
-        CacheInterface $cache
+        CacheInterface $cache,
+        CategoryRequestHandler $categoryRH,
     )
     {
+        $this->categoryRH        = $categoryRH;
         $this->attachmentRH      = $attachmentRH;
         $this->logger            = $logger;
         $this->containerBag      = $containerBag;
@@ -227,12 +234,12 @@ abstract class FixtureLib extends Fixture
         $dateFin->modify('+'.$faker->numberBetween(10, 50).' days');
         $dateFin->modify('+'.$faker->numberBetween(2, 24).' hours');
         $noteinterne->setDateFin($dateFin);
-        /** @var string $content */
+        // @var string $content
         $content = $faker->paragraphs(4, true);
         $noteinterne->setContent(str_replace("\n\n", "<br />\n", $content));
         $this->addReference('noteinterne_'.$index, $noteinterne);
         $tabIndex = array_rand($users);
-        /** @var User $user */
+        // @var User $user
         $user = $users[$tabIndex];
         $noteinterne->setRefuser($user);
         $this->upload($noteinterne, $faker);
@@ -307,17 +314,18 @@ abstract class FixtureLib extends Fixture
             return;
         }
 
-        /** @var resource $finfo */
+        // @var resource $finfo
         $finfo       = finfo_open(FILEINFO_MIME_TYPE);
         $annotations = $this->uploadAnnotReader->getUploadableFields($entity);
-        $slugify     = new Slugify();
+        $slugger     = new AsciiSlugger();
         foreach ($annotations as $annotation) {
             $path       = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $accessor   = PropertyAccess::createPropertyAccessor();
             $title      = $accessor->getValue($entity, $annotation->getSlug());
-            $slug       = $slugify->slugify($title);
+            $slug       = $slugger->slug($title);
             $attachment = new Attachment();
             $old        = clone $attachment;
+
             try {
                 $image   = $faker->imageUrl(
                     1920,
@@ -325,7 +333,7 @@ abstract class FixtureLib extends Fixture
                     true
                 );
                 $content = file_get_contents($image);
-                /** @var resource $tmpfile */
+                // @var resource $tmpfile
                 $tmpfile = tmpfile();
                 $data    = stream_get_meta_data($tmpfile);
                 file_put_contents($data['uri'], $content);

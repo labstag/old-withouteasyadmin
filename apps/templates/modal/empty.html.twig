@@ -3,23 +3,23 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="empty-modalLabel">
-                    Supprimer ?
+                    {{ 'modal.empty.title'|trans }}
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Êtes-vous sûr de vouloir vider la corbeille ?
+                {{ 'modal.empty.message'|trans }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn-cancel" data-bs-dismiss="modal">
                     <i></i>
-                    <span>Annuler</span>
+                    <span>{{ 'modal.button.cancel'|trans }}</span>
                 </button>
                 <confirm-empty>
                     <i></i>
-                    <span>Vider</span>
+                    <span>{{ 'modal.button.empty'|trans }}</span>
                 </confirm-empty>
             </div>
         </div>

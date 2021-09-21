@@ -27,7 +27,7 @@ class AdminGeoCodeControllerTest extends WebTestCase
 
     /**
      * @dataProvider provideAllUrlWithoutParams
-     * @param string $route
+     * @param        string $route
      */
     public function testUrl($route, $groupe)
     {
@@ -110,7 +110,9 @@ class AdminGeoCodeControllerTest extends WebTestCase
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(GeoCode::class);
-        /** @var GeoCodeRepository $repository */
+        /**
+ * @var GeoCodeRepository $repository
+*/
         $data = $repository->findOneRandom();
 
         return $data;

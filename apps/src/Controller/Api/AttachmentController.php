@@ -153,7 +153,7 @@ class AttachmentController extends ApiControllerLib
 
     protected function verifToken($entity): bool
     {
-        $token = $this->request->request->get('_token');
+        $token = $this->get('request_stack')->getCurrentRequest()->request->get('_token');
 
         $csrfToken = new CsrfToken(
             'attachment-img-'.$entity->getId(),
@@ -177,9 +177,9 @@ class AttachmentController extends ApiControllerLib
         }
 
         $old        = clone $entity;
-        $attachment = $entity->$methodGet();
+        $attachment = $entity->{$methodGet}();
         $this->deleteAttachment($attachment);
-        $entity->$methodSet(null);
+        $entity->{$methodSet}(null);
         $requesthandler->handle($old, $entity);
         $return['state'] = true;
 

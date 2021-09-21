@@ -11,8 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"user": "PhoneUser"})
+ * @ORM\DiscriminatorColumn(name="discr",       type="string")
+ * @ORM\DiscriminatorMap({"user":               "PhoneUser"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 abstract class Phone
@@ -39,7 +39,9 @@ abstract class Phone
      */
     protected $numero;
 
-    /** @ORM\Column(type="boolean") */
+    /**
+     * @ORM\Column(type="boolean")
+     */
     protected $principal;
 
     /**

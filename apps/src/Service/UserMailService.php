@@ -44,13 +44,13 @@ class UserMailService
         $this->config = $config;
 
         $code            = 'languagedefault';
-        $languagedefault = isset($config[$code]) ? $config[$code] : 'fr';
+        $languagedefault = $config[$code] ?? 'fr';
         Locale::setDefault($languagedefault);
     }
 
     public function changeEmailPrincipal(User $user): void
     {
-        /** @var Template $template */
+        // @var Template $template
         $template = $this->repository->findOneBy(
             ['code' => 'change-email-principal']
         );
@@ -66,7 +66,7 @@ class UserMailService
 
     public function changePassword(User $user): void
     {
-        /** @var Template $template */
+        // @var Template $template
         $template = $this->repository->findOneBy(
             ['code' => 'change-password']
         );
@@ -104,7 +104,7 @@ class UserMailService
 
     public function checkNewAdresse(User $user, AdresseUser $adresseUser): void
     {
-        /** @var Template $template */
+        // @var Template $template
         $template = $this->repository->findOneBy(
             ['code' => 'check-new-adresse']
         );
@@ -129,7 +129,7 @@ class UserMailService
 
     public function checkNewLink(User $user, LienUser $lienUser): void
     {
-        /** @var Template $template */
+        // @var Template $template
         $template = $this->repository->findOneBy(
             ['code' => 'check-new-link']
         );
@@ -149,7 +149,7 @@ class UserMailService
 
     public function checkNewMail(User $user, EmailUser $emailUser): void
     {
-        /** @var Template $template */
+        // @var Template $template
         $template = $this->repository->findOneBy(
             ['code' => 'check-new-mail']
         );
@@ -157,7 +157,7 @@ class UserMailService
             return;
         }
 
-        $url    = isset($this->config['site_url']) ? $this->config['site_url'] : '';
+        $url    = $this->config['site_url'] ?? '';
         $change = [
             'url_confirm_email' => $url.$this->router->generate(
                 'app_confirm_mail',
@@ -179,7 +179,7 @@ class UserMailService
         OauthConnectUser $oauthConnectUser
     ): void
     {
-        /** @var Template $template */
+        // @var Template $template
         $template = $this->repository->findOneBy(
             ['code' => 'check-new-oauthconnectuser']
         );
@@ -199,7 +199,7 @@ class UserMailService
 
     public function checkNewPhone(User $user, PhoneUser $phoneUser): void
     {
-        /** @var Template $template */
+        // @var Template $template
         $template = $this->repository->findOneBy(
             ['code' => 'check-new-phone']
         );
@@ -207,7 +207,7 @@ class UserMailService
             return;
         }
 
-        $url    = isset($this->config['site_url']) ? $this->config['site_url'] : '';
+        $url    = $this->config['site_url'] ?? '';
         $change = [
             'url_confirm_phone' => $url.$this->router->generate(
                 'app_confirm_phone',
@@ -226,7 +226,7 @@ class UserMailService
 
     public function lostPassword(User $user): void
     {
-        /** @var Template $template */
+        // @var Template $template
         $template = $this->repository->findOneBy(
             ['code' => 'lost-password']
         );
@@ -234,7 +234,7 @@ class UserMailService
             return;
         }
 
-        $url    = isset($this->config['site_url']) ? $this->config['site_url'] : $url = '';
+        $url    = $this->config['site_url'] ?? $url = '';
         $change = [
             'url_change_password' => $url.$this->router->generate(
                 'app_changepassword',
@@ -252,7 +252,7 @@ class UserMailService
 
     public function newUser(User $user): void
     {
-        /** @var Template $template */
+        // @var Template $template
         $template = $this->repository->findOneBy(
             ['code' => 'check-user']
         );

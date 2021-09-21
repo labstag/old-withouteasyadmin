@@ -9,7 +9,7 @@ use Labstag\Repository\ConfigurationRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ConfigurationRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt",                timeAware=false)
  */
 class Configuration
 {

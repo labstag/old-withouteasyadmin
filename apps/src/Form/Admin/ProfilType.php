@@ -8,44 +8,65 @@ use Labstag\Form\Admin\Collections\User\EmailType;
 use Labstag\Form\Admin\Collections\User\LienType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
 use Labstag\FormType\MinMaxCollectionType;
+use Labstag\Lib\AbstractTypeLib;
 use Labstag\Repository\EmailUserRepository;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ProfilType extends AbstractType
+class ProfilType extends AbstractTypeLib
 {
 
     protected EmailUserRepository $repository;
 
-    public function __construct(EmailUserRepository $repository)
+    public function __construct(
+        EmailUserRepository $repository,
+        TranslatorInterface $translator
+    )
     {
         $this->repository = $repository;
+        parent::__construct($translator);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
     ): void
     {
-        $builder->add('username');
+        $builder->add(
+            'username',
+            TextType::class,
+            [
+                'label' => $this->translator->trans('profil.username.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('profil.username.help', [], 'admin.form'),
+            ]
+        );
         $builder->add(
             'plainPassword',
             RepeatedType::class,
             [
                 'type'            => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
-                'options'         => ['attr' => ['class' => 'password-field']],
+                'invalid_message' => $this->translator->trans('profil.password.match', [], 'admin.form'),
+                'options'         => [
+                    'attr' => ['class' => 'password-field'],
+                ],
                 'required'        => false,
-                'first_options'   => ['label' => 'Password'],
-                'second_options'  => ['label' => 'Repeat Password'],
+                'first_options'   => [
+                    'label' => $this->translator->trans('profil.password.label', [], 'admin.form'),
+                    'help'  => $this->translator->trans('profil.password.help', [], 'admin.form'),
+                ],
+                'second_options'  => [
+                    'label' => $this->translator->trans('profil.repeatpassword.label', [], 'admin.form'),
+                    'help'  => $this->translator->trans('profil.repeatpassword.help', [], 'admin.form'),
+                ],
             ]
         );
         if (isset($options['data']) && !is_null($options['data']->getId())) {
@@ -65,7 +86,11 @@ class ProfilType extends AbstractType
                 $builder->add(
                     'email',
                     ChoiceType::class,
-                    ['choices' => $emails]
+                    [
+                        'label'   => $this->translator->trans('profil.email.label', [], 'admin.form'),
+                        'help'    => $this->translator->trans('profil.email.help', [], 'admin.form'),
+                        'choices' => $emails,
+                    ]
                 );
             }
         }
@@ -74,51 +99,33 @@ class ProfilType extends AbstractType
             'file',
             FileType::class,
             [
+                'label'    => ' ',
+                'help'     => $this->translator->trans('profil.file.help', [], 'admin.form'),
                 'required' => false,
                 'attr'     => ['accept' => 'image/*'],
             ]
         );
 
-        $builder->add(
-            'emailUsers',
-            MinMaxCollectionType::class,
-            [
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'entry_type'   => EmailType::class,
-                'by_reference' => false,
-            ]
-        );
-        $builder->add(
-            'phoneUsers',
-            MinMaxCollectionType::class,
-            [
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'entry_type'   => PhoneType::class,
-                'by_reference' => false,
-            ]
-        );
-        $builder->add(
-            'adresseUsers',
-            MinMaxCollectionType::class,
-            [
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'entry_type'   => AdresseType::class,
-                'by_reference' => false,
-            ]
-        );
-        $builder->add(
-            'lienUsers',
-            MinMaxCollectionType::class,
-            [
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'entry_type'   => LienType::class,
-                'by_reference' => false,
-            ]
-        );
+        $tab = [
+            'emailUsers'   => EmailType::class,
+            'phoneUsers'   => PhoneType::class,
+            'adresseUsers' => AdresseType::class,
+            'lienUsers'    => LienType::class,
+        ];
+
+        foreach ($tab as $key => $type) {
+            $builder->add(
+                $key,
+                MinMaxCollectionType::class,
+                [
+                    'label'        => ' ',
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                    'entry_type'   => $type,
+                    'by_reference' => false,
+                ]
+            );
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

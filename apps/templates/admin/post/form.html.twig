@@ -12,13 +12,14 @@
         {{ macro_admin.form_img(
             entity,
             entity.img,
-            "Image",
+            "post.image"|trans({}, 'admin.messages'),
             path('api_attachment_postimg', {'entity': entity.id})
         ) }}
     {% endif %}
     {{ form_row(form.file) }}
+    {{ form_row(form.refcategory) }}
+    {{ form_row(form.libelles) }}
     {{ form_row(form.refuser) }}
     {{ form_row(form.commentaire) }}
-    {{ form_row(form.libelles) }}
     {{ form_end(form) }}
 {% endblock %}

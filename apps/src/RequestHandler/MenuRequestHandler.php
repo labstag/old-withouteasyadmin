@@ -2,7 +2,6 @@
 
 namespace Labstag\RequestHandler;
 
-use Labstag\Entity\Menu;
 use Labstag\Event\MenuEntityEvent;
 use Labstag\Lib\RequestHandlerLib;
 

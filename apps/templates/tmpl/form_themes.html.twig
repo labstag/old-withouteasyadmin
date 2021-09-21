@@ -2,7 +2,25 @@
 {% block choice_widget_collapsed %}
     {% set isInput = attr.is|default('select-selector') %}
     {% set attr = attr|merge({'is': isInput}) %}
-    {{ parent() }}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
+        {% set required = false %}
+    {%- endif -%}
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {%- if placeholder is not none -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+        {%- endif -%}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {% set render_preferred_choices = true %}
+            {{- block('choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {%- set render_preferred_choices = false -%}
+        {{- block('choice_widget_options') -}}
+    </select>
 {% endblock %}
 {% block form_rows %}
     {% set template = formClass(form) %}
@@ -21,7 +39,7 @@
 {% block fieldset_widget %}
     <fieldset {{ block('widget_container_attributes') }}>
         {% if legend is defined and legend is not empty %}
-            <legend>{{ legend|trans({}, translation_domain) }}</legend>
+            <legend>{{ legend }}</legend>
 		{% endif %}
         {{ form_widget(form) }}
     </fieldset>
@@ -32,7 +50,7 @@
         <span class="{% if form is not rootform %}invalid-feedback{% else %}alert alert-danger{% endif %} d-block">
             {% for error in errors %}
                 {# <span class="d-block"> #}
-                    <span class="form-error">{{ 'Error'|trans({}, 'validators') }}</span> <span class="form-error-message">{{ error.message }}</span>
+                    <span class="form-error">{{ 'form.icon.error'|trans }}</span> <span class="form-error-message">{{ error.message }}</span>
                 {# </span> #}
             {% endfor %}
         </span>
@@ -280,9 +298,9 @@
                     {% endif %}
                 {% else %}
                     {% if label_html is same as(false) %}
-                        {{ label|trans(label_translation_parameters, translation_domain) }}
+                        {{ label }}
                     {% else %}
-                        {{ label|trans(label_translation_parameters, translation_domain)|raw }}
+                        {{ label|raw }}
                     {% endif %}
                 {% endif %}
             {% endif %}
@@ -344,7 +362,7 @@
             {% endif %}
         {% endfor %}
         {% if required == true %}
-            <div class="require-form-info">Les informations marquées d'un <span>*</span> sont obligatoires</div>
+            <div class="require-form-info">{{ 'form.requireinfo'|trans({"%span%": "<span>*</span>"})|raw }}</div>
         {% endif %}
     </form>
 {% endblock form_end %}
@@ -381,7 +399,7 @@
             {% endif %}
         {% endif %}
 		<{{ element|default('label') }}{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
-			{{ label|trans }}
+			{{ label }}
             <div class="btn-group float-end" role="group">
                 {% if allow_add is defined and allow_add == true %}
                     <btn-addcollection title="Ajouter"></btn-addcollection>
@@ -453,6 +471,38 @@
         {% endfor %}
     </div>
 {% endblock %}
+
+{%- block button_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('btn-secondary') ~ ' btn')|trim}) -%}
+    <div{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group')|trim})} %}{{ block('attributes') }}{% endwith %}>
+        
+    {%- if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- elseif label is not same as(false) -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
+        {%- if translation_domain is same as(false) -%}
+            {%- if label_html is same as(false) -%}
+                {{- label -}}
+            {%- else -%}
+                {{- label|raw -}}
+            {%- endif -%}
+        {%- else -%}
+            {%- if label_html is same as(false) -%}
+                {{- label -}}
+            {%- else -%}
+                {{- label|raw -}}
+            {%- endif -%}
+        {%- endif -%}
+    </button>
+    </div>
+{%- endblock button_widget %}
 
 {% block form_start %}
     {% do form.setMethodRendered() %}

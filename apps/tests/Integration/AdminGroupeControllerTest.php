@@ -27,7 +27,7 @@ class AdminGroupeControllerTest extends WebTestCase
 
     /**
      * @dataProvider provideAllUrlWithoutParams
-     * @param string $route
+     * @param        string $route
      */
     public function testUrl($route, $groupe)
     {
@@ -110,7 +110,9 @@ class AdminGroupeControllerTest extends WebTestCase
         $doctrine      = $container->get('doctrine');
         $entityManager = $doctrine->getManager();
         $repository    = $entityManager->getRepository(Groupe::class);
-        /** @var GroupeRepository $repository */
+        /**
+ * @var GroupeRepository $repository
+*/
         $data = $repository->findOneRandom();
 
         return $data;

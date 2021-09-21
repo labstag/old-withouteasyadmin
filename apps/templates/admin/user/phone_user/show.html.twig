@@ -3,33 +3,33 @@
     <table>
         <tbody>
             <tr>
-                <th>Numero</th>
+                <th>{{ 'user.phone.numero'|trans({}, 'admin.messages') }}</th>
                 <td><a href="tel:{{ entity.numero }}">{{ entity.numero }}</a></td>
             </tr>
             <tr>
-                <th>Verif</th>
+                <th>{{ 'user.phone.verif'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% set check = verifPhone(entity.country, entity.numero)  ? 'ok' : 'ko' %}
                     <span class="check-{{ check }}"></span>
                 </td>
             </tr>
             <tr>
-                <th>Country</th>
+                <th>{{ 'user.phone.country'|trans({}, 'admin.messages') }}</th>
                 <td>
                     <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
                     {{ entity.country|country_name('fr') }}
                 </td>
             </tr>
             <tr>
-                <th>Type</th>
+                <th>{{ 'user.phone.type'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.type }}</td>
             </tr>
             <tr>
-                <th>Principal</th>
-                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
+                <th>{{ 'user.phone.principal'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
             </tr>
             <tr>
-                <th>User</th>
+                <th>{{ 'user.phone.user'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% if entity.refuser.deletedAt != '' %}
                         {% set url = 'admin_user_preview' %}
@@ -45,7 +45,7 @@
                 </td>
             </tr>
             <tr>
-                <th>State</th>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

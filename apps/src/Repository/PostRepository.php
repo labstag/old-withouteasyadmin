@@ -62,6 +62,40 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
+    public function findPublierCategory($code)
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where('u.state LIKE :state');
+        $query->orderBy('u.published', 'DESC');
+        $query->leftJoin('u.refcategory', 'c');
+        $query->andWhere('c.slug=:slug');
+        $query->setParameters(
+            [
+                'slug'  => $code,
+                'state' => '%publie%',
+            ]
+        );
+
+        return $query->getQuery();
+    }
+
+    public function findPublierLibelle($code)
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where('u.state LIKE :state');
+        $query->orderBy('u.published', 'DESC');
+        $query->leftJoin('u.libelles', 'l');
+        $query->andWhere('l.slug=:slug');
+        $query->setParameters(
+            [
+                'slug'  => $code,
+                'state' => '%publie%',
+            ]
+        );
+
+        return $query->getQuery();
+    }
+
     public function findPublierUsername($username)
     {
         $queryBuilder = $this->createQueryBuilder('p');

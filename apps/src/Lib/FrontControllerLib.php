@@ -2,35 +2,12 @@
 
 namespace Labstag\Lib;
 
-use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Attachment;
-use Labstag\Service\DataService;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Twig\Environment;
-use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 abstract class FrontControllerLib extends ControllerLib
 {
-
-    protected Environment $twig;
-
-    protected RequestStack $requestStack;
-
-    public function __construct(
-        RequestStack $requestStack,
-        DataService $dataService,
-        Breadcrumbs $breadcrumbs,
-        Environment $twig,
-        PaginatorInterface $paginator
-    )
-    {
-        $this->twig = $twig;
-        parent::__construct($requestStack, $dataService, $breadcrumbs, $paginator);
-    }
-
     protected function setMetaOpenGraph(
         string $title,
         string $keywords,
@@ -38,8 +15,8 @@ abstract class FrontControllerLib extends ControllerLib
         $image
     )
     {
-        $globals = $this->twig->getGlobals();
-        $config  = isset($globals['config']) ? $globals['config'] : $this->dataService->getConfig();
+        $globals = $this->get('twig')->getGlobals();
+        $config  = $globals['config'] ?? $this->dataService->getConfig();
 
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
 
@@ -55,7 +32,7 @@ abstract class FrontControllerLib extends ControllerLib
         $config['meta'] = $meta;
         ksort($config['meta']);
 
-        $this->twig->AddGlobal('config', $config);
+        $this->get('twig')->AddGlobal('config', $config);
         $this->setMetatags($config['meta']);
     }
 
@@ -124,8 +101,11 @@ abstract class FrontControllerLib extends ControllerLib
                     'property' => $key,
                     'content'  => $value,
                 ];
+
                 continue;
-            } elseif ('description' == $key) {
+            }
+
+            if ('description' == $key) {
                 $metatags[] = [
                     'itemprop' => $key,
                     'content'  => $value,
@@ -134,6 +114,7 @@ abstract class FrontControllerLib extends ControllerLib
                     'name'    => $key,
                     'content' => $value,
                 ];
+
                 continue;
             }
 
@@ -143,6 +124,6 @@ abstract class FrontControllerLib extends ControllerLib
             ];
         }
 
-        $this->twig->AddGlobal('sitemetatags', $metatags);
+        $this->get('twig')->AddGlobal('sitemetatags', $metatags);
     }
 }

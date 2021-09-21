@@ -2,12 +2,13 @@
 
 namespace Labstag\Form\Admin\Menu;
 
+use Doctrine\DBAL\Types\TextType;
 use Labstag\Entity\Menu;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PrincipalType extends AbstractType
+class PrincipalType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -15,7 +16,14 @@ class PrincipalType extends AbstractType
     ): void
     {
         unset($options);
-        $builder->add('clef');
+        $builder->add(
+            'clef',
+            TextType::class,
+            [
+                'label' => $this->translator->trans('menu.principal.clef.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('menu.principal.clef.help', [], 'admin.form'),
+            ]
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

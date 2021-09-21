@@ -15,7 +15,6 @@
 {% endmacro %}
 
 {% macro show(entity, url, title) %}
-    {% set title = title|trans %}
     {% set state = guard_route(url) %}
     {% if state == true %}
         <link-show
@@ -25,7 +24,6 @@
     {% endif %}
 {% endmacro %}
 {% macro guard(entity, url, title) %}
-    {% set title = title|trans %}
     {% set state1 = guard_route(url) %}
     {% if entity.refgroupe is defined %}
         {% set state2 = guard_user_access(entity) %}
@@ -40,25 +38,23 @@
     {% endif %}
 {% endmacro %}
 {% macro edit(entity, url) %}
-    {% set title = "Edit"|trans %}
     {% set state1 = guard_route(url) %}
     {% set state2 = is_granted('edit', entity) %}
     {% if state1 == true and state2 == true %}
         <link-edit
             href="{{ path(url, {'id': entity.id}) }}"
-            title="{{ title|e('html_attr') }}"
+            title="{{ 'link.edit'|trans({}, 'admin.messages')|e('html_attr') }}"
         ></link-edit>
     {% endif %}
 {% endmacro %}
 {% macro delete(entity, urlDelete, urlList) %}
-    {% set title = "Delete"|trans %}
     {% set state1 = guard_route(urlDelete) %}
     {% set state2 = guard_route(urlList) %}
     {% if state1 == true and state2 == true %}
         <link-delete
             data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
             data-token="{{ csrf_token('delete' ~ entity.id) }}"
-            data-title="{{ title|e('html_attr') }}"
+            data-title="{{ 'link.delete'|trans({}, 'admin.messages')|e('html_attr') }}"
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
@@ -66,14 +62,13 @@
     {% endif %}
 {% endmacro %}
 {% macro destroy(entity, urlDelete, urlList) %}
-    {% set title = "Destroy"|trans %}
     {% set state1 = guard_route(urlDelete) %}
     {% set state2 = guard_route(urlList) %}
     {% if state1 == true and state2 == true %}
         <link-destroy
             data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
             data-token="{{ csrf_token('destroy' ~ entity.id) }}"
-            data-title="{{ title|e('html_attr') }}"
+            data-title="{{ 'link.destroy'|trans({}, 'admin.messages')|e('html_attr') }}"
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
@@ -81,14 +76,13 @@
     {% endif %}
 {% endmacro %}
 {% macro restore(entity, urlDelete, urlList) %}
-    {% set title = "Restaurer"|trans %}
     {% set state1 = guard_route(urlDelete) %}
     {% set state2 = guard_route(urlList) %}
     {% if state1 == true and state2 == true %}
         <link-restore
             data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
             data-token="{{ csrf_token('restore' ~ entity.id) }}"
-            data-title="{{ title|e('html_attr') }}"
+            data-title="{{ 'link.restore'|trans({}, 'admin.messages')|e('html_attr') }}"
             {% if urlList != '' %}
                 data-redirect="{{ path(urlList) }}"
             {% endif %}
@@ -118,13 +112,19 @@
     {% set trash = app.request.attributes.get('_route')|split('trash')|length-1 %}
     <div class="btngrouptable" role="group">
         {% if actions['show'] is defined %}
-            {% set urlShow = actions['show'] %}
-            {% set titleShow = 'show' %}
-            {% if trash != 0 %}
-                {% set urlShow = actions['preview'] %}
-                {% set titleShow = 'preview' %}
+            {% if trash == 0 %}
+                {{ _self.show(
+                    entity,
+                    actions['show'],
+                    'link.show'|trans({}, 'admin.messages')
+                ) }}
+            {% elseif trash != 0 %}
+                {{ _self.show(
+                    entity,
+                    actions['preview'],
+                    'link.preview'|trans({}, 'admin.messages')
+                ) }}
             {% endif %}
-            {{ _self.show(entity, urlShow, titleShow) }}
         {% endif %}
         {% if 0 == trash %}
             {% if actions['guard'] is defined %}

@@ -11,7 +11,7 @@
         {{ macro_admin.form_img(
             entity,
             entity.fond,
-            "Fond",
+            "edito.fond"|trans({}, 'admin.messages'),
             path('api_attachment_editofond', {'entity': entity.id})
         ) }}
     {% endif %}

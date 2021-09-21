@@ -2,34 +2,43 @@
 
 namespace Labstag\Form\Security;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ChangePasswordType extends AbstractType
+class ChangePasswordType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
     ): void
     {
+        $first  = [
+            'label' => $this->translator->trans('changepassword.password.label', [], 'security.form'),
+            'help'  => $this->translator->trans('changepassword.password.help', [], 'security.form'),
+        ];
+        $second = [
+            'label' => $this->translator->trans('changepassword.repeatpassword.label', [], 'security.form'),
+            'help'  => $this->translator->trans('changepassword.repeatpassword.help', [], 'security.form'),
+        ];
         $builder->add(
             'plainPassword',
             RepeatedType::class,
             [
                 'type'           => PasswordType::class,
-                'label'          => 'password',
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'first_options'  => $first,
+                'second_options' => $second,
             ]
         );
         $builder->add(
             'submit',
             SubmitType::class,
-            ['label' => 'Change password']
+            [
+                'label' => $this->translator->trans('changepassword.password.label', [], 'security.form'),
+            ]
         );
         unset($options);
     }

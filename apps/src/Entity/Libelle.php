@@ -36,7 +36,7 @@ class Libelle
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"nom"})
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string",   length=255)
      */
     private $slug;
 
@@ -101,5 +101,10 @@ class Libelle
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function setString(string $nom): self
+    {
+        return $this->setNom($nom);
     }
 }

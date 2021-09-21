@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=NoteInterneRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt",              timeAware=false)
  * @Uploadable()
  */
 class NoteInterne
@@ -33,7 +33,7 @@ class NoteInterne
     protected DateTime $dateDebut;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime",                         nullable=true)
      * @Assert\GreaterThanOrEqual(propertyPath="dateDebut")
      */
     protected DateTime $dateFin;

@@ -23,12 +23,12 @@ security:
       custom_authenticator:
         - Labstag\Security\LoginFormAuthenticator
         - Labstag\Security\OauthAuthenticator
-
-      # guard:
-      #   authenticators:
-      #     - Labstag\Security\OauthAuthenticator
-      #     - Labstag\Security\FormAuthenticator
-      #   entry_point: Labstag\Security\FormAuthenticator
+      remember_me:
+        secret:   '%kernel.secret%'
+        lifetime: 604800 # 1 week in seconds
+        remember_me_parameter: "login[remember_me]"
+        path:     /
+        domain: ~
       logout:
         path: app_logout
         # where to redirect after logout

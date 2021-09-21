@@ -13,34 +13,26 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SearchableType extends AbstractType
 {
 
+    protected EntityManagerInterface $entityManager;
+
     protected RouterInterface $router;
 
-    protected EntityManagerInterface $entityManager;
+    protected TranslatorInterface $translator;
 
     public function __construct(
         RouterInterface $router,
+        TranslatorInterface $translator,
         EntityManagerInterface $entityManager
     )
     {
+        $this->translator    = $translator;
         $this->entityManager = $entityManager;
         $this->router        = $router;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setRequired('class');
-        $resolver->setRequired('route');
-        $resolver->setDefaults(
-            [
-                'compound' => false,
-                'multiple' => true,
-                'attr'     => ['is' => 'select-selector'],
-            ]
-        );
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -60,6 +52,9 @@ class SearchableType extends AbstractType
                     }
 
                     $repository = $this->entityManager->getRepository($options['class']);
+                    if ($options['add'] && is_array($ids)) {
+                        $ids = $this->addToentity($ids, $options);
+                    }
 
                     return is_array($ids) ? new ArrayCollection(
                         $repository->findBy(['id' => $ids])
@@ -73,13 +68,13 @@ class SearchableType extends AbstractType
     {
         $view->vars['expanded'] = false;
 
-        $placeholder = isset($options['placeholder']) ? $options['placeholder'] : null;
+        $placeholder = $options['placeholder'] ?? null;
 
         $view->vars['placeholder']               = $placeholder;
         $view->vars['placeholder_in_choices']    = false;
         $view->vars['multiple']                  = $options['multiple'];
         $view->vars['preferred_choices']         = [];
-        $view->vars['choices']                   = $this->choices($form->getData());
+        $view->vars['choices']                   = $this->choices($form->getData(), $options);
         $view->vars['choice_translation_domain'] = false;
         if ($options['multiple']) {
             $view->vars['full_name'] .= '[]';
@@ -89,10 +84,33 @@ class SearchableType extends AbstractType
 
         $attr['data-url'] = $this->router->generate(
             $options['route'],
-            isset($options['route_param']) ? $options['route_param'] : []
+            $options['route_param'] ?? []
         );
 
+        $attr['data-add'] = $options['add'] ? 1 : 0;
+        if ($options['add']) {
+            $attr['data-addmessage'] = $this->translator->trans('select.add');
+        }
+
         $view->vars['attr'] = $attr;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('class');
+        $resolver->setRequired('route');
+        $resolver->setDefaults(
+            [
+                'new'      => null,
+                'add'      => false,
+                'compound' => false,
+                'multiple' => true,
+                'attr'     => [
+                    'data-noresult' => $this->translator->trans('select.noresult'),
+                    'is'            => 'select-selector',
+                ],
+            ]
+        );
     }
 
     public function getBlockPrefix()
@@ -100,8 +118,39 @@ class SearchableType extends AbstractType
         return 'choice';
     }
 
-    private function choices($values)
+    protected function addToentity(array $ids, $options)
     {
+        if (is_null($options['new'])) {
+            return $ids;
+        }
+
+        $entityManager = $this->entityManager;
+        $repository    = $entityManager->getRepository($options['class']);
+        dump($ids);
+        foreach ($ids as $id => $key) {
+            $entity = $repository->find($key);
+            if ($entity instanceof $options['class']) {
+                continue;
+            }
+
+            $entity = clone $options['new'];
+            $entity->setString($key);
+            $entityManager->persist($entity);
+            $entityManager->flush();
+            $ids[$id] = $entity->getId();
+        }
+
+        dump($ids);
+
+        return $ids;
+    }
+
+    private function choices($values, array $options)
+    {
+        if (is_null($values)) {
+            return ($options['multiple']) ? [] : null;
+        }
+
         if ($values instanceof Collection) {
             return $values->map(fn ($d) => new ChoiceView($d, (string) $d->getId(), (string) $d))->toArray();
         }

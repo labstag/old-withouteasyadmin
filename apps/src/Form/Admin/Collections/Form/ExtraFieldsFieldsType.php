@@ -4,14 +4,14 @@ namespace Labstag\Form\Admin\Collections\Form;
 
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\FormType\CoreTextareaType;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ExtraFieldsFieldsType extends AbstractType
+class ExtraFieldsFieldsType extends AbstractTypeLib
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

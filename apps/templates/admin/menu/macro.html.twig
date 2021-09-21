@@ -3,7 +3,7 @@
         {% for child in children %}
         <li>
             {% if child.separateur %}
-                [[DIVIDER]] {{ _self.link(child, position) }}
+                {{ 'menu.divider'|trans({}, 'admin.messages') }} {{ _self.link(child, position) }}
             {% else %}
                 {{ child.libelle }} {{ _self.link(child, position) }}
                 {% if 0 != child.children|length %}
@@ -15,7 +15,7 @@
     </ul>
 {% endmacro %}
 {% macro addlink(entity, url) %}
-    {% set title = "Add"|trans %}
+    {% set title = "admin.menu.add"|trans({}, 'admin.messages') %}
     {% set state1 = guard_route(url) %}
     {% set state2 = is_granted('add', entity) %}
     {% if state1 == true and state2 == true %}
@@ -26,7 +26,7 @@
     {% endif %}
 {% endmacro %}
 {% macro adddivider(entity, url) %}
-    {% set title = "Add divideur"|trans %}
+    {% set title = "admin.menu.adddivider"|trans({}, 'admin.messages') %}
     {% set state1 = guard_route(url) %}
     {% set state2 = is_granted('add', entity) %}
     {% if state1 == true and state2 == true %}
@@ -37,7 +37,7 @@
     {% endif %}
 {% endmacro %}
 {% macro move(entity, url) %}
-    {% set title = "Move"|trans %}
+    {% set title = "admin.menu.move"|trans({}, 'admin.messages') %}
     {% set state1 = guard_route(url) %}
     {% set state2 = is_granted('add', entity) %}
     {% if state1 == true and state2 == true %}

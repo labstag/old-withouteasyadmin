@@ -3,15 +3,15 @@
     <table>
         <tbody>
             <tr>
-                <th>Adresse</th>
+                <th>{{ 'user.email.adresse'|trans({}, 'admin.messages') }}</th>
                 <td><a href="mailto:{{ entity.adresse }}">{{ entity.adresse }}</a></td>
             </tr>
             <tr>
-                <th>Principal</th>
-                <td>{{ entity.principal ? 'Yes' : 'No' }}</td>
+                <th>{{ 'user.email.principal'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
             </tr>
             <tr>
-                <th>User</th>
+                <th>{{ 'user.email.user'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% if entity.refuser.deletedAt != '' %}
                         {% set url = 'admin_user_preview' %}
@@ -27,7 +27,7 @@
                 </td>
             </tr>
             <tr>
-                <th>State</th>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% for state in workflow_marked_places(entity) %}
                         {{ state }}

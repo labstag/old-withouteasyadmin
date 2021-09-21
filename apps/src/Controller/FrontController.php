@@ -4,7 +4,9 @@ namespace Labstag\Controller;
 
 use Labstag\Entity\Edito;
 use Labstag\Lib\FrontControllerLib;
+use Labstag\Repository\CategoryRepository;
 use Labstag\Repository\EditoRepository;
+use Labstag\Repository\LibelleRepository;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +19,7 @@ class FrontController extends FrontControllerLib
      */
     public function edito(EditoRepository $editoRepository): Response
     {
-        /** @var Edito $edito */
+        // @var Edito $edito
         $edito = $editoRepository->findOnePublier();
         $this->setMetaOpenGraph(
             $edito->getTitle(),
@@ -35,7 +37,13 @@ class FrontController extends FrontControllerLib
     /**
      * @Route("/", name="front")
      */
-    public function index(EditoRepository $editoRepository, Request $request, PostRepository $postRepository): Response
+    public function index(
+        EditoRepository $editoRepository,
+        Request $request,
+        PostRepository $postRepository,
+        LibelleRepository $libelleRepository,
+        CategoryRepository $categoryRepository
+    ): Response
     {
         $pagination = $this->paginator->paginate(
             $postRepository->findPublier(),
@@ -49,6 +57,8 @@ class FrontController extends FrontControllerLib
                 'edito'      => $editoRepository->findOnePublier(),
                 'pagination' => $pagination,
                 'archives'   => $postRepository->findDateArchive(),
+                'libelles'   => $libelleRepository->findByPost(),
+                'categories' => $categoryRepository->findByPost(),
             ]
         );
     }

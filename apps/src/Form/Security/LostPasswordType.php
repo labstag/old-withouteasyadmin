@@ -2,13 +2,13 @@
 
 namespace Labstag\Form\Security;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LostPasswordType extends AbstractType
+class LostPasswordType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -19,14 +19,17 @@ class LostPasswordType extends AbstractType
             'value',
             TextType::class,
             [
-                'label'    => 'Username or email',
+                'label'    => $this->translator->trans('lostpassword.value.label', [], 'security.form'),
+                'help'     => $this->translator->trans('lostpassword.value.help', [], 'security.form'),
                 'required' => false,
             ]
         );
         $builder->add(
             'submit',
             SubmitType::class,
-            ['label' => 'Get password']
+            [
+                'label' => $this->translator->trans('lostpassword.submit.label', [], 'security.form'),
+            ]
         );
         unset($options);
     }

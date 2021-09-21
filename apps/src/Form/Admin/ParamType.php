@@ -10,7 +10,7 @@ use Labstag\Form\Admin\Collections\Param\NotificationType;
 use Labstag\Form\Admin\Collections\Param\OauthType;
 use Labstag\Form\Admin\Collections\Param\TarteaucitronType;
 use Labstag\FormType\MinMaxCollectionType;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -21,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ParamType extends AbstractType
+class ParamType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $builder,
@@ -29,35 +29,23 @@ class ParamType extends AbstractType
     ): void
     {
         $builder->add('site_title', TextType::class);
-        $images = [
-            'image',
-            'favicon',
-        ];
-        foreach ($images as $key) {
-            $builder->add(
-                $key,
-                FileType::class,
-                [
-                    'required' => false,
-                    'attr'     => ['accept' => 'image/*'],
-                ]
-            );
-        }
-
-        $builder->add('title_format', TextType::class);
-        $builder->add('robotstxt', TextareaType::class);
-        $builder->add('languagedefault', LanguageType::class);
-        $builder->add('site_no-reply', EmailType::class);
-        $builder->add('site_url', UrlType::class);
+        $this->setFileType($builder);
+        $this->setInputs($builder);
         $builder->add(
             'language',
             LanguageType::class,
-            ['multiple' => true]
+            [
+                'multiple' => true,
+                'label'    => $this->translator->trans('param.language.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('param.language.help', [], 'admin.form'),
+            ]
         );
         $builder->add(
             'generator',
             ChoiceType::class,
             [
+                'label'   => $this->translator->trans('param.generator.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('param.generator.help', [], 'admin.form'),
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -84,6 +72,96 @@ class ParamType extends AbstractType
                 'entry_type'   => OauthType::class,
             ]
         );
+        $this->setMinMaxCollectionType($builder);
+
+        $builder->add(
+            'site_copyright',
+            CKEditorType::class,
+            [
+                'label' => $this->translator->trans('param.site_copyright.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.site_copyright.help', [], 'admin.form'),
+            ]
+        );
+        unset($options);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        // Configure your form options here
+        $resolver->setDefaults(
+            []
+        );
+    }
+
+    private function setFileType($builder)
+    {
+        $images = [
+            'image'   => [
+                'label' => $this->translator->trans('param.image.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.image.help', [], 'admin.form'),
+            ],
+            'favicon' => [
+                'label' => $this->translator->trans('param.favicon.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.favicon.help', [], 'admin.form'),
+            ],
+        ];
+        foreach ($images as $key => $row) {
+            $builder->add(
+                $key,
+                FileType::class,
+                [
+                    'label'    => $row['label'],
+                    'help'     => $row['help'],
+                    'required' => false,
+                    'attr'     => ['accept' => 'image/*'],
+                ]
+            );
+        }
+    }
+
+    private function setInputs($builder)
+    {
+        $inputs = [
+            'title_format'    => [
+                'class' => TextType::class,
+                'label' => $this->translator->trans('param.title_format.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.title_format.help', [], 'admin.form'),
+            ],
+            'robotstxt'       => [
+                'class' => TextareaType::class,
+                'label' => $this->translator->trans('param.robotstxt.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.robotstxt.help', [], 'admin.form'),
+            ],
+            'languagedefault' => [
+                'class' => LanguageType::class,
+                'label' => $this->translator->trans('param.languagedefault.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.languagedefault.help', [], 'admin.form'),
+            ],
+            'site_no-reply'   => [
+                'class' => EmailType::class,
+                'label' => $this->translator->trans('param.site_no-reply.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.site_no-reply.help', [], 'admin.form'),
+            ],
+            'site_url'        => [
+                'class' => UrlType::class,
+                'label' => $this->translator->trans('param.site_url.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.site_url.help', [], 'admin.form'),
+            ],
+        ];
+        foreach ($inputs as $key => $row) {
+            $builder->add(
+                $key,
+                $row['class'],
+                [
+                    'label' => $row['label'],
+                    'help'  => $row['help'],
+                ]
+            );
+        }
+    }
+
+    private function setMinMaxCollectionType($builder)
+    {
         $mixmax = [
             'tarteaucitron' => TarteaucitronType::class,
             'meta'          => MetaSiteType::class,
@@ -95,22 +173,12 @@ class ParamType extends AbstractType
                 $key,
                 MinMaxCollectionType::class,
                 [
+                    'label'        => ' ',
                     'allow_add'    => false,
                     'allow_delete' => false,
                     'entry_type'   => $entry,
                 ]
             );
         }
-
-        $builder->add('site_copyright', CKEditorType::class);
-        unset($options);
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        // Configure your form options here
-        $resolver->setDefaults(
-            []
-        );
     }
 }

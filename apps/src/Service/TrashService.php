@@ -33,32 +33,34 @@ class TrashService
         foreach ($finder as $file) {
             $repositoryFile = 'Labstag\\Repository\\'.$file->getFilenameWithoutExtension();
             $isTrashable    = $this->isTrashable($repositoryFile);
-            if ($isTrashable) {
-                $entity     = str_replace(
-                    'Repository',
-                    '',
-                    'Labstag\\Entity\\'.$file->getFilenameWithoutExtension()
-                );
-                $repository = $this->manager->getRepository($entity);
-                $trash      = $repository->findTrashForAdmin();
-                if (0 == count($trash)) {
-                    continue;
-                }
-
-                $data[] = [
-                    'name'       => strtolower(
-                        str_replace(
-                            'Repository',
-                            '',
-                            $file->getFilenameWithoutExtension()
-                        )
-                    ),
-                    'properties' => $this->getProperties($repositoryFile),
-                    'entity'     => $entity,
-                    'total'      => count($trash),
-                    'token'      => $this->csrfTokenManager->getToken('empty')->getValue(),
-                ];
+            if (!$isTrashable) {
+                continue;
             }
+
+            $entity     = str_replace(
+                'Repository',
+                '',
+                'Labstag\\Entity\\'.$file->getFilenameWithoutExtension()
+            );
+            $repository = $this->manager->getRepository($entity);
+            $trash      = $repository->findTrashForAdmin();
+            if (0 == count($trash)) {
+                continue;
+            }
+
+            $data[] = [
+                'name'       => strtolower(
+                    str_replace(
+                        'Repository',
+                        '',
+                        $file->getFilenameWithoutExtension()
+                    )
+                ),
+                'properties' => $this->getProperties($repositoryFile),
+                'entity'     => $entity,
+                'total'      => count($trash),
+                'token'      => $this->csrfTokenManager->getToken('empty')->getValue(),
+            ];
         }
 
         return $data;
@@ -74,9 +76,8 @@ class TrashService
 
         $reflection = $this->setReflection($repository);
         $properties = $reader->getClassAnnotations($reflection);
-        $properties = $properties[0];
 
-        return $properties;
+        return $properties[0];
     }
 
     public function isTrashable(string $repository): bool

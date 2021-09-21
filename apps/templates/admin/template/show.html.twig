@@ -3,19 +3,19 @@
     <table>
         <tbody>
             <tr>
-                <th>Name</th>
+                <th>{{ 'template.name'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.name }}</td>
             </tr>
             <tr>
-                <th>Code</th>
+                <th>{{ 'template.code'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.code }}</td>
             </tr>
             <tr>
-                <th>Html</th>
+                <th>{{ 'template.html'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.html|raw }}</td>
             </tr>
             <tr>
-                <th>Text</th>
+                <th>{{ 'template.text'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.text }}</td>
             </tr>
         </tbody>

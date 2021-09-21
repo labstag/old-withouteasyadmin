@@ -30,7 +30,7 @@ services:
       labels:
         - "traefik.enable=false"
   apache:
-    image: httpd:2.4.48
+    image: httpd:2.4.49
     depends_on:
       - phpfpm
     volumes:
@@ -52,6 +52,7 @@ services:
       - mailhog
       - redis
     environment:
+      COMPOSER_MEMORY_LIMIT: -1
       MAILER_DSN: "smtp://mailhog:1025"
       DATABASE_URL: "mysqli://labstag:password@mariadb:3306/labstag_bdd"
     volumes:

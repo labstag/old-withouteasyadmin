@@ -10,19 +10,19 @@
     {% endif %}
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
 		<li class="nav-item" role="presentation">
-			<a class="nav-link active" id="emails-tab" data-bs-toggle="tab" href="#emails" role="tab" aria-controls="emails" aria-selected="true">Emails</a>
+			<a class="nav-link active" id="emails-tab" data-bs-toggle="tab" href="#emails" role="tab" aria-controls="emails" aria-selected="true">{{ 'form.user.emails'|trans({}, 'admin.messages') }}</a>
 		</li>
 		<li class="nav-item" role="presentation">
-			<a class="nav-link" id="phones-tab" data-bs-toggle="tab" href="#phones" role="tab" aria-controls="phones" aria-selected="false">Phones</a>
+			<a class="nav-link" id="phones-tab" data-bs-toggle="tab" href="#phones" role="tab" aria-controls="phones" aria-selected="false">{{ 'form.user.phones'|trans({}, 'admin.messages') }}</a>
 		</li>
 		<li class="nav-item" role="presentation">
-			<a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false">Address</a>
+			<a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false">{{ 'form.user.address'|trans({}, 'admin.messages') }}</a>
 		</li>
 		<li class="nav-item" role="presentation">
-			<a class="nav-link" id="links-tab" data-bs-toggle="tab" href="#links" role="tab" aria-controls="links" aria-selected="false">Links</a>
+			<a class="nav-link" id="links-tab" data-bs-toggle="tab" href="#links" role="tab" aria-controls="links" aria-selected="false">{{ 'form.user.links'|trans({}, 'admin.messages') }}</a>
 		</li>
 		<li class="nav-item" role="presentation">
-			<a class="nav-link" id="avatar-tab" data-bs-toggle="tab" href="#avatar" role="tab" aria-controls="avatar" aria-selected="false">avatar</a>
+			<a class="nav-link" id="avatar-tab" data-bs-toggle="tab" href="#avatar" role="tab" aria-controls="avatar" aria-selected="false">{{ 'form.user.avatar'|trans({}, 'admin.messages') }}</a>
 		</li>
 	</ul>
 	<div class="tab-content" id="myTabContent">
@@ -43,7 +43,7 @@
                 {{ macro_admin.form_img(
                     entity,
                     entity.avatar,
-                    "Avatar",
+                    "user.avatar"|trans({}, 'admin.messages'),
                     path('api_attachment_useravatar', {'entity': entity.id})
                 ) }}
             {% endif %}

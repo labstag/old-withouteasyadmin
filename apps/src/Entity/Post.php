@@ -83,13 +83,18 @@ class Post
     private $published;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="posts")
+     */
+    private $refcategory;
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
      */
     private $refuser;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string",   length=255)
      */
     private $slug;
 
@@ -187,6 +192,11 @@ class Post
         return $this->published;
     }
 
+    public function getRefcategory(): ?Category
+    {
+        return $this->refcategory;
+    }
+
     public function getRefuser(): ?User
     {
         return $this->refuser;
@@ -271,6 +281,13 @@ class Post
     public function setPublished(DateTimeInterface $published): self
     {
         $this->published = $published;
+
+        return $this;
+    }
+
+    public function setRefcategory(?Category $refcategory): self
+    {
+        $this->refcategory = $refcategory;
 
         return $this;
     }
