@@ -74,3 +74,5 @@ user.subscriber.emailprincal.change: 'Email principal changé'
 user.subscriber.password.change: 'Mot de passe changé'
 user.workflow.new: 'Nouveau compte utilisateur créer'
 user.workflow.sendpasswordlink: 'Demande de nouveau mot de passe envoyé'
+select.noresult: 'Pas de résultat pour %result%'
+select.add: "Ajouter %result%&hellip;"

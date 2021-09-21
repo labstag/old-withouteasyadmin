@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SearchableType extends AbstractType
 {
@@ -21,11 +22,15 @@ class SearchableType extends AbstractType
 
     protected RouterInterface $router;
 
+    protected TranslatorInterface $translator;
+
     public function __construct(
         RouterInterface $router,
+        TranslatorInterface $translator,
         EntityManagerInterface $entityManager
     )
     {
+        $this->translator    = $translator;
         $this->entityManager = $entityManager;
         $this->router        = $router;
     }
@@ -47,6 +52,9 @@ class SearchableType extends AbstractType
                     }
 
                     $repository = $this->entityManager->getRepository($options['class']);
+                    if ($options['add'] && is_array($ids)) {
+                        $ids = $this->addToentity($ids, $options);
+                    }
 
                     return is_array($ids) ? new ArrayCollection(
                         $repository->findBy(['id' => $ids])
@@ -79,6 +87,11 @@ class SearchableType extends AbstractType
             $options['route_param'] ?? []
         );
 
+        $attr['data-add'] = $options['add'] ? 1 : 0;
+        if ($options['add']) {
+            $attr['data-addmessage'] = $this->translator->trans('select.add');
+        }
+
         $view->vars['attr'] = $attr;
     }
 
@@ -88,9 +101,14 @@ class SearchableType extends AbstractType
         $resolver->setRequired('route');
         $resolver->setDefaults(
             [
+                'new'      => null,
+                'add'      => false,
                 'compound' => false,
                 'multiple' => true,
-                'attr'     => ['is' => 'select-selector'],
+                'attr'     => [
+                    'data-noresult' => $this->translator->trans('select.noresult'),
+                    'is'            => 'select-selector',
+                ],
             ]
         );
     }
@@ -98,6 +116,33 @@ class SearchableType extends AbstractType
     public function getBlockPrefix()
     {
         return 'choice';
+    }
+
+    protected function addToentity(array $ids, $options)
+    {
+        if (is_null($options['new'])) {
+            return $ids;
+        }
+
+        $entityManager = $this->entityManager;
+        $repository    = $entityManager->getRepository($options['class']);
+        dump($ids);
+        foreach ($ids as $id => $key) {
+            $entity = $repository->find($key);
+            if ($entity instanceof $options['class']) {
+                continue;
+            }
+
+            $entity = clone $options['new'];
+            $entity->setString($key);
+            $entityManager->persist($entity);
+            $entityManager->flush();
+            $ids[$id] = $entity->getId();
+        }
+
+        dump($ids);
+
+        return $ids;
     }
 
     private function choices($values, array $options)
