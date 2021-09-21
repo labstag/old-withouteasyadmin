@@ -35,7 +35,7 @@ class MenuController extends AdminControllerLib
     ): Response
     {
         $get = $request->query->all();
-        $url = $this->router->generate('admin_menu_index');
+        $url = $this->generateUrl('admin_menu_index');
         if (!isset($get['id'])) {
             return new RedirectResponse($url);
         }
@@ -79,7 +79,7 @@ class MenuController extends AdminControllerLib
         $requestHandler->handle($oldEntity, $entity);
 
         return new RedirectResponse(
-            $this->router->generate('admin_menu_index')
+            $this->generateUrl('admin_menu_index')
         );
     }
 
@@ -122,11 +122,11 @@ class MenuController extends AdminControllerLib
     )
     {
         $all     = $repository->findAllCode();
-        $globals = $this->twig->getGlobals();
+        $globals = $this->get('twig')->getGlobals();
         $modal   = $globals['modal'] ?? [];
 
         $modal['delete'] = true;
-        $this->twig->addGlobal('modal', $modal);
+        $this->get('twig')->addGlobal('modal', $modal);
         $this->btnInstance()->addBtnNew('admin_menu_new');
 
         return $this->render(
@@ -145,7 +145,7 @@ class MenuController extends AdminControllerLib
     )
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $currentUrl    = $this->router->generate(
+        $currentUrl    = $this->generateUrl(
             'admin_menu_move',
             [
                 'id' => $menu->getId(),

@@ -26,6 +26,22 @@
             </tr>
             {% endif %}
             <tr>
+                <th>{{ 'post.category'|trans({}, 'admin.messages') }}</th>
+                <td>
+                    {% if entity.refuser.deletedAt != '' %}
+                        {% set url = 'admin_category_preview' %}
+                    {% else %}
+                        {% set url = 'admin_category_show' %}
+                    {% endif %}
+                    {% set state = guard_route(url) %}
+                    {% if state == true %}
+                        <a href="{{ path(url, {'id': entity.category.id}) }}">{{ entity.category }}</a>
+                    {% else %}
+                        {{ entity.category }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
                 <th>{{ 'post.user'|trans({}, 'admin.messages') }}</th>
                 <td>
                     {% if entity.refuser.deletedAt != '' %}

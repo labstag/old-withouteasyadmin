@@ -15,7 +15,7 @@ use Labstag\Repository\PostRepository;
 
 /**
  * @ORM\Entity(repositoryClass=PostRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt",       timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Uploadable()
  */
 class Post
@@ -53,7 +53,7 @@ class Post
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid",             unique=true)
+     * @ORM\Column(type="guid", unique=true)
      */
     private $id;
 
@@ -81,6 +81,11 @@ class Post
      * @ORM\Column(type="datetime")
      */
     private $published;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="posts")
+     */
+    private $refcategory;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
@@ -187,6 +192,11 @@ class Post
         return $this->published;
     }
 
+    public function getRefcategory(): ?Category
+    {
+        return $this->refcategory;
+    }
+
     public function getRefuser(): ?User
     {
         return $this->refuser;
@@ -271,6 +281,13 @@ class Post
     public function setPublished(DateTimeInterface $published): self
     {
         $this->published = $published;
+
+        return $this;
+    }
+
+    public function setRefcategory(?Category $refcategory): self
+    {
+        $this->refcategory = $refcategory;
 
         return $this;
     }

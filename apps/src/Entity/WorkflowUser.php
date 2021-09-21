@@ -14,7 +14,7 @@ class WorkflowUser
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid",             unique=true)
+     * @ORM\Column(type="guid", unique=true)
      */
     private $id;
 

@@ -50,7 +50,9 @@ pagination.next: Suivant
 pagination.previous: Précédent
 param.change: 'Données sauvegardé'
 post.archives: Archives
+post.categories: Categories
 post.infodateuser: '%date% par %user%'
+post.libelles: Libelles
 post.update: Modifier
 security.disclaimer.doaccept: 'Veuillez accepter l''énoncé'
 security.email.activate.fail: 'Courriel déjà confirmé'
@@ -65,6 +67,8 @@ security.user.connect.fail: 'Problème d''identification'
 security.user.oauth.dissociated: 'Connection Oauth %string% dissocié'
 security.user.oauth.fail: 'Connection Oauth impossible'
 security.user.sendlostpassword.fail: 'Demande de mot de passe non envoyé'
+select.add: 'Ajouter %result%&hellip;'
+select.noresult: 'Pas de résultat pour %result%'
 service.user.oauth.fail: 'Impossible d''associer le compte'
 service.user.oauth.sucess: 'Compte associé'
 user.guard.nope: 'Vous n''avez pas les droits nécessaires'
@@ -74,5 +78,3 @@ user.subscriber.emailprincal.change: 'Email principal changé'
 user.subscriber.password.change: 'Mot de passe changé'
 user.workflow.new: 'Nouveau compte utilisateur créer'
 user.workflow.sendpasswordlink: 'Demande de nouveau mot de passe envoyé'
-select.noresult: 'Pas de résultat pour %result%'
-select.add: "Ajouter %result%&hellip;"

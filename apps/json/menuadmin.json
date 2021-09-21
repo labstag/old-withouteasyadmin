@@ -1,4 +1,5 @@
-[{
+[
+    {
         "libelle": "Home",
         "data": {
             "route": "admin"
@@ -6,7 +7,8 @@
     },
     {
         "libelle": "Général",
-        "childs": [{
+        "childs": [
+            {
                 "libelle": "Trash",
                 "data": {
                     "route": "admin_trash"
@@ -64,7 +66,8 @@
     },
     {
         "libelle": "Utilisateurs",
-        "childs": [{
+        "childs": [
+            {
                 "libelle": "Adresses",
                 "data": {
                     "route": "admin_adresseuser_index"
@@ -129,10 +132,17 @@
     },
     {
         "libelle": "Posts",
-        "childs": [{
+        "childs": [
+            {
                 "libelle": "Libelle",
                 "data": {
                     "route": "admin_postlibelle_index"
+                }
+            },
+            {
+                "libelle": "Category",
+                "data": {
+                    "route": "admin_category_index"
                 }
             },
             {

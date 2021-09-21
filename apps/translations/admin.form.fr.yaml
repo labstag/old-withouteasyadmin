@@ -14,6 +14,12 @@ adresse.zipcode.help: ''
 adresse.zipcode.label: 'Code postal'
 adresseuser.refuser.help: ''
 adresseuser.refuser.label: Utilisateur
+category.name.help: ''
+category.name.label: Nom
+category.parent.help: ''
+category.parent.label: Parent
+category.slug.help: ''
+category.slug.label: Slug
 edito.content.help: ''
 edito.content.label: Contenu
 edito.file.help: ''
@@ -214,6 +220,8 @@ post.metaKeywords.help: ''
 post.metaKeywords.label: 'SEO mot clef'
 post.published.help: ''
 post.published.label: 'Publié ?'
+post.refcategory.help: ''
+post.refcategory.label: Catégorie
 post.refuser.help: ''
 post.refuser.label: Utilisateur
 post.slug.help: ''

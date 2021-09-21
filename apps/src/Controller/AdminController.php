@@ -141,7 +141,7 @@ class AdminController extends AdminControllerLib
             'btn-admin-header-export',
             'Exporter',
             [
-                'href' => $this->router->generate('admin_export'),
+                'href' => $this->generateUrl('admin_export'),
             ]
         );
 
@@ -222,7 +222,7 @@ class AdminController extends AdminControllerLib
             return $this->redirectToRoute('admin');
         }
 
-        $globals        = $this->twig->getGlobals();
+        $globals        = $this->get('twig')->getGlobals();
         $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
         if ($this->isRouteEnable('api_action_emptyall')) {
@@ -236,13 +236,13 @@ class AdminController extends AdminControllerLib
                     'data-bs-toggle' => 'modal',
                     'data-bs-target' => '#emptyall-modal',
                     'data-token'     => $token,
-                    'data-redirect'  => $this->router->generate('admin_trash'),
-                    'data-url'       => $this->router->generate('api_action_emptyall'),
+                    'data-redirect'  => $this->generateUrl('admin_trash'),
+                    'data-url'       => $this->generateUrl('api_action_emptyall'),
                 ]
             );
         }
 
-        $this->twig->addGlobal('modal', $modal);
+        $this->get('twig')->addGlobal('modal', $modal);
         $this->btnInstance()->addViderSelection(
             [
                 'redirect' => [
