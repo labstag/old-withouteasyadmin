@@ -10,7 +10,6 @@ use Labstag\Repository\WorkflowUserRepository;
  */
 class WorkflowUser
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")

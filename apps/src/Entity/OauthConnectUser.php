@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OauthConnectUser
 {
-
     /**
      * @ORM\Column(type="array")
      *

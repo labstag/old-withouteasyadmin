@@ -43,8 +43,7 @@ class FrontController extends FrontControllerLib
         PostRepository $postRepository,
         LibelleRepository $libelleRepository,
         CategoryRepository $categoryRepository
-    ): Response
-    {
+    ): Response {
         $pagination = $this->paginator->paginate(
             $postRepository->findPublier(),
             $request->query->getInt('page', 1),

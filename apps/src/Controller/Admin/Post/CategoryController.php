@@ -28,8 +28,7 @@ class CategoryController extends AdminControllerLib
         AttachmentRequestHandler $attachmentRH,
         Category $category,
         CategoryRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
 
         return $this->update(
@@ -88,8 +87,7 @@ class CategoryController extends AdminControllerLib
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         CategoryRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->create(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -108,8 +106,7 @@ class CategoryController extends AdminControllerLib
      */
     public function showOrPreview(
         Category $category
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $category,
             'admin/post/category/show.html.twig',
