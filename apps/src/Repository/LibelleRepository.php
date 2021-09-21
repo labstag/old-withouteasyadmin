@@ -13,6 +13,21 @@ class LibelleRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, Libelle::class);
     }
 
+    public function findByPost()
+    {
+        $entityManager = $this->getEntityManager();
+        $dql           = $entityManager->createQueryBuilder();
+        $dql->select('a');
+        $dql->from(Libelle::class, 'a');
+        $dql->innerJoin('a.posts', 'p');
+        $dql->where('p.state LIKE :state');
+        $dql->setParameters(
+            ['state' => '%publie%']
+        );
+
+        return $dql->getQuery()->getResult();
+    }
+
     public function findNom(string $field)
     {
         $queryBuilder = $this->createQueryBuilder('u');

@@ -1,0 +1,36 @@
+{% if archives|length != 0 %}
+    <div class="aside-list">
+        <h4>{{ 'post.archives'|trans }}</h4>
+        <ol>
+            {% for archive in archives %}
+                <li>
+                    <a href="{{ path('post_archive', {'code': archive.code}) }}">{{ archive.published|format_datetime(pattern="MMMM Y") }}</a>
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+{% endif %}
+{% if categories|length != 0 %}
+    <div class="aside-list">
+        <h4>{{ 'post.categories'|trans }}</h4>
+        <ol>
+            {% for category in categories %}
+                <li>
+                    <a href="{{ path('post_category', {'code': category.slug}) }}">{{ category }}</a>
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+{% endif %}
+{% if libelles|length != 0 %}
+    <div class="aside-list">
+        <h4>{{ 'post.libelles'|trans }}</h4>
+        <ol>
+            {% for libelle in libelles %}
+                <li>
+                    <a href="{{ path('post_libelle', {'code': libelle.slug}) }}">{{ libelle }}</a>
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+{% endif %}

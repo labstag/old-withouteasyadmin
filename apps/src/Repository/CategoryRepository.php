@@ -5,6 +5,7 @@ namespace Labstag\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Category;
+use Labstag\Entity\Post;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
 /**
@@ -30,6 +31,21 @@ class CategoryRepository extends ServiceEntityRepositoryLib
         $entityManager = $this->getEntityManager();
 
         return $entityManager->createQuery($dql);
+    }
+
+    public function findByPost()
+    {
+        $entityManager = $this->getEntityManager();
+        $dql           = $entityManager->createQueryBuilder();
+        $dql->select('a');
+        $dql->from(Category::class, 'a');
+        $dql->leftJoin(Post::class, 'p', 'a.id=p.refcategory_id');
+        $dql->where('p.state LIKE :state');
+        $dql->setParameters(
+            ['state' => '%publie%']
+        );
+
+        return $dql->getQuery()->getResult();
     }
 
     public function findTrashParentForAdmin(): array
