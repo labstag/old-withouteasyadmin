@@ -50,7 +50,9 @@ pagination.next: Suivant
 pagination.previous: Précédent
 param.change: 'Données sauvegardé'
 post.archives: Archives
+post.categories: Categories
 post.infodateuser: '%date% par %user%'
+post.libelles: Libelles
 post.update: Modifier
 security.disclaimer.doaccept: 'Veuillez accepter l''énoncé'
 security.email.activate.fail: 'Courriel déjà confirmé'
