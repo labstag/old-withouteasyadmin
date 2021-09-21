@@ -275,17 +275,20 @@ main {
   @extend .col-12;
 }
 
-.post_libelle{
+.post_libelle {
   &::before {
     @extend .fas;
     @extend .fa-tag;
+
     color: black;
   }
 }
-.post_category{
+
+.post_category {
   &::before {
     @extend .far;
     @extend .fa-folder;
+
     color: black;
   }
 }
