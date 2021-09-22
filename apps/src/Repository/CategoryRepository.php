@@ -5,7 +5,6 @@ namespace Labstag\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Category;
-use Labstag\Entity\Post;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
 /**
@@ -39,7 +38,8 @@ class CategoryRepository extends ServiceEntityRepositoryLib
         $dql           = $entityManager->createQueryBuilder();
         $dql->select('a');
         $dql->from(Category::class, 'a');
-        $dql->leftJoin(Post::class, 'p', 'a.id=p.refcategory_id');
+        $dql->leftJoin('a.posts', 'p');
+        $dql->innerjoin('p.refuser', 'u');
         $dql->where('p.state LIKE :state');
         $dql->setParameters(
             ['state' => '%publie%']

@@ -40,9 +40,15 @@ class Libelle
      */
     private $slug;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Bookmark::class, mappedBy="libelles")
+     */
+    private $bookmarks;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
     }
 
     public function __toString()
@@ -106,5 +112,32 @@ class Libelle
     public function setString(string $nom): self
     {
         return $this->setNom($nom);
+    }
+
+    /**
+     * @return Collection|Bookmark[]
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
+    }
+
+    public function addBookmark(Bookmark $bookmark): self
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks[] = $bookmark;
+            $bookmark->addLibelle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): self
+    {
+        if ($this->bookmarks->removeElement($bookmark)) {
+            $bookmark->removeLibelle($this);
+        }
+
+        return $this;
     }
 }

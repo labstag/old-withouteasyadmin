@@ -34,11 +34,12 @@ class EditoRepository extends ServiceEntityRepositoryLib
 
     public function findOnePublier()
     {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
-            'u.state LIKE :state'
+        $queryBuilder = $this->createQueryBuilder('e');
+        $query = $queryBuilder->leftjoin('e.refuser', 'u');
+        $query->where(
+            'e.state LIKE :state'
         );
-        $query->orderBy('u.published', 'DESC');
+        $query->orderBy('e.published', 'DESC');
         $query->setParameters(
             ['state' => '%publie%']
         );

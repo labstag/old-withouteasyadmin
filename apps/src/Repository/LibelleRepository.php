@@ -20,6 +20,7 @@ class LibelleRepository extends ServiceEntityRepositoryLib
         $dql->select('a');
         $dql->from(Libelle::class, 'a');
         $dql->innerJoin('a.posts', 'p');
+        $dql->innerjoin('p.refuser', 'u');
         $dql->where('p.state LIKE :state');
         $dql->setParameters(
             ['state' => '%publie%']

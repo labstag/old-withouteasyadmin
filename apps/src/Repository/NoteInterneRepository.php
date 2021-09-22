@@ -34,12 +34,13 @@ class NoteInterneRepository extends ServiceEntityRepositoryLib
 
     public function findPublier()
     {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
-            'u.state LIKE :state'
+        $queryBuilder = $this->createQueryBuilder('n');
+        $query = $queryBuilder->innerJoin('n.refuser', 'u');
+        $query->where(
+            'n.state LIKE :state'
         );
-        $query->andWhere('u.dateDebut >= now()');
-        $query->orderBy('u.dateDebut', 'ASC');
+        $query->andWhere('n.dateDebut >= now()');
+        $query->orderBy('n.dateDebut', 'ASC');
         $query->setParameters(
             ['state' => '%publie%']
         );
