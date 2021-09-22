@@ -4,20 +4,36 @@ namespace Labstag\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Labstag\Repository\BookmarkRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Repository\BookmarkRepository;
 
 /**
  * @ORM\Entity(repositoryClass=BookmarkRepository::class)
  */
 class Bookmark
 {
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $content;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
      */
     private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="bookmarks")
+     */
+    private $img;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Libelle::class, inversedBy="bookmarks")
+     */
+    private $libelles;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -30,82 +46,18 @@ class Bookmark
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $url;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Libelle::class, inversedBy="bookmarks")
-     */
-    private $libelles;
-
-    /**
      * @ORM\Column(type="array")
      */
     private $state = [];
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255)
      */
-    private $content;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="bookmarks")
-     */
-    private $img;
+    private $url;
 
     public function __construct()
     {
         $this->libelles = new ArrayCollection();
-    }
-
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(string $url): self
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Libelle[]
-     */
-    public function getLibelles(): Collection
-    {
-        return $this->libelles;
     }
 
     public function addLibelle(Libelle $libelle): self
@@ -117,11 +69,37 @@ class Bookmark
         return $this;
     }
 
-    public function removeLibelle(Libelle $libelle): self
+    public function getContent(): ?string
     {
-        $this->libelles->removeElement($libelle);
+        return $this->content;
+    }
 
-        return $this;
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function getImg(): ?Attachment
+    {
+        return $this->img;
+    }
+
+    /**
+     * @return Collection|Libelle[]
+     */
+    public function getLibelles(): Collection
+    {
+        return $this->libelles;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
     }
 
     public function getState(): ?array
@@ -129,16 +107,16 @@ class Bookmark
         return $this->state;
     }
 
-    public function setState(array $state): self
+    public function getUrl(): ?string
     {
-        $this->state = $state;
-
-        return $this;
+        return $this->url;
     }
 
-    public function getContent(): ?string
+    public function removeLibelle(Libelle $libelle): self
     {
-        return $this->content;
+        $this->libelles->removeElement($libelle);
+
+        return $this;
     }
 
     public function setContent(string $content): self
@@ -148,14 +126,37 @@ class Bookmark
         return $this;
     }
 
-    public function getImg(): ?Attachment
-    {
-        return $this->img;
-    }
-
     public function setImg(?Attachment $img): self
     {
         $this->img = $img;
+
+        return $this;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function setState(array $state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
 
         return $this;
     }

@@ -16,7 +16,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     public function findDateArchive()
     {
         $queryBuilder = $this->createQueryBuilder('p');
-        $query = $queryBuilder->innerjoin('p.refuser', 'u');
+        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
         $query->select(
             'date_format(p.published,\'%Y-%m\') as code, p.published, COUNT(p)'
         );
@@ -36,7 +36,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     public function findPublier()
     {
         $queryBuilder = $this->createQueryBuilder('p');
-        $query = $queryBuilder->innerjoin('p.refuser', 'u');
+        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
         $query->where(
             'p.state LIKE :state'
         );
@@ -51,7 +51,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     public function findPublierArchive($published)
     {
         $queryBuilder = $this->createQueryBuilder('p');
-        $query = $queryBuilder->innerjoin('p.refuser', 'u');
+        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
         $query->where('p.state LIKE :state');
         $query->andWhere('date_format(p.published,\'%Y-%m\') = :published');
         $query->orderBy('p.published', 'DESC');
@@ -68,7 +68,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     public function findPublierCategory($code)
     {
         $queryBuilder = $this->createQueryBuilder('p');
-        $query = $queryBuilder->innerjoin('p.refuser', 'u');
+        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
         $query->where('p.state LIKE :state');
         $query->orderBy('p.published', 'DESC');
         $query->leftJoin('p.refcategory', 'c');
@@ -86,7 +86,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     public function findPublierLibelle($code)
     {
         $queryBuilder = $this->createQueryBuilder('p');
-        $query = $queryBuilder->innerjoin('p.refuser', 'u');
+        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
         $query->where('p.state LIKE :state');
         $query->orderBy('p.published', 'DESC');
         $query->leftJoin('p.libelles', 'l');

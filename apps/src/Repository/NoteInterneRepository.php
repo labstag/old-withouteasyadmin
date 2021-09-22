@@ -35,7 +35,7 @@ class NoteInterneRepository extends ServiceEntityRepositoryLib
     public function findPublier()
     {
         $queryBuilder = $this->createQueryBuilder('n');
-        $query = $queryBuilder->innerJoin('n.refuser', 'u');
+        $query        = $queryBuilder->innerJoin('n.refuser', 'u');
         $query->where(
             'n.state LIKE :state'
         );

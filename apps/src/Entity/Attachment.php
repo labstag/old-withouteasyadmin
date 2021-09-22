@@ -71,6 +71,11 @@ class Attachment
     protected $users;
 
     /**
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img")
+     */
+    private $bookmarks;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $code;
@@ -83,18 +88,23 @@ class Attachment
      */
     private $stateChanged;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img")
-     */
-    private $bookmarks;
-
     public function __construct()
     {
         $this->users        = new ArrayCollection();
         $this->posts        = new ArrayCollection();
         $this->editos       = new ArrayCollection();
         $this->noteInternes = new ArrayCollection();
-        $this->bookmarks = new ArrayCollection();
+        $this->bookmarks    = new ArrayCollection();
+    }
+
+    public function addBookmark(Bookmark $bookmark): self
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks[] = $bookmark;
+            $bookmark->setImg($this);
+        }
+
+        return $this;
     }
 
     public function addEdito(Edito $edito): self
@@ -135,6 +145,14 @@ class Attachment
         }
 
         return $this;
+    }
+
+    /**
+     * @return Bookmark[]|Collection
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
     }
 
     public function getCode(): ?string
@@ -207,6 +225,18 @@ class Attachment
     public function getUsers(): Collection
     {
         return $this->users;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): self
+    {
+        if ($this->bookmarks->removeElement($bookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($bookmark->getImg() === $this) {
+                $bookmark->setImg(null);
+            }
+        }
+
+        return $this;
     }
 
     public function removeEdito(Edito $edito): self
@@ -295,35 +325,5 @@ class Attachment
     public function setState($state)
     {
         $this->state = $state;
-    }
-
-    /**
-     * @return Collection|Bookmark[]
-     */
-    public function getBookmarks(): Collection
-    {
-        return $this->bookmarks;
-    }
-
-    public function addBookmark(Bookmark $bookmark): self
-    {
-        if (!$this->bookmarks->contains($bookmark)) {
-            $this->bookmarks[] = $bookmark;
-            $bookmark->setImg($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBookmark(Bookmark $bookmark): self
-    {
-        if ($this->bookmarks->removeElement($bookmark)) {
-            // set the owning side to null (unless already changed)
-            if ($bookmark->getImg() === $this) {
-                $bookmark->setImg(null);
-            }
-        }
-
-        return $this;
     }
 }
