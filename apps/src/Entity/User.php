@@ -148,7 +148,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected $username;
 
     /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser")
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser", cascade={"persist"})
      */
     private $posts;
 

@@ -14,7 +14,7 @@ class LienUser extends Lien
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="lienUsers")
-     * @Assert\NotBlank
+     * @ORM\JoinColumn(nullable=false)
      */
     protected $refuser;
 

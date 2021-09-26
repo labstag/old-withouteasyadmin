@@ -1,10 +1,10 @@
 <?php
 
-namespace Labstag\Controller\Admin\Post;
+namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Category;
-use Labstag\Form\Admin\Post\CategoryType;
+use Labstag\Form\Admin\CategoryType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/post/category")
+ * @Route("/admin/category")
  */
 class CategoryController extends AdminControllerLib
 {
@@ -60,7 +60,7 @@ class CategoryController extends AdminControllerLib
                 'trash' => 'findTrashParentForAdmin',
                 'all'   => 'findAllParentForAdmin',
             ],
-            'admin/post/category/index.html.twig',
+            'admin/category/index.html.twig',
             [
                 'new'   => 'admin_category_new',
                 'empty' => 'api_action_empty',
@@ -112,7 +112,7 @@ class CategoryController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $category,
-            'admin/post/category/show.html.twig',
+            'admin/category/show.html.twig',
             [
                 'delete'  => 'api_action_delete',
                 'restore' => 'api_action_restore',

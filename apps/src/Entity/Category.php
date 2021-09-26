@@ -55,10 +55,16 @@ class Category
      */
     private $slug;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory")
+     */
+    private $bookmarks;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
         $this->posts    = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
     }
 
     public function __toString()
@@ -166,6 +172,36 @@ class Category
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Bookmark[]
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
+    }
+
+    public function addBookmark(Bookmark $bookmark): self
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks[] = $bookmark;
+            $bookmark->setRefcategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): self
+    {
+        if ($this->bookmarks->removeElement($bookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($bookmark->getRefcategory() === $this) {
+                $bookmark->setRefcategory(null);
+            }
+        }
 
         return $this;
     }

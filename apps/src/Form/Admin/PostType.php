@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Form\Admin\Post;
+namespace Labstag\Form\Admin;
 
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Category;

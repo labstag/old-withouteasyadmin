@@ -136,7 +136,7 @@
             {
                 "libelle": "Libelle",
                 "data": {
-                    "route": "admin_postlibelle_index"
+                    "route": "admin_libelle_index"
                 }
             },
             {

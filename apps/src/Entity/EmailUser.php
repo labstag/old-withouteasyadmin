@@ -14,7 +14,7 @@ class EmailUser extends Email
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="emailUsers")
-     * @Assert\NotBlank
+     * @ORM\JoinColumn(nullable=false)
      */
     protected $refuser;
 

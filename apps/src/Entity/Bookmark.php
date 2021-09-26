@@ -6,12 +6,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\BookmarkRepository;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=BookmarkRepository::class)
  */
 class Bookmark
 {
+    use SoftDeleteableEntity;
 
     /**
      * @ORM\Column(type="text")
@@ -54,6 +56,11 @@ class Bookmark
      * @ORM\Column(type="string", length=255)
      */
     private $url;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bookmarks")
+     */
+    private $refcategory;
 
     public function __construct()
     {
@@ -157,6 +164,18 @@ class Bookmark
     public function setUrl(string $url): self
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getRefcategory(): ?Category
+    {
+        return $this->refcategory;
+    }
+
+    public function setRefcategory(?Category $refcategory): self
+    {
+        $this->refcategory = $refcategory;
 
         return $this;
     }

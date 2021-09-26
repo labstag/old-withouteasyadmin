@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Repository\PostRepository;
@@ -89,6 +90,8 @@ class Post
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
+     * @Assert\NotBlank
+     * @ORM\JoinColumn(nullable=false)
      */
     private $refuser;
 
