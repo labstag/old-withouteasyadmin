@@ -148,6 +148,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected $username;
 
     /**
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refuser", cascade={"persist"})
+     */
+    private $bookmarks;
+
+    /**
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser", cascade={"persist"})
      */
     private $posts;
@@ -178,6 +183,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->routes            = new ArrayCollection();
         $this->workflowUsers     = new ArrayCollection();
         $this->posts             = new ArrayCollection();
+        $this->bookmarks         = new ArrayCollection();
     }
 
     public function __toString()
@@ -190,6 +196,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (!$this->adresseUsers->contains($adresseUser)) {
             $this->adresseUsers[] = $adresseUser;
             $adresseUser->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addBookmark(Bookmark $bookmark): self
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks[] = $bookmark;
+            $bookmark->setRefuser($this);
         }
 
         return $this;
@@ -304,6 +320,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getAvatar(): ?Attachment
     {
         return $this->avatar;
+    }
+
+    /**
+     * @return Bookmark[]|Collection
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
     }
 
     public function getEditos()
@@ -454,6 +478,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($adresseUser->getRefuser() === $this) {
                 $adresseUser->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): self
+    {
+        if ($this->bookmarks->removeElement($bookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($bookmark->getRefuser() === $this) {
+                $bookmark->setRefuser(null);
             }
         }
 

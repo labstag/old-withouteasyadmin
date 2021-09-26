@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\BookmarkRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BookmarkRepository::class)
@@ -40,12 +41,29 @@ class Bookmark
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private $metaDescription;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $metaKeywords;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bookmarks")
      */
     private $refcategory;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bookmarks")
+     * @Assert\NotBlank
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $refuser;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -99,6 +117,16 @@ class Bookmark
         return $this->libelles;
     }
 
+    public function getMetaDescription(): ?string
+    {
+        return $this->metaDescription;
+    }
+
+    public function getMetaKeywords(): ?string
+    {
+        return $this->metaKeywords;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -107,6 +135,11 @@ class Bookmark
     public function getRefcategory(): ?Category
     {
         return $this->refcategory;
+    }
+
+    public function getRefuser(): ?User
+    {
+        return $this->refuser;
     }
 
     public function getSlug(): ?string
@@ -145,6 +178,20 @@ class Bookmark
         return $this;
     }
 
+    public function setMetaDescription(string $metaDescription): self
+    {
+        $this->metaDescription = $metaDescription;
+
+        return $this;
+    }
+
+    public function setMetaKeywords(string $metaKeywords): self
+    {
+        $this->metaKeywords = $metaKeywords;
+
+        return $this;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -155,6 +202,13 @@ class Bookmark
     public function setRefcategory(?Category $refcategory): self
     {
         $this->refcategory = $refcategory;
+
+        return $this;
+    }
+
+    public function setRefuser(?User $refuser): self
+    {
+        $this->refuser = $refuser;
 
         return $this;
     }
