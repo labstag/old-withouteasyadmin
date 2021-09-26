@@ -119,19 +119,11 @@
         "childs": []
     },
     {
-        "libelle": "Histoires",
-        "childs": []
-    },
-    {
-        "libelle": "Bookmarks",
-        "childs": []
-    },
-    {
         "libelle": "Partenaires",
         "childs": []
     },
     {
-        "libelle": "Posts",
+        "libelle": "Data",
         "childs": [
             {
                 "libelle": "Libelle",
@@ -144,11 +136,22 @@
                 "data": {
                     "route": "admin_category_index"
                 }
-            },
+            }
+        ]
+    },
+    {
+        "libelle": "Contenu",
+        "childs": [
             {
-                "libelle": "Liste",
+                "libelle": "Posts",
                 "data": {
                     "route": "admin_post_index"
+                }
+            },
+            {
+                "libelle": "Bookmarks",
+                "data": {
+                    "route": "admin_bookmark_index"
                 }
             }
         ]
