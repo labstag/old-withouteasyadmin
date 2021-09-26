@@ -5,8 +5,8 @@ namespace Labstag\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Labstag\Repository\BookmarkRepository;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Repository\BookmarkRepository;
 
 /**
  * @ORM\Entity(repositoryClass=BookmarkRepository::class)
@@ -43,6 +43,11 @@ class Bookmark
     private $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bookmarks")
+     */
+    private $refcategory;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
@@ -56,11 +61,6 @@ class Bookmark
      * @ORM\Column(type="string", length=255)
      */
     private $url;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bookmarks")
-     */
-    private $refcategory;
 
     public function __construct()
     {
@@ -102,6 +102,11 @@ class Bookmark
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    public function getRefcategory(): ?Category
+    {
+        return $this->refcategory;
     }
 
     public function getSlug(): ?string
@@ -147,6 +152,13 @@ class Bookmark
         return $this;
     }
 
+    public function setRefcategory(?Category $refcategory): self
+    {
+        $this->refcategory = $refcategory;
+
+        return $this;
+    }
+
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
@@ -164,18 +176,6 @@ class Bookmark
     public function setUrl(string $url): self
     {
         $this->url = $url;
-
-        return $this;
-    }
-
-    public function getRefcategory(): ?Category
-    {
-        return $this->refcategory;
-    }
-
-    public function setRefcategory(?Category $refcategory): self
-    {
-        $this->refcategory = $refcategory;
 
         return $this;
     }

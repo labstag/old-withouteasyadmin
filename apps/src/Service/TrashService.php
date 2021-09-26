@@ -35,6 +35,7 @@ class TrashService
             $isTrashable    = $this->isTrashable($repositoryFile);
             if (!$isTrashable) {
                 dump($repositoryFile);
+
                 continue;
             }
 

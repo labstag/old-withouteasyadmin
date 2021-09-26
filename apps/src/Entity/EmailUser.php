@@ -4,7 +4,6 @@ namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\EmailUserRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EmailUserRepository::class)

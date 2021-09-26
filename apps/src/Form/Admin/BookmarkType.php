@@ -3,9 +3,9 @@
 namespace Labstag\Form\Admin;
 
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Labstag\Entity\Bookmark;
 use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
-use Labstag\Entity\Bookmark;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
 use Labstag\Lib\AbstractTypeLib;

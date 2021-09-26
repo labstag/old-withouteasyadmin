@@ -63,31 +63,6 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $this->setDeletedAt($oldEntity, $newEntity);
     }
 
-    protected function setDeletedAt(User $oldEntity, User $newEntity): void
-    {
-        if ($oldEntity->getDeletedAt() == $newEntity->getDeletedAt()) {
-            return;
-        }
-        $states = [
-            'adresseUsers' => $newEntity->getAdresseUsers(),
-            'editos' => $newEntity->getEditos(),
-            'emailUsers' => $newEntity->getEmailUsers(),
-            'noteInternes' => $newEntity->getNoteInternes(),
-            'lienUsers' => $newEntity->getLienUsers(),
-            'phoneUsers' => $newEntity->getPhoneUsers(),
-            'posts' => $newEntity->getPosts(),
-        ];
-
-        $datetime = $newEntity->getDeletedAt();
-        foreach ($states as $type => $data) {
-            foreach ($data as $entity) {
-                $entity->setDeletedAt($datetime);
-                $this->entityManager->persist($entity);
-            }
-            $this->entityManager->flush();
-        }
-    }
-
     protected function setChangePassword(User $oldEntity, User $newEntity): void
     {
         if ($oldEntity->getState() == $newEntity->getState()) {
@@ -103,6 +78,33 @@ class UserEntitySubscriber implements EventSubscriberInterface
             'success',
             'Changement de mot de passe effectué'
         );
+    }
+
+    protected function setDeletedAt(User $oldEntity, User $newEntity): void
+    {
+        if ($oldEntity->getDeletedAt() == $newEntity->getDeletedAt()) {
+            return;
+        }
+
+        $states = [
+            'adresseUsers' => $newEntity->getAdresseUsers(),
+            'editos'       => $newEntity->getEditos(),
+            'emailUsers'   => $newEntity->getEmailUsers(),
+            'noteInternes' => $newEntity->getNoteInternes(),
+            'lienUsers'    => $newEntity->getLienUsers(),
+            'phoneUsers'   => $newEntity->getPhoneUsers(),
+            'posts'        => $newEntity->getPosts(),
+        ];
+
+        $datetime = $newEntity->getDeletedAt();
+        foreach ($states as $data) {
+            foreach ($data as $entity) {
+                $entity->setDeletedAt($datetime);
+                $this->entityManager->persist($entity);
+            }
+
+            $this->entityManager->flush();
+        }
     }
 
     protected function setPassword(User $user): void
