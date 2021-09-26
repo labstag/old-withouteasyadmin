@@ -3,7 +3,6 @@
 namespace Labstag\Lib;
 
 use Bluemmb\Faker\PicsumPhotosProvider;
-use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Exception;
 use Faker\Factory;
@@ -12,9 +11,6 @@ use Labstag\Entity\AdresseUser;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\Groupe;
-use Labstag\Entity\LienUser;
-use Labstag\Entity\NoteInterne;
-use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\GroupeRepository;
@@ -201,87 +197,6 @@ abstract class FixtureLib extends Fixture
         $groupe->setName($row);
         $this->addReference('groupe_'.$key, $groupe);
         $this->groupeRH->handle($old, $groupe);
-    }
-
-    protected function addLink(
-        Generator $faker,
-        User $user
-    ): void
-    {
-        $lien = new LienUser();
-        $old  = clone $lien;
-        $lien->setRefUser($user);
-        $lien->setName($faker->word());
-        $lien->setAdresse($faker->url);
-        $this->lienUserRH->handle($old, $lien);
-    }
-
-    protected function addNoteInterne(
-        array $users,
-        Generator $faker,
-        int $index,
-        DateTime $maxDate,
-        array $states
-    ): void
-    {
-        $noteinterne = new NoteInterne();
-        $old         = clone $noteinterne;
-        $random      = $faker->numberBetween(5, 50);
-        $noteinterne->setTitle($faker->unique()->text($random));
-        $dateDebut = $faker->dateTime($maxDate);
-        $noteinterne->setDateDebut($dateDebut);
-        $dateFin = clone $dateDebut;
-        $dateFin->modify('+'.$faker->numberBetween(10, 50).' days');
-        $dateFin->modify('+'.$faker->numberBetween(2, 24).' hours');
-        $noteinterne->setDateFin($dateFin);
-        // @var string $content
-        $content = $faker->paragraphs(4, true);
-        $noteinterne->setContent(str_replace("\n\n", "<br />\n", $content));
-        $this->addReference('noteinterne_'.$index, $noteinterne);
-        $tabIndex = array_rand($users);
-        // @var User $user
-        $user = $users[$tabIndex];
-        $noteinterne->setRefuser($user);
-        $this->upload($noteinterne, $faker);
-        $this->noteInterneRH->handle($old, $noteinterne);
-        $this->noteInterneRH->changeWorkflowState($noteinterne, $states);
-    }
-
-    protected function addPhone(
-        Generator $faker,
-        User $user,
-        array $states
-    ): void
-    {
-        $number = $faker->e164PhoneNumber;
-        $phone  = new PhoneUser();
-        $old    = clone $phone;
-        $phone->setRefuser($user);
-        $phone->setNumero($number);
-        $phone->setType($faker->word());
-        $phone->setCountry($faker->countryCode);
-        $this->phoneUserRH->handle($old, $phone);
-        $this->phoneUserRH->changeWorkflowState($phone, $states);
-    }
-
-    protected function addUser(
-        array $groupes,
-        int $index,
-        array $dataUser,
-        Generator $faker
-    ): void
-    {
-        $user = new User();
-        $old  = clone $user;
-
-        $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
-        $user->setUsername($dataUser['username']);
-        $user->setPlainPassword($dataUser['password']);
-        $user->setEmail($dataUser['email']);
-        $this->upload($user, $faker);
-        $this->addReference('user_'.$index, $user);
-        $this->userRH->handle($old, $user);
-        $this->userRH->changeWorkflowState($user, $dataUser['state']);
     }
 
     protected function getParameter(string $name)

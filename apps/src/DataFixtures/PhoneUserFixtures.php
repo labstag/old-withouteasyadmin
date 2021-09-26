@@ -4,6 +4,9 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Generator;
+use Labstag\Entity\PhoneUser;
+use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
 
 class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
@@ -29,6 +32,23 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
             $user      = $this->getReference('user_'.$indexUser);
             $this->addPhone($faker, $user, $states);
         }
+    }
+
+    protected function addPhone(
+        Generator $faker,
+        User $user,
+        array $states
+    ): void
+    {
+        $number = $faker->e164PhoneNumber;
+        $phone  = new PhoneUser();
+        $old    = clone $phone;
+        $phone->setRefuser($user);
+        $phone->setNumero($number);
+        $phone->setType($faker->word());
+        $phone->setCountry($faker->countryCode);
+        $this->phoneUserRH->handle($old, $phone);
+        $this->phoneUserRH->changeWorkflowState($phone, $states);
     }
 
     protected function getStates()
