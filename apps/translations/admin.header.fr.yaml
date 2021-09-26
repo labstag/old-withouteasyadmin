@@ -7,6 +7,7 @@ emailuser.title: Emailuser
 geocode.title: Geocode
 groupuser.title: Groupuser
 guard.title: Guard
+libelle.title: Postlibelle
 lienuser.title: Lienuser
 menu.title: Menu
 noteinterne.title: Noteinterne
@@ -14,7 +15,6 @@ oauth.title: Oauth
 param.title: Param
 phoneuser.title: Phoneuser
 post.title: Post
-postlibelle.title: Postlibelle
 profil.title: Profil
 template.title: Template
 trash.title: Trash

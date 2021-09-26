@@ -38,6 +38,12 @@ groupuser.show: Voir
 groupuser.title: Groupuser
 groupuser.trash: Corbeille
 guard.title: Guard
+libelle.edit: Éditer
+libelle.new: Nouveau
+libelle.preview: Aperçu
+libelle.show: Voir
+libelle.title: Libelle
+libelle.trash: Corbeille
 lienuser.edit: Éditer
 lienuser.new: Nouveau
 lienuser.preview: Aperçu
@@ -71,12 +77,6 @@ post.preview: Aperçu
 post.show: Voir
 post.title: Post
 post.trash: Corbeille
-postlibelle.edit: Éditer
-postlibelle.new: Nouveau
-postlibelle.preview: Aperçu
-postlibelle.show: Voir
-postlibelle.title: Postlibelle
-postlibelle.trash: Corbeille
 profil.title: Profil
 template.edit: Éditer
 template.new: Nouveau

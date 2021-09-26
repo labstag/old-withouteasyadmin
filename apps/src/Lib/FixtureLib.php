@@ -7,11 +7,8 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Exception;
 use Faker\Factory;
 use Faker\Generator;
-use Labstag\Entity\AdresseUser;
 use Labstag\Entity\Attachment;
-use Labstag\Entity\EmailUser;
 use Labstag\Entity\Groupe;
-use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
@@ -151,52 +148,6 @@ abstract class FixtureLib extends Fixture
         $this->noteInterneRH     = $noteInterneRH;
         $this->lienUserRH        = $lienUserRH;
         $this->emailUserRH       = $emailUserRH;
-    }
-
-    protected function addAdresse(
-        Generator $faker,
-        User $user
-    ): void
-    {
-        $adresse = new AdresseUser();
-        $old     = clone $adresse;
-        $adresse->setRefuser($user);
-        $adresse->setRue($faker->streetAddress);
-        $adresse->setVille($faker->city);
-        $adresse->setCountry($faker->countryCode);
-        $adresse->setZipcode($faker->postcode);
-        $adresse->setType($faker->unique()->colorName);
-        $latitude  = $faker->latitude;
-        $longitude = $faker->longitude;
-        $gps       = $latitude.','.$longitude;
-        $adresse->setGps($gps);
-        $adresse->setPmr((bool) rand(0, 1));
-        $this->adresseUserRH->handle($old, $adresse);
-    }
-
-    protected function addEmail(
-        Generator $faker,
-        User $user
-    ): void
-    {
-        $email = new EmailUser();
-        $old   = clone $email;
-        $email->setRefuser($user);
-        $email->setAdresse($faker->safeEmail);
-        $this->emailUserRH->handle($old, $email);
-    }
-
-    protected function addGroupe(
-        int $key,
-        string $row
-    ): void
-    {
-        $groupe = new Groupe();
-        $old    = clone $groupe;
-        $groupe->setCode($row);
-        $groupe->setName($row);
-        $this->addReference('groupe_'.$key, $groupe);
-        $this->groupeRH->handle($old, $groupe);
     }
 
     protected function getParameter(string $name)
