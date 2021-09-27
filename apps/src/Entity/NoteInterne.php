@@ -8,6 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\NoteInterneRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,6 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class NoteInterne
 {
     use SoftDeleteableEntity;
+
+    use StateableEntity;
 
     /**
      * @ORM\Column(type="text")
@@ -62,23 +65,10 @@ class NoteInterne
     protected $refuser;
 
     /**
-     * @ORM\Column(type="array")
-     */
-    protected $state;
-
-    /**
      * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      * @Assert\NotBlank
      */
     protected $title;
-
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"state"})
-     */
-    private $stateChanged;
 
     public function __construct()
     {
@@ -126,16 +116,6 @@ class NoteInterne
         return $this->refuser;
     }
 
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    public function getStateChanged()
-    {
-        return $this->stateChanged;
-    }
-
     public function getTitle(): ?string
     {
         return $this->title;
@@ -181,11 +161,6 @@ class NoteInterne
         $this->refuser = $refuser;
 
         return $this;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
     }
 
     public function setTitle(string $title): self

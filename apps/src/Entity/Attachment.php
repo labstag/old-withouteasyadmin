@@ -2,12 +2,12 @@
 
 namespace Labstag\Entity;
 
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\AttachmentRepository;
 
 /**
@@ -17,6 +17,8 @@ use Labstag\Repository\AttachmentRepository;
 class Attachment
 {
     use SoftDeleteableEntity;
+
+    use StateableEntity;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
@@ -61,11 +63,6 @@ class Attachment
     protected $size;
 
     /**
-     * @ORM\Column(type="array")
-     */
-    protected $state;
-
-    /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar")
      */
     protected $users;
@@ -79,14 +76,6 @@ class Attachment
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $code;
-
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"state"})
-     */
-    private $stateChanged;
 
     public function __construct()
     {
@@ -209,16 +198,6 @@ class Attachment
         return $this->size;
     }
 
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    public function getStateChanged()
-    {
-        return $this->stateChanged;
-    }
-
     /**
      * @return Collection|User[]
      */
@@ -320,10 +299,5 @@ class Attachment
         $this->size = $size;
 
         return $this;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
     }
 }

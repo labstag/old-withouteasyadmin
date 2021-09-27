@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity;
 
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -23,6 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use SoftDeleteableEntity;
+
+    use StateableEntity;
 
     /**
      * @ORM\OneToMany(
@@ -137,11 +139,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected $routes;
 
     /**
-     * @ORM\Column(type="array")
-     */
-    protected $state;
-
-    /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
      * @Assert\NotNull
      */
@@ -156,14 +153,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser", cascade={"persist"})
      */
     private $posts;
-
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"state"})
-     */
-    private $stateChanged;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refuser")
@@ -438,16 +427,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    public function getStateChanged()
-    {
-        return $this->stateChanged;
-    }
-
     public function getUserIdentifier()
     {
         return $this->getUsername();
@@ -671,11 +650,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
     }
 
     public function setUsername(?string $username): self
