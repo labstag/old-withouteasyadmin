@@ -5,16 +5,26 @@ namespace Labstag\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Annotation\Uploadable;
+use Labstag\Annotation\UploadableField;
 use Labstag\Repository\BookmarkRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BookmarkRepository::class)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Uploadable()
  */
 class Bookmark
 {
     use SoftDeleteableEntity;
+
+    /**
+     * @UploadableField(filename="img", path="post/img", slug="name")
+     */
+    protected $file;
 
     /**
      * @ORM\Column(type="text")
@@ -66,6 +76,7 @@ class Bookmark
     private $refuser;
 
     /**
+     * @Gedmo\Slug(updatable=false, fields={"name"})
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
@@ -73,7 +84,15 @@ class Bookmark
     /**
      * @ORM\Column(type="array")
      */
-    private $state = [];
+    private $state;
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="change", field={"state"})
+     */
+    private $stateChanged;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -97,6 +116,11 @@ class Bookmark
     public function getContent(): ?string
     {
         return $this->content;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
     }
 
     public function getId(): ?string
@@ -147,9 +171,14 @@ class Bookmark
         return $this->slug;
     }
 
-    public function getState(): ?array
+    public function getState()
     {
         return $this->state;
+    }
+
+    public function getStateChanged()
+    {
+        return $this->stateChanged;
     }
 
     public function getUrl(): ?string
@@ -167,6 +196,13 @@ class Bookmark
     public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function setFile($file): self
+    {
+        $this->file = $file;
 
         return $this;
     }
@@ -220,7 +256,7 @@ class Bookmark
         return $this;
     }
 
-    public function setState(array $state): self
+    public function setState($state): self
     {
         $this->state = $state;
 

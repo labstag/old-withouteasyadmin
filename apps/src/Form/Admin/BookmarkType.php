@@ -51,7 +51,7 @@ class BookmarkType extends AbstractTypeLib
         );
         $this->setMeta($builder);
         $builder->add(
-            'img',
+            'file',
             FileType::class,
             [
                 'label'    => $this->translator->trans('bookmark.file.label', [], 'admin.form'),

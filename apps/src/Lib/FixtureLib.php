@@ -14,6 +14,7 @@ use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AdresseUserRequestHandler;
 use Labstag\RequestHandler\AttachmentRequestHandler;
+use Labstag\RequestHandler\BookmarkRequestHandler;
 use Labstag\RequestHandler\CategoryRequestHandler;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
@@ -22,6 +23,7 @@ use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\RequestHandler\LienUserRequestHandler;
 use Labstag\RequestHandler\NoteInterneRequestHandler;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
+use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\GuardService;
@@ -38,6 +40,8 @@ use Twig\Environment;
 abstract class FixtureLib extends Fixture
 {
     protected const NUMBER_ADRESSE = 25;
+
+    protected const NUMBER_BOOKMARK = 25;
 
     protected const NUMBER_CATEGORY = 50;
 
@@ -60,6 +64,8 @@ abstract class FixtureLib extends Fixture
     protected AdresseUserRequestHandler $adresseUserRH;
 
     protected AttachmentRequestHandler $attachmentRH;
+
+    protected BookmarkRequestHandler $bookmarkRH;
 
     protected CacheInterface $cache;
 
@@ -90,6 +96,8 @@ abstract class FixtureLib extends Fixture
     protected OauthService $oauthService;
 
     protected PhoneUserRequestHandler $phoneUserRH;
+
+    protected PostRequestHandler $postRH;
 
     protected TemplateRequestHandler $templateRH;
 
@@ -123,31 +131,35 @@ abstract class FixtureLib extends Fixture
         TemplateRequestHandler $templateRH,
         LibelleRequestHandler $libelleRH,
         CacheInterface $cache,
-        CategoryRequestHandler $categoryRH,
+        BookmarkRequestHandler $bookmarkRH,
+        PostRequestHandler $postRH,
+        CategoryRequestHandler $categoryRH
     )
     {
-        $this->categoryRH        = $categoryRH;
-        $this->attachmentRH      = $attachmentRH;
-        $this->logger            = $logger;
-        $this->containerBag      = $containerBag;
-        $this->libelleRH         = $libelleRH;
-        $this->uploadAnnotReader = $uploadAnnotReader;
-        $this->installService    = $installService;
-        $this->cache             = $cache;
-        $this->guardService      = $guardService;
-        $this->twig              = $twig;
-        $this->userRepository    = $userRepository;
-        $this->oauthService      = $oauthService;
-        $this->groupeRepository  = $groupeRepository;
-        $this->templateRH        = $templateRH;
         $this->adresseUserRH     = $adresseUserRH;
-        $this->phoneUserRH       = $phoneUserRH;
-        $this->userRH            = $userRH;
+        $this->attachmentRH      = $attachmentRH;
+        $this->bookmarkRH        = $bookmarkRH;
+        $this->cache             = $cache;
+        $this->categoryRH        = $categoryRH;
+        $this->containerBag      = $containerBag;
         $this->editoRH           = $editoRH;
-        $this->groupeRH          = $groupeRH;
-        $this->noteInterneRH     = $noteInterneRH;
-        $this->lienUserRH        = $lienUserRH;
         $this->emailUserRH       = $emailUserRH;
+        $this->groupeRepository  = $groupeRepository;
+        $this->groupeRH          = $groupeRH;
+        $this->guardService      = $guardService;
+        $this->installService    = $installService;
+        $this->libelleRH         = $libelleRH;
+        $this->lienUserRH        = $lienUserRH;
+        $this->logger            = $logger;
+        $this->noteInterneRH     = $noteInterneRH;
+        $this->oauthService      = $oauthService;
+        $this->phoneUserRH       = $phoneUserRH;
+        $this->postRH            = $postRH;
+        $this->templateRH        = $templateRH;
+        $this->twig              = $twig;
+        $this->uploadAnnotReader = $uploadAnnotReader;
+        $this->userRepository    = $userRepository;
+        $this->userRH            = $userRH;
     }
 
     protected function getParameter(string $name)
