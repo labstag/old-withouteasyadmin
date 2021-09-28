@@ -46,7 +46,7 @@ class BookmarkController extends FrontControllerLib
     }
 
     /**
-     * @Route("/", name="bookmark_ndex")
+     * @Route("/", name="bookmark_index")
      */
     public function index(
         Request $request,
