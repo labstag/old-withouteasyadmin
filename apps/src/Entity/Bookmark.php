@@ -65,6 +65,11 @@ class Bookmark
     private $name;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $published;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bookmarks")
      */
     private $refcategory;
@@ -86,11 +91,6 @@ class Bookmark
      * @ORM\Column(type="array")
      */
     private $state;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $published;
 
     /**
      * @var DateTime
@@ -160,6 +160,11 @@ class Bookmark
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    public function getPublished(): ?DateTimeInterface
+    {
+        return $this->published;
     }
 
     public function getRefcategory(): ?Category
@@ -241,6 +246,13 @@ class Bookmark
         return $this;
     }
 
+    public function setPublished(DateTimeInterface $published): self
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
     public function setRefcategory(?Category $refcategory): self
     {
         $this->refcategory = $refcategory;
@@ -272,18 +284,6 @@ class Bookmark
     public function setUrl(string $url): self
     {
         $this->url = $url;
-
-        return $this;
-    }
-
-    public function getPublished(): ?DateTimeInterface
-    {
-        return $this->published;
-    }
-
-    public function setPublished(DateTimeInterface $published): self
-    {
-        $this->published = $published;
 
         return $this;
     }
