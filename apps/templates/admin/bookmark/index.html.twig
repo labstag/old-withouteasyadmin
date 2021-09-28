@@ -12,7 +12,7 @@
     >
         <thead>
             <tr>
-                <th>{{ 'bookmark.title'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'bookmark.name'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'bookmark.user'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'bookmark.category'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
@@ -23,7 +23,7 @@
         <tbody>
         {% for entity in pagination %}
             <tr data-id="{{ entity.id }}">
-                <td>{{ entity.title }}</td>
+                <td>{{ entity.name }}</td>
                 <td>{{ entity.refuser }}</td>
                 <td>{{ entity.refcategory }}</td>
                 <td>

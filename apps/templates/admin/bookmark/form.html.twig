@@ -3,7 +3,9 @@
 {% block body %}
     {{ form_start(form) }}
     {{ form_row(form.name) }}
+    {{ form_row(form.published) }}
     {{ form_row(form.slug) }}
+    {{ form_row(form.url) }}
     {{ form_row(form.content) }}
     {{ form_row(form.metaDescription) }}
     {{ form_row(form.metaKeywords) }}

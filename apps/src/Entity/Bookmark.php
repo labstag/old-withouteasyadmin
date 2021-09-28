@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity;
 
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -85,6 +86,11 @@ class Bookmark
      * @ORM\Column(type="array")
      */
     private $state;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $published;
 
     /**
      * @var DateTime
@@ -266,6 +272,18 @@ class Bookmark
     public function setUrl(string $url): self
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getPublished(): ?DateTimeInterface
+    {
+        return $this->published;
+    }
+
+    public function setPublished(DateTimeInterface $published): self
+    {
+        $this->published = $published;
 
         return $this;
     }

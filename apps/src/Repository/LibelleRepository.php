@@ -17,6 +17,22 @@ class LibelleRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, Libelle::class);
     }
 
+    public function findByBookmark()
+    {
+        $entityManager = $this->getEntityManager();
+        $dql           = $entityManager->createQueryBuilder();
+        $dql->select('a');
+        $dql->from(Libelle::class, 'a');
+        $dql->innerJoin('a.bookmarks', 'b');
+        $dql->innerjoin('b.refuser', 'u');
+        $dql->where('b.state LIKE :state');
+        $dql->setParameters(
+            ['state' => '%publie%']
+        );
+
+        return $dql->getQuery()->getResult();
+    }
+
     public function findByPost()
     {
         $entityManager = $this->getEntityManager();

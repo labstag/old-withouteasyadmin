@@ -9,8 +9,10 @@ use Labstag\Entity\Libelle;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
 use Labstag\Lib\AbstractTypeLib;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -38,6 +40,26 @@ class BookmarkType extends AbstractTypeLib
             [
                 'label'    => $this->translator->trans('bookmark.slug.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('bookmark.slug.help', [], 'admin.form'),
+                'required' => false,
+            ]
+        );
+        $builder->add(
+            'published',
+            DateTimeType::class,
+            [
+                'label'        => $this->translator->trans('post.published.label', [], 'admin.form'),
+                'help'         => $this->translator->trans('post.published.help', [], 'admin.form'),
+                'date_widget'  => 'single_text',
+                'time_widget'  => 'single_text',
+                'with_seconds' => true,
+            ]
+        );
+        $builder->add(
+            'url',
+            UrlType::class,
+            [
+                'label'    => $this->translator->trans('bookmark.url.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('bookmark.url.help', [], 'admin.form'),
                 'required' => false,
             ]
         );

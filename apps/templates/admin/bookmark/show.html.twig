@@ -3,8 +3,20 @@
     <table>
         <tbody>
             <tr>
-                <th>{{ 'bookmark.title'|trans({}, 'admin.messages') }}</th>
-                <td>{{ entity.title }}</td>
+                <th>{{ 'bookmark.name'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'bookmark.url'|trans({}, 'admin.messages') }}</th>
+                <td>
+                    <a href="{{ entity.url }}" target="_blank">
+                        {{ entity.url }}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'bookmark.published'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
             </tr>
             <tr>
                 <th>{{ 'bookmark.content'|trans({}, 'admin.messages') }}</th>
@@ -31,9 +43,9 @@
                     {% endif %}
                     {% set state = guard_route(url) %}
                     {% if state == true %}
-                        <a href="{{ path(url, {'id': entity.category.id}) }}">{{ entity.category }}</a>
+                        <a href="{{ path(url, {'id': entity.refcategory.id}) }}">{{ entity.refcategory }}</a>
                     {% else %}
-                        {{ entity.category }}
+                        {{ entity.refcategory }}
                     {% endif %}
                 </td>
             </tr>

@@ -72,8 +72,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     public function findPublierCategory($code)
     {
         $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
-        $query->where('p.state LIKE :state');
+        $query        = $queryBuilder->where('p.state LIKE :state');
         $query->orderBy('p.published', 'DESC');
         $query->leftJoin('p.refcategory', 'c');
         $query->andWhere('c.slug=:slug');
@@ -90,8 +89,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     public function findPublierLibelle($code)
     {
         $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
-        $query->where('p.state LIKE :state');
+        $query        = $queryBuilder->where('p.state LIKE :state');
         $query->orderBy('p.published', 'DESC');
         $query->leftJoin('p.libelles', 'l');
         $query->andWhere('l.slug=:slug');

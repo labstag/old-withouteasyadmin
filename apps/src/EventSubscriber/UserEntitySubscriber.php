@@ -88,10 +88,11 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
         $states = [
             'adresseUsers' => $newEntity->getAdresseUsers(),
+            'bookmarks'    => $newEntity->getBookmarks(),
             'editos'       => $newEntity->getEditos(),
             'emailUsers'   => $newEntity->getEmailUsers(),
-            'noteInternes' => $newEntity->getNoteInternes(),
             'lienUsers'    => $newEntity->getLienUsers(),
+            'noteInternes' => $newEntity->getNoteInternes(),
             'phoneUsers'   => $newEntity->getPhoneUsers(),
             'posts'        => $newEntity->getPosts(),
         ];
