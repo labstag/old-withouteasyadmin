@@ -1,279 +1,279 @@
-adresse.country.help: ''
+adresse.country.help: ""
 adresse.country.label: Pays
-adresse.gps.help: ''
-adresse.gps.label: 'Position GPS'
-adresse.pmr.help: ''
-adresse.pmr.label: 'Accès PMR ?'
-adresse.rue.help: ''
+adresse.gps.help: ""
+adresse.gps.label: "Position GPS"
+adresse.pmr.help: ""
+adresse.pmr.label: "Accès PMR ?"
+adresse.rue.help: ""
 adresse.rue.label: Rue
-adresse.type.help: ''
+adresse.type.help: ""
 adresse.type.label: Type
-adresse.ville.help: ''
+adresse.ville.help: ""
 adresse.ville.label: Ville
-adresse.zipcode.help: ''
-adresse.zipcode.label: 'Code postal'
-adresseuser.refuser.help: ''
+adresse.zipcode.help: ""
+adresse.zipcode.label: "Code postal"
+adresseuser.refuser.help: ""
 adresseuser.refuser.label: Utilisateur
-bookmark.content.help: ''
+bookmark.content.help: ""
 bookmark.content.label: Contenu
-bookmark.file.help: ''
+bookmark.file.help: ""
 bookmark.file.label: Fichier
-bookmark.libelles.help: ''
+bookmark.libelles.help: ""
 bookmark.libelles.label: Libélles
-bookmark.metaDescription.help: ''
+bookmark.metaDescription.help: ""
 bookmark.metaDescription.label: meta Description
-bookmark.metaKeywords.help: ''
+bookmark.metaKeywords.help: ""
 bookmark.metaKeywords.label: meta Keywords
-bookmark.name.help: ''
+bookmark.name.help: ""
 bookmark.name.label: Nom
-bookmark.refcategory.help: ''
+bookmark.refcategory.help: ""
 bookmark.refcategory.label: Catégorie
-bookmark.refuser.help: ''
+bookmark.refuser.help: ""
 bookmark.refuser.label: Utilisateur
-bookmark.slug.help: ''
+bookmark.slug.help: ""
 bookmark.slug.label: Slug
-bookmark.url.help: ''
+bookmark.url.help: ""
 bookmark.url.label: Url
-category.name.help: ''
+category.name.help: ""
 category.name.label: Nom
-category.parent.help: ''
+category.parent.help: ""
 category.parent.label: Parent
-category.slug.help: ''
+category.slug.help: ""
 category.slug.label: Slug
-edito.content.help: ''
+edito.content.help: ""
 edito.content.label: Contenu
-edito.file.help: ''
+edito.file.help: ""
 edito.file.label: Image
-edito.metaDescription.help: ''
-edito.metaDescription.label: 'SEO description'
-edito.metaKeywords.help: ''
-edito.metaKeywords.label: 'SEO mot clef'
-edito.published.help: ''
-edito.published.label: 'Publié ?'
-edito.refuser.help: ''
+edito.metaDescription.help: ""
+edito.metaDescription.label: "SEO description"
+edito.metaKeywords.help: ""
+edito.metaKeywords.label: "SEO mot clef"
+edito.published.help: ""
+edito.published.label: "Publié ?"
+edito.refuser.help: ""
 edito.refuser.label: Utilisateur
-edito.title.help: ''
+edito.title.help: ""
 edito.title.label: Titre
-email.adresse.help: ''
-email.adresse.label: 'Adresse courriel'
-emailuser.principal.help: ''
-emailuser.principal.label: 'Principal ?'
-emailuser.refuser.help: ''
+email.adresse.help: ""
+email.adresse.label: "Adresse courriel"
+emailuser.principal.help: ""
+emailuser.principal.label: "Principal ?"
+emailuser.refuser.help: ""
 emailuser.refuser.label: Utilisateur
-geocode.countryCode.help: ''
+geocode.countryCode.help: ""
 geocode.countryCode.label: Pays
-groupe.code.help: ''
+groupe.code.help: ""
 groupe.code.label: Code
-groupe.name.help: ''
+groupe.name.help: ""
 groupe.name.label: Nom
-libelle.name.help: ''
+libelle.name.help: ""
 libelle.name.label: Nom
-libelle.slug.help: ''
+libelle.slug.help: ""
 libelle.slug.label: Slug
-lien.adresse.help: ''
-lien.adresse.label: 'Adresse URL'
-lien.name.help: ''
+lien.adresse.help: ""
+lien.adresse.label: "Adresse URL"
+lien.name.help: ""
 lien.name.label: Nom
-lienuser.refuser.help: ''
+lienuser.refuser.help: ""
 lienuser.refuser.label: Utilisateur
-menu.data.route.name.help: ''
+menu.data.route.name.help: ""
 menu.data.route.name.label: Nom
-menu.data.route.param.help: ''
+menu.data.route.param.help: ""
 menu.data.route.param.label: Paramètres
-menu.data.route.target.help: ''
+menu.data.route.target.help: ""
 menu.data.route.target.label: Target
-menu.data.route.url.help: ''
+menu.data.route.url.help: ""
 menu.data.route.url.label: Url
-menu.link.icon.help: ''
+menu.link.icon.help: ""
 menu.link.icon.label: Icon
-menu.link.libelle.help: ''
+menu.link.libelle.help: ""
 menu.link.libelle.label: Libellé
-menu.principal.clef.help: ''
+menu.principal.clef.help: ""
 menu.principal.clef.label: Clef
-noteinterne.content.help: ''
+noteinterne.content.help: ""
 noteinterne.content.label: Contenu
-noteinterne.date_debut.help: ''
-noteinterne.date_debut.label: 'Date de début'
-noteinterne.date_fin.help: ''
-noteinterne.date_fin.label: 'Date de fin'
-noteinterne.file.help: ''
+noteinterne.date_debut.help: ""
+noteinterne.date_debut.label: "Date de début"
+noteinterne.date_fin.help: ""
+noteinterne.date_fin.label: "Date de fin"
+noteinterne.file.help: ""
 noteinterne.file.label: Image
-noteinterne.refuser.help: ''
+noteinterne.refuser.help: ""
 noteinterne.refuser.label: Utilisateur
-noteinterne.title.help: ''
+noteinterne.title.help: ""
 noteinterne.title.label: Titre
-param.disclaimer.activate.help: ''
-param.disclaimer.activate.label: 'Activer ?'
-param.disclaimer.message.help: ''
+param.disclaimer.activate.help: ""
+param.disclaimer.activate.label: "Activer ?"
+param.disclaimer.message.help: ""
 param.disclaimer.message.label: Mesage
-param.disclaimer.title.help: ''
+param.disclaimer.title.help: ""
 param.disclaimer.title.label: Titre
-param.disclaimer.url-redirect.help: ''
-param.disclaimer.url-redirect.label: 'Url de redirection'
-param.favicon.help: ''
+param.disclaimer.url-redirect.help: ""
+param.disclaimer.url-redirect.label: "Url de redirection"
+param.favicon.help: ""
 param.favicon.label: Favicon
-param.formatdate.admin.help: ''
+param.formatdate.admin.help: ""
 param.formatdate.admin.label: Backend
-param.formatdate.public.help: ''
+param.formatdate.public.help: ""
 param.formatdate.public.label: Front
-param.generator.help: ''
-param.generator.label: 'Site générateur'
-param.geocode.accuracy.help: ''
+param.generator.help: ""
+param.generator.label: "Site générateur"
+param.geocode.accuracy.help: ""
 param.geocode.accuracy.label: Accuracy
-param.geocode.communityCode.help: ''
-param.geocode.communityCode.label: 'Code communauté'
-param.geocode.communityName.help: ''
+param.geocode.communityCode.help: ""
+param.geocode.communityCode.label: "Code communauté"
+param.geocode.communityName.help: ""
 param.geocode.communityName.label: Communauté
-param.geocode.latitude.help: ''
+param.geocode.latitude.help: ""
 param.geocode.latitude.label: Latitude
-param.geocode.longitude.help: ''
+param.geocode.longitude.help: ""
 param.geocode.longitude.label: Longitude
-param.geocode.placeName.help: ''
+param.geocode.placeName.help: ""
 param.geocode.placeName.label: Nom
-param.geocode.postalCode.help: ''
-param.geocode.postalCode.label: 'Code postal'
-param.geocode.provinceCode.help: ''
-param.geocode.provinceCode.label: 'Code prinvince'
-param.geocode.provinceName.help: ''
+param.geocode.postalCode.help: ""
+param.geocode.postalCode.label: "Code postal"
+param.geocode.provinceCode.help: ""
+param.geocode.provinceCode.label: "Code prinvince"
+param.geocode.provinceName.help: ""
 param.geocode.provinceName.label: Province
-param.geocode.stateCode.help: ''
-param.geocode.stateCode.label: 'Code Etat'
-param.geocode.stateName.help: ''
+param.geocode.stateCode.help: ""
+param.geocode.stateCode.label: "Code Etat"
+param.geocode.stateName.help: ""
 param.geocode.stateName.label: Etat
-param.image.help: ''
+param.image.help: ""
 param.image.label: Image
-param.language.help: ''
+param.language.help: ""
 param.language.label: Langues
-param.languagedefault.help: ''
-param.languagedefault.label: 'Langue par défaut'
-param.metasite.description.help: ''
-param.metasite.description.label: 'SEO description'
-param.metasite.keywords.help: ''
-param.metasite.keywords.label: 'SEO mot clef'
-param.metasite.theme-color.help: ''
-param.metasite.theme-color.label: 'Thème couleur'
-param.metasite.viewport.help: ''
+param.languagedefault.help: ""
+param.languagedefault.label: "Langue par défaut"
+param.metasite.description.help: ""
+param.metasite.description.label: "SEO description"
+param.metasite.keywords.help: ""
+param.metasite.keywords.label: "SEO mot clef"
+param.metasite.theme-color.help: ""
+param.metasite.theme-color.label: "Thème couleur"
+param.metasite.viewport.help: ""
 param.metasite.viewport.label: Viewport
-param.notification.mail.help: ''
+param.notification.mail.help: ""
 param.notification.mail.label: Courriel
-param.notification.notify.help: ''
+param.notification.notify.help: ""
 param.notification.notify.label: Notification
-param.notification.type.help: ''
+param.notification.type.help: ""
 param.notification.type.label: Type
-param.oauth.activate.help: ''
-param.oauth.activate.label: 'Activé ?'
-param.oauth.id.help: ''
+param.oauth.activate.help: ""
+param.oauth.activate.label: "Activé ?"
+param.oauth.id.help: ""
 param.oauth.id.label: Id
-param.oauth.secret.help: ''
+param.oauth.secret.help: ""
 param.oauth.secret.label: Secret
-param.oauth.type.help: ''
+param.oauth.type.help: ""
 param.oauth.type.label: Type
-param.robotstxt.help: ''
+param.robotstxt.help: ""
 param.robotstxt.label: Robotstxt
-param.site_copyright.help: ''
+param.site_copyright.help: ""
 param.site_copyright.label: Copyright
-param.site_no-reply.help: ''
-param.site_no-reply.label: 'Courriel d''envoie'
-param.site_url.help: ''
-param.site_url.label: 'Url du site'
-param.tarteaucitron.AcceptAllCta.help: ''
+param.site_no-reply.help: ""
+param.site_no-reply.label: "Courriel d'envoie"
+param.site_url.help: ""
+param.site_url.label: "Url du site"
+param.tarteaucitron.AcceptAllCta.help: ""
 param.tarteaucitron.AcceptAllCta.label: AcceptAllCta
-param.tarteaucitron.adblocker.help: ''
+param.tarteaucitron.adblocker.help: ""
 param.tarteaucitron.adblocker.label: Adblocker
-param.tarteaucitron.closePopup.help: ''
+param.tarteaucitron.closePopup.help: ""
 param.tarteaucitron.closePopup.label: ClosePopup
-param.tarteaucitron.cookieName.help: ''
+param.tarteaucitron.cookieName.help: ""
 param.tarteaucitron.cookieName.label: CookieName
-param.tarteaucitron.cookieslist.help: ''
+param.tarteaucitron.cookieslist.help: ""
 param.tarteaucitron.cookieslist.label: Cookieslist
-param.tarteaucitron.DenyAllCta.help: ''
+param.tarteaucitron.DenyAllCta.help: ""
 param.tarteaucitron.DenyAllCta.label: DenyAllCta
-param.tarteaucitron.groupServices.help: ''
+param.tarteaucitron.groupServices.help: ""
 param.tarteaucitron.groupServices.label: GroupServices
-param.tarteaucitron.handleBrowserDNTRequest.help: ''
+param.tarteaucitron.handleBrowserDNTRequest.help: ""
 param.tarteaucitron.handleBrowserDNTRequest.label: HandleBrowserDNTRequest
-param.tarteaucitron.hashtag.help: ''
+param.tarteaucitron.hashtag.help: ""
 param.tarteaucitron.hashtag.label: Hashtag
-param.tarteaucitron.highPrivacy.help: ''
+param.tarteaucitron.highPrivacy.help: ""
 param.tarteaucitron.highPrivacy.label: HighPrivacy
-param.tarteaucitron.iconPosition.help: ''
+param.tarteaucitron.iconPosition.help: ""
 param.tarteaucitron.iconPosition.label: IconPosition
-param.tarteaucitron.job.help: ''
+param.tarteaucitron.job.help: ""
 param.tarteaucitron.job.label: Jobs
-param.tarteaucitron.mandatory.help: ''
+param.tarteaucitron.mandatory.help: ""
 param.tarteaucitron.mandatory.label: Mandatory
-param.tarteaucitron.moreInfoLink.help: ''
+param.tarteaucitron.moreInfoLink.help: ""
 param.tarteaucitron.moreInfoLink.label: MoreInfoLink
-param.tarteaucitron.orientation.help: ''
+param.tarteaucitron.orientation.help: ""
 param.tarteaucitron.orientation.label: Orientation
-param.tarteaucitron.privacyUrl.help: ''
+param.tarteaucitron.privacyUrl.help: ""
 param.tarteaucitron.privacyUrl.label: PrivacyUrl
-param.tarteaucitron.readmoreLink.help: ''
+param.tarteaucitron.readmoreLink.help: ""
 param.tarteaucitron.readmoreLink.label: readmoreLink
-param.tarteaucitron.removeCredit.help: ''
+param.tarteaucitron.removeCredit.help: ""
 param.tarteaucitron.removeCredit.label: RemoveCredit
-param.tarteaucitron.showAlertSmall.help: ''
+param.tarteaucitron.showAlertSmall.help: ""
 param.tarteaucitron.showAlertSmall.label: ShowAlertSmall
-param.tarteaucitron.showIcon.help: ''
+param.tarteaucitron.showIcon.help: ""
 param.tarteaucitron.showIcon.label: ShowIcon
-param.title_format.help: ''
-param.title_format.label: 'Format du titre du site'
-phone.country.help: ''
+param.title_format.help: ""
+param.title_format.label: "Format du titre du site"
+phone.country.help: ""
 phone.country.label: Pays
-phone.numero.help: ''
-phone.numero.label: 'Numéro de téléphone'
-phoneuser.principal.help: ''
-phoneuser.principal.label: 'Principal ?'
-phoneuser.refuser.help: ''
+phone.numero.help: ""
+phone.numero.label: "Numéro de téléphone"
+phoneuser.principal.help: ""
+phoneuser.principal.label: "Principal ?"
+phoneuser.refuser.help: ""
 phoneuser.refuser.label: Utilisateur
-post.commentaire.help: ''
-post.commentaire.label: 'Commentaire ?'
-post.content.help: ''
+post.commentaire.help: ""
+post.commentaire.label: "Commentaire ?"
+post.content.help: ""
 post.content.label: Contenu
-post.file.help: ''
+post.file.help: ""
 post.file.label: Image
-post.libelles.help: ''
+post.libelles.help: ""
 post.libelles.label: Libellés
-post.metaDescription.help: ''
-post.metaDescription.label: 'SEO description'
-post.metaKeywords.help: ''
-post.metaKeywords.label: 'SEO mot clef'
-post.published.help: ''
-post.published.label: 'Publié ?'
-post.refcategory.help: ''
+post.metaDescription.help: ""
+post.metaDescription.label: "SEO description"
+post.metaKeywords.help: ""
+post.metaKeywords.label: "SEO mot clef"
+post.published.help: ""
+post.published.label: "Publié ?"
+post.refcategory.help: ""
 post.refcategory.label: Catégorie
-post.refuser.help: ''
+post.refuser.help: ""
 post.refuser.label: Utilisateur
-post.slug.help: ''
+post.slug.help: ""
 post.slug.label: Slug
-post.title.help: ''
+post.title.help: ""
 post.title.label: Titre
-profil.email.help: ''
+profil.email.help: ""
 profil.email.label: Courriel
-profil.file.help: ''
-profil.password.help: ''
-profil.password.label: 'Mot de passe'
-profil.password.match: 'Les champs de mot de passe doivent correspondre.'
-profil.repeatpassword.help: ''
-profil.repeatpassword.label: 'Répéter le mot de passe'
-profil.username.help: ''
+profil.file.help: ""
+profil.password.help: ""
+profil.password.label: "Mot de passe"
+profil.password.match: "Les champs de mot de passe doivent correspondre."
+profil.repeatpassword.help: ""
+profil.repeatpassword.label: "Répéter le mot de passe"
+profil.username.help: ""
 profil.username.label: Pseudo
-template.code.help: ''
+template.code.help: ""
 template.code.label: Code
-template.html.help: ''
+template.html.help: ""
 template.html.label: Html
-template.name.help: ''
+template.name.help: ""
 template.name.label: Nom
-template.text.help: ''
+template.text.help: ""
 template.text.label: Texte
-user.email.help: ''
+user.email.help: ""
 user.email.label: Courriel
-user.file.help: ''
-user.password.help: ''
-user.password.label: 'Mot de passe'
-user.refgroupe.help: ''
+user.file.help: ""
+user.password.help: ""
+user.password.label: "Mot de passe"
+user.refgroupe.help: ""
 user.refgroupe.label: Groupe
-user.repeatpassword.help: ''
-user.repeatpassword.label: 'Répéter le mot de passe'
-user.username.help: ''
+user.repeatpassword.help: ""
+user.repeatpassword.label: "Répéter le mot de passe"
+user.username.help: ""
 user.username.label: Pseudo
