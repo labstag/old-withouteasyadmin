@@ -18,6 +18,11 @@ class Category
     use SoftDeleteableEntity;
 
     /**
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory")
+     */
+    private $bookmarks;
+
+    /**
      * @ORM\OneToMany(targetEntity=Category::class, mappedBy="parent", cascade={"persist"})
      */
     private $children;
@@ -57,8 +62,9 @@ class Category
 
     public function __construct()
     {
-        $this->children = new ArrayCollection();
-        $this->posts    = new ArrayCollection();
+        $this->children  = new ArrayCollection();
+        $this->posts     = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
     }
 
     public function __toString()
@@ -67,6 +73,16 @@ class Category
         $text   = is_null($parent) ? '' : $parent.' - ';
 
         return $text.$this->getName();
+    }
+
+    public function addBookmark(Bookmark $bookmark): self
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks[] = $bookmark;
+            $bookmark->setRefcategory($this);
+        }
+
+        return $this;
     }
 
     public function addChild(self $child): self
@@ -87,6 +103,14 @@ class Category
         }
 
         return $this;
+    }
+
+    /**
+     * @return Bookmark[]|Collection
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
     }
 
     /**
@@ -123,6 +147,18 @@ class Category
     public function getSlug(): ?string
     {
         return $this->slug;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): self
+    {
+        if ($this->bookmarks->removeElement($bookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($bookmark->getRefcategory() === $this) {
+                $bookmark->setRefcategory(null);
+            }
+        }
+
+        return $this;
     }
 
     public function removeChild(self $child): self

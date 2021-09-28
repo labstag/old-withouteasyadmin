@@ -3,14 +3,34 @@
 namespace Labstag\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Labstag\Annotation\Trashable;
 use Labstag\Entity\Libelle;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
+/**
+ * @Trashable(url="admin_libelle_trash")
+ */
 class LibelleRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Libelle::class);
+    }
+
+    public function findByBookmark()
+    {
+        $entityManager = $this->getEntityManager();
+        $dql           = $entityManager->createQueryBuilder();
+        $dql->select('a');
+        $dql->from(Libelle::class, 'a');
+        $dql->innerJoin('a.bookmarks', 'b');
+        $dql->innerjoin('b.refuser', 'u');
+        $dql->where('b.state LIKE :state');
+        $dql->setParameters(
+            ['state' => '%publie%']
+        );
+
+        return $dql->getQuery()->getResult();
     }
 
     public function findByPost()

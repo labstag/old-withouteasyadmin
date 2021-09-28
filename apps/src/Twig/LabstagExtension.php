@@ -251,19 +251,19 @@ class LabstagExtension extends AbstractExtension
     private function getFiltersFunctions()
     {
         return [
-            'imagefilter'              => 'imagefilter',
-            'workflow_has'             => 'workflowHas',
-            'guard_route'              => 'guardRoute',
-            'class_entity'             => 'classEntity',
             'attachment'               => 'getAttachment',
-            'phone_valid'              => 'isPhoneValid',
+            'class_entity'             => 'classEntity',
+            'formClass'                => 'formClass',
+            'formPrototype'            => 'formPrototype',
+            'guard_group_access'       => 'guardAccessGroupRoutes',
             'guard_route_enable_group' => 'guardRouteEnableGroupe',
             'guard_route_enable_user'  => 'guardRouteEnableUser',
+            'guard_route'              => 'guardRoute',
             'guard_user_access'        => 'guardAccessUserRoutes',
-            'guard_group_access'       => 'guardAccessGroupRoutes',
-            'formClass'                => 'formClass',
+            'imagefilter'              => 'imagefilter',
+            'phone_valid'              => 'isPhoneValid',
             'verifPhone'               => 'verifPhone',
-            'formPrototype'            => 'formPrototype',
+            'workflow_has'             => 'workflowHas',
         ];
     }
 }

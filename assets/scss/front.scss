@@ -275,7 +275,8 @@ main {
   @extend .col-12;
 }
 
-.post_libelle {
+.post_libelle,
+.bookmark_libelle {
   &::before {
     @extend .fas;
     @extend .fa-tag;
@@ -284,7 +285,8 @@ main {
   }
 }
 
-.post_category {
+.post_category,
+.bookmark_category {
   &::before {
     @extend .far;
     @extend .fa-folder;

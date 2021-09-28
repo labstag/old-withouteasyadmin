@@ -1,33 +1,33 @@
 <?php
 
-namespace Labstag\Controller\Admin\Post;
+namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\Entity\Post;
-use Labstag\Form\Admin\Post\PostType;
+use Labstag\Entity\Bookmark;
+use Labstag\Form\Admin\BookmarkType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
-use Labstag\Repository\PostRepository;
+use Labstag\Repository\BookmarkRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
-use Labstag\RequestHandler\PostRequestHandler;
+use Labstag\RequestHandler\BookmarkRequestHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/post")
+ * @Route("/admin/bookmark")
  */
-class PostController extends AdminControllerLib
+class BookmarkController extends AdminControllerLib
 {
     /**
-     * @Route("/{id}/edit", name="admin_post_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_bookmark_edit", methods={"GET","POST"})
      */
     public function edit(
         UploadAnnotationReader $uploadAnnotReader,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
-        Post $post,
-        PostRequestHandler $requestHandler
+        Bookmark $bookmark,
+        BookmarkRequestHandler $requestHandler
     ): Response
     {
         $this->modalAttachmentDelete();
@@ -37,23 +37,23 @@ class PostController extends AdminControllerLib
             $attachmentRepository,
             $attachmentRH,
             $requestHandler,
-            PostType::class,
-            $post,
+            BookmarkType::class,
+            $bookmark,
             [
                 'delete' => 'api_action_delete',
-                'list'   => 'admin_post_index',
-                'show'   => 'admin_post_show',
+                'list'   => 'admin_bookmark_index',
+                'show'   => 'admin_bookmark_show',
             ],
-            'admin/post/form.html.twig'
+            'admin/bookmark/form.html.twig'
         );
     }
 
     /**
-     * @Route("/trash",  name="admin_post_trash", methods={"GET"})
-     * @Route("/",       name="admin_post_index", methods={"GET"})
+     * @Route("/trash",  name="admin_bookmark_trash", methods={"GET"})
+     * @Route("/",       name="admin_bookmark_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(PostRepository $repository): Response
+    public function indexOrTrash(BookmarkRepository $repository): Response
     {
         return $this->listOrTrash(
             $repository,
@@ -61,18 +61,18 @@ class PostController extends AdminControllerLib
                 'trash' => 'findTrashForAdmin',
                 'all'   => 'findAllForAdmin',
             ],
-            'admin/post/index.html.twig',
+            'admin/bookmark/index.html.twig',
             [
-                'new'   => 'admin_post_new',
+                'new'   => 'admin_bookmark_new',
                 'empty' => 'api_action_empty',
-                'trash' => 'admin_post_trash',
-                'list'  => 'admin_post_index',
+                'trash' => 'admin_bookmark_trash',
+                'list'  => 'admin_bookmark_index',
             ],
             [
-                'list'     => 'admin_post_index',
-                'show'     => 'admin_post_show',
-                'preview'  => 'admin_post_preview',
-                'edit'     => 'admin_post_edit',
+                'list'     => 'admin_bookmark_index',
+                'show'     => 'admin_bookmark_show',
+                'preview'  => 'admin_bookmark_preview',
+                'edit'     => 'admin_bookmark_edit',
                 'delete'   => 'api_action_delete',
                 'destroy'  => 'api_action_destroy',
                 'restore'  => 'api_action_restore',
@@ -82,13 +82,13 @@ class PostController extends AdminControllerLib
     }
 
     /**
-     * @Route("/new", name="admin_post_new", methods={"GET","POST"})
+     * @Route("/new", name="admin_bookmark_new", methods={"GET","POST"})
      */
     public function new(
         UploadAnnotationReader $uploadAnnotReader,
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
-        PostRequestHandler $requestHandler
+        BookmarkRequestHandler $requestHandler
     ): Response
     {
         return $this->create(
@@ -96,48 +96,48 @@ class PostController extends AdminControllerLib
             $attachmentRepository,
             $attachmentRH,
             $requestHandler,
-            new Post(),
-            PostType::class,
-            ['list' => 'admin_post_index'],
-            'admin/post/form.html.twig'
+            new Bookmark(),
+            BookmarkType::class,
+            ['list' => 'admin_bookmark_index'],
+            'admin/bookmark/form.html.twig'
         );
     }
 
     /**
-     * @Route("/{id}",         name="admin_post_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_post_preview", methods={"GET"})
+     * @Route("/{id}",         name="admin_bookmark_show", methods={"GET"})
+     * @Route("/preview/{id}", name="admin_bookmark_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function showOrPreview(
-        Post $post
+        Bookmark $bookmark
     ): Response
     {
         return $this->renderShowOrPreview(
-            $post,
-            'admin/post/show.html.twig',
+            $bookmark,
+            'admin/bookmark/show.html.twig',
             [
                 'delete'  => 'api_action_delete',
                 'restore' => 'api_action_restore',
                 'destroy' => 'api_action_destroy',
-                'edit'    => 'admin_post_edit',
-                'list'    => 'admin_post_index',
-                'trash'   => 'admin_post_trash',
+                'edit'    => 'admin_bookmark_edit',
+                'list'    => 'admin_bookmark_index',
+                'trash'   => 'admin_bookmark_trash',
             ]
         );
     }
 
-    protected function setBreadcrumbsPageAdminPost(): array
+    protected function setBreadcrumbsPageAdminBookmark(): array
     {
         return [
             [
-                'title'        => $this->translator->trans('post.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_index',
+                'title'        => $this->translator->trans('bookmark.name', [], 'admin.breadcrumb'),
+                'route'        => 'admin_bookmark_index',
                 'route_params' => [],
             ],
         ];
     }
 
-    protected function setBreadcrumbsPageAdminPostEdit(): array
+    protected function setBreadcrumbsPageAdminBookmarkEdit(): array
     {
         $request     = $this->get('request_stack')->getCurrentRequest();
         $all         = $request->attributes->all();
@@ -145,25 +145,25 @@ class PostController extends AdminControllerLib
 
         return [
             [
-                'title'        => $this->translator->trans('post.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_edit',
+                'title'        => $this->translator->trans('bookmark.edit', [], 'admin.breadcrumb'),
+                'route'        => 'admin_bookmark_edit',
                 'route_params' => $routeParams,
             ],
         ];
     }
 
-    protected function setBreadcrumbsPageAdminPostNew(): array
+    protected function setBreadcrumbsPageAdminBookmarkNew(): array
     {
         return [
             [
-                'title'        => $this->translator->trans('post.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_new',
+                'title'        => $this->translator->trans('bookmark.new', [], 'admin.breadcrumb'),
+                'route'        => 'admin_bookmark_new',
                 'route_params' => [],
             ],
         ];
     }
 
-    protected function setBreadcrumbsPageAdminPostPreview(): array
+    protected function setBreadcrumbsPageAdminBookmarkPreview(): array
     {
         $request     = $this->get('request_stack')->getCurrentRequest();
         $all         = $request->attributes->all();
@@ -171,19 +171,19 @@ class PostController extends AdminControllerLib
 
         return [
             [
-                'title'        => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_trash',
+                'title'        => $this->translator->trans('bookmark.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_bookmark_trash',
                 'route_params' => [],
             ],
             [
-                'title'        => $this->translator->trans('post.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_preview',
+                'title'        => $this->translator->trans('bookmark.preview', [], 'admin.breadcrumb'),
+                'route'        => 'admin_bookmark_preview',
                 'route_params' => $routeParams,
             ],
         ];
     }
 
-    protected function setBreadcrumbsPageAdminPostShow(): array
+    protected function setBreadcrumbsPageAdminBookmarkShow(): array
     {
         $request     = $this->get('request_stack')->getCurrentRequest();
         $all         = $request->attributes->all();
@@ -191,19 +191,19 @@ class PostController extends AdminControllerLib
 
         return [
             [
-                'title'        => $this->translator->trans('post.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_show',
+                'title'        => $this->translator->trans('bookmark.show', [], 'admin.breadcrumb'),
+                'route'        => 'admin_bookmark_show',
                 'route_params' => $routeParams,
             ],
         ];
     }
 
-    protected function setBreadcrumbsPageAdminPostTrash(): array
+    protected function setBreadcrumbsPageAdminBookmarkTrash(): array
     {
         return [
             [
-                'title'        => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_trash',
+                'title'        => $this->translator->trans('bookmark.trash', [], 'admin.breadcrumb'),
+                'route'        => 'admin_bookmark_trash',
                 'route_params' => [],
             ],
         ];
@@ -216,7 +216,7 @@ class PostController extends AdminControllerLib
         return array_merge(
             $headers,
             [
-                'admin_post' => $this->translator->trans('post.title', [], 'admin.header'),
+                'admin_bookmark' => $this->translator->trans('bookmark.title', [], 'admin.header'),
             ]
         );
     }

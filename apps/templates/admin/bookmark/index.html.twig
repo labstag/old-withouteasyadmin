@@ -1,5 +1,5 @@
 {% import "admin/macro.html.twig" as macro_admin %}
-{% extends 'admin/post/libelle/layout.html.twig' %}
+{% extends 'admin/bookmark/layout.html.twig' %}
 {% block body %}
     <table
         is="table-datatable"
@@ -12,16 +12,28 @@
     >
         <thead>
             <tr>
-                <th>{{ 'post.libelle.name'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'post.libelle.slug'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'bookmark.name'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'bookmark.user'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'bookmark.category'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'bookmark.workflow'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
         {% for entity in pagination %}
             <tr data-id="{{ entity.id }}">
-                <td>{{ entity.nom }}</td>
-                <td>{{ entity.slug }}</td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.refuser }}</td>
+                <td>{{ entity.refcategory }}</td>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ macro_admin.workflow(entity, actions) }}
+                </td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}
                 </td>

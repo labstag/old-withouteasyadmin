@@ -1,0 +1,52 @@
+{% set showaside = true %}
+{% set mainclass = "main-home" %}
+{% import "macro.html.twig" as macro_site %}
+{% extends 'skeleton/home.html.twig' %}
+{% block aside %}
+	<div class="aside-lists">
+		{% include "front/bookmarks/aside.html.twig" %}
+		{% include "front/aside.html.twig" %}
+	</div>
+{% endblock %}
+{% block section %}
+	{% for bookmark in pagination %}
+		<div class="bookmark_data">
+			<h2 class="bookmark_name">
+				<a href="{{ path('bookmark_show', {'slug': bookmark.slug}) }}" target="_blank">
+					{{ bookmark.name }}
+				</a>
+			</h2>
+			{% set img = attachment(bookmark.img) %}
+			{% if img is not null and img.name is not null %}
+				<picture class="bookmark_img">
+					<img alt="{{ bookmark.name|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}"/>
+				</picture>
+			{% endif %}
+			<div class="bookmark_date">
+				{{ 'bookmark.infodate'|trans(
+                    {
+                        '%date%': bookmark.published|format_datetime(pattern=formatdatetime.public)
+                    }
+                )|raw }}
+				{% set state = guard_route('admin_bookmark_edit') %}
+				{% if state == true %}
+					<a href="{{ path('admin_bookmark_edit', {'id': bookmark.id}) }}" target="_blank">{{ 'bookmark.update'|trans }}</a>
+				{% endif %}
+			</div>
+			<div class="bookmark_content">
+				{{ bookmark.content|raw }}
+			</div>
+			<div class="bookmark_libcat">
+				{% for libelle in bookmark.libelles %}
+					<a href="{{ path('bookmark_libelle', {'code' : libelle.slug}) }}" class="bookmark_libelle">{{ libelle }}</a>
+				{% endfor %}
+				{% if bookmark.refcategory %}
+					<a href="{{ path('bookmark_category', {'code': bookmark.refcategory.slug}) }}" class="bookmark_category">{{ bookmark.refcategory }}</a>
+				{% endif %}
+			</div>
+		</div>
+	{% endfor %}
+	{% if pagination is defined %}
+		{{ knp_pagination_render(pagination) }}
+	{% endif %}
+{% endblock %}

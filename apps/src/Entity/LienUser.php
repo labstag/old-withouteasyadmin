@@ -4,7 +4,6 @@ namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\LienUserRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=LienUserRepository::class)
@@ -14,7 +13,7 @@ class LienUser extends Lien
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="lienUsers")
-     * @Assert\NotBlank
+     * @ORM\JoinColumn(nullable=false)
      */
     protected $refuser;
 

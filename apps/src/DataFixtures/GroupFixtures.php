@@ -4,6 +4,7 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Labstag\Entity\Groupe;
 use Labstag\Lib\FixtureLib;
 
 class GroupFixtures extends FixtureLib implements DependentFixtureInterface
@@ -20,5 +21,18 @@ class GroupFixtures extends FixtureLib implements DependentFixtureInterface
         foreach ($groupes as $key => $row) {
             $this->addGroupe($key, $row);
         }
+    }
+
+    protected function addGroupe(
+        int $key,
+        string $row
+    ): void
+    {
+        $groupe = new Groupe();
+        $old    = clone $groupe;
+        $groupe->setCode($row);
+        $groupe->setName($row);
+        $this->addReference('groupe_'.$key, $groupe);
+        $this->groupeRH->handle($old, $groupe);
     }
 }

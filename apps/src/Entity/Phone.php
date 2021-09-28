@@ -2,10 +2,10 @@
 
 namespace Labstag\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Entity\Traits\StateableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,6 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 abstract class Phone
 {
     use SoftDeleteableEntity;
+
+    use StateableEntity;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -45,23 +47,10 @@ abstract class Phone
     protected $principal;
 
     /**
-     * @ORM\Column(type="array")
-     */
-    protected $state;
-
-    /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      */
     protected $type;
-
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"state"})
-     */
-    private $stateChanged;
 
     public function __construct()
     {
@@ -94,16 +83,6 @@ abstract class Phone
         return $this->numero;
     }
 
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    public function getStateChanged()
-    {
-        return $this->stateChanged;
-    }
-
     public function getType(): ?string
     {
         return $this->type;
@@ -133,11 +112,6 @@ abstract class Phone
         $this->principal = $principal;
 
         return $this;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
     }
 
     public function setType(string $type): self

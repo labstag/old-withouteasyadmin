@@ -44,7 +44,10 @@ apps/phpstan.phar:
 apps/phpDocumentor.phar:
 	$(DOCKER_EXECPHP) wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.1.2/phpDocumentor.phar
 
-phar: apps/phploc.phar apps/phpmd.phar apps/php-cs-fixer.phar apps/phpcbf.phar apps/phpcs.phar apps/phpstan.phar apps/phpDocumentor.phar
+apps/behat.phar:
+	$(DOCKER_EXECPHP) wget https://github.com/Behat/Behat/releases/download/v3.8.1/behat.phar
+
+phar: apps/phploc.phar apps/phpmd.phar apps/php-cs-fixer.phar apps/phpcbf.phar apps/phpcs.phar apps/phpstan.phar apps/phpDocumentor.phar apps/behat.phar
 
 apps/composer.lock: isdocker apps/composer.json
 	${COMPOSER_EXEC} update
@@ -288,11 +291,11 @@ else
 endif
 
 .PHONY: tests
-tests: isdocker ### Scripts tests
+tests: isdocker phar ### Scripts tests
 ifeq ($(COMMANDS_ARGS),launch)
 	@$(DOCKER_EXECPHP) make tests all
 else ifeq ($(COMMANDS_ARGS),behat)
-	${COMPOSER_EXEC} run behat
+	${PHP_EXEC} behat.phar --config behat.yaml
 else ifeq ($(COMMANDS_ARGS),simple-phpunit-unit-integration)
 	${COMPOSER_EXEC} run simple-phpunit-unit-integration
 else ifeq ($(COMMANDS_ARGS),simple-phpunit)

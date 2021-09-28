@@ -34,6 +34,8 @@ class TrashService
             $repositoryFile = 'Labstag\\Repository\\'.$file->getFilenameWithoutExtension();
             $isTrashable    = $this->isTrashable($repositoryFile);
             if (!$isTrashable) {
+                dump($repositoryFile);
+
                 continue;
             }
 

@@ -4,6 +4,9 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Generator;
+use Labstag\Entity\EmailUser;
+use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
 
 class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
@@ -26,5 +29,17 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
             $user      = $this->getReference('user_'.$indexUser);
             $this->addEmail($faker, $user);
         }
+    }
+
+    protected function addEmail(
+        Generator $faker,
+        User $user
+    ): void
+    {
+        $email = new EmailUser();
+        $old   = clone $email;
+        $email->setRefuser($user);
+        $email->setAdresse($faker->safeEmail);
+        $this->emailUserRH->handle($old, $email);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity;
 
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -23,6 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use SoftDeleteableEntity;
+
+    use StateableEntity;
 
     /**
      * @ORM\OneToMany(
@@ -137,28 +139,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected $routes;
 
     /**
-     * @ORM\Column(type="array")
-     */
-    protected $state;
-
-    /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
      * @Assert\NotNull
      */
     protected $username;
 
     /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser")
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refuser", cascade={"persist"})
      */
-    private $posts;
+    private $bookmarks;
 
     /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"state"})
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser", cascade={"persist"})
      */
-    private $stateChanged;
+    private $posts;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refuser")
@@ -178,6 +172,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->routes            = new ArrayCollection();
         $this->workflowUsers     = new ArrayCollection();
         $this->posts             = new ArrayCollection();
+        $this->bookmarks         = new ArrayCollection();
     }
 
     public function __toString()
@@ -190,6 +185,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (!$this->adresseUsers->contains($adresseUser)) {
             $this->adresseUsers[] = $adresseUser;
             $adresseUser->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addBookmark(Bookmark $bookmark): self
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks[] = $bookmark;
+            $bookmark->setRefuser($this);
         }
 
         return $this;
@@ -306,6 +311,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->avatar;
     }
 
+    /**
+     * @return Bookmark[]|Collection
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
+    }
+
     public function getEditos()
     {
         return $this->editos;
@@ -414,16 +427,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    public function getStateChanged()
-    {
-        return $this->stateChanged;
-    }
-
     public function getUserIdentifier()
     {
         return $this->getUsername();
@@ -454,6 +457,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($adresseUser->getRefuser() === $this) {
                 $adresseUser->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): self
+    {
+        if ($this->bookmarks->removeElement($bookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($bookmark->getRefuser() === $this) {
+                $bookmark->setRefuser(null);
             }
         }
 
@@ -635,11 +650,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
     }
 
     public function setUsername(?string $username): self
