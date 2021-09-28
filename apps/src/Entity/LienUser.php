@@ -10,7 +10,6 @@ use Labstag\Repository\LienUserRepository;
  */
 class LienUser extends Lien
 {
-
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="lienUsers")
      * @ORM\JoinColumn(nullable=false)

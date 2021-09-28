@@ -35,8 +35,7 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
     protected function addLink(
         Generator $faker,
         array $states
-    ): void
-    {
+    ): void {
         $bookmark = new Bookmark();
         $old      = clone $bookmark;
         if (1 == rand(0, 1)) {

@@ -39,8 +39,7 @@ class NoteInterneFixtures extends FixtureLib implements DependentFixtureInterfac
         int $index,
         DateTime $maxDate,
         array $states
-    ): void
-    {
+    ): void {
         $noteinterne = new NoteInterne();
         $old         = clone $noteinterne;
         $random      = $faker->numberBetween(5, 50);

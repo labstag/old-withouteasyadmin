@@ -27,8 +27,7 @@ class BookmarkController extends FrontControllerLib
         string $code,
         LibelleRepository $libelleRepository,
         CategoryRepository $categoryRepository
-    )
-    {
+    ) {
         $pagination = $this->paginator->paginate(
             $bookmarkRepository->findPublierCategory($code),
             $request->query->getInt('page', 1),
@@ -53,8 +52,7 @@ class BookmarkController extends FrontControllerLib
         BookmarkRepository $bookmarkRepository,
         LibelleRepository $libelleRepository,
         CategoryRepository $categoryRepository
-    ): Response
-    {
+    ): Response {
         $pagination = $this->paginator->paginate(
             $bookmarkRepository->findPublier(),
             $request->query->getInt('page', 1),
@@ -82,8 +80,7 @@ class BookmarkController extends FrontControllerLib
         string $code,
         LibelleRepository $libelleRepository,
         CategoryRepository $categoryRepository
-    )
-    {
+    ) {
         $pagination = $this->paginator->paginate(
             $bookmarkRepository->findPublierLibelle($code),
             $request->query->getInt('page', 1),
@@ -105,8 +102,7 @@ class BookmarkController extends FrontControllerLib
      */
     public function show(
         Bookmark $bookmark
-    )
-    {
+    ) {
         return $this->redirect($bookmark->getUrl());
     }
 }

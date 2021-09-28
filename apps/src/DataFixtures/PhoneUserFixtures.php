@@ -38,8 +38,7 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $faker,
         User $user,
         array $states
-    ): void
-    {
+    ): void {
         $number = $faker->e164PhoneNumber;
         $phone  = new PhoneUser();
         $old    = clone $phone;

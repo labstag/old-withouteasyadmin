@@ -24,8 +24,7 @@ class PostController extends FrontControllerLib
         string $code,
         LibelleRepository $libelleRepository,
         CategoryRepository $categoryRepository
-    )
-    {
+    ) {
         $pagination = $this->paginator->paginate(
             $postRepository->findPublierArchive($code),
             $request->query->getInt('page', 1),
@@ -54,8 +53,7 @@ class PostController extends FrontControllerLib
         string $code,
         LibelleRepository $libelleRepository,
         CategoryRepository $categoryRepository
-    )
-    {
+    ) {
         $pagination = $this->paginator->paginate(
             $postRepository->findPublierCategory($code),
             $request->query->getInt('page', 1),
@@ -84,8 +82,7 @@ class PostController extends FrontControllerLib
         string $code,
         LibelleRepository $libelleRepository,
         CategoryRepository $categoryRepository
-    )
-    {
+    ) {
         $pagination = $this->paginator->paginate(
             $postRepository->findPublierLibelle($code),
             $request->query->getInt('page', 1),
@@ -111,8 +108,7 @@ class PostController extends FrontControllerLib
         Post $post,
         LibelleRepository $libelleRepository,
         CategoryRepository $categoryRepository
-    )
-    {
+    ) {
         $this->setMetaOpenGraph(
             $post->getTitle(),
             $post->getMetaKeywords(),
@@ -140,8 +136,7 @@ class PostController extends FrontControllerLib
         $username,
         LibelleRepository $libelleRepository,
         CategoryRepository $categoryRepository
-    )
-    {
+    ) {
         $pagination = $this->paginator->paginate(
             $postRepository->findPublierUsername($username),
             $request->query->getInt('page', 1),

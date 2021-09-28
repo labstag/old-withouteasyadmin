@@ -34,8 +34,7 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
         int $index,
         array $dataUser,
         Generator $faker
-    ): void
-    {
+    ): void {
         $user = new User();
         $old  = clone $user;
 

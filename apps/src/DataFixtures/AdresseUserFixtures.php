@@ -36,8 +36,7 @@ class AdresseUserFixtures extends FixtureLib implements DependentInterface
     protected function addAdresse(
         Generator $faker,
         User $user
-    ): void
-    {
+    ): void {
         $adresse = new AdresseUser();
         $old     = clone $adresse;
         $adresse->setRefuser($user);
