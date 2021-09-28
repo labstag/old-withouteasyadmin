@@ -30,8 +30,8 @@ class BookmarkType extends AbstractTypeLib
             'name',
             TextType::class,
             [
-                'label' => $this->translator->trans('bookmark.title.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('bookmark.title.help', [], 'admin.form'),
+                'label' => $this->translator->trans('bookmark.name.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('bookmark.name.help', [], 'admin.form'),
             ]
         );
         $builder->add(

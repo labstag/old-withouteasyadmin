@@ -9,6 +9,14 @@ attachment.seefile: 'Voir le fichier'
 attachment.size: Taille
 attachment.state: Étape
 attachment.workflow: Workflow
+bookmark.category: Categorie
+bookmark.content: Contenu
+bookmark.image: Image
+bookmark.name: Nom
+bookmark.published: 'Publié ?'
+bookmark.url: Url
+bookmark.user: Utilsiateur
+bookmark.workflow: Workflow
 edito.content: Contenu
 edito.fond: Fond
 edito.published: 'Publié ?'

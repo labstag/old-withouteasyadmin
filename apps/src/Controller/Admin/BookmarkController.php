@@ -130,7 +130,7 @@ class BookmarkController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('bookmark.title', [], 'admin.breadcrumb'),
+                'title'        => $this->translator->trans('bookmark.name', [], 'admin.breadcrumb'),
                 'route'        => 'admin_bookmark_index',
                 'route_params' => [],
             ],
