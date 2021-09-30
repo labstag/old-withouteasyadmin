@@ -10,7 +10,6 @@ use Labstag\Repository\EmailUserRepository;
  */
 class EmailUser extends Email
 {
-
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="emailUsers")
      * @ORM\JoinColumn(nullable=false)

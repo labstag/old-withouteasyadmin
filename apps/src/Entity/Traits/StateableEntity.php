@@ -15,7 +15,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 trait StateableEntity
 {
-
     /**
      * @ORM\Column(type="array")
      */

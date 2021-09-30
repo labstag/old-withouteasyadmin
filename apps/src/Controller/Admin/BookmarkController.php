@@ -28,8 +28,7 @@ class BookmarkController extends AdminControllerLib
         AttachmentRequestHandler $attachmentRH,
         Bookmark $bookmark,
         BookmarkRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
 
         return $this->update(
@@ -89,8 +88,7 @@ class BookmarkController extends AdminControllerLib
         AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         BookmarkRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->create(
             $uploadAnnotReader,
             $attachmentRepository,
@@ -110,8 +108,7 @@ class BookmarkController extends AdminControllerLib
      */
     public function showOrPreview(
         Bookmark $bookmark
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $bookmark,
             'admin/bookmark/show.html.twig',
