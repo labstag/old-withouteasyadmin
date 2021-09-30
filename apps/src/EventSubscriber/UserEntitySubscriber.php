@@ -60,6 +60,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $this->setPassword($newEntity);
         $this->setPrincipalMail($oldEntity, $newEntity);
         $this->setChangePassword($oldEntity, $newEntity);
+        $this->setDeletedAt($oldEntity, $newEntity);
     }
 
     protected function setChangePassword(User $oldEntity, User $newEntity): void
@@ -77,6 +78,34 @@ class UserEntitySubscriber implements EventSubscriberInterface
             'success',
             'Changement de mot de passe effectué'
         );
+    }
+
+    protected function setDeletedAt(User $oldEntity, User $newEntity): void
+    {
+        if ($oldEntity->getDeletedAt() == $newEntity->getDeletedAt()) {
+            return;
+        }
+
+        $states = [
+            'adresseUsers' => $newEntity->getAdresseUsers(),
+            'bookmarks'    => $newEntity->getBookmarks(),
+            'editos'       => $newEntity->getEditos(),
+            'emailUsers'   => $newEntity->getEmailUsers(),
+            'lienUsers'    => $newEntity->getLienUsers(),
+            'noteInternes' => $newEntity->getNoteInternes(),
+            'phoneUsers'   => $newEntity->getPhoneUsers(),
+            'posts'        => $newEntity->getPosts(),
+        ];
+
+        $datetime = $newEntity->getDeletedAt();
+        foreach ($states as $data) {
+            foreach ($data as $entity) {
+                $entity->setDeletedAt($datetime);
+                $this->entityManager->persist($entity);
+            }
+
+            $this->entityManager->flush();
+        }
     }
 
     protected function setPassword(User $user): void

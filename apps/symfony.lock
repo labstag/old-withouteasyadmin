@@ -25,12 +25,6 @@
     "beberlei/doctrineextensions": {
         "version": "v1.2.8"
     },
-    "behat/behat": {
-        "version": "v3.7.0"
-    },
-    "behat/gherkin": {
-        "version": "v4.6.2"
-    },
     "behat/transliterator": {
         "version": "v1.3.0"
     },

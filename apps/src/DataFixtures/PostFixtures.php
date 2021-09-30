@@ -72,7 +72,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $this->upload($post, $faker);
         $this->addReference('post_'.$index, $post);
         $this->templateRH->handle($oldPost, $post);
-        $this->editoRH->changeWorkflowState($post, $states);
+        $this->postRH->changeWorkflowState($post, $states);
     }
 
     protected function getStates()

@@ -9,22 +9,24 @@
 	</div>
 {% endblock %}
 {% block header %}
-	<div class="header_edito">
-		<h1 class="header_edito_title">
-			<a href="{{ path('edito') }}">
-				{{ edito.title }}
-			</a>
-		</h1>
-		{% set fond = attachment(edito.fond) %}
-		{% if fond is not null and fond.name is not null %}
-			<picture class="header_edito_img">
-				<img alt="{{ edito.title|e('html_attr') }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}"/>
-			</picture>
-		{% endif %}
-		<div class="header_edito_content">
-			{{ edito.content|raw }}
+	{% if edito.id is defined %}
+		<div class="header_edito">
+			<h1 class="header_edito_title">
+				<a href="{{ path('edito') }}">
+					{{ edito.title }}
+				</a>
+			</h1>
+			{% set fond = attachment(edito.fond) %}
+			{% if fond is not null and fond.name is not null %}
+				<picture class="header_edito_img">
+					<img alt="{{ edito.title|e('html_attr') }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}"/>
+				</picture>
+			{% endif %}
+			<div class="header_edito_content">
+				{{ edito.content|raw }}
+			</div>
 		</div>
-	</div>
+	{% endif %}
 {% endblock %}
 {% block section %}
 	{% for post in pagination %}
@@ -55,14 +57,14 @@
 			<div class="post_content">
 				{{ post.content|raw }}
 			</div>
-            <div class="post_libcat">
-                {% for libelle in post.libelles %}
-                    <a href="{{ path('post_libelle', {'code' : libelle.slug}) }}" class="post_libelle">{{ libelle }}</a>
-                {% endfor %}
-                {% if post.refcategory %}
-                    <a href="{{ path('post_category', {'code': post.refcategory.slug}) }}" class="post_category">{{ post.refcategory }}</a>
-                {% endif %}
-            </div>
+			<div class="post_libcat">
+				{% for libelle in post.libelles %}
+					<a href="{{ path('post_libelle', {'code' : libelle.slug}) }}" class="post_libelle">{{ libelle }}</a>
+				{% endfor %}
+				{% if post.refcategory %}
+					<a href="{{ path('post_category', {'code': post.refcategory.slug}) }}" class="post_category">{{ post.refcategory }}</a>
+				{% endif %}
+			</div>
 		</div>
 	{% endfor %}
 	{% if pagination is defined %}

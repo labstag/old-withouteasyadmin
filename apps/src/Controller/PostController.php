@@ -86,10 +86,8 @@ class PostController extends FrontControllerLib
         CategoryRepository $categoryRepository
     )
     {
-        $posts = $postRepository->findPublierLibelle($code);
-        dump($posts->getSql());
         $pagination = $this->paginator->paginate(
-            $posts,
+            $postRepository->findPublierLibelle($code),
             $request->query->getInt('page', 1),
             10
         );

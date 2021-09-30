@@ -9,9 +9,17 @@ attachment.seefile: 'Voir le fichier'
 attachment.size: Taille
 attachment.state: Étape
 attachment.workflow: Workflow
+bookmark.category: Categorie
+bookmark.content: Contenu
+bookmark.image: Image
+bookmark.name: Nom
+bookmark.published: 'Date de publication'
+bookmark.url: Url
+bookmark.user: Utilisateur
+bookmark.workflow: Workflow
 edito.content: Contenu
 edito.fond: Fond
-edito.published: 'Publié ?'
+edito.published: 'Date de publication'
 edito.state: Étape
 edito.title: Titre
 edito.user: Utilisateur
@@ -92,7 +100,7 @@ post.content: Contenu
 post.image: Image
 post.libelle.name: Nom
 post.libelle.slug: Slug
-post.published: 'Publié ?'
+post.published: 'Date de publication'
 post.title: Titre
 post.user: Utilisateur
 post.workflow: Workflow

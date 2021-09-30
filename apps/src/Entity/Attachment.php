@@ -2,12 +2,12 @@
 
 namespace Labstag\Entity;
 
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\AttachmentRepository;
 
 /**
@@ -17,6 +17,8 @@ use Labstag\Repository\AttachmentRepository;
 class Attachment
 {
     use SoftDeleteableEntity;
+
+    use StateableEntity;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
@@ -61,27 +63,19 @@ class Attachment
     protected $size;
 
     /**
-     * @ORM\Column(type="array")
-     */
-    protected $state;
-
-    /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar")
      */
     protected $users;
 
     /**
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img")
+     */
+    private $bookmarks;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $code;
-
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"state"})
-     */
-    private $stateChanged;
 
     public function __construct()
     {
@@ -89,6 +83,17 @@ class Attachment
         $this->posts        = new ArrayCollection();
         $this->editos       = new ArrayCollection();
         $this->noteInternes = new ArrayCollection();
+        $this->bookmarks    = new ArrayCollection();
+    }
+
+    public function addBookmark(Bookmark $bookmark): self
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks[] = $bookmark;
+            $bookmark->setImg($this);
+        }
+
+        return $this;
     }
 
     public function addEdito(Edito $edito): self
@@ -129,6 +134,14 @@ class Attachment
         }
 
         return $this;
+    }
+
+    /**
+     * @return Bookmark[]|Collection
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
     }
 
     public function getCode(): ?string
@@ -185,22 +198,24 @@ class Attachment
         return $this->size;
     }
 
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    public function getStateChanged()
-    {
-        return $this->stateChanged;
-    }
-
     /**
      * @return Collection|User[]
      */
     public function getUsers(): Collection
     {
         return $this->users;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): self
+    {
+        if ($this->bookmarks->removeElement($bookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($bookmark->getImg() === $this) {
+                $bookmark->setImg(null);
+            }
+        }
+
+        return $this;
     }
 
     public function removeEdito(Edito $edito): self
@@ -284,10 +299,5 @@ class Attachment
         $this->size = $size;
 
         return $this;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
     }
 }

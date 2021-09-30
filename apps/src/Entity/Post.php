@@ -11,7 +11,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PostRepository::class)
@@ -22,15 +24,12 @@ class Post
 {
     use SoftDeleteableEntity;
 
+    use StateableEntity;
+
     /**
      * @UploadableField(filename="img", path="post/img", slug="title")
      */
     protected $file;
-
-    /**
-     * @ORM\Column(type="array")
-     */
-    protected $state;
 
     /**
      * @ORM\Column(type="boolean")
@@ -89,6 +88,8 @@ class Post
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
+     * @Assert\NotBlank
+     * @ORM\JoinColumn(nullable=false)
      */
     private $refuser;
 
@@ -97,14 +98,6 @@ class Post
      * @ORM\Column(type="string",   length=255)
      */
     private $slug;
-
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"state"})
-     */
-    private $stateChanged;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true, nullable=false)
@@ -207,16 +200,6 @@ class Post
         return $this->slug;
     }
 
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    public function getStateChanged()
-    {
-        return $this->stateChanged;
-    }
-
     public function getTitle(): ?string
     {
         return $this->title;
@@ -304,11 +287,6 @@ class Post
         $this->slug = $slug;
 
         return $this;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
     }
 
     public function setTitle(string $title): self

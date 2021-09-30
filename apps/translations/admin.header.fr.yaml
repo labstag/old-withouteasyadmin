@@ -1,12 +1,14 @@
 admin.title: Admin
 adresseuser.title: Adresseuser
 attachment.title: Attachment
+bookmark.title: Bookmark
 category.title: Catégorie
 edito.title: Edito
 emailuser.title: Emailuser
 geocode.title: Geocode
 groupuser.title: Groupuser
 guard.title: Guard
+libelle.title: Libelle
 lienuser.title: Lienuser
 menu.title: Menu
 noteinterne.title: Noteinterne
@@ -14,7 +16,6 @@ oauth.title: Oauth
 param.title: Param
 phoneuser.title: Phoneuser
 post.title: Post
-postlibelle.title: Postlibelle
 profil.title: Profil
 template.title: Template
 trash.title: Trash

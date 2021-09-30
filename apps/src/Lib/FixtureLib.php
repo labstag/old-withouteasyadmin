@@ -3,24 +3,18 @@
 namespace Labstag\Lib;
 
 use Bluemmb\Faker\PicsumPhotosProvider;
-use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Exception;
 use Faker\Factory;
 use Faker\Generator;
-use Labstag\Entity\AdresseUser;
 use Labstag\Entity\Attachment;
-use Labstag\Entity\EmailUser;
 use Labstag\Entity\Groupe;
-use Labstag\Entity\LienUser;
-use Labstag\Entity\NoteInterne;
-use Labstag\Entity\PhoneUser;
-use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AdresseUserRequestHandler;
 use Labstag\RequestHandler\AttachmentRequestHandler;
+use Labstag\RequestHandler\BookmarkRequestHandler;
 use Labstag\RequestHandler\CategoryRequestHandler;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
@@ -29,6 +23,7 @@ use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\RequestHandler\LienUserRequestHandler;
 use Labstag\RequestHandler\NoteInterneRequestHandler;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
+use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\GuardService;
@@ -45,6 +40,8 @@ use Twig\Environment;
 abstract class FixtureLib extends Fixture
 {
     protected const NUMBER_ADRESSE = 25;
+
+    protected const NUMBER_BOOKMARK = 25;
 
     protected const NUMBER_CATEGORY = 50;
 
@@ -67,6 +64,8 @@ abstract class FixtureLib extends Fixture
     protected AdresseUserRequestHandler $adresseUserRH;
 
     protected AttachmentRequestHandler $attachmentRH;
+
+    protected BookmarkRequestHandler $bookmarkRH;
 
     protected CacheInterface $cache;
 
@@ -97,6 +96,8 @@ abstract class FixtureLib extends Fixture
     protected OauthService $oauthService;
 
     protected PhoneUserRequestHandler $phoneUserRH;
+
+    protected PostRequestHandler $postRH;
 
     protected TemplateRequestHandler $templateRH;
 
@@ -130,158 +131,35 @@ abstract class FixtureLib extends Fixture
         TemplateRequestHandler $templateRH,
         LibelleRequestHandler $libelleRH,
         CacheInterface $cache,
-        CategoryRequestHandler $categoryRH,
+        BookmarkRequestHandler $bookmarkRH,
+        PostRequestHandler $postRH,
+        CategoryRequestHandler $categoryRH
     )
     {
-        $this->categoryRH        = $categoryRH;
-        $this->attachmentRH      = $attachmentRH;
-        $this->logger            = $logger;
-        $this->containerBag      = $containerBag;
-        $this->libelleRH         = $libelleRH;
-        $this->uploadAnnotReader = $uploadAnnotReader;
-        $this->installService    = $installService;
-        $this->cache             = $cache;
-        $this->guardService      = $guardService;
-        $this->twig              = $twig;
-        $this->userRepository    = $userRepository;
-        $this->oauthService      = $oauthService;
-        $this->groupeRepository  = $groupeRepository;
-        $this->templateRH        = $templateRH;
         $this->adresseUserRH     = $adresseUserRH;
-        $this->phoneUserRH       = $phoneUserRH;
-        $this->userRH            = $userRH;
+        $this->attachmentRH      = $attachmentRH;
+        $this->bookmarkRH        = $bookmarkRH;
+        $this->cache             = $cache;
+        $this->categoryRH        = $categoryRH;
+        $this->containerBag      = $containerBag;
         $this->editoRH           = $editoRH;
-        $this->groupeRH          = $groupeRH;
-        $this->noteInterneRH     = $noteInterneRH;
-        $this->lienUserRH        = $lienUserRH;
         $this->emailUserRH       = $emailUserRH;
-    }
-
-    protected function addAdresse(
-        Generator $faker,
-        User $user
-    ): void
-    {
-        $adresse = new AdresseUser();
-        $old     = clone $adresse;
-        $adresse->setRefuser($user);
-        $adresse->setRue($faker->streetAddress);
-        $adresse->setVille($faker->city);
-        $adresse->setCountry($faker->countryCode);
-        $adresse->setZipcode($faker->postcode);
-        $adresse->setType($faker->unique()->colorName);
-        $latitude  = $faker->latitude;
-        $longitude = $faker->longitude;
-        $gps       = $latitude.','.$longitude;
-        $adresse->setGps($gps);
-        $adresse->setPmr((bool) rand(0, 1));
-        $this->adresseUserRH->handle($old, $adresse);
-    }
-
-    protected function addEmail(
-        Generator $faker,
-        User $user
-    ): void
-    {
-        $email = new EmailUser();
-        $old   = clone $email;
-        $email->setRefuser($user);
-        $email->setAdresse($faker->safeEmail);
-        $this->emailUserRH->handle($old, $email);
-    }
-
-    protected function addGroupe(
-        int $key,
-        string $row
-    ): void
-    {
-        $groupe = new Groupe();
-        $old    = clone $groupe;
-        $groupe->setCode($row);
-        $groupe->setName($row);
-        $this->addReference('groupe_'.$key, $groupe);
-        $this->groupeRH->handle($old, $groupe);
-    }
-
-    protected function addLink(
-        Generator $faker,
-        User $user
-    ): void
-    {
-        $lien = new LienUser();
-        $old  = clone $lien;
-        $lien->setRefUser($user);
-        $lien->setName($faker->word());
-        $lien->setAdresse($faker->url);
-        $this->lienUserRH->handle($old, $lien);
-    }
-
-    protected function addNoteInterne(
-        array $users,
-        Generator $faker,
-        int $index,
-        DateTime $maxDate,
-        array $states
-    ): void
-    {
-        $noteinterne = new NoteInterne();
-        $old         = clone $noteinterne;
-        $random      = $faker->numberBetween(5, 50);
-        $noteinterne->setTitle($faker->unique()->text($random));
-        $dateDebut = $faker->dateTime($maxDate);
-        $noteinterne->setDateDebut($dateDebut);
-        $dateFin = clone $dateDebut;
-        $dateFin->modify('+'.$faker->numberBetween(10, 50).' days');
-        $dateFin->modify('+'.$faker->numberBetween(2, 24).' hours');
-        $noteinterne->setDateFin($dateFin);
-        // @var string $content
-        $content = $faker->paragraphs(4, true);
-        $noteinterne->setContent(str_replace("\n\n", "<br />\n", $content));
-        $this->addReference('noteinterne_'.$index, $noteinterne);
-        $tabIndex = array_rand($users);
-        // @var User $user
-        $user = $users[$tabIndex];
-        $noteinterne->setRefuser($user);
-        $this->upload($noteinterne, $faker);
-        $this->noteInterneRH->handle($old, $noteinterne);
-        $this->noteInterneRH->changeWorkflowState($noteinterne, $states);
-    }
-
-    protected function addPhone(
-        Generator $faker,
-        User $user,
-        array $states
-    ): void
-    {
-        $number = $faker->e164PhoneNumber;
-        $phone  = new PhoneUser();
-        $old    = clone $phone;
-        $phone->setRefuser($user);
-        $phone->setNumero($number);
-        $phone->setType($faker->word());
-        $phone->setCountry($faker->countryCode);
-        $this->phoneUserRH->handle($old, $phone);
-        $this->phoneUserRH->changeWorkflowState($phone, $states);
-    }
-
-    protected function addUser(
-        array $groupes,
-        int $index,
-        array $dataUser,
-        Generator $faker
-    ): void
-    {
-        $user = new User();
-        $old  = clone $user;
-
-        $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
-        $user->setUsername($dataUser['username']);
-        $user->setPlainPassword($dataUser['password']);
-        $user->setEmail($dataUser['email']);
-        $this->upload($user, $faker);
-        $this->addReference('user_'.$index, $user);
-        $this->userRH->handle($old, $user);
-        $this->userRH->changeWorkflowState($user, $dataUser['state']);
+        $this->groupeRepository  = $groupeRepository;
+        $this->groupeRH          = $groupeRH;
+        $this->guardService      = $guardService;
+        $this->installService    = $installService;
+        $this->libelleRH         = $libelleRH;
+        $this->lienUserRH        = $lienUserRH;
+        $this->logger            = $logger;
+        $this->noteInterneRH     = $noteInterneRH;
+        $this->oauthService      = $oauthService;
+        $this->phoneUserRH       = $phoneUserRH;
+        $this->postRH            = $postRH;
+        $this->templateRH        = $templateRH;
+        $this->twig              = $twig;
+        $this->uploadAnnotReader = $uploadAnnotReader;
+        $this->userRepository    = $userRepository;
+        $this->userRH            = $userRH;
     }
 
     protected function getParameter(string $name)

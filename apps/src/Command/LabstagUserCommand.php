@@ -29,20 +29,16 @@ class LabstagUserCommand extends Command
 
     protected UserRequestHandler $userRequestHandler;
 
-    protected UserRequestHandler $userRH;
-
     protected Registry $workflows;
 
     public function __construct(
         UserRepository $userRepository,
         GroupeRepository $groupeRepository,
         Registry $workflows,
-        UserRequestHandler $userRH,
         EntityManagerInterface $entityManager,
         UserRequestHandler $userRequestHandler
     )
     {
-        $this->userRH             = $userRH;
         $this->groupeRepository   = $groupeRepository;
         $this->entityManager      = $entityManager;
         $this->workflows          = $workflows;
@@ -179,8 +175,10 @@ class LabstagUserCommand extends Command
             return;
         }
 
+        $old = clone $entity;
         $this->entityManager->remove($entity);
         $this->entityManager->flush();
+        $this->userRequestHandler->handle($old, $entity);
         $inputOutput->success('Utilisateur supprimé');
     }
 
@@ -221,8 +219,10 @@ class LabstagUserCommand extends Command
             return;
         }
 
+        $old = clone $entity;
         $workflow->apply($entity, 'desactiver');
         $this->entityManager->flush();
+        $this->userRequestHandler->handle($old, $entity);
         $inputOutput->success('Utilisateur désactivé');
     }
 
@@ -263,8 +263,10 @@ class LabstagUserCommand extends Command
             return;
         }
 
+        $old = clone $entity;
         $workflow->apply($entity, 'activer');
         $this->entityManager->flush();
+        $this->userRequestHandler->handle($old, $entity);
         $inputOutput->success('Utilisateur activé');
     }
 
@@ -421,7 +423,7 @@ class LabstagUserCommand extends Command
 
         $old = clone $entity;
         $entity->setPlainPassword($password1);
-        $this->userRH->handle($old, $entity);
+        $this->userRequestHandler->handle($old, $entity);
         $inputOutput->success('Mot de passe changé');
     }
 }

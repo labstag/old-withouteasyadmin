@@ -3,6 +3,7 @@
 namespace Labstag\Controller\Api;
 
 use Labstag\Entity\Attachment;
+use Labstag\Entity\Bookmark;
 use Labstag\Entity\Edito;
 use Labstag\Entity\NoteInterne;
 use Labstag\Entity\Post;
@@ -23,6 +24,16 @@ use Symfony\Component\Security\Csrf\CsrfToken;
  */
 class AttachmentController extends ApiControllerLib
 {
+    /**
+     * @Route("/bookmark/img/{entity}", name="api_attachment_bookmarkimg")
+     *
+     * @return Response
+     */
+    public function bookmarkImg(Bookmark $entity, PostRequestHandler $postRequestHandler): JsonResponse
+    {
+        return $this->deleteFile($entity, $postRequestHandler, 'getImg', 'setImg');
+    }
+
     /**
      * @Route("/edito/fond/{entity}", name="api_attachment_editofond")
      *

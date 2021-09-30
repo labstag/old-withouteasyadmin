@@ -14,6 +14,26 @@ adresse.zipcode.help: ''
 adresse.zipcode.label: 'Code postal'
 adresseuser.refuser.help: ''
 adresseuser.refuser.label: Utilisateur
+bookmark.content.help: ''
+bookmark.content.label: Contenu
+bookmark.file.help: ''
+bookmark.file.label: Fichier
+bookmark.libelles.help: ''
+bookmark.libelles.label: Libélles
+bookmark.metaDescription.help: ''
+bookmark.metaDescription.label: meta Description
+bookmark.metaKeywords.help: ''
+bookmark.metaKeywords.label: meta Keywords
+bookmark.name.help: ''
+bookmark.name.label: Nom
+bookmark.refcategory.help: ''
+bookmark.refcategory.label: Catégorie
+bookmark.refuser.help: ''
+bookmark.refuser.label: Utilisateur
+bookmark.slug.help: ''
+bookmark.slug.label: Slug
+bookmark.url.help: ''
+bookmark.url.label: Url
 category.name.help: ''
 category.name.label: Nom
 category.parent.help: ''
@@ -29,7 +49,7 @@ edito.metaDescription.label: 'SEO description'
 edito.metaKeywords.help: ''
 edito.metaKeywords.label: 'SEO mot clef'
 edito.published.help: ''
-edito.published.label: 'Publié ?'
+edito.published.label: 'Date de publication'
 edito.refuser.help: ''
 edito.refuser.label: Utilisateur
 edito.title.help: ''
@@ -219,7 +239,7 @@ post.metaDescription.label: 'SEO description'
 post.metaKeywords.help: ''
 post.metaKeywords.label: 'SEO mot clef'
 post.published.help: ''
-post.published.label: 'Publié ?'
+post.published.label: 'Date de publication'
 post.refcategory.help: ''
 post.refcategory.label: Catégorie
 post.refuser.help: ''

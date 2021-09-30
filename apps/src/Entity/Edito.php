@@ -9,6 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\EditoRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,6 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Edito
 {
     use SoftDeleteableEntity;
+
+    use StateableEntity;
 
     /**
      * @ORM\Column(type="text")
@@ -51,11 +54,6 @@ class Edito
     protected $refuser;
 
     /**
-     * @ORM\Column(type="array")
-     */
-    protected $state;
-
-    /**
      * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      * @Assert\NotBlank
      */
@@ -75,14 +73,6 @@ class Edito
      * @ORM\Column(type="datetime")
      */
     private $published;
-
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"state"})
-     */
-    private $stateChanged;
 
     public function __toString()
     {
@@ -127,16 +117,6 @@ class Edito
     public function getRefuser(): ?User
     {
         return $this->refuser;
-    }
-
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    public function getStateChanged()
-    {
-        return $this->stateChanged;
     }
 
     public function getTitle(): ?string
@@ -191,11 +171,6 @@ class Edito
         $this->refuser = $refuser;
 
         return $this;
-    }
-
-    public function setState($state)
-    {
-        $this->state = $state;
     }
 
     public function setTitle(string $title): self

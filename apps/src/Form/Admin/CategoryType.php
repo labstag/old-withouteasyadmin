@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Form\Admin\Post;
+namespace Labstag\Form\Admin;
 
 use Labstag\Entity\Category;
 use Labstag\FormType\SearchableType;
