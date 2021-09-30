@@ -126,7 +126,6 @@ class SearchableType extends AbstractType
 
         $entityManager = $this->entityManager;
         $repository    = $entityManager->getRepository($options['class']);
-        dump($ids);
         foreach ($ids as $id => $key) {
             $entity = $repository->find($key);
             if ($entity instanceof $options['class']) {
@@ -139,8 +138,6 @@ class SearchableType extends AbstractType
             $entityManager->flush();
             $ids[$id] = $entity->getId();
         }
-
-        dump($ids);
 
         return $ids;
     }
