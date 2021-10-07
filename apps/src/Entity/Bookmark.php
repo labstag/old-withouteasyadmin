@@ -23,17 +23,17 @@ class Bookmark
     use SoftDeleteableEntity;
 
     /**
-     * @UploadableField(filename="img", path="post/img", slug="name")
+     * @UploadableField(filename="img", path="bookmark/img", slug="name")
      */
     protected $file;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $content;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $icon;
 
@@ -55,12 +55,12 @@ class Bookmark
     private $libelles;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $metaDescription;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $metaKeywords;
 
@@ -242,14 +242,14 @@ class Bookmark
         return $this;
     }
 
-    public function setMetaDescription(string $metaDescription): self
+    public function setMetaDescription(?string $metaDescription): self
     {
         $this->metaDescription = $metaDescription;
 
         return $this;
     }
 
-    public function setMetaKeywords(string $metaKeywords): self
+    public function setMetaKeywords(?string $metaKeywords): self
     {
         $this->metaKeywords = $metaKeywords;
 

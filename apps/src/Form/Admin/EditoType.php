@@ -54,16 +54,18 @@ class EditoType extends AbstractTypeLib
             'metaDescription',
             TextType::class,
             [
-                'label' => $this->translator->trans('edito.metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('edito.metaDescription.help', [], 'admin.form'),
+                'required' => false,
+                'label'    => $this->translator->trans('edito.metaDescription.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('edito.metaDescription.help', [], 'admin.form'),
             ]
         );
         $builder->add(
             'metaKeywords',
             TextType::class,
             [
-                'label' => $this->translator->trans('edito.metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('edito.metaKeywords.help', [], 'admin.form'),
+                'required' => false,
+                'label'    => $this->translator->trans('edito.metaKeywords.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('edito.metaKeywords.help', [], 'admin.form'),
             ]
         );
         $builder->add(

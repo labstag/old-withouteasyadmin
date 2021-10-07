@@ -33,6 +33,7 @@
                 </td>
             </tr>
             {% endif %}
+            {% if entity.refcategory != null %}
             <tr>
                 <th>{{ 'bookmark.category'|trans({}, 'admin.messages') }}</th>
                 <td>
@@ -49,6 +50,7 @@
                     {% endif %}
                 </td>
             </tr>
+            {% endif %}
             <tr>
                 <th>{{ 'bookmark.user'|trans({}, 'admin.messages') }}</th>
                 <td>

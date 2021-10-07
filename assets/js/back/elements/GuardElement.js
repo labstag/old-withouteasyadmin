@@ -30,7 +30,6 @@ export class GuardElement extends HTMLTableElement {
   responseFetch (guardSet, refgroup, response) {
     const guardsets = document.getElementsByTagName(guardSet)
     const refgroups = document.getElementsByTagName(refgroup)
-    console.log(guardSet, refgroup)
     if (response.user !== undefined && response.group !== undefined) {
       if (response.user.length === 0) {
         guardsets.forEach(

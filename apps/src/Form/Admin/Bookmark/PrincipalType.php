@@ -142,7 +142,14 @@ class PrincipalType extends AbstractTypeLib
         ];
 
         foreach ($meta as $key => $values) {
-            $builder->add($key, TextType::class, $values);
+            $builder->add(
+                $key,
+                TextType::class,
+                array_merge(
+                    $values,
+                    ['required' => false]
+                )
+            );
         }
     }
 }

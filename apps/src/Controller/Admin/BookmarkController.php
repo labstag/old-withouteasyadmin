@@ -276,11 +276,11 @@ class BookmarkController extends AdminControllerLib
                 BookmarkService::class,
                 'process',
                 [
-                    'user' => $user,
-                    'url'  => $tag->getAttribute('href'),
-                    'name' => $tag->nodeValue,
-                    'icon' => $tag->getAttribute('icon'),
-                    'date' => $date->setTimestamp((int) $tag->getAttribute('add_date')),
+                    'userid' => $user,
+                    'url'    => $tag->getAttribute('href'),
+                    'name'   => $tag->nodeValue,
+                    'icon'   => $tag->getAttribute('icon'),
+                    'date'   => $date->setTimestamp((int) $tag->getAttribute('add_date')),
                 ]
             );
         }

@@ -6,7 +6,6 @@ export class SelectSelector extends HTMLSelectElement {
     this.noresult = this.dataset.noresult
     this.addmessage = this.dataset.addmessage
     this.add = (this.dataset.add === '1')
-    console.log(this.dataset.add)
     if (this.classList.contains('tomselected') === false) {
       if (undefined !== this.url) {
         this.select = new TomSelect(
