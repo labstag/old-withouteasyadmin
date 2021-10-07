@@ -33,6 +33,11 @@ class Bookmark
     private $content;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $icon;
+
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
@@ -129,6 +134,11 @@ class Bookmark
         return $this->file;
     }
 
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
     public function getId(): ?string
     {
         return $this->id;
@@ -214,6 +224,13 @@ class Bookmark
     public function setFile($file): self
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    public function setIcon(?string $icon): self
+    {
+        $this->icon = $icon;
 
         return $this;
     }

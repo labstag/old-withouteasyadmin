@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Form\Admin;
+namespace Labstag\Form\Admin\Bookmark;
 
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Bookmark;
@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BookmarkType extends AbstractTypeLib
+class PrincipalType extends AbstractTypeLib
 {
     /**
      * @inheritdoc

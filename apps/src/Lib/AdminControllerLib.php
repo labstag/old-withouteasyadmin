@@ -86,18 +86,7 @@ abstract class AdminControllerLib extends ControllerLib
         $routeParams = $all['_route_params'];
         $routeType   = (0 != substr_count($route, 'trash')) ? 'trash' : 'all';
         $method      = $methods[$routeType];
-
-        if ('trash' == $routeType) {
-            $this->listOrTrashRouteTrash($url, $actions, $repository);
-        } elseif (isset($url['trash'])) {
-            $this->setTrashIcon($methods, $repository, $url, $actions);
-        }
-
-        if (isset($url['new']) && 'trash' != $routeType) {
-            $this->btnInstance()->addBtnNew(
-                $url['new']
-            );
-        }
+        $this->addNewImport($repository, $methods, $routeType, $url, $actions);
 
         if ('trash' != $routeType) {
             $this->btnInstance()->addSupprimerSelection(
@@ -731,6 +720,33 @@ abstract class AdminControllerLib extends ControllerLib
             );
             $attachmentRH->handle($old, $attachment);
             $accessor->setValue($entity, $annotation->getFilename(), $attachment);
+        }
+    }
+
+    private function addNewImport(
+        ServiceEntityRepositoryLib $repository,
+        array $methods,
+        string $routeType,
+        array $url = [],
+        array $actions = [],
+    )
+    {
+        if ('trash' == $routeType) {
+            $this->listOrTrashRouteTrash($url, $actions, $repository);
+        } elseif (isset($url['trash'])) {
+            $this->setTrashIcon($methods, $repository, $url, $actions);
+        }
+
+        if (isset($url['new']) && 'trash' != $routeType) {
+            $this->btnInstance()->addBtnNew(
+                $url['new']
+            );
+        }
+
+        if (isset($url['import']) && 'trash' != $routeType) {
+            $this->btnInstance()->addBtnImport(
+                $url['import']
+            );
         }
     }
 }

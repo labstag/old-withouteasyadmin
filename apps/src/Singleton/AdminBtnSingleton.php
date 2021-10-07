@@ -233,6 +233,23 @@ class AdminBtnSingleton
         return $this;
     }
 
+    public function addBtnImport(string $route, string $text = 'Import'): self
+    {
+        if ('' == $route || !$this->isRouteEnable($route)) {
+            return $this;
+        }
+
+        $this->add(
+            'btn-admin-header-import',
+            $text,
+            [
+                'href' => $this->router->generate($route),
+            ]
+        );
+
+        return $this;
+    }
+
     public function addBtnList(string $route, string $text = 'Liste'): self
     {
         if ('' == $route || !$this->isRouteEnable($route)) {

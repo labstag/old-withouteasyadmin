@@ -2,17 +2,26 @@
 
 namespace Labstag\Controller\Admin;
 
+use DateTime;
+use DOMDocument;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Bookmark;
-use Labstag\Form\Admin\BookmarkType;
+use Labstag\Form\Admin\Bookmark\ImportType;
+use Labstag\Form\Admin\Bookmark\PrincipalType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Queue\EnqueueMethod;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\BookmarkRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\BookmarkRequestHandler;
+use Labstag\Service\BookmarkService;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/admin/bookmark")
@@ -37,7 +46,7 @@ class BookmarkController extends AdminControllerLib
             $attachmentRepository,
             $attachmentRH,
             $requestHandler,
-            BookmarkType::class,
+            PrincipalType::class,
             $bookmark,
             [
                 'delete' => 'api_action_delete',
@@ -45,6 +54,30 @@ class BookmarkController extends AdminControllerLib
                 'show'   => 'admin_bookmark_show',
             ],
             'admin/bookmark/form.html.twig'
+        );
+    }
+
+    /**
+     * @Route("/import", name="admin_bookmark_import", methods={"GET","POST"})
+     */
+    public function import(
+        Request $request,
+        Security $security,
+        EnqueueMethod $enqueue
+    )
+    {
+        $form = $this->createForm(ImportType::class, []);
+        $this->btnInstance()->addBtnSave($form->getName(), 'Import');
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->uploadFile($form, $security, $enqueue);
+        }
+
+        return $this->render(
+            'admin/bookmark/import.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
         );
     }
 
@@ -63,10 +96,11 @@ class BookmarkController extends AdminControllerLib
             ],
             'admin/bookmark/index.html.twig',
             [
-                'new'   => 'admin_bookmark_new',
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_bookmark_trash',
-                'list'  => 'admin_bookmark_index',
+                'new'    => 'admin_bookmark_new',
+                'import' => 'admin_bookmark_import',
+                'empty'  => 'api_action_empty',
+                'trash'  => 'admin_bookmark_trash',
+                'list'   => 'admin_bookmark_index',
             ],
             [
                 'list'     => 'admin_bookmark_index',
@@ -97,7 +131,7 @@ class BookmarkController extends AdminControllerLib
             $attachmentRH,
             $requestHandler,
             new Bookmark(),
-            BookmarkType::class,
+            PrincipalType::class,
             ['list' => 'admin_bookmark_index'],
             'admin/bookmark/form.html.twig'
         );
@@ -219,5 +253,36 @@ class BookmarkController extends AdminControllerLib
                 'admin_bookmark' => $this->translator->trans('bookmark.title', [], 'admin.header'),
             ]
         );
+    }
+
+    private function uploadFile(
+        FormInterface $form,
+        Security $security,
+        EnqueueMethod $enqueue
+    )
+    {
+        $file = $form->get('file')->getData();
+        if (!$file instanceof UploadedFile) {
+            return;
+        }
+
+        $doc = new DOMDocument();
+        $doc->loadHTMLFile($file->getPathname(), LIBXML_NOWARNING | LIBXML_NOERROR);
+        $tags = $doc->getElementsByTagName('a');
+        $date = new DateTime();
+        $user = $security->getUser()->getId();
+        foreach ($tags as $tag) {
+            $enqueue->enqueue(
+                BookmarkService::class,
+                'process',
+                [
+                    'user' => $user,
+                    'url'  => $tag->getAttribute('href'),
+                    'name' => $tag->nodeValue,
+                    'icon' => $tag->getAttribute('icon'),
+                    'date' => $date->setTimestamp((int) $tag->getAttribute('add_date')),
+                ]
+            );
+        }
     }
 }

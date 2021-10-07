@@ -163,6 +163,11 @@ picture {
   @extend .fa-plus;
 }
 
+.btn-admin-header-import {
+  @extend .fas;
+  @extend .fa-file-import;
+}
+
 .btn-admin-header-list {
   @extend .fas;
   @extend .fa-list;
