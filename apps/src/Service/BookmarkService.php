@@ -2,10 +2,18 @@
 
 namespace Labstag\Service;
 
+use DateTime;
+
 class BookmarkService
 {
-    public function process(array $params)
+    public function process(
+        string $user,
+        string $url,
+        string $name,
+        string $icon,
+        DateTime $date
+    )
     {
-        dump($params);
+        dump($user, $url, $name, $icon, $date);
     }
 }
