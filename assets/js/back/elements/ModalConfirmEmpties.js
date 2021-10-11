@@ -16,7 +16,7 @@ export class ModalConfirmEmpties extends ElementHTML {
     urlSearchParams.append('_token', token)
     const selectElement = document.querySelectorAll("select-element>input[type='checkbox']:checked")
     const entities = []
-    selectElement.forEach(
+    Array.from(selectElement).forEach(
       element => {
         entities.push(element.closest('select-element').dataset.id)
       }

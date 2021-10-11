@@ -16,7 +16,7 @@ export class TableDatatable extends HTMLTableElement {
       thLast.append(iElement)
       thLast.classList.add('thactions')
       const tr = tbody.getElementsByTagName('tr')
-      tr.forEach(
+      Array.from(tr).forEach(
         element => {
           const tds = element.getElementsByTagName('td')
           const tdLast = tds[tds.length - 1]
@@ -43,7 +43,7 @@ export class TableDatatable extends HTMLTableElement {
       }
       thElement.append(selectAllElement)
       thLast.closest('tr').prepend(thElement)
-      tr.forEach(
+      Array.from(tr).forEach(
         (element) => {
           if (element.dataset.id === undefined) {
             return

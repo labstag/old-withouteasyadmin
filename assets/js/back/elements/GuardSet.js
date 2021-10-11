@@ -65,7 +65,7 @@ export class GuardSet extends ElementHTML {
     if (this.dataset.check === '1') {
       const setRouteElement = this.closest('tr').querySelectorAll(name)
       let state = 0
-      setRouteElement.forEach(
+      Array.from(setRouteElement).forEach(
         element => {
           state += parseInt(element.dataset.state)
         }

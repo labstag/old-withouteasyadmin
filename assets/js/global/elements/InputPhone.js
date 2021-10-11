@@ -4,7 +4,7 @@ export class InputPhone extends HTMLInputElement {
     this.setAttribute('autocomplete', 'off')
     const selects = this.row.getElementsByTagName('select')
     let select = null
-    selects.forEach(
+    Array.from(selects).forEach(
       element => {
         const isValue = element.getAttribute('is')
         if (isValue === 'select-country') {

@@ -9,7 +9,7 @@ export class GuardElement extends HTMLTableElement {
   }
 
   mutationObserver (mutations) {
-    mutations.forEach(mutation => { this.forEachMutationObserver(mutation) })
+    Array.from(mutations).forEach(mutation => { this.forEachMutationObserver(mutation) })
   }
 
   forEachMutationObserver (mutation) {
@@ -32,13 +32,13 @@ export class GuardElement extends HTMLTableElement {
     const refgroups = document.getElementsByTagName(refgroup)
     if (response.user !== undefined && response.group !== undefined) {
       if (response.user.length === 0) {
-        guardsets.forEach(
+        Array.from(guardsets).forEach(
           guardset => {
             guardset.dataset.state = 0
           }
         )
       } else {
-        guardsets.forEach(
+        Array.from(guardsets).forEach(
           guardset => {
             const data = (guardSet === 'guard-setworkflow' && refgroup === 'guard-refgroupworkflow') ? response.user.filter(element => (guardset.dataset.transition === element.transition && guardset.dataset.entity === element.entity)) : response.user.filter(element => (guardset.dataset.route === element.route))
             guardset.dataset.state = (data.length === 1) ? 1 : 0
@@ -46,13 +46,13 @@ export class GuardElement extends HTMLTableElement {
         )
       }
       if (response.group.length === 0) {
-        refgroups.forEach(
+        Array.from(refgroups).forEach(
           guardset => {
             guardset.dataset.state = 0
           }
         )
       } else {
-        refgroups.forEach(
+        Array.from(refgroups).forEach(
           refgroup => {
             const data = (guardSet === 'guard-setworkflow' && refgroup === 'guard-refgroupworkflow') ? response.group.filter(element => (refgroup.dataset.group === element.groupe && refgroup.dataset.transition === element.transition && refgroup.dataset.entity === element.entity)) : response.group.filter(element => (refgroup.dataset.group === element.groupe && refgroup.dataset.route === element.route))
             refgroup.dataset.state = (data.length === 1) ? 1 : 0
@@ -61,24 +61,24 @@ export class GuardElement extends HTMLTableElement {
       }
     } else if (response.group !== undefined) {
       if (response.group.length === 0) {
-        guardsets.forEach(
+        Array.from(guardsets).forEach(
           guardset => {
             guardset.dataset.state = 0
           }
         )
-        refgroups.forEach(
+        Array.from(refgroups).forEach(
           guardset => {
             guardset.dataset.state = 0
           }
         )
       } else {
-        refgroups.forEach(
+        Array.from(refgroups).forEach(
           refgroup => {
             const data = (guardSet === 'guard-setworkflow' && refgroup === 'guard-refgroupworkflow') ? response.group.filter(element => (refgroup.dataset.group === element.groupe && refgroup.dataset.transition === element.transition && refgroup.dataset.entity === element.entity)) : response.group.filter(element => (refgroup.dataset.group === element.groupe && refgroup.dataset.route === element.route))
             refgroup.dataset.state = (data.length === 1) ? 1 : 0
           }
         )
-        guardsets.forEach(
+        Array.from(guardsets).forEach(
           guardset => {
             const data = (guardSet === 'guard-setworkflow' && refgroup === 'guard-refgroupworkflow') ? response.group.filter(element => (guardset.dataset.groupe === element.groupe && guardset.dataset.transition === element.transition && guardset.dataset.entity === element.entity)) : response.group.filter(element => (guardset.dataset.groupe === element.groupe && guardset.dataset.route === element.route))
             guardset.dataset.state = (data.length === 1) ? 1 : 0

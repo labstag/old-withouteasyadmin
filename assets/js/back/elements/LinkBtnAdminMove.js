@@ -10,10 +10,10 @@ export class LinkBtnAdminMove extends LinkBtnAdmin {
     element.preventDefault()
     const url = this.getAttribute('href')
     const urlSearchParams = new URLSearchParams()
-    document.getElementsByClassName('menu-move').forEach(
+    Array.from(document.getElementsByClassName('menu-move')).forEach(
       async function (ul) {
         const position = []
-        ul.getElementsByTagName('li').forEach(
+        Array.from(ul.getElementsByTagName('li')).forEach(
           function (li, index) {
             position.push({
               id: li.dataset.id,
