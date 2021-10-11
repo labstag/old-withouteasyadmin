@@ -66,6 +66,12 @@ class BookmarkController extends AdminControllerLib
         EnqueueMethod $enqueue
     )
     {
+        
+        $this->setBtnList(
+            [
+                'list' => 'admin_bookmark_index',
+            ]
+        );
         $form = $this->createForm(ImportType::class, []);
         $this->btnInstance()->addBtnSave($form->getName(), 'Import');
         $form->handleRequest($request);
@@ -238,6 +244,17 @@ class BookmarkController extends AdminControllerLib
             [
                 'title'        => $this->translator->trans('bookmark.trash', [], 'admin.breadcrumb'),
                 'route'        => 'admin_bookmark_trash',
+                'route_params' => [],
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminBookmarkImport(): array
+    {
+        return [
+            [
+                'title'        => $this->translator->trans('bookmark.import', [], 'admin.breadcrumb'),
+                'route'        => 'admin_bookmark_import',
                 'route_params' => [],
             ],
         ];
