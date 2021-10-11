@@ -1,7 +1,7 @@
 import { ElementHTML } from '../../global/elements/ElementHTML'
 export class LinkElement extends ElementHTML {
   init (className) {
-    const title = this.getAttribute('title')
+    const title = this.dataset.title
     const href = this.getAttribute('href')
     this.aElement = document.createElement('a')
     this.iElement = document.createElement('i')
