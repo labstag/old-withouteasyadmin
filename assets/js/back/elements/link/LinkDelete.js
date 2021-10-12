@@ -2,7 +2,7 @@ import { ElementHTML } from './../../../global/elements/ElementHTML'
 export class LinkDelete extends ElementHTML {
   constructor () {
     super()
-    const title = this.dataset.title
+    const title = this.getAttribute('title')
     this.classList.add('link-delete')
     this.dataset.bsToggle = 'modal'
     this.dataset.bsTarget = '#delete-modal'

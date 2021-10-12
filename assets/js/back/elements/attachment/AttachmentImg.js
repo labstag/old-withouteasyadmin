@@ -32,8 +32,8 @@ export class AttachmentImg extends ElementHTML {
     if (this.getAttribute('url') !== '#') {
       const btnDeletes = this.getElementsByTagName('attachment-delete')
       const btnDelete = btnDeletes[btnDeletes.length - 1]
-      btnDelete.setAttribute('token', this.dataset.token)
-      btnDelete.setAttribute('url', this.dataset.url)
+      btnDelete.setAttribute('token', this.getAttribute('token'))
+      btnDelete.setAttribute('url', this.getAttribute('url'))
     }
   }
 }

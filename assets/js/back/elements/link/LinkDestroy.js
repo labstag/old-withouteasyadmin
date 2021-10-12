@@ -2,7 +2,7 @@ import { ElementHTML } from './../../../global/elements/ElementHTML'
 export class LinkDestroy extends ElementHTML {
   constructor () {
     super()
-    const title = this.dataset.title
+    const title = this.getAttribute('title')
     this.classList.add('link-destroy')
     this.dataset.bsToggle = 'modal'
     this.dataset.bsTarget = '#destroy-modal'

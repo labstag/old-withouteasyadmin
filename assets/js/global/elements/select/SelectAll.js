@@ -22,7 +22,7 @@ export class SelectAll extends ElementHTML {
     Array.from(checkboxs).forEach(
       element => {
         element.checked = checked
-        element.closest('select-element').dataset.checked = checked ? 1 : 0
+        element.closest('select-element').setAttribute('checked', checked ? 1 : 0)
       }
     )
   }

@@ -18,9 +18,9 @@ export class WorkflowAction extends ElementHTML {
 
   onClick (element) {
     element.preventDefault()
-    const url = element.currentTarget.dataset.url
-    const token = element.currentTarget.dataset.token
-    const redirect = element.currentTarget.dataset.redirect
+    const url = element.currentTarget.getAttribute('url')
+    const token = element.currentTarget.getAttribute('token')
+    const redirect = element.currentTarget.getAttribute('redirect')
     const btnConfirm = document.querySelector('confirm-workflow')
     if (btnConfirm === null) {
       return
