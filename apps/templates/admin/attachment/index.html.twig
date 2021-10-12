@@ -1,48 +1,40 @@
-{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/attachment/layout.html.twig' %}
 {% block body %}
-    <table
-        is="table-datatable"
-        data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-multiple
-        data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-count={{ pagination|length }}
-    >
-        <thead>
-            <tr>
-                <th>{{ 'attachment.name'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'attachment.mimetype'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'attachment.size'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'attachment.dimensions'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'attachment.download'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'attachment.state'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'attachment.workflow'|trans({}, 'admin.messages') }}</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in pagination %}
-            <tr data-id="{{ entity.id }}">
-                <td>{{ entity.name }}</td>
-                <td>{{ entity.mimeType }}</td>
-                <td>{{ entity.size }}</td>
-                <td>{{ entity.dimensions|json_encode }}</td>
-                <td><a href="{{ asset(entity.name) }}" target="_blank">{{ 'attachment.seefile'|trans({}, 'admin.messages') }}</a></td>
-                <td>
-                    {% for state in workflow_marked_places(entity) %}
-                        {{ state }}
-                    {% endfor %}
-                </td>
-                <td>
-                    {{ macro_admin.workflow(entity, actions) }}
-                </td>
-                <td>
-                    {{ macro_admin.actions(entity, actions) }}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% embed "admin/table.html.twig" %}
+        {% import "admin/macro.html.twig" as macro_admin %}
+        {% block thead %}
+        <tr>
+            <th>{{ 'attachment.name'|trans({}, 'admin.messages') }}</th>
+            <th>{{ 'attachment.mimetype'|trans({}, 'admin.messages') }}</th>
+            <th>{{ 'attachment.size'|trans({}, 'admin.messages') }}</th>
+            <th>{{ 'attachment.dimensions'|trans({}, 'admin.messages') }}</th>
+            <th>{{ 'attachment.download'|trans({}, 'admin.messages') }}</th>
+            <th>{{ 'attachment.state'|trans({}, 'admin.messages') }}</th>
+            <th>{{ 'attachment.workflow'|trans({}, 'admin.messages') }}</th>
+            <th></th>
+        </tr>
+        {% endblock %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.mimeType }}</td>
+                    <td>{{ entity.size }}</td>
+                    <td>{{ entity.dimensions|json_encode }}</td>
+                    <td><a href="{{ asset(entity.name) }}" target="_blank">{{ 'attachment.seefile'|trans({}, 'admin.messages') }}</a></td>
+                    <td>
+                        {% for state in workflow_marked_places(entity) %}
+                            {{ state }}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {{ macro_admin.workflow(entity, actions) }}
+                    </td>
+                    <td>
+                        {{ macro_admin.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

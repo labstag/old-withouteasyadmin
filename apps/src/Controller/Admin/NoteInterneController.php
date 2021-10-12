@@ -6,11 +6,9 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\NoteInterne;
 use Labstag\Form\Admin\NoteInterneType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\NoteInterneRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\NoteInterneRequestHandler;
+use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,29 +23,22 @@ class NoteInterneController extends AdminControllerLib
      *  name="admin_noteinterne_edit",
      *  methods={"GET","POST"}
      * )
+     * @Route("/new", name="admin_noteinterne_new", methods={"GET","POST"})
      */
     public function edit(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        NoteInterne $noteInterne,
+        AttachFormService $service,
+        ?NoteInterne $noteInterne,
         NoteInterneRequestHandler $requestHandler
     ): Response
     {
         $this->modalAttachmentDelete();
 
-        return $this->update(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
             NoteInterneType::class,
+            !is_null($noteInterne) ? $noteInterne : new NoteInterne(),
             $noteInterne,
-            [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_noteinterne_index',
-                'show'   => 'admin_noteinterne_show',
-            ],
             'admin/note_interne/form.html.twig'
         );
     }
@@ -61,49 +52,7 @@ class NoteInterneController extends AdminControllerLib
     {
         return $this->listOrTrash(
             $repository,
-            [
-                'trash' => 'findTrashForAdmin',
-                'all'   => 'findAllForAdmin',
-            ],
             'admin/note_interne/index.html.twig',
-            [
-                'new'   => 'admin_noteinterne_new',
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_noteinterne_trash',
-                'list'  => 'admin_noteinterne_index',
-            ],
-            [
-                'list'     => 'admin_noteinterne_index',
-                'show'     => 'admin_noteinterne_show',
-                'preview'  => 'admin_noteinterne_preview',
-                'edit'     => 'admin_noteinterne_edit',
-                'delete'   => 'api_action_delete',
-                'destroy'  => 'api_action_destroy',
-                'restore'  => 'api_action_restore',
-                'workflow' => 'api_action_workflow',
-            ]
-        );
-    }
-
-    /**
-     * @Route("/new", name="admin_noteinterne_new", methods={"GET","POST"})
-     */
-    public function new(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        NoteInterneRequestHandler $requestHandler
-    ): Response
-    {
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
-            $requestHandler,
-            new NoteInterne(),
-            NoteInterneType::class,
-            ['list' => 'admin_noteinterne_index'],
-            'admin/note_interne/form.html.twig'
         );
     }
 
@@ -118,16 +67,25 @@ class NoteInterneController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $noteInterne,
-            'admin/note_interne/show.html.twig',
-            [
-                'delete'  => 'api_action_delete',
-                'restore' => 'api_action_restore',
-                'destroy' => 'api_action_destroy',
-                'list'    => 'admin_noteinterne_index',
-                'edit'    => 'admin_noteinterne_edit',
-                'trash'   => 'admin_noteinterne_trash',
-            ]
+            'admin/note_interne/show.html.twig'
         );
+    }
+
+    protected function getUrlAdmin(): array
+    {
+        return [
+            'delete'   => 'api_action_delete',
+            'destroy'  => 'api_action_destroy',
+            'edit'     => 'admin_noteinterne_edit',
+            'empty'    => 'api_action_empty',
+            'list'     => 'admin_noteinterne_index',
+            'new'      => 'admin_noteinterne_new',
+            'preview'  => 'admin_noteinterne_preview',
+            'restore'  => 'api_action_restore',
+            'show'     => 'admin_noteinterne_show',
+            'trash'    => 'admin_noteinterne_trash',
+            'workflow' => 'api_action_workflow',
+        ];
     }
 
     protected function setBreadcrumbsPageAdminNoteinterne(): array

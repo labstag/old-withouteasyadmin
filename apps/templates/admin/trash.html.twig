@@ -1,52 +1,44 @@
 {% extends 'admin.html.twig' %}
 {% block body %}
-    <table
-        is="table-datatable"
-        data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-multiple
-        data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-count={{ trash|length }}
-    >
-        <thead>
+    {% embed "admin/table.html.twig" %}
+        {% block thead %}
             <tr>
                 <th>{{ 'trash.entite'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'trash.count'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
-        </thead>
-        <tbody>
-        {% for data in trash %}
-            <tr data-id="{{ data.name|e('html_attr') }}">
-                <td>
-                    {{ data.entity }}
-                </td>
-                <td>
-                    {{ data.total }}
-                </td>
-                <td>
-                    {% set state = guard_route(data.properties.url) %}
-                    {% if state == true %}
-                    <link-trash
-                        href="{{ path(data.properties.url) }}"
-                        title="{{ 'trash.go'|trans({}, 'admin.messages') }}"
-                    />
-                    {% endif %}
-                    {% set state = guard_route('api_action_empty') %}
-                    {% if state == true %}
-                        <link-empty
-                            data-redirect="{{ path(app.request.attributes.get('_route')) }}"
-                            data-url="{{ path('api_action_empty', {'entity': data.name}) }}"
-                            data-token="{{ data.token }}"
-                            data-title="{{ 'trash.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
+        {% endblock %}
+        {% block tbody %}
+            {% for data in trash %}
+                <tr data-id="{{ data.name|e('html_attr') }}">
+                    <td>
+                        {{ data.entity }}
+                    </td>
+                    <td>
+                        {{ data.total }}
+                    </td>
+                    <td>
+                        {% set state = guard_route(data.properties.url) %}
+                        {% if state == true %}
+                        <link-trash
+                            href="{{ path(data.properties.url) }}"
+                            title="{{ 'trash.go'|trans({}, 'admin.messages') }}"
                         />
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                        {% endif %}
+                        {% set state = guard_route('api_action_empty') %}
+                        {% if state == true %}
+                            <link-empty
+                                data-redirect="{{ path(app.request.attributes.get('_route')) }}"
+                                data-url="{{ path('api_action_empty', {'entity': data.name}) }}"
+                                data-token="{{ data.token }}"
+                                data-title="{{ 'trash.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
+                            />
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 {% block modal %}
     {{ parent() }}

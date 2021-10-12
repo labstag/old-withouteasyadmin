@@ -1,18 +1,17 @@
-{% import "admin/category/macro.html.twig" as macro_post %}
+
 {% extends 'admin/category/layout.html.twig' %}
 {% block body %}
-    <table
-        is="table-datatable"
-    >
-        <thead>
+    {% embed "admin/table.html.twig" %}
+        {% import "admin/category/macro.html.twig" as macro_post %}
+        {% block thead %}
             <tr>
                 <th>{{ 'post.category.name'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'post.category.slug'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
-        </thead>
-        <tbody>
+        {% endblock %}
+        {% block tbody %}
         {{ macro_post.show(pagination, 0, actions) }}
-        </tbody>
-    </table>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

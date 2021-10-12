@@ -6,11 +6,9 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\EmailUser;
 use Labstag\Form\Admin\User\EmailUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\EmailUserRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
+use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,27 +23,19 @@ class EmailUserController extends AdminControllerLib
      *  name="admin_emailuser_edit",
      *  methods={"GET","POST"}
      * )
+     * @Route("/new", name="admin_emailuser_new", methods={"GET","POST"})
      */
     public function edit(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        EmailUser $emailUser,
+        AttachFormService $service,
+        ?EmailUser $emailUser,
         EmailUserRequestHandler $requestHandler
     ): Response
     {
-        return $this->update(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
             EmailUserType::class,
-            $emailUser,
-            [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_emailuser_index',
-                'show'   => 'admin_emailuser_show',
-            ]
+            !is_null($emailUser) ? $emailUser : new EmailUser()
         );
     }
 
@@ -58,48 +48,7 @@ class EmailUserController extends AdminControllerLib
     {
         return $this->listOrTrash(
             $repository,
-            [
-                'trash' => 'findTrashForAdmin',
-                'all'   => 'findAllForAdmin',
-            ],
-            'admin/user/email_user/index.html.twig',
-            [
-                'new'   => 'admin_emailuser_new',
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_emailuser_trash',
-                'list'  => 'admin_emailuser_index',
-            ],
-            [
-                'list'     => 'admin_emailuser_index',
-                'show'     => 'admin_emailuser_show',
-                'preview'  => 'admin_emailuser_preview',
-                'edit'     => 'admin_emailuser_edit',
-                'delete'   => 'api_action_delete',
-                'destroy'  => 'api_action_destroy',
-                'restore'  => 'api_action_restore',
-                'workflow' => 'api_action_workflow',
-            ]
-        );
-    }
-
-    /**
-     * @Route("/new", name="admin_emailuser_new", methods={"GET","POST"})
-     */
-    public function new(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        EmailUserRequestHandler $requestHandler
-    ): Response
-    {
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
-            $requestHandler,
-            new EmailUser(),
-            EmailUserType::class,
-            ['list' => 'admin_emailuser_index']
+            'admin/user/email_user/index.html.twig'
         );
     }
 
@@ -114,16 +63,25 @@ class EmailUserController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $emailUser,
-            'admin/user/email_user/show.html.twig',
-            [
-                'delete'  => 'api_action_delete',
-                'restore' => 'api_action_restore',
-                'destroy' => 'api_action_destroy',
-                'edit'    => 'admin_emailuser_edit',
-                'list'    => 'admin_emailuser_index',
-                'trash'   => 'admin_emailuser_trash',
-            ]
+            'admin/user/email_user/show.html.twig'
         );
+    }
+
+    protected function getUrlAdmin(): array
+    {
+        return [
+            'delete'   => 'api_action_delete',
+            'destroy'  => 'api_action_destroy',
+            'edit'     => 'admin_emailuser_edit',
+            'empty'    => 'api_action_empty',
+            'list'     => 'admin_emailuser_index',
+            'new'      => 'admin_emailuser_new',
+            'preview'  => 'admin_emailuser_preview',
+            'restore'  => 'api_action_restore',
+            'show'     => 'admin_emailuser_show',
+            'trash'    => 'admin_emailuser_trash',
+            'workflow' => 'api_action_workflow',
+        ];
     }
 
     protected function setBreadcrumbsPageAdminEmailuser(): array

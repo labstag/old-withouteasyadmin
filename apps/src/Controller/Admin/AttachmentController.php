@@ -22,24 +22,21 @@ class AttachmentController extends AdminControllerLib
     {
         return $this->listOrTrash(
             $repository,
-            [
-                'trash' => 'findTrashForAdmin',
-                'all'   => 'findAllForAdmin',
-            ],
-            'admin/attachment/index.html.twig',
-            [
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_attachment_trash',
-                'list'  => 'admin_attachment_index',
-            ],
-            [
-                'list'     => 'admin_attachment_index',
-                'delete'   => 'api_action_delete',
-                'destroy'  => 'api_action_destroy',
-                'restore'  => 'api_action_restore',
-                'workflow' => 'api_action_workflow',
-            ]
+            'admin/attachment/index.html.twig'
         );
+    }
+
+    protected function getUrlAdmin(): array
+    {
+        return [
+            'delete'   => 'api_action_delete',
+            'destroy'  => 'api_action_destroy',
+            'empty'    => 'api_action_empty',
+            'list'     => 'admin_attachment_index',
+            'restore'  => 'api_action_restore',
+            'trash'    => 'admin_attachment_trash',
+            'workflow' => 'api_action_workflow',
+        ];
     }
 
     protected function setBreadcrumbsPageAdminAttachment(): array

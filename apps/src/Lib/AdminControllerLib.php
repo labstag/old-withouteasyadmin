@@ -7,6 +7,7 @@ use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
+use Labstag\Service\AttachFormService;
 use Labstag\Singleton\AdminBtnSingleton;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,30 +33,37 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected string $urlHome = '';
 
-    public function create(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
+    public function form(
+        AttachFormService $service,
         RequestHandlerLib $handler,
-        object $entity,
         string $formType,
-        array $url = [],
+        object $entity,
         string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
-        if (isset($url['list'])) {
-            $this->btnInstance()->addBtnList(
-                $url['list']
-            );
-        }
-
+        $uploadAnnotReader    = $service->getUploadAnnotationReader();
+        $attachmentRepository = $service->getRepository();
+        $attachmentRH         = $service->getRequestHandler();
+        $url                  = $this->getUrlAdmin();
+        $this->denyAccessUnlessGranted(
+            empty($entity->getId()) ? 'new' : 'edit',
+            $entity
+        );
+        $this->setBtnViewUpdate($url, $entity);
         $oldEntity = clone $entity;
         $form      = $this->createForm($formType, $entity);
-        $this->btnInstance()->addBtnSave($form->getName(), 'Ajouter');
+        $this->btnInstance()->addBtnSave(
+            $form->getName(),
+            empty($entity->getId()) ? 'Ajouter' : 'Sauvegarder'
+        );
         $form->handleRequest($this->get('request_stack')->getCurrentRequest());
         if ($form->isSubmitted() && $form->isValid()) {
             $this->upload($uploadAnnotReader, $attachmentRepository, $attachmentRH, $entity);
             $handler->handle($oldEntity, $entity);
+            $this->flashBagAdd(
+                'success',
+                $this->translator->trans('data.save')
+            );
             if (isset($url['list'])) {
                 return new RedirectResponse(
                     $this->generateUrl($url['list'])
@@ -74,12 +82,12 @@ abstract class AdminControllerLib extends ControllerLib
 
     public function listOrTrash(
         ServiceEntityRepositoryLib $repository,
-        array $methods,
-        string $html,
-        array $url = [],
-        array $actions = []
+        string $html
     ): Response
     {
+        $methods     = $this->getMethodsList();
+        $url         = $this->getUrlAdmin();
+        $actions     = $this->getUrlAdmin();
         $request     = $this->get('request_stack')->getCurrentRequest();
         $all         = $request->attributes->all();
         $route       = $all['_route'];
@@ -175,10 +183,10 @@ abstract class AdminControllerLib extends ControllerLib
 
     public function renderShowOrPreview(
         object $entity,
-        string $twigShow,
-        array $url = []
+        string $twigShow
     ): Response
     {
+        $url          = $this->getUrlAdmin();
         $routeCurrent = $this->get('request_stack')->getCurrentRequest()->get('_route');
         $routeType    = (0 != substr_count($routeCurrent, 'preview')) ? 'preview' : 'show';
         $this->showOrPreviewadd($url, $routeType, $entity);
@@ -209,46 +217,6 @@ abstract class AdminControllerLib extends ControllerLib
         return $this->render(
             $twigShow,
             ['entity' => $entity]
-        );
-    }
-
-    public function update(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        RequestHandlerLib $handler,
-        string $formType,
-        object $entity,
-        array $url = [],
-        string $twig = 'admin/crud/form.html.twig'
-    ): Response
-    {
-        $this->denyAccessUnlessGranted('edit', $entity);
-        $this->setBtnViewUpdate($url, $entity);
-        $oldEntity = clone $entity;
-        $form      = $this->createForm($formType, $entity);
-        $this->btnInstance()->addBtnSave($form->getName(), 'Sauvegarder');
-        $form->handleRequest($this->get('request_stack')->getCurrentRequest());
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->upload($uploadAnnotReader, $attachmentRepository, $attachmentRH, $entity);
-            $handler->handle($oldEntity, $entity);
-            $this->flashBagAdd(
-                'success',
-                $this->translator->trans('data.save')
-            );
-            if (isset($url['list'])) {
-                return new RedirectResponse(
-                    $this->generateUrl($url['list'])
-                );
-            }
-        }
-
-        return $this->render(
-            $twig,
-            [
-                'entity' => $entity,
-                'form'   => $form->createView(),
-            ]
         );
     }
 
@@ -291,6 +259,19 @@ abstract class AdminControllerLib extends ControllerLib
         $routes = $this->guardService->getGuardRoutesForGroupe($entity);
 
         return (0 != count($routes)) ? true : false;
+    }
+
+    protected function getMethodsList(): array
+    {
+        return [
+            'trash' => 'findTrashForAdmin',
+            'all'   => 'findAllForAdmin',
+        ];
+    }
+
+    protected function getUrlAdmin(): array
+    {
+        return [];
     }
 
     protected function isRouteEnable(
@@ -523,6 +504,10 @@ abstract class AdminControllerLib extends ControllerLib
         object $entity
     ): void
     {
+        if (empty($entity->getId())) {
+            return;
+        }
+
         $this->setBtnList($url);
         $this->setBtnShow($url, $entity);
         $this->setBtnGuard($url, $entity);

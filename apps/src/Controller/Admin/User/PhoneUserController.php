@@ -6,11 +6,9 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\PhoneUser;
 use Labstag\Form\Admin\User\PhoneUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\PhoneUserRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
+use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,27 +23,19 @@ class PhoneUserController extends AdminControllerLib
      *  name="admin_phoneuser_edit",
      *  methods={"GET","POST"}
      * )
+     * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
      */
     public function edit(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        PhoneUser $phoneUser,
+        AttachFormService $service,
+        ?PhoneUser $phoneUser,
         PhoneUserRequestHandler $requestHandler
     ): Response
     {
-        return $this->update(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
             PhoneUserType::class,
-            $phoneUser,
-            [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_phoneuser_index',
-                'show'   => 'admin_phoneuser_show',
-            ]
+            !is_null($phoneUser) ? $phoneUser : new PhoneUser()
         );
     }
 
@@ -58,48 +48,7 @@ class PhoneUserController extends AdminControllerLib
     {
         return $this->listOrTrash(
             $repository,
-            [
-                'trash' => 'findTrashForAdmin',
-                'all'   => 'findAllForAdmin',
-            ],
-            'admin/user/phone_user/index.html.twig',
-            [
-                'new'   => 'admin_phoneuser_new',
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_phoneuser_trash',
-                'list'  => 'admin_phoneuser_index',
-            ],
-            [
-                'list'     => 'admin_phoneuser_index',
-                'show'     => 'admin_phoneuser_show',
-                'preview'  => 'admin_phoneuser_preview',
-                'edit'     => 'admin_phoneuser_edit',
-                'delete'   => 'api_action_delete',
-                'destroy'  => 'api_action_destroy',
-                'restore'  => 'api_action_restore',
-                'workflow' => 'api_action_workflow',
-            ]
-        );
-    }
-
-    /**
-     * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
-     */
-    public function new(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        PhoneUserRequestHandler $requestHandler
-    ): Response
-    {
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
-            $requestHandler,
-            new PhoneUser(),
-            PhoneUserType::class,
-            ['list' => 'admin_phoneuser_index']
+            'admin/user/phone_user/index.html.twig'
         );
     }
 
@@ -114,16 +63,25 @@ class PhoneUserController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $phoneUser,
-            'admin/user/phone_user/show.html.twig',
-            [
-                'delete'  => 'api_action_delete',
-                'restore' => 'api_action_restore',
-                'destroy' => 'api_action_destroy',
-                'list'    => 'admin_phoneuser_index',
-                'edit'    => 'admin_phoneuser_edit',
-                'trash'   => 'admin_phoneuser_trash',
-            ]
+            'admin/user/phone_user/show.html.twig'
         );
+    }
+
+    protected function getUrlAdmin(): array
+    {
+        return [
+            'delete'   => 'api_action_delete',
+            'destroy'  => 'api_action_destroy',
+            'edit'     => 'admin_phoneuser_edit',
+            'empty'    => 'api_action_empty',
+            'list'     => 'admin_phoneuser_index',
+            'new'      => 'admin_phoneuser_new',
+            'preview'  => 'admin_phoneuser_preview',
+            'restore'  => 'api_action_restore',
+            'show'     => 'admin_phoneuser_show',
+            'trash'    => 'admin_phoneuser_trash',
+            'workflow' => 'api_action_workflow',
+        ];
     }
 
     protected function setBreadcrumbsPageAdminPhoneuser(): array

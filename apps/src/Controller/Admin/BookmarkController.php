@@ -10,11 +10,9 @@ use Labstag\Form\Admin\Bookmark\ImportType;
 use Labstag\Form\Admin\Bookmark\PrincipalType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Queue\EnqueueMethod;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\BookmarkRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\BookmarkRequestHandler;
+use Labstag\Service\AttachFormService;
 use Labstag\Service\BookmarkService;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -30,29 +28,21 @@ class BookmarkController extends AdminControllerLib
 {
     /**
      * @Route("/{id}/edit", name="admin_bookmark_edit", methods={"GET","POST"})
+     * @Route("/new", name="admin_bookmark_new", methods={"GET","POST"})
      */
     public function edit(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        Bookmark $bookmark,
+        AttachFormService $service,
+        ?Bookmark $bookmark,
         BookmarkRequestHandler $requestHandler
     ): Response
     {
         $this->modalAttachmentDelete();
 
-        return $this->update(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
             PrincipalType::class,
-            $bookmark,
-            [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_bookmark_index',
-                'show'   => 'admin_bookmark_show',
-            ],
+            !is_null($bookmark) ? $bookmark : new Bookmark(),
             'admin/bookmark/form.html.twig'
         );
     }
@@ -66,9 +56,7 @@ class BookmarkController extends AdminControllerLib
         EnqueueMethod $enqueue
     )
     {
-        $this->setBtnList(
-            ['list' => 'admin_bookmark_index']
-        );
+        $this->setBtnList($this->getUrlAdmin());
         $form = $this->createForm(ImportType::class, []);
         $this->btnInstance()->addBtnSave($form->getName(), 'Import');
         $form->handleRequest($request);
@@ -93,50 +81,7 @@ class BookmarkController extends AdminControllerLib
     {
         return $this->listOrTrash(
             $repository,
-            [
-                'trash' => 'findTrashForAdmin',
-                'all'   => 'findAllForAdmin',
-            ],
-            'admin/bookmark/index.html.twig',
-            [
-                'new'    => 'admin_bookmark_new',
-                'import' => 'admin_bookmark_import',
-                'empty'  => 'api_action_empty',
-                'trash'  => 'admin_bookmark_trash',
-                'list'   => 'admin_bookmark_index',
-            ],
-            [
-                'list'     => 'admin_bookmark_index',
-                'show'     => 'admin_bookmark_show',
-                'preview'  => 'admin_bookmark_preview',
-                'edit'     => 'admin_bookmark_edit',
-                'delete'   => 'api_action_delete',
-                'destroy'  => 'api_action_destroy',
-                'restore'  => 'api_action_restore',
-                'workflow' => 'api_action_workflow',
-            ]
-        );
-    }
-
-    /**
-     * @Route("/new", name="admin_bookmark_new", methods={"GET","POST"})
-     */
-    public function new(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        BookmarkRequestHandler $requestHandler
-    ): Response
-    {
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
-            $requestHandler,
-            new Bookmark(),
-            PrincipalType::class,
-            ['list' => 'admin_bookmark_index'],
-            'admin/bookmark/form.html.twig'
+            'admin/bookmark/index.html.twig'
         );
     }
 
@@ -151,16 +96,26 @@ class BookmarkController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $bookmark,
-            'admin/bookmark/show.html.twig',
-            [
-                'delete'  => 'api_action_delete',
-                'restore' => 'api_action_restore',
-                'destroy' => 'api_action_destroy',
-                'edit'    => 'admin_bookmark_edit',
-                'list'    => 'admin_bookmark_index',
-                'trash'   => 'admin_bookmark_trash',
-            ]
+            'admin/bookmark/show.html.twig'
         );
+    }
+
+    protected function getUrlAdmin(): array
+    {
+        return [
+            'delete'   => 'api_action_delete',
+            'destroy'  => 'api_action_destroy',
+            'edit'     => 'admin_bookmark_edit',
+            'empty'    => 'api_action_empty',
+            'import'   => 'admin_bookmark_import',
+            'list'     => 'admin_bookmark_index',
+            'new'      => 'admin_bookmark_new',
+            'preview'  => 'admin_bookmark_preview',
+            'restore'  => 'api_action_restore',
+            'show'     => 'admin_bookmark_show',
+            'trash'    => 'admin_bookmark_trash',
+            'workflow' => 'api_action_workflow',
+        ];
     }
 
     protected function setBreadcrumbsPageAdminBookmark(): array
