@@ -24,10 +24,10 @@
             <tr>
                 <th>
                     <guard-changeworkflow
-                        data-state=0
-                        data-token="{{ csrf_token('guard') }}"
-                        data-url="{{ path('api_guard_workflowuser', {'user' : user.id}) }}"
-                    ></guard-changeworkflow>
+                        state=0
+                        token="{{ csrf_token('guard') }}"
+                        url="{{ path('api_guard_workflowuser', {'user' : user.id}) }}"
+                    />
                 </th>
             </tr>
         </thead>
@@ -42,20 +42,20 @@
                 </td>
                 <td>
                     <guard-refgroupworkflow
-                        data-state=0
-                        data-group="{{ user.refgroupe.code|e('html_attr') }}"
-                        data-entity="{{ workflow.entity|e('html_attr') }}"
-                        data-transition="{{ workflow.transition|e('html_attr') }}"
-                    ></guard-refgroupworkflow>
+                        state=0
+                        group="{{ user.refgroupe.code|e('html_attr') }}"
+                        entity="{{ workflow.entity|e('html_attr') }}"
+                        transition="{{ workflow.transition|e('html_attr') }}"
+                    />
                 </td>
                 <td>
                     <guard-setworkflow
-                        data-state=0
-                        data-entity="{{ workflow.entity|e('html_attr') }}"
-                        data-transition="{{ workflow.transition|e('html_attr') }}"
-                        data-token="{{ csrf_token('guard') }}"
-                        data-url="{{ path('api_guard_workflowsetuser', {'user' : user.id, 'workflow' : workflow.id}) }}"
-                    ></guard-setworkflow>
+                        state=0
+                        entity="{{ workflow.entity|e('html_attr') }}"
+                        transition="{{ workflow.transition|e('html_attr') }}"
+                        token="{{ csrf_token('guard') }}"
+                        url="{{ path('api_guard_workflowsetuser', {'user' : user.id, 'workflow' : workflow.id}) }}"
+                    />
                 </td>
             </tr>
         {% else %}

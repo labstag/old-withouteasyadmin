@@ -13,14 +13,8 @@
                 {{ 'modal.restore.message'|trans }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-cancel" data-bs-dismiss="modal">
-                    <i></i>
-                    <span>{{ 'modal.button.cancel'|trans }}</span>
-                </button>
-                <confirm-restore>
-                    <i></i>
-                    <span>{{ 'modal.button.restore'|trans }}</span>
-                </confirm-restore>
+                <confirm-close title="{{ 'modal.button.cancel'|trans|e('html_attr') }}" />
+                <confirm-restore title="{{ 'modal.button.restore'|trans|e('html_attr') }}" />
             </div>
         </div>
     </div>

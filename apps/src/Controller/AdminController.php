@@ -232,12 +232,10 @@ class AdminController extends AdminControllerLib
                 'btn-admin-header-emptyall',
                 'Tout vider',
                 [
-                    'is'             => 'link-btnadminemptyall',
-                    'data-bs-toggle' => 'modal',
-                    'data-bs-target' => '#emptyall-modal',
-                    'data-token'     => $token,
-                    'data-redirect'  => $this->generateUrl('admin_trash'),
-                    'data-url'       => $this->generateUrl('api_action_emptyall'),
+                    'is'       => 'link-btnadminemptyall',
+                    'token'    => $token,
+                    'redirect' => $this->generateUrl('admin_trash'),
+                    'url'      => $this->generateUrl('api_action_emptyall'),
                 ]
             );
         }

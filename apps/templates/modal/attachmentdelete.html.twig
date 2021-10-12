@@ -13,13 +13,9 @@
                 {{ 'modal.attachmentdelete.message'|trans }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-cancel" data-bs-dismiss="modal">
-                    <i></i>
-                    <span>{{ 'modal.button.cancel'|trans }}</span>
-                </button>
-                <confirm-deleteattachment>
-                    <i></i>
-                    <span>{{ 'modal.button.delete'|trans }}</span>
+                <confirm-close title="{{ 'modal.button.cancel'|trans|e('html_attr') }}">
+                </confirm-close>
+                <confirm-deleteattachment title="{{ 'modal.button.delete'|trans|e('html_attr') }}">
                 </confirm-deleteattachment>
             </div>
         </div>

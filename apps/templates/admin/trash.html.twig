@@ -31,7 +31,7 @@
                     <link-trash
                         href="{{ path(data.properties.url) }}"
                         title="{{ 'trash.go'|trans({}, 'admin.messages') }}"
-                    ></link-trash>
+                    />
                     {% endif %}
                     {% set state = guard_route('api_action_empty') %}
                     {% if state == true %}
@@ -40,7 +40,7 @@
                             data-url="{{ path('api_action_empty', {'entity': data.name}) }}"
                             data-token="{{ data.token }}"
                             data-title="{{ 'trash.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
-                        ></link-empty>
+                        />
                     {% endif %}
                 </td>
             </tr>

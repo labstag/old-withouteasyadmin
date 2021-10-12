@@ -6,10 +6,10 @@
     {% endif %}
     {% if file is not null and file.name is not null %}
         <attachment-img
-            data-src="{{ asset(file.name) | imagefilter('my_thumb') }}"
-            data-name="{{ name|e('html_attr') }}"
-            data-url="{{ url }}"
-            data-token="{{ csrf_token('attachment-img-' ~ entity.id) }}"
+            src="{{ asset(file.name) | imagefilter('my_thumb') }}"
+            name="{{ name|e('html_attr') }}"
+            url="{{ url }}"
+            token="{{ csrf_token('attachment-img-' ~ entity.id) }}"
         ></attachment-img>
     {% endif %}
 {% endmacro %}
@@ -20,7 +20,7 @@
         <link-show
             href="{{ path(url, {'id': entity.id}) }}"
             title="{{ title|e('html_attr') }}"
-        ></link-show>
+        />
     {% endif %}
 {% endmacro %}
 {% macro guard(entity, url, title) %}
@@ -34,7 +34,7 @@
         <link-guard
             href="{{ path(url, {'id': entity.id}) }}"
             title="{{ title|e('html_attr') }}"
-        ></link-guard>
+        />
     {% endif %}
 {% endmacro %}
 {% macro edit(entity, url) %}
@@ -44,7 +44,7 @@
         <link-edit
             href="{{ path(url, {'id': entity.id}) }}"
             title="{{ 'link.edit'|trans({}, 'admin.messages')|e('html_attr') }}"
-        ></link-edit>
+        />
     {% endif %}
 {% endmacro %}
 {% macro delete(entity, urlDelete, urlList) %}
@@ -52,13 +52,13 @@
     {% set state2 = guard_route(urlList) %}
     {% if state1 == true and state2 == true %}
         <link-delete
-            data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
-            data-token="{{ csrf_token('delete' ~ entity.id) }}"
-            data-title="{{ 'link.delete'|trans({}, 'admin.messages')|e('html_attr') }}"
+            url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
+            token="{{ csrf_token('delete' ~ entity.id) }}"
+            title="{{ 'link.delete'|trans({}, 'admin.messages')|e('html_attr') }}"
             {% if urlList != '' %}
-                data-redirect="{{ path(urlList) }}"
+                redirect="{{ path(urlList) }}"
             {% endif %}
-        ></link-delete>
+        />
     {% endif %}
 {% endmacro %}
 {% macro destroy(entity, urlDelete, urlList) %}
@@ -66,13 +66,13 @@
     {% set state2 = guard_route(urlList) %}
     {% if state1 == true and state2 == true %}
         <link-destroy
-            data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
-            data-token="{{ csrf_token('destroy' ~ entity.id) }}"
-            data-title="{{ 'link.destroy'|trans({}, 'admin.messages')|e('html_attr') }}"
+            url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
+            token="{{ csrf_token('destroy' ~ entity.id) }}"
+            title="{{ 'link.destroy'|trans({}, 'admin.messages')|e('html_attr') }}"
             {% if urlList != '' %}
-                data-redirect="{{ path(urlList) }}"
+                redirect="{{ path(urlList) }}"
             {% endif %}
-        ></link-destroy>
+        />
     {% endif %}
 {% endmacro %}
 {% macro restore(entity, urlDelete, urlList) %}
@@ -80,13 +80,13 @@
     {% set state2 = guard_route(urlList) %}
     {% if state1 == true and state2 == true %}
         <link-restore
-            data-url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
-            data-token="{{ csrf_token('restore' ~ entity.id) }}"
-            data-title="{{ 'link.restore'|trans({}, 'admin.messages')|e('html_attr') }}"
+            url="{{ path(urlDelete, {'id': entity.id, 'entity': class_entity(entity)}) }}"
+            token="{{ csrf_token('restore' ~ entity.id) }}"
+            title="{{ 'link.restore'|trans({}, 'admin.messages')|e('html_attr') }}"
             {% if urlList != '' %}
-                data-redirect="{{ path(urlList) }}"
+                redirect="{{ path(urlList) }}"
             {% endif %}
-        ></link-restore>
+        />
     {% endif %}
 {% endmacro %}
 {% macro workflow(entity, actions) %}
@@ -98,10 +98,10 @@
             <div class="btngrouptable" role="group">
             {% for transition in workflow_transitions(entity) %}
                 <workflow-action
-                    data-url="{{ path(actions['workflow'], {'id': entity.id, 'state': transition.name, 'entity': class_entity(entity)}) }}"
-                    data-name="{{ transition.name|e('html_attr') }}"
-                    data-token="{{ csrf_token('workflow-' ~ transition.name ~ entity.id) }}"
-                    data-redirect="{{ path(actions['list']) }}"
+                    url="{{ path(actions['workflow'], {'id': entity.id, 'state': transition.name, 'entity': class_entity(entity)}) }}"
+                    name="{{ transition.name|e('html_attr') }}"
+                    token="{{ csrf_token('workflow-' ~ transition.name ~ entity.id) }}"
+                    redirect="{{ path(actions['list']) }}"
                 ></workflow-action>
             {% endfor %}
             </div>

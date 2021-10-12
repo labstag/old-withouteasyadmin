@@ -20,24 +20,23 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class BookmarkService
 {
-
-    private BookmarkRepository $bookmarkRepo;
-
-    private LoggerInterface $logger;
-
-    private UserRepository $userRepo;
-
-    private ContainerBagInterface $containerBag;
+    public const CLIENTNUMBER = 400;
 
     private AttachmentRequestHandler $attachmentRH;
 
-    private UploadAnnotationReader $uploadAnnotReader;
+    private BookmarkRepository $bookmarkRepo;
+
+    private ContainerBagInterface $containerBag;
 
     private EntityManagerInterface $entityManager;
 
+    private LoggerInterface $logger;
+
     private BookmarkRequestHandler $requestHandler;
 
-    public const CLIENTNUMBER = 400;
+    private UploadAnnotationReader $uploadAnnotReader;
+
+    private UserRepository $userRepo;
 
     public function __construct(
         UserRepository $userRepo,
@@ -50,14 +49,14 @@ class BookmarkService
         BookmarkRequestHandler $requestHandler
     )
     {
-        $this->requestHandler = $requestHandler;
-        $this->entityManager = $entityManager;
+        $this->requestHandler    = $requestHandler;
+        $this->entityManager     = $entityManager;
         $this->uploadAnnotReader = $uploadAnnotReader;
-        $this->attachmentRH = $attachmentRH;
-        $this->containerBag = $containerBag;
-        $this->userRepo     = $userRepo;
-        $this->bookmarkRepo = $bookmarkRepo;
-        $this->logger       = $logger;
+        $this->attachmentRH      = $attachmentRH;
+        $this->containerBag      = $containerBag;
+        $this->userRepo          = $userRepo;
+        $this->bookmarkRepo      = $bookmarkRepo;
+        $this->logger            = $logger;
     }
 
     public function process(
@@ -77,7 +76,7 @@ class BookmarkService
         }
 
         $bookmark = new bookmark();
-        $old = clone $bookmark;
+        $old      = clone $bookmark;
         $bookmark->setRefuser($user);
         $bookmark->setUrl($url);
         $bookmark->setIcon($icon);
@@ -92,19 +91,14 @@ class BookmarkService
 
             $meta        = get_meta_tags($url);
             $description = $meta['description'] ?? null;
-            $description = (is_null($description) && isset($meta['twitter:description'])) ? $meta['twitter:description'] : $description;
-            if (!is_null($description)) {
-                $bookmark->setMetaDescription($description);
-                $bookmark->setContent($description);
-            }
-
+            $code        = 'twitter:description';
+            $description = (is_null($description) && isset($meta[$code])) ? $meta[$code] : $description;
+            $bookmark->setMetaDescription($description);
+            $bookmark->setContent($description);
             $keywords = $meta['keywords'] ?? null;
-            if (!is_null($keywords)) {
-                $bookmark->setMetaKeywords($keywords);
-            }
-
-            $image = isset($meta['twitter:image']) ?  $meta['twitter:image'] : null;
-            $image = (is_null($image) && isset($meta['og:image'])) ?  $meta['og:image'] : $image;
+            $bookmark->setMetaKeywords($keywords);
+            $image = $meta['twitter:image'] ?? null;
+            $image = (is_null($image) && isset($meta['og:image'])) ? $meta['og:image'] : $image;
             $this->upload($bookmark, $image);
             $this->entityManager->persist($bookmark);
             $this->entityManager->flush();
@@ -120,10 +114,21 @@ class BookmarkService
         return $this->containerBag->get($name);
     }
 
+    protected function setErrorLogger($exception)
+    {
+        $errorMsg = sprintf(
+            'Exception : Erreur %s dans %s L.%s : %s',
+            $exception->getCode(),
+            $exception->getFile(),
+            $exception->getLine(),
+            $exception->getMessage()
+        );
+        $this->logger->error($errorMsg);
+    }
+
     protected function upload(Bookmark $bookmark, $image)
     {
-        if (is_null($image) || !$this->uploadAnnotReader->isUploadable($bookmark))
-        {
+        if (is_null($image) || !$this->uploadAnnotReader->isUploadable($bookmark)) {
             return;
         }
 
@@ -138,9 +143,10 @@ class BookmarkService
             $slug       = $slugger->slug($title);
             $attachment = new Attachment();
             $old        = clone $attachment;
+
             try {
                 $pathinfo = pathinfo($image);
-                $content = file_get_contents($image);
+                $content  = file_get_contents($image);
                 // @var resource $tmpfile
                 $tmpfile = tmpfile();
                 $data    = stream_get_meta_data($tmpfile);
@@ -181,17 +187,5 @@ class BookmarkService
             $this->attachmentRH->handle($old, $attachment);
             $accessor->setValue($bookmark, $annotation->getFilename(), $attachment);
         }
-    }
-
-    protected function setErrorLogger($exception)
-    {
-        $errorMsg = sprintf(
-            'Exception : Erreur %s dans %s L.%s : %s',
-            $exception->getCode(),
-            $exception->getFile(),
-            $exception->getLine(),
-            $exception->getMessage()
-        );
-        $this->logger->error($errorMsg);
     }
 }
