@@ -20,7 +20,7 @@ export class GuardSet extends ElementHTML {
   }
 
   forEachMutationObserver (mutation) {
-    if (mutation.type === 'attributes' && mutation.attributeName === 'data-state') {
+    if (mutation.type === 'attributes' && mutation.attributeName === 'state') {
       this.changeState()
     }
   }

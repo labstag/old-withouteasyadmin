@@ -18,7 +18,7 @@ export class SelectElement extends ElementHTML {
   }
 
   forEachMutationObserver (mutation) {
-    if (mutation.type === 'attributes' && mutation.attributeName === 'data-checked') {
+    if (mutation.type === 'attributes' && mutation.attributeName === 'checked') {
       this.changeChecked()
     }
   }
@@ -30,6 +30,7 @@ export class SelectElement extends ElementHTML {
       linkBtnAdminEmptiesElement.style.display = (selectElement.length !== 0) ? 'block' : 'none'
     }
     const linkBtnAdminDeletiesElement = document.querySelector('link-btnadmindeleties')
+
     if (linkBtnAdminDeletiesElement !== null) {
       linkBtnAdminDeletiesElement.style.display = (selectElement.length !== 0) ? 'block' : 'none'
     }
