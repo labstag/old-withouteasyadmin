@@ -141,15 +141,14 @@ abstract class AdminControllerLib extends ControllerLib
             $get  = $query->all();
             $data = $search['data'];
             $data->search($get, $this->getDoctrine());
-            $searchForm               = $this->createForm(
+            $route      = $this->get('request_stack')->getCurrentRequest()->get('_route');
+            $url        = $this->generateUrl($route);
+            $searchForm = $this->createForm(
                 $search['form'],
                 $data,
-                [
-                    'action' => $this->generateUrl(
-                        $this->get('request_stack')->getCurrentRequest()->get('_route')
-                    ),
-                ]
+                ['action' => $url]
             );
+
             $parameters['searchform'] = $searchForm->createView();
         }
 

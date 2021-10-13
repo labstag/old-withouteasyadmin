@@ -2,18 +2,35 @@
 
 namespace Labstag\Form\Admin\Search;
 
+use Labstag\Entity\Bookmark;
 use Labstag\Entity\Category;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
 use Labstag\Lib\AbstractTypeLib;
 use Labstag\Search\BookmarkSearch;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Workflow\Registry;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BookmarkType extends AbstractTypeLib
 {
+
+    protected Registry $workflows;
+
+    public function __construct(
+        Registry $workflows,
+        TranslatorInterface $translator
+    )
+    {
+        $this->workflows = $workflows;
+        parent::__construct($translator);
+    }
+
     /**
      * @inheritdoc
      */
@@ -55,10 +72,32 @@ class BookmarkType extends AbstractTypeLib
                 'route'    => 'api_search_category',
             ]
         );
+        $workflow   = $this->workflows->get(new Bookmark());
+        $definition = $workflow->getDefinition();
+        $places     = $definition->getPlaces();
+        $builder->add(
+            'etape',
+            ChoiceType::class,
+            [
+                'required' => false,
+                'label'    => $this->translator->trans('bookmark.etape.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('bookmark.etape.help', [], 'admin.form'),
+                'choices'  => $places,
+            ]
+        );
         $builder->add(
             'submit',
             SubmitType::class,
-            []
+            [
+                'attr' => ['name' => ''],
+            ]
+        );
+        $builder->add(
+            'reset',
+            ResetType::class,
+            [
+                'attr' => ['name' => ''],
+            ]
         );
         unset($options);
     }

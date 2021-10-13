@@ -8,6 +8,8 @@ use Labstag\Entity\User;
 class BookmarkSearch
 {
 
+    public $etape;
+
     public $name;
 
     public $refcategory;
