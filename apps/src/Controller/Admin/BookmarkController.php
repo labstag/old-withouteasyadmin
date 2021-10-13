@@ -6,6 +6,7 @@ use DateTime;
 use DOMDocument;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Bookmark;
+use Labstag\Entity\User;
 use Labstag\Form\Admin\Bookmark\ImportType;
 use Labstag\Form\Admin\Bookmark\PrincipalType;
 use Labstag\Form\Admin\Search\BookmarkType;
@@ -249,13 +250,15 @@ class BookmarkController extends AdminControllerLib
         $doc->loadHTMLFile($file->getPathname(), LIBXML_NOWARNING | LIBXML_NOERROR);
         $tags = $doc->getElementsByTagName('a');
         $date = new DateTime();
-        $user = $security->getUser()->getId();
+        /** @var User $user */
+        $user   = $security->getUser();
+        $userId = $user->getId();
         foreach ($tags as $tag) {
             $enqueue->enqueue(
                 BookmarkService::class,
                 'process',
                 [
-                    'userid' => $user,
+                    'userid' => $userId,
                     'url'    => $tag->getAttribute('href'),
                     'name'   => $tag->nodeValue,
                     'icon'   => $tag->getAttribute('icon'),

@@ -88,14 +88,13 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $methods     = $this->getMethodsList();
         $url         = $this->getUrlAdmin();
-        $actions     = $this->getUrlAdmin();
         $request     = $this->get('request_stack')->getCurrentRequest();
         $all         = $request->attributes->all();
         $route       = $all['_route'];
         $routeParams = $all['_route_params'];
         $routeType   = (0 != substr_count($route, 'trash')) ? 'trash' : 'all';
         $method      = $methods[$routeType];
-        $this->addNewImport($repository, $methods, $routeType, $url, $actions);
+        $this->addNewImport($repository, $methods, $routeType, $url);
 
         if ('trash' != $routeType) {
             $this->btnInstance()->addSupprimerSelection(
@@ -122,8 +121,9 @@ abstract class AdminControllerLib extends ControllerLib
         }
 
         $query      = $this->get('request_stack')->getCurrentRequest()->query;
+        $get        = $query->all();
         $pagination = $this->paginator->paginate(
-            $repository->{$method}(),
+            $repository->{$method}($get),
             $query->getInt('page', 1),
             10
         );
@@ -134,7 +134,7 @@ abstract class AdminControllerLib extends ControllerLib
 
         $parameters = [
             'pagination' => $pagination,
-            'actions'    => $actions,
+            'actions'    => $url,
         ];
         $search     = $this->searchForm();
         if (0 != count($search) && array_key_exists('form', $search) && array_key_exists('data', $search)) {
@@ -305,7 +305,6 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function listOrTrashRouteTrash(
         array $url,
-        array $actions,
         ServiceEntityRepositoryLib $repository
     )
     {
@@ -335,8 +334,8 @@ abstract class AdminControllerLib extends ControllerLib
         $twig             = $this->get('twig');
         $globals          = $twig->getGlobals();
         $modal            = $globals['modal'] ?? [];
-        $modal['destroy'] = (isset($actions['destroy']));
-        $modal['restore'] = (isset($actions['restore']));
+        $modal['destroy'] = (isset($url['destroy']));
+        $modal['restore'] = (isset($url['restore']));
         $twig->addGlobal('modal', $modal);
 
         $request     = $this->get('request_stack')->getCurrentRequest();
@@ -549,8 +548,7 @@ abstract class AdminControllerLib extends ControllerLib
     protected function setTrashIcon(
         $methods,
         $repository,
-        $url,
-        $actions
+        $url
     )
     {
         /** @var EntityManager $entityManager */
@@ -569,8 +567,8 @@ abstract class AdminControllerLib extends ControllerLib
         $twig              = $this->get('twig');
         $globals           = $twig->getGlobals();
         $modal             = $globals['modal'] ?? [];
-        $modal['delete']   = (isset($actions['delete']));
-        $modal['workflow'] = (isset($actions['workflow']));
+        $modal['delete']   = (isset($url['delete']));
+        $modal['workflow'] = (isset($url['workflow']));
 
         $twig->addGlobal('modal', $modal);
     }
@@ -740,13 +738,12 @@ abstract class AdminControllerLib extends ControllerLib
         array $methods,
         string $routeType,
         array $url = [],
-        array $actions = [],
     )
     {
         if ('trash' == $routeType) {
-            $this->listOrTrashRouteTrash($url, $actions, $repository);
+            $this->listOrTrashRouteTrash($url, $repository);
         } elseif (isset($url['trash'])) {
-            $this->setTrashIcon($methods, $repository, $url, $actions);
+            $this->setTrashIcon($methods, $repository, $url);
         }
 
         if (isset($url['new']) && 'trash' != $routeType) {
