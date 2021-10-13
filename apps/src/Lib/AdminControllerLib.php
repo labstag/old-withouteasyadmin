@@ -137,7 +137,7 @@ abstract class AdminControllerLib extends ControllerLib
             'actions'    => $actions,
         ];
         $search     = $this->searchForm();
-        if (0 != count($search) && in_array('data', $search) && in_array('data', $search)) {
+        if (0 != count($search) && array_key_exists('form', $search) && array_key_exists('data', $search)) {
             $get  = $query->all();
             $data = $search['data'];
             $data->search($get, $this->getDoctrine());
