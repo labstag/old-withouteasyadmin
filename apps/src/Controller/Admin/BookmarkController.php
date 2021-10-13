@@ -8,10 +8,12 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Bookmark;
 use Labstag\Form\Admin\Bookmark\ImportType;
 use Labstag\Form\Admin\Bookmark\PrincipalType;
+use Labstag\Form\Admin\Search\BookmarkType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\Repository\BookmarkRepository;
 use Labstag\RequestHandler\BookmarkRequestHandler;
+use Labstag\Search\BookmarkSearch;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\BookmarkService;
 use Symfony\Component\Form\FormInterface;
@@ -115,6 +117,14 @@ class BookmarkController extends AdminControllerLib
             'show'     => 'admin_bookmark_show',
             'trash'    => 'admin_bookmark_trash',
             'workflow' => 'api_action_workflow',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => BookmarkType::class,
+            'data' => new BookmarkSearch(),
         ];
     }
 

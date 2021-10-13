@@ -64,6 +64,21 @@ class CategoryRepository extends ServiceEntityRepositoryLib
         return $dql->getQuery()->getResult();
     }
 
+    public function findName(string $field)
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.name LIKE :name'
+        );
+        $query->setParameters(
+            [
+                'name' => '%'.$field.'%',
+            ]
+        );
+
+        return $query->getQuery()->getResult();
+    }
+
     public function findTrashParentForAdmin(): array
     {
         $methods = get_class_methods($this);

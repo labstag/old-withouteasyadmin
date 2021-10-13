@@ -40,6 +40,17 @@
         </div>
         {{ wo_render_breadcrumbs() }}
         {{ macro_site.flashbag(app) }}
+        {% if searchform is defined %}
+            {{ form_start(searchform) }}
+            <div class="row">
+            {% for input in searchform %}
+                <div class="col">
+                    {{ form_row(input) }}
+                </div>
+            {% endfor %}
+            </div>
+            {{ form_end(searchform) }}
+        {% endif %}
         {% block body %}
         {% endblock %}
         <footer>

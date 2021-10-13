@@ -2,6 +2,7 @@
 
 namespace Labstag\Lib;
 
+use Doctrine\ORM\EntityManager;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
@@ -120,9 +121,10 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
+        $query      = $this->get('request_stack')->getCurrentRequest()->query;
         $pagination = $this->paginator->paginate(
             $repository->{$method}(),
-            $this->get('request_stack')->getCurrentRequest()->query->getInt('page', 1),
+            $query->getInt('page', 1),
             10
         );
 
@@ -130,12 +132,30 @@ abstract class AdminControllerLib extends ControllerLib
             throw new AccessDeniedException();
         }
 
+        $parameters = [
+            'pagination' => $pagination,
+            'actions'    => $actions,
+        ];
+        $search     = $this->searchForm();
+        if (0 != count($search) && in_array('data', $search) && in_array('data', $search)) {
+            $get  = $query->all();
+            $data = $search['data'];
+            $data->search($get, $this->getDoctrine());
+            $searchForm               = $this->createForm(
+                $search['form'],
+                $data,
+                [
+                    'action' => $this->generateUrl(
+                        $this->get('request_stack')->getCurrentRequest()->get('_route')
+                    ),
+                ]
+            );
+            $parameters['searchform'] = $searchForm->createView();
+        }
+
         return $this->render(
             $html,
-            [
-                'pagination' => $pagination,
-                'actions'    => $actions,
-            ]
+            $parameters
         );
     }
 
@@ -369,6 +389,11 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
+    protected function searchForm(): array
+    {
+        return [];
+    }
+
     protected function setAttachment(
         AttachmentRepository $attachmentRepository,
         $accessor,
@@ -528,11 +553,13 @@ abstract class AdminControllerLib extends ControllerLib
         $actions
     )
     {
+        /** @var EntityManager $entityManager */
         $entityManager = $this->getDoctrine()->getManager();
         $methodTrash   = $methods['trash'];
-        $entityManager->getFilters()->disable('softdeleteable');
+        $filters       = $entityManager->getFilters();
+        $filters->disable('softdeleteable');
         $total = $repository->{$methodTrash}();
-        $entityManager->getFilters()->enable('softdeleteable');
+        $filters->enable('softdeleteable');
         if (0 != count($total)) {
             $this->btnInstance()->addBtnTrash(
                 $url['trash']

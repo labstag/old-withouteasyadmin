@@ -16,4 +16,19 @@ class GroupeRepository extends ServiceEntityRepositoryLib
     {
         parent::__construct($registry, Groupe::class);
     }
+
+    public function findName(string $field)
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.name LIKE :name'
+        );
+        $query->setParameters(
+            [
+                'name' => '%'.$field.'%',
+            ]
+        );
+
+        return $query->getQuery()->getResult();
+    }
 }
