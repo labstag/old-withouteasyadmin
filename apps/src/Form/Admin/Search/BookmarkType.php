@@ -44,8 +44,8 @@ class BookmarkType extends AbstractTypeLib
             TextType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('bookmark.name.label', [], 'admin.form'),
-                'help'     => $this->translator->trans('bookmark.name.help', [], 'admin.form'),
+                'label'    => $this->translator->trans('bookmark.name.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('bookmark.name.help', [], 'admin.search.form'),
             ]
         );
         $builder->add(
@@ -53,8 +53,8 @@ class BookmarkType extends AbstractTypeLib
             SearchableType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('bookmark.refuser.label', [], 'admin.form'),
-                'help'     => $this->translator->trans('bookmark.refuser.help', [], 'admin.form'),
+                'label'    => $this->translator->trans('bookmark.refuser.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('bookmark.refuser.help', [], 'admin.search.form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
@@ -65,8 +65,8 @@ class BookmarkType extends AbstractTypeLib
             SearchableType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('bookmark.refcategory.label', [], 'admin.form'),
-                'help'     => $this->translator->trans('bookmark.refcategory.help', [], 'admin.form'),
+                'label'    => $this->translator->trans('bookmark.refcategory.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('bookmark.refcategory.help', [], 'admin.search.form'),
                 'multiple' => false,
                 'class'    => Category::class,
                 'route'    => 'api_search_category',
@@ -80,8 +80,8 @@ class BookmarkType extends AbstractTypeLib
             ChoiceType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('bookmark.etape.label', [], 'admin.form'),
-                'help'     => $this->translator->trans('bookmark.etape.help', [], 'admin.form'),
+                'label'    => $this->translator->trans('bookmark.etape.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('bookmark.etape.help', [], 'admin.search.form'),
                 'choices'  => $places,
             ]
         );

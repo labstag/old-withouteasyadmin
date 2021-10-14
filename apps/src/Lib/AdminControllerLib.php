@@ -146,7 +146,10 @@ abstract class AdminControllerLib extends ControllerLib
             $searchForm = $this->createForm(
                 $search['form'],
                 $data,
-                ['action' => $url]
+                [
+                    'attr'   => ['id' => 'searchform'],
+                    'action' => $url,
+                ]
             );
 
             $parameters['searchform'] = $searchForm->createView();
@@ -555,9 +558,9 @@ abstract class AdminControllerLib extends ControllerLib
         $methodTrash   = $methods['trash'];
         $filters       = $entityManager->getFilters();
         $filters->disable('softdeleteable');
-        $total = $repository->{$methodTrash}();
+        $total = $repository->{$methodTrash}([]);
         $filters->enable('softdeleteable');
-        if (0 != count($total)) {
+        if (0 != count($total->getQuery()->getResult())) {
             $this->btnInstance()->addBtnTrash(
                 $url['trash']
             );

@@ -2,7 +2,7 @@
 
 namespace Labstag\Repository;
 
-use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\PhoneUser;
@@ -17,7 +17,7 @@ class PhoneUserRepository extends PhoneRepository
         parent::__construct($registry, PhoneUser::class);
     }
 
-    public function findAllForAdmin(): Query
+    public function findAllForAdmin(array $get): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $query        = $queryBuilder->leftJoin(
@@ -28,20 +28,6 @@ class PhoneUserRepository extends PhoneRepository
             'u.id IS NOT NULL'
         );
 
-        return $query->getQuery();
-    }
-
-    public function findTrashForAdmin(): array
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin(
-            'a.refuser',
-            'u'
-        );
-        $query->where(
-            'u.deletedAt IS NOT NULL OR a.deletedAt IS NOT NULL'
-        );
-
-        return $query->getQuery()->getResult();
+        return $this->setQuery($query, $get);
     }
 }

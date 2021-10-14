@@ -2,7 +2,7 @@
 
 namespace Labstag\Repository;
 
-use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Edito;
@@ -18,7 +18,7 @@ class EditoRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, Edito::class);
     }
 
-    public function findAllForAdmin(): Query
+    public function findAllForAdmin(array $get): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $query        = $queryBuilder->leftJoin(
@@ -29,7 +29,7 @@ class EditoRepository extends ServiceEntityRepositoryLib
             'u.id IS NOT NULL'
         );
 
-        return $query->getQuery();
+        return $this->setQuery($query, $get);
     }
 
     public function findOnePublier()
@@ -47,19 +47,5 @@ class EditoRepository extends ServiceEntityRepositoryLib
         $query->setMaxResults(1);
 
         return $query->getQuery()->getOneOrNullResult();
-    }
-
-    public function findTrashForAdmin(): array
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin(
-            'a.refuser',
-            'u'
-        );
-        $query->where(
-            'u.deletedAt IS NOT NULL OR a.deletedAt IS NOT NULL'
-        );
-
-        return $query->getQuery()->getResult();
     }
 }

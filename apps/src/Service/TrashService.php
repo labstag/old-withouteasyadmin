@@ -43,8 +43,8 @@ class TrashService
                 'Labstag\\Entity\\'.$file->getFilenameWithoutExtension()
             );
             $repository = $this->manager->getRepository($entity);
-            $trash      = $repository->findTrashForAdmin();
-            if (0 == count($trash)) {
+            $trash      = $repository->findTrashForAdmin([]);
+            if (0 == count($trash->getQuery()->getResult())) {
                 continue;
             }
 

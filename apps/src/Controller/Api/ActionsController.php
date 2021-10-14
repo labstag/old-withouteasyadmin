@@ -339,7 +339,7 @@ class ActionsController extends ApiControllerLib
 
     private function deleteEntityByRepository($repository)
     {
-        $all   = $repository->findTrashForAdmin();
+        $all   = $repository->findTrashForAdmin([]);
         $files = [];
         foreach ($all as $entity) {
             $this->entityManager->remove($entity);

@@ -2,7 +2,7 @@
 
 namespace Labstag\Repository;
 
-use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\EmailUser;
@@ -18,7 +18,7 @@ class EmailUserRepository extends EmailRepository
         parent::__construct($registry, EmailUser::class);
     }
 
-    public function findAllForAdmin(): Query
+    public function findAllForAdmin(array $get): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $query        = $queryBuilder->leftJoin(
@@ -29,21 +29,7 @@ class EmailUserRepository extends EmailRepository
             'u.id IS NOT NULL'
         );
 
-        return $query->getQuery();
-    }
-
-    public function findTrashForAdmin(): array
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin(
-            'a.refuser',
-            'u'
-        );
-        $query->where(
-            'u.deletedAt IS NOT NULL OR a.deletedAt IS NOT NULL'
-        );
-
-        return $query->getQuery()->getResult();
+        return $this->setQuery($query, $get);
     }
 
     public function getEmailsUserVerif(User $user, bool $verif): array
