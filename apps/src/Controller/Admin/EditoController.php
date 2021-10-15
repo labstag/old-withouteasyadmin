@@ -5,9 +5,11 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
 use Labstag\Form\Admin\EditoType;
+use Labstag\Form\Admin\Search\EditoType as SearchEditoType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\EditoRepository;
 use Labstag\RequestHandler\EditoRequestHandler;
+use Labstag\Search\EditoSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -80,6 +82,14 @@ class EditoController extends AdminControllerLib
             'show'     => 'admin_edito_show',
             'trash'    => 'admin_edito_trash',
             'workflow' => 'api_action_workflow',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchEditoType::class,
+            'data' => new EditoSearch(),
         ];
     }
 

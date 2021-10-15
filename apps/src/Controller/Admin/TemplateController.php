@@ -4,10 +4,12 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Template;
+use Labstag\Form\Admin\Search\TemplateType as SearchTemplateType;
 use Labstag\Form\Admin\TemplateType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\TemplateRepository;
 use Labstag\RequestHandler\TemplateRequestHandler;
+use Labstag\Search\TemplateSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -76,6 +78,14 @@ class TemplateController extends AdminControllerLib
             'restore' => 'api_action_restore',
             'show'    => 'admin_template_show',
             'trash'   => 'admin_template_trash',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchTemplateType::class,
+            'data' => new TemplateSearch(),
         ];
     }
 

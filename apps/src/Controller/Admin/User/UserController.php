@@ -4,11 +4,13 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
+use Labstag\Form\Admin\Search\UserType as SearchUserType;
 use Labstag\Form\Admin\User\UserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\UserRepository;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\UserRequestHandler;
+use Labstag\Search\UserSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -130,6 +132,14 @@ class UserController extends AdminControllerLib
             $user,
             'admin/user/show.html.twig'
         );
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchUserType::class,
+            'data' => new UserSearch(),
+        ];
     }
 
     protected function setBreadcrumbsPageAdminUser(): array

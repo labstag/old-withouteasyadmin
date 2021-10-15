@@ -58,7 +58,7 @@ class TrashService
                 ),
                 'properties' => $this->getProperties($repositoryFile),
                 'entity'     => $entity,
-                'total'      => count($trash),
+                'total'      => count($trash->getQuery()->getResult()),
                 'token'      => $this->csrfTokenManager->getToken('empty')->getValue(),
             ];
         }

@@ -561,7 +561,7 @@ abstract class AdminControllerLib extends ControllerLib
         $trash = $repository->{$methodTrash}([]);
         $total = count($trash->getQuery()->getResult());
         $filters->enable('softdeleteable');
-        if (0 != $trash) {
+        if (0 != $total) {
             $this->btnInstance()->addBtnTrash(
                 $url['trash']
             );

@@ -49,4 +49,66 @@ class NoteInterneRepository extends ServiceEntityRepositoryLib
 
         return $query->getQuery()->getResult();
     }
+
+    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
+    {
+        $this->setQueryEtape($query, $get);
+        $this->setQueryDateDebut($query, $get);
+        $this->setQueryDateFin($query, $get);
+        $this->setQueryTitle($query, $get);
+        $this->setQueryRefUser($query, $get);
+
+        return $query;
+    }
+
+    protected function setQueryDateDebut(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['date_debut']) || empty($get['date_debut'])) {
+            return;
+        }
+
+        $query->andWhere('DATE(a.dateDebut) = :date_debut');
+        $query->setParameter('date_debut', $get['date_debut']);
+    }
+
+    protected function setQueryDateFin(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['date_fin']) || empty($get['date_fin'])) {
+            return;
+        }
+
+        $query->andWhere('DATE(a.dateFin) = :date_fin');
+        $query->setParameter('date_fin', $get['date_fin']);
+    }
+
+    protected function setQueryEtape(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['etape']) || empty($get['etape'])) {
+            return;
+        }
+
+        $query->andWhere('a.state LIKE :state');
+        $query->setParameter('state', '%'.$get['etape'].'%');
+    }
+
+    protected function setQueryRefUser(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['refuser']) || empty($get['refuser'])) {
+            return;
+        }
+
+        $query->leftJoin('a.refuser', 'u');
+        $query->andWhere('u.id = :refuser');
+        $query->setParameter('refuser', $get['refuser']);
+    }
+
+    protected function setQueryTitle(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['title']) || empty($get['title'])) {
+            return;
+        }
+
+        $query->andWhere('a.title LIKE :title');
+        $query->setParameter('title', '%'.$get['title'].'%');
+    }
 }

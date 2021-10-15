@@ -4,11 +4,13 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
+use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\GroupeRequestHandler;
+use Labstag\Search\GroupeSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -126,6 +128,14 @@ class GroupeController extends AdminControllerLib
             'restore' => 'api_action_restore',
             'show'    => 'admin_groupuser_show',
             'trash'   => 'admin_groupuser_trash',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchGroupeType::class,
+            'data' => new GroupeSearch(),
         ];
     }
 

@@ -81,4 +81,21 @@ class CategoryRepository extends ServiceEntityRepositoryLib
 
         return $this->setQuery($query, $get);
     }
+
+    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
+    {
+        $this->setQueryName($query, $get);
+
+        return $query;
+    }
+
+    protected function setQueryName(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['name']) || empty($get['name'])) {
+            return;
+        }
+
+        $query->andWhere('a.name LIKE :name');
+        $query->setParameter('name', '%'.$get['name'].'%');
+    }
 }

@@ -5,9 +5,11 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Category;
 use Labstag\Form\Admin\CategoryType;
+use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\CategoryRepository;
 use Labstag\RequestHandler\CategoryRequestHandler;
+use Labstag\Search\CategorySearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -87,6 +89,14 @@ class CategoryController extends AdminControllerLib
             'show'     => 'admin_category_show',
             'trash'    => 'admin_category_trash',
             'workflow' => 'api_action_workflow',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchCategoryType::class,
+            'data' => new CategorySearch(),
         ];
     }
 

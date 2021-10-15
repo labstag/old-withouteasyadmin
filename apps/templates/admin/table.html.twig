@@ -5,7 +5,9 @@
     data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
     data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
     data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
-    data-count={{ pagination|length }}
+    {% if pagination is defined %}
+        data-count={{ pagination|length }}
+    {% endif %}
 >
 	<thead>
         {% block thead %}{% endblock %}

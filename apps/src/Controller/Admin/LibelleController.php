@@ -5,9 +5,11 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Libelle;
 use Labstag\Form\Admin\LibelleType;
+use Labstag\Form\Admin\Search\LibelleType as SearchLibelleType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\LibelleRepository;
 use Labstag\RequestHandler\LibelleRequestHandler;
+use Labstag\Search\LibelleSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -79,6 +81,14 @@ class LibelleController extends AdminControllerLib
             'show'     => 'admin_libelle_show',
             'trash'    => 'admin_libelle_trash',
             'workflow' => 'api_action_workflow',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchLibelleType::class,
+            'data' => new LibelleSearch(),
         ];
     }
 

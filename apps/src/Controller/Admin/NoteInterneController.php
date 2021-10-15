@@ -5,9 +5,11 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\NoteInterne;
 use Labstag\Form\Admin\NoteInterneType;
+use Labstag\Form\Admin\Search\NoteInterneType as SearchNoteInterneType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\NoteInterneRepository;
 use Labstag\RequestHandler\NoteInterneRequestHandler;
+use Labstag\Search\NoteInterneSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -85,6 +87,14 @@ class NoteInterneController extends AdminControllerLib
             'show'     => 'admin_noteinterne_show',
             'trash'    => 'admin_noteinterne_trash',
             'workflow' => 'api_action_workflow',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchNoteInterneType::class,
+            'data' => new NoteInterneSearch(),
         ];
     }
 
