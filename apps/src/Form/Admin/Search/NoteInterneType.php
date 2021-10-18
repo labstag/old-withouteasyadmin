@@ -61,7 +61,7 @@ class NoteInterneType extends AbstractTypeLib
             ]
         );
         $builder->add(
-            'date_debut',
+            'dateDebut',
             DateType::class,
             [
                 'required' => false,
@@ -71,7 +71,7 @@ class NoteInterneType extends AbstractTypeLib
             ]
         );
         $builder->add(
-            'date_fin',
+            'dateFin',
             DateType::class,
             [
                 'required' => false,

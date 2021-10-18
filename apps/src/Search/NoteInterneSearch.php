@@ -8,9 +8,9 @@ use Labstag\Entity\User;
 class NoteInterneSearch
 {
 
-    public $date_debut;
+    public $dateDebut;
 
-    public $date_fin;
+    public $dateFin;
 
     public $etape;
 
@@ -24,7 +24,7 @@ class NoteInterneSearch
         $userRepo = $doctrine->getRepository(User::class);
         foreach ($get as $key => $value) {
             $this->{$key} = $value;
-            if ('date_debut' == $key || 'date_fin' == $key) {
+            if ('dateDebut' == $key || 'dateFin' == $key) {
                 if (!empty($value)) {
                     [
                         $year,
