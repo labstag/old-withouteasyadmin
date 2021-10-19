@@ -31,7 +31,7 @@ class DisclaimerType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.disclaimer.activate.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
@@ -47,7 +47,7 @@ class DisclaimerType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.disclaimer.title.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
@@ -72,7 +72,7 @@ class DisclaimerType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.disclaimer.url-redirect.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
