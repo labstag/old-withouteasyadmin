@@ -21,8 +21,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     public function findDateArchive()
     {
         $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
-        $query->select(
+        $query        = $queryBuilder->select(
             'date_format(p.published,\'%Y-%m\') as code, p.published, COUNT(p)'
         );
         $query->where(

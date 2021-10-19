@@ -28,50 +28,28 @@ class CategoryRepository extends ServiceEntityRepositoryLib
 
     public function findByBookmark()
     {
-        $entityManager = $this->getEntityManager();
-        $dql           = $entityManager->createQueryBuilder();
-        $dql->select('a');
-        $dql->from(Category::class, 'a');
-        $dql->leftJoin('a.bookmarks', 'b');
-        $dql->innerjoin('b.refuser', 'u');
-        $dql->where('b.state LIKE :state');
-        $dql->setParameters(
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->leftJoin('a.bookmarks', 'b');
+        $query->innerjoin('b.refuser', 'u');
+        $query->where('b.state LIKE :state');
+        $query->setParameters(
             ['state' => '%publie%']
         );
 
-        return $dql->getQuery()->getResult();
-    }
-
-    public function findByBookmark()
-    {
-        $entityManager = $this->getEntityManager();
-        $dql           = $entityManager->createQueryBuilder();
-        $dql->select('a');
-        $dql->from(Category::class, 'a');
-        $dql->leftJoin('a.bookmarks', 'b');
-        $dql->innerjoin('b.refuser', 'u');
-        $dql->where('b.state LIKE :state');
-        $dql->setParameters(
-            ['state' => '%publie%']
-        );
-
-        return $dql->getQuery()->getResult();
+        return $query->getQuery()->getResult();
     }
 
     public function findByPost()
     {
-        $entityManager = $this->getEntityManager();
-        $dql           = $entityManager->createQueryBuilder();
-        $dql->select('a');
-        $dql->from(Category::class, 'a');
-        $dql->leftJoin('a.posts', 'p');
-        $dql->innerjoin('p.refuser', 'u');
-        $dql->where('p.state LIKE :state');
-        $dql->setParameters(
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->leftJoin('a.posts', 'p');
+        $query->innerjoin('p.refuser', 'u');
+        $query->where('p.state LIKE :state');
+        $query->setParameters(
             ['state' => '%publie%']
         );
 
-        return $dql->getQuery()->getResult();
+        return $query->getQuery()->getResult();
     }
 
     public function findName(string $field)

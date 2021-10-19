@@ -20,34 +20,29 @@ class LibelleRepository extends ServiceEntityRepositoryLib
 
     public function findByBookmark()
     {
-        $entityManager = $this->getEntityManager();
-        $dql           = $entityManager->createQueryBuilder();
-        $dql->select('a');
-        $dql->from(Libelle::class, 'a');
-        $dql->innerJoin('a.bookmarks', 'b');
-        $dql->innerjoin('b.refuser', 'u');
-        $dql->where('b.state LIKE :state');
-        $dql->setParameters(
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->from(Libelle::class, 'a');
+        $query->innerJoin('a.bookmarks', 'b');
+        $query->innerjoin('b.refuser', 'u');
+        $query->where('b.state LIKE :state');
+        $query->setParameters(
             ['state' => '%publie%']
         );
 
-        return $dql->getQuery()->getResult();
+        return $query->getQuery()->getResult();
     }
 
     public function findByPost()
     {
-        $entityManager = $this->getEntityManager();
-        $dql           = $entityManager->createQueryBuilder();
-        $dql->select('a');
-        $dql->from(Libelle::class, 'a');
-        $dql->innerJoin('a.posts', 'p');
-        $dql->innerjoin('p.refuser', 'u');
-        $dql->where('p.state LIKE :state');
-        $dql->setParameters(
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->innerJoin('a.posts', 'p');
+        $query->innerjoin('p.refuser', 'u');
+        $query->where('p.state LIKE :state');
+        $query->setParameters(
             ['state' => '%publie%']
         );
 
-        return $dql->getQuery()->getResult();
+        return $query->getQuery()->getResult();
     }
 
     public function findNom(string $field)
