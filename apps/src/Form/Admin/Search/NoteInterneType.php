@@ -46,6 +46,9 @@ class NoteInterneType extends AbstractTypeLib
                 'required' => false,
                 'label'    => $this->translator->trans('noteinterne.title.label', [], 'admin.search.form'),
                 'help'     => $this->translator->trans('noteinterne.title.help', [], 'admin.search.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('noteinterne.title.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(
@@ -58,6 +61,13 @@ class NoteInterneType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'noteinterne.refuser.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
             ]
         );
         $builder->add(
@@ -91,6 +101,13 @@ class NoteInterneType extends AbstractTypeLib
                 'label'    => $this->translator->trans('noteinterne.etape.label', [], 'admin.search.form'),
                 'help'     => $this->translator->trans('noteinterne.etape.help', [], 'admin.search.form'),
                 'choices'  => $places,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'noteinterne.etape.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
             ]
         );
         $builder->add(

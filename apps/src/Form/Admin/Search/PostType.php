@@ -47,6 +47,9 @@ class PostType extends AbstractTypeLib
                 'required' => false,
                 'label'    => $this->translator->trans('post.title.label', [], 'admin.search.form'),
                 'help'     => $this->translator->trans('post.title.help', [], 'admin.search.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('post.title.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(
@@ -59,6 +62,9 @@ class PostType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('post.refuser.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(
@@ -71,6 +77,9 @@ class PostType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => Category::class,
                 'route'    => 'api_search_category',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('post.refcategory.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(
@@ -94,6 +103,9 @@ class PostType extends AbstractTypeLib
                 'label'    => $this->translator->trans('post.etape.label', [], 'admin.search.form'),
                 'help'     => $this->translator->trans('post.etape.help', [], 'admin.search.form'),
                 'choices'  => $places,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('post.etape.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(

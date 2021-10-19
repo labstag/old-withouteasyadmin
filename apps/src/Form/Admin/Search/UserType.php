@@ -46,6 +46,9 @@ class UserType extends AbstractTypeLib
                 'required' => false,
                 'label'    => $this->translator->trans('user.username.label', [], 'admin.search.form'),
                 'help'     => $this->translator->trans('user.username.help', [], 'admin.search.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('user.username.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(
@@ -57,6 +60,9 @@ class UserType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => Groupe::class,
                 'route'    => 'api_search_group',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('user.refgroupe.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(
@@ -66,6 +72,9 @@ class UserType extends AbstractTypeLib
                 'required' => false,
                 'label'    => $this->translator->trans('user.email.label', [], 'admin.search.form'),
                 'help'     => $this->translator->trans('user.email.help', [], 'admin.search.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('user.email.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $workflow   = $this->workflows->get(new User());
@@ -79,6 +88,9 @@ class UserType extends AbstractTypeLib
                 'label'    => $this->translator->trans('user.etape.label', [], 'admin.search.form'),
                 'help'     => $this->translator->trans('user.etape.help', [], 'admin.search.form'),
                 'choices'  => $places,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('user.etape.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(

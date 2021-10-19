@@ -30,6 +30,13 @@ class MetaSiteType extends AbstractTypeLib
                 'label'    => $this->translator->trans('param.metasite.viewport.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('param.metasite.viewport.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'param.metasite.viewport.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
             ]
         );
         $builder->add(
@@ -39,6 +46,13 @@ class MetaSiteType extends AbstractTypeLib
                 'label'    => $this->translator->trans('param.metasite.description.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('param.metasite.description.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'param.metasite.description.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
             ]
         );
         $builder->add(
@@ -48,6 +62,13 @@ class MetaSiteType extends AbstractTypeLib
                 'label'    => $this->translator->trans('param.metasite.keywords.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('param.metasite.keywords.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'param.metasite.keywords.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
             ]
         );
         unset($options);

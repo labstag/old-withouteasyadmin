@@ -22,6 +22,9 @@ class PrincipalType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('menu.principal.clef.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('menu.principal.clef.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('menu.principal.clef.placeholder', [], 'admin.form'),
+                ],
             ]
         );
     }

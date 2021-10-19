@@ -30,6 +30,9 @@ class NoteInterneType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('noteinterne.title.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('noteinterne.title.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('noteinterne.title.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -82,6 +85,9 @@ class NoteInterneType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('noteinterne.refuser.placeholder', [], 'admin.form'),
+                ],
             ]
         );
     }

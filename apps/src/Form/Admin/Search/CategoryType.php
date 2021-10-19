@@ -9,23 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Workflow\Registry;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CategoryType extends AbstractTypeLib
 {
-
-    protected Registry $workflows;
-
-    public function __construct(
-        Registry $workflows,
-        TranslatorInterface $translator
-    )
-    {
-        $this->workflows = $workflows;
-        parent::__construct($translator);
-    }
-
     /**
      * @inheritdoc
      */
@@ -41,6 +27,9 @@ class CategoryType extends AbstractTypeLib
                 'required' => false,
                 'label'    => $this->translator->trans('category.name.label', [], 'admin.search.form'),
                 'help'     => $this->translator->trans('category.name.help', [], 'admin.search.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('category.name.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(

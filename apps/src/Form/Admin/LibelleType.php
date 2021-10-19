@@ -24,6 +24,9 @@ class LibelleType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('libelle.name.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('libelle.name.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('libelle.name.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -32,6 +35,9 @@ class LibelleType extends AbstractTypeLib
             [
                 'label'    => $this->translator->trans('libelle.slug.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('libelle.slug.help', [], 'admin.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('libelle.slug.placeholder', [], 'admin.form'),
+                ],
                 'required' => false,
             ]
         );

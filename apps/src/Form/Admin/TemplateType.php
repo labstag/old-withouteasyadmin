@@ -27,6 +27,9 @@ class TemplateType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('template.name.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('template.name.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('template.name.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -35,6 +38,9 @@ class TemplateType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('template.code.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('template.code.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('template.code.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(

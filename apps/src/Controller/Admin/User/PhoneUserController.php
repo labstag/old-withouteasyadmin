@@ -4,10 +4,12 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\PhoneUser;
+use Labstag\Form\Admin\Search\User\PhoneUserType as UserPhoneUserType;
 use Labstag\Form\Admin\User\PhoneUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\PhoneUserRepository;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
+use Labstag\Search\User\PhoneUserSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -81,6 +83,14 @@ class PhoneUserController extends AdminControllerLib
             'show'     => 'admin_phoneuser_show',
             'trash'    => 'admin_phoneuser_trash',
             'workflow' => 'api_action_workflow',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => UserPhoneUserType::class,
+            'data' => new PhoneUserSearch(),
         ];
     }
 

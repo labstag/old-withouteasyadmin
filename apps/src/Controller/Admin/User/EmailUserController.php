@@ -4,10 +4,12 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\EmailUser;
+use Labstag\Form\Admin\Search\User\EmailUserType as UserEmailUserType;
 use Labstag\Form\Admin\User\EmailUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\EmailUserRepository;
 use Labstag\RequestHandler\EmailUserRequestHandler;
+use Labstag\Search\User\EmailUserSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -81,6 +83,14 @@ class EmailUserController extends AdminControllerLib
             'show'     => 'admin_emailuser_show',
             'trash'    => 'admin_emailuser_trash',
             'workflow' => 'api_action_workflow',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => UserEmailUserType::class,
+            'data' => new EmailUserSearch(),
         ];
     }
 

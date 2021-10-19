@@ -46,6 +46,9 @@ class BookmarkType extends AbstractTypeLib
                 'required' => false,
                 'label'    => $this->translator->trans('bookmark.name.label', [], 'admin.search.form'),
                 'help'     => $this->translator->trans('bookmark.name.help', [], 'admin.search.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('bookmark.name.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(
@@ -58,6 +61,9 @@ class BookmarkType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('bookmark.refuser.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(
@@ -70,6 +76,13 @@ class BookmarkType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => Category::class,
                 'route'    => 'api_search_category',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'bookmark.refcategory.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
             ]
         );
         $workflow   = $this->workflows->get(new Bookmark());
@@ -83,6 +96,9 @@ class BookmarkType extends AbstractTypeLib
                 'label'    => $this->translator->trans('bookmark.etape.label', [], 'admin.search.form'),
                 'help'     => $this->translator->trans('bookmark.etape.help', [], 'admin.search.form'),
                 'choices'  => $places,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('bookmark.etape.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(

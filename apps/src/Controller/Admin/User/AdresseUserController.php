@@ -4,10 +4,12 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\AdresseUser;
+use Labstag\Form\Admin\Search\User\AdresseUserType as UserAdresseUserType;
 use Labstag\Form\Admin\User\AdresseUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\AdresseUserRepository;
 use Labstag\RequestHandler\AdresseUserRequestHandler;
+use Labstag\Search\User\AdresseUserSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -80,6 +82,14 @@ class AdresseUserController extends AdminControllerLib
             'restore' => 'api_action_restore',
             'show'    => 'admin_adresseuser_show',
             'trash'   => 'admin_adresseuser_trash',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => UserAdresseUserType::class,
+            'data' => new AdresseUserSearch(),
         ];
     }
 

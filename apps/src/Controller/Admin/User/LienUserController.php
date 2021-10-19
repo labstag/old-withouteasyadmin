@@ -4,10 +4,12 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\LienUser;
+use Labstag\Form\Admin\Search\User\LienUserType as UserLienUserType;
 use Labstag\Form\Admin\User\LienUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\LienUserRepository;
 use Labstag\RequestHandler\LienUserRequestHandler;
+use Labstag\Search\User\LienUserSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -76,6 +78,14 @@ class LienUserController extends AdminControllerLib
             'restore' => 'api_action_restore',
             'show'    => 'admin_lienuser_show',
             'trash'   => 'admin_lienuser_trash',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => UserLienUserType::class,
+            'data' => new LienUserSearch(),
         ];
     }
 

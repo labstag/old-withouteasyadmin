@@ -5,9 +5,11 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\GeoCode;
 use Labstag\Form\Admin\GeoCodeType;
+use Labstag\Form\Admin\Search\GeocodeType as SearchGeocodeType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\GeoCodeRepository;
 use Labstag\RequestHandler\GeoCodeRequestHandler;
+use Labstag\Search\GeocodeSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -76,6 +78,14 @@ class GeoCodeController extends AdminControllerLib
             'show'        => 'admin_geocode_show',
             'trash'       => 'admin_geocode_trash',
             'trashdelete' => 'admin_geocode_destroy',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchGeocodeType::class,
+            'data' => new GeocodeSearch(),
         ];
     }
 

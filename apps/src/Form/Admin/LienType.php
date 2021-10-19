@@ -24,6 +24,9 @@ abstract class LienType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('lien.name.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('lien.name.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('lien.name.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -32,6 +35,9 @@ abstract class LienType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('lien.adresse.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('lien.adresse.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('lien.adresse.placeholder', [], 'admin.form'),
+                ],
             ]
         );
     }

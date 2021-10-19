@@ -30,6 +30,9 @@ class LienUserType extends LienType
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('lienuser.refuser.placeholder', [], 'admin.form'),
+                ],
             ]
         );
     }

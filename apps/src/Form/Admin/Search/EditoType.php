@@ -46,6 +46,9 @@ class EditoType extends AbstractTypeLib
                 'required' => false,
                 'label'    => $this->translator->trans('edito.title.label', [], 'admin.search.form'),
                 'help'     => $this->translator->trans('edito.title.help', [], 'admin.search.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('edito.title.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(
@@ -58,6 +61,9 @@ class EditoType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('edito.refuser.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(
@@ -81,6 +87,9 @@ class EditoType extends AbstractTypeLib
                 'label'    => $this->translator->trans('edito.etape.label', [], 'admin.search.form'),
                 'help'     => $this->translator->trans('edito.etape.help', [], 'admin.search.form'),
                 'choices'  => $places,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('edito.etape.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(

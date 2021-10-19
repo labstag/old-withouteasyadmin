@@ -26,23 +26,7 @@ class PrincipalType extends AbstractTypeLib
         array $options
     ): void
     {
-        $builder->add(
-            'name',
-            TextType::class,
-            [
-                'label' => $this->translator->trans('bookmark.name.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('bookmark.name.help', [], 'admin.form'),
-            ]
-        );
-        $builder->add(
-            'slug',
-            TextType::class,
-            [
-                'label'    => $this->translator->trans('bookmark.slug.label', [], 'admin.form'),
-                'help'     => $this->translator->trans('bookmark.slug.help', [], 'admin.form'),
-                'required' => false,
-            ]
-        );
+        $this->setTextType($builder);
         $builder->add(
             'published',
             DateTimeType::class,
@@ -61,6 +45,9 @@ class PrincipalType extends AbstractTypeLib
                 'label'    => $this->translator->trans('bookmark.url.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('bookmark.url.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('bookmark.url.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(
@@ -91,6 +78,9 @@ class PrincipalType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('bookmark.refuser.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         $builder->add(
@@ -102,6 +92,13 @@ class PrincipalType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => Category::class,
                 'route'    => 'api_search_category',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'bookmark.refcategory.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
             ]
         );
         $builder->add(
@@ -114,6 +111,9 @@ class PrincipalType extends AbstractTypeLib
                 'new'   => new Libelle(),
                 'add'   => true,
                 'route' => 'api_search_postlibelle',
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('bookmark.libelles.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
         unset($options);
@@ -150,6 +150,30 @@ class PrincipalType extends AbstractTypeLib
                     ['required' => false]
                 )
             );
+        }
+    }
+
+    protected function setTextType($builder)
+    {
+        $texttype = [
+            'name' => [
+                'label' => $this->translator->trans('bookmark.name.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('bookmark.name.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('bookmark.name.placeholder', [], 'admin.search.form'),
+                ],
+            ],
+            'slug' => [
+                'label'    => $this->translator->trans('bookmark.slug.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('bookmark.slug.help', [], 'admin.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('bookmark.slug.placeholder', [], 'admin.search.form'),
+                ],
+                'required' => false,
+            ],
+        ];
+        foreach ($texttype as $key => $args) {
+            $builder->add($key, TextType::class, $args);
         }
     }
 }

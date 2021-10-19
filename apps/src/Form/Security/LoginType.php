@@ -23,6 +23,9 @@ class LoginType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('login.username.label', [], 'security.form'),
                 'help'  => $this->translator->trans('login.username.help', [], 'security.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('login.username.placeholder', [], 'security.form'),
+                ],
             ]
         );
         $builder->add(
