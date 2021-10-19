@@ -22,7 +22,7 @@
         <link-add
             href="{{ path(url, {'id': entity.id}) }}"
             title="{{ title|e('html_attr') }}"
-        ></link-add>
+        />
     {% endif %}
 {% endmacro %}
 {% macro adddivider(entity, url) %}
@@ -33,7 +33,7 @@
         <link-add
             href="{{ path(url, {'id': entity.id}) }}"
             title="{{ title|e('html_attr') }}"
-        ></link-add>
+        />
     {% endif %}
 {% endmacro %}
 {% macro move(entity, url) %}
@@ -44,7 +44,7 @@
         <link-move
             href="{{ path(url, {'id': entity.id}) }}"
             title="{{ title|e('html_attr') }}"
-        ></link-move>
+        />
     {% endif %}
 {% endmacro %}
 {% macro link (child, position) %}

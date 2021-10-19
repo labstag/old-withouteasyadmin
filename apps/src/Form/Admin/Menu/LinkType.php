@@ -23,6 +23,9 @@ class LinkType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('menu.link.libelle.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('menu.link.libelle.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('menu.link.libelle.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -31,6 +34,9 @@ class LinkType extends AbstractTypeLib
             [
                 'label'    => $this->translator->trans('menu.link.icon.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('menu.link.icon.help', [], 'admin.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('menu.link.icon.placeholder', [], 'admin.form'),
+                ],
                 'required' => false,
             ]
         );

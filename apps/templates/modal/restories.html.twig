@@ -13,14 +13,8 @@
                 {{ 'modal.restories.message'|trans }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-cancel" data-bs-dismiss="modal">
-                    <i></i>
-                    <span>{{ 'modal.button.cancel'|trans }}</span>
-                </button>
-                <confirm-restories>
-                    <i></i>
-                    <span>{{ 'modal.button.restore'|trans }}</span>
-                </confirm-restories>
+                <confirm-close title="{{ 'modal.button.cancel'|trans|e('html_attr') }}" />
+                <confirm-restories title="{{ 'modal.button.restore'|trans|e('html_attr') }}" />
             </div>
         </div>
     </div>

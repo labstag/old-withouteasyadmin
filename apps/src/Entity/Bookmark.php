@@ -23,14 +23,19 @@ class Bookmark
     use SoftDeleteableEntity;
 
     /**
-     * @UploadableField(filename="img", path="post/img", slug="name")
+     * @UploadableField(filename="img", path="bookmark/img", slug="name")
      */
     protected $file;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $content;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $icon;
 
     /**
      * @ORM\Id
@@ -50,12 +55,12 @@ class Bookmark
     private $libelles;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $metaDescription;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $metaKeywords;
 
@@ -127,6 +132,11 @@ class Bookmark
     public function getFile()
     {
         return $this->file;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
     }
 
     public function getId(): ?string
@@ -204,7 +214,7 @@ class Bookmark
         return $this;
     }
 
-    public function setContent(string $content): self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 
@@ -218,6 +228,13 @@ class Bookmark
         return $this;
     }
 
+    public function setIcon(?string $icon): self
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
     public function setImg(?Attachment $img): self
     {
         $this->img = $img;
@@ -225,14 +242,14 @@ class Bookmark
         return $this;
     }
 
-    public function setMetaDescription(string $metaDescription): self
+    public function setMetaDescription(?string $metaDescription): self
     {
         $this->metaDescription = $metaDescription;
 
         return $this;
     }
 
-    public function setMetaKeywords(string $metaKeywords): self
+    public function setMetaKeywords(?string $metaKeywords): self
     {
         $this->metaKeywords = $metaKeywords;
 

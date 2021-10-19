@@ -83,13 +83,11 @@ class AdminBtnSingleton
         $code  = 'delete'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
-            'id'             => 'DeleteForm',
-            'is'             => 'link-btnadmindelete',
-            'data-token'     => $token,
-            'data-bs-toggle' => 'modal',
-            'data-bs-target' => '#delete-modal',
-            'data-redirect'  => $this->router->generate($route['list']),
-            'data-url'       => $this->router->generate(
+            'id'       => 'DeleteForm',
+            'is'       => 'link-btnadmindelete',
+            'token'    => $token,
+            'redirect' => $this->router->generate($route['list']),
+            'url'      => $this->router->generate(
                 $route['delete'],
                 $routeParam
             ),
@@ -130,12 +128,10 @@ class AdminBtnSingleton
         $code  = 'destroy'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
-            'data-bs-toggle' => 'modal',
-            'data-token'     => $token,
-            'data-bs-target' => '#destroy-modal',
-            'is'             => 'link-btnadmindestroy',
-            'data-redirect'  => $this->router->generate($route['list']),
-            'data-url'       => $this->router->generate(
+            'token'    => $token,
+            'is'       => 'link-btnadmindestroy',
+            'redirect' => $this->router->generate($route['list']),
+            'url'      => $this->router->generate(
                 $route['destroy'],
                 $routeParam
             ),
@@ -192,12 +188,10 @@ class AdminBtnSingleton
         $code  = 'empty';
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
-            'is'             => 'link-btnadminempty',
-            'data-bs-toggle' => 'modal',
-            'data-token'     => $token,
-            'data-bs-target' => '#empty-modal',
-            'data-redirect'  => $this->router->generate($route['list']),
-            'data-url'       => $this->router->generate(
+            'is'       => 'link-btnadminempty',
+            'token'    => $token,
+            'redirect' => $this->router->generate($route['list']),
+            'url'      => $this->router->generate(
                 $route['empty'],
                 ['entity' => $entity]
             ),
@@ -227,6 +221,23 @@ class AdminBtnSingleton
             $text,
             [
                 'href' => $this->router->generate($route, $routeParam),
+            ]
+        );
+
+        return $this;
+    }
+
+    public function addBtnImport(string $route, string $text = 'Import'): self
+    {
+        if ('' == $route || !$this->isRouteEnable($route)) {
+            return $this;
+        }
+
+        $this->add(
+            'btn-admin-header-import',
+            $text,
+            [
+                'href' => $this->router->generate($route),
             ]
         );
 
@@ -293,17 +304,15 @@ class AdminBtnSingleton
         $code  = 'restore'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
-            'data-bs-toggle' => 'modal',
-            'data-token'     => $token,
-            'data-bs-target' => '#restore-modal',
-            'is'             => 'link-btnadminrestore',
-            'data-redirect'  => $this->router->generate(
+            'token'    => $token,
+            'is'       => 'link-btnadminrestore',
+            'redirect' => $this->router->generate(
                 $route['list'],
                 [
                     'entity' => $this->classEntity($entity),
                 ]
             ),
-            'data-url'       => $this->router->generate(
+            'url'      => $this->router->generate(
                 $route['restore'],
                 $routeParam
             ),
@@ -324,8 +333,8 @@ class AdminBtnSingleton
             'btn-admin-header-save',
             $text,
             [
-                'id'        => 'SaveForm',
-                'data-form' => $form,
+                'id'   => 'SaveForm',
+                'form' => $form,
             ]
         );
 
@@ -389,12 +398,10 @@ class AdminBtnSingleton
             'btn-admin-header-restories',
             $title,
             [
-                'is'             => 'link-btnadminrestories',
-                'data-bs-toggle' => 'modal',
-                'data-token'     => $token,
-                'data-bs-target' => '#restories-modal',
-                'data-redirect'  => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
-                'data-url'       => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+                'is'       => 'link-btnadminrestories',
+                'token'    => $token,
+                'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
+                'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
             ]
         );
 
@@ -416,13 +423,15 @@ class AdminBtnSingleton
         $modal             = $globals['modal'] ?? [];
         $modal['deleties'] = true;
         $this->twig->addGlobal('modal', $modal);
-        $this->setBtnAdd(
+        $this->add(
             'btn-admin-header-deleties',
-            'link-btnadmindeleties',
-            'deleties-modal',
             $title,
-            $token,
-            $routes
+            [
+                'is'       => 'link-btnadmindeleties',
+                'token'    => $token,
+                'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
+                'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+            ]
         );
 
         return $this;
@@ -443,13 +452,15 @@ class AdminBtnSingleton
         $modal            = $globals['modal'] ?? [];
         $modal['empties'] = true;
         $this->twig->addGlobal('modal', $modal);
-        $this->setBtnAdd(
+        $this->add(
             'btn-admin-header-empties',
-            'link-btnadminempties',
-            'empties-modal',
             $title,
-            $token,
-            $routes
+            [
+                'is'       => 'link-btnadminempties',
+                'token'    => $token,
+                'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
+                'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+            ]
         );
 
         return $this;
@@ -537,28 +548,5 @@ class AdminBtnSingleton
         || !array_key_exists('href', $routes['url'])
         || !array_key_exists('params', $routes['url'])
         || !$this->isRouteEnable($routes['url']['href']);
-    }
-
-    private function setBtnAdd(
-        $name,
-        $isinput,
-        $target,
-        $title,
-        $token,
-        $routes
-    )
-    {
-        $this->add(
-            $name,
-            $title,
-            [
-                'is'             => $isinput,
-                'data-bs-toggle' => 'modal',
-                'data-bs-target' => '#'.$target,
-                'data-token'     => $token,
-                'data-redirect'  => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
-                'data-url'       => $this->router->generate($routes['url']['href'], $routes['url']['params']),
-            ]
-        );
     }
 }

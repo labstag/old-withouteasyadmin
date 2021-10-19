@@ -27,6 +27,13 @@ class DisclaimerType extends AbstractTypeLib
                     'Non' => '0',
                     'Oui' => '1',
                 ],
+                'attr'    => [
+                    'placeholder' => $this->translator->trans(
+                        'param.disclaimer.activate.placeholder',
+                        [],
+                        'admin.form'
+                    ),
+                ],
             ]
         );
         $builder->add(
@@ -36,6 +43,13 @@ class DisclaimerType extends AbstractTypeLib
                 'label'    => $this->translator->trans('param.disclaimer.title.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('param.disclaimer.title.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'param.disclaimer.title.placeholder',
+                        [],
+                        'admin.form'
+                    ),
+                ],
             ]
         );
         $builder->add(
@@ -54,6 +68,13 @@ class DisclaimerType extends AbstractTypeLib
                 'label'    => $this->translator->trans('param.disclaimer.url-redirect.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('param.disclaimer.url-redirect.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'param.disclaimer.url-redirect.placeholder',
+                        [],
+                        'admin.form'
+                    ),
+                ],
             ]
         );
         unset($options);

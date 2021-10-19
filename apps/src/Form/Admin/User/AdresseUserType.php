@@ -29,6 +29,9 @@ class AdresseUserType extends AdresseType
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('adresseuser.refuser.placeholder', [], 'admin.form'),
+                ],
             ]
         );
     }

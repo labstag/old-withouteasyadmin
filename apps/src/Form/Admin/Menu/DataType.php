@@ -22,6 +22,9 @@ class DataType extends AbstractTypeLib
                 'label'    => $this->translator->trans('menu.data.route.name.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('menu.data.route.name.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('menu.data.route.name.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -31,6 +34,9 @@ class DataType extends AbstractTypeLib
                 'label'    => $this->translator->trans('menu.data.route.param.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('menu.data.route.param.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('menu.data.route.param.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -40,6 +46,9 @@ class DataType extends AbstractTypeLib
                 'label'    => $this->translator->trans('menu.data.route.url.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('menu.data.route.url.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('menu.data.route.url.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -55,6 +64,9 @@ class DataType extends AbstractTypeLib
                     '_blank'  => '_blank',
                     '_parent' => '_parent',
                     '_top'    => '_top',
+                ],
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('menu.data.route.target.placeholder', [], 'admin.form'),
                 ],
             ]
         );

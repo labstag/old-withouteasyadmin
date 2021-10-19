@@ -31,7 +31,7 @@
         <div class="row">
             {% if headerTitle is defined %}
             <div class="col">
-                <h1>{{ headerTitle|trans }}</h1>
+                <h1>{{ headerTitle|trans }}{% if pagination is defined %} ({{ pagination.getTotalItemCount }}){% endif %}</h1>
             </div>
             {% endif %}
             <div class="col text-end">
@@ -40,6 +40,17 @@
         </div>
         {{ wo_render_breadcrumbs() }}
         {{ macro_site.flashbag(app) }}
+        {% if searchform is defined %}
+            {{ form_start(searchform) }}
+            <div class="row">
+            {% for input in searchform %}
+                <div class="col">
+                    {{ form_row(input) }}
+                </div>
+            {% endfor %}
+            </div>
+            {{ form_end(searchform) }}
+        {% endif %}
         {% block body %}
         {% endblock %}
         <footer>

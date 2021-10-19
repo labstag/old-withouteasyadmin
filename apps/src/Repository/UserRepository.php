@@ -2,6 +2,7 @@
 
 namespace Labstag\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\User;
@@ -50,5 +51,44 @@ class UserRepository extends ServiceEntityRepositoryLib
         );
 
         return $query->getQuery()->getResult();
+    }
+
+    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
+    {
+        $this->setQueryEtape($query, $get);
+        $this->setQueryUsername($query, $get);
+        $this->setQueryEmail($query, $get);
+
+        return $query;
+    }
+
+    protected function setQueryEmail(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['email']) || empty($get['email'])) {
+            return;
+        }
+
+        $query->andWhere('a.email = :email');
+        $query->setParameter('email', $get['email']);
+    }
+
+    protected function setQueryEtape(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['etape']) || empty($get['etape'])) {
+            return;
+        }
+
+        $query->andWhere('a.state LIKE :state');
+        $query->setParameter('state', '%'.$get['etape'].'%');
+    }
+
+    protected function setQueryUsername(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['username']) || empty($get['username'])) {
+            return;
+        }
+
+        $query->andWhere('a.username LIKE :username');
+        $query->setParameter('username', '%'.$get['username'].'%');
     }
 }

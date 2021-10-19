@@ -19,10 +19,10 @@
                 <th>
                     {% if 'superadmin' != group.code %}
                         <guard-changeroute
-                            data-state=0
-                            data-url="{{ path('api_guard_routegroup', {'group' : group.id}) }}"
-                            data-token="{{ csrf_token('guard') }}"
-                        ></guard-changeroute>
+                            state=0
+                            url="{{ path('api_guard_routegroup', {'group' : group.id}) }}"
+                            token="{{ csrf_token('guard') }}"
+                        />
                     {% else %}
                         ----
                     {% endif %}
@@ -39,12 +39,12 @@
                     {% if 'superadmin' != group.code %}
                         <guard-setroute
                             title="{{ group.name|e('html_attr') }}"
-                            data-state=0
-                            data-groupe="{{ group.code|e('html_attr') }}"
-                            data-route="{{ route.name|e('html_attr') }}"
-                            data-url="{{ path('api_guard_routesetgroup', {'group' : group.id, 'route': route.id}) }}"
-                            data-token="{{ csrf_token('guard') }}"
-                        ></guard-setroute>
+                            state=0
+                            groupe="{{ group.code|e('html_attr') }}"
+                            route="{{ route.name|e('html_attr') }}"
+                            url="{{ path('api_guard_routesetgroup', {'group' : group.id, 'route': route.id}) }}"
+                            token="{{ csrf_token('guard') }}"
+                        />
                     {% else %}
                         ---
                     {% endif %}

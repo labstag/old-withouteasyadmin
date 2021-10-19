@@ -60,12 +60,12 @@ class Edito
     protected $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $metaDescription;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $metaKeywords;
 
@@ -145,14 +145,14 @@ class Edito
         return $this;
     }
 
-    public function setMetaDescription(string $metaDescription): self
+    public function setMetaDescription(?string $metaDescription): self
     {
         $this->metaDescription = $metaDescription;
 
         return $this;
     }
 
-    public function setMetaKeywords(string $metaKeywords): self
+    public function setMetaKeywords(?string $metaKeywords): self
     {
         $this->metaKeywords = $metaKeywords;
 

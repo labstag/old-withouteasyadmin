@@ -5,12 +5,12 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\PostType;
+use Labstag\Form\Admin\Search\PostType as SearchPostType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\PostRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
+use Labstag\Search\PostSearch;
+use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,29 +21,21 @@ class PostController extends AdminControllerLib
 {
     /**
      * @Route("/{id}/edit", name="admin_post_edit", methods={"GET","POST"})
+     * @Route("/new", name="admin_post_new", methods={"GET","POST"})
      */
     public function edit(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        Post $post,
+        AttachFormService $service,
+        ?Post $post,
         PostRequestHandler $requestHandler
     ): Response
     {
         $this->modalAttachmentDelete();
 
-        return $this->update(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
             PostType::class,
-            $post,
-            [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_post_index',
-                'show'   => 'admin_post_show',
-            ],
+            !is_null($post) ? $post : new Post(),
             'admin/post/form.html.twig'
         );
     }
@@ -57,49 +49,7 @@ class PostController extends AdminControllerLib
     {
         return $this->listOrTrash(
             $repository,
-            [
-                'trash' => 'findTrashForAdmin',
-                'all'   => 'findAllForAdmin',
-            ],
             'admin/post/index.html.twig',
-            [
-                'new'   => 'admin_post_new',
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_post_trash',
-                'list'  => 'admin_post_index',
-            ],
-            [
-                'list'     => 'admin_post_index',
-                'show'     => 'admin_post_show',
-                'preview'  => 'admin_post_preview',
-                'edit'     => 'admin_post_edit',
-                'delete'   => 'api_action_delete',
-                'destroy'  => 'api_action_destroy',
-                'restore'  => 'api_action_restore',
-                'workflow' => 'api_action_workflow',
-            ]
-        );
-    }
-
-    /**
-     * @Route("/new", name="admin_post_new", methods={"GET","POST"})
-     */
-    public function new(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        PostRequestHandler $requestHandler
-    ): Response
-    {
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
-            $requestHandler,
-            new Post(),
-            PostType::class,
-            ['list' => 'admin_post_index'],
-            'admin/post/form.html.twig'
         );
     }
 
@@ -114,16 +64,33 @@ class PostController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $post,
-            'admin/post/show.html.twig',
-            [
-                'delete'  => 'api_action_delete',
-                'restore' => 'api_action_restore',
-                'destroy' => 'api_action_destroy',
-                'edit'    => 'admin_post_edit',
-                'list'    => 'admin_post_index',
-                'trash'   => 'admin_post_trash',
-            ]
+            'admin/post/show.html.twig'
         );
+    }
+
+    protected function getUrlAdmin(): array
+    {
+        return [
+            'delete'   => 'api_action_delete',
+            'destroy'  => 'api_action_destroy',
+            'edit'     => 'admin_post_edit',
+            'empty'    => 'api_action_empty',
+            'list'     => 'admin_post_index',
+            'new'      => 'admin_post_new',
+            'preview'  => 'admin_post_preview',
+            'restore'  => 'api_action_restore',
+            'show'     => 'admin_post_show',
+            'trash'    => 'admin_post_trash',
+            'workflow' => 'api_action_workflow',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchPostType::class,
+            'data' => new PostSearch(),
+        ];
     }
 
     protected function setBreadcrumbsPageAdminPost(): array

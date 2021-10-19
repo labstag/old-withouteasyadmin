@@ -1,55 +1,41 @@
-{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/geocode/layout.html.twig' %}
 {% block body %}
-    <table
-        is="table-datatable"
-        data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-multiple
-        data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-count={{ pagination|length }}
-    >
-        <thead>
+    {% embed "admin/table.html.twig" %}
+        {% import "admin/macro.html.twig" as macro_admin %}
+        {% block thead %}
             <tr>
                 <th>{{ 'geocode.countrycode'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'geocode.postalcode'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'geocode.placename'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'geocode.statename'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'geocode.statecode'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'geocode.provincename'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'geocode.provincecode'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'geocode.communityname'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'geocode.communitycode'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'geocode.latitude'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'geocode.longitude'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'geocode.accuracy'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'geocode.actions'|trans({}, 'admin.messages') }}</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for entity in pagination %}
-            <tr data-id="{{ entity.id }}">
-                <td>
-                    <span class="flag-icon flag-icon-{{ entity.countryCode|lower }}"></span>
-                    {{ entity.countryCode|country_name('fr') }}
-                </td>
-                <td>{{ entity.postalCode }}</td>
-                <td>{{ entity.placeName }}</td>
-                <td>{{ entity.stateName }}</td>
-                <td>{{ entity.stateCode }}</td>
-                <td>{{ entity.provinceName }}</td>
-                <td>{{ entity.provinceCode }}</td>
-                <td>{{ entity.communityName }}</td>
-                <td>{{ entity.communityCode }}</td>
-                <td>{{ entity.latitude }}</td>
-                <td>{{ entity.longitude }}</td>
-                <td>{{ entity.accuracy }}</td>
-                <td>
-                    {{ macro_admin.actions(entity, actions) }}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        {% endblock %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>
+                        <span class="flag-icon flag-icon-{{ entity.countryCode|lower }}"></span>
+                        {{ entity.countryCode|country_name('fr') }}
+                    </td>
+                    <td>{{ entity.postalCode }}</td>
+                    <td>{{ entity.placeName }}</td>
+                    <td>{{ entity.stateName }}</td>
+                    <td>{{ entity.provinceName }}</td>
+                    <td>{{ entity.communityName }}</td>
+                    <td>{{ entity.latitude }}</td>
+                    <td>{{ entity.longitude }}</td>
+                    <td>{{ entity.accuracy }}</td>
+                    <td>
+                        {{ macro_admin.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

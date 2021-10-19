@@ -1,3 +1,6 @@
+import { SelectAll } from './select/SelectAll'
+import { SelectElement } from './select/SelectElement'
+
 export class TableDatatable extends HTMLTableElement {
   constructor () {
     super()
@@ -16,7 +19,7 @@ export class TableDatatable extends HTMLTableElement {
       thLast.append(iElement)
       thLast.classList.add('thactions')
       const tr = tbody.getElementsByTagName('tr')
-      tr.forEach(
+      Array.from(tr).forEach(
         element => {
           const tds = element.getElementsByTagName('td')
           const tdLast = tds[tds.length - 1]
@@ -37,23 +40,23 @@ export class TableDatatable extends HTMLTableElement {
     }
     if (multiple !== undefined && datalength !== '0') {
       const thElement = document.createElement('th')
-      const selectAllElement = document.createElement('select-all')
+      const selectAllElement = new SelectAll()
       if (multipleall !== undefined) {
         selectAllElement.setAttribute('title', multipleall)
       }
       thElement.append(selectAllElement)
       thLast.closest('tr').prepend(thElement)
-      tr.forEach(
+      Array.from(tr).forEach(
         (element) => {
           if (element.dataset.id === undefined) {
             return
           }
           const tdElement = document.createElement('td')
-          const selectElementElement = document.createElement('select-element')
+          const selectElementElement = new SelectElement()
           if (multipleelement !== undefined) {
-            selectElementElement.dataset.title = multipleelement
+            selectElementElement.setAttribute('title', multipleelement)
           }
-          selectElementElement.dataset.id = element.dataset.id
+          selectElementElement.setAttribute('id', element.dataset.id)
           tdElement.append(selectElementElement)
           element.prepend(tdElement)
         }

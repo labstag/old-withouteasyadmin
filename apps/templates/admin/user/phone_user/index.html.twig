@@ -1,16 +1,8 @@
-{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/user/phone_user/layout.html.twig' %}
 {% block body %}
-    <table
-        is="table-datatable"
-        data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-multiple
-        data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-count={{ pagination|length }}
-    >
-        <thead>
+    {% embed "admin/table.html.twig" %}
+        {% import "admin/macro.html.twig" as macro_admin %}
+        {% block thead %}
             <tr>
                 <th>{{ 'user.phone.numero'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'user.phone.country'|trans({}, 'admin.messages') }}</th>
@@ -21,34 +13,34 @@
                 <th>{{ 'user.phone.workflow'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
-        </thead>
-        <tbody>
-        {% for entity in pagination %}
-            <tr data-id="{{ entity.id }}">
-                <td>{{ entity.numero }}</td>
-                <td>
-                    <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
-                    {{ entity.country|country_name('fr') }}
-                </td>
-                <td>
-                    {% set check = verifPhone(entity.country, entity.numero)  ? 'ok' : 'ko' %}
-                    <span class="check-{{ check }}"></span>
-                </td>
-                <td>{{ entity.type }}</td>
-                <td>{{ entity.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
-                <td>
-                    {% for state in workflow_marked_places(entity) %}
-                        {{ state }}
-                    {% endfor %}
-                </td>
-                <td>
-                    {{ macro_admin.workflow(entity, actions) }}
-                </td>
-                <td>
-                    {{ macro_admin.actions(entity, actions) }}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        {% endblock %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.numero }}</td>
+                    <td>
+                        <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
+                        {{ entity.country|country_name('fr') }}
+                    </td>
+                    <td>
+                        {% set check = verifPhone(entity.country, entity.numero)  ? 'ok' : 'ko' %}
+                        <span class="check-{{ check }}"></span>
+                    </td>
+                    <td>{{ entity.type }}</td>
+                    <td>{{ entity.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
+                    <td>
+                        {% for state in workflow_marked_places(entity) %}
+                            {{ state }}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {{ macro_admin.workflow(entity, actions) }}
+                    </td>
+                    <td>
+                        {{ macro_admin.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

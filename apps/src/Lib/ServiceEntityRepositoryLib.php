@@ -3,23 +3,15 @@
 namespace Labstag\Lib;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 
 abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 {
-    public function findAllForAdmin(): Query
+    public function findAllForAdmin(array $get): QueryBuilder
     {
-        $methods = get_class_methods($this);
-        $name    = '';
+        $queryBuilder = $this->createQueryBuilder('a');
 
-        if (in_array('getClassMetadata', $methods)) {
-            $name = $this->getClassMetadata()->getName();
-        }
-
-        $dql           = 'SELECT a FROM '.$name.' a';
-        $entityManager = $this->getEntityManager();
-
-        return $entityManager->createQuery($dql);
+        return $this->setQuery($queryBuilder, $get);
     }
 
     /**
@@ -38,22 +30,15 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findTrashForAdmin(): array
+    public function findTrashForAdmin(array $get): QueryBuilder
     {
-        $methods = get_class_methods($this);
-        $name    = '';
+        $queryBuilder = $this->createQueryBuilder('a');
 
-        if (in_array('getClassMetadata', $methods)) {
-            $name = $this->getClassMetadata()->getName();
-        }
+        $query = $queryBuilder->where(
+            'a.deletedAt IS NOT NULL'
+        );
 
-        $entityManager = $this->getEntityManager();
-        $dql           = $entityManager->createQueryBuilder();
-        $dql->select('a');
-        $dql->from($name, 'a');
-        $dql->where('a.deletedAt IS NOT NULL');
-
-        return $dql->getQuery()->getResult();
+        return $this->setQuery($query, $get);
     }
 
     protected function getClassMetadataName(): string
@@ -65,5 +50,12 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         }
 
         return $name;
+    }
+
+    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
+    {
+        unset($get);
+
+        return $query;
     }
 }

@@ -8,7 +8,7 @@ export class ElementHTML extends HTMLElement {
   }
 
   mutationObserver (mutations) {
-    mutations.forEach(mutation => { this.forEachMutationObserver(mutation) })
+    Array.from(mutations).forEach(mutation => { this.forEachMutationObserver(mutation) })
   }
 
   async fetchRedirect (url, options, redirect) {

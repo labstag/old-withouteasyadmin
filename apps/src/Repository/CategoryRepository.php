@@ -2,6 +2,7 @@
 
 namespace Labstag\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Category;
@@ -17,69 +18,78 @@ class CategoryRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, Category::class);
     }
 
-    public function findAllParentForAdmin()
+    public function findAllParentForAdmin(array $get): QueryBuilder
     {
-        $methods = get_class_methods($this);
-        $name    = '';
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->where('a.parent IS NULL');
 
-        if (in_array('getClassMetadata', $methods)) {
-            $name = $this->getClassMetadata()->getName();
-        }
-
-        $dql           = 'SELECT a FROM '.$name.' a WHERE a.parent IS NULL';
-        $entityManager = $this->getEntityManager();
-
-        return $entityManager->createQuery($dql);
+        return $this->setQuery($query, $get);
     }
 
     public function findByBookmark()
     {
-        $entityManager = $this->getEntityManager();
-        $dql           = $entityManager->createQueryBuilder();
-        $dql->select('a');
-        $dql->from(Category::class, 'a');
-        $dql->leftJoin('a.bookmarks', 'b');
-        $dql->innerjoin('b.refuser', 'u');
-        $dql->where('b.state LIKE :state');
-        $dql->setParameters(
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->leftJoin('a.bookmarks', 'b');
+        $query->innerjoin('b.refuser', 'u');
+        $query->where('b.state LIKE :state');
+        $query->setParameters(
             ['state' => '%publie%']
         );
 
-        return $dql->getQuery()->getResult();
+        return $query->getQuery()->getResult();
     }
 
     public function findByPost()
     {
-        $entityManager = $this->getEntityManager();
-        $dql           = $entityManager->createQueryBuilder();
-        $dql->select('a');
-        $dql->from(Category::class, 'a');
-        $dql->leftJoin('a.posts', 'p');
-        $dql->innerjoin('p.refuser', 'u');
-        $dql->where('p.state LIKE :state');
-        $dql->setParameters(
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->leftJoin('a.posts', 'p');
+        $query->innerjoin('p.refuser', 'u');
+        $query->where('p.state LIKE :state');
+        $query->setParameters(
             ['state' => '%publie%']
         );
 
-        return $dql->getQuery()->getResult();
+        return $query->getQuery()->getResult();
     }
 
-    public function findTrashParentForAdmin(): array
+    public function findName(string $field)
     {
-        $methods = get_class_methods($this);
-        $name    = '';
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where(
+            'u.name LIKE :name'
+        );
+        $query->setParameters(
+            [
+                'name' => '%'.$field.'%',
+            ]
+        );
 
-        if (in_array('getClassMetadata', $methods)) {
-            $name = $this->getClassMetadata()->getName();
+        return $query->getQuery()->getResult();
+    }
+
+    public function findTrashParentForAdmin(array $get): QueryBuilder
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->where('a.deletedAt IS NOT NULL');
+        $query->andwhere('a.parent IS NULL');
+
+        return $this->setQuery($query, $get);
+    }
+
+    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
+    {
+        $this->setQueryName($query, $get);
+
+        return $query;
+    }
+
+    protected function setQueryName(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['name']) || empty($get['name'])) {
+            return;
         }
 
-        $entityManager = $this->getEntityManager();
-        $dql           = $entityManager->createQueryBuilder();
-        $dql->select('a');
-        $dql->from($name, 'a');
-        $dql->where('a.deletedAt IS NOT NULL');
-        $dql->andwhere('a.parent IS NULL');
-
-        return $dql->getQuery()->getResult();
+        $query->andWhere('a.name LIKE :name');
+        $query->setParameter('name', '%'.$get['name'].'%');
     }
 }

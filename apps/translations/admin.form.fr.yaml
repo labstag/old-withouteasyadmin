@@ -1,95 +1,134 @@
 adresse.country.help: ''
 adresse.country.label: Pays
+adresse.country.placeholder: ''
 adresse.gps.help: ''
 adresse.gps.label: 'Position GPS'
+adresse.gps.placeholder: ''
 adresse.pmr.help: ''
 adresse.pmr.label: 'Accès PMR ?'
 adresse.rue.help: ''
 adresse.rue.label: Rue
+adresse.rue.placeholder: ''
 adresse.type.help: ''
 adresse.type.label: Type
+adresse.type.placeholder: ''
 adresse.ville.help: ''
 adresse.ville.label: Ville
+adresse.ville.placeholder: ''
 adresse.zipcode.help: ''
 adresse.zipcode.label: 'Code postal'
+adresse.zipcode.placeholder: ''
 adresseuser.refuser.help: ''
 adresseuser.refuser.label: Utilisateur
+adresseuser.refuser.placeholder: ''
 bookmark.content.help: ''
 bookmark.content.label: Contenu
 bookmark.file.help: ''
 bookmark.file.label: Fichier
+bookmark.import.help: ''
+bookmark.import.label: ''
 bookmark.libelles.help: ''
 bookmark.libelles.label: Libélles
+bookmark.libelles.placeholder: ''
 bookmark.metaDescription.help: ''
-bookmark.metaDescription.label: meta Description
+bookmark.metaDescription.label: 'meta Description'
 bookmark.metaKeywords.help: ''
-bookmark.metaKeywords.label: meta Keywords
+bookmark.metaKeywords.label: 'meta Keywords'
 bookmark.name.help: ''
 bookmark.name.label: Nom
+bookmark.name.placeholder: ''
 bookmark.refcategory.help: ''
 bookmark.refcategory.label: Catégorie
+bookmark.refcategory.placeholder: ''
 bookmark.refuser.help: ''
 bookmark.refuser.label: Utilisateur
+bookmark.refuser.placeholder: ''
 bookmark.slug.help: ''
 bookmark.slug.label: Slug
+bookmark.slug.placeholder: ''
 bookmark.url.help: ''
 bookmark.url.label: Url
+bookmark.url.placeholder: ''
 category.name.help: ''
 category.name.label: Nom
+category.name.placeholder: ''
 category.parent.help: ''
 category.parent.label: Parent
+category.parent.placeholder: ''
 category.slug.help: ''
 category.slug.label: Slug
+category.slug.placeholder: ''
 edito.content.help: ''
 edito.content.label: Contenu
 edito.file.help: ''
 edito.file.label: Image
 edito.metaDescription.help: ''
 edito.metaDescription.label: 'SEO description'
+edito.metaDescription.placeholder: ''
 edito.metaKeywords.help: ''
 edito.metaKeywords.label: 'SEO mot clef'
+edito.metaKeywords.placeholder: ''
 edito.published.help: ''
 edito.published.label: 'Date de publication'
 edito.refuser.help: ''
 edito.refuser.label: Utilisateur
+edito.refuser.placeholder: ''
 edito.title.help: ''
 edito.title.label: Titre
+edito.title.placeholder: ''
 email.adresse.help: ''
 email.adresse.label: 'Adresse courriel'
+email.adresse.placeholder: ''
 emailuser.principal.help: ''
 emailuser.principal.label: 'Principal ?'
 emailuser.refuser.help: ''
 emailuser.refuser.label: Utilisateur
+emailuser.refuser.placeholder: ''
 geocode.countryCode.help: ''
 geocode.countryCode.label: Pays
+geocode.countryCode.placeholder: ''
 groupe.code.help: ''
 groupe.code.label: Code
+groupe.code.placeholder: ''
 groupe.name.help: ''
 groupe.name.label: Nom
+groupe.name.placeholder: ''
 libelle.name.help: ''
 libelle.name.label: Nom
+libelle.name.placeholder: ''
 libelle.slug.help: ''
 libelle.slug.label: Slug
+libelle.slug.placeholder: ''
 lien.adresse.help: ''
 lien.adresse.label: 'Adresse URL'
+lien.adresse.placeholder: ''
 lien.name.help: ''
 lien.name.label: Nom
+lien.name.placeholder: ''
 lienuser.refuser.help: ''
 lienuser.refuser.label: Utilisateur
+lienuser.refuser.placeholder: ''
 menu.data.route.name.help: ''
 menu.data.route.name.label: Nom
+menu.data.route.name.placeholder: ''
 menu.data.route.param.help: ''
 menu.data.route.param.label: Paramètres
+menu.data.route.param.placeholder: ''
 menu.data.route.target.help: ''
 menu.data.route.target.label: Target
+menu.data.route.target.placeholder: ''
 menu.data.route.url.help: ''
 menu.data.route.url.label: Url
+menu.data.route.url.placeholder: ''
 menu.link.icon.help: ''
 menu.link.icon.label: Icon
+menu.link.icon.placeholder: ''
 menu.link.libelle.help: ''
 menu.link.libelle.label: Libellé
+menu.link.libelle.placeholder: ''
 menu.principal.clef.help: ''
 menu.principal.clef.label: Clef
+menu.principal.clef.placeholder: ''
 noteinterne.content.help: ''
 noteinterne.content.label: Contenu
 noteinterne.date_debut.help: ''
@@ -100,132 +139,190 @@ noteinterne.file.help: ''
 noteinterne.file.label: Image
 noteinterne.refuser.help: ''
 noteinterne.refuser.label: Utilisateur
+noteinterne.refuser.placeholder: ''
 noteinterne.title.help: ''
 noteinterne.title.label: Titre
+noteinterne.title.placeholder: ''
 param.disclaimer.activate.help: ''
 param.disclaimer.activate.label: 'Activer ?'
+param.disclaimer.activate.placeholder: ''
 param.disclaimer.message.help: ''
 param.disclaimer.message.label: Mesage
 param.disclaimer.title.help: ''
 param.disclaimer.title.label: Titre
+param.disclaimer.title.placeholder: ''
 param.disclaimer.url-redirect.help: ''
 param.disclaimer.url-redirect.label: 'Url de redirection'
+param.disclaimer.url-redirect.placeholder: ''
 param.favicon.help: ''
 param.favicon.label: Favicon
 param.formatdate.admin.help: ''
 param.formatdate.admin.label: Backend
+param.formatdate.admin.placeholder: ''
 param.formatdate.public.help: ''
 param.formatdate.public.label: Front
+param.formatdate.public.placeholder: ''
 param.generator.help: ''
 param.generator.label: 'Site générateur'
+param.generator.placeholder: ''
 param.geocode.accuracy.help: ''
 param.geocode.accuracy.label: Accuracy
+param.geocode.accuracy.placeholder: ''
 param.geocode.communityCode.help: ''
 param.geocode.communityCode.label: 'Code communauté'
+param.geocode.communityCode.placeholder: ''
 param.geocode.communityName.help: ''
 param.geocode.communityName.label: Communauté
+param.geocode.communityName.placeholder: ''
 param.geocode.latitude.help: ''
 param.geocode.latitude.label: Latitude
+param.geocode.latitude.placeholder: ''
 param.geocode.longitude.help: ''
 param.geocode.longitude.label: Longitude
+param.geocode.longitude.placeholder: ''
 param.geocode.placeName.help: ''
 param.geocode.placeName.label: Nom
+param.geocode.placeName.placeholder: ''
 param.geocode.postalCode.help: ''
 param.geocode.postalCode.label: 'Code postal'
+param.geocode.postalCode.placeholder: ''
 param.geocode.provinceCode.help: ''
 param.geocode.provinceCode.label: 'Code prinvince'
+param.geocode.provinceCode.placeholder: ''
 param.geocode.provinceName.help: ''
 param.geocode.provinceName.label: Province
+param.geocode.provinceName.placeholder: ''
 param.geocode.stateCode.help: ''
 param.geocode.stateCode.label: 'Code Etat'
+param.geocode.stateCode.placeholder: ''
 param.geocode.stateName.help: ''
 param.geocode.stateName.label: Etat
+param.geocode.stateName.placeholder: ''
 param.image.help: ''
 param.image.label: Image
 param.language.help: ''
 param.language.label: Langues
+param.language.placeholder: ''
 param.languagedefault.help: ''
 param.languagedefault.label: 'Langue par défaut'
+param.languagedefault.placeholder: ''
 param.metasite.description.help: ''
 param.metasite.description.label: 'SEO description'
+param.metasite.description.placeholder: ''
 param.metasite.keywords.help: ''
 param.metasite.keywords.label: 'SEO mot clef'
+param.metasite.keywords.placeholder: ''
 param.metasite.theme-color.help: ''
 param.metasite.theme-color.label: 'Thème couleur'
 param.metasite.viewport.help: ''
 param.metasite.viewport.label: Viewport
+param.metasite.viewport.placeholder: ''
 param.notification.mail.help: ''
 param.notification.mail.label: Courriel
+param.notification.mail.placeholder: ''
 param.notification.notify.help: ''
 param.notification.notify.label: Notification
+param.notification.notify.placeholder: ''
 param.notification.type.help: ''
 param.notification.type.label: Type
+param.notification.type.placeholder: ''
 param.oauth.activate.help: ''
 param.oauth.activate.label: 'Activé ?'
+param.oauth.activate.placeholder: ''
 param.oauth.id.help: ''
 param.oauth.id.label: Id
+param.oauth.id.placeholder: ''
 param.oauth.secret.help: ''
 param.oauth.secret.label: Secret
+param.oauth.secret.placeholder: ''
 param.oauth.type.help: ''
 param.oauth.type.label: Type
+param.oauth.type.placeholder: ''
 param.robotstxt.help: ''
 param.robotstxt.label: Robotstxt
+param.robotstxt.placeholder: ''
 param.site_copyright.help: ''
 param.site_copyright.label: Copyright
+param.site_copyright.placeholder: ''
 param.site_no-reply.help: ''
 param.site_no-reply.label: 'Courriel d''envoie'
+param.site_no-reply.placeholder: ''
 param.site_url.help: ''
 param.site_url.label: 'Url du site'
+param.site_url.placeholder: ''
 param.tarteaucitron.AcceptAllCta.help: ''
 param.tarteaucitron.AcceptAllCta.label: AcceptAllCta
+param.tarteaucitron.AcceptAllCta.placeholder: ''
 param.tarteaucitron.adblocker.help: ''
 param.tarteaucitron.adblocker.label: Adblocker
+param.tarteaucitron.adblocker.placeholder: ''
 param.tarteaucitron.closePopup.help: ''
 param.tarteaucitron.closePopup.label: ClosePopup
+param.tarteaucitron.closePopup.placeholder: ''
 param.tarteaucitron.cookieName.help: ''
 param.tarteaucitron.cookieName.label: CookieName
+param.tarteaucitron.cookieName.placeholder: ''
 param.tarteaucitron.cookieslist.help: ''
 param.tarteaucitron.cookieslist.label: Cookieslist
+param.tarteaucitron.cookieslist.placeholder: ''
 param.tarteaucitron.DenyAllCta.help: ''
 param.tarteaucitron.DenyAllCta.label: DenyAllCta
+param.tarteaucitron.DenyAllCta.placeholder: ''
 param.tarteaucitron.groupServices.help: ''
 param.tarteaucitron.groupServices.label: GroupServices
+param.tarteaucitron.groupServices.placeholder: ''
 param.tarteaucitron.handleBrowserDNTRequest.help: ''
 param.tarteaucitron.handleBrowserDNTRequest.label: HandleBrowserDNTRequest
+param.tarteaucitron.handleBrowserDNTRequest.placeholder: ''
 param.tarteaucitron.hashtag.help: ''
 param.tarteaucitron.hashtag.label: Hashtag
+param.tarteaucitron.hashtag.placeholder: ''
 param.tarteaucitron.highPrivacy.help: ''
 param.tarteaucitron.highPrivacy.label: HighPrivacy
+param.tarteaucitron.highPrivacy.placeholder: ''
 param.tarteaucitron.iconPosition.help: ''
 param.tarteaucitron.iconPosition.label: IconPosition
+param.tarteaucitron.iconPosition.placeholder: ''
 param.tarteaucitron.job.help: ''
 param.tarteaucitron.job.label: Jobs
 param.tarteaucitron.mandatory.help: ''
 param.tarteaucitron.mandatory.label: Mandatory
+param.tarteaucitron.mandatory.placeholder: ''
 param.tarteaucitron.moreInfoLink.help: ''
 param.tarteaucitron.moreInfoLink.label: MoreInfoLink
+param.tarteaucitron.moreInfoLink.placeholder: ''
 param.tarteaucitron.orientation.help: ''
 param.tarteaucitron.orientation.label: Orientation
+param.tarteaucitron.orientation.placeholder: ''
 param.tarteaucitron.privacyUrl.help: ''
 param.tarteaucitron.privacyUrl.label: PrivacyUrl
+param.tarteaucitron.privacyUrl.placeholder: ''
 param.tarteaucitron.readmoreLink.help: ''
 param.tarteaucitron.readmoreLink.label: readmoreLink
+param.tarteaucitron.readmoreLink.placeholder: ''
 param.tarteaucitron.removeCredit.help: ''
 param.tarteaucitron.removeCredit.label: RemoveCredit
+param.tarteaucitron.removeCredit.placeholder: ''
 param.tarteaucitron.showAlertSmall.help: ''
 param.tarteaucitron.showAlertSmall.label: ShowAlertSmall
+param.tarteaucitron.showAlertSmall.placeholder: ''
 param.tarteaucitron.showIcon.help: ''
 param.tarteaucitron.showIcon.label: ShowIcon
+param.tarteaucitron.showIcon.placeholder: ''
 param.title_format.help: ''
 param.title_format.label: 'Format du titre du site'
+param.title_format.placeholder: ''
 phone.country.help: ''
 phone.country.label: Pays
+phone.country.placeholder: ''
 phone.numero.help: ''
 phone.numero.label: 'Numéro de téléphone'
+phone.numero.placeholder: ''
 phoneuser.principal.help: ''
 phoneuser.principal.label: 'Principal ?'
 phoneuser.refuser.help: ''
 phoneuser.refuser.label: Utilisateur
+phoneuser.refuser.placeholder: ''
 post.commentaire.help: ''
 post.commentaire.label: 'Commentaire ?'
 post.content.help: ''
@@ -234,6 +331,7 @@ post.file.help: ''
 post.file.label: Image
 post.libelles.help: ''
 post.libelles.label: Libellés
+post.libelles.placeholder: ''
 post.metaDescription.help: ''
 post.metaDescription.label: 'SEO description'
 post.metaKeywords.help: ''
@@ -242,14 +340,19 @@ post.published.help: ''
 post.published.label: 'Date de publication'
 post.refcategory.help: ''
 post.refcategory.label: Catégorie
+post.refcategory.placeholder: ''
 post.refuser.help: ''
 post.refuser.label: Utilisateur
+post.refuser.placeholder: ''
 post.slug.help: ''
 post.slug.label: Slug
+post.slug.placeholder: ''
 post.title.help: ''
 post.title.label: Titre
+post.title.placeholder: ''
 profil.email.help: ''
 profil.email.label: Courriel
+profil.email.placeholder: ''
 profil.file.help: ''
 profil.password.help: ''
 profil.password.label: 'Mot de passe'
@@ -258,22 +361,28 @@ profil.repeatpassword.help: ''
 profil.repeatpassword.label: 'Répéter le mot de passe'
 profil.username.help: ''
 profil.username.label: Pseudo
+profil.username.placeholder: ''
 template.code.help: ''
 template.code.label: Code
+template.code.placeholder: ''
 template.html.help: ''
 template.html.label: Html
 template.name.help: ''
 template.name.label: Nom
+template.name.placeholder: ''
 template.text.help: ''
 template.text.label: Texte
 user.email.help: ''
 user.email.label: Courriel
+user.email.placeholder: ''
 user.file.help: ''
 user.password.help: ''
 user.password.label: 'Mot de passe'
 user.refgroupe.help: ''
 user.refgroupe.label: Groupe
+user.refgroupe.placeholder: ''
 user.repeatpassword.help: ''
 user.repeatpassword.label: 'Répéter le mot de passe'
 user.username.help: ''
 user.username.label: Pseudo
+user.username.placeholder: ''

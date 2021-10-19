@@ -26,23 +26,7 @@ class PostType extends AbstractTypeLib
         array $options
     ): void
     {
-        $builder->add(
-            'title',
-            TextType::class,
-            [
-                'label' => $this->translator->trans('post.title.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('post.title.help', [], 'admin.form'),
-            ]
-        );
-        $builder->add(
-            'slug',
-            TextType::class,
-            [
-                'label'    => $this->translator->trans('post.slug.label', [], 'admin.form'),
-                'help'     => $this->translator->trans('post.slug.help', [], 'admin.form'),
-                'required' => false,
-            ]
-        );
+        $this->setTextType($builder);
         $builder->add(
             'published',
             DateTimeType::class,
@@ -82,6 +66,9 @@ class PostType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('post.refuser.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -93,6 +80,9 @@ class PostType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => Category::class,
                 'route'    => 'api_search_category',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('post.refcategory.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -113,6 +103,9 @@ class PostType extends AbstractTypeLib
                 'new'   => new Libelle(),
                 'add'   => true,
                 'route' => 'api_search_postlibelle',
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('post.libelles.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         unset($options);
@@ -141,7 +134,38 @@ class PostType extends AbstractTypeLib
         ];
 
         foreach ($meta as $key => $values) {
-            $builder->add($key, TextType::class, $values);
+            $builder->add(
+                $key,
+                TextType::class,
+                array_merge(
+                    $values,
+                    ['required' => false]
+                )
+            );
+        }
+    }
+
+    protected function setTextType($builder)
+    {
+        $texttype = [
+            'title' => [
+                'label' => $this->translator->trans('post.title.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('post.title.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('post.title.placeholder', [], 'admin.form'),
+                ],
+            ],
+            'slug'  => [
+                'label'    => $this->translator->trans('post.slug.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('post.slug.help', [], 'admin.form'),
+                'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('post.slug.placeholder', [], 'admin.form'),
+                ],
+            ],
+        ];
+        foreach ($texttype as $key => $args) {
+            $builder->add($key, TextType::class, $args);
         }
     }
 }

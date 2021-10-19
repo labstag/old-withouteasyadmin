@@ -5,12 +5,12 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Category;
 use Labstag\Form\Admin\CategoryType;
+use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\CategoryRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\CategoryRequestHandler;
+use Labstag\Search\CategorySearch;
+use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,29 +21,21 @@ class CategoryController extends AdminControllerLib
 {
     /**
      * @Route("/{id}/edit", name="admin_category_edit", methods={"GET","POST"})
+     * @Route("/new", name="admin_category_new", methods={"GET","POST"})
      */
     public function edit(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        Category $category,
+        AttachFormService $service,
+        ?Category $category,
         CategoryRequestHandler $requestHandler
     ): Response
     {
         $this->modalAttachmentDelete();
 
-        return $this->update(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
             CategoryType::class,
-            $category,
-            [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_category_index',
-                'show'   => 'admin_category_show',
-            ]
+            !is_null($category) ? $category : new Category()
         );
     }
 
@@ -56,48 +48,7 @@ class CategoryController extends AdminControllerLib
     {
         return $this->listOrTrash(
             $repository,
-            [
-                'trash' => 'findTrashParentForAdmin',
-                'all'   => 'findAllParentForAdmin',
-            ],
-            'admin/category/index.html.twig',
-            [
-                'new'   => 'admin_category_new',
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_category_trash',
-                'list'  => 'admin_category_index',
-            ],
-            [
-                'list'     => 'admin_category_index',
-                'show'     => 'admin_category_show',
-                'preview'  => 'admin_category_preview',
-                'edit'     => 'admin_category_edit',
-                'delete'   => 'api_action_delete',
-                'destroy'  => 'api_action_destroy',
-                'restore'  => 'api_action_restore',
-                'workflow' => 'api_action_workflow',
-            ]
-        );
-    }
-
-    /**
-     * @Route("/new", name="admin_category_new", methods={"GET","POST"})
-     */
-    public function new(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        CategoryRequestHandler $requestHandler
-    ): Response
-    {
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
-            $requestHandler,
-            new Category(),
-            CategoryType::class,
-            ['list' => 'admin_category_index']
+            'admin/category/index.html.twig'
         );
     }
 
@@ -112,16 +63,41 @@ class CategoryController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $category,
-            'admin/category/show.html.twig',
-            [
-                'delete'  => 'api_action_delete',
-                'restore' => 'api_action_restore',
-                'destroy' => 'api_action_destroy',
-                'edit'    => 'admin_category_edit',
-                'list'    => 'admin_category_index',
-                'trash'   => 'admin_category_trash',
-            ]
+            'admin/category/show.html.twig'
         );
+    }
+
+    protected function getMethodsList(): array
+    {
+        return [
+            'trash' => 'findTrashParentForAdmin',
+            'all'   => 'findAllParentForAdmin',
+        ];
+    }
+
+    protected function getUrlAdmin(): array
+    {
+        return [
+            'delete'   => 'api_action_delete',
+            'destroy'  => 'api_action_destroy',
+            'edit'     => 'admin_category_edit',
+            'empty'    => 'api_action_empty',
+            'list'     => 'admin_category_index',
+            'new'      => 'admin_category_new',
+            'preview'  => 'admin_category_preview',
+            'restore'  => 'api_action_restore',
+            'show'     => 'admin_category_show',
+            'trash'    => 'admin_category_trash',
+            'workflow' => 'api_action_workflow',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchCategoryType::class,
+            'data' => new CategorySearch(),
+        ];
     }
 
     protected function setBreadcrumbsPageAdminCategory(): array

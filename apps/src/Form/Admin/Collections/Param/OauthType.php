@@ -39,6 +39,13 @@ class OauthType extends AbstractTypeLib
                     'Non' => '0',
                     'Oui' => '1',
                 ],
+                'attr'    => [
+                    'placeholder' => $this->translator->trans(
+                        'param.oauth.activate.placeholder',
+                        [],
+                        'admin.form'
+                    ),
+                ],
             ]
         );
         $types   = $this->oauthService->getTypes();
@@ -55,6 +62,9 @@ class OauthType extends AbstractTypeLib
                 'label'   => $this->translator->trans('param.oauth.type.label', [], 'admin.form'),
                 'help'    => $this->translator->trans('param.oauth.type.help', [], 'admin.form'),
                 'choices' => $choices,
+                'attr'    => [
+                    'placeholder' => $this->translator->trans('param.oauth.type.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -64,6 +74,9 @@ class OauthType extends AbstractTypeLib
                 'label'    => $this->translator->trans('param.oauth.id.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('param.oauth.id.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('param.oauth.id.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -73,6 +86,13 @@ class OauthType extends AbstractTypeLib
                 'label'    => $this->translator->trans('param.oauth.secret.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('param.oauth.secret.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'param.oauth.secret.placeholder',
+                        [],
+                        'admin.form'
+                    ),
+                ],
             ]
         );
         unset($options);

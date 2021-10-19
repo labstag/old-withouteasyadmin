@@ -35,6 +35,9 @@ class EmailUserType extends EmailType
             [
                 'label'    => $this->translator->trans('emailuser.refuser.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('emailuser.refuser.help', [], 'admin.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('emailuser.refuser.placeholder', [], 'admin.form'),
+                ],
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

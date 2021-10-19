@@ -25,6 +25,9 @@ class CategoryType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('category.name.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('category.name.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('category.name.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -34,6 +37,9 @@ class CategoryType extends AbstractTypeLib
                 'label'    => $this->translator->trans('category.slug.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('category.slug.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('category.slug.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -46,6 +52,9 @@ class CategoryType extends AbstractTypeLib
                 'class'    => Category::class,
                 'required' => false,
                 'route'    => 'api_search_category',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('category.parent.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         unset($options);

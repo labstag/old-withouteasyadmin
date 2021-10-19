@@ -20,6 +20,13 @@ class FormatDateType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('param.formatdate.admin.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('param.formatdate.admin.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans(
+                        'param.formatdate.admin.placeholder',
+                        [],
+                        'admin.form'
+                    ),
+                ],
             ]
         );
         $builder->add(
@@ -28,6 +35,13 @@ class FormatDateType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('param.formatdate.public.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('param.formatdate.public.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans(
+                        'param.formatdate.public.placeholder',
+                        [],
+                        'admin.form'
+                    ),
+                ],
             ]
         );
         unset($options);
