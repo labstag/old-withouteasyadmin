@@ -2,7 +2,7 @@
 
 namespace Labstag\Repository;
 
-use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\AdresseUser;
@@ -17,7 +17,7 @@ class AdresseUserRepository extends AdresseRepository
         parent::__construct($registry, AdresseUser::class);
     }
 
-    public function findAllForAdmin(): Query
+    public function findAllForAdmin(array $get): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $query        = $queryBuilder->leftJoin('a.refuser', 'u');
@@ -25,20 +25,46 @@ class AdresseUserRepository extends AdresseRepository
             'u.id IS NOT NULL'
         );
 
-        return $query->getQuery();
+        return $this->setQuery($query, $get);
     }
 
-    public function findTrashForAdmin(): array
+    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
     {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin(
-            'a.refuser',
-            'u'
-        );
-        $query->where(
-            'u.deletedAt IS NOT NULL OR a.deletedAt IS NOT NULL'
-        );
+        $this->setQueryCountry($query, $get);
+        $this->setQueryVille($query, $get);
+        $this->setQueryRefUser($query, $get);
 
-        return $query->getQuery()->getResult();
+        return $query;
+    }
+
+    protected function setQueryCountry(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['country']) || empty($get['country'])) {
+            return;
+        }
+
+        $query->andWhere('a.country LIKE :country');
+        $query->setParameter('country', '%'.$get['country'].'%');
+    }
+
+    protected function setQueryRefUser(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['refuser']) || empty($get['refuser'])) {
+            return;
+        }
+
+        $query->leftJoin('a.refuser', 'u');
+        $query->andWhere('u.id = :refuser');
+        $query->setParameter('refuser', $get['refuser']);
+    }
+
+    protected function setQueryVille(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['ville']) || empty($get['ville'])) {
+            return;
+        }
+
+        $query->andWhere('a.ville LIKE :ville');
+        $query->setParameter('ville', '%'.$get['ville'].'%');
     }
 }

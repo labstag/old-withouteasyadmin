@@ -4,14 +4,14 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
+use Labstag\Form\Admin\Search\UserType as SearchUserType;
 use Labstag\Form\Admin\User\UserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\Repository\WorkflowRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
+use Labstag\Search\UserSearch;
+use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,30 +22,39 @@ class UserController extends AdminControllerLib
 {
     /**
      * @Route("/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
+     * @Route("/new", name="admin_user_new", methods={"GET","POST"})
      */
     public function edit(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        User $user,
+        AttachFormService $service,
+        ?User $user,
         UserRequestHandler $requestHandler
     ): Response
     {
-        return $this->update(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
             UserType::class,
-            $user,
-            [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_user_index',
-                'guard'  => 'admin_user_guard',
-                'show'   => 'admin_user_show',
-            ],
+            !is_null($user) ? $user : new User(),
             'admin/user/form.html.twig'
         );
+    }
+
+    public function getUrlAdmin(): array
+    {
+        return [
+            'delete'   => 'api_action_delete',
+            'destroy'  => 'api_action_destroy',
+            'edit'     => 'admin_user_edit',
+            'empty'    => 'api_action_empty',
+            'guard'    => 'admin_user_guard',
+            'list'     => 'admin_user_index',
+            'new'      => 'admin_user_new',
+            'preview'  => 'admin_user_preview',
+            'restore'  => 'api_action_restore',
+            'show'     => 'admin_user_show',
+            'trash'    => 'admin_user_trash',
+            'workflow' => 'api_action_workflow',
+        ];
     }
 
     /**
@@ -104,52 +113,7 @@ class UserController extends AdminControllerLib
     {
         return $this->listOrTrash(
             $repository,
-            [
-                'trash' => 'findTrashForAdmin',
-                'all'   => 'findAllForAdmin',
-            ],
-            'admin/user/index.html.twig',
-            [
-                'new'   => 'admin_user_new',
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_user_trash',
-                'list'  => 'admin_user_index',
-            ],
-            [
-                'list'     => 'admin_user_index',
-                'show'     => 'admin_user_show',
-                'preview'  => 'admin_user_preview',
-                'edit'     => 'admin_user_edit',
-                'delete'   => 'api_action_delete',
-                'destroy'  => 'api_action_destroy',
-                'guard'    => 'admin_user_guard',
-                'restore'  => 'api_action_restore',
-                'workflow' => 'api_action_workflow',
-            ]
-        );
-    }
-
-    /**
-     * @Route("/new", name="admin_user_new", methods={"GET","POST"})
-     */
-    public function new(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        UserRequestHandler $requestHandler
-    ): Response
-    {
-        $user = new User();
-
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
-            $requestHandler,
-            $user,
-            UserType::class,
-            ['list' => 'admin_user_index'],
-            'admin/user/form.html.twig'
+            'admin/user/index.html.twig'
         );
     }
 
@@ -166,17 +130,16 @@ class UserController extends AdminControllerLib
 
         return $this->renderShowOrPreview(
             $user,
-            'admin/user/show.html.twig',
-            [
-                'delete'  => 'api_action_delete',
-                'restore' => 'api_action_restore',
-                'destroy' => 'api_action_destroy',
-                'list'    => 'admin_user_index',
-                'guard'   => 'admin_user_guard',
-                'edit'    => 'admin_user_edit',
-                'trash'   => 'admin_user_trash',
-            ]
+            'admin/user/show.html.twig'
         );
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchUserType::class,
+            'data' => new UserSearch(),
+        ];
     }
 
     protected function setBreadcrumbsPageAdminUser(): array

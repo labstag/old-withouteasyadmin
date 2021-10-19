@@ -35,6 +35,9 @@ abstract class PhoneType extends AbstractTypeLib
         $optionsInput = [
             'label' => $this->translator->trans('phone.numero.label', [], 'admin.form'),
             'help'  => $this->translator->trans('phone.numero.help', [], 'admin.form'),
+            'attr'  => [
+                'placeholder' => $this->translator->trans('phone.numero.placeholder', [], 'admin.form'),
+            ],
         ];
         if (array_key_exists('data', $options)) {
             // @var PhoneUser $phoneuser
@@ -59,8 +62,9 @@ abstract class PhoneType extends AbstractTypeLib
                 'label' => $this->translator->trans('phone.country.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('phone.country.help', [], 'admin.form'),
                 'attr'  => [
-                    'is'      => 'select-country',
-                    'choices' => 'true',
+                    'placeholder' => $this->translator->trans('phone.country.placeholder', [], 'admin.form'),
+                    'is'          => 'select-country',
+                    'choices'     => 'true',
                 ],
             ]
         );

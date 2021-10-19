@@ -24,6 +24,13 @@ class TarteaucitronType extends AbstractTypeLib
                 'label'    => $this->translator->trans('param.tarteaucitron.privacyUrl.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('param.tarteaucitron.privacyUrl.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'param.tarteaucitron.privacyUrl.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
             ]
         );
 
@@ -35,6 +42,13 @@ class TarteaucitronType extends AbstractTypeLib
             [
                 'label'   => $this->translator->trans('param.tarteaucitron.iconPosition.label', [], 'admin.form'),
                 'help'    => $this->translator->trans('param.tarteaucitron.iconPosition.help', [], 'admin.form'),
+                'attr'    => [
+                    'placeholder' => $this->translator->trans(
+                        'param.tarteaucitron.iconPosition.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
                 'choices' => [
                     'BottomRight' => 'BottomRight',
                     'BottomLeft'  => 'BottomLeft',
@@ -51,6 +65,13 @@ class TarteaucitronType extends AbstractTypeLib
                 'label'    => $this->translator->trans('param.tarteaucitron.readmoreLink.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('param.tarteaucitron.readmoreLink.help', [], 'admin.form'),
                 'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'param.tarteaucitron.readmoreLink.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
             ]
         );
         $builder->add(
@@ -59,6 +80,13 @@ class TarteaucitronType extends AbstractTypeLib
             [
                 'label'   => $this->translator->trans('param.tarteaucitron.mandatory.label', [], 'admin.form'),
                 'help'    => $this->translator->trans('param.tarteaucitron.mandatory.help', [], 'admin.form'),
+                'attr'    => [
+                    'placeholder' => $this->translator->trans(
+                        'param.tarteaucitron.mandatory.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
@@ -88,16 +116,31 @@ class TarteaucitronType extends AbstractTypeLib
     {
         $tab = [
             'hashtag'     => [
-                'label' => $this->translator->trans('param.tarteaucitron.hashtag.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.hashtag.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.hashtag.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.hashtag.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.hashtag.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
             'cookieName'  => [
-                'label' => $this->translator->trans('param.tarteaucitron.cookieName.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.cookieName.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.cookieName.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.cookieName.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.cookieName.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
             'orientation' => [
-                'label' => $this->translator->trans('param.tarteaucitron.orientation.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.orientation.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.orientation.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.orientation.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.orientation.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
         ];
         foreach ($tab as $id => $row) {
@@ -107,6 +150,9 @@ class TarteaucitronType extends AbstractTypeLib
                 [
                     'label' => $row['label'],
                     'help'  => $row['help'],
+                    'attr'  => [
+                        'placeholder' => $row['placeholder'],
+                    ],
                 ]
             );
         }
@@ -125,6 +171,9 @@ class TarteaucitronType extends AbstractTypeLib
                         'Non' => '0',
                         'Oui' => '1',
                     ],
+                    'attr'    => [
+                        'placeholder' => $row['placeholder'],
+                    ],
                 ]
             );
         }
@@ -134,24 +183,49 @@ class TarteaucitronType extends AbstractTypeLib
     {
         $tab = [
             'groupServices'  => [
-                'label' => $this->translator->trans('param.tarteaucitron.groupServices.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.groupServices.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.groupServices.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.groupServices.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.groupServices.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
             'showAlertSmall' => [
-                'label' => $this->translator->trans('param.tarteaucitron.showAlertSmall.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.showAlertSmall.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.showAlertSmall.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.showAlertSmall.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.showAlertSmall.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
             'cookieslist'    => [
-                'label' => $this->translator->trans('param.tarteaucitron.cookieslist.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.cookieslist.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.cookieslist.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.cookieslist.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.cookieslist.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
             'closePopup'     => [
-                'label' => $this->translator->trans('param.tarteaucitron.closePopup.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.closePopup.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.closePopup.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.closePopup.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.closePopup.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
             'showIcon'       => [
-                'label' => $this->translator->trans('param.tarteaucitron.showIcon.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.showIcon.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.showIcon.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.showIcon.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.showIcon.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
         ];
         $this->setInputTrueFalse($builder, $tab);
@@ -161,40 +235,75 @@ class TarteaucitronType extends AbstractTypeLib
     {
         $tab = [
             'adblocker'               => [
-                'label' => $this->translator->trans('param.tarteaucitron.adblocker.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.adblocker.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.adblocker.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.adblocker.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.adblocker.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
             'DenyAllCta'              => [
-                'label' => $this->translator->trans('param.tarteaucitron.DenyAllCta.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.DenyAllCta.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.DenyAllCta.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.DenyAllCta.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.DenyAllCta.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
             'AcceptAllCta'            => [
-                'label' => $this->translator->trans('param.tarteaucitron.AcceptAllCta.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.AcceptAllCta.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.AcceptAllCta.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.AcceptAllCta.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.AcceptAllCta.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
             'highPrivacy'             => [
-                'label' => $this->translator->trans('param.tarteaucitron.highPrivacy.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.highPrivacy.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.highPrivacy.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.highPrivacy.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.highPrivacy.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
             'handleBrowserDNTRequest' => [
-                'label' => $this->translator->trans(
+                'label'       => $this->translator->trans(
                     'param.tarteaucitron.handleBrowserDNTRequest.label',
                     [],
                     'admin.form'
                 ),
-                'help'  => $this->translator->trans(
+                'help'        => $this->translator->trans(
                     'param.tarteaucitron.handleBrowserDNTRequest.help',
+                    [],
+                    'admin.form'
+                ),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.handleBrowserDNTRequest.placeholder',
                     [],
                     'admin.form'
                 ),
             ],
             'removeCredit'            => [
-                'label' => $this->translator->trans('param.tarteaucitron.removeCredit.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.removeCredit.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.removeCredit.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.removeCredit.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.removeCredit.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
             'moreInfoLink'            => [
-                'label' => $this->translator->trans('param.tarteaucitron.moreInfoLink.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.tarteaucitron.moreInfoLink.help', [], 'admin.form'),
+                'label'       => $this->translator->trans('param.tarteaucitron.moreInfoLink.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.tarteaucitron.moreInfoLink.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans(
+                    'param.tarteaucitron.moreInfoLink.placeholder',
+                    [],
+                    'admin.form'
+                ),
             ],
         ];
         $this->setInputTrueFalse($builder, $tab);

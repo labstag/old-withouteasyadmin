@@ -35,6 +35,9 @@ class PhoneUserType extends PhoneType
             [
                 'label'    => $this->translator->trans('phoneuser.refuser.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('phoneuser.refuser.help', [], 'admin.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('phoneuser.refuser.placeholder', [], 'admin.form'),
+                ],
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',

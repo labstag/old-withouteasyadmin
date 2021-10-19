@@ -29,6 +29,9 @@ class EditoType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('edito.title.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('edito.title.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('edito.title.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -54,16 +57,24 @@ class EditoType extends AbstractTypeLib
             'metaDescription',
             TextType::class,
             [
-                'label' => $this->translator->trans('edito.metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('edito.metaDescription.help', [], 'admin.form'),
+                'required' => false,
+                'label'    => $this->translator->trans('edito.metaDescription.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('edito.metaDescription.help', [], 'admin.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('edito.metaDescription.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
             'metaKeywords',
             TextType::class,
             [
-                'label' => $this->translator->trans('edito.metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('edito.metaKeywords.help', [], 'admin.form'),
+                'required' => false,
+                'label'    => $this->translator->trans('edito.metaKeywords.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('edito.metaKeywords.help', [], 'admin.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('edito.metaKeywords.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -85,6 +96,9 @@ class EditoType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('edito.refuser.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         unset($options);

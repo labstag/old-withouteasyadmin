@@ -1,11 +1,11 @@
-import { ElementHTML } from '../../global/elements/ElementHTML'
+import { ElementHTML } from './../../global/elements/ElementHTML'
 export class WorkflowAction extends ElementHTML {
   connectedCallback () {
     this.classList.add('workflow-action')
     const iElement = document.createElement('i')
     this.innerHTML = '&nbsp;'
     this.prepend(iElement)
-    this.append(document.createTextNode(this.dataset.name))
+    this.append(document.createTextNode(this.getAttribute('name')))
     this.dataset.bsToggle = 'modal'
     this.dataset.bsTarget = '#workflow-modal'
     this.addEventListener('click', this.onClick)
@@ -18,15 +18,15 @@ export class WorkflowAction extends ElementHTML {
 
   onClick (element) {
     element.preventDefault()
-    const url = element.currentTarget.dataset.url
-    const token = element.currentTarget.dataset.token
-    const redirect = element.currentTarget.dataset.redirect
+    const url = element.currentTarget.getAttribute('url')
+    const token = element.currentTarget.getAttribute('token')
+    const redirect = element.currentTarget.getAttribute('redirect')
     const btnConfirm = document.querySelector('confirm-workflow')
     if (btnConfirm === null) {
       return
     }
-    btnConfirm.dataset.url = url
-    btnConfirm.dataset.token = token
-    btnConfirm.dataset.redirect = redirect
+    btnConfirm.setAttribute('url', url)
+    btnConfirm.setAttribute('token', token)
+    btnConfirm.setAttribute('redirect', redirect)
   }
 }

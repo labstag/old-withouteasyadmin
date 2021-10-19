@@ -1,24 +1,16 @@
-{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin/user/lien_user/layout.html.twig' %}
 {% block body %}
-    <table
-        is="table-datatable"
-        data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-multiple
-        data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
-        data-count={{ pagination|length }}
-    >
-        <thead>
+    {% embed "admin/table.html.twig" %}
+        {% import "admin/macro.html.twig" as macro_admin %}
+        {% block thead %}
             <tr>
                 <th>{{ 'user.link.name'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'user.link.adresse'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'user.link.user'|trans({}, 'admin.messages') }}</th>
                 <th></th>
             </tr>
-        </thead>
-        <tbody>
+        {% endblock %}
+        {% block tbody %}
         {% for entity in pagination %}
             <tr data-id="{{ entity.id }}">
                 <td>{{ entity.name }}</td>
@@ -29,6 +21,6 @@
                 </td>
             </tr>
         {% endfor %}
-        </tbody>
-    </table>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

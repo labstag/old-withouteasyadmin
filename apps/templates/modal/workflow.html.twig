@@ -13,14 +13,8 @@
                 {{ 'modal.workflow.message'|trans }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-cancel" data-bs-dismiss="modal">
-                    <i></i>
-                    <span>{{ 'modal.button.cancel'|trans }}</span>
-                </button>
-                <confirm-workflow>
-                    <i></i>
-                    <span>{{ 'modal.button.confirm'|trans }}</span>
-                </confirm-workflow>
+                <confirm-close title="{{ 'modal.button.cancel'|trans|e('html_attr') }}" />
+                <confirm-workflow title="{{ 'modal.button.confirm'|trans|e('html_attr') }}" />
             </div>
         </div>
     </div>

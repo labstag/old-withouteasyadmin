@@ -7,11 +7,9 @@ use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Menu\LinkType;
 use Labstag\Form\Admin\Menu\PrincipalType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\MenuRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\MenuRequestHandler;
+use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,9 +24,7 @@ class MenuController extends AdminControllerLib
      * @Route("/add", name="admin_menu_add", methods={"GET", "POST"})
      */
     public function add(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
+        AttachFormService $service,
         Request $request,
         MenuRequestHandler $requestHandler,
         MenuRepository $repository
@@ -53,14 +49,11 @@ class MenuController extends AdminControllerLib
         $menu->setPosition(count($parent->getChildren()));
         $menu->setParent($parent);
 
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
-            $menu,
             LinkType::class,
-            ['list' => 'admin_menu_index'],
+            $menu,
             'admin/menu/form.html.twig'
         );
     }
@@ -87,9 +80,7 @@ class MenuController extends AdminControllerLib
      * @Route("/update/{id}", name="admin_menu_update", methods={"GET", "POST"})
      */
     public function edit(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
+        AttachFormService $service,
         Menu $menu,
         MenuRequestHandler $requestHandler
     )
@@ -99,17 +90,11 @@ class MenuController extends AdminControllerLib
         $data = [$menu->getData()];
         $menu->setData($data);
 
-        return $this->update(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
             $form,
             $menu,
-            [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_menu_index',
-            ],
             'admin/menu/form.html.twig'
         );
     }
@@ -195,20 +180,15 @@ class MenuController extends AdminControllerLib
      * @Route("/new", name="admin_menu_new", methods={"GET", "POST"})
      */
     public function new(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
+        AttachFormService $service,
         MenuRequestHandler $requestHandler
     ): Response
     {
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
-            new Menu(),
             PrincipalType::class,
-            ['list' => 'admin_menu_index'],
+            new Menu(),
             'admin/menu/form.html.twig'
         );
     }
@@ -222,25 +202,22 @@ class MenuController extends AdminControllerLib
     {
         return $this->listOrTrash(
             $repository,
-            [
-                'trash' => 'findTrashForAdmin',
-                'all'   => 'findAllForAdmin',
-            ],
             'admin/menu/trash.html.twig',
-            [
-                'new'   => 'admin_menu_new',
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_menu_trash',
-                'list'  => 'admin_menu_index',
-            ],
-            [
-                'list'    => 'admin_menu_index',
-                'edit'    => 'admin_menu_edit',
-                'delete'  => 'api_action_delete',
-                'destroy' => 'api_action_destroy',
-                'restore' => 'api_action_restore',
-            ]
         );
+    }
+
+    protected function getUrlAdmin(): array
+    {
+        return [
+            'delete'  => 'api_action_delete',
+            'destroy' => 'api_action_destroy',
+            'edit'    => 'admin_menu_edit',
+            'empty'   => 'api_action_empty',
+            'list'    => 'admin_menu_index',
+            'new'     => 'admin_menu_new',
+            'restore' => 'api_action_restore',
+            'trash'   => 'admin_menu_trash',
+        ];
     }
 
     protected function setBreadcrumbsPageAdminMenu(): array

@@ -45,7 +45,7 @@ export class PostalCode extends HTMLInputElement {
     this.codepostal = null
     this.ville = null
     this.gps = null
-    selects.forEach(
+    Array.from(selects).forEach(
       element => {
         const isInput = element.getAttribute('is')
         if (isInput === 'select-country') {
@@ -53,7 +53,7 @@ export class PostalCode extends HTMLInputElement {
         }
       }
     )
-    this.inputs.forEach(
+    Array.from(this.inputs).forEach(
       element => {
         const isInput = element.getAttribute('is')
         if (isInput === 'input-codepostal') {

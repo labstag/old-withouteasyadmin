@@ -2,6 +2,7 @@
 
 namespace Labstag\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Libelle;
@@ -62,5 +63,22 @@ class LibelleRepository extends ServiceEntityRepositoryLib
         );
 
         return $query->getQuery()->getResult();
+    }
+
+    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
+    {
+        $this->setQueryNom($query, $get);
+
+        return $query;
+    }
+
+    protected function setQueryNom(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['nom']) || empty($get['nom'])) {
+            return;
+        }
+
+        $query->andWhere('a.nom LIKE :nom');
+        $query->setParameter('nom', '%'.$get['nom'].'%');
     }
 }

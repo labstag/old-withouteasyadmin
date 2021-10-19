@@ -47,6 +47,9 @@ class ProfilType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('profil.username.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('profil.username.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('profil.username.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -90,6 +93,9 @@ class ProfilType extends AbstractTypeLib
                         'label'   => $this->translator->trans('profil.email.label', [], 'admin.form'),
                         'help'    => $this->translator->trans('profil.email.help', [], 'admin.form'),
                         'choices' => $emails,
+                        'attr'    => [
+                            'placeholder' => $this->translator->trans('profil.email.placeholder', [], 'admin.form'),
+                        ],
                     ]
                 );
             }

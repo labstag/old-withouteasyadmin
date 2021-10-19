@@ -21,6 +21,13 @@ class NotificationType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('param.notification.type.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('param.notification.type.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans(
+                        'param.notification.type.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
             ]
         );
         $builder->add(
@@ -33,6 +40,13 @@ class NotificationType extends AbstractTypeLib
                     'Non' => '0',
                     'Oui' => '1',
                 ],
+                'attr'    => [
+                    'placeholder' => $this->translator->trans(
+                        'param.notification.mail.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
             ]
         );
         $builder->add(
@@ -44,6 +58,13 @@ class NotificationType extends AbstractTypeLib
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
+                ],
+                'attr'    => [
+                    'placeholder' => $this->translator->trans(
+                        'param.notification.notify.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
                 ],
             ]
         );

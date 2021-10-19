@@ -11,7 +11,7 @@ PHP_EXEC := ${DOCKER_EXECPHP} php -d memory_limit=-1
 SYMFONY_EXEC := ${DOCKER_EXECPHP} symfony console
 COMPOSER_EXEC := ${DOCKER_EXECPHP} symfony composer
 
-COMMANDS_SUPPORTED_COMMANDS := libraries workflow-png tests messenger linter install git env encore composer bdd setbdd
+COMMANDS_SUPPORTED_COMMANDS := libraries workflow-png tests messenger linter install git env encore composer bdd setbdd geocode
 COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
 ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -146,7 +146,7 @@ endif
 
 .PHONY: geocode
 geocode: isdocker ### Geocode
-	$(SYMFONY_EXEC) $(COMMANDS_ARGS)
+	$(SYMFONY_EXEC) labstag:geocode:install $(COMMANDS_ARGS)
 
 .PHONY: install
 install: apps/.env ### installation

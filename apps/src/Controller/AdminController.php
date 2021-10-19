@@ -11,11 +11,10 @@ use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ParamType;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\NoteInterneRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
+use Labstag\Service\AttachFormService;
 use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
@@ -158,23 +157,18 @@ class AdminController extends AdminControllerLib
      * @Route("/profil", name="admin_profil", methods={"GET","POST"})
      */
     public function profil(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
+        AttachFormService $service,
         Security $security,
         UserRequestHandler $requestHandler
     ): Response
     {
         $this->modalAttachmentDelete();
 
-        return $this->update(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
             ProfilType::class,
             $security->getUser(),
-            [],
             'admin/profil.html.twig'
         );
     }
@@ -232,12 +226,10 @@ class AdminController extends AdminControllerLib
                 'btn-admin-header-emptyall',
                 'Tout vider',
                 [
-                    'is'             => 'link-btnadminemptyall',
-                    'data-bs-toggle' => 'modal',
-                    'data-bs-target' => '#emptyall-modal',
-                    'data-token'     => $token,
-                    'data-redirect'  => $this->generateUrl('admin_trash'),
-                    'data-url'       => $this->generateUrl('api_action_emptyall'),
+                    'is'       => 'link-btnadminemptyall',
+                    'token'    => $token,
+                    'redirect' => $this->generateUrl('admin_trash'),
+                    'url'      => $this->generateUrl('api_action_emptyall'),
                 ]
             );
         }

@@ -50,6 +50,9 @@ class UserType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('user.username.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('user.username.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('user.username.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -79,6 +82,9 @@ class UserType extends AbstractTypeLib
                 'multiple' => false,
                 'class'    => Groupe::class,
                 'route'    => 'api_search_group',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('user.refgroupe.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -113,6 +119,9 @@ class UserType extends AbstractTypeLib
                         'label'   => $this->translator->trans('user.email.label', [], 'admin.form'),
                         'help'    => $this->translator->trans('user.email.help', [], 'admin.form'),
                         'choices' => $emails,
+                        'attr'    => [
+                            'placeholder' => $this->translator->trans('user.email.placeholder', [], 'admin.form'),
+                        ],
                     ]
                 );
             }

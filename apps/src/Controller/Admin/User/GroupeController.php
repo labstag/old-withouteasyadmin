@@ -4,14 +4,14 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
+use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\WorkflowRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
+use Labstag\Search\GroupeSearch;
+use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,28 +22,19 @@ class GroupeController extends AdminControllerLib
 {
     /**
      * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET","POST"})
+     * @Route("/new", name="admin_groupuser_new", methods={"GET","POST"})
      */
     public function edit(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        Groupe $groupe,
+        AttachFormService $service,
+        ?Groupe $groupe,
         GroupeRequestHandler $requestHandler
     ): Response
     {
-        return $this->update(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
             GroupeType::class,
-            $groupe,
-            [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_groupuser_index',
-                'guard'  => 'admin_groupuser_guard',
-                'show'   => 'admin_groupuser_show',
-            ]
+            !is_null($groupe) ? $groupe : new Groupe()
         );
     }
 
@@ -104,47 +95,7 @@ class GroupeController extends AdminControllerLib
     {
         return $this->listOrTrash(
             $repository,
-            [
-                'trash' => 'findTrashForAdmin',
-                'all'   => 'findAllForAdmin',
-            ],
-            'admin/user/groupe/index.html.twig',
-            [
-                'new'   => 'admin_groupuser_new',
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_groupuser_trash',
-                'list'  => 'admin_groupuser_index',
-            ],
-            [
-                'list'    => 'admin_groupuser_index',
-                'show'    => 'admin_groupuser_show',
-                'edit'    => 'admin_groupuser_edit',
-                'preview' => 'admin_groupuser_preview',
-                'delete'  => 'api_action_delete',
-                'guard'   => 'admin_groupuser_guard',
-                'destroy' => 'api_action_destroy',
-            ]
-        );
-    }
-
-    /**
-     * @Route("/new", name="admin_groupuser_new", methods={"GET","POST"})
-     */
-    public function new(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        GroupeRequestHandler $requestHandler
-    ): Response
-    {
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
-            $requestHandler,
-            new Groupe(),
-            GroupeType::class,
-            ['list' => 'admin_groupuser_index']
+            'admin/user/groupe/index.html.twig'
         );
     }
 
@@ -159,17 +110,33 @@ class GroupeController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $groupe,
-            'admin/user/groupe/show.html.twig',
-            [
-                'delete'  => 'api_action_delete',
-                'restore' => 'api_action_restore',
-                'destroy' => 'api_action_destroy',
-                'edit'    => 'admin_groupuser_edit',
-                'guard'   => 'admin_groupuser_guard',
-                'list'    => 'admin_groupuser_index',
-                'trash'   => 'admin_groupuser_trash',
-            ]
+            'admin/user/groupe/show.html.twig'
         );
+    }
+
+    protected function getUrlAdmin(): array
+    {
+        return [
+            'delete'  => 'api_action_delete',
+            'destroy' => 'api_action_destroy',
+            'edit'    => 'admin_groupuser_edit',
+            'empty'   => 'api_action_empty',
+            'guard'   => 'admin_groupuser_guard',
+            'list'    => 'admin_groupuser_index',
+            'new'     => 'admin_groupuser_new',
+            'preview' => 'admin_groupuser_preview',
+            'restore' => 'api_action_restore',
+            'show'    => 'admin_groupuser_show',
+            'trash'   => 'admin_groupuser_trash',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchGroupeType::class,
+            'data' => new GroupeSearch(),
+        ];
     }
 
     protected function setBreadcrumbsPageAdminGroupuser(): array

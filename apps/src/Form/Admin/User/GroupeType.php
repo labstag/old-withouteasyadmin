@@ -25,6 +25,9 @@ class GroupeType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('groupe.name.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('groupe.name.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('groupe.name.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -33,6 +36,9 @@ class GroupeType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('groupe.code.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('groupe.code.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('groupe.code.placeholder', [], 'admin.form'),
+                ],
             ]
         );
     }

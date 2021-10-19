@@ -25,6 +25,9 @@ abstract class AdresseType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('adresse.rue.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('adresse.rue.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('adresse.rue.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -34,8 +37,9 @@ abstract class AdresseType extends AbstractTypeLib
                 'label' => $this->translator->trans('adresse.country.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('adresse.country.help', [], 'admin.form'),
                 'attr'  => [
-                    'is'      => 'select-country',
-                    'choices' => 'true',
+                    'is'          => 'select-country',
+                    'choices'     => 'true',
+                    'placeholder' => $this->translator->trans('adresse.country.placeholder', [], 'admin.form'),
                 ],
             ]
         );
@@ -45,7 +49,10 @@ abstract class AdresseType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('adresse.zipcode.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('adresse.zipcode.help', [], 'admin.form'),
-                'attr'  => ['is' => 'input-codepostal'],
+                'attr'  => [
+                    'is'          => 'input-codepostal',
+                    'placeholder' => $this->translator->trans('adresse.zipcode.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -54,7 +61,10 @@ abstract class AdresseType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('adresse.ville.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('adresse.ville.help', [], 'admin.form'),
-                'attr'  => ['is' => 'input-ville'],
+                'attr'  => [
+                    'is'          => 'input-ville',
+                    'placeholder' => $this->translator->trans('adresse.ville.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -63,7 +73,10 @@ abstract class AdresseType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('adresse.gps.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('adresse.gps.help', [], 'admin.form'),
-                'attr'  => ['is' => 'input-gps'],
+                'attr'  => [
+                    'is'          => 'input-gps',
+                    'placeholder' => $this->translator->trans('adresse.gps.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -72,6 +85,9 @@ abstract class AdresseType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('adresse.type.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('adresse.type.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('adresse.type.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(

@@ -5,12 +5,12 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\GeoCode;
 use Labstag\Form\Admin\GeoCodeType;
+use Labstag\Form\Admin\Search\GeocodeType as SearchGeocodeType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\GeoCodeRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\GeoCodeRequestHandler;
+use Labstag\Search\GeocodeSearch;
+use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,27 +21,19 @@ class GeoCodeController extends AdminControllerLib
 {
     /**
      * @Route("/{id}/edit", name="admin_geocode_edit", methods={"GET","POST"})
+     * @Route("/new", name="admin_geocode_new", methods={"GET","POST"})
      */
     public function edit(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        GeoCode $geoCode,
+        AttachFormService $service,
+        ?GeoCode $geoCode,
         GeoCodeRequestHandler $requestHandler
     ): Response
     {
-        return $this->update(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
             GeoCodeType::class,
-            $geoCode,
-            [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_geocode_index',
-                'show'   => 'admin_geocode_show',
-            ]
+            !is_null($geoCode) ? $geoCode : new GeoCode()
         );
     }
 
@@ -54,45 +46,7 @@ class GeoCodeController extends AdminControllerLib
     {
         return $this->listOrTrash(
             $repository,
-            [
-                'trash' => 'findTrashForAdmin',
-                'all'   => 'findAllForAdmin',
-            ],
-            'admin/geocode/index.html.twig',
-            [
-                'new'   => 'admin_geocode_new',
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_geocode_trash',
-                'list'  => 'admin_geocode_index',
-            ],
-            [
-                'list'        => 'admin_geocode_index',
-                'show'        => 'admin_geocode_show',
-                'edit'        => 'admin_geocode_edit',
-                'delete'      => 'api_action_delete',
-                'trashdelete' => 'admin_geocode_destroy',
-            ]
-        );
-    }
-
-    /**
-     * @Route("/new", name="admin_geocode_new", methods={"GET","POST"})
-     */
-    public function new(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        GeoCodeRequestHandler $requestHandler
-    ): Response
-    {
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
-            $requestHandler,
-            new GeoCode(),
-            GeoCodeType::class,
-            ['list' => 'admin_geocode_index']
+            'admin/geocode/index.html.twig'
         );
     }
 
@@ -107,16 +61,32 @@ class GeoCodeController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $geoCode,
-            'admin/geocode/show.html.twig',
-            [
-                'delete'  => 'api_action_delete',
-                'restore' => 'api_action_restore',
-                'destroy' => 'api_action_destroy',
-                'list'    => 'admin_geocode_index',
-                'edit'    => 'admin_geocode_edit',
-                'trash'   => 'admin_geocode_trash',
-            ]
+            'admin/geocode/show.html.twig'
         );
+    }
+
+    protected function getUrlAdmin(): array
+    {
+        return [
+            'delete'      => 'api_action_delete',
+            'destroy'     => 'api_action_destroy',
+            'edit'        => 'admin_geocode_edit',
+            'empty'       => 'api_action_empty',
+            'list'        => 'admin_geocode_index',
+            'new'         => 'admin_geocode_new',
+            'restore'     => 'api_action_restore',
+            'show'        => 'admin_geocode_show',
+            'trash'       => 'admin_geocode_trash',
+            'trashdelete' => 'admin_geocode_destroy',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => SearchGeocodeType::class,
+            'data' => new GeocodeSearch(),
+        ];
     }
 
     protected function setBreadcrumbsPageAdminGeocode(): array

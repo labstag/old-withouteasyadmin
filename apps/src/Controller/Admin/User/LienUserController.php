@@ -4,13 +4,13 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\LienUser;
+use Labstag\Form\Admin\Search\User\LienUserType as UserLienUserType;
 use Labstag\Form\Admin\User\LienUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\LienUserRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\LienUserRequestHandler;
+use Labstag\Search\User\LienUserSearch;
+use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,27 +21,19 @@ class LienUserController extends AdminControllerLib
 {
     /**
      * @Route("/{id}/edit", name="admin_lienuser_edit", methods={"GET","POST"})
+     * @Route("/new", name="admin_lienuser_new", methods={"GET","POST"})
      */
     public function edit(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        LienUser $lienUser,
+        AttachFormService $service,
+        ?LienUser $lienUser,
         LienUserRequestHandler $requestHandler
     ): Response
     {
-        return $this->update(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
+        return $this->form(
+            $service,
             $requestHandler,
             LienUserType::class,
-            $lienUser,
-            [
-                'delete' => 'api_action_delete',
-                'list'   => 'admin_lienuser_index',
-                'show'   => 'admin_lienuser_show',
-            ]
+            !is_null($lienUser) ? $lienUser : new LienUser()
         );
     }
 
@@ -54,47 +46,7 @@ class LienUserController extends AdminControllerLib
     {
         return $this->listOrTrash(
             $lienUserRepository,
-            [
-                'trash' => 'findTrashForAdmin',
-                'all'   => 'findAllForAdmin',
-            ],
-            'admin/user/lien_user/index.html.twig',
-            [
-                'new'   => 'admin_lienuser_new',
-                'empty' => 'api_action_empty',
-                'trash' => 'admin_lienuser_trash',
-                'list'  => 'admin_lienuser_index',
-            ],
-            [
-                'list'    => 'admin_lienuser_index',
-                'show'    => 'admin_lienuser_show',
-                'preview' => 'admin_lienuser_preview',
-                'edit'    => 'admin_lienuser_edit',
-                'delete'  => 'api_action_delete',
-                'destroy' => 'api_action_destroy',
-                'restore' => 'api_action_restore',
-            ]
-        );
-    }
-
-    /**
-     * @Route("/new", name="admin_lienuser_new", methods={"GET","POST"})
-     */
-    public function new(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH,
-        LienUserRequestHandler $requestHandler
-    ): Response
-    {
-        return $this->create(
-            $uploadAnnotReader,
-            $attachmentRepository,
-            $attachmentRH,
-            $requestHandler,
-            new LienUser(),
-            LienUserType::class,
-            ['list' => 'admin_lienuser_index']
+            'admin/user/lien_user/index.html.twig'
         );
     }
 
@@ -109,16 +61,32 @@ class LienUserController extends AdminControllerLib
     {
         return $this->renderShowOrPreview(
             $lienUser,
-            'admin/user/lien_user/show.html.twig',
-            [
-                'delete'  => 'api_action_delete',
-                'restore' => 'api_action_restore',
-                'destroy' => 'api_action_destroy',
-                'list'    => 'admin_lienuser_index',
-                'edit'    => 'admin_lienuser_edit',
-                'trash'   => 'admin_lienuser_trash',
-            ]
+            'admin/user/lien_user/show.html.twig'
         );
+    }
+
+    protected function getUrlAdmin(): array
+    {
+        return [
+            'delete'  => 'api_action_delete',
+            'destroy' => 'api_action_destroy',
+            'edit'    => 'admin_lienuser_edit',
+            'empty'   => 'api_action_empty',
+            'list'    => 'admin_lienuser_index',
+            'new'     => 'admin_lienuser_new',
+            'preview' => 'admin_lienuser_preview',
+            'restore' => 'api_action_restore',
+            'show'    => 'admin_lienuser_show',
+            'trash'   => 'admin_lienuser_trash',
+        ];
+    }
+
+    protected function searchForm(): array
+    {
+        return [
+            'form' => UserLienUserType::class,
+            'data' => new LienUserSearch(),
+        ];
     }
 
     protected function setBreadcrumbsPageAdminLienuser(): array

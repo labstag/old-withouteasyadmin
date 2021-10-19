@@ -50,6 +50,7 @@ class KernelSubscriber implements EventSubscriberInterface
         'guard-changeroute',
         'guard-refgrouproute',
         'guard-refgroupworkflow',
+        'confirm-close',
         'confirm-delete',
         'confirm-deleteattachment',
         'confirm-destroy',

@@ -13,14 +13,8 @@
                 {{ 'modal.destroy.message'|trans }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-cancel" data-bs-dismiss="modal">
-                    <i></i>
-                    <span>{{ 'modal.button.cancel'|trans }}</span>
-                </button>
-                <confirm-destroy>
-                    <i></i>
-                    <span>{{ 'modal.button.delete'|trans }}</span>
-                </confirm-destroy>
+                <confirm-close title="{{ 'modal.button.cancel'|trans|e('html_attr') }}" />
+                <confirm-destroy title="{{ 'modal.button.delete'|trans|e('html_attr') }}" />
             </div>
         </div>
     </div>

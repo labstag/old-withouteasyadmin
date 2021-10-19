@@ -1,0 +1,18 @@
+<table
+    is="table-datatable"
+    data-action="{{ 'table.admin.action'|trans({}, 'admin.messages')|e('html_attr') }}"
+    data-multiple
+    data-multipleall="{{ 'table.admin.multipleall'|trans({}, 'admin.messages')|e('html_attr') }}"
+    data-multipleelement="{{ 'table.admin.mutipleelement'|trans({}, 'admin.messages')|e('html_attr') }}"
+    data-empty="{{ 'table.admin.empty'|trans({}, 'admin.messages')|e('html_attr') }}"
+    {% if pagination is defined %}
+        data-count={{ pagination|length }}
+    {% endif %}
+>
+	<thead>
+        {% block thead %}{% endblock %}
+	</thead>
+	<tbody>
+        {% block tbody %}{% endblock %}
+	</tbody>
+</table>

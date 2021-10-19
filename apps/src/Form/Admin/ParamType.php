@@ -38,6 +38,9 @@ class ParamType extends AbstractTypeLib
                 'multiple' => true,
                 'label'    => $this->translator->trans('param.language.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('param.language.help', [], 'admin.form'),
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('param.language.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         $builder->add(
@@ -49,6 +52,9 @@ class ParamType extends AbstractTypeLib
                 'choices' => [
                     'Non' => '0',
                     'Oui' => '1',
+                ],
+                'attr'    => [
+                    'placeholder' => $this->translator->trans('param.generator.placeholder', [], 'admin.form'),
                 ],
             ]
         );
@@ -80,6 +86,9 @@ class ParamType extends AbstractTypeLib
             [
                 'label' => $this->translator->trans('param.site_copyright.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('param.site_copyright.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('param.site_copyright.placeholder', [], 'admin.form'),
+                ],
             ]
         );
         unset($options);
@@ -123,29 +132,34 @@ class ParamType extends AbstractTypeLib
     {
         $inputs = [
             'title_format'    => [
-                'class' => TextType::class,
-                'label' => $this->translator->trans('param.title_format.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.title_format.help', [], 'admin.form'),
+                'class'       => TextType::class,
+                'label'       => $this->translator->trans('param.title_format.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.title_format.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans('param.title_format.placeholder', [], 'admin.form'),
             ],
             'robotstxt'       => [
-                'class' => TextareaType::class,
-                'label' => $this->translator->trans('param.robotstxt.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.robotstxt.help', [], 'admin.form'),
+                'class'       => TextareaType::class,
+                'label'       => $this->translator->trans('param.robotstxt.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.robotstxt.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans('param.robotstxt.placeholder', [], 'admin.form'),
             ],
             'languagedefault' => [
-                'class' => LanguageType::class,
-                'label' => $this->translator->trans('param.languagedefault.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.languagedefault.help', [], 'admin.form'),
+                'class'       => LanguageType::class,
+                'label'       => $this->translator->trans('param.languagedefault.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.languagedefault.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans('param.languagedefault.placeholder', [], 'admin.form'),
             ],
             'site_no-reply'   => [
-                'class' => EmailType::class,
-                'label' => $this->translator->trans('param.site_no-reply.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.site_no-reply.help', [], 'admin.form'),
+                'class'       => EmailType::class,
+                'label'       => $this->translator->trans('param.site_no-reply.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.site_no-reply.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans('param.site_no-reply.placeholder', [], 'admin.form'),
             ],
             'site_url'        => [
-                'class' => UrlType::class,
-                'label' => $this->translator->trans('param.site_url.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('param.site_url.help', [], 'admin.form'),
+                'class'       => UrlType::class,
+                'label'       => $this->translator->trans('param.site_url.label', [], 'admin.form'),
+                'help'        => $this->translator->trans('param.site_url.help', [], 'admin.form'),
+                'placeholder' => $this->translator->trans('param.site_url.placeholder', [], 'admin.form'),
             ],
         ];
         foreach ($inputs as $key => $row) {
@@ -155,6 +169,9 @@ class ParamType extends AbstractTypeLib
                 [
                     'label' => $row['label'],
                     'help'  => $row['help'],
+                    'attr'  => [
+                        'placeholder' => $row['placeholder'],
+                    ],
                 ]
             );
         }
