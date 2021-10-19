@@ -21,15 +21,8 @@ class EditoRepository extends ServiceEntityRepositoryLib
     public function findAllForAdmin(array $get): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin(
-            'a.refuser',
-            'u'
-        );
-        $query->where(
-            'u.id IS NOT NULL'
-        );
 
-        return $this->setQuery($query, $get);
+        return $this->setQuery($queryBuilder, $get);
     }
 
     public function findOnePublier()
