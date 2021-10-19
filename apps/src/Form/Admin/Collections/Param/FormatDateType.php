@@ -24,7 +24,7 @@ class FormatDateType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.formatdate.admin.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
@@ -39,7 +39,7 @@ class FormatDateType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.formatdate.public.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]

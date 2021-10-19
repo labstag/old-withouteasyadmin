@@ -28,7 +28,7 @@ class TarteaucitronType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.tarteaucitron.privacyUrl.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
@@ -46,7 +46,7 @@ class TarteaucitronType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.tarteaucitron.iconPosition.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
                 'choices' => [
@@ -69,7 +69,7 @@ class TarteaucitronType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.tarteaucitron.readmoreLink.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
@@ -84,7 +84,7 @@ class TarteaucitronType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.tarteaucitron.mandatory.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
                 'choices' => [

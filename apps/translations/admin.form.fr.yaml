@@ -29,20 +29,26 @@ bookmark.import.help: ''
 bookmark.import.label: ''
 bookmark.libelles.help: ''
 bookmark.libelles.label: Libélles
+bookmark.libelles.placeholder: ''
 bookmark.metaDescription.help: ''
 bookmark.metaDescription.label: 'meta Description'
 bookmark.metaKeywords.help: ''
 bookmark.metaKeywords.label: 'meta Keywords'
 bookmark.name.help: ''
 bookmark.name.label: Nom
+bookmark.name.placeholder: ''
 bookmark.refcategory.help: ''
 bookmark.refcategory.label: Catégorie
+bookmark.refcategory.placeholder: ''
 bookmark.refuser.help: ''
 bookmark.refuser.label: Utilisateur
+bookmark.refuser.placeholder: ''
 bookmark.slug.help: ''
 bookmark.slug.label: Slug
+bookmark.slug.placeholder: ''
 bookmark.url.help: ''
 bookmark.url.label: Url
+bookmark.url.placeholder: ''
 category.name.help: ''
 category.name.label: Nom
 category.name.placeholder: ''
@@ -139,18 +145,23 @@ noteinterne.title.label: Titre
 noteinterne.title.placeholder: ''
 param.disclaimer.activate.help: ''
 param.disclaimer.activate.label: 'Activer ?'
+param.disclaimer.activate.placeholder: ''
 param.disclaimer.message.help: ''
 param.disclaimer.message.label: Mesage
 param.disclaimer.title.help: ''
 param.disclaimer.title.label: Titre
+param.disclaimer.title.placeholder: ''
 param.disclaimer.url-redirect.help: ''
 param.disclaimer.url-redirect.label: 'Url de redirection'
+param.disclaimer.url-redirect.placeholder: ''
 param.favicon.help: ''
 param.favicon.label: Favicon
 param.formatdate.admin.help: ''
 param.formatdate.admin.label: Backend
+param.formatdate.admin.placeholder: ''
 param.formatdate.public.help: ''
 param.formatdate.public.label: Front
+param.formatdate.public.placeholder: ''
 param.generator.help: ''
 param.generator.label: 'Site générateur'
 param.generator.placeholder: ''
@@ -197,26 +208,36 @@ param.languagedefault.label: 'Langue par défaut'
 param.languagedefault.placeholder: ''
 param.metasite.description.help: ''
 param.metasite.description.label: 'SEO description'
+param.metasite.description.placeholder: ''
 param.metasite.keywords.help: ''
 param.metasite.keywords.label: 'SEO mot clef'
+param.metasite.keywords.placeholder: ''
 param.metasite.theme-color.help: ''
 param.metasite.theme-color.label: 'Thème couleur'
 param.metasite.viewport.help: ''
 param.metasite.viewport.label: Viewport
+param.metasite.viewport.placeholder: ''
 param.notification.mail.help: ''
 param.notification.mail.label: Courriel
+param.notification.mail.placeholder: ''
 param.notification.notify.help: ''
 param.notification.notify.label: Notification
+param.notification.notify.placeholder: ''
 param.notification.type.help: ''
 param.notification.type.label: Type
+param.notification.type.placeholder: ''
 param.oauth.activate.help: ''
 param.oauth.activate.label: 'Activé ?'
+param.oauth.activate.placeholder: ''
 param.oauth.id.help: ''
 param.oauth.id.label: Id
+param.oauth.id.placeholder: ''
 param.oauth.secret.help: ''
 param.oauth.secret.label: Secret
+param.oauth.secret.placeholder: ''
 param.oauth.type.help: ''
 param.oauth.type.label: Type
+param.oauth.type.placeholder: ''
 param.robotstxt.help: ''
 param.robotstxt.label: Robotstxt
 param.robotstxt.placeholder: ''
@@ -261,10 +282,12 @@ param.tarteaucitron.highPrivacy.label: HighPrivacy
 param.tarteaucitron.highPrivacy.placeholder: ''
 param.tarteaucitron.iconPosition.help: ''
 param.tarteaucitron.iconPosition.label: IconPosition
+param.tarteaucitron.iconPosition.placeholder: ''
 param.tarteaucitron.job.help: ''
 param.tarteaucitron.job.label: Jobs
 param.tarteaucitron.mandatory.help: ''
 param.tarteaucitron.mandatory.label: Mandatory
+param.tarteaucitron.mandatory.placeholder: ''
 param.tarteaucitron.moreInfoLink.help: ''
 param.tarteaucitron.moreInfoLink.label: MoreInfoLink
 param.tarteaucitron.moreInfoLink.placeholder: ''
@@ -273,8 +296,10 @@ param.tarteaucitron.orientation.label: Orientation
 param.tarteaucitron.orientation.placeholder: ''
 param.tarteaucitron.privacyUrl.help: ''
 param.tarteaucitron.privacyUrl.label: PrivacyUrl
+param.tarteaucitron.privacyUrl.placeholder: ''
 param.tarteaucitron.readmoreLink.help: ''
 param.tarteaucitron.readmoreLink.label: readmoreLink
+param.tarteaucitron.readmoreLink.placeholder: ''
 param.tarteaucitron.removeCredit.help: ''
 param.tarteaucitron.removeCredit.label: RemoveCredit
 param.tarteaucitron.removeCredit.placeholder: ''

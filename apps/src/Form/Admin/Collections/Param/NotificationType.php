@@ -25,7 +25,7 @@ class NotificationType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.notification.type.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
@@ -44,7 +44,7 @@ class NotificationType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.notification.mail.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
@@ -63,7 +63,7 @@ class NotificationType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.notification.notify.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]

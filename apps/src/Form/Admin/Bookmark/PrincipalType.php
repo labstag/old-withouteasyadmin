@@ -46,7 +46,7 @@ class PrincipalType extends AbstractTypeLib
                 'help'     => $this->translator->trans('bookmark.url.help', [], 'admin.form'),
                 'required' => false,
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('bookmark.url.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('bookmark.url.placeholder', [], 'admin.form'),
                 ],
             ]
         );
@@ -79,7 +79,7 @@ class PrincipalType extends AbstractTypeLib
                 'class'    => User::class,
                 'route'    => 'api_search_user',
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('bookmark.refuser.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('bookmark.refuser.placeholder', [], 'admin.form'),
                 ],
             ]
         );
@@ -96,7 +96,7 @@ class PrincipalType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'bookmark.refcategory.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
@@ -112,7 +112,7 @@ class PrincipalType extends AbstractTypeLib
                 'add'   => true,
                 'route' => 'api_search_postlibelle',
                 'attr'  => [
-                    'placeholder' => $this->translator->trans('bookmark.libelles.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('bookmark.libelles.placeholder', [], 'admin.form'),
                 ],
             ]
         );
@@ -160,14 +160,14 @@ class PrincipalType extends AbstractTypeLib
                 'label' => $this->translator->trans('bookmark.name.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('bookmark.name.help', [], 'admin.form'),
                 'attr'  => [
-                    'placeholder' => $this->translator->trans('bookmark.name.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('bookmark.name.placeholder', [], 'admin.form'),
                 ],
             ],
             'slug' => [
                 'label'    => $this->translator->trans('bookmark.slug.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('bookmark.slug.help', [], 'admin.form'),
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('bookmark.slug.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('bookmark.slug.placeholder', [], 'admin.form'),
                 ],
                 'required' => false,
             ],

@@ -43,7 +43,7 @@ class OauthType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.oauth.activate.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
@@ -63,7 +63,7 @@ class OauthType extends AbstractTypeLib
                 'help'    => $this->translator->trans('param.oauth.type.help', [], 'admin.form'),
                 'choices' => $choices,
                 'attr'    => [
-                    'placeholder' => $this->translator->trans('param.oauth.type.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('param.oauth.type.placeholder', [], 'admin.form'),
                 ],
             ]
         );
@@ -75,7 +75,7 @@ class OauthType extends AbstractTypeLib
                 'help'     => $this->translator->trans('param.oauth.id.help', [], 'admin.form'),
                 'required' => false,
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('param.oauth.id.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('param.oauth.id.placeholder', [], 'admin.form'),
                 ],
             ]
         );
@@ -90,7 +90,7 @@ class OauthType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.oauth.secret.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]

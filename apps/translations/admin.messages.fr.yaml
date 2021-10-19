@@ -46,7 +46,6 @@ form.user.phones: Téléphones
 geocode.accuracy: Accuracy
 geocode.actions: Actions
 geocode.community: Community
-geocode.communitycode: Communitycode
 geocode.communityname: Communityname
 geocode.coordonnees: Coordonnees
 geocode.countrycode: Countrycode
@@ -55,9 +54,7 @@ geocode.longitude: Longitude
 geocode.placename: Placename
 geocode.postalcode: Postalcode
 geocode.province: Province
-geocode.provincecode: Provincecode
 geocode.provincename: Provincename
-geocode.statecode: Statecode
 geocode.statename: Statename
 guard.actions: Actions
 guard.entite: Table

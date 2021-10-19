@@ -34,7 +34,7 @@ class MetaSiteType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.metasite.viewport.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
@@ -50,7 +50,7 @@ class MetaSiteType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.metasite.description.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
@@ -66,7 +66,7 @@ class MetaSiteType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans(
                         'param.metasite.keywords.placeholder',
                         [],
-                        'admin.search.form'
+                        'admin.form'
                     ),
                 ],
             ]
