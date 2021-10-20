@@ -188,22 +188,21 @@ commands: isdocker
 .PHONY: linter
 linter: isdocker phar node_modules ### Scripts Linter
 ifeq ($(COMMANDS_ARGS),all)
+	@make linter compo -i
 	@make linter phpfix -i
-	@make linter eslint -i
+	@make linter eslint-fix -i
 	@make linter stylelint-fix -i
 	@make linter twig -i
 	@make linter container -i
 	@make linter yaml -i
-	@make linter phpstan -i
-	@make linter phpcs -i
-	@make linter phpmd -i
+	@make linter phpaudit -i
 	@make linter readme -i
 else ifeq ($(COMMANDS_ARGS),phpaudit)
 	@make linter phpcs -i
 	@make linter phpmd -i
 	@make linter phpmnd -i
 	@make linter phpstan -i
-else ifeq ($(COMMANDS_ARGS),composer)
+else ifeq ($(COMMANDS_ARGS),compo)
 	@make composer validate -i
 	@make composer outdated -i
 else ifeq ($(COMMANDS_ARGS),phpfix)
@@ -253,7 +252,7 @@ else
 	@printf "${MISSING_ARGUMENTS}" "linter"
 	$(call array_arguments, \
 		["all"]="## Launch all linter" \
-		["composer"]="composer" \
+		["compo"]="composer" \
 		["readme"]="linter README.md" \
 		["phpaudit"]="AUDIT PHP" \
 		["phpdoc"]="php doc" \

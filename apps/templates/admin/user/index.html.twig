@@ -22,10 +22,10 @@
                     <td>{{ entity.username }}</td>
                     <td>{{ entity.refgroupe }}</td>
                     <td>{{ entity.email }}</td>
-                    <td>{{ entity.adresseUsers|length }}</td>
-                    <td>{{ entity.lienUsers|length }}</td>
-                    <td>{{ entity.emailUsers|length }}</td>
-                    <td>{{ entity.phoneUsers|length }}</td>
+                    <td><a href="{{ path('admin_adresseuser_index', {'refuser': entity.id}) }}">{{ entity.adresseUsers|length }}</a></td>
+                    <td><a href="{{ path('admin_lienuser_index', {'refuser': entity.id}) }}">{{ entity.lienUsers|length }}</a></td>
+                    <td><a href="{{ path('admin_emailuser_index', {'refuser': entity.id}) }}">{{ entity.emailUsers|length }}</a></td>
+                    <td><a href="{{ path('admin_phoneuser_index', {'refuser': entity.id}) }}">{{ entity.phoneUsers|length }}</a></td>
                     <td>
                         {% for state in workflow_marked_places(entity) %}
                             {{ state }}

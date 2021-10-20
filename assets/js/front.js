@@ -1,7 +1,6 @@
 import './global'
 const gotop = document.getElementById('footer-gotop')
-function gotopClick()
-{
+function gotopClick () {
   window.scrollTo(
     {
       top: 0,
@@ -10,6 +9,6 @@ function gotopClick()
     }
   )
 }
-if (gotop.length != 0) {
+if (gotop.length !== 0) {
   gotop.addEventListener('click', gotopClick)
 }

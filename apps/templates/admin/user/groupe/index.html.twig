@@ -15,7 +15,7 @@
                 <tr data-id="{{ entity.id }}">
                     <td>{{ entity.name }}</td>
                     <td>{{ entity.code }}</td>
-                    <td>{{ entity.users|length }}</td>
+                    <td><a href="{{ path('admin_user_index', {'refgroupe': entity.id}) }}">{{ entity.users|length }}</a></td>
                     <td>
                         {{ macro_admin.actions(entity, actions) }}
                     </td>

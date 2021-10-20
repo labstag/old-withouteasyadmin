@@ -8,7 +8,9 @@ export class InputValidity extends HTMLInputElement {
   traitement () {
     this.classList.remove('is-valid')
     this.classList.remove('is-invalid')
-    this.classList.add(this.checkValidity() ? 'is-valid' : 'is-invalid')
+    if (this.value() !== '') {
+      this.classList.add(this.checkValidity() ? 'is-valid' : 'is-invalid')
+    }
   }
 
   onKeydown () {

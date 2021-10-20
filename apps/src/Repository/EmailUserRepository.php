@@ -43,9 +43,20 @@ class EmailUserRepository extends EmailRepository
 
     protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
     {
+        $this->setQueryEtape($query, $get);
         $this->setQueryRefUser($query, $get);
 
         return $query;
+    }
+
+    protected function setQueryEtape(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['etape']) || empty($get['etape'])) {
+            return;
+        }
+
+        $query->andWhere('a.state LIKE :state');
+        $query->setParameter('state', '%'.$get['etape'].'%');
     }
 
     protected function setQueryRefUser(QueryBuilder &$query, array $get)
