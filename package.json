@@ -50,7 +50,7 @@
     "readme-md-generator": "1.0.0",
     "regenerator-runtime": "0.13.9",
     "sass": "1.42.1",
-    "sass-loader": "12.1.0",
+    "sass-loader": "12.2.0",
     "stimulus": "2.0.0",
     "stylelint": "13.13.1",
     "stylelint-config-standard": "22.0.0",
