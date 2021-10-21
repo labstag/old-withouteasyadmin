@@ -55,7 +55,7 @@
     "stylelint": "13.13.1",
     "stylelint-config-standard": "22.0.0",
     "url-loader": "4.1.1",
-    "webpack-notifier": "1.13.0"
+    "webpack-notifier": "1.14.1"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.4",
