@@ -14,7 +14,7 @@
     "bluemmb/faker-picsum-photos-provider": "2.0",
     "composer/package-versions-deprecated": "1.11.99.3",
     "doctrine/annotations": "1.13.2",
-    "doctrine/doctrine-bundle": "2.4.2",
+    "doctrine/doctrine-bundle": "2.4.3",
     "doctrine/doctrine-migrations-bundle": "3.2.0",
     "doctrine/orm": "2.9.5",
     "fakerphp/faker": "v1.16.0",
