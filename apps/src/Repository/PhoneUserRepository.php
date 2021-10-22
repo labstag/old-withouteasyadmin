@@ -26,6 +26,7 @@ class PhoneUserRepository extends PhoneRepository
 
     protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
     {
+        $this->setQueryEtape($query, $get);
         $this->setQueryCountry($query, $get);
         $this->setQueryRefUser($query, $get);
 
@@ -40,6 +41,16 @@ class PhoneUserRepository extends PhoneRepository
 
         $query->andWhere('a.country LIKE :country');
         $query->setParameter('country', '%'.$get['country'].'%');
+    }
+
+    protected function setQueryEtape(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['etape']) || empty($get['etape'])) {
+            return;
+        }
+
+        $query->andWhere('a.state LIKE :state');
+        $query->setParameter('state', '%'.$get['etape'].'%');
     }
 
     protected function setQueryRefUser(QueryBuilder &$query, array $get)

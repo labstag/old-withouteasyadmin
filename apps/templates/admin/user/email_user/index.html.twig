@@ -3,14 +3,27 @@
     {% embed "admin/table.html.twig" %}
         {% import "admin/macro.html.twig" as macro_admin %}
         {% block thead %}
-            <tr>
-                <th>{{ 'user.email.adresse'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.email.principal'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.email.user'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.email.workflow'|trans({}, 'admin.messages') }}</th>
-                <th></th>
-            </tr>
+            {% set theads = [
+                {
+                    'field': 'a.adresse',
+                    'name': 'user.email.adresse'|trans({}, 'admin.messages'),
+                },
+                {
+                    'field': 'a.principal',
+                    'name': 'user.email.principal'|trans({}, 'admin.messages'),
+                },
+                {
+                    'name': 'user.email.user'|trans({}, 'admin.messages'),
+                },
+                {
+                    'field': 'a.state',
+                    'name': 'workflow.state'|trans({}, 'admin.messages'),
+                },
+                {
+                    'name': 'user.email.workflow'|trans({}, 'admin.messages'),
+                }
+            ] %}
+			{{ macro_admin.thead(theads, pagination, true) }}
         {% endblock %}
         {% block tbody %}
             {% for entity in pagination %}

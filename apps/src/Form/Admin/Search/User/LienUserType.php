@@ -4,14 +4,12 @@ namespace Labstag\Form\Admin\Search\User;
 
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
-use Labstag\Lib\AbstractTypeLib;
+use Labstag\Lib\SearchAbstractTypeLib;
 use Labstag\Search\User\LienUserSearch;
-use Symfony\Component\Form\Extension\Core\Type\ResetType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LienUserType extends AbstractTypeLib
+class LienUserType extends SearchAbstractTypeLib
 {
     /**
      * @inheritdoc
@@ -40,21 +38,7 @@ class LienUserType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'submit',
-            SubmitType::class,
-            [
-                'attr' => ['name' => ''],
-            ]
-        );
-        $builder->add(
-            'reset',
-            ResetType::class,
-            [
-                'attr' => ['name' => ''],
-            ]
-        );
-        unset($options);
+        parent::buildForm($builder, $options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -2,16 +2,16 @@
 
 namespace Labstag\Form\Admin\Search\User;
 
+use Labstag\Entity\EmailUser;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
-use Labstag\Lib\AbstractTypeLib;
+use Labstag\Lib\SearchAbstractTypeLib;
 use Labstag\Search\User\EmailUserSearch;
-use Symfony\Component\Form\Extension\Core\Type\ResetType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EmailUserType extends AbstractTypeLib
+class EmailUserType extends SearchAbstractTypeLib
 {
     /**
      * @inheritdoc
@@ -40,21 +40,23 @@ class EmailUserType extends AbstractTypeLib
                 ],
             ]
         );
+        $workflow   = $this->workflows->get(new EmailUser());
+        $definition = $workflow->getDefinition();
+        $places     = $definition->getPlaces();
         $builder->add(
-            'submit',
-            SubmitType::class,
+            'etape',
+            ChoiceType::class,
             [
-                'attr' => ['name' => ''],
+                'required' => false,
+                'label'    => $this->translator->trans('emailuser.etape.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('emailuser.etape.help', [], 'admin.search.form'),
+                'choices'  => $places,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('emailuser.etape.placeholder', [], 'admin.search.form'),
+                ],
             ]
         );
-        $builder->add(
-            'reset',
-            ResetType::class,
-            [
-                'attr' => ['name' => ''],
-            ]
-        );
-        unset($options);
+        parent::buildForm($builder, $options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

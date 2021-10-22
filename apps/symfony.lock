@@ -227,16 +227,16 @@
         "version": "5.1.2"
     },
     "liip/imagine-bundle": {
-        "version": "1.8",
+        "version": "2.6",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
             "branch": "master",
             "version": "1.8",
-            "ref": "ffbb72e74598f04cc7f79f9fc736c77eeb98f569"
+            "ref": "d1227d002b70d1a1f941d91845fcd7ac7fbfc929"
         },
         "files": [
-            "config/packages/liip_imagine.yaml",
-            "config/routes/liip_imagine.yaml"
+            "config/routes/liip_imagine.yaml",
+            "config/packages/liip_imagine.yaml"
         ]
     },
     "mhujer/breadcrumbs-bundle": {
@@ -673,7 +673,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "5.3",
-            "ref": "9c4fcf79873f7400c885b90935f7163233615d6f"
+            "ref": "3307d76caa2d12fb10ade57975beb3d8975df396"
         },
         "files": [
             "config/packages/security.yaml"
@@ -781,23 +781,23 @@
         ]
     },
     "symfony/webpack-encore-bundle": {
-        "version": "1.9",
+        "version": "1.12",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "1.9",
-            "ref": "404714014dd6ff7de9aa0f9582d592147359e617"
+            "ref": "0f274572ea315eb3b5884518a50ca43f211b4534"
         },
         "files": [
-            "assets/app.js",
-            "assets/bootstrap.js",
+            "assets/styles/app.css",
             "assets/controllers.json",
             "assets/controllers/hello_controller.js",
-            "assets/styles/app.css",
-            "config/packages/assets.yaml",
-            "config/packages/prod/webpack_encore.yaml",
-            "config/packages/test/webpack_encore.yaml",
+            "assets/app.js",
+            "assets/bootstrap.js",
             "config/packages/webpack_encore.yaml",
+            "config/packages/test/webpack_encore.yaml",
+            "config/packages/prod/webpack_encore.yaml",
+            "config/packages/assets.yaml",
             "package.json",
             "webpack.config.js"
         ]

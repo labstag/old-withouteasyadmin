@@ -33,6 +33,9 @@ edito.refuser.placeholder: ''
 edito.title.help: ''
 edito.title.label: title
 edito.title.placeholder: ''
+emailuser.etape.help: ''
+emailuser.etape.label: etape
+emailuser.etape.placeholder: ''
 emailuser.refuser.help: ''
 emailuser.refuser.label: refuser
 emailuser.refuser.placeholder: ''
@@ -60,6 +63,9 @@ groupe.name.placeholder: ''
 libelle.nom.help: ''
 libelle.nom.label: nom
 libelle.nom.placeholder: ''
+lienuser.etape.help: ''
+lienuser.etape.label: etape
+lienuser.etape.placeholder: ''
 lienuser.refuser.help: ''
 lienuser.refuser.label: refuser
 lienuser.refuser.placeholder: ''
@@ -102,7 +108,7 @@ user.email.placeholder: ''
 user.etape.help: ''
 user.etape.label: etape
 user.etape.placeholder: ''
-user.refgroupe.help: refgroupe
+user.refgroupe.help: ''
 user.refgroupe.label: refgroupe
 user.refgroupe.placeholder: ''
 user.username.help: ''

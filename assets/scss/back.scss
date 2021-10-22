@@ -316,6 +316,10 @@ picture {
     @extend .fas;
     @extend .fa-sign-in-alt;
   }
+
+  &:hover {
+    color: white;
+  }
 }
 
 .link-delete,
@@ -407,6 +411,10 @@ picture {
 
 #searchform {
   background: transparent;
+
+  button {
+    margin-top: 22px;
+  }
 }
 
 @media all and (min-width: 992px) {

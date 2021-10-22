@@ -7,6 +7,8 @@ use Labstag\Entity\User;
 class EmailUserSearch
 {
 
+    public $etape;
+
     public $refuser;
 
     public function search(array $get, $doctrine)

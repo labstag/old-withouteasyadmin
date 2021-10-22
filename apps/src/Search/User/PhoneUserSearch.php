@@ -9,6 +9,8 @@ class PhoneUserSearch
 
     public $country;
 
+    public $etape;
+
     public $refuser;
 
     public function search(array $get, $doctrine)

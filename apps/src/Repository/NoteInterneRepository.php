@@ -56,22 +56,22 @@ class NoteInterneRepository extends ServiceEntityRepositoryLib
 
     protected function setQueryDateDebut(QueryBuilder &$query, array $get)
     {
-        if (!isset($get['date_debut']) || empty($get['date_debut'])) {
+        if (!isset($get['dateDebut']) || empty($get['dateDebut'])) {
             return;
         }
 
-        $query->andWhere('DATE(a.dateDebut) = :date_debut');
-        $query->setParameter('date_debut', $get['date_debut']);
+        $query->andWhere('DATE(a.dateDebut) = :dateDebut');
+        $query->setParameter('dateDebut', $get['dateDebut']);
     }
 
     protected function setQueryDateFin(QueryBuilder &$query, array $get)
     {
-        if (!isset($get['date_fin']) || empty($get['date_fin'])) {
+        if (!isset($get['dateFin']) || empty($get['dateFin'])) {
             return;
         }
 
-        $query->andWhere('DATE(a.dateFin) = :date_fin');
-        $query->setParameter('date_fin', $get['date_fin']);
+        $query->andWhere('DATE(a.dateFin) = :dateFin');
+        $query->setParameter('dateFin', $get['dateFin']);
     }
 
     protected function setQueryEtape(QueryBuilder &$query, array $get)
