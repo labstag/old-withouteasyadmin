@@ -3,16 +3,38 @@
     {% embed "admin/table.html.twig" %}
         {% import "admin/macro.html.twig" as macro_admin %}
         {% block thead %}
-            <tr>
-                <th>{{ 'user.phone.numero'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.phone.country'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.phone.verif'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.phone.type'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.phone.principal'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.phone.workflow'|trans({}, 'admin.messages') }}</th>
-                <th></th>
-            </tr>
+            {% set theads = [
+                {
+                    'field': 'a.numero',
+                    'name': 'user.phone.numero'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.country',
+                    'name': 'user.phone.country'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'user.phone.verif'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.type',
+                    'name': 'user.phone.type'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.principal',
+                    'name': 'user.phone.principal'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.state',
+                    'name': 'workflow.state'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'user.phone.workflow'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'user.phone.user'|trans({}, 'admin.messages')
+                }
+            ] %}
+			{{ macro_admin.thead(theads, pagination, true) }}
         {% endblock %}
         {% block tbody %}
             {% for entity in pagination %}
@@ -35,6 +57,9 @@
                     </td>
                     <td>
                         {{ macro_admin.workflow(entity, actions) }}
+                    </td>
+                     <td>
+                        {{ entity.refuser.username }}
                     </td>
                     <td>
                         {{ macro_admin.actions(entity, actions) }}

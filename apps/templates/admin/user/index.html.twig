@@ -3,18 +3,39 @@
     {% embed "admin/table.html.twig" %}
         {% import "admin/macro.html.twig" as macro_admin %}
         {% block thead %}
-            <tr>
-                <th>{{ 'user.username'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.groupe'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.email'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.addresss'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.links'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.emails'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.phones'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'user.workflow'|trans({}, 'admin.messages') }}</th>
-                <th></th>
-            </tr>
+            {% set theads = [
+                {
+                    'field': 'a.username',
+                    'name': 'user.username'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'user.groupe'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.email',
+                    'name': 'user.email'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'user.addresss'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'user.links'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'user.emails'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'user.phones'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.state',
+                    'name': 'workflow.state'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'user.workflow'|trans({}, 'admin.messages')
+                }
+            ] %}
+			{{ macro_admin.thead(theads, pagination, true) }}
         {% endblock %}
         {% block tbody %}
             {% for entity in pagination %}

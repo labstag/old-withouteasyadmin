@@ -3,15 +3,31 @@
     {% embed "admin/table.html.twig" %}
         {% import "admin/macro.html.twig" as macro_admin %}
         {% block thead %}
-            <tr>
-                <th>{{ 'noteinterne.title'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'noteinterne.date_debut'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'noteinterne.date_fin'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'noteinterne.user'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'noteinterne.workflow'|trans({}, 'admin.messages') }}</th>
-                <th></th>
-            </tr>
+			{% set theads = [
+                {
+                    'field': 'a.title',
+                    'name': 'noteinterne.title'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.dateDebut',
+                    'name': 'noteinterne.date_debut'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.dateFin',
+                    'name': 'noteinterne.date_fin'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'noteinterne.user'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.state',
+                    'name': 'workflow.state'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'noteinterne.workflow'|trans({}, 'admin.messages')
+                }
+            ] %}
+			{{ macro_admin.thead(theads, pagination, true) }}
         {% endblock %}
         {% block tbody %}
             {% for entity in pagination %}

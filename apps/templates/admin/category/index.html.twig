@@ -2,13 +2,18 @@
 {% extends 'admin/category/layout.html.twig' %}
 {% block body %}
     {% embed "admin/table.html.twig" %}
+        {% import "admin/macro.html.twig" as macro_admin %}
         {% import "admin/category/macro.html.twig" as macro_post %}
         {% block thead %}
-            <tr>
-                <th>{{ 'post.category.name'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'post.category.slug'|trans({}, 'admin.messages') }}</th>
-                <th></th>
-            </tr>
+            {% set theads = [
+                {
+                    'name': 'post.category.name'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'post.category.slug'|trans({}, 'admin.messages')
+                }
+            ] %}
+			{{ macro_admin.thead(theads, pagination, true) }}
         {% endblock %}
         {% block tbody %}
         {{ macro_post.show(pagination, 0, actions) }}

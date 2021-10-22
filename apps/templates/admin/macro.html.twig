@@ -1,3 +1,20 @@
+{% macro thead(theads, pagination, actions) %}
+    <tr>
+    {% for thead in theads %}
+        <th{% if thead.field is defined and pagination.isSorted(thead.field) %} class="sorted"{% endif %}>
+            {% if thead.field is defined %}
+                {{ knp_pagination_sortable(pagination, thead.name, thead.field) }}
+            {% elseif thead.name is defined %}
+                {{ thead.name }}
+            {% endif %}
+        </th>
+    {% endfor %}
+    {% if actions == true %}
+        <th></th>
+    {% endif %}
+    <tr>
+{% endmacro %}
+
 {% macro form_img(entity, field, name, url) %}
     {% set file = attachment(field) %}
     {% set state = guard_route(url) %}

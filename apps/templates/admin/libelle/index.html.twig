@@ -3,11 +3,17 @@
     {% embed "admin/table.html.twig" %}
         {% import "admin/macro.html.twig" as macro_admin %}
         {% block thead %}
-            <tr>
-                <th>{{ 'post.libelle.name'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'post.libelle.slug'|trans({}, 'admin.messages') }}</th>
-                <th></th>
-            </tr>
+            {% set theads = [
+                {
+                    'field': 'a.name',
+                    'name': 'post.libelle.name'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.slug',
+                    'name': 'post.libelle.slug'|trans({}, 'admin.messages')
+                }
+            ] %}
+			{{ macro_admin.thead(theads, pagination, true) }}
         {% endblock %}
         {% block tbody %}
             {% for entity in pagination %}

@@ -1,41 +1,68 @@
 {% extends 'admin/geocode/layout.html.twig' %}
 {% block body %}
-    {% embed "admin/table.html.twig" %}
-        {% import "admin/macro.html.twig" as macro_admin %}
-        {% block thead %}
-            <tr>
-                <th>{{ 'geocode.countrycode'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'geocode.postalcode'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'geocode.placename'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'geocode.statename'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'geocode.provincename'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'geocode.communityname'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'geocode.latitude'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'geocode.longitude'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'geocode.accuracy'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'geocode.actions'|trans({}, 'admin.messages') }}</th>
-            </tr>
-        {% endblock %}
-        {% block tbody %}
-            {% for entity in pagination %}
-                <tr data-id="{{ entity.id }}">
-                    <td>
-                        <span class="flag-icon flag-icon-{{ entity.countryCode|lower }}"></span>
-                        {{ entity.countryCode|country_name('fr') }}
-                    </td>
-                    <td>{{ entity.postalCode }}</td>
-                    <td>{{ entity.placeName }}</td>
-                    <td>{{ entity.stateName }}</td>
-                    <td>{{ entity.provinceName }}</td>
-                    <td>{{ entity.communityName }}</td>
-                    <td>{{ entity.latitude }}</td>
-                    <td>{{ entity.longitude }}</td>
-                    <td>{{ entity.accuracy }}</td>
-                    <td>
-                        {{ macro_admin.actions(entity, actions) }}
-                    </td>
-                </tr>
-            {% endfor %}
-        {% endblock %}
-    {% endembed %}
+	{% embed "admin/table.html.twig" %}
+		{% import "admin/macro.html.twig" as macro_admin %}
+		{% block thead %}
+			{% set theads = [
+                {
+                    'field': 'a.countryCode',
+                    'name': 'geocode.countrycode'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.postalCode',
+                    'name': 'geocode.postalcode'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.placeName',
+                    'name': 'geocode.placename'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.stateName',
+                    'name': 'geocode.statename'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.provinceName',
+                    'name': 'geocode.provincename'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.communityName',
+                    'name': 'geocode.communityname'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.latitude',
+                    'name': 'geocode.latitude'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.longitude',
+                    'name': 'geocode.longitude'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.accuracy',
+                    'name': 'geocode.accuracy'|trans({}, 'admin.messages')
+                },
+            ] %}
+			{{ macro_admin.thead(theads, pagination, true) }}
+		{% endblock %}
+		{% block tbody %}
+			{% for entity in pagination %}
+				<tr data-id="{{ entity.id }}">
+					<td>
+						<span class="flag-icon flag-icon-{{ entity.countryCode|lower }}"></span>
+						{{ entity.countryCode|country_name('fr') }}
+					</td>
+					<td>{{ entity.postalCode }}</td>
+					<td>{{ entity.placeName }}</td>
+					<td>{{ entity.stateName }}</td>
+					<td>{{ entity.provinceName }}</td>
+					<td>{{ entity.communityName }}</td>
+					<td>{{ entity.latitude }}</td>
+					<td>{{ entity.longitude }}</td>
+					<td>{{ entity.accuracy }}</td>
+					<td>
+						{{ macro_admin.actions(entity, actions) }}
+					</td>
+				</tr>
+			{% endfor %}
+		{% endblock %}
+	{% endembed %}
 {% endblock %}

@@ -3,14 +3,26 @@
     {% embed "admin/table.html.twig" %}
         {% import "admin/macro.html.twig" as macro_admin %}
         {% block thead %}
-            <tr>
-                <th>{{ 'bookmark.name'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'bookmark.user'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'bookmark.category'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
-                <th>{{ 'bookmark.workflow'|trans({}, 'admin.messages') }}</th>
-                <th></th>
-            </tr>
+            {% set theads = [
+                {
+                    'field': 'a.name',
+                    'name': 'bookmark.name'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'bookmark.user'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'bookmark.category'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.state',
+                    'name': 'workflow.state'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'bookmark.workflow'|trans({}, 'admin.messages')
+                }
+            ] %}
+            {{ macro_admin.thead(theads, pagination, true) }}
         {% endblock %}
         {% block tbody %}
             {% for entity in pagination %}
