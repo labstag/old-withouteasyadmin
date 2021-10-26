@@ -4,8 +4,9 @@ namespace Labstag\Search;
 
 use Labstag\Entity\Category;
 use Labstag\Entity\User;
+use Labstag\Lib\LibSearch;
 
-class BookmarkSearch
+class BookmarkSearch extends LibSearch
 {
 
     public $etape;

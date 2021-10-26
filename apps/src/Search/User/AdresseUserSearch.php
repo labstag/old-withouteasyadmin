@@ -3,8 +3,9 @@
 namespace Labstag\Search\User;
 
 use Labstag\Entity\User;
+use Labstag\Lib\LibSearch;
 
-class AdresseUserSearch
+class AdresseUserSearch extends LibSearch
 {
 
     public $country;

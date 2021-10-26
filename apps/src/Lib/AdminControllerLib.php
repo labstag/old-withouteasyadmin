@@ -122,10 +122,11 @@ abstract class AdminControllerLib extends ControllerLib
 
         $query      = $this->get('request_stack')->getCurrentRequest()->query;
         $get        = $query->all();
+        $limit      = $query->getInt('limit', 10);
         $pagination = $this->paginator->paginate(
             $repository->{$method}($get),
             $query->getInt('page', 1),
-            10
+            $limit
         );
 
         if ('trash' == $routeType && 0 == $pagination->count()) {
@@ -138,8 +139,9 @@ abstract class AdminControllerLib extends ControllerLib
         ];
         $search     = $this->searchForm();
         if (0 != count($search) && array_key_exists('form', $search) && array_key_exists('data', $search)) {
-            $get  = $query->all();
-            $data = $search['data'];
+            $get         = $query->all();
+            $data        = $search['data'];
+            $data->limit = $limit;
             $data->search($get, $this->getDoctrine());
             $route      = $this->get('request_stack')->getCurrentRequest()->get('_route');
             $url        = $this->generateUrl($route);

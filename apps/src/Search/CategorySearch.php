@@ -2,7 +2,9 @@
 
 namespace Labstag\Search;
 
-class CategorySearch
+use Labstag\Lib\LibSearch;
+
+class CategorySearch extends LibSearch
 {
 
     public $name;

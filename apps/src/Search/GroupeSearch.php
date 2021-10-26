@@ -2,7 +2,9 @@
 
 namespace Labstag\Search;
 
-class GroupeSearch
+use Labstag\Lib\LibSearch;
+
+class GroupeSearch extends LibSearch
 {
 
     public $name;
