@@ -21,7 +21,7 @@ error.page.404.title: 'Erreur 404'
 error.page.errors: 'Erreur interne du serveur.'
 error.page.gotosite: 'Revenir sur le site'
 form.icon.error: Erreur
-form.requireinfo: 'Les informations marquées d''un %span%'
+form.requireinfo: 'Les champs marquées d''un %span% sont obligatoires'
 modal.attachmentdelete.message: 'Êtes-vous sûr de vouloir supprimer cette donnée ?'
 modal.attachmentdelete.title: 'Supprimer ?'
 modal.button.cancel: Annuler
