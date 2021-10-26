@@ -44,7 +44,6 @@ form.user.emails: Emails
 form.user.links: Liens
 form.user.phones: Téléphones
 geocode.accuracy: Accuracy
-geocode.actions: Actions
 geocode.community: Community
 geocode.communityname: Communityname
 geocode.coordonnees: Coordonnees
