@@ -29,9 +29,9 @@
         {% endif %}
         {% block stylesheets %}{% endblock %}
         {% block javascripts %}{% endblock %}
-        {# {% if app.environment == 'dev' %}
+        {% if app.environment == 'dev' %}
             <script src="http://localhost:35729/livereload.js"></script>
-        {% endif %} #}
+        {% endif %}
         {% if config.tarteaucitron is defined %}
             <script type="text/javascript" src="/tarteaucitron/tarteaucitron.js"></script>
             <script type="text/javascript">

@@ -2,9 +2,9 @@
 
 namespace Labstag\Form\Admin\Search;
 
+use Labstag\FormType\FlagCountryType;
 use Labstag\Lib\SearchAbstractTypeLib;
 use Labstag\Search\GeocodeSearch;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,7 +21,7 @@ class GeocodeType extends SearchAbstractTypeLib
     {
         $builder->add(
             'countrycode',
-            CountryType::class,
+            FlagCountryType::class,
             [
                 'required' => false,
                 'label'    => $this->translator->trans('geocode.countrycode.label', [], 'admin.search.form'),
