@@ -205,11 +205,7 @@ abstract class FixtureLib extends Fixture
             $old        = clone $attachment;
 
             try {
-                $image   = $faker->imageUrl(
-                    1920,
-                    1920,
-                    true
-                );
+                $image   = $faker->imageUrl(1920, 1920);
                 $content = file_get_contents($image);
                 // @var resource $tmpfile
                 $tmpfile = tmpfile();

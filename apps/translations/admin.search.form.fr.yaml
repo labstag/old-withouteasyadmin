@@ -39,6 +39,11 @@ emailuser.etape.placeholder: ''
 emailuser.refuser.help: ''
 emailuser.refuser.label: refuser
 emailuser.refuser.placeholder: ''
+form.limit.help: ''
+form.limit.label: limit
+form.limit.placeholder: ''
+form.reset: 'Reset'
+form.submit: 'Rechercher'
 geocode.communityname.help: ''
 geocode.communityname.label: communityname
 geocode.communityname.placeholder: ''

@@ -2,9 +2,9 @@
 
 namespace Labstag\Form\Admin\Collections\Form;
 
+use Labstag\FormType\FlagCountryType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\LocaleType;
@@ -66,7 +66,7 @@ class ChoiceFieldsType extends AbstractTypeLib
         );
         $builder->add(
             'country',
-            CountryType::class,
+            FlagCountryType::class,
             ['help' => 'help']
         );
         $builder->add(

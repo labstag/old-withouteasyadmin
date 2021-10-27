@@ -3,8 +3,8 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\GeoCode;
+use Labstag\FormType\FlagCountryType;
 use Labstag\Lib\AbstractTypeLib;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +16,7 @@ class GeoCodeType extends AbstractTypeLib
         unset($options);
         $builder->add(
             'countryCode',
-            CountryType::class,
+            FlagCountryType::class,
             [
                 'label' => $this->translator->trans('geocode.countryCode.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('geocode.countryCode.help', [], 'admin.form'),

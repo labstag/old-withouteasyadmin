@@ -4,8 +4,9 @@ namespace Labstag\Search;
 
 use DateTime;
 use Labstag\Entity\User;
+use Labstag\Lib\LibSearch;
 
-class NoteInterneSearch
+class NoteInterneSearch extends LibSearch
 {
 
     public $dateDebut;

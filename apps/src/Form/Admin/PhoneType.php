@@ -3,9 +3,9 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\PhoneUser;
+use Labstag\FormType\FlagCountryType;
 use Labstag\Lib\AbstractTypeLib;
 use Labstag\Service\PhoneService;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -57,7 +57,7 @@ abstract class PhoneType extends AbstractTypeLib
         );
         $builder->add(
             'country',
-            CountryType::class,
+            FlagCountryType::class,
             [
                 'label' => $this->translator->trans('phone.country.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('phone.country.help', [], 'admin.form'),

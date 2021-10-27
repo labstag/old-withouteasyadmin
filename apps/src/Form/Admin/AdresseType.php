@@ -2,9 +2,9 @@
 
 namespace Labstag\Form\Admin;
 
+use Labstag\FormType\FlagCountryType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -32,7 +32,7 @@ abstract class AdresseType extends AbstractTypeLib
         );
         $builder->add(
             'country',
-            CountryType::class,
+            FlagCountryType::class,
             [
                 'label' => $this->translator->trans('adresse.country.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('adresse.country.help', [], 'admin.form'),

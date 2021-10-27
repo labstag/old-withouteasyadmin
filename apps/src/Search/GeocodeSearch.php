@@ -2,7 +2,9 @@
 
 namespace Labstag\Search;
 
-class GeocodeSearch
+use Labstag\Lib\LibSearch;
+
+class GeocodeSearch extends LibSearch
 {
 
     public $communityname;

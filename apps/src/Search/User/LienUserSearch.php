@@ -3,8 +3,9 @@
 namespace Labstag\Search\User;
 
 use Labstag\Entity\User;
+use Labstag\Lib\LibSearch;
 
-class LienUserSearch
+class LienUserSearch extends LibSearch
 {
 
     public $refuser;

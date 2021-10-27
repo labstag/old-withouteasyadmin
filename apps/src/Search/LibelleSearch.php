@@ -2,7 +2,9 @@
 
 namespace Labstag\Search;
 
-class LibelleSearch
+use Labstag\Lib\LibSearch;
+
+class LibelleSearch extends LibSearch
 {
 
     public $nom;

@@ -113,10 +113,11 @@ endif
 .PHONY: encore
 encore: ### Script for Encore
 ifeq ($(COMMANDS_ARGS),dev)
-	@npm rebuild node-sass
 	@npm run encore-dev
 else ifeq ($(COMMANDS_ARGS),watch)
 	@npm run encore-watch
+else ifeq ($(COMMANDS_ARGS),dev-server)
+	@npm run encore-dev-server
 else ifeq ($(COMMANDS_ARGS),build)
 	@npm run encore-build
 else
@@ -124,6 +125,7 @@ else
 	$(call array_arguments, \
 		["dev"]="créer les assets en version dev" \
 		["watch"]="créer les assets en version watch" \
+		["dev-server"]="créer les assets en version dev-server" \
 		["build"]="créer les assets en version prod" \
 	)
 endif
