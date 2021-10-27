@@ -54,7 +54,7 @@ apps/composer.lock: isdocker apps/composer.json
 
 apps/vendor: isdocker apps/composer.json
 	${COMPOSER_EXEC} install --no-progress --prefer-dist --optimize-autoloader
-	
+
 .PHONY: assets
 assets: isdocker
 	${SYMFONY_EXEC} assets:install public --symlink --relative
@@ -313,7 +313,7 @@ endif
 
 .PHONY: translations
 translations: isdocker ## update translation
-	${SYMFONY_EXEC} translation:update --force --format=yaml --clean fr 
+	${SYMFONY_EXEC} translation:update --force --format=yaml --clean fr
 
 .PHONY: workflow-png
 workflow-png: isdocker ### generate workflow png
