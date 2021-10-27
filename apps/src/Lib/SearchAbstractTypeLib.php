@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,7 +37,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
     {
         $builder->add(
             'limit',
-            TextType::class,
+            NumberType::class,
             [
                 'required' => false,
                 'label'    => $this->translator->trans('form.limit.label', [], 'admin.search.form'),
