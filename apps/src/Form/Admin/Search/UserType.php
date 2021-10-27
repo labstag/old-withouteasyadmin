@@ -36,21 +36,6 @@ class UserType extends SearchAbstractTypeLib
             ]
         );
         $builder->add(
-            'refgroupe',
-            SearchableType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('user.refgroupe.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('user.refgroupe.help', [], 'admin.search.form'),
-                'multiple' => false,
-                'class'    => Groupe::class,
-                'route'    => 'api_search_group',
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('user.refgroupe.placeholder', [], 'admin.search.form'),
-                ],
-            ]
-        );
-        $builder->add(
             'email',
             EmailType::class,
             [
