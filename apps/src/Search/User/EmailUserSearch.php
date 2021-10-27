@@ -7,7 +7,6 @@ use Labstag\Lib\LibSearch;
 
 class EmailUserSearch extends LibSearch
 {
-
     public $etape;
 
     public $refuser;

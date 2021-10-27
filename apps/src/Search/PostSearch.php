@@ -9,7 +9,6 @@ use Labstag\Lib\LibSearch;
 
 class PostSearch extends LibSearch
 {
-
     public $etape;
 
     public $published;

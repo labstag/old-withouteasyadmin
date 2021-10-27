@@ -7,7 +7,6 @@ use Labstag\Lib\LibSearch;
 
 class AdresseUserSearch extends LibSearch
 {
-
     public $country;
 
     public $refuser;

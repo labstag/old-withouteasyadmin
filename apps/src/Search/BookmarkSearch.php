@@ -8,7 +8,6 @@ use Labstag\Lib\LibSearch;
 
 class BookmarkSearch extends LibSearch
 {
-
     public $etape;
 
     public $name;

@@ -13,8 +13,7 @@ class FlagCountryType extends AbstractType
         FormView $view,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         $view->vars['attr']['is'] = 'select-country';
 
         unset($form, $options);
