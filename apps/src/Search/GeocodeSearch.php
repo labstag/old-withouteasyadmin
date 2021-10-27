@@ -6,7 +6,6 @@ use Labstag\Lib\LibSearch;
 
 class GeocodeSearch extends LibSearch
 {
-
     public $communityname;
 
     public $countrycode;

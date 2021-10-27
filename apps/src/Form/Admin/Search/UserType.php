@@ -21,8 +21,7 @@ class UserType extends SearchAbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add(
             'username',
             TextType::class,

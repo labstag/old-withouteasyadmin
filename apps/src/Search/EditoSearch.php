@@ -8,7 +8,6 @@ use Labstag\Lib\LibSearch;
 
 class EditoSearch extends LibSearch
 {
-
     public $etape;
 
     public $published;

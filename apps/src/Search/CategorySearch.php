@@ -6,7 +6,6 @@ use Labstag\Lib\LibSearch;
 
 class CategorySearch extends LibSearch
 {
-
     public $name;
 
     public function search(array $get, $doctrine)

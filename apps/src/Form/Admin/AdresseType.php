@@ -16,8 +16,7 @@ abstract class AdresseType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         unset($options);
         $builder->add(
             'rue',

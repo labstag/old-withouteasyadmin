@@ -7,7 +7,6 @@ use Labstag\Lib\LibSearch;
 
 class PhoneUserSearch extends LibSearch
 {
-
     public $country;
 
     public $etape;

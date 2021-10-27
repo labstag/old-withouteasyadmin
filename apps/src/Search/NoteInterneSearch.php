@@ -8,7 +8,6 @@ use Labstag\Lib\LibSearch;
 
 class NoteInterneSearch extends LibSearch
 {
-
     public $dateDebut;
 
     public $dateFin;
