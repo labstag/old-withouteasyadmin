@@ -14,12 +14,14 @@ class UserSearch extends LibSearch
 
     public $username;
 
+    public $refgroup;
+
     public function search(array $get, $doctrine)
     {
         $groupeRepo = $doctrine->getRepository(Groupe::class);
         foreach ($get as $key => $value) {
             $this->{$key} = $value;
-            $this->{$key} = ('refgroupe' == $key) ? $groupeRepo->find($value) : $this->{$key};
+            $this->{$key} = ('refgroup' == $key) ? $groupeRepo->find($value) : $this->{$key};
         }
     }
 }
