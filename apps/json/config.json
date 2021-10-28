@@ -47,7 +47,7 @@
             "notify": "1"
         },
         {
-            "type": "adresseuser",
+            "type": "addresseuser",
             "mail": "1",
             "notify": "1"
         }

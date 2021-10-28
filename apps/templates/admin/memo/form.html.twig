@@ -1,0 +1,18 @@
+{% import "admin/macro.html.twig" as macro_admin %}
+{% extends 'admin/memo/layout.html.twig' %}
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.date_debut) }}
+    {{ form_row(form.date_fin) }}
+    {% if entity.id is not null %}
+        {{ macro_admin.form_img(
+            entity,
+            entity.fond,
+            "memo.fond"|trans({}, 'admin.messages'),
+            path('api_attachment_memofond', {'entity': entity.id})
+        ) }}
+    {% endif %}
+    {{ form_row(form.file) }}
+    {{ form_end(form) }}
+{% endblock %}

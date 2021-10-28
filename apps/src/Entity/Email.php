@@ -29,7 +29,7 @@ abstract class Email
      *     message="The email '{{ value }}' is not a valid email."
      * )
      */
-    protected $adresse;
+    protected $address;
 
     /**
      * @ORM\Id
@@ -50,12 +50,12 @@ abstract class Email
 
     public function __toString()
     {
-        return $this->getAdresse();
+        return $this->getAddress();
     }
 
-    public function getAdresse(): ?string
+    public function getAddress(): ?string
     {
-        return $this->adresse;
+        return $this->address;
     }
 
     public function getId(): ?string
@@ -68,9 +68,9 @@ abstract class Email
         return $this->principal;
     }
 
-    public function setAdresse(string $adresse): self
+    public function setAddress(string $address): self
     {
-        $this->adresse = $adresse;
+        $this->address = $address;
 
         return $this;
     }

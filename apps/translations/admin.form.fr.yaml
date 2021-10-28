@@ -1,26 +1,26 @@
-adresse.country.help: ''
-adresse.country.label: Pays
-adresse.country.placeholder: ''
-adresse.gps.help: ''
-adresse.gps.label: 'Position GPS'
-adresse.gps.placeholder: ''
-adresse.pmr.help: ''
-adresse.pmr.label: 'Accès PMR ?'
-adresse.rue.help: ''
-adresse.rue.label: Rue
-adresse.rue.placeholder: ''
-adresse.type.help: ''
-adresse.type.label: Type
-adresse.type.placeholder: ''
-adresse.ville.help: ''
-adresse.ville.label: Ville
-adresse.ville.placeholder: ''
-adresse.zipcode.help: ''
-adresse.zipcode.label: 'Code postal'
-adresse.zipcode.placeholder: ''
-adresseuser.refuser.help: ''
-adresseuser.refuser.label: Utilisateur
-adresseuser.refuser.placeholder: ''
+address.country.help: ''
+address.country.label: Pays
+address.country.placeholder: ''
+address.gps.help: ''
+address.gps.label: 'Position GPS'
+address.gps.placeholder: ''
+address.pmr.help: ''
+address.pmr.label: 'Accès PMR ?'
+address.street.help: ''
+address.street.label: Rue
+address.street.placeholder: ''
+address.type.help: ''
+address.type.label: Type
+address.type.placeholder: ''
+address.city.help: ''
+address.city.label: Ville
+address.city.placeholder: ''
+address.zipcode.help: ''
+address.zipcode.label: 'Code postal'
+address.zipcode.placeholder: ''
+addressuser.refuser.help: ''
+addressuser.refuser.label: Utilisateur
+addressuser.refuser.placeholder: ''
 bookmark.content.help: ''
 bookmark.content.label: Contenu
 bookmark.file.help: ''
@@ -76,9 +76,9 @@ edito.refuser.placeholder: ''
 edito.title.help: ''
 edito.title.label: Titre
 edito.title.placeholder: ''
-email.adresse.help: ''
-email.adresse.label: 'Adresse courriel'
-email.adresse.placeholder: ''
+email.address.help: ''
+email.address.label: 'Adresse courriel'
+email.address.placeholder: ''
 emailuser.principal.help: ''
 emailuser.principal.label: 'Principal ?'
 emailuser.refuser.help: ''
@@ -99,9 +99,9 @@ libelle.name.placeholder: ''
 libelle.slug.help: ''
 libelle.slug.label: Slug
 libelle.slug.placeholder: ''
-lien.adresse.help: ''
-lien.adresse.label: 'Adresse URL'
-lien.adresse.placeholder: ''
+lien.address.help: ''
+lien.address.label: 'Adresse URL'
+lien.address.placeholder: ''
 lien.name.help: ''
 lien.name.label: Nom
 lien.name.placeholder: ''
@@ -129,20 +129,20 @@ menu.link.libelle.placeholder: ''
 menu.principal.clef.help: ''
 menu.principal.clef.label: Clef
 menu.principal.clef.placeholder: ''
-noteinterne.content.help: ''
-noteinterne.content.label: Contenu
-noteinterne.date_debut.help: ''
-noteinterne.date_debut.label: 'Date de début'
-noteinterne.date_fin.help: ''
-noteinterne.date_fin.label: 'Date de fin'
-noteinterne.file.help: ''
-noteinterne.file.label: Image
-noteinterne.refuser.help: ''
-noteinterne.refuser.label: Utilisateur
-noteinterne.refuser.placeholder: ''
-noteinterne.title.help: ''
-noteinterne.title.label: Titre
-noteinterne.title.placeholder: ''
+memo.content.help: ''
+memo.content.label: Contenu
+memo.date_debut.help: ''
+memo.date_debut.label: 'Date de début'
+memo.date_fin.help: ''
+memo.date_fin.label: 'Date de fin'
+memo.file.help: ''
+memo.file.label: Image
+memo.refuser.help: ''
+memo.refuser.label: Utilisateur
+memo.refuser.placeholder: ''
+memo.title.help: ''
+memo.title.label: Titre
+memo.title.placeholder: ''
 param.disclaimer.activate.help: ''
 param.disclaimer.activate.label: 'Activer ?'
 param.disclaimer.activate.placeholder: ''
@@ -323,8 +323,8 @@ phoneuser.principal.label: 'Principal ?'
 phoneuser.refuser.help: ''
 phoneuser.refuser.label: Utilisateur
 phoneuser.refuser.placeholder: ''
-post.commentaire.help: ''
-post.commentaire.label: 'Commentaire ?'
+post.remark.help: ''
+post.remark.label: 'Commentaire ?'
 post.content.help: ''
 post.content.label: Contenu
 post.file.help: ''

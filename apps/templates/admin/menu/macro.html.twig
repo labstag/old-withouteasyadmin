@@ -5,7 +5,7 @@
             {% if child.separateur %}
                 {{ 'menu.divider'|trans({}, 'admin.messages') }} {{ _self.link(child, position) }}
             {% else %}
-                {{ child.libelle }} {{ _self.link(child, position) }}
+                {{ child.name }} {{ _self.link(child, position) }}
                 {% if 0 != child.children|length %}
                     {{ _self.show(child.children, position+1) }}
                 {% endif %}

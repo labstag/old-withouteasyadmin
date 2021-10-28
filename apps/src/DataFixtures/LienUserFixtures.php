@@ -40,7 +40,7 @@ class LienUserFixtures extends FixtureLib implements DependentFixtureInterface
         $old  = clone $lien;
         $lien->setRefUser($user);
         $lien->setName($faker->word());
-        $lien->setAdresse($faker->url);
+        $lien->setAddress($faker->url);
         $this->lienUserRH->handle($old, $lien);
     }
 }

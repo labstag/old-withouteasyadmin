@@ -12,7 +12,7 @@ use Labstag\Entity\Groupe;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\AdresseUserRequestHandler;
+use Labstag\RequestHandler\AddressUserRequestHandler;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\BookmarkRequestHandler;
 use Labstag\RequestHandler\CategoryRequestHandler;
@@ -21,7 +21,7 @@ use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\RequestHandler\LienUserRequestHandler;
-use Labstag\RequestHandler\NoteInterneRequestHandler;
+use Labstag\RequestHandler\MemoRequestHandler;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
@@ -61,7 +61,7 @@ abstract class FixtureLib extends Fixture
 
     protected const NUMBER_TEMPLATES = 10;
 
-    protected AdresseUserRequestHandler $adresseUserRH;
+    protected AddressUserRequestHandler $addressUserRH;
 
     protected AttachmentRequestHandler $attachmentRH;
 
@@ -91,7 +91,7 @@ abstract class FixtureLib extends Fixture
 
     protected LoggerInterface $logger;
 
-    protected NoteInterneRequestHandler $noteInterneRH;
+    protected MemoRequestHandler $noteInterneRH;
 
     protected OauthService $oauthService;
 
@@ -121,13 +121,13 @@ abstract class FixtureLib extends Fixture
         Environment $twig,
         EmailUserRequestHandler $emailUserRH,
         LienUserRequestHandler $lienUserRH,
-        NoteInterneRequestHandler $noteInterneRH,
+        MemoRequestHandler $noteInterneRH,
         GroupeRequestHandler $groupeRH,
         EditoRequestHandler $editoRH,
         UserRequestHandler $userRH,
         PhoneUserRequestHandler $phoneUserRH,
         AttachmentRequestHandler $attachmentRH,
-        AdresseUserRequestHandler $adresseUserRH,
+        AddressUserRequestHandler $addressUserRH,
         TemplateRequestHandler $templateRH,
         LibelleRequestHandler $libelleRH,
         CacheInterface $cache,
@@ -136,7 +136,7 @@ abstract class FixtureLib extends Fixture
         CategoryRequestHandler $categoryRH
     )
     {
-        $this->adresseUserRH     = $adresseUserRH;
+        $this->addressUserRH     = $addressUserRH;
         $this->attachmentRH      = $attachmentRH;
         $this->bookmarkRH        = $bookmarkRH;
         $this->cache             = $cache;

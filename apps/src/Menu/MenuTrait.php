@@ -93,7 +93,7 @@ trait MenuTrait
         }
 
         $menu      = $parent->addChild(
-            $child->getLibelle(),
+            $child->getName(),
             $data
         );
         $childrens = $child->getChildren();

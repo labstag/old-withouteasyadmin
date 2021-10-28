@@ -86,11 +86,11 @@ class PostType extends AbstractTypeLib
             ]
         );
         $builder->add(
-            'commentaire',
+            'remark',
             CheckboxType::class,
             [
-                'label' => $this->translator->trans('post.commentaire.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('post.commentaire.help', [], 'admin.form'),
+                'label' => $this->translator->trans('post.remark.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('post.remark.help', [], 'admin.form'),
             ]
         );
         $builder->add(

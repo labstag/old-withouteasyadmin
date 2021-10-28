@@ -1,12 +1,12 @@
 [{
-    "libelle": "Mon compte",
+    "name": "Mon compte",
     "childs": [{
-        "libelle": "Mon profil",
+        "name": "Mon profil",
         "data": {
             "route": "admin_profil"
         }
     }, {
-        "libelle": "Logout",
+        "name": "Logout",
         "data": {
             "route": "app_logout"
         }

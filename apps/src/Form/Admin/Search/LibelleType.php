@@ -19,14 +19,14 @@ class LibelleType extends SearchAbstractTypeLib
     ): void
     {
         $builder->add(
-            'nom',
+            'name',
             TextType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('libelle.nom.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('libelle.nom.help', [], 'admin.search.form'),
+                'label'    => $this->translator->trans('libelle.name.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('libelle.name.help', [], 'admin.search.form'),
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('libelle.nom.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('libelle.name.placeholder', [], 'admin.search.form'),
                 ],
             ]
         );

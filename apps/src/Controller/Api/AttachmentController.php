@@ -5,13 +5,13 @@ namespace Labstag\Controller\Api;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\Edito;
-use Labstag\Entity\NoteInterne;
+use Labstag\Entity\Memo;
 use Labstag\Entity\Post;
 use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\EditoRequestHandler;
-use Labstag\RequestHandler\NoteInterneRequestHandler;
+use Labstag\RequestHandler\MemoRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -93,11 +93,11 @@ class AttachmentController extends ApiControllerLib
     }
 
     /**
-     * @Route("/noteinterne/fond/{entity}", name="api_attachment_noteinternefond")
+     * @Route("/memo/fond/{entity}", name="api_attachment_memofond")
      *
      * @return Response
      */
-    public function noteinterneFond(NoteInterne $entity, NoteInterneRequestHandler $noteInterneRH): JsonResponse
+    public function memoFond(Memo $entity, MemoRequestHandler $noteInterneRH): JsonResponse
     {
         return $this->deleteFile($entity, $noteInterneRH, 'getFond', 'setFond');
     }
