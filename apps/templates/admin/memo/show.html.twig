@@ -11,11 +11,11 @@
                 <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
-                <th>{{ 'memo.date_debut'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'memo.date_start'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.dateDebut ? entity.dateDebut|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
             </tr>
             <tr>
-                <th>{{ 'memo.date_fin'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'memo.date_end'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.dateFin ? entity.dateFin|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
             </tr>
             {% set fond = attachment(entity.fond) %}

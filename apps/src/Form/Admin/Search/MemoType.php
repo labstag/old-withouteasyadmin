@@ -55,23 +55,23 @@ class MemoType extends SearchAbstractTypeLib
             ]
         );
         $builder->add(
-            'dateDebut',
+            'dateStart',
             DateType::class,
             [
                 'required' => false,
                 'widget'   => 'single_text',
-                'label'    => $this->translator->trans('memo.date_debut.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('memo.date_debut.help', [], 'admin.search.form'),
+                'label'    => $this->translator->trans('memo.date_start.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('memo.date_start.help', [], 'admin.search.form'),
             ]
         );
         $builder->add(
-            'dateFin',
+            'dateEnd',
             DateType::class,
             [
                 'required' => false,
                 'widget'   => 'single_text',
-                'label'    => $this->translator->trans('memo.date_fin.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('memo.date_fin.help', [], 'admin.search.form'),
+                'label'    => $this->translator->trans('memo.date_end.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('memo.date_end.help', [], 'admin.search.form'),
             ]
         );
         $workflow   = $this->workflows->get(new Memo());

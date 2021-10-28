@@ -77,8 +77,8 @@ menu.position: Position
 menu.separateur: 'Séparateur ?'
 norecord: 'Aucun enregistrement trouvé'
 memo.content: Contenu
-memo.date_debut: 'Date de début'
-memo.date_fin: 'Date de fin'
+memo.date_start: 'Date de début'
+memo.date_end: 'Date de fin'
 memo.fond: Fond
 memo.infodateuser: '%date% par %user%'
 memo.title: Titre

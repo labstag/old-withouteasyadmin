@@ -3,8 +3,8 @@
 {% block body %}
     {{ form_start(form) }}
     {{ form_row(form.title) }}
-    {{ form_row(form.date_debut) }}
-    {{ form_row(form.date_fin) }}
+    {{ form_row(form.date_start) }}
+    {{ form_row(form.date_end) }}
     {% if entity.id is not null %}
         {{ macro_admin.form_img(
             entity,

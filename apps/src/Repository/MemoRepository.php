@@ -32,8 +32,8 @@ class MemoRepository extends ServiceEntityRepositoryLib
         $query->where(
             'n.state LIKE :state'
         );
-        $query->andWhere('n.dateDebut >= now()');
-        $query->orderBy('n.dateDebut', 'ASC');
+        $query->andWhere('n.dateStart >= now()');
+        $query->orderBy('n.dateStart', 'ASC');
         $query->setParameters(
             ['state' => '%publie%']
         );
@@ -46,32 +46,32 @@ class MemoRepository extends ServiceEntityRepositoryLib
     protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
     {
         $this->setQueryEtape($query, $get);
-        $this->setQueryDateDebut($query, $get);
-        $this->setQueryDateFin($query, $get);
+        $this->setQueryDateStart($query, $get);
+        $this->setQueryDateEnd($query, $get);
         $this->setQueryTitle($query, $get);
         $this->setQueryRefUser($query, $get);
 
         return $query;
     }
 
-    protected function setQueryDateDebut(QueryBuilder &$query, array $get)
+    protected function setQueryDateEnd(QueryBuilder &$query, array $get)
     {
-        if (!isset($get['dateDebut']) || empty($get['dateDebut'])) {
+        if (!isset($get['dateEnd']) || empty($get['dateEnd'])) {
             return;
         }
 
-        $query->andWhere('DATE(a.dateDebut) = :dateDebut');
-        $query->setParameter('dateDebut', $get['dateDebut']);
+        $query->andWhere('DATE(a.dateEnd) = :dateEnd');
+        $query->setParameter('dateEnd', $get['dateEnd']);
     }
 
-    protected function setQueryDateFin(QueryBuilder &$query, array $get)
+    protected function setQueryDateStart(QueryBuilder &$query, array $get)
     {
-        if (!isset($get['dateFin']) || empty($get['dateFin'])) {
+        if (!isset($get['dateStart']) || empty($get['dateStart'])) {
             return;
         }
 
-        $query->andWhere('DATE(a.dateFin) = :dateFin');
-        $query->setParameter('dateFin', $get['dateFin']);
+        $query->andWhere('DATE(a.dateStart) = :dateStart');
+        $query->setParameter('dateStart', $get['dateStart']);
     }
 
     protected function setQueryEtape(QueryBuilder &$query, array $get)

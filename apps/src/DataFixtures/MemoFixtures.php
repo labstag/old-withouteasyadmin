@@ -45,12 +45,12 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
         $old    = clone $memo;
         $random = $faker->numberBetween(5, 50);
         $memo->setTitle($faker->unique()->text($random));
-        $dateDebut = $faker->dateTime($maxDate);
-        $memo->setDateDebut($dateDebut);
-        $dateFin = clone $dateDebut;
-        $dateFin->modify('+'.$faker->numberBetween(10, 50).' days');
-        $dateFin->modify('+'.$faker->numberBetween(2, 24).' hours');
-        $memo->setDateFin($dateFin);
+        $dateStart = $faker->dateTime($maxDate);
+        $memo->setDateStart($dateStart);
+        $dateEnd = clone $dateStart;
+        $dateEnd->modify('+'.$faker->numberBetween(10, 50).' days');
+        $dateEnd->modify('+'.$faker->numberBetween(2, 24).' hours');
+        $memo->setDateEnd($dateEnd);
         // @var string $content
         $content = $faker->paragraphs(4, true);
         $memo->setContent(str_replace("\n\n", "<br />\n", $content));

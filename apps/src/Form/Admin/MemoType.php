@@ -44,22 +44,22 @@ class MemoType extends AbstractTypeLib
             ]
         );
         $builder->add(
-            'date_debut',
+            'date_start',
             DateTimeType::class,
             [
-                'label'        => $this->translator->trans('memo.date_debut.label', [], 'admin.form'),
-                'help'         => $this->translator->trans('memo.date_debut.help', [], 'admin.form'),
+                'label'        => $this->translator->trans('memo.date_start.label', [], 'admin.form'),
+                'help'         => $this->translator->trans('memo.date_start.help', [], 'admin.form'),
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
             ]
         );
         $builder->add(
-            'date_fin',
+            'date_end',
             DateTimeType::class,
             [
-                'label'        => $this->translator->trans('memo.date_fin.label', [], 'admin.form'),
-                'help'         => $this->translator->trans('memo.date_fin.help', [], 'admin.form'),
+                'label'        => $this->translator->trans('memo.date_end.label', [], 'admin.form'),
+                'help'         => $this->translator->trans('memo.date_end.help', [], 'admin.form'),
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,

@@ -131,10 +131,10 @@ menu.principal.clef.label: Clef
 menu.principal.clef.placeholder: ''
 memo.content.help: ''
 memo.content.label: Contenu
-memo.date_debut.help: ''
-memo.date_debut.label: 'Date de début'
-memo.date_fin.help: ''
-memo.date_fin.label: 'Date de fin'
+memo.date_start.help: ''
+memo.date_start.label: 'Date de début'
+memo.date_end.help: ''
+memo.date_end.label: 'Date de fin'
 memo.file.help: ''
 memo.file.label: Image
 memo.refuser.help: ''

@@ -30,16 +30,16 @@ class Memo
     protected $content;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Assert\LessThanOrEqual(propertyPath="dateFin")
+     * @ORM\Column(type="datetime",                         nullable=true)
+     * @Assert\GreaterThanOrEqual(propertyPath="dateStart")
      */
-    protected DateTime $dateDebut;
+    protected DateTime $dateEnd;
 
     /**
-     * @ORM\Column(type="datetime",                         nullable=true)
-     * @Assert\GreaterThanOrEqual(propertyPath="dateDebut")
+     * @ORM\Column(type="datetime")
+     * @Assert\LessThanOrEqual(propertyPath="dateEnd")
      */
-    protected DateTime $dateFin;
+    protected DateTime $dateStart;
 
     /**
      * @UploadableField(filename="fond", path="memo/fond", slug="title")
@@ -72,8 +72,8 @@ class Memo
 
     public function __construct()
     {
-        $this->dateDebut = new DateTime();
-        $this->dateFin   = new DateTime();
+        $this->dateStart = new DateTime();
+        $this->dateEnd   = new DateTime();
     }
 
     public function __toString()
@@ -86,14 +86,14 @@ class Memo
         return $this->content;
     }
 
-    public function getDateDebut(): ?DateTime
+    public function getDateEnd(): ?DateTime
     {
-        return $this->dateDebut;
+        return $this->dateEnd;
     }
 
-    public function getDateFin(): ?DateTime
+    public function getDateStart(): ?DateTime
     {
-        return $this->dateFin;
+        return $this->dateStart;
     }
 
     public function getFile()
@@ -128,16 +128,16 @@ class Memo
         return $this;
     }
 
-    public function setDateDebut(DateTime $dateDebut): self
+    public function setDateEnd(?DateTime $dateEnd): self
     {
-        $this->dateDebut = $dateDebut;
+        $this->dateEnd = $dateEnd;
 
         return $this;
     }
 
-    public function setDateFin(?DateTime $dateFin): self
+    public function setDateStart(DateTime $dateStart): self
     {
-        $this->dateFin = $dateFin;
+        $this->dateStart = $dateStart;
 
         return $this;
     }

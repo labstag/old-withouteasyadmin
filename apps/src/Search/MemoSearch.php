@@ -9,9 +9,9 @@ use Labstag\Lib\LibSearch;
 class MemoSearch extends LibSearch
 {
 
-    public $dateDebut;
+    public $dateEnd;
 
-    public $dateFin;
+    public $dateStart;
 
     public $etape;
 
@@ -25,7 +25,7 @@ class MemoSearch extends LibSearch
         $userRepo = $doctrine->getRepository(User::class);
         foreach ($get as $key => $value) {
             $this->{$key} = $value;
-            if ('dateDebut' == $key || 'dateFin' == $key) {
+            if ('dateStart' == $key || 'dateEnd' == $key) {
                 if (!empty($value)) {
                     [
                         $year,

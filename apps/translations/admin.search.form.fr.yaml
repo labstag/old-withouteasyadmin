@@ -74,10 +74,10 @@ lienuser.etape.placeholder: ''
 lienuser.refuser.help: ''
 lienuser.refuser.label: refuser
 lienuser.refuser.placeholder: ''
-memo.date_debut.help: ''
-memo.date_debut.label: date_debut
-memo.date_fin.help: ''
-memo.date_fin.label: date_fin
+memo.date_start.help: ''
+memo.date_start.label: date_debut
+memo.date_end.help: ''
+memo.date_end.label: date_fin
 memo.etape.help: ''
 memo.etape.label: etape
 memo.etape.placeholder: ''
