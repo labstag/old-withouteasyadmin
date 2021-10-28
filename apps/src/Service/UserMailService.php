@@ -3,7 +3,7 @@
 namespace Labstag\Service;
 
 use DateTime;
-use Labstag\Entity\AdresseUser;
+use Labstag\Entity\AddressUser;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\LienUser;
 use Labstag\Entity\OauthConnectUser;
@@ -102,23 +102,23 @@ class UserMailService
         return $content;
     }
 
-    public function checkNewAdresse(User $user, AdresseUser $adresseUser): void
+    public function checkNewAddress(User $user, AddressUser $addressUser): void
     {
         // @var Template $template
         $template = $this->repository->findOneBy(
-            ['code' => 'check-new-adresse']
+            ['code' => 'check-new-address']
         );
         if (!$template instanceof Template) {
             return;
         }
 
         $change = [
-            'adresse_rue'     => $adresseUser->getRue(),
-            'adresse_zipcode' => $adresseUser->getZipcode(),
-            'adresse_ville'   => $adresseUser->getVille(),
-            'adresse_country' => Countries::getName($adresseUser->getCountry()),
-            'adresse_gps'     => $adresseUser->getGps(),
-            'adresse_pmr'     => $adresseUser->isPmr() ? 'Oui' : 'Non',
+            'address_street'  => $addressUser->getStreet(),
+            'address_zipcode' => $addressUser->getZipcode(),
+            'address_city'    => $addressUser->getCity(),
+            'address_country' => Countries::getName($addressUser->getCountry()),
+            'address_gps'     => $addressUser->getGps(),
+            'address_pmr'     => $addressUser->isPmr() ? 'Oui' : 'Non',
         ];
         $this->setEmail(
             $template,
@@ -138,7 +138,7 @@ class UserMailService
         }
 
         $change = [
-            'link' => $lienUser->getAdresse(),
+            'link' => $lienUser->getAddress(),
         ];
         $this->setEmail(
             $template,
@@ -165,7 +165,7 @@ class UserMailService
                     'id' => $emailUser->getId(),
                 ]
             ),
-            'courriel'          => $emailUser->getAdresse(),
+            'courriel'          => $emailUser->getAddress(),
         ];
         $this->setEmail(
             $template,

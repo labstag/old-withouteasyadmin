@@ -5,7 +5,7 @@ namespace Labstag\Form\Admin\User;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
-use Labstag\Form\Admin\Collections\User\AdresseType;
+use Labstag\Form\Admin\Collections\User\AddressType;
 use Labstag\Form\Admin\Collections\User\EmailType;
 use Labstag\Form\Admin\Collections\User\LienType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
@@ -105,8 +105,8 @@ class UserType extends AbstractTypeLib
             );
             foreach ($data as $email) {
                 // @var EmailUser $email
-                $adresse          = $email->getAdresse();
-                $emails[$adresse] = $adresse;
+                $address          = $email->getAddress();
+                $emails[$address] = $address;
             }
 
             ksort($emails);
@@ -144,7 +144,7 @@ class UserType extends AbstractTypeLib
         $tab = [
             'emailUsers'   => EmailType::class,
             'phoneUsers'   => PhoneType::class,
-            'adresseUsers' => AdresseType::class,
+            'addressUsers' => AddressType::class,
             'lienUsers'    => LienType::class,
         ];
         foreach ($tab as $key => $type) {

@@ -12,7 +12,7 @@ use Labstag\Form\Admin\ParamType;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\AttachmentRepository;
-use Labstag\Repository\NoteInterneRepository;
+use Labstag\Repository\MemoRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\DataService;
@@ -66,13 +66,13 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/", name="admin")
      */
-    public function index(NoteInterneRepository $noteInterneRepo): Response
+    public function index(MemoRepository $noteInterneRepo): Response
     {
-        $noteinternes = $noteInterneRepo->findPublier();
+        $memos = $noteInterneRepo->findPublier();
 
         return $this->render(
             'admin/index.html.twig',
-            ['noteinternes' => $noteinternes]
+            ['memos' => $memos]
         );
     }
 

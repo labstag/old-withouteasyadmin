@@ -1,10 +1,10 @@
 admin.title: Admin
-adresseuser.edit: Éditer
-adresseuser.new: Nouveau
-adresseuser.preview: Aperçu
-adresseuser.show: Voir
-adresseuser.title: Adresseuser
-adresseuser.trash: Corbeille
+addressuser.edit: Éditer
+addressuser.new: Nouveau
+addressuser.preview: Aperçu
+addressuser.show: Voir
+addressuser.title: Adresseuser
+addressuser.trash: Corbeille
 attachment.title: Attachment
 bookmark.edit: Éditer
 bookmark.import: Importer
@@ -64,12 +64,12 @@ menu.new: Nouveau
 menu.title: Menu
 menu.trash: Corbeille
 menu.update: 'Mise à jour'
-noteinterne.edit: Éditer
-noteinterne.new: Nouveau
-noteinterne.preview: Aperçu
-noteinterne.show: Voir
-noteinterne.title: Noteinterne
-noteinterne.trash: Corbeille
+memo.edit: Éditer
+memo.new: Nouveau
+memo.preview: Aperçu
+memo.show: Voir
+memo.title: Noteinterne
+memo.trash: Corbeille
 oauth.title: Oauth
 param.title: Param
 phoneuser.edit: Éditer

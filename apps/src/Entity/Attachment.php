@@ -48,7 +48,7 @@ class Attachment
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=NoteInterne::class, mappedBy="fond")
+     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="fond")
      */
     protected $noteInternes;
 
@@ -106,7 +106,7 @@ class Attachment
         return $this;
     }
 
-    public function addNoteInterne(NoteInterne $noteInterne): self
+    public function addMemo(Memo $noteInterne): self
     {
         if (!$this->noteInternes->contains($noteInterne)) {
             $this->noteInternes[] = $noteInterne;
@@ -167,6 +167,14 @@ class Attachment
         return $this->id;
     }
 
+    /**
+     * @return Collection|Memo[]
+     */
+    public function getMemos(): Collection
+    {
+        return $this->noteInternes;
+    }
+
     public function getMimeType(): ?string
     {
         return $this->mimeType;
@@ -175,14 +183,6 @@ class Attachment
     public function getName(): ?string
     {
         return $this->name;
-    }
-
-    /**
-     * @return Collection|NoteInterne[]
-     */
-    public function getNoteInternes(): Collection
-    {
-        return $this->noteInternes;
     }
 
     /**
@@ -230,7 +230,7 @@ class Attachment
         return $this;
     }
 
-    public function removeNoteInterne(NoteInterne $noteInterne): self
+    public function removeMemo(Memo $noteInterne): self
     {
         if ($this->noteInternes->removeElement($noteInterne)) {
             // set the owning side to null (unless already changed)

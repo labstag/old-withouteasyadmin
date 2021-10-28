@@ -28,12 +28,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=AdresseUser::class,
+     *  targetEntity=AddressUser::class,
      *  mappedBy="refuser",
      *  cascade={"persist"}
      * )
      */
-    protected $adresseUsers;
+    protected $addressUsers;
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="users")
@@ -86,7 +86,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=NoteInterne::class,
+     *  targetEntity=Memo::class,
      *  mappedBy="refuser",
      *  cascade={"persist"}
      * )
@@ -166,7 +166,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lienUsers         = new ArrayCollection();
         $this->emailUsers        = new ArrayCollection();
         $this->phoneUsers        = new ArrayCollection();
-        $this->adresseUsers      = new ArrayCollection();
+        $this->addressUsers      = new ArrayCollection();
         $this->oauthConnectUsers = new ArrayCollection();
         $this->roles             = ['ROLE_USER'];
         $this->routes            = new ArrayCollection();
@@ -180,11 +180,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getUsername();
     }
 
-    public function addAdresseUser(AdresseUser $adresseUser): self
+    public function addAddressUser(AddressUser $addressUser): self
     {
-        if (!$this->adresseUsers->contains($adresseUser)) {
-            $this->adresseUsers[] = $adresseUser;
-            $adresseUser->setRefuser($this);
+        if (!$this->addressUsers->contains($addressUser)) {
+            $this->addressUsers[] = $addressUser;
+            $addressUser->setRefuser($this);
         }
 
         return $this;
@@ -230,7 +230,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function addNoteInterne(NoteInterne $noteInterne): self
+    public function addMemo(Memo $noteInterne): self
     {
         if (!$this->noteInternes->contains($noteInterne)) {
             $this->noteInternes[] = $noteInterne;
@@ -301,9 +301,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getAdresseUsers()
+    public function getAddressUsers()
     {
-        return $this->adresseUsers;
+        return $this->addressUsers;
     }
 
     public function getAvatar(): ?Attachment
@@ -354,7 +354,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->lienUsers;
     }
 
-    public function getNoteInternes()
+    public function getMemos()
     {
         return $this->noteInternes;
     }
@@ -450,13 +450,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->workflowUsers;
     }
 
-    public function removeAdresseUser(AdresseUser $adresseUser): self
+    public function removeAddressUser(AddressUser $addressUser): self
     {
-        if ($this->adresseUsers->contains($adresseUser)) {
-            $this->adresseUsers->removeElement($adresseUser);
+        if ($this->addressUsers->contains($addressUser)) {
+            $this->addressUsers->removeElement($addressUser);
             // set the owning side to null (unless already changed)
-            if ($adresseUser->getRefuser() === $this) {
-                $adresseUser->setRefuser(null);
+            if ($addressUser->getRefuser() === $this) {
+                $addressUser->setRefuser(null);
             }
         }
 
@@ -514,7 +514,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeNoteInterne(NoteInterne $noteInterne): self
+    public function removeMemo(Memo $noteInterne): self
     {
         if ($this->noteInternes->contains($noteInterne)) {
             $this->noteInternes->removeElement($noteInterne);

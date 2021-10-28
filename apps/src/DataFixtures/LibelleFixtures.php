@@ -33,7 +33,7 @@ class LibelleFixtures extends FixtureLib implements DependentFixtureInterface
     {
         $libelle    = new Libelle();
         $oldLibelle = clone $libelle;
-        $libelle->setNom($faker->unique()->colorName);
+        $libelle->setName($faker->unique()->colorName);
         $this->addReference('libelle_'.$index, $libelle);
         $this->libelleRH->handle($oldLibelle, $libelle);
     }

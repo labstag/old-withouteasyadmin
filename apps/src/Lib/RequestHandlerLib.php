@@ -114,12 +114,12 @@ abstract class RequestHandlerLib
             $userCollectionEvent->addPhoneUser($old, $row);
         }
 
-        $adresseUsers = $entity->getAdresseUsers();
-        foreach ($adresseUsers as $row) {
-            // @var AdresseUser $row
+        $addressUsers = $entity->getAddressUsers();
+        foreach ($addressUsers as $row) {
+            // @var AddressUser $row
             $old = clone $row;
             $row->setRefuser($entity);
-            $userCollectionEvent->addAdresseUser($old, $row);
+            $userCollectionEvent->addAddressUser($old, $row);
         }
     }
 }

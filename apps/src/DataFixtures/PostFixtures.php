@@ -68,7 +68,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $indexLibelle = $faker->numberBetween(0, self::NUMBER_CATEGORY - 1);
         $category     = $this->getReference('category_'.$indexLibelle);
         $post->setRefcategory($category);
-        $post->setCommentaire((bool) rand(0, 1));
+        $post->setRemark((bool) rand(0, 1));
         $this->upload($post, $faker);
         $this->addReference('post_'.$index, $post);
         $this->templateRH->handle($oldPost, $post);

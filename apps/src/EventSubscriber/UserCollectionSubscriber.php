@@ -2,7 +2,7 @@
 
 namespace Labstag\EventSubscriber;
 
-use Labstag\Entity\AdresseUser;
+use Labstag\Entity\AddressUser;
 use Labstag\Entity\LienUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Event\UserCollectionEvent;
@@ -28,28 +28,28 @@ class UserCollectionSubscriber implements EventSubscriberInterface
     {
         $oauthConnectUser = $event->getOauthConnectUser();
         $lienUser         = $event->getLienUser();
-        $adresseUser      = $event->getAdresseUser();
+        $addressUser      = $event->getAddressUser();
 
         $this->setOauthConnectUser($oauthConnectUser);
         $this->setLienUser($lienUser);
-        $this->setAdresseUser($adresseUser);
+        $this->setAddressUser($addressUser);
     }
 
-    protected function setAdresseUser(array $data): void
+    protected function setAddressUser(array $data): void
     {
         if (0 == count($data)) {
             return;
         }
 
-        // @var AdresseUser $old
+        // @var AddressUser $old
         $old = $data['old'];
-        // @var AdresseUser $new
+        // @var AddressUser $new
         $new = $data['new'];
         if ($old->getId() == $new->getId()) {
             return;
         }
 
-        $this->userMailService->checkNewAdresse($new->getRefuser(), $new);
+        $this->userMailService->checkNewAddress($new->getRefuser(), $new);
     }
 
     protected function setLienUser(array $data): void

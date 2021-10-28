@@ -32,7 +32,7 @@ class Libelle
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom;
+    private $name;
 
     /**
      * @ORM\ManyToMany(targetEntity=Post::class, inversedBy="libelles", cascade={"persist"})
@@ -40,7 +40,7 @@ class Libelle
     private $posts;
 
     /**
-     * @Gedmo\Slug(updatable=false, fields={"nom"})
+     * @Gedmo\Slug(updatable=false, fields={"name"})
      * @ORM\Column(type="string",   length=255)
      */
     private $slug;
@@ -53,7 +53,7 @@ class Libelle
 
     public function __toString()
     {
-        return $this->getNom();
+        return $this->getName();
     }
 
     public function addBookmark(Bookmark $bookmark): self
@@ -88,9 +88,9 @@ class Libelle
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getName(): ?string
     {
-        return $this->nom;
+        return $this->name;
     }
 
     /**
@@ -122,9 +122,9 @@ class Libelle
         return $this;
     }
 
-    public function setNom(string $nom): self
+    public function setName(string $name): self
     {
-        $this->nom = $nom;
+        $this->name = $name;
 
         return $this;
     }
@@ -136,8 +136,8 @@ class Libelle
         return $this;
     }
 
-    public function setString(string $nom): self
+    public function setString(string $name): self
     {
-        return $this->setNom($nom);
+        return $this->setName($name);
     }
 }

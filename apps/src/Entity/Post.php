@@ -32,11 +32,6 @@ class Post
     protected $file;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $commentaire;
-
-    /**
      * @ORM\Column(type="text")
      */
     private $content;
@@ -94,6 +89,11 @@ class Post
     private $refuser;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $remark;
+
+    /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
      * @ORM\Column(type="string",   length=255)
      */
@@ -130,11 +130,6 @@ class Post
         }
 
         return $this;
-    }
-
-    public function getCommentaire(): ?bool
-    {
-        return $this->commentaire;
     }
 
     public function getContent(): ?string
@@ -195,6 +190,11 @@ class Post
         return $this->refuser;
     }
 
+    public function getRemark(): ?bool
+    {
+        return $this->remark;
+    }
+
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -215,13 +215,6 @@ class Post
         if ($this->libelles->removeElement($libelle)) {
             $libelle->removePost($this);
         }
-
-        return $this;
-    }
-
-    public function setCommentaire(bool $commentaire): self
-    {
-        $this->commentaire = $commentaire;
 
         return $this;
     }
@@ -278,6 +271,13 @@ class Post
     public function setRefuser(?User $refuser): self
     {
         $this->refuser = $refuser;
+
+        return $this;
+    }
+
+    public function setRemark(bool $remark): self
+    {
+        $this->remark = $remark;
 
         return $this;
     }

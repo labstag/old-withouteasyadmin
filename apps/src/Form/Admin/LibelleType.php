@@ -19,7 +19,7 @@ class LibelleType extends AbstractTypeLib
     ): void
     {
         $builder->add(
-            'nom',
+            'name',
             TextType::class,
             [
                 'label' => $this->translator->trans('libelle.name.label', [], 'admin.form'),

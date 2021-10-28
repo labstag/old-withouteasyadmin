@@ -39,7 +39,7 @@ class EmailWorkflowSubscriber implements EventSubscriberInterface
         // @var EmailUser $entity
         $entity = $event->getSubject();
         $user   = $entity->getRefuser();
-        if ($entity->getAdresse() == $user->getEmail()) {
+        if ($entity->getAddress() == $user->getEmail()) {
             return;
         }
 
