@@ -42,8 +42,8 @@ emailuser.refuser.placeholder: ''
 form.limit.help: ''
 form.limit.label: limit
 form.limit.placeholder: ''
-form.reset: 'Reset'
-form.submit: 'Rechercher'
+form.reset: Reset
+form.submit: Rechercher
 geocode.communityname.help: ''
 geocode.communityname.label: communityname
 geocode.communityname.placeholder: ''
@@ -113,9 +113,9 @@ user.email.placeholder: ''
 user.etape.help: ''
 user.etape.label: etape
 user.etape.placeholder: ''
-user.refgroupe.help: ''
-user.refgroupe.label: refgroupe
-user.refgroupe.placeholder: ''
+user.refgroup.help: ''
+user.refgroup.label: refgroup
+user.refgroup.placeholder: ''
 user.username.help: ''
 user.username.label: username
 user.username.placeholder: ''

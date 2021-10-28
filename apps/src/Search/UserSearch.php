@@ -12,9 +12,9 @@ class UserSearch extends LibSearch
 
     public $etape;
 
-    public $username;
-
     public $refgroup;
+
+    public $username;
 
     public function search(array $get, $doctrine)
     {
