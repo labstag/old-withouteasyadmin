@@ -15,7 +15,7 @@
 							{{ memo.title }}
 							{{ 'memo.infodateuser'|trans(
                     {
-                        '%date%': memo.datedebut|format_datetime(pattern=formatdatetime.admin),
+                        '%date%': memo.datestart|format_datetime(pattern=formatdatetime.admin),
                         '%user%': memo.refuser
                     },
                     'admin.messages'
