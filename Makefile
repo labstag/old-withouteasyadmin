@@ -21,9 +21,6 @@ endif
 init: ## Init project
 	@git submodule update --init --recursive --remote
 
-apps/.env: apps/.env.dist ## Install .env
-	@cp apps/.env.dist apps/.env
-
 apps/phploc.phar:
 	$(DOCKER_EXECPHP) wget https://phar.phpunit.de/phploc-7.0.2.phar -O phploc.phar
 
@@ -131,11 +128,11 @@ else
 endif
 
 .PHONY: env
-env: apps/.env ### Scripts Installation environnement
+env: ### Scripts Installation environnement
 ifeq ($(COMMANDS_ARGS),dev)
-	@sed -i 's/APP_ENV=prod/APP_ENV=dev/g' apps/.env
+	@echo "APP_ENV=dev" > apps/.env
 else ifeq ($(COMMANDS_ARGS),prod)
-	@sed -i 's/APP_ENV=dev/APP_ENV=prod/g' apps/.env
+	@echo "APP_ENV=prod" > apps/.env
 	@rm -rf apps/vendor
 	@make composer prod -i
 else
