@@ -23,7 +23,7 @@ abstract class Lien
      * @Assert\NotBlank
      * @Assert\Url
      */
-    protected $adresse;
+    protected $address;
 
     /**
      * @ORM\Id
@@ -44,14 +44,14 @@ abstract class Lien
             ' ',
             [
                 $this->getName(),
-                $this->getAdresse(),
+                $this->getAddress(),
             ]
         );
     }
 
-    public function getAdresse(): ?string
+    public function getAddress(): ?string
     {
-        return $this->adresse;
+        return $this->address;
     }
 
     public function getId(): ?string
@@ -64,9 +64,9 @@ abstract class Lien
         return $this->name;
     }
 
-    public function setAdresse(string $adresse): self
+    public function setAddress(string $address): self
     {
-        $this->adresse = $adresse;
+        $this->address = $address;
 
         return $this;
     }

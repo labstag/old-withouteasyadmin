@@ -73,7 +73,7 @@ class KernelSubscriber implements EventSubscriberInterface
         'input-url',
         'input-gps',
         'input-codepostal',
-        'input-ville',
+        'input-city',
         'table-datatable',
         'select-all',
         'select-element',

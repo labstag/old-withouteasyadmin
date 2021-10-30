@@ -3,7 +3,7 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\User;
-use Labstag\Form\Admin\Collections\User\AdresseType;
+use Labstag\Form\Admin\Collections\User\AddressType;
 use Labstag\Form\Admin\Collections\User\EmailType;
 use Labstag\Form\Admin\Collections\User\LienType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
@@ -79,8 +79,8 @@ class ProfilType extends AbstractTypeLib
                 true
             );
             foreach ($data as $email) {
-                $adresse          = $email->getAdresse();
-                $emails[$adresse] = $adresse;
+                $address          = $email->getAddress();
+                $emails[$address] = $address;
             }
 
             ksort($emails);
@@ -115,7 +115,7 @@ class ProfilType extends AbstractTypeLib
         $tab = [
             'emailUsers'   => EmailType::class,
             'phoneUsers'   => PhoneType::class,
-            'adresseUsers' => AdresseType::class,
+            'addressUsers' => AddressType::class,
             'lienUsers'    => LienType::class,
         ];
 

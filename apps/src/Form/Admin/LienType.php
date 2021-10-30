@@ -30,13 +30,13 @@ abstract class LienType extends AbstractTypeLib
             ]
         );
         $builder->add(
-            'adresse',
+            'address',
             UrlType::class,
             [
-                'label' => $this->translator->trans('lien.adresse.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('lien.adresse.help', [], 'admin.form'),
+                'label' => $this->translator->trans('lien.address.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('lien.address.help', [], 'admin.form'),
                 'attr'  => [
-                    'placeholder' => $this->translator->trans('lien.adresse.placeholder', [], 'admin.form'),
+                    'placeholder' => $this->translator->trans('lien.address.placeholder', [], 'admin.form'),
                 ],
             ]
         );

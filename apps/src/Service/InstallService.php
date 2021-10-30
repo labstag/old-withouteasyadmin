@@ -173,7 +173,7 @@ class InstallService
             return;
         }
 
-        $child->setLibelle($attr['libelle']);
+        $child->setName($attr['name']);
         if (isset($attr['data'])) {
             $child->setData($attr['data']);
         }

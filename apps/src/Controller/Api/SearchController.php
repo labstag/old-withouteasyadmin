@@ -81,7 +81,7 @@ class SearchController extends ApiControllerLib
             return $this->json($return);
         }
 
-        $data   = $repository->findNom($get['name']);
+        $data   = $repository->findName($get['name']);
         $result = [
             'results' => [],
         ];

@@ -12,6 +12,8 @@ class UserSearch extends LibSearch
 
     public $etape;
 
+    public $refgroup;
+
     public $username;
 
     public function search(array $get, $doctrine)
@@ -19,7 +21,7 @@ class UserSearch extends LibSearch
         $groupeRepo = $doctrine->getRepository(Groupe::class);
         foreach ($get as $key => $value) {
             $this->{$key} = $value;
-            $this->{$key} = ('refgroupe' == $key) ? $groupeRepo->find($value) : $this->{$key};
+            $this->{$key} = ('refgroup' == $key) ? $groupeRepo->find($value) : $this->{$key};
         }
     }
 }

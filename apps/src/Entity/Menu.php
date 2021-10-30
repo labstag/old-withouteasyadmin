@@ -52,7 +52,7 @@ class Menu
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $libelle;
+    protected $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="Menu", inversedBy="children")
@@ -92,7 +92,7 @@ class Menu
                 '-',
                 '('.$this->getClef().')',
                 '-',
-                $this->getLibelle(),
+                $this->getName(),
             ]
         );
     }
@@ -122,9 +122,9 @@ class Menu
         return $this->id;
     }
 
-    public function getLibelle(): ?string
+    public function getName(): ?string
     {
-        return $this->libelle;
+        return $this->name;
     }
 
     public function getParent(): ?Menu
@@ -163,9 +163,9 @@ class Menu
         return $this;
     }
 
-    public function setLibelle(string $libelle): self
+    public function setName(string $name): self
     {
-        $this->libelle = $libelle;
+        $this->name = $name;
 
         return $this;
     }

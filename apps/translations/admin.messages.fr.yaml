@@ -1,7 +1,6 @@
 admin.menu.add: Ajouter
 admin.menu.adddivider: 'Ajouter un séparateur'
 admin.menu.move: Déplacer
-attachment.dimensions: Dimensions
 attachment.download: Télécharger
 attachment.mimetype: 'Mime type'
 attachment.name: Nom
@@ -68,22 +67,22 @@ link.edit: Éditer
 link.preview: Aperçu
 link.restore: Restaurer
 link.show: Voir
+memo.content: Contenu
+memo.date_end: 'Date de fin'
+memo.date_start: 'Date de début'
+memo.fond: Fond
+memo.infodateuser: '%date% par %user%'
+memo.title: Titre
+memo.user: Utilisateur
+memo.workflow: Workflow
 menu.clef: Clef
 menu.data: Data
 menu.divider: Séparateur
 menu.icon: Icone
-menu.libelle: Libellé
+menu.name: __menu.name
 menu.position: Position
 menu.separateur: 'Séparateur ?'
 norecord: 'Aucun enregistrement trouvé'
-noteinterne.content: Contenu
-noteinterne.date_debut: 'Date de début'
-noteinterne.date_fin: 'Date de fin'
-noteinterne.fond: Fond
-noteinterne.infodateuser: '%date% par %user%'
-noteinterne.title: Titre
-noteinterne.user: Utilisateur
-noteinterne.workflow: Workflow
 oauth.go: 'Y accéder'
 oauth.message: 'Vous êtes sur la page qui vous permet de retrouver les différentes routes permettant de parametrer les connexions Oauth.</p> <p>Pour chaque service proposé ci-dessous, merci de récupérer l''<b>identifiant</b> ainsi que la <b>clef secrète</b>.'
 oauth.service: Service
@@ -114,19 +113,19 @@ trash.count: Total
 trash.empty: Vider
 trash.entite: Table
 trash.go: 'Aller sur cette corbeille'
-user.address.adresse: Adresse
+user.address.address: Adresse
+user.address.city: Ville
 user.address.country: Pays
 user.address.gps: Gps
 user.address.pmr: 'Accès PMR'
-user.address.rue: Rue
+user.address.street: Rue
 user.address.type: Type
 user.address.user: Utilisateur
-user.address.ville: Ville
 user.address.zipcode: 'Code postal'
 user.addresss: Adresses
 user.avatar: Avatar
 user.email: Email
-user.email.adresse: Courriel
+user.email.address: Courriel
 user.email.principal: 'Principal ?'
 user.email.user: Utilisateur
 user.email.workflow: Workflow
@@ -135,7 +134,7 @@ user.groupe: Groupe
 user.groupe.code: Code
 user.groupe.name: Nom
 user.groupe.users: Utilisateurs
-user.link.adresse: 'Adresse URL'
+user.link.address: 'Adresse URL'
 user.link.name: Nom
 user.link.user: Utilisateur
 user.links: Liens

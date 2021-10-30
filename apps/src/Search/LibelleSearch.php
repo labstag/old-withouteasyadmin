@@ -7,7 +7,7 @@ use Labstag\Lib\LibSearch;
 class LibelleSearch extends LibSearch
 {
 
-    public $nom;
+    public $name;
 
     public function search(array $get, $doctrine)
     {

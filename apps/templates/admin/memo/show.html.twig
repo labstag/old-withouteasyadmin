@@ -1,0 +1,58 @@
+{% extends 'admin/memo/layout.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ 'memo.title'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.title }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'memo.content'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.content|raw }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'memo.date_start'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.dateStart ? entity.dateStart|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'memo.date_end'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.dateEnd ? entity.dateEnd|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
+            </tr>
+            {% set fond = attachment(entity.fond) %}
+            {% if fond is not null and fond.name is not null %}
+            <tr>
+                <th>{{ 'memo.fond'|trans({}, 'admin.messages') }}</th>
+                <td>
+                    <picture >
+                        <img alt="{{ 'memo.fond'|trans({}, 'admin.messages')|e("html_attr") }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
+                    </picture>
+                </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>{{ 'memo.user'|trans({}, 'admin.messages') }}</th>
+                <td>
+                    {% if entity.refuser.deletedAt != '' %}
+                        {% set url = 'admin_user_preview' %}
+                    {% else %}
+                        {% set url = 'admin_user_show' %}
+                    {% endif %}
+                    {% set state = guard_route(url) %}
+                    {% if state == true %}
+                        <a href="{{ path(url, {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
+                    {% else %}
+                        {{ entity.refuser }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

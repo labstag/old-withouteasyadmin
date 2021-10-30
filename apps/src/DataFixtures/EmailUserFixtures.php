@@ -39,7 +39,7 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
         $email = new EmailUser();
         $old   = clone $email;
         $email->setRefuser($user);
-        $email->setAdresse($faker->safeEmail);
+        $email->setAddress($faker->safeEmail);
         $this->emailUserRH->handle($old, $email);
     }
 }

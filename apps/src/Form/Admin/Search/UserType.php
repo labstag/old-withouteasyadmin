@@ -47,6 +47,25 @@ class UserType extends SearchAbstractTypeLib
                 ],
             ]
         );
+        $builder->add(
+            'refgroup',
+            SearchableType::class,
+            [
+                'required' => false,
+                'label'    => $this->translator->trans('user.refgroup.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('user.refgroup.help', [], 'admin.search.form'),
+                'multiple' => false,
+                'class'    => Groupe::class,
+                'route'    => 'api_search_group',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans(
+                        'user.refgroup.placeholder',
+                        [],
+                        'admin.search.form'
+                    ),
+                ],
+            ]
+        );
         $workflow   = $this->workflows->get(new User());
         $definition = $workflow->getDefinition();
         $places     = $definition->getPlaces();

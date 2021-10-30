@@ -45,15 +45,15 @@ class LibelleRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getResult();
     }
 
-    public function findNom(string $field)
+    public function findName(string $field)
     {
         $queryBuilder = $this->createQueryBuilder('u');
         $query        = $queryBuilder->where(
-            'u.nom LIKE :nom'
+            'u.name LIKE :name'
         );
         $query->setParameters(
             [
-                'nom' => '%'.$field.'%',
+                'name' => '%'.$field.'%',
             ]
         );
 
@@ -62,18 +62,18 @@ class LibelleRepository extends ServiceEntityRepositoryLib
 
     protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
     {
-        $this->setQueryNom($query, $get);
+        $this->setQueryName($query, $get);
 
         return $query;
     }
 
-    protected function setQueryNom(QueryBuilder &$query, array $get)
+    protected function setQueryName(QueryBuilder &$query, array $get)
     {
-        if (!isset($get['nom']) || empty($get['nom'])) {
+        if (!isset($get['name']) || empty($get['name'])) {
             return;
         }
 
-        $query->andWhere('a.nom LIKE :nom');
-        $query->setParameter('nom', '%'.$get['nom'].'%');
+        $query->andWhere('a.name LIKE :name');
+        $query->setParameter('name', '%'.$get['name'].'%');
     }
 }

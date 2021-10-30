@@ -4,7 +4,7 @@
         {% import "admin/macro.html.twig" as macro_admin %}
         {% block thead %}
             <tr>
-                <th>{{ 'menu.libelle'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'menu.name'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'menu.icon'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'menu.position'|trans({}, 'admin.messages') }}</th>
                 <th>{{ 'menu.data'|trans({}, 'admin.messages') }}</th>
@@ -16,7 +16,7 @@
         {% block tbody %}
             {% for entity in pagination %}
                 <tr data-id="{{ entity.id }}">
-                    <td>{{ entity.libelle }}</td>
+                    <td>{{ entity.name }}</td>
                     <td>{{ entity.icon }}</td>
                     <td>{{ entity.position }}</td>
                     <td>{{ entity.data ? entity.data|json_encode : '' }}</td>

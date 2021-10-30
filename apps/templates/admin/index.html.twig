@@ -1,28 +1,28 @@
 {% extends 'admin.html.twig' %}
 {% block body %}
 	<div class="row">
-		{% for noteinterne in noteinternes %}
+		{% for memo in memos %}
 			<div class="col-6">
 				<div class="card">
-					{% set img = attachment(noteinterne.fond) %}
+					{% set img = attachment(memo.fond) %}
 					{% if img is not null and img.name is not null %}
-						<picture class="noteinterne_img">
-							<img alt="{{ noteinterne.title|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}"/>
+						<picture class="memo_img">
+							<img alt="{{ memo.title|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}"/>
 						</picture>
 					{% endif %}
 					<div class="card-body">
 						<h2 class="card-title">
-							{{ noteinterne.title }}
-							{{ 'noteinterne.infodateuser'|trans(
+							{{ memo.title }}
+							{{ 'memo.infodateuser'|trans(
                     {
-                        '%date%': noteinterne.datedebut|format_datetime(pattern=formatdatetime.admin),
-                        '%user%': noteinterne.refuser
+                        '%date%': memo.datestart|format_datetime(pattern=formatdatetime.admin),
+                        '%user%': memo.refuser
                     },
                     'admin.messages'
                 )}}
 						</h2>
 						<div class="card-text">
-							{{ noteinterne.content|raw }}
+							{{ memo.content|raw }}
 						</div>
 					</div>
 				</div>

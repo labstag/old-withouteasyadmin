@@ -30,7 +30,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $this->setProfilAvatar($docs);
         $this->setUserAvatar($docs);
         $this->setPostImg($docs);
-        $this->setNoteInterneFond($docs);
+        $this->setMemoFond($docs);
         $this->setEditoFond($docs);
 
         return $docs;
@@ -87,7 +87,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/edito/fond/{entity}']['delete'] = $statsEndpoint;
     }
 
-    private function setNoteInterneFond(&$docs)
+    private function setMemoFond(&$docs)
     {
         $statsEndpoint = [
             'summary'    => 'node interne Fond.',
@@ -127,7 +127,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
             ],
         ];
 
-        $docs['paths']['/api/attachment/noteinterne/fond/{entity}']['delete'] = $statsEndpoint;
+        $docs['paths']['/api/attachment/memo/fond/{entity}']['delete'] = $statsEndpoint;
     }
 
     private function setPostImg(&$docs)

@@ -35,37 +35,37 @@
             </tr>
         </tbody>
     </table>
-    {% set adresses = entity.adresseUsers %}
+    {% set addresss = entity.addressUsers %}
     <div class="row">
-        {% if adresses|length !=0 %}
+        {% if addresss|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>{{ 'user.addresss'|trans({"%nbr%": entity.adresseUsers|length}, 'admin.messages') }}</legend>
+                    <legend>{{ 'user.addresss'|trans({"%nbr%": entity.addressUsers|length}, 'admin.messages') }}</legend>
                     <table>
                         <thead>
                             <tr>
-                                <th>{{ 'user.address.adresse'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.address.address'|trans({}, 'admin.messages') }}</th>
                                 <th>{{ 'user.address.type'|trans({}, 'admin.messages') }}</th>
                                 <th>{{ 'user.address.pmr'|trans({}, 'admin.messages') }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for adresse in adresses %}
+                            {% for address in addresss %}
                                 <tr>
                                     <td>
-                                        {{ adresse.rue }}
+                                        {{ address.street }}
                                         <br />
-                                        {{ adresse.zipcode }} - {{ adresse.ville }}
+                                        {{ address.zipcode }} - {{ address.city }}
                                         <br />
-                                        <span class="flag-icon flag-icon-{{ adresse.country|lower }}"></span>
-                                        {{ adresse.country|country_name('fr') }}
+                                        <span class="flag-icon flag-icon-{{ address.country|lower }}"></span>
+                                        {{ address.country|country_name('fr') }}
                                         <br />
                                         <span class="gps-icon">
-                                            {{ adresse.gps }}
+                                            {{ address.gps }}
                                         </span>
                                     </td>
-                                    <td>{{ adresse.type }}</td>
-                                    <td>{{ adresse.pmr ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
+                                    <td>{{ address.type }}</td>
+                                    <td>{{ address.pmr ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -82,14 +82,14 @@
                         <thead>
                             <tr>
                                 <th>{{ 'user.link.name'|trans({}, 'admin.messages') }}</th>
-                                <th>{{ 'user.link.adresse'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.link.address'|trans({}, 'admin.messages') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for lien in liens %}
                                 <tr>
                                     <td>{{ lien.name }}</td>
-                                    <td><a href="{{ lien.adresse }}" target="_blank">{{ lien.adresse }}</a></td>
+                                    <td><a href="{{ lien.address }}" target="_blank">{{ lien.address }}</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -105,14 +105,14 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>{{ 'user.email.adresse'|trans({}, 'admin.messages') }}</th>
+                                <th>{{ 'user.email.address'|trans({}, 'admin.messages') }}</th>
                                 <th>{{ 'user.email.principal'|trans({}, 'admin.messages') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for email in emails %}
                                 <tr>
-                                    <td><a href="mailto:{{ email.adresse }}">{{ email.adresse }}</a></td>
+                                    <td><a href="mailto:{{ email.address }}">{{ email.address }}</a></td>
                                     <td>{{ email.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                                 </tr>
                             {% endfor %}

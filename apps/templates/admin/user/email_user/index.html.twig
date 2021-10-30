@@ -5,8 +5,8 @@
         {% block thead %}
             {% set theads = [
                 {
-                    'field': 'a.adresse',
-                    'name': 'user.email.adresse'|trans({}, 'admin.messages'),
+                    'field': 'a.address',
+                    'name': 'user.email.address'|trans({}, 'admin.messages'),
                 },
                 {
                     'field': 'a.principal',
@@ -28,7 +28,7 @@
         {% block tbody %}
             {% for entity in pagination %}
                 <tr data-id="{{ entity.id }}">
-                    <td>{{ entity.adresse }}</td>
+                    <td>{{ entity.address }}</td>
                     <td>{{ entity.principal ? 'state.yes'|trans({}, 'admin.messages') : 'state.no'|trans({}, 'admin.messages') }}</td>
                     <td>{{ entity.refuser }}</td>
                     <td>

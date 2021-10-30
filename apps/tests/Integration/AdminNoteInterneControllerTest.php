@@ -18,8 +18,8 @@ class AdminNoteInterneControllerTest extends WebTestCase
     use IntegrationTrait;
 
     protected $urls = [
-        'admin_noteinterne_index',
-        'admin_noteinterne_new',
+        'admin_memo_index',
+        'admin_memo_new',
     ];
 
     protected $groupeDisable = [
@@ -48,7 +48,7 @@ class AdminNoteInterneControllerTest extends WebTestCase
         $this->showTest(
             $groupe,
             !in_array($groupe, $this->groupeDisable),
-            'admin_noteinterne_show'
+            'admin_memo_show'
         );
     }
 
@@ -59,7 +59,7 @@ class AdminNoteInterneControllerTest extends WebTestCase
     {
         $this->editPostRedirect(
             $groupe,
-            'admin_noteinterne_edit',
+            'admin_memo_edit',
             NoteInterneType::class,
             !in_array($groupe, $this->groupeDisable)
         );
@@ -73,7 +73,7 @@ class AdminNoteInterneControllerTest extends WebTestCase
         $this->addNewEntity(
             $groupe,
             !in_array($groupe, $this->groupeDisable),
-            'admin_noteinterne_new',
+            'admin_memo_new',
             NoteInterneType::class
         );
     }
@@ -83,7 +83,7 @@ class AdminNoteInterneControllerTest extends WebTestCase
      */
     public function testShowDataNotFound($groupe)
     {
-        $this->showEditDataNotFound($groupe, 'admin_noteinterne_show');
+        $this->showEditDataNotFound($groupe, 'admin_memo_show');
     }
 
     /**
@@ -91,7 +91,7 @@ class AdminNoteInterneControllerTest extends WebTestCase
      */
     public function testEditDataNotFound($groupe)
     {
-        $this->showEditDataNotFound($groupe, 'admin_noteinterne_edit');
+        $this->showEditDataNotFound($groupe, 'admin_memo_edit');
     }
 
     /**
@@ -102,7 +102,7 @@ class AdminNoteInterneControllerTest extends WebTestCase
         $this->editDelete(
             $groupe,
             !in_array($groupe, $this->groupeDisable),
-            'admin_noteinterne_delete'
+            'admin_memo_delete'
         );
     }
 
@@ -134,27 +134,27 @@ class AdminNoteInterneControllerTest extends WebTestCase
             return;
         }
 
-        $faker       = Factory::create('fr_FR');
-        $noteinterne = new NoteInterne();
-        $noteinterne->setRefuser($user);
+        $faker = Factory::create('fr_FR');
+        $memo  = new NoteInterne();
+        $memo->setRefuser($user);
         $random = $faker->numberBetween(5, 50);
-        $noteinterne->setTitle($faker->unique()->text($random));
-        $noteinterne->setEnable($faker->numberBetween(0, 1));
+        $memo->setTitle($faker->unique()->text($random));
+        $memo->setEnable($faker->numberBetween(0, 1));
         $maxDate   = $faker->unique()->dateTimeInInterval('now', '+30 years');
         $dateDebut = $faker->unique()->dateTime($maxDate);
-        $noteinterne->setDateDebut($dateDebut);
+        $memo->setDateDebut($dateDebut);
         $dateFin = clone $dateDebut;
         $random  = $faker->numberBetween(10, 50);
         $dateFin->modify('+' . $random . ' days');
         $random = $faker->numberBetween(2, 24);
         $dateFin->modify('+' . $random . ' hours');
-        $noteinterne->setDateFin($dateFin);
+        $memo->setDateFin($dateFin);
         /**
  * @var string $content
 */
         $content = $faker->unique()->paragraphs(4, true);
-        $noteinterne->setContent(str_replace("\n\n", '<br />', $content));
+        $memo->setContent(str_replace("\n\n", '<br />', $content));
 
-        return $noteinterne;
+        return $memo;
     }
 }

@@ -1,26 +1,26 @@
-adresse.country.help: ''
-adresse.country.label: Pays
-adresse.country.placeholder: ''
-adresse.gps.help: ''
-adresse.gps.label: 'Position GPS'
-adresse.gps.placeholder: ''
-adresse.pmr.help: ''
-adresse.pmr.label: 'Accès PMR ?'
-adresse.rue.help: ''
-adresse.rue.label: Rue
-adresse.rue.placeholder: ''
-adresse.type.help: ''
-adresse.type.label: Type
-adresse.type.placeholder: ''
-adresse.ville.help: ''
-adresse.ville.label: Ville
-adresse.ville.placeholder: ''
-adresse.zipcode.help: ''
-adresse.zipcode.label: 'Code postal'
-adresse.zipcode.placeholder: ''
-adresseuser.refuser.help: ''
-adresseuser.refuser.label: Utilisateur
-adresseuser.refuser.placeholder: ''
+address.city.help: ''
+address.city.label: Ville
+address.city.placeholder: ''
+address.country.help: ''
+address.country.label: Pays
+address.country.placeholder: ''
+address.gps.help: ''
+address.gps.label: 'Position GPS'
+address.gps.placeholder: ''
+address.pmr.help: ''
+address.pmr.label: 'Accès PMR ?'
+address.street.help: ''
+address.street.label: Rue
+address.street.placeholder: ''
+address.type.help: ''
+address.type.label: Type
+address.type.placeholder: ''
+address.zipcode.help: ''
+address.zipcode.label: 'Code postal'
+address.zipcode.placeholder: ''
+addressuser.refuser.help: ''
+addressuser.refuser.label: Utilisateur
+addressuser.refuser.placeholder: ''
 bookmark.content.help: ''
 bookmark.content.label: Contenu
 bookmark.file.help: ''
@@ -76,9 +76,9 @@ edito.refuser.placeholder: ''
 edito.title.help: ''
 edito.title.label: Titre
 edito.title.placeholder: ''
-email.adresse.help: ''
-email.adresse.label: 'Adresse courriel'
-email.adresse.placeholder: ''
+email.address.help: ''
+email.address.label: 'Adresse courriel'
+email.address.placeholder: ''
 emailuser.principal.help: ''
 emailuser.principal.label: 'Principal ?'
 emailuser.refuser.help: ''
@@ -99,15 +99,29 @@ libelle.name.placeholder: ''
 libelle.slug.help: ''
 libelle.slug.label: Slug
 libelle.slug.placeholder: ''
-lien.adresse.help: ''
-lien.adresse.label: 'Adresse URL'
-lien.adresse.placeholder: ''
+lien.address.help: ''
+lien.address.label: 'Adresse URL'
+lien.address.placeholder: ''
 lien.name.help: ''
 lien.name.label: Nom
 lien.name.placeholder: ''
 lienuser.refuser.help: ''
 lienuser.refuser.label: Utilisateur
 lienuser.refuser.placeholder: ''
+memo.content.help: ''
+memo.content.label: Contenu
+memo.date_end.help: ''
+memo.date_end.label: 'Date de fin'
+memo.date_start.help: ''
+memo.date_start.label: 'Date de début'
+memo.file.help: ''
+memo.file.label: Image
+memo.refuser.help: ''
+memo.refuser.label: Utilisateur
+memo.refuser.placeholder: ''
+memo.title.help: ''
+memo.title.label: Titre
+memo.title.placeholder: ''
 menu.data.route.name.help: ''
 menu.data.route.name.label: Nom
 menu.data.route.name.placeholder: ''
@@ -123,26 +137,12 @@ menu.data.route.url.placeholder: ''
 menu.link.icon.help: ''
 menu.link.icon.label: Icon
 menu.link.icon.placeholder: ''
-menu.link.libelle.help: ''
-menu.link.libelle.label: Libellé
-menu.link.libelle.placeholder: ''
+menu.link.name.help: __menu.link.name.help
+menu.link.name.label: __menu.link.name.label
+menu.link.name.placeholder: __menu.link.name.placeholder
 menu.principal.clef.help: ''
 menu.principal.clef.label: Clef
 menu.principal.clef.placeholder: ''
-noteinterne.content.help: ''
-noteinterne.content.label: Contenu
-noteinterne.date_debut.help: ''
-noteinterne.date_debut.label: 'Date de début'
-noteinterne.date_fin.help: ''
-noteinterne.date_fin.label: 'Date de fin'
-noteinterne.file.help: ''
-noteinterne.file.label: Image
-noteinterne.refuser.help: ''
-noteinterne.refuser.label: Utilisateur
-noteinterne.refuser.placeholder: ''
-noteinterne.title.help: ''
-noteinterne.title.label: Titre
-noteinterne.title.placeholder: ''
 param.disclaimer.activate.help: ''
 param.disclaimer.activate.label: 'Activer ?'
 param.disclaimer.activate.placeholder: ''
@@ -323,8 +323,6 @@ phoneuser.principal.label: 'Principal ?'
 phoneuser.refuser.help: ''
 phoneuser.refuser.label: Utilisateur
 phoneuser.refuser.placeholder: ''
-post.commentaire.help: ''
-post.commentaire.label: 'Commentaire ?'
 post.content.help: ''
 post.content.label: Contenu
 post.file.help: ''
@@ -344,6 +342,8 @@ post.refcategory.placeholder: ''
 post.refuser.help: ''
 post.refuser.label: Utilisateur
 post.refuser.placeholder: ''
+post.remark.help: ''
+post.remark.label: 'Commentaire ?'
 post.slug.help: ''
 post.slug.label: Slug
 post.slug.placeholder: ''

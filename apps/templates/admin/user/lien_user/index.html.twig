@@ -9,8 +9,8 @@
                     'name': 'user.link.name'|trans({}, 'admin.messages')
                 },
                 {
-                    'field': 'a.adresse', 
-                    'name': 'user.link.adresse'|trans({}, 'admin.messages')
+                    'field': 'a.address', 
+                    'name': 'user.link.address'|trans({}, 'admin.messages')
                 },
                 {
                     'name': 'user.link.user'|trans({}, 'admin.messages')
@@ -22,7 +22,7 @@
         {% for entity in pagination %}
             <tr data-id="{{ entity.id }}">
                 <td>{{ entity.name }}</td>
-                <td>{{ entity.adresse }}</td>
+                <td>{{ entity.address }}</td>
                 <td>{{ entity.refuser }}</td>
                 <td>
                     {{ macro_admin.actions(entity, actions) }}

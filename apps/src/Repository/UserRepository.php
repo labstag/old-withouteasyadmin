@@ -58,6 +58,7 @@ class UserRepository extends ServiceEntityRepositoryLib
         $this->setQueryEtape($query, $get);
         $this->setQueryUsername($query, $get);
         $this->setQueryEmail($query, $get);
+        $this->setQueryRefGroup($query, $get);
 
         return $query;
     }
@@ -80,6 +81,17 @@ class UserRepository extends ServiceEntityRepositoryLib
 
         $query->andWhere('a.state LIKE :state');
         $query->setParameter('state', '%'.$get['etape'].'%');
+    }
+
+    protected function setQueryRefGroup(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['refgroup']) || empty($get['refgroup'])) {
+            return;
+        }
+
+        $query->leftJoin('a.refgroupe', 'g');
+        $query->andWhere('g.id = :refgroup');
+        $query->setParameter('refgroup', $get['refgroup']);
     }
 
     protected function setQueryUsername(QueryBuilder &$query, array $get)

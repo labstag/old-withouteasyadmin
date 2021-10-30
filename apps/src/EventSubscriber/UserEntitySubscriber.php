@@ -87,12 +87,12 @@ class UserEntitySubscriber implements EventSubscriberInterface
         }
 
         $states = [
-            'adresseUsers' => $newEntity->getAdresseUsers(),
+            'addressUsers' => $newEntity->getAddressUsers(),
             'bookmarks'    => $newEntity->getBookmarks(),
             'editos'       => $newEntity->getEditos(),
             'emailUsers'   => $newEntity->getEmailUsers(),
             'lienUsers'    => $newEntity->getLienUsers(),
-            'noteInternes' => $newEntity->getNoteInternes(),
+            'noteInternes' => $newEntity->getMemos(),
             'phoneUsers'   => $newEntity->getPhoneUsers(),
             'posts'        => $newEntity->getPosts(),
         ];
@@ -139,13 +139,13 @@ class UserEntitySubscriber implements EventSubscriberInterface
             return;
         }
 
-        $adresse = $newEntity->getEmail();
+        $address = $newEntity->getEmail();
         $emails  = $newEntity->getEmailUsers();
         $trouver = false;
         foreach ($emails as $emailUser) {
             // @var EmailUser $emailUser
             $emailUser->setPrincipal(false);
-            if ($emailUser->getAdresse() === $adresse) {
+            if ($emailUser->getAddress() === $address) {
                 $emailUser->setPrincipal(true);
                 $trouver = true;
             }
@@ -171,7 +171,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
         $old       = clone $emailUser;
         $emailUser->setRefuser($newEntity);
         $emailUser->setPrincipal(true);
-        $emailUser->setAdresse($adresse);
+        $emailUser->setAddress($address);
         $this->emailUserRH->handle($old, $emailUser);
         $this->emailUserRH->changeWorkflowState($emailUser, ['submit', 'valider']);
     }

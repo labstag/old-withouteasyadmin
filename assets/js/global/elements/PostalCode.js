@@ -6,7 +6,7 @@ export class PostalCode extends HTMLInputElement {
     const data = response[0]
     if (response.length === 1) {
       this.codepostal.value = data.postalCode
-      this.ville.value = data.placeName
+      this.city.value = data.placeName
       this.gps.value = data.latitude + ',' + data.longitude
     }
   }
@@ -17,8 +17,8 @@ export class PostalCode extends HTMLInputElement {
     if (this.country.value !== '') {
       params.country = this.country.value
     }
-    if (this.ville.value !== '') {
-      params.placeName = this.ville.value
+    if (this.city.value !== '') {
+      params.placeName = this.city.value
     }
     if (this.codepostal.value !== '') {
       params.postalCode = this.codepostal.value
@@ -43,7 +43,7 @@ export class PostalCode extends HTMLInputElement {
     const selects = this.row.getElementsByTagName('select')
     this.country = null
     this.codepostal = null
-    this.ville = null
+    this.city = null
     this.gps = null
     Array.from(selects).forEach(
       element => {
@@ -58,8 +58,8 @@ export class PostalCode extends HTMLInputElement {
         const isInput = element.getAttribute('is')
         if (isInput === 'input-codepostal') {
           this.codepostal = element
-        } else if (isInput === 'input-ville') {
-          this.ville = element
+        } else if (isInput === 'input-city') {
+          this.city = element
         } else if (isInput === 'input-gps') {
           this.gps = element
         }

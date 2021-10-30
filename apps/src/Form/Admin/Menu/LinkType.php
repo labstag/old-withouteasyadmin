@@ -18,13 +18,13 @@ class LinkType extends AbstractTypeLib
     {
         unset($options);
         $builder->add(
-            'libelle',
+            'name',
             TextType::class,
             [
-                'label' => $this->translator->trans('menu.link.libelle.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('menu.link.libelle.help', [], 'admin.form'),
+                'label' => $this->translator->trans('menu.link.name.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('menu.link.name.help', [], 'admin.form'),
                 'attr'  => [
-                    'placeholder' => $this->translator->trans('menu.link.libelle.placeholder', [], 'admin.form'),
+                    'placeholder' => $this->translator->trans('menu.link.name.placeholder', [], 'admin.form'),
                 ],
             ]
         );

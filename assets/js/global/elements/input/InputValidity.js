@@ -5,16 +5,16 @@ export class InputValidity extends HTMLInputElement {
     this.onKeydown()
   }
 
-  traitement () {
+  traitement (element) {
     this.classList.remove('is-valid')
     this.classList.remove('is-invalid')
-    if (this.value() !== '') {
+    if (element.value() !== '') {
       this.classList.add(this.checkValidity() ? 'is-valid' : 'is-invalid')
     }
   }
 
   onKeydown () {
     clearTimeout(this.timeout)
-    this.timeout = setTimeout(() => { this.traitement() }, 500)
+    this.timeout = setTimeout(() => { this.traitement(this) }, 500)
   }
 }

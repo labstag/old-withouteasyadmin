@@ -18,7 +18,7 @@
         {% block tbody %}
             {% for entity in pagination %}
                 <tr data-id="{{ entity.id }}">
-                    <td>{{ entity.nom }}</td>
+                    <td>{{ entity.name }}</td>
                     <td>{{ entity.slug }}</td>
                     <td>
                         {{ macro_admin.actions(entity, actions) }}
