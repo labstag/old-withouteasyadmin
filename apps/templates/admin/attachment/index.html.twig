@@ -17,9 +17,6 @@
                     'name': 'attachment.size'|trans({}, 'admin.messages')
                 },
                 {
-                    'name': 'attachment.dimensions'|trans({}, 'admin.messages')
-                },
-                {
                     'name': 'attachment.download'|trans({}, 'admin.messages')
                 },
                 {
@@ -38,7 +35,6 @@
                     <td>{{ entity.name }}</td>
                     <td>{{ entity.mimeType }}</td>
                     <td>{{ entity.size }}</td>
-                    <td>{{ entity.dimensions|json_encode }}</td>
                     <td>{% if entity.name != '' %}<a href="{{ asset(entity.name) }}" target="_blank">{{ 'attachment.seefile'|trans({}, 'admin.messages') }}</a>{% endif %}</td>
                     <td>
                         {% for state in workflow_marked_places(entity) %}

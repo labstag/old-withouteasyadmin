@@ -1,7 +1,6 @@
 admin.menu.add: Ajouter
 admin.menu.adddivider: 'Ajouter un séparateur'
 admin.menu.move: Déplacer
-attachment.dimensions: Dimensions
 attachment.download: Télécharger
 attachment.mimetype: 'Mime type'
 attachment.name: Nom
@@ -68,22 +67,22 @@ link.edit: Éditer
 link.preview: Aperçu
 link.restore: Restaurer
 link.show: Voir
-menu.clef: Clef
-menu.data: Data
-menu.divider: Séparateur
-menu.icon: Icone
-menu.libelle: Libellé
-menu.position: Position
-menu.separateur: 'Séparateur ?'
-norecord: 'Aucun enregistrement trouvé'
 memo.content: Contenu
-memo.date_start: 'Date de début'
 memo.date_end: 'Date de fin'
+memo.date_start: 'Date de début'
 memo.fond: Fond
 memo.infodateuser: '%date% par %user%'
 memo.title: Titre
 memo.user: Utilisateur
 memo.workflow: Workflow
+menu.clef: Clef
+menu.data: Data
+menu.divider: Séparateur
+menu.icon: Icone
+menu.name: __menu.name
+menu.position: Position
+menu.separateur: 'Séparateur ?'
+norecord: 'Aucun enregistrement trouvé'
 oauth.go: 'Y accéder'
 oauth.message: 'Vous êtes sur la page qui vous permet de retrouver les différentes routes permettant de parametrer les connexions Oauth.</p> <p>Pour chaque service proposé ci-dessous, merci de récupérer l''<b>identifiant</b> ainsi que la <b>clef secrète</b>.'
 oauth.service: Service
@@ -115,13 +114,13 @@ trash.empty: Vider
 trash.entite: Table
 trash.go: 'Aller sur cette corbeille'
 user.address.address: Adresse
+user.address.city: Ville
 user.address.country: Pays
 user.address.gps: Gps
 user.address.pmr: 'Accès PMR'
 user.address.street: Rue
 user.address.type: Type
 user.address.user: Utilisateur
-user.address.city: Ville
 user.address.zipcode: 'Code postal'
 user.addresss: Adresses
 user.avatar: Avatar

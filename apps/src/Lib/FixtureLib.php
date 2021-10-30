@@ -243,8 +243,6 @@ abstract class FixtureLib extends Fixture
             $file = $path.'/'.$filename;
             $attachment->setMimeType(mime_content_type($file));
             $attachment->setSize(filesize($file));
-            $size = getimagesize($file);
-            $attachment->setDimensions(is_array($size) ? $size : []);
             $attachment->setName(
                 str_replace(
                     $this->getParameter('kernel.project_dir').'/public/',

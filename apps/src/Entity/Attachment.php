@@ -21,11 +21,6 @@ class Attachment
     use StateableEntity;
 
     /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
-    protected $dimensions = [];
-
-    /**
      * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond")
      */
     protected $editos;
@@ -149,11 +144,6 @@ class Attachment
         return $this->code;
     }
 
-    public function getDimensions(): ?array
-    {
-        return $this->dimensions;
-    }
-
     /**
      * @return Collection|Edito[]
      */
@@ -269,13 +259,6 @@ class Attachment
     public function setCode(?string $code): self
     {
         $this->code = $code;
-
-        return $this;
-    }
-
-    public function setDimensions(?array $dimensions): self
-    {
-        $this->dimensions = $dimensions;
 
         return $this;
     }
