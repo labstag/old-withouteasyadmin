@@ -53,7 +53,7 @@ apps/vendor: isdocker apps/composer.json
 	${COMPOSER_EXEC} install --no-progress --prefer-dist --optimize-autoloader
 	
 .PHONY: assets
-assets: isdocker
+assets: isdocker apps/.env
 	${SYMFONY_EXEC} assets:install public --symlink --relative
 
 .PHONY: bdd
@@ -73,8 +73,12 @@ else
 	)
 endif
 
+.PHONY: env
+apps/.env: ### Scripts Installation environnement
+	@echo "APP_ENV=dev" > apps/.env
+
 .PHONY: composer
-composer: isdocker ### Scripts for composer
+composer: isdocker env ### Scripts for composer
 ifeq ($(COMMANDS_ARGS),suggests)
 	${COMPOSER_EXEC} suggests --by-suggestion
 else ifeq ($(COMMANDS_ARGS),outdated)
@@ -132,7 +136,7 @@ geocode: isdocker ### Geocode
 	$(SYMFONY_EXEC) labstag:geocode:install $(COMMANDS_ARGS)
 
 .PHONY: install
-install: node_modules ### installation
+install: node_modules apps/.env ### installation
 ifeq ($(COMMANDS_ARGS),all)
 	@make docker image-pull -i
 	@make docker deploy -i
