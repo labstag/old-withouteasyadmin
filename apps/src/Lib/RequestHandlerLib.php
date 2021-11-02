@@ -90,12 +90,12 @@ abstract class RequestHandlerLib
             $userCollectionEvent->addOauthConnectUser($old, $row);
         }
 
-        $liensUsers = $entity->getLienUsers();
-        foreach ($liensUsers as $row) {
-            // @var LienUser $row
+        $linksUsers = $entity->getLinkUsers();
+        foreach ($linksUsers as $row) {
+            // @var LinkUser $row
             $old = clone $row;
             $row->setRefuser($entity);
-            $userCollectionEvent->addLienUser($old, $row);
+            $userCollectionEvent->addLinkUser($old, $row);
         }
 
         $emailUsers = $entity->getEmailUsers();

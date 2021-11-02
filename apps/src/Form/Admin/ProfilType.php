@@ -5,7 +5,7 @@ namespace Labstag\Form\Admin;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Collections\User\AddressType;
 use Labstag\Form\Admin\Collections\User\EmailType;
-use Labstag\Form\Admin\Collections\User\LienType;
+use Labstag\Form\Admin\Collections\User\LinkType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\Lib\AbstractTypeLib;
@@ -116,7 +116,7 @@ class ProfilType extends AbstractTypeLib
             'emailUsers'   => EmailType::class,
             'phoneUsers'   => PhoneType::class,
             'addressUsers' => AddressType::class,
-            'lienUsers'    => LienType::class,
+            'linkUsers'    => LinkType::class,
         ];
 
         foreach ($tab as $key => $type) {

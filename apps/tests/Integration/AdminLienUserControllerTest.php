@@ -18,8 +18,8 @@ class AdminLienUserControllerTest extends WebTestCase
     use IntegrationTrait;
 
     protected $urls = [
-        'admin_lienuser_index',
-        'admin_lienuser_new',
+        'admin_linkuser_index',
+        'admin_linkuser_new',
     ];
 
     protected $groupeDisable = [
@@ -48,7 +48,7 @@ class AdminLienUserControllerTest extends WebTestCase
         $this->showTest(
             $groupe,
             !in_array($groupe, $this->groupeDisable),
-            'admin_lienuser_show'
+            'admin_linkuser_show'
         );
     }
 
@@ -59,7 +59,7 @@ class AdminLienUserControllerTest extends WebTestCase
     {
         $this->editPostRedirect(
             $groupe,
-            'admin_lienuser_edit',
+            'admin_linkuser_edit',
             LienUserType::class,
             !in_array($groupe, $this->groupeDisable)
         );
@@ -73,7 +73,7 @@ class AdminLienUserControllerTest extends WebTestCase
         $this->addNewEntity(
             $groupe,
             !in_array($groupe, $this->groupeDisable),
-            'admin_lienuser_new',
+            'admin_linkuser_new',
             LienUserType::class
         );
     }
@@ -83,7 +83,7 @@ class AdminLienUserControllerTest extends WebTestCase
      */
     public function testShowDataNotFound($groupe)
     {
-        $this->showEditDataNotFound($groupe, 'admin_lienuser_show');
+        $this->showEditDataNotFound($groupe, 'admin_linkuser_show');
     }
 
     /**
@@ -91,7 +91,7 @@ class AdminLienUserControllerTest extends WebTestCase
      */
     public function testEditDataNotFound($groupe)
     {
-        $this->showEditDataNotFound($groupe, 'admin_lienuser_edit');
+        $this->showEditDataNotFound($groupe, 'admin_linkuser_edit');
     }
 
     /**
@@ -102,7 +102,7 @@ class AdminLienUserControllerTest extends WebTestCase
         $this->editDelete(
             $groupe,
             !in_array($groupe, $this->groupeDisable),
-            'admin_lienuser_delete'
+            'admin_linkuser_delete'
         );
     }
 

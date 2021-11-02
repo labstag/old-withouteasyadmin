@@ -5,16 +5,16 @@ namespace Labstag\Repository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
-use Labstag\Entity\LienUser;
+use Labstag\Entity\LinkUser;
 
 /**
- * @Trashable(url="admin_lienuser_trash")
+ * @Trashable(url="admin_linkuser_trash")
  */
-class LienUserRepository extends LienRepository
+class LinkUserRepository extends LinkRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, LienUser::class);
+        parent::__construct($registry, LinkUser::class);
     }
 
     public function findAllForAdmin(array $get): QueryBuilder

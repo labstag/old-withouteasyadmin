@@ -4,6 +4,6 @@ namespace Labstag\Repository;
 
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-abstract class LienRepository extends ServiceEntityRepositoryLib
+abstract class LinkRepository extends ServiceEntityRepositoryLib
 {
 }

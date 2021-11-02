@@ -73,11 +73,11 @@
                 </fieldset>
             </div>
         {% endif %}
-        {% set liens = entity.lienUsers %}
-        {% if liens|length !=0 %}
+        {% set links = entity.linkUsers %}
+        {% if links|length !=0 %}
             <div class="col-6">
                 <fieldset>
-                    <legend>{{ 'user.links'|trans({"%nbr%": entity.lienUsers|length}, 'admin.messages') }}</legend>
+                    <legend>{{ 'user.links'|trans({"%nbr%": entity.linkUsers|length}, 'admin.messages') }}</legend>
                     <table>
                         <thead>
                             <tr>
@@ -86,10 +86,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for lien in liens %}
+                            {% for link in links %}
                                 <tr>
-                                    <td>{{ lien.name }}</td>
-                                    <td><a href="{{ lien.address }}" target="_blank">{{ lien.address }}</a></td>
+                                    <td>{{ link.name }}</td>
+                                    <td><a href="{{ link.address }}" target="_blank">{{ link.address }}</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>

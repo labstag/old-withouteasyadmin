@@ -3,7 +3,7 @@
 namespace Labstag\EventSubscriber;
 
 use Labstag\Entity\AddressUser;
-use Labstag\Entity\LienUser;
+use Labstag\Entity\LinkUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Event\UserCollectionEvent;
 use Labstag\Service\UserMailService;
@@ -27,11 +27,11 @@ class UserCollectionSubscriber implements EventSubscriberInterface
     public function onUserCollectionEvent(UserCollectionEvent $event): void
     {
         $oauthConnectUser = $event->getOauthConnectUser();
-        $lienUser         = $event->getLienUser();
+        $linkUser         = $event->getLinkUser();
         $addressUser      = $event->getAddressUser();
 
         $this->setOauthConnectUser($oauthConnectUser);
-        $this->setLienUser($lienUser);
+        $this->setLinkUser($linkUser);
         $this->setAddressUser($addressUser);
     }
 
@@ -52,15 +52,15 @@ class UserCollectionSubscriber implements EventSubscriberInterface
         $this->userMailService->checkNewAddress($new->getRefuser(), $new);
     }
 
-    protected function setLienUser(array $data): void
+    protected function setLinkUser(array $data): void
     {
         if (0 == count($data)) {
             return;
         }
 
-        // @var LienUser $old
+        // @var LinkUser $old
         $old = $data['old'];
-        // @var LienUser $new
+        // @var LinkUser $new
         $new = $data['new'];
         if ($old->getId() == $new->getId()) {
             return;
