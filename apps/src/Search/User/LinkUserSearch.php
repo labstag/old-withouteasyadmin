@@ -7,7 +7,6 @@ use Labstag\Lib\LibSearch;
 
 class LinkUserSearch extends LibSearch
 {
-
     public $refuser;
 
     public function search(array $get, $doctrine)

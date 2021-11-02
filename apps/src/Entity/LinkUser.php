@@ -10,7 +10,6 @@ use Labstag\Repository\LinkUserRepository;
  */
 class LinkUser extends Link
 {
-
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="LinkUsers")
      * @ORM\JoinColumn(nullable=false)

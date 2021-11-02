@@ -27,8 +27,7 @@ class LinkUserController extends AdminControllerLib
         AttachFormService $service,
         ?LinkUser $linkUser,
         LinkUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $service,
             $requestHandler,
@@ -57,8 +56,7 @@ class LinkUserController extends AdminControllerLib
      */
     public function showOrPreview(
         LinkUser $linkUser
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $linkUser,
             'admin/user/link_user/show.html.twig'

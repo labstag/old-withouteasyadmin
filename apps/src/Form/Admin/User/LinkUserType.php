@@ -17,8 +17,7 @@ class LinkUserType extends LinkType
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         parent::buildForm($builder, $options);
 
         $builder->add(

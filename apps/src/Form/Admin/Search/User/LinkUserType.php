@@ -17,8 +17,7 @@ class LinkUserType extends SearchAbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add(
             'refuser',
             SearchableType::class,
