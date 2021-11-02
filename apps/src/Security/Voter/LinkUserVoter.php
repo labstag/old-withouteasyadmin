@@ -2,17 +2,17 @@
 
 namespace Labstag\Security\Voter;
 
-use Labstag\Entity\LienUser;
+use Labstag\Entity\LinkUser;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class LienUserVoter extends Voter
+class LinkUserVoter extends Voter
 {
     protected function supports($attribute, $subject)
     {
         unset($attribute);
 
-        return $subject instanceof LienUser;
+        return $subject instanceof LinkUser;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

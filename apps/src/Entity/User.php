@@ -77,12 +77,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=LienUser::class,
+     *  targetEntity=LinkUser::class,
      *  mappedBy="refuser",
      *  cascade={"persist"}
      * )
      */
-    protected $lienUsers;
+    protected $linkUsers;
 
     /**
      * @ORM\OneToMany(
@@ -163,7 +163,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->editos            = new ArrayCollection();
         $this->noteInternes      = new ArrayCollection();
-        $this->lienUsers         = new ArrayCollection();
+        $this->linkUsers         = new ArrayCollection();
         $this->emailUsers        = new ArrayCollection();
         $this->phoneUsers        = new ArrayCollection();
         $this->addressUsers      = new ArrayCollection();
@@ -220,11 +220,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function addLienUser(LienUser $lienUser): self
+    public function addLinkUser(LinkUser $linkUser): self
     {
-        if (!$this->lienUsers->contains($lienUser)) {
-            $lienUser->setRefuser($this);
-            $this->lienUsers[] = $lienUser;
+        if (!$this->linkUsers->contains($linkUser)) {
+            $linkUser->setRefuser($this);
+            $this->linkUsers[] = $linkUser;
         }
 
         return $this;
@@ -349,9 +349,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getLienUsers()
+    public function getLinkUsers()
     {
-        return $this->lienUsers;
+        return $this->linkUsers;
     }
 
     public function getMemos()
@@ -501,13 +501,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeLienUser(LienUser $lienUser): self
+    public function removeLinkUser(LinkUser $linkUser): self
     {
-        if ($this->lienUsers->contains($lienUser)) {
-            $this->lienUsers->removeElement($lienUser);
+        if ($this->linkUsers->contains($linkUser)) {
+            $this->linkUsers->removeElement($linkUser);
             // set the owning side to null (unless already changed)
-            if ($lienUser->getRefuser() === $this) {
-                $lienUser->setRefuser(null);
+            if ($linkUser->getRefuser() === $this) {
+                $linkUser->setRefuser(null);
             }
         }
 

@@ -2,14 +2,14 @@
 
 namespace Labstag\Form\Admin\User;
 
-use Labstag\Entity\LienUser;
+use Labstag\Entity\LinkUser;
 use Labstag\Entity\User;
-use Labstag\Form\Admin\LienType;
+use Labstag\Form\Admin\LinkType;
 use Labstag\FormType\SearchableType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LienUserType extends LienType
+class LinkUserType extends LinkType
 {
     /**
      * @inheritdoc
@@ -25,13 +25,13 @@ class LienUserType extends LienType
             'refuser',
             SearchableType::class,
             [
-                'label'    => $this->translator->trans('lienuser.refuser.label', [], 'admin.form'),
-                'help'     => $this->translator->trans('lienuser.refuser.help', [], 'admin.form'),
+                'label'    => $this->translator->trans('linkuser.refuser.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('linkuser.refuser.help', [], 'admin.form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('lienuser.refuser.placeholder', [], 'admin.form'),
+                    'placeholder' => $this->translator->trans('linkuser.refuser.placeholder', [], 'admin.form'),
                 ],
             ]
         );
@@ -41,7 +41,7 @@ class LienUserType extends LienType
     {
         $resolver->setDefaults(
             [
-                'data_class' => LienUser::class,
+                'data_class' => LinkUser::class,
             ]
         );
     }

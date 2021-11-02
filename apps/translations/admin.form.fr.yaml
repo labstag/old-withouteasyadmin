@@ -99,15 +99,15 @@ libelle.name.placeholder: ''
 libelle.slug.help: ''
 libelle.slug.label: Slug
 libelle.slug.placeholder: ''
-lien.address.help: ''
-lien.address.label: 'Adresse URL'
-lien.address.placeholder: ''
-lien.name.help: ''
-lien.name.label: Nom
-lien.name.placeholder: ''
-lienuser.refuser.help: ''
-lienuser.refuser.label: Utilisateur
-lienuser.refuser.placeholder: ''
+link.address.help: ''
+link.address.label: 'Adresse URL'
+link.address.placeholder: ''
+link.name.help: ''
+link.name.label: Nom
+link.name.placeholder: ''
+linkuser.refuser.help: ''
+linkuser.refuser.label: Utilisateur
+linkuser.refuser.placeholder: ''
 memo.content.help: ''
 memo.content.label: Contenu
 memo.date_end.help: ''

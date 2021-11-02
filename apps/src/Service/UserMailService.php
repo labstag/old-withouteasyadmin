@@ -5,7 +5,7 @@ namespace Labstag\Service;
 use DateTime;
 use Labstag\Entity\AddressUser;
 use Labstag\Entity\EmailUser;
-use Labstag\Entity\LienUser;
+use Labstag\Entity\LinkUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\Template;
@@ -127,7 +127,7 @@ class UserMailService
         );
     }
 
-    public function checkNewLink(User $user, LienUser $lienUser): void
+    public function checkNewLink(User $user, LinkUser $linkUser): void
     {
         // @var Template $template
         $template = $this->repository->findOneBy(
@@ -138,7 +138,7 @@ class UserMailService
         }
 
         $change = [
-            'link' => $lienUser->getAddress(),
+            'link' => $linkUser->getAddress(),
         ];
         $this->setEmail(
             $template,

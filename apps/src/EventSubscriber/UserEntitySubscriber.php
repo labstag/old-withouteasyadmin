@@ -91,7 +91,7 @@ class UserEntitySubscriber implements EventSubscriberInterface
             'bookmarks'    => $newEntity->getBookmarks(),
             'editos'       => $newEntity->getEditos(),
             'emailUsers'   => $newEntity->getEmailUsers(),
-            'lienUsers'    => $newEntity->getLienUsers(),
+            'linkUsers'    => $newEntity->getLinkUsers(),
             'noteInternes' => $newEntity->getMemos(),
             'phoneUsers'   => $newEntity->getPhoneUsers(),
             'posts'        => $newEntity->getPosts(),

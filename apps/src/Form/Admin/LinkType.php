@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-abstract class LienType extends AbstractTypeLib
+abstract class LinkType extends AbstractTypeLib
 {
     /**
      * @inheritdoc
@@ -22,10 +22,10 @@ abstract class LienType extends AbstractTypeLib
             'name',
             TextType::class,
             [
-                'label' => $this->translator->trans('lien.name.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('lien.name.help', [], 'admin.form'),
+                'label' => $this->translator->trans('link.name.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('link.name.help', [], 'admin.form'),
                 'attr'  => [
-                    'placeholder' => $this->translator->trans('lien.name.placeholder', [], 'admin.form'),
+                    'placeholder' => $this->translator->trans('link.name.placeholder', [], 'admin.form'),
                 ],
             ]
         );
@@ -33,10 +33,10 @@ abstract class LienType extends AbstractTypeLib
             'address',
             UrlType::class,
             [
-                'label' => $this->translator->trans('lien.address.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('lien.address.help', [], 'admin.form'),
+                'label' => $this->translator->trans('link.address.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('link.address.help', [], 'admin.form'),
                 'attr'  => [
-                    'placeholder' => $this->translator->trans('lien.address.placeholder', [], 'admin.form'),
+                    'placeholder' => $this->translator->trans('link.address.placeholder', [], 'admin.form'),
                 ],
             ]
         );

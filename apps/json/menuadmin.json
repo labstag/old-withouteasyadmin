@@ -82,7 +82,7 @@
             {
                 "name": "Liens",
                 "data": {
-                    "route": "admin_lienuser_index"
+                    "route": "admin_linkuser_index"
                 }
             },
             {

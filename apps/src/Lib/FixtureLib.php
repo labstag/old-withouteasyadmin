@@ -20,7 +20,7 @@ use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\RequestHandler\LibelleRequestHandler;
-use Labstag\RequestHandler\LienUserRequestHandler;
+use Labstag\RequestHandler\LinkUserRequestHandler;
 use Labstag\RequestHandler\MemoRequestHandler;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
@@ -51,7 +51,7 @@ abstract class FixtureLib extends Fixture
 
     protected const NUMBER_LIBELLE = 10;
 
-    protected const NUMBER_LIEN = 25;
+    protected const NUMBER_LINK = 25;
 
     protected const NUMBER_NOTEINTERNE = 25;
 
@@ -87,7 +87,7 @@ abstract class FixtureLib extends Fixture
 
     protected LibelleRequestHandler $libelleRH;
 
-    protected LienUserRequestHandler $lienUserRH;
+    protected LinkUserRequestHandler $linkUserRH;
 
     protected LoggerInterface $logger;
 
@@ -120,7 +120,7 @@ abstract class FixtureLib extends Fixture
         GuardService $guardService,
         Environment $twig,
         EmailUserRequestHandler $emailUserRH,
-        LienUserRequestHandler $lienUserRH,
+        LinkUserRequestHandler $linkUserRH,
         MemoRequestHandler $noteInterneRH,
         GroupeRequestHandler $groupeRH,
         EditoRequestHandler $editoRH,
@@ -149,7 +149,7 @@ abstract class FixtureLib extends Fixture
         $this->guardService      = $guardService;
         $this->installService    = $installService;
         $this->libelleRH         = $libelleRH;
-        $this->lienUserRH        = $lienUserRH;
+        $this->linkUserRH        = $linkUserRH;
         $this->logger            = $logger;
         $this->noteInterneRH     = $noteInterneRH;
         $this->oauthService      = $oauthService;

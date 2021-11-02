@@ -7,7 +7,7 @@ use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Collections\User\AddressType;
 use Labstag\Form\Admin\Collections\User\EmailType;
-use Labstag\Form\Admin\Collections\User\LienType;
+use Labstag\Form\Admin\Collections\User\LinkType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\FormType\SearchableType;
@@ -145,7 +145,7 @@ class UserType extends AbstractTypeLib
             'emailUsers'   => EmailType::class,
             'phoneUsers'   => PhoneType::class,
             'addressUsers' => AddressType::class,
-            'lienUsers'    => LienType::class,
+            'linkUsers'    => LinkType::class,
         ];
         foreach ($tab as $key => $type) {
             $builder->add(

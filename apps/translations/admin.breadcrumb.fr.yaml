@@ -51,12 +51,12 @@ libelle.preview: Aperçu
 libelle.show: Voir
 libelle.title: Libelle
 libelle.trash: Corbeille
-lienuser.edit: Éditer
-lienuser.new: Nouveau
-lienuser.preview: Aperçu
-lienuser.show: Voir
-lienuser.title: Lienuser
-lienuser.trash: Corbeille
+linkuser.edit: Éditer
+linkuser.new: Nouveau
+linkuser.preview: Aperçu
+linkuser.show: Voir
+linkuser.title: Lienuser
+linkuser.trash: Corbeille
 menu.add: Ajouter
 menu.divider: 'Ajouter un séparateur'
 menu.move: Déplacer

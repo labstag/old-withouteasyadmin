@@ -61,11 +61,11 @@ class PhoneUserType extends SearchAbstractTypeLib
             ChoiceType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('lienuser.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('lienuser.etape.help', [], 'admin.search.form'),
+                'label'    => $this->translator->trans('linkuser.etape.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('linkuser.etape.help', [], 'admin.search.form'),
                 'choices'  => $places,
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('lienuser.etape.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('linkuser.etape.placeholder', [], 'admin.search.form'),
                 ],
             ]
         );

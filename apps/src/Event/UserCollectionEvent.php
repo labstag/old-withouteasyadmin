@@ -4,7 +4,7 @@ namespace Labstag\Event;
 
 use Labstag\Entity\AddressUser;
 use Labstag\Entity\EmailUser;
-use Labstag\Entity\LienUser;
+use Labstag\Entity\LinkUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\PhoneUser;
 
@@ -15,7 +15,7 @@ class UserCollectionEvent
 
     protected array $emailUser = [];
 
-    protected array $lienUser = [];
+    protected array $linkUser = [];
 
     protected array $oauthConnectUser = [];
 
@@ -37,9 +37,9 @@ class UserCollectionEvent
         ];
     }
 
-    public function addLienUser(LienUser $old, LienUser $new): void
+    public function addLinkUser(LinkUser $old, LinkUser $new): void
     {
-        $this->lienUser = [
+        $this->linkUser = [
             'old' => $old,
             'new' => $new,
         ];
@@ -74,9 +74,9 @@ class UserCollectionEvent
         return $this->emailUser;
     }
 
-    public function getLienUser(): array
+    public function getLinkUser(): array
     {
-        return $this->lienUser;
+        return $this->linkUser;
     }
 
     public function getOauthConnectUser(): array

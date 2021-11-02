@@ -1,6 +1,6 @@
 {
   "name": "@koromerzhin/labstag",
-  "version": "0.0.1",
+  "version": "1.4.0",
   "description": "Site Internet sous Symfony",
   "main": "index.js",
   "scripts": {

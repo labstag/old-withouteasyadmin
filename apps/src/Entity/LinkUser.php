@@ -3,16 +3,16 @@
 namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Labstag\Repository\LienUserRepository;
+use Labstag\Repository\LinkUserRepository;
 
 /**
- * @ORM\Entity(repositoryClass=LienUserRepository::class)
+ * @ORM\Entity(repositoryClass=LinkUserRepository::class)
  */
-class LienUser extends Lien
+class LinkUser extends Link
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="lienUsers")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="LinkUsers")
      * @ORM\JoinColumn(nullable=false)
      */
     protected $refuser;
