@@ -11,7 +11,7 @@ PHP_EXEC := ${DOCKER_EXECPHP} php -d memory_limit=-1
 SYMFONY_EXEC := ${DOCKER_EXECPHP} symfony console
 COMPOSER_EXEC := ${DOCKER_EXECPHP} symfony composer
 
-COMMANDS_SUPPORTED_COMMANDS := libraries workflow-png tests messenger linter install git env encore composer bdd setbdd geocode
+COMMANDS_SUPPORTED_COMMANDS := libraries workflow-png tests messenger linter install git encore composer bdd setbdd geocode
 COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
 ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -108,7 +108,7 @@ endif
 
 
 .PHONY: encore
-encore: ### Script for Encore
+encore: node_modules ### Script for Encore
 ifeq ($(COMMANDS_ARGS),dev)
 	@npm run encore-dev
 else ifeq ($(COMMANDS_ARGS),watch)
@@ -127,30 +127,13 @@ else
 	)
 endif
 
-.PHONY: env
-env: ### Scripts Installation environnement
-ifeq ($(COMMANDS_ARGS),dev)
-	@echo "APP_ENV=dev" > apps/.env
-else ifeq ($(COMMANDS_ARGS),prod)
-	@echo "APP_ENV=prod" > apps/.env
-	@rm -rf apps/vendor
-	@make composer prod -i
-else
-	@printf "${MISSING_ARGUMENTS}" "env"
-	$(call array_arguments, \
-		["dev"]="environnement dev" \
-		["prod"]="environnement prod" \
-	)
-endif
-
 .PHONY: geocode
 geocode: isdocker ### Geocode
 	$(SYMFONY_EXEC) labstag:geocode:install $(COMMANDS_ARGS)
 
 .PHONY: install
-install: apps/.env ### installation
+install: node_modules ### installation
 ifeq ($(COMMANDS_ARGS),all)
-	@make node_modules -i
 	@make docker image-pull -i
 	@make docker deploy -i
 	@make sleep 60 -i
@@ -162,12 +145,10 @@ else ifeq ($(COMMANDS_ARGS),dev)
 	@make install all -i
 	@make bdd fixtures -i
 	@make commands -i
-	@make env dev -i
 else ifeq ($(COMMANDS_ARGS),prod)
 	@make install all -i
 	@make bdd fixtures -i
 	@make commands -i
-	@make env prod -i
 	@make encore build -i
 else
 	@printf "${MISSING_ARGUMENTS}" "install"
