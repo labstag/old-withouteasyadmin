@@ -58,12 +58,12 @@ linkuser.show: Voir
 linkuser.title: Lienuser
 linkuser.trash: Corbeille
 menu.add: Ajouter
-menu.divider: 'Ajouter un séparateur'
+menu.divider: "Ajouter un séparateur"
 menu.move: Déplacer
 menu.new: Nouveau
 menu.title: Menu
 menu.trash: Corbeille
-menu.update: 'Mise à jour'
+menu.update: "Mise à jour"
 memo.edit: Éditer
 memo.new: Nouveau
 memo.preview: Aperçu
