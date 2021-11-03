@@ -25,6 +25,7 @@
                 </td>
             </tr>
             {% endif %}
+            {% if post.refcategory is defined %}
             <tr>
                 <th>{{ 'post.category'|trans({}, 'admin.messages') }}</th>
                 <td>
@@ -35,12 +36,13 @@
                     {% endif %}
                     {% set state = guard_route(url) %}
                     {% if state == true %}
-                        <a href="{{ path(url, {'id': entity.category.id}) }}">{{ entity.category }}</a>
+                        <a href="{{ path(url, {'id': entity.refcategory.id}) }}">{{ entity.refcategory }}</a>
                     {% else %}
-                        {{ entity.category }}
+                        {{ entity.refcategory }}
                     {% endif %}
                 </td>
             </tr>
+            {% endif %}
             <tr>
                 <th>{{ 'post.user'|trans({}, 'admin.messages') }}</th>
                 <td>
