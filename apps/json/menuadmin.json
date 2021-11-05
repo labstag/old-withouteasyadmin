@@ -153,6 +153,18 @@
                 "data": {
                     "route": "admin_bookmark_index"
                 }
+            },
+            {
+                "name": "Histories",
+                "data": {
+                    "route": "admin_history_index"
+                }
+            },
+            {
+                "name": "Chapters",
+                "data": {
+                    "route": "admin_chapter_index"
+                }
             }
         ]
     }
