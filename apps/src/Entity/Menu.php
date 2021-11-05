@@ -21,7 +21,8 @@ class Menu
      * @ORM\OneToMany(
      *  targetEntity="Menu",
      *  mappedBy="parent",
-     *  cascade={"persist"}
+     *  cascade={"persist"},
+     *  orphanRemoval=true
      * )
      * @ORM\OrderBy({"position" = "ASC"})
      */

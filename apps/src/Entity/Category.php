@@ -18,12 +18,12 @@ class Category
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory")
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory", orphanRemoval=true)
      */
     private $bookmarks;
 
     /**
-     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="parent", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
      */
     private $children;
 
@@ -50,7 +50,7 @@ class Category
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refcategory")
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refcategory", orphanRemoval=true)
      */
     private $posts;
 
