@@ -1,7 +1,7 @@
 framework:
   workflows:
     bookmark:
-      type: "state_machine" # or 'state_machine'
+      type: "state_machine"
       audit_trail:
         enabled: true
       marking_store:

@@ -2,10 +2,11 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Entity\History;
-use Labstag\Lib\ServiceEntityRepositoryLib;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
+use Labstag\Entity\History;
+use Labstag\Lib\ServiceEntityRepositoryLib;
+
 /**
  * @Trashable(url="admin_history_trash")
  */

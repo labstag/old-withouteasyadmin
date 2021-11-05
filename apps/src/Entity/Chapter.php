@@ -2,11 +2,12 @@
 
 namespace Labstag\Entity;
 
-use Labstag\Repository\ChapterRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Repository\ChapterRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,22 +19,24 @@ class Chapter
     use SoftDeleteableEntity;
 
     use StateableEntity;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $content;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $content;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -46,22 +49,22 @@ class Chapter
     private $metaKeywords;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     private $published;
 
     /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
+     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="chapters")
+     * @Assert\NotBlank
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $updated;
-
-    /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
-     */
-    private $created;
+    private $refhistory;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
@@ -75,15 +78,34 @@ class Chapter
     private $summary;
 
     /**
-     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="chapters")
-     * @Assert\NotBlank
-     * @ORM\JoinColumn(nullable=false)
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
      */
-    private $refhistory;
+    private $updated;
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function getCreated()
+    {
+        return $this->created;
+    }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getMetaDescription(): ?string
+    {
+        return $this->metaDescription;
+    }
+
+    public function getMetaKeywords(): ?string
+    {
+        return $this->metaKeywords;
     }
 
     public function getName(): ?string
@@ -91,16 +113,29 @@ class Chapter
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function getPublished(): ?DateTimeInterface
     {
-        $this->name = $name;
-
-        return $this;
+        return $this->published;
     }
 
-    public function getContent(): ?string
+    public function getRefhistory(): ?History
     {
-        return $this->content;
+        return $this->refhistory;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function getSummary(): ?string
+    {
+        return $this->summary;
+    }
+
+    public function getUpdated(): ?DateTimeInterface
+    {
+        return $this->updated;
     }
 
     public function setContent(?string $content): self
@@ -110,21 +145,11 @@ class Chapter
         return $this;
     }
 
-    public function getMetaDescription(): ?string
-    {
-        return $this->metaDescription;
-    }
-
     public function setMetaDescription(?string $metaDescription): self
     {
         $this->metaDescription = $metaDescription;
 
         return $this;
-    }
-
-    public function getMetaKeywords(): ?string
-    {
-        return $this->metaKeywords;
     }
 
     public function setMetaKeywords(?string $metaKeywords): self
@@ -134,38 +159,25 @@ class Chapter
         return $this;
     }
 
-    public function getPublished(): ?\DateTimeInterface
+    public function setName(string $name): self
     {
-        return $this->published;
+        $this->name = $name;
+
+        return $this;
     }
 
-    public function setPublished(\DateTimeInterface $published): self
+    public function setPublished(DateTimeInterface $published): self
     {
         $this->published = $published;
 
         return $this;
     }
 
-    public function getUpdated(): ?\DateTimeInterface
+    public function setRefhistory(?History $refhistory): self
     {
-        return $this->updated;
-    }
-
-    public function setUpdated(\DateTimeInterface $updated): self
-    {
-        $this->updated = $updated;
+        $this->refhistory = $refhistory;
 
         return $this;
-    }
-
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
     }
 
     public function setSlug(string $slug): self
@@ -175,11 +187,6 @@ class Chapter
         return $this;
     }
 
-    public function getSummary(): ?string
-    {
-        return $this->summary;
-    }
-
     public function setSummary(string $summary): self
     {
         $this->summary = $summary;
@@ -187,14 +194,9 @@ class Chapter
         return $this;
     }
 
-    public function getRefhistory(): ?History
+    public function setUpdated(DateTimeInterface $updated): self
     {
-        return $this->refhistory;
-    }
-
-    public function setRefhistory(?History $refhistory): self
-    {
-        $this->refhistory = $refhistory;
+        $this->updated = $updated;
 
         return $this;
     }

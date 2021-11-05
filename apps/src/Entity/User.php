@@ -157,6 +157,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $bookmarks;
 
     /**
+     * @ORM\OneToMany(targetEntity=History::class, mappedBy="refuser", orphanRemoval=true)
+     */
+    private $histories;
+
+    /**
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     private $posts;
@@ -165,11 +170,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refuser", orphanRemoval=true)
      */
     private $workflowUsers;
-
-    /**
-     * @ORM\OneToMany(targetEntity=History::class, mappedBy="refuser", orphanRemoval=true)
-     */
-    private $histories;
 
     public function __construct()
     {
@@ -185,7 +185,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->workflowUsers     = new ArrayCollection();
         $this->posts             = new ArrayCollection();
         $this->bookmarks         = new ArrayCollection();
-        $this->histories = new ArrayCollection();
+        $this->histories         = new ArrayCollection();
     }
 
     public function __toString()
@@ -228,6 +228,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (!$this->emailUsers->contains($emailUser)) {
             $emailUser->setRefuser($this);
             $this->emailUsers[] = $emailUser;
+        }
+
+        return $this;
+    }
+
+    public function addHistory(History $history): self
+    {
+        if (!$this->histories->contains($history)) {
+            $this->histories[] = $history;
+            $history->setRefuser($this);
         }
 
         return $this;
@@ -355,6 +365,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getFile()
     {
         return $this->file;
+    }
+
+    /**
+     * @return Collection|History[]
+     */
+    public function getHistories(): Collection
+    {
+        return $this->histories;
     }
 
     public function getId(): ?string
@@ -508,6 +526,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($emailUser->getRefuser() === $this) {
                 $emailUser->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeHistory(History $history): self
+    {
+        if ($this->histories->removeElement($history)) {
+            // set the owning side to null (unless already changed)
+            if ($history->getRefuser() === $this) {
+                $history->setRefuser(null);
             }
         }
 
@@ -679,35 +709,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->username,
             $this->password,
         ] = unserialize($serialized);
-    }
-
-    /**
-     * @return Collection|History[]
-     */
-    public function getHistories(): Collection
-    {
-        return $this->histories;
-    }
-
-    public function addHistory(History $history): self
-    {
-        if (!$this->histories->contains($history)) {
-            $this->histories[] = $history;
-            $history->setRefuser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeHistory(History $history): self
-    {
-        if ($this->histories->removeElement($history)) {
-            // set the owning side to null (unless already changed)
-            if ($history->getRefuser() === $this) {
-                $history->setRefuser(null);
-            }
-        }
-
-        return $this;
     }
 }

@@ -1,0 +1,53 @@
+{% extends 'admin/chapter/layout.html.twig' %}
+{% block body %}
+    {% embed "admin/table.html.twig" %}
+        {% import "admin/macro.html.twig" as macro_admin %}
+        {% block thead %}
+            {% set theads = [
+                {
+                    'field': 'a.title',
+                    'name': 'chapter.title'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'chapter.user'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'chapter.category'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.published',
+                    'name': 'chapter.published'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.state',
+                    'name': 'workflow.state'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'chapter.workflow'|trans({}, 'admin.messages')
+                }
+            ] %}
+			{{ macro_admin.thead(theads, pagination, true) }}
+        {% endblock %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.title }}</td>
+                    <td>{{ entity.refuser }}</td>
+                    <td>{{ entity.refcategory }}</td>
+                    <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
+                    <td>
+                        {% for state in workflow_marked_places(entity) %}
+                            {{ state }}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {{ macro_admin.workflow(entity, actions) }}
+                    </td>
+                    <td>
+                        {{ macro_admin.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

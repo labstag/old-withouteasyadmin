@@ -1,6 +1,6 @@
 framework:
   workflows:
-    post:
+    chapter:
       type: "state_machine"
       audit_trail:
         enabled: true
@@ -8,7 +8,7 @@ framework:
         type: "method"
         property: "state"
       supports:
-        - Labstag\Entity\Post
+        - Labstag\Entity\Chapter
       initial_marking: start
       places:
         - start
