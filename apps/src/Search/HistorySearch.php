@@ -11,11 +11,11 @@ class HistorySearch extends LibSearch
 
     public $etape;
 
+    public $name;
+
     public $published;
 
     public $refuser;
-
-    public $title;
 
     public function search(array $get, $doctrine)
     {

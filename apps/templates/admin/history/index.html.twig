@@ -5,25 +5,22 @@
         {% block thead %}
             {% set theads = [
                 {
-                    'field': 'a.title',
-                    'name': 'chapter.title'|trans({}, 'admin.messages')
+                    'field': 'a.name',
+                    'name': 'history.name'|trans({}, 'admin.messages')
                 },
                 {
-                    'name': 'chapter.user'|trans({}, 'admin.messages')
-                },
-                {
-                    'name': 'chapter.category'|trans({}, 'admin.messages')
+                    'name': 'history.user'|trans({}, 'admin.messages')
                 },
                 {
                     'field': 'a.published',
-                    'name': 'chapter.published'|trans({}, 'admin.messages')
+                    'name': 'history.published'|trans({}, 'admin.messages')
                 },
                 {
                     'field': 'a.state',
                     'name': 'workflow.state'|trans({}, 'admin.messages')
                 },
                 {
-                    'name': 'chapter.workflow'|trans({}, 'admin.messages')
+                    'name': 'history.workflow'|trans({}, 'admin.messages')
                 }
             ] %}
 			{{ macro_admin.thead(theads, pagination, true) }}
@@ -31,9 +28,8 @@
         {% block tbody %}
             {% for entity in pagination %}
                 <tr data-id="{{ entity.id }}">
-                    <td>{{ entity.title }}</td>
+                    <td>{{ entity.name }}</td>
                     <td>{{ entity.refuser }}</td>
-                    <td>{{ entity.refcategory }}</td>
                     <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
                     <td>
                         {% for state in workflow_marked_places(entity) %}

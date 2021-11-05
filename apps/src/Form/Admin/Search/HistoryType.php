@@ -2,7 +2,6 @@
 
 namespace Labstag\Form\Admin\Search;
 
-use Labstag\Entity\Category;
 use Labstag\Entity\History;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
@@ -25,14 +24,14 @@ class HistoryType extends SearchAbstractTypeLib
     ): void
     {
         $builder->add(
-            'title',
+            'name',
             TextType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('History.title.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('History.title.help', [], 'admin.search.form'),
+                'label'    => $this->translator->trans('history.name.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('history.name.help', [], 'admin.search.form'),
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('History.title.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('history.name.placeholder', [], 'admin.search.form'),
                 ],
             ]
         );
@@ -41,28 +40,13 @@ class HistoryType extends SearchAbstractTypeLib
             SearchableType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('History.refuser.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('History.refuser.help', [], 'admin.search.form'),
+                'label'    => $this->translator->trans('history.refuser.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('history.refuser.help', [], 'admin.search.form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('History.refuser.placeholder', [], 'admin.search.form'),
-                ],
-            ]
-        );
-        $builder->add(
-            'refcategory',
-            SearchableType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('History.refcategory.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('History.refcategory.help', [], 'admin.search.form'),
-                'multiple' => false,
-                'class'    => Category::class,
-                'route'    => 'api_search_category',
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('History.refcategory.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('history.refuser.placeholder', [], 'admin.search.form'),
                 ],
             ]
         );
@@ -72,8 +56,8 @@ class HistoryType extends SearchAbstractTypeLib
             [
                 'required' => false,
                 'widget'   => 'single_text',
-                'label'    => $this->translator->trans('History.published.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('History.published.help', [], 'admin.search.form'),
+                'label'    => $this->translator->trans('history.published.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('history.published.help', [], 'admin.search.form'),
             ]
         );
         $workflow   = $this->workflows->get(new History());
@@ -84,11 +68,11 @@ class HistoryType extends SearchAbstractTypeLib
             ChoiceType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('History.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('History.etape.help', [], 'admin.search.form'),
+                'label'    => $this->translator->trans('history.etape.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('history.etape.help', [], 'admin.search.form'),
                 'choices'  => $places,
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('History.etape.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('history.etape.placeholder', [], 'admin.search.form'),
                 ],
             ]
         );

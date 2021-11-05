@@ -2,24 +2,13 @@
 {% extends 'admin/chapter/layout.html.twig' %}
 {% block body %}
     {{ form_start(form) }}
-    {{ form_row(form.title) }}
+    {{ form_row(form.name) }}
     {{ form_row(form.published) }}
     {{ form_row(form.slug) }}
     {{ form_row(form.content) }}
+    {{ form_row(form.summary) }}
     {{ form_row(form.metaDescription) }}
     {{ form_row(form.metaKeywords) }}
-    {% if entity.id is not null %}
-        {{ macro_admin.form_img(
-            entity,
-            entity.img,
-            "chapter.image"|trans({}, 'admin.messages'),
-            path('api_attachment_chapterimg', {'entity': entity.id})
-        ) }}
-    {% endif %}
-    {{ form_row(form.file) }}
-    {{ form_row(form.refcategory) }}
-    {{ form_row(form.libelles) }}
     {{ form_row(form.refuser) }}
-    {{ form_row(form.remark) }}
     {{ form_end(form) }}
 {% endblock %}

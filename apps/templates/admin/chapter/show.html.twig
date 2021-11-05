@@ -3,61 +3,16 @@
     <table>
         <tbody>
             <tr>
-                <th>{{ 'history.title'|trans({}, 'admin.messages') }}</th>
-                <td>{{ entity.title }}</td>
+                <th>{{ 'chapter.name'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.name }}</td>
             </tr>
             <tr>
-                <th>{{ 'history.content'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'chapter.content'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
-                <th>{{ 'history.published'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'chapter.published'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
-            </tr>
-            {% set img = attachment(entity.img) %}
-            {% if img is not null and img.name is not null %}
-            <tr>
-                <th>{{ 'history.image'|trans({}, 'admin.messages') }}</th>
-                <td>
-                    <picture >
-                        <img alt="{{ 'history.image'|trans({}, 'admin.messages')|e("html_attr") }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}" />
-                    </picture>
-                </td>
-            </tr>
-            {% endif %}
-            {% if history.refcategory is defined %}
-            <tr>
-                <th>{{ 'history.category'|trans({}, 'admin.messages') }}</th>
-                <td>
-                    {% if entity.refuser.deletedAt != '' %}
-                        {% set url = 'admin_category_preview' %}
-                    {% else %}
-                        {% set url = 'admin_category_show' %}
-                    {% endif %}
-                    {% set state = guard_route(url) %}
-                    {% if state == true %}
-                        <a href="{{ path(url, {'id': entity.refcategory.id}) }}">{{ entity.refcategory }}</a>
-                    {% else %}
-                        {{ entity.refcategory }}
-                    {% endif %}
-                </td>
-            </tr>
-            {% endif %}
-            <tr>
-                <th>{{ 'history.user'|trans({}, 'admin.messages') }}</th>
-                <td>
-                    {% if entity.refuser.deletedAt != '' %}
-                        {% set url = 'admin_user_preview' %}
-                    {% else %}
-                        {% set url = 'admin_user_show' %}
-                    {% endif %}
-                    {% set state = guard_route(url) %}
-                    {% if state == true %}
-                        <a href="{{ path(url, {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
-                    {% else %}
-                        {{ entity.refuser }}
-                    {% endif %}
-                </td>
             </tr>
             <tr>
                 <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
