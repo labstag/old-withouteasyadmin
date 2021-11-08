@@ -1,12 +1,12 @@
 framework:
   workflows:
     attachment:
-      type: 'state_machine'
+      type: "state_machine"
       audit_trail:
         enabled: true
       marking_store:
-        type: 'method'
-        property: 'state'
+        type: "method"
+        property: "state"
       supports:
         - Labstag\Entity\Attachment
       initial_marking: start
@@ -17,14 +17,14 @@ framework:
         - nonconforme
       transitions:
         submit:
-            from: start
-            to: averifier
+          from: start
+          to: averifier
         valider:
-            from: averifier
-            to: valide
+          from: averifier
+          to: valide
         reenvoyer:
-            from: [nonconforme, averifier]
-            to: averifier
+          from: [nonconforme, averifier]
+          to: averifier
         annuler:
-            from: averifier
-            to: nonconforme
+          from: averifier
+          to: nonconforme
