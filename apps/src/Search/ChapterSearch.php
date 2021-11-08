@@ -7,7 +7,6 @@ use Labstag\Lib\LibSearch;
 
 class ChapterSearch extends LibSearch
 {
-
     public $etape;
 
     public $published;

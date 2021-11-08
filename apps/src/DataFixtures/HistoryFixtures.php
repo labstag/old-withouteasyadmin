@@ -37,8 +37,7 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $faker,
         int $index,
         array $states
-    ): void
-    {
+    ): void {
         $history    = new History();
         $oldHistory = clone $history;
         $history->setName($faker->unique()->colorName);

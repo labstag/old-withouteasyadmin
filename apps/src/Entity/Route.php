@@ -12,7 +12,6 @@ use Labstag\Repository\RouteRepository;
  */
 class Route
 {
-
     /**
      * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refroute", orphanRemoval=true)
      */

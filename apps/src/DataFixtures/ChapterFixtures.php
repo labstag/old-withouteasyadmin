@@ -38,8 +38,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $faker,
         int $index,
         array $states
-    ): void
-    {
+    ): void {
         $chapter    = new Chapter();
         $oldChapter = clone $chapter;
         $chapter->setName($faker->unique()->colorName);
