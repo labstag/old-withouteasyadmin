@@ -24,6 +24,7 @@ class History
 
     /**
      * @ORM\OneToMany(targetEntity=Chapter::class, mappedBy="refhistory", orphanRemoval=true)
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     private $chapters;
 

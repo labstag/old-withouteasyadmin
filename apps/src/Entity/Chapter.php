@@ -33,8 +33,8 @@ class Chapter
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid", unique=true)
      */
     private $id;
 
@@ -52,6 +52,11 @@ class Chapter
      * @ORM\Column(type="string", length=255)
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $position;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -108,6 +113,11 @@ class Chapter
         return $this->name;
     }
 
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
     public function getPublished(): ?DateTimeInterface
     {
         return $this->published;
@@ -152,6 +162,13 @@ class Chapter
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function setPosition(int $position): self
+    {
+        $this->position = $position;
 
         return $this;
     }

@@ -7,13 +7,25 @@
                 <td>{{ entity.name }}</td>
             </tr>
             <tr>
-                <th>{{ 'history.content'|trans({}, 'admin.messages') }}</th>
-                <td>{{ entity.content|raw }}</td>
+                <th>{{ 'history.summary'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.summary|raw }}</td>
             </tr>
             <tr>
                 <th>{{ 'history.published'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
-            </tr>x²
+            </tr>
+            <tr>
+                <th>{{ 'history.chapters'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.chapters|length }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'history.pdf'|trans({}, 'admin.messages') }}</th>
+                <td>
+                    <a href="{{ path('admin_history_pdf', {'id': entity.id}) }}" target="_blank">
+                        {{ 'history.pdfgenerate'|trans({}, 'admin.messages') }}
+                    </a>
+                </td>
+            </tr>
             <tr>
                 <th>{{ 'history.user'|trans({}, 'admin.messages') }}</th>
                 <td>

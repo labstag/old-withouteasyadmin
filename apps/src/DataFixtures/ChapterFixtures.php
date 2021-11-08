@@ -10,6 +10,9 @@ use Labstag\Lib\FixtureLib;
 
 class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
 {
+
+    protected $position = [];
+
     public function getDependencies()
     {
         return [
@@ -22,19 +25,17 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         unset($manager);
-        $users = $this->userRepository->findAll();
         $faker = $this->setFaker();
         // @var resource $finfo
         $statesTab = $this->getStates();
         for ($index = 0; $index < self::NUMBER_HISTORY; ++$index) {
             $stateId = array_rand($statesTab);
             $states  = $statesTab[$stateId];
-            $this->addChapter($users, $faker, $index, $states);
+            $this->addChapter($faker, $index, $states);
         }
     }
 
     protected function addChapter(
-        array $users,
         Generator $faker,
         int $index,
         array $states
@@ -50,9 +51,16 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         $chapter->setContent(str_replace("\n\n", "<br />\n", $content));
         $indexHistory = $faker->numberBetween(0, self::NUMBER_HISTORY - 1);
         $history      = $this->getReference('history_'.$indexHistory);
+        if (!isset($this->position[$indexHistory])) {
+            $this->position[$indexHistory] = [];
+        }
+
         $chapter->setRefhistory($history);
         $chapter->setPublished($faker->unique()->dateTime('now'));
+        $position = count($this->position[$indexHistory]);
+        $chapter->setPosition($position + 1);
         $this->addReference('chapter_'.$index, $chapter);
+        $this->position[$indexHistory][] = $chapter;
         $this->chapterRH->handle($oldChapter, $chapter);
         $this->chapterRH->changeWorkflowState($chapter, $states);
     }

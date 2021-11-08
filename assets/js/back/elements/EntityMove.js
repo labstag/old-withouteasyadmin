@@ -1,8 +1,8 @@
 import Sortable from 'sortablejs'
-export class MenuMove extends HTMLUListElement {
+export class EntityMove extends HTMLUListElement {
   constructor () {
     super()
-    this.classList.add('menu-move')
+    this.classList.add('entity-move')
     Sortable.create(
       this,
       {

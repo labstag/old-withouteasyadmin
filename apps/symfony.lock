@@ -329,6 +329,15 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "setasign/fpdf": {
+        "version": "1.8.4"
+    },
+    "setasign/fpdi": {
+        "version": "v2.3.6"
+    },
+    "spipu/html2pdf": {
+        "version": "v5.2.3"
+    },
     "stevenmaguire/oauth2-bitbucket": {
         "version": "3.0.0"
     },
@@ -813,6 +822,9 @@
     },
     "symfony/yaml": {
         "version": "v5.1.7"
+    },
+    "tecnickcom/tcpdf": {
+        "version": "6.4.2"
     },
     "tijsverkoyen/css-to-inline-styles": {
         "version": "2.2.3"

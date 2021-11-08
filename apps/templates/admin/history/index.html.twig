@@ -16,6 +16,9 @@
                     'name': 'history.published'|trans({}, 'admin.messages')
                 },
                 {
+                    'name': 'history.chapters'|trans({}, 'admin.messages')
+                },
+                {
                     'field': 'a.state',
                     'name': 'workflow.state'|trans({}, 'admin.messages')
                 },
@@ -31,6 +34,7 @@
                     <td>{{ entity.name }}</td>
                     <td>{{ entity.refuser }}</td>
                     <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
+                    <td>{{ entity.chapters|length }}</td>
                     <td>
                         {% for state in workflow_marked_places(entity) %}
                             {{ state }}

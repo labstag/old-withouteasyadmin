@@ -8,6 +8,17 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class HistoryVoter extends Voter
 {
+    
+    public const NBR_CHAPTER = 2;
+
+    protected function canMove(History $entity, TokenInterface $token): bool
+    {
+        unset($token);
+        $chapters = $entity->getChapters();
+
+        return count($chapters) >= self::NBR_CHAPTER;
+    }
+
     protected function supports($attribute, $subject)
     {
         unset($attribute);
@@ -17,8 +28,15 @@ class HistoryVoter extends Voter
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        unset($attribute, $subject, $token);
+        switch ($attribute) {
+            case 'move':
+                $return = $this->canMove($subject, $token);
 
-        return true;
+                break;
+            default:
+                $return = true;
+        }
+
+        return $return;
     }
 }

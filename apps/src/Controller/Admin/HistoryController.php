@@ -7,10 +7,13 @@ use Labstag\Entity\History;
 use Labstag\Form\Admin\HistoryType;
 use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\ChapterRepository;
 use Labstag\Repository\HistoryRepository;
 use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Search\HistorySearch;
 use Labstag\Service\AttachFormService;
+use Spipu\Html2Pdf\Html2Pdf;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -54,6 +57,85 @@ class HistoryController extends AdminControllerLib
     }
 
     /**
+     * @Route("/{id}/pdf", name="admin_history_pdf", methods={"GET"})
+     */
+    public function pdf(History $history)
+    {
+        $pdf        = new Html2Pdf();
+        $html       = '';
+        $pagination = '<page_footer>[[page_cu]]/[[page_nb]]</page_footer>';
+        foreach ($history->getChapters() as $chapter) {
+            $html .= sprintf(
+                '<page><h1>%s'.$chapter->getName().'</h1>%s%s</page>',
+                $chapter->getName(),
+                '<div style="text-align:justify;">'.$chapter->getcontent().'</div>',
+                $pagination
+            );
+        }
+
+        $pdf->writeHTML($html);
+        $pdf->output();
+    }
+
+    /**
+     * @Route("/{id}/move", name="admin_history_move", methods={"GET", "POST"})
+     */
+    public function position(
+        History $history,
+        Request $request,
+        ChapterRepository $repository
+    )
+    {
+        $currentUrl = $this->generateUrl(
+            'admin_history_move',
+            [
+                'id' => $history->getId(),
+            ]
+        );
+
+        if ('POST' == $request->getMethod()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $data          = $request->request->get('position');
+            if (!empty($data)) {
+                $data = json_decode($data, true);
+            }
+
+            if (is_array($data)) {
+                foreach ($data as $row) {
+                    $id       = $row['id'];
+                    $position = intval($row['position']);
+                    $entity   = $repository->find($id);
+                    if (!is_null($entity)) {
+                        $entity->setPosition($position + 1);
+                        $entityManager->persist($entity);
+                    }
+                }
+
+                $entityManager->flush();
+            }
+        }
+
+        $this->btnInstance()->addBtnList(
+            'admin_history_index',
+            'Liste',
+        );
+
+        $this->btnInstance()->add(
+            'btn-admin-save-move',
+            'Enregistrer',
+            [
+                'is'   => 'link-btnadminmove',
+                'href' => $currentUrl,
+            ]
+        );
+
+        return $this->render(
+            'admin/history/move.html.twig',
+            ['history' => $history]
+        );
+    }
+
+    /**
      * @Route("/{id}",         name="admin_history_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_history_preview", methods={"GET"})
      * @IgnoreSoftDelete
@@ -72,6 +154,7 @@ class HistoryController extends AdminControllerLib
     {
         return [
             'delete'   => 'api_action_delete',
+            'move'     => 'admin_history_move',
             'destroy'  => 'api_action_destroy',
             'edit'     => 'admin_history_edit',
             'empty'    => 'api_action_empty',
@@ -114,6 +197,21 @@ class HistoryController extends AdminControllerLib
             [
                 'title'        => $this->translator->trans('history.edit', [], 'admin.breadcrumb'),
                 'route'        => 'admin_history_edit',
+                'route_params' => $routeParams,
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminHistoryMove(): array
+    {
+        $request     = $this->get('request_stack')->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
+
+        return [
+            [
+                'title'        => $this->translator->trans('history.move', [], 'admin.breadcrumb'),
+                'route'        => 'admin_history_move',
                 'route_params' => $routeParams,
             ],
         ];
