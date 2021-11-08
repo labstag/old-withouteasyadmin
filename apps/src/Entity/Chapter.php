@@ -73,11 +73,6 @@ class Chapter
     private $slug;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    private $summary;
-
-    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
@@ -93,7 +88,7 @@ class Chapter
         return $this->created;
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -126,11 +121,6 @@ class Chapter
     public function getSlug(): ?string
     {
         return $this->slug;
-    }
-
-    public function getSummary(): ?string
-    {
-        return $this->summary;
     }
 
     public function getUpdated(): ?DateTimeInterface
@@ -183,13 +173,6 @@ class Chapter
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function setSummary(string $summary): self
-    {
-        $this->summary = $summary;
 
         return $this;
     }
