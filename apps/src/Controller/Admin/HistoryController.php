@@ -12,10 +12,12 @@ use Labstag\Repository\HistoryRepository;
 use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Search\HistorySearch;
 use Labstag\Service\AttachFormService;
+use setasign\Fpdi\Fpdi;
 use Spipu\Html2Pdf\Html2Pdf;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 /**
  * @Route("/admin/history")
@@ -59,21 +61,60 @@ class HistoryController extends AdminControllerLib
     /**
      * @Route("/{id}/pdf", name="admin_history_pdf", methods={"GET"})
      */
-    public function pdf(History $history)
+    public function pdf(Environment $twig, History $history)
     {
-        $pdf        = new Html2Pdf();
-        $html       = '';
-        $pagination = '<page_footer>[[page_cu]]/[[page_nb]]</page_footer>';
+        $files = [];
         foreach ($history->getChapters() as $chapter) {
-            $html .= sprintf(
-                '<page><h1>%s'.$chapter->getName().'</h1>%s%s</page>',
-                $chapter->getName(),
-                '<div style="text-align:justify;">'.$chapter->getcontent().'</div>',
-                $pagination
+            $tmpfile = tmpfile();
+            $data    = stream_get_meta_data($tmpfile);
+            $pdf     = new Html2Pdf();
+            $html    = $twig->render(
+                'pdf/history/content.html.twig',
+                ['chapter' => $chapter]
             );
+            $pdf->writeHTML($html);
+            $file = $data['uri'].'.pdf';
+            $pdf->output($file, 'F');
+            $files[$data['uri'].'.pdf'] = [
+                'file' => $file,
+                'name' => $chapter->getName(),
+            ];
         }
 
+        $fpdi     = new Fpdi();
+        $info     = [];
+        $position = 1;
+        foreach ($files as $row) {
+            $position = $position + $fpdi->setSourceFile($row['file']);
+            $info[]   = [
+                'name'     => $row['name'],
+                'file'     => $row['file'],
+                'position' => $position,
+            ];
+        }
+
+        $tmpfile = tmpfile();
+        $data    = stream_get_meta_data($tmpfile);
+        $pdf     = new Html2Pdf();
+        $html    = $twig->render(
+            'pdf/history/summary.html.twig',
+            [
+                'history' => $history,
+                'info'    => $info,
+            ]
+        );
         $pdf->writeHTML($html);
+        $file   = $data['uri'].'.pdf';
+        $output = $pdf->output($file, 'F');
+        array_unshift(
+            $files,
+            ['file' => $file]
+        );
+        $pdf = new Fpdi();
+        foreach ($files as $row) {
+            $pdf = $this->addPagePdf($pdf, $row['file']);
+        }
+
         $pdf->output();
     }
 
@@ -284,5 +325,17 @@ class HistoryController extends AdminControllerLib
                 'admin_history' => $this->translator->trans('history.title', [], 'admin.header'),
             ]
         );
+    }
+
+    private function addPagePdf($fpdi, $fichier)
+    {
+        $pageCount = $fpdi->setSourceFile($fichier);
+        for ($pageNo = 1; $pageNo <= $pageCount; ++$pageNo) {
+            $templateId = $fpdi->importPage($pageNo);
+            $fpdi->addPage();
+            $fpdi->useTemplate($templateId);
+        }
+
+        return $fpdi;
     }
 }

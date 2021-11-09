@@ -8,7 +8,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class HistoryVoter extends Voter
 {
-    
     public const NBR_CHAPTER = 2;
 
     protected function canMove(History $entity, TokenInterface $token): bool
