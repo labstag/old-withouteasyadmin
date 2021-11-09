@@ -63,58 +63,7 @@ class HistoryController extends AdminControllerLib
      */
     public function pdf(Environment $twig, History $history)
     {
-        $files = [];
-        foreach ($history->getChapters() as $chapter) {
-            $tmpfile = tmpfile();
-            $data    = stream_get_meta_data($tmpfile);
-            $pdf     = new Html2Pdf();
-            $html    = $twig->render(
-                'pdf/history/content.html.twig',
-                ['chapter' => $chapter]
-            );
-            $pdf->writeHTML($html);
-            $file = $data['uri'].'.pdf';
-            $pdf->output($file, 'F');
-            $files[$data['uri'].'.pdf'] = [
-                'file' => $file,
-                'name' => $chapter->getName(),
-            ];
-        }
-
-        $fpdi     = new Fpdi();
-        $info     = [];
-        $position = 1;
-        foreach ($files as $row) {
-            $position = $position + $fpdi->setSourceFile($row['file']);
-            $info[]   = [
-                'name'     => $row['name'],
-                'file'     => $row['file'],
-                'position' => $position,
-            ];
-        }
-
-        $tmpfile = tmpfile();
-        $data    = stream_get_meta_data($tmpfile);
-        $pdf     = new Html2Pdf();
-        $html    = $twig->render(
-            'pdf/history/summary.html.twig',
-            [
-                'history' => $history,
-                'info'    => $info,
-            ]
-        );
-        $pdf->writeHTML($html);
-        $file   = $data['uri'].'.pdf';
-        $output = $pdf->output($file, 'F');
-        array_unshift(
-            $files,
-            ['file' => $file]
-        );
-        $pdf = new Fpdi();
-        foreach ($files as $row) {
-            $pdf = $this->addPagePdf($pdf, $row['file']);
-        }
-
+        $pdf = $this->generateHistoryPdf($history, $twig);
         $pdf->output();
     }
 
@@ -337,5 +286,101 @@ class HistoryController extends AdminControllerLib
         }
 
         return $fpdi;
+    }
+
+    private function addSummary($twig, $history, $info)
+    {
+        $tmpfile = tmpfile();
+        $data    = stream_get_meta_data($tmpfile);
+        $pdf     = new Html2Pdf();
+        $html    = $twig->render(
+            'pdf/history/summary.html.twig',
+            [
+                'history' => $history,
+                'info'    => $info,
+            ]
+        );
+        $pdf->writeHTML($html);
+        $file = $data['uri'].'.pdf';
+        $pdf->output($file, 'F');
+
+        return $file;
+    }
+
+    private function addTitle($twig, $history)
+    {
+        $tmpfile = tmpfile();
+        $data    = stream_get_meta_data($tmpfile);
+        $pdf     = new Html2Pdf();
+        $html    = $twig->render(
+            'pdf/history/title.html.twig',
+            ['history' => $history]
+        );
+        $pdf->writeHTML($html);
+        $file = $data['uri'].'.pdf';
+        $pdf->output($file, 'F');
+
+        return $file;
+    }
+
+    private function generateChapterPdf($twig, $history)
+    {
+        $files = [];
+        foreach ($history->getChapters() as $chapter) {
+            $tmpfile = tmpfile();
+            $data    = stream_get_meta_data($tmpfile);
+            $pdf     = new Html2Pdf();
+            $html    = $twig->render(
+                'pdf/history/content.html.twig',
+                ['chapter' => $chapter]
+            );
+            $pdf->writeHTML($html);
+            $file = $data['uri'].'.pdf';
+            $pdf->output($file, 'F');
+            $files[$data['uri'].'.pdf'] = [
+                'file' => $file,
+                'name' => $chapter->getName(),
+            ];
+        }
+
+        return $files;
+    }
+
+    private function generateHistoryPdf($history, $twig)
+    {
+        $files = $this->generateChapterPdf($twig, $history);
+        $info  = $this->getInfoPosition($files);
+        array_unshift(
+            $files,
+            [
+                'file' => $this->addTitle($twig, $history),
+            ],
+            [
+                'file' => $this->addSummary($twig, $history, $info),
+            ]
+        );
+        $pdf = new Fpdi();
+        foreach ($files as $row) {
+            $pdf = $this->addPagePdf($pdf, $row['file']);
+        }
+
+        return $pdf;
+    }
+
+    private function getInfoPosition($files)
+    {
+        $fpdi     = new Fpdi();
+        $info     = [];
+        $position = 1;
+        foreach ($files as $row) {
+            $position = $position + $fpdi->setSourceFile($row['file']);
+            $info[]   = [
+                'name'     => $row['name'],
+                'file'     => $row['file'],
+                'position' => $position,
+            ];
+        }
+
+        return $info;
     }
 }
