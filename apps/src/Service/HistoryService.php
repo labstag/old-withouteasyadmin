@@ -2,6 +2,7 @@
 
 namespace Labstag\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\History;
 use Labstag\Repository\HistoryRepository;
 use setasign\Fpdi\Fpdi;
@@ -17,11 +18,15 @@ class HistoryService
 
     private Environment $twig;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         HistoryRepository $historyRepo,
-        Environment $twig
+        Environment $twig,
+        EntityManagerInterface $entityManager
     )
     {
+        $this->entityManager = $entityManager;
         $this->twig        = $twig;
         $this->historyRepo = $historyRepo;
     }
@@ -59,14 +64,16 @@ class HistoryService
         $pdf->output($this->filename, 'F');
     }
 
-    private function addPagePdf(&$fpdi, string $fichier)
+    private function addPagePdf(&$fpdi, string $file): int
     {
-        $pageCount = $fpdi->setSourceFile($fichier);
+        $pageCount = $fpdi->setSourceFile($file);
         for ($pageNo = 1; $pageNo <= $pageCount; ++$pageNo) {
             $templateId = $fpdi->importPage($pageNo);
             $fpdi->addPage();
             $fpdi->useTemplate($templateId);
         }
+
+        return $pageCount;
     }
 
     private function addSummary(History $history, array $info)
@@ -118,13 +125,25 @@ class HistoryService
             $pdf->writeHTML($html);
             $file = $data['uri'].'.pdf';
             $pdf->output($file, 'F');
+            $pages = $this->getCountPagesFile($file);
+            $chapter->setPages($pages);
+            $this->entityManager->persist($chapter);
             $files[$data['uri'].'.pdf'] = [
                 'file' => $file,
                 'name' => $chapter->getName(),
             ];
         }
 
+        $this->entityManager->flush();
+
         return $files;
+    }
+
+    private function getCountPagesFile(string $file): int
+    {
+        $fpdi = new Fpdi();
+
+        return $fpdi->setSourceFile($file);
     }
 
     private function generateHistoryPdf(History $history)
@@ -144,9 +163,14 @@ class HistoryService
         $pdf->setAuthor($history->getRefuser()->__toString());
         $pdf->setCreator($history->getRefuser()->__toString());
         $pdf->setTitle($history->getName());
+        $pages = 0;
         foreach ($files as $row) {
-            $this->addPagePdf($pdf, $row['file']);
+            $pages += $this->addPagePdf($pdf, $row['file']);
         }
+
+        $history->setPages($pages);
+        $this->entityManager->persist($history);
+        $this->entityManager->flush();
 
         return $pdf;
     }

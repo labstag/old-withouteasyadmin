@@ -85,8 +85,14 @@ class History
      */
     private $updated;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $pages;
+
     public function __construct()
     {
+        $this->pages = 0;
         $this->chapters = new ArrayCollection();
     }
 
@@ -229,6 +235,18 @@ class History
     public function setUpdated(DateTimeInterface $updated): self
     {
         $this->updated = $updated;
+
+        return $this;
+    }
+
+    public function getPages(): ?int
+    {
+        return $this->pages;
+    }
+
+    public function setPages(int $pages): self
+    {
+        $this->pages = $pages;
 
         return $this;
     }
