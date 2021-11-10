@@ -9,7 +9,6 @@ class ChapterRequestHandler extends RequestHandlerLib
 {
     public function handle($oldEntity, $entity)
     {
-        $this->setArrayCollection($entity);
         parent::handle($oldEntity, $entity);
         $this->dispatcher->dispatch(
             new ChapterEntityEvent($oldEntity, $entity)
