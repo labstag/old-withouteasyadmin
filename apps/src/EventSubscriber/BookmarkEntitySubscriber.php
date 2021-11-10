@@ -23,6 +23,6 @@ class BookmarkEntitySubscriber implements EventSubscriberInterface
 
     public function onBookmarkEntityEvent(BookmarkEntityEvent $event): void
     {
-        $entity = $event->getNewEntity();
+        unset($event);
     }
 }
