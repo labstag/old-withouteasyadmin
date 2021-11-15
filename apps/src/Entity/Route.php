@@ -14,7 +14,7 @@ class Route
 {
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refroute")
+     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refroute", orphanRemoval=true)
      */
     protected $groupes;
 
@@ -31,7 +31,7 @@ class Route
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refroute")
+     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refroute", orphanRemoval=true)
      */
     protected $users;
 

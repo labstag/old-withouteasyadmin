@@ -1,0 +1,27 @@
+{% extends 'admin/history/layout.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ 'chapter.name'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'chapter.content'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.content|raw }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'chapter.published'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

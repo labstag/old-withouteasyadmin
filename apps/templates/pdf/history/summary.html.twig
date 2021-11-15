@@ -1,0 +1,10 @@
+<page>
+    <h1>Summary</h1>
+    <ul>
+        {% for row in info %}
+        <li>
+            {{ row.name }} ({{ row.position }})
+        </li>
+        {% endfor %}
+    </ul>
+</page>

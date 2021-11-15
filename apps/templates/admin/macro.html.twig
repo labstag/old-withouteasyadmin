@@ -64,6 +64,16 @@
         />
     {% endif %}
 {% endmacro %}
+{% macro move(entity, url) %}
+    {% set state1 = guard_route(url) %}
+    {% set state2 = is_granted('move', entity) %}
+    {% if state1 == true and state2 == true %}
+        <link-move
+            href="{{ path(url, {'id': entity.id}) }}"
+            title="{{ 'link.move'|trans({}, 'admin.messages')|e('html_attr') }}"
+        />
+    {% endif %}
+{% endmacro %}
 {% macro delete(entity, urlDelete, urlList) %}
     {% set state1 = guard_route(urlDelete) %}
     {% set state2 = guard_route(urlList) %}
@@ -125,7 +135,7 @@
         {% endif %}
     {% endif %}
 {% endmacro %}
-{% macro actions (entity, actions) %}
+{% macro actions(entity, actions) %}
     {% set trash = app.request.attributes.get('_route')|split('trash')|length-1 %}
     <div class="btngrouptable" role="group">
         {% if actions['show'] is defined %}
@@ -146,6 +156,9 @@
         {% if 0 == trash %}
             {% if actions['guard'] is defined %}
                 {{ _self.guard(entity, actions['guard'], 'guard') }}
+            {% endif %}
+            {% if actions['move'] is defined %}
+                {{ _self.move(entity, actions['move']) }}
             {% endif %}
             {% if actions['edit'] is defined %}
                 {{ _self.edit(entity, actions['edit']) }}

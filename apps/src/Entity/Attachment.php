@@ -21,7 +21,7 @@ class Attachment
     use StateableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond")
+     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond", orphanRemoval=true)
      */
     protected $editos;
 
@@ -43,12 +43,12 @@ class Attachment
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="fond")
+     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="fond", orphanRemoval=true)
      */
     protected $noteInternes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img")
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img", orphanRemoval=true)
      */
     protected $posts;
 
@@ -58,12 +58,12 @@ class Attachment
     protected $size;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar")
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar", orphanRemoval=true)
      */
     protected $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img")
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img", orphanRemoval=true)
      */
     private $bookmarks;
 

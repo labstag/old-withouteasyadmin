@@ -46,7 +46,8 @@ class MenuController extends AdminControllerLib
         $menu->setClef(null);
         $menu->setData($data);
         $menu->setSeparateur(false);
-        $menu->setPosition(count($parent->getChildren()));
+        $position = count($parent->getChildren());
+        $menu->setPosition($position + 1);
         $menu->setParent($parent);
 
         return $this->form(
@@ -65,7 +66,7 @@ class MenuController extends AdminControllerLib
     {
         $entity    = new Menu();
         $oldEntity = clone $entity;
-        $position  = count($entity->getChildren());
+        $position  = count($menu->getChildren());
         $entity->setPosition($position + 1);
         $entity->setSeparateur(true);
         $entity->setParent($menu);
@@ -129,8 +130,7 @@ class MenuController extends AdminControllerLib
         MenuRepository $repository
     )
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $currentUrl    = $this->generateUrl(
+        $currentUrl = $this->generateUrl(
             'admin_menu_move',
             [
                 'id' => $menu->getId(),
@@ -138,7 +138,8 @@ class MenuController extends AdminControllerLib
         );
 
         if ('POST' == $request->getMethod()) {
-            $data = $request->request->get('position');
+            $entityManager = $this->getDoctrine()->getManager();
+            $data          = $request->request->get('position');
             if (!empty($data)) {
                 $data = json_decode($data, true);
             }
@@ -146,10 +147,12 @@ class MenuController extends AdminControllerLib
             if (is_array($data)) {
                 foreach ($data as $row) {
                     $id       = $row['id'];
-                    $position = $row['position'];
+                    $position = intval($row['position']);
                     $entity   = $repository->find($id);
-                    $entity->setPosition($position);
-                    $entityManager->persist($entity);
+                    if (!is_null($entity)) {
+                        $entity->setPosition($position + 1);
+                        $entityManager->persist($entity);
+                    }
                 }
 
                 $entityManager->flush();

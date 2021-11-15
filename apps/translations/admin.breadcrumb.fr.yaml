@@ -1,10 +1,10 @@
-admin.title: Admin
 addressuser.edit: Éditer
 addressuser.new: Nouveau
 addressuser.preview: Aperçu
 addressuser.show: Voir
 addressuser.title: Adresseuser
 addressuser.trash: Corbeille
+admin.title: Admin
 attachment.title: Attachment
 bookmark.edit: Éditer
 bookmark.import: Importer
@@ -19,6 +19,12 @@ category.preview: Aperçu
 category.show: Voir
 category.title: Titre
 category.trash: Corbeille
+chapter.edit: 'edit'
+chapter.new: 'new'
+chapter.preview: 'preview'
+chapter.show: 'show'
+chapter.title: 'title'
+chapter.trash: 'trash'
 edito.edit: Éditer
 edito.new: Nouveau
 edito.preview: Aperçu
@@ -45,6 +51,13 @@ groupuser.show: Voir
 groupuser.title: Groupuser
 groupuser.trash: Corbeille
 guard.title: Guard
+history.edit: 'edit'
+history.move: 'move'
+history.new: 'new'
+history.preview: 'preview'
+history.show: 'show'
+history.title: 'title'
+history.trash: 'trash'
 libelle.edit: Éditer
 libelle.new: Nouveau
 libelle.preview: Aperçu
@@ -57,6 +70,12 @@ linkuser.preview: Aperçu
 linkuser.show: Voir
 linkuser.title: Lienuser
 linkuser.trash: Corbeille
+memo.edit: Éditer
+memo.new: Nouveau
+memo.preview: Aperçu
+memo.show: Voir
+memo.title: Noteinterne
+memo.trash: Corbeille
 menu.add: Ajouter
 menu.divider: 'Ajouter un séparateur'
 menu.move: Déplacer
@@ -64,12 +83,6 @@ menu.new: Nouveau
 menu.title: Menu
 menu.trash: Corbeille
 menu.update: 'Mise à jour'
-memo.edit: Éditer
-memo.new: Nouveau
-memo.preview: Aperçu
-memo.show: Voir
-memo.title: Noteinterne
-memo.trash: Corbeille
 oauth.title: Oauth
 param.title: Param
 phoneuser.edit: Éditer

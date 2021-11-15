@@ -16,9 +16,11 @@ use Labstag\RequestHandler\AddressUserRequestHandler;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\BookmarkRequestHandler;
 use Labstag\RequestHandler\CategoryRequestHandler;
+use Labstag\RequestHandler\ChapterRequestHandler;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
+use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\RequestHandler\LinkUserRequestHandler;
 use Labstag\RequestHandler\MemoRequestHandler;
@@ -45,9 +47,13 @@ abstract class FixtureLib extends Fixture
 
     protected const NUMBER_CATEGORY = 50;
 
+    protected const NUMBER_CHAPTER = 25;
+
     protected const NUMBER_EDITO = 25;
 
     protected const NUMBER_EMAIL = 25;
+
+    protected const NUMBER_HISTORY = 25;
 
     protected const NUMBER_LIBELLE = 10;
 
@@ -71,6 +77,8 @@ abstract class FixtureLib extends Fixture
 
     protected CategoryRequestHandler $categoryRH;
 
+    protected ChapterRequestHandler $chapterRH;
+
     protected ContainerBagInterface $containerBag;
 
     protected EditoRequestHandler $editoRH;
@@ -82,6 +90,8 @@ abstract class FixtureLib extends Fixture
     protected GroupeRequestHandler $groupeRH;
 
     protected GuardService $guardService;
+
+    protected HistoryRequestHandler $historyRH;
 
     protected InstallService $installService;
 
@@ -133,9 +143,13 @@ abstract class FixtureLib extends Fixture
         CacheInterface $cache,
         BookmarkRequestHandler $bookmarkRH,
         PostRequestHandler $postRH,
-        CategoryRequestHandler $categoryRH
+        CategoryRequestHandler $categoryRH,
+        HistoryRequestHandler $historyRH,
+        ChapterRequestHandler $chapterRH
     )
     {
+        $this->chapterRH         = $chapterRH;
+        $this->historyRH         = $historyRH;
         $this->addressUserRH     = $addressUserRH;
         $this->attachmentRH      = $attachmentRH;
         $this->bookmarkRH        = $bookmarkRH;
@@ -240,18 +254,20 @@ abstract class FixtureLib extends Fixture
                 echo $exception->getMessage();
             }
 
-            $file = $path.'/'.$filename;
-            $attachment->setMimeType(mime_content_type($file));
-            $attachment->setSize(filesize($file));
-            $attachment->setName(
-                str_replace(
-                    $this->getParameter('kernel.project_dir').'/public/',
-                    '',
-                    $file
-                )
-            );
-            $this->attachmentRH->handle($old, $attachment);
-            $accessor->setValue($entity, $annotation->getFilename(), $attachment);
+            if (isset($filename)) {
+                $file = $path.'/'.$filename;
+                $attachment->setMimeType(mime_content_type($file));
+                $attachment->setSize(filesize($file));
+                $attachment->setName(
+                    str_replace(
+                        $this->getParameter('kernel.project_dir').'/public/',
+                        '',
+                        $file
+                    )
+                );
+                $this->attachmentRH->handle($old, $attachment);
+                $accessor->setValue($entity, $annotation->getFilename(), $attachment);
+            }
         }
     }
 }

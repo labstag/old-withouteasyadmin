@@ -16,6 +16,10 @@ bookmark.published: 'Date de publication'
 bookmark.url: Url
 bookmark.user: Utilisateur
 bookmark.workflow: Workflow
+chapter.content: content
+chapter.name: name
+chapter.published: published
+chapter.workflow: workflow
 edito.content: Contenu
 edito.fond: Fond
 edito.published: 'Date de publication'
@@ -61,9 +65,18 @@ guard.lost: 'Droit manquant'
 guard.route: Route
 guard.transition: Transition
 guard.workflow: Workflow
+history.chapters: chapters
+history.name: name
+history.pdf: pdf
+history.pdfgenerate: pdfgenerate
+history.published: published
+history.summary: summary
+history.user: user
+history.workflow: workflow
 link.delete: Supprimer
 link.destroy: Détruire
 link.edit: Éditer
+link.move: move
 link.preview: Aperçu
 link.restore: Restaurer
 link.show: Voir

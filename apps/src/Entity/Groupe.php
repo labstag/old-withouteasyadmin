@@ -38,7 +38,7 @@ class Groupe
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe")
+     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe", orphanRemoval=true)
      */
     protected $routes;
 
@@ -46,13 +46,14 @@ class Groupe
      * @ORM\OneToMany(
      *  targetEntity=User::class,
      *  mappedBy="refgroupe",
-     *  cascade={"persist"}
+     *  cascade={"persist"},
+     *  orphanRemoval=true
      * )
      */
     protected $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe")
+     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe", orphanRemoval=true)
      */
     private $workflowGroupes;
 
