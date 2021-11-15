@@ -63,10 +63,14 @@ class HistoryController extends AdminControllerLib
     {
         $service->process(
             $this->getParameter('file_directory'),
-            $history->getId()
+            $history->getId(),
+            true
         );
 
         $filename = $service->getFilename();
+        if (empty($filename)) {
+            throw $this->createNotFoundException('Pas de fichier');
+        }
 
         $filename = str_replace(
             $this->getParameter('kernel.project_dir').'/public/',

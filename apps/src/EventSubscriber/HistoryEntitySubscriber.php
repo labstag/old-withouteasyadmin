@@ -43,6 +43,7 @@ class HistoryEntitySubscriber implements EventSubscriberInterface
             [
                 'fileDirectory' => $this->getParameter('file_directory'),
                 'historyId'     => $entity->getId(),
+                'all'           => false,
             ]
         );
     }

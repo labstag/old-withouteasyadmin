@@ -56,6 +56,11 @@ class Chapter
     /**
      * @ORM\Column(type="integer")
      */
+    private $pages;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $position;
 
     /**
@@ -82,11 +87,6 @@ class Chapter
      * @ORM\Column(type="datetime")
      */
     private $updated;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $pages;
 
     public function __construct()
     {
@@ -121,6 +121,11 @@ class Chapter
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    public function getPages(): ?int
+    {
+        return $this->pages;
     }
 
     public function getPosition(): ?int
@@ -176,6 +181,13 @@ class Chapter
         return $this;
     }
 
+    public function setPages(int $pages): self
+    {
+        $this->pages = $pages;
+
+        return $this;
+    }
+
     public function setPosition(int $position): self
     {
         $this->position = $position;
@@ -207,18 +219,6 @@ class Chapter
     public function setUpdated(DateTimeInterface $updated): self
     {
         $this->updated = $updated;
-
-        return $this;
-    }
-
-    public function getPages(): ?int
-    {
-        return $this->pages;
-    }
-
-    public function setPages(int $pages): self
-    {
-        $this->pages = $pages;
 
         return $this;
     }

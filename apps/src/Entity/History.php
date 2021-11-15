@@ -57,6 +57,11 @@ class History
     private $name;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $pages;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $published;
@@ -85,14 +90,9 @@ class History
      */
     private $updated;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $pages;
-
     public function __construct()
     {
-        $this->pages = 0;
+        $this->pages    = 0;
         $this->chapters = new ArrayCollection();
     }
 
@@ -137,6 +137,11 @@ class History
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    public function getPages(): ?int
+    {
+        return $this->pages;
     }
 
     public function getPublished(): ?DateTimeInterface
@@ -204,6 +209,13 @@ class History
         return $this;
     }
 
+    public function setPages(int $pages): self
+    {
+        $this->pages = $pages;
+
+        return $this;
+    }
+
     public function setPublished(DateTimeInterface $published): self
     {
         $this->published = $published;
@@ -235,18 +247,6 @@ class History
     public function setUpdated(DateTimeInterface $updated): self
     {
         $this->updated = $updated;
-
-        return $this;
-    }
-
-    public function getPages(): ?int
-    {
-        return $this->pages;
-    }
-
-    public function setPages(int $pages): self
-    {
-        $this->pages = $pages;
 
         return $this;
     }

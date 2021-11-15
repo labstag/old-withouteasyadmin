@@ -43,6 +43,7 @@ class ChapterEntitySubscriber implements EventSubscriberInterface
             [
                 'fileDirectory' => $this->getParameter('file_directory'),
                 'historyId'     => $entity->getRefhistory()->getId(),
+                'all'           => false,
             ]
         );
     }

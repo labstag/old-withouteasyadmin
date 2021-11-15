@@ -12,13 +12,13 @@ use Twig\Environment;
 class HistoryService
 {
 
+    private EntityManagerInterface $entityManager;
+
     private $filename;
 
     private HistoryRepository $historyRepo;
 
     private Environment $twig;
-
-    private EntityManagerInterface $entityManager;
 
     public function __construct(
         HistoryRepository $historyRepo,
@@ -27,8 +27,8 @@ class HistoryService
     )
     {
         $this->entityManager = $entityManager;
-        $this->twig        = $twig;
-        $this->historyRepo = $historyRepo;
+        $this->twig          = $twig;
+        $this->historyRepo   = $historyRepo;
     }
 
     public function getFilename(): string
@@ -38,7 +38,8 @@ class HistoryService
 
     public function process(
         string $fileDirectory,
-        string $historyId
+        string $historyId,
+        bool $all
     )
     {
         $history = $this->historyRepo->find($historyId);
@@ -46,7 +47,11 @@ class HistoryService
             return;
         }
 
-        $pdf  = $this->generateHistoryPdf($history);
+        if (false == $all && !in_array('publie', $history->getState())) {
+            return;
+        }
+
+        $pdf  = $this->generateHistoryPdf($history, $all);
         $path = sprintf(
             '%s/%s',
             $fileDirectory,
@@ -111,10 +116,14 @@ class HistoryService
         return $file;
     }
 
-    private function generateChapterPdf(History $history)
+    private function generateChapterPdf(History $history, bool $all)
     {
         $files = [];
         foreach ($history->getChapters() as $chapter) {
+            if (false == $all && !in_array('publie', $chapter->getStatus())) {
+                continue;
+            }
+
             $tmpfile = tmpfile();
             $data    = stream_get_meta_data($tmpfile);
             $pdf     = new Html2Pdf();
@@ -139,16 +148,9 @@ class HistoryService
         return $files;
     }
 
-    private function getCountPagesFile(string $file): int
+    private function generateHistoryPdf(History $history, bool $all)
     {
-        $fpdi = new Fpdi();
-
-        return $fpdi->setSourceFile($file);
-    }
-
-    private function generateHistoryPdf(History $history)
-    {
-        $files = $this->generateChapterPdf($history);
+        $files = $this->generateChapterPdf($history, $all);
         $info  = $this->getInfoPosition($files);
         array_unshift(
             $files,
@@ -173,6 +175,13 @@ class HistoryService
         $this->entityManager->flush();
 
         return $pdf;
+    }
+
+    private function getCountPagesFile(string $file): int
+    {
+        $fpdi = new Fpdi();
+
+        return $fpdi->setSourceFile($file);
     }
 
     private function getInfoPosition(array $files)
