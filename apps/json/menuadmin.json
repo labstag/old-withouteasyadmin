@@ -165,6 +165,12 @@
                 "data": {
                     "route": "admin_chapter_index"
                 }
+            },
+            {
+                "name": "Pages",
+                "data": {
+                    "route": "admin_page_index"
+                }
             }
         ]
     }

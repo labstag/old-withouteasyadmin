@@ -9,12 +9,6 @@
                     'name': 'page.name'|trans({}, 'admin.messages')
                 },
                 {
-                    'name': 'page.user'|trans({}, 'admin.messages')
-                },
-                {
-                    'name': 'page.category'|trans({}, 'admin.messages')
-                },
-                {
                     'field': 'a.state',
                     'name': 'workflow.state'|trans({}, 'admin.messages')
                 },
@@ -28,8 +22,6 @@
             {% for entity in pagination %}
                 <tr data-id="{{ entity.id }}">
                     <td>{{ entity.name }}</td>
-                    <td>{{ entity.refuser }}</td>
-                    <td>{{ entity.refcategory }}</td>
                     <td>
                         {% for state in workflow_marked_places(entity) %}
                             {{ state }}
