@@ -46,8 +46,8 @@ class MemoController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_memo_trash", methods={"GET"})
-     * @Route("/",       name="admin_memo_index", methods={"GET"})
+     * @Route("/trash", name="admin_memo_trash", methods={"GET"})
+     * @Route("/", name="admin_memo_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(MemoRepository $repository): Response
@@ -59,7 +59,7 @@ class MemoController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}",         name="admin_memo_show", methods={"GET"})
+     * @Route("/{id}", name="admin_memo_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_memo_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

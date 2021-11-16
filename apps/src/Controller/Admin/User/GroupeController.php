@@ -87,8 +87,8 @@ class GroupeController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_groupuser_trash", methods={"GET"})
-     * @Route("/",       name="admin_groupuser_index", methods={"GET"})
+     * @Route("/trash", name="admin_groupuser_trash", methods={"GET"})
+     * @Route("/", name="admin_groupuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function index(GroupeRepository $repository): Response
@@ -100,7 +100,7 @@ class GroupeController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}",         name="admin_groupuser_show", methods={"GET"})
+     * @Route("/{id}", name="admin_groupuser_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_groupuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

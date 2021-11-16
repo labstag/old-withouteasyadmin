@@ -1,0 +1,7 @@
+{% import "admin/macro.html.twig" as macro_admin %}
+{% extends 'admin/page/layout.html.twig' %}
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_row(form.file) }}
+    {{ form_end(form) }}
+{% endblock %}

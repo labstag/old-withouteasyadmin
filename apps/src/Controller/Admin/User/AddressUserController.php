@@ -42,8 +42,8 @@ class AddressUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_addressuser_trash", methods={"GET"})
-     * @Route("/",       name="admin_addressuser_index", methods={"GET"})
+     * @Route("/trash", name="admin_addressuser_trash", methods={"GET"})
+     * @Route("/", name="admin_addressuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(AddressUserRepository $repository): Response
@@ -55,7 +55,7 @@ class AddressUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}",         name="admin_addressuser_show", methods={"GET"})
+     * @Route("/{id}", name="admin_addressuser_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_addressuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
