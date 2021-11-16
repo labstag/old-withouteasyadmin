@@ -19,7 +19,7 @@ class Menu
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity="Menu",
+     *  targetEntity=Menu::class,
      *  mappedBy="parent",
      *  cascade={"persist"},
      *  orphanRemoval=true
@@ -56,7 +56,7 @@ class Menu
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Menu", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children")
      * @ORM\JoinColumn(
      *  name="parent_id",
      *  referencedColumnName="id",

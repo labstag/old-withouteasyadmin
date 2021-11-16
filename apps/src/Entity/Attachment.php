@@ -12,7 +12,7 @@ use Labstag\Repository\AttachmentRepository;
 
 /**
  * @ORM\Entity(repositoryClass=AttachmentRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt",             timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Attachment
 {

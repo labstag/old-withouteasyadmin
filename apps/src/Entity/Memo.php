@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MemoRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt",              timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Uploadable()
  */
 class Memo
@@ -30,7 +30,7 @@ class Memo
     protected $content;
 
     /**
-     * @ORM\Column(type="datetime",                         nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      * @Assert\GreaterThanOrEqual(propertyPath="dateStart")
      */
     protected DateTime $dateEnd;

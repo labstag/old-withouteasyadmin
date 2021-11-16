@@ -95,7 +95,7 @@ class Post
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
-     * @ORM\Column(type="string",   length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
