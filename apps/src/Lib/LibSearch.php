@@ -2,7 +2,7 @@
 
 namespace Labstag\Lib;
 
-class LibSearch
+abstract class LibSearch
 {
 
     public $limit;

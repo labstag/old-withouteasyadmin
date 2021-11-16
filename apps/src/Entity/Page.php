@@ -27,6 +27,11 @@ class Page
     private $children;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $front;
+
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
@@ -43,6 +48,11 @@ class Page
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children")
      */
     private $parent;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $password;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
@@ -73,6 +83,11 @@ class Page
         return $this->children;
     }
 
+    public function getFront(): ?bool
+    {
+        return $this->front;
+    }
+
     public function getId(): ?string
     {
         return $this->id;
@@ -86,6 +101,11 @@ class Page
     public function getParent(): ?self
     {
         return $this->parent;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
     }
 
     public function getSlug(): ?string
@@ -105,6 +125,13 @@ class Page
         return $this;
     }
 
+    public function setFront(bool $front): self
+    {
+        $this->front = $front;
+
+        return $this;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -115,6 +142,13 @@ class Page
     public function setParent(?self $parent): self
     {
         $this->parent = $parent;
+
+        return $this;
+    }
+
+    public function setPassword(?string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }

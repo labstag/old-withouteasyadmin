@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Workflow\Registry;
 
-class ApiControllerLib extends AbstractController
+abstract class ApiControllerLib extends AbstractController
 {
 
     protected AttachmentRequestHandler $attachmentRH;
