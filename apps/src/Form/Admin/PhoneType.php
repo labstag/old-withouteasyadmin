@@ -6,6 +6,7 @@ use Labstag\Entity\PhoneUser;
 use Labstag\FormType\FlagCountryType;
 use Labstag\Lib\AbstractTypeLib;
 use Labstag\Service\PhoneService;
+use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -17,11 +18,12 @@ abstract class PhoneType extends AbstractTypeLib
 
     public function __construct(
         TranslatorInterface $translator,
-        PhoneService $phoneService
+        PhoneService $phoneService,
+        TemplatePageService $templatePageService
     )
     {
         $this->phoneService = $phoneService;
-        parent::__construct($translator);
+        parent::__construct($translator, $templatePageService);
     }
 
     /**

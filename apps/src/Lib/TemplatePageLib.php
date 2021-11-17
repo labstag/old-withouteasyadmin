@@ -4,7 +4,7 @@ namespace Labstag\Lib;
 
 use Twig\Environment;
 
-abstract class PageLib
+abstract class TemplatePageLib
 {
 
     protected Environment $twig;

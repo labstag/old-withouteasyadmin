@@ -13,6 +13,7 @@ use Labstag\FormType\MinMaxCollectionType;
 use Labstag\FormType\SearchableType;
 use Labstag\Lib\AbstractTypeLib;
 use Labstag\Repository\EmailUserRepository;
+use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -29,11 +30,12 @@ class UserType extends AbstractTypeLib
 
     public function __construct(
         TranslatorInterface $translator,
-        EmailUserRepository $repository
+        EmailUserRepository $repository,
+        TemplatePageService $templatePageService
     )
     {
         $this->repository = $repository;
-        parent::__construct($translator);
+        parent::__construct($translator, $templatePageService);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Labstag\Form\Admin;
 
 use Labstag\Entity\Page;
 use Labstag\Lib\AbstractTypeLib;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,6 +34,19 @@ class PageType extends AbstractTypeLib
                 'label'    => $this->translator->trans('page.slug.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('page.slug.help', [], 'admin.form'),
                 'required' => false,
+            ]
+        );
+
+        $choices = $this->templatePageService->getChoices();
+
+        dump($choices);
+
+        $builder->add(
+            'isAttending',
+            ChoiceType::class,
+            [
+                'mapped'  => false,
+                'choices' => $choices,
             ]
         );
         unset($options);
