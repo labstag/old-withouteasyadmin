@@ -31,6 +31,9 @@ services:
     Labstag\RequestHandler\:
       resource: "../src/RequestHandler/"
       public: true
+    Labstag\TemplatePage\:
+      resource: "../src/TemplatePage/"
+      public: true
     Labstag\Controller\:
       resource: "../src/Controller/"
       tags: ["controller.service_arguments"]

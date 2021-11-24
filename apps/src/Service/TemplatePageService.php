@@ -2,10 +2,17 @@
 
 namespace Labstag\Service;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 
 class TemplatePageService
 {
+    private ContainerInterface $container;
+
+    public function __construct(ContainerInterface $container) {
+        $this->container = $container;
+    }
+
     public function getAll(string $namespace): array
     {
         $finder = new Finder();
@@ -36,11 +43,16 @@ class TemplatePageService
                     continue;
                 }
 
-                $code                                             = $name.'::'.$key.'()';
+                $code                                             = $name.'::'.$key;
                 $choices[str_replace($namespace.'\\', '', $code)] = $code;
             }
         }
 
         return $choices;
+    }
+
+    public function getClass($class)
+    {
+        return $this->container->get($class);
     }
 }

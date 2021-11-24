@@ -4,6 +4,7 @@ namespace Labstag\Form\Admin;
 
 use Labstag\Entity\Page;
 use Labstag\Lib\AbstractTypeLib;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -36,16 +37,21 @@ class PageType extends AbstractTypeLib
                 'required' => false,
             ]
         );
+        $builder->add(
+            'front',
+            CheckboxType::class,
+            [
+                'label' => $this->translator->trans('page.front.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('page.front.help', [], 'admin.form'),
+            ]
+        );
 
         $choices = $this->templatePageService->getChoices();
 
-        dump($choices);
-
         $builder->add(
-            'isAttending',
+            'function',
             ChoiceType::class,
             [
-                'mapped'  => false,
                 'choices' => $choices,
             ]
         );

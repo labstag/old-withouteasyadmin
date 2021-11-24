@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\PageRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,8 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Page
 {
     use SoftDeleteableEntity;
-
-    use StateableEntity;
 
     /**
      * @ORM\OneToMany(targetEntity=Page::class, mappedBy="parent")
@@ -55,10 +52,14 @@ class Page
     private $password;
 
     /**
-     * @Gedmo\Slug(updatable=false, fields={"name"})
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $slug;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $function;
 
     public function __construct()
     {
@@ -156,6 +157,18 @@ class Page
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getFunction(): ?string
+    {
+        return $this->function;
+    }
+
+    public function setFunction(?string $function): self
+    {
+        $this->function = $function;
 
         return $this;
     }

@@ -37,7 +37,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends ControllerLib
 {
     /**
-     * @Route("/change-password/{id}", name="app_changepassword")
+     * @Route("/change-password/{id}", name="app_changepassword", priority=1)
      */
     public function changePassword(
         User $user,
@@ -71,7 +71,7 @@ class SecurityController extends ControllerLib
     }
 
     /**
-     * @Route("/confirm/email/{id}", name="app_confirm_mail")
+     * @Route("/confirm/email/{id}", name="app_confirm_mail", priority=1)
      */
     public function confirmEmail(
         Email $email,
@@ -97,7 +97,7 @@ class SecurityController extends ControllerLib
     }
 
     /**
-     * @Route("/confirm/phone/{id}", name="app_confirm_phone")
+     * @Route("/confirm/phone/{id}", name="app_confirm_phone", priority=1)
      */
     public function confirmPhone(
         Phone $phone,
@@ -123,7 +123,7 @@ class SecurityController extends ControllerLib
     }
 
     /**
-     * @Route("/confirm/user/{id}", name="app_confirm_user")
+     * @Route("/confirm/user/{id}", name="app_confirm_user", priority=1)
      */
     public function confirmUser(
         User $user,
@@ -149,7 +149,7 @@ class SecurityController extends ControllerLib
     }
 
     /**
-     * @Route("/disclaimer", name="disclaimer")
+     * @Route("/disclaimer", name="disclaimer", priority=1)
      *
      * @return RedirectResponse|Response
      */
@@ -192,7 +192,7 @@ class SecurityController extends ControllerLib
     }
 
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/login", name="app_login", priority=1)
      */
     public function login(
         AuthenticationUtils $authenticationUtils,
@@ -222,7 +222,7 @@ class SecurityController extends ControllerLib
     }
 
     /**
-     * @Route("/logout", name="app_logout")
+     * @Route("/logout", name="app_logout", priority=1)
      */
     public function logout(): void
     {
@@ -232,7 +232,7 @@ class SecurityController extends ControllerLib
     }
 
     /**
-     * @Route("/lost", name="app_lost")
+     * @Route("/lost", name="app_lost", priority=1)
      */
     public function lost(
         Request $request,
@@ -260,7 +260,7 @@ class SecurityController extends ControllerLib
     /**
      * Link to this controller to start the "connect" process.
      *
-     * @Route("/oauth/connect/{oauthCode}", name="connect_start")
+     * @Route("/oauth/connect/{oauthCode}", name="connect_start", priority=1)
      */
     public function oauthConnect(
         Request $request,
@@ -308,7 +308,7 @@ class SecurityController extends ControllerLib
      * because this is the "redirect_route" you configured
      * in config/packages/knpu_oauth2_client.yaml.
      *
-     * @Route("/oauth/check/{oauthCode}", name="connect_check")
+     * @Route("/oauth/check/{oauthCode}", name="connect_check", priority=1)
      */
     public function oauthConnectCheck(
         Request $request,
@@ -397,7 +397,7 @@ class SecurityController extends ControllerLib
     /**
      * Link to this controller to start the "connect" process.
      *
-     * @Route("/oauth/lost/{oauthCode}", name="connect_lost")
+     * @Route("/oauth/lost/{oauthCode}", name="connect_lost", priority=1)
      */
     public function oauthLost(
         Request $request,

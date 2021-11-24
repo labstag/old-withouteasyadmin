@@ -9,11 +9,8 @@
                     'name': 'page.name'|trans({}, 'admin.messages')
                 },
                 {
-                    'field': 'a.state',
-                    'name': 'workflow.state'|trans({}, 'admin.messages')
-                },
-                {
-                    'name': 'page.workflow'|trans({}, 'admin.messages')
+                    'field': 'a.slug',
+                    'name': 'page.slug'|trans({}, 'admin.messages')
                 }
             ] %}
             {{ macro_admin.thead(theads, pagination, true) }}
@@ -22,14 +19,7 @@
             {% for entity in pagination %}
                 <tr data-id="{{ entity.id }}">
                     <td>{{ entity.name }}</td>
-                    <td>
-                        {% for state in workflow_marked_places(entity) %}
-                            {{ state }}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {{ macro_admin.workflow(entity, actions) }}
-                    </td>
+                    <td>{{ entity.slug }}</td>
                     <td>
                         {{ macro_admin.actions(entity, actions) }}
                     </td>
