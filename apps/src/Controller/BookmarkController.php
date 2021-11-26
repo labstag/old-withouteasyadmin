@@ -4,9 +4,7 @@ namespace Labstag\Controller;
 
 use Labstag\Entity\Bookmark;
 use Labstag\Lib\FrontControllerLib;
-use Labstag\Repository\BookmarkRepository;
-use Labstag\Repository\CategoryRepository;
-use Labstag\Repository\LibelleRepository;
+use Labstag\Service\TemplatePageService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,53 +20,35 @@ class BookmarkController extends FrontControllerLib
      * @return void
      */
     public function category(
-        BookmarkRepository $bookmarkRepository,
+        TemplatePageService $templatePageService,
         Request $request,
-        string $code,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
+        string $code
     )
     {
-        $pagination = $this->paginator->paginate(
-            $bookmarkRepository->findPublierCategory($code),
-            $request->query->getInt('page', 1),
-            10
-        );
+        $className = 'Labstag\TemplatePage\BookmarkTemplatePage';
+        $method    = 'category';
 
-        return $this->render(
-            'front/bookmarks/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'libelles'   => $libelleRepository->findByBookmark(),
-                'categories' => $categoryRepository->findByBookmark(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($code);
     }
 
     /**
      * @Route("/", name="bookmark_index")
      */
     public function index(
-        Request $request,
-        BookmarkRepository $bookmarkRepository,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
+        TemplatePageService $templatePageService,
+        Request $request
     ): Response
     {
-        $pagination = $this->paginator->paginate(
-            $bookmarkRepository->findPublier(),
-            $request->query->getInt('page', 1),
-            10
-        );
+        $className = 'Labstag\TemplatePage\BookmarkTemplatePage';
+        $method    = 'index';
 
-        return $this->render(
-            'front/bookmarks/index.html.twig',
-            [
-                'pagination' => $pagination,
-                'libelles'   => $libelleRepository->findByBookmark(),
-                'categories' => $categoryRepository->findByBookmark(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}();
     }
 
     /**
@@ -77,36 +57,35 @@ class BookmarkController extends FrontControllerLib
      * @return void
      */
     public function libelle(
-        BookmarkRepository $bookmarkRepository,
+        TemplatePageService $templatePageService,
         Request $request,
-        string $code,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
+        string $code
     )
     {
-        $pagination = $this->paginator->paginate(
-            $bookmarkRepository->findPublierLibelle($code),
-            $request->query->getInt('page', 1),
-            10
-        );
+        $className = 'Labstag\TemplatePage\BookmarkTemplatePage';
+        $method    = 'libelle';
 
-        return $this->render(
-            'front/bookmarks/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'libelles'   => $libelleRepository->findByBookmark(),
-                'categories' => $categoryRepository->findByBookmark(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($code);
     }
 
     /**
      * @Route("/{slug}", name="bookmark_show")
      */
     public function show(
+        TemplatePageService $templatePageService,
+        Request $request,
         Bookmark $bookmark
     )
     {
-        return $this->redirect($bookmark->getUrl());
+        $className = 'Labstag\TemplatePage\BookmarkTemplatePage';
+        $method    = 'show';
+
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($bookmark);
     }
 }

@@ -4,11 +4,7 @@ namespace Labstag\Controller;
 
 use Labstag\Entity\Edito;
 use Labstag\Lib\FrontControllerLib;
-use Labstag\Repository\CategoryRepository;
-use Labstag\Repository\EditoRepository;
-use Labstag\Repository\LibelleRepository;
 use Labstag\Repository\PageRepository;
-use Labstag\Repository\PostRepository;
 use Labstag\Service\TemplatePageService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,38 +13,48 @@ use Symfony\Component\Routing\Annotation\Route;
 class FrontController extends FrontControllerLib
 {
     /**
-     * @Route("/edito", name="edito")
+     * @Route("/edito", name="edito", priority=1)
      */
-    public function edito(EditoRepository $editoRepository): Response
+    public function edito(
+        TemplatePageService $templatePageService,
+        Request $request
+    ): Response
     {
-        // @var Edito $edito
-        $edito = $editoRepository->findOnePublier();
-        $this->setMetaOpenGraph(
-            $edito->getTitle(),
-            $edito->getMetaKeywords(),
-            $edito->getMetaDescription(),
-            $edito->getFond()
-        );
+        $className = 'Labstag\TemplatePage\FrontTemplatePage';
+        $method    = 'edito';
 
-        return $this->render(
-            'front/edito.html.twig',
-            ['edito' => $edito]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}();
+    }
+
+    /**
+     * @Route("/", name="front", priority=1)
+     */
+    public function index(
+        TemplatePageService $templatePageService,
+        Request $request
+    ): Response
+    {
+        $className = 'Labstag\TemplatePage\FrontTemplatePage';
+        $method    = 'index';
+
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}();
     }
 
     /**
      * @Route("/{slug}", name="front", requirements={"slug"=".+"}, defaults={"slug"=""})
      */
-    public function index(
+    public function test(
         string $slug,
         TemplatePageService $templatePageService,
         PageRepository $pageRepository,
-        EditoRepository $editoRepository,
-        Request $request,
-        PostRepository $postRepository,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
-    ): Response
+        Request $request
+    ): mixed
     {
         $slug = trim($slug);
         if ('' == $slug) {
@@ -61,33 +67,23 @@ class FrontController extends FrontControllerLib
             preg_match('/'.$slugReg.'/', $slug, $matches);
             if (count($matches) > 0) {
                 $page = $row;
+
                 break;
             }
         }
-        if (isset($page)) {
-            list($className, $method) = explode('::', $page->getFunction());
-            $class = $templatePageService->getClass($className);
-            echo $class->$method();
-        }else{
+
+        if (!isset($page)) {
             throw $this->createNotFoundException();
         }
 
-        exit();
-        $pagination = $this->paginator->paginate(
-            $postRepository->findPublier(),
-            $request->query->getInt('page', 1),
-            10
-        );
+        [
+            $className,
+            $method,
+        ] = explode('::', $page->getFunction());
 
-        return $this->render(
-            'front/index.html.twig',
-            [
-                'edito'      => $editoRepository->findOnePublier(),
-                'pagination' => $pagination,
-                'archives'   => $postRepository->findDateArchive(),
-                'libelles'   => $libelleRepository->findByPost(),
-                'categories' => $categoryRepository->findByPost(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($matches);
     }
 }

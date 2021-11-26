@@ -3,12 +3,8 @@
 namespace Labstag\Controller;
 
 use Labstag\Entity\History;
-use Labstag\Entity\Post;
 use Labstag\Lib\FrontControllerLib;
-use Labstag\Repository\CategoryRepository;
-use Labstag\Repository\LibelleRepository;
-use Labstag\Repository\PostRepository;
-use Labstag\Service\HistoryService;
+use Labstag\Service\TemplatePageService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,28 +17,18 @@ class HistoryController extends FrontControllerLib
      * @Route("/archive/{code}", name="history_archive")
      */
     public function archive(
-        PostRepository $postRepository,
+        TemplatePageService $templatePageService,
         Request $request,
-        string $code,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
+        string $code
     )
     {
-        $pagination = $this->paginator->paginate(
-            $postRepository->findPublierArchive($code),
-            $request->query->getInt('page', 1),
-            10
-        );
+        $className = 'Labstag\TemplatePage\HistoryTemplatePage';
+        $method    = 'archive';
 
-        return $this->render(
-            'front/histories/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $postRepository->findDateArchive(),
-                'libelles'   => $libelleRepository->findByPost(),
-                'categories' => $categoryRepository->findByPost(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($code);
     }
 
     /**
@@ -51,28 +37,18 @@ class HistoryController extends FrontControllerLib
      * @return void
      */
     public function category(
-        PostRepository $postRepository,
+        TemplatePageService $templatePageService,
         Request $request,
         string $code,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
     )
     {
-        $pagination = $this->paginator->paginate(
-            $postRepository->findPublierCategory($code),
-            $request->query->getInt('page', 1),
-            10
-        );
+        $className = 'Labstag\TemplatePage\HistoryTemplatePage';
+        $method    = 'category';
 
-        return $this->render(
-            'front/histories/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $postRepository->findDateArchive(),
-                'libelles'   => $libelleRepository->findByPost(),
-                'categories' => $categoryRepository->findByPost(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($code);
     }
 
     /**
@@ -81,108 +57,71 @@ class HistoryController extends FrontControllerLib
      * @return void
      */
     public function libelle(
-        PostRepository $postRepository,
+        TemplatePageService $templatePageService,
         Request $request,
-        string $code,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
+        string $code
     )
     {
-        $pagination = $this->paginator->paginate(
-            $postRepository->findPublierLibelle($code),
-            $request->query->getInt('page', 1),
-            10
-        );
+        $className = 'Labstag\TemplatePage\HistoryTemplatePage';
+        $method    = 'libelle';
 
-        return $this->render(
-            'front/histories/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $postRepository->findDateArchive(),
-                'libelles'   => $libelleRepository->findByPost(),
-                'categories' => $categoryRepository->findByPost(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($code);
     }
 
     /**
      * @Route("/{slug}.pdf", name="history_pdf")
      */
-    public function pdf(History $history, HistoryService $service)
+    public function pdf(
+        TemplatePageService $templatePageService,
+        Request $request,
+        History $history
+    )
     {
-        $service->process(
-            $this->getParameter('file_directory'),
-            $history->getId(),
-            false
-        );
+        $className = 'Labstag\TemplatePage\HistoryTemplatePage';
+        $method    = 'pdf';
 
-        $filename = $service->getFilename();
-        if (empty($filename)) {
-            throw $this->createNotFoundException('Pas de fichier');
-        }
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
 
-        $filename = str_replace(
-            $this->getParameter('kernel.project_dir').'/public/',
-            '/',
-            $filename
-        );
-
-        return $this->redirect($filename);
+        return $class->{$method}($history);
     }
 
     /**
      * @Route("/{slug}", name="history_show")
      */
     public function show(
-        PostRepository $postRepository,
-        Post $post,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
+        Request $request,
+        TemplatePageService $templatePageService,
+        History $history
     )
     {
-        $this->setMetaOpenGraph(
-            $post->getTitle(),
-            $post->getMetaKeywords(),
-            $post->getMetaDescription(),
-            $post->getImg()
-        );
+        $className = 'Labstag\TemplatePage\HistoryTemplatePage';
+        $method    = 'show';
 
-        return $this->render(
-            'front/histories/show.html.twig',
-            [
-                'post'       => $post,
-                'archives'   => $postRepository->findDateArchive(),
-                'libelles'   => $libelleRepository->findByPost(),
-                'categories' => $categoryRepository->findByPost(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($history);
     }
 
     /**
      * @Route("/user/{username}", name="history_user")
      */
     public function user(
-        PostRepository $postRepository,
+        TemplatePageService $templatePageService,
         Request $request,
-        $username,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
+        $username
     )
     {
-        $pagination = $this->paginator->paginate(
-            $postRepository->findPublierUsername($username),
-            $request->query->getInt('page', 1),
-            10
-        );
+        $className = 'Labstag\TemplatePage\HistoryTemplatePage';
+        $method    = 'user';
 
-        return $this->render(
-            'front/histories/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $postRepository->findDateArchive(),
-                'libelles'   => $libelleRepository->findByPost(),
-                'categories' => $categoryRepository->findByPost(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($username);
     }
 }

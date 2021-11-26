@@ -4,9 +4,7 @@ namespace Labstag\Controller;
 
 use Labstag\Entity\Post;
 use Labstag\Lib\FrontControllerLib;
-use Labstag\Repository\CategoryRepository;
-use Labstag\Repository\LibelleRepository;
-use Labstag\Repository\PostRepository;
+use Labstag\Service\TemplatePageService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,28 +17,18 @@ class PostController extends FrontControllerLib
      * @Route("/archive/{code}", name="post_archive")
      */
     public function archive(
-        PostRepository $postRepository,
+        TemplatePageService $templatePageService,
         Request $request,
-        string $code,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
+        string $code
     )
     {
-        $pagination = $this->paginator->paginate(
-            $postRepository->findPublierArchive($code),
-            $request->query->getInt('page', 1),
-            10
-        );
+        $className = 'Labstag\TemplatePage\PostTemplatePage';
+        $method    = 'archive';
 
-        return $this->render(
-            'front/posts/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $postRepository->findDateArchive(),
-                'libelles'   => $libelleRepository->findByPost(),
-                'categories' => $categoryRepository->findByPost(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($code);
     }
 
     /**
@@ -49,28 +37,18 @@ class PostController extends FrontControllerLib
      * @return void
      */
     public function category(
-        PostRepository $postRepository,
+        TemplatePageService $templatePageService,
         Request $request,
-        string $code,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
+        string $code
     )
     {
-        $pagination = $this->paginator->paginate(
-            $postRepository->findPublierCategory($code),
-            $request->query->getInt('page', 1),
-            10
-        );
+        $className = 'Labstag\TemplatePage\PostTemplatePage';
+        $method    = 'category';
 
-        return $this->render(
-            'front/posts/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $postRepository->findDateArchive(),
-                'libelles'   => $libelleRepository->findByPost(),
-                'categories' => $categoryRepository->findByPost(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($code);
     }
 
     /**
@@ -79,83 +57,53 @@ class PostController extends FrontControllerLib
      * @return void
      */
     public function libelle(
-        PostRepository $postRepository,
+        TemplatePageService $templatePageService,
         Request $request,
-        string $code,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
+        string $code
     )
     {
-        $pagination = $this->paginator->paginate(
-            $postRepository->findPublierLibelle($code),
-            $request->query->getInt('page', 1),
-            10
-        );
+        $className = 'Labstag\TemplatePage\PostTemplatePage';
+        $method    = 'libelle';
 
-        return $this->render(
-            'front/posts/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $postRepository->findDateArchive(),
-                'libelles'   => $libelleRepository->findByPost(),
-                'categories' => $categoryRepository->findByPost(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($code);
     }
 
     /**
      * @Route("/{slug}", name="post_show")
      */
     public function show(
-        PostRepository $postRepository,
+        TemplatePageService $templatePageService,
+        Request $request,
         Post $post,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
     )
     {
-        $this->setMetaOpenGraph(
-            $post->getTitle(),
-            $post->getMetaKeywords(),
-            $post->getMetaDescription(),
-            $post->getImg()
-        );
+        $className = 'Labstag\TemplatePage\PostTemplatePage';
+        $method    = 'show';
 
-        return $this->render(
-            'front/posts/show.html.twig',
-            [
-                'post'       => $post,
-                'archives'   => $postRepository->findDateArchive(),
-                'libelles'   => $libelleRepository->findByPost(),
-                'categories' => $categoryRepository->findByPost(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($post);
     }
 
     /**
      * @Route("/user/{username}", name="post_user")
      */
     public function user(
-        PostRepository $postRepository,
+        TemplatePageService $templatePageService,
         Request $request,
-        $username,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
+        $username
     )
     {
-        $pagination = $this->paginator->paginate(
-            $postRepository->findPublierUsername($username),
-            $request->query->getInt('page', 1),
-            10
-        );
+        $className = 'Labstag\TemplatePage\PostTemplatePage';
+        $method    = 'category';
 
-        return $this->render(
-            'front/posts/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $postRepository->findDateArchive(),
-                'libelles'   => $libelleRepository->findByPost(),
-                'categories' => $categoryRepository->findByPost(),
-            ]
-        );
+        $class = $templatePageService->getClass($className);
+        $class->setRequest($request);
+
+        return $class->{$method}($username);
     }
 }

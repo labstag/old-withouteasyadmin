@@ -21,8 +21,7 @@ class LibelleRepository extends ServiceEntityRepositoryLib
     public function findByBookmark()
     {
         $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->from(Libelle::class, 'a');
-        $query->innerJoin('a.bookmarks', 'b');
+        $query        = $queryBuilder->innerJoin('a.bookmarks', 'b');
         $query->innerjoin('b.refuser', 'u');
         $query->where('b.state LIKE :state');
         $query->setParameters(

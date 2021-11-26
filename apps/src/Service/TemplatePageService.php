@@ -7,9 +7,11 @@ use Symfony\Component\Finder\Finder;
 
 class TemplatePageService
 {
+
     private ContainerInterface $container;
 
-    public function __construct(ContainerInterface $container) {
+    public function __construct(ContainerInterface $container)
+    {
         $this->container = $container;
     }
 
@@ -19,11 +21,11 @@ class TemplatePageService
         $finder->files()->in(__DIR__.'/../TemplatePage')->name('*.php');
         $plugins = [];
         foreach ($finder as $file) {
-            $class_name = rtrim($namespace, '\\').'\\'.$file->getFilenameWithoutExtension();
-            if (class_exists($class_name)) {
+            $className = rtrim($namespace, '\\').'\\'.$file->getFilenameWithoutExtension();
+            if (class_exists($className)) {
                 $plugins[] = [
-                    'name'    => $class_name,
-                    'methods' => get_class_methods($class_name),
+                    'name'    => $className,
+                    'methods' => get_class_methods($className),
                 ];
             }
         }

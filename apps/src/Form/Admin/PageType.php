@@ -51,9 +51,7 @@ class PageType extends AbstractTypeLib
         $builder->add(
             'function',
             ChoiceType::class,
-            [
-                'choices' => $choices,
-            ]
+            ['choices' => $choices]
         );
         unset($options);
     }

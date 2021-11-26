@@ -29,6 +29,11 @@ class Page
     private $front;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $function;
+
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid", unique=true)
@@ -56,11 +61,6 @@ class Page
      */
     private $slug;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $function;
-
     public function __construct()
     {
         $this->children = new ArrayCollection();
@@ -87,6 +87,11 @@ class Page
     public function getFront(): ?bool
     {
         return $this->front;
+    }
+
+    public function getFunction(): ?string
+    {
+        return $this->function;
     }
 
     public function getId(): ?string
@@ -133,6 +138,13 @@ class Page
         return $this;
     }
 
+    public function setFunction(?string $function): self
+    {
+        $this->function = $function;
+
+        return $this;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -157,18 +169,6 @@ class Page
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getFunction(): ?string
-    {
-        return $this->function;
-    }
-
-    public function setFunction(?string $function): self
-    {
-        $this->function = $function;
 
         return $this;
     }
