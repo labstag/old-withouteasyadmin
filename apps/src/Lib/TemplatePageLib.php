@@ -16,6 +16,7 @@ use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
@@ -44,9 +45,12 @@ abstract class TemplatePageLib
 
     protected Request $request;
 
+    protected RequestStack $requestStack;
+
     protected Environment $twig;
 
     public function __construct(
+        RequestStack $requestStack,
         Environment $twig,
         ContainerBagInterface $containerBag,
         HistoryService $historyService,
@@ -60,6 +64,9 @@ abstract class TemplatePageLib
         CategoryRepository $categoryRepository
     )
     {
+        $this->requestStack       = $requestStack;
+        $request                  = $this->requestStack->getCurrentRequest();
+        $this->request            = $request;
         $this->containerBag       = $containerBag;
         $this->historyRepository  = $historyRepository;
         $this->historyService     = $historyService;
@@ -73,12 +80,12 @@ abstract class TemplatePageLib
         $this->twig               = $twig;
     }
 
-    public function getRequest(): Request
+    protected function getParameter(string $name)
     {
-        return $this->request;
+        return $this->containerBag->get($name);
     }
 
-    public function render(string $view, array $parameters = [], ?Response $response = null): Response
+    protected function render(string $view, array $parameters = [], ?Response $response = null): Response
     {
         $content = $this->twig->render($view, $parameters);
 
@@ -89,11 +96,6 @@ abstract class TemplatePageLib
         $response->setContent($content);
 
         return $response;
-    }
-
-    protected function getParameter(string $name)
-    {
-        return $this->containerBag->get($name);
     }
 
     protected function setMetaOpenGraph(
@@ -122,11 +124,6 @@ abstract class TemplatePageLib
 
         $this->twig->AddGlobal('config', $config);
         $this->setMetatags($config['meta']);
-    }
-
-    protected function setRequest(Request $request): void
-    {
-        $this->request = $request;
     }
 
     private function setMetaOpenGraphDescription($description, &$meta)

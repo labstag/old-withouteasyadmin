@@ -6,14 +6,6 @@
                 <th>{{ 'page.name'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.name }}</td>
             </tr>
-            <tr>
-                <th>{{ 'workflow.state'|trans({}, 'admin.messages') }}</th>
-                <td>
-                    {% for state in workflow_marked_places(entity) %}
-                        {{ state }}
-                    {% endfor %}
-                </td>
-            </tr>
         </tbody>
     </table>
 {% endblock %}

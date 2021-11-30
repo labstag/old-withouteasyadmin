@@ -13,7 +13,7 @@ class HistoryTemplatePage extends TemplatePageLib
     {
         $pagination = $this->paginator->paginate(
             $this->historyRepository->findPublierArchive($code),
-            $this->getRequest()->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 
@@ -32,7 +32,7 @@ class HistoryTemplatePage extends TemplatePageLib
     {
         $pagination = $this->paginator->paginate(
             $this->historyRepository->findPublierCategory($code),
-            $this->getRequest()->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 
@@ -51,7 +51,7 @@ class HistoryTemplatePage extends TemplatePageLib
     {
         $pagination = $this->paginator->paginate(
             $this->historyRepository->findPublierLibelle($code),
-            $this->getRequest()->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 
@@ -112,7 +112,7 @@ class HistoryTemplatePage extends TemplatePageLib
     {
         $pagination = $this->paginator->paginate(
             $this->historyRepository->findPublierUsername($username),
-            $this->getRequest()->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 

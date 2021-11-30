@@ -66,6 +66,11 @@ class Page
         $this->children = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     public function addChild(self $child): self
     {
         if (!$this->children->contains($child)) {
@@ -166,7 +171,7 @@ class Page
         return $this;
     }
 
-    public function setSlug(string $slug): self
+    public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
 

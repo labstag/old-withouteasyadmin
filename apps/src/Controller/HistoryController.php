@@ -5,7 +5,6 @@ namespace Labstag\Controller;
 use Labstag\Entity\History;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Service\TemplatePageService;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,7 +17,6 @@ class HistoryController extends FrontControllerLib
      */
     public function archive(
         TemplatePageService $templatePageService,
-        Request $request,
         string $code
     )
     {
@@ -26,7 +24,6 @@ class HistoryController extends FrontControllerLib
         $method    = 'archive';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($code);
     }
@@ -38,7 +35,6 @@ class HistoryController extends FrontControllerLib
      */
     public function category(
         TemplatePageService $templatePageService,
-        Request $request,
         string $code,
     )
     {
@@ -46,7 +42,6 @@ class HistoryController extends FrontControllerLib
         $method    = 'category';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($code);
     }
@@ -58,7 +53,6 @@ class HistoryController extends FrontControllerLib
      */
     public function libelle(
         TemplatePageService $templatePageService,
-        Request $request,
         string $code
     )
     {
@@ -66,7 +60,6 @@ class HistoryController extends FrontControllerLib
         $method    = 'libelle';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($code);
     }
@@ -76,7 +69,6 @@ class HistoryController extends FrontControllerLib
      */
     public function pdf(
         TemplatePageService $templatePageService,
-        Request $request,
         History $history
     )
     {
@@ -84,7 +76,6 @@ class HistoryController extends FrontControllerLib
         $method    = 'pdf';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($history);
     }
@@ -93,7 +84,6 @@ class HistoryController extends FrontControllerLib
      * @Route("/{slug}", name="history_show")
      */
     public function show(
-        Request $request,
         TemplatePageService $templatePageService,
         History $history
     )
@@ -102,7 +92,6 @@ class HistoryController extends FrontControllerLib
         $method    = 'show';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($history);
     }
@@ -112,7 +101,6 @@ class HistoryController extends FrontControllerLib
      */
     public function user(
         TemplatePageService $templatePageService,
-        Request $request,
         $username
     )
     {
@@ -120,7 +108,6 @@ class HistoryController extends FrontControllerLib
         $method    = 'user';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($username);
     }

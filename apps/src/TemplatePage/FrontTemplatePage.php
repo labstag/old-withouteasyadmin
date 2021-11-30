@@ -27,7 +27,7 @@ class FrontTemplatePage extends TemplatePageLib
     {
         $pagination = $this->paginator->paginate(
             $this->postRepository->findPublier(),
-            $this->getRequest()->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 

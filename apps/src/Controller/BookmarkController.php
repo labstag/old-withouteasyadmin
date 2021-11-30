@@ -5,7 +5,6 @@ namespace Labstag\Controller;
 use Labstag\Entity\Bookmark;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Service\TemplatePageService;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,7 +20,6 @@ class BookmarkController extends FrontControllerLib
      */
     public function category(
         TemplatePageService $templatePageService,
-        Request $request,
         string $code
     )
     {
@@ -29,7 +27,6 @@ class BookmarkController extends FrontControllerLib
         $method    = 'category';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($code);
     }
@@ -38,15 +35,13 @@ class BookmarkController extends FrontControllerLib
      * @Route("/", name="bookmark_index")
      */
     public function index(
-        TemplatePageService $templatePageService,
-        Request $request
+        TemplatePageService $templatePageService
     ): Response
     {
         $className = 'Labstag\TemplatePage\BookmarkTemplatePage';
         $method    = 'index';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}();
     }
@@ -58,7 +53,6 @@ class BookmarkController extends FrontControllerLib
      */
     public function libelle(
         TemplatePageService $templatePageService,
-        Request $request,
         string $code
     )
     {
@@ -66,7 +60,6 @@ class BookmarkController extends FrontControllerLib
         $method    = 'libelle';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($code);
     }
@@ -76,7 +69,6 @@ class BookmarkController extends FrontControllerLib
      */
     public function show(
         TemplatePageService $templatePageService,
-        Request $request,
         Bookmark $bookmark
     )
     {
@@ -84,7 +76,6 @@ class BookmarkController extends FrontControllerLib
         $method    = 'show';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($bookmark);
     }

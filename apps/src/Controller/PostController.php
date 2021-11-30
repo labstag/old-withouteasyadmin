@@ -5,7 +5,6 @@ namespace Labstag\Controller;
 use Labstag\Entity\Post;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Service\TemplatePageService;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,7 +17,6 @@ class PostController extends FrontControllerLib
      */
     public function archive(
         TemplatePageService $templatePageService,
-        Request $request,
         string $code
     )
     {
@@ -26,7 +24,6 @@ class PostController extends FrontControllerLib
         $method    = 'archive';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($code);
     }
@@ -38,7 +35,6 @@ class PostController extends FrontControllerLib
      */
     public function category(
         TemplatePageService $templatePageService,
-        Request $request,
         string $code
     )
     {
@@ -46,7 +42,6 @@ class PostController extends FrontControllerLib
         $method    = 'category';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($code);
     }
@@ -58,7 +53,6 @@ class PostController extends FrontControllerLib
      */
     public function libelle(
         TemplatePageService $templatePageService,
-        Request $request,
         string $code
     )
     {
@@ -66,7 +60,6 @@ class PostController extends FrontControllerLib
         $method    = 'libelle';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($code);
     }
@@ -76,7 +69,6 @@ class PostController extends FrontControllerLib
      */
     public function show(
         TemplatePageService $templatePageService,
-        Request $request,
         Post $post,
     )
     {
@@ -84,7 +76,6 @@ class PostController extends FrontControllerLib
         $method    = 'show';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($post);
     }
@@ -94,7 +85,6 @@ class PostController extends FrontControllerLib
      */
     public function user(
         TemplatePageService $templatePageService,
-        Request $request,
         $username
     )
     {
@@ -102,7 +92,6 @@ class PostController extends FrontControllerLib
         $method    = 'category';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($username);
     }

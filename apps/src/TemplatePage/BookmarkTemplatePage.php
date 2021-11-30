@@ -12,7 +12,7 @@ class BookmarkTemplatePage extends TemplatePageLib
     {
         $pagination = $this->paginator->paginate(
             $this->bookmarkRepository->findPublierCategory($code),
-            $this->getRequest()->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 
@@ -30,7 +30,7 @@ class BookmarkTemplatePage extends TemplatePageLib
     {
         $pagination = $this->paginator->paginate(
             $this->bookmarkRepository->findPublier(),
-            $this->getRequest()->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 
@@ -48,7 +48,7 @@ class BookmarkTemplatePage extends TemplatePageLib
     {
         $pagination = $this->paginator->paginate(
             $this->bookmarkRepository->findPublierLibelle($code),
-            $this->getRequest()->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 

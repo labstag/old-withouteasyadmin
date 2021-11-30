@@ -11,7 +11,7 @@ class PostTemplatePage extends TemplatePageLib
     {
         $pagination = $this->paginator->paginate(
             $this->postRepository->findPublierArchive($code),
-            $this->getRequest()->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 
@@ -30,7 +30,7 @@ class PostTemplatePage extends TemplatePageLib
     {
         $pagination = $this->paginator->paginate(
             $this->postRepository->findPublierCategory($code),
-            $this->getRequest()->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 
@@ -49,7 +49,7 @@ class PostTemplatePage extends TemplatePageLib
     {
         $pagination = $this->paginator->paginate(
             $this->postRepository->findPublierLibelle($code),
-            $this->getRequest()->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 
@@ -88,7 +88,7 @@ class PostTemplatePage extends TemplatePageLib
     {
         $pagination = $this->paginator->paginate(
             $this->postRepository->findPublierUsername($username),
-            $this->getRequest()->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 

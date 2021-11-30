@@ -6,7 +6,6 @@ use Labstag\Entity\Edito;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\PageRepository;
 use Labstag\Service\TemplatePageService;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,32 +15,13 @@ class FrontController extends FrontControllerLib
      * @Route("/edito", name="edito", priority=1)
      */
     public function edito(
-        TemplatePageService $templatePageService,
-        Request $request
+        TemplatePageService $templatePageService
     ): Response
     {
         $className = 'Labstag\TemplatePage\FrontTemplatePage';
         $method    = 'edito';
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
-
-        return $class->{$method}();
-    }
-
-    /**
-     * @Route("/", name="front", priority=1)
-     */
-    public function index(
-        TemplatePageService $templatePageService,
-        Request $request
-    ): Response
-    {
-        $className = 'Labstag\TemplatePage\FrontTemplatePage';
-        $method    = 'index';
-
-        $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}();
     }
@@ -49,11 +29,10 @@ class FrontController extends FrontControllerLib
     /**
      * @Route("/{slug}", name="front", requirements={"slug"=".+"}, defaults={"slug"=""})
      */
-    public function test(
+    public function essai(
         string $slug,
         TemplatePageService $templatePageService,
-        PageRepository $pageRepository,
-        Request $request
+        PageRepository $pageRepository
     ): mixed
     {
         $slug = trim($slug);
@@ -82,8 +61,22 @@ class FrontController extends FrontControllerLib
         ] = explode('::', $page->getFunction());
 
         $class = $templatePageService->getClass($className);
-        $class->setRequest($request);
 
         return $class->{$method}($matches);
+    }
+
+    /**
+     * @Route("/", name="front", priority=1)
+     */
+    public function index(
+        TemplatePageService $templatePageService
+    ): Response
+    {
+        $className = 'Labstag\TemplatePage\FrontTemplatePage';
+        $method    = 'index';
+
+        $class = $templatePageService->getClass($className);
+
+        return $class->{$method}();
     }
 }

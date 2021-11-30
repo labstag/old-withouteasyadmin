@@ -4,6 +4,8 @@ namespace Labstag\Form\Admin;
 
 use Labstag\Entity\Page;
 use Labstag\Lib\AbstractTypeLib;
+use Labstag\Repository\PageRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,6 +31,15 @@ class PageType extends AbstractTypeLib
             ]
         );
         $builder->add(
+            'password',
+            TextType::class,
+            [
+                'label'    => $this->translator->trans('page.password.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('page.password.help', [], 'admin.form'),
+                'required' => false,
+            ]
+        );
+        $builder->add(
             'slug',
             TextType::class,
             [
@@ -37,6 +48,19 @@ class PageType extends AbstractTypeLib
                 'required' => false,
             ]
         );
+
+        $builder->add(
+            'parent',
+            EntityType::class,
+            [
+                'required'      => false,
+                'class'         => Page::class,
+                'query_builder' => function (PageRepository $er) use ($options) {
+                    return $er->formType($options);
+                },
+            ]
+        );
+
         $builder->add(
             'front',
             CheckboxType::class,
