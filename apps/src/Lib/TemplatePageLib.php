@@ -80,6 +80,11 @@ abstract class TemplatePageLib
         $this->twig               = $twig;
     }
 
+    public function launch($matches, $slug)
+    {
+        unset($matches, $slug);
+    }
+
     protected function getParameter(string $name)
     {
         return $this->containerBag->get($name);

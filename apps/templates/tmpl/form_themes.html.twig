@@ -2,23 +2,23 @@
 {% block choice_widget_collapsed %}
     {% set isInput = attr.is|default('select-selector') %}
     {% set attr = attr|merge({'is': isInput}) %}
-    {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
+    {%  if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) %}
         {% set required = false %}
-    {%- endif -%}
+    {%  endif %}
     <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
-        {%- if placeholder is not none -%}
+        {%  if placeholder is not none %}
             <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
-        {%- endif -%}
-        {%- if preferred_choices|length > 0 -%}
+        {%  endif %}
+        {%  if preferred_choices|length > 0 %}
             {% set options = preferred_choices %}
             {% set render_preferred_choices = true %}
             {{- block('choice_widget_options') -}}
-            {%- if choices|length > 0 and separator is not none -%}
+            {%  if choices|length > 0 and separator is not none %}
                 <option disabled="disabled">{{ separator }}</option>
-            {%- endif -%}
-        {%- endif -%}
-        {%- set options = choices -%}
-        {%- set render_preferred_choices = false -%}
+            {%  endif %}
+        {%  endif %}
+        {%  set options = choices %}
+        {%  set render_preferred_choices = false %}
         {{- block('choice_widget_options') -}}
     </select>
 {% endblock %}
@@ -139,7 +139,7 @@
             </div>
         {% endif %}
         {% if with_seconds %}
-            {% if form.hour is defined or form.minute is defined%}
+            {% if form.hour is defined or form.minute is defined %}
                 <div class="col">
                     :
                 </div>
@@ -472,37 +472,37 @@
     </div>
 {% endblock %}
 
-{%- block button_widget -%}
-    {%- set attr = attr|merge({class: (attr.class|default('btn-secondary') ~ ' btn')|trim}) -%}
+{%  block button_widget %}
+    {%  set attr = attr|merge({class: (attr.class|default('btn-secondary') ~ ' btn')|trim}) %}
     <div{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group')|trim})} %}{{ block('attributes') }}{% endwith %}>
         
-    {%- if label is empty -%}
-        {%- if label_format is not empty -%}
+    {%  if label is empty %}
+        {%  if label_format is not empty %}
             {% set label = label_format|replace({
                 '%name%': name,
                 '%id%': id,
             }) %}
-        {%- elseif label is not same as(false) -%}
+        {%  elseif label is not same as(false) %}
             {% set label = name|humanize %}
-        {%- endif -%}
-    {%- endif -%}
+        {%  endif %}
+    {%  endif %}
     <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
-        {%- if translation_domain is same as(false) -%}
-            {%- if label_html is same as(false) -%}
+        {%  if translation_domain is same as(false) %}
+            {%  if label_html is same as(false) %}
                 {{- label -}}
-            {%- else -%}
+            {%  else %}
                 {{- label|raw -}}
-            {%- endif -%}
-        {%- else -%}
-            {%- if label_html is same as(false) -%}
+            {%  endif %}
+        {%  else %}
+            {%  if label_html is same as(false) %}
                 {{- label -}}
-            {%- else -%}
+            {%  else %}
                 {{- label|raw -}}
-            {%- endif -%}
-        {%- endif -%}
+            {%  endif %}
+        {%  endif %}
     </button>
     </div>
-{%- endblock button_widget %}
+{%  endblock button_widget %}
 
 {% block form_start %}
     {% do form.setMethodRendered() %}

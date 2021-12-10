@@ -6,16 +6,16 @@
         {% if sitemetatags is defined %}
             {% for attr in sitemetatags %}
                 <meta
-            {%- for attrname, attrvalue in attr -%}
+            {%  for attrname, attrvalue in attr %}
                 {{- " " -}}
-                {%- if attrname in ['placeholder', 'title'] -%}
+                {%  if attrname in ['placeholder', 'title'] %}
                     {{- attrname }}="{{ translation_domain is same as(false) or attrvalue is null ? attrvalue : attrvalue|trans(attr_translation_parameters, translation_domain) }}"
-                {%- elseif attrvalue is same as(true) -%}
+                {%  elseif attrvalue is same as(true) %}
                     {{- attrname }}="{{ attrname }}"
-                {%- elseif attrvalue is not same as(false) -%}
+                {%  elseif attrvalue is not same as(false) %}
                     {{- attrname }}="{{ attrvalue }}"
-                {%- endif -%}
-            {%- endfor -%}
+                {%  endif %}
+            {%  endfor %}
                  />
             {% endfor %}
         {% endif %}

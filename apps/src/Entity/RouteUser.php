@@ -48,6 +48,11 @@ class RouteUser
         return $this->refuser;
     }
 
+    public function getState(): ?bool
+    {
+        return $this->state;
+    }
+
     public function isState(): ?bool
     {
         return $this->state;

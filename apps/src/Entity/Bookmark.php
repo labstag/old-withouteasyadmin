@@ -298,6 +298,13 @@ class Bookmark
         return $this;
     }
 
+    public function setStateChanged(?DateTimeInterface $stateChanged): self
+    {
+        $this->stateChanged = $stateChanged;
+
+        return $this;
+    }
+
     public function setUrl(string $url): self
     {
         $this->url = $url;

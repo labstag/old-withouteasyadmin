@@ -263,6 +263,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function addNoteInterne(Memo $noteInterne): self
+    {
+        if (!$this->noteInternes->contains($noteInterne)) {
+            $this->noteInternes[] = $noteInterne;
+            $noteInterne->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addOauthConnectUser(OauthConnectUser $oauthConnectUser): self
+    {
+        if (!$this->oauthConnectUsers->contains($oauthConnectUser)) {
+            $this->oauthConnectUsers[] = $oauthConnectUser;
+            $oauthConnectUser->setRefuser($this);
+        }
+
+        return $this;
+    }
+
     public function addOauthConnectUsers(
         OauthConnectUser $oauthConnectUser
     ): self
@@ -386,6 +406,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getMemos()
+    {
+        return $this->noteInternes;
+    }
+
+    /**
+     * @return Collection|Memo[]
+     */
+    public function getNoteInternes(): Collection
     {
         return $this->noteInternes;
     }
@@ -564,6 +592,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($noteInterne->getRefuser() === $this) {
                 $noteInterne->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeNoteInterne(Memo $noteInterne): self
+    {
+        if ($this->noteInternes->removeElement($noteInterne)) {
+            // set the owning side to null (unless already changed)
+            if ($noteInterne->getRefuser() === $this) {
+                $noteInterne->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeOauthConnectUser(OauthConnectUser $oauthConnectUser): self
+    {
+        if ($this->oauthConnectUsers->removeElement($oauthConnectUser)) {
+            // set the owning side to null (unless already changed)
+            if ($oauthConnectUser->getRefuser() === $this) {
+                $oauthConnectUser->setRefuser(null);
             }
         }
 

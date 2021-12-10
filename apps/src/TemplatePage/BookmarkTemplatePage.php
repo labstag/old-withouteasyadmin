@@ -44,6 +44,20 @@ class BookmarkTemplatePage extends TemplatePageLib
         );
     }
 
+    public function launch($matches, $slug)
+    {
+        unset($matches, $slug);
+        // /category/{code}
+        // $this->category();
+        // /
+        // $this->index();
+        // /libelle/{code}
+        // $this->libelle();
+        // /{slug}
+        // $this->show();
+        return $this->index();
+    }
+
     public function libelle(string $code)
     {
         $pagination = $this->paginator->paginate(

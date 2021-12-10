@@ -29,6 +29,11 @@ class Page
     private $front;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $frontslug;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $function;
@@ -94,6 +99,11 @@ class Page
         return $this->front;
     }
 
+    public function getFrontslug(): string
+    {
+        return $this->frontslug;
+    }
+
     public function getFunction(): ?string
     {
         return $this->function;
@@ -109,7 +119,7 @@ class Page
         return $this->name;
     }
 
-    public function getParent(): ?self
+    public function getParent(): ?Page
     {
         return $this->parent;
     }
@@ -139,6 +149,13 @@ class Page
     public function setFront(bool $front): self
     {
         $this->front = $front;
+
+        return $this;
+    }
+
+    public function setFrontslug(string $frontslug): self
+    {
+        $this->frontslug = $frontslug;
 
         return $this;
     }

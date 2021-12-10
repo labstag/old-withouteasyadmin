@@ -45,6 +45,20 @@ class PostTemplatePage extends TemplatePageLib
         );
     }
 
+    public function launch($matches, $slug)
+    {
+        // /archive/{code}
+        // $this->archive();
+        // /category/{code}
+        // $this->category();
+        // /libelle/{code}
+        // $this->libelle();
+        // /{slug}
+        // $this->show();
+        // /user/{username}
+        // $this->user();
+    }
+
     public function libelle(string $code)
     {
         $pagination = $this->paginator->paginate(

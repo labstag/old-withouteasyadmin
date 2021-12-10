@@ -61,6 +61,7 @@ class Groupe
     {
         $this->routes          = new ArrayCollection();
         $this->workflowGroupes = new ArrayCollection();
+        $this->users           = new ArrayCollection();
     }
 
     public function __toString()

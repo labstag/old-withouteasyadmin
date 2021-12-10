@@ -98,6 +98,16 @@ class Menu
         );
     }
 
+    public function addChild(Menu $child): self
+    {
+        if (!$this->children->contains($child)) {
+            $this->children[] = $child;
+            $child->setParent($this);
+        }
+
+        return $this;
+    }
+
     public function getChildren()
     {
         return $this->children;
@@ -138,9 +148,26 @@ class Menu
         return $this->position;
     }
 
+    public function getSeparateur(): ?bool
+    {
+        return $this->separateur;
+    }
+
     public function isSeparateur(): ?bool
     {
         return $this->separateur;
+    }
+
+    public function removeChild(Menu $child): self
+    {
+        if ($this->children->removeElement($child)) {
+            // set the owning side to null (unless already changed)
+            if ($child->getParent() === $this) {
+                $child->setParent(null);
+            }
+        }
+
+        return $this;
     }
 
     public function setClef(?string $clef): self

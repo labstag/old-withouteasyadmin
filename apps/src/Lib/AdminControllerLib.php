@@ -532,11 +532,11 @@ abstract class AdminControllerLib extends ControllerLib
         object $entity
     ): void
     {
+        $this->setBtnList($url);
         if (empty($entity->getId())) {
             return;
         }
 
-        $this->setBtnList($url);
         $this->setBtnShow($url, $entity);
         $this->setBtnGuard($url, $entity);
         $this->setBtnDelete($url, $entity);

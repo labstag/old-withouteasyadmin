@@ -7,16 +7,16 @@
             {% set btnname = 'link-btnadmin' %}
         {% endif %}
         <{{ btnname }}
-            {%- for attrname, attrvalue in btn.attr|sort -%}
+            {%  for attrname, attrvalue in btn.attr|sort %}
                 {% if attrname != 'is' %}
                     {{- " " -}}
-                    {%- if attrvalue is same as(true) -%}
+                    {%  if attrvalue is same as(true) %}
                         {{- attrname }}="{{ attrname|e('html_attr') }}"
-                    {%- elseif attrvalue is not same as(false) -%}
+                    {%  elseif attrvalue is not same as(false) %}
                         {{- attrname }}="{{ attrvalue|e('html_attr') }}"
-                    {%- endif -%}
+                    {%  endif %}
                 {% endif %}
-            {%- endfor -%}
+            {%  endfor %}
             {% if btn.icon is defined %}
                 icon="{{ btn.icon }}"
             {% endif %}

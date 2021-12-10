@@ -99,6 +99,11 @@ abstract class Address
         return $this->id;
     }
 
+    public function getPmr(): ?bool
+    {
+        return $this->pmr;
+    }
+
     public function getStreet(): ?string
     {
         return $this->street;

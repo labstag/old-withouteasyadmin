@@ -27,6 +27,7 @@ class LabstagInstallCommand extends Command
     protected function all($inputOutput)
     {
         $inputOutput->note('Installations');
+        $this->setPages($inputOutput);
         $this->setMenuAdmin($inputOutput);
         $this->setMenuAdminProfil($inputOutput);
         $this->setGroup($inputOutput);
@@ -38,6 +39,7 @@ class LabstagInstallCommand extends Command
     protected function configure()
     {
         $this->setDescription('Add a short description for your command');
+        $this->addOption('pages', null, InputOption::VALUE_NONE, 'pages');
         $this->addOption('menuadmin', null, InputOption::VALUE_NONE, 'menuadmin');
         $this->addOption('menuadminprofil', null, InputOption::VALUE_NONE, 'menuadminprofil');
         $this->addOption('group', null, InputOption::VALUE_NONE, 'group');
@@ -50,7 +52,9 @@ class LabstagInstallCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $inputOutput = new SymfonyStyle($input, $output);
-        if ($input->getOption('menuadmin')) {
+        if ($input->getOption('pages')) {
+            $this->setPages($inputOutput);
+        } elseif ($input->getOption('menuadmin')) {
             $this->setMenuAdmin($inputOutput);
         } elseif ($input->getOption('menuadminprofil')) {
             $this->setMenuAdminProfil($inputOutput);
@@ -93,6 +97,12 @@ class LabstagInstallCommand extends Command
     {
         $inputOutput->note('Ajout du menu admin profil');
         $this->installService->menuadminprofil();
+    }
+
+    protected function setPages($inputOutput)
+    {
+        $inputOutput->note('Ajout des pages');
+        $this->installService->pages();
     }
 
     protected function setTemplates($inputOutput)

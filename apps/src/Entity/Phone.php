@@ -83,6 +83,11 @@ abstract class Phone
         return $this->numero;
     }
 
+    public function getPrincipal(): ?bool
+    {
+        return $this->principal;
+    }
+
     public function getType(): ?string
     {
         return $this->type;

@@ -63,6 +63,11 @@ abstract class Email
         return $this->id;
     }
 
+    public function getPrincipal(): ?bool
+    {
+        return $this->principal;
+    }
+
     public function isPrincipal(): ?bool
     {
         return $this->principal;

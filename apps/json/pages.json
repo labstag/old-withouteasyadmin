@@ -1,0 +1,30 @@
+[
+    {
+        "front": "1",
+        "name": "front",
+        "template": "Labstag\\TemplatePage\\FrontTemplate",
+        "slug": "",
+        "childs": [
+            {
+                "template": "Labstag\\TemplatePage\\BookmarkTemplate",
+                "slug": "bookmark",
+                "name": "bookmark"
+            },
+            {
+                "template": "Labstag\\TemplatePage\\EditoTemplate",
+                "slug": "edito",
+                "name": "edito"
+            },
+            {
+                "template": "Labstag\\TemplatePage\\HistoryTemplate",
+                "slug": "history",
+                "name": "history"
+            },
+            {
+                "template": "Labstag\\TemplatePage\\PostTemplate",
+                "slug": "post",
+                "name": "post"
+            }
+        ]
+    }
+]

@@ -226,6 +226,13 @@ class Post
         return $this;
     }
 
+    public function setCreated(DateTimeInterface $created): self
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
     public function setFile($file): self
     {
         $this->file = $file;
@@ -292,6 +299,13 @@ class Post
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function setUpdated(DateTimeInterface $updated): self
+    {
+        $this->updated = $updated;
 
         return $this;
     }

@@ -6,25 +6,14 @@ use Labstag\Lib\TemplatePageLib;
 
 class FrontTemplatePage extends TemplatePageLib
 {
-    public function edito()
-    {
-        // @var Edito $edito
-        $edito = $this->editoRepository->findOnePublier();
-        $this->setMetaOpenGraph(
-            $edito->getTitle(),
-            $edito->getMetaKeywords(),
-            $edito->getMetaDescription(),
-            $edito->getFond()
-        );
-
-        return $this->render(
-            'front/edito.html.twig',
-            ['edito' => $edito]
-        );
-    }
-
     public function index()
     {
+        return $this->launch('', '');
+    }
+
+    public function launch($matches, $slug)
+    {
+        unset($matches, $slug);
         $pagination = $this->paginator->paginate(
             $this->postRepository->findPublier(),
             $this->request->query->getInt('page', 1),

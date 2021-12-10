@@ -160,6 +160,13 @@ class Chapter
         return $this;
     }
 
+    public function setCreated(DateTimeInterface $created): self
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
     public function setMetaDescription(?string $metaDescription): self
     {
         $this->metaDescription = $metaDescription;

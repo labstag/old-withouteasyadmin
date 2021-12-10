@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Menu;
+use Labstag\Entity\Page;
 use Labstag\Entity\Template;
 use Labstag\Entity\User;
 use Labstag\Repository\ConfigurationRepository;
@@ -16,6 +17,7 @@ use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\ConfigurationRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\RequestHandler\MenuRequestHandler;
+use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\Dotenv\Dotenv;
@@ -43,6 +45,8 @@ class InstallService
 
     protected OauthService $oauthService;
 
+    protected PageRequestHandler $pageRH;
+
     protected TemplateRepository $templateRepo;
 
     protected TemplateRequestHandler $templateRH;
@@ -54,6 +58,7 @@ class InstallService
     protected UserRequestHandler $userRH;
 
     public function __construct(
+        PageRequestHandler $pageRH,
         MenuRequestHandler $menuRH,
         GroupeRequestHandler $groupeRH,
         GroupeRepository $groupeRepo,
@@ -70,6 +75,7 @@ class InstallService
         CacheInterface $cache
     )
     {
+        $this->pageRH            = $pageRH;
         $this->userRepo          = $userRepo;
         $this->userRH            = $userRH;
         $this->cache             = $cache;
@@ -141,6 +147,14 @@ class InstallService
     {
         $childs = $this->getData('menuadminprofil');
         $this->saveMenu('admin-profil', $childs);
+    }
+
+    public function pages()
+    {
+        $pages = $this->getData('pages');
+        foreach ($pages as $row) {
+            $this->addPage($row, null);
+        }
     }
 
     public function templates()
@@ -221,6 +235,23 @@ class InstallService
         $groupe->setCode($row);
         $groupe->setName($row);
         $this->groupeRH->handle($old, $groupe);
+    }
+
+    protected function addPage(array $row, ?Page $parent): void
+    {
+        $page = new Page();
+        $old  = clone $page;
+        $page->setParent($parent);
+        $page->setSlug($row['slug']);
+        $page->setName($row['name']);
+        $page->setFunction($row['template']);
+        $page->setFront(isset($row['front']));
+        $this->pageRH->handle($old, $page);
+        if (isset($row['childs'])) {
+            foreach ($row['childs'] as $child) {
+                $this->addPage($child, $page);
+            }
+        }
     }
 
     protected function addTemplate(

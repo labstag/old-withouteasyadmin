@@ -21,13 +21,7 @@ class TemplatePageService
         $finder->files()->in(__DIR__.'/../TemplatePage')->name('*.php');
         $plugins = [];
         foreach ($finder as $file) {
-            $className = rtrim($namespace, '\\').'\\'.$file->getFilenameWithoutExtension();
-            if (class_exists($className)) {
-                $plugins[] = [
-                    'name'    => $className,
-                    'methods' => get_class_methods($className),
-                ];
-            }
+            $plugins[] = rtrim($namespace, '\\').'\\'.$file->getFilenameWithoutExtension();
         }
 
         return $plugins ?? [];
@@ -36,21 +30,16 @@ class TemplatePageService
     public function getChoices()
     {
         $namespace = 'Labstag\TemplatePage';
-        $files     = $this->getAll($namespace);
-        $choices   = [];
-        foreach ($files as $row) {
-            $name = $row['name'];
-            foreach ($row['methods'] as $key) {
-                if ('__construct' == $key) {
-                    continue;
-                }
+        $finder    = new Finder();
+        $finder->files()->in(__DIR__.'/../TemplatePage')->name('*.php');
+        $plugins = [];
+        foreach ($finder as $file) {
+            $class = rtrim($namespace, '\\').'\\'.$file->getFilenameWithoutExtension();
 
-                $code                                             = $name.'::'.$key;
-                $choices[str_replace($namespace.'\\', '', $code)] = $code;
-            }
+            $plugins[$class] = $class;
         }
 
-        return $choices;
+        return $plugins;
     }
 
     public function getClass($class)

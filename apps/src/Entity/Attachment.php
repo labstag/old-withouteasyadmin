@@ -111,6 +111,16 @@ class Attachment
         return $this;
     }
 
+    public function addNoteInterne(Memo $noteInterne): self
+    {
+        if (!$this->noteInternes->contains($noteInterne)) {
+            $this->noteInternes[] = $noteInterne;
+            $noteInterne->setFond($this);
+        }
+
+        return $this;
+    }
+
     public function addPost(Post $post): self
     {
         if (!$this->posts->contains($post)) {
@@ -176,6 +186,14 @@ class Attachment
     }
 
     /**
+     * @return Collection|Memo[]
+     */
+    public function getNoteInternes(): Collection
+    {
+        return $this->noteInternes;
+    }
+
+    /**
      * @return Collection|Post[]
      */
     public function getPosts(): Collection
@@ -221,6 +239,18 @@ class Attachment
     }
 
     public function removeMemo(Memo $noteInterne): self
+    {
+        if ($this->noteInternes->removeElement($noteInterne)) {
+            // set the owning side to null (unless already changed)
+            if ($noteInterne->getFond() === $this) {
+                $noteInterne->setFond(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeNoteInterne(Memo $noteInterne): self
     {
         if ($this->noteInternes->removeElement($noteInterne)) {
             // set the owning side to null (unless already changed)
