@@ -6,9 +6,9 @@ use Labstag\Lib\TemplatePageLib;
 
 class EditoTemplatePage extends TemplatePageLib
 {
-    public function launch($matches, $slug)
+    public function launch($matches)
     {
-        unset($matches, $slug);
+        unset($matches);
         // @var Edito $edito
         $edito = $this->editoRepository->findOnePublier();
         $this->setMetaOpenGraph(

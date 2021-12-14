@@ -45,18 +45,36 @@ class PostTemplatePage extends TemplatePageLib
         );
     }
 
-    public function launch($matches, $slug)
+    public function launch($matches)
     {
-        // /archive/{code}
-        // $this->archive();
-        // /category/{code}
-        // $this->category();
-        // /libelle/{code}
-        // $this->libelle();
-        // /{slug}
-        // $this->show();
-        // /user/{username}
-        // $this->user();
+        [
+            $case,
+            $search,
+        ] = $this->getCaseSlug($matches[1]);
+        if ('' == $case) {
+            throw $this->createNotFoundException();
+        }
+
+        switch ($case) {
+            case 'user':
+                $user = $this->userRepository->findOneBy(['username' => $search[1]]);
+
+                return $this->user($user);
+            case 'archive':
+                return $this->archive($search[1]);
+            case 'category':
+                $category = $this->categoryRepository->findOneBy(['slug' => $search[1]]);
+
+                return $this->category($category);
+            case 'libelle':
+                $libelle = $this->libelleRepository->findOneBy(['slug' => $search[1]]);
+
+                return $this->libelle($libelle);
+            case 'show':
+                $post = $this->postRepository->findOneBy(['slug' => $search[1]]);
+
+                return $this->show($post);
+        }
     }
 
     public function libelle(string $code)
@@ -115,5 +133,16 @@ class PostTemplatePage extends TemplatePageLib
                 'categories' => $this->categoryRepository->findByPost(),
             ]
         );
+    }
+
+    protected function getCaseRegex()
+    {
+        return [
+            '/user\/(.*)/'     => 'user',
+            '/archive\/(.*)/'  => 'archive',
+            '/category\/(.*)/' => 'category',
+            '/libelle\/(.*)/'  => 'libelle',
+            '/\/(.*)/'         => 'show',
+        ];
     }
 }

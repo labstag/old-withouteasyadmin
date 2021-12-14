@@ -6,14 +6,9 @@ use Labstag\Lib\TemplatePageLib;
 
 class FrontTemplatePage extends TemplatePageLib
 {
-    public function index()
+    public function launch($matches)
     {
-        return $this->launch('', '');
-    }
-
-    public function launch($matches, $slug)
-    {
-        unset($matches, $slug);
+        unset($matches);
         $pagination = $this->paginator->paginate(
             $this->postRepository->findPublier(),
             $this->request->query->getInt('page', 1),

@@ -5,7 +5,6 @@ namespace Labstag\TemplatePage;
 use Labstag\Entity\History;
 use Labstag\Lib\TemplatePageLib;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class HistoryTemplatePage extends TemplatePageLib
 {
@@ -47,20 +46,40 @@ class HistoryTemplatePage extends TemplatePageLib
         );
     }
 
-    public function launch($matches, $slug)
+    public function launch($matches)
     {
-        // /archive/{code}
-        // $this->archive();
-        // /category/{code}
-        // $this->category();
-        // /libelle/{code}
-        // $this->libelle();
-        // /{slug}.pdf
-        // $this->pdf();
-        // /{slug}
-        // $this->show();
-        // /user/{username}
-        // $this->user();
+        [
+            $case,
+            $search,
+        ] = $this->getCaseSlug($matches[1]);
+        if ('' == $case) {
+            throw $this->createNotFoundException();
+        }
+
+        switch ($case) {
+            case 'archive':
+                return $this->archive($search[1]);
+            case 'category':
+                $category = $this->categoryRepository->findOneBy(['slug' => $search[1]]);
+
+                return $this->category($category);
+            case 'libelle':
+                $libelle = $this->libelleRepository->findOneBy(['slug' => $search[1]]);
+
+                return $this->libelle($libelle);
+            case 'user':
+                $user = $this->userRepository->findOneBy(['username' => $search[1]]);
+
+                return $this->user($user);
+            case 'show':
+                $history = $this->historyRepository->findOneBy(['slug' => $search[1]]);
+
+                return $this->show($history);
+            case 'pdf':
+                $history = $this->historyRepository->findOneBy(['slug' => $search[1]]);
+
+                return $this->pdf($history);
+        }
     }
 
     public function libelle(string $code)
@@ -92,7 +111,7 @@ class HistoryTemplatePage extends TemplatePageLib
 
         $filename = $this->historyService->getFilename();
         if (empty($filename)) {
-            throw new NotFoundHttpException('Pas de fichier');
+            throw $this->createNotFoundException('Pas de fichier');
         }
 
         $filename = str_replace(
@@ -141,5 +160,17 @@ class HistoryTemplatePage extends TemplatePageLib
                 'categories' => $this->categoryRepository->findByPost(),
             ]
         );
+    }
+
+    protected function getCaseRegex()
+    {
+        return [
+            '/archive\/(.*)/'  => 'archive',
+            '/category\/(.*)/' => 'category',
+            '/libelle\/(.*)/'  => 'libelle',
+            '/user\/(.*)/'     => 'user',
+            '/\/(.*)/'         => 'show',
+            '/\/(.*).pdf/'     => 'pdf',
+        ];
     }
 }

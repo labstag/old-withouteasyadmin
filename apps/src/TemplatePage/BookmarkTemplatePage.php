@@ -44,18 +44,33 @@ class BookmarkTemplatePage extends TemplatePageLib
         );
     }
 
-    public function launch($matches, $slug)
+    public function launch($matches)
     {
-        unset($matches, $slug);
-        // /category/{code}
-        // $this->category();
-        // /
-        // $this->index();
-        // /libelle/{code}
-        // $this->libelle();
-        // /{slug}
-        // $this->show();
-        return $this->index();
+        [
+            $case,
+            $search,
+        ] = $this->getCaseSlug($matches[1]);
+        if ('' == $case) {
+            throw $this->createNotFoundException();
+        }
+
+        switch ($case) {
+            case 'category':
+                $category = $this->categoryRepository->findOneBy(['slug' => $search[1]]);
+
+                return $this->category($category);
+            case 'libelle':
+                $libelle = $this->libelleRepository->findOneBy(['slug' => $search[1]]);
+
+                return $this->libelle($libelle);
+            case 'post':
+                if (!empty($search[1])) {
+                    $post = $this->historyRepository->findOneBy(['slug' => $search[1]]);
+
+                    return $this->show($post);
+                }
+                return $this->index();
+        }
     }
 
     public function libelle(string $code)
@@ -79,5 +94,14 @@ class BookmarkTemplatePage extends TemplatePageLib
     public function show(Bookmark $bookmark)
     {
         return new RedirectResponse($bookmark->getUrl(), 302);
+    }
+
+    protected function getCaseRegex()
+    {
+        return [
+            '/category\/(.*)/' => 'category',
+            '/libelle\/(.*)/'  => 'libelle',
+            '/\/(.*)/'         => 'bookmark',
+        ];
     }
 }

@@ -10,6 +10,7 @@ use Labstag\Repository\EditoRepository;
 use Labstag\Repository\HistoryRepository;
 use Labstag\Repository\LibelleRepository;
 use Labstag\Repository\PostRepository;
+use Labstag\Repository\UserRepository;
 use Labstag\Service\DataService;
 use Labstag\Service\HistoryService;
 use Symfony\Component\Asset\PathPackage;
@@ -18,6 +19,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 use Twig\Environment;
 
 abstract class TemplatePageLib
@@ -49,12 +52,15 @@ abstract class TemplatePageLib
 
     protected Environment $twig;
 
+    protected UserRepository $userRepository;
+
     public function __construct(
         RequestStack $requestStack,
         Environment $twig,
         ContainerBagInterface $containerBag,
         HistoryService $historyService,
         DataService $dataService,
+        UserRepository $userRepository,
         HistoryRepository $historyRepository,
         BookmarkRepository $bookmarkRepository,
         EditoRepository $editoRepository,
@@ -64,6 +70,7 @@ abstract class TemplatePageLib
         CategoryRepository $categoryRepository
     )
     {
+        $this->userRepository     = $userRepository;
         $this->requestStack       = $requestStack;
         $request                  = $this->requestStack->getCurrentRequest();
         $this->request            = $request;
@@ -80,9 +87,35 @@ abstract class TemplatePageLib
         $this->twig               = $twig;
     }
 
-    public function launch($matches, $slug)
+    public function launch($matches)
     {
-        unset($matches, $slug);
+        unset($matches);
+    }
+
+    protected function createNotFoundException(string $message = 'Not Found', ?Throwable $previous = null)
+    {
+        return new NotFoundHttpException($message, $previous);
+    }
+
+    protected function getCaseSlug($slug)
+    {
+        $regex  = $this->getCaseRegex();
+        $case   = '';
+        $search = [];
+        foreach ($regex as $key => $value) {
+            preg_match($key, $slug, $matches);
+            if (0 != count($matches)) {
+                $search = $matches;
+                $case   = $value;
+
+                break;
+            }
+        }
+
+        return [
+            $case,
+            $search,
+        ];
     }
 
     protected function getParameter(string $name)
@@ -129,6 +162,11 @@ abstract class TemplatePageLib
 
         $this->twig->AddGlobal('config', $config);
         $this->setMetatags($config['meta']);
+    }
+
+    private function getCaseRegex(): array
+    {
+        return [];
     }
 
     private function setMetaOpenGraphDescription($description, &$meta)

@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller;
 
+use Labstag\Entity\Page;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\PageRepository;
 use Labstag\Service\TemplatePageService;
@@ -20,37 +21,36 @@ class FrontController extends FrontControllerLib
     {
         $slug = trim($slug);
         if ('' == $slug) {
-            $page    = $pageRepository->findOneBy(['front' => 1]);
-            $matches = [];
-
-            if (!isset($page)) {
-                throw $this->createNotFoundException();
-            }
-
-            $class = $templatePageService->getClass($page->getFunction());
-            $slug  = strstr($slug, $page->getSlug());
-
-            return $class->launch($matches, $slug);
+            $page = $pageRepository->findOneBy(['front' => 1]);
         }
 
-        $pages = $pageRepository->findAll();
-        foreach ($pages as $row) {
-            $slugReg = $row->getSlug();
-            preg_match('/'.$slugReg.'/', $slug, $matches);
-            if (count($matches) > 0) {
-                $page = $row;
+        $search = $slug;
+        $find   = 0;
+        $page   = null;
+        $strlen = strlen($search);
+        while (0 == $find || 0 != $strlen) {
+            $searchPage = $pageRepository->findOneBy(['frontslug' => $search]);
+            if ($searchPage instanceof Page) {
+                $page = $searchPage;
 
                 break;
             }
+
+            $search = substr($search, 0, -1);
+            $strlen = strlen($search);
         }
 
         if (!isset($page)) {
             throw $this->createNotFoundException();
         }
 
+        $slugFront = $page->getFrontslug();
+
+        preg_match('/'.$slugFront.'(.*)/', $slug, $matches);
+
         $class = $templatePageService->getClass($page->getFunction());
         $slug  = strstr($slug, $page->getSlug());
 
-        return $class->launch($matches, $slug);
+        return $class->launch($matches);
     }
 }

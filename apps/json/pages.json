@@ -2,26 +2,26 @@
     {
         "front": "1",
         "name": "front",
-        "template": "Labstag\\TemplatePage\\FrontTemplate",
+        "template": "Labstag\\TemplatePage\\FrontTemplatePage",
         "slug": "",
         "childs": [
             {
-                "template": "Labstag\\TemplatePage\\BookmarkTemplate",
+                "template": "Labstag\\TemplatePage\\BookmarkTemplatePage",
                 "slug": "bookmark",
                 "name": "bookmark"
             },
             {
-                "template": "Labstag\\TemplatePage\\EditoTemplate",
+                "template": "Labstag\\TemplatePage\\EditoTemplatePage",
                 "slug": "edito",
                 "name": "edito"
             },
             {
-                "template": "Labstag\\TemplatePage\\HistoryTemplate",
+                "template": "Labstag\\TemplatePage\\HistoryTemplatePage",
                 "slug": "history",
                 "name": "history"
             },
             {
-                "template": "Labstag\\TemplatePage\\PostTemplate",
+                "template": "Labstag\\TemplatePage\\PostTemplatePage",
                 "slug": "post",
                 "name": "post"
             }
