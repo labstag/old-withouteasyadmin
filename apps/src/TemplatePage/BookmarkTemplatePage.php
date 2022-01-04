@@ -3,6 +3,7 @@
 namespace Labstag\TemplatePage;
 
 use Labstag\Entity\Bookmark;
+use Labstag\Entity\Page;
 use Labstag\Lib\TemplatePageLib;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -24,6 +25,42 @@ class BookmarkTemplatePage extends TemplatePageLib
                 'categories' => $this->categoryRepository->findByBookmark(),
             ]
         );
+    }
+
+    public function generateUrl(Page $page, string $route, array $params, bool $relative): string
+    {
+        $slug = $page->getSlug().'/';
+        switch ($route) {
+            case 'user':
+                $url = $slug.'user/'.$params['username'];
+
+                break;
+            case 'show':
+                $url = $slug.$params['slug'];
+
+                break;
+            case 'libelle':
+                $url = $slug.'libelle/'.$params['code'];
+
+                break;
+            case 'category':
+                $url = $slug.'category/'.$params['code'];
+
+                break;
+            default:
+                $url = $slug;
+        }
+
+        return $this->router->generate(
+            'front',
+            ['slug' => $url],
+            $relative
+        );
+    }
+
+    public function getId(): string
+    {
+        return 'bookmark';
     }
 
     public function index()
@@ -56,18 +93,17 @@ class BookmarkTemplatePage extends TemplatePageLib
 
         switch ($case) {
             case 'category':
-                $category = $this->categoryRepository->findOneBy(['slug' => $search[1]]);
-
-                return $this->category($category);
+                return $this->category($search[1]);
             case 'libelle':
-                $libelle = $this->libelleRepository->findOneBy(['slug' => $search[1]]);
-
-                return $this->libelle($libelle);
+                return $this->libelle($search[1]);
             case 'post':
                 if (!empty($search[1])) {
-                    $post = $this->historyRepository->findOneBy(['slug' => $search[1]]);
+                    $history = $this->bookmarkRepository->findOneBy(['slug' => $search[1]]);
+                    if (!$history instanceof Bookmark) {
+                        throw $this->createNotFoundException();
+                    }
 
-                    return $this->show($post);
+                    return $this->show($history);
                 }
                 return $this->index();
         }
@@ -96,7 +132,7 @@ class BookmarkTemplatePage extends TemplatePageLib
         return new RedirectResponse($bookmark->getUrl(), 302);
     }
 
-    protected function getCaseRegex()
+    protected function getCaseRegex(): array
     {
         return [
             '/category\/(.*)/' => 'category',

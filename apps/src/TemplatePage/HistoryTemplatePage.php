@@ -3,6 +3,7 @@
 namespace Labstag\TemplatePage;
 
 use Labstag\Entity\History;
+use Labstag\Entity\Page;
 use Labstag\Lib\TemplatePageLib;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -46,6 +47,47 @@ class HistoryTemplatePage extends TemplatePageLib
         );
     }
 
+    public function generateUrl(Page $page, string $route, array $params, bool $relative): string
+    {
+        unset($params);
+        $slug = $page->getSlug().'/';
+        switch ($route) {
+            case 'user':
+                $url = $slug;
+
+                break;
+            case 'show':
+                $url = $slug;
+
+                break;
+            case 'libelle':
+                $url = $slug;
+
+                break;
+            case 'category':
+                $url = $slug;
+
+                break;
+            case 'archive':
+                $url = $slug;
+
+                break;
+            default:
+                $url = $slug;
+        }
+
+        return $this->router->generate(
+            'front',
+            ['slug' => $url],
+            $relative
+        );
+    }
+
+    public function getId(): string
+    {
+        return 'history';
+    }
+
     public function launch($matches)
     {
         [
@@ -60,25 +102,17 @@ class HistoryTemplatePage extends TemplatePageLib
             case 'archive':
                 return $this->archive($search[1]);
             case 'category':
-                $category = $this->categoryRepository->findOneBy(['slug' => $search[1]]);
-
-                return $this->category($category);
+                return $this->category($search[1]);
             case 'libelle':
-                $libelle = $this->libelleRepository->findOneBy(['slug' => $search[1]]);
-
-                return $this->libelle($libelle);
+                return $this->libelle($search[1]);
             case 'user':
-                $user = $this->userRepository->findOneBy(['username' => $search[1]]);
-
-                return $this->user($user);
-            case 'show':
+                return $this->user($search[1]);
+            default:
                 $history = $this->historyRepository->findOneBy(['slug' => $search[1]]);
-
-                return $this->show($history);
-            case 'pdf':
-                $history = $this->historyRepository->findOneBy(['slug' => $search[1]]);
-
-                return $this->pdf($history);
+                if (!$history instanceof History) {
+                    throw $this->createNotFoundException();
+                }
+                return ('show' == $case) ? $this->show($history) : $this->pdf($history);
         }
     }
 
@@ -162,7 +196,7 @@ class HistoryTemplatePage extends TemplatePageLib
         );
     }
 
-    protected function getCaseRegex()
+    protected function getCaseRegex(): array
     {
         return [
             '/archive\/(.*)/'  => 'archive',

@@ -7,11 +7,14 @@ use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\PageRepository;
 use Labstag\Service\GuardService;
 use Labstag\Service\PhoneService;
+use Labstag\Service\TemplatePageService;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Registry;
 use Twig\Extension\AbstractExtension;
@@ -34,23 +37,35 @@ class LabstagExtension extends AbstractExtension
 
     protected LoggerInterface $logger;
 
+    protected PageRepository $pageRepository;
+
     protected PhoneService $phoneService;
+
+    protected RouterInterface $router;
+
+    protected TemplatePageService $templatePageService;
 
     protected TokenStorageInterface $token;
 
     protected Registry $workflows;
 
     public function __construct(
+        RouterInterface $router,
         PhoneService $phoneService,
         CacheManager $cache,
         Registry $workflows,
         TokenStorageInterface $token,
         LoggerInterface $logger,
         GroupeRepository $groupeRepository,
+        TemplatePageService $templatePageService,
+        PageRepository $pageRepository,
         AttachmentRepository $attachmentRepository,
         GuardService $guardService
     )
     {
+        $this->pageRepository       = $pageRepository;
+        $this->templatePageService  = $templatePageService;
+        $this->router               = $router;
         $this->cache                = $cache;
         $this->attachmentRepository = $attachmentRepository;
         $this->logger               = $logger;
@@ -225,6 +240,28 @@ class LabstagExtension extends AbstractExtension
         return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
     }
 
+    public function page(string $template, string $route = '', array $params = []): string
+    {
+        $templates = $this->templatePageService->getChoices();
+        foreach ($templates as $row) {
+            $class = $this->templatePageService->getclass($row);
+            if ($class->getId() == $template) {
+                $page = $this->pageRepository->findOneBy(
+                    ['function' => $row]
+                );
+
+                return $class->generateUrl(
+                    $page,
+                    $route,
+                    $params,
+                    false
+                );
+            }
+        }
+
+        return '';
+    }
+
     public function verifPhone(string $country, string $phone)
     {
         $verif = $this->phoneService->verif($phone, $country);
@@ -251,6 +288,7 @@ class LabstagExtension extends AbstractExtension
     private function getFiltersFunctions()
     {
         return [
+            'page'                     => 'page',
             'attachment'               => 'getAttachment',
             'class_entity'             => 'classEntity',
             'formClass'                => 'formClass',

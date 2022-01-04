@@ -4,7 +4,7 @@
         <ol>
             {% for category in categories %}
                 <li>
-                    <a href="{{ path('bookmark_category', {'code': category.slug}) }}" class="bookmark_category">{{ category }}</a>
+                    <a href="{{ page('bookmark', 'category', {'code': category.slug}) }}" class="bookmark_category">{{ category }}</a>
                 </li>
             {% endfor %}
         </ol>
@@ -16,7 +16,7 @@
         <ol>
             {% for libelle in libelles %}
                 <li>
-                    <a href="{{ path('bookmark_libelle', {'code': libelle.slug}) }}" class="bookmark_libelle">{{ libelle }}</a>
+                    <a href="{{ page('bookmark', 'libelle', {'code': libelle.slug}) }}" class="bookmark_libelle">{{ libelle }}</a>
                 </li>
             {% endfor %}
         </ol>

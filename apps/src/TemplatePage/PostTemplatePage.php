@@ -2,6 +2,7 @@
 
 namespace Labstag\TemplatePage;
 
+use Labstag\Entity\Page;
 use Labstag\Entity\Post;
 use Labstag\Lib\TemplatePageLib;
 
@@ -45,6 +46,46 @@ class PostTemplatePage extends TemplatePageLib
         );
     }
 
+    public function generateUrl(Page $page, string $route, array $params, bool $relative): string
+    {
+        $slug = $page->getSlug().'/';
+        switch ($route) {
+            case 'user':
+                $url = $slug.'user/'.$params['username'];
+
+                break;
+            case 'show':
+                $url = $slug.$params['slug'];
+
+                break;
+            case 'libelle':
+                $url = $slug.'libelle/'.$params['code'];
+
+                break;
+            case 'category':
+                $url = $slug.'category/'.$params['code'];
+
+                break;
+            case 'archive':
+                $url = $slug.'/archive/'.$params['code'];
+
+                break;
+            default:
+                $url = $slug;
+        }
+
+        return $this->router->generate(
+            'front',
+            ['slug' => $url],
+            $relative
+        );
+    }
+
+    public function getId(): string
+    {
+        return 'post';
+    }
+
     public function launch($matches)
     {
         [
@@ -57,22 +98,18 @@ class PostTemplatePage extends TemplatePageLib
 
         switch ($case) {
             case 'user':
-                $user = $this->userRepository->findOneBy(['username' => $search[1]]);
-
-                return $this->user($user);
+                return $this->user($search[1]);
             case 'archive':
                 return $this->archive($search[1]);
             case 'category':
-                $category = $this->categoryRepository->findOneBy(['slug' => $search[1]]);
-
-                return $this->category($category);
+                return $this->category($search[1]);
             case 'libelle':
-                $libelle = $this->libelleRepository->findOneBy(['slug' => $search[1]]);
-
-                return $this->libelle($libelle);
+                return $this->libelle($search[1]);
             case 'show':
                 $post = $this->postRepository->findOneBy(['slug' => $search[1]]);
-
+                if (!$post instanceof Post) {
+                    throw $this->createNotFoundException();
+                }
                 return $this->show($post);
         }
     }
@@ -135,7 +172,7 @@ class PostTemplatePage extends TemplatePageLib
         );
     }
 
-    protected function getCaseRegex()
+    protected function getCaseRegex(): array
     {
         return [
             '/user\/(.*)/'     => 'user',

@@ -4,6 +4,7 @@ namespace Labstag\Lib;
 
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Attachment;
+use Labstag\Entity\Page;
 use Labstag\Repository\BookmarkRepository;
 use Labstag\Repository\CategoryRepository;
 use Labstag\Repository\EditoRepository;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface;
 use Throwable;
 use Twig\Environment;
 
@@ -50,12 +52,15 @@ abstract class TemplatePageLib
 
     protected RequestStack $requestStack;
 
+    protected RouterInterface $router;
+
     protected Environment $twig;
 
     protected UserRepository $userRepository;
 
     public function __construct(
         RequestStack $requestStack,
+        RouterInterface $router,
         Environment $twig,
         ContainerBagInterface $containerBag,
         HistoryService $historyService,
@@ -70,6 +75,7 @@ abstract class TemplatePageLib
         CategoryRepository $categoryRepository
     )
     {
+        $this->router             = $router;
         $this->userRepository     = $userRepository;
         $this->requestStack       = $requestStack;
         $request                  = $this->requestStack->getCurrentRequest();
@@ -87,6 +93,18 @@ abstract class TemplatePageLib
         $this->twig               = $twig;
     }
 
+    public function generateUrl(Page $page, string $route, array $params, bool $relative): string
+    {
+        unset($page, $route, $params, $relative);
+
+        return '';
+    }
+
+    public function getId(): string
+    {
+        return '';
+    }
+
     public function launch($matches)
     {
         unset($matches);
@@ -95,6 +113,11 @@ abstract class TemplatePageLib
     protected function createNotFoundException(string $message = 'Not Found', ?Throwable $previous = null)
     {
         return new NotFoundHttpException($message, $previous);
+    }
+
+    protected function getCaseRegex(): array
+    {
+        return [];
     }
 
     protected function getCaseSlug($slug)
@@ -162,11 +185,6 @@ abstract class TemplatePageLib
 
         $this->twig->AddGlobal('config', $config);
         $this->setMetatags($config['meta']);
-    }
-
-    private function getCaseRegex(): array
-    {
-        return [];
     }
 
     private function setMetaOpenGraphDescription($description, &$meta)

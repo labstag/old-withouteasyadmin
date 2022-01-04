@@ -4,7 +4,7 @@
         <ol>
             {% for archive in archives %}
                 <li>
-                    <a href="{{ path('post_archive', {'code': archive.code}) }}">{{ archive.published|format_datetime(pattern="MMMM Y") }}</a>
+                    <a href="{{ page('post', 'archive', {'code': archive.code}) }}">{{ archive.published|format_datetime(pattern="MMMM Y") }}</a>
                 </li>
             {% endfor %}
         </ol>
@@ -16,7 +16,7 @@
         <ol>
             {% for category in categories %}
                 <li>
-                    <a href="{{ path('post_category', {'code': category.slug}) }}" class="post_category">{{ category }}</a>
+                    <a href="{{ page('post', 'category', {'code': category.slug}) }}" class="post_category">{{ category }}</a>
                 </li>
             {% endfor %}
         </ol>
@@ -28,7 +28,7 @@
         <ol>
             {% for libelle in libelles %}
                 <li>
-                    <a href="{{ path('post_libelle', {'code': libelle.slug}) }}" class="post_libelle">{{ libelle }}</a>
+                    <a href="{{ page('post', 'libelle', {'code': libelle.slug}) }}" class="post_libelle">{{ libelle }}</a>
                 </li>
             {% endfor %}
         </ol>

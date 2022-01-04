@@ -12,7 +12,7 @@
 	{% for bookmark in pagination %}
 		<div class="bookmark_data">
 			<h2 class="bookmark_name">
-				<a href="{{ path('bookmark_show', {'slug': bookmark.slug}) }}" target="_blank">
+				<a href="{{ page('bookmark', 'show', {'slug': bookmark.slug}) }}" target="_blank">
 					{{ bookmark.name }}
 				</a>
 			</h2>
@@ -38,10 +38,10 @@
 			</div>
             <div class="bookmark_libcat">
                 {% for libelle in bookmark.libelles %}
-                    <a href="{{ path('bookmark_libelle', {'code' : libelle.slug}) }}" class="bookmark_libelle">{{ libelle }}</a>
+                    <a href="{{ page('bookmark', 'libelle', {'code' : libelle.slug}) }}" class="bookmark_libelle">{{ libelle }}</a>
                 {% endfor %}
                 {% if bookmark.refcategory %}
-                    <a href="{{ path('bookmark_category', {'code': bookmark.refcategory.slug}) }}" class="bookmark_category">{{ bookmark.refcategory }}</a>
+                    <a href="{{ page('bookmark', 'category', {'code': bookmark.refcategory.slug}) }}" class="bookmark_category">{{ bookmark.refcategory }}</a>
                 {% endif %}
             </div>
 		</div>
