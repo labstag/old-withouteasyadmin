@@ -11,9 +11,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class FrontController extends FrontControllerLib
 {
     /**
-     * @Route("/{slug}", name="front", requirements={"slug"=".+"}, defaults={"slug"=""})
+     * @Route("/{slug}", name="front", requirements={"slug"=".+"}, defaults={"slug"=""}, priority=-1)
      */
-    public function essai(
+    public function front(
         string $slug,
         TemplatePageService $templatePageService,
         PageRepository $pageRepository

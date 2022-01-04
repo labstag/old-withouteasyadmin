@@ -213,7 +213,7 @@ abstract class FixtureLib extends Fixture
         foreach ($annotations as $annotation) {
             $path       = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $accessor   = PropertyAccess::createPropertyAccessor();
-            $title      = $accessor->getValue($entity, $annotation->getSlug());
+            $title      = $accessor->getValue($entity, strtolower($annotation->getSlug()));
             $slug       = $slugger->slug($title);
             $attachment = new Attachment();
             $old        = clone $attachment;

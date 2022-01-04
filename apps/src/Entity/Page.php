@@ -19,7 +19,7 @@ class Page
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Page::class, mappedBy="parent")
+     * @ORM\OneToMany(targetEntity=Page::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
      */
     private $children;
 
@@ -53,6 +53,11 @@ class Page
 
     /**
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children")
+     * @ORM\JoinColumn(
+     *  name="parent_id",
+     *  referencedColumnName="id",
+     *  onDelete="SET NULL"
+     * )
      */
     private $parent;
 
