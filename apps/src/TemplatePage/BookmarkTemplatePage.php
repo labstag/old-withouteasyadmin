@@ -96,7 +96,7 @@ class BookmarkTemplatePage extends TemplatePageLib
                 return $this->category($search[1]);
             case 'libelle':
                 return $this->libelle($search[1]);
-            case 'post':
+            case 'bookmark':
                 if (!empty($search[1])) {
                     $history = $this->bookmarkRepository->findOneBy(['slug' => $search[1]]);
                     if (!$history instanceof Bookmark) {
