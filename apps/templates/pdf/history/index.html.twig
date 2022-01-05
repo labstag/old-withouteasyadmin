@@ -1,0 +1,58 @@
+<style type="text/css">
+<!--
+    {% include "pdf/history/style.css.twig" %}
+-->
+</style>
+<page backtop="14mm" backbottom="14mm" backleft="10mm" backright="10mm" style="font-size: 12pt">
+    <div class="title">
+        {{ history.name }}
+    </div>
+</page>
+<page backtop="14mm" backbottom="14mm" backleft="10mm" backright="10mm" style="font-size: 12pt">
+</page>
+<page pageset="old">
+</page>
+<page pageset="old">
+</page>
+<page pageset="old">
+    <div class="standard">
+        {{ history.summary|raw }}
+    </div>
+</page>
+<page backtop="14mm" backbottom="14mm" backleft="10mm" backright="10mm" style="font-size: 12pt">
+</page>
+{% for chapter in chapters %}
+    <page backtop="14mm" backbottom="14mm" backleft="10mm" backright="10mm" style="font-size: 12pt">
+        <bookmark title="{{ chapter.name|e('html_attr') }}" level="0"></bookmark>
+        <page_header>
+            <table class="page_header">
+                <tr>
+                    <td style="width: 50%; text-align: left">
+                        {{ history.name }}
+                    </td>
+                    <td style="width: 50%; text-align: right">
+                        par {{ history.refuser.username }}
+                    </td>
+                </tr>
+            </table>
+        </page_header>
+        <div class="standard">
+            <h2>{{ chapter.name }} </h2>
+            <div style="text-align:justify;">
+                {{ chapter.content|raw }}
+            </div>
+        </div>
+        <page_footer>
+            <table class="page_footer">
+                <tr>
+                    <td style="width: 50%; text-align: left">
+                        {{ history.name }}
+                    </td>
+                    <td style="width: 50%; text-align: right">
+                        page [[page_cu]]/[[page_nb]]
+                    </td>
+                </tr>
+            </table>
+        </page_footer>
+    </page>
+{% endfor %}

@@ -329,12 +329,6 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
-    "setasign/fpdf": {
-        "version": "1.8.4"
-    },
-    "setasign/fpdi": {
-        "version": "v2.3.6"
-    },
     "spipu/html2pdf": {
         "version": "v5.2.3"
     },

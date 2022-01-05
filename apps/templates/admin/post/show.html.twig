@@ -3,6 +3,13 @@
     <table>
         <tbody>
             <tr>
+                <th colspan=2>
+                    <a href="{{ page('post', 'show', {'slug': entity.slug}) }}" target="_blank">
+                        {{ 'post.url'|trans({}, 'admin.messages') }}
+                    </a>
+                </th>
+            </tr>
+            <tr>
                 <th>{{ 'post.title'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.title }}</td>
             </tr>
