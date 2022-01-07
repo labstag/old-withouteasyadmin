@@ -93,7 +93,7 @@
     "twig/twig": "^2.12|^3.0",
     "vantezzen/oauth2-pinterest": "2.2.1",
     "vertisan/oauth2-twitch-helix": "1.1.1",
-    "webonyx/graphql-php": "14.11.0",
+    "webonyx/graphql-php": "14.11.3",
     "wohali/oauth2-discord-new": "1.1.0"
   },
   "require-dev": {
