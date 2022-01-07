@@ -9,67 +9,16 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class HistoryTemplatePage extends TemplatePageLib
 {
-    public function archive(string $code)
-    {
-        $pagination = $this->paginator->paginate(
-            $this->historyRepository->findPublierArchive($code),
-            $this->request->query->getInt('page', 1),
-            10
-        );
-
-        return $this->render(
-            'front/histories/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $this->historyRepository->findDateArchive(),
-                'libelles'   => $this->libelleRepository->findByPost(),
-                'categories' => $this->categoryRepository->findByPost(),
-            ]
-        );
-    }
-
-    public function category(string $code)
-    {
-        $pagination = $this->paginator->paginate(
-            $this->historyRepository->findPublierCategory($code),
-            $this->request->query->getInt('page', 1),
-            10
-        );
-
-        return $this->render(
-            'front/histories/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $this->historyRepository->findDateArchive(),
-                'libelles'   => $this->libelleRepository->findByPost(),
-                'categories' => $this->categoryRepository->findByPost(),
-            ]
-        );
-    }
-
     public function generateUrl(Page $page, string $route, array $params, bool $relative): string
     {
-        unset($params);
         $slug = $page->getSlug().'/';
         switch ($route) {
             case 'user':
-                $url = $slug;
+                $url = $slug.'user/'.$params['username'];
 
                 break;
             case 'show':
-                $url = $slug;
-
-                break;
-            case 'libelle':
-                $url = $slug;
-
-                break;
-            case 'category':
-                $url = $slug;
-
-                break;
-            case 'archive':
-                $url = $slug;
+                $url = $slug.$params['slug'];
 
                 break;
             default:
@@ -99,39 +48,32 @@ class HistoryTemplatePage extends TemplatePageLib
         }
 
         switch ($case) {
-            case 'archive':
-                return $this->archive($search[1]);
-            case 'category':
-                return $this->category($search[1]);
-            case 'libelle':
-                return $this->libelle($search[1]);
             case 'user':
                 return $this->user($search[1]);
             default:
-                $history = $this->historyRepository->findOneBy(['slug' => $search[1]]);
-                if (!$history instanceof History) {
-                    throw $this->createNotFoundException();
+                if (!empty($search[1])) {
+                    $history = $this->historyRepository->findOneBy(['slug' => $search[1]]);
+                    if (!$history instanceof History) {
+                        throw $this->createNotFoundException();
+                    }
+
+                    return ('show' == $case) ? $this->show($history) : $this->pdf($history);
                 }
-                return ('show' == $case) ? $this->show($history) : $this->pdf($history);
+                return $this->list();
         }
     }
 
-    public function libelle(string $code)
+    public function list()
     {
         $pagination = $this->paginator->paginate(
-            $this->historyRepository->findPublierLibelle($code),
+            $this->historyRepository->findPublier(),
             $this->request->query->getInt('page', 1),
             10
         );
 
         return $this->render(
             'front/histories/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $this->historyRepository->findDateArchive(),
-                'libelles'   => $this->libelleRepository->findByPost(),
-                'categories' => $this->categoryRepository->findByPost(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 
@@ -166,14 +108,11 @@ class HistoryTemplatePage extends TemplatePageLib
             null
         );
 
+        dump($history);
+
         return $this->render(
             'front/histories/show.html.twig',
-            [
-                'history'    => $history,
-                'archives'   => $this->historyRepository->findDateArchive(),
-                'libelles'   => $this->libelleRepository->findByPost(),
-                'categories' => $this->categoryRepository->findByPost(),
-            ]
+            ['history' => $history]
         );
     }
 
@@ -187,24 +126,16 @@ class HistoryTemplatePage extends TemplatePageLib
 
         return $this->render(
             'front/histories/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $this->historyRepository->findDateArchive(),
-                'libelles'   => $this->libelleRepository->findByPost(),
-                'categories' => $this->categoryRepository->findByPost(),
-            ]
+            ['pagination' => $pagination]
         );
     }
 
     protected function getCaseRegex(): array
     {
         return [
-            '/archive\/(.*)/'  => 'archive',
-            '/category\/(.*)/' => 'category',
-            '/libelle\/(.*)/'  => 'libelle',
-            '/user\/(.*)/'     => 'user',
-            '/\/(.*)/'         => 'show',
-            '/\/(.*).pdf/'     => 'pdf',
+            '/user\/(.*)/' => 'user',
+            '/\/(.*).pdf/' => 'pdf',
+            '/\/(.*)/'     => 'show',
         ];
     }
 }

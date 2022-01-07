@@ -1,0 +1,15 @@
+{% extends 'admin/layout/layout.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ 'layout.name'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'layout.content'|trans({}, 'admin.messages') }}</th>
+                <td><pre>{{ entity.content }}</pre></td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
