@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a65deca8ff917724a6470c86eee21b0e",
+    "content-hash": "95ee67688d5cc9a0422bc7431b121f86",
     "packages": [
         {
             "name": "adam-paterson/oauth2-slack",
@@ -11682,22 +11682,22 @@
         },
         {
             "name": "twig/intl-extra",
-            "version": "v3.3.3",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/intl-extra.git",
-                "reference": "5a84d0f6bab386bc4224b4220da1daef8d015577"
+                "reference": "8dca6f4c5a00cdd3c43b6bd080f50d32aca33a84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/intl-extra/zipball/5a84d0f6bab386bc4224b4220da1daef8d015577",
-                "reference": "5a84d0f6bab386bc4224b4220da1daef8d015577",
+                "url": "https://api.github.com/repos/twigphp/intl-extra/zipball/8dca6f4c5a00cdd3c43b6bd080f50d32aca33a84",
+                "reference": "8dca6f4c5a00cdd3c43b6bd080f50d32aca33a84",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.3",
-                "symfony/intl": "^4.3|^5.0|^6.0",
-                "twig/twig": "^2.4|^3.0"
+                "symfony/intl": "^4.4|^5.0|^6.0",
+                "twig/twig": "^2.7|^3.0"
             },
             "require-dev": {
                 "symfony/phpunit-bridge": "^4.4.9|^5.0.9|^6.0"
@@ -11735,7 +11735,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/intl-extra/tree/v3.3.3"
+                "source": "https://github.com/twigphp/intl-extra/tree/v3.3.5"
             },
             "funding": [
                 {
@@ -11747,7 +11747,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-20T14:28:34+00:00"
+            "time": "2022-01-02T10:02:25+00:00"
         },
         {
             "name": "twig/twig",
