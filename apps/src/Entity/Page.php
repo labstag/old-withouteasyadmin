@@ -67,6 +67,12 @@ class Page
     private $password;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Layout::class, inversedBy="pages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $reflayout;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $slug;
@@ -134,6 +140,11 @@ class Page
         return $this->password;
     }
 
+    public function getReflayout(): ?Layout
+    {
+        return $this->reflayout;
+    }
+
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -189,6 +200,13 @@ class Page
     public function setPassword(?string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function setReflayout(?Layout $reflayout): self
+    {
+        $this->reflayout = $reflayout;
 
         return $this;
     }

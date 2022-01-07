@@ -15,6 +15,9 @@
                 {
                     'field': 'a.frontslug',
                     'name': 'page.frontslug'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'page.reflayout'|trans({}, 'admin.messages')
                 }
             ] %}
             {{ macro_admin.thead(theads, pagination, true) }}
@@ -25,6 +28,7 @@
                     <td>{{ entity.name }}</td>
                     <td>{{ entity.slug }}</td>
                     <td>{{ entity.frontslug }}</td>
+                    <td>{{ entity.reflayout.name }}</td>
                     <td>
                         {{ macro_admin.actions(entity, actions) }}
                     </td>

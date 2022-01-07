@@ -11,6 +11,7 @@ use Labstag\Entity\Template;
 use Labstag\Entity\User;
 use Labstag\Repository\ConfigurationRepository;
 use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\LayoutRepository;
 use Labstag\Repository\MenuRepository;
 use Labstag\Repository\TemplateRepository;
 use Labstag\Repository\UserRepository;
@@ -38,6 +39,8 @@ class InstallService
     protected GroupeRepository $groupeRepo;
 
     protected GroupeRequestHandler $groupeRH;
+
+    protected LayoutRepository $layoutRepo;
 
     protected MenuRepository $menuRepo;
 
@@ -69,12 +72,14 @@ class InstallService
         UserRequestHandler $userRH,
         UserRepository $userRepo,
         TemplateRequestHandler $templateRH,
+        LayoutRepository $layoutRepo,
         TemplateRepository $templateRepo,
         EntityManagerInterface $entityManager,
         Environment $twig,
         CacheInterface $cache
     )
     {
+        $this->layoutRepo        = $layoutRepo;
         $this->pageRH            = $pageRH;
         $this->userRepo          = $userRepo;
         $this->userRH            = $userRH;
@@ -239,8 +244,14 @@ class InstallService
 
     protected function addPage(array $row, ?Page $parent): void
     {
-        $page = new Page();
-        $old  = clone $page;
+        $layout = $this->layoutRepo->findOneBy(
+            [
+                'name' => $row['layout'],
+            ]
+        );
+        $page   = new Page();
+        $old    = clone $page;
+        $page->setReflayout($layout);
         $page->setParent($parent);
         $page->setSlug($row['slug']);
         $page->setName($row['name']);

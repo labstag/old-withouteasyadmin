@@ -18,4 +18,9 @@ class LayoutRepository extends ServiceEntityRepositoryLib
     {
         parent::__construct($registry, Layout::class);
     }
+
+    public function formType()
+    {
+        return $this->createQueryBuilder('p');
+    }
 }

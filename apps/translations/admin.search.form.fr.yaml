@@ -138,3 +138,9 @@ user.refgroup.placeholder: ''
 user.username.help: ''
 user.username.label: username
 user.username.placeholder: ''
+page.name.label: __page.name.label
+page.name.help: __page.name.help
+page.name.placeholder: __page.name.placeholder
+page.etape.label: __page.etape.label
+page.etape.help: __page.etape.help
+page.etape.placeholder: __page.etape.placeholder
