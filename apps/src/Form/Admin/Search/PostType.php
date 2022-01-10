@@ -22,8 +22,7 @@ class PostType extends SearchAbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add(
             'title',
             TextType::class,

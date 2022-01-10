@@ -17,8 +17,7 @@ class GeocodeType extends SearchAbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add(
             'countrycode',
             FlagCountryType::class,

@@ -20,8 +20,7 @@ class PhoneUserType extends SearchAbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add(
             'country',
             FlagCountryType::class,

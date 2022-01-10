@@ -16,8 +16,7 @@ class LibelleType extends SearchAbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add(
             'name',
             TextType::class,
