@@ -71,7 +71,7 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
     }
 
     /**
-     * @return OauthConnectUser|void
+     * @return OauthConnectUser
      */
     public function login(?string $identity, ?string $oauth)
     {

@@ -83,7 +83,7 @@ class PhoneUserType extends SearchAbstractTypeLib
         );
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return '';
     }

@@ -79,7 +79,7 @@ class KernelSubscriber implements EventSubscriberInterface
         'select-element',
     ];
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['kernel.response' => 'onKernelResponse'];
     }

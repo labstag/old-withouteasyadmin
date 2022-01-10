@@ -2,6 +2,7 @@
 
 namespace Labstag\Swagger;
 
+use ArrayObject;
 use Labstag\Controller\Api\CheckController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -24,7 +25,11 @@ final class CheckSwaggerDecorator implements NormalizerInterface
     /**
      * @inheritdoc
      */
-    public function normalize($object, ?string $format = null, array $context = [])
+    public function normalize(
+        $object,
+        ?string $format = null,
+        array $context = []
+    ): array|string|int|float|bool|ArrayObject|null
     {
         $docs          = $this->decorated->normalize($object, $format, $context);
         $statsEndpoint = [

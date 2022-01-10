@@ -153,7 +153,7 @@ class SecurityController extends ControllerLib
      *
      * @return RedirectResponse|Response
      */
-    public function disclaimer(Request $request, DataService $dataService)
+    public function disclaimer(Request $request, DataService $dataService): RedirectResponse|Response
     {
         $form = $this->createForm(DisclaimerType::class, []);
         $form->handleRequest($request);

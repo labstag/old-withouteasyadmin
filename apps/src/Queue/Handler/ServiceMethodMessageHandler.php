@@ -31,7 +31,7 @@ class ServiceMethodMessageHandler implements MessageHandlerInterface, ServiceSub
         call_user_func_array($callable, $message->getParams());
     }
 
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         return [
             MailerInterface::class => MailerInterface::class,

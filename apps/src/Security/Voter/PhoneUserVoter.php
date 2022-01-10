@@ -8,14 +8,14 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class PhoneUserVoter extends Voter
 {
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         unset($attribute);
 
         return $subject instanceof PhoneUser;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         unset($attribute, $subject, $token);
 

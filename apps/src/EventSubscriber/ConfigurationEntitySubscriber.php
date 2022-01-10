@@ -56,7 +56,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         $this->requestStack  = $requestStack;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [ConfigurationEntityEvent::class => 'onEvent'];
     }

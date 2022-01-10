@@ -7,7 +7,7 @@ use Symfony\Component\Workflow\Event\Event;
 
 class BookmarkWorkflowSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['workflow.bookmark.transition' => 'onTransition'];
     }
