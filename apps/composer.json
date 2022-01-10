@@ -6,6 +6,7 @@
   "require": {
     "php": ">=8.0",
     "ext-ctype": "*",
+    "ext-amqp": "*",
     "ext-iconv": "*",
     "adam-paterson/oauth2-slack": "1.1.3",
     "api-platform/core": "2.6.7",
@@ -117,7 +118,12 @@
     "platform": {
       "php": "8.0.9"
     },
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true,
+      "symfony/flex": true,
+      "symfony/runtime": true
+    }
   },
   "autoload": {
     "psr-4": {
