@@ -26,30 +26,24 @@ class AttachmentController extends ApiControllerLib
 {
     /**
      * @Route("/bookmark/img/{entity}", name="api_attachment_bookmarkimg")
-     *
-     * @return Response
      */
-    public function bookmarkImg(Bookmark $entity, PostRequestHandler $postRequestHandler): JsonResponse
+    public function bookmarkImg(Bookmark $entity, PostRequestHandler $postRequestHandler): Response
     {
         return $this->deleteFile($entity, $postRequestHandler, 'getImg', 'setImg');
     }
 
     /**
      * @Route("/edito/fond/{entity}", name="api_attachment_editofond")
-     *
-     * @return Response
      */
-    public function editoFond(Edito $entity, EditoRequestHandler $editoRH): JsonResponse
+    public function editoFond(Edito $entity, EditoRequestHandler $editoRH): Response
     {
         return $this->deleteFile($entity, $editoRH, 'getFond', 'setFond');
     }
 
     /**
      * @Route("/favicon", name="api_attachment_favicon")
-     *
-     * @return Response
      */
-    public function favicon(AttachmentRepository $repository): JsonResponse
+    public function favicon(AttachmentRepository $repository): Response
     {
         $entity = $repository->getFavicon();
         $return = [
@@ -70,10 +64,8 @@ class AttachmentController extends ApiControllerLib
 
     /**
      * @Route("/imagedefault", name="api_attachment_image")
-     *
-     * @return Response
      */
-    public function imageDefault(AttachmentRepository $repository): JsonResponse
+    public function imageDefault(AttachmentRepository $repository): Response
     {
         $entity = $repository->getImageDefault();
         $return = [
@@ -94,30 +86,24 @@ class AttachmentController extends ApiControllerLib
 
     /**
      * @Route("/memo/fond/{entity}", name="api_attachment_memofond")
-     *
-     * @return Response
      */
-    public function memoFond(Memo $entity, MemoRequestHandler $noteInterneRH): JsonResponse
+    public function memoFond(Memo $entity, MemoRequestHandler $noteInterneRH): Response
     {
         return $this->deleteFile($entity, $noteInterneRH, 'getFond', 'setFond');
     }
 
     /**
      * @Route("/post/img/{entity}", name="api_attachment_postimg")
-     *
-     * @return Response
      */
-    public function postImg(Post $entity, PostRequestHandler $postRequestHandler): JsonResponse
+    public function postImg(Post $entity, PostRequestHandler $postRequestHandler): Response
     {
         return $this->deleteFile($entity, $postRequestHandler, 'getImg', 'setImg');
     }
 
     /**
      * @Route("/profil/avatar", name="api_attachment_profilavatar")
-     *
-     * @return Response
      */
-    public function profilAvatar(UserRequestHandler $userRequestHandler): JsonResponse
+    public function profilAvatar(UserRequestHandler $userRequestHandler): Response
     {
         $return = [
             'state' => false,
@@ -144,10 +130,8 @@ class AttachmentController extends ApiControllerLib
 
     /**
      * @Route("/user/avatar/{entity}", name="api_attachment_useravatar")
-     *
-     * @return Response
      */
-    public function userAvatar(User $entity, UserRequestHandler $userRequestHandler): JsonResponse
+    public function userAvatar(User $entity, UserRequestHandler $userRequestHandler): Response
     {
         return $this->deleteFile($entity, $userRequestHandler, 'getAvatar', 'setAvatar');
     }

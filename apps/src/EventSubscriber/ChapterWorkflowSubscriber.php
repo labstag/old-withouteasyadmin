@@ -7,7 +7,7 @@ use Symfony\Component\Workflow\Event\Event;
 
 class ChapterWorkflowSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['workflow.chapter.transition' => 'onTransition'];
     }

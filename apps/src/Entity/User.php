@@ -436,10 +436,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->phoneUsers;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getPlainPassword()
+    public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
@@ -486,7 +483,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
-    public function getUserIdentifier()
+    public function getUserIdentifier(): string
     {
         return $this->getUsername();
     }

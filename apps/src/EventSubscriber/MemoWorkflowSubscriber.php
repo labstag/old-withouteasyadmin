@@ -7,7 +7,7 @@ use Symfony\Component\Workflow\Event\Event;
 
 class MemoWorkflowSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['workflow.memo.transition' => 'onTransition'];
     }

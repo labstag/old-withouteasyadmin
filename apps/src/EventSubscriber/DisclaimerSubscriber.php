@@ -25,7 +25,7 @@ class DisclaimerSubscriber implements EventSubscriberInterface
         $this->router      = $router;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['kernel.request' => 'onKernelRequest'];
     }

@@ -64,7 +64,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->dataService      = $dataService;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [ControllerEvent::class => 'onControllerEvent'];
     }

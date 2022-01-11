@@ -50,7 +50,7 @@ class GuardRouterSubscriber implements EventSubscriberInterface
         $this->guardService     = $guardService;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['kernel.request' => 'onKernelRequest'];
     }

@@ -24,8 +24,6 @@ class GuardController extends ApiControllerLib
 {
     /**
      * @Route("/groups/{groupe}", name="api_guard_group")
-     *
-     * @return Response
      */
     public function groupe(Groupe $groupe, RouteGroupeRepository $routeGroupeRepo): JsonResponse
     {
@@ -34,8 +32,6 @@ class GuardController extends ApiControllerLib
 
     /**
      * @Route("/groups", name="api_guard_groups")
-     *
-     * @return Response
      */
     public function groupes(RouteGroupeRepository $routeGroupeRepo): JsonResponse
     {
@@ -186,7 +182,7 @@ class GuardController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    private function getRefgroupe($routeGroupeRepo, ?Groupe $groupe = null)
+    private function getRefgroupe($routeGroupeRepo, ?Groupe $groupe = null): JsonResponse
     {
         $results = $routeGroupeRepo->findEnable($groupe);
         $data    = [];

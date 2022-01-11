@@ -18,14 +18,14 @@ class HistoryVoter extends Voter
         return count($chapters) >= self::NBR_CHAPTER;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         unset($attribute);
 
         return $subject instanceof History;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         switch ($attribute) {
             case 'move':

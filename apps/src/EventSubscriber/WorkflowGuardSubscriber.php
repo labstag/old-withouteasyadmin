@@ -41,7 +41,7 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
         $this->token              = $token;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['workflow.guard' => 'onWorkflowAttachmentGuard'];
     }

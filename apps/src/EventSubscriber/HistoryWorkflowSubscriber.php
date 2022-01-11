@@ -7,7 +7,7 @@ use Symfony\Component\Workflow\Event\Event;
 
 class HistoryWorkflowSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['workflow.history.transition' => 'onTransition'];
     }

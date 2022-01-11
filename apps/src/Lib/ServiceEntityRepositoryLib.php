@@ -16,10 +16,8 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 
     /**
      * Get random data.
-     *
-     * @return object
      */
-    public function findOneRandom()
+    public function findOneRandom(): object
     {
         $name          = $this->getClassMetadataName();
         $dql           = 'SELECT p FROM '.$name.' p ORDER BY RAND()';

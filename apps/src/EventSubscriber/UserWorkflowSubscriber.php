@@ -34,7 +34,7 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
         $this->userMailService = $userMailService;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['workflow.user.transition' => 'onTransition'];
     }

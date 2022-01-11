@@ -7,7 +7,7 @@ use Symfony\Component\Workflow\Event\Event;
 
 class EditoWorkflowSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['workflow.edito.transition' => 'onTransition'];
     }
