@@ -1,35 +1,35 @@
 [
-    {
-        "front": "1",
-        "name": "front",
-        "template": "Labstag\\TemplatePage\\FrontTemplatePage",
-        "layout": "home",
-        "slug": "",
-        "childs": [
-            {
-                "template": "Labstag\\TemplatePage\\BookmarkTemplatePage",
-                "slug": "bookmark",
-                "layout": "content",
-                "name": "bookmark"
-            },
-            {
-                "template": "Labstag\\TemplatePage\\EditoTemplatePage",
-                "slug": "edito",
-                "layout": "content",
-                "name": "edito"
-            },
-            {
-                "template": "Labstag\\TemplatePage\\HistoryTemplatePage",
-                "slug": "history",
-                "layout": "content",
-                "name": "history"
-            },
-            {
-                "template": "Labstag\\TemplatePage\\PostTemplatePage",
-                "slug": "post",
-                "layout": "content",
-                "name": "post"
-            }
-        ]
-    }
+  {
+    "front": "1",
+    "name": "front",
+    "template": "Labstag\\TemplatePage\\FrontTemplatePage",
+    "layout": "home",
+    "slug": "",
+    "childs": [
+      {
+        "template": "Labstag\\TemplatePage\\BookmarkTemplatePage",
+        "slug": "bookmark",
+        "layout": "content",
+        "name": "bookmark"
+      },
+      {
+        "template": "Labstag\\TemplatePage\\EditoTemplatePage",
+        "slug": "edito",
+        "layout": "content",
+        "name": "edito"
+      },
+      {
+        "template": "Labstag\\TemplatePage\\HistoryTemplatePage",
+        "slug": "history",
+        "layout": "content",
+        "name": "history"
+      },
+      {
+        "template": "Labstag\\TemplatePage\\PostTemplatePage",
+        "slug": "post",
+        "layout": "content",
+        "name": "post"
+      }
+    ]
+  }
 ]
