@@ -9,6 +9,37 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class HistoryTemplatePage extends TemplatePageLib
 {
+    public function chapter($historySlug, $chapterSlug)
+    {
+        $history = $this->historyRepository->findOneBy(['slug' => $historySlug]);
+        if (!$history instanceof History) {
+            throw $this->createNotFoundException();
+        }
+
+        $chapters = $history->getchapters();
+        $prev     = null;
+        $next     = null;
+        foreach ($chapters as $i => $row) {
+            if ($row->getSlug() == $chapterSlug) {
+                $prev    = $chapters[$i - 1] ?? null;
+                $next    = $chapters[$i + 1] ?? null;
+                $chapter = $row;
+
+                break;
+            }
+        }
+
+        return $this->render(
+            'front/histories/chapter.html.twig',
+            [
+                'history' => $history,
+                'prev'    => $prev,
+                'next'    => $next,
+                'chapter' => $chapter,
+            ]
+        );
+    }
+
     public function generateUrl(Page $page, string $route, array $params, bool $relative): string
     {
         $slug = $page->getSlug().'/';
@@ -23,9 +54,11 @@ class HistoryTemplatePage extends TemplatePageLib
                 break;
             case 'chapter':
                 $url = $slug.$params['history'].'/'.$params['chapter'];
+
                 break;
             case 'pdf':
                 $url = $slug.$params['slug'].'.pdf';
+
                 break;
             default:
                 $url = $slug;
@@ -60,10 +93,15 @@ class HistoryTemplatePage extends TemplatePageLib
                 return $this->user($search[1]);
             default:
                 if (!empty($search[1])) {
-                    if (substr_count($search[1], '/') == 1) {
-                        list($historySlug, $chapterSlug) = explode('/', $search[1]);
+                    if (1 == substr_count($search[1], '/')) {
+                        [
+                            $historySlug,
+                            $chapterSlug,
+                        ] = explode('/', $search[1]);
+
                         return $this->chapter($historySlug, $chapterSlug);
                     }
+
                     $history = $this->historyRepository->findOneBy(['slug' => $search[1]]);
                     if (!$history instanceof History) {
                         throw $this->createNotFoundException();
@@ -73,35 +111,6 @@ class HistoryTemplatePage extends TemplatePageLib
                 }
                 throw $this->createNotFoundException();
         }
-    }
-
-    public function chapter($historySlug, $chapterSlug)
-    {
-        $history = $this->historyRepository->findOneBy(['slug' => $historySlug]);
-        if (!$history instanceof History) {
-            throw $this->createNotFoundException();
-        }
-
-        $chapters = $history->getchapters();
-        $prev = null;
-        $next = null;
-        foreach ($chapters as $i => $row) {
-            if ($row->getSlug() == $chapterSlug) {
-                $prev = $chapters[$i-1] ?? null;
-                $next = $chapters[$i+1] ?? null;
-                $chapter = $row;
-                break;
-            }
-        }
-        return $this->render(
-            'front/histories/chapter.html.twig',
-            [
-                'history' => $history,
-                'prev' => $prev,
-                'next' => $next,
-                'chapter' => $chapter
-            ]
-        );
     }
 
     public function list()
@@ -172,11 +181,11 @@ class HistoryTemplatePage extends TemplatePageLib
     protected function getCaseRegex(): array
     {
         return [
-            '/user\/(.*)/' => 'user',
-            '/\/(.*).pdf/' => 'pdf',
-            '/\/(.*[^\/])/'     => 'show',
+            '/user\/(.*)/'   => 'user',
+            '/\/(.*).pdf/'   => 'pdf',
+            '/\/(.*[^\/])/'  => 'show',
             '/\/(.*)\/(.*)/' => 'chapter',
-            '//' => 'list',
+            '//'             => 'list',
         ];
     }
 }

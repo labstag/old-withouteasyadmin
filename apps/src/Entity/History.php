@@ -118,9 +118,9 @@ class History
     public function getChaptersPublished(): Collection
     {
         $enableChapter = new ArrayCollection();
-        $chapters = $this->getChapters();
+        $chapters      = $this->getChapters();
         foreach ($chapters as $chapter) {
-            $state = in_array('publie', (array) $chapter->getState());
+            $state     = in_array('publie', (array) $chapter->getState());
             $published = $chapter->getPublished() <= new DateTime();
             if ($state && $published) {
                 $enableChapter->add($chapter);
