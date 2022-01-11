@@ -15,8 +15,14 @@
                 <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
             </tr>
             <tr>
-                <th>{{ 'history.chapters'|trans({}, 'admin.messages') }}</th>
-                <td>{{ entity.chapters|length }}</td>
+                <th>{{ 'history.chapters'|trans({}, 'admin.messages') }} ({{ entity.chapters|length }}</th>
+                <td>
+                    <ul>
+                        {% for chapter in entity.chapters %}
+                            <li>{{ chapter.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
             </tr>
             <tr>
                 <th>{{ 'history.pdf'|trans({}, 'admin.messages') }}</th>

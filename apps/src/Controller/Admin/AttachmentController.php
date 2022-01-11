@@ -14,8 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class AttachmentController extends AdminControllerLib
 {
     /**
-     * @Route("/trash",  name="admin_attachment_trash", methods={"GET"})
-     * @Route("/",       name="admin_attachment_index", methods={"GET"})
+     * @Route("/trash", name="admin_attachment_trash", methods={"GET"})
+     * @Route("/", name="admin_attachment_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(AttachmentRepository $repository): Response

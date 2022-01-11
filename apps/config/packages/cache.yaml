@@ -17,3 +17,16 @@ framework:
         # Namespaced pools use the above "app" backend by default
         #pools:
             #my.dedicated.cache: null
+        pools:
+          view_cache_pool:
+            default_lifetime: '7 days'
+          custom_cache_pool:
+            adapter: cache.adapter.redis
+
+services:
+  app.cache.adapter.redis:
+    parent: 'cache.adapter.redis'
+    arguments:
+      $defaultLifetime: 604800
+    tags:
+      - { name: 'cache.pool', namespace: 'labstag_cache' }

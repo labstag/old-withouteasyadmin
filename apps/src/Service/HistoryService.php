@@ -2,17 +2,14 @@
 
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\Collection;
 use Labstag\Entity\History;
 use Labstag\Repository\HistoryRepository;
-use setasign\Fpdi\Fpdi;
 use Spipu\Html2Pdf\Html2Pdf;
 use Twig\Environment;
 
 class HistoryService
 {
-
-    private EntityManagerInterface $entityManager;
 
     private $filename;
 
@@ -22,13 +19,11 @@ class HistoryService
 
     public function __construct(
         HistoryRepository $historyRepo,
-        Environment $twig,
-        EntityManagerInterface $entityManager
+        Environment $twig
     )
     {
-        $this->entityManager = $entityManager;
-        $this->twig          = $twig;
-        $this->historyRepo   = $historyRepo;
+        $this->twig        = $twig;
+        $this->historyRepo = $historyRepo;
     }
 
     public function getFilename(): string
@@ -43,15 +38,16 @@ class HistoryService
     )
     {
         $history = $this->historyRepo->find($historyId);
-        if (!$history instanceof History) {
+        if (!$history instanceof History || (false == $all && !in_array('publie', (array) $history->getState()))) {
             return;
         }
 
-        if (false == $all && !in_array('publie', $history->getState())) {
+        $dataChapters = $this->getChapters($history, $all);
+        if (0 == count($dataChapters)) {
             return;
         }
 
-        $pdf  = $this->generateHistoryPdf($history, $all);
+        $pdf  = $this->generateHistoryPdf($history, $dataChapters);
         $path = sprintf(
             '%s/%s',
             $fileDirectory,
@@ -64,140 +60,33 @@ class HistoryService
         $this->filename = sprintf(
             '%s/%s.pdf',
             $path,
-            $history->getSlug()
+            $history->getSlug().($all ? '-all' : '')
         );
         $pdf->output($this->filename, 'F');
     }
 
-    private function addPagePdf(&$fpdi, string $file): int
-    {
-        $pageCount = $fpdi->setSourceFile($file);
-        for ($pageNo = 1; $pageNo <= $pageCount; ++$pageNo) {
-            $templateId = $fpdi->importPage($pageNo);
-            $fpdi->addPage();
-            $fpdi->useTemplate($templateId);
-        }
-
-        return $pageCount;
-    }
-
-    private function addSummary(History $history, array $info)
+    private function generateHistoryPdf(History $history, Collection $dataChapters): Html2Pdf
     {
         $tmpfile = tmpfile();
         $data    = stream_get_meta_data($tmpfile);
         $pdf     = new Html2Pdf();
         $html    = $this->twig->render(
-            'pdf/history/summary.html.twig',
+            'pdf/history/index.html.twig',
             [
-                'history' => $history,
-                'info'    => $info,
+                'history'  => $history,
+                'chapters' => $dataChapters,
             ]
         );
         $pdf->writeHTML($html);
+        $pdf->createIndex('Table des matières', 25, 12, false, true, 3);
         $file = $data['uri'].'.pdf';
         $pdf->output($file, 'F');
-
-        return $file;
-    }
-
-    private function addTitle(History $history)
-    {
-        $tmpfile = tmpfile();
-        $data    = stream_get_meta_data($tmpfile);
-        $pdf     = new Html2Pdf();
-        $html    = $this->twig->render(
-            'pdf/history/title.html.twig',
-            ['history' => $history]
-        );
-        $pdf->writeHTML($html);
-        $file = $data['uri'].'.pdf';
-        $pdf->output($file, 'F');
-
-        return $file;
-    }
-
-    private function generateChapterPdf(History $history, bool $all)
-    {
-        $files = [];
-        foreach ($history->getChapters() as $chapter) {
-            if (false == $all && !in_array('publie', $chapter->getStatus())) {
-                continue;
-            }
-
-            $tmpfile = tmpfile();
-            $data    = stream_get_meta_data($tmpfile);
-            $pdf     = new Html2Pdf();
-            $html    = $this->twig->render(
-                'pdf/history/content.html.twig',
-                ['chapter' => $chapter]
-            );
-            $pdf->writeHTML($html);
-            $file = $data['uri'].'.pdf';
-            $pdf->output($file, 'F');
-            $pages = $this->getCountPagesFile($file);
-            $chapter->setPages($pages);
-            $this->entityManager->persist($chapter);
-            $files[$data['uri'].'.pdf'] = [
-                'file' => $file,
-                'name' => $chapter->getName(),
-            ];
-        }
-
-        $this->entityManager->flush();
-
-        return $files;
-    }
-
-    private function generateHistoryPdf(History $history, bool $all)
-    {
-        $files = $this->generateChapterPdf($history, $all);
-        $info  = $this->getInfoPosition($files);
-        array_unshift(
-            $files,
-            [
-                'file' => $this->addTitle($history),
-            ],
-            [
-                'file' => $this->addSummary($history, $info),
-            ]
-        );
-        $pdf = new Fpdi();
-        $pdf->setAuthor($history->getRefuser()->__toString());
-        $pdf->setCreator($history->getRefuser()->__toString());
-        $pdf->setTitle($history->getName());
-        $pages = 0;
-        foreach ($files as $row) {
-            $pages += $this->addPagePdf($pdf, $row['file']);
-        }
-
-        $history->setPages($pages);
-        $this->entityManager->persist($history);
-        $this->entityManager->flush();
 
         return $pdf;
     }
 
-    private function getCountPagesFile(string $file): int
+    private function getChapters(History $history, bool $all): Collection
     {
-        $fpdi = new Fpdi();
-
-        return $fpdi->setSourceFile($file);
-    }
-
-    private function getInfoPosition(array $files)
-    {
-        $fpdi     = new Fpdi();
-        $info     = [];
-        $position = 1;
-        foreach ($files as $row) {
-            $position = $position + $fpdi->setSourceFile($row['file']);
-            $info[]   = [
-                'name'     => $row['name'],
-                'file'     => $row['file'],
-                'position' => $position,
-            ];
-        }
-
-        return $info;
+        return $all ? $history->getChapters() : $history->getChaptersPublished();
     }
 }

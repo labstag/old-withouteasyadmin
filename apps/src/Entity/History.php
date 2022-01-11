@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity;
 
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -112,6 +113,21 @@ class History
     public function getChapters(): Collection
     {
         return $this->chapters;
+    }
+
+    public function getChaptersPublished(): Collection
+    {
+        $enableChapter = new ArrayCollection();
+        $chapters      = $this->getChapters();
+        foreach ($chapters as $chapter) {
+            $state     = in_array('publie', (array) $chapter->getState());
+            $published = $chapter->getPublished() <= new DateTime();
+            if ($state && $published) {
+                $enableChapter->add($chapter);
+            }
+        }
+
+        return $enableChapter;
     }
 
     public function getCreated(): ?DateTimeInterface

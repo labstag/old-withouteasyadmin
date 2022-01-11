@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Controller\Admin;
+namespace Labstag\Controller\Admin\History;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
@@ -41,8 +41,8 @@ class ChapterController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_chapter_trash", methods={"GET"})
-     * @Route("/",       name="admin_chapter_index", methods={"GET"})
+     * @Route("/trash", name="admin_chapter_trash", methods={"GET"})
+     * @Route("/", name="admin_chapter_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(ChapterRepository $repository): Response
@@ -54,7 +54,7 @@ class ChapterController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}",         name="admin_chapter_show", methods={"GET"})
+     * @Route("/{id}", name="admin_chapter_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_chapter_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

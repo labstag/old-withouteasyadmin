@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=GroupeRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt",         timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Groupe
 {
@@ -20,7 +20,7 @@ class Groupe
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
-     * @ORM\Column(type="string",   length=255, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     protected $code;
 
@@ -61,6 +61,7 @@ class Groupe
     {
         $this->routes          = new ArrayCollection();
         $this->workflowGroupes = new ArrayCollection();
+        $this->users           = new ArrayCollection();
     }
 
     public function __toString()

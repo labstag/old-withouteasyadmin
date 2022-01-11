@@ -35,14 +35,6 @@ class HistoryType extends AbstractTypeLib
             ]
         );
         $builder->add(
-            'content',
-            CKEditorType::class,
-            [
-                'label' => $this->translator->trans('history.content.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('history.content.help', [], 'admin.form'),
-            ]
-        );
-        $builder->add(
             'summary',
             CKEditorType::class,
             [

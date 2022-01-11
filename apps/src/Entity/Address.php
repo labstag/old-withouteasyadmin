@@ -10,8 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr",       type="string")
- * @ORM\DiscriminatorMap({"user":               "AddressUser"})
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"user": "AddressUser"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 abstract class Address
@@ -97,6 +97,11 @@ abstract class Address
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function getPmr(): ?bool
+    {
+        return $this->pmr;
     }
 
     public function getStreet(): ?string

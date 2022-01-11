@@ -40,8 +40,8 @@ class CategoryController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_category_trash", methods={"GET"})
-     * @Route("/",       name="admin_category_index", methods={"GET"})
+     * @Route("/trash", name="admin_category_trash", methods={"GET"})
+     * @Route("/", name="admin_category_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(CategoryRepository $repository): Response
@@ -53,7 +53,7 @@ class CategoryController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}",         name="admin_category_show", methods={"GET"})
+     * @Route("/{id}", name="admin_category_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_category_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

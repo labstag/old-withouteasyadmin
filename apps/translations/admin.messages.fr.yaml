@@ -164,3 +164,10 @@ user.phones: Téléphones
 user.username: Pseudo
 user.workflow: Workflow
 workflow.state: Étape
+page.name: __page.name
+page.slug: __page.slug
+page.frontslug: __page.frontslug
+layout.name: __layout.name
+layout.content: __layout.content
+post.url: __post.url
+page.reflayout: __page.reflayout

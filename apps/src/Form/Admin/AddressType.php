@@ -20,7 +20,7 @@ abstract class AddressType extends AbstractTypeLib
     {
         unset($options);
         $builder->add(
-            'rue',
+            'street',
             TextType::class,
             [
                 'label' => $this->translator->trans('address.street.label', [], 'admin.form'),

@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EditoRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt",        timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Uploadable()
  */
 class Edito

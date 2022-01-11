@@ -41,7 +41,7 @@ class Libelle
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
-     * @ORM\Column(type="string",   length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private $slug;
 

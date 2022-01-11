@@ -40,14 +40,6 @@ class ChapterType extends AbstractTypeLib
                 'help'  => $this->translator->trans('chapter.content.help', [], 'admin.form'),
             ]
         );
-        $builder->add(
-            'summary',
-            CKEditorType::class,
-            [
-                'label' => $this->translator->trans('chapter.summary.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('chapter.summary.help', [], 'admin.form'),
-            ]
-        );
         $this->setMeta($builder);
         unset($options);
     }

@@ -19,7 +19,7 @@ class Menu
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity="Menu",
+     *  targetEntity=Menu::class,
      *  mappedBy="parent",
      *  cascade={"persist"},
      *  orphanRemoval=true
@@ -56,7 +56,7 @@ class Menu
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Menu", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children")
      * @ORM\JoinColumn(
      *  name="parent_id",
      *  referencedColumnName="id",
@@ -96,6 +96,16 @@ class Menu
                 $this->getName(),
             ]
         );
+    }
+
+    public function addChild(Menu $child): self
+    {
+        if (!$this->children->contains($child)) {
+            $this->children[] = $child;
+            $child->setParent($this);
+        }
+
+        return $this;
     }
 
     public function getChildren()
@@ -138,9 +148,26 @@ class Menu
         return $this->position;
     }
 
+    public function getSeparateur(): ?bool
+    {
+        return $this->separateur;
+    }
+
     public function isSeparateur(): ?bool
     {
         return $this->separateur;
+    }
+
+    public function removeChild(Menu $child): self
+    {
+        if ($this->children->removeElement($child)) {
+            // set the owning side to null (unless already changed)
+            if ($child->getParent() === $this) {
+                $child->setParent(null);
+            }
+        }
+
+        return $this;
     }
 
     public function setClef(?string $clef): self

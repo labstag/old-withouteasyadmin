@@ -21,6 +21,7 @@ use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\RequestHandler\HistoryRequestHandler;
+use Labstag\RequestHandler\LayoutRequestHandler;
 use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\RequestHandler\LinkUserRequestHandler;
 use Labstag\RequestHandler\MemoRequestHandler;
@@ -95,6 +96,8 @@ abstract class FixtureLib extends Fixture
 
     protected InstallService $installService;
 
+    protected LayoutRequestHandler $layoutRH;
+
     protected LibelleRequestHandler $libelleRH;
 
     protected LinkUserRequestHandler $linkUserRH;
@@ -133,6 +136,7 @@ abstract class FixtureLib extends Fixture
         LinkUserRequestHandler $linkUserRH,
         MemoRequestHandler $noteInterneRH,
         GroupeRequestHandler $groupeRH,
+        LayoutRequestHandler $layoutRH,
         EditoRequestHandler $editoRH,
         UserRequestHandler $userRH,
         PhoneUserRequestHandler $phoneUserRH,
@@ -149,6 +153,7 @@ abstract class FixtureLib extends Fixture
     )
     {
         $this->chapterRH         = $chapterRH;
+        $this->layoutRH          = $layoutRH;
         $this->historyRH         = $historyRH;
         $this->addressUserRH     = $addressUserRH;
         $this->attachmentRH      = $attachmentRH;

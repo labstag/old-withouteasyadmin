@@ -40,8 +40,8 @@ class LibelleController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_libelle_trash", methods={"GET"})
-     * @Route("/",       name="admin_libelle_index", methods={"GET"})
+     * @Route("/trash", name="admin_libelle_trash", methods={"GET"})
+     * @Route("/", name="admin_libelle_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(LibelleRepository $repository): Response
@@ -53,7 +53,7 @@ class LibelleController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}",         name="admin_libelle_show", methods={"GET"})
+     * @Route("/{id}", name="admin_libelle_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_libelle_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

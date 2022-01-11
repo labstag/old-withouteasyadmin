@@ -5,6 +5,9 @@
         {% block thead %}
             {% set theads = [
                 {
+                    'name': 'chapter.refhistory'|trans({}, 'admin.messages')
+                },
+                {
                     'field': 'a.name',
                     'name': 'chapter.name'|trans({}, 'admin.messages')
                 },
@@ -25,6 +28,7 @@
         {% block tbody %}
             {% for entity in pagination %}
                 <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.refhistory.name }}</td>
                     <td>{{ entity.name }}</td>
                     <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
                     <td>

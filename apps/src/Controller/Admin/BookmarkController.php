@@ -76,8 +76,8 @@ class BookmarkController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_bookmark_trash", methods={"GET"})
-     * @Route("/",       name="admin_bookmark_index", methods={"GET"})
+     * @Route("/trash", name="admin_bookmark_trash", methods={"GET"})
+     * @Route("/", name="admin_bookmark_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(BookmarkRepository $repository): Response
@@ -89,7 +89,7 @@ class BookmarkController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}",         name="admin_bookmark_show", methods={"GET"})
+     * @Route("/{id}", name="admin_bookmark_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_bookmark_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

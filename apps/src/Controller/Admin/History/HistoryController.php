@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Controller\Admin;
+namespace Labstag\Controller\Admin\History;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\History;
@@ -44,8 +44,8 @@ class HistoryController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_history_trash", methods={"GET"})
-     * @Route("/",       name="admin_history_index", methods={"GET"})
+     * @Route("/trash", name="admin_history_trash", methods={"GET"})
+     * @Route("/", name="admin_history_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(HistoryRepository $repository): Response
@@ -140,7 +140,7 @@ class HistoryController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}",         name="admin_history_show", methods={"GET"})
+     * @Route("/{id}", name="admin_history_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_history_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

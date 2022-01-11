@@ -38,8 +38,8 @@ class LinkUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_linkuser_trash", methods={"GET"})
-     * @Route("/",       name="admin_linkuser_index", methods={"GET"})
+     * @Route("/trash", name="admin_linkuser_trash", methods={"GET"})
+     * @Route("/", name="admin_linkuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
     public function indexOrTrash(LinkUserRepository $linkUserRepository): Response
@@ -51,7 +51,7 @@ class LinkUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}",         name="admin_linkuser_show", methods={"GET"})
+     * @Route("/{id}", name="admin_linkuser_show", methods={"GET"})
      * @Route("/preview/{id}", name="admin_linkuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */

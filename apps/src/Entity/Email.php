@@ -11,8 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr",       type="string")
- * @ORM\DiscriminatorMap({"user":               "EmailUser"})
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"user": "EmailUser"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 abstract class Email
@@ -61,6 +61,11 @@ abstract class Email
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function getPrincipal(): ?bool
+    {
+        return $this->principal;
     }
 
     public function isPrincipal(): ?bool

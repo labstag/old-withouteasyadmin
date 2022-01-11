@@ -9,7 +9,7 @@ class ChapterWorkflowSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {
-        return ['workflow.post.transition' => 'onTransition'];
+        return ['workflow.chapter.transition' => 'onTransition'];
     }
 
     public function onTransition(Event $event)

@@ -199,7 +199,7 @@ class AdminController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_trash")
+     * @Route("/trash", name="admin_trash")
      * @IgnoreSoftDelete
      */
     public function trash(

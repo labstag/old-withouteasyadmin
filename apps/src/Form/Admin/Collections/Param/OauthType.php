@@ -4,6 +4,7 @@ namespace Labstag\Form\Admin\Collections\Param;
 
 use Labstag\Lib\AbstractTypeLib;
 use Labstag\Service\OauthService;
+use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,11 +18,12 @@ class OauthType extends AbstractTypeLib
 
     public function __construct(
         TranslatorInterface $translator,
-        OauthService $oauthService
+        OauthService $oauthService,
+        TemplatePageService $templatePageService
     )
     {
         $this->oauthService = $oauthService;
-        parent::__construct($translator);
+        parent::__construct($translator, $templatePageService);
     }
 
     public function buildForm(

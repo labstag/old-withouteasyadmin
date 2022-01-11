@@ -9,7 +9,7 @@ class HistoryWorkflowSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {
-        return ['workflow.post.transition' => 'onTransition'];
+        return ['workflow.history.transition' => 'onTransition'];
     }
 
     public function onTransition(Event $event)
