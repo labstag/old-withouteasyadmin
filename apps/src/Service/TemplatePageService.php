@@ -4,13 +4,11 @@ namespace Labstag\Service;
 
 class TemplatePageService
 {
-
     protected $templates;
 
     public function __construct(
         $templates
-    )
-    {
+    ) {
         $this->templates = $templates;
     }
 
