@@ -6,7 +6,6 @@ use Labstag\Lib\LibSearch;
 
 class LayoutSearch extends LibSearch
 {
-
     public $name;
 
     public function search(array $get, $doctrine)

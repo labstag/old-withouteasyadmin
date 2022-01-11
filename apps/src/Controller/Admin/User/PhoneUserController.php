@@ -31,8 +31,7 @@ class PhoneUserController extends AdminControllerLib
         AttachFormService $service,
         ?PhoneUser $phoneUser,
         PhoneUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $service,
             $requestHandler,
@@ -61,8 +60,7 @@ class PhoneUserController extends AdminControllerLib
      */
     public function showOrPreview(
         PhoneUser $phoneUser
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $phoneUser,
             'admin/user/phone_user/show.html.twig'

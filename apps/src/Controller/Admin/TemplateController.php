@@ -27,8 +27,7 @@ class TemplateController extends AdminControllerLib
         AttachFormService $service,
         ?Template $template,
         TemplateRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $service,
             $requestHandler,
@@ -57,8 +56,7 @@ class TemplateController extends AdminControllerLib
      */
     public function showOrPreview(
         Template $template
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $template,
             'admin/template/show.html.twig'

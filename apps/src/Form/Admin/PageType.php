@@ -22,8 +22,7 @@ class PageType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $builder->add(
             'name',
             TextType::class,

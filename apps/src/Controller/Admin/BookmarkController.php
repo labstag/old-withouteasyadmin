@@ -37,8 +37,7 @@ class BookmarkController extends AdminControllerLib
         AttachFormService $service,
         ?Bookmark $bookmark,
         BookmarkRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
 
         return $this->form(
@@ -57,8 +56,7 @@ class BookmarkController extends AdminControllerLib
         Request $request,
         Security $security,
         EnqueueMethod $enqueue
-    )
-    {
+    ) {
         $this->setBtnList($this->getUrlAdmin());
         $form = $this->createForm(ImportType::class, []);
         $this->btnInstance()->addBtnSave($form->getName(), 'Import');
@@ -95,8 +93,7 @@ class BookmarkController extends AdminControllerLib
      */
     public function showOrPreview(
         Bookmark $bookmark
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $bookmark,
             'admin/bookmark/show.html.twig'
@@ -239,8 +236,7 @@ class BookmarkController extends AdminControllerLib
         FormInterface $form,
         Security $security,
         EnqueueMethod $enqueue
-    )
-    {
+    ) {
         $file = $form->get('file')->getData();
         if (!$file instanceof UploadedFile) {
             return;

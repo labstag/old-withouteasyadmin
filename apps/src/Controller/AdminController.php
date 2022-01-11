@@ -38,8 +38,7 @@ class AdminController extends AdminControllerLib
     public function export(
         DataService $dataService,
         LoggerInterface $logger
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $config = $dataService->getConfig();
         ksort($config);
         $content = json_encode($config, JSON_PRETTY_PRINT);
@@ -99,8 +98,7 @@ class AdminController extends AdminControllerLib
         AttachmentRepository $repository,
         DataService $dataService,
         CacheInterface $cache
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
         $images = [
             'image'   => $repository->getImageDefault(),
@@ -160,8 +158,7 @@ class AdminController extends AdminControllerLib
         AttachFormService $service,
         Security $security,
         UserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
 
         return $this->form(
@@ -204,8 +201,7 @@ class AdminController extends AdminControllerLib
      */
     public function trash(
         TrashService $trashService
-    ): Response
-    {
+    ): Response {
         $all = $trashService->all();
         if (0 == count($all)) {
             $this->flashBagAdd(

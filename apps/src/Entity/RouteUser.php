@@ -10,7 +10,6 @@ use Labstag\Repository\RouteUserRepository;
  */
 class RouteUser
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

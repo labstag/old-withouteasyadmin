@@ -27,8 +27,7 @@ class CategoryController extends AdminControllerLib
         AttachFormService $service,
         ?Category $category,
         CategoryRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
 
         return $this->form(
@@ -59,8 +58,7 @@ class CategoryController extends AdminControllerLib
      */
     public function showOrPreview(
         Category $category
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $category,
             'admin/category/show.html.twig'

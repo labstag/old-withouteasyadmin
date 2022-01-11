@@ -27,8 +27,7 @@ class PageController extends AdminControllerLib
         AttachFormService $service,
         ?Page $page,
         PageRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
 
         return $this->form(
@@ -60,8 +59,7 @@ class PageController extends AdminControllerLib
      */
     public function showOrPreview(
         Page $page
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $page,
             'admin/page/show.html.twig'

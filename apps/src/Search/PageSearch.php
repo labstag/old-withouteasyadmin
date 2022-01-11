@@ -6,7 +6,6 @@ use Labstag\Lib\LibSearch;
 
 class PageSearch extends LibSearch
 {
-
     public $etape;
 
     public $name;

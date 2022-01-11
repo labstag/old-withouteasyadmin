@@ -31,8 +31,7 @@ class AddressUserController extends AdminControllerLib
         AttachFormService $service,
         ?AddressUser $addressUser,
         AddressUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $service,
             $requestHandler,
@@ -61,8 +60,7 @@ class AddressUserController extends AdminControllerLib
      */
     public function showOrPreview(
         AddressUser $addressUser
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $addressUser,
             'admin/user/address_user/show.html.twig'

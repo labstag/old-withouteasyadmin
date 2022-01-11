@@ -11,7 +11,6 @@ use InvalidArgumentException;
  */
 class UploadableField
 {
-
     protected $filename;
 
     protected $path;
