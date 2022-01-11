@@ -52,27 +52,52 @@ class LabstagInstallCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $inputOutput = new SymfonyStyle($input, $output);
-        if ($input->getOption('pages')) {
-            $this->setPages($inputOutput);
-        } elseif ($input->getOption('menuadmin')) {
-            $this->setMenuAdmin($inputOutput);
-        } elseif ($input->getOption('menuadminprofil')) {
-            $this->setMenuAdminProfil($inputOutput);
-        } elseif ($input->getOption('group')) {
-            $this->setGroup($inputOutput);
-        } elseif ($input->getOption('config')) {
-            $this->setConfig($inputOutput);
-        } elseif ($input->getOption('templates')) {
-            $this->setTemplates($inputOutput);
-        } elseif ($input->getOption('users')) {
-            $this->setUsers($inputOutput);
-        } elseif ($input->getOption('all')) {
-            $this->all($inputOutput);
+        $options     = $input->getOptions();
+        foreach ($options as $option) {
+            $this->executeOption($option, $inputOutput);
         }
 
         $inputOutput->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;
+    }
+
+    protected function executeOption($option, $inputOutput)
+    {
+        switch ($option) {
+            case 'pages':
+                $this->setPages($inputOutput);
+
+                break;
+            case 'menuadmin':
+                $this->setMenuAdmin($inputOutput);
+
+                break;
+            case 'menuadminprofil':
+                $this->setMenuAdminProfil($inputOutput);
+
+                break;
+            case 'group':
+                $this->setGroup($inputOutput);
+
+                break;
+            case 'config':
+                $this->setConfig($inputOutput);
+
+                break;
+            case 'templates':
+                $this->setTemplates($inputOutput);
+
+                break;
+            case 'users':
+                $this->setUsers($inputOutput);
+
+                break;
+            case 'all':
+                $this->all($inputOutput);
+
+                break;
+        }
     }
 
     protected function setConfig($inputOutput)

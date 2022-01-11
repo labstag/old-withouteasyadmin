@@ -61,12 +61,19 @@ class LabstagUserCommand extends Command
                 continue;
             }
 
-            if ('enable' === $action) {
-                $this->enable($helper, $username, $inputOutput, $input, $output);
-            } elseif ('disable' === $action) {
-                $this->disable($helper, $username, $inputOutput, $input, $output);
-            } elseif ('delete' === $action) {
-                $this->delete($helper, $username, $inputOutput, $input, $output);
+            switch ($action) {
+                case 'enable':
+                    $this->enable($helper, $username, $inputOutput, $input, $output);
+
+                    break;
+                case 'disable':
+                    $this->disable($helper, $username, $inputOutput, $input, $output);
+
+                    break;
+                case 'delete':
+                    $this->delete($helper, $username, $inputOutput, $input, $output);
+
+                    break;
             }
         }
     }

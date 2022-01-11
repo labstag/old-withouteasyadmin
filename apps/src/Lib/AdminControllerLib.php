@@ -744,11 +744,7 @@ abstract class AdminControllerLib extends ControllerLib
         array $url = [],
     )
     {
-        if ('trash' == $routeType) {
-            $this->listOrTrashRouteTrash($url, $repository);
-        } elseif (isset($url['trash'])) {
-            $this->setTrashIcon($methods, $repository, $url);
-        }
+        $this->listOrTrashRouteTrashsetTrashIcon($methods, $repository, $url, $routeType);
 
         if (isset($url['new']) && 'trash' != $routeType) {
             $this->btnInstance()->addBtnNew(
@@ -760,6 +756,19 @@ abstract class AdminControllerLib extends ControllerLib
             $this->btnInstance()->addBtnImport(
                 $url['import']
             );
+        }
+    }
+
+    private function listOrTrashRouteTrashsetTrashIcon($methods, $repository, $url, $routeType)
+    {
+        if ('trash' == $routeType) {
+            $this->listOrTrashRouteTrash($url, $repository);
+
+            return;
+        }
+
+        if (isset($url['trash'])) {
+            $this->setTrashIcon($methods, $repository, $url);
         }
     }
 }

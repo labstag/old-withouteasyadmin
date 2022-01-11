@@ -245,18 +245,20 @@ class LabstagExtension extends AbstractExtension
         $templates = $this->templatePageService->getChoices();
         foreach ($templates as $row) {
             $class = $this->templatePageService->getclass($row);
-            if ($class->getId() == $template) {
-                $page = $this->pageRepository->findOneBy(
-                    ['function' => $row]
-                );
-
-                return $class->generateUrl(
-                    $page,
-                    $route,
-                    $params,
-                    false
-                );
+            if ($class->getId() != $template) {
+                continue;
             }
+
+            $page = $this->pageRepository->findOneBy(
+                ['function' => $row]
+            );
+
+            return $class->generateUrl(
+                $page,
+                $route,
+                $params,
+                false
+            );
         }
 
         return '';

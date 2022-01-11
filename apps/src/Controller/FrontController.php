@@ -53,7 +53,7 @@ class FrontController extends FrontControllerLib
             throw $this->createNotFoundException();
         }
 
-        $slug  = strstr($slug, $page->getSlug());
+        $slug = strstr($slug, $page->getSlug());
 
         return $class->launch($matches);
     }
