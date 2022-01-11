@@ -1,85 +1,85 @@
-admin.flashbag.data.export.fail: 'Problème d''enregistrement du fichier %file%'
-admin.flashbag.data.export.success: 'Données exporté'
-admin.flashbag.trash.empty: 'La corbeille est vide'
-admin.group.guard.superadmin.nope: 'Le groupe superadmin n''est pas un groupe qui peut avoir des droits spécifique'
-admin.robotstxt.file: 'Fichier %file% modifié'
-admin.togglenavigation: 'Basculer la navigation'
-admin.user.guard.superadmin.nope: 'L''utilisateur fait partie du groupe superadmin, qui n''est pas un groupe qui peut avoir des droits spécifique'
+admin.flashbag.data.export.fail: "Problème d'enregistrement du fichier %file%"
+admin.flashbag.data.export.success: "Données exporté"
+admin.flashbag.trash.empty: "La corbeille est vide"
+admin.group.guard.superadmin.nope: "Le groupe superadmin n'est pas un groupe qui peut avoir des droits spécifique"
+admin.robotstxt.file: "Fichier %file% modifié"
+admin.togglenavigation: "Basculer la navigation"
+admin.user.guard.superadmin.nope: "L'utilisateur fait partie du groupe superadmin, qui n'est pas un groupe qui peut avoir des droits spécifique"
 bookmark.categories: Categories
-bookmark.infodate: '%date%'
+bookmark.infodate: "%date%"
 bookmark.libelles: Libelles
 bookmark.update: Modifier
-data.save: 'Données sauvegardé'
-error.page.400.message: 'La syntaxe de la requête est erronée.'
-error.page.400.title: 'Erreur 400'
-error.page.401.message: 'Une authentification est nécessaire pour accéder à la ressource.'
-error.page.401.title: 'Erreur 401'
-error.page.403.message: 'Le serveur a compris la requête, mais refuse de l''exécuter. Contrairement à l''erreur 401, s''authentifier ne fera aucune différence. Sur les serveurs où l''authentification est requise, cela signifie généralement que l''authentification a été acceptée mais que les droits d''accès ne permettent pas au client d''accéder à la ressource.'
-error.page.403.title: 'Erreur 403'
-error.page.404.message: 'Ressource non trouvée.'
-error.page.404.title: 'Erreur 404'
-error.page.errors: 'Erreur interne du serveur.'
-error.page.gotosite: 'Revenir sur le site'
+data.save: "Données sauvegardé"
+error.page.400.message: "La syntaxe de la requête est erronée."
+error.page.400.title: "Erreur 400"
+error.page.401.message: "Une authentification est nécessaire pour accéder à la ressource."
+error.page.401.title: "Erreur 401"
+error.page.403.message: "Le serveur a compris la requête, mais refuse de l'exécuter. Contrairement à l'erreur 401, s'authentifier ne fera aucune différence. Sur les serveurs où l'authentification est requise, cela signifie généralement que l'authentification a été acceptée mais que les droits d'accès ne permettent pas au client d'accéder à la ressource."
+error.page.403.title: "Erreur 403"
+error.page.404.message: "Ressource non trouvée."
+error.page.404.title: "Erreur 404"
+error.page.errors: "Erreur interne du serveur."
+error.page.gotosite: "Revenir sur le site"
 form.icon.error: Erreur
-form.requireinfo: 'Les champs marquées d''un %span% sont obligatoires'
-modal.attachmentdelete.message: 'Êtes-vous sûr de vouloir supprimer cette donnée ?'
-modal.attachmentdelete.title: 'Supprimer ?'
+form.requireinfo: "Les champs marquées d'un %span% sont obligatoires"
+modal.attachmentdelete.message: "Êtes-vous sûr de vouloir supprimer cette donnée ?"
+modal.attachmentdelete.title: "Supprimer ?"
 modal.button.cancel: Annuler
 modal.button.confirm: Confirmer
 modal.button.delete: Supprimer
 modal.button.empty: Vider
 modal.button.restore: Restaurer
-modal.delete.message: 'Êtes-vous sûr de vouloir supprimer cette donnée ?'
-modal.delete.title: 'Supprimer ?'
-modal.deleties.message: 'Êtes-vous sûr de vouloir supprimer la sélection ?'
-modal.deleties.title: 'Supprimer ?'
-modal.destroy.message: 'Êtes-vous sûr de vouloir supprimer cette donnée (elle sera supprimé de la base de données définivement) ?'
-modal.destroy.title: 'Supprimer ?'
-modal.empties.message: 'Êtes-vous sûr de vouloir vider la sélection ?'
-modal.empties.title: 'Supprimer ?'
-modal.empty.message: 'Êtes-vous sûr de vouloir vider la corbeille ?'
-modal.empty.title: 'Supprimer ?'
-modal.emptyall.message: 'Êtes-vous sûr de vouloir vider la corbeille ?'
-modal.emptyall.title: 'Supprimer ?'
-modal.restore.message: 'Êtes-vous sûr de vouloir restaurer cette donnée ?'
-modal.restore.title: 'Restaurer ?'
-modal.restories.message: 'Êtes-vous sûr de vouloir restaurer la sélection ?'
-modal.restories.title: 'Restaurer ?'
-modal.workflow.message: 'Êtes-vous sûr de vouloir changer d''état cette donnée ?'
+modal.delete.message: "Êtes-vous sûr de vouloir supprimer cette donnée ?"
+modal.delete.title: "Supprimer ?"
+modal.deleties.message: "Êtes-vous sûr de vouloir supprimer la sélection ?"
+modal.deleties.title: "Supprimer ?"
+modal.destroy.message: "Êtes-vous sûr de vouloir supprimer cette donnée (elle sera supprimé de la base de données définivement) ?"
+modal.destroy.title: "Supprimer ?"
+modal.empties.message: "Êtes-vous sûr de vouloir vider la sélection ?"
+modal.empties.title: "Supprimer ?"
+modal.empty.message: "Êtes-vous sûr de vouloir vider la corbeille ?"
+modal.empty.title: "Supprimer ?"
+modal.emptyall.message: "Êtes-vous sûr de vouloir vider la corbeille ?"
+modal.emptyall.title: "Supprimer ?"
+modal.restore.message: "Êtes-vous sûr de vouloir restaurer cette donnée ?"
+modal.restore.title: "Restaurer ?"
+modal.restories.message: "Êtes-vous sûr de vouloir restaurer la sélection ?"
+modal.restories.title: "Restaurer ?"
+modal.workflow.message: "Êtes-vous sûr de vouloir changer d'état cette donnée ?"
 modal.workflow.title: Workflow
 pagination.current: Actuel
 pagination.first: Premier
 pagination.last: Dernier
 pagination.next: Suivant
 pagination.previous: Précédent
-param.change: 'Données sauvegardé'
+param.change: "Données sauvegardé"
 post.archives: Archives
 post.categories: Categories
-post.infodateuser: '%date% par %user%'
+post.infodateuser: "%date% par %user%"
 post.libelles: Libelles
 post.update: Modifier
-security.disclaimer.doaccept: 'Veuillez accepter l''énoncé'
-security.email.activate.fail: 'Courriel déjà confirmé'
-security.email.activate.win: 'Courriel confirmé'
-security.page.changepassword.title: 'Changement du mot de passe'
-security.page.lostpassword.title: 'Mot de passe perdu'
-security.phone.activate.fail: 'Téléphone déjà confirmé'
-security.phone.activate.win: 'Téléphone confirmé'
-security.user.activate.fail: 'Utilisateur déjà activé'
-security.user.activate.win: 'Utilisateur activé'
-security.user.connect.fail: 'Problème d''identification'
-security.user.oauth.dissociated: 'Connection Oauth %string% dissocié'
-security.user.oauth.fail: 'Connection Oauth impossible'
-security.user.sendlostpassword.fail: 'Demande de mot de passe non envoyé'
-select.add: 'Ajouter %result%&hellip;'
-select.noresult: 'Pas de résultat pour %result%'
-service.user.oauth.fail: 'Impossible d''associer le compte'
-service.user.oauth.sucess: 'Compte associé'
-user.guard.nope: 'Vous n''avez pas les droits nécessaires'
-user.login.oauth: 'Se connecter avec :'
-user.lostpassword.link: 'J''ai perdu mon mot de passe'
-user.subscriber.emailprincal.change: 'Email principal changé'
-user.subscriber.password.change: 'Mot de passe changé'
-user.workflow.new: 'Nouveau compte utilisateur créer'
-user.workflow.sendpasswordlink: 'Demande de nouveau mot de passe envoyé'
-history.infodateuser: '%date% par %user%'
+security.disclaimer.doaccept: "Veuillez accepter l'énoncé"
+security.email.activate.fail: "Courriel déjà confirmé"
+security.email.activate.win: "Courriel confirmé"
+security.page.changepassword.title: "Changement du mot de passe"
+security.page.lostpassword.title: "Mot de passe perdu"
+security.phone.activate.fail: "Téléphone déjà confirmé"
+security.phone.activate.win: "Téléphone confirmé"
+security.user.activate.fail: "Utilisateur déjà activé"
+security.user.activate.win: "Utilisateur activé"
+security.user.connect.fail: "Problème d'identification"
+security.user.oauth.dissociated: "Connection Oauth %string% dissocié"
+security.user.oauth.fail: "Connection Oauth impossible"
+security.user.sendlostpassword.fail: "Demande de mot de passe non envoyé"
+select.add: "Ajouter %result%&hellip;"
+select.noresult: "Pas de résultat pour %result%"
+service.user.oauth.fail: "Impossible d'associer le compte"
+service.user.oauth.sucess: "Compte associé"
+user.guard.nope: "Vous n'avez pas les droits nécessaires"
+user.login.oauth: "Se connecter avec :"
+user.lostpassword.link: "J'ai perdu mon mot de passe"
+user.subscriber.emailprincal.change: "Email principal changé"
+user.subscriber.password.change: "Mot de passe changé"
+user.workflow.new: "Nouveau compte utilisateur créer"
+user.workflow.sendpasswordlink: "Demande de nouveau mot de passe envoyé"
+history.infodateuser: "%date% par %user%"
