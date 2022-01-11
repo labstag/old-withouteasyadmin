@@ -8,34 +8,20 @@ use Symfony\Component\Finder\Finder;
 class TemplatePageService
 {
 
-    private ContainerInterface $container;
+    protected $templates;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(
+        $templates
+    )
     {
-        $this->container = $container;
-    }
-
-    public function getAll(string $namespace): array
-    {
-        $finder = new Finder();
-        $finder->files()->in(__DIR__.'/../TemplatePage')->name('*.php');
-        $plugins = [];
-        foreach ($finder as $file) {
-            $plugins[] = rtrim($namespace, '\\').'\\'.$file->getFilenameWithoutExtension();
-        }
-
-        return $plugins ?? [];
+        $this->templates = $templates;
     }
 
     public function getChoices()
     {
-        $namespace = 'Labstag\TemplatePage';
-        $finder    = new Finder();
-        $finder->files()->in(__DIR__.'/../TemplatePage')->name('*.php');
         $plugins = [];
-        foreach ($finder as $file) {
-            $class = rtrim($namespace, '\\').'\\'.$file->getFilenameWithoutExtension();
-
+        foreach ($this->templates as $template) {
+            $class = get_class($template);
             $plugins[$class] = $class;
         }
 
@@ -44,6 +30,12 @@ class TemplatePageService
 
     public function getClass($class)
     {
-        return $this->container->get($class);
+        foreach ($this->templates as $template) {
+            if (get_class($template) === $class) {
+                return $template;
+            }
+        }
+
+        return null;
     }
 }

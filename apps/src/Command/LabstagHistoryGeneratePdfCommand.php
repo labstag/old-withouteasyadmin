@@ -9,7 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 #[AsCommand(
     name: 'labstag:history:generate-pdf',
@@ -18,19 +18,19 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 class LabstagHistoryGeneratePdfCommand extends Command
 {
 
-    protected ContainerBagInterface $container;
+    protected ParameterBagInterface $containerBag;
 
     protected HistoryRepository $historyRepository;
 
     protected HistoryService $historyService;
 
     public function __construct(
-        ContainerBagInterface $container,
+        ParameterBagInterface $containerBag,
         HistoryRepository $historyRepository,
         HistoryService $historyService
     )
     {
-        $this->container         = $container;
+        $this->containerBag         = $containerBag;
         $this->historyRepository = $historyRepository;
         $this->historyService    = $historyService;
         parent::__construct();
@@ -49,12 +49,12 @@ class LabstagHistoryGeneratePdfCommand extends Command
         $inoutput->progressStart(count($histories));
         foreach ($histories as $history) {
             $this->historyService->process(
-                $this->container->get('file_directory'),
+                $this->getParameter('file_directory'),
                 $history->getId(),
                 true
             );
             $this->historyService->process(
-                $this->container->get('file_directory'),
+                $this->getParameter('file_directory'),
                 $history->getId(),
                 false
             );
@@ -64,5 +64,10 @@ class LabstagHistoryGeneratePdfCommand extends Command
         $inoutput->progressFinish();
 
         return Command::SUCCESS;
+    }
+
+    protected function getParameter(string $name)
+    {
+      return $this->containerBag->get($name);
     }
 }

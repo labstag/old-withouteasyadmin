@@ -34,10 +34,13 @@ services:
     Labstag\TemplatePage\:
       resource: "../src/TemplatePage/"
       public: true
+      tags: [templatepage]
     Labstag\Controller\:
       resource: "../src/Controller/"
       tags: ["controller.service_arguments"]
-
+    Labstag\Service\TemplatePageService:
+        arguments:  
+            - !tagged_iterator templatepage
       # add more service definitions when explicit configuration is needed
       # please note that last definitions always *replace* previous ones
 

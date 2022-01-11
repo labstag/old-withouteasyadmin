@@ -21,7 +21,7 @@
       "fakerphp/faker": "v1.16.0",
       "friendsofsymfony/ckeditor-bundle": "2.3.0",
       "giggsey/libphonenumber-for-php": "8.12.40",
-      "helios-ag/fm-elfinder-bundle": "10.1",
+      "helios-ag/fm-elfinder-bundle": "12.1",
       "imagine/imagine": "1.2.4",
       "knplabs/knp-menu-bundle": "3.2.0",
       "knplabs/knp-paginator-bundle": "5.7.0",
@@ -96,16 +96,16 @@
       "wohali/oauth2-discord-new": "1.1.0"
     },
     "require-dev": {
-      "doctrine/doctrine-fixtures-bundle": "3.4.1",
-      "povils/phpmnd": "2.4.0",
-      "symfony/browser-kit": "5.4.2",
-      "symfony/css-selector": "5.4.2",
-      "symfony/debug-bundle": "5.4.2",
-      "symfony/maker-bundle": "1.36.4",
-      "symfony/phpunit-bridge": "5.4.0",
-      "symfony/stopwatch": "5.4.0",
-      "symfony/var-dumper": "5.4.2",
-      "symfony/web-profiler-bundle": "5.4.2"
+        "doctrine/doctrine-fixtures-bundle": "3.4.1",
+        "povils/phpmnd": "2.4.0",
+        "symfony/browser-kit": "5.4.2",
+        "symfony/css-selector": "5.4.2",
+        "symfony/debug-bundle": "5.4.2",
+        "symfony/maker-bundle": "1.36.4",
+        "symfony/phpunit-bridge": "^6.0",
+        "symfony/stopwatch": "5.4.0",
+        "symfony/var-dumper": "5.4.2",
+        "symfony/web-profiler-bundle": "5.4.2"
     },
     "config": {
       "optimize-autoloader": true,
