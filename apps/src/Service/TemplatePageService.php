@@ -2,9 +2,6 @@
 
 namespace Labstag\Service;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Finder\Finder;
-
 class TemplatePageService
 {
 
@@ -21,7 +18,7 @@ class TemplatePageService
     {
         $plugins = [];
         foreach ($this->templates as $template) {
-            $class = get_class($template);
+            $class           = get_class($template);
             $plugins[$class] = $class;
         }
 
@@ -36,6 +33,6 @@ class TemplatePageService
             }
         }
 
-        return null;
+        return;
     }
 }

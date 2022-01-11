@@ -30,7 +30,7 @@ class LabstagHistoryGeneratePdfCommand extends Command
         HistoryService $historyService
     )
     {
-        $this->containerBag         = $containerBag;
+        $this->containerBag      = $containerBag;
         $this->historyRepository = $historyRepository;
         $this->historyService    = $historyService;
         parent::__construct();
@@ -68,6 +68,6 @@ class LabstagHistoryGeneratePdfCommand extends Command
 
     protected function getParameter(string $name)
     {
-      return $this->containerBag->get($name);
+        return $this->containerBag->get($name);
     }
 }
