@@ -4,7 +4,7 @@
 apps/.phpdoc
 apps/*.phar
 apps/bin/
-!app/bin/console
+!apps/bin/console
 apps/public/assets
 apps/public/docs
 apps/public/uploads
