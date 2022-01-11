@@ -77,12 +77,12 @@ memo.show: Voir
 memo.title: Noteinterne
 memo.trash: Corbeille
 menu.add: Ajouter
-menu.divider: 'Ajouter un séparateur'
+menu.divider: "Ajouter un séparateur"
 menu.move: Déplacer
 menu.new: Nouveau
 menu.title: Menu
 menu.trash: Corbeille
-menu.update: 'Mise à jour'
+menu.update: "Mise à jour"
 oauth.title: Oauth
 param.title: Param
 phoneuser.edit: Éditer
