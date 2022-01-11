@@ -35,6 +35,7 @@ abstract class ControllerLib extends AbstractController
     protected Environment $twig;
 
     public function __construct(
+        Environment $twig,
         GuardService $guardService,
         DataService $dataService,
         Breadcrumbs $breadcrumbs,
@@ -42,6 +43,7 @@ abstract class ControllerLib extends AbstractController
         TranslatorInterface $translator
     )
     {
+        $this->twig                = $twig;
         $this->guardService        = $guardService;
         $this->translator          = $translator;
         $this->dataService         = $dataService;
