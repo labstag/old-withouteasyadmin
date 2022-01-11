@@ -17,8 +17,7 @@ class LayoutType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         unset($options);
         $builder->add(
             'name',

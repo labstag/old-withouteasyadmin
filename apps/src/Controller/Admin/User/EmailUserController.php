@@ -31,8 +31,7 @@ class EmailUserController extends AdminControllerLib
         AttachFormService $service,
         ?EmailUser $emailUser,
         EmailUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $service,
             $requestHandler,
@@ -61,8 +60,7 @@ class EmailUserController extends AdminControllerLib
      */
     public function showOrPreview(
         EmailUser $emailUser
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $emailUser,
             'admin/user/email_user/show.html.twig'

@@ -17,8 +17,7 @@ class FrontController extends FrontControllerLib
         string $slug,
         TemplatePageService $templatePageService,
         PageRepository $pageRepository
-    ): mixed
-    {
+    ): mixed {
         $slug = trim($slug);
         if ('' == $slug) {
             $page = $pageRepository->findOneBy(['front' => 1]);

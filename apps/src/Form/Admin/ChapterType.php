@@ -18,8 +18,7 @@ class ChapterType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
-    ): void
-    {
+    ): void {
         $this->setTextType($builder);
         $builder->add(
             'published',
