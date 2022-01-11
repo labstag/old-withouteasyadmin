@@ -98,6 +98,9 @@
         "symfony/polyfill-php72": "*"
     },
     "scripts": {
+        "phpmnd": "phpmnd src features/bootstrap tests",
+        "simple-phpunit": "simple-phpunit --verbose",
+        "simple-phpunit-unit-integration": "simple-phpunit --testsuite unit,integration --verbose",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
