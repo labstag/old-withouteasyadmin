@@ -21,10 +21,8 @@ class ActionsController extends ApiControllerLib
 {
     /**
      * @Route("/delete/{entity}/{id}", name="api_action_delete", methods={"DELETE"})
-     *
-     * @return Response
      */
-    public function delete(string $entity, string $id): JsonResponse
+    public function delete(string $entity, string $id): Response
     {
         $data   = [
             'action' => false,
@@ -52,10 +50,8 @@ class ActionsController extends ApiControllerLib
 
     /**
      * @Route("/deleties/{entity}/", name="api_action_deleties", methods={"DELETE"})
-     *
-     * @return Response
      */
-    public function deleties(string $entity, Request $request): JsonResponse
+    public function deleties(string $entity, Request $request): Response
     {
         return $this->deleteOrRestore($entity, $request, 'deleties');
     }
@@ -63,10 +59,8 @@ class ActionsController extends ApiControllerLib
     /**
      * @Route("/destroies/{entity}", name="api_action_destroies", methods={"DELETE"})
      * @IgnoreSoftDelete
-     *
-     * @return Response
      */
-    public function destroies(string $entity, Request $request): JsonResponse
+    public function destroies(string $entity, Request $request): Response
     {
         return $this->deleteOrRestore($entity, $request, 'destroies');
     }
@@ -74,10 +68,8 @@ class ActionsController extends ApiControllerLib
     /**
      * @Route("/destroy/{entity}/{id}", name="api_action_destroy", methods={"DELETE"})
      * @IgnoreSoftDelete
-     *
-     * @return Response
      */
-    public function destroy(string $entity, string $id): JsonResponse
+    public function destroy(string $entity, string $id): Response
     {
         $data       = [
             'action' => false,
@@ -107,10 +99,8 @@ class ActionsController extends ApiControllerLib
     /**
      * @Route("/empties", name="api_action_empties", methods={"DELETE"})
      * @IgnoreSoftDelete
-     *
-     * @return Response
      */
-    public function empties(Request $request): JsonResponse
+    public function empties(Request $request): Response
     {
         $data       = [
             'action' => false,
@@ -146,10 +136,8 @@ class ActionsController extends ApiControllerLib
     /**
      * @Route("/empty/{entity}", name="api_action_empty", methods={"DELETE"})
      * @IgnoreSoftDelete
-     *
-     * @return Response
      */
-    public function empty(string $entity): JsonResponse
+    public function empty(string $entity): Response
     {
         $data       = [
             'action' => false,
@@ -182,10 +170,8 @@ class ActionsController extends ApiControllerLib
     /**
      * @Route("/emptyall", name="api_action_emptyall", methods={"DELETE"})
      * @IgnoreSoftDelete
-     *
-     * @return Response
      */
-    public function emptyall(TrashService $trashService): JsonResponse
+    public function emptyall(TrashService $trashService): Response
     {
         $tokenValid = $this->tokenVerif('emptyall');
 
@@ -211,10 +197,8 @@ class ActionsController extends ApiControllerLib
     /**
      * @Route("/restore/{entity}/{id}", name="api_action_restore", methods={"POST"})
      * @IgnoreSoftDelete
-     *
-     * @return Response
      */
-    public function restore(string $entity, string $id): JsonResponse
+    public function restore(string $entity, string $id): Response
     {
         $data   = [
             'action' => false,
@@ -243,10 +227,8 @@ class ActionsController extends ApiControllerLib
     /**
      * @Route("/restories/{entity}", name="api_action_restories", methods={"POST"})
      * @IgnoreSoftDelete
-     *
-     * @return Response
      */
-    public function restories(string $entity, Request $request): JsonResponse
+    public function restories(string $entity, Request $request): Response
     {
         return $this->deleteOrRestore($entity, $request, 'restories');
     }

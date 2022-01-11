@@ -8,14 +8,14 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class LibelleVoter extends Voter
 {
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         unset($attribute);
 
         return $subject instanceof Libelle;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         unset($attribute, $subject, $token);
 

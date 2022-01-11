@@ -19,7 +19,7 @@ class UserCollectionSubscriber implements EventSubscriberInterface
         $this->userMailService = $userMailService;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [UserCollectionEvent::class => 'onUserCollectionEvent'];
     }

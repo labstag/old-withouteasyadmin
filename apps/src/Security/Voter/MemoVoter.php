@@ -16,14 +16,14 @@ class MemoVoter extends Voter
         return !(in_array($state, ['publie', 'rejete']));
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         unset($attribute);
 
         return $subject instanceof Memo;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         switch ($attribute) {
             case 'edit':
