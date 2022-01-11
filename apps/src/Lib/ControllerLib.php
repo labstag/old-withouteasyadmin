@@ -9,6 +9,9 @@ use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
@@ -20,6 +23,8 @@ abstract class ControllerLib extends AbstractController
 
     protected BreadcrumbsSingleton $breadcrumbsInstance;
 
+    protected CsrfTokenManagerInterface $csrfTokenManager;
+
     protected DataService $dataService;
 
     protected GuardService $guardService;
@@ -28,7 +33,11 @@ abstract class ControllerLib extends AbstractController
 
     protected Request $request;
 
-    protected RequestStack $requestStack;
+    protected RequestStack $requeststack;
+
+    protected RouterInterface $routerInterface;
+
+    protected TokenStorageInterface $tokenStorage;
 
     protected TranslatorInterface $translator;
 
@@ -36,6 +45,10 @@ abstract class ControllerLib extends AbstractController
 
     public function __construct(
         Environment $twig,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        TokenStorageInterface $tokenStorage,
+        RouterInterface $routerInterface,
+        RequestStack $requestStack,
         GuardService $guardService,
         DataService $dataService,
         Breadcrumbs $breadcrumbs,
@@ -43,24 +56,27 @@ abstract class ControllerLib extends AbstractController
         TranslatorInterface $translator
     )
     {
+        $this->csrfTokenManager    = $csrfTokenManager;
+        $this->tokenStorage        = $tokenStorage;
+        $this->routerInterface     = $routerInterface;
         $this->twig                = $twig;
         $this->guardService        = $guardService;
         $this->translator          = $translator;
         $this->dataService         = $dataService;
         $this->breadcrumbs         = $breadcrumbs;
         $this->paginator           = $paginator;
+        $this->requeststack        = $requestStack;
         $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
     }
 
     protected function flashBagAdd(string $type, $message)
     {
-        $requestStack = $this->get('request_stack');
-        $request      = $requestStack->getCurrentRequest();
+        $request = $this->requeststack->getCurrentRequest();
         if (is_null($request)) {
             return;
         }
 
-        $session  = $requestStack->getSession();
+        $session  = $this->requeststack->getSession();
         $flashbag = $session->getFlashBag();
         $flashbag->add($type, $message);
     }

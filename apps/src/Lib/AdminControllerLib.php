@@ -57,7 +57,7 @@ abstract class AdminControllerLib extends ControllerLib
             $form->getName(),
             empty($entity->getId()) ? 'Ajouter' : 'Sauvegarder'
         );
-        $form->handleRequest($this->get('request_stack')->getCurrentRequest());
+        $form->handleRequest($this->requeststack->getCurrentRequest());
         if ($form->isSubmitted() && $form->isValid()) {
             $this->upload($uploadAnnotReader, $attachmentRepository, $attachmentRH, $entity);
             $handler->handle($oldEntity, $entity);
@@ -88,7 +88,7 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $methods     = $this->getMethodsList();
         $url         = $this->getUrlAdmin();
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $route       = $all['_route'];
         $routeParams = $all['_route_params'];
@@ -120,7 +120,7 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        $query      = $this->get('request_stack')->getCurrentRequest()->query;
+        $query      = $this->requeststack->getCurrentRequest()->query;
         $get        = $query->all();
         $limit      = $query->getInt('limit', 10);
         $pagination = $this->paginator->paginate(
@@ -143,7 +143,7 @@ abstract class AdminControllerLib extends ControllerLib
             $data        = $search['data'];
             $data->limit = $limit;
             $data->search($get, $this->getDoctrine());
-            $route      = $this->get('request_stack')->getCurrentRequest()->get('_route');
+            $route      = $this->requeststack->getCurrentRequest()->get('_route');
             $url        = $this->generateUrl($route);
             $searchForm = $this->createForm(
                 $search['form'],
@@ -165,7 +165,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     public function modalAttachmentDelete(): void
     {
-        $twig                      = $this->get('twig');
+        $twig                      = $this->twig;
         $globals                   = $twig->getGlobals();
         $modal                     = $globals['modal'] ?? [];
         $modal['attachmentdelete'] = true;
@@ -179,7 +179,7 @@ abstract class AdminControllerLib extends ControllerLib
     ): Response
     {
         $this->setBreadcrumbsPage();
-        $request = $this->get('request_stack')->getCurrentRequest();
+        $request = $this->requeststack->getCurrentRequest();
         $all     = $request->attributes->all();
         $route   = $all['_route'];
         $headers = $this->setHeaderTitle();
@@ -211,7 +211,7 @@ abstract class AdminControllerLib extends ControllerLib
     ): Response
     {
         $url          = $this->getUrlAdmin();
-        $routeCurrent = $this->get('request_stack')->getCurrentRequest()->get('_route');
+        $routeCurrent = $this->requeststack->getCurrentRequest()->get('_route');
         $routeType    = (0 != substr_count($routeCurrent, 'preview')) ? 'preview' : 'show';
         $this->showOrPreviewadd($url, $routeType, $entity);
 
@@ -252,10 +252,10 @@ abstract class AdminControllerLib extends ControllerLib
 
         if (!$this->btns->isInit()) {
             $this->btns->setConf(
-                $this->get('twig'),
-                $this->get('router'),
-                $this->get('security.token_storage'),
-                $this->get('security.csrf.token_manager'),
+                $this->twig,
+                $this->routerInterface,
+                $this->tokenStorage,
+                $this->csrfTokenManager,
                 $this->guardService
             );
         }
@@ -302,9 +302,10 @@ abstract class AdminControllerLib extends ControllerLib
         string $route
     )
     {
-        $token = $this->get('security.token_storage');
-
-        return $this->guardService->guardRoute($route, $token->getToken());
+        return $this->guardService->guardRoute(
+            $route,
+            $this->tokenStorage->getToken()
+        );
     }
 
     protected function listOrTrashRouteTrash(
@@ -335,14 +336,14 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        $twig             = $this->get('twig');
+        $twig             = $this->twig;
         $globals          = $twig->getGlobals();
         $modal            = $globals['modal'] ?? [];
         $modal['destroy'] = (isset($url['destroy']));
         $modal['restore'] = (isset($url['restore']));
         $twig->addGlobal('modal', $modal);
 
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $route       = $all['_route'];
         $routeParams = $all['_route_params'];
@@ -419,13 +420,13 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function setBreadcrumbsPage()
     {
-        $request   = $this->get('request_stack')->getCurrentRequest();
+        $request   = $this->requeststack->getCurrentRequest();
         $all       = $request->attributes->all();
         $route     = $all['_route'];
         $data      = explode('_', $route);
         $method    = 'setBreadcrumbsPage';
         $callables = get_class_methods($this);
-        $router    = $this->get('router');
+        $router    = $this->routerInterface;
         foreach ($data as $row) {
             $method .= ucfirst($row);
             if (!in_array($method, $callables)) {
@@ -569,7 +570,7 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        $twig              = $this->get('twig');
+        $twig              = $this->twig;
         $globals           = $twig->getGlobals();
         $modal             = $globals['modal'] ?? [];
         $modal['delete']   = (isset($url['delete']));

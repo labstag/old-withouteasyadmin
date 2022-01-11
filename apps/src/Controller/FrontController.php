@@ -49,6 +49,10 @@ class FrontController extends FrontControllerLib
         preg_match('/'.$slugFront.'(.*)/', $slug, $matches);
 
         $class = $templatePageService->getClass($page->getFunction());
+        if (is_null($class)) {
+            throw $this->createNotFoundException();
+        }
+
         $slug  = strstr($slug, $page->getSlug());
 
         return $class->launch($matches);

@@ -26,7 +26,7 @@ abstract class ApiControllerLib extends AbstractController
 
     protected Request $request;
 
-    protected RequestStack $requestStack;
+    protected RequestStack $requeststack;
 
     protected RouteRepository $routeRepo;
 
@@ -48,11 +48,11 @@ abstract class ApiControllerLib extends AbstractController
         $this->routeRepo        = $routeRepo;
         $this->attachmentRH     = $attachmentRH;
         $this->token            = $token;
-        $this->requestStack     = $requestStack;
+        $this->requeststack     = $requestStack;
         $this->entityManager    = $entityManager;
         $this->csrfTokenManager = $csrfTokenManager;
         // @var Request $request
-        $request            = $this->requestStack->getCurrentRequest();
+        $request            = $this->requeststack->getCurrentRequest();
         $this->request      = $request;
         $this->phoneService = $phoneService;
         $this->workflows    = $workflows;

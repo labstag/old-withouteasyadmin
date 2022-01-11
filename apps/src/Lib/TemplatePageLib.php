@@ -50,7 +50,7 @@ abstract class TemplatePageLib
 
     protected Request $request;
 
-    protected RequestStack $requestStack;
+    protected RequestStack $requeststack;
 
     protected RouterInterface $router;
 
@@ -77,8 +77,8 @@ abstract class TemplatePageLib
     {
         $this->router             = $router;
         $this->userRepository     = $userRepository;
-        $this->requestStack       = $requestStack;
-        $request                  = $this->requestStack->getCurrentRequest();
+        $this->requeststack       = $requestStack;
+        $request                  = $this->requeststack->getCurrentRequest();
         $this->request            = $request;
         $this->containerBag       = $containerBag;
         $this->historyRepository  = $historyRepository;

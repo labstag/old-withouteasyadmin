@@ -25,7 +25,7 @@ class TemplatePageService
         return $plugins;
     }
 
-    public function getClass($class)
+    public function getClass($class): mixed
     {
         foreach ($this->templates as $template) {
             if (get_class($template) === $class) {
@@ -33,6 +33,6 @@ class TemplatePageService
             }
         }
 
-        return;
+        return null;
     }
 }
