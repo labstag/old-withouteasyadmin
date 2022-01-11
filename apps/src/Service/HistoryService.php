@@ -2,6 +2,7 @@
 
 namespace Labstag\Service;
 
+use Doctrine\Common\Collections\Collection;
 use Labstag\Entity\History;
 use Labstag\Repository\HistoryRepository;
 use Spipu\Html2Pdf\Html2Pdf;
@@ -64,7 +65,7 @@ class HistoryService
         $pdf->output($this->filename, 'F');
     }
 
-    private function generateHistoryPdf(History $history, array $dataChapters): Html2Pdf
+    private function generateHistoryPdf(History $history, Collection $dataChapters): Html2Pdf
     {
         $tmpfile = tmpfile();
         $data    = stream_get_meta_data($tmpfile);
@@ -84,18 +85,8 @@ class HistoryService
         return $pdf;
     }
 
-    private function getChapters(History $history, bool $all): array
+    private function getChapters(History $history, bool $all): Collection
     {
-        $entityChapters = $history->getChapters();
-        $dataChapters   = [];
-        foreach ($entityChapters as $chapter) {
-            if (false == $all && !in_array('publie', (array) $chapter->getState())) {
-                continue;
-            }
-
-            $dataChapters[] = $chapter;
-        }
-
-        return $dataChapters;
+        return $all ? $history->getChapters() : $history->getChaptersPublished();
     }
 }
