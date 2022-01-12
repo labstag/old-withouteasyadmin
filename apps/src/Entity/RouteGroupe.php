@@ -13,7 +13,7 @@ class RouteGroupe
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="guid", unique=true)
      */
     protected $id;
