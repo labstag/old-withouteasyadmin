@@ -53,8 +53,8 @@ class LabstagInstallCommand extends Command
     {
         $inputOutput = new SymfonyStyle($input, $output);
         $options     = $input->getOptions();
-        foreach ($options as $option) {
-            $this->executeOption($option, $inputOutput);
+        foreach ($options as $option => $state) {
+            $this->executeOption($state ? $option : '', $inputOutput);
         }
 
         $inputOutput->success('You have a new command! Now make it your own! Pass --help to see your options.');
