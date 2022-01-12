@@ -134,7 +134,7 @@ class AdminController extends AdminControllerLib
         if ($form->isSubmitted()) {
             $this->setUpload($request, $images);
             $cache->delete('configuration');
-            $post = $request->request->get($form->getName());
+            $post = $request->request->all($form->getName());
             $dispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
 

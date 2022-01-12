@@ -142,7 +142,7 @@ class MenuController extends AdminControllerLib
         );
 
         if ('POST' == $request->getMethod()) {
-            $data = $request->request->get('position');
+            $data = $request->request->all('position');
             if (!empty($data)) {
                 $data = json_decode($data, true);
             }

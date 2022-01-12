@@ -61,7 +61,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 
     protected function ignoreSoftDeleteAnnotation($controller, $method)
     {
-        $routeCurrent = $this->request->get('_route');
+        $routeCurrent = $this->request->attributes->get('_route');
         $routes       = [
             'api_action_destroies',
             'api_action_restories',

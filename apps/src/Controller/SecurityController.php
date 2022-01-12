@@ -159,7 +159,7 @@ class SecurityController extends ControllerLib
         $form->handleRequest($request);
         $session = $request->getSession();
         if ($form->isSubmitted()) {
-            $post = $request->request->get($form->getName());
+            $post = $request->request->all($form->getName());
             if (isset($post['confirm'])) {
                 $session->set('disclaimer', 1);
 
@@ -199,7 +199,6 @@ class SecurityController extends ControllerLib
         OauthConnectUserRepository $repository
     ): Response
     {
-        $this->denyAccessUnlessGranted('IS_ANONYMOUS');
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
@@ -239,11 +238,10 @@ class SecurityController extends ControllerLib
         UserService $userService
     ): Response
     {
-        $this->denyAccessUnlessGranted('IS_ANONYMOUS');
         $form = $this->createForm(LostPasswordType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $post = $request->request->get($form->getName());
+            $post = $request->request->all($form->getName());
             $userService->postLostPassword($post);
 
             return $this->redirectToRoute('app_login');
