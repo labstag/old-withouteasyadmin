@@ -28,8 +28,7 @@ class LibelleController extends AdminControllerLib
         AttachFormService $service,
         ?Libelle $libelle,
         LibelleRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
 
         return $this->form(
@@ -48,8 +47,7 @@ class LibelleController extends AdminControllerLib
     public function indexOrTrash(
         EntityManagerInterface $entityManager,
         LibelleRepository $repository
-    ): Response
-    {
+    ): Response {
         return $this->listOrTrash(
             $entityManager,
             $repository,
@@ -64,8 +62,7 @@ class LibelleController extends AdminControllerLib
      */
     public function showOrPreview(
         Libelle $libelle
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $libelle,
             'admin/libelle/show.html.twig'

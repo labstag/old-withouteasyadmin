@@ -10,7 +10,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  */
 class OauthConnectUser
 {
-
     /**
      * @ORM\Column(type="array")
      *

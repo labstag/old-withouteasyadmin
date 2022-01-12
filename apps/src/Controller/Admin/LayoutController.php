@@ -28,8 +28,7 @@ class LayoutController extends AdminControllerLib
         AttachFormService $service,
         ?Layout $layout,
         LayoutRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $service,
             $requestHandler,
@@ -46,8 +45,7 @@ class LayoutController extends AdminControllerLib
     public function indexOrTrash(
         EntityManagerInterface $entityManager,
         LayoutRepository $repository
-    ): Response
-    {
+    ): Response {
         return $this->listOrTrash(
             $entityManager,
             $repository,
@@ -62,8 +60,7 @@ class LayoutController extends AdminControllerLib
      */
     public function showOrPreview(
         Layout $layout
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $layout,
             'admin/layout/show.html.twig'

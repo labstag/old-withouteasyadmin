@@ -22,8 +22,7 @@ class AttachmentController extends AdminControllerLib
     public function indexOrTrash(
         EntityManagerInterface $entityManager,
         AttachmentRepository $repository
-    ): Response
-    {
+    ): Response {
         return $this->listOrTrash(
             $entityManager,
             $repository,

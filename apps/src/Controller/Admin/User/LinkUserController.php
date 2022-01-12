@@ -28,8 +28,7 @@ class LinkUserController extends AdminControllerLib
         AttachFormService $service,
         ?LinkUser $linkUser,
         LinkUserRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $service,
             $requestHandler,
@@ -46,8 +45,7 @@ class LinkUserController extends AdminControllerLib
     public function indexOrTrash(
         EntityManagerInterface $entityManager,
         LinkUserRepository $linkUserRepository
-    ): Response
-    {
+    ): Response {
         return $this->listOrTrash(
             $entityManager,
             $linkUserRepository,
@@ -62,8 +60,7 @@ class LinkUserController extends AdminControllerLib
      */
     public function showOrPreview(
         LinkUser $linkUser
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $linkUser,
             'admin/user/link_user/show.html.twig'

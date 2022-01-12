@@ -28,8 +28,7 @@ class GeoCodeController extends AdminControllerLib
         AttachFormService $service,
         ?GeoCode $geoCode,
         GeoCodeRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $service,
             $requestHandler,
@@ -46,8 +45,7 @@ class GeoCodeController extends AdminControllerLib
     public function index(
         EntityManagerInterface $entityManager,
         GeoCodeRepository $repository
-    ): Response
-    {
+    ): Response {
         return $this->listOrTrash(
             $entityManager,
             $repository,
@@ -62,8 +60,7 @@ class GeoCodeController extends AdminControllerLib
      */
     public function showOrPreview(
         GeoCode $geoCode
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $geoCode,
             'admin/geocode/show.html.twig'

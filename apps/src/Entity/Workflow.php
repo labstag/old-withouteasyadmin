@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  */
 class Workflow
 {
-
     /**
      * @ORM\Column(type="string", length=255)
      */

@@ -28,8 +28,7 @@ class TemplateController extends AdminControllerLib
         AttachFormService $service,
         ?Template $template,
         TemplateRequestHandler $requestHandler
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $service,
             $requestHandler,
@@ -46,8 +45,7 @@ class TemplateController extends AdminControllerLib
     public function indexOrTrash(
         EntityManagerInterface $entityManager,
         TemplateRepository $repository
-    ): Response
-    {
+    ): Response {
         return $this->listOrTrash(
             $entityManager,
             $repository,
@@ -62,8 +60,7 @@ class TemplateController extends AdminControllerLib
      */
     public function showOrPreview(
         Template $template
-    ): Response
-    {
+    ): Response {
         return $this->renderShowOrPreview(
             $template,
             'admin/template/show.html.twig'

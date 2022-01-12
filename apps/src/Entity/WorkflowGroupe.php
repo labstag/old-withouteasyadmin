@@ -11,7 +11,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  */
 class WorkflowGroupe
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")

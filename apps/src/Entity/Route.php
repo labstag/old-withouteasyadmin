@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  */
 class Route
 {
-
     /**
      * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refroute", orphanRemoval=true)
      */
