@@ -107,7 +107,7 @@ class GeoCodeController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminGeocodeEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -133,7 +133,7 @@ class GeoCodeController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminGeocodePreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -153,7 +153,7 @@ class GeoCodeController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminGeocodeShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

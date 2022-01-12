@@ -198,7 +198,7 @@ class HistoryController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminHistoryEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -213,7 +213,7 @@ class HistoryController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminHistoryMove(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -239,7 +239,7 @@ class HistoryController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminHistoryPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -259,7 +259,7 @@ class HistoryController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminHistoryShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

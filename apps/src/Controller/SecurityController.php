@@ -64,11 +64,9 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('front');
         }
 
-        return $this->render(
+        return $this->renderForm(
             'security/change-password.html.twig',
-            [
-                'formChangePassword' => $form->createView(),
-            ]
+            ['formChangePassword' => $form]
         );
     }
 
@@ -184,11 +182,11 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('front');
         }
 
-        return $this->render(
+        return $this->renderForm(
             'security/disclaimer.html.twig',
             [
                 'class_body' => 'DisclaimerPage',
-                'form'       => $form->createView(),
+                'form'       => $form,
             ]
         );
     }
@@ -213,11 +211,11 @@ class SecurityController extends ControllerLib
 
         $oauths = $repository->findDistinctAllOauth();
 
-        return $this->render(
+        return $this->renderForm(
             'security/login.html.twig',
             [
                 'oauths'    => $oauths,
-                'formLogin' => $form->createView(),
+                'formLogin' => $form,
                 'error'     => $error,
             ]
         );
@@ -251,11 +249,9 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render(
+        return $this->renderForm(
             'security/lost-password.html.twig',
-            [
-                'formLostPassword' => $form->createView(),
-            ]
+            ['formLostPassword' => $form]
         );
     }
 

@@ -116,7 +116,7 @@ class MemoController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminNoteinterneEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -142,7 +142,7 @@ class MemoController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminNoteinternePreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -162,7 +162,7 @@ class MemoController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminNoteinterneShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

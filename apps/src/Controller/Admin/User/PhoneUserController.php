@@ -112,7 +112,7 @@ class PhoneUserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminPhoneuserEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -138,7 +138,7 @@ class PhoneUserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminPhoneuserPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -158,7 +158,7 @@ class PhoneUserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminPhoneuserShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

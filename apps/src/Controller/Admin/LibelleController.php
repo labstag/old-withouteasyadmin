@@ -110,7 +110,7 @@ class LibelleController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminlibelleEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -136,7 +136,7 @@ class LibelleController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminlibellePreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -156,7 +156,7 @@ class LibelleController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminlibelleShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

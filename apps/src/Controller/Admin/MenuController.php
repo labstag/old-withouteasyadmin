@@ -254,7 +254,7 @@ class MenuController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminMenuDivider(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -269,7 +269,7 @@ class MenuController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminMenuMove(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -306,7 +306,7 @@ class MenuController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminMenuUpdate(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

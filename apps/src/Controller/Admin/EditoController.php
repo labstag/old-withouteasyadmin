@@ -111,7 +111,7 @@ class EditoController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminEditoEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -137,7 +137,7 @@ class EditoController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminEditoPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -157,7 +157,7 @@ class EditoController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminEditoShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

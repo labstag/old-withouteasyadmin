@@ -111,7 +111,7 @@ class PostController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminPostEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -137,7 +137,7 @@ class PostController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminPostPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -157,7 +157,7 @@ class PostController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminPostShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

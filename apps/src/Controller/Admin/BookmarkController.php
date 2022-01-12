@@ -68,11 +68,9 @@ class BookmarkController extends AdminControllerLib
             $this->uploadFile($form, $security, $enqueue);
         }
 
-        return $this->render(
+        return $this->renderForm(
             'admin/bookmark/import.html.twig',
-            [
-                'form' => $form->createView(),
-            ]
+            ['form' => $form]
         );
     }
 
@@ -147,7 +145,7 @@ class BookmarkController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminBookmarkEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -184,7 +182,7 @@ class BookmarkController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminBookmarkPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -204,7 +202,7 @@ class BookmarkController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminBookmarkShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

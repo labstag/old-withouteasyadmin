@@ -111,7 +111,7 @@ class ChapterController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminChapterEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -137,7 +137,7 @@ class ChapterController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminChapterPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -157,7 +157,7 @@ class ChapterController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminChapterShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

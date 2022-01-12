@@ -107,7 +107,7 @@ class LinkUserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminLinkuserEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -133,7 +133,7 @@ class LinkUserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminLinkuserPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -153,7 +153,7 @@ class LinkUserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminLinkuserShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

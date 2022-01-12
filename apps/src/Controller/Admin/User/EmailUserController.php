@@ -112,7 +112,7 @@ class EmailUserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminEmailuserEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -138,7 +138,7 @@ class EmailUserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminEmailuserPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -158,7 +158,7 @@ class EmailUserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminEmailuserShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

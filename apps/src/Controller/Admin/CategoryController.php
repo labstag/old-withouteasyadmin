@@ -118,7 +118,7 @@ class CategoryController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminCategoryEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -144,7 +144,7 @@ class CategoryController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminCategoryPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -164,7 +164,7 @@ class CategoryController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminCategoryShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

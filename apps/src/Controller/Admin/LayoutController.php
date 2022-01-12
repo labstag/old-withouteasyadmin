@@ -107,7 +107,7 @@ class LayoutController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminTemplaceEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -133,7 +133,7 @@ class LayoutController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminTemplacePreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -153,7 +153,7 @@ class LayoutController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminTemplaceShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

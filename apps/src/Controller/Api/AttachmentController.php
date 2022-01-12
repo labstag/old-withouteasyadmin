@@ -148,7 +148,7 @@ class AttachmentController extends ApiControllerLib
 
     protected function verifToken($entity): bool
     {
-        $token = $this->get('request_stack')->getCurrentRequest()->request->get('_token');
+        $token = $this->requeststack->getCurrentRequest()->request->get('_token');
 
         $csrfToken = new CsrfToken(
             'attachment-img-'.$entity->getId(),

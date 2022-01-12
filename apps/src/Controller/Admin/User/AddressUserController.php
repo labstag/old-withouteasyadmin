@@ -111,7 +111,7 @@ class AddressUserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminAddressuserEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -137,7 +137,7 @@ class AddressUserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminAddressuserPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -157,7 +157,7 @@ class AddressUserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminAddressuserShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

@@ -146,11 +146,11 @@ class AdminController extends AdminControllerLib
             ]
         );
 
-        return $this->render(
+        return $this->renderForm(
             'admin/param.html.twig',
             [
                 'images' => $images,
-                'form'   => $form->createView(),
+                'form'   => $form,
             ]
         );
     }
@@ -192,11 +192,9 @@ class AdminController extends AdminControllerLib
 
         $form = $this->createForm(FormType::class, $data);
 
-        return $this->render(
+        return $this->renderForm(
             'admin/form.html.twig',
-            [
-                'form' => $form->createView(),
-            ]
+            ['form' => $form]
         );
     }
 

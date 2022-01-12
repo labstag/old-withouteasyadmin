@@ -160,7 +160,7 @@ class UserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminUserEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -175,7 +175,7 @@ class UserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminUserGuard(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -201,7 +201,7 @@ class UserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminUserPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -221,7 +221,7 @@ class UserController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminUserShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 

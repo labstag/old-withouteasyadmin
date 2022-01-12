@@ -73,11 +73,11 @@ abstract class AdminControllerLib extends ControllerLib
             }
         }
 
-        return $this->render(
+        return $this->renderForm(
             $twig,
             [
                 'entity' => $entity,
-                'form'   => $form->createView(),
+                'form'   => $form,
             ]
         );
     }
@@ -156,10 +156,10 @@ abstract class AdminControllerLib extends ControllerLib
                 ]
             );
 
-            $parameters['searchform'] = $searchForm->createView();
+            $parameters['searchform'] = $searchForm;
         }
 
-        return $this->render(
+        return $this->renderForm(
             $html,
             $parameters
         );

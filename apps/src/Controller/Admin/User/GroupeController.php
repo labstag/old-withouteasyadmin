@@ -157,7 +157,7 @@ class GroupeController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminGroupuserEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -172,7 +172,7 @@ class GroupeController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminGroupuserGuard(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -198,7 +198,7 @@ class GroupeController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminGroupuserPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
@@ -218,7 +218,7 @@ class GroupeController extends AdminControllerLib
 
     protected function setBreadcrumbsPageAdminGroupuserShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
+        $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $routeParams = $all['_route_params'];
 
