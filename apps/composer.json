@@ -76,6 +76,7 @@
         "symfony/string": "5.4.2",
         "symfony/translation": "5.4.2",
         "symfony/twig-bundle": "5.4.0",
+        "symfony/uid": "5.4.*",
         "symfony/validator": "5.4.2",
         "symfony/web-link": "5.4.0",
         "symfony/webpack-encore-bundle": "1.13.2",
