@@ -71,7 +71,6 @@ class SearchController extends ApiControllerLib
 
     /**
      * @Route("/libelle", name="api_search_postlibelle")
-     *
      */
     public function libelle(Request $request, LibelleRepository $repository): JsonResponse
     {

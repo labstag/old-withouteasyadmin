@@ -114,9 +114,6 @@ class Groupe
         return $this->name;
     }
 
-    /**
-     * @return Collection|RouteGroupe[]
-     */
     public function getRoutes(): Collection
     {
         return $this->routes;
@@ -127,9 +124,6 @@ class Groupe
         return $this->users;
     }
 
-    /**
-     * @return Collection|WorkflowGroupe[]
-     */
     public function getWorkflowGroupes(): Collection
     {
         return $this->workflowGroupes;

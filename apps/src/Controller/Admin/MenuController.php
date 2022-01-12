@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Menu\LinkType;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 /**
  * @Route("/admin/menu")
@@ -104,15 +106,16 @@ class MenuController extends AdminControllerLib
      * @Route("/", name="admin_menu_index", methods={"GET"})
      */
     public function index(
+        Environment $twig,
         MenuRepository $repository
     )
     {
         $all     = $repository->findAllCode();
-        $globals = $this->get('twig')->getGlobals();
+        $globals = $twig->getGlobals();
         $modal   = $globals['modal'] ?? [];
 
         $modal['delete'] = true;
-        $this->get('twig')->addGlobal('modal', $modal);
+        $twig->addGlobal('modal', $modal);
         $this->btnInstance()->addBtnNew('admin_menu_new');
 
         return $this->render(
@@ -127,6 +130,7 @@ class MenuController extends AdminControllerLib
     public function move(
         Menu $menu,
         Request $request,
+        EntityManagerInterface $entityManager,
         MenuRepository $repository
     )
     {
@@ -138,8 +142,7 @@ class MenuController extends AdminControllerLib
         );
 
         if ('POST' == $request->getMethod()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $data          = $request->request->get('position');
+            $data = $request->request->get('position');
             if (!empty($data)) {
                 $data = json_decode($data, true);
             }
@@ -201,9 +204,13 @@ class MenuController extends AdminControllerLib
      *
      * @IgnoreSoftDelete
      */
-    public function trash(MenuRepository $repository): Response
+    public function trash(
+        EntityManagerInterface $entityManager,
+        MenuRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/menu/trash.html.twig',
         );

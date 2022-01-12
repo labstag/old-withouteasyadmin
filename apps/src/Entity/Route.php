@@ -66,9 +66,6 @@ class Route
         return $this;
     }
 
-    /**
-     * @return Collection|RouteGroupe[]
-     */
     public function getGroupes(): Collection
     {
         return $this->groupes;
@@ -84,9 +81,6 @@ class Route
         return $this->name;
     }
 
-    /**
-     * @return Collection|RouteUser[]
-     */
     public function getUsers(): Collection
     {
         return $this->users;

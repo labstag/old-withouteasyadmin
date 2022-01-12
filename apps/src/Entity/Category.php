@@ -105,17 +105,11 @@ class Category
         return $this;
     }
 
-    /**
-     * @return Bookmark[]|Collection
-     */
     public function getBookmarks(): Collection
     {
         return $this->bookmarks;
     }
 
-    /**
-     * @return Collection|self[]
-     */
     public function getChildren(): Collection
     {
         return $this->children;
@@ -136,9 +130,6 @@ class Category
         return $this->parent;
     }
 
-    /**
-     * @return Collection|Post[]
-     */
     public function getPosts(): Collection
     {
         return $this->posts;

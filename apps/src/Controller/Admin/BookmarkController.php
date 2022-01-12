@@ -3,6 +3,7 @@
 namespace Labstag\Controller\Admin;
 
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use DOMDocument;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Bookmark;
@@ -80,9 +81,13 @@ class BookmarkController extends AdminControllerLib
      * @Route("/", name="admin_bookmark_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(BookmarkRepository $repository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        BookmarkRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/bookmark/index.html.twig'
         );

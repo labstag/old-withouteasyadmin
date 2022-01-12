@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
 use Labstag\Form\Admin\EditoType;
@@ -45,9 +46,13 @@ class EditoController extends AdminControllerLib
      * @Route("/", name="admin_edito_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(EditoRepository $repository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        EditoRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/edito/index.html.twig',
         );

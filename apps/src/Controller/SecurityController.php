@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\Email;
 use Labstag\Entity\OauthConnectUser;
@@ -32,6 +33,7 @@ use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends ControllerLib
@@ -311,6 +313,7 @@ class SecurityController extends ControllerLib
      * @Route("/oauth/check/{oauthCode}", name="connect_check", priority=1)
      */
     public function oauthConnectCheck(
+        TokenStorageInterface $tokenStorage,
         Request $request,
         string $oauthCode,
         LoggerInterface $logger,
@@ -353,7 +356,6 @@ class SecurityController extends ControllerLib
 
             $session->remove('oauth2state');
             // @var UsageTrackingTokenStorage $tokenStorage
-            $tokenStorage = $this->get('security.token_storage');
             // @var TokenInterface $token
             $token = $tokenStorage->getToken();
             if (!$token instanceof AnonymousToken) {
@@ -403,6 +405,7 @@ class SecurityController extends ControllerLib
         Request $request,
         string $oauthCode,
         Security $security,
+        EntityManagerInterface $entityManager,
         OauthConnectUserRepository $repository
     ): RedirectResponse
     {
@@ -419,11 +422,10 @@ class SecurityController extends ControllerLib
             $referer = $url;
         }
 
-        $entity  = $repository->findOneOauthByUser($oauthCode, $user);
-        $manager = $this->getDoctrine()->getManager();
+        $entity = $repository->findOneOauthByUser($oauthCode, $user);
         if ($entity instanceof OauthConnectUser) {
-            $manager->remove($entity);
-            $manager->flush();
+            $entityManager->remove($entity);
+            $entityManager->flush();
             $paramtrans = ['%string%' => $oauthCode];
 
             $msg = $this->translator->trans('security.user.oauth.dissociated', $paramtrans);

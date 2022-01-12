@@ -72,9 +72,6 @@ class Layout
         return $this->name;
     }
 
-    /**
-     * @return Collection|Page[]
-     */
     public function getPages(): Collection
     {
         return $this->pages;

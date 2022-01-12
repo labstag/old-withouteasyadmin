@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\PhoneUser;
 use Labstag\Form\Admin\Search\User\PhoneUserType as UserPhoneUserType;
@@ -46,9 +47,13 @@ class PhoneUserController extends AdminControllerLib
      * @Route("/", name="admin_phoneuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(PhoneUserRepository $repository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        PhoneUserRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/user/phone_user/index.html.twig'
         );

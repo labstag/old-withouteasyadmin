@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Category;
 use Labstag\Form\Admin\CategoryType;
@@ -44,9 +45,13 @@ class CategoryController extends AdminControllerLib
      * @Route("/", name="admin_category_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(CategoryRepository $repository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        CategoryRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/category/index.html.twig'
         );

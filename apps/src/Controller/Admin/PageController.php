@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Page;
 use Labstag\Form\Admin\PageType;
@@ -45,9 +46,13 @@ class PageController extends AdminControllerLib
      * @Route("/", name="admin_page_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(PageRepository $repository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        PageRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/page/index.html.twig'
         );

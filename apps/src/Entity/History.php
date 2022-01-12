@@ -107,9 +107,6 @@ class History
         return $this;
     }
 
-    /**
-     * @return Chapter[]|Collection
-     */
     public function getChapters(): Collection
     {
         return $this->chapters;

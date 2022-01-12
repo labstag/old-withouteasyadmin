@@ -81,17 +81,11 @@ class Workflow
         return $this->transition;
     }
 
-    /**
-     * @return Collection|WorkflowGroupe[]
-     */
     public function getWorkflowGroupes(): Collection
     {
         return $this->workflowGroupes;
     }
 
-    /**
-     * @return Collection|WorkflowUser[]
-     */
     public function getWorkflowUsers(): Collection
     {
         return $this->workflowUsers;

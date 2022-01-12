@@ -119,9 +119,11 @@ class OauthService
         if ($this->ifConfigProviderEnable($clientName)) {
             return $this->initProvider($clientName);
         }
+
+        return null;
     }
 
-    protected function generateProvider($clientName, $url, $oauth)
+    protected function generateProvider($clientName, $url, $oauth): ?AbstractProvider
     {
         $params   = [
             'clientId'     => $oauth['id'],
@@ -147,7 +149,7 @@ class OauthService
         return $provider;
     }
 
-    protected function generateStandardProvider($clientName, $params)
+    protected function generateStandardProvider($clientName, $params): ?AbstractProvider
     {
         $provider = null;
         $provider = $this->generateStandardProviderBitbucket($clientName, $params, $provider);
@@ -162,47 +164,47 @@ class OauthService
         return $this->generateStandardProviderTwitch($clientName, $params, $provider);
     }
 
-    protected function generateStandardProviderBitbucket($clientName, $params, $provider)
+    protected function generateStandardProviderBitbucket($clientName, $params, $provider): ?AbstractProvider
     {
         return ('bitbucket' == $clientName) ? new Bitbucket($params) : $provider;
     }
 
-    protected function generateStandardProviderDiscord($clientName, $params, $provider)
+    protected function generateStandardProviderDiscord($clientName, $params, $provider): ?AbstractProvider
     {
         return ('discord' == $clientName) ? new Discord($params) : $provider;
     }
 
-    protected function generateStandardProviderDropbox($clientName, $params, $provider)
+    protected function generateStandardProviderDropbox($clientName, $params, $provider): ?AbstractProvider
     {
         return ('dropbox' == $clientName) ? new Dropbox($params) : $provider;
     }
 
-    protected function generateStandardProviderGithub($clientName, $params, $provider)
+    protected function generateStandardProviderGithub($clientName, $params, $provider): ?AbstractProvider
     {
         return ('github' == $clientName) ? new Github($params) : $provider;
     }
 
-    protected function generateStandardProviderGitlab($clientName, $params, $provider)
+    protected function generateStandardProviderGitlab($clientName, $params, $provider): ?AbstractProvider
     {
         return ('gitlab' == $clientName) ? new Gitlab($params) : $provider;
     }
 
-    protected function generateStandardProviderGoogle($clientName, $params, $provider)
+    protected function generateStandardProviderGoogle($clientName, $params, $provider): ?AbstractProvider
     {
         return ('google' == $clientName) ? new Google($params) : $provider;
     }
 
-    protected function generateStandardProviderlinkedin($clientName, $params, $provider)
+    protected function generateStandardProviderlinkedin($clientName, $params, $provider): ?AbstractProvider
     {
         return ('linkedin' == $clientName) ? new LinkedIn($params) : $provider;
     }
 
-    protected function generateStandardProviderSlack($clientName, $params, $provider)
+    protected function generateStandardProviderSlack($clientName, $params, $provider): ?AbstractProvider
     {
         return ('slack' == $clientName) ? new Slack($params) : $provider;
     }
 
-    protected function generateStandardProviderTwitch($clientName, $params, $provider)
+    protected function generateStandardProviderTwitch($clientName, $params, $provider): ?AbstractProvider
     {
         return ('twitch' == $clientName) ? new TwitchHelix($params) : $provider;
     }
@@ -216,7 +218,7 @@ class OauthService
         return [];
     }
 
-    protected function initProvider(string $clientName): AbstractProvider
+    protected function initProvider(string $clientName): ?AbstractProvider
     {
         $code  = strtoupper($clientName);
         $oauth = $this->oauthActivated[strtolower($code)];

@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
@@ -82,6 +83,7 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     public function listOrTrash(
+        EntityManagerInterface $entityManager,
         ServiceEntityRepositoryLib $repository,
         string $html
     ): Response
@@ -94,7 +96,7 @@ abstract class AdminControllerLib extends ControllerLib
         $routeParams = $all['_route_params'];
         $routeType   = (0 != substr_count($route, 'trash')) ? 'trash' : 'all';
         $method      = $methods[$routeType];
-        $this->addNewImport($repository, $methods, $routeType, $url);
+        $this->addNewImport($entityManager, $repository, $methods, $routeType, $url);
 
         if ('trash' != $routeType) {
             $this->btnInstance()->addSupprimerSelection(
@@ -142,7 +144,7 @@ abstract class AdminControllerLib extends ControllerLib
             $get         = $query->all();
             $data        = $search['data'];
             $data->limit = $limit;
-            $data->search($get, $this->getDoctrine());
+            $data->search($get, $entityManager);
             $route      = $this->requeststack->getCurrentRequest()->get('_route');
             $url        = $this->generateUrl($route);
             $searchForm = $this->createForm(
@@ -553,13 +555,13 @@ abstract class AdminControllerLib extends ControllerLib
     protected function setTrashIcon(
         $methods,
         $repository,
-        $url
+        $url,
+        EntityManagerInterface $entityManager
     )
     {
         /** @var EntityManager $entityManager */
-        $entityManager = $this->getDoctrine()->getManager();
-        $methodTrash   = $methods['trash'];
-        $filters       = $entityManager->getFilters();
+        $methodTrash = $methods['trash'];
+        $filters     = $entityManager->getFilters();
         $filters->disable('softdeleteable');
         $trash = $repository->{$methodTrash}([]);
         $total = count($trash->getQuery()->getResult());
@@ -738,13 +740,20 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     private function addNewImport(
+        EntityManagerInterface $entityManager,
         ServiceEntityRepositoryLib $repository,
         array $methods,
         string $routeType,
         array $url = [],
     )
     {
-        $this->listOrTrashRouteTrashsetTrashIcon($methods, $repository, $url, $routeType);
+        $this->listOrTrashRouteTrashsetTrashIcon(
+            $methods,
+            $repository,
+            $url,
+            $routeType,
+            $entityManager
+        );
 
         if (isset($url['new']) && 'trash' != $routeType) {
             $this->btnInstance()->addBtnNew(
@@ -759,7 +768,13 @@ abstract class AdminControllerLib extends ControllerLib
         }
     }
 
-    private function listOrTrashRouteTrashsetTrashIcon($methods, $repository, $url, $routeType)
+    private function listOrTrashRouteTrashsetTrashIcon(
+        $methods,
+        $repository,
+        $url,
+        $routeType,
+        EntityManagerInterface $entityManager
+    )
     {
         if ('trash' == $routeType) {
             $this->listOrTrashRouteTrash($url, $repository);
@@ -768,7 +783,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
 
         if (isset($url['trash'])) {
-            $this->setTrashIcon($methods, $repository, $url);
+            $this->setTrashIcon($methods, $repository, $url, $entityManager);
         }
     }
 }

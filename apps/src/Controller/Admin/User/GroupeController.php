@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
 use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
@@ -91,9 +92,13 @@ class GroupeController extends AdminControllerLib
      * @Route("/", name="admin_groupuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function index(GroupeRepository $repository): Response
+    public function index(
+        EntityManagerInterface $entityManager,
+        GroupeRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/user/groupe/index.html.twig'
         );

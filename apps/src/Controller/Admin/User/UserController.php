@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Search\UserType as SearchUserType;
@@ -109,9 +110,13 @@ class UserController extends AdminControllerLib
      * @Route("/", name="admin_user_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(UserRepository $repository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        UserRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/user/index.html.twig'
         );

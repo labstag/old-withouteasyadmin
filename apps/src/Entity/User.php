@@ -354,9 +354,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->avatar;
     }
 
-    /**
-     * @return Bookmark[]|Collection
-     */
     public function getBookmarks(): Collection
     {
         return $this->bookmarks;
@@ -387,9 +384,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->file;
     }
 
-    /**
-     * @return Collection|History[]
-     */
     public function getHistories(): Collection
     {
         return $this->histories;
@@ -410,9 +404,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->noteInternes;
     }
 
-    /**
-     * @return Collection|Memo[]
-     */
     public function getNoteInternes(): Collection
     {
         return $this->noteInternes;
@@ -441,9 +432,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->plainPassword;
     }
 
-    /**
-     * @return Collection|Post[]
-     */
     public function getPosts(): Collection
     {
         return $this->posts;
@@ -466,9 +454,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    /**
-     * @return Collection|RouteUser[]
-     */
     public function getRoutes(): Collection
     {
         return $this->routes;
@@ -498,9 +483,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->username;
     }
 
-    /**
-     * @return Collection|WorkflowUser[]
-     */
     public function getWorkflowUsers(): Collection
     {
         return $this->workflowUsers;

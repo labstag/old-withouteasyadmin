@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\History;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\History;
 use Labstag\Form\Admin\HistoryType;
@@ -48,9 +49,13 @@ class HistoryController extends AdminControllerLib
      * @Route("/", name="admin_history_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(HistoryRepository $repository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        HistoryRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/history/index.html.twig',
         );
@@ -87,6 +92,7 @@ class HistoryController extends AdminControllerLib
     public function position(
         History $history,
         Request $request,
+        EntityManagerInterface $entityManager,
         ChapterRepository $repository
     )
     {
@@ -98,8 +104,7 @@ class HistoryController extends AdminControllerLib
         );
 
         if ('POST' == $request->getMethod()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $data          = $request->request->get('position');
+            $data = $request->request->get('position');
             if (!empty($data)) {
                 $data = json_decode($data, true);
             }

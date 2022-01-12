@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Layout;
 use Labstag\Form\Admin\LayoutType;
@@ -42,9 +43,13 @@ class LayoutController extends AdminControllerLib
      * @Route("/", name="admin_layout_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(LayoutRepository $repository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        LayoutRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/layout/index.html.twig'
         );

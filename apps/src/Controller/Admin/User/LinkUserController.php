@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\LinkUser;
 use Labstag\Form\Admin\Search\User\LinkUserType as UserLinkUserType;
@@ -42,9 +43,13 @@ class LinkUserController extends AdminControllerLib
      * @Route("/", name="admin_linkuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(LinkUserRepository $linkUserRepository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        LinkUserRepository $linkUserRepository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $linkUserRepository,
             'admin/user/link_user/index.html.twig'
         );

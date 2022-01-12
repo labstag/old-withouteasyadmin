@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\GeoCode;
 use Labstag\Form\Admin\GeoCodeType;
@@ -42,9 +43,13 @@ class GeoCodeController extends AdminControllerLib
      * @Route("/", name="admin_geocode_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function index(GeoCodeRepository $repository): Response
+    public function index(
+        EntityManagerInterface $entityManager,
+        GeoCodeRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/geocode/index.html.twig'
         );

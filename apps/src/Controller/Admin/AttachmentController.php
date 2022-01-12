@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\AttachmentRepository;
@@ -18,9 +19,13 @@ class AttachmentController extends AdminControllerLib
      * @Route("/", name="admin_attachment_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(AttachmentRepository $repository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        AttachmentRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/attachment/index.html.twig'
         );

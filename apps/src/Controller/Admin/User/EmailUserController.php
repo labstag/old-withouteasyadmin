@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\EmailUser;
 use Labstag\Form\Admin\Search\User\EmailUserType as UserEmailUserType;
@@ -46,9 +47,13 @@ class EmailUserController extends AdminControllerLib
      * @Route("/", name="admin_emailuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(EmailUserRepository $repository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        EmailUserRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/user/email_user/index.html.twig'
         );

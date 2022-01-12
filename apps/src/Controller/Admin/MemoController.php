@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Memo;
 use Labstag\Form\Admin\MemoType;
@@ -50,9 +51,13 @@ class MemoController extends AdminControllerLib
      * @Route("/", name="admin_memo_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(MemoRepository $repository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        MemoRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/memo/index.html.twig',
         );

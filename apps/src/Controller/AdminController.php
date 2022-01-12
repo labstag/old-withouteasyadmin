@@ -25,7 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
+use Twig\Environment;
 
 /**
  * @Route("/admin")
@@ -203,6 +205,8 @@ class AdminController extends AdminControllerLib
      * @IgnoreSoftDelete
      */
     public function trash(
+        CsrfTokenManagerInterface $csrfTokenManager,
+        Environment $twig,
         TrashService $trashService
     ): Response
     {
@@ -216,11 +220,11 @@ class AdminController extends AdminControllerLib
             return $this->redirectToRoute('admin');
         }
 
-        $globals        = $this->get('twig')->getGlobals();
+        $globals        = $twig->getGlobals();
         $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
         if ($this->isRouteEnable('api_action_emptyall')) {
-            $token             = $this->get('security.csrf.token_manager')->getToken('emptyall')->getValue();
+            $token             = $csrfTokenManager->getToken('emptyall')->getValue();
             $modal['emptyall'] = true;
             $this->btnInstance()->add(
                 'btn-admin-header-emptyall',
@@ -234,7 +238,7 @@ class AdminController extends AdminControllerLib
             );
         }
 
-        $this->get('twig')->addGlobal('modal', $modal);
+        $twig->addGlobal('modal', $modal);
         $this->btnInstance()->addViderSelection(
             [
                 'redirect' => [

@@ -157,9 +157,6 @@ class Post
         return $this->img;
     }
 
-    /**
-     * @return Collection|Libelle[]
-     */
     public function getLibelles(): Collection
     {
         return $this->libelles;

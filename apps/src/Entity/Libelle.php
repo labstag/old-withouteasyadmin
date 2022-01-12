@@ -75,9 +75,6 @@ class Libelle
         return $this;
     }
 
-    /**
-     * @return Bookmark[]|Collection
-     */
     public function getBookmarks(): Collection
     {
         return $this->bookmarks;
@@ -93,9 +90,6 @@ class Libelle
         return $this->name;
     }
 
-    /**
-     * @return Collection|Post[]
-     */
     public function getPosts(): Collection
     {
         return $this->posts;

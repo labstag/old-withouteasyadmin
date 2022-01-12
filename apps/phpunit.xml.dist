@@ -26,12 +26,6 @@
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
-
     <coverage processUncoveredFiles="true">
         <include>
             <directory suffix=".php">src</directory>
@@ -48,10 +42,4 @@
         <extension class="Symfony\Component\Panther\ServerExtension" />
     </extensions>
     -->
-
-    <logging>
-        <log type="coverage-html" target="var/coverage" lowUpperBound="35" highLowerBound="70"/>
-        <log type="coverage-clover" target="var/clover.xml" lowUpperBound="35" highLowerBound="70"/>
-        <log type="junit" target="var/junit.xml" lowUpperBound="35" highLowerBound="70"/>
-    </logging>
 </phpunit>

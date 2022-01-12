@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\History;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Form\Admin\ChapterType;
@@ -45,9 +46,13 @@ class ChapterController extends AdminControllerLib
      * @Route("/", name="admin_chapter_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(ChapterRepository $repository): Response
+    public function indexOrTrash(
+        EntityManagerInterface $entityManager,
+        ChapterRepository $repository
+    ): Response
     {
         return $this->listOrTrash(
+            $entityManager,
             $repository,
             'admin/chapter/index.html.twig',
         );
