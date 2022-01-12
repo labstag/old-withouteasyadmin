@@ -7,6 +7,7 @@ use Labstag\Repository\CategoryRepository;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\LibelleRepository;
 use Labstag\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -71,9 +72,8 @@ class SearchController extends ApiControllerLib
     /**
      * @Route("/libelle", name="api_search_postlibelle")
      *
-     * @return void
      */
-    public function libelle(Request $request, LibelleRepository $repository): Response
+    public function libelle(Request $request, LibelleRepository $repository): JsonResponse
     {
         $get    = $request->query->all();
         $return = ['isvalid' => false];

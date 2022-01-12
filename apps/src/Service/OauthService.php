@@ -56,23 +56,21 @@ class OauthService
 
     /**
      * @param null|mixed $data
-     *
-     * @return mixed|void
      */
-    public function getIdentity($data, ?string $oauth)
+    public function getIdentity($data, ?string $oauth): mixed
     {
         if (is_null($oauth)) {
-            return;
+            return null;
         }
 
         $config = $this->getConfig($oauth);
         if (!array_key_exists('identity', $config)) {
-            return;
+            return null;
         }
 
         $identity = $config['identity'];
         if (!array_key_exists($identity, $data)) {
-            return;
+            return null;
         }
 
         return $data[$identity];
@@ -112,13 +110,10 @@ class OauthService
         $this->configProvider = $data;
     }
 
-    /**
-     * @return AbstractProvider|void
-     */
-    public function setProvider(?string $clientName)
+    public function setProvider(?string $clientName): ?AbstractProvider
     {
         if (is_null($clientName)) {
-            return;
+            return null;
         }
 
         if ($this->ifConfigProviderEnable($clientName)) {

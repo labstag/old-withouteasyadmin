@@ -17,17 +17,12 @@
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
         <env name="KERNEL_CLASS" value="Labstag\Kernel" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=999999"/>
     </php>
 
     <testsuites>
-        <testsuite name="unit">
-            <directory>tests/Unit</directory>
-        </testsuite>
-        <testsuite name="integration">
-            <directory>tests/Integration</directory>
-        </testsuite>
-        <testsuite name="system">
-            <directory>tests/System</directory>
+        <testsuite name="Project Test Suite">
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
