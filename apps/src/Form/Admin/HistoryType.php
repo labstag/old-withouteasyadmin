@@ -6,6 +6,7 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\History;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
+use Labstag\FormType\WysiwygType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,7 +37,7 @@ class HistoryType extends AbstractTypeLib
         );
         $builder->add(
             'summary',
-            CKEditorType::class,
+            WysiwygType::class,
             [
                 'label' => $this->translator->trans('history.summary.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('history.summary.help', [], 'admin.form'),

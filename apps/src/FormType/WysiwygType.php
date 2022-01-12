@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-class CoreTextareaType extends AbstractType
+class WysiwygType extends AbstractType
 {
     public function buildView(
         FormView $view,
@@ -16,7 +16,9 @@ class CoreTextareaType extends AbstractType
     ): void
     {
         $attr = $options['attr'];
-        $attr['rows'] = $attr['rows'] ?? 20;
+        $attr['class'] = $attr['class'] ?? '';
+        $attr['class'] = trim($attr['class'].' wysiwyg');
+
         $view->vars['attr'] = $attr;
         unset($form);
     }

@@ -8,6 +8,7 @@ use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
+use Labstag\FormType\WysiwygType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -52,7 +53,7 @@ class PrincipalType extends AbstractTypeLib
         );
         $builder->add(
             'content',
-            CKEditorType::class,
+            WysiwygType::class,
             [
                 'label' => $this->translator->trans('bookmark.content.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('bookmark.content.help', [], 'admin.form'),

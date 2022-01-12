@@ -7,9 +7,11 @@
 {% import "macro.html.twig" as macro_site %}
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
+    {{ parent() }}
     {{ encore_entry_link_tags('back') }}
 {% endblock %}
 {% block javascripts %}
+    {{ parent() }}
     {{ encore_entry_script_tags('back') }}
 {% endblock %}
 {% block content %}

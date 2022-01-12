@@ -3,6 +3,7 @@
 namespace Labstag\Form\Admin\Collections\Param;
 
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Labstag\FormType\WysiwygType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -54,7 +55,7 @@ class DisclaimerType extends AbstractTypeLib
         );
         $builder->add(
             'message',
-            CKEditorType::class,
+            WysiwygType::class,
             [
                 'label'    => $this->translator->trans('param.disclaimer.message.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('param.disclaimer.message.help', [], 'admin.form'),

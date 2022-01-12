@@ -6,6 +6,7 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Edito;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
+use Labstag\FormType\WysiwygType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -47,7 +48,7 @@ class EditoType extends AbstractTypeLib
         );
         $builder->add(
             'content',
-            CKEditorType::class,
+            WysiwygType::class,
             [
                 'label' => $this->translator->trans('edito.content.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('edito.content.help', [], 'admin.form'),

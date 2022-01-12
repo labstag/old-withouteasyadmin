@@ -4,6 +4,7 @@ namespace Labstag\Form\Admin;
 
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Chapter;
+use Labstag\FormType\WysiwygType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -34,7 +35,7 @@ class ChapterType extends AbstractTypeLib
         );
         $builder->add(
             'content',
-            CKEditorType::class,
+            WysiwygType::class,
             [
                 'label' => $this->translator->trans('chapter.content.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('chapter.content.help', [], 'admin.form'),

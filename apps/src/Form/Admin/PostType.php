@@ -8,6 +8,7 @@ use Labstag\Entity\Libelle;
 use Labstag\Entity\Post;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
+use Labstag\FormType\WysiwygType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -40,7 +41,7 @@ class PostType extends AbstractTypeLib
         );
         $builder->add(
             'content',
-            CKEditorType::class,
+            WysiwygType::class,
             [
                 'label' => $this->translator->trans('post.content.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('post.content.help', [], 'admin.form'),
