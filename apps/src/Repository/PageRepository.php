@@ -4,6 +4,7 @@ namespace Labstag\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Page;
+use Labstag\Annotation\Trashable;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
 /**
