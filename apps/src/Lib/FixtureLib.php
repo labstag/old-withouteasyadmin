@@ -31,7 +31,6 @@ use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\GuardService;
 use Labstag\Service\InstallService;
-use Labstag\Service\OauthService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -106,8 +105,6 @@ abstract class FixtureLib extends Fixture
 
     protected MemoRequestHandler $noteInterneRH;
 
-    protected OauthService $oauthService;
-
     protected PhoneUserRequestHandler $phoneUserRH;
 
     protected PostRequestHandler $postRH;
@@ -127,7 +124,6 @@ abstract class FixtureLib extends Fixture
         ContainerBagInterface $containerBag,
         UploadAnnotationReader $uploadAnnotReader,
         InstallService $installService,
-        OauthService $oauthService,
         UserRepository $userRepository,
         GroupeRepository $groupeRepository,
         GuardService $guardService,
@@ -171,7 +167,6 @@ abstract class FixtureLib extends Fixture
         $this->linkUserRH        = $linkUserRH;
         $this->logger            = $logger;
         $this->noteInterneRH     = $noteInterneRH;
-        $this->oauthService      = $oauthService;
         $this->phoneUserRH       = $phoneUserRH;
         $this->postRH            = $postRH;
         $this->templateRH        = $templateRH;

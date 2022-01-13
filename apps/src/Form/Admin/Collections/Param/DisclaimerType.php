@@ -2,7 +2,6 @@
 
 namespace Labstag\Form\Admin\Collections\Param;
 
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\FormType\WysiwygType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

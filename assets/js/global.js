@@ -1,6 +1,6 @@
 import './global/elements/index'
-require('bootstrap');
-require('ckeditor4');
+require('bootstrap')
+require('ckeditor4')
 window.addEventListener(
   'load',
   event => {

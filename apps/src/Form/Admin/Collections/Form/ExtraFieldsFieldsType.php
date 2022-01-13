@@ -2,7 +2,6 @@
 
 namespace Labstag\Form\Admin\Collections\Form;
 
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\FormType\CoreTextareaType;
 use Labstag\FormType\WysiwygType;
 use Labstag\Lib\AbstractTypeLib;

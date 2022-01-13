@@ -22,7 +22,6 @@ security:
       provider: labstag_user_provider
       custom_authenticator:
         - Labstag\Security\LoginFormAuthenticator
-        - Labstag\Security\OauthAuthenticator
       remember_me:
         secret:   '%kernel.secret%'
         lifetime: 604800 # 1 week in seconds

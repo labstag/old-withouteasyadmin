@@ -13,11 +13,12 @@ class BreadcrumbsSingleton
     {
     }
 
-    public function add(array $breadcrumbs): void
+    public function add(string $title, string $route): void
     {
-        foreach ($breadcrumbs as $key => $row) {
-            $this->data[$key] = $row;
-        }
+        $this->data[] = [
+            'title' => $title,
+            'route' => $route,
+        ];
     }
 
     public function addPosition(array $breadcrumbs, int $position): void

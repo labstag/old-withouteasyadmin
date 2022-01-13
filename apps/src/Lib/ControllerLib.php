@@ -14,12 +14,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
-use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 abstract class ControllerLib extends AbstractController
 {
-
-    protected Breadcrumbs $breadcrumbs;
 
     protected BreadcrumbsSingleton $breadcrumbsInstance;
 
@@ -51,7 +48,6 @@ abstract class ControllerLib extends AbstractController
         RequestStack $requestStack,
         GuardService $guardService,
         DataService $dataService,
-        Breadcrumbs $breadcrumbs,
         PaginatorInterface $paginator,
         TranslatorInterface $translator
     )
@@ -63,7 +59,6 @@ abstract class ControllerLib extends AbstractController
         $this->guardService        = $guardService;
         $this->translator          = $translator;
         $this->dataService         = $dataService;
-        $this->breadcrumbs         = $breadcrumbs;
         $this->paginator           = $paginator;
         $this->requeststack        = $requestStack;
         $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();

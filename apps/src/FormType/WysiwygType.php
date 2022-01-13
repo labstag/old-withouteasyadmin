@@ -15,7 +15,7 @@ class WysiwygType extends AbstractType
         array $options
     ): void
     {
-        $attr = $options['attr'];
+        $attr          = $options['attr'];
         $attr['class'] = $attr['class'] ?? '';
         $attr['class'] = trim($attr['class'].' wysiwyg');
 

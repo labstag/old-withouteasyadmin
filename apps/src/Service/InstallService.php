@@ -46,8 +46,6 @@ class InstallService
 
     protected MenuRequestHandler $menuRH;
 
-    protected OauthService $oauthService;
-
     protected PageRequestHandler $pageRH;
 
     protected TemplateRepository $templateRepo;
@@ -65,7 +63,6 @@ class InstallService
         MenuRequestHandler $menuRH,
         GroupeRequestHandler $groupeRH,
         GroupeRepository $groupeRepo,
-        OauthService $oauthService,
         ConfigurationRequestHandler $configurationRH,
         ConfigurationRepository $configurationRepo,
         MenuRepository $menuRepo,
@@ -84,7 +81,6 @@ class InstallService
         $this->userRepo          = $userRepo;
         $this->userRH            = $userRH;
         $this->cache             = $cache;
-        $this->oauthService      = $oauthService;
         $this->menuRepo          = $menuRepo;
         $this->twig              = $twig;
         $this->templateRepo      = $templateRepo;
@@ -100,8 +96,6 @@ class InstallService
     public function config()
     {
         $config = $this->getData('config');
-        $env    = $this->getEnv();
-        $this->setOauth($env, $config);
         foreach ($config as $key => $row) {
             $this->addConfig($key, $row);
         }
@@ -352,37 +346,6 @@ class InstallService
         foreach ($childs as $attr) {
             $this->addChild($indexChild, $menu, $attr);
             ++$indexChild;
-        }
-    }
-
-    protected function setOauth(array $env, array &$data): void
-    {
-        $oauth = [];
-        foreach ($env as $key => $val) {
-            if (0 == substr_count($key, 'OAUTH_')) {
-                continue;
-            }
-
-            $code    = str_replace('OAUTH_', '', $key);
-            $code    = strtolower($code);
-            $explode = explode('_', $code);
-            $type    = $explode[0];
-            $key     = $explode[1];
-            if (!isset($oauth[$type])) {
-                $activate = $this->oauthService->getActivedProvider($type);
-
-                $oauth[$type] = [
-                    'activate' => $activate,
-                    'type'     => $type,
-                ];
-            }
-
-            $oauth[$type][$key] = $val;
-        }
-
-        // @var mixed $row
-        foreach ($oauth as $row) {
-            $data['oauth'][] = $row;
         }
     }
 }

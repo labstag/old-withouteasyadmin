@@ -437,20 +437,18 @@ abstract class AdminControllerLib extends ControllerLib
 
             $infos = $this->{$method}();
             foreach ($infos as $breadcrumb) {
-                $breadcrumbs = [
-                    $breadcrumb['title'] => $router->generate(
+                $this->setSingletons()->add(
+                    $breadcrumb['title'],
+                    $router->generate(
                         $breadcrumb['route'],
                         $breadcrumb['route_params'],
-                    ),
-                ];
-                $this->setSingletons()->add($breadcrumbs);
+                    )
+                );
             }
         }
 
         $data = $this->setSingletons()->get();
-        foreach ($data as $title => $route) {
-            $this->breadcrumbs->addItem($title, $route);
-        }
+        $this->twig->addGlobal('breadcrumbs', $data);
     }
 
     protected function setBreadcrumbsPageAdmin(): array

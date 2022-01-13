@@ -21,12 +21,6 @@
                 }
             },
             {
-                "name": "Oauth",
-                "data": {
-                    "route": "admin_oauth"
-                }
-            },
-            {
                 "name": "Attachment",
                 "data": {
                     "route": "admin_attachment_index"

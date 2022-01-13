@@ -2,7 +2,6 @@
 
 namespace Labstag\Form\Admin;
 
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\History;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;

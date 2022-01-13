@@ -2,7 +2,6 @@
 
 namespace Labstag\Form\Admin\Bookmark;
 
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
