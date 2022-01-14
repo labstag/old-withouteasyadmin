@@ -34,7 +34,6 @@
   "devDependencies": {
     "@symfony/stimulus-bridge": "2.0.2",
     "@symfony/webpack-encore": "1.6.1",
-    "all-contributors-cli": "6.20.0",
     "core-js": "3.19.1",
     "cypress": "9.2.0",
     "eslint": "8.1.0",
@@ -45,9 +44,6 @@
     "file-loader": "6.2.0",
     "generate-changelog": "1.8.0",
     "jscpd": "3.4.2",
-    "license-checker": "25.0.1",
-    "markdownlint-cli": "0.30.0",
-    "readme-md-generator": "1.0.0",
     "regenerator-runtime": "0.13.9",
     "sass": "1.46.0",
     "sass-loader": "12.3.0",
@@ -64,6 +60,7 @@
     "ckeditor4": "^4.17.1",
     "flag-icon-css": "^4.0.0",
     "jquery": "3.6.0",
+    "koromerzhin-dependencies": "^1.1.0",
     "sortablejs": "1.14.0",
     "tarteaucitronjs": "^1.9.5",
     "tom-select": "1.7.8"
