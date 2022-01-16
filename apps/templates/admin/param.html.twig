@@ -19,9 +19,6 @@
 			<a class="nav-link" id="datetime-tab" data-bs-toggle="tab" href="#datetime" role="tab" aria-controls="datetime" aria-selected="false">{{ 'form.param.datetime'|trans({}, 'admin.messages') }}</a>
 		</li>
 		<li class="nav-item" role="presentation">
-			<a class="nav-link" id="oauth-tab" data-bs-toggle="tab" href="#oauth" role="tab" aria-controls="oauth" aria-selected="false">{{ 'form.param.oauth'|trans({}, 'admin.messages') }}</a>
-		</li>
-		<li class="nav-item" role="presentation">
 			<a class="nav-link" id="tac-tab" data-bs-toggle="tab" href="#tac" role="tab" aria-controls="tac" aria-selected="false">{{ 'form.param.tarteaucitron'|trans({}, 'admin.messages') }}</a>
 		</li>
 		<li class="nav-item" role="presentation">
@@ -43,9 +40,6 @@
 		</div>
 		<div class="tab-pane fade" id="datetime" role="tabpanel" aria-labelledby="datetime-tab">
 			{{ form_row(form['format_datetime']) }}
-		</div>
-		<div class="tab-pane fade" id="oauth" role="tabpanel" aria-labelledby="oauth-tab">
-			{{ form_row(form['oauth']) }}
 		</div>
 		<div class="tab-pane fade" id="tac" role="tabpanel" aria-labelledby="tac-tab">
 			{{ form_row(form['tarteaucitron']) }}

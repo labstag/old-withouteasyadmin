@@ -43,7 +43,7 @@
         {% endif %}
         <script type="text/javascript" defer src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
     </head>
-    <body{% if bodyclass is defined %} class="{{ bodyclass }}"{% endif %}>
+    <body{% if bodyclass is defined %} class="{{ bodyclass }}"{% endif %}{% if bodystyle is defined %} style="{{ bodystyle }}"{% endif %}>
         {% block content %}{% endblock %}
         {% block modal %}
             {% if modal is defined %}
