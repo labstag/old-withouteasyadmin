@@ -23,15 +23,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ProfilType extends AbstractTypeLib
 {
 
-    protected EmailUserRepository $repository;
-
     public function __construct(
-        EmailUserRepository $repository,
+        protected EmailUserRepository $repository,
         TranslatorInterface $translator,
         TemplatePageService $templatePageService
     )
     {
-        $this->repository = $repository;
         parent::__construct($translator, $templatePageService);
     }
 

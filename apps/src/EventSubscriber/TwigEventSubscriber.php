@@ -27,41 +27,8 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
-    protected AttachmentRepository $attachmentRepo;
-
-    protected CsrfTokenManagerInterface $csrfTokenManager;
-
-    protected DataService $dataService;
-
-    protected RouterInterface $router;
-
-    protected Security $security;
-
-    protected TranslatorInterface $translator;
-
-    protected Environment $twig;
-
-    protected UrlGeneratorInterface $urlGenerator;
-
-    public function __construct(
-        RouterInterface $router,
-        AttachmentRepository $attachmentRepo,
-        Environment $twig,
-        UrlGeneratorInterface $urlGenerator,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        DataService $dataService,
-        Security $security,
-        TranslatorInterface $translator
-    )
+    public function __construct(protected RouterInterface $router, protected AttachmentRepository $attachmentRepo, protected Environment $twig, protected UrlGeneratorInterface $urlGenerator, protected CsrfTokenManagerInterface $csrfTokenManager, protected DataService $dataService, protected Security $security, protected TranslatorInterface $translator)
     {
-        $this->translator       = $translator;
-        $this->attachmentRepo   = $attachmentRepo;
-        $this->security         = $security;
-        $this->urlGenerator     = $urlGenerator;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->router           = $router;
-        $this->twig             = $twig;
-        $this->dataService      = $dataService;
     }
 
     public static function getSubscribedEvents(): array
@@ -176,7 +143,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         }
 
         $this->setMetaTitle($config);
-        $this->setMetaImage($config, $request);
+        $this->setMetaImage($config);
         $this->setMetaDescription($config);
         $url = $request->getSchemeAndHttpHost();
         $all = $request->attributes->all();

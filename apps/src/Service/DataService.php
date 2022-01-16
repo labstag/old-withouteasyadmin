@@ -11,21 +11,15 @@ use Symfony\Contracts\Cache\ItemInterface;
 class DataService
 {
 
-    protected CacheInterface $cache;
-
     protected array $config = [];
 
     protected array $oauthActivated = [];
 
-    protected ConfigurationRepository $repository;
-
     public function __construct(
-        ConfigurationRepository $repository,
-        CacheInterface $cache
+        protected ConfigurationRepository $repository,
+        protected CacheInterface $cache
     )
     {
-        $this->cache      = $cache;
-        $this->repository = $repository;
         $this->setData();
     }
 
@@ -90,7 +84,7 @@ class DataService
                 'compute',
             ]
         );
-        if (0 === count($config)) {
+        if (0 === (is_countable($config) ? count($config) : 0)) {
             $config = $this->getConfiguration();
         }
 

@@ -26,15 +26,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UserType extends AbstractTypeLib
 {
 
-    protected EmailUserRepository $repository;
-
     public function __construct(
         TranslatorInterface $translator,
-        EmailUserRepository $repository,
+        protected EmailUserRepository $repository,
         TemplatePageService $templatePageService
     )
     {
-        $this->repository = $repository;
         parent::__construct($translator, $templatePageService);
     }
 

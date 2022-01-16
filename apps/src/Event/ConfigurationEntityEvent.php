@@ -5,11 +5,8 @@ namespace Labstag\Event;
 class ConfigurationEntityEvent
 {
 
-    protected array $post;
-
-    public function __construct(array $post)
+    public function __construct(protected array $post)
     {
-        $this->post = $post;
     }
 
     public function getPost(): array

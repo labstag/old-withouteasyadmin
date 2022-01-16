@@ -44,10 +44,10 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         $chapter    = new Chapter();
         $oldChapter = clone $chapter;
         $chapter->setName($faker->unique()->colorName);
-        $chapter->setMetaKeywords(implode(', ', $faker->unique()->words(rand(4, 10))));
+        $chapter->setMetaKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
         $chapter->setMetaDescription($faker->unique()->sentence);
         // @var string $content
-        $content = $faker->paragraphs(rand(4, 10), true);
+        $content = $faker->paragraphs(random_int(4, 10), true);
         $chapter->setContent(str_replace("\n\n", "<br />\n", $content));
         $indexHistory = $faker->numberBetween(0, self::NUMBER_HISTORY - 1);
         $history      = $this->getReference('history_'.$indexHistory);
@@ -57,7 +57,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
 
         $chapter->setRefhistory($history);
         $chapter->setPublished($faker->unique()->dateTime('now'));
-        $position = count($this->position[$indexHistory]);
+        $position = is_countable($this->position[$indexHistory]) ? count($this->position[$indexHistory]) : 0;
         $chapter->setPosition($position + 1);
         $this->addReference('chapter_'.$index, $chapter);
         $this->position[$indexHistory][] = $chapter;

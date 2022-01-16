@@ -7,14 +7,8 @@ use Labstag\Entity\History;
 class HistoryEntityEvent
 {
 
-    protected History $newEntity;
-
-    protected History $oldEntity;
-
-    public function __construct(History $oldEntity, History $newEntity)
+    public function __construct(protected History $oldEntity, protected History $newEntity)
     {
-        $this->oldEntity = $oldEntity;
-        $this->newEntity = $newEntity;
     }
 
     public function getNewEntity(): History

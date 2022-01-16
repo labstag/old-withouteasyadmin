@@ -10,25 +10,8 @@ use Twig\Environment;
 class MailerService
 {
 
-    protected DataService $dataService;
-
-    protected EnqueueMethod $enqueue;
-
-    protected MailerInterface $mailer;
-
-    protected Environment $twig;
-
-    public function __construct(
-        Environment $twig,
-        EnqueueMethod $enqueue,
-        MailerInterface $mailer,
-        DataService $dataService
-    )
+    public function __construct(protected Environment $twig, protected EnqueueMethod $enqueue, protected MailerInterface $mailer, protected DataService $dataService)
     {
-        $this->dataService = $dataService;
-        $this->twig        = $twig;
-        $this->enqueue     = $enqueue;
-        $this->mailer      = $mailer;
     }
 
     public function createEmail(array $data = []): Email

@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=GroupeRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Groupe
+class Groupe implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -66,9 +66,9 @@ class Groupe
         $this->users           = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function addRoute(RouteGroupe $route): self

@@ -13,17 +13,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 abstract class SearchAbstractTypeLib extends AbstractType
 {
 
-    protected TranslatorInterface $translator;
-
-    protected Registry $workflows;
-
-    public function __construct(
-        Registry $workflows,
-        TranslatorInterface $translator
-    )
+    public function __construct(protected Registry $workflows, protected TranslatorInterface $translator)
     {
-        $this->translator = $translator;
-        $this->workflows  = $workflows;
     }
 
     /**

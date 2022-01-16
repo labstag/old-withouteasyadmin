@@ -16,7 +16,7 @@ class WysiwygType extends AbstractType
     ): void
     {
         $attr          = $options['attr'];
-        $attr['class'] = $attr['class'] ?? '';
+        $attr['class'] ??= '';
         $attr['class'] = trim($attr['class'].' wysiwyg');
 
         $view->vars['attr'] = $attr;

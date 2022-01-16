@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Uploadable()
  */
-class Post
+class Post implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -38,12 +38,11 @@ class Post
     private $content;
 
     /**
-     * @var DateTime
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
-    private $created;
+    private \DateTime $created;
 
     /**
      * @ORM\Id
@@ -107,21 +106,20 @@ class Post
     private $title;
 
     /**
-     * @var DateTime
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
-    private $updated;
+    private \DateTime $updated;
 
     public function __construct()
     {
         $this->libelles = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getTitle();
+        return (string) $this->getTitle();
     }
 
     public function addLibelle(Libelle $libelle): self

@@ -10,11 +10,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class MenuEntitySubscriber implements EventSubscriberInterface
 {
 
-    protected EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(protected EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     public static function getSubscribedEvents(): array
@@ -31,7 +28,7 @@ class MenuEntitySubscriber implements EventSubscriberInterface
     protected function setData(Menu $menu): void
     {
         $data = $menu->getData();
-        if (0 == count($data)) {
+        if (0 == count((array) $data)) {
             return;
         }
 

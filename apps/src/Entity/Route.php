@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 /**
  * @ORM\Entity(repositoryClass=RouteRepository::class)
  */
-class Route
+class Route implements \Stringable
 {
 
     /**
@@ -43,9 +43,9 @@ class Route
         $this->users   = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function addGroupe(RouteGroupe $groupe): self

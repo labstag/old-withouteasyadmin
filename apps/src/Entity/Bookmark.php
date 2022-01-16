@@ -100,12 +100,11 @@ class Bookmark
     private $state;
 
     /**
-     * @var DateTime
      *
      * @ORM\Column(name="state_changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"state"})
      */
-    private $stateChanged;
+    private \DateTime $stateChanged;
 
     /**
      * @ORM\Column(type="string", length=255)

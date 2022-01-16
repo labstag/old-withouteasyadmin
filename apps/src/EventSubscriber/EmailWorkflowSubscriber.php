@@ -10,11 +10,8 @@ use Symfony\Component\Workflow\Event\Event;
 class EmailWorkflowSubscriber implements EventSubscriberInterface
 {
 
-    protected UserMailService $userMailService;
-
-    public function __construct(UserMailService $userMailService)
+    public function __construct(protected UserMailService $userMailService)
     {
-        $this->userMailService = $userMailService;
     }
 
     public static function getSubscribedEvents(): array

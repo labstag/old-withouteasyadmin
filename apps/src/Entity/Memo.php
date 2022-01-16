@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Uploadable()
  */
-class Memo
+class Memo implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -78,9 +78,9 @@ class Memo
         $this->dateEnd   = new DateTime();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getTitle();
+        return (string) $this->getTitle();
     }
 
     public function getContent(): ?string

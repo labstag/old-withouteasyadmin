@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Uploadable()
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -190,7 +190,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->histories         = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getUsername();
     }

@@ -22,41 +22,8 @@ class BookmarkService
 {
     public const CLIENTNUMBER = 400;
 
-    private AttachmentRequestHandler $attachmentRH;
-
-    private BookmarkRepository $bookmarkRepo;
-
-    private ContainerBagInterface $containerBag;
-
-    private EntityManagerInterface $entityManager;
-
-    private LoggerInterface $logger;
-
-    private BookmarkRequestHandler $requestHandler;
-
-    private UploadAnnotationReader $uploadAnnotReader;
-
-    private UserRepository $userRepo;
-
-    public function __construct(
-        UserRepository $userRepo,
-        BookmarkRepository $bookmarkRepo,
-        LoggerInterface $logger,
-        EntityManagerInterface $entityManager,
-        AttachmentRequestHandler $attachmentRH,
-        UploadAnnotationReader $uploadAnnotReader,
-        ContainerBagInterface $containerBag,
-        BookmarkRequestHandler $requestHandler
-    )
+    public function __construct(private UserRepository $userRepo, private BookmarkRepository $bookmarkRepo, private LoggerInterface $logger, private EntityManagerInterface $entityManager, private AttachmentRequestHandler $attachmentRH, private UploadAnnotationReader $uploadAnnotReader, private ContainerBagInterface $containerBag, private BookmarkRequestHandler $requestHandler)
     {
-        $this->requestHandler    = $requestHandler;
-        $this->entityManager     = $entityManager;
-        $this->uploadAnnotReader = $uploadAnnotReader;
-        $this->attachmentRH      = $attachmentRH;
-        $this->containerBag      = $containerBag;
-        $this->userRepo          = $userRepo;
-        $this->bookmarkRepo      = $bookmarkRepo;
-        $this->logger            = $logger;
     }
 
     public function process(

@@ -15,23 +15,10 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
 
     protected FlashBagInterface $flashbag;
 
-    protected RequestStack $requestStack;
-
     protected SessionInterface $session;
 
-    protected TranslatorInterface $translator;
-
-    protected UserMailService $userMailService;
-
-    public function __construct(
-        UserMailService $userMailService,
-        RequestStack $requestStack,
-        TranslatorInterface $translator
-    )
+    public function __construct(protected UserMailService $userMailService, protected RequestStack $requestStack, protected TranslatorInterface $translator)
     {
-        $this->translator      = $translator;
-        $this->requestStack    = $requestStack;
-        $this->userMailService = $userMailService;
     }
 
     public static function getSubscribedEvents(): array

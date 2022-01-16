@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Category
+class Category implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -69,7 +69,7 @@ class Category
         $this->bookmarks = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $parent = $this->getParent();
         $text   = is_null($parent) ? '' : $parent.' - ';

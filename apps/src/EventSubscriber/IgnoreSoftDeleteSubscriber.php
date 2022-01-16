@@ -16,27 +16,18 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 {
     public const ANNOTATION = 'Labstag\Annotation\IgnoreSoftDelete';
 
-    protected EntityManagerInterface $entityManager;
-
-    protected Reader $reader;
-
     // @var null|Request
     protected $request;
 
-    protected RequestStack $requestStack;
-
     public function __construct(
-        Reader $reader,
-        EntityManagerInterface $entityManager,
-        RequestStack $requestStack
+        protected Reader $reader,
+        protected EntityManagerInterface $entityManager,
+        protected RequestStack $requestStack
     )
     {
-        $this->requestStack = $requestStack;
         // @var Request $request
         $request             = $this->requestStack->getCurrentRequest();
         $this->request       = $request;
-        $this->reader        = $reader;
-        $this->entityManager = $entityManager;
     }
 
     public static function getSubscribedEvents(): array

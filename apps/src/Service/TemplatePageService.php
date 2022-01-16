@@ -5,21 +5,15 @@ namespace Labstag\Service;
 class TemplatePageService
 {
 
-    protected $templates;
-
-    public function __construct(
-        $templates
-    )
+    public function __construct(protected $templates)
     {
-        $this->templates = $templates;
     }
 
     public function getChoices()
     {
         $plugins = [];
         foreach ($this->templates as $template) {
-            $class           = get_class($template);
-            $plugins[$class] = $class;
+            $plugins[$template::class] = $template::class;
         }
 
         return $plugins;
@@ -28,7 +22,7 @@ class TemplatePageService
     public function getClass($class): mixed
     {
         foreach ($this->templates as $template) {
-            if (get_class($template) === $class) {
+            if ($template::class === $class) {
                 return $template;
             }
         }

@@ -25,14 +25,10 @@ class MemoVoter extends Voter
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        switch ($attribute) {
-            case 'edit':
-                $return = $this->canEdit($subject, $token);
-
-                break;
-            default:
-                $return = true;
-        }
+        $return = match ($attribute) {
+            'edit' => $this->canEdit($subject, $token),
+            default => true,
+        };
 
         return $return;
     }

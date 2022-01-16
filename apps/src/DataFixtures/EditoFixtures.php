@@ -44,10 +44,10 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         $old    = clone $edito;
         $random = $faker->numberBetween(5, 50);
         $edito->setTitle($faker->unique()->text($random));
-        $edito->setMetaKeywords(implode(', ', $faker->unique()->words(rand(4, 10))));
+        $edito->setMetaKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
         $edito->setMetaDescription($faker->unique()->sentence);
         // @var string $content
-        $content = $faker->paragraphs(rand(4, 10), true);
+        $content = $faker->paragraphs(random_int(4, 10), true);
         $edito->setContent(str_replace("\n\n", "<br />\n", $content));
         $edito->setPublished($faker->unique()->dateTime('now'));
         $this->addReference('edito_'.$index, $edito);

@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  * @ORM\Entity(repositoryClass=ConfigurationRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Configuration
+class Configuration implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -34,9 +34,9 @@ class Configuration
      */
     protected $value;
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function getId(): ?string

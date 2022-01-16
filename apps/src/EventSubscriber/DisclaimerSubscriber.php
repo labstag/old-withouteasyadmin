@@ -12,17 +12,8 @@ use Symfony\Component\Routing\RouterInterface;
 class DisclaimerSubscriber implements EventSubscriberInterface
 {
 
-    protected DataService $dataService;
-
-    protected RouterInterface $router;
-
-    public function __construct(
-        RouterInterface $router,
-        DataService $dataService
-    )
+    public function __construct(protected RouterInterface $router, protected DataService $dataService)
     {
-        $this->dataService = $dataService;
-        $this->router      = $router;
     }
 
     public static function getSubscribedEvents(): array

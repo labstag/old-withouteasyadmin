@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorMap({"user": "EmailUser"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-abstract class Email
+abstract class Email implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -50,9 +50,9 @@ abstract class Email
         $this->principal = false;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getAddress();
+        return (string) $this->getAddress();
     }
 
     public function getAddress(): ?string

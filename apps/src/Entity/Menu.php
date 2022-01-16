@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=MenuRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Menu
+class Menu implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -86,7 +86,7 @@ class Menu
         $this->separateur = false;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return implode(
             ' ',

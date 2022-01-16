@@ -19,41 +19,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ConfigurationEntitySubscriber implements EventSubscriberInterface
 {
 
-    protected CacheInterface $cache;
-
-    protected ContainerBagInterface $containerBag;
-
-    protected EntityManagerInterface $entityManager;
-
     protected FlashBagInterface $flashbag;
-
-    protected LoggerInterface $logger;
-
-    protected ConfigurationRepository $repository;
-
-    protected RequestStack $requestStack;
 
     protected SessionInterface $session;
 
-    protected TranslatorInterface $translator;
-
-    public function __construct(
-        LoggerInterface $logger,
-        ContainerBagInterface $containerBag,
-        EntityManagerInterface $entityManager,
-        ConfigurationRepository $repository,
-        CacheInterface $cache,
-        RequestStack $requestStack,
-        TranslatorInterface $translator
-    )
+    public function __construct(protected LoggerInterface $logger, protected ContainerBagInterface $containerBag, protected EntityManagerInterface $entityManager, protected ConfigurationRepository $repository, protected CacheInterface $cache, protected RequestStack $requestStack, protected TranslatorInterface $translator)
     {
-        $this->translator    = $translator;
-        $this->containerBag  = $containerBag;
-        $this->cache         = $cache;
-        $this->entityManager = $entityManager;
-        $this->repository    = $repository;
-        $this->logger        = $logger;
-        $this->requestStack  = $requestStack;
     }
 
     public static function getSubscribedEvents(): array

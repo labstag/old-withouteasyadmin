@@ -9,11 +9,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class PageEntitySubscriber implements EventSubscriberInterface
 {
 
-    protected EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(protected EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     public static function getSubscribedEvents(): array

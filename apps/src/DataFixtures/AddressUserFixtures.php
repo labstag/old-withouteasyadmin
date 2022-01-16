@@ -27,7 +27,7 @@ class AddressUserFixtures extends FixtureLib implements DependentInterface
         $faker = $this->setFaker();
         $users = $this->installService->getData('user');
         for ($index = 0; $index < self::NUMBER_ADRESSE; ++$index) {
-            $indexUser = $faker->numberBetween(0, count($users) - 1);
+            $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
             $user      = $this->getReference('user_'.$indexUser);
             $this->addAddress($faker, $user);
         }
@@ -50,7 +50,7 @@ class AddressUserFixtures extends FixtureLib implements DependentInterface
         $longitude = $faker->longitude;
         $gps       = $latitude.','.$longitude;
         $address->setGps($gps);
-        $address->setPmr((bool) rand(0, 1));
+        $address->setPmr((bool) random_int(0, 1));
         $this->addressUserRH->handle($old, $address);
     }
 }

@@ -28,69 +28,27 @@ use Twig\Environment;
 abstract class TemplatePageLib
 {
 
-    protected BookmarkRepository $bookmarkRepository;
-
-    protected CategoryRepository $categoryRepository;
-
-    protected ContainerBagInterface $containerBag;
-
-    protected DataService $dataService;
-
-    protected EditoRepository $editoRepository;
-
-    protected HistoryRepository $historyRepository;
-
-    protected HistoryService $historyService;
-
-    protected LibelleRepository $libelleRepository;
-
-    protected PaginatorInterface $paginator;
-
-    protected PostRepository $postRepository;
-
     protected Request $request;
 
-    protected RequestStack $requeststack;
-
-    protected RouterInterface $router;
-
-    protected Environment $twig;
-
-    protected UserRepository $userRepository;
-
     public function __construct(
-        RequestStack $requestStack,
-        RouterInterface $router,
-        Environment $twig,
-        ContainerBagInterface $containerBag,
-        HistoryService $historyService,
-        DataService $dataService,
-        UserRepository $userRepository,
-        HistoryRepository $historyRepository,
-        BookmarkRepository $bookmarkRepository,
-        EditoRepository $editoRepository,
-        PostRepository $postRepository,
-        LibelleRepository $libelleRepository,
-        PaginatorInterface $paginator,
-        CategoryRepository $categoryRepository
+        protected RequestStack $requeststack,
+        protected RouterInterface $router,
+        protected Environment $twig,
+        protected ContainerBagInterface $containerBag,
+        protected HistoryService $historyService,
+        protected DataService $dataService,
+        protected UserRepository $userRepository,
+        protected HistoryRepository $historyRepository,
+        protected BookmarkRepository $bookmarkRepository,
+        protected EditoRepository $editoRepository,
+        protected PostRepository $postRepository,
+        protected LibelleRepository $libelleRepository,
+        protected PaginatorInterface $paginator,
+        protected CategoryRepository $categoryRepository
     )
     {
-        $this->router             = $router;
-        $this->userRepository     = $userRepository;
-        $this->requeststack       = $requestStack;
         $request                  = $this->requeststack->getCurrentRequest();
         $this->request            = $request;
-        $this->containerBag       = $containerBag;
-        $this->historyRepository  = $historyRepository;
-        $this->historyService     = $historyService;
-        $this->bookmarkRepository = $bookmarkRepository;
-        $this->dataService        = $dataService;
-        $this->paginator          = $paginator;
-        $this->editoRepository    = $editoRepository;
-        $this->postRepository     = $postRepository;
-        $this->libelleRepository  = $libelleRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->twig               = $twig;
     }
 
     public function generateUrl(Page $page, string $route, array $params, bool $relative): string

@@ -14,35 +14,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UserService
 {
 
-    protected EntityManagerInterface $entityManager;
-
     protected FlashBagInterface $flashbag;
 
-    protected OauthConnectUserRequestHandler $oauthConnectUserRH;
-
-    protected UserRepository $repository;
-
-    protected RequestStack $requestStack;
-
-    protected TranslatorInterface $translator;
-
-    protected UserRequestHandler $userRH;
-
-    public function __construct(
-        RequestStack $requestStack,
-        EntityManagerInterface $entityManager,
-        UserRepository $repository,
-        UserRequestHandler $userRH,
-        OauthConnectUserRequestHandler $oauthConnectUserRH,
-        TranslatorInterface $translator
-    )
+    public function __construct(protected RequestStack $requestStack, protected EntityManagerInterface $entityManager, protected UserRepository $repository, protected UserRequestHandler $userRH, protected OauthConnectUserRequestHandler $oauthConnectUserRH, protected TranslatorInterface $translator)
     {
-        $this->translator         = $translator;
-        $this->userRH             = $userRH;
-        $this->requestStack       = $requestStack;
-        $this->entityManager      = $entityManager;
-        $this->repository         = $repository;
-        $this->oauthConnectUserRH = $oauthConnectUserRH;
     }
 
     public function postLostPassword(array $post): void

@@ -7,14 +7,8 @@ use Labstag\Entity\Menu;
 class MenuEntityEvent
 {
 
-    protected Menu $newEntity;
-
-    protected Menu $oldEntity;
-
-    public function __construct(Menu $oldEntity, Menu $newEntity)
+    public function __construct(protected Menu $oldEntity, protected Menu $newEntity)
     {
-        $this->oldEntity = $oldEntity;
-        $this->newEntity = $newEntity;
     }
 
     public function getNewEntity(): Menu

@@ -27,14 +27,10 @@ class HistoryVoter extends Voter
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        switch ($attribute) {
-            case 'move':
-                $return = $this->canMove($subject, $token);
-
-                break;
-            default:
-                $return = true;
-        }
+        $return = match ($attribute) {
+            'move' => $this->canMove($subject, $token),
+            default => true,
+        };
 
         return $return;
     }

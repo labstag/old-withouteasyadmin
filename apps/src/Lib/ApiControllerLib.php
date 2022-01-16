@@ -16,45 +16,21 @@ use Symfony\Component\Workflow\Registry;
 abstract class ApiControllerLib extends AbstractController
 {
 
-    protected AttachmentRequestHandler $attachmentRH;
-
-    protected CsrfTokenManagerInterface $csrfTokenManager;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected PhoneService $phoneService;
-
     protected Request $request;
 
-    protected RequestStack $requeststack;
-
-    protected RouteRepository $routeRepo;
-
-    protected TokenStorageInterface $token;
-
-    protected Registry $workflows;
-
     public function __construct(
-        RequestStack $requestStack,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        TokenStorageInterface $token,
-        PhoneService $phoneService,
-        RouteRepository $routeRepo,
-        EntityManagerInterface $entityManager,
-        AttachmentRequestHandler $attachmentRH,
-        Registry $workflows
+        protected RequestStack $requeststack,
+        protected CsrfTokenManagerInterface $csrfTokenManager,
+        protected TokenStorageInterface $token,
+        protected PhoneService $phoneService,
+        protected RouteRepository $routeRepo,
+        protected EntityManagerInterface $entityManager,
+        protected AttachmentRequestHandler $attachmentRH,
+        protected Registry $workflows
     )
     {
-        $this->routeRepo        = $routeRepo;
-        $this->attachmentRH     = $attachmentRH;
-        $this->token            = $token;
-        $this->requeststack     = $requestStack;
-        $this->entityManager    = $entityManager;
-        $this->csrfTokenManager = $csrfTokenManager;
         // @var Request $request
         $request            = $this->requeststack->getCurrentRequest();
         $this->request      = $request;
-        $this->phoneService = $phoneService;
-        $this->workflows    = $workflows;
     }
 }

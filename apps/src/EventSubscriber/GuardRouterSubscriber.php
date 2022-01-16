@@ -19,35 +19,10 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
     protected FlashBagInterface $flashbag;
 
-    protected GroupeRepository $groupeRepository;
-
-    protected GuardService $guardService;
-
-    protected RequestStack $requestStack;
-
-    protected RouterInterface $router;
-
     protected SessionInterface $session;
 
-    protected TokenStorageInterface $token;
-
-    protected TranslatorInterface $translator;
-
-    public function __construct(
-        RequestStack $requestStack,
-        RouterInterface $router,
-        TokenStorageInterface $token,
-        GroupeRepository $groupeRepository,
-        GuardService $guardService,
-        TranslatorInterface $translator
-    )
+    public function __construct(protected RequestStack $requestStack, protected RouterInterface $router, protected TokenStorageInterface $token, protected GroupeRepository $groupeRepository, protected GuardService $guardService, protected TranslatorInterface $translator)
     {
-        $this->translator       = $translator;
-        $this->requestStack     = $requestStack;
-        $this->groupeRepository = $groupeRepository;
-        $this->token            = $token;
-        $this->router           = $router;
-        $this->guardService     = $guardService;
     }
 
     public static function getSubscribedEvents(): array

@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=TemplateRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Template
+class Template implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -49,9 +49,9 @@ class Template
      */
     protected $text;
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function getCode(): ?string

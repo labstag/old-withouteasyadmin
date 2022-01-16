@@ -28,69 +28,8 @@ use Twig\Environment;
 class InstallService
 {
 
-    protected CacheInterface $cache;
-
-    protected ConfigurationRepository $configurationRepo;
-
-    protected ConfigurationRequestHandler $configurationRH;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected GroupeRepository $groupeRepo;
-
-    protected GroupeRequestHandler $groupeRH;
-
-    protected LayoutRepository $layoutRepo;
-
-    protected MenuRepository $menuRepo;
-
-    protected MenuRequestHandler $menuRH;
-
-    protected PageRequestHandler $pageRH;
-
-    protected TemplateRepository $templateRepo;
-
-    protected TemplateRequestHandler $templateRH;
-
-    protected Environment $twig;
-
-    protected UserRepository $userRepo;
-
-    protected UserRequestHandler $userRH;
-
-    public function __construct(
-        PageRequestHandler $pageRH,
-        MenuRequestHandler $menuRH,
-        GroupeRequestHandler $groupeRH,
-        GroupeRepository $groupeRepo,
-        ConfigurationRequestHandler $configurationRH,
-        ConfigurationRepository $configurationRepo,
-        MenuRepository $menuRepo,
-        UserRequestHandler $userRH,
-        UserRepository $userRepo,
-        TemplateRequestHandler $templateRH,
-        LayoutRepository $layoutRepo,
-        TemplateRepository $templateRepo,
-        EntityManagerInterface $entityManager,
-        Environment $twig,
-        CacheInterface $cache
-    )
+    public function __construct(protected PageRequestHandler $pageRH, protected MenuRequestHandler $menuRH, protected GroupeRequestHandler $groupeRH, protected GroupeRepository $groupeRepo, protected ConfigurationRequestHandler $configurationRH, protected ConfigurationRepository $configurationRepo, protected MenuRepository $menuRepo, protected UserRequestHandler $userRH, protected UserRepository $userRepo, protected TemplateRequestHandler $templateRH, protected LayoutRepository $layoutRepo, protected TemplateRepository $templateRepo, protected EntityManagerInterface $entityManager, protected Environment $twig, protected CacheInterface $cache)
     {
-        $this->layoutRepo        = $layoutRepo;
-        $this->pageRH            = $pageRH;
-        $this->userRepo          = $userRepo;
-        $this->userRH            = $userRH;
-        $this->cache             = $cache;
-        $this->menuRepo          = $menuRepo;
-        $this->twig              = $twig;
-        $this->templateRepo      = $templateRepo;
-        $this->configurationRepo = $configurationRepo;
-        $this->groupeRepo        = $groupeRepo;
-        $this->menuRH            = $menuRH;
-        $this->groupeRH          = $groupeRH;
-        $this->entityManager     = $entityManager;
-        $this->configurationRH   = $configurationRH;
-        $this->templateRH        = $templateRH;
     }
 
     public function config()
@@ -108,7 +47,7 @@ class InstallService
         $file = __DIR__.'/../../json/'.$file.'.json';
         $data = [];
         if (is_file($file)) {
-            $data = json_decode(file_get_contents($file), true);
+            $data = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
         }
 
         return $data;

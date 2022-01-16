@@ -42,13 +42,13 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         $history    = new History();
         $oldHistory = clone $history;
         $history->setName($faker->unique()->colorName);
-        $history->setMetaKeywords(implode(', ', $faker->unique()->words(rand(4, 10))));
+        $history->setMetaKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
         $history->setMetaDescription($faker->unique()->sentence);
         // @var string $content
-        $content = $faker->paragraphs(rand(2, 4), true);
+        $content = $faker->paragraphs(random_int(2, 4), true);
         $history->setSummary(str_replace("\n\n", "<br />\n", $content));
         $users     = $this->installService->getData('user');
-        $indexUser = $faker->numberBetween(0, count($users) - 1);
+        $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
         $user      = $this->getReference('user_'.$indexUser);
         $history->setRefuser($user);
         $history->setPublished($faker->unique()->dateTime('now'));

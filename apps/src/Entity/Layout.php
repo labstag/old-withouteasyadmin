@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 /**
  * @ORM\Entity(repositoryClass=LayoutRepository::class)
  */
-class Layout
+class Layout implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -44,9 +44,9 @@ class Layout
         $this->pages = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function addPage(Page $page): self

@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorMap({"user": "AddressUser"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-abstract class Address
+abstract class Address implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -68,7 +68,7 @@ abstract class Address
      */
     protected $zipcode;
 
-    public function __toString()
+    public function __toString(): string
     {
         return implode(
             ' ',

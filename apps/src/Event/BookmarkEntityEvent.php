@@ -7,14 +7,8 @@ use Labstag\Entity\Bookmark;
 class BookmarkEntityEvent
 {
 
-    protected Bookmark $newEntity;
-
-    protected Bookmark $oldEntity;
-
-    public function __construct(Bookmark $oldEntity, Bookmark $newEntity)
+    public function __construct(protected Bookmark $oldEntity, protected Bookmark $newEntity)
     {
-        $this->oldEntity = $oldEntity;
-        $this->newEntity = $newEntity;
     }
 
     public function getNewEntity(): Bookmark

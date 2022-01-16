@@ -13,25 +13,8 @@ class GeocodeService
 {
     public const HTTP_OK = 200;
 
-    protected HttpClientInterface $client;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected GeoCodeRequestHandler $geoCodeRH;
-
-    protected GeoCodeRepository $repository;
-
-    public function __construct(
-        HttpClientInterface $client,
-        GeoCodeRepository $repository,
-        EntityManagerInterface $entityManager,
-        GeoCodeRequestHandler $geoCodeRH
-    )
+    public function __construct(protected HttpClientInterface $client, protected GeoCodeRepository $repository, protected EntityManagerInterface $entityManager, protected GeoCodeRequestHandler $geoCodeRH)
     {
-        $this->client        = $client;
-        $this->repository    = $repository;
-        $this->entityManager = $entityManager;
-        $this->geoCodeRH     = $geoCodeRH;
     }
 
     public function add(array $row)

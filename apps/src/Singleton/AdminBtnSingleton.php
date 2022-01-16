@@ -503,9 +503,7 @@ class AdminBtnSingleton
 
     protected function classEntity($entity)
     {
-        $class = get_class($entity);
-
-        $class = str_replace('Labstag\\Entity\\', '', $class);
+        $class = str_replace('Labstag\\Entity\\', '', $entity::class);
 
         return strtolower($class);
     }

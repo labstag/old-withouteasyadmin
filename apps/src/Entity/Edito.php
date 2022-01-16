@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Uploadable()
  */
-class Edito
+class Edito implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -76,9 +76,9 @@ class Edito
      */
     private $published;
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getTitle();
+        return (string) $this->getTitle();
     }
 
     public function getContent(): ?string

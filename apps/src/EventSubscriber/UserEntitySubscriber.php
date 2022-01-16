@@ -17,35 +17,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UserEntitySubscriber implements EventSubscriberInterface
 {
 
-    protected EmailUserRequestHandler $emailUserRH;
-
-    protected EntityManagerInterface $entityManager;
-
     protected FlashBagInterface $flashbag;
 
-    protected UserPasswordHasherInterface $passwordEncoder;
-
-    protected RequestStack $requestStack;
-
-    protected TranslatorInterface $translator;
-
-    protected UserMailService $userMailService;
-
-    public function __construct(
-        RequestStack $requestStack,
-        EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordEncoder,
-        UserMailService $userMailService,
-        EmailUserRequestHandler $emailUserRH,
-        TranslatorInterface $translator
-    )
+    public function __construct(protected RequestStack $requestStack, protected EntityManagerInterface $entityManager, protected UserPasswordHasherInterface $passwordEncoder, protected UserMailService $userMailService, protected EmailUserRequestHandler $emailUserRH, protected TranslatorInterface $translator)
     {
-        $this->translator      = $translator;
-        $this->requestStack    = $requestStack;
-        $this->emailUserRH     = $emailUserRH;
-        $this->userMailService = $userMailService;
-        $this->entityManager   = $entityManager;
-        $this->passwordEncoder = $passwordEncoder;
     }
 
     public static function getSubscribedEvents(): array

@@ -30,26 +30,13 @@ class BookmarkTemplatePage extends TemplatePageLib
     public function generateUrl(Page $page, string $route, array $params, bool $relative): string
     {
         $slug = $page->getSlug().'/';
-        switch ($route) {
-            case 'user':
-                $url = $slug.'user/'.$params['username'];
-
-                break;
-            case 'show':
-                $url = $slug.$params['slug'];
-
-                break;
-            case 'libelle':
-                $url = $slug.'libelle/'.$params['code'];
-
-                break;
-            case 'category':
-                $url = $slug.'category/'.$params['code'];
-
-                break;
-            default:
-                $url = $slug;
-        }
+        $url = match ($route) {
+            'user' => $slug.'user/'.$params['username'],
+            'show' => $slug.$params['slug'],
+            'libelle' => $slug.'libelle/'.$params['code'],
+            'category' => $slug.'category/'.$params['code'],
+            default => $slug,
+        };
 
         return $this->router->generate(
             'front',

@@ -20,26 +20,13 @@ class UserMailService
 
     protected array $config;
 
-    protected DataService $dataService;
-
-    protected MailerService $mailerService;
-
-    protected TemplateRepository $repository;
-
-    protected RouterInterface $router;
-
     public function __construct(
-        RouterInterface $router,
-        MailerService $mailerService,
-        TemplateRepository $repository,
-        DataService $dataService
+        protected RouterInterface $router,
+        protected MailerService $mailerService,
+        protected TemplateRepository $repository,
+        protected DataService $dataService
     )
     {
-        $this->dataService   = $dataService;
-        $this->repository    = $repository;
-        $this->mailerService = $mailerService;
-        $this->router        = $router;
-
         $config       = $dataService->getConfig();
         $this->config = $config;
 
@@ -260,7 +247,7 @@ class UserMailService
             return;
         }
 
-        $url    = (isset($this->config['site_url'])) ? $this->config['site_url'] : '';
+        $url    = $this->config['site_url'] ?? '';
         $change = [
             'url_confirm_user' => $url.$this->router->generate(
                 'app_confirm_user',

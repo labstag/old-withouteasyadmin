@@ -9,21 +9,8 @@ use Labstag\RequestHandler\AttachmentRequestHandler;
 class AttachFormService
 {
 
-    private AttachmentRepository $attachmentRepository;
-
-    private AttachmentRequestHandler $attachmentRH;
-
-    private UploadAnnotationReader $uploadAnnotReader;
-
-    public function __construct(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
-        AttachmentRequestHandler $attachmentRH
-    )
+    public function __construct(private UploadAnnotationReader $uploadAnnotReader, private AttachmentRepository $attachmentRepository, private AttachmentRequestHandler $attachmentRH)
     {
-        $this->uploadAnnotReader    = $uploadAnnotReader;
-        $this->attachmentRepository = $attachmentRepository;
-        $this->attachmentRH         = $attachmentRH;
     }
 
     public function getRepository(): AttachmentRepository

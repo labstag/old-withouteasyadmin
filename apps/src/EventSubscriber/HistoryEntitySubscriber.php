@@ -12,21 +12,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class HistoryEntitySubscriber implements EventSubscriberInterface
 {
 
-    protected ParameterBagInterface $containerBag;
-
-    protected EnqueueMethod $enqueue;
-
-    protected EntityManagerInterface $entityManager;
-
-    public function __construct(
-        ParameterBagInterface $containerBag,
-        EntityManagerInterface $entityManager,
-        EnqueueMethod $enqueue
-    )
+    public function __construct(protected ParameterBagInterface $containerBag, protected EntityManagerInterface $entityManager, protected EnqueueMethod $enqueue)
     {
-        $this->containerBag  = $containerBag;
-        $this->enqueue       = $enqueue;
-        $this->entityManager = $entityManager;
     }
 
     public static function getSubscribedEvents(): array

@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  * @ORM\Entity(repositoryClass=LibelleRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Libelle
+class Libelle implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -53,9 +53,9 @@ class Libelle
         $this->bookmarks = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function addBookmark(Bookmark $bookmark): self

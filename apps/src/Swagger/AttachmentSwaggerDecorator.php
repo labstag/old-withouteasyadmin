@@ -15,11 +15,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class AttachmentSwaggerDecorator implements NormalizerInterface
 {
 
-    private NormalizerInterface $decorated;
-
-    public function __construct(NormalizerInterface $decorated)
+    public function __construct(private NormalizerInterface $decorated)
     {
-        $this->decorated = $decorated;
     }
 
     /**

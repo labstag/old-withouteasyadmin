@@ -5,21 +5,8 @@ namespace Labstag\Queue\Message;
 class ServiceMethodMessage
 {
 
-    protected string $method;
-
-    protected array $params;
-
-    protected string $serviceName;
-
-    public function __construct(
-        string $serviceName,
-        string $method,
-        array $params = []
-    )
+    public function __construct(protected string $serviceName, protected string $method, protected array $params = [])
     {
-        $this->serviceName = $serviceName;
-        $this->method      = $method;
-        $this->params      = $params;
     }
 
     public function getMethod(): string

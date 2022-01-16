@@ -10,11 +10,8 @@ use ReflectionClass;
 class UploadAnnotationReader
 {
 
-    protected AnnotationReader $reader;
-
-    public function __construct(AnnotationReader $reader)
+    public function __construct(protected AnnotationReader $reader)
     {
-        $this->reader = $reader;
     }
 
     /**
@@ -51,6 +48,6 @@ class UploadAnnotationReader
 
     protected function setReflection($entity): ReflectionClass
     {
-        return new ReflectionClass(get_class($entity));
+        return new ReflectionClass($entity::class);
     }
 }

@@ -28,41 +28,8 @@ class GuardService
 
     public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
-    protected EntityManagerInterface $entityManager;
-
-    protected GroupeRepository $groupeRepository;
-
-    protected RouteRepository $repositoryRoute;
-
-    protected RouteGroupeRepository $routeGroupeRepo;
-
-    protected RouterInterface $router;
-
-    protected RouteRepository $routeRepository;
-
-    protected RouteUserRepository $routeUserRepo;
-
-    protected Registry $workflows;
-
-    public function __construct(
-        RouterInterface $router,
-        EntityManagerInterface $entityManager,
-        RouteUserRepository $routeUserRepo,
-        GroupeRepository $groupeRepository,
-        RouteRepository $routeRepository,
-        Registry $workflows,
-        RouteGroupeRepository $routeGroupeRepo,
-        RouteRepository $repositoryRoute
-    )
+    public function __construct(protected RouterInterface $router, protected EntityManagerInterface $entityManager, protected RouteUserRepository $routeUserRepo, protected GroupeRepository $groupeRepository, protected RouteRepository $routeRepository, protected Registry $workflows, protected RouteGroupeRepository $routeGroupeRepo, protected RouteRepository $repositoryRoute)
     {
-        $this->routeRepository  = $routeRepository;
-        $this->entityManager    = $entityManager;
-        $this->groupeRepository = $groupeRepository;
-        $this->workflows        = $workflows;
-        $this->routeGroupeRepo  = $routeGroupeRepo;
-        $this->routeUserRepo    = $routeUserRepo;
-        $this->repositoryRoute  = $repositoryRoute;
-        $this->router           = $router;
     }
 
     public function all(): array
@@ -78,7 +45,7 @@ class GuardService
             }
 
             $matches = $this->regex($defaults['_controller']);
-            if (0 != count($matches)) {
+            if (0 != (is_countable($matches) ? count($matches) : 0)) {
                 continue;
             }
 

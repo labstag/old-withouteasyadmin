@@ -9,16 +9,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 abstract class AbstractTypeLib extends AbstractType
 {
 
-    protected TemplatePageService $templatePageService;
-
-    protected TranslatorInterface $translator;
-
-    public function __construct(
-        TranslatorInterface $translator,
-        TemplatePageService $templatePageService
-    )
+    public function __construct(protected TranslatorInterface $translator, protected TemplatePageService $templatePageService)
     {
-        $this->templatePageService = $templatePageService;
-        $this->translator          = $translator;
     }
 }

@@ -43,26 +43,13 @@ class HistoryTemplatePage extends TemplatePageLib
     public function generateUrl(Page $page, string $route, array $params, bool $relative): string
     {
         $slug = $page->getSlug().'/';
-        switch ($route) {
-            case 'user':
-                $url = $slug.'user/'.$params['username'];
-
-                break;
-            case 'show':
-                $url = $slug.$params['slug'];
-
-                break;
-            case 'chapter':
-                $url = $slug.$params['history'].'/'.$params['chapter'];
-
-                break;
-            case 'pdf':
-                $url = $slug.$params['slug'].'.pdf';
-
-                break;
-            default:
-                $url = $slug;
-        }
+        $url = match ($route) {
+            'user' => $slug.'user/'.$params['username'],
+            'show' => $slug.$params['slug'],
+            'chapter' => $slug.$params['history'].'/'.$params['chapter'],
+            'pdf' => $slug.$params['slug'].'.pdf',
+            default => $slug,
+        };
 
         return $this->router->generate(
             'front',

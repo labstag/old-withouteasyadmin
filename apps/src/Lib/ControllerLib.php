@@ -20,47 +20,20 @@ abstract class ControllerLib extends AbstractController
 
     protected BreadcrumbsSingleton $breadcrumbsInstance;
 
-    protected CsrfTokenManagerInterface $csrfTokenManager;
-
-    protected DataService $dataService;
-
-    protected GuardService $guardService;
-
-    protected PaginatorInterface $paginator;
-
     protected Request $request;
 
-    protected RequestStack $requeststack;
-
-    protected RouterInterface $routerInterface;
-
-    protected TokenStorageInterface $tokenStorage;
-
-    protected TranslatorInterface $translator;
-
-    protected Environment $twig;
-
     public function __construct(
-        Environment $twig,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        TokenStorageInterface $tokenStorage,
-        RouterInterface $routerInterface,
-        RequestStack $requestStack,
-        GuardService $guardService,
-        DataService $dataService,
-        PaginatorInterface $paginator,
-        TranslatorInterface $translator
+        protected Environment $twig,
+        protected CsrfTokenManagerInterface $csrfTokenManager,
+        protected TokenStorageInterface $tokenStorage,
+        protected RouterInterface $routerInterface,
+        protected RequestStack $requeststack,
+        protected GuardService $guardService,
+        protected DataService $dataService,
+        protected PaginatorInterface $paginator,
+        protected TranslatorInterface $translator
     )
     {
-        $this->csrfTokenManager    = $csrfTokenManager;
-        $this->tokenStorage        = $tokenStorage;
-        $this->routerInterface     = $routerInterface;
-        $this->twig                = $twig;
-        $this->guardService        = $guardService;
-        $this->translator          = $translator;
-        $this->dataService         = $dataService;
-        $this->paginator           = $paginator;
-        $this->requeststack        = $requestStack;
         $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
     }
 

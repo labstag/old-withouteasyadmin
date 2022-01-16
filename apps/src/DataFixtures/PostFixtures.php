@@ -46,17 +46,17 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $post    = new Post();
         $oldPost = clone $post;
         $post->setTitle($faker->unique()->colorName);
-        $post->setMetaKeywords(implode(', ', $faker->unique()->words(rand(4, 10))));
+        $post->setMetaKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
         $post->setMetaDescription($faker->unique()->sentence);
         // @var string $content
-        $content = $faker->paragraphs(rand(4, 10), true);
+        $content = $faker->paragraphs(random_int(4, 10), true);
         $post->setContent(str_replace("\n\n", "<br />\n", $content));
         $users     = $this->installService->getData('user');
-        $indexUser = $faker->numberBetween(0, count($users) - 1);
+        $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
         $user      = $this->getReference('user_'.$indexUser);
         $post->setRefuser($user);
         $post->setPublished($faker->unique()->dateTime('now'));
-        if (1 == rand(0, 1)) {
+        if (1 == random_int(0, 1)) {
             $nbr = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
             for ($i = 0; $i < $nbr; ++$i) {
                 $indexLibelle = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
@@ -68,7 +68,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $indexLibelle = $faker->numberBetween(0, self::NUMBER_CATEGORY - 1);
         $category     = $this->getReference('category_'.$indexLibelle);
         $post->setRefcategory($category);
-        $post->setRemark((bool) rand(0, 1));
+        $post->setRemark((bool) random_int(0, 1));
         $this->upload($post, $faker);
         $this->addReference('post_'.$index, $post);
         $this->postRH->handle($oldPost, $post);

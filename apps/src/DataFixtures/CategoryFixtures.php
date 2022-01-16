@@ -36,7 +36,7 @@ class CategoryFixtures extends FixtureLib implements DependentFixtureInterface
         $category->setName($faker->unique()->colorName);
         $indexCategory = $faker->numberBetween(0, $index);
         $code          = 'category_'.$indexCategory;
-        if ($this->hasReference($code) && 1 == rand(0, 1)) {
+        if ($this->hasReference($code) && 1 == random_int(0, 1)) {
             $parent = $this->getReference($code);
             $category->setParent($parent);
         }

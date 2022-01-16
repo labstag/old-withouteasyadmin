@@ -13,17 +13,8 @@ class HistoryService
 
     private $filename;
 
-    private HistoryRepository $historyRepo;
-
-    private Environment $twig;
-
-    public function __construct(
-        HistoryRepository $historyRepo,
-        Environment $twig
-    )
+    public function __construct(private HistoryRepository $historyRepo, private Environment $twig)
     {
-        $this->twig        = $twig;
-        $this->historyRepo = $historyRepo;
     }
 
     public function getFilename(): string

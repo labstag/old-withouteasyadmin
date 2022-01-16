@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorMap({"user": "LinkUser"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-abstract class Link
+abstract class Link implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -40,7 +40,7 @@ abstract class Link
      */
     protected $name;
 
-    public function __toString()
+    public function __toString(): string
     {
         return implode(
             ' ',

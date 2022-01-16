@@ -16,29 +16,8 @@ use Symfony\Component\Workflow\Event\GuardEvent;
 class WorkflowGuardSubscriber implements EventSubscriberInterface
 {
 
-    protected GroupeRepository $groupeRepo;
-
-    protected TokenStorageInterface $token;
-
-    protected WorkflowGroupeRepository $workflowGroupeRepo;
-
-    protected WorkflowRepository $workflowRepo;
-
-    protected WorkflowUserRepository $workflowUserRepo;
-
-    public function __construct(
-        TokenStorageInterface $token,
-        WorkflowUserRepository $workflowUserRepo,
-        GroupeRepository $groupeRepo,
-        WorkflowRepository $workflowRepo,
-        WorkflowGroupeRepository $workflowGroupeRepo
-    )
+    public function __construct(protected TokenStorageInterface $token, protected WorkflowUserRepository $workflowUserRepo, protected GroupeRepository $groupeRepo, protected WorkflowRepository $workflowRepo, protected WorkflowGroupeRepository $workflowGroupeRepo)
     {
-        $this->workflowRepo       = $workflowRepo;
-        $this->groupeRepo         = $groupeRepo;
-        $this->workflowUserRepo   = $workflowUserRepo;
-        $this->workflowGroupeRepo = $workflowGroupeRepo;
-        $this->token              = $token;
     }
 
     public static function getSubscribedEvents(): array
