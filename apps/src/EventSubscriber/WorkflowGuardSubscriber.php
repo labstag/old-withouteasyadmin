@@ -15,8 +15,13 @@ use Symfony\Component\Workflow\Event\GuardEvent;
 
 class WorkflowGuardSubscriber implements EventSubscriberInterface
 {
-
-    public function __construct(protected TokenStorageInterface $token, protected WorkflowUserRepository $workflowUserRepo, protected GroupeRepository $groupeRepo, protected WorkflowRepository $workflowRepo, protected WorkflowGroupeRepository $workflowGroupeRepo)
+    public function __construct(
+        protected TokenStorageInterface $token,
+        protected WorkflowUserRepository $workflowUserRepo,
+        protected GroupeRepository $groupeRepo,
+        protected WorkflowRepository $workflowRepo,
+        protected WorkflowGroupeRepository $workflowGroupeRepo
+    )
     {
     }
 

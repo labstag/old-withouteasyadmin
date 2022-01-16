@@ -22,7 +22,16 @@ class BookmarkService
 {
     public const CLIENTNUMBER = 400;
 
-    public function __construct(private UserRepository $userRepo, private BookmarkRepository $bookmarkRepo, private LoggerInterface $logger, private EntityManagerInterface $entityManager, private AttachmentRequestHandler $attachmentRH, private UploadAnnotationReader $uploadAnnotReader, private ContainerBagInterface $containerBag, private BookmarkRequestHandler $requestHandler)
+    public function __construct(
+        private UserRepository $userRepo,
+        private BookmarkRepository $bookmarkRepo,
+        private LoggerInterface $logger,
+        private EntityManagerInterface $entityManager,
+        private AttachmentRequestHandler $attachmentRH,
+        private UploadAnnotationReader $uploadAnnotReader,
+        private ContainerBagInterface $containerBag,
+        private BookmarkRequestHandler $requestHandler
+    )
     {
     }
 

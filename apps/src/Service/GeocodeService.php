@@ -13,7 +13,12 @@ class GeocodeService
 {
     public const HTTP_OK = 200;
 
-    public function __construct(protected HttpClientInterface $client, protected GeoCodeRepository $repository, protected EntityManagerInterface $entityManager, protected GeoCodeRequestHandler $geoCodeRH)
+    public function __construct(
+        protected HttpClientInterface $client,
+        protected GeoCodeRepository $repository,
+        protected EntityManagerInterface $entityManager,
+        protected GeoCodeRequestHandler $geoCodeRH
+    )
     {
     }
 

@@ -6,13 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\ConfigurationRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=ConfigurationRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Configuration implements \Stringable
+class Configuration implements Stringable
 {
     use SoftDeleteableEntity;
 

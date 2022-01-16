@@ -28,7 +28,16 @@ class GuardService
 
     public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
-    public function __construct(protected RouterInterface $router, protected EntityManagerInterface $entityManager, protected RouteUserRepository $routeUserRepo, protected GroupeRepository $groupeRepository, protected RouteRepository $routeRepository, protected Registry $workflows, protected RouteGroupeRepository $routeGroupeRepo, protected RouteRepository $repositoryRoute)
+    public function __construct(
+        protected RouterInterface $router,
+        protected EntityManagerInterface $entityManager,
+        protected RouteUserRepository $routeUserRepo,
+        protected GroupeRepository $groupeRepository,
+        protected RouteRepository $routeRepository,
+        protected Registry $workflows,
+        protected RouteGroupeRepository $routeGroupeRepo,
+        protected RouteRepository $repositoryRoute
+    )
     {
     }
 

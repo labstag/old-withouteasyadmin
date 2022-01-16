@@ -21,7 +21,14 @@ class GuardRouterSubscriber implements EventSubscriberInterface
 
     protected SessionInterface $session;
 
-    public function __construct(protected RequestStack $requestStack, protected RouterInterface $router, protected TokenStorageInterface $token, protected GroupeRepository $groupeRepository, protected GuardService $guardService, protected TranslatorInterface $translator)
+    public function __construct(
+        protected RequestStack $requestStack,
+        protected RouterInterface $router,
+        protected TokenStorageInterface $token,
+        protected GroupeRepository $groupeRepository,
+        protected GuardService $guardService,
+        protected TranslatorInterface $translator
+    )
     {
     }
 

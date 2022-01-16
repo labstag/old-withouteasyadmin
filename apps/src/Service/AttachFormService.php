@@ -8,8 +8,11 @@ use Labstag\RequestHandler\AttachmentRequestHandler;
 
 class AttachFormService
 {
-
-    public function __construct(private UploadAnnotationReader $uploadAnnotReader, private AttachmentRepository $attachmentRepository, private AttachmentRequestHandler $attachmentRH)
+    public function __construct(
+        private UploadAnnotationReader $uploadAnnotReader,
+        private AttachmentRepository $attachmentRepository,
+        private AttachmentRequestHandler $attachmentRH
+    )
     {
     }
 

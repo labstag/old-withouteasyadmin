@@ -6,7 +6,6 @@ use Labstag\Entity\Menu;
 
 class MenuEntityEvent
 {
-
     public function __construct(protected Menu $oldEntity, protected Menu $newEntity)
     {
     }

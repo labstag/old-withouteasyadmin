@@ -10,6 +10,7 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\MemoRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,10 +19,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Uploadable()
  */
-class Memo implements \Stringable
+class Memo implements Stringable
 {
     use SoftDeleteableEntity;
-
     use StateableEntity;
 
     /**

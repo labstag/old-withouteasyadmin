@@ -13,6 +13,7 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\PostRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,10 +22,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Uploadable()
  */
-class Post implements \Stringable
+class Post implements Stringable
 {
     use SoftDeleteableEntity;
-
     use StateableEntity;
 
     /**
@@ -38,11 +38,10 @@ class Post implements \Stringable
     private $content;
 
     /**
-     *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
-    private \DateTime $created;
+    private DateTime $created;
 
     /**
      * @ORM\Id
@@ -106,11 +105,10 @@ class Post implements \Stringable
     private $title;
 
     /**
-     *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
-    private \DateTime $updated;
+    private DateTime $updated;
 
     public function __construct()
     {

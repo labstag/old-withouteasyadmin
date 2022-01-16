@@ -27,8 +27,23 @@ use Twig\Environment;
 
 class InstallService
 {
-
-    public function __construct(protected PageRequestHandler $pageRH, protected MenuRequestHandler $menuRH, protected GroupeRequestHandler $groupeRH, protected GroupeRepository $groupeRepo, protected ConfigurationRequestHandler $configurationRH, protected ConfigurationRepository $configurationRepo, protected MenuRepository $menuRepo, protected UserRequestHandler $userRH, protected UserRepository $userRepo, protected TemplateRequestHandler $templateRH, protected LayoutRepository $layoutRepo, protected TemplateRepository $templateRepo, protected EntityManagerInterface $entityManager, protected Environment $twig, protected CacheInterface $cache)
+    public function __construct(
+        protected PageRequestHandler $pageRH,
+        protected MenuRequestHandler $menuRH,
+        protected GroupeRequestHandler $groupeRH,
+        protected GroupeRepository $groupeRepo,
+        protected ConfigurationRequestHandler $configurationRH,
+        protected ConfigurationRepository $configurationRepo,
+        protected MenuRepository $menuRepo,
+        protected UserRequestHandler $userRH,
+        protected UserRepository $userRepo,
+        protected TemplateRequestHandler $templateRH,
+        protected LayoutRepository $layoutRepo,
+        protected TemplateRepository $templateRepo,
+        protected EntityManagerInterface $entityManager,
+        protected Environment $twig,
+        protected CacheInterface $cache
+    )
     {
     }
 

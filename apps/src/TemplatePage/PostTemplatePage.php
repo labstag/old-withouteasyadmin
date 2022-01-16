@@ -49,7 +49,7 @@ class PostTemplatePage extends TemplatePageLib
     public function generateUrl(Page $page, string $route, array $params, bool $relative): string
     {
         $slug = $page->getSlug().'/';
-        $url = match ($route) {
+        $url  = match ($route) {
             'user' => $slug.'user/'.$params['username'],
             'show' => $slug.$params['slug'],
             'libelle' => $slug.'libelle/'.$params['code'],

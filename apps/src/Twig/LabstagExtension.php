@@ -27,7 +27,19 @@ class LabstagExtension extends AbstractExtension
 
     public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
-    public function __construct(protected RouterInterface $router, protected PhoneService $phoneService, protected CacheManager $cache, protected Registry $workflows, protected TokenStorageInterface $token, protected LoggerInterface $logger, protected GroupeRepository $groupeRepository, protected TemplatePageService $templatePageService, protected PageRepository $pageRepository, protected AttachmentRepository $attachmentRepository, protected GuardService $guardService)
+    public function __construct(
+        protected RouterInterface $router,
+        protected PhoneService $phoneService,
+        protected CacheManager $cache,
+        protected Registry $workflows,
+        protected TokenStorageInterface $token,
+        protected LoggerInterface $logger,
+        protected GroupeRepository $groupeRepository,
+        protected TemplatePageService $templatePageService,
+        protected PageRepository $pageRepository,
+        protected AttachmentRepository $attachmentRepository,
+        protected GuardService $guardService
+    )
     {
     }
 

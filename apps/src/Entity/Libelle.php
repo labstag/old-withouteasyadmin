@@ -8,13 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\LibelleRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=LibelleRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Libelle implements \Stringable
+class Libelle implements Stringable
 {
     use SoftDeleteableEntity;
 

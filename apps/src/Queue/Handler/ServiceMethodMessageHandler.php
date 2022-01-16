@@ -12,7 +12,6 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 class ServiceMethodMessageHandler implements MessageHandlerInterface, ServiceSubscriberInterface
 {
-
     public function __construct(protected ContainerInterface $container)
     {
     }

@@ -4,7 +4,6 @@ namespace Labstag\Service;
 
 class TemplatePageService
 {
-
     public function __construct(protected $templates)
     {
     }

@@ -137,8 +137,6 @@ class SecurityController extends ControllerLib
 
     /**
      * @Route("/disclaimer", name="disclaimer", priority=1)
-     *
-     * @return RedirectResponse|Response
      */
     public function disclaimer(Request $request, DataService $dataService): RedirectResponse|Response
     {

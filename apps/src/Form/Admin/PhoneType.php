@@ -13,7 +13,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class PhoneType extends AbstractTypeLib
 {
-
     public function __construct(
         TranslatorInterface $translator,
         protected PhoneService $phoneService,

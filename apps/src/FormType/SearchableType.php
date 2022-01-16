@@ -17,8 +17,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SearchableType extends AbstractType
 {
-
-    public function __construct(protected RouterInterface $router, protected TranslatorInterface $translator, protected EntityManagerInterface $entityManager)
+    public function __construct(
+        protected RouterInterface $router,
+        protected TranslatorInterface $translator,
+        protected EntityManagerInterface $entityManager
+    )
     {
     }
 

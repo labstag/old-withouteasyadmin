@@ -10,8 +10,11 @@ use Symfony\Component\Workflow\Registry;
 
 abstract class RequestHandlerLib
 {
-
-    public function __construct(protected EntityManagerInterface $entityManager, protected Registry $workflows, protected EventDispatcherInterface $dispatcher)
+    public function __construct(
+        protected EntityManagerInterface $entityManager,
+        protected Registry $workflows,
+        protected EventDispatcherInterface $dispatcher
+    )
     {
     }
 

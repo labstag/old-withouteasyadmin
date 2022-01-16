@@ -57,7 +57,7 @@ class PageType extends AbstractTypeLib
             [
                 'required'      => false,
                 'class'         => Page::class,
-                'query_builder' => fn(PageRepository $er) => $er->formType($options),
+                'query_builder' => fn (PageRepository $er) => $er->formType($options),
             ]
         );
 
@@ -68,7 +68,7 @@ class PageType extends AbstractTypeLib
                 'label'         => $this->translator->trans('page.reflayout.label', [], 'admin.form'),
                 'help'          => $this->translator->trans('page.reflayout.help', [], 'admin.form'),
                 'class'         => Layout::class,
-                'query_builder' => fn(LayoutRepository $er) => $er->formType(),
+                'query_builder' => fn (LayoutRepository $er) => $er->formType(),
             ]
         );
 

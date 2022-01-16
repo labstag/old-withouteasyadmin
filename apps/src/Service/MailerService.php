@@ -9,8 +9,12 @@ use Twig\Environment;
 
 class MailerService
 {
-
-    public function __construct(protected Environment $twig, protected EnqueueMethod $enqueue, protected MailerInterface $mailer, protected DataService $dataService)
+    public function __construct(
+        protected Environment $twig,
+        protected EnqueueMethod $enqueue,
+        protected MailerInterface $mailer,
+        protected DataService $dataService
+    )
     {
     }
 

@@ -67,7 +67,34 @@ abstract class FixtureLib extends Fixture
 
     protected const NUMBER_TEMPLATES = 10;
 
-    public function __construct(protected LoggerInterface $logger, protected ContainerBagInterface $containerBag, protected UploadAnnotationReader $uploadAnnotReader, protected InstallService $installService, protected UserRepository $userRepository, protected GroupeRepository $groupeRepository, protected GuardService $guardService, protected Environment $twig, protected EmailUserRequestHandler $emailUserRH, protected LinkUserRequestHandler $linkUserRH, protected MemoRequestHandler $noteInterneRH, protected GroupeRequestHandler $groupeRH, protected LayoutRequestHandler $layoutRH, protected EditoRequestHandler $editoRH, protected UserRequestHandler $userRH, protected PhoneUserRequestHandler $phoneUserRH, protected AttachmentRequestHandler $attachmentRH, protected AddressUserRequestHandler $addressUserRH, protected TemplateRequestHandler $templateRH, protected LibelleRequestHandler $libelleRH, protected CacheInterface $cache, protected BookmarkRequestHandler $bookmarkRH, protected PostRequestHandler $postRH, protected CategoryRequestHandler $categoryRH, protected HistoryRequestHandler $historyRH, protected ChapterRequestHandler $chapterRH)
+    public function __construct(
+        protected LoggerInterface $logger,
+        protected ContainerBagInterface $containerBag,
+        protected UploadAnnotationReader $uploadAnnotReader,
+        protected InstallService $installService,
+        protected UserRepository $userRepository,
+        protected GroupeRepository $groupeRepository,
+        protected GuardService $guardService,
+        protected Environment $twig,
+        protected EmailUserRequestHandler $emailUserRH,
+        protected LinkUserRequestHandler $linkUserRH,
+        protected MemoRequestHandler $noteInterneRH,
+        protected GroupeRequestHandler $groupeRH,
+        protected LayoutRequestHandler $layoutRH,
+        protected EditoRequestHandler $editoRH,
+        protected UserRequestHandler $userRH,
+        protected PhoneUserRequestHandler $phoneUserRH,
+        protected AttachmentRequestHandler $attachmentRH,
+        protected AddressUserRequestHandler $addressUserRH,
+        protected TemplateRequestHandler $templateRH,
+        protected LibelleRequestHandler $libelleRH,
+        protected CacheInterface $cache,
+        protected BookmarkRequestHandler $bookmarkRH,
+        protected PostRequestHandler $postRH,
+        protected CategoryRequestHandler $categoryRH,
+        protected HistoryRequestHandler $historyRH,
+        protected ChapterRequestHandler $chapterRH
+    )
     {
     }
 

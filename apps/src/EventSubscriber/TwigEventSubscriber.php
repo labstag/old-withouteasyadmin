@@ -27,7 +27,16 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
-    public function __construct(protected RouterInterface $router, protected AttachmentRepository $attachmentRepo, protected Environment $twig, protected UrlGeneratorInterface $urlGenerator, protected CsrfTokenManagerInterface $csrfTokenManager, protected DataService $dataService, protected Security $security, protected TranslatorInterface $translator)
+    public function __construct(
+        protected RouterInterface $router,
+        protected AttachmentRepository $attachmentRepo,
+        protected Environment $twig,
+        protected UrlGeneratorInterface $urlGenerator,
+        protected CsrfTokenManagerInterface $csrfTokenManager,
+        protected DataService $dataService,
+        protected Security $security,
+        protected TranslatorInterface $translator
+    )
     {
     }
 

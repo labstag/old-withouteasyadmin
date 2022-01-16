@@ -8,7 +8,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class BookmarkEntitySubscriber implements EventSubscriberInterface
 {
-
     public function __construct(protected EntityManagerInterface $entityManager)
     {
     }

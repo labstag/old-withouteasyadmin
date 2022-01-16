@@ -5,6 +5,7 @@ namespace Labstag\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorMap({"user": "AddressUser"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-abstract class Address implements \Stringable
+abstract class Address implements Stringable
 {
     use SoftDeleteableEntity;
 

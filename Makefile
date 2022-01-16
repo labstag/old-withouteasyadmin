@@ -25,24 +25,25 @@ apps/phploc.phar:
 	$(DOCKER_EXECPHP) wget https://phar.phpunit.de/phploc-7.0.2.phar -O phploc.phar
 
 apps/php-cs-fixer.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.1.0/php-cs-fixer.phar
+	$(DOCKER_EXECPHP) wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.5.0/php-cs-fixer.phar
+
 apps/phpmd.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/phpmd/phpmd/releases/download/2.10.2/phpmd.phar
+	$(DOCKER_EXECPHP) wget https://github.com/phpmd/phpmd/releases/download/2.11.1/phpmd.phar
 
 apps/phpcbf.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.0/phpcbf.phar
+	$(DOCKER_EXECPHP) wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.2/phpcbf.phar
 
 apps/phpcs.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.0/phpcs.phar
+	$(DOCKER_EXECPHP) wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.2/phpcs.phar
 
 apps/phpstan.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/phpstan/phpstan/releases/download/0.12.98/phpstan.phar
+	$(DOCKER_EXECPHP) wget https://github.com/phpstan/phpstan/releases/download/1.4.0/phpstan.phar
 
 apps/phpDocumentor.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.1.2/phpDocumentor.phar
+	$(DOCKER_EXECPHP) wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.3.0/phpDocumentor.phar
 
 apps/behat.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/Behat/Behat/releases/download/v3.8.1/behat.phar
+	$(DOCKER_EXECPHP) wget https://github.com/Behat/Behat/releases/download/v3.10.0/behat.phar
 
 phar: apps/phploc.phar apps/phpmd.phar apps/php-cs-fixer.phar apps/phpcbf.phar apps/phpcs.phar apps/phpstan.phar apps/phpDocumentor.phar apps/behat.phar
 

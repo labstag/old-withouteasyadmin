@@ -9,7 +9,6 @@ use Symfony\Component\Workflow\Event\Event;
 
 class EmailWorkflowSubscriber implements EventSubscriberInterface
 {
-
     public function __construct(protected UserMailService $userMailService)
     {
     }

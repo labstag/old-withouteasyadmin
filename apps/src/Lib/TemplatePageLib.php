@@ -47,8 +47,8 @@ abstract class TemplatePageLib
         protected CategoryRepository $categoryRepository
     )
     {
-        $request                  = $this->requeststack->getCurrentRequest();
-        $this->request            = $request;
+        $request       = $this->requeststack->getCurrentRequest();
+        $this->request = $request;
     }
 
     public function generateUrl(Page $page, string $route, array $params, bool $relative): string

@@ -18,7 +18,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class Attachment
 {
     use SoftDeleteableEntity;
-
     use StateableEntity;
 
     /**

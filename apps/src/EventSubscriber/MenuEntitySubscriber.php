@@ -9,7 +9,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MenuEntitySubscriber implements EventSubscriberInterface
 {
-
     public function __construct(protected EntityManagerInterface $entityManager)
     {
     }

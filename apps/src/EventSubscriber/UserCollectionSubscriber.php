@@ -11,7 +11,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserCollectionSubscriber implements EventSubscriberInterface
 {
-
     public function __construct(protected UserMailService $userMailService)
     {
     }

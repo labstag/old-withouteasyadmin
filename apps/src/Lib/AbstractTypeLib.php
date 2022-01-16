@@ -8,8 +8,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractTypeLib extends AbstractType
 {
-
-    public function __construct(protected TranslatorInterface $translator, protected TemplatePageService $templatePageService)
+    public function __construct(
+        protected TranslatorInterface $translator,
+        protected TemplatePageService $templatePageService
+    )
     {
     }
 }

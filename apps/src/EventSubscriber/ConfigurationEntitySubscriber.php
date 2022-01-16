@@ -23,7 +23,15 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
 
     protected SessionInterface $session;
 
-    public function __construct(protected LoggerInterface $logger, protected ContainerBagInterface $containerBag, protected EntityManagerInterface $entityManager, protected ConfigurationRepository $repository, protected CacheInterface $cache, protected RequestStack $requestStack, protected TranslatorInterface $translator)
+    public function __construct(
+        protected LoggerInterface $logger,
+        protected ContainerBagInterface $containerBag,
+        protected EntityManagerInterface $entityManager,
+        protected ConfigurationRepository $repository,
+        protected CacheInterface $cache,
+        protected RequestStack $requestStack,
+        protected TranslatorInterface $translator
+    )
     {
     }
 

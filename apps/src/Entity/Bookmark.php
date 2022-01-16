@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity;
 
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -100,11 +101,10 @@ class Bookmark
     private $state;
 
     /**
-     *
      * @ORM\Column(name="state_changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"state"})
      */
-    private \DateTime $stateChanged;
+    private DateTime $stateChanged;
 
     /**
      * @ORM\Column(type="string", length=255)

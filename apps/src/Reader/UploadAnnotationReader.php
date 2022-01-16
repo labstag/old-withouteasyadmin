@@ -9,7 +9,6 @@ use ReflectionClass;
 
 class UploadAnnotationReader
 {
-
     public function __construct(protected AnnotationReader $reader)
     {
     }

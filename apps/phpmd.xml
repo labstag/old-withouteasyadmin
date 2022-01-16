@@ -28,6 +28,8 @@
 			<property name="exceptions" value="id" />
 		</properties>
 	</rule>
-	<rule ref="rulesets/unusedcode.xml"/>
+	<rule ref="rulesets/unusedcode.xml">
+        <exclude name="UnusedFormalParameter" />
+    </rule>
 	<exclude-pattern>src/Kernel.php</exclude-pattern>
 </ruleset>

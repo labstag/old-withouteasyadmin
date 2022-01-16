@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\GroupeRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=GroupeRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Groupe implements \Stringable
+class Groupe implements Stringable
 {
     use SoftDeleteableEntity;
 

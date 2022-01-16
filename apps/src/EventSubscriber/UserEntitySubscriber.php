@@ -19,7 +19,14 @@ class UserEntitySubscriber implements EventSubscriberInterface
 
     protected FlashBagInterface $flashbag;
 
-    public function __construct(protected RequestStack $requestStack, protected EntityManagerInterface $entityManager, protected UserPasswordHasherInterface $passwordEncoder, protected UserMailService $userMailService, protected EmailUserRequestHandler $emailUserRH, protected TranslatorInterface $translator)
+    public function __construct(
+        protected RequestStack $requestStack,
+        protected EntityManagerInterface $entityManager,
+        protected UserPasswordHasherInterface $passwordEncoder,
+        protected UserMailService $userMailService,
+        protected EmailUserRequestHandler $emailUserRH,
+        protected TranslatorInterface $translator
+    )
     {
     }
 

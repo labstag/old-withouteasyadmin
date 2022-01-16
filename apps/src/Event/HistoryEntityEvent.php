@@ -6,7 +6,6 @@ use Labstag\Entity\History;
 
 class HistoryEntityEvent
 {
-
     public function __construct(protected History $oldEntity, protected History $newEntity)
     {
     }

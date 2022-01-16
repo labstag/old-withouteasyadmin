@@ -8,7 +8,6 @@ use Symfony\Component\Workflow\Event\Event;
 
 class PhoneWorkflowSubscriber implements EventSubscriberInterface
 {
-
     public function __construct(protected UserMailService $userMailService)
     {
     }

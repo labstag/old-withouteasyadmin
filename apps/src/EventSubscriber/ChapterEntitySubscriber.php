@@ -11,8 +11,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ChapterEntitySubscriber implements EventSubscriberInterface
 {
-
-    public function __construct(protected ParameterBagInterface $containerBag, protected EntityManagerInterface $entityManager, protected EnqueueMethod $enqueue)
+    public function __construct(
+        protected ParameterBagInterface $containerBag,
+        protected EntityManagerInterface $entityManager,
+        protected EnqueueMethod $enqueue
+    )
     {
     }
 

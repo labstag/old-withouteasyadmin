@@ -22,7 +22,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProfilType extends AbstractTypeLib
 {
-
     public function __construct(
         protected EmailUserRepository $repository,
         TranslatorInterface $translator,

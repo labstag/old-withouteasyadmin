@@ -17,7 +17,11 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
 
     protected SessionInterface $session;
 
-    public function __construct(protected UserMailService $userMailService, protected RequestStack $requestStack, protected TranslatorInterface $translator)
+    public function __construct(
+        protected UserMailService $userMailService,
+        protected RequestStack $requestStack,
+        protected TranslatorInterface $translator
+    )
     {
     }
 

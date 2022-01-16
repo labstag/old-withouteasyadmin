@@ -6,7 +6,6 @@ use Labstag\Entity\Page;
 
 class PageEntityEvent
 {
-
     public function __construct(protected Page $oldEntity, protected Page $newEntity)
     {
     }

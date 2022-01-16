@@ -16,7 +16,14 @@ class UserService
 
     protected FlashBagInterface $flashbag;
 
-    public function __construct(protected RequestStack $requestStack, protected EntityManagerInterface $entityManager, protected UserRepository $repository, protected UserRequestHandler $userRH, protected OauthConnectUserRequestHandler $oauthConnectUserRH, protected TranslatorInterface $translator)
+    public function __construct(
+        protected RequestStack $requestStack,
+        protected EntityManagerInterface $entityManager,
+        protected UserRepository $repository,
+        protected UserRequestHandler $userRH,
+        protected OauthConnectUserRequestHandler $oauthConnectUserRH,
+        protected TranslatorInterface $translator
+    )
     {
     }
 

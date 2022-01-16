@@ -11,7 +11,6 @@ use Symfony\Component\Routing\RouterInterface;
 
 class DisclaimerSubscriber implements EventSubscriberInterface
 {
-
     public function __construct(protected RouterInterface $router, protected DataService $dataService)
     {
     }

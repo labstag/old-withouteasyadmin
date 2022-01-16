@@ -6,7 +6,6 @@ use Labstag\Entity\User;
 
 class UserEntityEvent
 {
-
     public function __construct(protected User $oldEntity, protected User $newEntity)
     {
     }
