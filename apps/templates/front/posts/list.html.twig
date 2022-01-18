@@ -41,6 +41,8 @@
                 {% for libelle in post.libelles %}
                     <a href="{{ page('post', 'libelle', {'code' : libelle.slug}) }}" class="post_libelle">{{ libelle }}</a>
                 {% endfor %}
+            </div>
+            <div class="post_libcat">
                 {% if post.refcategory %}
                     <a href="{{ page('post', 'category', {'code': post.refcategory.slug}) }}" class="post_category">{{ post.refcategory }}</a>
                 {% endif %}
