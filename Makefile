@@ -5,7 +5,7 @@ include make/docker/Makefile
 
 PHPFPMFULLNAME := $(STACK)_phpfpm.1.$$(docker service ps -f 'name=$(STACK)_phpfpm' $(STACK)_phpfpm -q --no-trunc | head -n1)
 
-DOCKER_EXECPHP := @docker exec $(PHPFPMFULLNAME)
+DOCKER_EXECPHP := @$(DOCKER_EXEC) $(PHPFPMFULLNAME)
 
 PHP_EXEC := ${DOCKER_EXECPHP} php -d memory_limit=-1
 SYMFONY_EXEC := ${DOCKER_EXECPHP} symfony console
