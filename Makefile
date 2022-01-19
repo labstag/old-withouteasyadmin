@@ -11,7 +11,7 @@ PHP_EXEC := ${DOCKER_EXECPHP} php -d memory_limit=-1
 SYMFONY_EXEC := ${DOCKER_EXECPHP} symfony console
 COMPOSER_EXEC := ${DOCKER_EXECPHP} symfony composer
 
-COMMANDS_SUPPORTED_COMMANDS := libraries workflow-png tests messenger linter install git encore composer bdd setbdd geocode
+COMMANDS_SUPPORTED_COMMANDS := workflow-png tests messenger linter install git encore composer bdd setbdd geocode
 COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
 ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -302,25 +302,5 @@ translations: isdocker ## update translation
 workflow-png: isdocker ### generate workflow png
 	${SYMFONY_EXEC} workflow:dump $(COMMAND_ARGS) | dot -Tpng -o $(COMMAND_ARGS).png
 
-.PHONY: libraries
-libraries: ### Add libraries
-ifeq ($(COMMANDS_ARGS),tarteaucitron)
-	wget https://github.com/AmauriC/tarteaucitron.js/archive/refs/tags/v1.9.3.zip
-	unzip v1.9.3.zip
-	rm v1.9.3.zip
-	mv tarteaucitron.js-1.9.3 apps/public/tarteaucitron
-else
-	@printf "${MISSING_ARGUMENTS}" "libraries"
-	$(call array_arguments, \
-		["tarteaucitron"]="tarteaucitron" \
-	)
-endif
-
-DATABASE_BDD := $(shell more docker-compose.yml | grep DATABASE_BDD: | sed -e "s/^.*DATABASE_BDD:[[:space:]]//")
-DATABASE_USER := $(shell more docker-compose.yml | grep DATABASE_USER: | sed -e "s/^.*DATABASE_USER:[[:space:]]//")
-DATABASE_PASSWORD := $(shell more docker-compose.yml | grep DATABASE_PASSWORD: | sed -e "s/^.*DATABASE_PASSWORD:[[:space:]]//")
-SETBDD := cd lampy && make setbdd USERNAME="${DATABASE_USER}" BDD="${DATABASE_BDD}" PASSWORD="${DATABASE_PASSWORD}"
-
 bddset: ## Set bdd
-	@echo "$(SETBDD)"
-	$(shell $(SETBDD))
+	@cp database_init/01_labstag.sql lampy/mariadb_init/01_labstag.sql
