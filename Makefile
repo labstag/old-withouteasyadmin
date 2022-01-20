@@ -213,9 +213,9 @@ else ifeq ($(COMMANDS_ARGS),phpcbf)
 	${PHP_EXEC} phpcbf.phar -d memory_limit=-1 --report=diff -p --extensions=php --standard=phpcs.xml
 else ifeq ($(COMMANDS_ARGS),phpcs)
 	${PHP_EXEC} phpcs.phar --report=full --extensions=php src --standard=phpcs.xml
-else ifeq ($(COMMANDS_ARGS),phpcs-Onlywarning)
+else ifeq ($(COMMANDS_ARGS),phpcs-onlywarning)
 	${PHP_EXEC} phpcs.phar  --report=full --extensions=php --error-severity=0 --standard=phpcs.xml
-else ifeq ($(COMMANDS_ARGS),phpcs-Onlyerror)
+else ifeq ($(COMMANDS_ARGS),phpcs-onlyerror)
 	${PHP_EXEC} phpcs.phar  --report=full --extensions=php --warning-severity=0 --standard=phpcs.xml
 else ifeq ($(COMMANDS_ARGS),phploc)
 	$(PHP_EXEC) phploc.phar src
@@ -249,8 +249,8 @@ else
 		["phpcbf"]="fixe le code PHP à partir d'un standard" \
 		["php-cs-fixer"]="fixe le code PHP à partir d'un standard" \
 		["phpcs"]="indique les erreurs de code non corrigé par PHPCBF" \
-		["phpcs-Onlywarning"]="indique les erreurs de code non corrigé par PHPCBF" \
-		["phpcs-Onlyerror"]="indique les erreurs de code non corrigé par PHPCBF" \
+		["phpcs-onlywarning"]="indique les erreurs de code non corrigé par PHPCBF" \
+		["phpcs-onlyerror"]="indique les erreurs de code non corrigé par PHPCBF" \
 		["phploc"]="phploc" \
 		["phpmd"]="indique quand le code PHP contient des erreurs de syntaxes ou des erreurs" \
 		["phpmnd"]="Si des chiffres sont utilisé dans le code PHP" \
