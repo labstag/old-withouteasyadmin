@@ -22,28 +22,28 @@ init: ## Init project
 	@git submodule update --init --recursive --remote
 
 apps/phploc.phar:
-	$(DOCKER_EXECPHP) wget https://phar.phpunit.de/phploc-7.0.2.phar -O phploc.phar
+	wget https://phar.phpunit.de/phploc-7.0.2.phar -O apps/phploc.phar
 
 apps/php-cs-fixer.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.5.0/php-cs-fixer.phar
+	wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.5.0/php-cs-fixer.phar -O apps/php-cs-fixer.phar
 
 apps/phpmd.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/phpmd/phpmd/releases/download/2.11.1/phpmd.phar
+	wget https://github.com/phpmd/phpmd/releases/download/2.11.1/phpmd.phar -O apps/phpmd.phar
 
 apps/phpcbf.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.2/phpcbf.phar
+	wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.2/phpcbf.phar -O apps/phpcbf.phar
 
 apps/phpcs.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.2/phpcs.phar
+	wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.2/phpcs.phar -O apps/phpcs.phar
 
 apps/phpstan.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/phpstan/phpstan/releases/download/1.4.0/phpstan.phar
+	wget https://github.com/phpstan/phpstan/releases/download/1.4.0/phpstan.phar -O apps/phpstan.phar
 
 apps/phpDocumentor.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.3.0/phpDocumentor.phar
+	wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.3.0/phpDocumentor.phar -O apps/phpDocumentor.phar
 
 apps/behat.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/Behat/Behat/releases/download/v3.10.0/behat.phar
+	wget https://github.com/Behat/Behat/releases/download/v3.10.0/behat.phar -O apps/behat.phar
 
 phar: apps/phploc.phar apps/phpmd.phar apps/php-cs-fixer.phar apps/phpcbf.phar apps/phpcs.phar apps/phpstan.phar apps/phpDocumentor.phar apps/behat.phar
 
@@ -51,7 +51,7 @@ apps/composer.lock: isdocker apps/composer.json
 	${COMPOSER_EXEC} update
 
 apps/vendor: isdocker apps/composer.json
-	${COMPOSER_EXEC} install --no-progress --prefer-dist --optimize-autoloader
+	${COMPOSER_EXEC} install --no-progress --prefer-dist --Optimize-autoloader
 	
 .PHONY: assets
 assets: isdocker apps/.env
@@ -87,9 +87,9 @@ else ifeq ($(COMMANDS_ARGS),outdated)
 else ifeq ($(COMMANDS_ARGS),fund)
 	${COMPOSER_EXEC} fund
 else ifeq ($(COMMANDS_ARGS),prod)
-	${COMPOSER_EXEC} install --no-dev --no-progress --prefer-dist --optimize-autoloader
+	${COMPOSER_EXEC} install --no-dev --no-progress --prefer-dist --Optimize-autoloader
 else ifeq ($(COMMANDS_ARGS),dev)
-	${COMPOSER_EXEC} install --no-progress --prefer-dist --optimize-autoloader
+	${COMPOSER_EXEC} install --no-progress --prefer-dist --Optimize-autoloader
 else ifeq ($(COMMANDS_ARGS),u)
 	${COMPOSER_EXEC} update
 else ifeq ($(COMMANDS_ARGS),i)
@@ -213,9 +213,9 @@ else ifeq ($(COMMANDS_ARGS),phpcbf)
 	${PHP_EXEC} phpcbf.phar -d memory_limit=-1 --report=diff -p --extensions=php --standard=phpcs.xml
 else ifeq ($(COMMANDS_ARGS),phpcs)
 	${PHP_EXEC} phpcs.phar --report=full --extensions=php src --standard=phpcs.xml
-else ifeq ($(COMMANDS_ARGS),phpcs-onlywarning)
+else ifeq ($(COMMANDS_ARGS),phpcs-Onlywarning)
 	${PHP_EXEC} phpcs.phar  --report=full --extensions=php --error-severity=0 --standard=phpcs.xml
-else ifeq ($(COMMANDS_ARGS),phpcs-onlyerror)
+else ifeq ($(COMMANDS_ARGS),phpcs-Onlyerror)
 	${PHP_EXEC} phpcs.phar  --report=full --extensions=php --warning-severity=0 --standard=phpcs.xml
 else ifeq ($(COMMANDS_ARGS),phploc)
 	$(PHP_EXEC) phploc.phar src
@@ -249,8 +249,8 @@ else
 		["phpcbf"]="fixe le code PHP à partir d'un standard" \
 		["php-cs-fixer"]="fixe le code PHP à partir d'un standard" \
 		["phpcs"]="indique les erreurs de code non corrigé par PHPCBF" \
-		["phpcs-onlywarning"]="indique les erreurs de code non corrigé par PHPCBF" \
-		["phpcs-onlyerror"]="indique les erreurs de code non corrigé par PHPCBF" \
+		["phpcs-Onlywarning"]="indique les erreurs de code non corrigé par PHPCBF" \
+		["phpcs-Onlyerror"]="indique les erreurs de code non corrigé par PHPCBF" \
 		["phploc"]="phploc" \
 		["phpmd"]="indique quand le code PHP contient des erreurs de syntaxes ou des erreurs" \
 		["phpmnd"]="Si des chiffres sont utilisé dans le code PHP" \
@@ -300,7 +300,7 @@ translations: isdocker ## update translation
 
 .PHONY: workflow-png
 workflow-png: isdocker ### generate workflow png
-	${SYMFONY_EXEC} workflow:dump $(COMMANDS_ARGS) | dot -Tpng -o $(COMMANDS_ARGS).png
+	${SYMFONY_EXEC} workflow:dump $(COMMANDS_ARGS) | dot -Tpng -O $(COMMANDS_ARGS).png
 
 bddset: ## Set bdd
 	@cp database_init/01_labstag.sql lampy/mariadb_init/01_labstag.sql
