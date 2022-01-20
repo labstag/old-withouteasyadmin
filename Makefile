@@ -300,7 +300,7 @@ translations: isdocker ## update translation
 
 .PHONY: workflow-png
 workflow-png: isdocker ### generate workflow png
-	${SYMFONY_EXEC} workflow:dump $(COMMAND_ARGS) | dot -Tpng -o $(COMMAND_ARGS).png
+	${SYMFONY_EXEC} workflow:dump $(COMMANDS_ARGS) | dot -Tpng -o $(COMMANDS_ARGS).png
 
 bddset: ## Set bdd
 	@cp database_init/01_labstag.sql lampy/mariadb_init/01_labstag.sql
