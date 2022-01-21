@@ -14,13 +14,10 @@ class LabstagInstallCommand extends Command
 
     protected static $defaultName = 'labstag:install';
 
-    protected InstallService $installService;
-
     public function __construct(
-        InstallService $installService
+        protected InstallService $installService
     )
     {
-        $this->installService = $installService;
         parent::__construct();
     }
 

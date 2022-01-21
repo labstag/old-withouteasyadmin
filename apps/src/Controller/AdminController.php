@@ -195,7 +195,7 @@ class AdminController extends AdminControllerLib
     ): Response
     {
         $all = $trashService->all();
-        if (0 == count($all)) {
+        if (0 == (is_countable($all) ? count($all) : 0)) {
             $this->flashBagAdd(
                 'danger',
                 $this->translator->trans('admin.flashbag.trash.empty')

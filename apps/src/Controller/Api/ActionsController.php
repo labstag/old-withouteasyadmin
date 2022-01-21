@@ -187,7 +187,7 @@ class ActionsController extends ApiControllerLib
 
         $error         = $this->deleteAll($trashService);
         $data['error'] = $error;
-        if (0 === count($error)) {
+        if (0 === (is_countable($error) ? count($error) : 0)) {
             $data['action'] = true;
         }
 

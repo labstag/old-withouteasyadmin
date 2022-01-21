@@ -15,17 +15,11 @@ class LabstagGuardRouteCommand extends Command
 
     protected static $defaultName = 'labstag:guard-route';
 
-    protected GroupeRepository $repositoryGroupe;
-
-    protected GuardService $service;
-
     public function __construct(
-        GuardService $service,
-        GroupeRepository $repositoryGroupe
+        protected GuardService $service,
+        protected GroupeRepository $repositoryGroupe
     )
     {
-        $this->repositoryGroupe = $repositoryGroupe;
-        $this->service          = $service;
         parent::__construct();
     }
 
@@ -59,7 +53,7 @@ class LabstagGuardRouteCommand extends Command
             $table
         );
         $table = $this->service->old();
-        if (0 != count($table)) {
+        if (0 != (is_countable($table) ? count($table) : 0)) {
             $inputOutput->section('Suppression des anciennes routes');
             $inputOutput->table(
                 ['route'],

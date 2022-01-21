@@ -17,26 +17,14 @@ class LabstagWorkflowsShowCommand extends Command
 
     protected static $defaultName = 'labstag:workflows-show';
 
-    protected EventDispatcherInterface $dispatcher;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected WorkflowRepository $workflowRepository;
-
-    protected WorkflowRequestHandler $workflowRH;
-
     public function __construct(
-        EventDispatcherInterface $dispatcher,
-        EntityManagerInterface $entityManager,
-        WorkflowRepository $workflowRepository,
-        WorkflowRequestHandler $workflowRH
+        protected EventDispatcherInterface $dispatcher,
+        protected EntityManagerInterface $entityManager,
+        protected WorkflowRepository $workflowRepository,
+        protected WorkflowRequestHandler $workflowRH
     )
     {
         parent::__construct();
-        $this->workflowRH         = $workflowRH;
-        $this->entityManager      = $entityManager;
-        $this->workflowRepository = $workflowRepository;
-        $this->dispatcher         = $dispatcher;
     }
 
     protected function configure()

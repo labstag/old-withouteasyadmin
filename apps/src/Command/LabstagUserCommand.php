@@ -21,29 +21,14 @@ class LabstagUserCommand extends Command
 
     protected static $defaultName = 'labstag:user';
 
-    protected EntityManagerInterface $entityManager;
-
-    protected GroupeRepository $groupeRepository;
-
-    protected UserRepository $userRepository;
-
-    protected UserRequestHandler $userRequestHandler;
-
-    protected Registry $workflows;
-
     public function __construct(
-        UserRepository $userRepository,
-        GroupeRepository $groupeRepository,
-        Registry $workflows,
-        EntityManagerInterface $entityManager,
-        UserRequestHandler $userRequestHandler
+        protected UserRepository $userRepository,
+        protected GroupeRepository $groupeRepository,
+        protected Registry $workflows,
+        protected EntityManagerInterface $entityManager,
+        protected UserRequestHandler $userRequestHandler
     )
     {
-        $this->groupeRepository   = $groupeRepository;
-        $this->entityManager      = $entityManager;
-        $this->workflows          = $workflows;
-        $this->userRequestHandler = $userRequestHandler;
-        $this->userRepository     = $userRepository;
         parent::__construct();
     }
 
@@ -398,7 +383,8 @@ class LabstagUserCommand extends Command
                     'email'    => $user->getEmail(),
                     'groupe'   => $user->getRefgroupe()->getName(),
                     'state'    => $user->getState(),
-                ]
+                ],
+                JSON_THROW_ON_ERROR
             );
         }
 

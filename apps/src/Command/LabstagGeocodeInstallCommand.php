@@ -15,11 +15,8 @@ class LabstagGeocodeInstallCommand extends Command
 
     protected static $defaultName = 'labstag:geocode:install';
 
-    protected GeocodeService $service;
-
-    public function __construct(GeocodeService $service)
+    public function __construct(protected GeocodeService $service)
     {
-        $this->service = $service;
         parent::__construct();
     }
 
@@ -54,7 +51,7 @@ class LabstagGeocodeInstallCommand extends Command
             return COMMAND::FAILURE;
         }
 
-        $progressBar = new ProgressBar($output, count($csv));
+        $progressBar = new ProgressBar($output, is_countable($csv) ? count($csv) : 0);
         $table       = $this->service->tables($csv);
         $progressBar->start();
         foreach ($table as $row) {

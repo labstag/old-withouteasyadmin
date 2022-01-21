@@ -106,7 +106,7 @@ class HistoryController extends AdminControllerLib
         if ('POST' == $request->getMethod()) {
             $data = $request->request->all('position');
             if (!empty($data)) {
-                $data = json_decode($data, true);
+                $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
             }
 
             if (is_array($data)) {

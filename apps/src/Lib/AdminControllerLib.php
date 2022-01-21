@@ -267,9 +267,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function classEntity($entity)
     {
-        $class = get_class($entity);
-
-        $class = str_replace('Labstag\\Entity\\', '', $class);
+        $class = str_replace('Labstag\\Entity\\', '', $entity::class);
 
         return strtolower($class);
     }
@@ -561,8 +559,9 @@ abstract class AdminControllerLib extends ControllerLib
         $methodTrash = $methods['trash'];
         $filters     = $entityManager->getFilters();
         $filters->disable('softdeleteable');
-        $trash = $repository->{$methodTrash}([]);
-        $total = count($trash->getQuery()->getResult());
+        $trash  = $repository->{$methodTrash}([]);
+        $result = $trash->getQuery()->getResult();
+        $total  = is_countable($result) ? count($result) : 0;
         $filters->enable('softdeleteable');
         if (0 != $total) {
             $this->btnInstance()->addBtnTrash(

@@ -17,22 +17,12 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 )]
 class LabstagHistoryGeneratePdfCommand extends Command
 {
-
-    protected ParameterBagInterface $containerBag;
-
-    protected HistoryRepository $historyRepository;
-
-    protected HistoryService $historyService;
-
     public function __construct(
-        ParameterBagInterface $containerBag,
-        HistoryRepository $historyRepository,
-        HistoryService $historyService
+        protected ParameterBagInterface $containerBag,
+        protected HistoryRepository $historyRepository,
+        protected HistoryService $historyService
     )
     {
-        $this->containerBag      = $containerBag;
-        $this->historyRepository = $historyRepository;
-        $this->historyService    = $historyService;
         parent::__construct();
     }
 

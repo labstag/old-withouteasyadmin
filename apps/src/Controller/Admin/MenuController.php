@@ -48,7 +48,8 @@ class MenuController extends AdminControllerLib
         $menu->setClef(null);
         $menu->setData($data);
         $menu->setSeparateur(false);
-        $position = count($parent->getChildren());
+        $children = $parent->getChildren();
+        $position = is_countable($children) ? count($children) : 0;
         $menu->setPosition($position + 1);
         $menu->setParent($parent);
 
@@ -68,7 +69,8 @@ class MenuController extends AdminControllerLib
     {
         $entity    = new Menu();
         $oldEntity = clone $entity;
-        $position  = count($menu->getChildren());
+        $children  = $menu->getChildren();
+        $position  = is_countable($children) ? count($children) : 0;
         $entity->setPosition($position + 1);
         $entity->setSeparateur(true);
         $entity->setParent($menu);
@@ -144,7 +146,7 @@ class MenuController extends AdminControllerLib
         if ('POST' == $request->getMethod()) {
             $data = $request->request->all('position');
             if (!empty($data)) {
-                $data = json_decode($data, true);
+                $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
             }
 
             if (is_array($data)) {

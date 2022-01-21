@@ -57,7 +57,8 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
 
         $chapter->setRefhistory($history);
         $chapter->setPublished($faker->unique()->dateTime('now'));
-        $position = is_countable($this->position[$indexHistory]) ? count($this->position[$indexHistory]) : 0;
+        $indexposition = $this->position[$indexHistory];
+        $position      = is_countable($indexposition) ? count($indexposition) : 0;
         $chapter->setPosition($position + 1);
         $this->addReference('chapter_'.$index, $chapter);
         $this->position[$indexHistory][] = $chapter;
