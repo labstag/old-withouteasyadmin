@@ -2,7 +2,6 @@
 
 namespace Labstag\EventSubscriber;
 
-use Labstag\Repository\GroupeRepository;
 use Labstag\Service\GuardService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -25,7 +24,6 @@ class GuardRouterSubscriber implements EventSubscriberInterface
         protected RequestStack $requestStack,
         protected RouterInterface $router,
         protected TokenStorageInterface $token,
-        protected GroupeRepository $groupeRepository,
         protected GuardService $guardService,
         protected TranslatorInterface $translator
     )

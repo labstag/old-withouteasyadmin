@@ -4,12 +4,11 @@ namespace Labstag\Controller\Admin\History;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Form\Admin\HistoryType;
 use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\ChapterRepository;
-use Labstag\Repository\HistoryRepository;
 use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Search\HistorySearch;
 use Labstag\Service\AttachFormService;
@@ -49,14 +48,10 @@ class HistoryController extends AdminControllerLib
      * @Route("/", name="admin_history_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(
-        EntityManagerInterface $entityManager,
-        HistoryRepository $repository
-    ): Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $entityManager,
-            $repository,
+            History::class,
             'admin/history/index.html.twig',
         );
     }
@@ -92,8 +87,7 @@ class HistoryController extends AdminControllerLib
     public function position(
         History $history,
         Request $request,
-        EntityManagerInterface $entityManager,
-        ChapterRepository $repository
+        EntityManagerInterface $entityManager
     )
     {
         $currentUrl = $this->generateUrl(
@@ -113,7 +107,7 @@ class HistoryController extends AdminControllerLib
                 foreach ($data as $row) {
                     $id       = $row['id'];
                     $position = intval($row['position']);
-                    $entity   = $repository->find($id);
+                    $entity   = $this->getRepository(Chapter::class)->find($id);
                     if (!is_null($entity)) {
                         $entity->setPosition($position + 1);
                         $entityManager->persist($entity);

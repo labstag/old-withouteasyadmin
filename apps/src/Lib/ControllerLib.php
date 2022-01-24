@@ -2,6 +2,7 @@
 
 namespace Labstag\Lib;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Service\DataService;
 use Labstag\Service\GuardService;
@@ -24,6 +25,7 @@ abstract class ControllerLib extends AbstractController
 
     public function __construct(
         protected Environment $twig,
+        protected EntityManagerInterface $entityManager,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected TokenStorageInterface $tokenStorage,
         protected RouterInterface $routerInterface,
@@ -47,6 +49,11 @@ abstract class ControllerLib extends AbstractController
         $session  = $this->requeststack->getSession();
         $flashbag = $session->getFlashBag();
         $flashbag->add($type, $message);
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 
     protected function setErrorLogger($exception, $logger)

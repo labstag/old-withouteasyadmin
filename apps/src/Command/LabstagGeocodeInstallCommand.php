@@ -2,6 +2,8 @@
 
 namespace Labstag\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Lib\CommandLib;
 use Labstag\Service\GeocodeService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -10,14 +12,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class LabstagGeocodeInstallCommand extends Command
+class LabstagGeocodeInstallCommand extends CommandLib
 {
 
     protected static $defaultName = 'labstag:geocode:install';
 
-    public function __construct(protected GeocodeService $service)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        protected GeocodeService $service
+    )
     {
-        parent::__construct();
+        parent::__construct($entityManager);
     }
 
     protected function configure()

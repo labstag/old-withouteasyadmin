@@ -2,13 +2,11 @@
 
 namespace Labstag\Controller\Admin\User;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\AddressUser;
 use Labstag\Form\Admin\Search\User\AddressUserType as UserAddressUserType;
 use Labstag\Form\Admin\User\AddressUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\AddressUserRepository;
 use Labstag\RequestHandler\AddressUserRequestHandler;
 use Labstag\Search\User\AddressUserSearch;
 use Labstag\Service\AttachFormService;
@@ -47,14 +45,10 @@ class AddressUserController extends AdminControllerLib
      * @Route("/", name="admin_addressuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(
-        EntityManagerInterface $entityManager,
-        AddressUserRepository $repository
-    ): Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $entityManager,
-            $repository,
+            AddressUser::class,
             'admin/user/address_user/index.html.twig'
         );
     }

@@ -2,12 +2,11 @@
 
 namespace Labstag\Twig;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Page;
 use Labstag\Entity\User;
-use Labstag\Repository\AttachmentRepository;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\PageRepository;
 use Labstag\Service\GuardService;
 use Labstag\Service\PhoneService;
 use Labstag\Service\TemplatePageService;
@@ -28,16 +27,14 @@ class LabstagExtension extends AbstractExtension
     public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     public function __construct(
+        protected EntityManagerInterface $entityManager,
         protected RouterInterface $router,
         protected PhoneService $phoneService,
         protected CacheManager $cache,
         protected Registry $workflows,
         protected TokenStorageInterface $token,
         protected LoggerInterface $logger,
-        protected GroupeRepository $groupeRepository,
         protected TemplatePageService $templatePageService,
-        protected PageRepository $pageRepository,
-        protected AttachmentRepository $attachmentRepository,
         protected GuardService $guardService
     )
     {
@@ -103,7 +100,7 @@ class LabstagExtension extends AbstractExtension
         }
 
         $id         = $data->getId();
-        $attachment = $this->attachmentRepository->findOneBy(['id' => $id]);
+        $attachment = $this->getRepository(Attachment::class)->findOneBy(['id' => $id]);
         if (is_null($attachment)) {
             return null;
         }
@@ -214,7 +211,7 @@ class LabstagExtension extends AbstractExtension
                 continue;
             }
 
-            $page = $this->pageRepository->findOneBy(
+            $page = $this->getRepository(Page::class)->findOneBy(
                 ['function' => $row]
             );
 
@@ -239,6 +236,11 @@ class LabstagExtension extends AbstractExtension
     public function workflowHas($entity)
     {
         return $this->workflows->has($entity);
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 
     protected function setTypeformClass(array $class): string

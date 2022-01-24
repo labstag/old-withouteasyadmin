@@ -11,7 +11,7 @@ class HistoryTemplatePage extends TemplatePageLib
 {
     public function chapter($historySlug, $chapterSlug)
     {
-        $history = $this->historyRepository->findOneBy(['slug' => $historySlug]);
+        $history = $this->getRepository(History::class)->findOneBy(['slug' => $historySlug]);
         if (!$history instanceof History) {
             throw $this->createNotFoundException();
         }
@@ -89,7 +89,7 @@ class HistoryTemplatePage extends TemplatePageLib
                         return $this->chapter($historySlug, $chapterSlug);
                     }
 
-                    $history = $this->historyRepository->findOneBy(['slug' => $search[1]]);
+                    $history = $this->getRepository(History::class)->findOneBy(['slug' => $search[1]]);
                     if (!$history instanceof History) {
                         throw $this->createNotFoundException();
                     }
@@ -103,7 +103,7 @@ class HistoryTemplatePage extends TemplatePageLib
     public function list()
     {
         $pagination = $this->paginator->paginate(
-            $this->historyRepository->findPublier(),
+            $this->getRepository(History::class)->findPublier(),
             $this->request->query->getInt('page', 1),
             10
         );
@@ -154,7 +154,7 @@ class HistoryTemplatePage extends TemplatePageLib
     public function user(string $username)
     {
         $pagination = $this->paginator->paginate(
-            $this->historyRepository->findPublierUsername($username),
+            $this->getRepository(History::class)->findPublierUsername($username),
             $this->request->query->getInt('page', 1),
             10
         );

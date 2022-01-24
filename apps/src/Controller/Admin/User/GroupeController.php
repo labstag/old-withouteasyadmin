@@ -2,14 +2,12 @@
 
 namespace Labstag\Controller\Admin\User;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Workflow;
 use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\Search\GroupeSearch;
 use Labstag\Service\AttachFormService;
@@ -43,8 +41,7 @@ class GroupeController extends AdminControllerLib
      * @Route("/{id}/guard", name="admin_groupuser_guard")
      */
     public function guard(
-        Groupe $groupe,
-        WorkflowRepository $workflowRepo
+        Groupe $groupe
     ): Response
     {
         $this->btnInstance()->addBtnList(
@@ -77,12 +74,20 @@ class GroupeController extends AdminControllerLib
             return $this->redirectToRoute('admin_groupuser_index');
         }
 
+        $workflows = $this->getRepository(Workflow::class)->findBy(
+            [],
+            [
+                'entity'     => 'ASC',
+                'transition' => 'ASC',
+            ]
+        );
+
         return $this->render(
             'admin/user/guard/group.html.twig',
             [
                 'group'     => $groupe,
                 'routes'    => $routes,
-                'workflows' => $workflowRepo->findBy([], ['entity' => 'ASC', 'transition' => 'ASC']),
+                'workflows' => $workflows,
             ]
         );
     }
@@ -92,14 +97,10 @@ class GroupeController extends AdminControllerLib
      * @Route("/", name="admin_groupuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function index(
-        EntityManagerInterface $entityManager,
-        GroupeRepository $repository
-    ): Response
+    public function index(): Response
     {
         return $this->listOrTrash(
-            $entityManager,
-            $repository,
+            Groupe::class,
             'admin/user/groupe/index.html.twig'
         );
     }

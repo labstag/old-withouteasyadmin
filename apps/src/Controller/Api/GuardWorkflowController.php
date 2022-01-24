@@ -8,11 +8,6 @@ use Labstag\Entity\Workflow;
 use Labstag\Entity\WorkflowGroupe;
 use Labstag\Entity\WorkflowUser;
 use Labstag\Lib\ApiControllerLib;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\UserRepository;
-use Labstag\Repository\WorkflowGroupeRepository;
-use Labstag\Repository\WorkflowRepository;
-use Labstag\Repository\WorkflowUserRepository;
 use Labstag\RequestHandler\WorkflowGroupeRequestHandler;
 use Labstag\RequestHandler\WorkflowUserRequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,8 +25,6 @@ class GuardWorkflowController extends ApiControllerLib
     public function group(
         Request $request,
         Groupe $group,
-        WorkflowRepository $workflowRepo,
-        WorkflowGroupeRepository $workflowGroupeRepo,
         WorkflowGroupeRequestHandler $workflowGroupeRH
     )
     {
@@ -41,12 +34,12 @@ class GuardWorkflowController extends ApiControllerLib
             'error'  => '',
         ];
         $state     = $request->request->all('state');
-        $workflows = $workflowRepo->findAll();
+        $workflows = $this->getRepository(Workflow::class)->findAll();
         // @var EntityRoute $route
         foreach ($workflows as $workflow) {
             $data = $this->setWorkflowGroupe(
                 $data,
-                $workflowGroupeRepo,
+                $this->getRepository(WorkflowGroupe::class),
                 $group,
                 $workflow,
                 $state,
@@ -62,8 +55,6 @@ class GuardWorkflowController extends ApiControllerLib
      */
     public function groups(
         Workflow $workflow,
-        GroupeRepository $groupeRepo,
-        WorkflowGroupeRepository $workflowGroupeRepo,
         WorkflowGroupeRequestHandler $workflowGroupeRH,
         Request $request
     )
@@ -74,11 +65,11 @@ class GuardWorkflowController extends ApiControllerLib
             'error'  => '',
         ];
         $state   = $request->request->all('state');
-        $groupes = $groupeRepo->findAll();
+        $groupes = $this->getRepository(Groupe::class)->findAll();
         foreach ($groupes as $group) {
             $data = $this->setWorkflowGroupe(
                 $data,
-                $workflowGroupeRepo,
+                $this->getRepository(WorkflowGroupe::class),
                 $group,
                 $workflow,
                 $state,
@@ -93,9 +84,6 @@ class GuardWorkflowController extends ApiControllerLib
      * @Route("/", name="api_guard_workflow")
      */
     public function index(
-        WorkflowGroupeRepository $workflowGroupeRepo,
-        WorkflowUserRepository $workflowUserRepo,
-        UserRepository $userRepository,
         Request $request
     )
     {
@@ -105,12 +93,12 @@ class GuardWorkflowController extends ApiControllerLib
         $get  = $request->query->all();
         if (array_key_exists('user', $get)) {
             $data['user'] = [];
-            $user         = $userRepository->find($get['user']);
+            $user         = $this->getRepository(User::class)->find($get['user']);
             if (!$user instanceof User) {
                 return new JsonResponse($data);
             }
 
-            $results = $workflowUserRepo->findEnable($user);
+            $results = $this->getRepository(WorkflowUser::class)->findEnable($user);
             foreach ($results as $row) {
                 // @var WorkflowUser $row
                 $data['user'][] = [
@@ -120,7 +108,7 @@ class GuardWorkflowController extends ApiControllerLib
             }
         }
 
-        $results = $this->getResultWorkflow($request, $workflowGroupeRepo, $userRepository);
+        $results = $this->getResultWorkflow($request);
         foreach ($results as $row) {
             // @var WorkflowGroupe $row
             $data['group'][] = [
@@ -140,7 +128,6 @@ class GuardWorkflowController extends ApiControllerLib
         Groupe $group,
         Workflow $workflow,
         Request $request,
-        WorkflowGroupeRepository $workflowGroupeRepo,
         WorkflowGroupeRequestHandler $workflowGroupeRH
     )
     {
@@ -152,7 +139,7 @@ class GuardWorkflowController extends ApiControllerLib
         $state = $request->request->all('state');
         $data  = $this->setWorkflowGroupe(
             $data,
-            $workflowGroupeRepo,
+            $this->getRepository(WorkflowGroupe::class),
             $group,
             $workflow,
             $state,
@@ -169,7 +156,6 @@ class GuardWorkflowController extends ApiControllerLib
         User $user,
         Workflow $workflow,
         Request $request,
-        WorkflowUserRepository $workflowUserRepo,
         WorkflowUserRequestHandler $workflowUserRH
     )
     {
@@ -181,7 +167,7 @@ class GuardWorkflowController extends ApiControllerLib
         $state = $request->request->all('state');
         $data  = $this->setWorkflowUser(
             $data,
-            $workflowUserRepo,
+            $this->getRepository(WorkflowUser::class),
             $user,
             $workflow,
             $state,
@@ -197,8 +183,6 @@ class GuardWorkflowController extends ApiControllerLib
     public function user(
         User $user,
         Request $request,
-        WorkflowRepository $workflowRepo,
-        WorkflowUserRepository $workflowUserRepo,
         WorkflowUserRequestHandler $workflowUserRH
     )
     {
@@ -208,12 +192,12 @@ class GuardWorkflowController extends ApiControllerLib
             'error'  => '',
         ];
         $state     = $request->request->all('state');
-        $workflows = $workflowRepo->findAll();
+        $workflows = $this->getRepository(Workflow::class)->findAll();
         // @var WorkflowUser $route
         foreach ($workflows as $workflow) {
             $data = $this->setWorkflowUser(
                 $data,
-                $workflowUserRepo,
+                $this->getRepository(WorkflowUser::class),
                 $user,
                 $workflow,
                 $state,
@@ -224,16 +208,16 @@ class GuardWorkflowController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    private function getResultWorkflow($request, $workflowGroupeRepo, $userRepository)
+    private function getResultWorkflow($request)
     {
         $get = $request->query->all();
         if (array_key_exists('user', $get)) {
-            $user = $userRepository->find($get['user']);
+            $user = $this->getRepository(User::class)->find($get['user']);
 
-            return $workflowGroupeRepo->findEnable($user->getRefgroupe());
+            return $this->getRepository(WorkflowGroupe::class)->findEnable($user->getRefgroupe());
         }
 
-        return $workflowGroupeRepo->findEnable();
+        return $this->getRepository(WorkflowGroupe::class)->findEnable();
     }
 
     private function setWorkflowGroupe(

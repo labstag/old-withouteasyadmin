@@ -2,7 +2,11 @@
 
 namespace Labstag\TemplatePage;
 
+use Labstag\Entity\Category;
+use Labstag\Entity\Edito;
+use Labstag\Entity\Libelle;
 use Labstag\Entity\Page;
+use Labstag\Entity\Post;
 use Labstag\Lib\TemplatePageLib;
 
 class FrontTemplatePage extends TemplatePageLib
@@ -29,7 +33,7 @@ class FrontTemplatePage extends TemplatePageLib
     {
         unset($matches);
         $pagination = $this->paginator->paginate(
-            $this->postRepository->findPublier(),
+            $this->getRepository(Post::class)->findPublier(),
             $this->request->query->getInt('page', 1),
             10
         );
@@ -37,11 +41,11 @@ class FrontTemplatePage extends TemplatePageLib
         return $this->render(
             'front/index.html.twig',
             [
-                'edito'      => $this->editoRepository->findOnePublier(),
+                'edito'      => $this->getRepository(Edito::class)->findOnePublier(),
                 'pagination' => $pagination,
-                'archives'   => $this->postRepository->findDateArchive(),
-                'libelles'   => $this->libelleRepository->findByPost(),
-                'categories' => $this->categoryRepository->findByPost(),
+                'archives'   => $this->getRepository(Post::class)->findDateArchive(),
+                'libelles'   => $this->getRepository(Libelle::class)->findByPost(),
+                'categories' => $this->getRepository(Category::class)->findByPost(),
             ]
         );
     }

@@ -7,9 +7,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Bookmark;
+use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\BookmarkRepository;
-use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\BookmarkRequestHandler;
 use Psr\Log\LoggerInterface;
@@ -23,8 +22,6 @@ class BookmarkService
     public const CLIENTNUMBER = 400;
 
     public function __construct(
-        private UserRepository $userRepo,
-        private BookmarkRepository $bookmarkRepo,
         private LoggerInterface $logger,
         private EntityManagerInterface $entityManager,
         private AttachmentRequestHandler $attachmentRH,
@@ -43,8 +40,8 @@ class BookmarkService
         DateTime $date
     )
     {
-        $user     = $this->userRepo->find($userid);
-        $bookmark = $this->bookmarkRepo->findOneBy(
+        $user     = $this->getRepository(User::class)->find($userid);
+        $bookmark = $this->getRepository(Bookmark::class)->findOneBy(
             ['url' => $url]
         );
         if ($bookmark instanceof Bookmark) {
@@ -88,6 +85,11 @@ class BookmarkService
     protected function getParameter(string $name)
     {
         return $this->containerBag->get($name);
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 
     protected function setErrorLogger($exception)

@@ -5,16 +5,11 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Layout;
 use Labstag\Entity\Menu;
 use Labstag\Entity\Page;
 use Labstag\Entity\Template;
 use Labstag\Entity\User;
-use Labstag\Repository\ConfigurationRepository;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\LayoutRepository;
-use Labstag\Repository\MenuRepository;
-use Labstag\Repository\TemplateRepository;
-use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\ConfigurationRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\RequestHandler\MenuRequestHandler;
@@ -31,15 +26,9 @@ class InstallService
         protected PageRequestHandler $pageRH,
         protected MenuRequestHandler $menuRH,
         protected GroupeRequestHandler $groupeRH,
-        protected GroupeRepository $groupeRepo,
         protected ConfigurationRequestHandler $configurationRH,
-        protected ConfigurationRepository $configurationRepo,
-        protected MenuRepository $menuRepo,
         protected UserRequestHandler $userRH,
-        protected UserRepository $userRepo,
         protected TemplateRequestHandler $templateRH,
-        protected LayoutRepository $layoutRepo,
-        protected TemplateRepository $templateRepo,
         protected EntityManagerInterface $entityManager,
         protected Environment $twig,
         protected CacheInterface $cache
@@ -121,7 +110,7 @@ class InstallService
     public function users()
     {
         $users   = $this->getData('user');
-        $groupes = $this->groupeRepo->findAll();
+        $groupes = $this->getRepository(Groupe::class)->findAll();
         foreach ($users as $user) {
             $this->addUser($groupes, $user);
         }
@@ -162,7 +151,7 @@ class InstallService
     ): void
     {
         $search        = ['name' => $key];
-        $configuration = $this->configurationRepo->findOneBy($search);
+        $configuration = $this->getRepository(Configuration::class)->findOneBy($search);
         if (!$configuration instanceof Configuration) {
             $configuration = new Configuration();
         }
@@ -178,7 +167,7 @@ class InstallService
     ): void
     {
         $search = ['code' => $row];
-        $groupe = $this->groupeRepo->findOneBy($search);
+        $groupe = $this->getRepository(Groupe::class)->findOneBy($search);
         if ($groupe instanceof Groupe) {
             return;
         }
@@ -192,7 +181,7 @@ class InstallService
 
     protected function addPage(array $row, ?Page $parent): void
     {
-        $layout = $this->layoutRepo->findOneBy(
+        $layout = $this->getRepository(Layout::class)->findOneBy(
             [
                 'name' => $row['layout'],
             ]
@@ -219,7 +208,7 @@ class InstallService
     ): void
     {
         $search   = ['code' => $key];
-        $template = $this->templateRepo->findOneBy($search);
+        $template = $this->getRepository(Template::class)->findOneBy($search);
         if ($template instanceof Template) {
             return;
         }
@@ -249,7 +238,7 @@ class InstallService
         $search = [
             'username' => $dataUser['username'],
         ];
-        $user   = $this->userRepo->findOneBy($search);
+        $user   = $this->getRepository(User::class)->findOneBy($search);
         if ($user instanceof User) {
             return;
         }
@@ -281,11 +270,16 @@ class InstallService
         return $return;
     }
 
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
+    }
+
     protected function saveMenu(string $key, array $childs): void
     {
         // $this->entityManager->getFilters()->disable('softdeleteable');
         $search = ['clef' => $key];
-        $menu   = $this->menuRepo->findOneBy($search);
+        $menu   = $this->getRepository(Menu::class)->findOneBy($search);
         if ($menu instanceof Menu) {
             $this->entityManager->remove($menu);
             $this->entityManager->flush();

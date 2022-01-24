@@ -3,6 +3,8 @@
 namespace Labstag\TemplatePage;
 
 use Labstag\Entity\Bookmark;
+use Labstag\Entity\Category;
+use Labstag\Entity\Libelle;
 use Labstag\Entity\Page;
 use Labstag\Lib\TemplatePageLib;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -12,7 +14,7 @@ class BookmarkTemplatePage extends TemplatePageLib
     public function category(string $code)
     {
         $pagination = $this->paginator->paginate(
-            $this->bookmarkRepository->findPublierCategory($code),
+            $this->getRepository(Bookmark::class)->findPublierCategory($code),
             $this->request->query->getInt('page', 1),
             10
         );
@@ -21,8 +23,8 @@ class BookmarkTemplatePage extends TemplatePageLib
             'front/bookmarks/list.html.twig',
             [
                 'pagination' => $pagination,
-                'libelles'   => $this->libelleRepository->findByBookmark(),
-                'categories' => $this->categoryRepository->findByBookmark(),
+                'libelles'   => $this->getRepository(Libelle::class)->findByBookmark(),
+                'categories' => $this->getRepository(Category::class)->findByBookmark(),
             ]
         );
     }
@@ -53,7 +55,7 @@ class BookmarkTemplatePage extends TemplatePageLib
     public function index()
     {
         $pagination = $this->paginator->paginate(
-            $this->bookmarkRepository->findPublier(),
+            $this->getRepository(Bookmark::class)->findPublier(),
             $this->request->query->getInt('page', 1),
             10
         );
@@ -62,8 +64,8 @@ class BookmarkTemplatePage extends TemplatePageLib
             'front/bookmarks/index.html.twig',
             [
                 'pagination' => $pagination,
-                'libelles'   => $this->libelleRepository->findByBookmark(),
-                'categories' => $this->categoryRepository->findByBookmark(),
+                'libelles'   => $this->getRepository(Libelle::class)->findByBookmark(),
+                'categories' => $this->getRepository(Category::class)->findByBookmark(),
             ]
         );
     }
@@ -85,7 +87,7 @@ class BookmarkTemplatePage extends TemplatePageLib
                 return $this->libelle($search[1]);
             case 'bookmark':
                 if (!empty($search[1])) {
-                    $history = $this->bookmarkRepository->findOneBy(['slug' => $search[1]]);
+                    $history = $this->getRepository(Bookmark::class)->findOneBy(['slug' => $search[1]]);
                     if (!$history instanceof Bookmark) {
                         throw $this->createNotFoundException();
                     }
@@ -99,7 +101,7 @@ class BookmarkTemplatePage extends TemplatePageLib
     public function libelle(string $code)
     {
         $pagination = $this->paginator->paginate(
-            $this->bookmarkRepository->findPublierLibelle($code),
+            $this->getRepository(Bookmark::class)->findPublierLibelle($code),
             $this->request->query->getInt('page', 1),
             10
         );
@@ -108,8 +110,8 @@ class BookmarkTemplatePage extends TemplatePageLib
             'front/bookmarks/list.html.twig',
             [
                 'pagination' => $pagination,
-                'libelles'   => $this->libelleRepository->findByBookmark(),
-                'categories' => $this->categoryRepository->findByBookmark(),
+                'libelles'   => $this->getRepository(Libelle::class)->findByBookmark(),
+                'categories' => $this->getRepository(Category::class)->findByBookmark(),
             ]
         );
     }

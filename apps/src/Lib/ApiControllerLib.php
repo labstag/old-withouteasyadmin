@@ -3,7 +3,6 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Labstag\Repository\RouteRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\PhoneService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +22,6 @@ abstract class ApiControllerLib extends AbstractController
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected TokenStorageInterface $token,
         protected PhoneService $phoneService,
-        protected RouteRepository $routeRepo,
         protected EntityManagerInterface $entityManager,
         protected AttachmentRequestHandler $attachmentRH,
         protected Registry $workflows
@@ -32,5 +30,10 @@ abstract class ApiControllerLib extends AbstractController
         // @var Request $request
         $request       = $this->requeststack->getCurrentRequest();
         $this->request = $request;
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 }

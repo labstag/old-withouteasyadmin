@@ -4,7 +4,7 @@ namespace Labstag\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Workflow;
-use Labstag\Repository\WorkflowRepository;
+use Labstag\Lib\CommandLib;
 use Labstag\RequestHandler\WorkflowRequestHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,19 +12,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class LabstagWorkflowsShowCommand extends Command
+class LabstagWorkflowsShowCommand extends CommandLib
 {
 
     protected static $defaultName = 'labstag:workflows-show';
 
     public function __construct(
+        EntityManagerInterface $entityManager,
         protected EventDispatcherInterface $dispatcher,
-        protected EntityManagerInterface $entityManager,
-        protected WorkflowRepository $workflowRepository,
         protected WorkflowRequestHandler $workflowRH
     )
     {
-        parent::__construct();
+        parent::__construct($entityManager);
     }
 
     protected function configure()
@@ -64,7 +63,7 @@ class LabstagWorkflowsShowCommand extends Command
         $this->entityManager->flush();
         foreach ($data as $name => $transitions) {
             foreach ($transitions as $transition) {
-                $workflow = $this->workflowRepository->findOneBy(
+                $workflow = $this->getRepository(Workflow::class)->findOneBy(
                     [
                         'entity'     => $name,
                         'transition' => $transition,
@@ -89,13 +88,13 @@ class LabstagWorkflowsShowCommand extends Command
 
     private function delete($entities, $data)
     {
-        $toDelete = $this->workflowRepository->toDeleteEntities($entities);
+        $toDelete = $this->getRepository(Workflow::class)->toDeleteEntities($entities);
         foreach ($toDelete as $entity) {
             $this->entityManager->remove($entity);
         }
 
         foreach ($data as $entity => $transitions) {
-            $toDelete = $this->workflowRepository->toDeleteTransition($entity, $transitions);
+            $toDelete = $this->getRepository(Workflow::class)->toDeleteTransition($entity, $transitions);
             foreach ($toDelete as $entity) {
                 $this->entityManager->remove($entity);
             }

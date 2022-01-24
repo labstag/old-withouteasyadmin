@@ -3,14 +3,11 @@
 namespace Labstag\Controller\Api;
 
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Route as EntityRoute;
 use Labstag\Entity\RouteGroupe;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\RouteGroupeRepository;
-use Labstag\Repository\RouteUserRepository;
-use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\RouteGroupeRequestHandler;
 use Labstag\RequestHandler\RouteUserRequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,17 +22,17 @@ class GuardController extends ApiControllerLib
     /**
      * @Route("/groups/{groupe}", name="api_guard_group")
      */
-    public function groupe(Groupe $groupe, RouteGroupeRepository $routeGroupeRepo): JsonResponse
+    public function groupe(Groupe $groupe): JsonResponse
     {
-        return $this->getRefgroupe($routeGroupeRepo, $groupe);
+        return $this->getRefgroupe($this->getRepository(RouteGroupe::class), $groupe);
     }
 
     /**
      * @Route("/groups", name="api_guard_groups")
      */
-    public function groupes(RouteGroupeRepository $routeGroupeRepo): JsonResponse
+    public function groupes(): JsonResponse
     {
-        return $this->getRefgroupe($routeGroupeRepo);
+        return $this->getRefgroupe($this->getRepository(RouteGroupe::class));
     }
 
     /**
@@ -46,15 +43,13 @@ class GuardController extends ApiControllerLib
     public function setgroup(
         string $route,
         string $groupe,
-        GroupeRepository $groupeRepo,
-        RouteGroupeRequestHandler $routeGroupeRH,
-        RouteGroupeRepository $routeGroupeRepo
+        RouteGroupeRequestHandler $routeGroupeRH
     ): JsonResponse
     {
         $post   = $this->requeststack->getCurrentRequest()->request->all();
         $data   = ['ok' => false];
-        $groupe = $groupeRepo->findOneBy(['code' => $groupe]);
-        $route  = $this->routeRepo->findOneBy(['name' => $route]);
+        $groupe = $this->getRepository(Groupe::class)->findOneBy(['code' => $groupe]);
+        $route  = $this->getRepository(EntityRoute::class)->findOneBy(['name' => $route]);
         if (empty($groupe) || empty($route) || !array_key_exists('_token', $post)) {
             $data['error'] = 'Erreur de saisie';
 
@@ -73,7 +68,7 @@ class GuardController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $routeGroupe = $routeGroupeRepo->findOneBy(
+        $routeGroupe = $this->getRepository(RouteGroupe::class)->findOneBy(
             [
                 'refgroupe' => $groupe,
                 'refroute'  => $route,
@@ -101,15 +96,13 @@ class GuardController extends ApiControllerLib
     public function setuser(
         string $route,
         string $user,
-        UserRepository $userRepo,
-        RouteUserRepository $routeUserRepo,
         RouteUserRequestHandler $routeUserRH
     ): JsonResponse
     {
         $data  = ['ok' => false];
         $post  = $this->requeststack->getCurrentRequest()->request->all();
-        $user  = $userRepo->findOneBy(['username' => $user]);
-        $route = $this->routeRepo->findOneBy(['name' => $route]);
+        $user  = $this->getRepository(User::class)->findOneBy(['username' => $user]);
+        $route = $this->getRepository(EntityRoute::class)->findOneBy(['name' => $route]);
         if (empty($user) || empty($route) || !array_key_exists('_token', $post)) {
             $data['error'] = 'Erreur de saisie';
 
@@ -128,7 +121,7 @@ class GuardController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $routeUser = $routeUserRepo->findOneBy(
+        $routeUser = $this->getRepository(RouteUser::class)->findOneBy(
             [
                 'refuser'  => $user,
                 'refroute' => $route,
@@ -154,16 +147,14 @@ class GuardController extends ApiControllerLib
      * @return Response
      */
     public function user(
-        User $user,
-        RouteGroupeRepository $routeGroupeRepo,
-        RouteUserRepository $routeUserRepo
+        User $user
     ): JsonResponse
     {
         $data    = [
             'groups' => [],
             'user'   => [],
         ];
-        $results = $routeGroupeRepo->findEnable($user->getRefgroupe());
+        $results = $this->getRepository(RouteGroupe::class)->findEnable($user->getRefgroupe());
         foreach ($results as $row) {
             // @var RouteGroupe $row
             $data['groups'][] = [
@@ -171,7 +162,7 @@ class GuardController extends ApiControllerLib
             ];
         }
 
-        $results = $routeUserRepo->findEnable($user);
+        $results = $this->getRepository(RouteUser::class)->findEnable($user);
         foreach ($results as $row) {
             // @var RouteUser $row
             $data['user'][] = [

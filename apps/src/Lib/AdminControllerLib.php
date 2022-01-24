@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\AttachFormService;
 use Labstag\Singleton\AdminBtnSingleton;
@@ -43,10 +42,9 @@ abstract class AdminControllerLib extends ControllerLib
         string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
-        $uploadAnnotReader    = $service->getUploadAnnotationReader();
-        $attachmentRepository = $service->getRepository();
-        $attachmentRH         = $service->getRequestHandler();
-        $url                  = $this->getUrlAdmin();
+        $uploadAnnotReader = $service->getUploadAnnotationReader();
+        $attachmentRH      = $service->getRequestHandler();
+        $url               = $this->getUrlAdmin();
         $this->denyAccessUnlessGranted(
             empty($entity->getId()) ? 'new' : 'edit',
             $entity
@@ -60,7 +58,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
         $form->handleRequest($this->requeststack->getCurrentRequest());
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->upload($uploadAnnotReader, $attachmentRepository, $attachmentRH, $entity);
+            $this->upload($uploadAnnotReader, $attachmentRH, $entity);
             $handler->handle($oldEntity, $entity);
             $this->flashBagAdd(
                 'success',
@@ -83,11 +81,11 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     public function listOrTrash(
-        EntityManagerInterface $entityManager,
-        ServiceEntityRepositoryLib $repository,
+        $entity,
         string $html
     ): Response
     {
+        $repository  = $this->getRepository($entity);
         $methods     = $this->getMethodsList();
         $url         = $this->getUrlAdmin();
         $request     = $this->requeststack->getCurrentRequest();
@@ -96,7 +94,7 @@ abstract class AdminControllerLib extends ControllerLib
         $routeParams = $all['_route_params'];
         $routeType   = (0 != substr_count($route, 'trash')) ? 'trash' : 'all';
         $method      = $methods[$routeType];
-        $this->addNewImport($entityManager, $repository, $methods, $routeType, $url);
+        $this->addNewImport($this->entityManager, $repository, $methods, $routeType, $url);
 
         if ('trash' != $routeType) {
             $this->btnInstance()->addSupprimerSelection(
@@ -144,7 +142,7 @@ abstract class AdminControllerLib extends ControllerLib
             $get         = $query->all();
             $data        = $search['data'];
             $data->limit = $limit;
-            $data->search($get, $entityManager);
+            $data->search($get, $this->entityManager);
             $route      = $this->requeststack->getCurrentRequest()->get('_route');
             $url        = $this->generateUrl($route);
             $searchForm = $this->createForm(
@@ -399,7 +397,6 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     protected function setAttachment(
-        AttachmentRepository $attachmentRepository,
         $accessor,
         $entity,
         $annotation
@@ -410,7 +407,7 @@ abstract class AdminControllerLib extends ControllerLib
             return new Attachment();
         }
 
-        $attachment = $attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
+        $attachment = $this->getRepository(Attachment::class)->findOneBy(['id' => $attachmentField->getId()]);
         if (!$attachment instanceof Attachment) {
             $attachment = new Attachment();
         }
@@ -686,7 +683,6 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function upload(
         UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRepository $attachmentRepository,
         AttachmentRequestHandler $attachmentRH,
         $entity
     )
@@ -704,7 +700,6 @@ abstract class AdminControllerLib extends ControllerLib
             }
 
             $attachment = $this->setAttachment(
-                $attachmentRepository,
                 $accessor,
                 $entity,
                 $annotation

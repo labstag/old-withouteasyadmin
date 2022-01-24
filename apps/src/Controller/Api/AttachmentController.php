@@ -9,7 +9,6 @@ use Labstag\Entity\Memo;
 use Labstag\Entity\Post;
 use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\MemoRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
@@ -43,9 +42,9 @@ class AttachmentController extends ApiControllerLib
     /**
      * @Route("/favicon", name="api_attachment_favicon")
      */
-    public function favicon(AttachmentRepository $repository): Response
+    public function favicon(): Response
     {
-        $entity = $repository->getFavicon();
+        $entity = $this->getRepository(Attachment::class)->getFavicon();
         $return = [
             'state' => false,
             'error' => '',
@@ -65,9 +64,9 @@ class AttachmentController extends ApiControllerLib
     /**
      * @Route("/imagedefault", name="api_attachment_image")
      */
-    public function imageDefault(AttachmentRepository $repository): Response
+    public function imageDefault(): Response
     {
-        $entity = $repository->getImageDefault();
+        $entity = $this->getRepository(Attachment::class)->getImageDefault();
         $return = [
             'state' => false,
             'error' => '',

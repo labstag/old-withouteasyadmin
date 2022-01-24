@@ -2,7 +2,9 @@
 
 namespace Labstag\Command;
 
-use Labstag\Repository\HistoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\History;
+use Labstag\Lib\CommandLib;
 use Labstag\Service\HistoryService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -15,15 +17,15 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
     name: 'labstag:history:generate-pdf',
     description: 'Add a short description for your command',
 )]
-class LabstagHistoryGeneratePdfCommand extends Command
+class LabstagHistoryGeneratePdfCommand extends CommandLib
 {
     public function __construct(
+        EntityManagerInterface $entityManager,
         protected ParameterBagInterface $containerBag,
-        protected HistoryRepository $historyRepository,
         protected HistoryService $historyService
     )
     {
-        parent::__construct();
+        parent::__construct($entityManager);
     }
 
     protected function configure(): void
@@ -34,7 +36,7 @@ class LabstagHistoryGeneratePdfCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $inoutput  = new SymfonyStyle($input, $output);
-        $histories = $this->historyRepository->findAll();
+        $histories = $this->getRepository(History::class)->findAll();
         $inoutput->title('Génération des PDF');
         $inoutput->progressStart(count($histories));
         foreach ($histories as $history) {

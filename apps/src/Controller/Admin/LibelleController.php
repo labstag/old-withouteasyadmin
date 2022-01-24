@@ -2,13 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Libelle;
 use Labstag\Form\Admin\LibelleType;
 use Labstag\Form\Admin\Search\LibelleType as SearchLibelleType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\LibelleRepository;
 use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\Search\LibelleSearch;
 use Labstag\Service\AttachFormService;
@@ -45,14 +43,10 @@ class LibelleController extends AdminControllerLib
      * @Route("/", name="admin_libelle_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(
-        EntityManagerInterface $entityManager,
-        LibelleRepository $repository
-    ): Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $entityManager,
-            $repository,
+            Libelle::class,
             'admin/libelle/index.html.twig'
         );
     }

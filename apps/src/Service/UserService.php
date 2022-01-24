@@ -4,7 +4,6 @@ namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\User;
-use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\OauthConnectUserRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -19,7 +18,6 @@ class UserService
     public function __construct(
         protected RequestStack $requestStack,
         protected EntityManagerInterface $entityManager,
-        protected UserRepository $repository,
         protected UserRequestHandler $userRH,
         protected OauthConnectUserRequestHandler $oauthConnectUserRH,
         protected TranslatorInterface $translator
@@ -34,7 +32,7 @@ class UserService
         }
 
         // @var User $user
-        $user = $this->repository->findUserEnable($post['value']);
+        $user = $this->getRepository(User::class)->findUserEnable($post['value']);
         if (!$user instanceof User) {
             return;
         }
@@ -63,5 +61,10 @@ class UserService
         }
 
         return $return;
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 }

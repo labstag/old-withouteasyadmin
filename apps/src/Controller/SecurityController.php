@@ -3,6 +3,7 @@
 namespace Labstag\Controller;
 
 use Labstag\Entity\Email;
+use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\Phone;
 use Labstag\Entity\User;
 use Labstag\Form\Security\ChangePasswordType;
@@ -10,7 +11,6 @@ use Labstag\Form\Security\DisclaimerType;
 use Labstag\Form\Security\LoginType;
 use Labstag\Form\Security\LostPasswordType;
 use Labstag\Lib\ControllerLib;
-use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\RequestHandler\EmailRequestHandler;
 use Labstag\RequestHandler\PhoneRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
@@ -180,8 +180,7 @@ class SecurityController extends ControllerLib
      * @Route("/login", name="app_login", priority=1)
      */
     public function login(
-        AuthenticationUtils $authenticationUtils,
-        OauthConnectUserRepository $repository
+        AuthenticationUtils $authenticationUtils
     ): Response
     {
         // get the login error if there is one
@@ -193,7 +192,7 @@ class SecurityController extends ControllerLib
             ['username' => $lastUsername]
         );
 
-        $oauths = $repository->findDistinctAllOauth();
+        $oauths = $this->getRepository(OauthConnectUser::class)->findDistinctAllOauth();
 
         return $this->renderForm(
             'security/login.html.twig',

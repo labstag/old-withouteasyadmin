@@ -2,11 +2,11 @@
 
 namespace Labstag\Controller\Api;
 
+use Labstag\Entity\Category;
+use Labstag\Entity\Groupe;
+use Labstag\Entity\Libelle;
+use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
-use Labstag\Repository\CategoryRepository;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\LibelleRepository;
-use Labstag\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ class SearchController extends ApiControllerLib
     /**
      * @Route("/category", name="api_search_category")
      */
-    public function category(Request $request, CategoryRepository $repository): Response
+    public function category(Request $request): Response
     {
         $get    = $request->query->all();
         $return = ['isvalid' => false];
@@ -28,7 +28,7 @@ class SearchController extends ApiControllerLib
             return $this->json($return);
         }
 
-        $data   = $repository->findName($get['name']);
+        $data   = $this->getRepository(Category::class)->findName($get['name']);
         $result = [
             'results' => [],
         ];
@@ -46,7 +46,7 @@ class SearchController extends ApiControllerLib
     /**
      * @Route("/group", name="api_search_group")
      */
-    public function groupe(Request $request, GroupeRepository $repository): Response
+    public function groupe(Request $request): Response
     {
         $get    = $request->query->all();
         $return = ['isvalid' => false];
@@ -54,7 +54,7 @@ class SearchController extends ApiControllerLib
             return $this->json($return);
         }
 
-        $data   = $repository->findName($get['name']);
+        $data   = $this->getRepository(Groupe::class)->findName($get['name']);
         $result = [
             'results' => [],
         ];
@@ -72,7 +72,7 @@ class SearchController extends ApiControllerLib
     /**
      * @Route("/libelle", name="api_search_postlibelle")
      */
-    public function libelle(Request $request, LibelleRepository $repository): JsonResponse
+    public function libelle(Request $request): JsonResponse
     {
         $get    = $request->query->all();
         $return = ['isvalid' => false];
@@ -80,7 +80,7 @@ class SearchController extends ApiControllerLib
             return $this->json($return);
         }
 
-        $data   = $repository->findName($get['name']);
+        $data   = $this->getRepository(Libelle::class)->findName($get['name']);
         $result = [
             'results' => [],
         ];
@@ -98,7 +98,7 @@ class SearchController extends ApiControllerLib
     /**
      * @Route("/user", name="api_search_user")
      */
-    public function user(Request $request, UserRepository $repository): Response
+    public function user(Request $request): Response
     {
         $get    = $request->query->all();
         $return = ['isvalid' => false];
@@ -106,7 +106,7 @@ class SearchController extends ApiControllerLib
             return $this->json($return);
         }
 
-        $data   = $repository->findUserName($get['name']);
+        $data   = $this->getRepository(User::class)->findUserName($get['name']);
         $result = [
             'results' => [],
         ];

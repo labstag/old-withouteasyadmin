@@ -2,7 +2,8 @@
 
 namespace Labstag\EventSubscriber;
 
-use Labstag\Repository\AttachmentRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\Attachment;
 use Labstag\Service\DataService;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
@@ -28,8 +29,8 @@ class TwigEventSubscriber implements EventSubscriberInterface
     public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
     public function __construct(
+        protected EntityManagerInterface $entityManager,
         protected RouterInterface $router,
-        protected AttachmentRepository $attachmentRepo,
         protected Environment $twig,
         protected UrlGeneratorInterface $urlGenerator,
         protected CsrfTokenManagerInterface $csrfTokenManager,
@@ -52,9 +53,14 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->setConfig($event, $request);
     }
 
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
+    }
+
     protected function setConfig(ControllerEvent $event, Request $request): void
     {
-        $favicon    = $this->attachmentRepo->getFavicon();
+        $favicon    = $this->getRepository(Attachment::class)->getFavicon();
         $controller = $event->getRequest()->attributes->get('_controller');
         $matches    = [];
         preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
@@ -195,7 +201,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     private function setMetaImage(&$config)
     {
-        $image = $this->attachmentRepo->getImageDefault();
+        $image = $this->getRepository(Attachment::class)->getImageDefault();
         $this->twig->AddGlobal('imageglobal', $image);
         $meta  = $config['meta'];
         $tests = [

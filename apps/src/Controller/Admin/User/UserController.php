@@ -2,14 +2,12 @@
 
 namespace Labstag\Controller\Admin\User;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
+use Labstag\Entity\Workflow;
 use Labstag\Form\Admin\Search\UserType as SearchUserType;
 use Labstag\Form\Admin\User\UserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\UserRepository;
-use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Search\UserSearch;
 use Labstag\Service\AttachFormService;
@@ -62,8 +60,7 @@ class UserController extends AdminControllerLib
      * @Route("/{id}/guard", name="admin_user_guard")
      */
     public function guard(
-        User $user,
-        WorkflowRepository $workflowRepo
+        User $user
     ): Response
     {
         $this->btnInstance()->addBtnList(
@@ -95,12 +92,20 @@ class UserController extends AdminControllerLib
             return $this->redirectToRoute('admin_user_index');
         }
 
+        $workflows = $this->getRepository(Workflow::class)->findBy(
+            [],
+            [
+                'entity'     => 'ASC',
+                'transition' => 'ASC',
+            ]
+        );
+
         return $this->render(
             'admin/guard/user.html.twig',
             [
                 'user'      => $user,
                 'routes'    => $routes,
-                'workflows' => $workflowRepo->findBy([], ['entity' => 'ASC', 'transition' => 'ASC']),
+                'workflows' => $workflows,
             ]
         );
     }
@@ -110,14 +115,10 @@ class UserController extends AdminControllerLib
      * @Route("/", name="admin_user_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(
-        EntityManagerInterface $entityManager,
-        UserRepository $repository
-    ): Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $entityManager,
-            $repository,
+            User::class,
             'admin/user/index.html.twig'
         );
     }

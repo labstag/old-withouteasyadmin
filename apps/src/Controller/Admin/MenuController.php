@@ -8,7 +8,6 @@ use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Menu\LinkType;
 use Labstag\Form\Admin\Menu\PrincipalType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\MenuRepository;
 use Labstag\RequestHandler\MenuRequestHandler;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,8 +27,7 @@ class MenuController extends AdminControllerLib
     public function add(
         AttachFormService $service,
         Request $request,
-        MenuRequestHandler $requestHandler,
-        MenuRepository $repository
+        MenuRequestHandler $requestHandler
     ): Response
     {
         $get = $request->query->all();
@@ -38,7 +36,7 @@ class MenuController extends AdminControllerLib
             return new RedirectResponse($url);
         }
 
-        $parent = $repository->find($get['id']);
+        $parent = $this->getRepository(Menu::class)->find($get['id']);
         if (!$parent instanceof Menu) {
             return new RedirectResponse($url);
         }
@@ -108,11 +106,10 @@ class MenuController extends AdminControllerLib
      * @Route("/", name="admin_menu_index", methods={"GET"})
      */
     public function index(
-        Environment $twig,
-        MenuRepository $repository
+        Environment $twig
     )
     {
-        $all     = $repository->findAllCode();
+        $all     = $this->getRepository(Menu::class)->findAllCode();
         $globals = $twig->getGlobals();
         $modal   = $globals['modal'] ?? [];
 
@@ -132,8 +129,7 @@ class MenuController extends AdminControllerLib
     public function move(
         Menu $menu,
         Request $request,
-        EntityManagerInterface $entityManager,
-        MenuRepository $repository
+        EntityManagerInterface $entityManager
     )
     {
         $currentUrl = $this->generateUrl(
@@ -153,7 +149,7 @@ class MenuController extends AdminControllerLib
                 foreach ($data as $row) {
                     $id       = $row['id'];
                     $position = intval($row['position']);
-                    $entity   = $repository->find($id);
+                    $entity   = $this->getRepository(Menu::class)->find($id);
                     if (!is_null($entity)) {
                         $entity->setPosition($position + 1);
                         $entityManager->persist($entity);
@@ -206,14 +202,10 @@ class MenuController extends AdminControllerLib
      *
      * @IgnoreSoftDelete
      */
-    public function trash(
-        EntityManagerInterface $entityManager,
-        MenuRepository $repository
-    ): Response
+    public function trash(): Response
     {
         return $this->listOrTrash(
-            $entityManager,
-            $repository,
+            Menu::class,
             'admin/menu/trash.html.twig',
         );
     }

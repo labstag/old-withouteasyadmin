@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\Configuration;
 use Labstag\Event\ConfigurationEntityEvent;
-use Labstag\Repository\ConfigurationRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -27,7 +26,6 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
         protected LoggerInterface $logger,
         protected ContainerBagInterface $containerBag,
         protected EntityManagerInterface $entityManager,
-        protected ConfigurationRepository $repository,
         protected CacheInterface $cache,
         protected RequestStack $requestStack,
         protected TranslatorInterface $translator
@@ -55,7 +53,7 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
                 continue;
             }
 
-            $configuration = $this->repository->findOneBy(['name' => $key]);
+            $configuration = $this->getRepository(Configuration::class)->findOneBy(['name' => $key]);
             if (!$configuration instanceof Configuration) {
                 $configuration = new Configuration();
                 $configuration->setName($key);
@@ -79,6 +77,11 @@ class ConfigurationEntitySubscriber implements EventSubscriberInterface
     protected function getParameter(string $name)
     {
         return $this->containerBag->get($name);
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 
     protected function setRobotsTxt(array $post): void

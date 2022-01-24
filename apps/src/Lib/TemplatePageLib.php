@@ -2,16 +2,10 @@
 
 namespace Labstag\Lib;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Page;
-use Labstag\Repository\BookmarkRepository;
-use Labstag\Repository\CategoryRepository;
-use Labstag\Repository\EditoRepository;
-use Labstag\Repository\HistoryRepository;
-use Labstag\Repository\LibelleRepository;
-use Labstag\Repository\PostRepository;
-use Labstag\Repository\UserRepository;
 use Labstag\Service\DataService;
 use Labstag\Service\HistoryService;
 use Symfony\Component\Asset\PathPackage;
@@ -31,20 +25,14 @@ abstract class TemplatePageLib
     protected Request $request;
 
     public function __construct(
+        protected EntityManagerInterface $entityManager,
         protected RequestStack $requeststack,
         protected RouterInterface $router,
         protected Environment $twig,
         protected ContainerBagInterface $containerBag,
         protected HistoryService $historyService,
         protected DataService $dataService,
-        protected UserRepository $userRepository,
-        protected HistoryRepository $historyRepository,
-        protected BookmarkRepository $bookmarkRepository,
-        protected EditoRepository $editoRepository,
-        protected PostRepository $postRepository,
-        protected LibelleRepository $libelleRepository,
         protected PaginatorInterface $paginator,
-        protected CategoryRepository $categoryRepository
     )
     {
         $request       = $this->requeststack->getCurrentRequest();
@@ -102,6 +90,11 @@ abstract class TemplatePageLib
     protected function getParameter(string $name)
     {
         return $this->containerBag->get($name);
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 
     protected function render(string $view, array $parameters = [], ?Response $response = null): Response

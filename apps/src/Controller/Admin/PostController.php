@@ -2,13 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\PostType;
 use Labstag\Form\Admin\Search\PostType as SearchPostType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\PostRepository;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\Search\PostSearch;
 use Labstag\Service\AttachFormService;
@@ -46,14 +44,10 @@ class PostController extends AdminControllerLib
      * @Route("/", name="admin_post_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(
-        EntityManagerInterface $entityManager,
-        PostRepository $repository
-    ): Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $entityManager,
-            $repository,
+            Post::class,
             'admin/post/index.html.twig',
         );
     }

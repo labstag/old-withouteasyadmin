@@ -6,13 +6,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
+use Labstag\Entity\Memo;
 use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ParamType;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\AttachmentRepository;
-use Labstag\Repository\MemoRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\DataService;
@@ -67,9 +66,9 @@ class AdminController extends AdminControllerLib
     /**
      * @Route("/", name="admin")
      */
-    public function index(MemoRepository $noteInterneRepo): Response
+    public function index(): Response
     {
-        $memos = $noteInterneRepo->findPublier();
+        $memos = $this->getRepository(Memo::class)->findPublier();
 
         return $this->render(
             'admin/index.html.twig',
@@ -84,15 +83,14 @@ class AdminController extends AdminControllerLib
         Request $request,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $dispatcher,
-        AttachmentRepository $repository,
         DataService $dataService,
         CacheInterface $cache
     ): Response
     {
         $this->modalAttachmentDelete();
         $images = [
-            'image'   => $repository->getImageDefault(),
-            'favicon' => $repository->getFavicon(),
+            'image'   => $this->getRepository(Attachment::class)->getImageDefault(),
+            'favicon' => $this->getRepository(Attachment::class)->getFavicon(),
         ];
 
         foreach ($images as $key => $value) {

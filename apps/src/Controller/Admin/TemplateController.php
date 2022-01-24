@@ -2,13 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Template;
 use Labstag\Form\Admin\Search\TemplateType as SearchTemplateType;
 use Labstag\Form\Admin\TemplateType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\TemplateRepository;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\Search\TemplateSearch;
 use Labstag\Service\AttachFormService;
@@ -43,14 +41,10 @@ class TemplateController extends AdminControllerLib
      * @Route("/", name="admin_template_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(
-        EntityManagerInterface $entityManager,
-        TemplateRepository $repository
-    ): Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $entityManager,
-            $repository,
+            Template::class,
             'admin/template/index.html.twig'
         );
     }

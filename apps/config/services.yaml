@@ -31,6 +31,7 @@ services:
     Labstag\RequestHandler\:
       resource: "../src/RequestHandler/"
       public: true
+      tags: [requestHandler]
     Labstag\TemplatePage\:
       resource: "../src/TemplatePage/"
       public: true

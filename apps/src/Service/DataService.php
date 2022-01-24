@@ -2,9 +2,9 @@
 
 namespace Labstag\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\User;
-use Labstag\Repository\ConfigurationRepository;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
@@ -16,7 +16,7 @@ class DataService
     protected array $oauthActivated = [];
 
     public function __construct(
-        protected ConfigurationRepository $repository,
+        protected EntityManagerInterface $entityManager,
         protected CacheInterface $cache
     )
     {
@@ -63,7 +63,7 @@ class DataService
 
     protected function getConfiguration()
     {
-        $data   = $this->repository->findAll();
+        $data   = $this->getRepository(Configuration::class)->findAll();
         $config = [];
         // @var Configuration $row
         foreach ($data as $row) {
@@ -73,6 +73,11 @@ class DataService
         }
 
         return $config;
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 
     protected function setData(): void
