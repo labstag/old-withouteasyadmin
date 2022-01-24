@@ -29,6 +29,8 @@ security:
         remember_me_parameter: "login[remember_me]"
         path:     /
         domain: ~
+        token_provider:
+          doctrine: true
       logout:
         path: app_logout
         # where to redirect after logout
