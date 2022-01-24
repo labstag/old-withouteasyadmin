@@ -98,24 +98,7 @@ class HistoryController extends AdminControllerLib
         );
 
         if ('POST' == $request->getMethod()) {
-            $data = $request->request->all('position');
-            if (!empty($data)) {
-                $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
-            }
-
-            if (is_array($data)) {
-                foreach ($data as $row) {
-                    $id       = $row['id'];
-                    $position = intval($row['position']);
-                    $entity   = $this->getRepository(Chapter::class)->find($id);
-                    if (!is_null($entity)) {
-                        $entity->setPosition($position + 1);
-                        $entityManager->persist($entity);
-                    }
-                }
-
-                $entityManager->flush();
-            }
+            $this->setPositionEntity($request, Chapter::class);
         }
 
         $this->btnInstance()->addBtnList(

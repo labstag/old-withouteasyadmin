@@ -55,7 +55,6 @@ class GuardWorkflowController extends ApiControllerLib
         foreach ($groupes as $group) {
             $data = $this->setWorkflowGroupe(
                 $data,
-                $this->getRepository(WorkflowGroupe::class),
                 $group,
                 $workflow,
                 $state,
@@ -94,7 +93,7 @@ class GuardWorkflowController extends ApiControllerLib
             }
         }
 
-        $results = $this->getResultWorkflow($request);
+        $results = $this->getResultWorkflow($request, WorkflowGroupe::class);
         foreach ($results as $row) {
             // @var WorkflowGroupe $row
             $data['group'][] = [
@@ -125,7 +124,6 @@ class GuardWorkflowController extends ApiControllerLib
         $state = $request->request->all('state');
         $data  = $this->setWorkflowGroupe(
             $data,
-            $this->getRepository(WorkflowGroupe::class),
             $group,
             $workflow,
             $state,
@@ -180,18 +178,6 @@ class GuardWorkflowController extends ApiControllerLib
         );
     }
 
-    private function getResultWorkflow($request)
-    {
-        $get = $request->query->all();
-        if (array_key_exists('user', $get)) {
-            $user = $this->getRepository(User::class)->find($get['user']);
-
-            return $this->getRepository(WorkflowGroupe::class)->findEnable($user->getRefgroupe());
-        }
-
-        return $this->getRepository(WorkflowGroupe::class)->findEnable();
-    }
-
     private function setWorkflow(
         $request,
         $entity,
@@ -223,14 +209,18 @@ class GuardWorkflowController extends ApiControllerLib
 
     private function setWorkflowGroupe(
         $data,
-        $workflowGroupeRepo,
         $group,
         $workflow,
         $state,
         $workflowGroupeRH
     )
     {
-        $workflowGroupe = $workflowGroupeRepo->findOneBy(['refgroupe' => $group, 'refworkflow' => $workflow]);
+        $workflowGroupe = $this->getRepository(WorkflowGroupe::class)->findOneBy(
+            [
+                'refgroupe'   => $group,
+                'refworkflow' => $workflow,
+            ]
+        );
         if ('0' === $state) {
             if ($workflowGroupe instanceof WorkflowGroupe) {
                 $data['delete'] = 1;

@@ -5,6 +5,7 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Attachment;
+use Labstag\Entity\Menu;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\RequestHandler\AttachmentRequestHandler;
@@ -42,9 +43,7 @@ abstract class AdminControllerLib extends ControllerLib
         string $twig = 'admin/crud/form.html.twig'
     ): Response
     {
-        $uploadAnnotReader = $service->getUploadAnnotationReader();
-        $attachmentRH      = $service->getRequestHandler();
-        $url               = $this->getUrlAdmin();
+        $url = $this->getUrlAdmin();
         $this->denyAccessUnlessGranted(
             empty($entity->getId()) ? 'new' : 'edit',
             $entity
@@ -58,7 +57,10 @@ abstract class AdminControllerLib extends ControllerLib
         );
         $form->handleRequest($this->requeststack->getCurrentRequest());
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->upload($uploadAnnotReader, $attachmentRH, $entity);
+            $this->upload(
+                $service->getUploadAnnotationReader(),
+                $entity
+            );
             $handler->handle($oldEntity, $entity);
             $this->flashBagAdd(
                 'success',
@@ -568,6 +570,28 @@ abstract class AdminControllerLib extends ControllerLib
         ];
     }
 
+    protected function setPositionEntity($request, $entity)
+    {
+        $data = $request->request->all('position');
+        if (!empty($data)) {
+            $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+        }
+
+        if (is_array($data)) {
+            foreach ($data as $row) {
+                $id       = $row['id'];
+                $position = intval($row['position']);
+                $entity   = $this->getRepository(Menu::class)->find($id);
+                if (!is_null($entity)) {
+                    $entity->setPosition($position + 1);
+                    $this->entityManager->persist($entity);
+                }
+            }
+
+            $this->entityManager->flush();
+        }
+    }
+
     protected function setTrashIcon(
         $methods,
         $repository,
@@ -704,11 +728,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function upload(
-        UploadAnnotationReader $uploadAnnotReader,
-        AttachmentRequestHandler $attachmentRH,
-        $entity
-    )
+    protected function upload(UploadAnnotationReader $uploadAnnotReader, $entity)
     {
         if (!$uploadAnnotReader->isUploadable($entity)) {
             return;
