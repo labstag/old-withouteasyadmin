@@ -24,7 +24,7 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
         unset($manager);
         $users     = $this->userRepository->findAll();
         $faker     = $this->setFaker();
-        $statesTab = $this->getStates();
+        $statesTab = $this->getStatesData();
         $maxDate   = $faker->unique()->dateTimeInInterval('now', '+30 years');
         for ($index = 0; $index < self::NUMBER_NOTEINTERNE; ++$index) {
             $stateId = array_rand($statesTab);
@@ -62,31 +62,5 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
         $this->upload($memo, $faker);
         $this->noteInterneRH->handle($old, $memo);
         $this->noteInterneRH->changeWorkflowState($memo, $states);
-    }
-
-    protected function getStates()
-    {
-        return [
-            ['submit'],
-            [
-                'submit',
-                'relire',
-            ],
-            [
-                'submit',
-                'relire',
-                'corriger',
-            ],
-            [
-                'submit',
-                'relire',
-                'publier',
-            ],
-            [
-                'submit',
-                'relire',
-                'rejeter',
-            ],
-        ];
     }
 }

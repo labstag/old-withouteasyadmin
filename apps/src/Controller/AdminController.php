@@ -315,21 +315,7 @@ class AdminController extends AdminControllerLib
             $filename   = $file->getClientOriginalName();
             $path       = $paths[$key];
             $filename   = ('favicon' == $key) ? 'favicon.ico' : $filename;
-            $file->move(
-                $path,
-                $filename
-            );
-            $file = $path.'/'.$filename;
-            $attachment->setMimeType(mime_content_type($file));
-            $attachment->setSize(filesize($file));
-            $attachment->setName(
-                str_replace(
-                    $this->getParameter('kernel.project_dir').'/public/',
-                    '',
-                    $file
-                )
-            );
-            $this->attachmentRH->handle($old, $attachment);
+            $this->moveFile($file, $path, $filename, $attachment, $old);
         }
     }
 }

@@ -391,6 +391,25 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
+    protected function moveFile($file, $path, $filename, $attachment, $old)
+    {
+        $file->move(
+            $path,
+            $filename
+        );
+        $file = $path.'/'.$filename;
+        $attachment->setMimeType(mime_content_type($file));
+        $attachment->setSize(filesize($file));
+        $attachment->setName(
+            str_replace(
+                $this->getParameter('kernel.project_dir').'/public/',
+                '',
+                $file
+            )
+        );
+        $this->attachmentRH->handle($old, $attachment);
+    }
+
     protected function searchForm(): array
     {
         return [];
@@ -424,6 +443,10 @@ abstract class AdminControllerLib extends ControllerLib
         $method    = 'setBreadcrumbsPage';
         $callables = get_class_methods($this);
         $router    = $this->routerInterface;
+
+        $request     = $this->requeststack->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $routeParams = $all['_route_params'];
         foreach ($data as $row) {
             $method .= ucfirst($row);
             if (!in_array($method, $callables)) {
@@ -436,7 +459,7 @@ abstract class AdminControllerLib extends ControllerLib
                     $breadcrumb['title'],
                     $router->generate(
                         $breadcrumb['route'],
-                        $breadcrumb['route_params'],
+                        $routeParams,
                     )
                 );
             }
@@ -712,21 +735,7 @@ abstract class AdminControllerLib extends ControllerLib
                 mkdir($path, 0777, true);
             }
 
-            $file->move(
-                $path,
-                $filename
-            );
-            $file = $path.'/'.$filename;
-            $attachment->setMimeType(mime_content_type($file));
-            $attachment->setSize(filesize($file));
-            $attachment->setName(
-                str_replace(
-                    $this->getParameter('kernel.project_dir').'/public/',
-                    '',
-                    $file
-                )
-            );
-            $attachmentRH->handle($old, $attachment);
+            $this->moveFile($file, $path, $filename, $attachment, $old);
             $accessor->setValue($entity, $annotation->getFilename(), $attachment);
         }
     }

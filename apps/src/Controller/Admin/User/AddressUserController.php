@@ -96,24 +96,18 @@ class AddressUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('addressuser.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('addressuser.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminAddressuserEdit(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('addressuser.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('addressuser.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_edit',
             ],
         ];
     }
@@ -122,44 +116,32 @@ class AddressUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('addressuser.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('addressuser.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminAddressuserPreview(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_trash',
             ],
             [
-                'title'        => $this->translator->trans('addressuser.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('addressuser.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminAddressuserShow(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('addressuser.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('addressuser.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_show',
             ],
         ];
     }
@@ -168,9 +150,8 @@ class AddressUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_trash',
             ],
         ];
     }

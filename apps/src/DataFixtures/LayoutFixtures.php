@@ -16,11 +16,6 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $this->add($manager);
-    }
-
-    protected function add(ObjectManager $manager): void
-    {
         unset($manager);
         $this->addLayoutLanding();
         $this->addLayoutHome();

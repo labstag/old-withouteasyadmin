@@ -103,24 +103,18 @@ class CategoryController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('category.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('category.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminCategoryEdit(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('category.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('category.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_edit',
             ],
         ];
     }
@@ -129,44 +123,32 @@ class CategoryController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('category.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('category.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminCategoryPreview(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_trash',
             ],
             [
-                'title'        => $this->translator->trans('category.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('category.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminCategoryShow(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('category.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('category.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_show',
             ],
         ];
     }
@@ -175,9 +157,8 @@ class CategoryController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_trash',
             ],
         ];
     }

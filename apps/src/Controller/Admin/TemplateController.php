@@ -92,24 +92,18 @@ class TemplateController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('template.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_template_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('template.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_template_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminTemplaceEdit(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('template.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_template_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('template.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_template_edit',
             ],
         ];
     }
@@ -118,44 +112,32 @@ class TemplateController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('template.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_template_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('template.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_template_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminTemplacePreview(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_template_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_template_trash',
             ],
             [
-                'title'        => $this->translator->trans('template.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_template_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('template.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_template_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminTemplaceShow(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('template.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_template_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('template.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_template_show',
             ],
         ];
     }
@@ -164,9 +146,8 @@ class TemplateController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_template_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_template_trash',
             ],
         ];
     }

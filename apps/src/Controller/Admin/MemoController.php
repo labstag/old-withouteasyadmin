@@ -100,24 +100,18 @@ class MemoController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('memo.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_memo_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('memo.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_memo_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminNoteinterneEdit(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('memo.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_memo_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('memo.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_memo_edit',
             ],
         ];
     }
@@ -126,44 +120,32 @@ class MemoController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('memo.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_memo_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('memo.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_memo_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminNoteinternePreview(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('memo.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_memo_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('memo.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_memo_trash',
             ],
             [
-                'title'        => $this->translator->trans('memo.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_memo_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('memo.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_memo_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminNoteinterneShow(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('memo.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_memo_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('memo.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_memo_show',
             ],
         ];
     }
@@ -172,9 +154,8 @@ class MemoController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('memo.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_memo_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('memo.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_memo_trash',
             ],
         ];
     }

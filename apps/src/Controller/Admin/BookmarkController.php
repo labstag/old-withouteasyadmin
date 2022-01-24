@@ -130,24 +130,18 @@ class BookmarkController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('bookmark.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_bookmark_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('bookmark.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_bookmark_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminBookmarkEdit(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('bookmark.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_bookmark_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('bookmark.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_bookmark_edit',
             ],
         ];
     }
@@ -156,9 +150,8 @@ class BookmarkController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('bookmark.import', [], 'admin.breadcrumb'),
-                'route'        => 'admin_bookmark_import',
-                'route_params' => [],
+                'title' => $this->translator->trans('bookmark.import', [], 'admin.breadcrumb'),
+                'route' => 'admin_bookmark_import',
             ],
         ];
     }
@@ -167,44 +160,32 @@ class BookmarkController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('bookmark.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_bookmark_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('bookmark.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_bookmark_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminBookmarkPreview(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('bookmark.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_bookmark_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('bookmark.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_bookmark_trash',
             ],
             [
-                'title'        => $this->translator->trans('bookmark.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_bookmark_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('bookmark.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_bookmark_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminBookmarkShow(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('bookmark.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_bookmark_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('bookmark.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_bookmark_show',
             ],
         ];
     }
@@ -213,9 +194,8 @@ class BookmarkController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('bookmark.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_bookmark_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('bookmark.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_bookmark_trash',
             ],
         ];
     }

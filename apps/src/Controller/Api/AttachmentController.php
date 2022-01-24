@@ -44,21 +44,7 @@ class AttachmentController extends ApiControllerLib
      */
     public function favicon(): Response
     {
-        $entity = $this->getRepository(Attachment::class)->getFavicon();
-        $return = [
-            'state' => false,
-            'error' => '',
-        ];
-        $token  = $this->verifToken($entity);
-        if (!$token) {
-            $return['error'] = 'Token incorrect';
-
-            return new JsonResponse($return);
-        }
-
-        $this->deleteAttachment($entity);
-
-        return new JsonResponse($return);
+        return $this->setDataAttachment('getFavicon');
     }
 
     /**
@@ -66,21 +52,7 @@ class AttachmentController extends ApiControllerLib
      */
     public function imageDefault(): Response
     {
-        $entity = $this->getRepository(Attachment::class)->getImageDefault();
-        $return = [
-            'state' => false,
-            'error' => '',
-        ];
-        $token  = $this->verifToken($entity);
-        if (!$token) {
-            $return['error'] = 'Token incorrect';
-
-            return new JsonResponse($return);
-        }
-
-        $this->deleteAttachment($entity);
-
-        return new JsonResponse($return);
+        return $this->setDataAttachment('getImageDefault');
     }
 
     /**
@@ -176,6 +148,25 @@ class AttachmentController extends ApiControllerLib
         $entity->{$methodSet}(null);
         $requesthandler->handle($old, $entity);
         $return['state'] = true;
+
+        return new JsonResponse($return);
+    }
+
+    private function setDataAttachment($method)
+    {
+        $entity = $this->getRepository(Attachment::class)->{$method}();
+        $return = [
+            'state' => false,
+            'error' => '',
+        ];
+        $token  = $this->verifToken($entity);
+        if (!$token) {
+            $return['error'] = 'Token incorrect';
+
+            return new JsonResponse($return);
+        }
+
+        $this->deleteAttachment($entity);
 
         return new JsonResponse($return);
     }

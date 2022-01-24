@@ -12,40 +12,12 @@ class PostTemplatePage extends TemplatePageLib
 {
     public function archive(string $code)
     {
-        $pagination = $this->paginator->paginate(
-            $this->getRepository(Post::class)->findPublierArchive($code),
-            $this->request->query->getInt('page', 1),
-            10
-        );
-
-        return $this->render(
-            'front/posts/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $this->getRepository(Post::class)->findDateArchive(),
-                'libelles'   => $this->getRepository(Libelle::class)->findByPost(),
-                'categories' => $this->getRepository(Category::class)->findByPost(),
-            ]
-        );
+        return $this->getList($code, 'findPublierArchive');
     }
 
     public function category(string $code)
     {
-        $pagination = $this->paginator->paginate(
-            $this->getRepository(Post::class)->findPublierCategory($code),
-            $this->request->query->getInt('page', 1),
-            10
-        );
-
-        return $this->render(
-            'front/posts/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $this->getRepository(Post::class)->findDateArchive(),
-                'libelles'   => $this->getRepository(Libelle::class)->findByPost(),
-                'categories' => $this->getRepository(Category::class)->findByPost(),
-            ]
-        );
+        return $this->getList($code, 'findPublierCategory');
     }
 
     public function generateUrl(Page $page, string $route, array $params, bool $relative): string
@@ -102,21 +74,7 @@ class PostTemplatePage extends TemplatePageLib
 
     public function libelle(string $code)
     {
-        $pagination = $this->paginator->paginate(
-            $this->getRepository(Post::class)->findPublierLibelle($code),
-            $this->request->query->getInt('page', 1),
-            10
-        );
-
-        return $this->render(
-            'front/posts/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $this->getRepository(Post::class)->findDateArchive(),
-                'libelles'   => $this->getRepository(Libelle::class)->findByPost(),
-                'categories' => $this->getRepository(Category::class)->findByPost(),
-            ]
-        );
+        return $this->getList($code, 'findPublierLibelle');
     }
 
     public function show(Post $post)
@@ -128,34 +86,15 @@ class PostTemplatePage extends TemplatePageLib
             $post->getImg()
         );
 
-        return $this->render(
+        return $this->renderData(
             'front/posts/show.html.twig',
-            [
-                'post'       => $post,
-                'archives'   => $this->getRepository(Post::class)->findDateArchive(),
-                'libelles'   => $this->getRepository(Libelle::class)->findByPost(),
-                'categories' => $this->getRepository(Category::class)->findByPost(),
-            ]
+            ['post' => $post]
         );
     }
 
     public function user($username)
     {
-        $pagination = $this->paginator->paginate(
-            $this->getRepository(Post::class)->findPublierUsername($username),
-            $this->request->query->getInt('page', 1),
-            10
-        );
-
-        return $this->render(
-            'front/posts/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'archives'   => $this->getRepository(Post::class)->findDateArchive(),
-                'libelles'   => $this->getRepository(Libelle::class)->findByPost(),
-                'categories' => $this->getRepository(Category::class)->findByPost(),
-            ]
-        );
+        return $this->getList($username, 'findPublierUsername');
     }
 
     protected function getCaseRegex(): array
@@ -167,5 +106,34 @@ class PostTemplatePage extends TemplatePageLib
             '/libelle\/(.*)/'  => 'libelle',
             '/\/(.*)/'         => 'show',
         ];
+    }
+
+    private function getList($code, $method)
+    {
+        $pagination = $this->paginator->paginate(
+            $this->getRepository(Post::class)->{$method}($code),
+            $this->request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->renderData(
+            'front/posts/list.html.twig',
+            ['pagination' => $pagination]
+        );
+    }
+
+    private function renderData($twig, $data)
+    {
+        return $this->render(
+            $twig,
+            array_merge(
+                $data,
+                [
+                    'archives'   => $this->getRepository(Post::class)->findDateArchive(),
+                    'libelles'   => $this->getRepository(Libelle::class)->findByPost(),
+                    'categories' => $this->getRepository(Category::class)->findByPost(),
+                ]
+            )
+        );
     }
 }

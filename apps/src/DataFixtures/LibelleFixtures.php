@@ -17,11 +17,6 @@ class LibelleFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $this->add($manager);
-    }
-
-    protected function add(ObjectManager $manager): void
-    {
         unset($manager);
         $faker = $this->setFaker();
         for ($index = 0; $index < self::NUMBER_LIBELLE; ++$index) {

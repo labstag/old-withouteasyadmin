@@ -27,7 +27,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         unset($manager);
         $faker = $this->setFaker();
         // @var resource $finfo
-        $statesTab = $this->getStates();
+        $statesTab = $this->getStatesData();
         for ($index = 0; $index < self::NUMBER_HISTORY; ++$index) {
             $stateId = array_rand($statesTab);
             $states  = $statesTab[$stateId];
@@ -64,31 +64,5 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         $this->position[$indexHistory][] = $chapter;
         $this->chapterRH->handle($oldChapter, $chapter);
         $this->chapterRH->changeWorkflowState($chapter, $states);
-    }
-
-    protected function getStates()
-    {
-        return [
-            ['submit'],
-            [
-                'submit',
-                'relire',
-            ],
-            [
-                'submit',
-                'relire',
-                'corriger',
-            ],
-            [
-                'submit',
-                'relire',
-                'publier',
-            ],
-            [
-                'submit',
-                'relire',
-                'rejeter',
-            ],
-        ];
     }
 }

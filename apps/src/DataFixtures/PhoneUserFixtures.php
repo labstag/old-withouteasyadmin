@@ -23,7 +23,7 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
     {
         unset($manager);
         $faker     = $this->setFaker();
-        $statesTab = $this->getStates();
+        $statesTab = $this->getStatePhone();
         $users     = $this->installService->getData('user');
         for ($index = 0; $index < self::NUMBER_PHONE; ++$index) {
             $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
@@ -51,7 +51,7 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
         $this->phoneUserRH->changeWorkflowState($phone, $states);
     }
 
-    protected function getStates()
+    protected function getStatePhone()
     {
         return [
             ['submit'],

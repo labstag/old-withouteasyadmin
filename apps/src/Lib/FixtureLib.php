@@ -114,12 +114,52 @@ abstract class FixtureLib extends Fixture
         return null;
     }
 
+    protected function getStatesData()
+    {
+        return [
+            ['submit'],
+            [
+                'submit',
+                'relire',
+            ],
+            [
+                'submit',
+                'relire',
+                'corriger',
+            ],
+            [
+                'submit',
+                'relire',
+                'publier',
+            ],
+            [
+                'submit',
+                'relire',
+                'rejeter',
+            ],
+        ];
+    }
+
     protected function setFaker()
     {
         $faker = Factory::create('fr_FR');
         $faker->addProvider(new PicsumPhotosProvider($faker));
 
         return $faker;
+    }
+
+    protected function setLibelles($faker, $entity)
+    {
+        if (1 != random_int(0, 1)) {
+            return;
+        }
+
+        $nbr = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
+        for ($i = 0; $i < $nbr; ++$i) {
+            $indexLibelle = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
+            $libelle      = $this->getReference('libelle_'.$indexLibelle);
+            $entity->addLibelle($libelle);
+        }
     }
 
     protected function upload($entity, Generator $faker)

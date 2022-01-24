@@ -149,39 +149,28 @@ class GroupeController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('groupuser.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('groupuser.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminGroupuserEdit(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('groupuser.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('groupuser.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_edit',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminGroupuserGuard(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('groupuser.guard', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_guard',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('groupuser.guard', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_guard',
             ],
         ];
     }
@@ -190,44 +179,32 @@ class GroupeController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('groupuser.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('groupuser.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminGroupuserPreview(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_trash',
             ],
             [
-                'title'        => $this->translator->trans('groupuser.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('groupuser.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminGroupuserShow(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('groupuser.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('groupuser.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_show',
             ],
         ];
     }
@@ -236,9 +213,8 @@ class GroupeController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_trash',
             ],
         ];
     }

@@ -96,24 +96,18 @@ class PostController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('post.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('post.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminPostEdit(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('post.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('post.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_edit',
             ],
         ];
     }
@@ -122,44 +116,32 @@ class PostController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('post.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('post.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminPostPreview(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_trash',
             ],
             [
-                'title'        => $this->translator->trans('post.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('post.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminPostShow(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('post.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('post.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_show',
             ],
         ];
     }
@@ -168,9 +150,8 @@ class PostController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_trash',
             ],
         ];
     }

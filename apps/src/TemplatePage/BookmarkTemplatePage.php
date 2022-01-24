@@ -13,20 +13,7 @@ class BookmarkTemplatePage extends TemplatePageLib
 {
     public function category(string $code)
     {
-        $pagination = $this->paginator->paginate(
-            $this->getRepository(Bookmark::class)->findPublierCategory($code),
-            $this->request->query->getInt('page', 1),
-            10
-        );
-
-        return $this->render(
-            'front/bookmarks/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'libelles'   => $this->getRepository(Libelle::class)->findByBookmark(),
-                'categories' => $this->getRepository(Category::class)->findByBookmark(),
-            ]
-        );
+        return $this->getList($code, 'findPublierCategory');
     }
 
     public function generateUrl(Page $page, string $route, array $params, bool $relative): string
@@ -100,20 +87,7 @@ class BookmarkTemplatePage extends TemplatePageLib
 
     public function libelle(string $code)
     {
-        $pagination = $this->paginator->paginate(
-            $this->getRepository(Bookmark::class)->findPublierLibelle($code),
-            $this->request->query->getInt('page', 1),
-            10
-        );
-
-        return $this->render(
-            'front/bookmarks/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'libelles'   => $this->getRepository(Libelle::class)->findByBookmark(),
-                'categories' => $this->getRepository(Category::class)->findByBookmark(),
-            ]
-        );
+        return $this->getList($code, 'findPublierLibelle');
     }
 
     public function show(Bookmark $bookmark)
@@ -128,5 +102,23 @@ class BookmarkTemplatePage extends TemplatePageLib
             '/libelle\/(.*)/'  => 'libelle',
             '/\/(.*)/'         => 'bookmark',
         ];
+    }
+
+    private function getList($code, $method)
+    {
+        $pagination = $this->paginator->paginate(
+            $this->getRepository(Bookmark::class)->{$method}($code),
+            $this->request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render(
+            'front/bookmarks/list.html.twig',
+            [
+                'pagination' => $pagination,
+                'libelles'   => $this->getRepository(Libelle::class)->findByBookmark(),
+                'categories' => $this->getRepository(Category::class)->findByBookmark(),
+            ]
+        );
     }
 }

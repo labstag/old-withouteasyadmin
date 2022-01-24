@@ -24,7 +24,7 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         $users = $this->userRepository->findAll();
         $faker = $this->setFaker();
         // @var resource $finfo
-        $statesTab = $this->getStates();
+        $statesTab = $this->getStatesData();
         for ($index = 0; $index < self::NUMBER_HISTORY; ++$index) {
             $stateId = array_rand($statesTab);
             $states  = $statesTab[$stateId];
@@ -55,31 +55,5 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         $this->addReference('history_'.$index, $history);
         $this->historyRH->handle($oldHistory, $history);
         $this->historyRH->changeWorkflowState($history, $states);
-    }
-
-    protected function getStates()
-    {
-        return [
-            ['submit'],
-            [
-                'submit',
-                'relire',
-            ],
-            [
-                'submit',
-                'relire',
-                'corriger',
-            ],
-            [
-                'submit',
-                'relire',
-                'publier',
-            ],
-            [
-                'submit',
-                'relire',
-                'rejeter',
-            ],
-        ];
     }
 }

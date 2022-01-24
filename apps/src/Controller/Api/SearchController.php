@@ -22,25 +22,7 @@ class SearchController extends ApiControllerLib
      */
     public function category(Request $request): Response
     {
-        $get    = $request->query->all();
-        $return = ['isvalid' => false];
-        if (!array_key_exists('name', $get)) {
-            return $this->json($return);
-        }
-
-        $data   = $this->getRepository(Category::class)->findName($get['name']);
-        $result = [
-            'results' => [],
-        ];
-
-        foreach ($data as $user) {
-            $result['results'][] = [
-                'id'   => $user->getId(),
-                'text' => (string) $user,
-            ];
-        }
-
-        return $this->json($result);
+        return $this->showData($request, Category::class, 'findName');
     }
 
     /**
@@ -48,25 +30,7 @@ class SearchController extends ApiControllerLib
      */
     public function groupe(Request $request): Response
     {
-        $get    = $request->query->all();
-        $return = ['isvalid' => false];
-        if (!array_key_exists('name', $get)) {
-            return $this->json($return);
-        }
-
-        $data   = $this->getRepository(Groupe::class)->findName($get['name']);
-        $result = [
-            'results' => [],
-        ];
-
-        foreach ($data as $user) {
-            $result['results'][] = [
-                'id'   => $user->getId(),
-                'text' => (string) $user,
-            ];
-        }
-
-        return $this->json($result);
+        return $this->showData($request, Groupe::class, 'findName');
     }
 
     /**
@@ -74,25 +38,7 @@ class SearchController extends ApiControllerLib
      */
     public function libelle(Request $request): JsonResponse
     {
-        $get    = $request->query->all();
-        $return = ['isvalid' => false];
-        if (!array_key_exists('name', $get)) {
-            return $this->json($return);
-        }
-
-        $data   = $this->getRepository(Libelle::class)->findName($get['name']);
-        $result = [
-            'results' => [],
-        ];
-
-        foreach ($data as $user) {
-            $result['results'][] = [
-                'id'   => $user->getId(),
-                'text' => (string) $user,
-            ];
-        }
-
-        return $this->json($result);
+        return $this->showData($request, Libelle::class, 'findName');
     }
 
     /**
@@ -100,13 +46,18 @@ class SearchController extends ApiControllerLib
      */
     public function user(Request $request): Response
     {
+        return $this->showData($request, User::class, 'findUserName');
+    }
+
+    private function showData($request, $entity, $method)
+    {
         $get    = $request->query->all();
         $return = ['isvalid' => false];
         if (!array_key_exists('name', $get)) {
             return $this->json($return);
         }
 
-        $data   = $this->getRepository(User::class)->findUserName($get['name']);
+        $data   = $this->getRepository($entity)->{$method}($get['name']);
         $result = [
             'results' => [],
         ];

@@ -92,24 +92,18 @@ class LayoutController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('layout.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('layout.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminTemplaceEdit(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('layout.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('layout.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_edit',
             ],
         ];
     }
@@ -118,44 +112,32 @@ class LayoutController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('layout.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('layout.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminTemplacePreview(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('layout.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('layout.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_trash',
             ],
             [
-                'title'        => $this->translator->trans('layout.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('layout.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminTemplaceShow(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('layout.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('layout.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_show',
             ],
         ];
     }
@@ -164,9 +146,8 @@ class LayoutController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('layout.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('layout.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_trash',
             ],
         ];
     }

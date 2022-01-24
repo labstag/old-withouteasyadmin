@@ -22,14 +22,9 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $this->add($manager);
-    }
-
-    protected function add(ObjectManager $manager): void
-    {
         unset($manager);
         $faker     = $this->setFaker();
-        $statesTab = $this->getStates();
+        $statesTab = $this->getStatesData();
         for ($index = 0; $index < self::NUMBER_POST; ++$index) {
             $stateId = array_rand($statesTab);
             $states  = $statesTab[$stateId];
@@ -56,15 +51,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $user      = $this->getReference('user_'.$indexUser);
         $post->setRefuser($user);
         $post->setPublished($faker->unique()->dateTime('now'));
-        if (1 == random_int(0, 1)) {
-            $nbr = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
-            for ($i = 0; $i < $nbr; ++$i) {
-                $indexLibelle = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
-                $libelle      = $this->getReference('libelle_'.$indexLibelle);
-                $post->addLibelle($libelle);
-            }
-        }
-
+        $this->setLibelles($faker, $post);
         $indexLibelle = $faker->numberBetween(0, self::NUMBER_CATEGORY - 1);
         $category     = $this->getReference('category_'.$indexLibelle);
         $post->setRefcategory($category);
@@ -73,31 +60,5 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $this->addReference('post_'.$index, $post);
         $this->postRH->handle($oldPost, $post);
         $this->postRH->changeWorkflowState($post, $states);
-    }
-
-    protected function getStates()
-    {
-        return [
-            ['submit'],
-            [
-                'submit',
-                'relire',
-            ],
-            [
-                'submit',
-                'relire',
-                'corriger',
-            ],
-            [
-                'submit',
-                'relire',
-                'publier',
-            ],
-            [
-                'submit',
-                'relire',
-                'rejete',
-            ],
-        ];
     }
 }

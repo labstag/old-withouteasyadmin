@@ -28,26 +28,12 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowGroupeRequestHandler $workflowGroupeRH
     )
     {
-        $data      = [
-            'delete' => 0,
-            'add'    => 0,
-            'error'  => '',
-        ];
-        $state     = $request->request->all('state');
-        $workflows = $this->getRepository(Workflow::class)->findAll();
-        // @var EntityRoute $route
-        foreach ($workflows as $workflow) {
-            $data = $this->setWorkflowGroupe(
-                $data,
-                $this->getRepository(WorkflowGroupe::class),
-                $group,
-                $workflow,
-                $state,
-                $workflowGroupeRH
-            );
-        }
-
-        return new JsonResponse($data);
+        return $this->setWorkflow(
+            $request,
+            $group,
+            WorkflowGroupe::class,
+            $workflowGroupeRH
+        );
     }
 
     /**
@@ -186,26 +172,12 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowUserRequestHandler $workflowUserRH
     )
     {
-        $data      = [
-            'delete' => 0,
-            'add'    => 0,
-            'error'  => '',
-        ];
-        $state     = $request->request->all('state');
-        $workflows = $this->getRepository(Workflow::class)->findAll();
-        // @var WorkflowUser $route
-        foreach ($workflows as $workflow) {
-            $data = $this->setWorkflowUser(
-                $data,
-                $this->getRepository(WorkflowUser::class),
-                $user,
-                $workflow,
-                $state,
-                $workflowUserRH
-            );
-        }
-
-        return new JsonResponse($data);
+        return $this->setWorkflow(
+            $request,
+            $user,
+            WorkflowUser::class,
+            $workflowUserRH
+        );
     }
 
     private function getResultWorkflow($request)
@@ -218,6 +190,35 @@ class GuardWorkflowController extends ApiControllerLib
         }
 
         return $this->getRepository(WorkflowGroupe::class)->findEnable();
+    }
+
+    private function setWorkflow(
+        $request,
+        $entity,
+        $classEntity,
+        $requestHandler
+    )
+    {
+        $data      = [
+            'delete' => 0,
+            'add'    => 0,
+            'error'  => '',
+        ];
+        $state     = $request->request->all('state');
+        $workflows = $this->getRepository(Workflow::class)->findAll();
+        // @var WorkflowUser $route
+        foreach ($workflows as $workflow) {
+            $data = $this->setWorkflowUser(
+                $data,
+                $this->getRepository($classEntity),
+                $entity,
+                $workflow,
+                $state,
+                $requestHandler
+            );
+        }
+
+        return new JsonResponse($data);
     }
 
     private function setWorkflowGroupe(

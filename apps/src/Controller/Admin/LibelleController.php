@@ -95,24 +95,18 @@ class LibelleController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('libelle.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_libelle_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('libelle.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_libelle_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminlibelleEdit(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('libelle.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_libelle_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('libelle.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_libelle_edit',
             ],
         ];
     }
@@ -121,44 +115,32 @@ class LibelleController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('libelle.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_libelle_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('libelle.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_libelle_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminlibellePreview(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('libelle.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_libelle_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('libelle.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_libelle_trash',
             ],
             [
-                'title'        => $this->translator->trans('libelle.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_libelle_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('libelle.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_libelle_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminlibelleShow(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('libelle.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_libelle_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('libelle.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_libelle_show',
             ],
         ];
     }
@@ -167,9 +149,8 @@ class LibelleController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('libelle.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_libelle_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('libelle.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_libelle_trash',
             ],
         ];
     }

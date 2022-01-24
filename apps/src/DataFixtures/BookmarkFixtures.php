@@ -24,7 +24,7 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
     {
         unset($manager);
         $faker     = $this->setFaker();
-        $statesTab = $this->getStates();
+        $statesTab = $this->getStatesData();
         for ($index = 0; $index < self::NUMBER_BOOKMARK; ++$index) {
             $stateId = array_rand($statesTab);
             $states  = $statesTab[$stateId];
@@ -39,15 +39,7 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
     {
         $bookmark = new Bookmark();
         $old      = clone $bookmark;
-        if (1 == random_int(0, 1)) {
-            $nbr = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
-            for ($i = 0; $i < $nbr; ++$i) {
-                $indexLibelle = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
-                $libelle      = $this->getReference('libelle_'.$indexLibelle);
-                $bookmark->addLibelle($libelle);
-            }
-        }
-
+        $this->setLibelles($faker, $bookmark);
         $users     = $this->installService->getData('user');
         $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
         $user      = $this->getReference('user_'.$indexUser);
@@ -66,31 +58,5 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
         $this->upload($bookmark, $faker);
         $this->bookmarkRH->handle($old, $bookmark);
         $this->bookmarkRH->changeWorkflowState($bookmark, $states);
-    }
-
-    protected function getStates()
-    {
-        return [
-            ['submit'],
-            [
-                'submit',
-                'relire',
-            ],
-            [
-                'submit',
-                'relire',
-                'corriger',
-            ],
-            [
-                'submit',
-                'relire',
-                'publier',
-            ],
-            [
-                'submit',
-                'relire',
-                'rejete',
-            ],
-        ];
     }
 }

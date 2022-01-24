@@ -183,39 +183,28 @@ class HistoryController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('history.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('history.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminHistoryEdit(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('history.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('history.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_edit',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminHistoryMove(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('history.move', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_move',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('history.move', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_move',
             ],
         ];
     }
@@ -224,44 +213,32 @@ class HistoryController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('history.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('history.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminHistoryPreview(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_trash',
             ],
             [
-                'title'        => $this->translator->trans('history.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('history.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminHistoryShow(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('history.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('history.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_show',
             ],
         ];
     }
@@ -270,9 +247,8 @@ class HistoryController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_trash',
             ],
         ];
     }

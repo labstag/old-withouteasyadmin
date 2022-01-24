@@ -43,9 +43,8 @@ class AttachmentController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_attachment_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_attachment_index',
             ],
         ];
     }

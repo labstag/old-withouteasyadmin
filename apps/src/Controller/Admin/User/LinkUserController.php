@@ -92,24 +92,18 @@ class LinkUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('linkuser.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('linkuser.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminLinkuserEdit(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('linkuser.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('linkuser.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_edit',
             ],
         ];
     }
@@ -118,44 +112,32 @@ class LinkUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('linkuser.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('linkuser.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminLinkuserPreview(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_trash',
             ],
             [
-                'title'        => $this->translator->trans('linkuser.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('linkuser.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminLinkuserShow(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('linkuser.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('linkuser.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_show',
             ],
         ];
     }
@@ -164,9 +146,8 @@ class LinkUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_trash',
             ],
         ];
     }

@@ -228,9 +228,8 @@ class MenuController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('menu.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_menu_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('menu.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_menu_index',
             ],
         ];
     }
@@ -239,39 +238,28 @@ class MenuController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('menu.add', [], 'admin.breadcrumb'),
-                'route'        => 'admin_menu_add',
-                'route_params' => [],
+                'title' => $this->translator->trans('menu.add', [], 'admin.breadcrumb'),
+                'route' => 'admin_menu_add',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminMenuDivider(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('menu.divider', [], 'admin.breadcrumb'),
-                'route'        => 'admin_menu_divider',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('menu.divider', [], 'admin.breadcrumb'),
+                'route' => 'admin_menu_divider',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminMenuMove(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('menu.move', [], 'admin.breadcrumb'),
-                'route'        => 'admin_menu_move',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('menu.move', [], 'admin.breadcrumb'),
+                'route' => 'admin_menu_move',
             ],
         ];
     }
@@ -280,9 +268,8 @@ class MenuController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('menu.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_menu_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('menu.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_menu_new',
             ],
         ];
     }
@@ -291,24 +278,18 @@ class MenuController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('menu.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_menu_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('menu.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_menu_trash',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminMenuUpdate(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('menu.update', [], 'admin.breadcrumb'),
-                'route'        => 'admin_menu_update',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('menu.update', [], 'admin.breadcrumb'),
+                'route' => 'admin_menu_update',
             ],
         ];
     }

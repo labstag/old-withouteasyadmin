@@ -41,9 +41,8 @@ class GuardController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('guard.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_guard_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('guard.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_guard_index',
             ],
         ];
     }

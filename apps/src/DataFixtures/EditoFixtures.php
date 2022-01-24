@@ -25,7 +25,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         $users = $this->userRepository->findAll();
         $faker = $this->setFaker();
         // @var resource $finfo
-        $statesTab = $this->getStates();
+        $statesTab = $this->getStatesData();
         for ($index = 0; $index < self::NUMBER_EDITO; ++$index) {
             $stateId = array_rand($statesTab);
             $states  = $statesTab[$stateId];
@@ -58,31 +58,5 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         $this->upload($edito, $faker);
         $this->editoRH->handle($old, $edito);
         $this->editoRH->changeWorkflowState($edito, $states);
-    }
-
-    protected function getStates()
-    {
-        return [
-            ['submit'],
-            [
-                'submit',
-                'relire',
-            ],
-            [
-                'submit',
-                'relire',
-                'corriger',
-            ],
-            [
-                'submit',
-                'relire',
-                'publier',
-            ],
-            [
-                'submit',
-                'relire',
-                'rejeter',
-            ],
-        ];
     }
 }

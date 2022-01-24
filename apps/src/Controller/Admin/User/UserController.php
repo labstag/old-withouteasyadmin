@@ -152,39 +152,28 @@ class UserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminUserEdit(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('user.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('user.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_edit',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminUserGuard(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('user.guard', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_guard',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('user.guard', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_guard',
             ],
         ];
     }
@@ -193,44 +182,32 @@ class UserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('user.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('user.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminUserPreview(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_trash',
             ],
             [
-                'title'        => $this->translator->trans('user.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('user.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminUserShow(): array
     {
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('user.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('user.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_show',
             ],
         ];
     }
@@ -239,9 +216,8 @@ class UserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_trash',
             ],
         ];
     }
