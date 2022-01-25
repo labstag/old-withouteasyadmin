@@ -221,6 +221,8 @@ else ifeq ($(COMMANDS_ARGS),phploc)
 	$(PHP_EXEC) phploc.phar src
 else ifeq ($(COMMANDS_ARGS),phpdoc)
 	$(PHP_EXEC) phpDocumentor.phar -d src -t public/docs
+else ifeq ($(COMMANDS_ARGS),rector)
+	$(PHP_EXEC) bin/rector process src
 else ifeq ($(COMMANDS_ARGS),phpmd)
 	$(PHP_EXEC) -d error_reporting=24575 phpmd.phar src,features/bootstrap ansi phpmd.xml
 else ifeq ($(COMMANDS_ARGS),phpmnd)
@@ -238,6 +240,7 @@ else
 	$(call array_arguments, \
 		["all"]="## Launch all linter" \
 		["compo"]="composer" \
+		["rector"]="rector" \
 		["readme"]="linter README.md" \
 		["phpaudit"]="AUDIT PHP" \
 		["phpdoc"]="php doc" \
