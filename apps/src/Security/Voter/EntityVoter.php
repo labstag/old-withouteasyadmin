@@ -8,12 +8,15 @@ use Labstag\Entity\Bookmark;
 use Labstag\Entity\Category;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Configuration;
+use Labstag\Entity\Edito;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\GeoCode;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\LinkUser;
+use Labstag\Entity\Memo;
 use Labstag\Entity\Menu;
 use Labstag\Entity\Page;
 use Labstag\Entity\PhoneUser;
@@ -26,6 +29,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class EntityVoter extends Voter
 {
+    public const NBR_CHAPTER = 2;
+
     protected function supports($attribute, $subject): bool
     {
         unset($attribute);
@@ -36,12 +41,15 @@ class EntityVoter extends Voter
             Category::class,
             Chapter::class,
             Configuration::class,
+            Edito::class,
             EmailUser::class,
             GeoCode::class,
             Groupe::class,
+            History::class,
             Layout::class,
             Libelle::class,
             LinkUser::class,
+            Memo::class,
             Menu::class,
             Page::class,
             PhoneUser::class,
@@ -64,8 +72,51 @@ class EntityVoter extends Voter
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        unset($attribute, $subject, $token);
+        $state = true;
+        if ($subject instanceof Edito) {
+            
+            $state = match ($attribute) {
+                'edit' => $this->canEditEdito($subject, $token),
+                default => true,
+            };
+        }elseif($subject instanceof History) {
+            
+            $state = match ($attribute) {
+                'move' => $this->canMoveHistory($subject, $token),
+                default => true,
+            };
+        }elseif($subject instanceof Memo) {
+            
+            $state = match ($attribute) {
+                'edit' => $this->canEditMemo($subject, $token),
+                default => true,
+            };
+        }
 
-        return true;
+        return $state;
+    }
+
+    protected function canEditMemo(Memo $entity, TokenInterface $token): bool
+    {
+        unset($token);
+        $state = $entity->getState();
+
+        return !(in_array($state, ['publie', 'rejete']));
+    }
+
+    protected function canMoveHistory(History $entity, TokenInterface $token): bool
+    {
+        unset($token);
+        $chapters = $entity->getChapters();
+
+        return count($chapters) >= self::NBR_CHAPTER;
+    }
+
+    protected function canEditEdito(Edito $entity, TokenInterface $token): bool
+    {
+        unset($token);
+        $state = $entity->getState();
+
+        return !(in_array($state, ['publie', 'rejete']));
     }
 }
