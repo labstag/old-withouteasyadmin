@@ -59,21 +59,6 @@ class HistoryType extends AbstractTypeLib
         );
     }
 
-    protected function setMeta($builder)
-    {
-        $meta = [
-            'metaDescription' => [
-                'label' => $this->translator->trans('history.metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('history.metaDescription.help', [], 'admin.form'),
-            ],
-            'metaKeywords'    => [
-                'label' => $this->translator->trans('history.metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('history.metaKeywords.help', [], 'admin.form'),
-            ],
-        ];
-        $this->setMetas($builder, $meta);
-    }
-
     protected function setTextType($builder)
     {
         $texttype = [

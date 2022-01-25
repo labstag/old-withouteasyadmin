@@ -28,14 +28,7 @@ class PostType extends AbstractTypeLib
     {
         $this->setTextType($builder);
         $this->addPublished($builder);
-        $builder->add(
-            'content',
-            WysiwygType::class,
-            [
-                'label' => $this->translator->trans('post.content.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('post.content.help', [], 'admin.form'),
-            ]
-        );
+        $this->setContent($builder);
         $this->setMeta($builder);
         $builder->add(
             'file',
@@ -108,21 +101,6 @@ class PostType extends AbstractTypeLib
                 'data_class' => Post::class,
             ]
         );
-    }
-
-    protected function setMeta($builder)
-    {
-        $meta = [
-            'metaDescription' => [
-                'label' => $this->translator->trans('post.metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('post.metaDescription.help', [], 'admin.form'),
-            ],
-            'metaKeywords'    => [
-                'label' => $this->translator->trans('post.metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('post.metaKeywords.help', [], 'admin.form'),
-            ],
-        ];
-        $this->setMetas($builder, $meta);
     }
 
     protected function setTextType($builder)

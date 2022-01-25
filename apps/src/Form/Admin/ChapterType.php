@@ -22,14 +22,7 @@ class ChapterType extends AbstractTypeLib
     {
         $this->setTextType($builder);
         $this->addPublished($builder);
-        $builder->add(
-            'content',
-            WysiwygType::class,
-            [
-                'label' => $this->translator->trans('chapter.content.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('chapter.content.help', [], 'admin.form'),
-            ]
-        );
+        $this->setContent($builder);
         $this->setMeta($builder);
         unset($options);
     }
@@ -41,21 +34,6 @@ class ChapterType extends AbstractTypeLib
                 'data_class' => Chapter::class,
             ]
         );
-    }
-
-    protected function setMeta($builder)
-    {
-        $meta = [
-            'metaDescription' => [
-                'label' => $this->translator->trans('chapter.metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('chapter.metaDescription.help', [], 'admin.form'),
-            ],
-            'metaKeywords'    => [
-                'label' => $this->translator->trans('chapter.metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('chapter.metaKeywords.help', [], 'admin.form'),
-            ],
-        ];
-        $this->setMetas($builder, $meta);
     }
 
     protected function setTextType($builder)

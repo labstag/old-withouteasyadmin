@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use Labstag\FormType\MinMaxCollectionType;
+use Labstag\FormType\WysiwygType;
 use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,6 +20,36 @@ abstract class AbstractTypeLib extends AbstractType
         protected TemplatePageService $templatePageService
     )
     {
+    }
+
+    protected function setMeta($builder)
+    {
+        $meta = [
+            'metaDescription' => [
+                'label' => $this->translator->trans('metaDescription.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('metaDescription.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('metaDescription.placeholder', [], 'admin.form'),
+                ],
+            ],
+            'metaKeywords'    => [
+                'label' => $this->translator->trans('metaKeywords.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('metaKeywords.help', [], 'admin.form'),
+            ],
+        ];
+        $this->setMetas($builder, $meta);
+    }
+
+    protected function setContent($builder)
+    {
+        $builder->add(
+            'content',
+            WysiwygType::class,
+            [
+                'label' => $this->translator->trans('content.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('content.help', [], 'admin.form'),
+            ]
+        );
     }
 
     protected function addPublished($builder)

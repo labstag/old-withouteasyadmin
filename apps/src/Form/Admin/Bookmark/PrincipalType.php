@@ -40,14 +40,7 @@ class PrincipalType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'content',
-            WysiwygType::class,
-            [
-                'label' => $this->translator->trans('bookmark.content.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('bookmark.content.help', [], 'admin.form'),
-            ]
-        );
+        $this->setContent($builder);
         $this->setMeta($builder);
         $builder->add(
             'file',
@@ -116,21 +109,6 @@ class PrincipalType extends AbstractTypeLib
                 'data_class' => Bookmark::class,
             ]
         );
-    }
-
-    protected function setMeta($builder)
-    {
-        $meta = [
-            'metaDescription' => [
-                'label' => $this->translator->trans('bookmark.metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('bookmark.metaDescription.help', [], 'admin.form'),
-            ],
-            'metaKeywords'    => [
-                'label' => $this->translator->trans('bookmark.metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('bookmark.metaKeywords.help', [], 'admin.form'),
-            ],
-        ];
-        $this->setMetas($builder, $meta);
     }
 
     protected function setTextType($builder)

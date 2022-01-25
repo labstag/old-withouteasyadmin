@@ -35,14 +35,7 @@ class MemoType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'content',
-            WysiwygType::class,
-            [
-                'label' => $this->translator->trans('memo.content.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('memo.content.help', [], 'admin.form'),
-            ]
-        );
+        $this->setContent($builder);
         $builder->add(
             'date_start',
             DateTimeType::class,

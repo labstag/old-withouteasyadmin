@@ -35,38 +35,8 @@ class EditoType extends AbstractTypeLib
             ]
         );
         $this->addPublished($builder);
-        $builder->add(
-            'content',
-            WysiwygType::class,
-            [
-                'label' => $this->translator->trans('edito.content.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('edito.content.help', [], 'admin.form'),
-            ]
-        );
-        $builder->add(
-            'metaDescription',
-            TextType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('edito.metaDescription.label', [], 'admin.form'),
-                'help'     => $this->translator->trans('edito.metaDescription.help', [], 'admin.form'),
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('edito.metaDescription.placeholder', [], 'admin.form'),
-                ],
-            ]
-        );
-        $builder->add(
-            'metaKeywords',
-            TextType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('edito.metaKeywords.label', [], 'admin.form'),
-                'help'     => $this->translator->trans('edito.metaKeywords.help', [], 'admin.form'),
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('edito.metaKeywords.placeholder', [], 'admin.form'),
-                ],
-            ]
-        );
+        $this->setContent($builder);
+        $this->setMeta($builder);
         $builder->add(
             'file',
             FileType::class,
