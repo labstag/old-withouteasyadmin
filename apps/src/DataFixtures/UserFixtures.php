@@ -36,16 +36,8 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $faker
     ): void
     {
-        $user = new User();
-        $old  = clone $user;
-
-        $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
-        $user->setUsername($dataUser['username']);
-        $user->setPlainPassword($dataUser['password']);
-        $user->setEmail($dataUser['email']);
+        $user = $this->userService->create($groupes, $dataUser);
         $this->upload($user, $faker);
         $this->addReference('user_'.$index, $user);
-        $this->userRH->handle($old, $user);
-        $this->userRH->changeWorkflowState($user, $dataUser['state']);
     }
 }

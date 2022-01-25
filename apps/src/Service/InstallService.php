@@ -23,6 +23,7 @@ use Twig\Environment;
 class InstallService
 {
     public function __construct(
+        protected UserService $userService,
         protected PageRequestHandler $pageRH,
         protected MenuRequestHandler $menuRH,
         protected GroupeRequestHandler $groupeRH,
@@ -243,31 +244,7 @@ class InstallService
             return;
         }
 
-        $user = new User();
-        $old  = clone $user;
-
-        $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
-        $user->setUsername($dataUser['username']);
-        $user->setPlainPassword($dataUser['password']);
-        $user->setEmail($dataUser['email']);
-        $this->userRH->handle($old, $user);
-        $this->userRH->changeWorkflowState($user, $dataUser['state']);
-    }
-
-    protected function getRefgroupe(array $groupes, string $code): ?Groupe
-    {
-        $return = null;
-        foreach ($groupes as $groupe) {
-            if ($groupe->getCode() != $code) {
-                continue;
-            }
-
-            $return = $groupe;
-
-            break;
-        }
-
-        return $return;
+        $this->userService->create($groupes, $dataUser);
     }
 
     protected function getRepository(string $entity)

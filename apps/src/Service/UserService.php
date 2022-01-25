@@ -3,6 +3,7 @@
 namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\RequestHandler\OauthConnectUserRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
@@ -23,6 +24,37 @@ class UserService
         protected TranslatorInterface $translator
     )
     {
+    }
+
+    public function create($groupes, $dataUser)
+    {
+        $user = new User();
+        $old  = clone $user;
+
+        $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
+        $user->setUsername($dataUser['username']);
+        $user->setPlainPassword($dataUser['password']);
+        $user->setEmail($dataUser['email']);
+        $this->userRH->handle($old, $user);
+        $this->userRH->changeWorkflowState($user, $dataUser['state']);
+
+        return $user;
+    }
+
+    protected function getRefgroupe(array $groupes, string $code): ?Groupe
+    {
+        $return = null;
+        foreach ($groupes as $groupe) {
+            if ($groupe->getCode() != $code) {
+                continue;
+            }
+
+            $return = $groupe;
+
+            break;
+        }
+
+        return $return;
     }
 
     public function postLostPassword(array $post): void

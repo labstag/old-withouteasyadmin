@@ -36,6 +36,7 @@ use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\ErrorService;
 use Labstag\Service\GuardService;
 use Labstag\Service\InstallService;
+use Labstag\Service\UserService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -73,6 +74,7 @@ abstract class FixtureLib extends Fixture
     protected const NUMBER_TEMPLATES = 10;
 
     public function __construct(
+        protected UserService $userService,
         protected ErrorService $errorService,
         protected LoggerInterface $logger,
         protected ContainerBagInterface $containerBag,
