@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -53,5 +54,29 @@ abstract class SearchAbstractTypeLib extends AbstractType
             ]
         );
         unset($options);
+    }
+
+    protected function showState(
+        $builder,
+        $entityclass,
+        $label,
+        $help,
+        $placeholder
+    )
+    {
+        $workflow   = $this->workflows->get($entityclass);
+        $definition = $workflow->getDefinition();
+        $places     = $definition->getPlaces();
+        $builder->add(
+            'etape',
+            ChoiceType::class,
+            [
+                'required' => false,
+                'label'    => $label,
+                'help'     => $help,
+                'choices'  => $places,
+                'attr'     => ['placeholder' => $placeholder],
+            ]
+        );
     }
 }

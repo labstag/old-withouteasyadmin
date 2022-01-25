@@ -40,21 +40,12 @@ class EmailUserType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $workflow   = $this->workflows->get(new EmailUser());
-        $definition = $workflow->getDefinition();
-        $places     = $definition->getPlaces();
-        $builder->add(
-            'etape',
-            ChoiceType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('emailuser.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('emailuser.etape.help', [], 'admin.search.form'),
-                'choices'  => $places,
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('emailuser.etape.placeholder', [], 'admin.search.form'),
-                ],
-            ]
+        $this->showState(
+            $builder,
+            new EmailUser(),
+            $this->translator->trans('emailuser.etape.label', [], 'admin.search.form'),
+            $this->translator->trans('emailuser.etape.help', [], 'admin.search.form'),
+            $this->translator->trans('emailuser.etape.placeholder', [], 'admin.search.form')
         );
         parent::buildForm($builder, $options);
     }

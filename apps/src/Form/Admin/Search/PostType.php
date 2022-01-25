@@ -76,21 +76,12 @@ class PostType extends SearchAbstractTypeLib
                 'help'     => $this->translator->trans('post.published.help', [], 'admin.search.form'),
             ]
         );
-        $workflow   = $this->workflows->get(new Post());
-        $definition = $workflow->getDefinition();
-        $places     = $definition->getPlaces();
-        $builder->add(
-            'etape',
-            ChoiceType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('post.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('post.etape.help', [], 'admin.search.form'),
-                'choices'  => $places,
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('post.etape.placeholder', [], 'admin.search.form'),
-                ],
-            ]
+        $this->showState(
+            $builder,
+            new Post(),
+            $this->translator->trans('post.etape.label', [], 'admin.search.form'),
+            $this->translator->trans('post.etape.help', [], 'admin.search.form'),
+            $this->translator->trans('post.etape.placeholder', [], 'admin.search.form')
         );
         parent::buildForm($builder, $options);
     }

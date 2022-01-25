@@ -53,21 +53,12 @@ class PhoneUserType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $workflow   = $this->workflows->get(new PhoneUser());
-        $definition = $workflow->getDefinition();
-        $places     = $definition->getPlaces();
-        $builder->add(
-            'etape',
-            ChoiceType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('linkuser.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('linkuser.etape.help', [], 'admin.search.form'),
-                'choices'  => $places,
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('linkuser.etape.placeholder', [], 'admin.search.form'),
-                ],
-            ]
+        $this->showState(
+            $builder,
+            new PhoneUser(),
+            $this->translator->trans('phoneuser.etape.label', [], 'admin.search.form'),
+            $this->translator->trans('phoneuser.etape.help', [], 'admin.search.form'),
+            $this->translator->trans('phoneuser.etape.placeholder', [], 'admin.search.form')
         );
         parent::buildForm($builder, $options);
     }

@@ -74,25 +74,12 @@ class MemoType extends SearchAbstractTypeLib
                 'help'     => $this->translator->trans('memo.date_end.help', [], 'admin.search.form'),
             ]
         );
-        $workflow   = $this->workflows->get(new Memo());
-        $definition = $workflow->getDefinition();
-        $places     = $definition->getPlaces();
-        $builder->add(
-            'etape',
-            ChoiceType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('memo.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('memo.etape.help', [], 'admin.search.form'),
-                'choices'  => $places,
-                'attr'     => [
-                    'placeholder' => $this->translator->trans(
-                        'memo.etape.placeholder',
-                        [],
-                        'admin.search.form'
-                    ),
-                ],
-            ]
+        $this->showState(
+            $builder,
+            new Memo(),
+            $this->translator->trans('memo.etape.label', [], 'admin.search.form'),
+            $this->translator->trans('memo.etape.help', [], 'admin.search.form'),
+            $this->translator->trans('memo.etape.placeholder', [], 'admin.search.form')
         );
         parent::buildForm($builder, $options);
     }

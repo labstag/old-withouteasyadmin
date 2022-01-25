@@ -69,21 +69,12 @@ class BookmarkType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $workflow   = $this->workflows->get(new Bookmark());
-        $definition = $workflow->getDefinition();
-        $places     = $definition->getPlaces();
-        $builder->add(
-            'etape',
-            ChoiceType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('bookmark.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('bookmark.etape.help', [], 'admin.search.form'),
-                'choices'  => $places,
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('bookmark.etape.placeholder', [], 'admin.search.form'),
-                ],
-            ]
+        $this->showState(
+            $builder,
+            new Bookmark(),
+            $this->translator->trans('bookmark.etape.label', [], 'admin.search.form'),
+            $this->translator->trans('bookmark.etape.help', [], 'admin.search.form'),
+            $this->translator->trans('bookmark.etape.placeholder', [], 'admin.search.form')
         );
         parent::buildForm($builder, $options);
     }

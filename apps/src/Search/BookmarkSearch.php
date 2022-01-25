@@ -16,15 +16,4 @@ class BookmarkSearch extends LibSearch
     public $refcategory;
 
     public $refuser;
-
-    public function search(array $get, $doctrine)
-    {
-        $userRepo     = $doctrine->getRepository(User::class);
-        $categoryRepo = $doctrine->getRepository(Category::class);
-        foreach ($get as $key => $value) {
-            $this->{$key} = $value;
-            $this->{$key} = ('refuser' == $key) ? $userRepo->find($value) : $this->{$key};
-            $this->{$key} = ('refcategory' == $key) ? $categoryRepo->find($value) : $this->{$key};
-        }
-    }
 }

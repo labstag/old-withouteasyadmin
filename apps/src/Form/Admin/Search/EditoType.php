@@ -60,21 +60,12 @@ class EditoType extends SearchAbstractTypeLib
                 'help'     => $this->translator->trans('edito.published.help', [], 'admin.search.form'),
             ]
         );
-        $workflow   = $this->workflows->get(new Edito());
-        $definition = $workflow->getDefinition();
-        $places     = $definition->getPlaces();
-        $builder->add(
-            'etape',
-            ChoiceType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('edito.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('edito.etape.help', [], 'admin.search.form'),
-                'choices'  => $places,
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('edito.etape.placeholder', [], 'admin.search.form'),
-                ],
-            ]
+        $this->showState(
+            $builder,
+            new Edito(),
+            $this->translator->trans('edito.etape.label', [], 'admin.search.form'),
+            $this->translator->trans('edito.etape.help', [], 'admin.search.form'),
+            $this->translator->trans('edito.etape.placeholder', [], 'admin.search.form')
         );
         parent::buildForm($builder, $options);
     }

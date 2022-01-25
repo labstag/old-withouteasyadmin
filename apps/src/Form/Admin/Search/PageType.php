@@ -32,21 +32,12 @@ class PageType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $workflow   = $this->workflows->get(new Bookmark());
-        $definition = $workflow->getDefinition();
-        $places     = $definition->getPlaces();
-        $builder->add(
-            'etape',
-            ChoiceType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('page.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('page.etape.help', [], 'admin.search.form'),
-                'choices'  => $places,
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('page.etape.placeholder', [], 'admin.search.form'),
-                ],
-            ]
+        $this->showState(
+            $builder,
+            new Bookmark(),
+            $this->translator->trans('page.etape.label', [], 'admin.search.form'),
+            $this->translator->trans('page.etape.help', [], 'admin.search.form'),
+            $this->translator->trans('page.etape.placeholder', [], 'admin.search.form')
         );
         parent::buildForm($builder, $options);
     }

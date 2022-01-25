@@ -66,21 +66,12 @@ class UserType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $workflow   = $this->workflows->get(new User());
-        $definition = $workflow->getDefinition();
-        $places     = $definition->getPlaces();
-        $builder->add(
-            'etape',
-            ChoiceType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('user.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('user.etape.help', [], 'admin.search.form'),
-                'choices'  => $places,
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('user.etape.placeholder', [], 'admin.search.form'),
-                ],
-            ]
+        $this->showState(
+            $builder,
+            new User(),
+            $this->translator->trans('user.etape.label', [], 'admin.search.form'),
+            $this->translator->trans('user.etape.help', [], 'admin.search.form'),
+            $this->translator->trans('user.etape.placeholder', [], 'admin.search.form')
         );
         parent::buildForm($builder, $options);
     }

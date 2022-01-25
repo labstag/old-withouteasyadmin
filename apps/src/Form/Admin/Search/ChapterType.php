@@ -43,21 +43,12 @@ class ChapterType extends SearchAbstractTypeLib
                 'help'     => $this->translator->trans('chapter.published.help', [], 'admin.search.form'),
             ]
         );
-        $workflow   = $this->workflows->get(new Chapter());
-        $definition = $workflow->getDefinition();
-        $places     = $definition->getPlaces();
-        $builder->add(
-            'etape',
-            ChoiceType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('chapter.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('chapter.etape.help', [], 'admin.search.form'),
-                'choices'  => $places,
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('chapter.etape.placeholder', [], 'admin.search.form'),
-                ],
-            ]
+        $this->showState(
+            $builder,
+            new Chapter(),
+            $this->translator->trans('chapter.etape.label', [], 'admin.search.form'),
+            $this->translator->trans('chapter.etape.help', [], 'admin.search.form'),
+            $this->translator->trans('chapter.etape.placeholder', [], 'admin.search.form')
         );
         parent::buildForm($builder, $options);
     }
