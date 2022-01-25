@@ -23,17 +23,12 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         unset($manager);
-        $faker     = $this->setFaker();
-        $statesTab = $this->getStatesData();
-        for ($index = 0; $index < self::NUMBER_BOOKMARK; ++$index) {
-            $stateId = array_rand($statesTab);
-            $states  = $statesTab[$stateId];
-            $this->addLink($faker, $states);
-        }
+        $this->loadForeach(self::NUMBER_BOOKMARK, 'addLink');
     }
 
     protected function addLink(
         Generator $faker,
+        int $index,
         array $states
     ): void
     {
@@ -56,6 +51,7 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
         $bookmark->setUrl($faker->url);
         $bookmark->setPublished($faker->unique()->dateTime('now'));
         $this->upload($bookmark, $faker);
+        $this->addReference('bookmark_'.$index, $bookmark);
         $this->bookmarkRH->handle($old, $bookmark);
         $this->bookmarkRH->changeWorkflowState($bookmark, $states);
     }

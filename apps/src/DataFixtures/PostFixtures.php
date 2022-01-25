@@ -23,13 +23,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         unset($manager);
-        $faker     = $this->setFaker();
-        $statesTab = $this->getStatesData();
-        for ($index = 0; $index < self::NUMBER_POST; ++$index) {
-            $stateId = array_rand($statesTab);
-            $states  = $statesTab[$stateId];
-            $this->addPost($faker, $index, $states);
-        }
+        $this->loadForeach(self::NUMBER_POST, 'addPost');
     }
 
     protected function addPost(

@@ -21,24 +21,16 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         unset($manager);
-        $users = $this->userRepository->findAll();
-        $faker = $this->setFaker();
-        // @var resource $finfo
-        $statesTab = $this->getStatesData();
-        for ($index = 0; $index < self::NUMBER_HISTORY; ++$index) {
-            $stateId = array_rand($statesTab);
-            $states  = $statesTab[$stateId];
-            $this->addHistory($users, $faker, $index, $states);
-        }
+        $this->loadForeach(self::NUMBER_HISTORY, 'addHistory');
     }
 
     protected function addHistory(
-        array $users,
         Generator $faker,
         int $index,
         array $states
     ): void
     {
+        $users      = $this->userRepository->findAll();
         $history    = new History();
         $oldHistory = clone $history;
         $history->setName($faker->unique()->colorName);

@@ -22,24 +22,16 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         unset($manager);
-        $users = $this->userRepository->findAll();
-        $faker = $this->setFaker();
-        // @var resource $finfo
-        $statesTab = $this->getStatesData();
-        for ($index = 0; $index < self::NUMBER_EDITO; ++$index) {
-            $stateId = array_rand($statesTab);
-            $states  = $statesTab[$stateId];
-            $this->addEdito($users, $faker, $index, $states);
-        }
+        $this->loadForeach(self::NUMBER_EDITO, 'addEdito');
     }
 
     protected function addEdito(
-        array $users,
         Generator $faker,
         int $index,
         array $states
     ): void
     {
+        $users  = $this->userRepository->findAll();
         $edito  = new Edito();
         $old    = clone $edito;
         $random = $faker->numberBetween(5, 50);

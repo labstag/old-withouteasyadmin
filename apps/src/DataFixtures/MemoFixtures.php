@@ -22,28 +22,20 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         unset($manager);
-        $users     = $this->userRepository->findAll();
-        $faker     = $this->setFaker();
-        $statesTab = $this->getStatesData();
-        $maxDate   = $faker->unique()->dateTimeInInterval('now', '+30 years');
-        for ($index = 0; $index < self::NUMBER_NOTEINTERNE; ++$index) {
-            $stateId = array_rand($statesTab);
-            $states  = $statesTab[$stateId];
-            $this->addMemo($users, $faker, $index, $maxDate, $states);
-        }
+        $this->loadForeach(self::NUMBER_NOTEINTERNE, 'addMemo');
     }
 
     protected function addMemo(
-        array $users,
         Generator $faker,
         int $index,
-        DateTime $maxDate,
         array $states
     ): void
     {
-        $memo   = new Memo();
-        $old    = clone $memo;
-        $random = $faker->numberBetween(5, 50);
+        $maxDate = $faker->unique()->dateTimeInInterval('now', '+30 years');
+        $users   = $this->userRepository->findAll();
+        $memo    = new Memo();
+        $old     = clone $memo;
+        $random  = $faker->numberBetween(5, 50);
         $memo->setTitle($faker->unique()->text($random));
         $dateStart = $faker->dateTime($maxDate);
         $memo->setDateStart($dateStart);

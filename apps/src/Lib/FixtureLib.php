@@ -151,6 +151,17 @@ abstract class FixtureLib extends Fixture
         }
     }
 
+    protected function loadForeach($number, $method)
+    {
+        $faker     = $this->setFaker();
+        $statesTab = $this->getStatesData();
+        for ($index = 0; $index < $number; ++$index) {
+            $stateId = array_rand($statesTab);
+            $states  = $statesTab[$stateId];
+            $this->$method($faker, $index, $states);
+        }
+    }
+
     protected function setFaker()
     {
         $faker = Factory::create('fr_FR');
