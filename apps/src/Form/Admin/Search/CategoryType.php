@@ -32,9 +32,4 @@ class CategoryType extends SearchAbstractTypeLib
             ]
         );
     }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
-    }
 }

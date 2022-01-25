@@ -63,9 +63,4 @@ class AddressUserType extends SearchAbstractTypeLib
             ]
         );
     }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
-    }
 }

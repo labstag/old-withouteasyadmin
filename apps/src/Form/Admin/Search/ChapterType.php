@@ -54,9 +54,4 @@ class ChapterType extends SearchAbstractTypeLib
             ]
         );
     }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
-    }
 }

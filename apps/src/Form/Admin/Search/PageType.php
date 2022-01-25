@@ -41,9 +41,4 @@ class PageType extends SearchAbstractTypeLib
             ]
         );
     }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
-    }
 }

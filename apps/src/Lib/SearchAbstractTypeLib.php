@@ -41,6 +41,11 @@ abstract class SearchAbstractTypeLib extends AbstractType
         );
     }
 
+    public function getBlockPrefix(): string
+    {
+        return '';
+    }
+
     protected function addRefUser($builder)
     {
         $builder->add(

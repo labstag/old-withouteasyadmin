@@ -50,11 +50,6 @@ class GeocodeType extends SearchAbstractTypeLib
         );
     }
 
-    public function getBlockPrefix(): string
-    {
-        return '';
-    }
-
     protected function setTextType($builder)
     {
         $texttype = [
