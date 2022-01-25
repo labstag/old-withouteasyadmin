@@ -14,6 +14,26 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $this->setQuery($queryBuilder, $get);
     }
 
+    protected function setQueryTitle(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['title']) || empty($get['title'])) {
+            return;
+        }
+
+        $query->andWhere('a.title LIKE :title');
+        $query->setParameter('title', '%'.$get['title'].'%');
+    }
+
+    protected function setQueryPublished(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['published']) || empty($get['published'])) {
+            return;
+        }
+
+        $query->andWhere('DATE(a.published) = :published');
+        $query->setParameter('published', $get['published']);
+    }
+
     /**
      * Get random data.
      */

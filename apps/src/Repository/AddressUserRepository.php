@@ -17,13 +17,6 @@ class AddressUserRepository extends AddressRepository
         parent::__construct($registry, AddressUser::class);
     }
 
-    public function findAllForAdmin(array $get): QueryBuilder
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-
-        return $this->setQuery($queryBuilder, $get);
-    }
-
     protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
     {
         $this->setQueryCountry($query, $get);

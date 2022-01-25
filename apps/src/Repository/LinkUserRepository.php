@@ -17,13 +17,6 @@ class LinkUserRepository extends LinkRepository
         parent::__construct($registry, LinkUser::class);
     }
 
-    public function findAllForAdmin(array $get): QueryBuilder
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-
-        return $this->setQuery($queryBuilder, $get);
-    }
-
     protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
     {
         $this->setQueryRefUser($query, $get);

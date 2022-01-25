@@ -18,13 +18,6 @@ class EmailUserRepository extends EmailRepository
         parent::__construct($registry, EmailUser::class);
     }
 
-    public function findAllForAdmin(array $get): QueryBuilder
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-
-        return $this->setQuery($queryBuilder, $get);
-    }
-
     public function getEmailsUserVerif(User $user, bool $verif): array
     {
         $queryBuilder = $this->createQueryBuilder('u');

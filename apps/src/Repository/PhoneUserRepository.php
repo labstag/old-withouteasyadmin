@@ -17,13 +17,6 @@ class PhoneUserRepository extends PhoneRepository
         parent::__construct($registry, PhoneUser::class);
     }
 
-    public function findAllForAdmin(array $get): QueryBuilder
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-
-        return $this->setQuery($queryBuilder, $get);
-    }
-
     protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
     {
         $this->setQueryEtape($query, $get);

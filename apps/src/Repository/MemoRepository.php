@@ -18,13 +18,6 @@ class MemoRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, Memo::class);
     }
 
-    public function findAllForAdmin(array $get): QueryBuilder
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-
-        return $this->setQuery($queryBuilder, $get);
-    }
-
     public function findPublier()
     {
         $queryBuilder = $this->createQueryBuilder('n');
@@ -72,15 +65,5 @@ class MemoRepository extends ServiceEntityRepositoryLib
 
         $query->andWhere('DATE(a.dateStart) = :dateStart');
         $query->setParameter('dateStart', $get['dateStart']);
-    }
-
-    protected function setQueryTitle(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['title']) || empty($get['title'])) {
-            return;
-        }
-
-        $query->andWhere('a.title LIKE :title');
-        $query->setParameter('title', '%'.$get['title'].'%');
     }
 }

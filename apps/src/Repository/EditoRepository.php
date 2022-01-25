@@ -18,13 +18,6 @@ class EditoRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, Edito::class);
     }
 
-    public function findAllForAdmin(array $get): QueryBuilder
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-
-        return $this->setQuery($queryBuilder, $get);
-    }
-
     public function findOnePublier()
     {
         $queryBuilder = $this->createQueryBuilder('e');
@@ -50,25 +43,5 @@ class EditoRepository extends ServiceEntityRepositoryLib
         $this->setQueryRefUser($query, $get);
 
         return $query;
-    }
-
-    protected function setQueryPublished(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['published']) || empty($get['published'])) {
-            return;
-        }
-
-        $query->andWhere('DATE(a.published) = :published');
-        $query->setParameter('published', $get['published']);
-    }
-
-    protected function setQueryTitle(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['title']) || empty($get['title'])) {
-            return;
-        }
-
-        $query->andWhere('a.title LIKE :title');
-        $query->setParameter('title', '%'.$get['title'].'%');
     }
 }
