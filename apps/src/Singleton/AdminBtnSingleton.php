@@ -312,48 +312,28 @@ class AdminBtnSingleton
         string $title = 'Restaurer'
     )
     {
-        $this->addViderSelectionSupprimerRestauter('restories', $routes, $code, $title);
+        $this->addBtnVider('restories', $routes, $code, $title);
     }
 
     public function addSupprimerSelection(
         array $routes,
         string $code,
         string $title = 'Supprimer'
-    ): self
+    )
     {
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
-            return $this;
-        }
-
-        $globals           = $this->twig->getGlobals();
-        $modal             = $globals['modal'] ?? [];
-        $modal['deleties'] = true;
-        $this->twig->addGlobal('modal', $modal);
-        $this->add(
-            'btn-admin-header-deleties',
-            $title,
-            [
-                'is'       => 'link-btnadmindeleties',
-                'token'    => $token,
-                'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
-                'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
-            ]
-        );
-
-        return $this;
+        $this->addBtnVider('deleties', $routes, $code, $title);
     }
 
     public function addViderSelection(
         array $routes,
         string $code,
         string $title = 'Supprimer'
-    ): self
+    )
     {
-        $this->addViderSelectionSupprimerRestauter('empties', $routes, $code, $title);
+        $this->addBtnVider('empties', $routes, $code, $title);
     }
 
-    protected function addViderSelectionSupprimerRestauter(
+    protected function addBtnVider(
         string $codemodal,
         array $routes,
         string $code,
