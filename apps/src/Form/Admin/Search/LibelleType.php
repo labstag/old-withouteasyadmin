@@ -18,12 +18,7 @@ class LibelleType extends SearchAbstractTypeLib
         array $options
     ): void
     {
-        $this->addName(
-            $builder,
-            $this->translator->trans('libelle.name.label', [], 'admin.search.form'),
-            $this->translator->trans('libelle.name.help', [], 'admin.search.form'),
-            $this->translator->trans('libelle.name.placeholder', [], 'admin.search.form')
-        );
+        $this->addName($builder);
         parent::buildForm($builder, $options);
     }
 

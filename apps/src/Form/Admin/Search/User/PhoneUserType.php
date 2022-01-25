@@ -34,25 +34,7 @@ class PhoneUserType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'refuser',
-            SearchableType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('phoneuser.refuser.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('phoneuser.refuser.help', [], 'admin.search.form'),
-                'multiple' => false,
-                'class'    => User::class,
-                'route'    => 'api_search_user',
-                'attr'     => [
-                    'placeholder' => $this->translator->trans(
-                        'phoneuser.refuser.placeholder',
-                        [],
-                        'admin.search.form'
-                    ),
-                ],
-            ]
-        );
+        $this->addRefUser($builder);
         $this->showState(
             $builder,
             new PhoneUser(),

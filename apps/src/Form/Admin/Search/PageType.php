@@ -20,12 +20,7 @@ class PageType extends SearchAbstractTypeLib
         array $options
     ): void
     {
-        $this->addName(
-            $builder,
-            $this->translator->trans('page.name.label', [], 'admin.search.form'),
-            $this->translator->trans('page.name.help', [], 'admin.search.form'),
-            $this->translator->trans('page.name.placeholder', [], 'admin.search.form')
-        );
+        $this->addName($builder);
         $this->showState(
             $builder,
             new Bookmark(),

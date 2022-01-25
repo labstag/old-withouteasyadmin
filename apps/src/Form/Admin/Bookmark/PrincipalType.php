@@ -27,17 +27,7 @@ class PrincipalType extends AbstractTypeLib
     ): void
     {
         $this->setTextType($builder);
-        $builder->add(
-            'published',
-            DateTimeType::class,
-            [
-                'label'        => $this->translator->trans('post.published.label', [], 'admin.form'),
-                'help'         => $this->translator->trans('post.published.help', [], 'admin.form'),
-                'date_widget'  => 'single_text',
-                'time_widget'  => 'single_text',
-                'with_seconds' => true,
-            ]
-        );
+        $this->addPublished($builder);
         $builder->add(
             'url',
             UrlType::class,

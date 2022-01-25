@@ -18,12 +18,7 @@ class GroupeType extends SearchAbstractTypeLib
         array $options
     ): void
     {
-        $this->addName(
-            $builder,
-            $this->translator->trans('groupe.name.label', [], 'admin.search.form'),
-            $this->translator->trans('groupe.name.help', [], 'admin.search.form'),
-            $this->translator->trans('groupe.name.placeholder', [], 'admin.search.form')
-        );
+        $this->addName($builder);
         parent::buildForm($builder, $options);
     }
 

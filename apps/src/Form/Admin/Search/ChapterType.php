@@ -33,16 +33,7 @@ class ChapterType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'published',
-            DateType::class,
-            [
-                'required' => false,
-                'widget'   => 'single_text',
-                'label'    => $this->translator->trans('chapter.published.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('chapter.published.help', [], 'admin.search.form'),
-            ]
-        );
+        $this->addPublished($builder);
         $this->showState(
             $builder,
             new Chapter(),

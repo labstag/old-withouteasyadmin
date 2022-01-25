@@ -53,24 +53,7 @@ class UserType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'plainPassword',
-            RepeatedType::class,
-            [
-                'type'            => PasswordType::class,
-                'invalid_message' => $this->translator->trans('profil.password.match', [], 'admin.form'),
-                'options'         => ['attr' => ['class' => 'password-field']],
-                'required'        => false,
-                'first_options'   => [
-                    'label' => $this->translator->trans('user.password.label', [], 'admin.form'),
-                    'help'  => $this->translator->trans('user.password.help', [], 'admin.form'),
-                ],
-                'second_options'  => [
-                    'label' => $this->translator->trans('user.repeatpassword.label', [], 'admin.form'),
-                    'help'  => $this->translator->trans('user.repeatpassword.help', [], 'admin.form'),
-                ],
-            ]
-        );
+        $this->addPlainPassword($builder);
         $builder->add(
             'refgroupe',
             SearchableType::class,

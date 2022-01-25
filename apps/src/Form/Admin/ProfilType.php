@@ -50,26 +50,7 @@ class ProfilType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'plainPassword',
-            RepeatedType::class,
-            [
-                'type'            => PasswordType::class,
-                'invalid_message' => $this->translator->trans('profil.password.match', [], 'admin.form'),
-                'options'         => [
-                    'attr' => ['class' => 'password-field'],
-                ],
-                'required'        => false,
-                'first_options'   => [
-                    'label' => $this->translator->trans('profil.password.label', [], 'admin.form'),
-                    'help'  => $this->translator->trans('profil.password.help', [], 'admin.form'),
-                ],
-                'second_options'  => [
-                    'label' => $this->translator->trans('profil.repeatpassword.label', [], 'admin.form'),
-                    'help'  => $this->translator->trans('profil.repeatpassword.help', [], 'admin.form'),
-                ],
-            ]
-        );
+        $this->addPlainPassword($builder);
         if (isset($options['data']) && !is_null($options['data']->getId())) {
             $emails = [];
             $data   = $this->repository->getEmailsUserVerif(

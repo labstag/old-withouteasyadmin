@@ -23,37 +23,9 @@ class HistoryType extends SearchAbstractTypeLib
         array $options
     ): void
     {
-        $this->addName(
-            $builder,
-            $this->translator->trans('history.name.label', [], 'admin.search.form'),
-            $this->translator->trans('history.name.help', [], 'admin.search.form'),
-            $this->translator->trans('history.name.placeholder', [], 'admin.search.form')
-        );
-        $builder->add(
-            'refuser',
-            SearchableType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('history.refuser.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('history.refuser.help', [], 'admin.search.form'),
-                'multiple' => false,
-                'class'    => User::class,
-                'route'    => 'api_search_user',
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('history.refuser.placeholder', [], 'admin.search.form'),
-                ],
-            ]
-        );
-        $builder->add(
-            'published',
-            DateType::class,
-            [
-                'required' => false,
-                'widget'   => 'single_text',
-                'label'    => $this->translator->trans('history.published.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('history.published.help', [], 'admin.search.form'),
-            ]
-        );
+        $this->addName($builder);
+        $this->addRefUser($builder);
+        $this->addPublished($builder);
         $this->showState(
             $builder,
             new History(),

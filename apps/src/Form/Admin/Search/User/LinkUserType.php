@@ -19,25 +19,7 @@ class LinkUserType extends SearchAbstractTypeLib
         array $options
     ): void
     {
-        $builder->add(
-            'refuser',
-            SearchableType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('linkuser.refuser.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('linkuser.refuser.help', [], 'admin.search.form'),
-                'multiple' => false,
-                'class'    => User::class,
-                'route'    => 'api_search_user',
-                'attr'     => [
-                    'placeholder' => $this->translator->trans(
-                        'linkuser.refuser.placeholder',
-                        [],
-                        'admin.search.form'
-                    ),
-                ],
-            ]
-        );
+        $this->addRefUser($builder);
         parent::buildForm($builder, $options);
     }
 

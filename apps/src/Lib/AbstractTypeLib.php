@@ -5,6 +5,9 @@ namespace Labstag\Lib;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -15,6 +18,45 @@ abstract class AbstractTypeLib extends AbstractType
         protected TemplatePageService $templatePageService
     )
     {
+    }
+
+    protected function addPublished($builder)
+    {
+        $builder->add(
+            'published',
+            DateTimeType::class,
+            [
+                'label'        => $this->translator->trans('published.label', [], 'admin.form'),
+                'help'         => $this->translator->trans('published.help', [], 'admin.form'),
+                'date_widget'  => 'single_text',
+                'time_widget'  => 'single_text',
+                'with_seconds' => true,
+            ]
+        );
+    }
+
+    protected function addPlainPassword($builder)
+    {
+        $builder->add(
+            'plainPassword',
+            RepeatedType::class,
+            [
+                'type'            => PasswordType::class,
+                'invalid_message' => $this->translator->trans('profil.password.match', [], 'admin.form'),
+                'options'         => [
+                    'attr' => ['class' => 'password-field'],
+                ],
+                'required'        => false,
+                'first_options'   => [
+                    'label' => $this->translator->trans('profil.password.label', [], 'admin.form'),
+                    'help'  => $this->translator->trans('profil.password.help', [], 'admin.form'),
+                ],
+                'second_options'  => [
+                    'label' => $this->translator->trans('profil.repeatpassword.label', [], 'admin.form'),
+                    'help'  => $this->translator->trans('profil.repeatpassword.help', [], 'admin.form'),
+                ],
+            ]
+        );
     }
 
     protected function setCollectionType($builder, $tab)

@@ -35,25 +35,7 @@ class MemoType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'refuser',
-            SearchableType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('memo.refuser.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('memo.refuser.help', [], 'admin.search.form'),
-                'multiple' => false,
-                'class'    => User::class,
-                'route'    => 'api_search_user',
-                'attr'     => [
-                    'placeholder' => $this->translator->trans(
-                        'memo.refuser.placeholder',
-                        [],
-                        'admin.search.form'
-                    ),
-                ],
-            ]
-        );
+        $this->addRefUser($builder);
         $builder->add(
             'dateStart',
             DateType::class,

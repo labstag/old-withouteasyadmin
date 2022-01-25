@@ -18,12 +18,7 @@ class LayoutType extends SearchAbstractTypeLib
         array $options
     ): void
     {
-        $this->addName(
-            $builder,
-            $this->translator->trans('bookmark.name.label', [], 'admin.search.form'),
-            $this->translator->trans('bookmark.name.help', [], 'admin.search.form'),
-            $this->translator->trans('bookmark.name.placeholder', [], 'admin.search.form')
-        );
+        $this->addName($builder);
         parent::buildForm($builder, $options);
     }
 

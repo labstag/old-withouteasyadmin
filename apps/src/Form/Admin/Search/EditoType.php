@@ -35,31 +35,8 @@ class EditoType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'refuser',
-            SearchableType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('edito.refuser.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('edito.refuser.help', [], 'admin.search.form'),
-                'multiple' => false,
-                'class'    => User::class,
-                'route'    => 'api_search_user',
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('edito.refuser.placeholder', [], 'admin.search.form'),
-                ],
-            ]
-        );
-        $builder->add(
-            'published',
-            DateType::class,
-            [
-                'required' => false,
-                'widget'   => 'single_text',
-                'label'    => $this->translator->trans('edito.published.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('edito.published.help', [], 'admin.search.form'),
-            ]
-        );
+        $this->addRefUser($builder);
+        $this->addPublished($builder);
         $this->showState(
             $builder,
             new Edito(),

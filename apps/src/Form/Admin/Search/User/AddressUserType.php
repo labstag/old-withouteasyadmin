@@ -49,25 +49,7 @@ class AddressUserType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'refuser',
-            SearchableType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('addressuser.refuser.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('addressuser.refuser.help', [], 'admin.search.form'),
-                'multiple' => false,
-                'class'    => User::class,
-                'route'    => 'api_search_user',
-                'attr'     => [
-                    'placeholder' => $this->translator->trans(
-                        'addressuser.refuser.placeholder',
-                        [],
-                        'admin.search.form'
-                    ),
-                ],
-            ]
-        );
+        $this->addRefUser($builder);
         parent::buildForm($builder, $options);
     }
 
