@@ -16,6 +16,23 @@ abstract class AbstractTypeLib extends AbstractType
     {
     }
 
+    protected function setInputText($builder, $tab)
+    {
+        foreach ($tab as $id => $row) {
+            $builder->add(
+                $id,
+                TextType::class,
+                [
+                    'label' => $row['label'],
+                    'help'  => $row['help'],
+                    'attr'  => [
+                        'placeholder' => $row['placeholder'],
+                    ],
+                ]
+            );
+        }
+    }
+
     protected function setMetas($builder, $metas)
     {
         foreach ($metas as $key => $values) {

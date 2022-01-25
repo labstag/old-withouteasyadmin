@@ -34,7 +34,7 @@ class TarteaucitronType extends AbstractTypeLib
             ]
         );
 
-        $this->setInputText($builder);
+        $this->setInputTextAll($builder);
         $this->setInputTrueFalsePartie1($builder);
         $builder->add(
             'iconPosition',
@@ -112,7 +112,7 @@ class TarteaucitronType extends AbstractTypeLib
         );
     }
 
-    private function setInputText($builder)
+    private function setInputTextAll($builder)
     {
         $tab = [
             'hashtag'     => [
@@ -143,19 +143,7 @@ class TarteaucitronType extends AbstractTypeLib
                 ),
             ],
         ];
-        foreach ($tab as $id => $row) {
-            $builder->add(
-                $id,
-                TextType::class,
-                [
-                    'label' => $row['label'],
-                    'help'  => $row['help'],
-                    'attr'  => [
-                        'placeholder' => $row['placeholder'],
-                    ],
-                ]
-            );
-        }
+        $this->setInputText($builder, $tab);
     }
 
     private function setInputTrueFalse($builder, $tab)

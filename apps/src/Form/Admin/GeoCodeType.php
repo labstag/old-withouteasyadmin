@@ -94,21 +94,4 @@ class GeoCodeType extends AbstractTypeLib
             ]
         );
     }
-
-    private function setInputText($builder, $tab)
-    {
-        foreach ($tab as $id => $row) {
-            $builder->add(
-                $id,
-                TextType::class,
-                [
-                    'label' => $row['label'],
-                    'help'  => $row['help'],
-                    'attr'  => [
-                        'placeholder' => $row['placeholder'],
-                    ],
-                ]
-            );
-        }
-    }
 }
