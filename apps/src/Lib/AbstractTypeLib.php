@@ -5,6 +5,7 @@ namespace Labstag\Lib;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -31,6 +32,43 @@ abstract class AbstractTypeLib extends AbstractType
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
+            ]
+        );
+    }
+
+    protected function addEmails($builder, $options, $repository)
+    {
+        if (!(isset($options['data']) && !is_null($options['data']->getId()))) {
+            return;
+        }
+
+        $emails = [];
+        $data   = $repository->getEmailsUserVerif(
+            $options['data'],
+            true
+        );
+        foreach ($data as $email) {
+            // @var EmailUser $email
+            $address          = $email->getAddress();
+            $emails[$address] = $address;
+        }
+
+        ksort($emails);
+
+        if (0 == count($emails)) {
+            return;
+        }
+
+        $builder->add(
+            'email',
+            ChoiceType::class,
+            [
+                'label'   => $this->translator->trans('email.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('email.help', [], 'admin.form'),
+                'choices' => $emails,
+                'attr'    => [
+                    'placeholder' => $this->translator->trans('email.placeholder', [], 'admin.form'),
+                ],
             ]
         );
     }

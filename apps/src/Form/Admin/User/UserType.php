@@ -78,35 +78,7 @@ class UserType extends AbstractTypeLib
                 'attr'     => ['accept' => 'image/*'],
             ]
         );
-        if (isset($options['data']) && !is_null($options['data']->getId())) {
-            $emails = [];
-            $data   = $this->repository->getEmailsUserVerif(
-                $options['data'],
-                true
-            );
-            foreach ($data as $email) {
-                // @var EmailUser $email
-                $address          = $email->getAddress();
-                $emails[$address] = $address;
-            }
-
-            ksort($emails);
-
-            if (0 != count($emails)) {
-                $builder->add(
-                    'email',
-                    ChoiceType::class,
-                    [
-                        'label'   => $this->translator->trans('user.email.label', [], 'admin.form'),
-                        'help'    => $this->translator->trans('user.email.help', [], 'admin.form'),
-                        'choices' => $emails,
-                        'attr'    => [
-                            'placeholder' => $this->translator->trans('user.email.placeholder', [], 'admin.form'),
-                        ],
-                    ]
-                );
-            }
-        }
+        $this->addEmails($builder, $options, $this->repository);
 
         $this->setCollectionTypeAll($builder);
     }
