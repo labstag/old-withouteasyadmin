@@ -6,14 +6,10 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\Template;
-use Labstag\Lib\FixtureLib;
+use Labstag\Lib\DataFixtureLib;
 
-class TemplatesFixtures extends FixtureLib implements DependentFixtureInterface
+class TemplatesFixtures extends DataFixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
-    {
-        return [DataFixtures::class];
-    }
 
     public function load(ObjectManager $manager): void
     {

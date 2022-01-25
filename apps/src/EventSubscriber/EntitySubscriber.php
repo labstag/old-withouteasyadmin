@@ -2,7 +2,6 @@
 
 namespace Labstag\EventSubscriber;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\EmailUser;
@@ -16,34 +15,11 @@ use Labstag\Event\HistoryEntityEvent;
 use Labstag\Event\MenuEntityEvent;
 use Labstag\Event\PageEntityEvent;
 use Labstag\Event\UserEntityEvent;
-use Labstag\Queue\EnqueueMethod;
-use Labstag\RequestHandler\EmailUserRequestHandler;
+use Labstag\Lib\EventSubscriberLib;
 use Labstag\Service\HistoryService;
-use Labstag\Service\UserMailService;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class EntitySubscriber implements EventSubscriberInterface
+class EntitySubscriber extends EventSubscriberLib
 {
-    public function __construct(
-        protected LoggerInterface $logger,
-        protected ParameterBagInterface $containerBag,
-        protected EntityManagerInterface $entityManager,
-        protected EnqueueMethod $enqueue,
-        protected CacheInterface $cache,
-        protected RequestStack $requestStack,
-        protected UserPasswordHasherInterface $passwordEncoder,
-        protected UserMailService $userMailService,
-        protected EmailUserRequestHandler $emailUserRH,
-        protected TranslatorInterface $translator
-    )
-    {
-    }
 
     public static function getSubscribedEvents(): array
     {
@@ -347,18 +323,5 @@ class EntitySubscriber implements EventSubscriberInterface
             $this->logger->error($errorMsg);
             $this->flashBagAdd('danger', $errorMsg);
         }
-    }
-
-    private function flashBagAdd(string $type, $message)
-    {
-        $requestStack = $this->requestStack;
-        $request      = $requestStack->getCurrentRequest();
-        if (is_null($request)) {
-            return;
-        }
-
-        $session  = $requestStack->getSession();
-        $flashbag = $session->getFlashBag();
-        $flashbag->add($type, $message);
     }
 }

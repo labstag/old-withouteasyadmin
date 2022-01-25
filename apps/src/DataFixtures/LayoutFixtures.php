@@ -5,14 +5,10 @@ namespace Labstag\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Layout;
-use Labstag\Lib\FixtureLib;
+use Labstag\Lib\DataFixtureLib;
 
-class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
+class LayoutFixtures extends DataFixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
-    {
-        return [DataFixtures::class];
-    }
 
     public function load(ObjectManager $manager): void
     {

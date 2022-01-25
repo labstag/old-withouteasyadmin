@@ -12,12 +12,7 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
 {
     public function getDependencies()
     {
-        return [
-            DataFixtures::class,
-            UserFixtures::class,
-            LibelleFixtures::class,
-            CategoryFixtures::class,
-        ];
+        return $this->getDependenciesBookmarkPost();
     }
 
     public function load(ObjectManager $manager): void

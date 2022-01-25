@@ -7,6 +7,10 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Exception;
 use Faker\Factory;
 use Faker\Generator;
+use Labstag\DataFixtures\CategoryFixtures;
+use Labstag\DataFixtures\DataFixtures;
+use Labstag\DataFixtures\LibelleFixtures;
+use Labstag\DataFixtures\UserFixtures;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Groupe;
 use Labstag\Reader\UploadAnnotationReader;
@@ -96,6 +100,16 @@ abstract class FixtureLib extends Fixture
         protected ChapterRequestHandler $chapterRH
     )
     {
+    }
+
+    public function getDependenciesBookmarkPost()
+    {
+        return [
+            DataFixtures::class,
+            UserFixtures::class,
+            LibelleFixtures::class,
+            CategoryFixtures::class,
+        ];
     }
 
     protected function getParameter(string $name)

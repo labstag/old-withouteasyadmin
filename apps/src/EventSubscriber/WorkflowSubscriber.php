@@ -3,21 +3,11 @@
 namespace Labstag\EventSubscriber;
 
 use Labstag\Entity\User;
-use Labstag\Service\UserMailService;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Labstag\Lib\EventSubscriberLib;
 use Symfony\Component\Workflow\Event\Event;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class WorkflowSubscriber implements EventSubscriberInterface
+class WorkflowSubscriber extends EventSubscriberLib
 {
-    public function __construct(
-        protected UserMailService $userMailService,
-        protected RequestStack $requestStack,
-        protected TranslatorInterface $translator
-    )
-    {
-    }
 
     public static function getSubscribedEvents(): array
     {
@@ -79,18 +69,5 @@ class WorkflowSubscriber implements EventSubscriberInterface
                 $this->translator->trans('user.workflow.new')
             );
         }
-    }
-
-    private function flashBagAdd(string $type, $message)
-    {
-        $requestStack = $this->requestStack;
-        $request      = $requestStack->getCurrentRequest();
-        if (is_null($request)) {
-            return;
-        }
-
-        $session  = $requestStack->getSession();
-        $flashbag = $session->getFlashBag();
-        $flashbag->add($type, $message);
     }
 }

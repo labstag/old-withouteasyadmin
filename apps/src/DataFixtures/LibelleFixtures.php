@@ -6,14 +6,10 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\Libelle;
-use Labstag\Lib\FixtureLib;
+use Labstag\Lib\DataFixtureLib;
 
-class LibelleFixtures extends FixtureLib implements DependentFixtureInterface
+class LibelleFixtures extends DataFixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
-    {
-        return [DataFixtures::class];
-    }
 
     public function load(ObjectManager $manager): void
     {
