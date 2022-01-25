@@ -140,6 +140,17 @@ abstract class FixtureLib extends Fixture
         ];
     }
 
+    protected function loadForeachUser($number, $method)
+    {
+        $faker = $this->setFaker();
+        $users = $this->installService->getData('user');
+        for ($index = 0; $index < $number; ++$index) {
+            $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
+            $user      = $this->getReference('user_'.$indexUser);
+            $this->{$method}($faker, $user);
+        }
+    }
+
     protected function setFaker()
     {
         $faker = Factory::create('fr_FR');

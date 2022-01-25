@@ -2,7 +2,6 @@
 
 namespace Labstag\Controller\Admin;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Menu\LinkType;
@@ -128,8 +127,7 @@ class MenuController extends AdminControllerLib
      */
     public function move(
         Menu $menu,
-        Request $request,
-        EntityManagerInterface $entityManager
+        Request $request
     )
     {
         $currentUrl = $this->generateUrl(

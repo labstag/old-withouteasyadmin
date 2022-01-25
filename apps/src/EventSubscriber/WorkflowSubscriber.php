@@ -2,21 +2,15 @@
 
 namespace Labstag\EventSubscriber;
 
+use Labstag\Entity\User;
 use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class UserWorkflowSubscriber implements EventSubscriberInterface
+class WorkflowSubscriber implements EventSubscriberInterface
 {
-
-    protected FlashBagInterface $flashbag;
-
-    protected SessionInterface $session;
-
     public function __construct(
         protected UserMailService $userMailService,
         protected RequestStack $requestStack,
@@ -27,23 +21,42 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return ['workflow.user.transition' => 'onTransition'];
+        return [
+            'workflow.attachment.transition' => 'onTransition',
+            'workflow.bookmark.transition'   => 'onTransition',
+            'workflow.chapter.transition'    => 'onTransition',
+            'workflow.edito.transition'      => 'onTransition',
+            'workflow.email.transition'      => 'onTransition',
+            'workflow.history.transition'    => 'onTransition',
+            'workflow.memo.transition'       => 'onTransition',
+            'workflow.phone.transition'      => 'onTransition',
+            'workflow.post.transition'       => 'onTransition',
+            'workflow.user.transition'       => 'onTransition',
+        ];
     }
 
     public function onTransition(Event $event)
     {
         $transition = $event->getTransition();
         $name       = $transition->getName();
-        switch ($name) {
-            case 'submit':
-                $this->transitionSubmit($event);
+        if ('submit' == $name) {
+            $this->transitionSubmit($event);
 
-                break;
-            case 'passwordlost':
-                $this->transitionPasswordLost($event);
-
-                break;
+            return;
         }
+
+        if ('passwordlost' == $name) {
+            $this->transitionPasswordLost($event);
+
+            return;
+        }
+
+        $this->transitionDisable($event);
+    }
+
+    public function transitionDisable(Event $event)
+    {
+        unset($event);
     }
 
     public function transitionPasswordLost(Event $event)
@@ -59,11 +72,13 @@ class UserWorkflowSubscriber implements EventSubscriberInterface
     public function transitionSubmit(Event $event)
     {
         $entity = $event->getSubject();
-        $this->userMailService->newUser($entity);
-        $this->flashBagAdd(
-            'success',
-            $this->translator->trans('user.workflow.new')
-        );
+        if (User::class == $entity::class) {
+            $this->userMailService->newUser($entity);
+            $this->flashBagAdd(
+                'success',
+                $this->translator->trans('user.workflow.new')
+            );
+        }
     }
 
     private function flashBagAdd(string $type, $message)

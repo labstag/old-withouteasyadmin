@@ -72,27 +72,11 @@ class GuardWorkflowController extends ApiControllerLib
         Request $request
     )
     {
-        $data = [
+        $data    = [
             'group' => [],
         ];
-        $get  = $request->query->all();
-        if (array_key_exists('user', $get)) {
-            $data['user'] = [];
-            $user         = $this->getRepository(User::class)->find($get['user']);
-            if (!$user instanceof User) {
-                return new JsonResponse($data);
-            }
-
-            $results = $this->getRepository(WorkflowUser::class)->findEnable($user);
-            foreach ($results as $row) {
-                // @var WorkflowUser $row
-                $data['user'][] = [
-                    'entity'     => $row->getRefworkflow()->getEntity(),
-                    'transition' => $row->getRefworkflow()->getTransition(),
-                ];
-            }
-        }
-
+        $get     = $request->query->all();
+        $data    = $this->getGuardRouteOrWorkflow($data, $get, WorkflowUser::class);
         $results = $this->getResultWorkflow($request, WorkflowGroupe::class);
         foreach ($results as $row) {
             // @var WorkflowGroupe $row

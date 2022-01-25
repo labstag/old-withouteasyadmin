@@ -90,28 +90,12 @@ class GuardRouteController extends ApiControllerLib
         Request $request
     )
     {
-        $data = [
+        $data    = [
             'group' => [],
         ];
-        $get  = $request->query->all();
-        if (array_key_exists('user', $get)) {
-            $data['user'] = [];
-            $user         = $this->getRepository(User::class)->find($get['user']);
-            if (!$user instanceof User) {
-                return new JsonResponse($data);
-            }
-
-            $results = $this->getRepository(RouteUser::class)->findEnable($user);
-            foreach ($results as $row) {
-                // @var RouteUser $row
-                $data['user'][] = [
-                    'route' => $row->getRefroute()->getName(),
-                ];
-            }
-        }
-
+        $get     = $request->query->all();
+        $data    = $this->getGuardRouteOrWorkflow($data, $get, RouteUser::class);
         $results = $this->getResultWorkflow($request, RouteGroupe::class);
-
         foreach ($results as $row) {
             // @var RouteGroupe $row
             $data['group'][] = [

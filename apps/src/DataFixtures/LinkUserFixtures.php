@@ -22,13 +22,7 @@ class LinkUserFixtures extends FixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         unset($manager);
-        $faker = $this->setFaker();
-        $users = $this->installService->getData('user');
-        for ($index = 0; $index < self::NUMBER_LINK; ++$index) {
-            $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
-            $user      = $this->getReference('user_'.$indexUser);
-            $this->addLink($faker, $user);
-        }
+        $this->loadForeachUser(self::NUMBER_LINK, 'addLink');
     }
 
     protected function addLink(

@@ -107,43 +107,9 @@ class AdminBtnSingleton
         array $route,
         string $text = 'Destroy',
         array $routeParam = []
-    ): self
+    )
     {
-        if (!isset($route['list']) || !isset($route['destroy'])) {
-            return $this;
-        }
-
-        $routes = [
-            $route['destroy'],
-            $route['list'],
-        ];
-        if (!$this->isRoutesEnable($routes)) {
-            return $this;
-        }
-
-        $globals          = $this->twig->getGlobals();
-        $modal            = $globals['modal'] ?? [];
-        $modal['destroy'] = true;
-        $this->twig->addGlobal('modal', $modal);
-        $code  = 'destroy'.$entity->getId();
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr  = [
-            'token'    => $token,
-            'is'       => 'link-btnadmindestroy',
-            'redirect' => $this->router->generate($route['list']),
-            'url'      => $this->router->generate(
-                $route['destroy'],
-                $routeParam
-            ),
-        ];
-
-        $this->add(
-            'btn-admin-header-destroy',
-            $text,
-            $attr
-        );
-
-        return $this;
+        $this->addBtnDestroyRestore('destroy', $entity, $route, $routeParam, $text);
     }
 
     public function addBtnEdit(
@@ -283,48 +249,9 @@ class AdminBtnSingleton
         array $route,
         string $text = 'Restore',
         array $routeParam = []
-    ): self
+    )
     {
-        if (!isset($route['restore']) || !isset($route['list'])) {
-            return $this;
-        }
-
-        $routes = [
-            $route['restore'],
-            $route['list'],
-        ];
-        if (!$this->isRoutesEnable($routes)) {
-            return $this;
-        }
-
-        $globals          = $this->twig->getGlobals();
-        $modal            = $globals['modal'] ?? [];
-        $modal['restore'] = true;
-        $this->twig->addGlobal('modal', $modal);
-        $code  = 'restore'.$entity->getId();
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr  = [
-            'token'    => $token,
-            'is'       => 'link-btnadminrestore',
-            'redirect' => $this->router->generate(
-                $route['list'],
-                [
-                    'entity' => $this->classEntity($entity),
-                ]
-            ),
-            'url'      => $this->router->generate(
-                $route['restore'],
-                $routeParam
-            ),
-        ];
-
-        $this->add(
-            'btn-admin-header-restore',
-            $text,
-            $attr
-        );
-
-        return $this;
+        $this->addBtnDestroyRestore('restore', $entity, $route, $routeParam, $text);
     }
 
     public function addBtnSave(string $form, string $text = 'Sauvegarder'): self
@@ -530,6 +457,44 @@ class AdminBtnSingleton
         }
 
         return $return;
+    }
+
+    private function addBtnDestroyRestore($word, $entity, $route, $routeParam, $text)
+    {
+        if (!isset($route['list']) || !isset($route[$word])) {
+            return $this;
+        }
+
+        $routes = [
+            $route[$word],
+            $route['list'],
+        ];
+
+        if (!$this->isRoutesEnable($routes)) {
+            return $this;
+        }
+
+        $globals      = $this->twig->getGlobals();
+        $modal        = $globals['modal'] ?? [];
+        $modal[$word] = true;
+        $this->twig->addGlobal('modal', $modal);
+        $code  = $word.$entity->getId();
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        $attr  = [
+            'token'    => $token,
+            'is'       => 'link-btnadmin'.$word,
+            'redirect' => $this->router->generate($route['list']),
+            'url'      => $this->router->generate(
+                $route[$word],
+                $routeParam
+            ),
+        ];
+
+        $this->add(
+            'btn-admin-header-'.$word,
+            $text,
+            $attr
+        );
     }
 
     private function arrayKeyExistsRedirect($routes)

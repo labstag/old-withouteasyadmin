@@ -24,13 +24,7 @@ class AddressUserFixtures extends FixtureLib implements DependentInterface
     public function load(ObjectManager $manager): void
     {
         unset($manager);
-        $faker = $this->setFaker();
-        $users = $this->installService->getData('user');
-        for ($index = 0; $index < self::NUMBER_ADRESSE; ++$index) {
-            $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
-            $user      = $this->getReference('user_'.$indexUser);
-            $this->addAddress($faker, $user);
-        }
+        $this->loadForeachUser(self::NUMBER_ADRESSE, 'addAddress');
     }
 
     protected function addAddress(

@@ -5,7 +5,6 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Attachment;
-use Labstag\Entity\Menu;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\RequestHandler\AttachmentRequestHandler;
@@ -570,7 +569,7 @@ abstract class AdminControllerLib extends ControllerLib
         ];
     }
 
-    protected function setPositionEntity($request, $entity)
+    protected function setPositionEntity($request, $entityclass)
     {
         $data = $request->request->all('position');
         if (!empty($data)) {
@@ -581,7 +580,7 @@ abstract class AdminControllerLib extends ControllerLib
             foreach ($data as $row) {
                 $id       = $row['id'];
                 $position = intval($row['position']);
-                $entity   = $this->getRepository(Menu::class)->find($id);
+                $entity   = $this->getRepository($entityclass)->find($id);
                 if (!is_null($entity)) {
                     $entity->setPosition($position + 1);
                     $this->entityManager->persist($entity);

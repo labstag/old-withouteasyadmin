@@ -2,7 +2,6 @@
 
 namespace Labstag\Controller\Admin\History;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
@@ -86,8 +85,7 @@ class HistoryController extends AdminControllerLib
      */
     public function position(
         History $history,
-        Request $request,
-        EntityManagerInterface $entityManager
+        Request $request
     )
     {
         $currentUrl = $this->generateUrl(

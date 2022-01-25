@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\PhoneService;
@@ -31,6 +32,41 @@ abstract class ApiControllerLib extends AbstractController
         // @var Request $request
         $request       = $this->requeststack->getCurrentRequest();
         $this->request = $request;
+    }
+
+    protected function getGuardRouteOrWorkflow($data, $get, $entityClass)
+    {
+        if (!array_key_exists('user', $get)) {
+            return $data;
+        }
+
+        $data['user'] = [];
+        $user         = $this->getRepository(User::class)->find($get['user']);
+        if (!$user instanceof User) {
+            return $data;
+        }
+
+        $results = $this->getRepository($entityClass)->findEnable($user);
+        if (RouteUser::class == $entityClass) {
+            foreach ($results as $row) {
+                // @var RouteUser $row
+                $data['user'][] = [
+                    'route' => $row->getRefroute()->getName(),
+                ];
+            }
+
+            return $data;
+        }
+
+        foreach ($results as $row) {
+            // @var WorkflowGroupe $row
+            $data['group'][] = [
+                'entity'     => $row->getRefworkflow()->getEntity(),
+                'transition' => $row->getRefworkflow()->getTransition(),
+            ];
+        }
+
+        return $data;
     }
 
     protected function getRepository(string $entity)
