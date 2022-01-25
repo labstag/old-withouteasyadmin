@@ -18,6 +18,18 @@ class UserRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, User::class);
     }
 
+    public function findOauth(array $data, $name)
+    {
+        unset($data, $name);
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->where('u.username=:username');
+        $query->setParameters(
+            ['username' => 'superadmin']
+        );
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
+
     public function findUserEnable(string $field): ?User
     {
         $queryBuilder = $this->createQueryBuilder('u');

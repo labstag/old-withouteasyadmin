@@ -4,9 +4,11 @@ namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
 use Labstag\RequestHandler\OauthConnectUserRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
+use League\OAuth2\Client\Provider\AbstractProvider;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -17,6 +19,8 @@ class UserService
     protected FlashBagInterface $flashbag;
 
     public function __construct(
+        protected OauthService $oauthService,
+        protected SessionService $sessionService,
         protected RequestStack $requestStack,
         protected EntityManagerInterface $entityManager,
         protected UserRequestHandler $userRH,
@@ -24,6 +28,61 @@ class UserService
         protected TranslatorInterface $translator
     )
     {
+    }
+
+    public function addOauthToUser(
+        string $client,
+        User $user,
+        $userOauth
+    ): void
+    {
+        $data     = !is_array($userOauth) ? $userOauth->toArray() : $userOauth;
+        $identity = $this->oauthService->getIdentity($data, $client);
+        $find     = $this->findOAuthIdentity(
+            $user,
+            $identity,
+            $client,
+            $oauthConnect
+        );
+        // @var OauthConnectUserRepository $repository
+        $repository = $this->getRepository(OauthConnectUser::class);
+        if (false === $find) {
+            // @var null|OauthConnectUser $oauthConnect
+            $oauthConnect = $repository->findOauthNotUser(
+                $user,
+                $identity,
+                $client
+            );
+            if (is_null($oauthConnect)) {
+                $oauthConnect = new OauthConnectUser();
+                $oauthConnect->setIdentity($identity);
+                $oauthConnect->setRefuser($user);
+                $oauthConnect->setName($client);
+            }
+
+            // @var User $refuser
+            $refuser = $oauthConnect->getRefuser();
+            if ($refuser->getId() !== $user->getId()) {
+                $oauthConnect = null;
+            }
+        }
+
+        if ($oauthConnect instanceof OauthConnectUser) {
+            $old = clone $oauthConnect;
+            $oauthConnect->setData($data);
+            $this->oauthConnectUserRH->handle($old, $oauthConnect);
+            $this->sessionService->flashBagAdd(
+                'success',
+                $this->translator->trans('service.user.oauth.sucess')
+            );
+
+            return;
+        }
+
+        $this->sessionService->flashBagAdd(
+            'warning',
+            $this->translator->trans('service.user.oauth.fail')
+        );
     }
 
     public function create($groupes, $dataUser)
@@ -39,6 +98,23 @@ class UserService
         $this->userRH->changeWorkflowState($user, $dataUser['state']);
 
         return $user;
+    }
+
+    public function ifBug(
+        AbstractProvider $provider,
+        array $query,
+        ?string $oauth2state
+    ): bool
+    {
+        if (is_null($oauth2state)) {
+            return true;
+        }
+
+        if (!$provider instanceof AbstractProvider) {
+            return true;
+        }
+
+        return (bool) (!isset($query['code']) || $oauth2state !== $query['state']);
     }
 
     public function postLostPassword(array $post): void

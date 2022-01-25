@@ -384,16 +384,7 @@ abstract class AdminControllerLib extends ControllerLib
             $filename
         );
         $file = $path.'/'.$filename;
-        $attachment->setMimeType(mime_content_type($file));
-        $attachment->setSize(filesize($file));
-        $attachment->setName(
-            str_replace(
-                $this->getParameter('kernel.project_dir').'/public/',
-                '',
-                $file
-            )
-        );
-        $this->attachmentRH->handle($old, $attachment);
+        $this->fileService->setAttachment($file, $attachment, $old);
     }
 
     protected function searchForm(): array

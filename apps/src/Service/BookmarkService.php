@@ -5,7 +5,6 @@ namespace Labstag\Service;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Labstag\Entity\Attachment;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
@@ -22,6 +21,7 @@ class BookmarkService
     public const CLIENTNUMBER = 400;
 
     public function __construct(
+        protected FileService $fileService,
         private ErrorService $errorService,
         private LoggerInterface $logger,
         private EntityManagerInterface $entityManager,
@@ -103,12 +103,10 @@ class BookmarkService
         $annotations = $this->uploadAnnotReader->getUploadableFields($bookmark);
         $slugger     = new AsciiSlugger();
         foreach ($annotations as $annotation) {
-            $path       = $this->getParameter('file_directory').'/'.$annotation->getPath();
-            $accessor   = PropertyAccess::createPropertyAccessor();
-            $title      = $accessor->getValue($bookmark, $annotation->getSlug());
-            $slug       = $slugger->slug($title);
-            $attachment = new Attachment();
-            $old        = clone $attachment;
+            $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $accessor = PropertyAccess::createPropertyAccessor();
+            $title    = $accessor->getValue($bookmark, $annotation->getSlug());
+            $slug     = $slugger->slug($title);
 
             try {
                 $pathinfo = pathinfo($image);
@@ -138,17 +136,8 @@ class BookmarkService
                 $this->errorService->set($exception);
             }
 
-            $file = $path.'/'.$filename;
-            $attachment->setMimeType(mime_content_type($file));
-            $attachment->setSize(filesize($file));
-            $attachment->setName(
-                str_replace(
-                    $this->getParameter('kernel.project_dir').'/public/',
-                    '',
-                    $file
-                )
-            );
-            $this->attachmentRH->handle($old, $attachment);
+            $file       = $path.'/'.$filename;
+            $attachment = $this->fileService->setAttachment($file);
             $accessor->setValue($bookmark, $annotation->getFilename(), $attachment);
         }
     }

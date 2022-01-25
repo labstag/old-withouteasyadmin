@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Service\DataService;
 use Labstag\Service\ErrorService;
+use Labstag\Service\FileService;
 use Labstag\Service\GuardService;
 use Labstag\Service\SessionService;
 use Labstag\Singleton\BreadcrumbsSingleton;
@@ -26,6 +27,7 @@ abstract class ControllerLib extends AbstractController
     protected Request $request;
 
     public function __construct(
+        protected FileService $fileService,
         protected Environment $twig,
         protected ErrorService $errorService,
         protected SessionService $sessionService,

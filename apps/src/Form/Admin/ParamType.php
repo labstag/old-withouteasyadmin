@@ -6,6 +6,7 @@ use Labstag\Form\Admin\Collections\Param\DisclaimerType;
 use Labstag\Form\Admin\Collections\Param\FormatDateType;
 use Labstag\Form\Admin\Collections\Param\MetaSiteType;
 use Labstag\Form\Admin\Collections\Param\NotificationType;
+use Labstag\Form\Admin\Collections\Param\OauthType;
 use Labstag\Form\Admin\Collections\Param\TarteaucitronType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\FormType\WysiwygType;
@@ -66,6 +67,15 @@ class ParamType extends AbstractTypeLib
                 'allow_delete' => false,
                 'entry_type'   => FormatDateType::class,
                 'help'         => $url,
+            ]
+        );
+        $builder->add(
+            'oauth',
+            MinMaxCollectionType::class,
+            [
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'entry_type'   => OauthType::class,
             ]
         );
         $this->setMinMaxCollectionType($builder);

@@ -1,0 +1,32 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    <div>
+        <p>{{ 'oauth.message'|trans({}, 'admin.messages')|raw }}</p>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>{{ 'oauth.service'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'oauth.url'|trans({}, 'admin.messages') }}</th>
+                <th>{{ 'oauth.urltoshare'|trans({}, 'admin.messages') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service, data in types %}
+                {% if data.config is defined %}
+                <tr>
+                    <td>
+                        {{ service }}
+                    </td>
+                    <td>
+                        <a href="{{ data.config }}">{{ 'oauth.go'|trans({}, 'admin.messages') }}</a>
+                    </td>
+                    <td>
+                        {{ "%url%/oauth/check/%service%"|replace({"%url%": config['site_url'], "%service%": service}) }}
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

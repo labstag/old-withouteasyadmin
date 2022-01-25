@@ -17,6 +17,7 @@ class LabstagInstallCommand extends CommandLib
     protected static $defaultName = 'labstag:install';
 
     public function __construct(
+        protected array $serverenv,
         EntityManagerInterface $entityManager,
         protected InstallService $installService
     )
@@ -103,7 +104,7 @@ class LabstagInstallCommand extends CommandLib
     protected function setConfig($inputOutput)
     {
         $inputOutput->note('Ajout de la configuration');
-        $this->installService->config();
+        $this->installService->config($this->serverenv);
     }
 
     protected function setGroup($inputOutput)

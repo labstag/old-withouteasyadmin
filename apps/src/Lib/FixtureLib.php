@@ -11,7 +11,6 @@ use Labstag\DataFixtures\CategoryFixtures;
 use Labstag\DataFixtures\DataFixtures;
 use Labstag\DataFixtures\LibelleFixtures;
 use Labstag\DataFixtures\UserFixtures;
-use Labstag\Entity\Attachment;
 use Labstag\Entity\Groupe;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\GroupeRepository;
@@ -34,6 +33,7 @@ use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\ErrorService;
+use Labstag\Service\FileService;
 use Labstag\Service\GuardService;
 use Labstag\Service\InstallService;
 use Labstag\Service\UserService;
@@ -74,6 +74,7 @@ abstract class FixtureLib extends Fixture
     protected const NUMBER_TEMPLATES = 10;
 
     public function __construct(
+        protected FileService $fileService,
         protected UserService $userService,
         protected ErrorService $errorService,
         protected LoggerInterface $logger,
@@ -213,12 +214,10 @@ abstract class FixtureLib extends Fixture
         $annotations = $this->uploadAnnotReader->getUploadableFields($entity);
         $slugger     = new AsciiSlugger();
         foreach ($annotations as $annotation) {
-            $path       = $this->getParameter('file_directory').'/'.$annotation->getPath();
-            $accessor   = PropertyAccess::createPropertyAccessor();
-            $title      = $accessor->getValue($entity, $annotation->getSlug());
-            $slug       = $slugger->slug($title);
-            $attachment = new Attachment();
-            $old        = clone $attachment;
+            $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $accessor = PropertyAccess::createPropertyAccessor();
+            $title    = $accessor->getValue($entity, $annotation->getSlug());
+            $slug     = $slugger->slug($title);
 
             try {
                 $image   = $faker->imageUrl(1920, 1920);
@@ -250,17 +249,8 @@ abstract class FixtureLib extends Fixture
             }
 
             if (isset($filename)) {
-                $file = $path.'/'.$filename;
-                $attachment->setMimeType(mime_content_type($file));
-                $attachment->setSize(filesize($file));
-                $attachment->setName(
-                    str_replace(
-                        $this->getParameter('kernel.project_dir').'/public/',
-                        '',
-                        $file
-                    )
-                );
-                $this->attachmentRH->handle($old, $attachment);
+                $file       = $path.'/'.$filename;
+                $attachment = $this->fileService->setAttachment($file);
                 $accessor->setValue($entity, $annotation->getFilename(), $attachment);
             }
         }

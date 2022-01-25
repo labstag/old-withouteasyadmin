@@ -23,6 +23,7 @@ use Twig\Environment;
 class InstallService
 {
     public function __construct(
+        protected OauthService $oauthService,
         protected UserService $userService,
         protected PageRequestHandler $pageRH,
         protected MenuRequestHandler $menuRH,
@@ -37,9 +38,10 @@ class InstallService
     {
     }
 
-    public function config()
+    public function config($serverEnv)
     {
         $config = $this->getData('config');
+        $this->setOauth($serverEnv, $config);
         foreach ($config as $key => $row) {
             $this->addConfig($key, $row);
         }
@@ -58,7 +60,7 @@ class InstallService
         return $data;
     }
 
-    public function getEnv()
+    public function getEnv($serverEnv)
     {
         $file   = __DIR__.'/../../.env';
         $data   = [];
@@ -67,6 +69,7 @@ class InstallService
             $data = $dotenv->parse(file_get_contents($file));
         }
 
+        $data = array_merge($serverEnv, $data);
         ksort($data);
 
         return $data;
@@ -271,6 +274,38 @@ class InstallService
         foreach ($childs as $attr) {
             $this->addChild($indexChild, $menu, $attr);
             ++$indexChild;
+        }
+    }
+
+    protected function setOauth(array $serverEnv, array &$data): void
+    {
+        $env   = $this->getEnv($serverEnv);
+        $oauth = [];
+        foreach ($env as $key => $val) {
+            if (0 == substr_count($key, 'OAUTH_')) {
+                continue;
+            }
+
+            $code    = str_replace('OAUTH_', '', $key);
+            $code    = strtolower($code);
+            $explode = explode('_', $code);
+            $type    = $explode[0];
+            $key     = $explode[1];
+            if (!isset($oauth[$type])) {
+                $activate = $this->oauthService->getActivedProvider($type);
+
+                $oauth[$type] = [
+                    'activate' => $activate,
+                    'type'     => $type,
+                ];
+            }
+
+            $oauth[$type][$key] = $val;
+        }
+
+        // @var mixed $row
+        foreach ($oauth as $row) {
+            $data['oauth'][] = $row;
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller;
 
+use Exception;
 use Labstag\Entity\Email;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\Phone;
@@ -15,12 +16,21 @@ use Labstag\RequestHandler\EmailRequestHandler;
 use Labstag\RequestHandler\PhoneRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
+use Labstag\Service\ErrorService;
+use Labstag\Service\OauthService;
 use Labstag\Service\UserService;
+use League\OAuth2\Client\Provider\AbstractProvider;
+use League\OAuth2\Client\Provider\ResourceOwnerInterface;
+use League\OAuth2\Client\Token\AccessToken;
 use LogicException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends ControllerLib
@@ -235,5 +245,175 @@ class SecurityController extends ControllerLib
             'security/lost-password.html.twig',
             ['formLostPassword' => $form]
         );
+    }
+
+    /**
+     * Link to this controller to start the "connect" process.
+     *
+     * @Route("/oauth/connect/{oauthCode}", name="connect_start", priority=1)
+     */
+    public function oauthConnect(
+        Request $request,
+        string $oauthCode,
+        OauthService $oauthService
+    ): RedirectResponse
+    {
+        // @var AbstractProvider $provider
+        $provider = $oauthService->setProvider($oauthCode);
+        $session  = $request->getSession();
+        // @var string $referer
+        $query = $request->query->all();
+        if (array_key_exists('link', $query)) {
+            $session->set('link', 1);
+        }
+
+        $referer = $request->headers->get('referer');
+        $session->set('referer', $referer);
+        // @var string $url
+        $url = $this->generateUrl('front');
+        if ('' == $referer) {
+            $referer = $url;
+        }
+
+        if (!$provider instanceof AbstractProvider) {
+            $this->sessionService->flashBagAdd(
+                'warning',
+                $this->translator->trans('security.user.oauth.fail')
+            );
+
+            return $this->redirect($referer);
+        }
+
+        $authUrl = $provider->getAuthorizationUrl();
+        $session = $request->getSession();
+        $referer = $request->headers->get('referer');
+        $session->set('referer', $referer);
+        $session->set('oauth2state', $provider->getState());
+
+        return $this->redirect($authUrl);
+    }
+
+    /**
+     * After going to Github, you're redirected back here
+     * because this is the "redirect_route" you configured
+     * in config/packages/knpu_oauth2_client.yaml.
+     *
+     * @Route("/oauth/check/{oauthCode}", name="connect_check", priority=1)
+     */
+    public function oauthConnectCheck(
+        Request $request,
+        string $oauthCode,
+        ErrorService $errorService,
+        OauthService $oauthService,
+        UserService $userService
+    ): RedirectResponse
+    {
+        // @var AbstractProvider $provider
+        $provider    = $oauthService->setProvider($oauthCode);
+        $query       = $request->query->all();
+        $session     = $request->getSession();
+        $referer     = $session->get('referer');
+        $oauth2state = $session->get('oauth2state');
+        // @var string $url
+        $url = $this->generateUrl('front');
+        if ('' == $referer) {
+            $referer = $url;
+        }
+
+        if ($userService->ifBug($provider, $query, $oauth2state)) {
+            $session->remove('oauth2state');
+            $session->remove('referer');
+            $session->remove('link');
+            $this->sessionService->flashBagAdd(
+                'warning',
+                $this->translator->trans('security.user.connect.fail')
+            );
+
+            return $this->redirect($referer);
+        }
+
+        try {
+            // @var AccessToken $tokenProvider
+            $tokenProvider = $provider->getAccessToken(
+                'authorization_code',
+                [
+                    'code' => $query['code'],
+                ]
+            );
+
+            $session->remove('oauth2state');
+            // @var UsageTrackingTokenStorage $tokenStorage
+            $tokenStorage = $this->get('security.token_storage');
+            // @var TokenInterface $token
+            $token = $tokenStorage->getToken();
+            if (!$token instanceof AnonymousToken) {
+                // @var ResourceOwnerInterface $userOauth
+                $userOauth = $provider->getResourceOwner($tokenProvider);
+                // @var User $user
+                $user = $token->getUser();
+                if (!$user instanceof User) {
+                    $this->sessionService->flashBagAdd(
+                        'warning',
+                        $this->translator->trans('security.user.connect.fail')
+                    );
+
+                    return $this->redirect($referer);
+                }
+
+                $userService->addOauthToUser(
+                    $oauthCode,
+                    $user,
+                    $userOauth
+                );
+            }
+
+            $session->remove('referer');
+            $session->remove('link');
+
+            return $this->redirect($referer);
+        } catch (Exception $exception) {
+            $errorService->set($exception);
+            $session->remove('referer');
+            $session->remove('link');
+
+            return $this->redirect($referer);
+        }
+    }
+
+    /**
+     * Link to this controller to start the "connect" process.
+     *
+     * @Route("/oauth/lost/{oauthCode}", name="connect_lost", priority=1)
+     */
+    public function oauthLost(
+        Request $request,
+        string $oauthCode,
+        Security $security
+    ): RedirectResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        // @var User $user
+        $user = $security->getUser();
+        // @var string $referer
+        $referer = $request->headers->get('referer');
+        $session = $request->getSession();
+        $session->set('referer', $referer);
+        // @var string $url
+        $url = $this->generateUrl('front');
+        if ('' == $referer) {
+            $referer = $url;
+        }
+
+        $entity = $this->getRepository(OauthConnectUser::class)->findOneOauthByUser($oauthCode, $user);
+        if ($entity instanceof OauthConnectUser) {
+            $this->entityManager->remove($entity);
+            $this->entityManager->flush();
+            $paramtrans = ['%string%' => $oauthCode];
+
+            $msg = $this->translator->trans('security.user.oauth.dissociated', $paramtrans);
+            $this->sessionService->flashBagAdd('success', $msg);
+        }
+
+        return $this->redirect($referer);
     }
 }

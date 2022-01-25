@@ -15,6 +15,7 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\DataService;
+use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -71,6 +72,19 @@ class AdminController extends AdminControllerLib
         return $this->render(
             'admin/index.html.twig',
             ['memos' => $memos]
+        );
+    }
+
+    /**
+     * @Route("/oauth", name="admin_oauth")
+     */
+    public function oauth(OauthService $oauthService): Response
+    {
+        $types = $oauthService->getConfigProvider();
+
+        return $this->render(
+            'admin/oauth.html.twig',
+            ['types' => $types]
         );
     }
 

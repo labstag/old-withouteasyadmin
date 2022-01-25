@@ -23,6 +23,11 @@
 		<li class="nav-item" role="presentation">
 			<a class="nav-link" id="avatar-tab" data-bs-toggle="tab" href="#avatar" role="tab" aria-controls="avatar" aria-selected="false">{{ 'form.profil.avatar'|trans({}, 'admin.messages') }}</a>
 		</li>
+	    {% if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 %}
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="oauth-tab" data-bs-toggle="tab" href="#oauth" role="tab" aria-controls="oauth" aria-selected="false">{{ 'form.profil.oauth'|trans({}, 'admin.messages') }}</a>
+		</li>
+        {% endif %}
 	</ul>
 	<div class="tab-content" id="myTabContent">
 		<div class="tab-pane fade show active" id="emails" role="tabpanel" aria-labelledby="emails-tab">
@@ -46,6 +51,48 @@
             ) }}
 			{{ form_row(form.file) }}
 		</div>
+	    {% if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 %}
+		<div class="tab-pane fade" id="oauth" role="tabpanel" aria-labelledby="oauth-tab">
+            <div class="row">
+                {% set state = guard_route('connect_lost') %}
+                {% if state == true and entity.oauthconnectusers|length != 0 %}
+                    <div class="col-12">
+                        <fieldset>
+                            <legend>{{ 'user.oauth.lost'|trans({}, 'admin.messages') }}</legend>
+                            <div class="row">
+                                {% for oauth in entity.oauthconnectusers %}
+                                    <div class="col-3">
+                                        <a href="{{ path('connect_lost', {'oauthCode': oauth.name}) }}" title="{{ oauth.name|e('html_attr') }}">
+                                            <i class="fab fa-{{ oauth.name }}"></i>
+                                            {{ oauth.name }}
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+                    </div>
+                {% endif %}
+                {% set state = guard_route('connect_start') %}
+                {% if state == true and oauthActivated|length != 0 %}
+                    <div class="col-12">
+                        <fieldset>
+                            <legend>{{ 'user.oauth.associer'|trans({}, 'admin.messages') }}</legend>
+                            <div class="row">
+                                {% for oauth in oauthActivated %}
+                                    <div class="col-3">
+                                        <a href="{{ path('connect_start', {'oauthCode': oauth.type, 'link': 1}) }}" title="{{ oauth.type|e('html_attr') }}">
+                                            <i class="fab fa-{{ oauth.type }}"></i>
+                                            {{ oauth.type }}
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+                    </div>
+                {% endif %}
+		    </div>
+        </div>
+        {% endif %}
 	</div>
 	{{ form_end(form) }}
 {% endblock %}
