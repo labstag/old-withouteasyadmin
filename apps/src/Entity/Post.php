@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\PostRepository;
 use Stringable;
@@ -24,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Post implements Stringable
 {
+    use MetatagsEntity;
     use SoftDeleteableEntity;
     use StateableEntity;
 
@@ -60,16 +62,6 @@ class Post implements Stringable
      * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"})
      */
     private $libelles;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $metaDescription;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $metaKeywords;
 
     /**
      * @ORM\Column(type="datetime")
@@ -160,16 +152,6 @@ class Post implements Stringable
         return $this->libelles;
     }
 
-    public function getMetaDescription(): ?string
-    {
-        return $this->metaDescription;
-    }
-
-    public function getMetaKeywords(): ?string
-    {
-        return $this->metaKeywords;
-    }
-
     public function getPublished(): ?DateTimeInterface
     {
         return $this->published;
@@ -238,20 +220,6 @@ class Post implements Stringable
     public function setImg(?Attachment $img): self
     {
         $this->img = $img;
-
-        return $this;
-    }
-
-    public function setMetaDescription(?string $metaDescription): self
-    {
-        $this->metaDescription = $metaDescription;
-
-        return $this;
-    }
-
-    public function setMetaKeywords(?string $metaKeywords): self
-    {
-        $this->metaKeywords = $metaKeywords;
 
         return $this;
     }

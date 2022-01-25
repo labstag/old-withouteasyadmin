@@ -9,6 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\EditoRepository;
 use Stringable;
@@ -22,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Edito implements Stringable
 {
+    use MetatagsEntity;
     use SoftDeleteableEntity;
     use StateableEntity;
 
@@ -62,16 +64,6 @@ class Edito implements Stringable
     protected $title;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $metaDescription;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $metaKeywords;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $published;
@@ -99,16 +91,6 @@ class Edito implements Stringable
     public function getId(): ?string
     {
         return $this->id;
-    }
-
-    public function getMetaDescription(): ?string
-    {
-        return $this->metaDescription;
-    }
-
-    public function getMetaKeywords(): ?string
-    {
-        return $this->metaKeywords;
     }
 
     public function getPublished(): ?DateTimeInterface
@@ -143,20 +125,6 @@ class Edito implements Stringable
     public function setFond(?Attachment $fond): self
     {
         $this->fond = $fond;
-
-        return $this;
-    }
-
-    public function setMetaDescription(?string $metaDescription): self
-    {
-        $this->metaDescription = $metaDescription;
-
-        return $this;
-    }
-
-    public function setMetaKeywords(?string $metaKeywords): self
-    {
-        $this->metaKeywords = $metaKeywords;
 
         return $this;
     }

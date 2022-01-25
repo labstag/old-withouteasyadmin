@@ -6,6 +6,7 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\ChapterRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -17,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Chapter
 {
+    use MetatagsEntity;
     use SoftDeleteableEntity;
     use StateableEntity;
 
@@ -38,16 +40,6 @@ class Chapter
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $metaDescription;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $metaKeywords;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -109,16 +101,6 @@ class Chapter
         return $this->id;
     }
 
-    public function getMetaDescription(): ?string
-    {
-        return $this->metaDescription;
-    }
-
-    public function getMetaKeywords(): ?string
-    {
-        return $this->metaKeywords;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -164,20 +146,6 @@ class Chapter
     public function setCreated(DateTimeInterface $created): self
     {
         $this->created = $created;
-
-        return $this;
-    }
-
-    public function setMetaDescription(?string $metaDescription): self
-    {
-        $this->metaDescription = $metaDescription;
-
-        return $this;
-    }
-
-    public function setMetaKeywords(?string $metaKeywords): self
-    {
-        $this->metaKeywords = $metaKeywords;
 
         return $this;
     }
