@@ -310,29 +310,9 @@ class AdminBtnSingleton
         array $routes,
         string $code,
         string $title = 'Restaurer'
-    ): self
+    )
     {
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
-            return $this;
-        }
-
-        $globals            = $this->twig->getGlobals();
-        $modal              = $globals['modal'] ?? [];
-        $modal['restories'] = true;
-        $this->twig->addGlobal('modal', $modal);
-        $this->add(
-            'btn-admin-header-restories',
-            $title,
-            [
-                'is'       => 'link-btnadminrestories',
-                'token'    => $token,
-                'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
-                'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
-            ]
-        );
-
-        return $this;
+        $this->addViderSelectionSupprimerRestauter('restories', $routes, $code, $title);
     }
 
     public function addSupprimerSelection(
@@ -370,27 +350,35 @@ class AdminBtnSingleton
         string $title = 'Supprimer'
     ): self
     {
+        $this->addViderSelectionSupprimerRestauter('empties', $routes, $code, $title);
+    }
+
+    protected function addViderSelectionSupprimerRestauter(
+        string $codemodal,
+        array $routes,
+        string $code,
+        string $title = 'Restaurer',
+    )
+    {
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
-            return $this;
+            return;
         }
 
         $globals          = $this->twig->getGlobals();
         $modal            = $globals['modal'] ?? [];
-        $modal['empties'] = true;
+        $modal[$codemodal] = true;
         $this->twig->addGlobal('modal', $modal);
         $this->add(
-            'btn-admin-header-empties',
+            'btn-admin-header-'.$codemodal,
             $title,
             [
-                'is'       => 'link-btnadminempties',
+                'is'       => 'link-btnadmin'.$codemodal,
                 'token'    => $token,
                 'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
                 'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
             ]
         );
-
-        return $this;
     }
 
     public function get(): array
