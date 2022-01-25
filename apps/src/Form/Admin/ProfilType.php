@@ -116,20 +116,7 @@ class ProfilType extends AbstractTypeLib
             'addressUsers' => AddressType::class,
             'linkUsers'    => LinkType::class,
         ];
-
-        foreach ($tab as $key => $type) {
-            $builder->add(
-                $key,
-                MinMaxCollectionType::class,
-                [
-                    'label'        => ' ',
-                    'allow_add'    => true,
-                    'allow_delete' => true,
-                    'entry_type'   => $type,
-                    'by_reference' => false,
-                ]
-            );
-        }
+        $this->setCollectionType($builder, $tab);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

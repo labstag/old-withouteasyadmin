@@ -125,7 +125,7 @@ class UserType extends AbstractTypeLib
             }
         }
 
-        $this->setCollectionType($builder);
+        $this->setCollectionTypeAll($builder);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -137,7 +137,7 @@ class UserType extends AbstractTypeLib
         );
     }
 
-    protected function setCollectionType(FormBuilderInterface $builder)
+    protected function setCollectionTypeAll(FormBuilderInterface $builder)
     {
         $tab = [
             'emailUsers'   => EmailType::class,
@@ -145,17 +145,6 @@ class UserType extends AbstractTypeLib
             'addressUsers' => AddressType::class,
             'linkUsers'    => LinkType::class,
         ];
-        foreach ($tab as $key => $type) {
-            $builder->add(
-                $key,
-                MinMaxCollectionType::class,
-                [
-                    'label'        => ' ',
-                    'allow_add'    => true,
-                    'allow_delete' => true,
-                    'entry_type'   => $type,
-                ]
-            );
-        }
+        $this->setCollectionType($builder, $tab);
     }
 }

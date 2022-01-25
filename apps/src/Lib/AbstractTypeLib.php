@@ -2,6 +2,7 @@
 
 namespace Labstag\Lib;
 
+use Labstag\FormType\MinMaxCollectionType;
 use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,6 +15,22 @@ abstract class AbstractTypeLib extends AbstractType
         protected TemplatePageService $templatePageService
     )
     {
+    }
+
+    protected function setCollectionType($builder, $tab)
+    {
+        foreach ($tab as $key => $type) {
+            $builder->add(
+                $key,
+                MinMaxCollectionType::class,
+                [
+                    'label'        => ' ',
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                    'entry_type'   => $type,
+                ]
+            );
+        }
     }
 
     protected function setInputText($builder, $tab)
