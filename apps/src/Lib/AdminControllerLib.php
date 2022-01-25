@@ -217,22 +217,7 @@ abstract class AdminControllerLib extends ControllerLib
         $this->showOrPreviewadd($url, $routeType, $entity);
 
         if (isset($url['delete']) && 'show' == $routeType) {
-            $urlsDelete = [
-                'delete' => $url['delete'],
-            ];
-            if (isset($url['list'])) {
-                $urlsDelete['list'] = $url['list'];
-            }
-
-            $this->btnInstance()->addBtnDelete(
-                $entity,
-                $urlsDelete,
-                'Supprimer',
-                [
-                    'id'     => $entity->getId(),
-                    'entity' => $this->classEntity($entity),
-                ]
-            );
+            $this->setBtnDelete($url, $entity);
         }
 
         if ('preview' == $routeType && is_null($entity->getDeletedAt())) {

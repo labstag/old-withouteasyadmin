@@ -30,15 +30,4 @@ class LinkUserRepository extends LinkRepository
 
         return $query;
     }
-
-    protected function setQueryRefUser(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['refuser']) || empty($get['refuser'])) {
-            return;
-        }
-
-        $query->leftJoin('a.refuser', 'u');
-        $query->andWhere('u.id = :refuser');
-        $query->setParameter('refuser', $get['refuser']);
-    }
 }

@@ -81,17 +81,6 @@ class GeoCodeRepository extends ServiceEntityRepositoryLib
         $query->setParameter('provincename', '%'.$get['provincename'].'%');
     }
 
-    protected function setQueryRefUser(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['refuser']) || empty($get['refuser'])) {
-            return;
-        }
-
-        $query->leftJoin('a.refuser', 'u');
-        $query->andWhere('u.id = :refuser');
-        $query->setParameter('refuser', $get['refuser']);
-    }
-
     protected function setQueryStateName(QueryBuilder &$query, array $get)
     {
         if (!isset($get['statename']) || empty($get['statename'])) {

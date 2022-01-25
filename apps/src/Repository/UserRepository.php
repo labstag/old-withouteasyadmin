@@ -73,16 +73,6 @@ class UserRepository extends ServiceEntityRepositoryLib
         $query->setParameter('email', $get['email']);
     }
 
-    protected function setQueryEtape(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['etape']) || empty($get['etape'])) {
-            return;
-        }
-
-        $query->andWhere('a.state LIKE :state');
-        $query->setParameter('state', '%'.$get['etape'].'%');
-    }
-
     protected function setQueryRefGroup(QueryBuilder &$query, array $get)
     {
         if (!isset($get['refgroup']) || empty($get['refgroup'])) {

@@ -42,25 +42,4 @@ class AddressUserRepository extends AddressRepository
         $query->andWhere('a.city LIKE :city');
         $query->setParameter('city', '%'.$get['city'].'%');
     }
-
-    protected function setQueryCountry(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['country']) || empty($get['country'])) {
-            return;
-        }
-
-        $query->andWhere('a.country LIKE :country');
-        $query->setParameter('country', '%'.$get['country'].'%');
-    }
-
-    protected function setQueryRefUser(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['refuser']) || empty($get['refuser'])) {
-            return;
-        }
-
-        $query->leftJoin('a.refuser', 'u');
-        $query->andWhere('u.id = :refuser');
-        $query->setParameter('refuser', $get['refuser']);
-    }
 }

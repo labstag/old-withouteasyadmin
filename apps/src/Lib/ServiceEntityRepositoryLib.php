@@ -56,4 +56,56 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 
         return $query;
     }
+
+    protected function setQueryRefUser(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['refuser']) || empty($get['refuser'])) {
+            return;
+        }
+
+        $query->leftJoin('a.refuser', 'u');
+        $query->andWhere('u.id = :refuser');
+        $query->setParameter('refuser', $get['refuser']);
+    }
+
+    protected function setQueryCountry(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['country']) || empty($get['country'])) {
+            return;
+        }
+
+        $query->andWhere('a.country LIKE :country');
+        $query->setParameter('country', '%'.$get['country'].'%');
+    }
+
+    protected function setQueryRefCategory(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['refcategory']) || empty($get['refcategory'])) {
+            return;
+        }
+
+        $query->leftJoin('a.refcategory', 'u');
+        $query->andWhere('u.id = :refcategory');
+        $query->setParameter('refcategory', $get['refcategory']);
+    }
+
+    protected function setQueryName(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['name']) || empty($get['name'])) {
+            return;
+        }
+
+        $query->andWhere('a.name LIKE :name');
+        $query->setParameter('name', '%'.$get['name'].'%');
+    }
+
+    protected function setQueryEtape(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['etape']) || empty($get['etape'])) {
+            return;
+        }
+
+        $query->andWhere('a.state LIKE :state');
+        $query->setParameter('state', '%'.$get['etape'].'%');
+    }
 }

@@ -24,14 +24,4 @@ class TemplateRepository extends ServiceEntityRepositoryLib
 
         return $query;
     }
-
-    protected function setQueryName(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['name']) || empty($get['name'])) {
-            return;
-        }
-
-        $query->andWhere('a.name LIKE :name');
-        $query->setParameter('name', '%'.$get['name'].'%');
-    }
 }

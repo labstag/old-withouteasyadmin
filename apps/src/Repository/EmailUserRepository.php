@@ -48,25 +48,4 @@ class EmailUserRepository extends EmailRepository
 
         return $query;
     }
-
-    protected function setQueryEtape(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['etape']) || empty($get['etape'])) {
-            return;
-        }
-
-        $query->andWhere('a.state LIKE :state');
-        $query->setParameter('state', '%'.$get['etape'].'%');
-    }
-
-    protected function setQueryRefUser(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['refuser']) || empty($get['refuser'])) {
-            return;
-        }
-
-        $query->leftJoin('a.refuser', 'u');
-        $query->andWhere('u.id = :refuser');
-        $query->setParameter('refuser', $get['refuser']);
-    }
 }
