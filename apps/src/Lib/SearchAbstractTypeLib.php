@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Workflow\Registry;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -15,6 +16,20 @@ abstract class SearchAbstractTypeLib extends AbstractType
 {
     public function __construct(protected Registry $workflows, protected TranslatorInterface $translator)
     {
+    }
+
+    protected function addName($builder, $label, $help, $placeholder)
+    {
+        $builder->add(
+            'name',
+            TextType::class,
+            [
+                'required' => false,
+                'label'    => $label,
+                'help'     => $help,
+                'attr'     => ['placeholder' => $placeholder],
+            ]
+        );
     }
 
     /**

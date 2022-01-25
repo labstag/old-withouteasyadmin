@@ -23,17 +23,11 @@ class BookmarkType extends SearchAbstractTypeLib
         array $options
     ): void
     {
-        $builder->add(
-            'name',
-            TextType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('bookmark.name.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('bookmark.name.help', [], 'admin.search.form'),
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('bookmark.name.placeholder', [], 'admin.search.form'),
-                ],
-            ]
+        $this->addName(
+            $builder,
+            $this->translator->trans('bookmark.name.label', [], 'admin.search.form'),
+            $this->translator->trans('bookmark.name.help', [], 'admin.search.form'),
+            $this->translator->trans('bookmark.name.placeholder', [], 'admin.search.form')
         );
         $builder->add(
             'refuser',

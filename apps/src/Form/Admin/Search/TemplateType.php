@@ -18,17 +18,11 @@ class TemplateType extends SearchAbstractTypeLib
         array $options
     ): void
     {
-        $builder->add(
-            'name',
-            TextType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('category.name.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('category.name.help', [], 'admin.search.form'),
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('category.name.placeholder', [], 'admin.search.form'),
-                ],
-            ]
+        $this->addName(
+            $builder,
+            $this->translator->trans('category.name.label', [], 'admin.search.form'),
+            $this->translator->trans('category.name.help', [], 'admin.search.form'),
+            $this->translator->trans('category.name.placeholder', [], 'admin.search.form')
         );
         parent::buildForm($builder, $options);
     }
