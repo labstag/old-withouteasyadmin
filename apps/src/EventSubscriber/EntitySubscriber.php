@@ -136,7 +136,7 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $this->entityManager->flush();
-        $this->flashBagAdd(
+        $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('param.change')
         );
@@ -163,7 +163,7 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $this->userMailService->changePassword($newEntity);
-        $this->flashBagAdd(
+        $this->sessionService->flashBagAdd(
             'success',
             'Changement de mot de passe effectué'
         );
@@ -246,7 +246,7 @@ class EntitySubscriber extends EventSubscriberLib
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-        $this->flashBagAdd(
+        $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('user.subscriber.password.change')
         );
@@ -277,7 +277,7 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $this->entityManager->flush();
-        $this->flashBagAdd(
+        $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('user.subscriber.emailprincal.change')
         );
@@ -311,17 +311,9 @@ class EntitySubscriber extends EventSubscriberLib
             file_put_contents($file, $value);
             $msg = $this->translator->trans('admin.robotstxt.file', ['%file%' => $file]);
             $this->logger->info($msg);
-            $this->flashBagAdd('success', $msg);
+            $this->sessionService->flashBagAdd('success', $msg);
         } catch (Exception $exception) {
-            $errorMsg = sprintf(
-                'Exception : Erreur %s dans %s L.%s : %s',
-                $exception->getCode(),
-                $exception->getFile(),
-                $exception->getLine(),
-                $exception->getMessage()
-            );
-            $this->logger->error($errorMsg);
-            $this->flashBagAdd('danger', $errorMsg);
+            $this->errorService->set($exception);
         }
     }
 }

@@ -24,7 +24,7 @@ class GuardRouterSubscriber extends EventSubscriberLib
             return;
         }
 
-        $this->flashBagAdd(
+        $this->sessionService->flashBagAdd(
             'warning',
             $this->translator->trans('user.guard.nope')
         );

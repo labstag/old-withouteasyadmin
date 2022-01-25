@@ -33,6 +33,7 @@ use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
+use Labstag\Service\ErrorService;
 use Labstag\Service\GuardService;
 use Labstag\Service\InstallService;
 use Psr\Log\LoggerInterface;
@@ -72,6 +73,7 @@ abstract class FixtureLib extends Fixture
     protected const NUMBER_TEMPLATES = 10;
 
     public function __construct(
+        protected ErrorService $errorService,
         protected LoggerInterface $logger,
         protected ContainerBagInterface $containerBag,
         protected UploadAnnotationReader $uploadAnnotReader,
@@ -241,14 +243,7 @@ abstract class FixtureLib extends Fixture
                 );
                 $file = $path.'/'.$filename;
             } catch (Exception $exception) {
-                $errorMsg = sprintf(
-                    'Exception : Erreur %s dans %s L.%s : %s',
-                    $exception->getCode(),
-                    $exception->getFile(),
-                    $exception->getLine(),
-                    $exception->getMessage()
-                );
-                $this->logger->error($errorMsg);
+                $this->errorService->set($exception);
                 echo $exception->getMessage();
             }
 

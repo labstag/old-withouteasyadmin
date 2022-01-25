@@ -66,7 +66,7 @@ class GroupeController extends AdminControllerLib
 
         $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
         if (0 == count($routes)) {
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'danger',
                 $this->translator->trans('admin.group.guard.superadmin.nope')
             );

@@ -35,7 +35,7 @@ class SecurityController extends ControllerLib
     ): Response
     {
         if ('lostpassword' != $user->getState()) {
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'danger',
                 $this->translator->trans('security.user.sendlostpassword.fail')
             );
@@ -66,7 +66,7 @@ class SecurityController extends ControllerLib
     ): RedirectResponse
     {
         if ('averifier' != $email->getState()) {
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'danger',
                 $this->translator->trans('security.email.activate.fail')
             );
@@ -75,7 +75,7 @@ class SecurityController extends ControllerLib
         }
 
         $emailRequestHandler->changeWorkflowState($email, ['valider']);
-        $this->flashBagAdd(
+        $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('security.email.activate.win')
         );
@@ -92,7 +92,7 @@ class SecurityController extends ControllerLib
     ): RedirectResponse
     {
         if ('averifier' != $phone->getState()) {
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'danger',
                 $this->translator->trans('security.phone.activate.fail')
             );
@@ -101,7 +101,7 @@ class SecurityController extends ControllerLib
         }
 
         $emailRequestHandler->changeWorkflowState($phone, ['valider']);
-        $this->flashBagAdd(
+        $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('security.phone.activate.win')
         );
@@ -118,7 +118,7 @@ class SecurityController extends ControllerLib
     ): RedirectResponse
     {
         if ('avalider' != $user->getState()) {
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'danger',
                 $this->translator->trans('security.user.activate.fail')
             );
@@ -127,7 +127,7 @@ class SecurityController extends ControllerLib
         }
 
         $userRequestHandler->changeWorkflowState($user, ['validation']);
-        $this->flashBagAdd(
+        $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('security.user.activate.win')
         );
@@ -151,7 +151,7 @@ class SecurityController extends ControllerLib
                 return $this->redirectToRoute('front');
             }
 
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'danger',
                 $this->translator->trans('security.disclaimer.doaccept')
             );

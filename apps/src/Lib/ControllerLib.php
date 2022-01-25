@@ -5,7 +5,9 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Service\DataService;
+use Labstag\Service\ErrorService;
 use Labstag\Service\GuardService;
+use Labstag\Service\SessionService;
 use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +27,8 @@ abstract class ControllerLib extends AbstractController
 
     public function __construct(
         protected Environment $twig,
+        protected ErrorService $errorService,
+        protected SessionService $sessionService,
         protected EntityManagerInterface $entityManager,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected TokenStorageInterface $tokenStorage,
@@ -39,33 +43,9 @@ abstract class ControllerLib extends AbstractController
         $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
     }
 
-    protected function flashBagAdd(string $type, $message)
-    {
-        $request = $this->requeststack->getCurrentRequest();
-        if (is_null($request)) {
-            return;
-        }
-
-        $session  = $this->requeststack->getSession();
-        $flashbag = $session->getFlashBag();
-        $flashbag->add($type, $message);
-    }
-
     protected function getRepository(string $entity)
     {
         return $this->entityManager->getRepository($entity);
-    }
-
-    protected function setErrorLogger($exception, $logger)
-    {
-        $errorMsg = sprintf(
-            'Exception : Erreur %s dans %s L.%s : %s',
-            $exception->getCode(),
-            $exception->getFile(),
-            $exception->getLine(),
-            $exception->getMessage()
-        );
-        $logger->error($errorMsg);
     }
 
     protected function setSingletons()

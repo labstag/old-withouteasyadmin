@@ -47,16 +47,16 @@ class AdminController extends AdminControllerLib
         if (is_file($file)) {
             try {
                 file_put_contents($file, $content);
-                $this->flashBagAdd(
+                $this->sessionService->flashBagAdd(
                     'success',
                     $this->translator->trans('admin.flashbag.data.export.success')
                 );
             } catch (Exception $exception) {
-                $this->setErrorLogger($exception, $logger);
+                $this->errorService->set($exception);
                 $paramtrans = ['%file%' => $file];
 
                 $msg = $this->translator->trans('admin.flashbag.data.export.fail', $paramtrans);
-                $this->flashBagAdd('danger', $msg);
+                $this->sessionService->flashBagAdd('danger', $msg);
             }
         }
 
@@ -194,7 +194,7 @@ class AdminController extends AdminControllerLib
     {
         $all = $trashService->all();
         if (0 == (is_countable($all) ? count($all) : 0)) {
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'danger',
                 $this->translator->trans('admin.flashbag.trash.empty')
             );

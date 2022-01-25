@@ -22,6 +22,7 @@ class BookmarkService
     public const CLIENTNUMBER = 400;
 
     public function __construct(
+        private ErrorService $errorService,
         private LoggerInterface $logger,
         private EntityManagerInterface $entityManager,
         private AttachmentRequestHandler $attachmentRH,
@@ -77,8 +78,7 @@ class BookmarkService
             $this->entityManager->flush();
             $this->requestHandler->handle($old, $bookmark);
         } catch (Exception $exception) {
-            dump($exception->getMessage());
-            $this->setErrorLogger($exception);
+            $this->errorService->set($exception);
         }
     }
 
@@ -90,18 +90,6 @@ class BookmarkService
     protected function getRepository(string $entity)
     {
         return $this->entityManager->getRepository($entity);
-    }
-
-    protected function setErrorLogger($exception)
-    {
-        $errorMsg = sprintf(
-            'Exception : Erreur %s dans %s L.%s : %s',
-            $exception->getCode(),
-            $exception->getFile(),
-            $exception->getLine(),
-            $exception->getMessage()
-        );
-        $this->logger->error($errorMsg);
     }
 
     protected function upload(Bookmark $bookmark, $image)
@@ -147,7 +135,7 @@ class BookmarkService
                 );
                 $file = $path.'/'.$filename;
             } catch (Exception $exception) {
-                $this->setErrorLogger($exception);
+                $this->errorService->set($exception);
             }
 
             $file = $path.'/'.$filename;

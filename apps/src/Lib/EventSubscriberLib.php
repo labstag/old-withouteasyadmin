@@ -9,9 +9,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\Service\UserMailService;
 use Labstag\RequestHandler\EmailUserRequestHandler;
+use Labstag\Service\ErrorService;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Labstag\Service\GuardService;
+use Labstag\Service\SessionService;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -21,6 +23,7 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
 {
 
     public function __construct(
+        protected ErrorService $errorService,
         protected RouterInterface $router,
         protected GuardService $guardService,
         protected TokenStorageInterface $token,
@@ -29,6 +32,7 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected EntityManagerInterface $entityManager,
         protected EnqueueMethod $enqueue,
         protected CacheInterface $cache,
+        protected SessionService $sessionService,
         protected RequestStack $requestStack,
         protected UserPasswordHasherInterface $passwordEncoder,
         protected UserMailService $userMailService,
@@ -36,18 +40,5 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected TranslatorInterface $translator
     )
     {
-    }
-
-    protected function flashBagAdd(string $type, $message)
-    {
-        $requestStack = $this->requestStack;
-        $request      = $requestStack->getCurrentRequest();
-        if (is_null($request)) {
-            return;
-        }
-
-        $session  = $requestStack->getSession();
-        $flashbag = $session->getFlashBag();
-        $flashbag->add($type, $message);
     }
 }

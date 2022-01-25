@@ -53,7 +53,7 @@ class WorkflowSubscriber extends EventSubscriberLib
     {
         $entity = $event->getSubject();
         $this->userMailService->lostPassword($entity);
-        $this->flashBagAdd(
+        $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('user.workflow.sendpasswordlink')
         );
@@ -64,7 +64,7 @@ class WorkflowSubscriber extends EventSubscriberLib
         $entity = $event->getSubject();
         if (User::class == $entity::class) {
             $this->userMailService->newUser($entity);
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'success',
                 $this->translator->trans('user.workflow.new')
             );

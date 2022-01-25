@@ -84,7 +84,7 @@ class UserController extends AdminControllerLib
         );
         $routes = $this->guardService->getGuardRoutesForUser($user);
         if (0 == count($routes)) {
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'danger',
                 $this->translator->trans('admin.user.guard.superadmin.nope')
             );

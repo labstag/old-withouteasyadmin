@@ -61,7 +61,7 @@ abstract class AdminControllerLib extends ControllerLib
                 $entity
             );
             $handler->handle($oldEntity, $entity);
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'success',
                 $this->translator->trans('data.save')
             );
