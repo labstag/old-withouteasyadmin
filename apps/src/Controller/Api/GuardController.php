@@ -154,7 +154,7 @@ class GuardController extends ApiControllerLib
             'groups' => [],
             'user'   => [],
         ];
-        $results = $this->getRepository(RouteGroupe::class)->findEnable($user->getRefgroupe());
+        $results = $this->getRepository(RouteGroupe::class)->findEnableByGroupe($user->getRefgroupe());
         foreach ($results as $row) {
             // @var RouteGroupe $row
             $data['groups'][] = [
@@ -162,7 +162,7 @@ class GuardController extends ApiControllerLib
             ];
         }
 
-        $results = $this->getRepository(RouteUser::class)->findEnable($user);
+        $results = $this->getRepository(RouteUser::class)->findEnableByUser($user);
         foreach ($results as $row) {
             // @var RouteUser $row
             $data['user'][] = [
@@ -175,7 +175,7 @@ class GuardController extends ApiControllerLib
 
     private function getRefgroupe($routeGroupeRepo, ?Groupe $groupe = null): JsonResponse
     {
-        $results = $routeGroupeRepo->findEnable($groupe);
+        $results = $routeGroupeRepo->findEnableByGroupe($groupe);
         $data    = [];
         foreach ($results as $row) {
             // @var RouteGroupe $row

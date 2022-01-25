@@ -4,6 +4,8 @@ namespace Labstag\Lib;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Labstag\Entity\Groupe;
+use Labstag\Entity\User;
 
 abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 {
@@ -12,6 +14,40 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('a');
 
         return $this->setQuery($queryBuilder, $get);
+    }
+
+    public function findEnableByGroupe(?Groupe $groupe = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->where(
+            'a.state=:state'
+        );
+        $parameters   = ['state' => 1];
+        if (!is_null($groupe)) {
+            $query->andWhere('a.refgroupe=:refgroupe');
+            $parameters['refgroupe'] = $groupe;
+        }
+
+        $query->setParameters($parameters);
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findEnableByUser(?User $user = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        $query        = $queryBuilder->where(
+            'a.state=:state'
+        );
+        $parameters   = ['state' => 1];
+        if (!is_null($user)) {
+            $query->andWhere('a.refuser=:refuser');
+            $parameters['refuser'] = $user;
+        }
+
+        $query->setParameters($parameters);
+
+        return $query->getQuery()->getResult();
     }
 
     /**

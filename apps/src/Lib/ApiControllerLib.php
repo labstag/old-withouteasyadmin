@@ -46,7 +46,7 @@ abstract class ApiControllerLib extends AbstractController
             return $data;
         }
 
-        $results = $this->getRepository($entityClass)->findEnable($user);
+        $results = $this->getRepository($entityClass)->findEnableByUser($user);
         if (RouteUser::class == $entityClass) {
             foreach ($results as $row) {
                 // @var RouteUser $row
@@ -80,9 +80,9 @@ abstract class ApiControllerLib extends AbstractController
         if (array_key_exists('user', $get)) {
             $user = $this->getRepository(User::class)->find($get['user']);
 
-            return $this->getRepository($entity)->findEnable($user->getRefgroupe());
+            return $this->getRepository($entity)->findEnableByGroupe($user->getRefgroupe());
         }
 
-        return $this->getRepository($entity)->findEnable();
+        return $this->getRepository($entity)->findEnableByGroupe();
     }
 }
