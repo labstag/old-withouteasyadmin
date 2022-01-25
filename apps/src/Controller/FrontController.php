@@ -3,11 +3,11 @@
 namespace Labstag\Controller;
 
 use Labstag\Entity\Page;
-use Labstag\Lib\FrontControllerLib;
+use Labstag\Lib\ControllerLib;
 use Labstag\Service\TemplatePageService;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FrontController extends FrontControllerLib
+class FrontController extends ControllerLib
 {
     /**
      * @Route("/{slug}", name="front", requirements={"slug"=".+"}, defaults={"slug"=""}, priority=-1)
