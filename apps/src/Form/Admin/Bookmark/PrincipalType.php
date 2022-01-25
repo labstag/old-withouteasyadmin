@@ -140,17 +140,7 @@ class PrincipalType extends AbstractTypeLib
                 'help'  => $this->translator->trans('bookmark.metaKeywords.help', [], 'admin.form'),
             ],
         ];
-
-        foreach ($meta as $key => $values) {
-            $builder->add(
-                $key,
-                TextType::class,
-                array_merge(
-                    $values,
-                    ['required' => false]
-                )
-            );
-        }
+        $this->setMetas($builder, $meta);
     }
 
     protected function setTextType($builder)
