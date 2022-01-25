@@ -20,11 +20,11 @@ class MemoController extends AdminControllerLib
 {
     /**
      * @Route(
-     *  "/{id}/edit",
-     *  name="admin_memo_edit",
-     *  methods={"GET","POST"}
+     *     "/{id}/edit",
+     *     name="admin_memo_edit",
+     *     methods={"GET", "POST"}
      * )
-     * @Route("/new", name="admin_memo_new", methods={"GET","POST"})
+     * @Route("/new", name="admin_memo_new", methods={"GET", "POST"})
      */
     public function edit(
         AttachFormService $service,

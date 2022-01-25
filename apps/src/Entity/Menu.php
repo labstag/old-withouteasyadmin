@@ -21,10 +21,10 @@ class Menu implements Stringable
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=Menu::class,
-     *  mappedBy="parent",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=Menu::class,
+     *     mappedBy="parent",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"position" = "ASC"})
      */
@@ -61,9 +61,9 @@ class Menu implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children")
      * @ORM\JoinColumn(
-     *  name="parent_id",
-     *  referencedColumnName="id",
-     *  onDelete="SET NULL"
+     *     name="parent_id",
+     *     referencedColumnName="id",
+     *     onDelete="SET NULL"
      * )
      *
      * @var null|Menu

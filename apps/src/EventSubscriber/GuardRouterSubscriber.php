@@ -8,7 +8,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class GuardRouterSubscriber extends EventSubscriberLib
 {
-
     public static function getSubscribedEvents(): array
     {
         return ['kernel.request' => 'onKernelRequest'];

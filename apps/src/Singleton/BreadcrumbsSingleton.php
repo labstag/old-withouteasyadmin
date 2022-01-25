@@ -7,7 +7,7 @@ class BreadcrumbsSingleton
 
     protected array $data = [];
 
-    protected static $instance = null;
+    protected static $instance;
 
     protected function __construct()
     {

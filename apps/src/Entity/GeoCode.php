@@ -23,8 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  * @ApiFilter(
- *  SearchFilter::class,
- *  properties={"countryCode": "exact", "postalCode": "exact", "placeName": "partial"}
+ *     SearchFilter::class,
+ *     properties={"countryCode" = "exact", "postalCode" = "exact", "placeName" = "partial"}
  * )
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */

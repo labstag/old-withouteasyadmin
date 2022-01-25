@@ -2,9 +2,7 @@
 
 namespace Labstag\Form\Admin\Search\User;
 
-use Labstag\Entity\User;
 use Labstag\FormType\FlagCountryType;
-use Labstag\FormType\SearchableType;
 use Labstag\Lib\SearchAbstractTypeLib;
 use Labstag\Search\User\AddressUserSearch;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class AddressUserType extends SearchAbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

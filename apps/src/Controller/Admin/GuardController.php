@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class GuardController extends AdminControllerLib
 {
     /**
-     * @Route("/", name="admin_guard_index", methods={"GET","POST"})
+     * @Route("/", name="admin_guard_index", methods={"GET", "POST"})
      */
     public function index(): Response
     {

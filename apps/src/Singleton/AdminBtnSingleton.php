@@ -19,7 +19,7 @@ class AdminBtnSingleton
 
     protected bool $init = false;
 
-    protected static $instance = null;
+    protected static $instance;
 
     protected RouterInterface $router;
 
@@ -333,34 +333,6 @@ class AdminBtnSingleton
         $this->addBtnVider('empties', $routes, $code, $title);
     }
 
-    protected function addBtnVider(
-        string $codemodal,
-        array $routes,
-        string $code,
-        string $title = 'Restaurer',
-    )
-    {
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
-            return;
-        }
-
-        $globals           = $this->twig->getGlobals();
-        $modal             = $globals['modal'] ?? [];
-        $modal[$codemodal] = true;
-        $this->twig->addGlobal('modal', $modal);
-        $this->add(
-            'btn-admin-header-'.$codemodal,
-            $title,
-            [
-                'is'       => 'link-btnadmin'.$codemodal,
-                'token'    => $token,
-                'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
-                'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
-            ]
-        );
-    }
-
     public function get(): array
     {
         return $this->bouton;
@@ -394,6 +366,34 @@ class AdminBtnSingleton
         $this->csrfTokenManager = $csrfTokenManager;
         $this->guardService     = $guardService;
         $this->init             = true;
+    }
+
+    protected function addBtnVider(
+        string $codemodal,
+        array $routes,
+        string $code,
+        string $title = 'Restaurer',
+    )
+    {
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
+            return;
+        }
+
+        $globals           = $this->twig->getGlobals();
+        $modal             = $globals['modal'] ?? [];
+        $modal[$codemodal] = true;
+        $this->twig->addGlobal('modal', $modal);
+        $this->add(
+            'btn-admin-header-'.$codemodal,
+            $title,
+            [
+                'is'       => 'link-btnadmin'.$codemodal,
+                'token'    => $token,
+                'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
+                'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+            ]
+        );
     }
 
     protected function classEntity($entity)

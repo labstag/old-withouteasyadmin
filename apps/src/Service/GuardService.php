@@ -58,13 +58,7 @@ class GuardService
 
     public function delete(): void
     {
-        $all    = $this->all();
-        $routes = [];
-        foreach (array_keys($all) as $name) {
-            $routes[] = $name;
-        }
-
-        $results = $this->getRepository(Route::class)->findLost($routes);
+        $results = $this->getLostRoute();
         foreach ($results as $route) {
             $this->entityManager->remove($route);
         }
@@ -135,13 +129,7 @@ class GuardService
 
     public function old()
     {
-        $all    = $this->all();
-        $routes = [];
-        foreach (array_keys($all) as $name) {
-            $routes[] = $name;
-        }
-
-        $results = $this->getRepository(Route::class)->findLost($routes);
+        $results = $this->getLostRoute();
         $data    = [];
         foreach ($results as $route) {
             $data[] = [$route];
@@ -251,6 +239,17 @@ class GuardService
         $stateUser   = ($entity instanceof RouteUser) ? $entity->isState() : false;
 
         return $stateGroupe || $stateUser;
+    }
+
+    private function getLostRoute()
+    {
+        $all    = $this->all();
+        $routes = [];
+        foreach (array_keys($all) as $name) {
+            $routes[] = $name;
+        }
+
+        return $this->getRepository(Route::class)->findLost($routes);
     }
 
     private function isRouteGroupe(

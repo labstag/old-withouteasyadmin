@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Service;
 
 use Psr\Log\LoggerInterface;
@@ -10,7 +11,6 @@ class ErrorService
         protected SessionService $sessionService
     )
     {
-
     }
 
     public function set($exception)

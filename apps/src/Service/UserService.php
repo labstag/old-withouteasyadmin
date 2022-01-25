@@ -41,22 +41,6 @@ class UserService
         return $user;
     }
 
-    protected function getRefgroupe(array $groupes, string $code): ?Groupe
-    {
-        $return = null;
-        foreach ($groupes as $groupe) {
-            if ($groupe->getCode() != $code) {
-                continue;
-            }
-
-            $return = $groupe;
-
-            break;
-        }
-
-        return $return;
-    }
-
     public function postLostPassword(array $post): void
     {
         if ('' === $post['value']) {
@@ -90,6 +74,22 @@ class UserService
 
                 break;
             }
+        }
+
+        return $return;
+    }
+
+    protected function getRefgroupe(array $groupes, string $code): ?Groupe
+    {
+        $return = null;
+        foreach ($groupes as $groupe) {
+            if ($groupe->getCode() != $code) {
+                continue;
+            }
+
+            $return = $groupe;
+
+            break;
         }
 
         return $return;

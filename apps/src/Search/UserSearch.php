@@ -2,7 +2,6 @@
 
 namespace Labstag\Search;
 
-use Labstag\Entity\Groupe;
 use Labstag\Lib\LibSearch;
 
 class UserSearch extends LibSearch

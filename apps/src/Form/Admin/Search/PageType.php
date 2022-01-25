@@ -5,15 +5,13 @@ namespace Labstag\Form\Admin\Search;
 use Labstag\Entity\Bookmark;
 use Labstag\Lib\SearchAbstractTypeLib;
 use Labstag\Search\PageSearch;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PageType extends SearchAbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

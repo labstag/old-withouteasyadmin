@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class TemplateController extends AdminControllerLib
 {
     /**
-     * @Route("/{id}/edit", name="admin_template_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_template_new", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_template_edit", methods={"GET", "POST"})
+     * @Route("/new", name="admin_template_new", methods={"GET", "POST"})
      */
     public function edit(
         AttachFormService $service,

@@ -20,11 +20,11 @@ class EmailUserController extends AdminControllerLib
 {
     /**
      * @Route(
-     *  "/{id}/edit",
-     *  name="admin_emailuser_edit",
-     *  methods={"GET","POST"}
+     *     "/{id}/edit",
+     *     name="admin_emailuser_edit",
+     *     methods={"GET", "POST"}
      * )
-     * @Route("/new", name="admin_emailuser_new", methods={"GET","POST"})
+     * @Route("/new", name="admin_emailuser_new", methods={"GET", "POST"})
      */
     public function edit(
         AttachFormService $service,

@@ -57,9 +57,9 @@ class Page implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children")
      * @ORM\JoinColumn(
-     *  name="parent_id",
-     *  referencedColumnName="id",
-     *  onDelete="SET NULL"
+     *     name="parent_id",
+     *     referencedColumnName="id",
+     *     onDelete="SET NULL"
      * )
      */
     private $parent;

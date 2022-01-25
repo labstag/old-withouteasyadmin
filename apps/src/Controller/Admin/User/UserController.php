@@ -20,8 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AdminControllerLib
 {
     /**
-     * @Route("/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_user_new", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_user_edit", methods={"GET", "POST"})
+     * @Route("/new", name="admin_user_new", methods={"GET", "POST"})
      */
     public function edit(
         AttachFormService $service,

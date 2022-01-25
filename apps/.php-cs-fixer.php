@@ -47,24 +47,12 @@ return $config
         'declare_equal_normalize' => true,
         // There must not be spaces around `declare` statement parentheses.
         'declare_parentheses' => true,
-        // Doctrine annotations must use configured operator for assignment in arrays.
-        'doctrine_annotation_array_assignment' => true,
-        // Doctrine annotations without arguments must use the configured syntax.
-        'doctrine_annotation_braces' => true,
-        // Doctrine annotations must be indented with four spaces.
-        'doctrine_annotation_indentation' => true,
-        // Fixes spaces in Doctrine annotations.
-        'doctrine_annotation_spaces' => true,
         // Replaces short-echo `<?=` with long format `<?php echo`/`<?php print` syntax, or vice-versa.
         'echo_tag_syntax' => true,
         // The keyword `elseif` should be used instead of `else if` so that all control keywords look like single words.
         'elseif' => true,
-        // Empty loop-body must be in configured style.
-        'empty_loop_body' => true,
         // PHP code MUST use only UTF-8 without BOM (remove BOM).
         'encoding' => true,
-        // Escape implicit backslashes in strings and heredocs to ease the understanding of which are special chars interpreted by PHP and which not.
-        'escape_implicit_backslashes' => true,
         // Add curly braces to indirect variables to make them clear to understand. Requires PHP >= 7.0.
         'explicit_indirect_variable' => true,
         // Converts implicit variables into explicit ones in double-quoted strings or heredoc syntax.
@@ -77,16 +65,10 @@ return $config
         'function_declaration' => true,
         // Ensure single space between function's argument and its typehint.
         'function_typehint_space' => true,
-        // Configured annotations should be omitted from PHPDoc.
-        'general_phpdoc_annotation_remove' => true,
         // Renames PHPDoc tags.
         'general_phpdoc_tag_rename' => true,
         // Imports or fully qualifies global classes/functions/constants.
         'global_namespace_import' => true,
-        // Add, replace or remove header comment.
-        'header_comment' => true,
-        // Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.
-        'heredoc_indentation' => true,
         // Include/Require and file path should be divided with a single space. File path should not be placed under brackets.
         'include' => true,
         // Pre- or post-increment and decrement operators should be used if possible.
@@ -115,8 +97,6 @@ return $config
         'method_argument_space' => true,
         // Method chaining MUST be properly indented. Method chaining with different levels of indentation is not supported.
         'method_chaining_indentation' => true,
-        // DocBlocks must start with two asterisks, multiline comments must start with a single asterisk, after the opening slash. Both must end with a single asterisk before the closing slash.
-        'multiline_comment_opening_closing' => true,
         // Forbid multi-line whitespace before the closing semicolon or move the semicolon to the new line for chained calls.
         'multiline_whitespace_before_semicolons' => true,
         // Function defined by PHP should be called using the correct casing.
@@ -155,8 +135,6 @@ return $config
         'no_mixed_echo_print' => true,
         // Operator `=>` should not be surrounded by multi-line whitespaces.
         'no_multiline_whitespace_around_double_arrow' => true,
-        // Properties MUST not be explicitly initialized with `null` except when they have a type declaration (PHP 7.4).
-        'no_null_property_initialization' => true,
         // Short cast `bool` using double exclamation mark should not be used.
         'no_short_bool_cast' => true,
         // Single-line whitespace before closing semicolon are prohibited.
@@ -189,40 +167,24 @@ return $config
         'no_unused_imports' => true,
         // There should not be useless `else` cases.
         'no_useless_else' => true,
-        // There should not be an empty `return` statement at the end of a function.
-        'no_useless_return' => true,
         // In array declaration, there MUST NOT be a whitespace before each comma.
         'no_whitespace_before_comma_in_array' => true,
         // Remove trailing whitespace at the end of blank lines.
         'no_whitespace_in_blank_line' => true,
         // Array index should always be written by using square braces.
         'normalize_index_brace' => true,
-        // Logical NOT operators (`!`) should have leading and trailing whitespaces.
-        'not_operator_with_space' => true,
-        // Logical NOT operators (`!`) should have one trailing whitespace.
-        'not_operator_with_successor_space' => true,
         // Adds or removes `?` before type declarations for parameters with a default `null` value.
         'nullable_type_declaration_for_default_null_value' => true,
         // There should not be space before or after object operators `->` and `?->`.
         'object_operator_without_whitespace' => true,
-        // Operators - when multiline - must always be at the beginning or at the end of the line.
-        'operator_linebreak' => true,
         // Orders the elements of classes/interfaces/traits.
         'ordered_class_elements' => ['sort_algorithm'=>'alpha'],
         // Ordering `use` statements.
         'ordered_imports' => true,
         // PHPUnit annotations should be a FQCNs including a root namespace.
         'php_unit_fqcn_annotation' => true,
-        // All PHPUnit test classes should be marked as internal.
-        'php_unit_internal_class' => true,
         // Enforce camel (or snake) case for PHPUnit test methods, following configuration.
         'php_unit_method_casing' => true,
-        // All PHPUnit test cases should have `@small`, `@medium` or `@large` annotation to enable run time limits.
-        'php_unit_size_class' => true,
-        // Adds a default `@coversNothing` annotation to PHPUnit test classes that have no `@covers*` annotation.
-        'php_unit_test_class_requires_covers' => true,
-        // PHPDoc should contain `@param` for all params.
-        'phpdoc_add_missing_param_annotation' => true,
         // All items of the given phpdoc tags must be either left-aligned or (by default) aligned vertically.
         'phpdoc_align' => true,
         // PHPDoc annotation descriptions should not be a sentence.
@@ -237,16 +199,10 @@ return $config
         'phpdoc_no_access' => true,
         // No alias PHPDoc tags should be used.
         'phpdoc_no_alias_tag' => true,
-        // `@return void` and `@return null` annotations should be omitted from PHPDoc.
-        'phpdoc_no_empty_return' => true,
         // `@package` and `@subpackage` annotations should be omitted from PHPDoc.
         'phpdoc_no_package' => true,
         // Classy that does not inherit must not have `@inheritdoc` tags.
         'phpdoc_no_useless_inheritdoc' => true,
-        // Annotations in PHPDoc should be ordered so that `@param` annotations come first, then `@throws` annotations, then `@return` annotations.
-        'phpdoc_order' => true,
-        // Order phpdoc tags by value.
-        'phpdoc_order_by_value' => true,
         // The type of `@return` annotations of methods returning a reference to itself must the configured one.
         'phpdoc_return_self_reference' => true,
         // Scalar types should always be written in the same form. `int` not `integer`, `bool` not `boolean`, `float` not `real` or `double`.
@@ -257,8 +213,6 @@ return $config
         'phpdoc_single_line_var_spacing' => true,
         // PHPDoc summary should end in either a full stop, exclamation mark, or question mark.
         'phpdoc_summary' => true,
-        // Fixes casing of PHPDoc tags.
-        'phpdoc_tag_casing' => true,
         // Forces PHPDoc tags to be either regular annotations or inline.
         'phpdoc_tag_type' => true,
         // Docblocks should only be used on structural elements.

@@ -9,7 +9,6 @@ use Labstag\Lib\DataFixtureLib;
 
 class LayoutFixtures extends DataFixtureLib implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         unset($manager);
@@ -34,30 +33,30 @@ class LayoutFixtures extends DataFixtureLib implements DependentFixtureInterface
     protected function addLayoutContent()
     {
         $content = <<<EOF
-        [header]
-        [main,aside]
-        [footer]
-        EOF;
+            [header]
+            [main,aside]
+            [footer]
+            EOF;
         $this->addLayout('content', $content);
     }
 
     protected function addLayoutHome()
     {
         $content = <<<EOF
-        [header]
-        [main]
-        [footer]
-        EOF;
+            [header]
+            [main]
+            [footer]
+            EOF;
         $this->addLayout('home', $content);
     }
 
     protected function addLayoutLanding()
     {
         $content = <<<EOF
-        [header]
-        [main]
-        [footer]
-        EOF;
+            [header]
+            [main]
+            [footer]
+            EOF;
         $this->addLayout('landing', $content);
     }
 }

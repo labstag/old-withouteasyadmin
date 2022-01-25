@@ -31,6 +31,30 @@ class EntityVoter extends Voter
 {
     public const NBR_CHAPTER = 2;
 
+    protected function canEditEdito(Edito $entity, TokenInterface $token): bool
+    {
+        unset($token);
+        $state = $entity->getState();
+
+        return !(in_array($state, ['publie', 'rejete']));
+    }
+
+    protected function canEditMemo(Memo $entity, TokenInterface $token): bool
+    {
+        unset($token);
+        $state = $entity->getState();
+
+        return !(in_array($state, ['publie', 'rejete']));
+    }
+
+    protected function canMoveHistory(History $entity, TokenInterface $token): bool
+    {
+        unset($token);
+        $chapters = $entity->getChapters();
+
+        return count($chapters) >= self::NBR_CHAPTER;
+    }
+
     protected function supports($attribute, $subject): bool
     {
         unset($attribute);
@@ -63,6 +87,7 @@ class EntityVoter extends Voter
         foreach ($entities as $entity) {
             if ($subject::class == $entity) {
                 $status = true;
+
                 break;
             }
         }
@@ -91,29 +116,5 @@ class EntityVoter extends Voter
         }
 
         return $state;
-    }
-
-    protected function canEditMemo(Memo $entity, TokenInterface $token): bool
-    {
-        unset($token);
-        $state = $entity->getState();
-
-        return !(in_array($state, ['publie', 'rejete']));
-    }
-
-    protected function canMoveHistory(History $entity, TokenInterface $token): bool
-    {
-        unset($token);
-        $chapters = $entity->getChapters();
-
-        return count($chapters) >= self::NBR_CHAPTER;
-    }
-
-    protected function canEditEdito(Edito $entity, TokenInterface $token): bool
-    {
-        unset($token);
-        $state = $entity->getState();
-
-        return !(in_array($state, ['publie', 'rejete']));
     }
 }

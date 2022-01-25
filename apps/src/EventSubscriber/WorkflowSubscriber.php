@@ -8,7 +8,6 @@ use Symfony\Component\Workflow\Event\Event;
 
 class WorkflowSubscriber extends EventSubscriberLib
 {
-
     public static function getSubscribedEvents(): array
     {
         return [

@@ -22,79 +22,8 @@ abstract class SearchAbstractTypeLib extends AbstractType
     {
     }
 
-    protected function addRefCategory($builder)
-    {
-        $builder->add(
-            'refcategory',
-            SearchableType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('refcategory.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('refcategory.help', [], 'admin.search.form'),
-                'multiple' => false,
-                'class'    => Category::class,
-                'route'    => 'api_search_category',
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('refcategory.placeholder', [], 'admin.search.form'),
-                ],
-            ]
-        );
-    }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
-    }
-
-    protected function addRefUser($builder)
-    {
-        $builder->add(
-            'refuser',
-            SearchableType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('refuser.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('refuser.help', [], 'admin.search.form'),
-                'multiple' => false,
-                'class'    => User::class,
-                'route'    => 'api_search_user',
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('refuser.placeholder', [], 'admin.search.form'),
-                ],
-            ]
-        );
-    }
-
-    protected function addName($builder)
-    {
-        $builder->add(
-            'name',
-            TextType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('name.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('name.help', [], 'admin.search.form'),
-                'attr'     => ['placeholder' => $this->translator->trans('.name.placeholder', [], 'admin.search.form')],
-            ]
-        );
-    }
-
-    protected function addPublished($builder)
-    {
-        $builder->add(
-            'published',
-            DateType::class,
-            [
-                'required' => false,
-                'widget'   => 'single_text',
-                'label'    => $this->translator->trans('published.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('published.help', [], 'admin.search.form'),
-            ]
-        );
-    }
-
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -130,6 +59,77 @@ abstract class SearchAbstractTypeLib extends AbstractType
             ]
         );
         unset($options);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return '';
+    }
+
+    protected function addName($builder)
+    {
+        $builder->add(
+            'name',
+            TextType::class,
+            [
+                'required' => false,
+                'label'    => $this->translator->trans('name.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('name.help', [], 'admin.search.form'),
+                'attr'     => ['placeholder' => $this->translator->trans('.name.placeholder', [], 'admin.search.form')],
+            ]
+        );
+    }
+
+    protected function addPublished($builder)
+    {
+        $builder->add(
+            'published',
+            DateType::class,
+            [
+                'required' => false,
+                'widget'   => 'single_text',
+                'label'    => $this->translator->trans('published.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('published.help', [], 'admin.search.form'),
+            ]
+        );
+    }
+
+    protected function addRefCategory($builder)
+    {
+        $builder->add(
+            'refcategory',
+            SearchableType::class,
+            [
+                'required' => false,
+                'label'    => $this->translator->trans('refcategory.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('refcategory.help', [], 'admin.search.form'),
+                'multiple' => false,
+                'class'    => Category::class,
+                'route'    => 'api_search_category',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('refcategory.placeholder', [], 'admin.search.form'),
+                ],
+            ]
+        );
+    }
+
+    protected function addRefUser($builder)
+    {
+        $builder->add(
+            'refuser',
+            SearchableType::class,
+            [
+                'required' => false,
+                'label'    => $this->translator->trans('refuser.label', [], 'admin.search.form'),
+                'help'     => $this->translator->trans('refuser.help', [], 'admin.search.form'),
+                'multiple' => false,
+                'class'    => User::class,
+                'route'    => 'api_search_user',
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('refuser.placeholder', [], 'admin.search.form'),
+                ],
+            ]
+        );
     }
 
     protected function showState(

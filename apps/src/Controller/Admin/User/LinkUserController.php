@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class LinkUserController extends AdminControllerLib
 {
     /**
-     * @Route("/{id}/edit", name="admin_linkuser_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_linkuser_new", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_linkuser_edit", methods={"GET", "POST"})
+     * @Route("/new", name="admin_linkuser_new", methods={"GET", "POST"})
      */
     public function edit(
         AttachFormService $service,

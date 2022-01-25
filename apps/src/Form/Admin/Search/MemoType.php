@@ -3,11 +3,8 @@
 namespace Labstag\Form\Admin\Search;
 
 use Labstag\Entity\Memo;
-use Labstag\Entity\User;
-use Labstag\FormType\SearchableType;
 use Labstag\Lib\SearchAbstractTypeLib;
 use Labstag\Search\MemoSearch;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class MemoType extends SearchAbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

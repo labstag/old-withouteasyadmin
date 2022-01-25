@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FrontController extends ControllerLib
 {
     /**
-     * @Route("/{slug}", name="front", requirements={"slug"=".+"}, defaults={"slug"=""}, priority=-1)
+     * @Route("/{slug}", name="front", requirements={"slug" = ".+"}, defaults={"slug" = ""}, priority=-1)
      */
     public function front(
         string $slug,

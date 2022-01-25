@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Uploadable()
+ * @Uploadable
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
 {
@@ -29,10 +29,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=AddressUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=AddressUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $addressUsers;
@@ -44,10 +44,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=Edito::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=Edito::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $editos;
@@ -59,10 +59,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=EmailUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=EmailUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $emailUsers;
@@ -82,30 +82,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=LinkUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=LinkUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $linkUsers;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=Memo::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=Memo::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $noteInternes;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=OauthConnectUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=OauthConnectUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $oauthConnectUsers;
@@ -118,10 +118,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=PhoneUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=PhoneUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $phoneUsers;

@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class LibelleController extends AdminControllerLib
 {
     /**
-     * @Route("/{id}/edit", name="admin_libelle_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_libelle_new", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_libelle_edit", methods={"GET", "POST"})
+     * @Route("/new", name="admin_libelle_new", methods={"GET", "POST"})
      */
     public function edit(
         AttachFormService $service,

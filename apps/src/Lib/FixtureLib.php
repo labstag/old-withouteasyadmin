@@ -158,6 +158,17 @@ abstract class FixtureLib extends Fixture
         ];
     }
 
+    protected function loadForeach($number, $method)
+    {
+        $faker     = $this->setFaker();
+        $statesTab = $this->getStatesData();
+        for ($index = 0; $index < $number; ++$index) {
+            $stateId = array_rand($statesTab);
+            $states  = $statesTab[$stateId];
+            $this->{$method}($faker, $index, $states);
+        }
+    }
+
     protected function loadForeachUser($number, $method)
     {
         $faker = $this->setFaker();
@@ -166,17 +177,6 @@ abstract class FixtureLib extends Fixture
             $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
             $user      = $this->getReference('user_'.$indexUser);
             $this->{$method}($faker, $user);
-        }
-    }
-
-    protected function loadForeach($number, $method)
-    {
-        $faker     = $this->setFaker();
-        $statesTab = $this->getStatesData();
-        for ($index = 0; $index < $number; ++$index) {
-            $stateId = array_rand($statesTab);
-            $states  = $statesTab[$stateId];
-            $this->$method($faker, $index, $states);
         }
     }
 

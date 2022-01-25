@@ -2,7 +2,6 @@
 
 namespace Labstag\Search;
 
-use DateTime;
 use Labstag\Lib\LibSearch;
 
 class ChapterSearch extends LibSearch

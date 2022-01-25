@@ -2,7 +2,6 @@
 
 namespace Labstag\DataFixtures;
 
-use DateTime;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;

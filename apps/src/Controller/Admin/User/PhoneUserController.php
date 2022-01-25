@@ -20,11 +20,11 @@ class PhoneUserController extends AdminControllerLib
 {
     /**
      * @Route(
-     *  "/{id}/edit",
-     *  name="admin_phoneuser_edit",
-     *  methods={"GET","POST"}
+     *     "/{id}/edit",
+     *     name="admin_phoneuser_edit",
+     *     methods={"GET", "POST"}
      * )
-     * @Route("/new", name="admin_phoneuser_new", methods={"GET","POST"})
+     * @Route("/new", name="admin_phoneuser_new", methods={"GET", "POST"})
      */
     public function edit(
         AttachFormService $service,

@@ -1,4 +1,5 @@
 <?php
+
 namespace Labstag\Service;
 
 use Symfony\Component\HttpFoundation\RequestStack;

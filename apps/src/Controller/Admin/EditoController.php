@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class EditoController extends AdminControllerLib
 {
     /**
-     * @Route("/{id}/edit", name="admin_edito_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_edito_new", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_edito_edit", methods={"GET", "POST"})
+     * @Route("/new", name="admin_edito_new", methods={"GET", "POST"})
      */
     public function edit(
         AttachFormService $service,

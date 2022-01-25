@@ -20,7 +20,6 @@ use Labstag\Service\HistoryService;
 
 class EntitySubscriber extends EventSubscriberLib
 {
-
     public static function getSubscribedEvents(): array
     {
         return [

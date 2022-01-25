@@ -5,7 +5,6 @@ namespace Labstag\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
-use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
 
 class UserFixtures extends FixtureLib implements DependentFixtureInterface

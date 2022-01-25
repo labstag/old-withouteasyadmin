@@ -20,11 +20,11 @@ class AddressUserController extends AdminControllerLib
 {
     /**
      * @Route(
-     *  "/{id}/edit",
-     *  name="admin_addressuser_edit",
-     *  methods={"GET","POST"}
+     *     "/{id}/edit",
+     *     name="admin_addressuser_edit",
+     *     methods={"GET", "POST"}
      * )
-     * @Route("/new", name="admin_addressuser_new", methods={"GET","POST"})
+     * @Route("/new", name="admin_addressuser_new", methods={"GET", "POST"})
      */
     public function edit(
         AttachFormService $service,

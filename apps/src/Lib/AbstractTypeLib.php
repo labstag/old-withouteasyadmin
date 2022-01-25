@@ -22,51 +22,6 @@ abstract class AbstractTypeLib extends AbstractType
     {
     }
 
-    protected function setMeta($builder)
-    {
-        $meta = [
-            'metaDescription' => [
-                'label' => $this->translator->trans('metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('metaDescription.help', [], 'admin.form'),
-                'attr'  => [
-                    'placeholder' => $this->translator->trans('metaDescription.placeholder', [], 'admin.form'),
-                ],
-            ],
-            'metaKeywords'    => [
-                'label' => $this->translator->trans('metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('metaKeywords.help', [], 'admin.form'),
-            ],
-        ];
-        $this->setMetas($builder, $meta);
-    }
-
-    protected function setContent($builder)
-    {
-        $builder->add(
-            'content',
-            WysiwygType::class,
-            [
-                'label' => $this->translator->trans('content.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('content.help', [], 'admin.form'),
-            ]
-        );
-    }
-
-    protected function addPublished($builder)
-    {
-        $builder->add(
-            'published',
-            DateTimeType::class,
-            [
-                'label'        => $this->translator->trans('published.label', [], 'admin.form'),
-                'help'         => $this->translator->trans('published.help', [], 'admin.form'),
-                'date_widget'  => 'single_text',
-                'time_widget'  => 'single_text',
-                'with_seconds' => true,
-            ]
-        );
-    }
-
     protected function addEmails($builder, $options, $repository)
     {
         if (!(isset($options['data']) && !is_null($options['data']->getId()))) {
@@ -128,6 +83,21 @@ abstract class AbstractTypeLib extends AbstractType
         );
     }
 
+    protected function addPublished($builder)
+    {
+        $builder->add(
+            'published',
+            DateTimeType::class,
+            [
+                'label'        => $this->translator->trans('published.label', [], 'admin.form'),
+                'help'         => $this->translator->trans('published.help', [], 'admin.form'),
+                'date_widget'  => 'single_text',
+                'time_widget'  => 'single_text',
+                'with_seconds' => true,
+            ]
+        );
+    }
+
     protected function setCollectionType($builder, $tab)
     {
         foreach ($tab as $key => $type) {
@@ -142,6 +112,18 @@ abstract class AbstractTypeLib extends AbstractType
                 ]
             );
         }
+    }
+
+    protected function setContent($builder)
+    {
+        $builder->add(
+            'content',
+            WysiwygType::class,
+            [
+                'label' => $this->translator->trans('content.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('content.help', [], 'admin.form'),
+            ]
+        );
     }
 
     protected function setInputText($builder, $tab)
@@ -159,6 +141,24 @@ abstract class AbstractTypeLib extends AbstractType
                 ]
             );
         }
+    }
+
+    protected function setMeta($builder)
+    {
+        $meta = [
+            'metaDescription' => [
+                'label' => $this->translator->trans('metaDescription.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('metaDescription.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('metaDescription.placeholder', [], 'admin.form'),
+                ],
+            ],
+            'metaKeywords'    => [
+                'label' => $this->translator->trans('metaKeywords.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('metaKeywords.help', [], 'admin.form'),
+            ],
+        ];
+        $this->setMetas($builder, $meta);
     }
 
     protected function setMetas($builder, $metas)

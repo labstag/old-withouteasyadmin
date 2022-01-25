@@ -5,7 +5,6 @@ namespace Labstag\Form\Admin;
 use Labstag\Entity\GeoCode;
 use Labstag\FormType\FlagCountryType;
 use Labstag\Lib\AbstractTypeLib;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

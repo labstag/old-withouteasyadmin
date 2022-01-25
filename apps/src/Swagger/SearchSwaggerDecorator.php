@@ -19,7 +19,7 @@ final class SearchSwaggerDecorator implements NormalizerInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function normalize(
         $object,
@@ -37,22 +37,34 @@ final class SearchSwaggerDecorator implements NormalizerInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function supportsNormalization($data, ?string $format = null): bool
     {
         return $this->decorated->supportsNormalization($data, $format);
     }
 
-    private function setParameters()
+    private function getResponses()
     {
         return [
-            [
-                'name'        => 'name',
-                'in'          => 'query',
-                'required'    => true,
-                'description' => 'name',
-                'schema'      => ['type' => 'string'],
+            Response::HTTP_OK => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            'type'       => 'object',
+                            'properties' => [
+                                'id'   => [
+                                    'type'    => 'string',
+                                    'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
+                                ],
+                                'name' => [
+                                    'type'    => 'string',
+                                    'example' => 'name',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ];
     }
@@ -81,31 +93,6 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/search/group']['get'] = $statsEndpoint;
     }
 
-    private function getResponses()
-    {
-        return [
-            Response::HTTP_OK => [
-                'content' => [
-                    'application/json' => [
-                        'schema' => [
-                            'type'       => 'object',
-                            'properties' => [
-                                'id'   => [
-                                    'type'    => 'string',
-                                    'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
-                                ],
-                                'name' => [
-                                    'type'    => 'string',
-                                    'example' => 'name',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-    }
-
     private function setLibelles(&$docs)
     {
         $statsEndpoint = [
@@ -116,6 +103,19 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         ];
 
         $docs['paths']['/api/search/libelle']['get'] = $statsEndpoint;
+    }
+
+    private function setParameters()
+    {
+        return [
+            [
+                'name'        => 'name',
+                'in'          => 'query',
+                'required'    => true,
+                'description' => 'name',
+                'schema'      => ['type' => 'string'],
+            ],
+        ];
     }
 
     private function setUsers(&$docs)

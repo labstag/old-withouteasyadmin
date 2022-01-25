@@ -2,8 +2,6 @@
 
 namespace Labstag\Search;
 
-use Labstag\Entity\Category;
-use Labstag\Entity\User;
 use Labstag\Lib\LibSearch;
 
 class BookmarkSearch extends LibSearch

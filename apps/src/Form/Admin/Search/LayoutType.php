@@ -4,14 +4,13 @@ namespace Labstag\Form\Admin\Search;
 
 use Labstag\Lib\SearchAbstractTypeLib;
 use Labstag\Search\LayoutSearch;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LayoutType extends SearchAbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

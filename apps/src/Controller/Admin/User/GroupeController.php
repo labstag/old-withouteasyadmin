@@ -20,8 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class GroupeController extends AdminControllerLib
 {
     /**
-     * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_groupuser_new", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET", "POST"})
+     * @Route("/new", name="admin_groupuser_new", methods={"GET", "POST"})
      */
     public function edit(
         AttachFormService $service,

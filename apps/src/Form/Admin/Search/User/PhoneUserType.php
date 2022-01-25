@@ -3,19 +3,16 @@
 namespace Labstag\Form\Admin\Search\User;
 
 use Labstag\Entity\PhoneUser;
-use Labstag\Entity\User;
 use Labstag\FormType\FlagCountryType;
-use Labstag\FormType\SearchableType;
 use Labstag\Lib\SearchAbstractTypeLib;
 use Labstag\Search\User\PhoneUserSearch;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PhoneUserType extends SearchAbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

@@ -29,8 +29,8 @@ use Symfony\Component\Security\Core\Security;
 class BookmarkController extends AdminControllerLib
 {
     /**
-     * @Route("/{id}/edit", name="admin_bookmark_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_bookmark_new", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_bookmark_edit", methods={"GET", "POST"})
+     * @Route("/new", name="admin_bookmark_new", methods={"GET", "POST"})
      */
     public function edit(
         AttachFormService $service,
@@ -50,7 +50,7 @@ class BookmarkController extends AdminControllerLib
     }
 
     /**
-     * @Route("/import", name="admin_bookmark_import", methods={"GET","POST"})
+     * @Route("/import", name="admin_bookmark_import", methods={"GET", "POST"})
      */
     public function import(
         Request $request,

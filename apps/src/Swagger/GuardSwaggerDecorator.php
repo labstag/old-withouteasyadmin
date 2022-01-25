@@ -19,7 +19,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function normalize(
         $object,
@@ -38,32 +38,11 @@ final class GuardSwaggerDecorator implements NormalizerInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function supportsNormalization($data, ?string $format = null): bool
     {
         return $this->decorated->supportsNormalization($data, $format);
-    }
-
-    private function setResponses()
-    {
-        return [
-            Response::HTTP_OK => [
-                'content' => [
-                    'application/json' => [
-                        'schema' => [
-                            'type'       => 'object',
-                            'properties' => [
-                                'ok' => [
-                                    'type'    => 'boolean',
-                                    'example' => true,
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
     }
 
     private function setGroup(&$docs)
@@ -200,6 +179,27 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         ];
 
         $docs['paths']['/api/guard/setuser/{route}/{user}']['post'] = $statsEndpoint;
+    }
+
+    private function setResponses()
+    {
+        return [
+            Response::HTTP_OK => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            'type'       => 'object',
+                            'properties' => [
+                                'ok' => [
+                                    'type'    => 'boolean',
+                                    'example' => true,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
     private function setReturnUserGroup()

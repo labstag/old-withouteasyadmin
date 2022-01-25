@@ -19,7 +19,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function normalize(
         $object,
@@ -43,7 +43,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function supportsNormalization($data, ?string $format = null): bool
     {
@@ -60,27 +60,6 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         ];
 
         $docs['paths']['/api/actions/delete/{entity}/{id}']['delete'] = $statsEndpoint;
-    }
-
-    private function setResponses()
-    {
-        return [
-            Response::HTTP_OK => [
-                'content' => [
-                    'application/json' => [
-                        'schema' => [
-                            'type'       => 'object',
-                            'properties' => [
-                                'isvalid' => [
-                                    'type'    => 'boolean',
-                                    'example' => true,
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
     }
 
     private function setDeleties(&$docs)
@@ -178,19 +157,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/emptyall']['delete'] = $statsEndpoint;
     }
 
-    private function setRestore(&$docs)
-    {
-        $statsEndpoint = [
-            'summary'    => 'restore.',
-            'tags'       => ['Actions'],
-            'parameters' => $this->setParametersDeleteDestroyRestore(),
-            'responses'  => $this->setResponses(),
-        ];
-
-        $docs['paths']['/api/actions/restore/{entity}/{id}']['post'] = $statsEndpoint;
-    }
-
-    private function setParametersRestoreDestroy()
+    private function setParametersDeleteDestroyRestore()
     {
         return [
             [
@@ -201,10 +168,10 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
                 'schema'      => ['type' => 'string'],
             ],
             [
-                'name'        => 'entities',
+                'name'        => 'id',
                 'in'          => 'query',
                 'required'    => true,
-                'description' => 'entities',
+                'description' => 'id',
                 'schema'      => ['type' => 'string'],
             ],
             [
@@ -237,7 +204,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setParametersDeleteDestroyRestore()
+    private function setParametersRestoreDestroy()
     {
         return [
             [
@@ -248,10 +215,10 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
                 'schema'      => ['type' => 'string'],
             ],
             [
-                'name'        => 'id',
+                'name'        => 'entities',
                 'in'          => 'query',
                 'required'    => true,
-                'description' => 'id',
+                'description' => 'entities',
                 'schema'      => ['type' => 'string'],
             ],
             [
@@ -264,6 +231,38 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         ];
     }
 
+    private function setResponses()
+    {
+        return [
+            Response::HTTP_OK => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            'type'       => 'object',
+                            'properties' => [
+                                'isvalid' => [
+                                    'type'    => 'boolean',
+                                    'example' => true,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    private function setRestore(&$docs)
+    {
+        $statsEndpoint = [
+            'summary'    => 'restore.',
+            'tags'       => ['Actions'],
+            'parameters' => $this->setParametersDeleteDestroyRestore(),
+            'responses'  => $this->setResponses(),
+        ];
+
+        $docs['paths']['/api/actions/restore/{entity}/{id}']['post'] = $statsEndpoint;
+    }
 
     private function setRestories(&$docs)
     {

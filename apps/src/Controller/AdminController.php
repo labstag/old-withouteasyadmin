@@ -17,7 +17,6 @@ use Labstag\Service\AttachFormService;
 use Labstag\Service\DataService;
 use Labstag\Service\TrashService;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,8 +35,7 @@ class AdminController extends AdminControllerLib
      * @Route("/export", name="admin_export")
      */
     public function export(
-        DataService $dataService,
-        LoggerInterface $logger
+        DataService $dataService
     ): RedirectResponse
     {
         $config = $dataService->getConfig();
@@ -77,7 +75,7 @@ class AdminController extends AdminControllerLib
     }
 
     /**
-     * @Route("/param", name="admin_param", methods={"GET","POST"})
+     * @Route("/param", name="admin_param", methods={"GET", "POST"})
      */
     public function param(
         Request $request,
@@ -140,7 +138,7 @@ class AdminController extends AdminControllerLib
     }
 
     /**
-     * @Route("/profil", name="admin_profil", methods={"GET","POST"})
+     * @Route("/profil", name="admin_profil", methods={"GET", "POST"})
      */
     public function profil(
         AttachFormService $service,

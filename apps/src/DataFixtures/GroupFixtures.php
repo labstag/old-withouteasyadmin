@@ -9,7 +9,6 @@ use Labstag\Lib\DataFixtureLib;
 
 class GroupFixtures extends DataFixtureLib implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         unset($manager);

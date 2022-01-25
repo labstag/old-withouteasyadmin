@@ -14,26 +14,6 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $this->setQuery($queryBuilder, $get);
     }
 
-    protected function setQueryTitle(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['title']) || empty($get['title'])) {
-            return;
-        }
-
-        $query->andWhere('a.title LIKE :title');
-        $query->setParameter('title', '%'.$get['title'].'%');
-    }
-
-    protected function setQueryPublished(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['published']) || empty($get['published'])) {
-            return;
-        }
-
-        $query->andWhere('DATE(a.published) = :published');
-        $query->setParameter('published', $get['published']);
-    }
-
     /**
      * Get random data.
      */
@@ -77,17 +57,6 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $query;
     }
 
-    protected function setQueryRefUser(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['refuser']) || empty($get['refuser'])) {
-            return;
-        }
-
-        $query->leftJoin('a.refuser', 'u');
-        $query->andWhere('u.id = :refuser');
-        $query->setParameter('refuser', $get['refuser']);
-    }
-
     protected function setQueryCountry(QueryBuilder &$query, array $get)
     {
         if (!isset($get['country']) || empty($get['country'])) {
@@ -96,6 +65,36 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 
         $query->andWhere('a.country LIKE :country');
         $query->setParameter('country', '%'.$get['country'].'%');
+    }
+
+    protected function setQueryEtape(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['etape']) || empty($get['etape'])) {
+            return;
+        }
+
+        $query->andWhere('a.state LIKE :state');
+        $query->setParameter('state', '%'.$get['etape'].'%');
+    }
+
+    protected function setQueryName(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['name']) || empty($get['name'])) {
+            return;
+        }
+
+        $query->andWhere('a.name LIKE :name');
+        $query->setParameter('name', '%'.$get['name'].'%');
+    }
+
+    protected function setQueryPublished(QueryBuilder &$query, array $get)
+    {
+        if (!isset($get['published']) || empty($get['published'])) {
+            return;
+        }
+
+        $query->andWhere('DATE(a.published) = :published');
+        $query->setParameter('published', $get['published']);
     }
 
     protected function setQueryRefCategory(QueryBuilder &$query, array $get)
@@ -109,23 +108,24 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $query->setParameter('refcategory', $get['refcategory']);
     }
 
-    protected function setQueryName(QueryBuilder &$query, array $get)
+    protected function setQueryRefUser(QueryBuilder &$query, array $get)
     {
-        if (!isset($get['name']) || empty($get['name'])) {
+        if (!isset($get['refuser']) || empty($get['refuser'])) {
             return;
         }
 
-        $query->andWhere('a.name LIKE :name');
-        $query->setParameter('name', '%'.$get['name'].'%');
+        $query->leftJoin('a.refuser', 'u');
+        $query->andWhere('u.id = :refuser');
+        $query->setParameter('refuser', $get['refuser']);
     }
 
-    protected function setQueryEtape(QueryBuilder &$query, array $get)
+    protected function setQueryTitle(QueryBuilder &$query, array $get)
     {
-        if (!isset($get['etape']) || empty($get['etape'])) {
+        if (!isset($get['title']) || empty($get['title'])) {
             return;
         }
 
-        $query->andWhere('a.state LIKE :state');
-        $query->setParameter('state', '%'.$get['etape'].'%');
+        $query->andWhere('a.title LIKE :title');
+        $query->setParameter('title', '%'.$get['title'].'%');
     }
 }

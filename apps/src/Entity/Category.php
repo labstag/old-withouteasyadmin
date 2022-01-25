@@ -45,9 +45,9 @@ class Category implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="children", cascade={"persist"})
      * @ORM\JoinColumn(
-     *  name="parent_id",
-     *  referencedColumnName="id",
-     *  onDelete="SET NULL"
+     *     name="parent_id",
+     *     referencedColumnName="id",
+     *     onDelete="SET NULL"
      * )
      */
     private $parent;

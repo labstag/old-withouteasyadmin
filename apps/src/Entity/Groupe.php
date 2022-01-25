@@ -47,10 +47,10 @@ class Groupe implements Stringable
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=User::class,
-     *  mappedBy="refgroupe",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=User::class,
+     *     mappedBy="refgroupe",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $users;

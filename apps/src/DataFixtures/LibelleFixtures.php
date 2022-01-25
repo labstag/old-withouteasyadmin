@@ -10,7 +10,6 @@ use Labstag\Lib\DataFixtureLib;
 
 class LibelleFixtures extends DataFixtureLib implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         unset($manager);

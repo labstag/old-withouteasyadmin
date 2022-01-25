@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class ChapterController extends AdminControllerLib
 {
     /**
-     * @Route("/{id}/edit", name="admin_chapter_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_chapter_new", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_chapter_edit", methods={"GET", "POST"})
+     * @Route("/new", name="admin_chapter_new", methods={"GET", "POST"})
      */
     public function edit(
         AttachFormService $service,
