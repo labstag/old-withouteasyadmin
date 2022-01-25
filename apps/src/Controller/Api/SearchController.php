@@ -19,34 +19,20 @@ class SearchController extends ApiControllerLib
 {
     /**
      * @Route("/category", name="api_search_category")
-     */
-    public function category(Request $request): Response
-    {
-        return $this->showData($request, Category::class, 'findName');
-    }
-
-    /**
      * @Route("/group", name="api_search_group")
-     */
-    public function groupe(Request $request): Response
-    {
-        return $this->showData($request, Groupe::class, 'findName');
-    }
-
-    /**
      * @Route("/libelle", name="api_search_postlibelle")
+     * @Route("/user", name="api_search_user")
      */
     public function libelle(Request $request): JsonResponse
     {
-        return $this->showData($request, Libelle::class, 'findName');
-    }
+        $attributes = $request->attributes->all();
+        $route      = $attributes['_route'];
+        $entityName = ($route == 'api_search_category') ? Category::class : null;
+        $entityName = ($route == 'api_search_group') ? Groupe::class : null;
+        $entityName = ($route == 'api_search_postlibelle') ? Libelle::class : null;
 
-    /**
-     * @Route("/user", name="api_search_user")
-     */
-    public function user(Request $request): Response
-    {
-        return $this->showData($request, User::class, 'findUserName');
+        $function = ($route == 'api_search_user') ? 'findUserName' : 'findName';
+        return $this->showData($request, $entityName, $function);
     }
 
     private function showData($request, $entity, $method)
