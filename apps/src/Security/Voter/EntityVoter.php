@@ -61,7 +61,7 @@ class EntityVoter extends Voter
 
         $status = false;
         foreach ($entities as $entity) {
-            if ($subject::class== $entity) {
+            if ($subject::class == $entity) {
                 $status = true;
                 break;
             }
@@ -74,19 +74,16 @@ class EntityVoter extends Voter
     {
         $state = true;
         if ($subject instanceof Edito) {
-            
             $state = match ($attribute) {
                 'edit' => $this->canEditEdito($subject, $token),
                 default => true,
             };
-        }elseif($subject instanceof History) {
-            
+        } elseif ($subject instanceof History) {
             $state = match ($attribute) {
                 'move' => $this->canMoveHistory($subject, $token),
                 default => true,
             };
-        }elseif($subject instanceof Memo) {
-            
+        } elseif ($subject instanceof Memo) {
             $state = match ($attribute) {
                 'edit' => $this->canEditMemo($subject, $token),
                 default => true,

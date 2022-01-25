@@ -345,8 +345,8 @@ class AdminBtnSingleton
             return;
         }
 
-        $globals          = $this->twig->getGlobals();
-        $modal            = $globals['modal'] ?? [];
+        $globals           = $this->twig->getGlobals();
+        $modal             = $globals['modal'] ?? [];
         $modal[$codemodal] = true;
         $this->twig->addGlobal('modal', $modal);
         $this->add(
