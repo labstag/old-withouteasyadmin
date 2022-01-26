@@ -2,7 +2,6 @@
 
 namespace Labstag\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Memo;
@@ -34,36 +33,5 @@ class MemoRepository extends ServiceEntityRepositoryLib
         $query->setMaxResults(1);
 
         return $query->getQuery()->getResult();
-    }
-
-    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
-    {
-        $this->setQueryEtape($query, $get);
-        $this->setQueryDateStart($query, $get);
-        $this->setQueryDateEnd($query, $get);
-        $this->setQueryTitle($query, $get);
-        $this->setQueryRefUser($query, $get);
-
-        return $query;
-    }
-
-    protected function setQueryDateEnd(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['dateEnd']) || empty($get['dateEnd'])) {
-            return;
-        }
-
-        $query->andWhere('DATE(a.dateEnd) = :dateEnd');
-        $query->setParameter('dateEnd', $get['dateEnd']);
-    }
-
-    protected function setQueryDateStart(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['dateStart']) || empty($get['dateStart'])) {
-            return;
-        }
-
-        $query->andWhere('DATE(a.dateStart) = :dateStart');
-        $query->setParameter('dateStart', $get['dateStart']);
     }
 }

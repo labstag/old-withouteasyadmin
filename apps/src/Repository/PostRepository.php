@@ -2,7 +2,6 @@
 
 namespace Labstag\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Post;
@@ -118,16 +117,5 @@ class PostRepository extends ServiceEntityRepositoryLib
         );
 
         return $query->getQuery();
-    }
-
-    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
-    {
-        $this->setQueryEtape($query, $get);
-        $this->setQueryPublished($query, $get);
-        $this->setQueryTitle($query, $get);
-        $this->setQueryRefUser($query, $get);
-        $this->setQueryRefCategory($query, $get);
-
-        return $query;
     }
 }

@@ -11,7 +11,6 @@ use Omines\OAuth2\Client\Provider\Gitlab;
 use Rudolf\OAuth2\Client\Provider\Reddit;
 use Stevenmaguire\OAuth2\Client\Provider\Bitbucket;
 use Stevenmaguire\OAuth2\Client\Provider\Dropbox;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Vertisan\OAuth2\Client\Provider\TwitchHelix;

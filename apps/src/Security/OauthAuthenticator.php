@@ -57,7 +57,7 @@ class OauthAuthenticator extends AbstractAuthenticator
         // @var Request $request
         $request = $this->requestStack->getCurrentRequest();
 
-        $this->request      = $request;
+        $this->request = $request;
 
         $attributes      = $this->request->attributes;
         $oauthCode       = $this->setOauthCode($attributes);

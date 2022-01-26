@@ -2,7 +2,6 @@
 
 namespace Labstag\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Edito;
@@ -33,15 +32,5 @@ class EditoRepository extends ServiceEntityRepositoryLib
         $query->setMaxResults(1);
 
         return $query->getQuery()->getOneOrNullResult();
-    }
-
-    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
-    {
-        $this->setQueryEtape($query, $get);
-        $this->setQueryPublished($query, $get);
-        $this->setQueryTitle($query, $get);
-        $this->setQueryRefUser($query, $get);
-
-        return $query;
     }
 }

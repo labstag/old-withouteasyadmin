@@ -2,7 +2,6 @@
 
 namespace Labstag\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\EmailUser;
@@ -32,13 +31,5 @@ class EmailUserRepository extends EmailRepository
         );
 
         return $query->getQuery()->getResult();
-    }
-
-    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
-    {
-        $this->setQueryEtape($query, $get);
-        $this->setQueryRefUser($query, $get);
-
-        return $query;
     }
 }
