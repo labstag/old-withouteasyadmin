@@ -17,13 +17,17 @@ class UserRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, User::class);
     }
 
-    public function findOauth(array $data, $name)
+    public function findOauth(string $identity, $name)
     {
-        unset($data, $name);
         $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where('u.username=:username');
+        $query        = $queryBuilder->leftJoin('u.oauthConnectUsers', 'o');
+        $query->where('o.name = :name');
+        $query->andWhere('o.identity=:identity');
         $query->setParameters(
-            ['username' => 'superadmin']
+            [
+                'name'     => $name,
+                'identity' => $identity
+            ]
         );
 
         return $query->getQuery()->getOneOrNullResult();
