@@ -26,7 +26,7 @@ class UserRepository extends ServiceEntityRepositoryLib
         $query->setParameters(
             [
                 'name'     => $name,
-                'identity' => $identity
+                'identity' => $identity,
             ]
         );
 

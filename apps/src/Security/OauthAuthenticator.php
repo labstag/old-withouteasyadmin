@@ -90,10 +90,10 @@ class OauthAuthenticator extends AbstractAuthenticator
             );
             // @var mixed $userOauth
             $userOauth = $provider->getResourceOwner($tokenProvider);
-            $data = $userOauth->toArray();
-            $client = $attributes['_route_params']['oauthCode'];
-            $identity = $this->oauthService->getIdentity($data, $client);
-            $user = $this->getRepository(User::class)->findOauth(
+            $data      = $userOauth->toArray();
+            $client    = $attributes['_route_params']['oauthCode'];
+            $identity  = $this->oauthService->getIdentity($data, $client);
+            $user      = $this->getRepository(User::class)->findOauth(
                 $identity,
                 $client
             );
