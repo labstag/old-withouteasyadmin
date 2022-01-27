@@ -6,6 +6,7 @@
 parameters:
   file_directory: '%kernel.project_dir%/public/uploads'
   metatags: ['disclaimer', 'meta', 'tarteaucitron', 'format_datetime']
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -17,11 +18,10 @@ services:
     Labstag\:
         resource: '../src/'
         exclude:
-            - "../src/Reader/"
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
+            - "../src/Reader/"
 
   # controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class
@@ -82,3 +82,5 @@ services:
     Labstag\Reader\UploadAnnotationReader:
       arguments: ["@annotations.reader"]
 
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones

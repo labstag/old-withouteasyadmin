@@ -59,8 +59,8 @@ jobs:
         run: make linter phpcs-onlyerror
       - name: linter PHP MD
         run: make linter phpmd
-      - name: linter PHPMND
-        run: make linter phpmnd
+      # - name: linter PHPMND
+      #   run: make linter phpmnd
       - name: Add assets
         run: make assets
       - name: Test lancement bootstrap

@@ -226,7 +226,7 @@ else ifeq ($(COMMANDS_ARGS),rector)
 else ifeq ($(COMMANDS_ARGS),phpmd)
 	$(PHP_EXEC) -d error_reporting=24575 phpmd.phar src,features/bootstrap ansi phpmd.xml
 else ifeq ($(COMMANDS_ARGS),phpmnd)
-	${COMPOSER_EXEC} run phpmnd
+	# ${COMPOSER_EXEC} run phpmnd
 else ifeq ($(COMMANDS_ARGS),phpstan)
 	${PHP_EXEC} phpstan.phar analyse src
 else ifeq ($(COMMANDS_ARGS),twig)

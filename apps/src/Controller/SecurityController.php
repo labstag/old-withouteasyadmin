@@ -20,14 +20,12 @@ use Labstag\Service\ErrorService;
 use Labstag\Service\OauthService;
 use Labstag\Service\UserService;
 use League\OAuth2\Client\Provider\AbstractProvider;
-use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use LogicException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Security;
@@ -303,6 +301,7 @@ class SecurityController extends ControllerLib
     public function oauthConnectCheck(
         Request $request,
         string $oauthCode,
+        UsageTrackingTokenStorage $tokenStorage,
         ErrorService $errorService,
         OauthService $oauthService,
         UserService $userService
@@ -342,30 +341,23 @@ class SecurityController extends ControllerLib
             );
 
             $session->remove('oauth2state');
-            // @var UsageTrackingTokenStorage $tokenStorage
-            $tokenStorage = $this->get('security.token_storage');
+            $userOauth = $provider->getResourceOwner($tokenProvider);
             // @var TokenInterface $token
-            $token = $tokenStorage->getToken();
-            if (!$token instanceof AnonymousToken) {
-                // @var ResourceOwnerInterface $userOauth
-                $userOauth = $provider->getResourceOwner($tokenProvider);
-                // @var User $user
-                $user = $token->getUser();
-                if (!$user instanceof User) {
-                    $this->sessionService->flashBagAdd(
-                        'warning',
-                        $this->translator->trans('security.user.connect.fail')
-                    );
-
-                    return $this->redirect($referer);
-                }
-
-                $userService->addOauthToUser(
-                    $oauthCode,
-                    $user,
-                    $userOauth
+            $user = $tokenStorage->getToken()->getUser();
+            if (!$user instanceof User) {
+                $this->sessionService->flashBagAdd(
+                    'warning',
+                    $this->translator->trans('security.user.connect.fail')
                 );
+
+                return $this->redirect($referer);
             }
+
+            $userService->addOauthToUser(
+                $oauthCode,
+                $user,
+                $userOauth
+            );
 
             $session->remove('referer');
             $session->remove('link');
