@@ -19,14 +19,14 @@ use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
 {
-    public const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
+    public final const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
 
-    public const ERROR_CONTROLLER = [
+    public final const ERROR_CONTROLLER = [
         'error_controller',
         'error_controller::preview',
     ];
 
-    public const LABSTAG_CONTROLLER = '/(Labstag)/';
+    public final const LABSTAG_CONTROLLER = '/(Labstag)/';
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
@@ -63,7 +63,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $favicon    = $this->getRepository(Attachment::class)->getFavicon();
         $controller = $event->getRequest()->attributes->get('_controller');
         $matches    = [];
-        preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
+        preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
         if (0 == count($matches) && !in_array($controller, self::ERROR_CONTROLLER)) {
             return;
         }
@@ -75,7 +75,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
         $this->setMetaTitleGlobal($config);
-        preg_match(self::ADMIN_CONTROLLER, $controller, $matches);
+        preg_match(self::ADMIN_CONTROLLER, (string) $controller, $matches);
         $state = (0 == count($matches) || !in_array($controller, self::ERROR_CONTROLLER));
         $this->setConfigGlobal($state, $config, $request);
         if (!$state) {

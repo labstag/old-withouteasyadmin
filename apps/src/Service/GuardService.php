@@ -14,16 +14,16 @@ use Symfony\Component\Workflow\Registry;
 
 class GuardService
 {
-    public const GROUPE_ENABLE = ['visiteur'];
+    public final const GROUPE_ENABLE = ['visiteur'];
 
-    public const REGEX = [
+    public final const REGEX = [
         '/(SecurityController)/',
         '/(web_profiler.controller)/',
         '/(error_controller)/',
         '/(api_platform)/',
     ];
 
-    public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
+    public final const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     public function __construct(
         protected RouterInterface $router,
@@ -269,7 +269,7 @@ class GuardService
         $data     = $all[$route];
         $defaults = $data->getDefaults();
         $matches  = [];
-        preg_match(self::REGEX_CONTROLLER_ADMIN, $defaults['_controller'], $matches);
+        preg_match(self::REGEX_CONTROLLER_ADMIN, (string) $defaults['_controller'], $matches);
 
         return !(0 != count($matches) && 'visiteur' == $groupe->getCode());
     }

@@ -13,24 +13,12 @@ use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/user/email")
- */
+#[Route(path: '/admin/user/email')]
 class EmailUserController extends AdminControllerLib
 {
-    /**
-     * @Route(
-     *     "/{id}/edit",
-     *     name="admin_emailuser_edit",
-     *     methods={"GET", "POST"}
-     * )
-     * @Route("/new", name="admin_emailuser_new", methods={"GET", "POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?EmailUser $emailUser,
-        EmailUserRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_emailuser_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_emailuser_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?EmailUser $emailUser, EmailUserRequestHandler $requestHandler) : Response
     {
         return $this->form(
             $service,
@@ -39,35 +27,30 @@ class EmailUserController extends AdminControllerLib
             !is_null($emailUser) ? $emailUser : new EmailUser()
         );
     }
-
     /**
-     * @Route("/trash", name="admin_emailuser_trash", methods={"GET"})
-     * @Route("/", name="admin_emailuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(): Response
+    #[Route(path: '/trash', name: 'admin_emailuser_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_emailuser_index', methods: ['GET'])]
+    public function indexOrTrash() : Response
     {
         return $this->listOrTrash(
             EmailUser::class,
             'admin/user/email_user/index.html.twig'
         );
     }
-
     /**
-     * @Route("/{id}", name="admin_emailuser_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_emailuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        EmailUser $emailUser
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_emailuser_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_emailuser_preview', methods: ['GET'])]
+    public function showOrPreview(EmailUser $emailUser) : Response
     {
         return $this->renderShowOrPreview(
             $emailUser,
             'admin/user/email_user/show.html.twig'
         );
     }
-
     protected function getUrlAdmin(): array
     {
         return [
@@ -84,7 +67,6 @@ class EmailUserController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
-
     protected function searchForm(): array
     {
         return [
@@ -92,7 +74,6 @@ class EmailUserController extends AdminControllerLib
             'data' => new EmailUserSearch(),
         ];
     }
-
     protected function setBreadcrumbsPageAdminEmailuser(): array
     {
         return [
@@ -102,7 +83,6 @@ class EmailUserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminEmailuserEdit(): array
     {
         return [
@@ -112,7 +92,6 @@ class EmailUserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminEmailuserNew(): array
     {
         return [
@@ -122,7 +101,6 @@ class EmailUserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminEmailuserPreview(): array
     {
         return [
@@ -136,7 +114,6 @@ class EmailUserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminEmailuserShow(): array
     {
         return [
@@ -146,7 +123,6 @@ class EmailUserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminEmailuserTrash(): array
     {
         return [
@@ -156,7 +132,6 @@ class EmailUserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

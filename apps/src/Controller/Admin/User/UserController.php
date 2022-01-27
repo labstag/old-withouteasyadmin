@@ -14,20 +14,12 @@ use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/user")
- */
+#[Route(path: '/admin/user')]
 class UserController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_user_edit", methods={"GET", "POST"})
-     * @Route("/new", name="admin_user_new", methods={"GET", "POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?User $user,
-        UserRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_user_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_user_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?User $user, UserRequestHandler $requestHandler) : Response
     {
         return $this->form(
             $service,
@@ -37,7 +29,6 @@ class UserController extends AdminControllerLib
             'admin/user/form.html.twig'
         );
     }
-
     public function getUrlAdmin(): array
     {
         return [
@@ -55,13 +46,8 @@ class UserController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
-
-    /**
-     * @Route("/{id}/guard", name="admin_user_guard")
-     */
-    public function guard(
-        User $user
-    ): Response
+    #[Route(path: '/{id}/guard', name: 'admin_user_guard')]
+    public function guard(User $user) : Response
     {
         $this->btnInstance()->addBtnList(
             'admin_user_index',
@@ -74,7 +60,6 @@ class UserController extends AdminControllerLib
                 'id' => $user->getId(),
             ]
         );
-
         $this->btnInstance()->addBtnEdit(
             'admin_user_edit',
             'Editer',
@@ -91,7 +76,6 @@ class UserController extends AdminControllerLib
 
             return $this->redirectToRoute('admin_user_index');
         }
-
         $workflows = $this->getRepository(Workflow::class)->findBy(
             [],
             [
@@ -99,7 +83,6 @@ class UserController extends AdminControllerLib
                 'transition' => 'ASC',
             ]
         );
-
         return $this->render(
             'admin/guard/user.html.twig',
             [
@@ -109,37 +92,31 @@ class UserController extends AdminControllerLib
             ]
         );
     }
-
     /**
-     * @Route("/trash", name="admin_user_trash", methods={"GET"})
-     * @Route("/", name="admin_user_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(): Response
+    #[Route(path: '/trash', name: 'admin_user_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_user_index', methods: ['GET'])]
+    public function indexOrTrash() : Response
     {
         return $this->listOrTrash(
             User::class,
             'admin/user/index.html.twig'
         );
     }
-
     /**
-     * @Route("/{id}", name="admin_user_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_user_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        User $user
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_user_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_user_preview', methods: ['GET'])]
+    public function showOrPreview(User $user) : Response
     {
         $this->modalAttachmentDelete();
-
         return $this->renderShowOrPreview(
             $user,
             'admin/user/show.html.twig'
         );
     }
-
     protected function searchForm(): array
     {
         return [
@@ -147,7 +124,6 @@ class UserController extends AdminControllerLib
             'data' => new UserSearch(),
         ];
     }
-
     protected function setBreadcrumbsPageAdminUser(): array
     {
         return [
@@ -157,7 +133,6 @@ class UserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminUserEdit(): array
     {
         return [
@@ -167,7 +142,6 @@ class UserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminUserGuard(): array
     {
         return [
@@ -177,7 +151,6 @@ class UserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminUserNew(): array
     {
         return [
@@ -187,7 +160,6 @@ class UserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminUserPreview(): array
     {
         return [
@@ -201,7 +173,6 @@ class UserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminUserShow(): array
     {
         return [
@@ -211,7 +182,6 @@ class UserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminUserTrash(): array
     {
         return [
@@ -221,7 +191,6 @@ class UserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

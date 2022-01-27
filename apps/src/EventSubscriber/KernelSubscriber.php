@@ -7,18 +7,18 @@ use tidy;
 
 class KernelSubscriber implements EventSubscriberInterface
 {
-    public const API_CONTROLLER = '/(Api)/';
+    public final const API_CONTROLLER = '/(Api)/';
 
-    public const CLIENTNUMBER = 400;
+    public final const CLIENTNUMBER = 400;
 
-    public const ERROR_CONTROLLER = [
+    public final const ERROR_CONTROLLER = [
         'error_controller',
         'error_controller::preview',
     ];
 
-    public const LABSTAG_CONTROLLER = '/(Labstag)/';
+    public final const LABSTAG_CONTROLLER = '/(Labstag)/';
 
-    public const TAGS = [
+    public final const TAGS = [
         'workflow-action',
         'link-show',
         'link-guard',
@@ -89,8 +89,8 @@ class KernelSubscriber implements EventSubscriberInterface
         $response   = $event->getResponse();
         $request    = $event->getRequest();
         $controller = $request->attributes->get('_controller');
-        preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
-        preg_match(self::API_CONTROLLER, $controller, $apis);
+        preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
+        preg_match(self::API_CONTROLLER, (string) $controller, $apis);
         if (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER) || 0 != count($apis)) {
             return;
         }

@@ -15,7 +15,7 @@ class HistoryService
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        private Environment $twig
+        private readonly Environment $twig
     )
     {
     }

@@ -16,23 +16,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/history")
- */
+#[Route(path: '/admin/history')]
 class HistoryController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_history_edit", methods={"GET", "POST"})
-     * @Route("/new", name="admin_history_new", methods={"GET", "POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?History $history,
-        HistoryRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_history_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_history_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?History $history, HistoryRequestHandler $requestHandler) : Response
     {
         $this->modalAttachmentDelete();
-
         return $this->form(
             $service,
             $requestHandler,
@@ -41,23 +32,19 @@ class HistoryController extends AdminControllerLib
             'admin/history/form.html.twig'
         );
     }
-
     /**
-     * @Route("/trash", name="admin_history_trash", methods={"GET"})
-     * @Route("/", name="admin_history_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(): Response
+    #[Route(path: '/trash', name: 'admin_history_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_history_index', methods: ['GET'])]
+    public function indexOrTrash() : Response
     {
         return $this->listOrTrash(
             History::class,
             'admin/history/index.html.twig',
         );
     }
-
-    /**
-     * @Route("/{id}/pdf", name="admin_history_pdf", methods={"GET"})
-     */
+    #[Route(path: '/{id}/pdf', name: 'admin_history_pdf', methods: ['GET'])]
     public function pdf(HistoryService $service, History $history)
     {
         $service->process(
@@ -65,28 +52,19 @@ class HistoryController extends AdminControllerLib
             $history->getId(),
             true
         );
-
         $filename = $service->getFilename();
         if (empty($filename)) {
             throw $this->createNotFoundException('Pas de fichier');
         }
-
         $filename = str_replace(
             $this->getParameter('kernel.project_dir').'/public/',
             '/',
             $filename
         );
-
         return $this->redirect($filename);
     }
-
-    /**
-     * @Route("/{id}/move", name="admin_history_move", methods={"GET", "POST"})
-     */
-    public function position(
-        History $history,
-        Request $request
-    )
+    #[Route(path: '/{id}/move', name: 'admin_history_move', methods: ['GET', 'POST'])]
+    public function position(History $history, Request $request)
     {
         $currentUrl = $this->generateUrl(
             'admin_history_move',
@@ -94,16 +72,13 @@ class HistoryController extends AdminControllerLib
                 'id' => $history->getId(),
             ]
         );
-
         if ('POST' == $request->getMethod()) {
             $this->setPositionEntity($request, Chapter::class);
         }
-
         $this->btnInstance()->addBtnList(
             'admin_history_index',
             'Liste',
         );
-
         $this->btnInstance()->add(
             'btn-admin-save-move',
             'Enregistrer',
@@ -112,28 +87,23 @@ class HistoryController extends AdminControllerLib
                 'href' => $currentUrl,
             ]
         );
-
         return $this->render(
             'admin/history/move.html.twig',
             ['history' => $history]
         );
     }
-
     /**
-     * @Route("/{id}", name="admin_history_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_history_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        History $history
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_history_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_history_preview', methods: ['GET'])]
+    public function showOrPreview(History $history) : Response
     {
         return $this->renderShowOrPreview(
             $history,
             'admin/history/show.html.twig'
         );
     }
-
     protected function getUrlAdmin(): array
     {
         return [
@@ -151,7 +121,6 @@ class HistoryController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
-
     protected function searchForm(): array
     {
         return [
@@ -159,7 +128,6 @@ class HistoryController extends AdminControllerLib
             'data' => new HistorySearch(),
         ];
     }
-
     protected function setBreadcrumbsPageAdminHistory(): array
     {
         return [
@@ -169,7 +137,6 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminHistoryEdit(): array
     {
         return [
@@ -179,7 +146,6 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminHistoryMove(): array
     {
         return [
@@ -189,7 +155,6 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminHistoryNew(): array
     {
         return [
@@ -199,7 +164,6 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminHistoryPreview(): array
     {
         return [
@@ -213,7 +177,6 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminHistoryShow(): array
     {
         return [
@@ -223,7 +186,6 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminHistoryTrash(): array
     {
         return [
@@ -233,7 +195,6 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

@@ -13,23 +13,14 @@ use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/category")
- */
+#[Route(path: '/admin/category')]
 class CategoryController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_category_edit", methods={"GET", "POST"})
-     * @Route("/new", name="admin_category_new", methods={"GET", "POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?Category $category,
-        CategoryRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_category_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_category_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?Category $category, CategoryRequestHandler $requestHandler) : Response
     {
         $this->modalAttachmentDelete();
-
         return $this->form(
             $service,
             $requestHandler,
@@ -37,35 +28,30 @@ class CategoryController extends AdminControllerLib
             !is_null($category) ? $category : new Category()
         );
     }
-
     /**
-     * @Route("/trash", name="admin_category_trash", methods={"GET"})
-     * @Route("/", name="admin_category_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(): Response
+    #[Route(path: '/trash', name: 'admin_category_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_category_index', methods: ['GET'])]
+    public function indexOrTrash() : Response
     {
         return $this->listOrTrash(
             Category::class,
             'admin/category/index.html.twig'
         );
     }
-
     /**
-     * @Route("/{id}", name="admin_category_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_category_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Category $category
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_category_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_category_preview', methods: ['GET'])]
+    public function showOrPreview(Category $category) : Response
     {
         return $this->renderShowOrPreview(
             $category,
             'admin/category/show.html.twig'
         );
     }
-
     protected function getMethodsList(): array
     {
         return [
@@ -73,7 +59,6 @@ class CategoryController extends AdminControllerLib
             'all'   => 'findAllParentForAdmin',
         ];
     }
-
     protected function getUrlAdmin(): array
     {
         return [
@@ -90,7 +75,6 @@ class CategoryController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
-
     protected function searchForm(): array
     {
         return [
@@ -98,7 +82,6 @@ class CategoryController extends AdminControllerLib
             'data' => new CategorySearch(),
         ];
     }
-
     protected function setBreadcrumbsPageAdminCategory(): array
     {
         return [
@@ -108,7 +91,6 @@ class CategoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminCategoryEdit(): array
     {
         return [
@@ -118,7 +100,6 @@ class CategoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminCategoryNew(): array
     {
         return [
@@ -128,7 +109,6 @@ class CategoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminCategoryPreview(): array
     {
         return [
@@ -142,7 +122,6 @@ class CategoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminCategoryShow(): array
     {
         return [
@@ -152,7 +131,6 @@ class CategoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminCategoryTrash(): array
     {
         return [
@@ -162,7 +140,6 @@ class CategoryController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

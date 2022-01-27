@@ -26,7 +26,7 @@ abstract class LibSearch
                         $year,
                         $month,
                         $day,
-                    ] = explode('-', $value);
+                    ] = explode('-', (string) $value);
                     $date->setDate($year, $month, $day);
                     $this->{$key} = $date;
 

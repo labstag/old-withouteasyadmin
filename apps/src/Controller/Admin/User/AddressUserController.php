@@ -13,24 +13,12 @@ use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/user/adresse")
- */
+#[Route(path: '/admin/user/adresse')]
 class AddressUserController extends AdminControllerLib
 {
-    /**
-     * @Route(
-     *     "/{id}/edit",
-     *     name="admin_addressuser_edit",
-     *     methods={"GET", "POST"}
-     * )
-     * @Route("/new", name="admin_addressuser_new", methods={"GET", "POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?AddressUser $addressUser,
-        AddressUserRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_addressuser_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_addressuser_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?AddressUser $addressUser, AddressUserRequestHandler $requestHandler) : Response
     {
         return $this->form(
             $service,
@@ -39,35 +27,30 @@ class AddressUserController extends AdminControllerLib
             !is_null($addressUser) ? $addressUser : new AddressUser()
         );
     }
-
     /**
-     * @Route("/trash", name="admin_addressuser_trash", methods={"GET"})
-     * @Route("/", name="admin_addressuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(): Response
+    #[Route(path: '/trash', name: 'admin_addressuser_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_addressuser_index', methods: ['GET'])]
+    public function indexOrTrash() : Response
     {
         return $this->listOrTrash(
             AddressUser::class,
             'admin/user/address_user/index.html.twig'
         );
     }
-
     /**
-     * @Route("/{id}", name="admin_addressuser_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_addressuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        AddressUser $addressUser
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_addressuser_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_addressuser_preview', methods: ['GET'])]
+    public function showOrPreview(AddressUser $addressUser) : Response
     {
         return $this->renderShowOrPreview(
             $addressUser,
             'admin/user/address_user/show.html.twig'
         );
     }
-
     protected function getUrlAdmin(): array
     {
         return [
@@ -83,7 +66,6 @@ class AddressUserController extends AdminControllerLib
             'trash'   => 'admin_addressuser_trash',
         ];
     }
-
     protected function searchForm(): array
     {
         return [
@@ -91,7 +73,6 @@ class AddressUserController extends AdminControllerLib
             'data' => new AddressUserSearch(),
         ];
     }
-
     protected function setBreadcrumbsPageAdminAddressuser(): array
     {
         return [
@@ -101,7 +82,6 @@ class AddressUserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminAddressuserEdit(): array
     {
         return [
@@ -111,7 +91,6 @@ class AddressUserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminAddressuserNew(): array
     {
         return [
@@ -121,7 +100,6 @@ class AddressUserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminAddressuserPreview(): array
     {
         return [
@@ -135,7 +113,6 @@ class AddressUserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminAddressuserShow(): array
     {
         return [
@@ -145,7 +122,6 @@ class AddressUserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminAddressuserTrash(): array
     {
         return [
@@ -155,7 +131,6 @@ class AddressUserController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

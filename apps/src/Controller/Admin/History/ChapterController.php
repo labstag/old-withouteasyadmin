@@ -13,23 +13,14 @@ use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/chapter")
- */
+#[Route(path: '/admin/chapter')]
 class ChapterController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_chapter_edit", methods={"GET", "POST"})
-     * @Route("/new", name="admin_chapter_new", methods={"GET", "POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?Chapter $chapter,
-        ChapterRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_chapter_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_chapter_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?Chapter $chapter, ChapterRequestHandler $requestHandler) : Response
     {
         $this->modalAttachmentDelete();
-
         return $this->form(
             $service,
             $requestHandler,
@@ -38,35 +29,30 @@ class ChapterController extends AdminControllerLib
             'admin/chapter/form.html.twig'
         );
     }
-
     /**
-     * @Route("/trash", name="admin_chapter_trash", methods={"GET"})
-     * @Route("/", name="admin_chapter_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(): Response
+    #[Route(path: '/trash', name: 'admin_chapter_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_chapter_index', methods: ['GET'])]
+    public function indexOrTrash() : Response
     {
         return $this->listOrTrash(
             Chapter::class,
             'admin/chapter/index.html.twig',
         );
     }
-
     /**
-     * @Route("/{id}", name="admin_chapter_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_chapter_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Chapter $chapter
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_chapter_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_chapter_preview', methods: ['GET'])]
+    public function showOrPreview(Chapter $chapter) : Response
     {
         return $this->renderShowOrPreview(
             $chapter,
             'admin/chapter/show.html.twig'
         );
     }
-
     protected function getUrlAdmin(): array
     {
         return [
@@ -83,7 +69,6 @@ class ChapterController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
-
     protected function searchForm(): array
     {
         return [
@@ -91,7 +76,6 @@ class ChapterController extends AdminControllerLib
             'data' => new ChapterSearch(),
         ];
     }
-
     protected function setBreadcrumbsPageAdminChapter(): array
     {
         return [
@@ -101,7 +85,6 @@ class ChapterController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminChapterEdit(): array
     {
         return [
@@ -111,7 +94,6 @@ class ChapterController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminChapterNew(): array
     {
         return [
@@ -121,7 +103,6 @@ class ChapterController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminChapterPreview(): array
     {
         return [
@@ -135,7 +116,6 @@ class ChapterController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminChapterShow(): array
     {
         return [
@@ -145,7 +125,6 @@ class ChapterController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminChapterTrash(): array
     {
         return [
@@ -155,7 +134,6 @@ class ChapterController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

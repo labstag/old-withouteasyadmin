@@ -84,7 +84,7 @@ class HistoryTemplatePage extends TemplatePageLib
                         [
                             $historySlug,
                             $chapterSlug,
-                        ] = explode('/', $search[1]);
+                        ] = explode('/', (string) $search[1]);
 
                         return $this->chapter($historySlug, $chapterSlug);
                     }

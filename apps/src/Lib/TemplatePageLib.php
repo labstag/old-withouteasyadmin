@@ -72,7 +72,7 @@ abstract class TemplatePageLib
         $case   = '';
         $search = [];
         foreach ($regex as $key => $value) {
-            preg_match($key, $slug, $matches);
+            preg_match($key, (string) $slug, $matches);
             if (0 != count($matches)) {
                 $search = $matches;
                 $case   = $value;

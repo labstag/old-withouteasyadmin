@@ -13,20 +13,12 @@ use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/layout")
- */
+#[Route(path: '/admin/layout')]
 class LayoutController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_layout_edit", methods={"GET", "POST"})
-     * @Route("/new", name="admin_layout_new", methods={"GET", "POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?Layout $layout,
-        LayoutRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_layout_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_layout_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?Layout $layout, LayoutRequestHandler $requestHandler) : Response
     {
         return $this->form(
             $service,
@@ -35,35 +27,30 @@ class LayoutController extends AdminControllerLib
             !is_null($layout) ? $layout : new Layout()
         );
     }
-
     /**
-     * @Route("/trash", name="admin_layout_trash", methods={"GET"})
-     * @Route("/", name="admin_layout_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(): Response
+    #[Route(path: '/trash', name: 'admin_layout_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_layout_index', methods: ['GET'])]
+    public function indexOrTrash() : Response
     {
         return $this->listOrTrash(
             Layout::class,
             'admin/layout/index.html.twig'
         );
     }
-
     /**
-     * @Route("/{id}", name="admin_layout_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_layout_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Layout $layout
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_layout_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_layout_preview', methods: ['GET'])]
+    public function showOrPreview(Layout $layout) : Response
     {
         return $this->renderShowOrPreview(
             $layout,
             'admin/layout/show.html.twig'
         );
     }
-
     protected function getUrlAdmin(): array
     {
         return [
@@ -79,7 +66,6 @@ class LayoutController extends AdminControllerLib
             'trash'   => 'admin_layout_trash',
         ];
     }
-
     protected function searchForm(): array
     {
         return [
@@ -87,7 +73,6 @@ class LayoutController extends AdminControllerLib
             'data' => new LayoutSearch(),
         ];
     }
-
     protected function setBreadcrumbsPageAdminTemplace(): array
     {
         return [
@@ -97,7 +82,6 @@ class LayoutController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminTemplaceEdit(): array
     {
         return [
@@ -107,7 +91,6 @@ class LayoutController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminTemplaceNew(): array
     {
         return [
@@ -117,7 +100,6 @@ class LayoutController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminTemplacePreview(): array
     {
         return [
@@ -131,7 +113,6 @@ class LayoutController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminTemplaceShow(): array
     {
         return [
@@ -141,7 +122,6 @@ class LayoutController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminTemplaceTrash(): array
     {
         return [
@@ -151,7 +131,6 @@ class LayoutController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

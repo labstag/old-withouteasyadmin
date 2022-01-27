@@ -14,37 +14,24 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
-/**
- * @Route("/api/guard")
- */
+#[Route(path: '/api/guard')]
 class GuardController extends ApiControllerLib
 {
-    /**
-     * @Route("/groups/{groupe}", name="api_guard_group")
-     */
-    public function groupe(Groupe $groupe): JsonResponse
+    #[Route(path: '/groups/{groupe}', name: 'api_guard_group')]
+    public function groupe(Groupe $groupe) : JsonResponse
     {
         return $this->getRefgroupe($this->getRepository(RouteGroupe::class), $groupe);
     }
-
-    /**
-     * @Route("/groups", name="api_guard_groups")
-     */
-    public function groupes(): JsonResponse
+    #[Route(path: '/groups', name: 'api_guard_groups')]
+    public function groupes() : JsonResponse
     {
         return $this->getRefgroupe($this->getRepository(RouteGroupe::class));
     }
-
     /**
-     * @Route("/setgroup/{route}/{groupe}", name="api_guard_setgroup")
-     *
      * @return Response
      */
-    public function setgroup(
-        string $route,
-        string $groupe,
-        RouteGroupeRequestHandler $routeGroupeRH
-    ): JsonResponse
+    #[Route(path: '/setgroup/{route}/{groupe}', name: 'api_guard_setgroup')]
+    public function setgroup(string $route, string $groupe, RouteGroupeRequestHandler $routeGroupeRH) : JsonResponse
     {
         $post   = $this->requeststack->getCurrentRequest()->request->all();
         $data   = ['ok' => false];
@@ -55,7 +42,6 @@ class GuardController extends ApiControllerLib
 
             return new JsonResponse($data);
         }
-
         $groupeId  = $groupe->getId();
         $routeId   = $route->getId();
         $csrfToken = new CsrfToken(
@@ -67,7 +53,6 @@ class GuardController extends ApiControllerLib
 
             return new JsonResponse($data);
         }
-
         $routeGroupe = $this->getRepository(RouteGroupe::class)->findOneBy(
             [
                 'refgroupe' => $groupe,
@@ -79,25 +64,17 @@ class GuardController extends ApiControllerLib
             $routeGroupe->setRefGroupe($groupe);
             $routeGroupe->setRefRoute($route);
         }
-
         $old = clone $routeGroupe;
         $routeGroupe->setState($post['state']);
         $routeGroupeRH->handle($old, $routeGroupe);
         $data['ok'] = true;
-
         return new JsonResponse($data);
     }
-
     /**
-     * @Route("/setuser/{route}/{user}", name="api_guard_setuser", methods={"POST"})
-     *
      * @return Response
      */
-    public function setuser(
-        string $route,
-        string $user,
-        RouteUserRequestHandler $routeUserRH
-    ): JsonResponse
+    #[Route(path: '/setuser/{route}/{user}', name: 'api_guard_setuser', methods: ['POST'])]
+    public function setuser(string $route, string $user, RouteUserRequestHandler $routeUserRH) : JsonResponse
     {
         $data  = ['ok' => false];
         $post  = $this->requeststack->getCurrentRequest()->request->all();
@@ -108,7 +85,6 @@ class GuardController extends ApiControllerLib
 
             return new JsonResponse($data);
         }
-
         $userId    = $user->getId();
         $routeId   = $route->getId();
         $csrfToken = new CsrfToken(
@@ -120,7 +96,6 @@ class GuardController extends ApiControllerLib
 
             return new JsonResponse($data);
         }
-
         $routeUser = $this->getRepository(RouteUser::class)->findOneBy(
             [
                 'refuser'  => $user,
@@ -132,23 +107,17 @@ class GuardController extends ApiControllerLib
             $routeUser->setRefuser($user);
             $routeUser->setRefRoute($route);
         }
-
         $old = clone $routeUser;
         $routeUser->setState($post['state']);
         $routeUserRH->handle($old, $routeUser);
         $data['ok'] = true;
-
         return new JsonResponse($data);
     }
-
     /**
-     * @Route("/users/{user}", name="api_guard_user")
-     *
      * @return Response
      */
-    public function user(
-        User $user
-    ): JsonResponse
+    #[Route(path: '/users/{user}', name: 'api_guard_user')]
+    public function user(User $user) : JsonResponse
     {
         $data    = [
             'groups' => [],
@@ -161,7 +130,6 @@ class GuardController extends ApiControllerLib
                 'route' => $row->getRefroute()->getName(),
             ];
         }
-
         $results = $this->getRepository(RouteUser::class)->findEnableByUser($user);
         foreach ($results as $row) {
             // @var RouteUser $row
@@ -169,10 +137,8 @@ class GuardController extends ApiControllerLib
                 'route' => $row->getRefroute()->getName(),
             ];
         }
-
         return new JsonResponse($data);
     }
-
     private function getRefgroupe($routeGroupeRepo, ?Groupe $groupe = null): JsonResponse
     {
         $results = $routeGroupeRepo->findEnableByGroupe($groupe);

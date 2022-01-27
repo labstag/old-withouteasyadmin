@@ -13,27 +13,14 @@ use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/memo")
- */
+#[Route(path: '/admin/memo')]
 class MemoController extends AdminControllerLib
 {
-    /**
-     * @Route(
-     *     "/{id}/edit",
-     *     name="admin_memo_edit",
-     *     methods={"GET", "POST"}
-     * )
-     * @Route("/new", name="admin_memo_new", methods={"GET", "POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?Memo $noteInterne,
-        MemoRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_memo_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_memo_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?Memo $noteInterne, MemoRequestHandler $requestHandler) : Response
     {
         $this->modalAttachmentDelete();
-
         return $this->form(
             $service,
             $requestHandler,
@@ -42,35 +29,30 @@ class MemoController extends AdminControllerLib
             'admin/memo/form.html.twig'
         );
     }
-
     /**
-     * @Route("/trash", name="admin_memo_trash", methods={"GET"})
-     * @Route("/", name="admin_memo_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(): Response
+    #[Route(path: '/trash', name: 'admin_memo_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_memo_index', methods: ['GET'])]
+    public function indexOrTrash() : Response
     {
         return $this->listOrTrash(
             Memo::class,
             'admin/memo/index.html.twig',
         );
     }
-
     /**
-     * @Route("/{id}", name="admin_memo_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_memo_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Memo $noteInterne
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_memo_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_memo_preview', methods: ['GET'])]
+    public function showOrPreview(Memo $noteInterne) : Response
     {
         return $this->renderShowOrPreview(
             $noteInterne,
             'admin/memo/show.html.twig'
         );
     }
-
     protected function getUrlAdmin(): array
     {
         return [
@@ -87,7 +69,6 @@ class MemoController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
-
     protected function searchForm(): array
     {
         return [
@@ -95,7 +76,6 @@ class MemoController extends AdminControllerLib
             'data' => new MemoSearch(),
         ];
     }
-
     protected function setBreadcrumbsPageAdminNoteinterne(): array
     {
         return [
@@ -105,7 +85,6 @@ class MemoController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminNoteinterneEdit(): array
     {
         return [
@@ -115,7 +94,6 @@ class MemoController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminNoteinterneNew(): array
     {
         return [
@@ -125,7 +103,6 @@ class MemoController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminNoteinternePreview(): array
     {
         return [
@@ -139,7 +116,6 @@ class MemoController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminNoteinterneShow(): array
     {
         return [
@@ -149,7 +125,6 @@ class MemoController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminNoteinterneTrash(): array
     {
         return [
@@ -159,7 +134,6 @@ class MemoController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

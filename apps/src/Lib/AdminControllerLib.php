@@ -416,7 +416,7 @@ abstract class AdminControllerLib extends ControllerLib
         $request   = $this->requeststack->getCurrentRequest();
         $all       = $request->attributes->all();
         $route     = $all['_route'];
-        $data      = explode('_', $route);
+        $data      = explode('_', (string) $route);
         $method    = 'setBreadcrumbsPage';
         $callables = get_class_methods($this);
         $router    = $this->routerInterface;

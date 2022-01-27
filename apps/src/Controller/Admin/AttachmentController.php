@@ -8,24 +8,21 @@ use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/attachment")
- */
+#[Route(path: '/admin/attachment')]
 class AttachmentController extends AdminControllerLib
 {
     /**
-     * @Route("/trash", name="admin_attachment_trash", methods={"GET"})
-     * @Route("/", name="admin_attachment_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(): Response
+    #[Route(path: '/trash', name: 'admin_attachment_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_attachment_index', methods: ['GET'])]
+    public function indexOrTrash() : Response
     {
         return $this->listOrTrash(
             Attachment::class,
             'admin/attachment/index.html.twig'
         );
     }
-
     protected function getUrlAdmin(): array
     {
         return [
@@ -38,7 +35,6 @@ class AttachmentController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
-
     protected function setBreadcrumbsPageAdminAttachment(): array
     {
         return [
@@ -48,7 +44,6 @@ class AttachmentController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

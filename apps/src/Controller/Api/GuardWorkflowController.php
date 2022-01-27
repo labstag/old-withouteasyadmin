@@ -14,19 +14,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/api/guard/workflow")
- */
+#[Route(path: '/api/guard/workflow')]
 class GuardWorkflowController extends ApiControllerLib
 {
-    /**
-     * @Route("/group/{group}", name="api_guard_workflowgroup", methods={"POST"})
-     */
-    public function group(
-        Request $request,
-        Groupe $group,
-        WorkflowGroupeRequestHandler $workflowGroupeRH
-    )
+    #[Route(path: '/group/{group}', name: 'api_guard_workflowgroup', methods: ['POST'])]
+    public function group(Request $request, Groupe $group, WorkflowGroupeRequestHandler $workflowGroupeRH)
     {
         return $this->setWorkflow(
             $request,
@@ -35,15 +27,8 @@ class GuardWorkflowController extends ApiControllerLib
             $workflowGroupeRH
         );
     }
-
-    /**
-     * @Route("/groups/{workflow}", name="api_guard_workflowgroups", methods={"POST"})
-     */
-    public function groups(
-        Workflow $workflow,
-        WorkflowGroupeRequestHandler $workflowGroupeRH,
-        Request $request
-    )
+    #[Route(path: '/groups/{workflow}', name: 'api_guard_workflowgroups', methods: ['POST'])]
+    public function groups(Workflow $workflow, WorkflowGroupeRequestHandler $workflowGroupeRH, Request $request)
     {
         $data    = [
             'delete' => 0,
@@ -61,16 +46,10 @@ class GuardWorkflowController extends ApiControllerLib
                 $workflowGroupeRH
             );
         }
-
         return new JsonResponse($data);
     }
-
-    /**
-     * @Route("/", name="api_guard_workflow")
-     */
-    public function index(
-        Request $request
-    )
+    #[Route(path: '/', name: 'api_guard_workflow')]
+    public function index(Request $request)
     {
         $data    = [
             'group' => [],
@@ -86,19 +65,10 @@ class GuardWorkflowController extends ApiControllerLib
                 'transition' => $row->getRefworkflow()->getTransition(),
             ];
         }
-
         return new JsonResponse($data);
     }
-
-    /**
-     * @Route("/setgroup/{group}/{workflow}", name="api_guard_workflowsetgroup", methods={"POST"})
-     */
-    public function setgroup(
-        Groupe $group,
-        Workflow $workflow,
-        Request $request,
-        WorkflowGroupeRequestHandler $workflowGroupeRH
-    )
+    #[Route(path: '/setgroup/{group}/{workflow}', name: 'api_guard_workflowsetgroup', methods: ['POST'])]
+    public function setgroup(Groupe $group, Workflow $workflow, Request $request, WorkflowGroupeRequestHandler $workflowGroupeRH)
     {
         $data  = [
             'delete' => 0,
@@ -113,19 +83,10 @@ class GuardWorkflowController extends ApiControllerLib
             $state,
             $workflowGroupeRH
         );
-
         return new JsonResponse($data);
     }
-
-    /**
-     * @Route("/setuser/{user}/{workflow}", name="api_guard_workflowsetuser", methods={"POST"})
-     */
-    public function setuser(
-        User $user,
-        Workflow $workflow,
-        Request $request,
-        WorkflowUserRequestHandler $workflowUserRH
-    )
+    #[Route(path: '/setuser/{user}/{workflow}', name: 'api_guard_workflowsetuser', methods: ['POST'])]
+    public function setuser(User $user, Workflow $workflow, Request $request, WorkflowUserRequestHandler $workflowUserRH)
     {
         $data  = [
             'delete' => 0,
@@ -141,18 +102,10 @@ class GuardWorkflowController extends ApiControllerLib
             $state,
             $workflowUserRH
         );
-
         return new JsonResponse($data);
     }
-
-    /**
-     * @Route("/user/{user}", name="api_guard_workflowuser", methods={"POST"})
-     */
-    public function user(
-        User $user,
-        Request $request,
-        WorkflowUserRequestHandler $workflowUserRH
-    )
+    #[Route(path: '/user/{user}', name: 'api_guard_workflowuser', methods: ['POST'])]
+    public function user(User $user, Request $request, WorkflowUserRequestHandler $workflowUserRH)
     {
         return $this->setWorkflow(
             $request,
@@ -161,7 +114,6 @@ class GuardWorkflowController extends ApiControllerLib
             $workflowUserRH
         );
     }
-
     private function setWorkflow(
         $request,
         $entity,
@@ -190,7 +142,6 @@ class GuardWorkflowController extends ApiControllerLib
 
         return new JsonResponse($data);
     }
-
     private function setWorkflowGroupe(
         $data,
         $group,
@@ -231,7 +182,6 @@ class GuardWorkflowController extends ApiControllerLib
 
         return $data;
     }
-
     private function setWorkflowUser(
         $data,
         $workflowUserRepo,

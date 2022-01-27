@@ -13,23 +13,14 @@ use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/libelle")
- */
+#[Route(path: '/admin/libelle')]
 class LibelleController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_libelle_edit", methods={"GET", "POST"})
-     * @Route("/new", name="admin_libelle_new", methods={"GET", "POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?Libelle $libelle,
-        LibelleRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_libelle_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_libelle_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?Libelle $libelle, LibelleRequestHandler $requestHandler) : Response
     {
         $this->modalAttachmentDelete();
-
         return $this->form(
             $service,
             $requestHandler,
@@ -37,35 +28,30 @@ class LibelleController extends AdminControllerLib
             !is_null($libelle) ? $libelle : new Libelle()
         );
     }
-
     /**
-     * @Route("/trash", name="admin_libelle_trash", methods={"GET"})
-     * @Route("/", name="admin_libelle_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(): Response
+    #[Route(path: '/trash', name: 'admin_libelle_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_libelle_index', methods: ['GET'])]
+    public function indexOrTrash() : Response
     {
         return $this->listOrTrash(
             Libelle::class,
             'admin/libelle/index.html.twig'
         );
     }
-
     /**
-     * @Route("/{id}", name="admin_libelle_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_libelle_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Libelle $libelle
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_libelle_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_libelle_preview', methods: ['GET'])]
+    public function showOrPreview(Libelle $libelle) : Response
     {
         return $this->renderShowOrPreview(
             $libelle,
             'admin/libelle/show.html.twig'
         );
     }
-
     protected function getUrlAdmin(): array
     {
         return [
@@ -82,7 +68,6 @@ class LibelleController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
-
     protected function searchForm(): array
     {
         return [
@@ -90,7 +75,6 @@ class LibelleController extends AdminControllerLib
             'data' => new LibelleSearch(),
         ];
     }
-
     protected function setBreadcrumbsPageAdminlibelle(): array
     {
         return [
@@ -100,7 +84,6 @@ class LibelleController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminlibelleEdit(): array
     {
         return [
@@ -110,7 +93,6 @@ class LibelleController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminlibelleNew(): array
     {
         return [
@@ -120,7 +102,6 @@ class LibelleController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminlibellePreview(): array
     {
         return [
@@ -134,7 +115,6 @@ class LibelleController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminlibelleShow(): array
     {
         return [
@@ -144,7 +124,6 @@ class LibelleController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminlibelleTrash(): array
     {
         return [
@@ -154,7 +133,6 @@ class LibelleController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

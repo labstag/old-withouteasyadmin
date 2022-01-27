@@ -9,15 +9,11 @@ use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/guard")
- */
+#[Route(path: '/admin/guard')]
 class GuardController extends AdminControllerLib
 {
-    /**
-     * @Route("/", name="admin_guard_index", methods={"GET", "POST"})
-     */
-    public function index(): Response
+    #[Route(path: '/', name: 'admin_guard_index', methods: ['GET', 'POST'])]
+    public function index() : Response
     {
         $workflows = $this->getRepository(Workflow::class)->findBy(
             [],
@@ -26,7 +22,6 @@ class GuardController extends AdminControllerLib
                 'transition' => 'ASC',
             ]
         );
-
         return $this->render(
             'admin/guard/index.html.twig',
             [
@@ -36,7 +31,6 @@ class GuardController extends AdminControllerLib
             ]
         );
     }
-
     protected function setBreadcrumbsPageAdminGuard(): array
     {
         return [
@@ -46,7 +40,6 @@ class GuardController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

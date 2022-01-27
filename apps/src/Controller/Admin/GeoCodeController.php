@@ -13,20 +13,12 @@ use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/geocode")
- */
+#[Route(path: '/admin/geocode')]
 class GeoCodeController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_geocode_edit", methods={"GET", "POST"})
-     * @Route("/new", name="admin_geocode_new", methods={"GET", "POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?GeoCode $geoCode,
-        GeoCodeRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_geocode_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_geocode_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?GeoCode $geoCode, GeoCodeRequestHandler $requestHandler) : Response
     {
         return $this->form(
             $service,
@@ -35,35 +27,30 @@ class GeoCodeController extends AdminControllerLib
             !is_null($geoCode) ? $geoCode : new GeoCode()
         );
     }
-
     /**
-     * @Route("/trash", name="admin_geocode_trash", methods={"GET"})
-     * @Route("/", name="admin_geocode_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function index(): Response
+    #[Route(path: '/trash', name: 'admin_geocode_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_geocode_index', methods: ['GET'])]
+    public function index() : Response
     {
         return $this->listOrTrash(
             GeoCode::class,
             'admin/geocode/index.html.twig'
         );
     }
-
     /**
-     * @Route("/{id}", name="admin_geocode_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_geocode_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        GeoCode $geoCode
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_geocode_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_geocode_preview', methods: ['GET'])]
+    public function showOrPreview(GeoCode $geoCode) : Response
     {
         return $this->renderShowOrPreview(
             $geoCode,
             'admin/geocode/show.html.twig'
         );
     }
-
     protected function getUrlAdmin(): array
     {
         return [
@@ -79,7 +66,6 @@ class GeoCodeController extends AdminControllerLib
             'trashdelete' => 'admin_geocode_destroy',
         ];
     }
-
     protected function searchForm(): array
     {
         return [
@@ -87,7 +73,6 @@ class GeoCodeController extends AdminControllerLib
             'data' => new GeocodeSearch(),
         ];
     }
-
     protected function setBreadcrumbsPageAdminGeocode(): array
     {
         return [
@@ -97,7 +82,6 @@ class GeoCodeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminGeocodeEdit(): array
     {
         return [
@@ -107,7 +91,6 @@ class GeoCodeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminGeocodeNew(): array
     {
         return [
@@ -117,7 +100,6 @@ class GeoCodeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminGeocodePreview(): array
     {
         return [
@@ -131,7 +113,6 @@ class GeoCodeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminGeocodeShow(): array
     {
         return [
@@ -141,7 +122,6 @@ class GeoCodeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminGeocodeTrash(): array
     {
         return [
@@ -151,7 +131,6 @@ class GeoCodeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

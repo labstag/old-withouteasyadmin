@@ -14,20 +14,12 @@ use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/user/groupe")
- */
+#[Route(path: '/admin/user/groupe')]
 class GroupeController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET", "POST"})
-     * @Route("/new", name="admin_groupuser_new", methods={"GET", "POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?Groupe $groupe,
-        GroupeRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_groupuser_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_groupuser_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?Groupe $groupe, GroupeRequestHandler $requestHandler) : Response
     {
         return $this->form(
             $service,
@@ -36,13 +28,8 @@ class GroupeController extends AdminControllerLib
             !is_null($groupe) ? $groupe : new Groupe()
         );
     }
-
-    /**
-     * @Route("/{id}/guard", name="admin_groupuser_guard")
-     */
-    public function guard(
-        Groupe $groupe
-    ): Response
+    #[Route(path: '/{id}/guard', name: 'admin_groupuser_guard')]
+    public function guard(Groupe $groupe) : Response
     {
         $this->btnInstance()->addBtnList(
             'admin_groupuser_index',
@@ -55,7 +42,6 @@ class GroupeController extends AdminControllerLib
                 'id' => $groupe->getId(),
             ]
         );
-
         $this->btnInstance()->addBtnEdit(
             'admin_groupuser_edit',
             'Editer',
@@ -63,7 +49,6 @@ class GroupeController extends AdminControllerLib
                 'id' => $groupe->getId(),
             ]
         );
-
         $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
         if (0 == count($routes)) {
             $this->sessionService->flashBagAdd(
@@ -73,7 +58,6 @@ class GroupeController extends AdminControllerLib
 
             return $this->redirectToRoute('admin_groupuser_index');
         }
-
         $workflows = $this->getRepository(Workflow::class)->findBy(
             [],
             [
@@ -81,7 +65,6 @@ class GroupeController extends AdminControllerLib
                 'transition' => 'ASC',
             ]
         );
-
         return $this->render(
             'admin/user/guard/group.html.twig',
             [
@@ -91,35 +74,30 @@ class GroupeController extends AdminControllerLib
             ]
         );
     }
-
     /**
-     * @Route("/trash", name="admin_groupuser_trash", methods={"GET"})
-     * @Route("/", name="admin_groupuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function index(): Response
+    #[Route(path: '/trash', name: 'admin_groupuser_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_groupuser_index', methods: ['GET'])]
+    public function index() : Response
     {
         return $this->listOrTrash(
             Groupe::class,
             'admin/user/groupe/index.html.twig'
         );
     }
-
     /**
-     * @Route("/{id}", name="admin_groupuser_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_groupuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Groupe $groupe
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_groupuser_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_groupuser_preview', methods: ['GET'])]
+    public function showOrPreview(Groupe $groupe) : Response
     {
         return $this->renderShowOrPreview(
             $groupe,
             'admin/user/groupe/show.html.twig'
         );
     }
-
     protected function getUrlAdmin(): array
     {
         return [
@@ -136,7 +114,6 @@ class GroupeController extends AdminControllerLib
             'trash'   => 'admin_groupuser_trash',
         ];
     }
-
     protected function searchForm(): array
     {
         return [
@@ -144,7 +121,6 @@ class GroupeController extends AdminControllerLib
             'data' => new GroupeSearch(),
         ];
     }
-
     protected function setBreadcrumbsPageAdminGroupuser(): array
     {
         return [
@@ -154,7 +130,6 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminGroupuserEdit(): array
     {
         return [
@@ -164,7 +139,6 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminGroupuserGuard(): array
     {
         return [
@@ -174,7 +148,6 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminGroupuserNew(): array
     {
         return [
@@ -184,7 +157,6 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminGroupuserPreview(): array
     {
         return [
@@ -198,7 +170,6 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminGroupuserShow(): array
     {
         return [
@@ -208,7 +179,6 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminGroupuserTrash(): array
     {
         return [
@@ -218,7 +188,6 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

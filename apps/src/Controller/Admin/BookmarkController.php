@@ -23,23 +23,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
-/**
- * @Route("/admin/bookmark")
- */
+#[Route(path: '/admin/bookmark')]
 class BookmarkController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_bookmark_edit", methods={"GET", "POST"})
-     * @Route("/new", name="admin_bookmark_new", methods={"GET", "POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?Bookmark $bookmark,
-        BookmarkRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_bookmark_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_bookmark_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?Bookmark $bookmark, BookmarkRequestHandler $requestHandler) : Response
     {
         $this->modalAttachmentDelete();
-
         return $this->form(
             $service,
             $requestHandler,
@@ -48,15 +39,8 @@ class BookmarkController extends AdminControllerLib
             'admin/bookmark/form.html.twig'
         );
     }
-
-    /**
-     * @Route("/import", name="admin_bookmark_import", methods={"GET", "POST"})
-     */
-    public function import(
-        Request $request,
-        Security $security,
-        EnqueueMethod $enqueue
-    )
+    #[Route(path: '/import', name: 'admin_bookmark_import', methods: ['GET', 'POST'])]
+    public function import(Request $request, Security $security, EnqueueMethod $enqueue)
     {
         $this->setBtnList($this->getUrlAdmin());
         $form = $this->createForm(ImportType::class, []);
@@ -65,41 +49,35 @@ class BookmarkController extends AdminControllerLib
         if ($form->isSubmitted() && $form->isValid()) {
             $this->uploadFile($form, $security, $enqueue);
         }
-
         return $this->renderForm(
             'admin/bookmark/import.html.twig',
             ['form' => $form]
         );
     }
-
     /**
-     * @Route("/trash", name="admin_bookmark_trash", methods={"GET"})
-     * @Route("/", name="admin_bookmark_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(): Response
+    #[Route(path: '/trash', name: 'admin_bookmark_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_bookmark_index', methods: ['GET'])]
+    public function indexOrTrash() : Response
     {
         return $this->listOrTrash(
             Bookmark::class,
             'admin/bookmark/index.html.twig'
         );
     }
-
     /**
-     * @Route("/{id}", name="admin_bookmark_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_bookmark_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Bookmark $bookmark
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_bookmark_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_bookmark_preview', methods: ['GET'])]
+    public function showOrPreview(Bookmark $bookmark) : Response
     {
         return $this->renderShowOrPreview(
             $bookmark,
             'admin/bookmark/show.html.twig'
         );
     }
-
     protected function getUrlAdmin(): array
     {
         return [
@@ -117,7 +95,6 @@ class BookmarkController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
-
     protected function searchForm(): array
     {
         return [
@@ -125,7 +102,6 @@ class BookmarkController extends AdminControllerLib
             'data' => new BookmarkSearch(),
         ];
     }
-
     protected function setBreadcrumbsPageAdminBookmark(): array
     {
         return [
@@ -135,7 +111,6 @@ class BookmarkController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminBookmarkEdit(): array
     {
         return [
@@ -145,7 +120,6 @@ class BookmarkController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminBookmarkImport(): array
     {
         return [
@@ -155,7 +129,6 @@ class BookmarkController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminBookmarkNew(): array
     {
         return [
@@ -165,7 +138,6 @@ class BookmarkController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminBookmarkPreview(): array
     {
         return [
@@ -179,7 +151,6 @@ class BookmarkController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminBookmarkShow(): array
     {
         return [
@@ -189,7 +160,6 @@ class BookmarkController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminBookmarkTrash(): array
     {
         return [
@@ -199,7 +169,6 @@ class BookmarkController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();
@@ -211,7 +180,6 @@ class BookmarkController extends AdminControllerLib
             ]
         );
     }
-
     private function uploadFile(
         FormInterface $form,
         Security $security,

@@ -27,17 +27,11 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
 
-/**
- * @Route("/admin")
- */
+#[Route(path: '/admin')]
 class AdminController extends AdminControllerLib
 {
-    /**
-     * @Route("/export", name="admin_export")
-     */
-    public function export(
-        DataService $dataService
-    ): RedirectResponse
+    #[Route(path: '/export', name: 'admin_export')]
+    public function export(DataService $dataService) : RedirectResponse
     {
         $config = $dataService->getConfig();
         ksort($config);
@@ -58,53 +52,34 @@ class AdminController extends AdminControllerLib
                 $this->sessionService->flashBagAdd('danger', $msg);
             }
         }
-
         return $this->redirectToRoute('admin_param');
     }
-
-    /**
-     * @Route("/", name="admin")
-     */
-    public function index(): Response
+    #[Route(path: '/', name: 'admin')]
+    public function index() : Response
     {
         $memos = $this->getRepository(Memo::class)->findPublier();
-
         return $this->render(
             'admin/index.html.twig',
             ['memos' => $memos]
         );
     }
-
-    /**
-     * @Route("/oauth", name="admin_oauth")
-     */
-    public function oauth(OauthService $oauthService): Response
+    #[Route(path: '/oauth', name: 'admin_oauth')]
+    public function oauth(OauthService $oauthService) : Response
     {
         $types = $oauthService->getConfigProvider();
-
         return $this->render(
             'admin/oauth.html.twig',
             ['types' => $types]
         );
     }
-
-    /**
-     * @Route("/param", name="admin_param", methods={"GET", "POST"})
-     */
-    public function param(
-        Request $request,
-        EntityManagerInterface $entityManager,
-        EventDispatcherInterface $dispatcher,
-        DataService $dataService,
-        CacheInterface $cache
-    ): Response
+    #[Route(path: '/param', name: 'admin_param', methods: ['GET', 'POST'])]
+    public function param(Request $request, EntityManagerInterface $entityManager, EventDispatcherInterface $dispatcher, DataService $dataService, CacheInterface $cache) : Response
     {
         $this->modalAttachmentDelete();
         $images = [
             'image'   => $this->getRepository(Attachment::class)->getImageDefault(),
             'favicon' => $this->getRepository(Attachment::class)->getFavicon(),
         ];
-
         foreach ($images as $key => $value) {
             if (!is_null($value)) {
                 continue;
@@ -115,7 +90,6 @@ class AdminController extends AdminControllerLib
             $entityManager->persist($images[$key]);
             $entityManager->flush();
         }
-
         $config = $dataService->getConfig();
         $tab    = $this->getParameter('metatags');
         foreach ($tab as $index) {
@@ -123,7 +97,6 @@ class AdminController extends AdminControllerLib
                 $config[$index],
             ];
         }
-
         $form = $this->createForm(ParamType::class, $config);
         $this->btnInstance()->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
@@ -133,7 +106,6 @@ class AdminController extends AdminControllerLib
             $post = $request->request->all($form->getName());
             $dispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
-
         $this->btnInstance()->add(
             'btn-admin-header-export',
             'Exporter',
@@ -141,7 +113,6 @@ class AdminController extends AdminControllerLib
                 'href' => $this->generateUrl('admin_export'),
             ]
         );
-
         return $this->renderForm(
             'admin/param.html.twig',
             [
@@ -150,18 +121,10 @@ class AdminController extends AdminControllerLib
             ]
         );
     }
-
-    /**
-     * @Route("/profil", name="admin_profil", methods={"GET", "POST"})
-     */
-    public function profil(
-        AttachFormService $service,
-        Security $security,
-        UserRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/profil', name: 'admin_profil', methods: ['GET', 'POST'])]
+    public function profil(AttachFormService $service, Security $security, UserRequestHandler $requestHandler) : Response
     {
         $this->modalAttachmentDelete();
-
         return $this->form(
             $service,
             $requestHandler,
@@ -170,11 +133,8 @@ class AdminController extends AdminControllerLib
             'admin/profil.html.twig'
         );
     }
-
-    /**
-     * @Route("/themes", name="admin_themes")
-     */
-    public function themes(): Response
+    #[Route(path: '/themes', name: 'admin_themes')]
+    public function themes() : Response
     {
         $data = [
             'buttons'     => [[]],
@@ -185,24 +145,17 @@ class AdminController extends AdminControllerLib
             'other'       => [[]],
             'text'        => [[]],
         ];
-
         $form = $this->createForm(FormType::class, $data);
-
         return $this->renderForm(
             'admin/form.html.twig',
             ['form' => $form]
         );
     }
-
     /**
-     * @Route("/trash", name="admin_trash")
      * @IgnoreSoftDelete
      */
-    public function trash(
-        CsrfTokenManagerInterface $csrfTokenManager,
-        Environment $twig,
-        TrashService $trashService
-    ): Response
+    #[Route(path: '/trash', name: 'admin_trash')]
+    public function trash(CsrfTokenManagerInterface $csrfTokenManager, Environment $twig, TrashService $trashService) : Response
     {
         $all = $trashService->all();
         if (0 == (is_countable($all) ? count($all) : 0)) {
@@ -213,7 +166,6 @@ class AdminController extends AdminControllerLib
 
             return $this->redirectToRoute('admin');
         }
-
         $globals        = $twig->getGlobals();
         $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
@@ -231,7 +183,6 @@ class AdminController extends AdminControllerLib
                 ]
             );
         }
-
         $twig->addGlobal('modal', $modal);
         $this->btnInstance()->addViderSelection(
             [
@@ -246,13 +197,11 @@ class AdminController extends AdminControllerLib
             ],
             'empties'
         );
-
         return $this->render(
             'admin/trash.html.twig',
             ['trash' => $all]
         );
     }
-
     protected function setBreadcrumbsPageAdminParam(): array
     {
         return [
@@ -263,7 +212,6 @@ class AdminController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminProfil(): array
     {
         return [
@@ -274,7 +222,6 @@ class AdminController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setBreadcrumbsPageAdminTrash(): array
     {
         return [
@@ -285,7 +232,6 @@ class AdminController extends AdminControllerLib
             ],
         ];
     }
-
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();
@@ -300,7 +246,6 @@ class AdminController extends AdminControllerLib
             ]
         );
     }
-
     private function setUpload(Request $request, array $images)
     {
         $all   = $request->files->all();
