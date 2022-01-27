@@ -5,16 +5,18 @@ namespace Labstag\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"user": "LinkUser"})
+ * @ORM\DiscriminatorMap({"user" = "LinkUser"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-abstract class Link
+abstract class Link implements Stringable
 {
     use SoftDeleteableEntity;
 
@@ -27,8 +29,9 @@ abstract class Link
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -38,7 +41,7 @@ abstract class Link
      */
     protected $name;
 
-    public function __toString()
+    public function __toString(): string
     {
         return implode(
             ' ',

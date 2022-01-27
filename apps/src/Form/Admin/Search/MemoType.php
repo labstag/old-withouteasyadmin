@@ -3,11 +3,8 @@
 namespace Labstag\Form\Admin\Search;
 
 use Labstag\Entity\Memo;
-use Labstag\Entity\User;
-use Labstag\FormType\SearchableType;
 use Labstag\Lib\SearchAbstractTypeLib;
 use Labstag\Search\MemoSearch;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class MemoType extends SearchAbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -35,25 +32,7 @@ class MemoType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'refuser',
-            SearchableType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('memo.refuser.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('memo.refuser.help', [], 'admin.search.form'),
-                'multiple' => false,
-                'class'    => User::class,
-                'route'    => 'api_search_user',
-                'attr'     => [
-                    'placeholder' => $this->translator->trans(
-                        'memo.refuser.placeholder',
-                        [],
-                        'admin.search.form'
-                    ),
-                ],
-            ]
-        );
+        $this->addRefUser($builder);
         $builder->add(
             'dateStart',
             DateType::class,
@@ -74,25 +53,12 @@ class MemoType extends SearchAbstractTypeLib
                 'help'     => $this->translator->trans('memo.date_end.help', [], 'admin.search.form'),
             ]
         );
-        $workflow   = $this->workflows->get(new Memo());
-        $definition = $workflow->getDefinition();
-        $places     = $definition->getPlaces();
-        $builder->add(
-            'etape',
-            ChoiceType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('memo.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('memo.etape.help', [], 'admin.search.form'),
-                'choices'  => $places,
-                'attr'     => [
-                    'placeholder' => $this->translator->trans(
-                        'memo.etape.placeholder',
-                        [],
-                        'admin.search.form'
-                    ),
-                ],
-            ]
+        $this->showState(
+            $builder,
+            new Memo(),
+            $this->translator->trans('memo.etape.label', [], 'admin.search.form'),
+            $this->translator->trans('memo.etape.help', [], 'admin.search.form'),
+            $this->translator->trans('memo.etape.placeholder', [], 'admin.search.form')
         );
         parent::buildForm($builder, $options);
     }
@@ -106,10 +72,5 @@ class MemoType extends SearchAbstractTypeLib
                 'method'          => 'GET',
             ]
         );
-    }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
     }
 }

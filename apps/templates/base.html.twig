@@ -30,7 +30,7 @@
         {% block stylesheets %}{% endblock %}
         {% block javascripts %}{% endblock %}
         {% if config.tarteaucitron is defined %}
-            <script type="text/javascript" src="/tarteaucitron/tarteaucitron.js"></script>
+            <script type="text/javascript" src="{{ asset('assets/tarteaucitron/tarteaucitron.js') }}"></script>
             <script type="text/javascript">
     tarteaucitron.init(
     {{ configtarteaucitron|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
@@ -41,8 +41,9 @@
     {% endif %}
             </script>
         {% endif %}
+        <script type="text/javascript" defer src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
     </head>
-    <body{% if bodyclass is defined %} class="{{ bodyclass }}"{% endif %}>
+    <body{% if bodyclass is defined %} class="{{ bodyclass }}"{% endif %}{% if bodystyle is defined %} style="{{ bodystyle }}"{% endif %}>
         {% block content %}{% endblock %}
         {% block modal %}
             {% if modal is defined %}

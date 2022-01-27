@@ -8,12 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\LibelleRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=LibelleRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Libelle
+class Libelle implements Stringable
 {
     use SoftDeleteableEntity;
 
@@ -24,8 +26,9 @@ class Libelle
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
@@ -51,9 +54,9 @@ class Libelle
         $this->bookmarks = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function addBookmark(Bookmark $bookmark): self
@@ -75,9 +78,6 @@ class Libelle
         return $this;
     }
 
-    /**
-     * @return Bookmark[]|Collection
-     */
     public function getBookmarks(): Collection
     {
         return $this->bookmarks;
@@ -93,9 +93,6 @@ class Libelle
         return $this->name;
     }
 
-    /**
-     * @return Collection|Post[]
-     */
     public function getPosts(): Collection
     {
         return $this->posts;

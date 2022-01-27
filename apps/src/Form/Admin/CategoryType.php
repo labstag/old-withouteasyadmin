@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CategoryType extends AbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

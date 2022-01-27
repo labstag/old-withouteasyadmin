@@ -7,27 +7,18 @@ use Labstag\Entity\Page;
 use Labstag\Form\Admin\PageType;
 use Labstag\Form\Admin\Search\PageType as SearchPageType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\PageRepository;
 use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\Search\PageSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/page")
- */
+#[Route(path: '/admin/page')]
 class PageController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_page_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_page_new", methods={"GET","POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?Page $page,
-        PageRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_page_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_page_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?Page $page, PageRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
 
@@ -41,26 +32,24 @@ class PageController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_page_trash", methods={"GET"})
-     * @Route("/", name="admin_page_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(PageRepository $repository): Response
+    #[Route(path: '/trash', name: 'admin_page_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_page_index', methods: ['GET'])]
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $repository,
+            Page::class,
             'admin/page/index.html.twig'
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_page_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_page_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Page $page
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_page_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_page_preview', methods: ['GET'])]
+    public function showOrPreview(Page $page): Response
     {
         return $this->renderShowOrPreview(
             $page,
@@ -97,24 +86,18 @@ class PageController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('page.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_page_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('page.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_page_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminPageEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('page.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_page_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('page.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_page_edit',
             ],
         ];
     }
@@ -123,44 +106,32 @@ class PageController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('page.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_page_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('page.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_page_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminPagePreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('page.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_page_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('page.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_page_trash',
             ],
             [
-                'title'        => $this->translator->trans('page.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_page_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('page.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_page_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminPageShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('page.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_page_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('page.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_page_show',
             ],
         ];
     }
@@ -169,9 +140,8 @@ class PageController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('page.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_page_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('page.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_page_trash',
             ],
         ];
     }

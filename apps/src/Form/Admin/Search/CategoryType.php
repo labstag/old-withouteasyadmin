@@ -4,32 +4,20 @@ namespace Labstag\Form\Admin\Search;
 
 use Labstag\Lib\SearchAbstractTypeLib;
 use Labstag\Search\CategorySearch;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CategoryType extends SearchAbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
     ): void
     {
-        $builder->add(
-            'name',
-            TextType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('category.name.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('category.name.help', [], 'admin.search.form'),
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('category.name.placeholder', [], 'admin.search.form'),
-                ],
-            ]
-        );
+        $this->addName($builder);
         parent::buildForm($builder, $options);
     }
 
@@ -42,10 +30,5 @@ class CategoryType extends SearchAbstractTypeLib
                 'method'          => 'GET',
             ]
         );
-    }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
     }
 }

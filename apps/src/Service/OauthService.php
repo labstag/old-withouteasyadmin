@@ -11,7 +11,6 @@ use Omines\OAuth2\Client\Provider\Gitlab;
 use Rudolf\OAuth2\Client\Provider\Reddit;
 use Stevenmaguire\OAuth2\Client\Provider\Bitbucket;
 use Stevenmaguire\OAuth2\Client\Provider\Dropbox;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Vertisan\OAuth2\Client\Provider\TwitchHelix;
@@ -22,21 +21,14 @@ class OauthService
 
     protected array $configProvider;
 
-    protected DataService $dataService;
-
     protected array $oauthActivated;
 
-    // @var Router|RouterInterface
-    protected $router;
-
     public function __construct(
-        RouterInterface $router,
-        DataService $dataService
+        protected RouterInterface $router,
+        protected DataService $dataService
     )
     {
-        $this->dataService    = $dataService;
         $this->oauthActivated = $this->dataService->getOauthActivated();
-        $this->router         = $router;
         $this->setConfigProvider();
     }
 
@@ -106,7 +98,7 @@ class OauthService
         $file = __DIR__.'/../../json/oauth.json';
         $data = [];
         if (is_file($file)) {
-            $data = json_decode(file_get_contents($file), true);
+            $data = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
         }
 
         $this->configProvider = $data;
@@ -128,28 +120,13 @@ class OauthService
 
     protected function generateProvider($clientName, $url, $oauth)
     {
-        $params   = [
+        $params = [
             'clientId'     => $oauth['id'],
             'clientSecret' => $oauth['secret'],
             'redirectUri'  => $url,
         ];
-        $provider = $this->generateStandardProvider($clientName, $params);
-        if ('reddit' == $clientName) {
-            $provider = new Reddit(
-                [
-                    'clientId'     => $oauth['id'],
-                    'clientSecret' => $oauth['secret'],
-                    'redirectUri'  => $url,
-                    'userAgent'    => 'platform:appid:version, (by /u/username)',
-                    'scopes'       => [
-                        'identity',
-                        'read',
-                    ],
-                ]
-            );
-        }
 
-        return $provider;
+        return $this->generateStandardProvider($clientName, $params);
     }
 
     protected function generateStandardProvider($clientName, $params)
@@ -162,6 +139,7 @@ class OauthService
         $provider = $this->generateStandardProviderGitlab($clientName, $params, $provider);
         $provider = $this->generateStandardProviderGoogle($clientName, $params, $provider);
         $provider = $this->generateStandardProviderLinkedin($clientName, $params, $provider);
+        $provider = $this->generateStandardProviderReddit($clientName, $params, $provider);
         $provider = $this->generateStandardProviderSlack($clientName, $params, $provider);
 
         return $this->generateStandardProviderTwitch($clientName, $params, $provider);
@@ -200,6 +178,22 @@ class OauthService
     protected function generateStandardProviderlinkedin($clientName, $params, $provider)
     {
         return ('linkedin' == $clientName) ? new LinkedIn($params) : $provider;
+    }
+
+    protected function generateStandardProviderReddit($clientName, $params, $provider)
+    {
+        $params = array_merge(
+            $params,
+            [
+                'userAgent' => 'platform:appid:version, (by /u/username)',
+                'scopes'    => [
+                    'identity',
+                    'read',
+                ],
+            ]
+        );
+
+        return ('reddit' == $clientName) ? new Reddit($params) : $provider;
     }
 
     protected function generateStandardProviderSlack($clientName, $params, $provider)

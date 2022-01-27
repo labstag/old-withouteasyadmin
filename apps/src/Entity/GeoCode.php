@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\GeoCodeRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,8 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  * @ApiFilter(
- *  SearchFilter::class,
- *  properties={"countryCode": "exact", "postalCode": "exact", "placeName": "partial"}
+ *     SearchFilter::class,
+ *     properties={"countryCode" = "exact", "postalCode" = "exact", "placeName" = "partial"}
  * )
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
@@ -54,8 +55,9 @@ class GeoCode
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 

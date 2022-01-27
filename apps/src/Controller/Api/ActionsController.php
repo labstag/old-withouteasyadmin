@@ -14,14 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
-/**
- * @Route("/api/actions")
- */
+#[Route(path: '/api/actions')]
 class ActionsController extends ApiControllerLib
 {
-    /**
-     * @Route("/delete/{entity}/{id}", name="api_action_delete", methods={"DELETE"})
-     */
+    #[Route(path: '/delete/{entity}/{id}', name: 'api_action_delete', methods: ['DELETE'])]
     public function delete(string $entity, string $id): Response
     {
         $data   = [
@@ -48,27 +44,25 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    /**
-     * @Route("/deleties/{entity}/", name="api_action_deleties", methods={"DELETE"})
-     */
+    #[Route(path: '/deleties/{entity}/', name: 'api_action_deleties', methods: ['DELETE'])]
     public function deleties(string $entity, Request $request): Response
     {
         return $this->deleteOrRestore($entity, $request, 'deleties');
     }
 
     /**
-     * @Route("/destroies/{entity}", name="api_action_destroies", methods={"DELETE"})
      * @IgnoreSoftDelete
      */
+    #[Route(path: '/destroies/{entity}', name: 'api_action_destroies', methods: ['DELETE'])]
     public function destroies(string $entity, Request $request): Response
     {
         return $this->deleteOrRestore($entity, $request, 'destroies');
     }
 
     /**
-     * @Route("/destroy/{entity}/{id}", name="api_action_destroy", methods={"DELETE"})
      * @IgnoreSoftDelete
      */
+    #[Route(path: '/destroy/{entity}/{id}', name: 'api_action_destroy', methods: ['DELETE'])]
     public function destroy(string $entity, string $id): Response
     {
         $data       = [
@@ -97,9 +91,9 @@ class ActionsController extends ApiControllerLib
     }
 
     /**
-     * @Route("/empties", name="api_action_empties", methods={"DELETE"})
      * @IgnoreSoftDelete
      */
+    #[Route(path: '/empties', name: 'api_action_empties', methods: ['DELETE'])]
     public function empties(Request $request): Response
     {
         $data       = [
@@ -113,7 +107,7 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $entities = explode(',', $request->request->get('entities'));
+        $entities = explode(',', (string) $request->request->all('entities'));
         $error    = [];
         foreach ($entities as $entity) {
             $repository = $this->getRepoByEntity($entity);
@@ -134,9 +128,9 @@ class ActionsController extends ApiControllerLib
     }
 
     /**
-     * @Route("/empty/{entity}", name="api_action_empty", methods={"DELETE"})
      * @IgnoreSoftDelete
      */
+    #[Route(path: '/empty/{entity}', name: 'api_action_empty', methods: ['DELETE'])]
     public function empty(string $entity): Response
     {
         $data       = [
@@ -168,14 +162,13 @@ class ActionsController extends ApiControllerLib
     }
 
     /**
-     * @Route("/emptyall", name="api_action_emptyall", methods={"DELETE"})
      * @IgnoreSoftDelete
      */
+    #[Route(path: '/emptyall', name: 'api_action_emptyall', methods: ['DELETE'])]
     public function emptyall(TrashService $trashService): Response
     {
         $tokenValid = $this->tokenVerif('emptyall');
-
-        $data = [
+        $data       = [
             'action' => false,
             'error'  => '',
         ];
@@ -187,7 +180,7 @@ class ActionsController extends ApiControllerLib
 
         $error         = $this->deleteAll($trashService);
         $data['error'] = $error;
-        if (0 === count($error)) {
+        if (0 === (is_countable($error) ? count($error) : 0)) {
             $data['action'] = true;
         }
 
@@ -195,9 +188,9 @@ class ActionsController extends ApiControllerLib
     }
 
     /**
-     * @Route("/restore/{entity}/{id}", name="api_action_restore", methods={"POST"})
      * @IgnoreSoftDelete
      */
+    #[Route(path: '/restore/{entity}/{id}', name: 'api_action_restore', methods: ['POST'])]
     public function restore(string $entity, string $id): Response
     {
         $data   = [
@@ -225,17 +218,15 @@ class ActionsController extends ApiControllerLib
     }
 
     /**
-     * @Route("/restories/{entity}", name="api_action_restories", methods={"POST"})
      * @IgnoreSoftDelete
      */
+    #[Route(path: '/restories/{entity}', name: 'api_action_restories', methods: ['POST'])]
     public function restories(string $entity, Request $request): Response
     {
         return $this->deleteOrRestore($entity, $request, 'restories');
     }
 
-    /**
-     * @Route("/workflow/{entity}/{state}/{id}", name="api_action_workflow", methods={"POST"})
-     */
+    #[Route(path: '/workflow/{entity}/{state}/{id}', name: 'api_action_workflow', methods: ['POST'])]
     public function workflow(string $entity, string $state, string $id): Response
     {
         $data       = [
@@ -356,7 +347,7 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $entities   = explode(',', $request->request->get('entities'));
+        $entities   = explode(',', (string) $request->request->all('entities'));
         $error      = [];
         $repository = $this->getRepoByEntity($entity);
         $method     = ('deleties' == $token) ? 'deleteEntity' : 'restoreEntity';
@@ -418,7 +409,7 @@ class ActionsController extends ApiControllerLib
 
     private function tokenVerif(string $action, $entity = null): bool
     {
-        $token = $this->get('request_stack')->getCurrentRequest()->get('_token');
+        $token = $this->requeststack->getCurrentRequest()->get('_token');
 
         $csrfToken = new CsrfToken(
             $action.(is_null($entity) ? '' : $entity->getId()),

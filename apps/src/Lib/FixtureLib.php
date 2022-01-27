@@ -7,7 +7,10 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Exception;
 use Faker\Factory;
 use Faker\Generator;
-use Labstag\Entity\Attachment;
+use Labstag\DataFixtures\CategoryFixtures;
+use Labstag\DataFixtures\DataFixtures;
+use Labstag\DataFixtures\LibelleFixtures;
+use Labstag\DataFixtures\UserFixtures;
 use Labstag\Entity\Groupe;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\GroupeRepository;
@@ -29,9 +32,11 @@ use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
+use Labstag\Service\ErrorService;
+use Labstag\Service\FileService;
 use Labstag\Service\GuardService;
 use Labstag\Service\InstallService;
-use Labstag\Service\OauthService;
+use Labstag\Service\UserService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -68,117 +73,48 @@ abstract class FixtureLib extends Fixture
 
     protected const NUMBER_TEMPLATES = 10;
 
-    protected AddressUserRequestHandler $addressUserRH;
-
-    protected AttachmentRequestHandler $attachmentRH;
-
-    protected BookmarkRequestHandler $bookmarkRH;
-
-    protected CacheInterface $cache;
-
-    protected CategoryRequestHandler $categoryRH;
-
-    protected ChapterRequestHandler $chapterRH;
-
-    protected ContainerBagInterface $containerBag;
-
-    protected EditoRequestHandler $editoRH;
-
-    protected EmailUserRequestHandler $emailUserRH;
-
-    protected GroupeRepository $groupeRepository;
-
-    protected GroupeRequestHandler $groupeRH;
-
-    protected GuardService $guardService;
-
-    protected HistoryRequestHandler $historyRH;
-
-    protected InstallService $installService;
-
-    protected LayoutRequestHandler $layoutRH;
-
-    protected LibelleRequestHandler $libelleRH;
-
-    protected LinkUserRequestHandler $linkUserRH;
-
-    protected LoggerInterface $logger;
-
-    protected MemoRequestHandler $noteInterneRH;
-
-    protected OauthService $oauthService;
-
-    protected PhoneUserRequestHandler $phoneUserRH;
-
-    protected PostRequestHandler $postRH;
-
-    protected TemplateRequestHandler $templateRH;
-
-    protected Environment $twig;
-
-    protected UploadAnnotationReader $uploadAnnotReader;
-
-    protected UserRepository $userRepository;
-
-    protected UserRequestHandler $userRH;
-
     public function __construct(
-        LoggerInterface $logger,
-        ContainerBagInterface $containerBag,
-        UploadAnnotationReader $uploadAnnotReader,
-        InstallService $installService,
-        OauthService $oauthService,
-        UserRepository $userRepository,
-        GroupeRepository $groupeRepository,
-        GuardService $guardService,
-        Environment $twig,
-        EmailUserRequestHandler $emailUserRH,
-        LinkUserRequestHandler $linkUserRH,
-        MemoRequestHandler $noteInterneRH,
-        GroupeRequestHandler $groupeRH,
-        LayoutRequestHandler $layoutRH,
-        EditoRequestHandler $editoRH,
-        UserRequestHandler $userRH,
-        PhoneUserRequestHandler $phoneUserRH,
-        AttachmentRequestHandler $attachmentRH,
-        AddressUserRequestHandler $addressUserRH,
-        TemplateRequestHandler $templateRH,
-        LibelleRequestHandler $libelleRH,
-        CacheInterface $cache,
-        BookmarkRequestHandler $bookmarkRH,
-        PostRequestHandler $postRH,
-        CategoryRequestHandler $categoryRH,
-        HistoryRequestHandler $historyRH,
-        ChapterRequestHandler $chapterRH
+        protected FileService $fileService,
+        protected UserService $userService,
+        protected ErrorService $errorService,
+        protected LoggerInterface $logger,
+        protected ContainerBagInterface $containerBag,
+        protected UploadAnnotationReader $uploadAnnotReader,
+        protected InstallService $installService,
+        protected UserRepository $userRepository,
+        protected GroupeRepository $groupeRepository,
+        protected GuardService $guardService,
+        protected Environment $twig,
+        protected EmailUserRequestHandler $emailUserRH,
+        protected LinkUserRequestHandler $linkUserRH,
+        protected MemoRequestHandler $noteInterneRH,
+        protected GroupeRequestHandler $groupeRH,
+        protected LayoutRequestHandler $layoutRH,
+        protected EditoRequestHandler $editoRH,
+        protected UserRequestHandler $userRH,
+        protected PhoneUserRequestHandler $phoneUserRH,
+        protected AttachmentRequestHandler $attachmentRH,
+        protected AddressUserRequestHandler $addressUserRH,
+        protected TemplateRequestHandler $templateRH,
+        protected LibelleRequestHandler $libelleRH,
+        protected CacheInterface $cache,
+        protected BookmarkRequestHandler $bookmarkRH,
+        protected PostRequestHandler $postRH,
+        protected CategoryRequestHandler $categoryRH,
+        protected HistoryRequestHandler $historyRH,
+        protected ChapterRequestHandler $chapterRH
     )
     {
-        $this->chapterRH         = $chapterRH;
-        $this->layoutRH          = $layoutRH;
-        $this->historyRH         = $historyRH;
-        $this->addressUserRH     = $addressUserRH;
-        $this->attachmentRH      = $attachmentRH;
-        $this->bookmarkRH        = $bookmarkRH;
-        $this->cache             = $cache;
-        $this->categoryRH        = $categoryRH;
-        $this->containerBag      = $containerBag;
-        $this->editoRH           = $editoRH;
-        $this->emailUserRH       = $emailUserRH;
-        $this->groupeRepository  = $groupeRepository;
-        $this->groupeRH          = $groupeRH;
-        $this->guardService      = $guardService;
-        $this->installService    = $installService;
-        $this->libelleRH         = $libelleRH;
-        $this->linkUserRH        = $linkUserRH;
-        $this->logger            = $logger;
-        $this->noteInterneRH     = $noteInterneRH;
-        $this->oauthService      = $oauthService;
-        $this->phoneUserRH       = $phoneUserRH;
-        $this->postRH            = $postRH;
-        $this->templateRH        = $templateRH;
-        $this->twig              = $twig;
-        $this->uploadAnnotReader = $uploadAnnotReader;
-        $this->userRepository    = $userRepository;
-        $this->userRH            = $userRH;
+    }
+
+    public function getDependenciesBookmarkPost()
+    {
+        return [
+            DataFixtures::class,
+            UserFixtures::class,
+            LibelleFixtures::class,
+            CategoryFixtures::class,
+        ];
     }
 
     protected function getParameter(string $name)
@@ -197,12 +133,74 @@ abstract class FixtureLib extends Fixture
         return null;
     }
 
+    protected function getStatesData()
+    {
+        return [
+            ['submit'],
+            [
+                'submit',
+                'relire',
+            ],
+            [
+                'submit',
+                'relire',
+                'corriger',
+            ],
+            [
+                'submit',
+                'relire',
+                'publier',
+            ],
+            [
+                'submit',
+                'relire',
+                'rejeter',
+            ],
+        ];
+    }
+
+    protected function loadForeach($number, $method)
+    {
+        $faker     = $this->setFaker();
+        $statesTab = $this->getStatesData();
+        for ($index = 0; $index < $number; ++$index) {
+            $stateId = array_rand($statesTab);
+            $states  = $statesTab[$stateId];
+            $this->{$method}($faker, $index, $states);
+        }
+    }
+
+    protected function loadForeachUser($number, $method)
+    {
+        $faker = $this->setFaker();
+        $users = $this->installService->getData('user');
+        for ($index = 0; $index < $number; ++$index) {
+            $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
+            $user      = $this->getReference('user_'.$indexUser);
+            $this->{$method}($faker, $user);
+        }
+    }
+
     protected function setFaker()
     {
         $faker = Factory::create('fr_FR');
         $faker->addProvider(new PicsumPhotosProvider($faker));
 
         return $faker;
+    }
+
+    protected function setLibelles($faker, $entity)
+    {
+        if (1 != random_int(0, 1)) {
+            return;
+        }
+
+        $nbr = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
+        for ($i = 0; $i < $nbr; ++$i) {
+            $indexLibelle = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
+            $libelle      = $this->getReference('libelle_'.$indexLibelle);
+            $entity->addLibelle($libelle);
+        }
     }
 
     protected function upload($entity, Generator $faker)
@@ -216,12 +214,10 @@ abstract class FixtureLib extends Fixture
         $annotations = $this->uploadAnnotReader->getUploadableFields($entity);
         $slugger     = new AsciiSlugger();
         foreach ($annotations as $annotation) {
-            $path       = $this->getParameter('file_directory').'/'.$annotation->getPath();
-            $accessor   = PropertyAccess::createPropertyAccessor();
-            $title      = $accessor->getValue($entity, $annotation->getSlug());
-            $slug       = $slugger->slug($title);
-            $attachment = new Attachment();
-            $old        = clone $attachment;
+            $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $accessor = PropertyAccess::createPropertyAccessor();
+            $title    = $accessor->getValue($entity, $annotation->getSlug());
+            $slug     = $slugger->slug($title);
 
             try {
                 $image   = $faker->imageUrl(1920, 1920);
@@ -248,29 +244,13 @@ abstract class FixtureLib extends Fixture
                 );
                 $file = $path.'/'.$filename;
             } catch (Exception $exception) {
-                $errorMsg = sprintf(
-                    'Exception : Erreur %s dans %s L.%s : %s',
-                    $exception->getCode(),
-                    $exception->getFile(),
-                    $exception->getLine(),
-                    $exception->getMessage()
-                );
-                $this->logger->error($errorMsg);
+                $this->errorService->set($exception);
                 echo $exception->getMessage();
             }
 
             if (isset($filename)) {
-                $file = $path.'/'.$filename;
-                $attachment->setMimeType(mime_content_type($file));
-                $attachment->setSize(filesize($file));
-                $attachment->setName(
-                    str_replace(
-                        $this->getParameter('kernel.project_dir').'/public/',
-                        '',
-                        $file
-                    )
-                );
-                $this->attachmentRH->handle($old, $attachment);
+                $file       = $path.'/'.$filename;
+                $attachment = $this->fileService->setAttachment($file);
                 $accessor->setValue($entity, $annotation->getFilename(), $attachment);
             }
         }

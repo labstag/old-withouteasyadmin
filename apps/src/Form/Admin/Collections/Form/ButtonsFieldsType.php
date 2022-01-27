@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ButtonsFieldsType extends AbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

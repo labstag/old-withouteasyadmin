@@ -19,7 +19,7 @@ class AdminBtnSingleton
 
     protected bool $init = false;
 
-    protected static $instance = null;
+    protected static $instance;
 
     protected RouterInterface $router;
 
@@ -107,43 +107,9 @@ class AdminBtnSingleton
         array $route,
         string $text = 'Destroy',
         array $routeParam = []
-    ): self
+    )
     {
-        if (!isset($route['list']) || !isset($route['destroy'])) {
-            return $this;
-        }
-
-        $routes = [
-            $route['destroy'],
-            $route['list'],
-        ];
-        if (!$this->isRoutesEnable($routes)) {
-            return $this;
-        }
-
-        $globals          = $this->twig->getGlobals();
-        $modal            = $globals['modal'] ?? [];
-        $modal['destroy'] = true;
-        $this->twig->addGlobal('modal', $modal);
-        $code  = 'destroy'.$entity->getId();
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr  = [
-            'token'    => $token,
-            'is'       => 'link-btnadmindestroy',
-            'redirect' => $this->router->generate($route['list']),
-            'url'      => $this->router->generate(
-                $route['destroy'],
-                $routeParam
-            ),
-        ];
-
-        $this->add(
-            'btn-admin-header-destroy',
-            $text,
-            $attr
-        );
-
-        return $this;
+        $this->addBtnDestroyRestore('destroy', $entity, $route, $routeParam, $text);
     }
 
     public function addBtnEdit(
@@ -283,48 +249,9 @@ class AdminBtnSingleton
         array $route,
         string $text = 'Restore',
         array $routeParam = []
-    ): self
+    )
     {
-        if (!isset($route['restore']) || !isset($route['list'])) {
-            return $this;
-        }
-
-        $routes = [
-            $route['restore'],
-            $route['list'],
-        ];
-        if (!$this->isRoutesEnable($routes)) {
-            return $this;
-        }
-
-        $globals          = $this->twig->getGlobals();
-        $modal            = $globals['modal'] ?? [];
-        $modal['restore'] = true;
-        $this->twig->addGlobal('modal', $modal);
-        $code  = 'restore'.$entity->getId();
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr  = [
-            'token'    => $token,
-            'is'       => 'link-btnadminrestore',
-            'redirect' => $this->router->generate(
-                $route['list'],
-                [
-                    'entity' => $this->classEntity($entity),
-                ]
-            ),
-            'url'      => $this->router->generate(
-                $route['restore'],
-                $routeParam
-            ),
-        ];
-
-        $this->add(
-            'btn-admin-header-restore',
-            $text,
-            $attr
-        );
-
-        return $this;
+        $this->addBtnDestroyRestore('restore', $entity, $route, $routeParam, $text);
     }
 
     public function addBtnSave(string $form, string $text = 'Sauvegarder'): self
@@ -383,87 +310,27 @@ class AdminBtnSingleton
         array $routes,
         string $code,
         string $title = 'Restaurer'
-    ): self
+    )
     {
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
-            return $this;
-        }
-
-        $globals            = $this->twig->getGlobals();
-        $modal              = $globals['modal'] ?? [];
-        $modal['restories'] = true;
-        $this->twig->addGlobal('modal', $modal);
-        $this->add(
-            'btn-admin-header-restories',
-            $title,
-            [
-                'is'       => 'link-btnadminrestories',
-                'token'    => $token,
-                'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
-                'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
-            ]
-        );
-
-        return $this;
+        $this->addBtnVider('restories', $routes, $code, $title);
     }
 
     public function addSupprimerSelection(
         array $routes,
         string $code,
         string $title = 'Supprimer'
-    ): self
+    )
     {
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
-            return $this;
-        }
-
-        $globals           = $this->twig->getGlobals();
-        $modal             = $globals['modal'] ?? [];
-        $modal['deleties'] = true;
-        $this->twig->addGlobal('modal', $modal);
-        $this->add(
-            'btn-admin-header-deleties',
-            $title,
-            [
-                'is'       => 'link-btnadmindeleties',
-                'token'    => $token,
-                'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
-                'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
-            ]
-        );
-
-        return $this;
+        $this->addBtnVider('deleties', $routes, $code, $title);
     }
 
     public function addViderSelection(
         array $routes,
         string $code,
         string $title = 'Supprimer'
-    ): self
+    )
     {
-        $token = $this->csrfTokenManager->getToken($code)->getValue();
-        if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
-            return $this;
-        }
-
-        $globals          = $this->twig->getGlobals();
-        $modal            = $globals['modal'] ?? [];
-        $modal['empties'] = true;
-        $this->twig->addGlobal('modal', $modal);
-        $this->add(
-            'btn-admin-header-empties',
-            $title,
-            [
-                'is'       => 'link-btnadminempties',
-                'token'    => $token,
-                'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
-                'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
-            ]
-        );
-
-        return $this;
+        $this->addBtnVider('empties', $routes, $code, $title);
     }
 
     public function get(): array
@@ -501,11 +368,37 @@ class AdminBtnSingleton
         $this->init             = true;
     }
 
+    protected function addBtnVider(
+        string $codemodal,
+        array $routes,
+        string $code,
+        string $title = 'Restaurer',
+    )
+    {
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
+            return;
+        }
+
+        $globals           = $this->twig->getGlobals();
+        $modal             = $globals['modal'] ?? [];
+        $modal[$codemodal] = true;
+        $this->twig->addGlobal('modal', $modal);
+        $this->add(
+            'btn-admin-header-'.$codemodal,
+            $title,
+            [
+                'is'       => 'link-btnadmin'.$codemodal,
+                'token'    => $token,
+                'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
+                'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+            ]
+        );
+    }
+
     protected function classEntity($entity)
     {
-        $class = get_class($entity);
-
-        $class = str_replace('Labstag\\Entity\\', '', $class);
+        $class = str_replace('Labstag\\Entity\\', '', $entity::class);
 
         return strtolower($class);
     }
@@ -532,6 +425,44 @@ class AdminBtnSingleton
         }
 
         return $return;
+    }
+
+    private function addBtnDestroyRestore($word, $entity, $route, $routeParam, $text)
+    {
+        if (!isset($route['list']) || !isset($route[$word])) {
+            return $this;
+        }
+
+        $routes = [
+            $route[$word],
+            $route['list'],
+        ];
+
+        if (!$this->isRoutesEnable($routes)) {
+            return $this;
+        }
+
+        $globals      = $this->twig->getGlobals();
+        $modal        = $globals['modal'] ?? [];
+        $modal[$word] = true;
+        $this->twig->addGlobal('modal', $modal);
+        $code  = $word.$entity->getId();
+        $token = $this->csrfTokenManager->getToken($code)->getValue();
+        $attr  = [
+            'token'    => $token,
+            'is'       => 'link-btnadmin'.$word,
+            'redirect' => $this->router->generate($route['list']),
+            'url'      => $this->router->generate(
+                $route[$word],
+                $routeParam
+            ),
+        ];
+
+        $this->add(
+            'btn-admin-header-'.$word,
+            $text,
+            $attr
+        );
     }
 
     private function arrayKeyExistsRedirect($routes)

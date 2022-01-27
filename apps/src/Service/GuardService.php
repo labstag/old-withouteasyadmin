@@ -5,12 +5,9 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Route;
+use Labstag\Entity\RouteGroupe;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\RouteGroupeRepository;
-use Labstag\Repository\RouteRepository;
-use Labstag\Repository\RouteUserRepository;
 use Symfony\Component\Routing\Route as Routing;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\Registry;
@@ -28,41 +25,12 @@ class GuardService
 
     public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
-    protected EntityManagerInterface $entityManager;
-
-    protected GroupeRepository $groupeRepository;
-
-    protected RouteRepository $repositoryRoute;
-
-    protected RouteGroupeRepository $routeGroupeRepo;
-
-    protected RouterInterface $router;
-
-    protected RouteRepository $routeRepository;
-
-    protected RouteUserRepository $routeUserRepo;
-
-    protected Registry $workflows;
-
     public function __construct(
-        RouterInterface $router,
-        EntityManagerInterface $entityManager,
-        RouteUserRepository $routeUserRepo,
-        GroupeRepository $groupeRepository,
-        RouteRepository $routeRepository,
-        Registry $workflows,
-        RouteGroupeRepository $routeGroupeRepo,
-        RouteRepository $repositoryRoute
+        protected RouterInterface $router,
+        protected EntityManagerInterface $entityManager,
+        protected Registry $workflows
     )
     {
-        $this->routeRepository  = $routeRepository;
-        $this->entityManager    = $entityManager;
-        $this->groupeRepository = $groupeRepository;
-        $this->workflows        = $workflows;
-        $this->routeGroupeRepo  = $routeGroupeRepo;
-        $this->routeUserRepo    = $routeUserRepo;
-        $this->repositoryRoute  = $repositoryRoute;
-        $this->router           = $router;
     }
 
     public function all(): array
@@ -78,7 +46,7 @@ class GuardService
             }
 
             $matches = $this->regex($defaults['_controller']);
-            if (0 != count($matches)) {
+            if (0 != (is_countable($matches) ? count($matches) : 0)) {
                 continue;
             }
 
@@ -90,13 +58,7 @@ class GuardService
 
     public function delete(): void
     {
-        $all    = $this->all();
-        $routes = [];
-        foreach (array_keys($all) as $name) {
-            $routes[] = $name;
-        }
-
-        $results = $this->repositoryRoute->findLost($routes);
+        $results = $this->getLostRoute();
         foreach ($results as $route) {
             $this->entityManager->remove($route);
         }
@@ -132,7 +94,7 @@ class GuardService
         }
 
         if (empty($token) || !$token->getUser() instanceof User) {
-            $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
+            $groupe = $this->getRepository(Groupe::class)->findOneBy(['code' => 'visiteur']);
 
             return !(!$this->searchRouteGroupe($groupe, $route));
         }
@@ -167,13 +129,7 @@ class GuardService
 
     public function old()
     {
-        $all    = $this->all();
-        $routes = [];
-        foreach (array_keys($all) as $name) {
-            $routes[] = $name;
-        }
-
-        $results = $this->repositoryRoute->findLost($routes);
+        $results = $this->getLostRoute();
         $data    = [];
         foreach ($results as $route) {
             $data[] = [$route];
@@ -197,7 +153,7 @@ class GuardService
 
     public function routesEnableGroupe(Groupe $groupe): array
     {
-        $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
+        $data   = $this->getRepository(Route::class)->findBy([], ['name' => 'ASC']);
         $routes = [];
         foreach ($data as $route) {
             $state = $this->guardRouteEnableGroupe($route, $groupe);
@@ -213,7 +169,7 @@ class GuardService
 
     public function routesEnableUser(User $user): array
     {
-        $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
+        $data   = $this->getRepository(Route::class)->findBy([], ['name' => 'ASC']);
         $routes = [];
         foreach ($data as $route) {
             $state = $this->guardRouteEnableUser($route, $user);
@@ -230,7 +186,7 @@ class GuardService
     public function save($name): void
     {
         $search = ['name' => $name];
-        $result = $this->repositoryRoute->findOneBy(
+        $result = $this->getRepository(Route::class)->findOneBy(
             $search
         );
 
@@ -261,9 +217,14 @@ class GuardService
         return $data;
     }
 
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
+    }
+
     protected function searchRouteGroupe(Groupe $groupe, string $route): bool
     {
-        $entity = $this->routeGroupeRepo->findRoute($groupe, $route);
+        $entity = $this->getRepository(RouteGroupe::class)->findRoute($groupe, $route);
         if (empty($entity)) {
             return false;
         }
@@ -274,10 +235,21 @@ class GuardService
     protected function searchRouteUser(User $user, string $route): bool
     {
         $stateGroupe = $this->searchRouteGroupe($user->getRefgroupe(), $route);
-        $entity      = $this->routeUserRepo->findRoute($user, $route);
+        $entity      = $this->getRepository(RouteUser::class)->findRoute($user, $route);
         $stateUser   = ($entity instanceof RouteUser) ? $entity->isState() : false;
 
         return $stateGroupe || $stateUser;
+    }
+
+    private function getLostRoute()
+    {
+        $all    = $this->all();
+        $routes = [];
+        foreach (array_keys($all) as $name) {
+            $routes[] = $name;
+        }
+
+        return $this->getRepository(Route::class)->findLost($routes);
     }
 
     private function isRouteGroupe(
@@ -297,7 +269,7 @@ class GuardService
         $data     = $all[$route];
         $defaults = $data->getDefaults();
         $matches  = [];
-        preg_match(self::REGEX_CONTROLLER_ADMIN, $defaults['_controller'], $matches);
+        preg_match(self::REGEX_CONTROLLER_ADMIN, (string) $defaults['_controller'], $matches);
 
         return !(0 != count($matches) && 'visiteur' == $groupe->getCode());
     }

@@ -3,6 +3,7 @@
 namespace Labstag\Service;
 
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\AddressUser;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\LinkUser;
@@ -10,7 +11,6 @@ use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\Template;
 use Labstag\Entity\User;
-use Labstag\Repository\TemplateRepository;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Locale;
 use Symfony\Component\Routing\RouterInterface;
@@ -20,26 +20,13 @@ class UserMailService
 
     protected array $config;
 
-    protected DataService $dataService;
-
-    protected MailerService $mailerService;
-
-    protected TemplateRepository $repository;
-
-    protected RouterInterface $router;
-
     public function __construct(
-        RouterInterface $router,
-        MailerService $mailerService,
-        TemplateRepository $repository,
-        DataService $dataService
+        protected EntityManagerInterface $entityManager,
+        protected RouterInterface $router,
+        protected MailerService $mailerService,
+        protected DataService $dataService
     )
     {
-        $this->dataService   = $dataService;
-        $this->repository    = $repository;
-        $this->mailerService = $mailerService;
-        $this->router        = $router;
-
         $config       = $dataService->getConfig();
         $this->config = $config;
 
@@ -51,7 +38,7 @@ class UserMailService
     public function changeEmailPrincipal(User $user): void
     {
         // @var Template $template
-        $template = $this->repository->findOneBy(
+        $template = $this->getRepository(Template::class)->findOneBy(
             ['code' => 'change-email-principal']
         );
         if (!$template instanceof Template) {
@@ -67,7 +54,7 @@ class UserMailService
     public function changePassword(User $user): void
     {
         // @var Template $template
-        $template = $this->repository->findOneBy(
+        $template = $this->getRepository(Template::class)->findOneBy(
             ['code' => 'change-password']
         );
         if (!$template instanceof Template) {
@@ -105,7 +92,7 @@ class UserMailService
     public function checkNewAddress(User $user, AddressUser $addressUser): void
     {
         // @var Template $template
-        $template = $this->repository->findOneBy(
+        $template = $this->getRepository(Template::class)->findOneBy(
             ['code' => 'check-new-address']
         );
         if (!$template instanceof Template) {
@@ -130,7 +117,7 @@ class UserMailService
     public function checkNewLink(User $user, LinkUser $linkUser): void
     {
         // @var Template $template
-        $template = $this->repository->findOneBy(
+        $template = $this->getRepository(Template::class)->findOneBy(
             ['code' => 'check-new-link']
         );
         if (!$template instanceof Template) {
@@ -150,7 +137,7 @@ class UserMailService
     public function checkNewMail(User $user, EmailUser $emailUser): void
     {
         // @var Template $template
-        $template = $this->repository->findOneBy(
+        $template = $this->getRepository(Template::class)->findOneBy(
             ['code' => 'check-new-mail']
         );
         if (!$template instanceof Template) {
@@ -180,7 +167,7 @@ class UserMailService
     ): void
     {
         // @var Template $template
-        $template = $this->repository->findOneBy(
+        $template = $this->getRepository(Template::class)->findOneBy(
             ['code' => 'check-new-oauthconnectuser']
         );
         if (!$template instanceof Template) {
@@ -200,7 +187,7 @@ class UserMailService
     public function checkNewPhone(User $user, PhoneUser $phoneUser): void
     {
         // @var Template $template
-        $template = $this->repository->findOneBy(
+        $template = $this->getRepository(Template::class)->findOneBy(
             ['code' => 'check-new-phone']
         );
         if (!$template instanceof Template) {
@@ -227,7 +214,7 @@ class UserMailService
     public function lostPassword(User $user): void
     {
         // @var Template $template
-        $template = $this->repository->findOneBy(
+        $template = $this->getRepository(Template::class)->findOneBy(
             ['code' => 'lost-password']
         );
         if (!$template instanceof Template) {
@@ -253,14 +240,14 @@ class UserMailService
     public function newUser(User $user): void
     {
         // @var Template $template
-        $template = $this->repository->findOneBy(
+        $template = $this->getRepository(Template::class)->findOneBy(
             ['code' => 'check-user']
         );
         if (!$template instanceof Template) {
             return;
         }
 
-        $url    = (isset($this->config['site_url'])) ? $this->config['site_url'] : '';
+        $url    = $this->config['site_url'] ?? '';
         $change = [
             'url_confirm_user' => $url.$this->router->generate(
                 'app_confirm_user',
@@ -274,6 +261,11 @@ class UserMailService
             $user,
             $change
         );
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 
     private function setEmail(

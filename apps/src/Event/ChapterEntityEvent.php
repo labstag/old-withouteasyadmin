@@ -6,15 +6,8 @@ use Labstag\Entity\Chapter;
 
 class ChapterEntityEvent
 {
-
-    protected Chapter $newEntity;
-
-    protected Chapter $oldEntity;
-
-    public function __construct(Chapter $oldEntity, Chapter $newEntity)
+    public function __construct(protected Chapter $oldEntity, protected Chapter $newEntity)
     {
-        $this->oldEntity = $oldEntity;
-        $this->newEntity = $newEntity;
     }
 
     public function getNewEntity(): Chapter

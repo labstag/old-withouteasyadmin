@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class DateAndTimeFieldsType extends AbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

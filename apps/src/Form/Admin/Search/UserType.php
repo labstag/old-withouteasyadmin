@@ -7,7 +7,6 @@ use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
 use Labstag\Lib\SearchAbstractTypeLib;
 use Labstag\Search\UserSearch;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class UserType extends SearchAbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -66,21 +65,12 @@ class UserType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $workflow   = $this->workflows->get(new User());
-        $definition = $workflow->getDefinition();
-        $places     = $definition->getPlaces();
-        $builder->add(
-            'etape',
-            ChoiceType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('user.etape.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('user.etape.help', [], 'admin.search.form'),
-                'choices'  => $places,
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('user.etape.placeholder', [], 'admin.search.form'),
-                ],
-            ]
+        $this->showState(
+            $builder,
+            new User(),
+            $this->translator->trans('user.etape.label', [], 'admin.search.form'),
+            $this->translator->trans('user.etape.help', [], 'admin.search.form'),
+            $this->translator->trans('user.etape.placeholder', [], 'admin.search.form')
         );
         parent::buildForm($builder, $options);
     }
@@ -94,10 +84,5 @@ class UserType extends SearchAbstractTypeLib
                 'method'          => 'GET',
             ]
         );
-    }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
     }
 }

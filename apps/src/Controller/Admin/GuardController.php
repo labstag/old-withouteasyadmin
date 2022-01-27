@@ -2,33 +2,33 @@
 
 namespace Labstag\Controller\Admin;
 
+use Labstag\Entity\Groupe;
+use Labstag\Entity\Route as EntityRoute;
+use Labstag\Entity\Workflow;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\RouteRepository;
-use Labstag\Repository\WorkflowRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/guard")
- */
+#[Route(path: '/admin/guard')]
 class GuardController extends AdminControllerLib
 {
-    /**
-     * @Route("/", name="admin_guard_index", methods={"GET","POST"})
-     */
-    public function index(
-        RouteRepository $routeRepo,
-        GroupeRepository $groupeRepo,
-        WorkflowRepository $workflowRepo
-    ): Response
+    #[Route(path: '/', name: 'admin_guard_index', methods: ['GET', 'POST'])]
+    public function index(): Response
     {
+        $workflows = $this->getRepository(Workflow::class)->findBy(
+            [],
+            [
+                'entity'     => 'ASC',
+                'transition' => 'ASC',
+            ]
+        );
+
         return $this->render(
             'admin/guard/index.html.twig',
             [
-                'groups'    => $groupeRepo->findBy([], ['name' => 'ASC']),
-                'routes'    => $routeRepo->findBy([], ['name' => 'ASC']),
-                'workflows' => $workflowRepo->findBy([], ['entity' => 'ASC', 'transition' => 'ASC']),
+                'groups'    => $this->getRepository(Groupe::class)->findBy([], ['name' => 'ASC']),
+                'routes'    => $this->getRepository(EntityRoute::class)->findBy([], ['name' => 'ASC']),
+                'workflows' => $workflows,
             ]
         );
     }
@@ -37,9 +37,8 @@ class GuardController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('guard.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_guard_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('guard.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_guard_index',
             ],
         ];
     }

@@ -2,12 +2,11 @@
 
 namespace Labstag\Form\Admin;
 
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\History;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
+use Labstag\FormType\WysiwygType;
 use Labstag\Lib\AbstractTypeLib;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class HistoryType extends AbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -23,20 +22,10 @@ class HistoryType extends AbstractTypeLib
     ): void
     {
         $this->setTextType($builder);
-        $builder->add(
-            'published',
-            DateTimeType::class,
-            [
-                'label'        => $this->translator->trans('history.published.label', [], 'admin.form'),
-                'help'         => $this->translator->trans('history.published.help', [], 'admin.form'),
-                'date_widget'  => 'single_text',
-                'time_widget'  => 'single_text',
-                'with_seconds' => true,
-            ]
-        );
+        $this->addPublished($builder);
         $builder->add(
             'summary',
-            CKEditorType::class,
+            WysiwygType::class,
             [
                 'label' => $this->translator->trans('history.summary.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('history.summary.help', [], 'admin.form'),
@@ -67,31 +56,6 @@ class HistoryType extends AbstractTypeLib
                 'data_class' => History::class,
             ]
         );
-    }
-
-    protected function setMeta($builder)
-    {
-        $meta = [
-            'metaDescription' => [
-                'label' => $this->translator->trans('history.metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('history.metaDescription.help', [], 'admin.form'),
-            ],
-            'metaKeywords'    => [
-                'label' => $this->translator->trans('history.metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('history.metaKeywords.help', [], 'admin.form'),
-            ],
-        ];
-
-        foreach ($meta as $key => $values) {
-            $builder->add(
-                $key,
-                TextType::class,
-                array_merge(
-                    $values,
-                    ['required' => false]
-                )
-            );
-        }
     }
 
     protected function setTextType($builder)

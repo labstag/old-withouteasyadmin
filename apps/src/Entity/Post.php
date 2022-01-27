@@ -11,19 +11,22 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\PostRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PostRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Uploadable()
+ * @Uploadable
  */
-class Post
+class Post implements Stringable
 {
+    use MetatagsEntity;
     use SoftDeleteableEntity;
-
     use StateableEntity;
 
     /**
@@ -37,17 +40,16 @@ class Post
     private $content;
 
     /**
-     * @var DateTime
-     *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
-    private $created;
+    private DateTime $created;
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
@@ -60,16 +62,6 @@ class Post
      * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"})
      */
     private $libelles;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $metaDescription;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $metaKeywords;
 
     /**
      * @ORM\Column(type="datetime")
@@ -105,21 +97,19 @@ class Post
     private $title;
 
     /**
-     * @var DateTime
-     *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
-    private $updated;
+    private DateTime $updated;
 
     public function __construct()
     {
         $this->libelles = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getTitle();
+        return (string) $this->getTitle();
     }
 
     public function addLibelle(Libelle $libelle): self
@@ -157,22 +147,9 @@ class Post
         return $this->img;
     }
 
-    /**
-     * @return Collection|Libelle[]
-     */
     public function getLibelles(): Collection
     {
         return $this->libelles;
-    }
-
-    public function getMetaDescription(): ?string
-    {
-        return $this->metaDescription;
-    }
-
-    public function getMetaKeywords(): ?string
-    {
-        return $this->metaKeywords;
     }
 
     public function getPublished(): ?DateTimeInterface
@@ -243,20 +220,6 @@ class Post
     public function setImg(?Attachment $img): self
     {
         $this->img = $img;
-
-        return $this;
-    }
-
-    public function setMetaDescription(?string $metaDescription): self
-    {
-        $this->metaDescription = $metaDescription;
-
-        return $this;
-    }
-
-    public function setMetaKeywords(?string $metaKeywords): self
-    {
-        $this->metaKeywords = $metaKeywords;
 
         return $this;
     }

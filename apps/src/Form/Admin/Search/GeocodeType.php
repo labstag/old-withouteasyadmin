@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class GeocodeType extends SearchAbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -48,11 +48,6 @@ class GeocodeType extends SearchAbstractTypeLib
                 'method'          => 'GET',
             ]
         );
-    }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
     }
 
     protected function setTextType($builder)

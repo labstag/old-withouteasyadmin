@@ -4,31 +4,22 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
+use Labstag\Entity\Workflow;
 use Labstag\Form\Admin\Search\UserType as SearchUserType;
 use Labstag\Form\Admin\User\UserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\UserRepository;
-use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Search\UserSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/user")
- */
+#[Route(path: '/admin/user')]
 class UserController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_user_new", methods={"GET","POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?User $user,
-        UserRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_user_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_user_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?User $user, UserRequestHandler $requestHandler): Response
     {
         return $this->form(
             $service,
@@ -57,13 +48,8 @@ class UserController extends AdminControllerLib
         ];
     }
 
-    /**
-     * @Route("/{id}/guard", name="admin_user_guard")
-     */
-    public function guard(
-        User $user,
-        WorkflowRepository $workflowRepo
-    ): Response
+    #[Route(path: '/{id}/guard', name: 'admin_user_guard')]
+    public function guard(User $user): Response
     {
         $this->btnInstance()->addBtnList(
             'admin_user_index',
@@ -76,7 +62,6 @@ class UserController extends AdminControllerLib
                 'id' => $user->getId(),
             ]
         );
-
         $this->btnInstance()->addBtnEdit(
             'admin_user_edit',
             'Editer',
@@ -86,7 +71,7 @@ class UserController extends AdminControllerLib
         );
         $routes = $this->guardService->getGuardRoutesForUser($user);
         if (0 == count($routes)) {
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'danger',
                 $this->translator->trans('admin.user.guard.superadmin.nope')
             );
@@ -94,37 +79,43 @@ class UserController extends AdminControllerLib
             return $this->redirectToRoute('admin_user_index');
         }
 
+        $workflows = $this->getRepository(Workflow::class)->findBy(
+            [],
+            [
+                'entity'     => 'ASC',
+                'transition' => 'ASC',
+            ]
+        );
+
         return $this->render(
             'admin/guard/user.html.twig',
             [
                 'user'      => $user,
                 'routes'    => $routes,
-                'workflows' => $workflowRepo->findBy([], ['entity' => 'ASC', 'transition' => 'ASC']),
+                'workflows' => $workflows,
             ]
         );
     }
 
     /**
-     * @Route("/trash", name="admin_user_trash", methods={"GET"})
-     * @Route("/", name="admin_user_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(UserRepository $repository): Response
+    #[Route(path: '/trash', name: 'admin_user_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_user_index', methods: ['GET'])]
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $repository,
+            User::class,
             'admin/user/index.html.twig'
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_user_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_user_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        User $user
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_user_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_user_preview', methods: ['GET'])]
+    public function showOrPreview(User $user): Response
     {
         $this->modalAttachmentDelete();
 
@@ -146,39 +137,28 @@ class UserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminUserEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('user.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('user.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_edit',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminUserGuard(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('user.guard', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_guard',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('user.guard', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_guard',
             ],
         ];
     }
@@ -187,44 +167,32 @@ class UserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('user.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('user.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminUserPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_trash',
             ],
             [
-                'title'        => $this->translator->trans('user.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('user.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminUserShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('user.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('user.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_show',
             ],
         ];
     }
@@ -233,9 +201,8 @@ class UserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_user_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_user_trash',
             ],
         ];
     }

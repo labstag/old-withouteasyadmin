@@ -20,7 +20,7 @@ class MinMaxCollectionType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getParent(): string
     {

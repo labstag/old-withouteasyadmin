@@ -17,22 +17,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SearchableType extends AbstractType
 {
-
-    protected EntityManagerInterface $entityManager;
-
-    protected RouterInterface $router;
-
-    protected TranslatorInterface $translator;
-
     public function __construct(
-        RouterInterface $router,
-        TranslatorInterface $translator,
-        EntityManagerInterface $entityManager
+        protected RouterInterface $router,
+        protected TranslatorInterface $translator,
+        protected EntityManagerInterface $entityManager
     )
     {
-        $this->translator    = $translator;
-        $this->entityManager = $entityManager;
-        $this->router        = $router;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

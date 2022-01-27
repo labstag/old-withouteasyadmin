@@ -10,17 +10,18 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\MemoRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MemoRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Uploadable()
+ * @Uploadable
  */
-class Memo
+class Memo implements Stringable
 {
     use SoftDeleteableEntity;
-
     use StateableEntity;
 
     /**
@@ -53,8 +54,9 @@ class Memo
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -76,9 +78,9 @@ class Memo
         $this->dateEnd   = new DateTime();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getTitle();
+        return (string) $this->getTitle();
     }
 
     public function getContent(): ?string

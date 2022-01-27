@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 abstract class LinkType extends AbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

@@ -2,14 +2,12 @@
 
 namespace Labstag\Form\Admin\Bookmark;
 
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
 use Labstag\Lib\AbstractTypeLib;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -19,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PrincipalType extends AbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -27,17 +25,7 @@ class PrincipalType extends AbstractTypeLib
     ): void
     {
         $this->setTextType($builder);
-        $builder->add(
-            'published',
-            DateTimeType::class,
-            [
-                'label'        => $this->translator->trans('post.published.label', [], 'admin.form'),
-                'help'         => $this->translator->trans('post.published.help', [], 'admin.form'),
-                'date_widget'  => 'single_text',
-                'time_widget'  => 'single_text',
-                'with_seconds' => true,
-            ]
-        );
+        $this->addPublished($builder);
         $builder->add(
             'url',
             UrlType::class,
@@ -50,14 +38,7 @@ class PrincipalType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'content',
-            CKEditorType::class,
-            [
-                'label' => $this->translator->trans('bookmark.content.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('bookmark.content.help', [], 'admin.form'),
-            ]
-        );
+        $this->setContent($builder);
         $this->setMeta($builder);
         $builder->add(
             'file',
@@ -126,31 +107,6 @@ class PrincipalType extends AbstractTypeLib
                 'data_class' => Bookmark::class,
             ]
         );
-    }
-
-    protected function setMeta($builder)
-    {
-        $meta = [
-            'metaDescription' => [
-                'label' => $this->translator->trans('bookmark.metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('bookmark.metaDescription.help', [], 'admin.form'),
-            ],
-            'metaKeywords'    => [
-                'label' => $this->translator->trans('bookmark.metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('bookmark.metaKeywords.help', [], 'admin.form'),
-            ],
-        ];
-
-        foreach ($meta as $key => $values) {
-            $builder->add(
-                $key,
-                TextType::class,
-                array_merge(
-                    $values,
-                    ['required' => false]
-                )
-            );
-        }
     }
 
     protected function setTextType($builder)

@@ -21,7 +21,7 @@ class FlagCountryType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getParent(): string
     {

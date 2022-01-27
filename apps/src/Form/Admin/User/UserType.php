@@ -2,22 +2,17 @@
 
 namespace Labstag\Form\Admin\User;
 
-use Labstag\Entity\EmailUser;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Collections\User\AddressType;
 use Labstag\Form\Admin\Collections\User\EmailType;
 use Labstag\Form\Admin\Collections\User\LinkType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
-use Labstag\FormType\MinMaxCollectionType;
 use Labstag\FormType\SearchableType;
 use Labstag\Lib\AbstractTypeLib;
 use Labstag\Repository\EmailUserRepository;
 use Labstag\Service\TemplatePageService;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,21 +20,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserType extends AbstractTypeLib
 {
-
-    protected EmailUserRepository $repository;
-
     public function __construct(
         TranslatorInterface $translator,
-        EmailUserRepository $repository,
+        protected EmailUserRepository $repository,
         TemplatePageService $templatePageService
     )
     {
-        $this->repository = $repository;
         parent::__construct($translator, $templatePageService);
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -57,24 +48,7 @@ class UserType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'plainPassword',
-            RepeatedType::class,
-            [
-                'type'            => PasswordType::class,
-                'invalid_message' => $this->translator->trans('profil.password.match', [], 'admin.form'),
-                'options'         => ['attr' => ['class' => 'password-field']],
-                'required'        => false,
-                'first_options'   => [
-                    'label' => $this->translator->trans('user.password.label', [], 'admin.form'),
-                    'help'  => $this->translator->trans('user.password.help', [], 'admin.form'),
-                ],
-                'second_options'  => [
-                    'label' => $this->translator->trans('user.repeatpassword.label', [], 'admin.form'),
-                    'help'  => $this->translator->trans('user.repeatpassword.help', [], 'admin.form'),
-                ],
-            ]
-        );
+        $this->addPlainPassword($builder);
         $builder->add(
             'refgroupe',
             SearchableType::class,
@@ -99,37 +73,9 @@ class UserType extends AbstractTypeLib
                 'attr'     => ['accept' => 'image/*'],
             ]
         );
-        if (isset($options['data']) && !is_null($options['data']->getId())) {
-            $emails = [];
-            $data   = $this->repository->getEmailsUserVerif(
-                $options['data'],
-                true
-            );
-            foreach ($data as $email) {
-                // @var EmailUser $email
-                $address          = $email->getAddress();
-                $emails[$address] = $address;
-            }
+        $this->addEmails($builder, $options, $this->repository);
 
-            ksort($emails);
-
-            if (0 != count($emails)) {
-                $builder->add(
-                    'email',
-                    ChoiceType::class,
-                    [
-                        'label'   => $this->translator->trans('user.email.label', [], 'admin.form'),
-                        'help'    => $this->translator->trans('user.email.help', [], 'admin.form'),
-                        'choices' => $emails,
-                        'attr'    => [
-                            'placeholder' => $this->translator->trans('user.email.placeholder', [], 'admin.form'),
-                        ],
-                    ]
-                );
-            }
-        }
-
-        $this->setCollectionType($builder);
+        $this->setCollectionTypeAll($builder);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -141,7 +87,7 @@ class UserType extends AbstractTypeLib
         );
     }
 
-    protected function setCollectionType(FormBuilderInterface $builder)
+    protected function setCollectionTypeAll(FormBuilderInterface $builder)
     {
         $tab = [
             'emailUsers'   => EmailType::class,
@@ -149,17 +95,6 @@ class UserType extends AbstractTypeLib
             'addressUsers' => AddressType::class,
             'linkUsers'    => LinkType::class,
         ];
-        foreach ($tab as $key => $type) {
-            $builder->add(
-                $key,
-                MinMaxCollectionType::class,
-                [
-                    'label'        => ' ',
-                    'allow_add'    => true,
-                    'allow_delete' => true,
-                    'entry_type'   => $type,
-                ]
-            );
-        }
+        $this->setCollectionType($builder, $tab);
     }
 }

@@ -8,12 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\CategoryRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Category
+class Category implements Stringable
 {
     use SoftDeleteableEntity;
 
@@ -29,8 +31,9 @@ class Category
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
@@ -42,9 +45,9 @@ class Category
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="children", cascade={"persist"})
      * @ORM\JoinColumn(
-     *  name="parent_id",
-     *  referencedColumnName="id",
-     *  onDelete="SET NULL"
+     *     name="parent_id",
+     *     referencedColumnName="id",
+     *     onDelete="SET NULL"
      * )
      */
     private $parent;
@@ -67,7 +70,7 @@ class Category
         $this->bookmarks = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $parent = $this->getParent();
         $text   = is_null($parent) ? '' : $parent.' - ';
@@ -105,17 +108,11 @@ class Category
         return $this;
     }
 
-    /**
-     * @return Bookmark[]|Collection
-     */
     public function getBookmarks(): Collection
     {
         return $this->bookmarks;
     }
 
-    /**
-     * @return Collection|self[]
-     */
     public function getChildren(): Collection
     {
         return $this->children;
@@ -136,9 +133,6 @@ class Category
         return $this->parent;
     }
 
-    /**
-     * @return Collection|Post[]
-     */
     public function getPosts(): Collection
     {
         return $this->posts;

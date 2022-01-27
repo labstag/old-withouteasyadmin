@@ -7,11 +7,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\LayoutRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=LayoutRepository::class)
  */
-class Layout
+class Layout implements Stringable
 {
     use SoftDeleteableEntity;
 
@@ -22,8 +24,9 @@ class Layout
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
@@ -42,9 +45,9 @@ class Layout
         $this->pages = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function addPage(Page $page): self
@@ -72,9 +75,6 @@ class Layout
         return $this->name;
     }
 
-    /**
-     * @return Collection|Page[]
-     */
     public function getPages(): Collection
     {
         return $this->pages;

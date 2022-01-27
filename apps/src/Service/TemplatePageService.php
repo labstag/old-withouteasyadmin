@@ -2,48 +2,30 @@
 
 namespace Labstag\Service;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Finder\Finder;
-
 class TemplatePageService
 {
-
-    private ContainerInterface $container;
-
-    public function __construct(ContainerInterface $container)
+    public function __construct(protected $templates)
     {
-        $this->container = $container;
-    }
-
-    public function getAll(string $namespace): array
-    {
-        $finder = new Finder();
-        $finder->files()->in(__DIR__.'/../TemplatePage')->name('*.php');
-        $plugins = [];
-        foreach ($finder as $file) {
-            $plugins[] = rtrim($namespace, '\\').'\\'.$file->getFilenameWithoutExtension();
-        }
-
-        return $plugins ?? [];
     }
 
     public function getChoices()
     {
-        $namespace = 'Labstag\TemplatePage';
-        $finder    = new Finder();
-        $finder->files()->in(__DIR__.'/../TemplatePage')->name('*.php');
         $plugins = [];
-        foreach ($finder as $file) {
-            $class = rtrim($namespace, '\\').'\\'.$file->getFilenameWithoutExtension();
-
-            $plugins[$class] = $class;
+        foreach ($this->templates as $template) {
+            $plugins[$template::class] = $template::class;
         }
 
         return $plugins;
     }
 
-    public function getClass($class)
+    public function getClass($class): mixed
     {
-        return $this->container->get($class);
+        foreach ($this->templates as $template) {
+            if ($template::class === $class) {
+                return $template;
+            }
+        }
+
+        return null;
     }
 }

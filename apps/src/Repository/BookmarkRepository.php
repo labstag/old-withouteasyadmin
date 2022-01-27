@@ -2,7 +2,6 @@
 
 namespace Labstag\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Bookmark;
@@ -65,57 +64,5 @@ class BookmarkRepository extends ServiceEntityRepositoryLib
         );
 
         return $query->getQuery();
-    }
-
-    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
-    {
-        $this->setQueryEtape($query, $get);
-        $this->setQueryName($query, $get);
-        $this->setQueryRefUser($query, $get);
-        $this->setQueryRefCategory($query, $get);
-
-        return $query;
-    }
-
-    protected function setQueryEtape(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['etape']) || empty($get['etape'])) {
-            return;
-        }
-
-        $query->andWhere('a.state LIKE :state');
-        $query->setParameter('state', '%'.$get['etape'].'%');
-    }
-
-    protected function setQueryName(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['name']) || empty($get['name'])) {
-            return;
-        }
-
-        $query->andWhere('a.name LIKE :name');
-        $query->setParameter('name', '%'.$get['name'].'%');
-    }
-
-    protected function setQueryRefCategory(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['refcategory']) || empty($get['refcategory'])) {
-            return;
-        }
-
-        $query->leftJoin('a.refcategory', 'u');
-        $query->andWhere('u.id = :refcategory');
-        $query->setParameter('refcategory', $get['refcategory']);
-    }
-
-    protected function setQueryRefUser(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['refuser']) || empty($get['refuser'])) {
-            return;
-        }
-
-        $query->leftJoin('a.refuser', 'u');
-        $query->andWhere('u.id = :refuser');
-        $query->setParameter('refuser', $get['refuser']);
     }
 }

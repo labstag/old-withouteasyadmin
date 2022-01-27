@@ -6,21 +6,11 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\Category;
-use Labstag\Lib\FixtureLib;
+use Labstag\Lib\DataFixtureLib;
 
-class CategoryFixtures extends FixtureLib implements DependentFixtureInterface
+class CategoryFixtures extends DataFixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
-    {
-        return [DataFixtures::class];
-    }
-
     public function load(ObjectManager $manager): void
-    {
-        $this->add($manager);
-    }
-
-    protected function add(ObjectManager $manager): void
     {
         unset($manager);
         $faker = $this->setFaker();
@@ -36,7 +26,7 @@ class CategoryFixtures extends FixtureLib implements DependentFixtureInterface
         $category->setName($faker->unique()->colorName);
         $indexCategory = $faker->numberBetween(0, $index);
         $code          = 'category_'.$indexCategory;
-        if ($this->hasReference($code) && 1 == rand(0, 1)) {
+        if ($this->hasReference($code) && 1 == random_int(0, 1)) {
             $parent = $this->getReference($code);
             $category->setParent($parent);
         }

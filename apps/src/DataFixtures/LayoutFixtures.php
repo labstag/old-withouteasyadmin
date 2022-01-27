@@ -5,21 +5,11 @@ namespace Labstag\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Layout;
-use Labstag\Lib\FixtureLib;
+use Labstag\Lib\DataFixtureLib;
 
-class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
+class LayoutFixtures extends DataFixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
-    {
-        return [DataFixtures::class];
-    }
-
     public function load(ObjectManager $manager): void
-    {
-        $this->add($manager);
-    }
-
-    protected function add(ObjectManager $manager): void
     {
         unset($manager);
         $this->addLayoutLanding();
@@ -43,30 +33,30 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
     protected function addLayoutContent()
     {
         $content = <<<EOF
-        [header]
-        [main,aside]
-        [footer]
-        EOF;
+            [header]
+            [main,aside]
+            [footer]
+            EOF;
         $this->addLayout('content', $content);
     }
 
     protected function addLayoutHome()
     {
         $content = <<<EOF
-        [header]
-        [main]
-        [footer]
-        EOF;
+            [header]
+            [main]
+            [footer]
+            EOF;
         $this->addLayout('home', $content);
     }
 
     protected function addLayoutLanding()
     {
         $content = <<<EOF
-        [header]
-        [main]
-        [footer]
-        EOF;
+            [header]
+            [main]
+            [footer]
+            EOF;
         $this->addLayout('landing', $content);
     }
 }

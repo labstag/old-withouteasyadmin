@@ -17,25 +17,14 @@
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
         <env name="KERNEL_CLASS" value="Labstag\Kernel" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=999999"/>
     </php>
 
     <testsuites>
-        <testsuite name="unit">
-            <directory>tests/Unit</directory>
-        </testsuite>
-        <testsuite name="integration">
-            <directory>tests/Integration</directory>
-        </testsuite>
-        <testsuite name="system">
-            <directory>tests/System</directory>
+        <testsuite name="Project Test Suite">
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
 
     <coverage processUncoveredFiles="true">
         <include>
@@ -53,10 +42,4 @@
         <extension class="Symfony\Component\Panther\ServerExtension" />
     </extensions>
     -->
-
-    <logging>
-        <log type="coverage-html" target="var/coverage" lowUpperBound="35" highLowerBound="70"/>
-        <log type="coverage-clover" target="var/clover.xml" lowUpperBound="35" highLowerBound="70"/>
-        <log type="junit" target="var/junit.xml" lowUpperBound="35" highLowerBound="70"/>
-    </logging>
 </phpunit>

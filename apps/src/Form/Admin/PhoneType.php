@@ -13,21 +13,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class PhoneType extends AbstractTypeLib
 {
-
-    protected PhoneService $phoneService;
-
     public function __construct(
         TranslatorInterface $translator,
-        PhoneService $phoneService,
+        protected PhoneService $phoneService,
         TemplatePageService $templatePageService
     )
     {
-        $this->phoneService = $phoneService;
         parent::__construct($translator, $templatePageService);
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,

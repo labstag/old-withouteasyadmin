@@ -12,12 +12,8 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 class ServiceMethodMessageHandler implements MessageHandlerInterface, ServiceSubscriberInterface
 {
-
-    protected ContainerInterface $container;
-
-    public function __construct(ContainerInterface $container)
+    public function __construct(protected ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     public function __invoke(ServiceMethodMessage $message): void

@@ -7,27 +7,18 @@ use Labstag\Entity\Layout;
 use Labstag\Form\Admin\LayoutType;
 use Labstag\Form\Admin\Search\LayoutType as SearchLayoutType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\LayoutRepository;
 use Labstag\RequestHandler\LayoutRequestHandler;
 use Labstag\Search\LayoutSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/layout")
- */
+#[Route(path: '/admin/layout')]
 class LayoutController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_layout_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_layout_new", methods={"GET","POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?Layout $layout,
-        LayoutRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_layout_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_layout_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?Layout $layout, LayoutRequestHandler $requestHandler): Response
     {
         return $this->form(
             $service,
@@ -38,26 +29,24 @@ class LayoutController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_layout_trash", methods={"GET"})
-     * @Route("/", name="admin_layout_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(LayoutRepository $repository): Response
+    #[Route(path: '/trash', name: 'admin_layout_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_layout_index', methods: ['GET'])]
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $repository,
+            Layout::class,
             'admin/layout/index.html.twig'
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_layout_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_layout_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Layout $layout
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_layout_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_layout_preview', methods: ['GET'])]
+    public function showOrPreview(Layout $layout): Response
     {
         return $this->renderShowOrPreview(
             $layout,
@@ -93,24 +82,18 @@ class LayoutController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('layout.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('layout.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminTemplaceEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('layout.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('layout.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_edit',
             ],
         ];
     }
@@ -119,44 +102,32 @@ class LayoutController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('layout.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('layout.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminTemplacePreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('layout.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('layout.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_trash',
             ],
             [
-                'title'        => $this->translator->trans('layout.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('layout.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminTemplaceShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('layout.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('layout.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_show',
             ],
         ];
     }
@@ -165,9 +136,8 @@ class LayoutController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('layout.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_layout_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('layout.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_layout_trash',
             ],
         ];
     }

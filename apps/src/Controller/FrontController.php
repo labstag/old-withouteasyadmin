@@ -3,25 +3,18 @@
 namespace Labstag\Controller;
 
 use Labstag\Entity\Page;
-use Labstag\Lib\FrontControllerLib;
-use Labstag\Repository\PageRepository;
+use Labstag\Lib\ControllerLib;
 use Labstag\Service\TemplatePageService;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FrontController extends FrontControllerLib
+class FrontController extends ControllerLib
 {
-    /**
-     * @Route("/{slug}", name="front", requirements={"slug"=".+"}, defaults={"slug"=""}, priority=-1)
-     */
-    public function front(
-        string $slug,
-        TemplatePageService $templatePageService,
-        PageRepository $pageRepository
-    ): mixed
+    #[Route(path: '/{slug}', name: 'front', requirements: ['slug' => '.+'], defaults: ['slug' => ''], priority: -1)]
+    public function front(string $slug, TemplatePageService $templatePageService): mixed
     {
         $slug = trim($slug);
         if ('' == $slug) {
-            $page = $pageRepository->findOneBy(['front' => 1]);
+            $page = $this->getRepository(Page::class)->findOneBy(['front' => 1]);
         }
 
         $search = $slug;
@@ -29,7 +22,7 @@ class FrontController extends FrontControllerLib
         $page   = null;
         $strlen = strlen($search);
         while (0 == $find || 0 != $strlen) {
-            $searchPage = $pageRepository->findOneBy(['frontslug' => $search]);
+            $searchPage = $this->getRepository(Page::class)->findOneBy(['frontslug' => $search]);
             if ($searchPage instanceof Page) {
                 $page = $searchPage;
 
@@ -45,11 +38,13 @@ class FrontController extends FrontControllerLib
         }
 
         $slugFront = $page->getFrontslug();
-
         preg_match('/'.$slugFront.'(.*)/', $slug, $matches);
-
         $class = $templatePageService->getClass($page->getFunction());
-        $slug  = strstr($slug, $page->getSlug());
+        if (is_null($class)) {
+            throw $this->createNotFoundException();
+        }
+
+        $slug = strstr($slug, (string) $page->getSlug());
 
         return $class->launch($matches);
     }

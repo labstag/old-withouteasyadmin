@@ -8,13 +8,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\PageRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PageRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Page
+class Page implements Stringable
 {
     use SoftDeleteableEntity;
 
@@ -40,8 +42,9 @@ class Page
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
@@ -54,9 +57,9 @@ class Page
     /**
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children")
      * @ORM\JoinColumn(
-     *  name="parent_id",
-     *  referencedColumnName="id",
-     *  onDelete="SET NULL"
+     *     name="parent_id",
+     *     referencedColumnName="id",
+     *     onDelete="SET NULL"
      * )
      */
     private $parent;
@@ -82,9 +85,9 @@ class Page
         $this->children = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->name;
+        return (string) $this->name;
     }
 
     public function addChild(self $child): self
@@ -97,9 +100,6 @@ class Page
         return $this;
     }
 
-    /**
-     * @return Collection|self[]
-     */
     public function getChildren(): Collection
     {
         return $this->children;

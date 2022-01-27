@@ -3,25 +3,23 @@
 namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\Entity\Attachment;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/attachment")
- */
+#[Route(path: '/admin/attachment')]
 class AttachmentController extends AdminControllerLib
 {
     /**
-     * @Route("/trash", name="admin_attachment_trash", methods={"GET"})
-     * @Route("/", name="admin_attachment_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(AttachmentRepository $repository): Response
+    #[Route(path: '/trash', name: 'admin_attachment_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_attachment_index', methods: ['GET'])]
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $repository,
+            Attachment::class,
             'admin/attachment/index.html.twig'
         );
     }
@@ -43,9 +41,8 @@ class AttachmentController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_attachment_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_attachment_index',
             ],
         ];
     }

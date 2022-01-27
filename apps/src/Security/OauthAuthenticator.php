@@ -5,6 +5,7 @@ namespace Labstag\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\User;
+use Labstag\Service\ErrorService;
 use Labstag\Service\OauthService;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
@@ -22,12 +23,9 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Security\Guard\Authenticator\{
-    AbstractFormLoginAuthenticator
-};
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
@@ -37,62 +35,40 @@ class OauthAuthenticator extends AbstractAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
 
-    protected CsrfTokenManagerInterface $csrfTokenManager;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected LoggerInterface $logger;
-
     protected string $oauthCode;
 
-    protected OauthService $oauthService;
-
-    protected UserPasswordHasherInterface $passwordEncoder;
-
     protected Request $request;
-
-    protected RequestStack $requestStack;
 
     // @var string
     protected $route;
 
-    protected TokenStorageInterface $token;
-
-    protected UrlGeneratorInterface $urlGenerator;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        UrlGeneratorInterface $urlGenerator,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        UserPasswordHasherInterface $passwordEncoder,
-        OauthService $oauthService,
-        RequestStack $requestStack,
-        TokenStorageInterface $token,
-        LoggerInterface $logger
+        protected ErrorService $errorService,
+        protected EntityManagerInterface $entityManager,
+        protected UrlGeneratorInterface $urlGenerator,
+        protected CsrfTokenManagerInterface $csrfTokenManager,
+        protected UserPasswordHasherInterface $passwordEncoder,
+        protected OauthService $oauthService,
+        protected RequestStack $requestStack,
+        protected TokenStorageInterface $token,
+        protected LoggerInterface $logger
     )
     {
-        $this->logger           = $logger;
-        $this->entityManager    = $entityManager;
-        $this->urlGenerator     = $urlGenerator;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->passwordEncoder  = $passwordEncoder;
-        $this->requestStack     = $requestStack;
         // @var Request $request
         $request = $this->requestStack->getCurrentRequest();
 
-        $this->request      = $request;
-        $this->oauthService = $oauthService;
-        $this->token        = $token;
+        $this->request = $request;
 
         $attributes      = $this->request->attributes;
         $oauthCode       = $this->setOauthCode($attributes);
         $this->oauthCode = $oauthCode;
     }
 
-    public function authenticate(Request $request): PassportInterface
+    public function authenticate(Request $request): Passport
     {
         // @var AbstractProvider $provider
         $provider    = $this->oauthService->setProvider($this->oauthCode);
+        $attributes  = $request->attributes->all();
         $query       = $request->query->all();
         $session     = $request->getSession();
         $oauth2state = $session->get('oauth2state');
@@ -114,19 +90,20 @@ class OauthAuthenticator extends AbstractAuthenticator
             );
             // @var mixed $userOauth
             $userOauth = $provider->getResourceOwner($tokenProvider);
+            $data      = $userOauth->toArray();
+            $client    = $attributes['_route_params']['oauthCode'];
+            $identity  = $this->oauthService->getIdentity($data, $client);
+            $user      = $this->getRepository(User::class)->findOauth(
+                $identity,
+                $client
+            );
 
             return new SelfValidatingPassport(
-                new UserBadge($userOauth->getUserName())
+                new UserBadge($user->getUsername())
             );
         } catch (Exception $exception) {
-            $errorMsg = sprintf(
-                'Exception : Erreur %s dans %s L.%s : %s',
-                $exception->getCode(),
-                $exception->getFile(),
-                $exception->getLine(),
-                $exception->getMessage()
-            );
-            $this->logger->error($errorMsg);
+            $this->errorService->set($exception);
+            dump($exception);
 
             throw new CustomUserMessageAuthenticationException('No API token provided');
         }
@@ -177,6 +154,11 @@ class OauthAuthenticator extends AbstractAuthenticator
         unset($request);
 
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 
     protected function setOauthCode(ParameterBag $attributes): string

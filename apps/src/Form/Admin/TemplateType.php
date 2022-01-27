@@ -2,9 +2,9 @@
 
 namespace Labstag\Form\Admin;
 
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Template;
 use Labstag\FormType\CoreTextareaType;
+use Labstag\FormType\WysiwygType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TemplateType extends AbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -45,7 +45,7 @@ class TemplateType extends AbstractTypeLib
         );
         $builder->add(
             'html',
-            CKEditorType::class,
+            WysiwygType::class,
             [
                 'label' => $this->translator->trans('template.html.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('template.html.help', [], 'admin.form'),

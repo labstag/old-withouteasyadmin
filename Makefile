@@ -5,13 +5,13 @@ include make/docker/Makefile
 
 PHPFPMFULLNAME := $(STACK)_phpfpm.1.$$(docker service ps -f 'name=$(STACK)_phpfpm' $(STACK)_phpfpm -q --no-trunc | head -n1)
 
-DOCKER_EXECPHP := @docker exec $(PHPFPMFULLNAME)
+DOCKER_EXECPHP := @$(DOCKER_EXEC) $(PHPFPMFULLNAME)
 
 PHP_EXEC := ${DOCKER_EXECPHP} php -d memory_limit=-1
 SYMFONY_EXEC := ${DOCKER_EXECPHP} symfony console
 COMPOSER_EXEC := ${DOCKER_EXECPHP} symfony composer
 
-COMMANDS_SUPPORTED_COMMANDS := libraries workflow-png tests messenger linter install git encore composer bdd setbdd geocode
+COMMANDS_SUPPORTED_COMMANDS := workflow-png tests messenger linter install git encore composer bdd setbdd geocode
 COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
 ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -22,27 +22,28 @@ init: ## Init project
 	@git submodule update --init --recursive --remote
 
 apps/phploc.phar:
-	$(DOCKER_EXECPHP) wget https://phar.phpunit.de/phploc-7.0.2.phar -O phploc.phar
+	wget https://phar.phpunit.de/phploc-7.0.2.phar -O apps/phploc.phar
 
 apps/php-cs-fixer.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.1.0/php-cs-fixer.phar
+	wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.5.0/php-cs-fixer.phar -O apps/php-cs-fixer.phar
+
 apps/phpmd.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/phpmd/phpmd/releases/download/2.10.2/phpmd.phar
+	wget https://github.com/phpmd/phpmd/releases/download/2.11.1/phpmd.phar -O apps/phpmd.phar
 
 apps/phpcbf.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.0/phpcbf.phar
+	wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.2/phpcbf.phar -O apps/phpcbf.phar
 
 apps/phpcs.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.0/phpcs.phar
+	wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.2/phpcs.phar -O apps/phpcs.phar
 
 apps/phpstan.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/phpstan/phpstan/releases/download/0.12.98/phpstan.phar
+	wget https://github.com/phpstan/phpstan/releases/download/1.4.0/phpstan.phar -O apps/phpstan.phar
 
 apps/phpDocumentor.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.1.2/phpDocumentor.phar
+	wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.3.0/phpDocumentor.phar -O apps/phpDocumentor.phar
 
 apps/behat.phar:
-	$(DOCKER_EXECPHP) wget https://github.com/Behat/Behat/releases/download/v3.8.1/behat.phar
+	wget https://github.com/Behat/Behat/releases/download/v3.10.0/behat.phar -O apps/behat.phar
 
 phar: apps/phploc.phar apps/phpmd.phar apps/php-cs-fixer.phar apps/phpcbf.phar apps/phpcs.phar apps/phpstan.phar apps/phpDocumentor.phar apps/behat.phar
 
@@ -50,7 +51,7 @@ apps/composer.lock: isdocker apps/composer.json
 	${COMPOSER_EXEC} update
 
 apps/vendor: isdocker apps/composer.json
-	${COMPOSER_EXEC} install --no-progress --prefer-dist --optimize-autoloader
+	${COMPOSER_EXEC} install --no-progress --prefer-dist --Optimize-autoloader
 	
 .PHONY: assets
 assets: isdocker apps/.env
@@ -86,9 +87,9 @@ else ifeq ($(COMMANDS_ARGS),outdated)
 else ifeq ($(COMMANDS_ARGS),fund)
 	${COMPOSER_EXEC} fund
 else ifeq ($(COMMANDS_ARGS),prod)
-	${COMPOSER_EXEC} install --no-dev --no-progress --prefer-dist --optimize-autoloader
+	${COMPOSER_EXEC} install --no-dev --no-progress --prefer-dist --Optimize-autoloader
 else ifeq ($(COMMANDS_ARGS),dev)
-	${COMPOSER_EXEC} install --no-progress --prefer-dist --optimize-autoloader
+	${COMPOSER_EXEC} install --no-progress --prefer-dist --Optimize-autoloader
 else ifeq ($(COMMANDS_ARGS),u)
 	${COMPOSER_EXEC} update
 else ifeq ($(COMMANDS_ARGS),i)
@@ -220,10 +221,12 @@ else ifeq ($(COMMANDS_ARGS),phploc)
 	$(PHP_EXEC) phploc.phar src
 else ifeq ($(COMMANDS_ARGS),phpdoc)
 	$(PHP_EXEC) phpDocumentor.phar -d src -t public/docs
+else ifeq ($(COMMANDS_ARGS),rector)
+	$(PHP_EXEC) bin/rector process src
 else ifeq ($(COMMANDS_ARGS),phpmd)
 	$(PHP_EXEC) -d error_reporting=24575 phpmd.phar src,features/bootstrap ansi phpmd.xml
 else ifeq ($(COMMANDS_ARGS),phpmnd)
-	${COMPOSER_EXEC} run phpmnd
+	# ${COMPOSER_EXEC} run phpmnd
 else ifeq ($(COMMANDS_ARGS),phpstan)
 	${PHP_EXEC} phpstan.phar analyse src
 else ifeq ($(COMMANDS_ARGS),twig)
@@ -231,12 +234,13 @@ else ifeq ($(COMMANDS_ARGS),twig)
 else ifeq ($(COMMANDS_ARGS),container)
 	${SYMFONY_EXEC} lint:container
 else ifeq ($(COMMANDS_ARGS),yaml)
-	${SYMFONY_EXEC} lint:yaml config translations
+	${SYMFONY_EXEC} lint:yaml config translations --parse-tags
 else
 	@printf "${MISSING_ARGUMENTS}" "linter"
 	$(call array_arguments, \
 		["all"]="## Launch all linter" \
 		["compo"]="composer" \
+		["rector"]="rector" \
 		["readme"]="linter README.md" \
 		["phpaudit"]="AUDIT PHP" \
 		["phpdoc"]="php doc" \
@@ -299,27 +303,7 @@ translations: isdocker ## update translation
 
 .PHONY: workflow-png
 workflow-png: isdocker ### generate workflow png
-	${SYMFONY_EXEC} workflow:dump $(COMMAND_ARGS) | dot -Tpng -o $(COMMAND_ARGS).png
-
-.PHONY: libraries
-libraries: ### Add libraries
-ifeq ($(COMMANDS_ARGS),tarteaucitron)
-	wget https://github.com/AmauriC/tarteaucitron.js/archive/refs/tags/v1.9.3.zip
-	unzip v1.9.3.zip
-	rm v1.9.3.zip
-	mv tarteaucitron.js-1.9.3 apps/public/tarteaucitron
-else
-	@printf "${MISSING_ARGUMENTS}" "libraries"
-	$(call array_arguments, \
-		["tarteaucitron"]="tarteaucitron" \
-	)
-endif
-
-DATABASE_BDD := $(shell more docker-compose.yml | grep DATABASE_BDD: | sed -e "s/^.*DATABASE_BDD:[[:space:]]//")
-DATABASE_USER := $(shell more docker-compose.yml | grep DATABASE_USER: | sed -e "s/^.*DATABASE_USER:[[:space:]]//")
-DATABASE_PASSWORD := $(shell more docker-compose.yml | grep DATABASE_PASSWORD: | sed -e "s/^.*DATABASE_PASSWORD:[[:space:]]//")
-SETBDD := cd lampy && make setbdd USERNAME="${DATABASE_USER}" BDD="${DATABASE_BDD}" PASSWORD="${DATABASE_PASSWORD}"
+	${SYMFONY_EXEC} workflow:dump $(COMMANDS_ARGS) | dot -Tpng -O $(COMMANDS_ARGS).png
 
 bddset: ## Set bdd
-	@echo "$(SETBDD)"
-	$(shell $(SETBDD))
+	@cp database_init/01_labstag.sql lampy/mariadb_init/01_labstag.sql

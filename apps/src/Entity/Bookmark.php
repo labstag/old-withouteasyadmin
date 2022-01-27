@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity;
 
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,16 +11,19 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Repository\BookmarkRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BookmarkRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Uploadable()
+ * @Uploadable
  */
 class Bookmark
 {
+    use MetatagsEntity;
     use SoftDeleteableEntity;
 
     /**
@@ -39,8 +43,9 @@ class Bookmark
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
@@ -53,16 +58,6 @@ class Bookmark
      * @ORM\ManyToMany(targetEntity=Libelle::class, inversedBy="bookmarks")
      */
     private $libelles;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $metaDescription;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $metaKeywords;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -98,12 +93,10 @@ class Bookmark
     private $state;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(name="state_changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"state"})
      */
-    private $stateChanged;
+    private DateTime $stateChanged;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -149,22 +142,9 @@ class Bookmark
         return $this->img;
     }
 
-    /**
-     * @return Collection|Libelle[]
-     */
     public function getLibelles(): Collection
     {
         return $this->libelles;
-    }
-
-    public function getMetaDescription(): ?string
-    {
-        return $this->metaDescription;
-    }
-
-    public function getMetaKeywords(): ?string
-    {
-        return $this->metaKeywords;
     }
 
     public function getName(): ?string
@@ -238,20 +218,6 @@ class Bookmark
     public function setImg(?Attachment $img): self
     {
         $this->img = $img;
-
-        return $this;
-    }
-
-    public function setMetaDescription(?string $metaDescription): self
-    {
-        $this->metaDescription = $metaDescription;
-
-        return $this;
-    }
-
-    public function setMetaKeywords(?string $metaKeywords): self
-    {
-        $this->metaKeywords = $metaKeywords;
 
         return $this;
     }

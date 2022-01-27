@@ -5,7 +5,6 @@ namespace Labstag\Form\Admin\Collections\Param;
 use Labstag\FormType\CoreTextareaType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,7 +33,7 @@ class TarteaucitronType extends AbstractTypeLib
             ]
         );
 
-        $this->setInputText($builder);
+        $this->setInputTextAll($builder);
         $this->setInputTrueFalsePartie1($builder);
         $builder->add(
             'iconPosition',
@@ -112,7 +111,7 @@ class TarteaucitronType extends AbstractTypeLib
         );
     }
 
-    private function setInputText($builder)
+    private function setInputTextAll($builder)
     {
         $tab = [
             'hashtag'     => [
@@ -143,19 +142,7 @@ class TarteaucitronType extends AbstractTypeLib
                 ),
             ],
         ];
-        foreach ($tab as $id => $row) {
-            $builder->add(
-                $id,
-                TextType::class,
-                [
-                    'label' => $row['label'],
-                    'help'  => $row['help'],
-                    'attr'  => [
-                        'placeholder' => $row['placeholder'],
-                    ],
-                ]
-            );
-        }
+        $this->setInputText($builder, $tab);
     }
 
     private function setInputTrueFalse($builder, $tab)

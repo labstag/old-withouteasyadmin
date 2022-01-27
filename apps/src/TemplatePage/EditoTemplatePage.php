@@ -2,6 +2,7 @@
 
 namespace Labstag\TemplatePage;
 
+use Labstag\Entity\Edito;
 use Labstag\Entity\Page;
 use Labstag\Lib\TemplatePageLib;
 
@@ -29,7 +30,7 @@ class EditoTemplatePage extends TemplatePageLib
     {
         unset($matches);
         // @var Edito $edito
-        $edito = $this->editoRepository->findOnePublier();
+        $edito = $this->getRepository(Edito::class)->findOnePublier();
         $this->setMetaOpenGraph(
             $edito->getTitle(),
             $edito->getMetaKeywords(),

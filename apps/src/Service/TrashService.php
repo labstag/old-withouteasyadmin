@@ -11,18 +11,11 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class TrashService
 {
-
-    protected CsrfTokenManagerInterface $csrfTokenManager;
-
-    protected ManagerRegistry $manager;
-
     public function __construct(
-        ManagerRegistry $manager,
-        CsrfTokenManagerInterface $csrfTokenManager
+        protected ManagerRegistry $manager,
+        protected CsrfTokenManagerInterface $csrfTokenManager
     )
     {
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->manager          = $manager;
     }
 
     public function all()
@@ -44,7 +37,9 @@ class TrashService
             );
             $repository = $this->manager->getRepository($entity);
             $trash      = $repository->findTrashForAdmin([]);
-            if (0 == count($trash->getQuery()->getResult())) {
+            $result     = $trash->getQuery()->getResult();
+            $test       = is_countable($result) ? count($result) : 0;
+            if (0 == $test) {
                 continue;
             }
 
@@ -58,7 +53,7 @@ class TrashService
                 ),
                 'properties' => $this->getProperties($repositoryFile),
                 'entity'     => $entity,
-                'total'      => count($trash->getQuery()->getResult()),
+                'total'      => $test,
                 'token'      => $this->csrfTokenManager->getToken('empty')->getValue(),
             ];
         }

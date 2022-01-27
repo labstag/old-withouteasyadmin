@@ -2,7 +2,6 @@
 
 namespace Labstag\Form\Admin;
 
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\Post;
@@ -10,7 +9,6 @@ use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PostType extends AbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -27,25 +25,8 @@ class PostType extends AbstractTypeLib
     ): void
     {
         $this->setTextType($builder);
-        $builder->add(
-            'published',
-            DateTimeType::class,
-            [
-                'label'        => $this->translator->trans('post.published.label', [], 'admin.form'),
-                'help'         => $this->translator->trans('post.published.help', [], 'admin.form'),
-                'date_widget'  => 'single_text',
-                'time_widget'  => 'single_text',
-                'with_seconds' => true,
-            ]
-        );
-        $builder->add(
-            'content',
-            CKEditorType::class,
-            [
-                'label' => $this->translator->trans('post.content.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('post.content.help', [], 'admin.form'),
-            ]
-        );
+        $this->addPublished($builder);
+        $this->setContent($builder);
         $this->setMeta($builder);
         $builder->add(
             'file',
@@ -118,31 +99,6 @@ class PostType extends AbstractTypeLib
                 'data_class' => Post::class,
             ]
         );
-    }
-
-    protected function setMeta($builder)
-    {
-        $meta = [
-            'metaDescription' => [
-                'label' => $this->translator->trans('post.metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('post.metaDescription.help', [], 'admin.form'),
-            ],
-            'metaKeywords'    => [
-                'label' => $this->translator->trans('post.metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('post.metaKeywords.help', [], 'admin.form'),
-            ],
-        ];
-
-        foreach ($meta as $key => $values) {
-            $builder->add(
-                $key,
-                TextType::class,
-                array_merge(
-                    $values,
-                    ['required' => false]
-                )
-            );
-        }
     }
 
     protected function setTextType($builder)

@@ -6,11 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\RouteRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=RouteRepository::class)
  */
-class Route
+class Route implements Stringable
 {
 
     /**
@@ -20,8 +22,9 @@ class Route
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -41,9 +44,9 @@ class Route
         $this->users   = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function addGroupe(RouteGroupe $groupe): self
@@ -66,9 +69,6 @@ class Route
         return $this;
     }
 
-    /**
-     * @return Collection|RouteGroupe[]
-     */
     public function getGroupes(): Collection
     {
         return $this->groupes;
@@ -84,9 +84,6 @@ class Route
         return $this->name;
     }
 
-    /**
-     * @return Collection|RouteUser[]
-     */
     public function getUsers(): Collection
     {
         return $this->users;

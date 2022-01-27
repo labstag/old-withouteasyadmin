@@ -7,22 +7,17 @@ use Labstag\Entity\LinkUser;
 use Labstag\Form\Admin\Search\User\LinkUserType as UserLinkUserType;
 use Labstag\Form\Admin\User\LinkUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\LinkUserRepository;
 use Labstag\RequestHandler\LinkUserRequestHandler;
 use Labstag\Search\User\LinkUserSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/user/lien")
- */
+#[Route(path: '/admin/user/lien')]
 class LinkUserController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_linkuser_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_linkuser_new", methods={"GET","POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'admin_linkuser_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_linkuser_new', methods: ['GET', 'POST'])]
     public function edit(
         AttachFormService $service,
         ?LinkUser $linkUser,
@@ -38,26 +33,24 @@ class LinkUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_linkuser_trash", methods={"GET"})
-     * @Route("/", name="admin_linkuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(LinkUserRepository $linkUserRepository): Response
+    #[Route(path: '/trash', name: 'admin_linkuser_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_linkuser_index', methods: ['GET'])]
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $linkUserRepository,
+            LinkUser::class,
             'admin/user/link_user/index.html.twig'
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_linkuser_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_linkuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        LinkUser $linkUser
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_linkuser_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_linkuser_preview', methods: ['GET'])]
+    public function showOrPreview(LinkUser $linkUser): Response
     {
         return $this->renderShowOrPreview(
             $linkUser,
@@ -93,24 +86,18 @@ class LinkUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('linkuser.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('linkuser.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminLinkuserEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('linkuser.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('linkuser.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_edit',
             ],
         ];
     }
@@ -119,44 +106,32 @@ class LinkUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('linkuser.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('linkuser.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminLinkuserPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_trash',
             ],
             [
-                'title'        => $this->translator->trans('linkuser.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('linkuser.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminLinkuserShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('linkuser.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('linkuser.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_show',
             ],
         ];
     }
@@ -165,9 +140,8 @@ class LinkUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_linkuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_linkuser_trash',
             ],
         ];
     }

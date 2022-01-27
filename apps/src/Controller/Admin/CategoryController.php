@@ -7,22 +7,17 @@ use Labstag\Entity\Category;
 use Labstag\Form\Admin\CategoryType;
 use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\CategoryRepository;
 use Labstag\RequestHandler\CategoryRequestHandler;
 use Labstag\Search\CategorySearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/category")
- */
+#[Route(path: '/admin/category')]
 class CategoryController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_category_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_category_new", methods={"GET","POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'admin_category_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_category_new', methods: ['GET', 'POST'])]
     public function edit(
         AttachFormService $service,
         ?Category $category,
@@ -40,26 +35,24 @@ class CategoryController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_category_trash", methods={"GET"})
-     * @Route("/", name="admin_category_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(CategoryRepository $repository): Response
+    #[Route(path: '/trash', name: 'admin_category_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_category_index', methods: ['GET'])]
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $repository,
+            Category::class,
             'admin/category/index.html.twig'
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_category_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_category_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Category $category
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_category_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_category_preview', methods: ['GET'])]
+    public function showOrPreview(Category $category): Response
     {
         return $this->renderShowOrPreview(
             $category,
@@ -104,24 +97,18 @@ class CategoryController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('category.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('category.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminCategoryEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('category.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('category.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_edit',
             ],
         ];
     }
@@ -130,44 +117,32 @@ class CategoryController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('category.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('category.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminCategoryPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_trash',
             ],
             [
-                'title'        => $this->translator->trans('category.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('category.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminCategoryShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('category.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('category.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_show',
             ],
         ];
     }
@@ -176,9 +151,8 @@ class CategoryController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_category_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_category_trash',
             ],
         ];
     }

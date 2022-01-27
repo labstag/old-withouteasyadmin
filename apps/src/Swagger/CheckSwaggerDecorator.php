@@ -14,16 +14,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class CheckSwaggerDecorator implements NormalizerInterface
 {
-
-    private NormalizerInterface $decorated;
-
-    public function __construct(NormalizerInterface $decorated)
+    public function __construct(private NormalizerInterface $decorated)
     {
-        $this->decorated = $decorated;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function normalize(
         $object,
@@ -76,7 +72,7 @@ final class CheckSwaggerDecorator implements NormalizerInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function supportsNormalization($data, ?string $format = null): bool
     {

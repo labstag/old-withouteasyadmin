@@ -7,22 +7,24 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\MenuRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MenuRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Menu
+class Menu implements Stringable
 {
     use SoftDeleteableEntity;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=Menu::class,
-     *  mappedBy="parent",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=Menu::class,
+     *     mappedBy="parent",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"position" = "ASC"})
      */
@@ -45,8 +47,9 @@ class Menu
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -58,9 +61,9 @@ class Menu
     /**
      * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children")
      * @ORM\JoinColumn(
-     *  name="parent_id",
-     *  referencedColumnName="id",
-     *  onDelete="SET NULL"
+     *     name="parent_id",
+     *     referencedColumnName="id",
+     *     onDelete="SET NULL"
      * )
      *
      * @var null|Menu
@@ -84,7 +87,7 @@ class Menu
         $this->separateur = false;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return implode(
             ' ',

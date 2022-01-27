@@ -2,16 +2,10 @@
 
 namespace Labstag\Lib;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Page;
-use Labstag\Repository\BookmarkRepository;
-use Labstag\Repository\CategoryRepository;
-use Labstag\Repository\EditoRepository;
-use Labstag\Repository\HistoryRepository;
-use Labstag\Repository\LibelleRepository;
-use Labstag\Repository\PostRepository;
-use Labstag\Repository\UserRepository;
 use Labstag\Service\DataService;
 use Labstag\Service\HistoryService;
 use Symfony\Component\Asset\PathPackage;
@@ -28,69 +22,21 @@ use Twig\Environment;
 abstract class TemplatePageLib
 {
 
-    protected BookmarkRepository $bookmarkRepository;
-
-    protected CategoryRepository $categoryRepository;
-
-    protected ContainerBagInterface $containerBag;
-
-    protected DataService $dataService;
-
-    protected EditoRepository $editoRepository;
-
-    protected HistoryRepository $historyRepository;
-
-    protected HistoryService $historyService;
-
-    protected LibelleRepository $libelleRepository;
-
-    protected PaginatorInterface $paginator;
-
-    protected PostRepository $postRepository;
-
     protected Request $request;
 
-    protected RequestStack $requestStack;
-
-    protected RouterInterface $router;
-
-    protected Environment $twig;
-
-    protected UserRepository $userRepository;
-
     public function __construct(
-        RequestStack $requestStack,
-        RouterInterface $router,
-        Environment $twig,
-        ContainerBagInterface $containerBag,
-        HistoryService $historyService,
-        DataService $dataService,
-        UserRepository $userRepository,
-        HistoryRepository $historyRepository,
-        BookmarkRepository $bookmarkRepository,
-        EditoRepository $editoRepository,
-        PostRepository $postRepository,
-        LibelleRepository $libelleRepository,
-        PaginatorInterface $paginator,
-        CategoryRepository $categoryRepository
+        protected EntityManagerInterface $entityManager,
+        protected RequestStack $requeststack,
+        protected RouterInterface $router,
+        protected Environment $twig,
+        protected ContainerBagInterface $containerBag,
+        protected HistoryService $historyService,
+        protected DataService $dataService,
+        protected PaginatorInterface $paginator,
     )
     {
-        $this->router             = $router;
-        $this->userRepository     = $userRepository;
-        $this->requestStack       = $requestStack;
-        $request                  = $this->requestStack->getCurrentRequest();
-        $this->request            = $request;
-        $this->containerBag       = $containerBag;
-        $this->historyRepository  = $historyRepository;
-        $this->historyService     = $historyService;
-        $this->bookmarkRepository = $bookmarkRepository;
-        $this->dataService        = $dataService;
-        $this->paginator          = $paginator;
-        $this->editoRepository    = $editoRepository;
-        $this->postRepository     = $postRepository;
-        $this->libelleRepository  = $libelleRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->twig               = $twig;
+        $request       = $this->requeststack->getCurrentRequest();
+        $this->request = $request;
     }
 
     public function generateUrl(Page $page, string $route, array $params, bool $relative): string
@@ -126,7 +72,7 @@ abstract class TemplatePageLib
         $case   = '';
         $search = [];
         foreach ($regex as $key => $value) {
-            preg_match($key, $slug, $matches);
+            preg_match($key, (string) $slug, $matches);
             if (0 != count($matches)) {
                 $search = $matches;
                 $case   = $value;
@@ -144,6 +90,11 @@ abstract class TemplatePageLib
     protected function getParameter(string $name)
     {
         return $this->containerBag->get($name);
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 
     protected function render(string $view, array $parameters = [], ?Response $response = null): Response

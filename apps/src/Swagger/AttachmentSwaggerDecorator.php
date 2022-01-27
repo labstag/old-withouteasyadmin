@@ -14,16 +14,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class AttachmentSwaggerDecorator implements NormalizerInterface
 {
-
-    private NormalizerInterface $decorated;
-
-    public function __construct(NormalizerInterface $decorated)
+    public function __construct(private NormalizerInterface $decorated)
     {
-        $this->decorated = $decorated;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function normalize(
         $object,
@@ -42,7 +38,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function supportsNormalization($data, ?string $format = null): bool
     {
@@ -54,39 +50,8 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'edito fond.',
             'tags'       => ['Attachment'],
-            'parameters' => [
-                [
-                    'name'        => 'entity',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entity',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParameters(),
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/attachment/edito/fond/{entity}']['delete'] = $statsEndpoint;
@@ -97,42 +62,31 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'node interne Fond.',
             'tags'       => ['Attachment'],
-            'parameters' => [
-                [
-                    'name'        => 'entity',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entity',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParameters(),
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/attachment/memo/fond/{entity}']['delete'] = $statsEndpoint;
+    }
+
+    private function setParameters()
+    {
+        return [
+            [
+                'name'        => 'entity',
+                'in'          => 'query',
+                'required'    => true,
+                'description' => 'entity',
+                'schema'      => ['type' => 'string'],
+            ],
+            [
+                'name'        => '_token',
+                'in'          => 'query',
+                'required'    => true,
+                'description' => 'token',
+                'schema'      => ['type' => 'string'],
+            ],
+        ];
     }
 
     private function setPostImg(&$docs)
@@ -140,39 +94,8 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'Post Img.',
             'tags'       => ['Attachment'],
-            'parameters' => [
-                [
-                    'name'        => 'entity',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entity',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParameters(),
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/attachment/post/img/{entity}']['delete'] = $statsEndpoint;
@@ -192,17 +115,24 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
                     'schema'      => ['type' => 'string'],
                 ],
             ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
+            'responses'  => $this->setResponses(),
+        ];
+
+        $docs['paths']['/api/attachment/profil/avatar']['delete'] = $statsEndpoint;
+    }
+
+    private function setResponses()
+    {
+        return [
+            Response::HTTP_OK => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            'type'       => 'object',
+                            'properties' => [
+                                'isvalid' => [
+                                    'type'    => 'boolean',
+                                    'example' => true,
                                 ],
                             ],
                         ],
@@ -210,8 +140,6 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
                 ],
             ],
         ];
-
-        $docs['paths']['/api/attachment/profil/avatar']['delete'] = $statsEndpoint;
     }
 
     private function setUserAvatar(&$docs)
@@ -219,39 +147,8 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'User avatar.',
             'tags'       => ['Attachment'],
-            'parameters' => [
-                [
-                    'name'        => 'entity',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entity',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParameters(),
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/attachment/user/avatar/{entity}']['delete'] = $statsEndpoint;

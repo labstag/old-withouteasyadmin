@@ -13,16 +13,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OauthType extends AbstractTypeLib
 {
-
-    protected OauthService $oauthService;
-
     public function __construct(
         TranslatorInterface $translator,
-        OauthService $oauthService,
+        protected OauthService $oauthService,
         TemplatePageService $templatePageService
     )
     {
-        $this->oauthService = $oauthService;
         parent::__construct($translator, $templatePageService);
     }
 

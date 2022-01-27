@@ -2,7 +2,6 @@
 
 namespace Labstag\Form\Admin;
 
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Memo;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
@@ -16,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class MemoType extends AbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -35,14 +34,7 @@ class MemoType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'content',
-            CKEditorType::class,
-            [
-                'label' => $this->translator->trans('memo.content.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('memo.content.help', [], 'admin.form'),
-            ]
-        );
+        $this->setContent($builder);
         $builder->add(
             'date_start',
             DateTimeType::class,

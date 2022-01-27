@@ -7,17 +7,18 @@ class BreadcrumbsSingleton
 
     protected array $data = [];
 
-    protected static $instance = null;
+    protected static $instance;
 
     protected function __construct()
     {
     }
 
-    public function add(array $breadcrumbs): void
+    public function add(string $title, string $route): void
     {
-        foreach ($breadcrumbs as $key => $row) {
-            $this->data[$key] = $row;
-        }
+        $this->data[] = [
+            'title' => $title,
+            'route' => $route,
+        ];
     }
 
     public function addPosition(array $breadcrumbs, int $position): void

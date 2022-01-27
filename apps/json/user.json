@@ -19,7 +19,7 @@
 }, {
     "username": "disable",
     "password": "password",
-    "state": ["submit"],
+    "state": ["submit", "validation", "desactiver"],
     "email": "disable@email.fr",
     "groupe": "user"
 }, {

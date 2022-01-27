@@ -7,27 +7,18 @@ use Labstag\Entity\Edito;
 use Labstag\Form\Admin\EditoType;
 use Labstag\Form\Admin\Search\EditoType as SearchEditoType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\EditoRepository;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\Search\EditoSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/edito")
- */
+#[Route(path: '/admin/edito')]
 class EditoController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_edito_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_edito_new", methods={"GET","POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?Edito $edito,
-        EditoRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_edito_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_edito_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?Edito $edito, EditoRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
 
@@ -41,26 +32,24 @@ class EditoController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_edito_trash", methods={"GET"})
-     * @Route("/", name="admin_edito_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(EditoRepository $repository): Response
+    #[Route(path: '/trash', name: 'admin_edito_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_edito_index', methods: ['GET'])]
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $repository,
+            Edito::class,
             'admin/edito/index.html.twig',
         );
     }
 
     /**
-     * @Route("/{id}", name="admin_edito_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_edito_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Edito $edito
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_edito_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_edito_preview', methods: ['GET'])]
+    public function showOrPreview(Edito $edito): Response
     {
         return $this->renderShowOrPreview(
             $edito,
@@ -97,24 +86,18 @@ class EditoController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('edito.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_edito_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('edito.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_edito_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminEditoEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('edito.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_edito_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('edito.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_edito_edit',
             ],
         ];
     }
@@ -123,44 +106,32 @@ class EditoController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('edito.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_edito_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('edito.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_edito_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminEditoPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('edito.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_edito_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('edito.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_edito_trash',
             ],
             [
-                'title'        => $this->translator->trans('edito.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_edito_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('edito.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_edito_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminEditoShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('edito.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_edito_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('edito.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_edito_show',
             ],
         ];
     }
@@ -169,9 +140,8 @@ class EditoController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('edito.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_edito_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('edito.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_edito_trash',
             ],
         ];
     }

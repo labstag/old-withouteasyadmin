@@ -9,6 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\AttachmentRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=AttachmentRepository::class)
@@ -17,7 +18,6 @@ use Labstag\Repository\AttachmentRepository;
 class Attachment
 {
     use SoftDeleteableEntity;
-
     use StateableEntity;
 
     /**
@@ -27,8 +27,9 @@ class Attachment
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -141,9 +142,6 @@ class Attachment
         return $this;
     }
 
-    /**
-     * @return Bookmark[]|Collection
-     */
     public function getBookmarks(): Collection
     {
         return $this->bookmarks;
@@ -154,9 +152,6 @@ class Attachment
         return $this->code;
     }
 
-    /**
-     * @return Collection|Edito[]
-     */
     public function getEditos(): Collection
     {
         return $this->editos;
@@ -167,9 +162,6 @@ class Attachment
         return $this->id;
     }
 
-    /**
-     * @return Collection|Memo[]
-     */
     public function getMemos(): Collection
     {
         return $this->noteInternes;
@@ -185,17 +177,11 @@ class Attachment
         return $this->name;
     }
 
-    /**
-     * @return Collection|Memo[]
-     */
     public function getNoteInternes(): Collection
     {
         return $this->noteInternes;
     }
 
-    /**
-     * @return Collection|Post[]
-     */
     public function getPosts(): Collection
     {
         return $this->posts;
@@ -206,9 +192,6 @@ class Attachment
         return $this->size;
     }
 
-    /**
-     * @return Collection|User[]
-     */
     public function getUsers(): Collection
     {
         return $this->users;

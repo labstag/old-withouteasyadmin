@@ -11,7 +11,7 @@ class HistoryTemplatePage extends TemplatePageLib
 {
     public function chapter($historySlug, $chapterSlug)
     {
-        $history = $this->historyRepository->findOneBy(['slug' => $historySlug]);
+        $history = $this->getRepository(History::class)->findOneBy(['slug' => $historySlug]);
         if (!$history instanceof History) {
             throw $this->createNotFoundException();
         }
@@ -43,26 +43,13 @@ class HistoryTemplatePage extends TemplatePageLib
     public function generateUrl(Page $page, string $route, array $params, bool $relative): string
     {
         $slug = $page->getSlug().'/';
-        switch ($route) {
-            case 'user':
-                $url = $slug.'user/'.$params['username'];
-
-                break;
-            case 'show':
-                $url = $slug.$params['slug'];
-
-                break;
-            case 'chapter':
-                $url = $slug.$params['history'].'/'.$params['chapter'];
-
-                break;
-            case 'pdf':
-                $url = $slug.$params['slug'].'.pdf';
-
-                break;
-            default:
-                $url = $slug;
-        }
+        $url  = match ($route) {
+            'user' => $slug.'user/'.$params['username'],
+            'show' => $slug.$params['slug'],
+            'chapter' => $slug.$params['history'].'/'.$params['chapter'],
+            'pdf' => $slug.$params['slug'].'.pdf',
+            default => $slug,
+        };
 
         return $this->router->generate(
             'front',
@@ -97,12 +84,12 @@ class HistoryTemplatePage extends TemplatePageLib
                         [
                             $historySlug,
                             $chapterSlug,
-                        ] = explode('/', $search[1]);
+                        ] = explode('/', (string) $search[1]);
 
                         return $this->chapter($historySlug, $chapterSlug);
                     }
 
-                    $history = $this->historyRepository->findOneBy(['slug' => $search[1]]);
+                    $history = $this->getRepository(History::class)->findOneBy(['slug' => $search[1]]);
                     if (!$history instanceof History) {
                         throw $this->createNotFoundException();
                     }
@@ -116,7 +103,7 @@ class HistoryTemplatePage extends TemplatePageLib
     public function list()
     {
         $pagination = $this->paginator->paginate(
-            $this->historyRepository->findPublier(),
+            $this->getRepository(History::class)->findPublier(),
             $this->request->query->getInt('page', 1),
             10
         );
@@ -167,7 +154,7 @@ class HistoryTemplatePage extends TemplatePageLib
     public function user(string $username)
     {
         $pagination = $this->paginator->paginate(
-            $this->historyRepository->findPublierUsername($username),
+            $this->getRepository(History::class)->findPublierUsername($username),
             $this->request->query->getInt('page', 1),
             10
         );

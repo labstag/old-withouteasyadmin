@@ -3,12 +3,11 @@
 namespace Labstag\Controller\Admin\History;
 
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Form\Admin\HistoryType;
 use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\ChapterRepository;
-use Labstag\Repository\HistoryRepository;
 use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Search\HistorySearch;
 use Labstag\Service\AttachFormService;
@@ -17,20 +16,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/history")
- */
+#[Route(path: '/admin/history')]
 class HistoryController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_history_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_history_new", methods={"GET","POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?History $history,
-        HistoryRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_history_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_history_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?History $history, HistoryRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
 
@@ -44,21 +35,19 @@ class HistoryController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash", name="admin_history_trash", methods={"GET"})
-     * @Route("/", name="admin_history_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(HistoryRepository $repository): Response
+    #[Route(path: '/trash', name: 'admin_history_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_history_index', methods: ['GET'])]
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $repository,
+            History::class,
             'admin/history/index.html.twig',
         );
     }
 
-    /**
-     * @Route("/{id}/pdf", name="admin_history_pdf", methods={"GET"})
-     */
+    #[Route(path: '/{id}/pdf', name: 'admin_history_pdf', methods: ['GET'])]
     public function pdf(HistoryService $service, History $history)
     {
         $service->process(
@@ -66,7 +55,6 @@ class HistoryController extends AdminControllerLib
             $history->getId(),
             true
         );
-
         $filename = $service->getFilename();
         if (empty($filename)) {
             throw $this->createNotFoundException('Pas de fichier');
@@ -81,14 +69,8 @@ class HistoryController extends AdminControllerLib
         return $this->redirect($filename);
     }
 
-    /**
-     * @Route("/{id}/move", name="admin_history_move", methods={"GET", "POST"})
-     */
-    public function position(
-        History $history,
-        Request $request,
-        ChapterRepository $repository
-    )
+    #[Route(path: '/{id}/move', name: 'admin_history_move', methods: ['GET', 'POST'])]
+    public function position(History $history, Request $request)
     {
         $currentUrl = $this->generateUrl(
             'admin_history_move',
@@ -96,34 +78,14 @@ class HistoryController extends AdminControllerLib
                 'id' => $history->getId(),
             ]
         );
-
         if ('POST' == $request->getMethod()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $data          = $request->request->get('position');
-            if (!empty($data)) {
-                $data = json_decode($data, true);
-            }
-
-            if (is_array($data)) {
-                foreach ($data as $row) {
-                    $id       = $row['id'];
-                    $position = intval($row['position']);
-                    $entity   = $repository->find($id);
-                    if (!is_null($entity)) {
-                        $entity->setPosition($position + 1);
-                        $entityManager->persist($entity);
-                    }
-                }
-
-                $entityManager->flush();
-            }
+            $this->setPositionEntity($request, Chapter::class);
         }
 
         $this->btnInstance()->addBtnList(
             'admin_history_index',
             'Liste',
         );
-
         $this->btnInstance()->add(
             'btn-admin-save-move',
             'Enregistrer',
@@ -140,13 +102,11 @@ class HistoryController extends AdminControllerLib
     }
 
     /**
-     * @Route("/{id}", name="admin_history_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_history_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        History $history
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_history_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_history_preview', methods: ['GET'])]
+    public function showOrPreview(History $history): Response
     {
         return $this->renderShowOrPreview(
             $history,
@@ -184,39 +144,28 @@ class HistoryController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('history.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('history.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminHistoryEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('history.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('history.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_edit',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminHistoryMove(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('history.move', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_move',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('history.move', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_move',
             ],
         ];
     }
@@ -225,44 +174,32 @@ class HistoryController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('history.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('history.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminHistoryPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_trash',
             ],
             [
-                'title'        => $this->translator->trans('history.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('history.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminHistoryShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('history.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('history.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_show',
             ],
         ];
     }
@@ -271,9 +208,8 @@ class HistoryController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_history_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_history_trash',
             ],
         ];
     }

@@ -11,6 +11,8 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\UserRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,20 +20,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Uploadable()
+ * @Uploadable
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
 {
     use SoftDeleteableEntity;
-
     use StateableEntity;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=AddressUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=AddressUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $addressUsers;
@@ -43,10 +44,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=Edito::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=Edito::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $editos;
@@ -58,10 +59,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=EmailUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=EmailUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $emailUsers;
@@ -73,37 +74,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=LinkUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=LinkUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $linkUsers;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=Memo::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=Memo::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $noteInternes;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=OauthConnectUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=OauthConnectUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $oauthConnectUsers;
@@ -116,10 +118,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=PhoneUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=PhoneUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $phoneUsers;
@@ -188,7 +190,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->histories         = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getUsername();
     }
@@ -354,9 +356,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->avatar;
     }
 
-    /**
-     * @return Bookmark[]|Collection
-     */
     public function getBookmarks(): Collection
     {
         return $this->bookmarks;
@@ -387,9 +386,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->file;
     }
 
-    /**
-     * @return Collection|History[]
-     */
     public function getHistories(): Collection
     {
         return $this->histories;
@@ -410,9 +406,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->noteInternes;
     }
 
-    /**
-     * @return Collection|Memo[]
-     */
     public function getNoteInternes(): Collection
     {
         return $this->noteInternes;
@@ -441,9 +434,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->plainPassword;
     }
 
-    /**
-     * @return Collection|Post[]
-     */
     public function getPosts(): Collection
     {
         return $this->posts;
@@ -466,9 +456,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    /**
-     * @return Collection|RouteUser[]
-     */
     public function getRoutes(): Collection
     {
         return $this->routes;
@@ -498,9 +485,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->username;
     }
 
-    /**
-     * @return Collection|WorkflowUser[]
-     */
     public function getWorkflowUsers(): Collection
     {
         return $this->workflowUsers;

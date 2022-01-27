@@ -8,13 +8,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\GroupeRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=GroupeRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Groupe
+class Groupe implements Stringable
 {
     use SoftDeleteableEntity;
 
@@ -26,8 +28,9 @@ class Groupe
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -44,10 +47,10 @@ class Groupe
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=User::class,
-     *  mappedBy="refgroupe",
-     *  cascade={"persist"},
-     *  orphanRemoval=true
+     *     targetEntity=User::class,
+     *     mappedBy="refgroupe",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $users;
@@ -64,9 +67,9 @@ class Groupe
         $this->users           = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function addRoute(RouteGroupe $route): self
@@ -114,9 +117,6 @@ class Groupe
         return $this->name;
     }
 
-    /**
-     * @return Collection|RouteGroupe[]
-     */
     public function getRoutes(): Collection
     {
         return $this->routes;
@@ -127,9 +127,6 @@ class Groupe
         return $this->users;
     }
 
-    /**
-     * @return Collection|WorkflowGroupe[]
-     */
     public function getWorkflowGroupes(): Collection
     {
         return $this->workflowGroupes;

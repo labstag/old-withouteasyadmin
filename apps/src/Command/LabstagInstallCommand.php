@@ -2,6 +2,8 @@
 
 namespace Labstag\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Lib\CommandLib;
 use Labstag\Service\InstallService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,19 +11,18 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class LabstagInstallCommand extends Command
+class LabstagInstallCommand extends CommandLib
 {
 
     protected static $defaultName = 'labstag:install';
 
-    protected InstallService $installService;
-
     public function __construct(
-        InstallService $installService
+        protected array $serverenv,
+        EntityManagerInterface $entityManager,
+        protected InstallService $installService
     )
     {
-        $this->installService = $installService;
-        parent::__construct();
+        parent::__construct($entityManager);
     }
 
     protected function all($inputOutput)
@@ -52,22 +53,9 @@ class LabstagInstallCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $inputOutput = new SymfonyStyle($input, $output);
-        if ($input->getOption('pages')) {
-            $this->setPages($inputOutput);
-        } elseif ($input->getOption('menuadmin')) {
-            $this->setMenuAdmin($inputOutput);
-        } elseif ($input->getOption('menuadminprofil')) {
-            $this->setMenuAdminProfil($inputOutput);
-        } elseif ($input->getOption('group')) {
-            $this->setGroup($inputOutput);
-        } elseif ($input->getOption('config')) {
-            $this->setConfig($inputOutput);
-        } elseif ($input->getOption('templates')) {
-            $this->setTemplates($inputOutput);
-        } elseif ($input->getOption('users')) {
-            $this->setUsers($inputOutput);
-        } elseif ($input->getOption('all')) {
-            $this->all($inputOutput);
+        $options     = $input->getOptions();
+        foreach ($options as $option => $state) {
+            $this->executeOption($state ? $option : '', $inputOutput);
         }
 
         $inputOutput->success('You have a new command! Now make it your own! Pass --help to see your options.');
@@ -75,10 +63,48 @@ class LabstagInstallCommand extends Command
         return Command::SUCCESS;
     }
 
+    protected function executeOption($option, $inputOutput)
+    {
+        switch ($option) {
+            case 'pages':
+                $this->setPages($inputOutput);
+
+                break;
+            case 'menuadmin':
+                $this->setMenuAdmin($inputOutput);
+
+                break;
+            case 'menuadminprofil':
+                $this->setMenuAdminProfil($inputOutput);
+
+                break;
+            case 'group':
+                $this->setGroup($inputOutput);
+
+                break;
+            case 'config':
+                $this->setConfig($inputOutput);
+
+                break;
+            case 'templates':
+                $this->setTemplates($inputOutput);
+
+                break;
+            case 'users':
+                $this->setUsers($inputOutput);
+
+                break;
+            case 'all':
+                $this->all($inputOutput);
+
+                break;
+        }
+    }
+
     protected function setConfig($inputOutput)
     {
         $inputOutput->note('Ajout de la configuration');
-        $this->installService->config();
+        $this->installService->config($this->serverenv);
     }
 
     protected function setGroup($inputOutput)

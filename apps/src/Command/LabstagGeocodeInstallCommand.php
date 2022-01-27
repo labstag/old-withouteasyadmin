@@ -2,6 +2,8 @@
 
 namespace Labstag\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Lib\CommandLib;
 use Labstag\Service\GeocodeService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -10,17 +12,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class LabstagGeocodeInstallCommand extends Command
+class LabstagGeocodeInstallCommand extends CommandLib
 {
 
     protected static $defaultName = 'labstag:geocode:install';
 
-    protected GeocodeService $service;
-
-    public function __construct(GeocodeService $service)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        protected GeocodeService $service
+    )
     {
-        $this->service = $service;
-        parent::__construct();
+        parent::__construct($entityManager);
     }
 
     protected function configure()
@@ -54,7 +56,7 @@ class LabstagGeocodeInstallCommand extends Command
             return COMMAND::FAILURE;
         }
 
-        $progressBar = new ProgressBar($output, count($csv));
+        $progressBar = new ProgressBar($output, is_countable($csv) ? count($csv) : 0);
         $table       = $this->service->tables($csv);
         $progressBar->start();
         foreach ($table as $row) {

@@ -2,9 +2,7 @@
 
 namespace Labstag\Form\Admin\Search\User;
 
-use Labstag\Entity\User;
 use Labstag\FormType\FlagCountryType;
-use Labstag\FormType\SearchableType;
 use Labstag\Lib\SearchAbstractTypeLib;
 use Labstag\Search\User\AddressUserSearch;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class AddressUserType extends SearchAbstractTypeLib
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function buildForm(
         FormBuilderInterface $builder,
@@ -49,25 +47,7 @@ class AddressUserType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'refuser',
-            SearchableType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('addressuser.refuser.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('addressuser.refuser.help', [], 'admin.search.form'),
-                'multiple' => false,
-                'class'    => User::class,
-                'route'    => 'api_search_user',
-                'attr'     => [
-                    'placeholder' => $this->translator->trans(
-                        'addressuser.refuser.placeholder',
-                        [],
-                        'admin.search.form'
-                    ),
-                ],
-            ]
-        );
+        $this->addRefUser($builder);
         parent::buildForm($builder, $options);
     }
 
@@ -80,10 +60,5 @@ class AddressUserType extends SearchAbstractTypeLib
                 'method'          => 'GET',
             ]
         );
-    }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
     }
 }

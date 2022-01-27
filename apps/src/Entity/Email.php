@@ -6,19 +6,20 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"user": "EmailUser"})
+ * @ORM\DiscriminatorMap({"user" = "EmailUser"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-abstract class Email
+abstract class Email implements Stringable
 {
     use SoftDeleteableEntity;
-
     use StateableEntity;
 
     /**
@@ -33,8 +34,9 @@ abstract class Email
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -48,9 +50,9 @@ abstract class Email
         $this->principal = false;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getAddress();
+        return (string) $this->getAddress();
     }
 
     public function getAddress(): ?string

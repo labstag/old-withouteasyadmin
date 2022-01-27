@@ -5,8 +5,7 @@ namespace Labstag\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\UserRepository;
+use Labstag\Lib\CommandLib;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,35 +15,18 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Workflow\Registry;
 
-class LabstagUserCommand extends Command
+class LabstagUserCommand extends CommandLib
 {
 
     protected static $defaultName = 'labstag:user';
 
-    protected EntityManagerInterface $entityManager;
-
-    protected GroupeRepository $groupeRepository;
-
-    protected UserRepository $userRepository;
-
-    protected UserRequestHandler $userRequestHandler;
-
-    protected Registry $workflows;
-
     public function __construct(
-        UserRepository $userRepository,
-        GroupeRepository $groupeRepository,
-        Registry $workflows,
         EntityManagerInterface $entityManager,
-        UserRequestHandler $userRequestHandler
+        protected Registry $workflows,
+        protected UserRequestHandler $userRequestHandler
     )
     {
-        $this->groupeRepository   = $groupeRepository;
-        $this->entityManager      = $entityManager;
-        $this->workflows          = $workflows;
-        $this->userRequestHandler = $userRequestHandler;
-        $this->userRepository     = $userRepository;
-        parent::__construct();
+        parent::__construct($entityManager);
     }
 
     protected function actionEnableDisableDelete($input, $output, $inputOutput, $action)
@@ -61,12 +43,19 @@ class LabstagUserCommand extends Command
                 continue;
             }
 
-            if ('enable' === $action) {
-                $this->enable($helper, $username, $inputOutput, $input, $output);
-            } elseif ('disable' === $action) {
-                $this->disable($helper, $username, $inputOutput, $input, $output);
-            } elseif ('delete' === $action) {
-                $this->delete($helper, $username, $inputOutput, $input, $output);
+            switch ($action) {
+                case 'enable':
+                    $this->enable($helper, $username, $inputOutput, $input, $output);
+
+                    break;
+                case 'disable':
+                    $this->disable($helper, $username, $inputOutput, $input, $output);
+
+                    break;
+                case 'delete':
+                    $this->delete($helper, $username, $inputOutput, $input, $output);
+
+                    break;
             }
         }
     }
@@ -122,7 +111,7 @@ class LabstagUserCommand extends Command
         $question = new Question("Entrer l'email de l'utilisateur : ");
         $email    = $helper->ask($input, $output, $question);
         $user->setEmail($email);
-        $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
+        $groupes = $this->getRepository(Groupe::class)->findBy([], ['name' => 'DESC']);
         $data    = [];
         foreach ($groupes as $groupe) {
             // @var Groupe $groupe
@@ -153,7 +142,7 @@ class LabstagUserCommand extends Command
 
     protected function delete($helper, string $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->userRepository->findOneBy(['username' => $username]);
+        $entity = $this->getRepository(User::class)->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -184,7 +173,7 @@ class LabstagUserCommand extends Command
 
     protected function disable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->userRepository->findOneBy(['username' => $username]);
+        $entity = $this->getRepository(User::class)->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -228,7 +217,7 @@ class LabstagUserCommand extends Command
 
     protected function enable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->userRepository->findOneBy(['username' => $username]);
+        $entity = $this->getRepository(User::class)->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -318,7 +307,7 @@ class LabstagUserCommand extends Command
 
     protected function list($inputOutput, OutputInterface $output)
     {
-        $users = $this->userRepository->findBy([], ['username' => 'ASC']);
+        $users = $this->getRepository(User::class)->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
             // @var User $user
@@ -344,7 +333,7 @@ class LabstagUserCommand extends Command
 
     protected function state($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->userRepository->findOneBy(['username' => $username]);
+        $entity = $this->getRepository(User::class)->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -381,7 +370,7 @@ class LabstagUserCommand extends Command
 
     protected function tableQuestionUser()
     {
-        $users = $this->userRepository->findBy([], ['username' => 'ASC']);
+        $users = $this->getRepository(User::class)->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
             // @var User $user
@@ -391,7 +380,8 @@ class LabstagUserCommand extends Command
                     'email'    => $user->getEmail(),
                     'groupe'   => $user->getRefgroupe()->getName(),
                     'state'    => $user->getState(),
-                ]
+                ],
+                JSON_THROW_ON_ERROR
             );
         }
 
@@ -400,7 +390,7 @@ class LabstagUserCommand extends Command
 
     protected function updatePassword($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->userRepository->findOneBy(['username' => $username]);
+        $entity = $this->getRepository(User::class)->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']

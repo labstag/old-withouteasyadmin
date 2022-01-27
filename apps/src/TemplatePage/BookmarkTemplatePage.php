@@ -3,6 +3,8 @@
 namespace Labstag\TemplatePage;
 
 use Labstag\Entity\Bookmark;
+use Labstag\Entity\Category;
+use Labstag\Entity\Libelle;
 use Labstag\Entity\Page;
 use Labstag\Lib\TemplatePageLib;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -11,45 +13,19 @@ class BookmarkTemplatePage extends TemplatePageLib
 {
     public function category(string $code)
     {
-        $pagination = $this->paginator->paginate(
-            $this->bookmarkRepository->findPublierCategory($code),
-            $this->request->query->getInt('page', 1),
-            10
-        );
-
-        return $this->render(
-            'front/bookmarks/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'libelles'   => $this->libelleRepository->findByBookmark(),
-                'categories' => $this->categoryRepository->findByBookmark(),
-            ]
-        );
+        return $this->getList($code, 'findPublierCategory');
     }
 
     public function generateUrl(Page $page, string $route, array $params, bool $relative): string
     {
         $slug = $page->getSlug().'/';
-        switch ($route) {
-            case 'user':
-                $url = $slug.'user/'.$params['username'];
-
-                break;
-            case 'show':
-                $url = $slug.$params['slug'];
-
-                break;
-            case 'libelle':
-                $url = $slug.'libelle/'.$params['code'];
-
-                break;
-            case 'category':
-                $url = $slug.'category/'.$params['code'];
-
-                break;
-            default:
-                $url = $slug;
-        }
+        $url  = match ($route) {
+            'user' => $slug.'user/'.$params['username'],
+            'show' => $slug.$params['slug'],
+            'libelle' => $slug.'libelle/'.$params['code'],
+            'category' => $slug.'category/'.$params['code'],
+            default => $slug,
+        };
 
         return $this->router->generate(
             'front',
@@ -66,7 +42,7 @@ class BookmarkTemplatePage extends TemplatePageLib
     public function index()
     {
         $pagination = $this->paginator->paginate(
-            $this->bookmarkRepository->findPublier(),
+            $this->getRepository(Bookmark::class)->findPublier(),
             $this->request->query->getInt('page', 1),
             10
         );
@@ -75,8 +51,8 @@ class BookmarkTemplatePage extends TemplatePageLib
             'front/bookmarks/index.html.twig',
             [
                 'pagination' => $pagination,
-                'libelles'   => $this->libelleRepository->findByBookmark(),
-                'categories' => $this->categoryRepository->findByBookmark(),
+                'libelles'   => $this->getRepository(Libelle::class)->findByBookmark(),
+                'categories' => $this->getRepository(Category::class)->findByBookmark(),
             ]
         );
     }
@@ -98,7 +74,7 @@ class BookmarkTemplatePage extends TemplatePageLib
                 return $this->libelle($search[1]);
             case 'bookmark':
                 if (!empty($search[1])) {
-                    $history = $this->bookmarkRepository->findOneBy(['slug' => $search[1]]);
+                    $history = $this->getRepository(Bookmark::class)->findOneBy(['slug' => $search[1]]);
                     if (!$history instanceof Bookmark) {
                         throw $this->createNotFoundException();
                     }
@@ -111,20 +87,7 @@ class BookmarkTemplatePage extends TemplatePageLib
 
     public function libelle(string $code)
     {
-        $pagination = $this->paginator->paginate(
-            $this->bookmarkRepository->findPublierLibelle($code),
-            $this->request->query->getInt('page', 1),
-            10
-        );
-
-        return $this->render(
-            'front/bookmarks/list.html.twig',
-            [
-                'pagination' => $pagination,
-                'libelles'   => $this->libelleRepository->findByBookmark(),
-                'categories' => $this->categoryRepository->findByBookmark(),
-            ]
-        );
+        return $this->getList($code, 'findPublierLibelle');
     }
 
     public function show(Bookmark $bookmark)
@@ -139,5 +102,23 @@ class BookmarkTemplatePage extends TemplatePageLib
             '/libelle\/(.*)/'  => 'libelle',
             '/\/(.*)/'         => 'bookmark',
         ];
+    }
+
+    private function getList($code, $method)
+    {
+        $pagination = $this->paginator->paginate(
+            $this->getRepository(Bookmark::class)->{$method}($code),
+            $this->request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render(
+            'front/bookmarks/list.html.twig',
+            [
+                'pagination' => $pagination,
+                'libelles'   => $this->getRepository(Libelle::class)->findByBookmark(),
+                'categories' => $this->getRepository(Category::class)->findByBookmark(),
+            ]
+        );
     }
 }
