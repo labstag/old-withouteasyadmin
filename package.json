@@ -46,7 +46,7 @@
     "jscpd": "3.4.5",
     "regenerator-runtime": "0.13.9",
     "sass": "1.46.0",
-    "sass-loader": "12.3.0",
+    "sass-loader": "12.4.0",
     "stimulus": "2.0.0",
     "stylelint": "13.13.1",
     "stylelint-config-standard": "22.0.0",
