@@ -18,7 +18,11 @@ class TemplateController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_template_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_template_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Template $template, TemplateRequestHandler $requestHandler) : Response
+    public function edit(
+        AttachFormService $service,
+        ?Template $template,
+        TemplateRequestHandler $requestHandler
+    ): Response
     {
         return $this->form(
             $service,
@@ -27,30 +31,33 @@ class TemplateController extends AdminControllerLib
             !is_null($template) ? $template : new Template()
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/trash', name: 'admin_template_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_template_index', methods: ['GET'])]
-    public function indexOrTrash() : Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
             Template::class,
             'admin/template/index.html.twig'
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/{id}', name: 'admin_template_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_template_preview', methods: ['GET'])]
-    public function showOrPreview(Template $template) : Response
+    public function showOrPreview(Template $template): Response
     {
         return $this->renderShowOrPreview(
             $template,
             'admin/template/show.html.twig'
         );
     }
+
     protected function getUrlAdmin(): array
     {
         return [
@@ -66,6 +73,7 @@ class TemplateController extends AdminControllerLib
             'trash'   => 'admin_template_trash',
         ];
     }
+
     protected function searchForm(): array
     {
         return [
@@ -73,6 +81,7 @@ class TemplateController extends AdminControllerLib
             'data' => new TemplateSearch(),
         ];
     }
+
     protected function setBreadcrumbsPageAdminTemplace(): array
     {
         return [
@@ -82,6 +91,7 @@ class TemplateController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminTemplaceEdit(): array
     {
         return [
@@ -91,6 +101,7 @@ class TemplateController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminTemplaceNew(): array
     {
         return [
@@ -100,6 +111,7 @@ class TemplateController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminTemplacePreview(): array
     {
         return [
@@ -113,6 +125,7 @@ class TemplateController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminTemplaceShow(): array
     {
         return [
@@ -122,6 +135,7 @@ class TemplateController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminTemplaceTrash(): array
     {
         return [
@@ -131,6 +145,7 @@ class TemplateController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

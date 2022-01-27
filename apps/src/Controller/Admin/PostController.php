@@ -18,9 +18,10 @@ class PostController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_post_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_post_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Post $post, PostRequestHandler $requestHandler) : Response
+    public function edit(AttachFormService $service, ?Post $post, PostRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
+
         return $this->form(
             $service,
             $requestHandler,
@@ -29,30 +30,33 @@ class PostController extends AdminControllerLib
             'admin/post/form.html.twig'
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/trash', name: 'admin_post_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_post_index', methods: ['GET'])]
-    public function indexOrTrash() : Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
             Post::class,
             'admin/post/index.html.twig',
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/{id}', name: 'admin_post_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_post_preview', methods: ['GET'])]
-    public function showOrPreview(Post $post) : Response
+    public function showOrPreview(Post $post): Response
     {
         return $this->renderShowOrPreview(
             $post,
             'admin/post/show.html.twig'
         );
     }
+
     protected function getUrlAdmin(): array
     {
         return [
@@ -69,6 +73,7 @@ class PostController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
+
     protected function searchForm(): array
     {
         return [
@@ -76,6 +81,7 @@ class PostController extends AdminControllerLib
             'data' => new PostSearch(),
         ];
     }
+
     protected function setBreadcrumbsPageAdminPost(): array
     {
         return [
@@ -85,6 +91,7 @@ class PostController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPostEdit(): array
     {
         return [
@@ -94,6 +101,7 @@ class PostController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPostNew(): array
     {
         return [
@@ -103,6 +111,7 @@ class PostController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPostPreview(): array
     {
         return [
@@ -116,6 +125,7 @@ class PostController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPostShow(): array
     {
         return [
@@ -125,6 +135,7 @@ class PostController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPostTrash(): array
     {
         return [
@@ -134,6 +145,7 @@ class PostController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

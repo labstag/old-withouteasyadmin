@@ -18,9 +18,10 @@ class LibelleController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_libelle_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_libelle_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Libelle $libelle, LibelleRequestHandler $requestHandler) : Response
+    public function edit(AttachFormService $service, ?Libelle $libelle, LibelleRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
+
         return $this->form(
             $service,
             $requestHandler,
@@ -28,30 +29,33 @@ class LibelleController extends AdminControllerLib
             !is_null($libelle) ? $libelle : new Libelle()
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/trash', name: 'admin_libelle_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_libelle_index', methods: ['GET'])]
-    public function indexOrTrash() : Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
             Libelle::class,
             'admin/libelle/index.html.twig'
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/{id}', name: 'admin_libelle_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_libelle_preview', methods: ['GET'])]
-    public function showOrPreview(Libelle $libelle) : Response
+    public function showOrPreview(Libelle $libelle): Response
     {
         return $this->renderShowOrPreview(
             $libelle,
             'admin/libelle/show.html.twig'
         );
     }
+
     protected function getUrlAdmin(): array
     {
         return [
@@ -68,6 +72,7 @@ class LibelleController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
+
     protected function searchForm(): array
     {
         return [
@@ -75,6 +80,7 @@ class LibelleController extends AdminControllerLib
             'data' => new LibelleSearch(),
         ];
     }
+
     protected function setBreadcrumbsPageAdminlibelle(): array
     {
         return [
@@ -84,6 +90,7 @@ class LibelleController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminlibelleEdit(): array
     {
         return [
@@ -93,6 +100,7 @@ class LibelleController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminlibelleNew(): array
     {
         return [
@@ -102,6 +110,7 @@ class LibelleController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminlibellePreview(): array
     {
         return [
@@ -115,6 +124,7 @@ class LibelleController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminlibelleShow(): array
     {
         return [
@@ -124,6 +134,7 @@ class LibelleController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminlibelleTrash(): array
     {
         return [
@@ -133,6 +144,7 @@ class LibelleController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

@@ -31,7 +31,7 @@ use Twig\Environment;
 class AdminController extends AdminControllerLib
 {
     #[Route(path: '/export', name: 'admin_export')]
-    public function export(DataService $dataService) : RedirectResponse
+    public function export(DataService $dataService): RedirectResponse
     {
         $config = $dataService->getConfig();
         ksort($config);
@@ -52,28 +52,40 @@ class AdminController extends AdminControllerLib
                 $this->sessionService->flashBagAdd('danger', $msg);
             }
         }
+
         return $this->redirectToRoute('admin_param');
     }
+
     #[Route(path: '/', name: 'admin')]
-    public function index() : Response
+    public function index(): Response
     {
         $memos = $this->getRepository(Memo::class)->findPublier();
+
         return $this->render(
             'admin/index.html.twig',
             ['memos' => $memos]
         );
     }
+
     #[Route(path: '/oauth', name: 'admin_oauth')]
-    public function oauth(OauthService $oauthService) : Response
+    public function oauth(OauthService $oauthService): Response
     {
         $types = $oauthService->getConfigProvider();
+
         return $this->render(
             'admin/oauth.html.twig',
             ['types' => $types]
         );
     }
+
     #[Route(path: '/param', name: 'admin_param', methods: ['GET', 'POST'])]
-    public function param(Request $request, EntityManagerInterface $entityManager, EventDispatcherInterface $dispatcher, DataService $dataService, CacheInterface $cache) : Response
+    public function param(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $dispatcher,
+        DataService $dataService,
+        CacheInterface $cache
+    ): Response
     {
         $this->modalAttachmentDelete();
         $images = [
@@ -90,6 +102,7 @@ class AdminController extends AdminControllerLib
             $entityManager->persist($images[$key]);
             $entityManager->flush();
         }
+
         $config = $dataService->getConfig();
         $tab    = $this->getParameter('metatags');
         foreach ($tab as $index) {
@@ -97,6 +110,7 @@ class AdminController extends AdminControllerLib
                 $config[$index],
             ];
         }
+
         $form = $this->createForm(ParamType::class, $config);
         $this->btnInstance()->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
@@ -106,6 +120,7 @@ class AdminController extends AdminControllerLib
             $post = $request->request->all($form->getName());
             $dispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
+
         $this->btnInstance()->add(
             'btn-admin-header-export',
             'Exporter',
@@ -113,6 +128,7 @@ class AdminController extends AdminControllerLib
                 'href' => $this->generateUrl('admin_export'),
             ]
         );
+
         return $this->renderForm(
             'admin/param.html.twig',
             [
@@ -121,10 +137,12 @@ class AdminController extends AdminControllerLib
             ]
         );
     }
+
     #[Route(path: '/profil', name: 'admin_profil', methods: ['GET', 'POST'])]
-    public function profil(AttachFormService $service, Security $security, UserRequestHandler $requestHandler) : Response
+    public function profil(AttachFormService $service, Security $security, UserRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
+
         return $this->form(
             $service,
             $requestHandler,
@@ -133,8 +151,9 @@ class AdminController extends AdminControllerLib
             'admin/profil.html.twig'
         );
     }
+
     #[Route(path: '/themes', name: 'admin_themes')]
-    public function themes() : Response
+    public function themes(): Response
     {
         $data = [
             'buttons'     => [[]],
@@ -146,16 +165,22 @@ class AdminController extends AdminControllerLib
             'text'        => [[]],
         ];
         $form = $this->createForm(FormType::class, $data);
+
         return $this->renderForm(
             'admin/form.html.twig',
             ['form' => $form]
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/trash', name: 'admin_trash')]
-    public function trash(CsrfTokenManagerInterface $csrfTokenManager, Environment $twig, TrashService $trashService) : Response
+    public function trash(
+        CsrfTokenManagerInterface $csrfTokenManager,
+        Environment $twig,
+        TrashService $trashService
+    ): Response
     {
         $all = $trashService->all();
         if (0 == (is_countable($all) ? count($all) : 0)) {
@@ -166,6 +191,7 @@ class AdminController extends AdminControllerLib
 
             return $this->redirectToRoute('admin');
         }
+
         $globals        = $twig->getGlobals();
         $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
@@ -183,6 +209,7 @@ class AdminController extends AdminControllerLib
                 ]
             );
         }
+
         $twig->addGlobal('modal', $modal);
         $this->btnInstance()->addViderSelection(
             [
@@ -197,11 +224,13 @@ class AdminController extends AdminControllerLib
             ],
             'empties'
         );
+
         return $this->render(
             'admin/trash.html.twig',
             ['trash' => $all]
         );
     }
+
     protected function setBreadcrumbsPageAdminParam(): array
     {
         return [
@@ -212,6 +241,7 @@ class AdminController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminProfil(): array
     {
         return [
@@ -222,6 +252,7 @@ class AdminController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminTrash(): array
     {
         return [
@@ -232,6 +263,7 @@ class AdminController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();
@@ -246,6 +278,7 @@ class AdminController extends AdminControllerLib
             ]
         );
     }
+
     private function setUpload(Request $request, array $images)
     {
         $all   = $request->files->all();

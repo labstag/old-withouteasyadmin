@@ -21,9 +21,10 @@ class HistoryController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_history_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_history_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?History $history, HistoryRequestHandler $requestHandler) : Response
+    public function edit(AttachFormService $service, ?History $history, HistoryRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
+
         return $this->form(
             $service,
             $requestHandler,
@@ -32,18 +33,20 @@ class HistoryController extends AdminControllerLib
             'admin/history/form.html.twig'
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/trash', name: 'admin_history_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_history_index', methods: ['GET'])]
-    public function indexOrTrash() : Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
             History::class,
             'admin/history/index.html.twig',
         );
     }
+
     #[Route(path: '/{id}/pdf', name: 'admin_history_pdf', methods: ['GET'])]
     public function pdf(HistoryService $service, History $history)
     {
@@ -56,13 +59,16 @@ class HistoryController extends AdminControllerLib
         if (empty($filename)) {
             throw $this->createNotFoundException('Pas de fichier');
         }
+
         $filename = str_replace(
             $this->getParameter('kernel.project_dir').'/public/',
             '/',
             $filename
         );
+
         return $this->redirect($filename);
     }
+
     #[Route(path: '/{id}/move', name: 'admin_history_move', methods: ['GET', 'POST'])]
     public function position(History $history, Request $request)
     {
@@ -75,6 +81,7 @@ class HistoryController extends AdminControllerLib
         if ('POST' == $request->getMethod()) {
             $this->setPositionEntity($request, Chapter::class);
         }
+
         $this->btnInstance()->addBtnList(
             'admin_history_index',
             'Liste',
@@ -87,23 +94,26 @@ class HistoryController extends AdminControllerLib
                 'href' => $currentUrl,
             ]
         );
+
         return $this->render(
             'admin/history/move.html.twig',
             ['history' => $history]
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/{id}', name: 'admin_history_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_history_preview', methods: ['GET'])]
-    public function showOrPreview(History $history) : Response
+    public function showOrPreview(History $history): Response
     {
         return $this->renderShowOrPreview(
             $history,
             'admin/history/show.html.twig'
         );
     }
+
     protected function getUrlAdmin(): array
     {
         return [
@@ -121,6 +131,7 @@ class HistoryController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
+
     protected function searchForm(): array
     {
         return [
@@ -128,6 +139,7 @@ class HistoryController extends AdminControllerLib
             'data' => new HistorySearch(),
         ];
     }
+
     protected function setBreadcrumbsPageAdminHistory(): array
     {
         return [
@@ -137,6 +149,7 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminHistoryEdit(): array
     {
         return [
@@ -146,6 +159,7 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminHistoryMove(): array
     {
         return [
@@ -155,6 +169,7 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminHistoryNew(): array
     {
         return [
@@ -164,6 +179,7 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminHistoryPreview(): array
     {
         return [
@@ -177,6 +193,7 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminHistoryShow(): array
     {
         return [
@@ -186,6 +203,7 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminHistoryTrash(): array
     {
         return [
@@ -195,6 +213,7 @@ class HistoryController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

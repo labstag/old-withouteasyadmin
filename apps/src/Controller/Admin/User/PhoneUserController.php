@@ -18,7 +18,11 @@ class PhoneUserController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_phoneuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_phoneuser_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?PhoneUser $phoneUser, PhoneUserRequestHandler $requestHandler) : Response
+    public function edit(
+        AttachFormService $service,
+        ?PhoneUser $phoneUser,
+        PhoneUserRequestHandler $requestHandler
+    ): Response
     {
         return $this->form(
             $service,
@@ -27,30 +31,33 @@ class PhoneUserController extends AdminControllerLib
             !is_null($phoneUser) ? $phoneUser : new PhoneUser()
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/trash', name: 'admin_phoneuser_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_phoneuser_index', methods: ['GET'])]
-    public function indexOrTrash() : Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
             PhoneUser::class,
             'admin/user/phone_user/index.html.twig'
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/{id}', name: 'admin_phoneuser_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_phoneuser_preview', methods: ['GET'])]
-    public function showOrPreview(PhoneUser $phoneUser) : Response
+    public function showOrPreview(PhoneUser $phoneUser): Response
     {
         return $this->renderShowOrPreview(
             $phoneUser,
             'admin/user/phone_user/show.html.twig'
         );
     }
+
     protected function getUrlAdmin(): array
     {
         return [
@@ -67,6 +74,7 @@ class PhoneUserController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
+
     protected function searchForm(): array
     {
         return [
@@ -74,6 +82,7 @@ class PhoneUserController extends AdminControllerLib
             'data' => new PhoneUserSearch(),
         ];
     }
+
     protected function setBreadcrumbsPageAdminPhoneuser(): array
     {
         return [
@@ -83,6 +92,7 @@ class PhoneUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPhoneuserEdit(): array
     {
         return [
@@ -92,6 +102,7 @@ class PhoneUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPhoneuserNew(): array
     {
         return [
@@ -101,6 +112,7 @@ class PhoneUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPhoneuserPreview(): array
     {
         return [
@@ -114,6 +126,7 @@ class PhoneUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPhoneuserShow(): array
     {
         return [
@@ -123,6 +136,7 @@ class PhoneUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPhoneuserTrash(): array
     {
         return [
@@ -132,6 +146,7 @@ class PhoneUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

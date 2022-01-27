@@ -18,9 +18,10 @@ class EditoController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_edito_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_edito_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Edito $edito, EditoRequestHandler $requestHandler) : Response
+    public function edit(AttachFormService $service, ?Edito $edito, EditoRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
+
         return $this->form(
             $service,
             $requestHandler,
@@ -29,30 +30,33 @@ class EditoController extends AdminControllerLib
             'admin/edito/form.html.twig'
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/trash', name: 'admin_edito_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_edito_index', methods: ['GET'])]
-    public function indexOrTrash() : Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
             Edito::class,
             'admin/edito/index.html.twig',
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/{id}', name: 'admin_edito_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_edito_preview', methods: ['GET'])]
-    public function showOrPreview(Edito $edito) : Response
+    public function showOrPreview(Edito $edito): Response
     {
         return $this->renderShowOrPreview(
             $edito,
             'admin/edito/show.html.twig'
         );
     }
+
     protected function getUrlAdmin(): array
     {
         return [
@@ -69,6 +73,7 @@ class EditoController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
+
     protected function searchForm(): array
     {
         return [
@@ -76,6 +81,7 @@ class EditoController extends AdminControllerLib
             'data' => new EditoSearch(),
         ];
     }
+
     protected function setBreadcrumbsPageAdminEdito(): array
     {
         return [
@@ -85,6 +91,7 @@ class EditoController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminEditoEdit(): array
     {
         return [
@@ -94,6 +101,7 @@ class EditoController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminEditoNew(): array
     {
         return [
@@ -103,6 +111,7 @@ class EditoController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminEditoPreview(): array
     {
         return [
@@ -116,6 +125,7 @@ class EditoController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminEditoShow(): array
     {
         return [
@@ -125,6 +135,7 @@ class EditoController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminEditoTrash(): array
     {
         return [
@@ -134,6 +145,7 @@ class EditoController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

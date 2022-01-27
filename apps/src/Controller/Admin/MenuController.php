@@ -19,17 +19,19 @@ use Twig\Environment;
 class MenuController extends AdminControllerLib
 {
     #[Route(path: '/add', name: 'admin_menu_add', methods: ['GET', 'POST'])]
-    public function add(AttachFormService $service, Request $request, MenuRequestHandler $requestHandler) : Response
+    public function add(AttachFormService $service, Request $request, MenuRequestHandler $requestHandler): Response
     {
         $get = $request->query->all();
         $url = $this->generateUrl('admin_menu_index');
         if (!isset($get['id'])) {
             return new RedirectResponse($url);
         }
+
         $parent = $this->getRepository(Menu::class)->find($get['id']);
         if (!$parent instanceof Menu) {
             return new RedirectResponse($url);
         }
+
         $menu = new Menu();
         $data = [$menu->getData()];
         $menu->setClef(null);
@@ -39,6 +41,7 @@ class MenuController extends AdminControllerLib
         $position = is_countable($children) ? count($children) : 0;
         $menu->setPosition($position + 1);
         $menu->setParent($parent);
+
         return $this->form(
             $service,
             $requestHandler,
@@ -47,8 +50,9 @@ class MenuController extends AdminControllerLib
             'admin/menu/form.html.twig'
         );
     }
+
     #[Route(path: '/divider/{id}', name: 'admin_menu_divider')]
-    public function divider(Menu $menu, MenuRequestHandler $requestHandler) : RedirectResponse
+    public function divider(Menu $menu, MenuRequestHandler $requestHandler): RedirectResponse
     {
         $entity    = new Menu();
         $oldEntity = clone $entity;
@@ -58,10 +62,12 @@ class MenuController extends AdminControllerLib
         $entity->setSeparateur(true);
         $entity->setParent($menu);
         $requestHandler->handle($oldEntity, $entity);
+
         return new RedirectResponse(
             $this->generateUrl('admin_menu_index')
         );
     }
+
     #[Route(path: '/update/{id}', name: 'admin_menu_update', methods: ['GET', 'POST'])]
     public function edit(AttachFormService $service, Menu $menu, MenuRequestHandler $requestHandler)
     {
@@ -69,6 +75,7 @@ class MenuController extends AdminControllerLib
         $form = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
         $data = [$menu->getData()];
         $menu->setData($data);
+
         return $this->form(
             $service,
             $requestHandler,
@@ -77,20 +84,23 @@ class MenuController extends AdminControllerLib
             'admin/menu/form.html.twig'
         );
     }
+
     #[Route(path: '/', name: 'admin_menu_index', methods: ['GET'])]
     public function index(Environment $twig)
     {
-        $all     = $this->getRepository(Menu::class)->findAllCode();
-        $globals = $twig->getGlobals();
-        $modal   = $globals['modal'] ?? [];
+        $all             = $this->getRepository(Menu::class)->findAllCode();
+        $globals         = $twig->getGlobals();
+        $modal           = $globals['modal'] ?? [];
         $modal['delete'] = true;
         $twig->addGlobal('modal', $modal);
         $this->btnInstance()->addBtnNew('admin_menu_new');
+
         return $this->render(
             'admin/menu/index.html.twig',
             ['all' => $all]
         );
     }
+
     #[Route(path: '/move/{id}', name: 'admin_menu_move', methods: ['GET', 'POST'])]
     public function move(Menu $menu, Request $request)
     {
@@ -103,6 +113,7 @@ class MenuController extends AdminControllerLib
         if ('POST' == $request->getMethod()) {
             $this->setPositionEntity($request, Menu::class);
         }
+
         $this->btnInstance()->addBtnList(
             'admin_menu_index',
             'Liste',
@@ -115,13 +126,15 @@ class MenuController extends AdminControllerLib
                 'href' => $currentUrl,
             ]
         );
+
         return $this->render(
             'admin/menu/move.html.twig',
             ['menu' => $menu]
         );
     }
+
     #[Route(path: '/new', name: 'admin_menu_new', methods: ['GET', 'POST'])]
-    public function new(AttachFormService $service, MenuRequestHandler $requestHandler) : Response
+    public function new(AttachFormService $service, MenuRequestHandler $requestHandler): Response
     {
         return $this->form(
             $service,
@@ -131,17 +144,19 @@ class MenuController extends AdminControllerLib
             'admin/menu/form.html.twig'
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/trash', name: 'admin_menu_trash', methods: ['GET'])]
-    public function trash() : Response
+    public function trash(): Response
     {
         return $this->listOrTrash(
             Menu::class,
             'admin/menu/trash.html.twig',
         );
     }
+
     protected function getUrlAdmin(): array
     {
         return [
@@ -155,6 +170,7 @@ class MenuController extends AdminControllerLib
             'trash'   => 'admin_menu_trash',
         ];
     }
+
     protected function setBreadcrumbsPageAdminMenu(): array
     {
         return [
@@ -164,6 +180,7 @@ class MenuController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminMenuAdd(): array
     {
         return [
@@ -173,6 +190,7 @@ class MenuController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminMenuDivider(): array
     {
         return [
@@ -182,6 +200,7 @@ class MenuController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminMenuMove(): array
     {
         return [
@@ -191,6 +210,7 @@ class MenuController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminMenuNew(): array
     {
         return [
@@ -200,6 +220,7 @@ class MenuController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminMenuTrash(): array
     {
         return [
@@ -209,6 +230,7 @@ class MenuController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminMenuUpdate(): array
     {
         return [
@@ -218,6 +240,7 @@ class MenuController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

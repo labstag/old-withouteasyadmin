@@ -18,7 +18,11 @@ class LinkUserController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_linkuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_linkuser_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?LinkUser $linkUser, LinkUserRequestHandler $requestHandler) : Response
+    public function edit(
+        AttachFormService $service,
+        ?LinkUser $linkUser,
+        LinkUserRequestHandler $requestHandler
+    ): Response
     {
         return $this->form(
             $service,
@@ -27,30 +31,33 @@ class LinkUserController extends AdminControllerLib
             !is_null($linkUser) ? $linkUser : new LinkUser()
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/trash', name: 'admin_linkuser_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_linkuser_index', methods: ['GET'])]
-    public function indexOrTrash() : Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
             LinkUser::class,
             'admin/user/link_user/index.html.twig'
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/{id}', name: 'admin_linkuser_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_linkuser_preview', methods: ['GET'])]
-    public function showOrPreview(LinkUser $linkUser) : Response
+    public function showOrPreview(LinkUser $linkUser): Response
     {
         return $this->renderShowOrPreview(
             $linkUser,
             'admin/user/link_user/show.html.twig'
         );
     }
+
     protected function getUrlAdmin(): array
     {
         return [
@@ -66,6 +73,7 @@ class LinkUserController extends AdminControllerLib
             'trash'   => 'admin_linkuser_trash',
         ];
     }
+
     protected function searchForm(): array
     {
         return [
@@ -73,6 +81,7 @@ class LinkUserController extends AdminControllerLib
             'data' => new LinkUserSearch(),
         ];
     }
+
     protected function setBreadcrumbsPageAdminLinkuser(): array
     {
         return [
@@ -82,6 +91,7 @@ class LinkUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminLinkuserEdit(): array
     {
         return [
@@ -91,6 +101,7 @@ class LinkUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminLinkuserNew(): array
     {
         return [
@@ -100,6 +111,7 @@ class LinkUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminLinkuserPreview(): array
     {
         return [
@@ -113,6 +125,7 @@ class LinkUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminLinkuserShow(): array
     {
         return [
@@ -122,6 +135,7 @@ class LinkUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminLinkuserTrash(): array
     {
         return [
@@ -131,6 +145,7 @@ class LinkUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

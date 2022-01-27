@@ -7,18 +7,18 @@ use tidy;
 
 class KernelSubscriber implements EventSubscriberInterface
 {
-    public final const API_CONTROLLER = '/(Api)/';
+    public const API_CONTROLLER = '/(Api)/';
 
-    public final const CLIENTNUMBER = 400;
+    public const CLIENTNUMBER = 400;
 
-    public final const ERROR_CONTROLLER = [
+    public const ERROR_CONTROLLER = [
         'error_controller',
         'error_controller::preview',
     ];
 
-    public final const LABSTAG_CONTROLLER = '/(Labstag)/';
+    public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
-    public final const TAGS = [
+    public const TAGS = [
         'workflow-action',
         'link-show',
         'link-guard',

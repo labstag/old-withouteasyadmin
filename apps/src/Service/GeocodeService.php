@@ -10,7 +10,7 @@ use ZipArchive;
 
 class GeocodeService
 {
-    public final const HTTP_OK = 200;
+    public const HTTP_OK = 200;
 
     public function __construct(
         protected HttpClientInterface $client,

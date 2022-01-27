@@ -18,7 +18,11 @@ class EmailUserController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_emailuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_emailuser_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?EmailUser $emailUser, EmailUserRequestHandler $requestHandler) : Response
+    public function edit(
+        AttachFormService $service,
+        ?EmailUser $emailUser,
+        EmailUserRequestHandler $requestHandler
+    ): Response
     {
         return $this->form(
             $service,
@@ -27,30 +31,33 @@ class EmailUserController extends AdminControllerLib
             !is_null($emailUser) ? $emailUser : new EmailUser()
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/trash', name: 'admin_emailuser_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_emailuser_index', methods: ['GET'])]
-    public function indexOrTrash() : Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
             EmailUser::class,
             'admin/user/email_user/index.html.twig'
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/{id}', name: 'admin_emailuser_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_emailuser_preview', methods: ['GET'])]
-    public function showOrPreview(EmailUser $emailUser) : Response
+    public function showOrPreview(EmailUser $emailUser): Response
     {
         return $this->renderShowOrPreview(
             $emailUser,
             'admin/user/email_user/show.html.twig'
         );
     }
+
     protected function getUrlAdmin(): array
     {
         return [
@@ -67,6 +74,7 @@ class EmailUserController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
+
     protected function searchForm(): array
     {
         return [
@@ -74,6 +82,7 @@ class EmailUserController extends AdminControllerLib
             'data' => new EmailUserSearch(),
         ];
     }
+
     protected function setBreadcrumbsPageAdminEmailuser(): array
     {
         return [
@@ -83,6 +92,7 @@ class EmailUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminEmailuserEdit(): array
     {
         return [
@@ -92,6 +102,7 @@ class EmailUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminEmailuserNew(): array
     {
         return [
@@ -101,6 +112,7 @@ class EmailUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminEmailuserPreview(): array
     {
         return [
@@ -114,6 +126,7 @@ class EmailUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminEmailuserShow(): array
     {
         return [
@@ -123,6 +136,7 @@ class EmailUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminEmailuserTrash(): array
     {
         return [
@@ -132,6 +146,7 @@ class EmailUserController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

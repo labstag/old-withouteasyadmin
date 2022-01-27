@@ -19,7 +19,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class GuardRouteController extends ApiControllerLib
 {
     #[Route(path: '/group/{group}', name: 'api_guard_routegroup', methods: ['POST'])]
-    public function group(Groupe $group, GuardService $guardService, RouteGroupeRequestHandler $routeGroupeRH, Request $request)
+    public function group(
+        Groupe $group,
+        GuardService $guardService,
+        RouteGroupeRequestHandler $routeGroupeRH,
+        Request $request
+    )
     {
         $data   = [
             'delete' => 0,
@@ -39,10 +44,17 @@ class GuardRouteController extends ApiControllerLib
                 $routeGroupeRH
             );
         }
+
         return new JsonResponse($data);
     }
+
     #[Route(path: '/groups/{route}', name: 'api_guard_routegroups', methods: ['POST'])]
-    public function groups(GuardService $guardService, EntityRoute $route, RouteGroupeRequestHandler $routeGroupeRH, Request $request)
+    public function groups(
+        GuardService $guardService,
+        EntityRoute $route,
+        RouteGroupeRequestHandler $routeGroupeRH,
+        Request $request
+    )
     {
         $data    = [
             'delete' => 0,
@@ -61,8 +73,10 @@ class GuardRouteController extends ApiControllerLib
                 $routeGroupeRH
             );
         }
+
         return new JsonResponse($data);
     }
+
     #[Route(path: '/', name: 'api_guard_route')]
     public function index(Request $request)
     {
@@ -79,10 +93,18 @@ class GuardRouteController extends ApiControllerLib
                 'route'  => $row->getRefroute()->getName(),
             ];
         }
+
         return new JsonResponse($data);
     }
+
     #[Route(path: '/setgroup/{group}/{route}', name: 'api_guard_routesetgroup', methods: ['POST'])]
-    public function setgroup(GuardService $guardService, Groupe $group, EntityRoute $route, Request $request, RouteGroupeRequestHandler $routeGroupeRH)
+    public function setgroup(
+        GuardService $guardService,
+        Groupe $group,
+        EntityRoute $route,
+        Request $request,
+        RouteGroupeRequestHandler $routeGroupeRH
+    )
     {
         $data  = [
             'delete' => 0,
@@ -98,10 +120,18 @@ class GuardRouteController extends ApiControllerLib
             $state,
             $routeGroupeRH
         );
+
         return new JsonResponse($data);
     }
+
     #[Route(path: '/setuser/{user}/{route}', name: 'api_guard_routesetuser', methods: ['POST'])]
-    public function setuser(GuardService $guardService, User $user, EntityRoute $route, Request $request, RouteUserRequestHandler $routeUserRH)
+    public function setuser(
+        GuardService $guardService,
+        User $user,
+        EntityRoute $route,
+        Request $request,
+        RouteUserRequestHandler $routeUserRH
+    )
     {
         $data  = [
             'delete' => 0,
@@ -117,8 +147,10 @@ class GuardRouteController extends ApiControllerLib
             $route,
             $routeUserRH
         );
+
         return new JsonResponse($data);
     }
+
     #[Route(path: '/user/{user}', name: 'api_guard_routeuser', methods: ['POST'])]
     public function user(GuardService $guardService, User $user, Request $request, RouteUserRequestHandler $routeUserRH)
     {
@@ -140,8 +172,10 @@ class GuardRouteController extends ApiControllerLib
                 $routeUserRH
             );
         }
+
         return new JsonResponse($data);
     }
+
     private function setRouteGroupe(
         GuardService $guardService,
         $data,
@@ -184,6 +218,7 @@ class GuardRouteController extends ApiControllerLib
 
         return $data;
     }
+
     private function setRouteUser(
         guardService $guardService,
         array $data,

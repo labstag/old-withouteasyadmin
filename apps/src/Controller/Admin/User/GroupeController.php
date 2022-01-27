@@ -19,7 +19,7 @@ class GroupeController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_groupuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_groupuser_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Groupe $groupe, GroupeRequestHandler $requestHandler) : Response
+    public function edit(AttachFormService $service, ?Groupe $groupe, GroupeRequestHandler $requestHandler): Response
     {
         return $this->form(
             $service,
@@ -28,8 +28,9 @@ class GroupeController extends AdminControllerLib
             !is_null($groupe) ? $groupe : new Groupe()
         );
     }
+
     #[Route(path: '/{id}/guard', name: 'admin_groupuser_guard')]
-    public function guard(Groupe $groupe) : Response
+    public function guard(Groupe $groupe): Response
     {
         $this->btnInstance()->addBtnList(
             'admin_groupuser_index',
@@ -58,6 +59,7 @@ class GroupeController extends AdminControllerLib
 
             return $this->redirectToRoute('admin_groupuser_index');
         }
+
         $workflows = $this->getRepository(Workflow::class)->findBy(
             [],
             [
@@ -65,6 +67,7 @@ class GroupeController extends AdminControllerLib
                 'transition' => 'ASC',
             ]
         );
+
         return $this->render(
             'admin/user/guard/group.html.twig',
             [
@@ -74,30 +77,33 @@ class GroupeController extends AdminControllerLib
             ]
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/trash', name: 'admin_groupuser_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_groupuser_index', methods: ['GET'])]
-    public function index() : Response
+    public function index(): Response
     {
         return $this->listOrTrash(
             Groupe::class,
             'admin/user/groupe/index.html.twig'
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/{id}', name: 'admin_groupuser_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_groupuser_preview', methods: ['GET'])]
-    public function showOrPreview(Groupe $groupe) : Response
+    public function showOrPreview(Groupe $groupe): Response
     {
         return $this->renderShowOrPreview(
             $groupe,
             'admin/user/groupe/show.html.twig'
         );
     }
+
     protected function getUrlAdmin(): array
     {
         return [
@@ -114,6 +120,7 @@ class GroupeController extends AdminControllerLib
             'trash'   => 'admin_groupuser_trash',
         ];
     }
+
     protected function searchForm(): array
     {
         return [
@@ -121,6 +128,7 @@ class GroupeController extends AdminControllerLib
             'data' => new GroupeSearch(),
         ];
     }
+
     protected function setBreadcrumbsPageAdminGroupuser(): array
     {
         return [
@@ -130,6 +138,7 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminGroupuserEdit(): array
     {
         return [
@@ -139,6 +148,7 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminGroupuserGuard(): array
     {
         return [
@@ -148,6 +158,7 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminGroupuserNew(): array
     {
         return [
@@ -157,6 +168,7 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminGroupuserPreview(): array
     {
         return [
@@ -170,6 +182,7 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminGroupuserShow(): array
     {
         return [
@@ -179,6 +192,7 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminGroupuserTrash(): array
     {
         return [
@@ -188,6 +202,7 @@ class GroupeController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

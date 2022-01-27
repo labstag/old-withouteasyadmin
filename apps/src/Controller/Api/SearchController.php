@@ -5,7 +5,6 @@ namespace Labstag\Controller\Api;
 use Labstag\Entity\Category;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Libelle;
-use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,16 +17,18 @@ class SearchController extends ApiControllerLib
     #[Route(path: '/group', name: 'api_search_group')]
     #[Route(path: '/libelle', name: 'api_search_postlibelle')]
     #[Route(path: '/user', name: 'api_search_user')]
-    public function libelle(Request $request) : JsonResponse
+    public function libelle(Request $request): JsonResponse
     {
         $attributes = $request->attributes->all();
         $route      = $attributes['_route'];
         $entityName = ('api_search_category' == $route) ? Category::class : null;
         $entityName = ('api_search_group' == $route) ? Groupe::class : null;
         $entityName = ('api_search_postlibelle' == $route) ? Libelle::class : null;
-        $function = ('api_search_user' == $route) ? 'findUserName' : 'findName';
+        $function   = ('api_search_user' == $route) ? 'findUserName' : 'findName';
+
         return $this->showData($request, $entityName, $function);
     }
+
     private function showData($request, $entity, $method)
     {
         $get    = $request->query->all();

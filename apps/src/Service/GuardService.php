@@ -14,16 +14,16 @@ use Symfony\Component\Workflow\Registry;
 
 class GuardService
 {
-    public final const GROUPE_ENABLE = ['visiteur'];
+    public const GROUPE_ENABLE = ['visiteur'];
 
-    public final const REGEX = [
+    public const REGEX = [
         '/(SecurityController)/',
         '/(web_profiler.controller)/',
         '/(error_controller)/',
         '/(api_platform)/',
     ];
 
-    public final const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
+    public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     public function __construct(
         protected RouterInterface $router,

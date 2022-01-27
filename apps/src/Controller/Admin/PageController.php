@@ -18,9 +18,10 @@ class PageController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_page_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_page_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Page $page, PageRequestHandler $requestHandler) : Response
+    public function edit(AttachFormService $service, ?Page $page, PageRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
+
         return $this->form(
             $service,
             $requestHandler,
@@ -29,30 +30,33 @@ class PageController extends AdminControllerLib
             'admin/page/form.html.twig'
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/trash', name: 'admin_page_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_page_index', methods: ['GET'])]
-    public function indexOrTrash() : Response
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
             Page::class,
             'admin/page/index.html.twig'
         );
     }
+
     /**
      * @IgnoreSoftDelete
      */
     #[Route(path: '/{id}', name: 'admin_page_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_page_preview', methods: ['GET'])]
-    public function showOrPreview(Page $page) : Response
+    public function showOrPreview(Page $page): Response
     {
         return $this->renderShowOrPreview(
             $page,
             'admin/page/show.html.twig'
         );
     }
+
     protected function getUrlAdmin(): array
     {
         return [
@@ -69,6 +73,7 @@ class PageController extends AdminControllerLib
             'workflow' => 'api_action_workflow',
         ];
     }
+
     protected function searchForm(): array
     {
         return [
@@ -76,6 +81,7 @@ class PageController extends AdminControllerLib
             'data' => new PageSearch(),
         ];
     }
+
     protected function setBreadcrumbsPageAdminPage(): array
     {
         return [
@@ -85,6 +91,7 @@ class PageController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPageEdit(): array
     {
         return [
@@ -94,6 +101,7 @@ class PageController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPageNew(): array
     {
         return [
@@ -103,6 +111,7 @@ class PageController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPagePreview(): array
     {
         return [
@@ -116,6 +125,7 @@ class PageController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPageShow(): array
     {
         return [
@@ -125,6 +135,7 @@ class PageController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setBreadcrumbsPageAdminPageTrash(): array
     {
         return [
@@ -134,6 +145,7 @@ class PageController extends AdminControllerLib
             ],
         ];
     }
+
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

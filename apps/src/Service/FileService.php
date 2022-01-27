@@ -10,7 +10,7 @@ class FileService
 {
     public function __construct(
         protected ContainerBagInterface $containerBag,
-        private readonly AttachmentRequestHandler $attachmentRH
+        private AttachmentRequestHandler $attachmentRH
     )
     {
     }

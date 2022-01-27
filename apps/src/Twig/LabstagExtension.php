@@ -22,9 +22,9 @@ use Twig\TwigFunction;
 
 class LabstagExtension extends AbstractExtension
 {
-    public final const FOLDER_ENTITY = 'Labstag\\Entity\\';
+    public const FOLDER_ENTITY = 'Labstag\\Entity\\';
 
-    public final const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
+    public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     public function __construct(
         protected EntityManagerInterface $entityManager,

@@ -18,17 +18,17 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class BookmarkService
 {
-    public final const CLIENTNUMBER = 400;
+    public const CLIENTNUMBER = 400;
 
     public function __construct(
         protected FileService $fileService,
-        private readonly ErrorService $errorService,
-        private readonly LoggerInterface $logger,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly AttachmentRequestHandler $attachmentRH,
-        private readonly UploadAnnotationReader $uploadAnnotReader,
-        private readonly ContainerBagInterface $containerBag,
-        private readonly BookmarkRequestHandler $requestHandler
+        private ErrorService $errorService,
+        private LoggerInterface $logger,
+        private EntityManagerInterface $entityManager,
+        private AttachmentRequestHandler $attachmentRH,
+        private UploadAnnotationReader $uploadAnnotReader,
+        private ContainerBagInterface $containerBag,
+        private BookmarkRequestHandler $requestHandler
     )
     {
     }
