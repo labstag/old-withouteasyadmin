@@ -39,7 +39,7 @@ services:
       labels:
         - "traefik.enable=false"
   apache:
-    image: httpd:2.4.51
+    image: httpd:2.4.52
     depends_on:
       - phpfpm
     volumes:
