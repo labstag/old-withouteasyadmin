@@ -51,7 +51,7 @@
         "symfony/finder": "6.0.2",
         "symfony/flex": "2.1.4",
         "symfony/form": "6.0.2",
-        "symfony/framework-bundle": "6.0.2",
+        "symfony/framework-bundle": "6.0.4",
         "symfony/http-client": "6.0.2",
         "symfony/intl": "6.0.1",
         "symfony/ldap": "6.0.2",
