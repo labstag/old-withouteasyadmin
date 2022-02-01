@@ -25,21 +25,21 @@ class LabstagInstallCommand extends CommandLib
         parent::__construct($entityManager);
     }
 
-    protected function all($inputOutput)
+    protected function all($inputOutput): bool
     {
         $inputOutput->note('Installations');
-        $this->setPages($inputOutput);
-        $this->setMenuAdmin($inputOutput);
-        $this->setMenuAdminProfil($inputOutput);
-        $this->setGroup($inputOutput);
-        $this->setConfig($inputOutput);
-        $this->setTemplates($inputOutput);
-        $this->setUsers($inputOutput);
+        $executes = $this->getExecutesFunction();
+        foreach ($executes as $function) {
+            $this->{$function}($inputOutput);
+        }
+
+        return true;
     }
 
     protected function configure()
     {
         $this->setDescription('Add a short description for your command');
+        $this->addOption('layout', null, InputOption::VALUE_NONE, 'layout');
         $this->addOption('pages', null, InputOption::VALUE_NONE, 'pages');
         $this->addOption('menuadmin', null, InputOption::VALUE_NONE, 'menuadmin');
         $this->addOption('menuadminprofil', null, InputOption::VALUE_NONE, 'menuadminprofil');
@@ -54,8 +54,12 @@ class LabstagInstallCommand extends CommandLib
     {
         $inputOutput = new SymfonyStyle($input, $output);
         $options     = $input->getOptions();
+        $executes    = $this->getExecutesFunction();
         foreach ($options as $option => $state) {
-            $this->executeOption($state ? $option : '', $inputOutput);
+            $execute = $state ? $option : '';
+            if (isset($executes[$execute])) {
+                $this->{$executes[$execute]}($inputOutput);
+            }
         }
 
         $inputOutput->success('You have a new command! Now make it your own! Pass --help to see your options.');
@@ -63,83 +67,82 @@ class LabstagInstallCommand extends CommandLib
         return Command::SUCCESS;
     }
 
-    protected function executeOption($option, $inputOutput)
+    protected function getExecutesFunction()
     {
-        switch ($option) {
-            case 'pages':
-                $this->setPages($inputOutput);
-
-                break;
-            case 'menuadmin':
-                $this->setMenuAdmin($inputOutput);
-
-                break;
-            case 'menuadminprofil':
-                $this->setMenuAdminProfil($inputOutput);
-
-                break;
-            case 'group':
-                $this->setGroup($inputOutput);
-
-                break;
-            case 'config':
-                $this->setConfig($inputOutput);
-
-                break;
-            case 'templates':
-                $this->setTemplates($inputOutput);
-
-                break;
-            case 'users':
-                $this->setUsers($inputOutput);
-
-                break;
-            case 'all':
-                $this->all($inputOutput);
-
-                break;
-        }
+        return [
+            'layout'          => 'setLayouts',
+            'pages'           => 'setPages',
+            'menuadmin'       => 'setMenuAdmin',
+            'menuadminprofil' => 'setMenuAdminProfil',
+            'group'           => 'setGroup',
+            'config'          => 'setConfig',
+            'templates'       => 'setTemplates',
+            'users'           => 'setUsers',
+            'all'             => 'all',
+        ];
     }
 
-    protected function setConfig($inputOutput)
+    protected function setConfig($inputOutput): bool
     {
         $inputOutput->note('Ajout de la configuration');
         $this->installService->config($this->serverenv);
+
+        return true;
     }
 
-    protected function setGroup($inputOutput)
+    protected function setGroup($inputOutput): bool
     {
         $inputOutput->note('Ajout des groupes');
         $this->installService->group();
+
+        return true;
     }
 
-    protected function setMenuAdmin($inputOutput)
+    protected function setLayouts($inputOutput): bool
+    {
+        $inputOutput->note('Ajout des layouts');
+        $this->installService->layouts();
+
+        return true;
+    }
+
+    protected function setMenuAdmin($inputOutput): bool
     {
         $inputOutput->note('Ajout du menu admin');
         $this->installService->menuadmin();
+
+        return true;
     }
 
-    protected function setMenuAdminProfil($inputOutput)
+    protected function setMenuAdminProfil($inputOutput): bool
     {
         $inputOutput->note('Ajout du menu admin profil');
         $this->installService->menuadminprofil();
+
+        return true;
     }
 
-    protected function setPages($inputOutput)
+    protected function setPages($inputOutput): bool
     {
         $inputOutput->note('Ajout des pages');
         $this->installService->pages();
+
+        return true;
     }
 
-    protected function setTemplates($inputOutput)
+    protected function setTemplates($inputOutput): bool
     {
         $inputOutput->note('Ajout des templates');
         $this->installService->templates();
+
+        return true;
     }
 
-    protected function setUsers($inputOutput)
+    protected function setUsers($inputOutput): bool
     {
         $inputOutput->note('Ajout des users');
         $this->installService->users();
+
+        return true;
     }
 }

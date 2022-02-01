@@ -1,6 +1,6 @@
 include make/general/Makefile
 STACK   := labstag
-NETWORK := proxynetwork
+NETWORK := proxylampy
 include make/docker/Makefile
 
 PHPFPMFULLNAME := $(STACK)_phpfpm.1.$$(docker service ps -f 'name=$(STACK)_phpfpm' $(STACK)_phpfpm -q --no-trunc | head -n1)
@@ -51,7 +51,7 @@ apps/composer.lock: isdocker apps/composer.json
 	${COMPOSER_EXEC} update
 
 apps/vendor: isdocker apps/composer.json
-	${COMPOSER_EXEC} install --no-progress --prefer-dist --Optimize-autoloader
+	${COMPOSER_EXEC} install --no-progress --prefer-dist --optimize-autoloader
 	
 .PHONY: assets
 assets: isdocker apps/.env
@@ -87,9 +87,9 @@ else ifeq ($(COMMANDS_ARGS),outdated)
 else ifeq ($(COMMANDS_ARGS),fund)
 	${COMPOSER_EXEC} fund
 else ifeq ($(COMMANDS_ARGS),prod)
-	${COMPOSER_EXEC} install --no-dev --no-progress --prefer-dist --Optimize-autoloader
+	${COMPOSER_EXEC} install --no-dev --no-progress --prefer-dist --optimize-autoloader
 else ifeq ($(COMMANDS_ARGS),dev)
-	${COMPOSER_EXEC} install --no-progress --prefer-dist --Optimize-autoloader
+	${COMPOSER_EXEC} install --no-progress --prefer-dist --optimize-autoloader
 else ifeq ($(COMMANDS_ARGS),u)
 	${COMPOSER_EXEC} update
 else ifeq ($(COMMANDS_ARGS),i)

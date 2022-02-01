@@ -22,9 +22,6 @@ services:
       MAILER_DSN: "smtp://mailhog:1025"
       MESSENGER_TRANSPORT_DSN: "doctrine://default"
       LOCK_DNS: semaphore
-      DATABASE_BDD: labstag_bdd
-      DATABASE_USER: labstag
-      DATABASE_PASSWORD: password
       DATABASE_URL: "mysqli://labstag:password@mariadb:3306/labstag_bdd"
     depends_on:
       - mariadb

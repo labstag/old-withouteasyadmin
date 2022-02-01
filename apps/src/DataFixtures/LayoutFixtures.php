@@ -12,9 +12,9 @@ class LayoutFixtures extends DataFixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         unset($manager);
-        $this->addLayoutLanding();
-        $this->addLayoutHome();
-        $this->addLayoutContent();
+        $this->addLayout('content', $this->installService->getLayoutContent());
+        $this->addLayout('home', $this->installService->getLayoutHome());
+        $this->addLayout('landing', $this->installService->getLayoutLanding());
     }
 
     protected function addLayout(string $name, string $content): Layout
@@ -28,35 +28,5 @@ class LayoutFixtures extends DataFixtureLib implements DependentFixtureInterface
         $this->layoutRH->handle($oldLayout, $layout);
 
         return $layout;
-    }
-
-    protected function addLayoutContent()
-    {
-        $content = <<<EOF
-            [header]
-            [main,aside]
-            [footer]
-            EOF;
-        $this->addLayout('content', $content);
-    }
-
-    protected function addLayoutHome()
-    {
-        $content = <<<EOF
-            [header]
-            [main]
-            [footer]
-            EOF;
-        $this->addLayout('home', $content);
-    }
-
-    protected function addLayoutLanding()
-    {
-        $content = <<<EOF
-            [header]
-            [main]
-            [footer]
-            EOF;
-        $this->addLayout('landing', $content);
     }
 }
