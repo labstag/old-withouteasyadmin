@@ -6,19 +6,20 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr",       type="string")
- * @ORM\DiscriminatorMap({"user":               "PhoneUser"})
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"user" = "PhoneUser"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-abstract class Phone
+abstract class Phone implements Stringable
 {
     use SoftDeleteableEntity;
-
     use StateableEntity;
 
     /**
@@ -30,8 +31,9 @@ abstract class Phone
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -57,7 +59,7 @@ abstract class Phone
         $this->principal = false;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return implode(
             ' ',
@@ -81,6 +83,11 @@ abstract class Phone
     public function getNumero(): ?string
     {
         return $this->numero;
+    }
+
+    public function getPrincipal(): ?bool
+    {
+        return $this->principal;
     }
 
     public function getType(): ?string

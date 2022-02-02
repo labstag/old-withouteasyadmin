@@ -9,19 +9,22 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\EditoRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EditoRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt",        timeAware=false)
- * @Uploadable()
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Uploadable
  */
-class Edito
+class Edito implements Stringable
 {
+    use MetatagsEntity;
     use SoftDeleteableEntity;
-
     use StateableEntity;
 
     /**
@@ -42,8 +45,9 @@ class Edito
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -60,23 +64,13 @@ class Edito
     protected $title;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $metaDescription;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $metaKeywords;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $published;
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getTitle();
+        return (string) $this->getTitle();
     }
 
     public function getContent(): ?string
@@ -97,16 +91,6 @@ class Edito
     public function getId(): ?string
     {
         return $this->id;
-    }
-
-    public function getMetaDescription(): ?string
-    {
-        return $this->metaDescription;
-    }
-
-    public function getMetaKeywords(): ?string
-    {
-        return $this->metaKeywords;
     }
 
     public function getPublished(): ?DateTimeInterface
@@ -141,20 +125,6 @@ class Edito
     public function setFond(?Attachment $fond): self
     {
         $this->fond = $fond;
-
-        return $this;
-    }
-
-    public function setMetaDescription(?string $metaDescription): self
-    {
-        $this->metaDescription = $metaDescription;
-
-        return $this;
-    }
-
-    public function setMetaKeywords(?string $metaKeywords): self
-    {
-        $this->metaKeywords = $metaKeywords;
 
         return $this;
     }

@@ -11,6 +11,8 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\UserRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,19 +20,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Uploadable()
+ * @Uploadable
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
 {
     use SoftDeleteableEntity;
-
     use StateableEntity;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=AddressUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
+     *     targetEntity=AddressUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $addressUsers;
@@ -42,9 +44,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=Edito::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
+     *     targetEntity=Edito::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $editos;
@@ -56,9 +59,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=EmailUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
+     *     targetEntity=EmailUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $emailUsers;
@@ -70,34 +74,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=LinkUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
+     *     targetEntity=LinkUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $linkUsers;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=Memo::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
+     *     targetEntity=Memo::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $noteInternes;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=OauthConnectUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
+     *     targetEntity=OauthConnectUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $oauthConnectUsers;
@@ -110,9 +118,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=PhoneUser::class,
-     *  mappedBy="refuser",
-     *  cascade={"persist"}
+     *     targetEntity=PhoneUser::class,
+     *     mappedBy="refuser",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $phoneUsers;
@@ -134,7 +143,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected array $roles = [];
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser")
+     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser", orphanRemoval=true)
      */
     protected $routes;
 
@@ -145,17 +154,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected $username;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refuser", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     private $bookmarks;
 
     /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=History::class, mappedBy="refuser", orphanRemoval=true)
+     */
+    private $histories;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     private $posts;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refuser")
+     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refuser", orphanRemoval=true)
      */
     private $workflowUsers;
 
@@ -173,9 +187,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->workflowUsers     = new ArrayCollection();
         $this->posts             = new ArrayCollection();
         $this->bookmarks         = new ArrayCollection();
+        $this->histories         = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getUsername();
     }
@@ -220,6 +235,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function addHistory(History $history): self
+    {
+        if (!$this->histories->contains($history)) {
+            $this->histories[] = $history;
+            $history->setRefuser($this);
+        }
+
+        return $this;
+    }
+
     public function addLinkUser(LinkUser $linkUser): self
     {
         if (!$this->linkUsers->contains($linkUser)) {
@@ -235,6 +260,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (!$this->noteInternes->contains($noteInterne)) {
             $this->noteInternes[] = $noteInterne;
             $noteInterne->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addNoteInterne(Memo $noteInterne): self
+    {
+        if (!$this->noteInternes->contains($noteInterne)) {
+            $this->noteInternes[] = $noteInterne;
+            $noteInterne->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addOauthConnectUser(OauthConnectUser $oauthConnectUser): self
+    {
+        if (!$this->oauthConnectUsers->contains($oauthConnectUser)) {
+            $this->oauthConnectUsers[] = $oauthConnectUser;
+            $oauthConnectUser->setRefuser($this);
         }
 
         return $this;
@@ -311,9 +356,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->avatar;
     }
 
-    /**
-     * @return Bookmark[]|Collection
-     */
     public function getBookmarks(): Collection
     {
         return $this->bookmarks;
@@ -344,6 +386,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->file;
     }
 
+    public function getHistories(): Collection
+    {
+        return $this->histories;
+    }
+
     public function getId(): ?string
     {
         return $this->id;
@@ -355,6 +402,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getMemos()
+    {
+        return $this->noteInternes;
+    }
+
+    public function getNoteInternes(): Collection
     {
         return $this->noteInternes;
     }
@@ -377,17 +429,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->phoneUsers;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getPlainPassword()
+    public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
-    /**
-     * @return Collection|Post[]
-     */
     public function getPosts(): Collection
     {
         return $this->posts;
@@ -410,9 +456,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    /**
-     * @return Collection|RouteUser[]
-     */
     public function getRoutes(): Collection
     {
         return $this->routes;
@@ -427,7 +470,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
-    public function getUserIdentifier()
+    public function getUserIdentifier(): string
     {
         return $this->getUsername();
     }
@@ -442,9 +485,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->username;
     }
 
-    /**
-     * @return Collection|WorkflowUser[]
-     */
     public function getWorkflowUsers(): Collection
     {
         return $this->workflowUsers;
@@ -501,6 +541,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function removeHistory(History $history): self
+    {
+        if ($this->histories->removeElement($history)) {
+            // set the owning side to null (unless already changed)
+            if ($history->getRefuser() === $this) {
+                $history->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function removeLinkUser(LinkUser $linkUser): self
     {
         if ($this->linkUsers->contains($linkUser)) {
@@ -521,6 +573,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($noteInterne->getRefuser() === $this) {
                 $noteInterne->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeNoteInterne(Memo $noteInterne): self
+    {
+        if ($this->noteInternes->removeElement($noteInterne)) {
+            // set the owning side to null (unless already changed)
+            if ($noteInterne->getRefuser() === $this) {
+                $noteInterne->setRefuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeOauthConnectUser(OauthConnectUser $oauthConnectUser): self
+    {
+        if ($this->oauthConnectUsers->removeElement($oauthConnectUser)) {
+            // set the owning side to null (unless already changed)
+            if ($oauthConnectUser->getRefuser() === $this) {
+                $oauthConnectUser->setRefuser(null);
             }
         }
 

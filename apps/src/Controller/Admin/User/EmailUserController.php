@@ -7,26 +7,17 @@ use Labstag\Entity\EmailUser;
 use Labstag\Form\Admin\Search\User\EmailUserType as UserEmailUserType;
 use Labstag\Form\Admin\User\EmailUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\EmailUserRepository;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Search\User\EmailUserSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/user/email")
- */
+#[Route(path: '/admin/user/email')]
 class EmailUserController extends AdminControllerLib
 {
-    /**
-     * @Route(
-     *  "/{id}/edit",
-     *  name="admin_emailuser_edit",
-     *  methods={"GET","POST"}
-     * )
-     * @Route("/new", name="admin_emailuser_new", methods={"GET","POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'admin_emailuser_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_emailuser_new', methods: ['GET', 'POST'])]
     public function edit(
         AttachFormService $service,
         ?EmailUser $emailUser,
@@ -42,26 +33,24 @@ class EmailUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_emailuser_trash", methods={"GET"})
-     * @Route("/",       name="admin_emailuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(EmailUserRepository $repository): Response
+    #[Route(path: '/trash', name: 'admin_emailuser_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_emailuser_index', methods: ['GET'])]
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $repository,
+            EmailUser::class,
             'admin/user/email_user/index.html.twig'
         );
     }
 
     /**
-     * @Route("/{id}",         name="admin_emailuser_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_emailuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        EmailUser $emailUser
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_emailuser_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_emailuser_preview', methods: ['GET'])]
+    public function showOrPreview(EmailUser $emailUser): Response
     {
         return $this->renderShowOrPreview(
             $emailUser,
@@ -98,24 +87,18 @@ class EmailUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('emailuser.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_emailuser_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('emailuser.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_emailuser_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminEmailuserEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('emailuser.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_emailuser_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('emailuser.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_emailuser_edit',
             ],
         ];
     }
@@ -124,44 +107,32 @@ class EmailUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('emailuser.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_emailuser_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('emailuser.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_emailuser_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminEmailuserPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('emailuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_emailuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('emailuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_emailuser_trash',
             ],
             [
-                'title'        => $this->translator->trans('emailuser.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_emailuser_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('emailuser.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_emailuser_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminEmailuserShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('emailuser.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_emailuser_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('emailuser.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_emailuser_show',
             ],
         ];
     }
@@ -170,9 +141,8 @@ class EmailUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('emailuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_emailuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('emailuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_emailuser_trash',
             ],
         ];
     }

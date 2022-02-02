@@ -4,6 +4,7 @@ namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\RouteGroupeRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=RouteGroupeRepository::class)
@@ -13,8 +14,9 @@ class RouteGroupe
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -46,6 +48,11 @@ class RouteGroupe
     public function getRefroute(): ?Route
     {
         return $this->refroute;
+    }
+
+    public function getState(): ?bool
+    {
+        return $this->state;
     }
 
     public function isState(): ?bool

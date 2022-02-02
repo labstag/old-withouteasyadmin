@@ -6,39 +6,32 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
+use Labstag\Entity\Memo;
 use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ParamType;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\AttachmentRepository;
-use Labstag\Repository\MemoRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
+use Twig\Environment;
 
-/**
- * @Route("/admin")
- */
+#[Route(path: '/admin')]
 class AdminController extends AdminControllerLib
 {
-    /**
-     * @Route("/export", name="admin_export")
-     */
-    public function export(
-        DataService $dataService,
-        LoggerInterface $logger
-    ): RedirectResponse
+    #[Route(path: '/export', name: 'admin_export')]
+    public function export(DataService $dataService): RedirectResponse
     {
         $config = $dataService->getConfig();
         ksort($config);
@@ -47,28 +40,26 @@ class AdminController extends AdminControllerLib
         if (is_file($file)) {
             try {
                 file_put_contents($file, $content);
-                $this->flashBagAdd(
+                $this->sessionService->flashBagAdd(
                     'success',
                     $this->translator->trans('admin.flashbag.data.export.success')
                 );
             } catch (Exception $exception) {
-                $this->setErrorLogger($exception, $logger);
+                $this->errorService->set($exception);
                 $paramtrans = ['%file%' => $file];
 
                 $msg = $this->translator->trans('admin.flashbag.data.export.fail', $paramtrans);
-                $this->flashBagAdd('danger', $msg);
+                $this->sessionService->flashBagAdd('danger', $msg);
             }
         }
 
         return $this->redirectToRoute('admin_param');
     }
 
-    /**
-     * @Route("/", name="admin")
-     */
-    public function index(MemoRepository $noteInterneRepo): Response
+    #[Route(path: '/', name: 'admin')]
+    public function index(): Response
     {
-        $memos = $noteInterneRepo->findPublier();
+        $memos = $this->getRepository(Memo::class)->findPublier();
 
         return $this->render(
             'admin/index.html.twig',
@@ -76,9 +67,7 @@ class AdminController extends AdminControllerLib
         );
     }
 
-    /**
-     * @Route("/oauth", name="admin_oauth")
-     */
+    #[Route(path: '/oauth', name: 'admin_oauth')]
     public function oauth(OauthService $oauthService): Response
     {
         $types = $oauthService->getConfigProvider();
@@ -89,24 +78,20 @@ class AdminController extends AdminControllerLib
         );
     }
 
-    /**
-     * @Route("/param", name="admin_param", methods={"GET","POST"})
-     */
+    #[Route(path: '/param', name: 'admin_param', methods: ['GET', 'POST'])]
     public function param(
         Request $request,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $dispatcher,
-        AttachmentRepository $repository,
         DataService $dataService,
         CacheInterface $cache
     ): Response
     {
         $this->modalAttachmentDelete();
         $images = [
-            'image'   => $repository->getImageDefault(),
-            'favicon' => $repository->getFavicon(),
+            'image'   => $this->getRepository(Attachment::class)->getImageDefault(),
+            'favicon' => $this->getRepository(Attachment::class)->getFavicon(),
         ];
-
         foreach ($images as $key => $value) {
             if (!is_null($value)) {
                 continue;
@@ -132,7 +117,7 @@ class AdminController extends AdminControllerLib
         if ($form->isSubmitted()) {
             $this->setUpload($request, $images);
             $cache->delete('configuration');
-            $post = $request->request->get($form->getName());
+            $post = $request->request->all($form->getName());
             $dispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
 
@@ -144,23 +129,17 @@ class AdminController extends AdminControllerLib
             ]
         );
 
-        return $this->render(
+        return $this->renderForm(
             'admin/param.html.twig',
             [
                 'images' => $images,
-                'form'   => $form->createView(),
+                'form'   => $form,
             ]
         );
     }
 
-    /**
-     * @Route("/profil", name="admin_profil", methods={"GET","POST"})
-     */
-    public function profil(
-        AttachFormService $service,
-        Security $security,
-        UserRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/profil', name: 'admin_profil', methods: ['GET', 'POST'])]
+    public function profil(AttachFormService $service, Security $security, UserRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
 
@@ -173,9 +152,7 @@ class AdminController extends AdminControllerLib
         );
     }
 
-    /**
-     * @Route("/themes", name="admin_themes")
-     */
+    #[Route(path: '/themes', name: 'admin_themes')]
     public function themes(): Response
     {
         $data = [
@@ -187,28 +164,27 @@ class AdminController extends AdminControllerLib
             'other'       => [[]],
             'text'        => [[]],
         ];
-
         $form = $this->createForm(FormType::class, $data);
 
-        return $this->render(
+        return $this->renderForm(
             'admin/form.html.twig',
-            [
-                'form' => $form->createView(),
-            ]
+            ['form' => $form]
         );
     }
 
     /**
-     * @Route("/trash",  name="admin_trash")
      * @IgnoreSoftDelete
      */
+    #[Route(path: '/trash', name: 'admin_trash')]
     public function trash(
+        CsrfTokenManagerInterface $csrfTokenManager,
+        Environment $twig,
         TrashService $trashService
     ): Response
     {
         $all = $trashService->all();
-        if (0 == count($all)) {
-            $this->flashBagAdd(
+        if (0 == (is_countable($all) ? count($all) : 0)) {
+            $this->sessionService->flashBagAdd(
                 'danger',
                 $this->translator->trans('admin.flashbag.trash.empty')
             );
@@ -216,11 +192,11 @@ class AdminController extends AdminControllerLib
             return $this->redirectToRoute('admin');
         }
 
-        $globals        = $this->get('twig')->getGlobals();
+        $globals        = $twig->getGlobals();
         $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
         if ($this->isRouteEnable('api_action_emptyall')) {
-            $token             = $this->get('security.csrf.token_manager')->getToken('emptyall')->getValue();
+            $token             = $csrfTokenManager->getToken('emptyall')->getValue();
             $modal['emptyall'] = true;
             $this->btnInstance()->add(
                 'btn-admin-header-emptyall',
@@ -234,7 +210,7 @@ class AdminController extends AdminControllerLib
             );
         }
 
-        $this->get('twig')->addGlobal('modal', $modal);
+        $twig->addGlobal('modal', $modal);
         $this->btnInstance()->addViderSelection(
             [
                 'redirect' => [
@@ -253,17 +229,6 @@ class AdminController extends AdminControllerLib
             'admin/trash.html.twig',
             ['trash' => $all]
         );
-    }
-
-    protected function setBreadcrumbsPageAdminOauth(): array
-    {
-        return [
-            [
-                'title'        => $this->translator->trans('oauth.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_oauth',
-                'route_params' => [],
-            ],
-        ];
     }
 
     protected function setBreadcrumbsPageAdminParam(): array
@@ -340,21 +305,7 @@ class AdminController extends AdminControllerLib
             $filename   = $file->getClientOriginalName();
             $path       = $paths[$key];
             $filename   = ('favicon' == $key) ? 'favicon.ico' : $filename;
-            $file->move(
-                $path,
-                $filename
-            );
-            $file = $path.'/'.$filename;
-            $attachment->setMimeType(mime_content_type($file));
-            $attachment->setSize(filesize($file));
-            $attachment->setName(
-                str_replace(
-                    $this->getParameter('kernel.project_dir').'/public/',
-                    '',
-                    $file
-                )
-            );
-            $this->attachmentRH->handle($old, $attachment);
+            $this->moveFile($file, $path, $filename, $attachment, $old);
         }
     }
 }

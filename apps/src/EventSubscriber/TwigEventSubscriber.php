@@ -2,7 +2,8 @@
 
 namespace Labstag\EventSubscriber;
 
-use Labstag\Repository\AttachmentRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\Attachment;
 use Labstag\Service\DataService;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
@@ -27,44 +28,20 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
-    protected AttachmentRepository $attachmentRepo;
-
-    protected CsrfTokenManagerInterface $csrfTokenManager;
-
-    protected DataService $dataService;
-
-    protected RouterInterface $router;
-
-    protected Security $security;
-
-    protected TranslatorInterface $translator;
-
-    protected Environment $twig;
-
-    protected UrlGeneratorInterface $urlGenerator;
-
     public function __construct(
-        RouterInterface $router,
-        AttachmentRepository $attachmentRepo,
-        Environment $twig,
-        UrlGeneratorInterface $urlGenerator,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        DataService $dataService,
-        Security $security,
-        TranslatorInterface $translator
+        protected EntityManagerInterface $entityManager,
+        protected RouterInterface $router,
+        protected Environment $twig,
+        protected UrlGeneratorInterface $urlGenerator,
+        protected CsrfTokenManagerInterface $csrfTokenManager,
+        protected DataService $dataService,
+        protected Security $security,
+        protected TranslatorInterface $translator
     )
     {
-        $this->translator       = $translator;
-        $this->attachmentRepo   = $attachmentRepo;
-        $this->security         = $security;
-        $this->urlGenerator     = $urlGenerator;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->router           = $router;
-        $this->twig             = $twig;
-        $this->dataService      = $dataService;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [ControllerEvent::class => 'onControllerEvent'];
     }
@@ -76,12 +53,17 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->setConfig($event, $request);
     }
 
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
+    }
+
     protected function setConfig(ControllerEvent $event, Request $request): void
     {
-        $favicon    = $this->attachmentRepo->getFavicon();
+        $favicon    = $this->getRepository(Attachment::class)->getFavicon();
         $controller = $event->getRequest()->attributes->get('_controller');
         $matches    = [];
-        preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
+        preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
         if (0 == count($matches) && !in_array($controller, self::ERROR_CONTROLLER)) {
             return;
         }
@@ -93,7 +75,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
         $this->setMetaTitleGlobal($config);
-        preg_match(self::ADMIN_CONTROLLER, $controller, $matches);
+        preg_match(self::ADMIN_CONTROLLER, (string) $controller, $matches);
         $state = (0 == count($matches) || !in_array($controller, self::ERROR_CONTROLLER));
         $this->setConfigGlobal($state, $config, $request);
         if (!$state) {
@@ -176,7 +158,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         }
 
         $this->setMetaTitle($config);
-        $this->setMetaImage($config, $request);
+        $this->setMetaImage($config);
         $this->setMetaDescription($config);
         $url = $request->getSchemeAndHttpHost();
         $all = $request->attributes->all();
@@ -219,7 +201,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     private function setMetaImage(&$config)
     {
-        $image = $this->attachmentRepo->getImageDefault();
+        $image = $this->getRepository(Attachment::class)->getImageDefault();
         $this->twig->AddGlobal('imageglobal', $image);
         $meta  = $config['meta'];
         $tests = [

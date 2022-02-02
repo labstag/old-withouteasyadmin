@@ -11,15 +11,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserCollectionSubscriber implements EventSubscriberInterface
 {
-
-    protected UserMailService $userMailService;
-
-    public function __construct(UserMailService $userMailService)
+    public function __construct(protected UserMailService $userMailService)
     {
-        $this->userMailService = $userMailService;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [UserCollectionEvent::class => 'onUserCollectionEvent'];
     }

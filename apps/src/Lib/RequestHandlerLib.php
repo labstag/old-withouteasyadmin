@@ -10,22 +10,12 @@ use Symfony\Component\Workflow\Registry;
 
 abstract class RequestHandlerLib
 {
-
-    protected EventDispatcherInterface $dispatcher;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected Registry $workflows;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        Registry $workflows,
-        EventDispatcherInterface $dispatcher
+        protected EntityManagerInterface $entityManager,
+        protected Registry $workflows,
+        protected EventDispatcherInterface $dispatcher
     )
     {
-        $this->entityManager = $entityManager;
-        $this->workflows     = $workflows;
-        $this->dispatcher    = $dispatcher;
     }
 
     public function changeWorkflowState($entity, array $states)

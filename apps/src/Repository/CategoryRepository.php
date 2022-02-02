@@ -30,7 +30,6 @@ class CategoryRepository extends ServiceEntityRepositoryLib
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $query        = $queryBuilder->leftJoin('a.bookmarks', 'b');
-        $query->innerjoin('b.refuser', 'u');
         $query->where('b.state LIKE :state');
         $query->setParameters(
             ['state' => '%publie%']
@@ -74,22 +73,5 @@ class CategoryRepository extends ServiceEntityRepositoryLib
         $query->andwhere('a.parent IS NULL');
 
         return $this->setQuery($query, $get);
-    }
-
-    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
-    {
-        $this->setQueryName($query, $get);
-
-        return $query;
-    }
-
-    protected function setQueryName(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['name']) || empty($get['name'])) {
-            return;
-        }
-
-        $query->andWhere('a.name LIKE :name');
-        $query->setParameter('name', '%'.$get['name'].'%');
     }
 }

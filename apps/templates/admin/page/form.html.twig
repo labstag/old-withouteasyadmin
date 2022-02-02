@@ -1,0 +1,11 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.slug) }}
+    {{ form_row(form.parent) }}
+    {{ form_row(form.front) }}
+    {{ form_row(form.reflayout) }}
+    {{ form_row(form.function) }}
+    {{ form_end(form) }}
+{% endblock %}

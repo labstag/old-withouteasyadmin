@@ -3,10 +3,9 @@
 namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\Groupe;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
-use Labstag\Repository\OauthConnectUserRepository;
-use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\OauthConnectUserRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use League\OAuth2\Client\Provider\AbstractProvider;
@@ -17,39 +16,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UserService
 {
 
-    protected EntityManagerInterface $entityManager;
-
     protected FlashBagInterface $flashbag;
 
-    protected OauthConnectUserRequestHandler $oauthConnectUserRH;
-
-    protected OauthService $oauthService;
-
-    protected UserRepository $repository;
-
-    protected RequestStack $requestStack;
-
-    protected TranslatorInterface $translator;
-
-    protected UserRequestHandler $userRH;
-
     public function __construct(
-        RequestStack $requestStack,
-        EntityManagerInterface $entityManager,
-        UserRepository $repository,
-        OauthService $oauthService,
-        UserRequestHandler $userRH,
-        OauthConnectUserRequestHandler $oauthConnectUserRH,
-        TranslatorInterface $translator
+        protected OauthService $oauthService,
+        protected SessionService $sessionService,
+        protected RequestStack $requestStack,
+        protected EntityManagerInterface $entityManager,
+        protected UserRequestHandler $userRH,
+        protected OauthConnectUserRequestHandler $oauthConnectUserRH,
+        protected TranslatorInterface $translator
     )
     {
-        $this->translator         = $translator;
-        $this->userRH             = $userRH;
-        $this->oauthService       = $oauthService;
-        $this->requestStack       = $requestStack;
-        $this->entityManager      = $entityManager;
-        $this->repository         = $repository;
-        $this->oauthConnectUserRH = $oauthConnectUserRH;
     }
 
     public function addOauthToUser(
@@ -67,7 +45,7 @@ class UserService
             $oauthConnect
         );
         // @var OauthConnectUserRepository $repository
-        $repository = $this->entityManager->getRepository(OauthConnectUser::class);
+        $repository = $this->getRepository(OauthConnectUser::class);
         if (false === $find) {
             // @var null|OauthConnectUser $oauthConnect
             $oauthConnect = $repository->findOauthNotUser(
@@ -93,7 +71,7 @@ class UserService
             $old = clone $oauthConnect;
             $oauthConnect->setData($data);
             $this->oauthConnectUserRH->handle($old, $oauthConnect);
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'success',
                 $this->translator->trans('service.user.oauth.sucess')
             );
@@ -101,10 +79,25 @@ class UserService
             return;
         }
 
-        $this->flashBagAdd(
+        $this->sessionService->flashBagAdd(
             'warning',
             $this->translator->trans('service.user.oauth.fail')
         );
+    }
+
+    public function create($groupes, $dataUser)
+    {
+        $user = new User();
+        $old  = clone $user;
+
+        $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
+        $user->setUsername($dataUser['username']);
+        $user->setPlainPassword($dataUser['password']);
+        $user->setEmail($dataUser['email']);
+        $this->userRH->handle($old, $user);
+        $this->userRH->changeWorkflowState($user, $dataUser['state']);
+
+        return $user;
     }
 
     public function ifBug(
@@ -131,7 +124,7 @@ class UserService
         }
 
         // @var User $user
-        $user = $this->repository->findUserEnable($post['value']);
+        $user = $this->getRepository(User::class)->findUserEnable($post['value']);
         if (!$user instanceof User) {
             return;
         }
@@ -162,16 +155,24 @@ class UserService
         return $return;
     }
 
-    private function flashBagAdd(string $type, $message)
+    protected function getRefgroupe(array $groupes, string $code): ?Groupe
     {
-        $requestStack = $this->requestStack;
-        $request      = $requestStack->getCurrentRequest();
-        if (is_null($request)) {
-            return;
+        $return = null;
+        foreach ($groupes as $groupe) {
+            if ($groupe->getCode() != $code) {
+                continue;
+            }
+
+            $return = $groupe;
+
+            break;
         }
 
-        $session  = $requestStack->getSession();
-        $flashbag = $session->getFlashBag();
-        $flashbag->add($type, $message);
+        return $return;
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 }

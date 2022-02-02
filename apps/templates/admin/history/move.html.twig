@@ -1,0 +1,14 @@
+{% extends 'admin/history/layout.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-6">
+            <ul is="entity-move">
+            {% for chapter in history.chapters %}
+                <li data-id="{{ chapter.id }}">
+                    {{ chapter.name }}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

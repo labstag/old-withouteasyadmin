@@ -79,7 +79,7 @@ class KernelSubscriber implements EventSubscriberInterface
         'select-element',
     ];
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['kernel.response' => 'onKernelResponse'];
     }
@@ -89,8 +89,8 @@ class KernelSubscriber implements EventSubscriberInterface
         $response   = $event->getResponse();
         $request    = $event->getRequest();
         $controller = $request->attributes->get('_controller');
-        preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
-        preg_match(self::API_CONTROLLER, $controller, $apis);
+        preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
+        preg_match(self::API_CONTROLLER, (string) $controller, $apis);
         if (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER) || 0 != count($apis)) {
             return;
         }

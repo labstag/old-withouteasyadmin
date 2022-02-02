@@ -2,6 +2,7 @@
 
 namespace Labstag\Swagger;
 
+use ArrayObject;
 use Labstag\Controller\Api\ActionsController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -13,18 +14,18 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class ActionsSwaggerDecorator implements NormalizerInterface
 {
-
-    private NormalizerInterface $decorated;
-
-    public function __construct(NormalizerInterface $decorated)
+    public function __construct(private NormalizerInterface $decorated)
     {
-        $this->decorated = $decorated;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function normalize($object, ?string $format = null, array $context = [])
+    public function normalize(
+        $object,
+        ?string $format = null,
+        array $context = []
+    ): array|string|int|float|bool|ArrayObject|null
     {
         $docs = $this->decorated->normalize($object, $format, $context);
         $this->setEmpty($docs);
@@ -42,7 +43,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function supportsNormalization($data, ?string $format = null): bool
     {
@@ -54,46 +55,8 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'Delete.',
             'tags'       => ['Actions'],
-            'parameters' => [
-                [
-                    'name'        => 'entity',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entity',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'id',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'id',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParametersDeleteDestroyRestore(),
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/actions/delete/{entity}/{id}']['delete'] = $statsEndpoint;
@@ -104,39 +67,8 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'Delete.',
             'tags'       => ['Actions'],
-            'parameters' => [
-                [
-                    'name'        => 'entities',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entities',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParametersDeletiesEmpties(),
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/actions/deleties/{entity}']['delete'] = $statsEndpoint;
@@ -147,46 +79,8 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'destroy.',
             'tags'       => ['Actions'],
-            'parameters' => [
-                [
-                    'name'        => 'entity',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entity',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'entities',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entities',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParametersRestoreDestroy(),
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/actions/destroies/{entity}']['delete'] = $statsEndpoint;
@@ -197,46 +91,8 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'destroy.',
             'tags'       => ['Actions'],
-            'parameters' => [
-                [
-                    'name'        => 'entity',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entity',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'id',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'id',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParametersDeleteDestroyRestore(),
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/actions/destroy/{entity}/{id}']['delete'] = $statsEndpoint;
@@ -247,39 +103,8 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'empty entity.',
             'tags'       => ['Actions'],
-            'parameters' => [
-                [
-                    'name'        => 'entities',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entities',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParametersDeletiesEmpties(),
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/actions/empties']['delete'] = $statsEndpoint;
@@ -306,23 +131,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
                     'schema'      => ['type' => 'string'],
                 ],
             ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/actions/empty/{entity}']['delete'] = $statsEndpoint;
@@ -342,17 +151,98 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
                     'schema'      => ['type' => 'string'],
                 ],
             ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
+            'responses'  => $this->setResponses(),
+        ];
+
+        $docs['paths']['/api/actions/emptyall']['delete'] = $statsEndpoint;
+    }
+
+    private function setParametersDeleteDestroyRestore()
+    {
+        return [
+            [
+                'name'        => 'entity',
+                'in'          => 'query',
+                'required'    => true,
+                'description' => 'entity',
+                'schema'      => ['type' => 'string'],
+            ],
+            [
+                'name'        => 'id',
+                'in'          => 'query',
+                'required'    => true,
+                'description' => 'id',
+                'schema'      => ['type' => 'string'],
+            ],
+            [
+                'name'        => '_token',
+                'in'          => 'query',
+                'required'    => true,
+                'description' => 'token',
+                'schema'      => ['type' => 'string'],
+            ],
+        ];
+    }
+
+    private function setParametersDeletiesEmpties()
+    {
+        return [
+            [
+                'name'        => 'entities',
+                'in'          => 'query',
+                'required'    => true,
+                'description' => 'entities',
+                'schema'      => ['type' => 'string'],
+            ],
+            [
+                'name'        => '_token',
+                'in'          => 'query',
+                'required'    => true,
+                'description' => 'token',
+                'schema'      => ['type' => 'string'],
+            ],
+        ];
+    }
+
+    private function setParametersRestoreDestroy()
+    {
+        return [
+            [
+                'name'        => 'entity',
+                'in'          => 'query',
+                'required'    => true,
+                'description' => 'entity',
+                'schema'      => ['type' => 'string'],
+            ],
+            [
+                'name'        => 'entities',
+                'in'          => 'query',
+                'required'    => true,
+                'description' => 'entities',
+                'schema'      => ['type' => 'string'],
+            ],
+            [
+                'name'        => '_token',
+                'in'          => 'query',
+                'required'    => true,
+                'description' => 'token',
+                'schema'      => ['type' => 'string'],
+            ],
+        ];
+    }
+
+    private function setResponses()
+    {
+        return [
+            Response::HTTP_OK => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            'type'       => 'object',
+                            'properties' => [
+                                'isvalid' => [
+                                    'type'    => 'boolean',
+                                    'example' => true,
                                 ],
                             ],
                         ],
@@ -360,8 +250,6 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
                 ],
             ],
         ];
-
-        $docs['paths']['/api/actions/emptyall']['delete'] = $statsEndpoint;
     }
 
     private function setRestore(&$docs)
@@ -369,46 +257,8 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'restore.',
             'tags'       => ['Actions'],
-            'parameters' => [
-                [
-                    'name'        => 'entity',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entity',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'id',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'id',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParametersDeleteDestroyRestore(),
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/actions/restore/{entity}/{id}']['post'] = $statsEndpoint;
@@ -419,46 +269,8 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'restore.',
             'tags'       => ['Actions'],
-            'parameters' => [
-                [
-                    'name'        => 'entity',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entity',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => 'entities',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'entities',
-                    'schema'      => ['type' => 'string'],
-                ],
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParametersRestoreDestroy(),
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/actions/restories/{entity}']['post'] = $statsEndpoint;
@@ -499,23 +311,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
                     'schema'      => ['type' => 'string'],
                 ],
             ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'isvalid' => [
-                                        'type'    => 'boolean',
-                                        'example' => true,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'responses'  => $this->setResponses(),
         ];
 
         $docs['paths']['/api/actions/workflow/{entity}/{state}/{id}']['post'] = $statsEndpoint;

@@ -2,64 +2,50 @@
 
 namespace Labstag\Controller;
 
-use Labstag\Entity\Edito;
-use Labstag\Lib\FrontControllerLib;
-use Labstag\Repository\CategoryRepository;
-use Labstag\Repository\EditoRepository;
-use Labstag\Repository\LibelleRepository;
-use Labstag\Repository\PostRepository;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Labstag\Entity\Page;
+use Labstag\Lib\ControllerLib;
+use Labstag\Service\TemplatePageService;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FrontController extends FrontControllerLib
+class FrontController extends ControllerLib
 {
-    /**
-     * @Route("/edito", name="edito")
-     */
-    public function edito(EditoRepository $editoRepository): Response
+    #[Route(path: '/{slug}', name: 'front', requirements: ['slug' => '.+'], defaults: ['slug' => ''], priority: -1)]
+    public function front(string $slug, TemplatePageService $templatePageService): mixed
     {
-        // @var Edito $edito
-        $edito = $editoRepository->findOnePublier();
-        $this->setMetaOpenGraph(
-            $edito->getTitle(),
-            $edito->getMetaKeywords(),
-            $edito->getMetaDescription(),
-            $edito->getFond()
-        );
+        $slug = trim($slug);
+        if ('' == $slug) {
+            $page = $this->getRepository(Page::class)->findOneBy(['front' => 1]);
+        }
 
-        return $this->render(
-            'front/edito.html.twig',
-            ['edito' => $edito]
-        );
-    }
+        $search = $slug;
+        $find   = 0;
+        $page   = null;
+        $strlen = strlen($search);
+        while (0 == $find || 0 != $strlen) {
+            $searchPage = $this->getRepository(Page::class)->findOneBy(['frontslug' => $search]);
+            if ($searchPage instanceof Page) {
+                $page = $searchPage;
 
-    /**
-     * @Route("/", name="front")
-     */
-    public function index(
-        EditoRepository $editoRepository,
-        Request $request,
-        PostRepository $postRepository,
-        LibelleRepository $libelleRepository,
-        CategoryRepository $categoryRepository
-    ): Response
-    {
-        $pagination = $this->paginator->paginate(
-            $postRepository->findPublier(),
-            $request->query->getInt('page', 1),
-            10
-        );
+                break;
+            }
 
-        return $this->render(
-            'front/index.html.twig',
-            [
-                'edito'      => $editoRepository->findOnePublier(),
-                'pagination' => $pagination,
-                'archives'   => $postRepository->findDateArchive(),
-                'libelles'   => $libelleRepository->findByPost(),
-                'categories' => $categoryRepository->findByPost(),
-            ]
-        );
+            $search = substr($search, 0, -1);
+            $strlen = strlen($search);
+        }
+
+        if (!isset($page)) {
+            throw $this->createNotFoundException();
+        }
+
+        $slugFront = $page->getFrontslug();
+        preg_match('/'.$slugFront.'(.*)/', $slug, $matches);
+        $class = $templatePageService->getClass($page->getFunction());
+        if (is_null($class)) {
+            throw $this->createNotFoundException();
+        }
+
+        $slug = strstr($slug, (string) $page->getSlug());
+
+        return $class->__invoke($matches);
     }
 }

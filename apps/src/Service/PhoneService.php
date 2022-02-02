@@ -12,15 +12,14 @@ use Psr\Log\LoggerInterface;
 class PhoneService
 {
 
-    // @var LoggerInterface
-    protected $logger;
-
     // @var PhoneNumberUtil
     protected $phoneUtil;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(
+        protected ErrorService $errorService,
+        protected LoggerInterface $logger
+    )
     {
-        $this->logger    = $logger;
         $this->phoneUtil = PhoneNumberUtil::getInstance();
     }
 
@@ -68,14 +67,7 @@ class PhoneService
             );
             $data['parse']     = $parse;
         } catch (NumberParseException $exception) {
-            $errorMsg = sprintf(
-                'Exception : Erreur %s dans %s L.%s : %s',
-                $exception->getCode(),
-                $exception->getFile(),
-                $exception->getLine(),
-                $exception->getMessage()
-            );
-            $this->logger->error($errorMsg);
+            $this->errorService->set($exception);
             $data['error'] = $exception->getMessage();
         }
 

@@ -5,7 +5,6 @@ namespace Labstag\Form\Admin;
 use Labstag\Entity\GeoCode;
 use Labstag\FormType\FlagCountryType;
 use Labstag\Lib\AbstractTypeLib;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -93,22 +92,5 @@ class GeoCodeType extends AbstractTypeLib
                 'data_class' => GeoCode::class,
             ]
         );
-    }
-
-    private function setInputText($builder, $tab)
-    {
-        foreach ($tab as $id => $row) {
-            $builder->add(
-                $id,
-                TextType::class,
-                [
-                    'label' => $row['label'],
-                    'help'  => $row['help'],
-                    'attr'  => [
-                        'placeholder' => $row['placeholder'],
-                    ],
-                ]
-            );
-        }
     }
 }

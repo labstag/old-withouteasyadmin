@@ -1,7 +1,14 @@
-{% extends 'admin/post/layout.html.twig' %}
+{% extends 'admin.html.twig' %}
 {% block body %}
     <table>
         <tbody>
+            <tr>
+                <th colspan=2>
+                    <a href="{{ page('post', 'show', {'slug': entity.slug}) }}" target="_blank">
+                        {{ 'post.url'|trans({}, 'admin.messages') }}
+                    </a>
+                </th>
+            </tr>
             <tr>
                 <th>{{ 'post.title'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.title }}</td>
@@ -25,6 +32,7 @@
                 </td>
             </tr>
             {% endif %}
+            {% if post.refcategory is defined %}
             <tr>
                 <th>{{ 'post.category'|trans({}, 'admin.messages') }}</th>
                 <td>
@@ -35,12 +43,13 @@
                     {% endif %}
                     {% set state = guard_route(url) %}
                     {% if state == true %}
-                        <a href="{{ path(url, {'id': entity.category.id}) }}">{{ entity.category }}</a>
+                        <a href="{{ path(url, {'id': entity.refcategory.id}) }}">{{ entity.refcategory }}</a>
                     {% else %}
-                        {{ entity.category }}
+                        {{ entity.refcategory }}
                     {% endif %}
                 </td>
             </tr>
+            {% endif %}
             <tr>
                 <th>{{ 'post.user'|trans({}, 'admin.messages') }}</th>
                 <td>

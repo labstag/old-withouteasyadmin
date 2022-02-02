@@ -7,56 +7,78 @@
 {% import "macro.html.twig" as macro_site %}
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
-    {{ encore_entry_link_tags('back') }}
+	{{ parent() }}
+	{{ encore_entry_link_tags('back') }}
 {% endblock %}
 {% block javascripts %}
-    {{ encore_entry_script_tags('back') }}
+	{{ parent() }}
+	{{ encore_entry_script_tags('back') }}
 {% endblock %}
 {% block content %}
-    <header>
-        <div class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">{{ config.meta.title }}</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbar-supported-content" aria-controls="navbar-supported-content" aria-expanded="false" aria-label="{{ 'admin.togglenavigation'|trans|e('html_attr') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbar-supported-content">
-                    {{ knp_menu_render('admin_menu', {'style': 'navbar', 'currentClass': 'active'}) }}
-                    {{ knp_menu_render('admin_profilmenu', {'style': 'navbar', 'currentClass': 'active'}) }}
-                </div>
-            </div>
-        </div>
-    </header>
-    <div class="container-fluid">
-        <div class="row">
-            {% if headerTitle is defined %}
-            <div class="col">
-                <h1>{{ headerTitle|trans }}{% if pagination is defined %} ({{ pagination.getTotalItemCount }}){% endif %}</h1>
-            </div>
-            {% endif %}
-            <div class="col text-end">
-                {{ include('admin/btn.html.twig') }}
-            </div>
-        </div>
-        {{ wo_render_breadcrumbs() }}
-        {{ macro_site.flashbag(app) }}
-        {% if searchform is defined %}
-            {{ form_start(searchform) }}
-            <div class="row">
-            {% for input in searchform %}
-                <div class="col">
-                    {{ form_row(input) }}
-                </div>
-            {% endfor %}
-            </div>
-            {{ form_end(searchform) }}
-        {% endif %}
-        {% block body %}
-        {% endblock %}
-        <footer>
-            {% if pagination is defined %}
-                {{ knp_pagination_render(pagination) }}
-            {% endif %}
-        </footer>
-    </div>
+	<header>
+		<div class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#">{{ config.meta.title }}</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbar-supported-content" aria-controls="navbar-supported-content" aria-expanded="false" aria-label="{{ 'admin.togglenavigation'|trans|e('html_attr') }}">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbar-supported-content">
+					{{ knp_menu_render('admin_menu', {'style': 'navbar', 'currentClass': 'active'}) }}
+					{{ knp_menu_render('admin_profilmenu', {'style': 'navbar', 'currentClass': 'active'}) }}
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="container-fluid">
+		<div class="row">
+			{% if headerTitle is defined %}
+				<div class="col">
+					<h1>{{ headerTitle|trans }}
+						{% if pagination is defined %}
+							({{ pagination.getTotalItemCount }})
+						{% endif %}
+					</h1>
+				</div>
+			{% endif %}
+			<div class="col text-end">
+				{{ include('admin/btn.html.twig') }}
+			</div>
+		</div>
+		<ol class="breadcrumb" itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList">
+			{% for i, breadcrumb in breadcrumbs %}
+				<li itemprop="itemListElement" itemscope="itemscope" itemtype="http://schema.org/ListItem">
+					{% if loop.last == false %}
+						<a href="{{ breadcrumb.route }}" itemprop="item">
+						{% endif %}
+						<span itemprop="name">{{ breadcrumb.title }}</span>
+
+						{% if loop.last == false %}
+						</a>
+					{% endif %}
+					<meta itemprop="position" content="{{ i+1 }}">
+					{% if loop.last == false %}
+						<span class="separator">/</span>
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ol>
+		{{ macro_site.flashbag(app) }}
+		{% if searchform is defined %}
+			{{ form_start(searchform) }}
+			<div class="row">
+				{% for input in searchform %}
+					<div class="col">
+						{{ form_row(input) }}
+					</div>
+				{% endfor %}
+			</div>
+			{{ form_end(searchform) }}
+		{% endif %}
+		{% block body %}{% endblock %}
+		<footer>
+			{% if pagination is defined %}
+				{{ knp_pagination_render(pagination) }}
+			{% endif %}
+		</footer>
+	</div>
 {% endblock %}

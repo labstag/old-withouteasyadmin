@@ -6,19 +6,21 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\TemplateRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TemplateRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt",           timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Template
+class Template implements Stringable
 {
     use SoftDeleteableEntity;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
-     * @ORM\Column(type="string",   length=255)
+     * @ORM\Column(type="string", length=255)
      */
     protected $code;
 
@@ -30,8 +32,9 @@ class Template
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -47,9 +50,9 @@ class Template
      */
     protected $text;
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function getCode(): ?string

@@ -1,0 +1,23 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ 'page.name'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'page.slug'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.slug }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'page.frontslug'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.frontslug }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'page.reflayout'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.reflayout.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

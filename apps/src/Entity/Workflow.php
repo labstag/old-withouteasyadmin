@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\WorkflowRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=WorkflowRepository::class)
@@ -20,8 +21,9 @@ class Workflow
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
@@ -31,12 +33,12 @@ class Workflow
     private $transition;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refworkflow")
+     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refworkflow", orphanRemoval=true)
      */
     private $workflowGroupes;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refworkflow")
+     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refworkflow", orphanRemoval=true)
      */
     private $workflowUsers;
 
@@ -81,17 +83,11 @@ class Workflow
         return $this->transition;
     }
 
-    /**
-     * @return Collection|WorkflowGroupe[]
-     */
     public function getWorkflowGroupes(): Collection
     {
         return $this->workflowGroupes;
     }
 
-    /**
-     * @return Collection|WorkflowUser[]
-     */
     public function getWorkflowUsers(): Collection
     {
         return $this->workflowUsers;

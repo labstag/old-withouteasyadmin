@@ -5,11 +5,9 @@ namespace Labstag\Service;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Labstag\Entity\Attachment;
 use Labstag\Entity\Bookmark;
+use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\BookmarkRepository;
-use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\BookmarkRequestHandler;
 use Psr\Log\LoggerInterface;
@@ -22,41 +20,17 @@ class BookmarkService
 {
     public const CLIENTNUMBER = 400;
 
-    private AttachmentRequestHandler $attachmentRH;
-
-    private BookmarkRepository $bookmarkRepo;
-
-    private ContainerBagInterface $containerBag;
-
-    private EntityManagerInterface $entityManager;
-
-    private LoggerInterface $logger;
-
-    private BookmarkRequestHandler $requestHandler;
-
-    private UploadAnnotationReader $uploadAnnotReader;
-
-    private UserRepository $userRepo;
-
     public function __construct(
-        UserRepository $userRepo,
-        BookmarkRepository $bookmarkRepo,
-        LoggerInterface $logger,
-        EntityManagerInterface $entityManager,
-        AttachmentRequestHandler $attachmentRH,
-        UploadAnnotationReader $uploadAnnotReader,
-        ContainerBagInterface $containerBag,
-        BookmarkRequestHandler $requestHandler
+        protected FileService $fileService,
+        private ErrorService $errorService,
+        private LoggerInterface $logger,
+        private EntityManagerInterface $entityManager,
+        private AttachmentRequestHandler $attachmentRH,
+        private UploadAnnotationReader $uploadAnnotReader,
+        private ContainerBagInterface $containerBag,
+        private BookmarkRequestHandler $requestHandler
     )
     {
-        $this->requestHandler    = $requestHandler;
-        $this->entityManager     = $entityManager;
-        $this->uploadAnnotReader = $uploadAnnotReader;
-        $this->attachmentRH      = $attachmentRH;
-        $this->containerBag      = $containerBag;
-        $this->userRepo          = $userRepo;
-        $this->bookmarkRepo      = $bookmarkRepo;
-        $this->logger            = $logger;
     }
 
     public function process(
@@ -67,8 +41,8 @@ class BookmarkService
         DateTime $date
     )
     {
-        $user     = $this->userRepo->find($userid);
-        $bookmark = $this->bookmarkRepo->findOneBy(
+        $user     = $this->getRepository(User::class)->find($userid);
+        $bookmark = $this->getRepository(Bookmark::class)->findOneBy(
             ['url' => $url]
         );
         if ($bookmark instanceof Bookmark) {
@@ -104,8 +78,7 @@ class BookmarkService
             $this->entityManager->flush();
             $this->requestHandler->handle($old, $bookmark);
         } catch (Exception $exception) {
-            dump($exception->getMessage());
-            $this->setErrorLogger($exception);
+            $this->errorService->set($exception);
         }
     }
 
@@ -114,16 +87,9 @@ class BookmarkService
         return $this->containerBag->get($name);
     }
 
-    protected function setErrorLogger($exception)
+    protected function getRepository(string $entity)
     {
-        $errorMsg = sprintf(
-            'Exception : Erreur %s dans %s L.%s : %s',
-            $exception->getCode(),
-            $exception->getFile(),
-            $exception->getLine(),
-            $exception->getMessage()
-        );
-        $this->logger->error($errorMsg);
+        return $this->entityManager->getRepository($entity);
     }
 
     protected function upload(Bookmark $bookmark, $image)
@@ -137,12 +103,10 @@ class BookmarkService
         $annotations = $this->uploadAnnotReader->getUploadableFields($bookmark);
         $slugger     = new AsciiSlugger();
         foreach ($annotations as $annotation) {
-            $path       = $this->getParameter('file_directory').'/'.$annotation->getPath();
-            $accessor   = PropertyAccess::createPropertyAccessor();
-            $title      = $accessor->getValue($bookmark, $annotation->getSlug());
-            $slug       = $slugger->slug($title);
-            $attachment = new Attachment();
-            $old        = clone $attachment;
+            $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $accessor = PropertyAccess::createPropertyAccessor();
+            $title    = $accessor->getValue($bookmark, $annotation->getSlug());
+            $slug     = $slugger->slug($title);
 
             try {
                 $pathinfo = pathinfo($image);
@@ -169,20 +133,11 @@ class BookmarkService
                 );
                 $file = $path.'/'.$filename;
             } catch (Exception $exception) {
-                $this->setErrorLogger($exception);
+                $this->errorService->set($exception);
             }
 
-            $file = $path.'/'.$filename;
-            $attachment->setMimeType(mime_content_type($file));
-            $attachment->setSize(filesize($file));
-            $attachment->setName(
-                str_replace(
-                    $this->getParameter('kernel.project_dir').'/public/',
-                    '',
-                    $file
-                )
-            );
-            $this->attachmentRH->handle($old, $attachment);
+            $file       = $path.'/'.$filename;
+            $attachment = $this->fileService->setAttachment($file);
             $accessor->setValue($bookmark, $annotation->getFilename(), $attachment);
         }
     }

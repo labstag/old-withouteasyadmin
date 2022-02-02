@@ -2,7 +2,8 @@
 
 namespace Labstag\Command;
 
-use Labstag\Repository\GroupeRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Lib\CommandLib;
 use Labstag\Service\GuardService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -10,23 +11,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class LabstagGuardRouteCommand extends Command
+class LabstagGuardRouteCommand extends CommandLib
 {
 
     protected static $defaultName = 'labstag:guard-route';
 
-    protected GroupeRepository $repositoryGroupe;
-
-    protected GuardService $service;
-
     public function __construct(
-        GuardService $service,
-        GroupeRepository $repositoryGroupe
+        EntityManagerInterface $entityManager,
+        protected GuardService $service
     )
     {
-        $this->repositoryGroupe = $repositoryGroupe;
-        $this->service          = $service;
-        parent::__construct();
+        parent::__construct($entityManager);
     }
 
     protected function configure()
@@ -59,7 +54,7 @@ class LabstagGuardRouteCommand extends Command
             $table
         );
         $table = $this->service->old();
-        if (0 != count($table)) {
+        if (0 != (is_countable($table) ? count($table) : 0)) {
             $inputOutput->section('Suppression des anciennes routes');
             $inputOutput->table(
                 ['route'],

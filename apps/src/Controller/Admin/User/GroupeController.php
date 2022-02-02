@@ -4,31 +4,22 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Workflow;
 use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\Search\GroupeSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/user/groupe")
- */
+#[Route(path: '/admin/user/groupe')]
 class GroupeController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_groupuser_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_groupuser_new", methods={"GET","POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?Groupe $groupe,
-        GroupeRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_groupuser_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_groupuser_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?Groupe $groupe, GroupeRequestHandler $requestHandler): Response
     {
         return $this->form(
             $service,
@@ -38,13 +29,8 @@ class GroupeController extends AdminControllerLib
         );
     }
 
-    /**
-     * @Route("/{id}/guard", name="admin_groupuser_guard")
-     */
-    public function guard(
-        Groupe $groupe,
-        WorkflowRepository $workflowRepo
-    ): Response
+    #[Route(path: '/{id}/guard', name: 'admin_groupuser_guard')]
+    public function guard(Groupe $groupe): Response
     {
         $this->btnInstance()->addBtnList(
             'admin_groupuser_index',
@@ -57,7 +43,6 @@ class GroupeController extends AdminControllerLib
                 'id' => $groupe->getId(),
             ]
         );
-
         $this->btnInstance()->addBtnEdit(
             'admin_groupuser_edit',
             'Editer',
@@ -65,10 +50,9 @@ class GroupeController extends AdminControllerLib
                 'id' => $groupe->getId(),
             ]
         );
-
         $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
         if (0 == count($routes)) {
-            $this->flashBagAdd(
+            $this->sessionService->flashBagAdd(
                 'danger',
                 $this->translator->trans('admin.group.guard.superadmin.nope')
             );
@@ -76,37 +60,43 @@ class GroupeController extends AdminControllerLib
             return $this->redirectToRoute('admin_groupuser_index');
         }
 
+        $workflows = $this->getRepository(Workflow::class)->findBy(
+            [],
+            [
+                'entity'     => 'ASC',
+                'transition' => 'ASC',
+            ]
+        );
+
         return $this->render(
             'admin/user/guard/group.html.twig',
             [
                 'group'     => $groupe,
                 'routes'    => $routes,
-                'workflows' => $workflowRepo->findBy([], ['entity' => 'ASC', 'transition' => 'ASC']),
+                'workflows' => $workflows,
             ]
         );
     }
 
     /**
-     * @Route("/trash",  name="admin_groupuser_trash", methods={"GET"})
-     * @Route("/",       name="admin_groupuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function index(GroupeRepository $repository): Response
+    #[Route(path: '/trash', name: 'admin_groupuser_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_groupuser_index', methods: ['GET'])]
+    public function index(): Response
     {
         return $this->listOrTrash(
-            $repository,
+            Groupe::class,
             'admin/user/groupe/index.html.twig'
         );
     }
 
     /**
-     * @Route("/{id}",         name="admin_groupuser_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_groupuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Groupe $groupe
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_groupuser_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_groupuser_preview', methods: ['GET'])]
+    public function showOrPreview(Groupe $groupe): Response
     {
         return $this->renderShowOrPreview(
             $groupe,
@@ -143,39 +133,28 @@ class GroupeController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('groupuser.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('groupuser.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminGroupuserEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('groupuser.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('groupuser.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_edit',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminGroupuserGuard(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('groupuser.guard', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_guard',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('groupuser.guard', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_guard',
             ],
         ];
     }
@@ -184,44 +163,32 @@ class GroupeController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('groupuser.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('groupuser.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminGroupuserPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_trash',
             ],
             [
-                'title'        => $this->translator->trans('groupuser.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('groupuser.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminGroupuserShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('groupuser.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('groupuser.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_show',
             ],
         ];
     }
@@ -230,9 +197,8 @@ class GroupeController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_groupuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_groupuser_trash',
             ],
         ];
     }

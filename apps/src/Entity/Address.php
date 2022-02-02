@@ -5,16 +5,18 @@ namespace Labstag\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr",       type="string")
- * @ORM\DiscriminatorMap({"user":               "AddressUser"})
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"user" = "AddressUser"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-abstract class Address
+abstract class Address implements Stringable
 {
     use SoftDeleteableEntity;
 
@@ -38,8 +40,9 @@ abstract class Address
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -66,7 +69,7 @@ abstract class Address
      */
     protected $zipcode;
 
-    public function __toString()
+    public function __toString(): string
     {
         return implode(
             ' ',
@@ -97,6 +100,11 @@ abstract class Address
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function getPmr(): ?bool
+    {
+        return $this->pmr;
     }
 
     public function getStreet(): ?string

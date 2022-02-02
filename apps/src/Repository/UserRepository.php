@@ -2,7 +2,6 @@
 
 namespace Labstag\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\User;
@@ -16,6 +15,22 @@ class UserRepository extends ServiceEntityRepositoryLib
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    public function findOauth(string $identity, $name)
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $query        = $queryBuilder->leftJoin('u.oauthConnectUsers', 'o');
+        $query->where('o.name = :name');
+        $query->andWhere('o.identity=:identity');
+        $query->setParameters(
+            [
+                'name'     => $name,
+                'identity' => $identity,
+            ]
+        );
+
+        return $query->getQuery()->getOneOrNullResult();
     }
 
     public function findUserEnable(string $field): ?User
@@ -51,56 +66,5 @@ class UserRepository extends ServiceEntityRepositoryLib
         );
 
         return $query->getQuery()->getResult();
-    }
-
-    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
-    {
-        $this->setQueryEtape($query, $get);
-        $this->setQueryUsername($query, $get);
-        $this->setQueryEmail($query, $get);
-        $this->setQueryRefGroup($query, $get);
-
-        return $query;
-    }
-
-    protected function setQueryEmail(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['email']) || empty($get['email'])) {
-            return;
-        }
-
-        $query->andWhere('a.email = :email');
-        $query->setParameter('email', $get['email']);
-    }
-
-    protected function setQueryEtape(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['etape']) || empty($get['etape'])) {
-            return;
-        }
-
-        $query->andWhere('a.state LIKE :state');
-        $query->setParameter('state', '%'.$get['etape'].'%');
-    }
-
-    protected function setQueryRefGroup(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['refgroup']) || empty($get['refgroup'])) {
-            return;
-        }
-
-        $query->leftJoin('a.refgroupe', 'g');
-        $query->andWhere('g.id = :refgroup');
-        $query->setParameter('refgroup', $get['refgroup']);
-    }
-
-    protected function setQueryUsername(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['username']) || empty($get['username'])) {
-            return;
-        }
-
-        $query->andWhere('a.username LIKE :username');
-        $query->setParameter('username', '%'.$get['username'].'%');
     }
 }

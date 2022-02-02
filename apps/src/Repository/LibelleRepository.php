@@ -2,7 +2,6 @@
 
 namespace Labstag\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Libelle;
@@ -21,9 +20,7 @@ class LibelleRepository extends ServiceEntityRepositoryLib
     public function findByBookmark()
     {
         $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->from(Libelle::class, 'a');
-        $query->innerJoin('a.bookmarks', 'b');
-        $query->innerjoin('b.refuser', 'u');
+        $query        = $queryBuilder->innerJoin('a.bookmarks', 'b');
         $query->where('b.state LIKE :state');
         $query->setParameters(
             ['state' => '%publie%']
@@ -58,22 +55,5 @@ class LibelleRepository extends ServiceEntityRepositoryLib
         );
 
         return $query->getQuery()->getResult();
-    }
-
-    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
-    {
-        $this->setQueryName($query, $get);
-
-        return $query;
-    }
-
-    protected function setQueryName(QueryBuilder &$query, array $get)
-    {
-        if (!isset($get['name']) || empty($get['name'])) {
-            return;
-        }
-
-        $query->andWhere('a.name LIKE :name');
-        $query->setParameter('name', '%'.$get['name'].'%');
     }
 }

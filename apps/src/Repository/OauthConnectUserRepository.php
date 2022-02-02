@@ -24,13 +24,10 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
         return $builder->getQuery()->getResult();
     }
 
-    /**
-     * @return OauthConnectUser|void
-     */
-    public function findOauthNotUser(?User $user, ?string $identity, ?string $client)
+    public function findOauthNotUser(?User $user, ?string $identity, ?string $client): ?OauthConnectUser
     {
         if (is_null($identity) || is_null($user) || is_null($client)) {
-            return;
+            return null;
         }
 
         $dql = $this->createQueryBuilder('p');
@@ -48,13 +45,10 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
         return $dql->getQuery()->getOneOrNullResult();
     }
 
-    /**
-     * @return OauthConnectUser|void
-     */
-    public function findOneOauthByUser(?string $oauthCode, ?User $user)
+    public function findOneOauthByUser(?string $oauthCode, ?User $user): ?OauthConnectUser
     {
         if (is_null($oauthCode) || is_null($user)) {
-            return;
+            return null;
         }
 
         $dql = $this->createQueryBuilder('p');
@@ -70,13 +64,10 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
         return $dql->getQuery()->getOneOrNullResult();
     }
 
-    /**
-     * @return OauthConnectUser|void
-     */
-    public function login(?string $identity, ?string $oauth)
+    public function login(?string $identity, ?string $oauth): ?OauthConnectUser
     {
         if (is_null($identity) || is_null($oauth)) {
-            return;
+            return null;
         }
 
         $builder = $this->createQueryBuilder('u');

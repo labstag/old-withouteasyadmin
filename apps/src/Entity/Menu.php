@@ -7,21 +7,24 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\MenuRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MenuRepository::class)
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Menu
+class Menu implements Stringable
 {
     use SoftDeleteableEntity;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity="Menu",
-     *  mappedBy="parent",
-     *  cascade={"persist"}
+     *     targetEntity=Menu::class,
+     *     mappedBy="parent",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"position" = "ASC"})
      */
@@ -44,8 +47,9 @@ class Menu
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -55,11 +59,11 @@ class Menu
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Menu", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children")
      * @ORM\JoinColumn(
-     *  name="parent_id",
-     *  referencedColumnName="id",
-     *  onDelete="SET NULL"
+     *     name="parent_id",
+     *     referencedColumnName="id",
+     *     onDelete="SET NULL"
      * )
      *
      * @var null|Menu
@@ -83,7 +87,7 @@ class Menu
         $this->separateur = false;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return implode(
             ' ',
@@ -95,6 +99,16 @@ class Menu
                 $this->getName(),
             ]
         );
+    }
+
+    public function addChild(Menu $child): self
+    {
+        if (!$this->children->contains($child)) {
+            $this->children[] = $child;
+            $child->setParent($this);
+        }
+
+        return $this;
     }
 
     public function getChildren()
@@ -137,9 +151,26 @@ class Menu
         return $this->position;
     }
 
+    public function getSeparateur(): ?bool
+    {
+        return $this->separateur;
+    }
+
     public function isSeparateur(): ?bool
     {
         return $this->separateur;
+    }
+
+    public function removeChild(Menu $child): self
+    {
+        if ($this->children->removeElement($child)) {
+            // set the owning side to null (unless already changed)
+            if ($child->getParent() === $this) {
+                $child->setParent(null);
+            }
+        }
+
+        return $this;
     }
 
     public function setClef(?string $clef): self

@@ -7,27 +7,18 @@ use Labstag\Entity\Post;
 use Labstag\Form\Admin\PostType;
 use Labstag\Form\Admin\Search\PostType as SearchPostType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\PostRepository;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\Search\PostSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/post")
- */
+#[Route(path: '/admin/post')]
 class PostController extends AdminControllerLib
 {
-    /**
-     * @Route("/{id}/edit", name="admin_post_edit", methods={"GET","POST"})
-     * @Route("/new", name="admin_post_new", methods={"GET","POST"})
-     */
-    public function edit(
-        AttachFormService $service,
-        ?Post $post,
-        PostRequestHandler $requestHandler
-    ): Response
+    #[Route(path: '/{id}/edit', name: 'admin_post_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_post_new', methods: ['GET', 'POST'])]
+    public function edit(AttachFormService $service, ?Post $post, PostRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
 
@@ -41,26 +32,24 @@ class PostController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_post_trash", methods={"GET"})
-     * @Route("/",       name="admin_post_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(PostRepository $repository): Response
+    #[Route(path: '/trash', name: 'admin_post_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_post_index', methods: ['GET'])]
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $repository,
+            Post::class,
             'admin/post/index.html.twig',
         );
     }
 
     /**
-     * @Route("/{id}",         name="admin_post_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_post_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        Post $post
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_post_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_post_preview', methods: ['GET'])]
+    public function showOrPreview(Post $post): Response
     {
         return $this->renderShowOrPreview(
             $post,
@@ -97,24 +86,18 @@ class PostController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('post.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('post.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminPostEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('post.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('post.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_edit',
             ],
         ];
     }
@@ -123,44 +106,32 @@ class PostController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('post.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('post.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminPostPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_trash',
             ],
             [
-                'title'        => $this->translator->trans('post.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('post.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminPostShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('post.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('post.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_show',
             ],
         ];
     }
@@ -169,9 +140,8 @@ class PostController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_post_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_post_trash',
             ],
         ];
     }

@@ -9,26 +9,27 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\AttachmentRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=AttachmentRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt",             timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Attachment
 {
     use SoftDeleteableEntity;
-
     use StateableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond")
+     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond", orphanRemoval=true)
      */
     protected $editos;
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -43,12 +44,12 @@ class Attachment
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="fond")
+     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="fond", orphanRemoval=true)
      */
     protected $noteInternes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img")
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img", orphanRemoval=true)
      */
     protected $posts;
 
@@ -58,12 +59,12 @@ class Attachment
     protected $size;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar")
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar", orphanRemoval=true)
      */
     protected $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img")
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img", orphanRemoval=true)
      */
     private $bookmarks;
 
@@ -111,6 +112,16 @@ class Attachment
         return $this;
     }
 
+    public function addNoteInterne(Memo $noteInterne): self
+    {
+        if (!$this->noteInternes->contains($noteInterne)) {
+            $this->noteInternes[] = $noteInterne;
+            $noteInterne->setFond($this);
+        }
+
+        return $this;
+    }
+
     public function addPost(Post $post): self
     {
         if (!$this->posts->contains($post)) {
@@ -131,9 +142,6 @@ class Attachment
         return $this;
     }
 
-    /**
-     * @return Bookmark[]|Collection
-     */
     public function getBookmarks(): Collection
     {
         return $this->bookmarks;
@@ -144,9 +152,6 @@ class Attachment
         return $this->code;
     }
 
-    /**
-     * @return Collection|Edito[]
-     */
     public function getEditos(): Collection
     {
         return $this->editos;
@@ -157,9 +162,6 @@ class Attachment
         return $this->id;
     }
 
-    /**
-     * @return Collection|Memo[]
-     */
     public function getMemos(): Collection
     {
         return $this->noteInternes;
@@ -175,9 +177,11 @@ class Attachment
         return $this->name;
     }
 
-    /**
-     * @return Collection|Post[]
-     */
+    public function getNoteInternes(): Collection
+    {
+        return $this->noteInternes;
+    }
+
     public function getPosts(): Collection
     {
         return $this->posts;
@@ -188,9 +192,6 @@ class Attachment
         return $this->size;
     }
 
-    /**
-     * @return Collection|User[]
-     */
     public function getUsers(): Collection
     {
         return $this->users;
@@ -221,6 +222,18 @@ class Attachment
     }
 
     public function removeMemo(Memo $noteInterne): self
+    {
+        if ($this->noteInternes->removeElement($noteInterne)) {
+            // set the owning side to null (unless already changed)
+            if ($noteInterne->getFond() === $this) {
+                $noteInterne->setFond(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeNoteInterne(Memo $noteInterne): self
     {
         if ($this->noteInternes->removeElement($noteInterne)) {
             // set the owning side to null (unless already changed)

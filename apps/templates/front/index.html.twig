@@ -12,7 +12,7 @@
 	{% if edito.id is defined %}
 		<div class="header_edito">
 			<h1 class="header_edito_title">
-				<a href="{{ path('edito') }}">
+				<a href="{{ page('edito') }}">
 					{{ edito.title }}
 				</a>
 			</h1>
@@ -32,7 +32,7 @@
 	{% for post in pagination %}
 		<div class="post_data">
 			<h2 class="post_title">
-				<a href="{{ path('post_show', {'slug': post.slug}) }}">
+				<a href="{{ page('post', 'show', {'slug': post.slug}) }}">
 					{{ post.title }}
 				</a>
 			</h2>
@@ -46,7 +46,7 @@
 				{{ 'post.infodateuser'|trans(
                     {
                         '%date%': post.published|format_datetime(pattern=formatdatetime.public),
-                        '%user%': macro_site.user(post.refuser, path('post_user', {'username': post.refuser.username}))
+                        '%user%': macro_site.user(post.refuser, page('post', 'user', {'username': post.refuser.username}))
                     }
                 )|raw }}
 				{% set state = guard_route('admin_post_edit') %}
@@ -59,10 +59,12 @@
 			</div>
 			<div class="post_libcat">
 				{% for libelle in post.libelles %}
-					<a href="{{ path('post_libelle', {'code' : libelle.slug}) }}" class="post_libelle">{{ libelle }}</a>
+					<a href="{{ page('post', 'libelle', {'code' : libelle.slug}) }}" class="post_libelle">{{ libelle }}</a>
 				{% endfor %}
+			</div>
+			<div class="post_libcat">
 				{% if post.refcategory %}
-					<a href="{{ path('post_category', {'code': post.refcategory.slug}) }}" class="post_category">{{ post.refcategory }}</a>
+					<a href="{{ page('post', 'category', {'code': post.refcategory.slug}) }}" class="post_category">{{ post.refcategory }}</a>
 				{% endif %}
 			</div>
 		</div>

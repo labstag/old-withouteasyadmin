@@ -2,6 +2,7 @@
 
 namespace Labstag\Swagger;
 
+use ArrayObject;
 use Labstag\Controller\Api\SearchController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -13,18 +14,18 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class SearchSwaggerDecorator implements NormalizerInterface
 {
-
-    private NormalizerInterface $decorated;
-
-    public function __construct(NormalizerInterface $decorated)
+    public function __construct(private NormalizerInterface $decorated)
     {
-        $this->decorated = $decorated;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function normalize($object, ?string $format = null, array $context = [])
+    public function normalize(
+        $object,
+        ?string $format = null,
+        array $context = []
+    ): array|string|int|float|bool|ArrayObject|null
     {
         $docs = $this->decorated->normalize($object, $format, $context);
         $this->setUsers($docs);
@@ -36,11 +37,36 @@ final class SearchSwaggerDecorator implements NormalizerInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function supportsNormalization($data, ?string $format = null): bool
     {
         return $this->decorated->supportsNormalization($data, $format);
+    }
+
+    private function getResponses()
+    {
+        return [
+            Response::HTTP_OK => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            'type'       => 'object',
+                            'properties' => [
+                                'id'   => [
+                                    'type'    => 'string',
+                                    'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
+                                ],
+                                'name' => [
+                                    'type'    => 'string',
+                                    'example' => 'name',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
     private function setCategories(&$docs)
@@ -48,36 +74,8 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'get Categories.',
             'tags'       => ['Search'],
-            'parameters' => [
-                [
-                    'name'        => 'name',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'name',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'id'   => [
-                                        'type'    => 'string',
-                                        'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
-                                    ],
-                                    'name' => [
-                                        'type'    => 'string',
-                                        'example' => 'name',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParameters(),
+            'responses'  => $this->getResponses(),
         ];
 
         $docs['paths']['/api/search/category']['get'] = $statsEndpoint;
@@ -88,36 +86,8 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'get Groupe.',
             'tags'       => ['Search'],
-            'parameters' => [
-                [
-                    'name'        => 'name',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'name',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'id'   => [
-                                        'type'    => 'string',
-                                        'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
-                                    ],
-                                    'name' => [
-                                        'type'    => 'string',
-                                        'example' => 'name',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParameters(),
+            'responses'  => $this->getResponses(),
         ];
 
         $docs['paths']['/api/search/group']['get'] = $statsEndpoint;
@@ -128,39 +98,24 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'get Libelle.',
             'tags'       => ['Search'],
-            'parameters' => [
-                [
-                    'name'        => 'name',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'name',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'id'   => [
-                                        'type'    => 'string',
-                                        'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
-                                    ],
-                                    'name' => [
-                                        'type'    => 'string',
-                                        'example' => 'name',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParameters(),
+            'responses'  => $this->getResponses(),
         ];
 
         $docs['paths']['/api/search/libelle']['get'] = $statsEndpoint;
+    }
+
+    private function setParameters()
+    {
+        return [
+            [
+                'name'        => 'name',
+                'in'          => 'query',
+                'required'    => true,
+                'description' => 'name',
+                'schema'      => ['type' => 'string'],
+            ],
+        ];
     }
 
     private function setUsers(&$docs)
@@ -168,36 +123,8 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         $statsEndpoint = [
             'summary'    => 'get Users.',
             'tags'       => ['Search'],
-            'parameters' => [
-                [
-                    'name'        => 'name',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'name',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => [
-                Response::HTTP_OK => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'id'   => [
-                                        'type'    => 'string',
-                                        'example' => '56e96fa9-dc44-494d-885c-797c7d588449',
-                                    ],
-                                    'name' => [
-                                        'type'    => 'string',
-                                        'example' => 'name',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'parameters' => $this->setParameters(),
+            'responses'  => $this->getResponses(),
         ];
 
         $docs['paths']['/api/search/user']['get'] = $statsEndpoint;

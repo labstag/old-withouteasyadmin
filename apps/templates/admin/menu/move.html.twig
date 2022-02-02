@@ -1,10 +1,9 @@
-{% import "admin/macro.html.twig" as macro_admin %}
 {% import "admin/menu/macro.html.twig" as macro_menu %}
-{% extends 'admin/menu/layout.html.twig' %}
+{% extends 'admin.html.twig' %}
 {% block body %}
     <div class="row">
         <div class="col-6">
-            <ul is="menu-move">
+            <ul is="entity-move">
             {% for child in menu.children %}
                 <li data-id="{{ child.id }}">
                     {% if child.separateur %}

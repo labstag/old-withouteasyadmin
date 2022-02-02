@@ -3,7 +3,8 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Labstag\Repository\RouteRepository;
+use Labstag\Entity\RouteUser;
+use Labstag\Entity\User;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\PhoneService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,48 +14,75 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Workflow\Registry;
 
-class ApiControllerLib extends AbstractController
+abstract class ApiControllerLib extends AbstractController
 {
-
-    protected AttachmentRequestHandler $attachmentRH;
-
-    protected CsrfTokenManagerInterface $csrfTokenManager;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected PhoneService $phoneService;
 
     protected Request $request;
 
-    protected RequestStack $requestStack;
-
-    protected RouteRepository $routeRepo;
-
-    protected TokenStorageInterface $token;
-
-    protected Registry $workflows;
-
     public function __construct(
-        RequestStack $requestStack,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        TokenStorageInterface $token,
-        PhoneService $phoneService,
-        RouteRepository $routeRepo,
-        EntityManagerInterface $entityManager,
-        AttachmentRequestHandler $attachmentRH,
-        Registry $workflows
+        protected RequestStack $requeststack,
+        protected CsrfTokenManagerInterface $csrfTokenManager,
+        protected TokenStorageInterface $token,
+        protected PhoneService $phoneService,
+        protected EntityManagerInterface $entityManager,
+        protected AttachmentRequestHandler $attachmentRH,
+        protected Registry $workflows
     )
     {
-        $this->routeRepo        = $routeRepo;
-        $this->attachmentRH     = $attachmentRH;
-        $this->token            = $token;
-        $this->requestStack     = $requestStack;
-        $this->entityManager    = $entityManager;
-        $this->csrfTokenManager = $csrfTokenManager;
         // @var Request $request
-        $request            = $this->requestStack->getCurrentRequest();
-        $this->request      = $request;
-        $this->phoneService = $phoneService;
-        $this->workflows    = $workflows;
+        $request       = $this->requeststack->getCurrentRequest();
+        $this->request = $request;
+    }
+
+    protected function getGuardRouteOrWorkflow($data, $get, $entityClass)
+    {
+        if (!array_key_exists('user', $get)) {
+            return $data;
+        }
+
+        $data['user'] = [];
+        $user         = $this->getRepository(User::class)->find($get['user']);
+        if (!$user instanceof User) {
+            return $data;
+        }
+
+        $results = $this->getRepository($entityClass)->findEnableByUser($user);
+        if (RouteUser::class == $entityClass) {
+            foreach ($results as $row) {
+                // @var RouteUser $row
+                $data['user'][] = [
+                    'route' => $row->getRefroute()->getName(),
+                ];
+            }
+
+            return $data;
+        }
+
+        foreach ($results as $row) {
+            // @var WorkflowGroupe $row
+            $data['group'][] = [
+                'entity'     => $row->getRefworkflow()->getEntity(),
+                'transition' => $row->getRefworkflow()->getTransition(),
+            ];
+        }
+
+        return $data;
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
+    }
+
+    protected function getResultWorkflow($request, $entity)
+    {
+        $get = $request->query->all();
+        if (array_key_exists('user', $get)) {
+            $user = $this->getRepository(User::class)->find($get['user']);
+
+            return $this->getRepository($entity)->findEnableByGroupe($user->getRefgroupe());
+        }
+
+        return $this->getRepository($entity)->findEnableByGroupe();
     }
 }

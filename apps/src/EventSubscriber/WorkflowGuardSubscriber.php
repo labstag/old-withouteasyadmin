@@ -2,46 +2,26 @@
 
 namespace Labstag\EventSubscriber;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
+use Labstag\Entity\Workflow;
 use Labstag\Entity\WorkflowGroupe;
 use Labstag\Entity\WorkflowUser;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\WorkflowGroupeRepository;
-use Labstag\Repository\WorkflowRepository;
-use Labstag\Repository\WorkflowUserRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Event\GuardEvent;
 
 class WorkflowGuardSubscriber implements EventSubscriberInterface
 {
-
-    protected GroupeRepository $groupeRepo;
-
-    protected TokenStorageInterface $token;
-
-    protected WorkflowGroupeRepository $workflowGroupeRepo;
-
-    protected WorkflowRepository $workflowRepo;
-
-    protected WorkflowUserRepository $workflowUserRepo;
-
     public function __construct(
-        TokenStorageInterface $token,
-        WorkflowUserRepository $workflowUserRepo,
-        GroupeRepository $groupeRepo,
-        WorkflowRepository $workflowRepo,
-        WorkflowGroupeRepository $workflowGroupeRepo
+        protected EntityManagerInterface $entityManager,
+        protected TokenStorageInterface $token
     )
     {
-        $this->workflowRepo       = $workflowRepo;
-        $this->groupeRepo         = $groupeRepo;
-        $this->workflowUserRepo   = $workflowUserRepo;
-        $this->workflowGroupeRepo = $workflowGroupeRepo;
-        $this->token              = $token;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['workflow.guard' => 'onWorkflowAttachmentGuard'];
     }
@@ -53,7 +33,7 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
         $token       = $this->token->getToken();
         $name        = $event->getWorkflowName();
         $transition  = $event->getTransition()->getName();
-        $workflow    = $this->workflowRepo->findOneBy(
+        $workflow    = $this->getRepository(Workflow::class)->findOneBy(
             [
                 'entity'     => $name,
                 'transition' => $transition,
@@ -67,8 +47,8 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
         // @var User $user
         $user = $token->getUser();
         if (!$user instanceof User) {
-            $groupe         = $this->groupeRepo->findOneBy(['code' => 'visiteur']);
-            $workflowGroupe = $this->workflowGroupeRepo->findOneBy(
+            $groupe         = $this->getRepository(Groupe::class)->findOneBy(['code' => 'visiteur']);
+            $workflowGroupe = $this->getRepository(WorkflowGroupe::class)->findOneBy(
                 [
                     'refgroupe'   => $groupe,
                     'refworkflow' => $workflow,
@@ -86,14 +66,14 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $workflowGroupe = $this->workflowGroupeRepo->findOneBy(
+        $workflowGroupe = $this->getRepository(WorkflowGroupe::class)->findOneBy(
             [
                 'refgroupe'   => $groupe,
                 'refworkflow' => $workflow,
             ]
         );
         $stategroupe    = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
-        $workflowUser   = $this->workflowUserRepo->findOneBy(
+        $workflowUser   = $this->getRepository(WorkflowUser::class)->findOneBy(
             [
                 'refuser'     => $user,
                 'refworkflow' => $workflow,
@@ -102,5 +82,10 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
         $stategroupe    = ($workflowUser instanceof WorkflowUser) ? $workflowUser->getState() : $stategroupe;
 
         $event->setBlocked(!$stategroupe || !$stateuser);
+    }
+
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
     }
 }

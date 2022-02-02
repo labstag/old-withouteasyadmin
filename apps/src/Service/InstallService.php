@@ -5,17 +5,16 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Layout;
 use Labstag\Entity\Menu;
+use Labstag\Entity\Page;
 use Labstag\Entity\Template;
 use Labstag\Entity\User;
-use Labstag\Repository\ConfigurationRepository;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\MenuRepository;
-use Labstag\Repository\TemplateRepository;
-use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\ConfigurationRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
+use Labstag\RequestHandler\LayoutRequestHandler;
 use Labstag\RequestHandler\MenuRequestHandler;
+use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\Dotenv\Dotenv;
@@ -24,73 +23,27 @@ use Twig\Environment;
 
 class InstallService
 {
-
-    protected CacheInterface $cache;
-
-    protected ConfigurationRepository $configurationRepo;
-
-    protected ConfigurationRequestHandler $configurationRH;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected GroupeRepository $groupeRepo;
-
-    protected GroupeRequestHandler $groupeRH;
-
-    protected MenuRepository $menuRepo;
-
-    protected MenuRequestHandler $menuRH;
-
-    protected OauthService $oauthService;
-
-    protected TemplateRepository $templateRepo;
-
-    protected TemplateRequestHandler $templateRH;
-
-    protected Environment $twig;
-
-    protected UserRepository $userRepo;
-
-    protected UserRequestHandler $userRH;
-
     public function __construct(
-        MenuRequestHandler $menuRH,
-        GroupeRequestHandler $groupeRH,
-        GroupeRepository $groupeRepo,
-        OauthService $oauthService,
-        ConfigurationRequestHandler $configurationRH,
-        ConfigurationRepository $configurationRepo,
-        MenuRepository $menuRepo,
-        UserRequestHandler $userRH,
-        UserRepository $userRepo,
-        TemplateRequestHandler $templateRH,
-        TemplateRepository $templateRepo,
-        EntityManagerInterface $entityManager,
-        Environment $twig,
-        CacheInterface $cache
+        protected OauthService $oauthService,
+        protected UserService $userService,
+        protected LayoutRequestHandler $layoutRH,
+        protected PageRequestHandler $pageRH,
+        protected MenuRequestHandler $menuRH,
+        protected GroupeRequestHandler $groupeRH,
+        protected ConfigurationRequestHandler $configurationRH,
+        protected UserRequestHandler $userRH,
+        protected TemplateRequestHandler $templateRH,
+        protected EntityManagerInterface $entityManager,
+        protected Environment $twig,
+        protected CacheInterface $cache
     )
     {
-        $this->userRepo          = $userRepo;
-        $this->userRH            = $userRH;
-        $this->cache             = $cache;
-        $this->oauthService      = $oauthService;
-        $this->menuRepo          = $menuRepo;
-        $this->twig              = $twig;
-        $this->templateRepo      = $templateRepo;
-        $this->configurationRepo = $configurationRepo;
-        $this->groupeRepo        = $groupeRepo;
-        $this->menuRH            = $menuRH;
-        $this->groupeRH          = $groupeRH;
-        $this->entityManager     = $entityManager;
-        $this->configurationRH   = $configurationRH;
-        $this->templateRH        = $templateRH;
     }
 
-    public function config()
+    public function config($serverEnv)
     {
         $config = $this->getData('config');
-        $env    = $this->getEnv();
-        $this->setOauth($env, $config);
+        $this->setOauth($serverEnv, $config);
         foreach ($config as $key => $row) {
             $this->addConfig($key, $row);
         }
@@ -103,13 +56,13 @@ class InstallService
         $file = __DIR__.'/../../json/'.$file.'.json';
         $data = [];
         if (is_file($file)) {
-            $data = json_decode(file_get_contents($file), true);
+            $data = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
         }
 
         return $data;
     }
 
-    public function getEnv()
+    public function getEnv($serverEnv)
     {
         $file   = __DIR__.'/../../.env';
         $data   = [];
@@ -118,9 +71,37 @@ class InstallService
             $data = $dotenv->parse(file_get_contents($file));
         }
 
+        $data = array_merge($serverEnv, $data);
         ksort($data);
 
         return $data;
+    }
+
+    public function getLayoutContent()
+    {
+        return <<<EOF
+        [header]
+        [main,aside]
+        [footer]
+        EOF;
+    }
+
+    public function getLayoutHome()
+    {
+        return <<<EOF
+        [header]
+        [main]
+        [footer]
+        EOF;
+    }
+
+    public function getLayoutLanding()
+    {
+        return <<<EOF
+        [header]
+        [main]
+        [footer]
+        EOF;
     }
 
     public function group()
@@ -128,6 +109,19 @@ class InstallService
         $groupes = $this->getData('group');
         foreach ($groupes as $row) {
             $this->addGroupe($row);
+        }
+    }
+
+    public function layouts()
+    {
+        $layouts = [
+            'content' => $this->getLayoutContent(),
+            'home'    => $this->getLayoutHome(),
+            'landing' => $this->getLayoutLanding(),
+        ];
+
+        foreach ($layouts as $id => $content) {
+            $this->addLayout($id, $content);
         }
     }
 
@@ -143,6 +137,14 @@ class InstallService
         $this->saveMenu('admin-profil', $childs);
     }
 
+    public function pages()
+    {
+        $pages = $this->getData('pages');
+        foreach ($pages as $row) {
+            $this->addPage($row, null);
+        }
+    }
+
     public function templates()
     {
         $templates = $this->getData('template');
@@ -154,7 +156,7 @@ class InstallService
     public function users()
     {
         $users   = $this->getData('user');
-        $groupes = $this->groupeRepo->findAll();
+        $groupes = $this->getRepository(Groupe::class)->findAll();
         foreach ($users as $user) {
             $this->addUser($groupes, $user);
         }
@@ -195,7 +197,7 @@ class InstallService
     ): void
     {
         $search        = ['name' => $key];
-        $configuration = $this->configurationRepo->findOneBy($search);
+        $configuration = $this->getRepository(Configuration::class)->findOneBy($search);
         if (!$configuration instanceof Configuration) {
             $configuration = new Configuration();
         }
@@ -211,7 +213,7 @@ class InstallService
     ): void
     {
         $search = ['code' => $row];
-        $groupe = $this->groupeRepo->findOneBy($search);
+        $groupe = $this->getRepository(Groupe::class)->findOneBy($search);
         if ($groupe instanceof Groupe) {
             return;
         }
@@ -223,13 +225,57 @@ class InstallService
         $this->groupeRH->handle($old, $groupe);
     }
 
+    protected function addLayout(string $id, string $content): void
+    {
+        $layout = $this->getRepository(Layout::class)->findOneBy(
+            ['name' => $id]
+        );
+
+        if ($layout instanceof Layout) {
+            return;
+        }
+
+        $layout = new Layout();
+        $old    = clone $layout;
+        $layout->setName($id);
+        $layout->setContent($content);
+        $this->layoutRH->handle($old, $layout);
+    }
+
+    protected function addPage(array $row, ?Page $parent): void
+    {
+        $layout = $this->getRepository(Layout::class)->findOneBy(
+            [
+                'name' => $row['layout'],
+            ]
+        );
+        if (!$layout instanceof Layout) {
+            return;
+        }
+
+        $page = new Page();
+        $old  = clone $page;
+        $page->setReflayout($layout);
+        $page->setParent($parent);
+        $page->setSlug($row['slug']);
+        $page->setName($row['name']);
+        $page->setFunction($row['template']);
+        $page->setFront(isset($row['front']));
+        $this->pageRH->handle($old, $page);
+        if (isset($row['childs'])) {
+            foreach ($row['childs'] as $child) {
+                $this->addPage($child, $page);
+            }
+        }
+    }
+
     protected function addTemplate(
         string $key,
         string $value
     ): void
     {
         $search   = ['code' => $key];
-        $template = $this->templateRepo->findOneBy($search);
+        $template = $this->getRepository(Template::class)->findOneBy($search);
         if ($template instanceof Template) {
             return;
         }
@@ -259,43 +305,24 @@ class InstallService
         $search = [
             'username' => $dataUser['username'],
         ];
-        $user   = $this->userRepo->findOneBy($search);
+        $user   = $this->getRepository(User::class)->findOneBy($search);
         if ($user instanceof User) {
             return;
         }
 
-        $user = new User();
-        $old  = clone $user;
-
-        $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
-        $user->setUsername($dataUser['username']);
-        $user->setPlainPassword($dataUser['password']);
-        $user->setEmail($dataUser['email']);
-        $this->userRH->handle($old, $user);
-        $this->userRH->changeWorkflowState($user, $dataUser['state']);
+        $this->userService->create($groupes, $dataUser);
     }
 
-    protected function getRefgroupe(array $groupes, string $code): ?Groupe
+    protected function getRepository(string $entity)
     {
-        $return = null;
-        foreach ($groupes as $groupe) {
-            if ($groupe->getCode() != $code) {
-                continue;
-            }
-
-            $return = $groupe;
-
-            break;
-        }
-
-        return $return;
+        return $this->entityManager->getRepository($entity);
     }
 
     protected function saveMenu(string $key, array $childs): void
     {
         // $this->entityManager->getFilters()->disable('softdeleteable');
         $search = ['clef' => $key];
-        $menu   = $this->menuRepo->findOneBy($search);
+        $menu   = $this->getRepository(Menu::class)->findOneBy($search);
         if ($menu instanceof Menu) {
             $this->entityManager->remove($menu);
             $this->entityManager->flush();
@@ -313,8 +340,9 @@ class InstallService
         }
     }
 
-    protected function setOauth(array $env, array &$data): void
+    protected function setOauth(array $serverEnv, array &$data): void
     {
+        $env   = $this->getEnv($serverEnv);
         $oauth = [];
         foreach ($env as $key => $val) {
             if (0 == substr_count($key, 'OAUTH_')) {

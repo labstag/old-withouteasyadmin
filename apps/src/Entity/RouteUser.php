@@ -4,6 +4,7 @@ namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\RouteUserRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=RouteUserRepository::class)
@@ -13,8 +14,9 @@ class RouteUser
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -46,6 +48,11 @@ class RouteUser
     public function getRefuser(): ?User
     {
         return $this->refuser;
+    }
+
+    public function getState(): ?bool
+    {
+        return $this->state;
     }
 
     public function isState(): ?bool

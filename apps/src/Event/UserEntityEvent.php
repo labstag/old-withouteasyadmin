@@ -6,15 +6,8 @@ use Labstag\Entity\User;
 
 class UserEntityEvent
 {
-
-    protected User $newEntity;
-
-    protected User $oldEntity;
-
-    public function __construct(User $oldEntity, User $newEntity)
+    public function __construct(protected User $oldEntity, protected User $newEntity)
     {
-        $this->oldEntity = $oldEntity;
-        $this->newEntity = $newEntity;
     }
 
     public function getNewEntity(): User

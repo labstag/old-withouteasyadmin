@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% import "macro.html.twig" as macro_site %}
 {% block stylesheets %}
+    {{ parent() }}
     {{ encore_entry_link_tags('front') }}
 {% endblock %}
 {% block content %}
@@ -9,5 +10,6 @@
     {% endblock %}
 {% endblock %}
 {% block javascripts %}
+    {{ parent() }}
     {{ encore_entry_script_tags('front') }}
 {% endblock %}

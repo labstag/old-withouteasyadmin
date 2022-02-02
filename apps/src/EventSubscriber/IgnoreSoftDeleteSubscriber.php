@@ -16,30 +16,21 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 {
     public const ANNOTATION = 'Labstag\Annotation\IgnoreSoftDelete';
 
-    protected EntityManagerInterface $entityManager;
-
-    protected Reader $reader;
-
     // @var null|Request
     protected $request;
 
-    protected RequestStack $requestStack;
-
     public function __construct(
-        Reader $reader,
-        EntityManagerInterface $entityManager,
-        RequestStack $requestStack
+        protected Reader $reader,
+        protected EntityManagerInterface $entityManager,
+        protected RequestStack $requestStack
     )
     {
-        $this->requestStack = $requestStack;
         // @var Request $request
-        $request             = $this->requestStack->getCurrentRequest();
-        $this->request       = $request;
-        $this->reader        = $reader;
-        $this->entityManager = $entityManager;
+        $request       = $this->requestStack->getCurrentRequest();
+        $this->request = $request;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return ['kernel.controller' => 'onKernelController'];
     }
@@ -61,7 +52,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 
     protected function ignoreSoftDeleteAnnotation($controller, $method)
     {
-        $routeCurrent = $this->request->get('_route');
+        $routeCurrent = $this->request->attributes->get('_route');
         $routes       = [
             'api_action_destroies',
             'api_action_restories',

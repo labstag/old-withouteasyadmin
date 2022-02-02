@@ -8,26 +8,29 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Repository\GroupeRepository;
+use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=GroupeRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt",         timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Groupe
+class Groupe implements Stringable
 {
     use SoftDeleteableEntity;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
-     * @ORM\Column(type="string",   length=255, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     protected $code;
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
@@ -38,21 +41,22 @@ class Groupe
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe")
+     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe", orphanRemoval=true)
      */
     protected $routes;
 
     /**
      * @ORM\OneToMany(
-     *  targetEntity=User::class,
-     *  mappedBy="refgroupe",
-     *  cascade={"persist"}
+     *     targetEntity=User::class,
+     *     mappedBy="refgroupe",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      */
     protected $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe")
+     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe", orphanRemoval=true)
      */
     private $workflowGroupes;
 
@@ -60,11 +64,12 @@ class Groupe
     {
         $this->routes          = new ArrayCollection();
         $this->workflowGroupes = new ArrayCollection();
+        $this->users           = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function addRoute(RouteGroupe $route): self
@@ -112,9 +117,6 @@ class Groupe
         return $this->name;
     }
 
-    /**
-     * @return Collection|RouteGroupe[]
-     */
     public function getRoutes(): Collection
     {
         return $this->routes;
@@ -125,9 +127,6 @@ class Groupe
         return $this->users;
     }
 
-    /**
-     * @return Collection|WorkflowGroupe[]
-     */
     public function getWorkflowGroupes(): Collection
     {
         return $this->workflowGroupes;

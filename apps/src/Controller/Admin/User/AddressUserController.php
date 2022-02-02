@@ -7,26 +7,17 @@ use Labstag\Entity\AddressUser;
 use Labstag\Form\Admin\Search\User\AddressUserType as UserAddressUserType;
 use Labstag\Form\Admin\User\AddressUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\AddressUserRepository;
 use Labstag\RequestHandler\AddressUserRequestHandler;
 use Labstag\Search\User\AddressUserSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/user/adresse")
- */
+#[Route(path: '/admin/user/adresse')]
 class AddressUserController extends AdminControllerLib
 {
-    /**
-     * @Route(
-     *  "/{id}/edit",
-     *  name="admin_addressuser_edit",
-     *  methods={"GET","POST"}
-     * )
-     * @Route("/new", name="admin_addressuser_new", methods={"GET","POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'admin_addressuser_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_addressuser_new', methods: ['GET', 'POST'])]
     public function edit(
         AttachFormService $service,
         ?AddressUser $addressUser,
@@ -42,26 +33,24 @@ class AddressUserController extends AdminControllerLib
     }
 
     /**
-     * @Route("/trash",  name="admin_addressuser_trash", methods={"GET"})
-     * @Route("/",       name="admin_addressuser_index", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function indexOrTrash(AddressUserRepository $repository): Response
+    #[Route(path: '/trash', name: 'admin_addressuser_trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'admin_addressuser_index', methods: ['GET'])]
+    public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            $repository,
+            AddressUser::class,
             'admin/user/address_user/index.html.twig'
         );
     }
 
     /**
-     * @Route("/{id}",         name="admin_addressuser_show", methods={"GET"})
-     * @Route("/preview/{id}", name="admin_addressuser_preview", methods={"GET"})
      * @IgnoreSoftDelete
      */
-    public function showOrPreview(
-        AddressUser $addressUser
-    ): Response
+    #[Route(path: '/{id}', name: 'admin_addressuser_show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'admin_addressuser_preview', methods: ['GET'])]
+    public function showOrPreview(AddressUser $addressUser): Response
     {
         return $this->renderShowOrPreview(
             $addressUser,
@@ -97,24 +86,18 @@ class AddressUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('addressuser.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_index',
-                'route_params' => [],
+                'title' => $this->translator->trans('addressuser.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_index',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminAddressuserEdit(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('addressuser.edit', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_edit',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('addressuser.edit', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_edit',
             ],
         ];
     }
@@ -123,44 +106,32 @@ class AddressUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('addressuser.new', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_new',
-                'route_params' => [],
+                'title' => $this->translator->trans('addressuser.new', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_new',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminAddressuserPreview(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_trash',
             ],
             [
-                'title'        => $this->translator->trans('addressuser.preview', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_preview',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('addressuser.preview', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_preview',
             ],
         ];
     }
 
     protected function setBreadcrumbsPageAdminAddressuserShow(): array
     {
-        $request     = $this->get('request_stack')->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-
         return [
             [
-                'title'        => $this->translator->trans('addressuser.show', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_show',
-                'route_params' => $routeParams,
+                'title' => $this->translator->trans('addressuser.show', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_show',
             ],
         ];
     }
@@ -169,9 +140,8 @@ class AddressUserController extends AdminControllerLib
     {
         return [
             [
-                'title'        => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
-                'route'        => 'admin_addressuser_trash',
-                'route_params' => [],
+                'title' => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
+                'route' => 'admin_addressuser_trash',
             ],
         ];
     }

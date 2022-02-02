@@ -2,16 +2,18 @@
 
 namespace Labstag\Twig;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Page;
 use Labstag\Entity\User;
-use Labstag\Repository\AttachmentRepository;
-use Labstag\Repository\GroupeRepository;
 use Labstag\Service\GuardService;
 use Labstag\Service\PhoneService;
+use Labstag\Service\TemplatePageService;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Registry;
 use Twig\Extension\AbstractExtension;
@@ -24,48 +26,23 @@ class LabstagExtension extends AbstractExtension
 
     public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
-    protected AttachmentRepository $attachmentRepository;
-
-    protected CacheManager $cache;
-
-    protected GroupeRepository $groupeRepository;
-
-    protected GuardService $guardService;
-
-    protected LoggerInterface $logger;
-
-    protected PhoneService $phoneService;
-
-    protected TokenStorageInterface $token;
-
-    protected Registry $workflows;
-
     public function __construct(
-        PhoneService $phoneService,
-        CacheManager $cache,
-        Registry $workflows,
-        TokenStorageInterface $token,
-        LoggerInterface $logger,
-        GroupeRepository $groupeRepository,
-        AttachmentRepository $attachmentRepository,
-        GuardService $guardService
+        protected EntityManagerInterface $entityManager,
+        protected RouterInterface $router,
+        protected PhoneService $phoneService,
+        protected CacheManager $cache,
+        protected Registry $workflows,
+        protected TokenStorageInterface $token,
+        protected LoggerInterface $logger,
+        protected TemplatePageService $templatePageService,
+        protected GuardService $guardService
     )
     {
-        $this->cache                = $cache;
-        $this->attachmentRepository = $attachmentRepository;
-        $this->logger               = $logger;
-        $this->guardService         = $guardService;
-        $this->groupeRepository     = $groupeRepository;
-        $this->workflows            = $workflows;
-        $this->token                = $token;
-        $this->phoneService         = $phoneService;
     }
 
     public function classEntity($entity)
     {
-        $class = get_class($entity);
-
-        $class = substr($class, strpos($class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY));
+        $class = substr($entity::class, strpos($entity::class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY));
 
         return trim(strtolower($class));
     }
@@ -74,7 +51,7 @@ class LabstagExtension extends AbstractExtension
     {
         $file = '';
 
-        $methods = get_class_vars(get_class($class));
+        $methods = get_class_vars($class::class);
         if (!array_key_exists('vars', $methods)) {
             return $file;
         }
@@ -123,7 +100,7 @@ class LabstagExtension extends AbstractExtension
         }
 
         $id         = $data->getId();
-        $attachment = $this->attachmentRepository->findOneBy(['id' => $id]);
+        $attachment = $this->getRepository(Attachment::class)->findOneBy(['id' => $id]);
         if (is_null($attachment)) {
             return null;
         }
@@ -225,6 +202,30 @@ class LabstagExtension extends AbstractExtension
         return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
     }
 
+    public function page(string $template, string $route = '', array $params = []): string
+    {
+        $templates = $this->templatePageService->getChoices();
+        foreach ($templates as $row) {
+            $class = $this->templatePageService->getclass($row);
+            if ($class->getId() != $template) {
+                continue;
+            }
+
+            $page = $this->getRepository(Page::class)->findOneBy(
+                ['function' => $row]
+            );
+
+            return $class->generateUrl(
+                $page,
+                $route,
+                $params,
+                false
+            );
+        }
+
+        return '';
+    }
+
     public function verifPhone(string $country, string $phone)
     {
         $verif = $this->phoneService->verif($phone, $country);
@@ -237,10 +238,15 @@ class LabstagExtension extends AbstractExtension
         return $this->workflows->has($entity);
     }
 
+    protected function getRepository(string $entity)
+    {
+        return $this->entityManager->getRepository($entity);
+    }
+
     protected function setTypeformClass(array $class): string
     {
         if (is_object($class['data'])) {
-            $tabClass = explode('\\', get_class($class['data']));
+            $tabClass = explode('\\', $class['data']::class);
 
             return end($tabClass);
         }
@@ -251,6 +257,7 @@ class LabstagExtension extends AbstractExtension
     private function getFiltersFunctions()
     {
         return [
+            'page'                     => 'page',
             'attachment'               => 'getAttachment',
             'class_entity'             => 'classEntity',
             'formClass'                => 'formClass',
