@@ -30,7 +30,9 @@ class LabstagInstallCommand extends CommandLib
         $inputOutput->note('Installations');
         $executes = $this->getExecutesFunction();
         foreach ($executes as $function) {
-            $this->{$function}($inputOutput);
+            if ($function != 'all') {
+                $this->{$function}($inputOutput);
+            }
         }
 
         return true;
