@@ -99,12 +99,12 @@ else ifeq ($(COMMANDS_ARGS),validate)
 else
 	@printf "${MISSING_ARGUMENTS}" "composer"
 	$(call array_arguments, \
-		["suggests"]="suggestions package pour PHP" \
+		["dev"]="Installation version de dev" \
+		["fund"]="Discover how to help fund the maintenance of your dependencies." \
 		["i"]="install" \
 		["outdated"]="Packet php outdated" \
-		["fund"]="Discover how to help fund the maintenance of your dependencies." \
 		["prod"]="Installation version de prod" \
-		["dev"]="Installation version de dev" \
+		["suggests"]="suggestions package pour PHP" \
 		["u"]="COMPOSER update" \
 		["validate"]="COMPOSER validate" \
 	)
@@ -125,10 +125,10 @@ else ifeq ($(COMMANDS_ARGS),build)
 else
 	@printf "${MISSING_ARGUMENTS}" "encore"
 	$(call array_arguments, \
+		["build"]="créer les assets en version prod" \
+		["dev-server"]="créer les assets en version dev-server" \
 		["dev"]="créer les assets en version dev" \
 		["watch"]="créer les assets en version watch" \
-		["dev-server"]="créer les assets en version dev-server" \
-		["build"]="créer les assets en version prod" \
 	)
 endif
 
@@ -240,29 +240,29 @@ else
 	$(call array_arguments, \
 		["all"]="## Launch all linter" \
 		["compo"]="composer" \
-		["rector"]="rector" \
-		["readme"]="linter README.md" \
+		["container"]="indique les erreurs de code de container" \
+		["eslint-fix"]="fixe le code JavaScript à partir d'un standard" \
+		["eslint"]="indique les erreurs sur le code JavaScript à partir d'un standard" \
+		["jscpd-report"]="Copy paste detector report" \
+		["jscpd"]="Copy paste detector" \
+		["php-cs-fixer"]="fixe le code PHP à partir d'un standard" \
 		["phpaudit"]="AUDIT PHP" \
+		["phpcbf"]="fixe le code PHP à partir d'un standard" \
+		["phpcs-onlyerror"]="indique les erreurs de code non corrigé par PHPCBF" \
+		["phpcs-onlywarning"]="indique les erreurs de code non corrigé par PHPCBF" \
+		["phpcs"]="indique les erreurs de code non corrigé par PHPCBF" \
 		["phpdoc"]="php doc" \
 		["phpfix"]="PHP-CS-FIXER & PHPCBF" \
-		["stylelint"]="indique les erreurs dans le code SCSS" \
-		["stylelint-fix"]="fix les erreurs dans le code SCSS" \
-		["eslint"]="indique les erreurs sur le code JavaScript à partir d'un standard" \
-		["eslint-fix"]="fixe le code JavaScript à partir d'un standard" \
-		["phpcbf"]="fixe le code PHP à partir d'un standard" \
-		["php-cs-fixer"]="fixe le code PHP à partir d'un standard" \
-		["phpcs"]="indique les erreurs de code non corrigé par PHPCBF" \
-		["phpcs-onlywarning"]="indique les erreurs de code non corrigé par PHPCBF" \
-		["phpcs-onlyerror"]="indique les erreurs de code non corrigé par PHPCBF" \
 		["phploc"]="phploc" \
 		["phpmd"]="indique quand le code PHP contient des erreurs de syntaxes ou des erreurs" \
 		["phpmnd"]="Si des chiffres sont utilisé dans le code PHP" \
 		["phpstan"]="regarde si le code PHP ne peux pas être optimisé" \
+		["readme"]="linter README.md" \
+		["rector"]="rector" \
+		["stylelint-fix"]="fix les erreurs dans le code SCSS" \
+		["stylelint"]="indique les erreurs dans le code SCSS" \
 		["twig"]="indique les erreurs de code de twig" \
-		["container"]="indique les erreurs de code de container" \
 		["yaml"]="indique les erreurs de code de yaml" \
-		["jscpd"]="Copy paste detector" \
-		["jscpd-report"]="Copy paste detector report" \
 	)
 endif
 
@@ -290,8 +290,8 @@ else ifeq ($(COMMANDS_ARGS),simple-phpunit)
 else
 	@printf "${MISSING_ARGUMENTS}" "tests"
 	$(call array_arguments, \
-		["launch"]="Launch all tests" \
 		["behat"]="Lance les tests behat" \
+		["launch"]="Launch all tests" \
 		["simple-phpunit-unit-integration"]="lance les tests phpunit" \
 		["simple-phpunit"]="lance les tests phpunit" \
 	)
