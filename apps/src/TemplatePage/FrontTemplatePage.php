@@ -29,7 +29,7 @@ class FrontTemplatePage extends TemplatePageLib
         return 'front';
     }
 
-    public function launch($matches)
+    public function __invoke($matches)
     {
         unset($matches);
         $pagination = $this->paginator->paginate(

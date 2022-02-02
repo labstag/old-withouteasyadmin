@@ -44,7 +44,7 @@ class PostTemplatePage extends TemplatePageLib
         return 'post';
     }
 
-    public function launch($matches)
+    public function __invoke($matches)
     {
         [
             $case,

@@ -63,7 +63,7 @@ class HistoryTemplatePage extends TemplatePageLib
         return 'history';
     }
 
-    public function launch($matches)
+    public function __invoke($matches)
     {
         [
             $case,
