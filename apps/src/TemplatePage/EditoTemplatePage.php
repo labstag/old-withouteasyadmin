@@ -26,7 +26,7 @@ class EditoTemplatePage extends TemplatePageLib
         return 'edito';
     }
 
-    public function launch($matches)
+    public function __invoke($matches)
     {
         unset($matches);
         // @var Edito $edito

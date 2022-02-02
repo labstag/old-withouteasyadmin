@@ -57,7 +57,7 @@ class BookmarkTemplatePage extends TemplatePageLib
         );
     }
 
-    public function launch($matches)
+    public function __invoke($matches)
     {
         [
             $case,

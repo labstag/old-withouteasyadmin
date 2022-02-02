@@ -46,6 +46,6 @@ class FrontController extends ControllerLib
 
         $slug = strstr($slug, (string) $page->getSlug());
 
-        return $class->launch($matches);
+        return $class->__invoke($matches);
     }
 }
