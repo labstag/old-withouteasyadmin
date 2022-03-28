@@ -63,7 +63,10 @@ class DisclaimerSubscriber implements EventSubscriberInterface
 
         $disclaimer = $config[$key];
         $activate   = (bool) $disclaimer['activate'];
+        if (false === $activate) {
+            return false;
+        }
 
-        return 1 !== $session->get($key, 0) && true === $activate;
+        return 1 !== $session->get($key, 0);
     }
 }
