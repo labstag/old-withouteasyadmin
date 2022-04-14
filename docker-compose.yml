@@ -50,6 +50,8 @@ services:
       - serverlampy
       - net
     deploy:
+      restart_policy:
+        condition: none
       labels:
         - "traefik.enable=false"
   phpfpmexec:
