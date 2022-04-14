@@ -142,7 +142,8 @@ class LabstagUserCommand extends CommandLib
 
     protected function delete($helper, string $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->getRepository(User::class)->findOneBy(['username' => $username]);
+        $repository = $this->getRepository(User::class);
+        $entity     = $repository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -165,8 +166,7 @@ class LabstagUserCommand extends CommandLib
         }
 
         $old = clone $entity;
-        $this->entityManager->remove($entity);
-        $this->entityManager->flush();
+        $repository->remove($entity);
         $this->userRequestHandler->handle($old, $entity);
         $inputOutput->success('Utilisateur supprimé');
     }

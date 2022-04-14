@@ -3,6 +3,8 @@
 namespace Labstag\Lib;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Labstag\Entity\AddressUser;
 use Labstag\Entity\Bookmark;
@@ -21,6 +23,20 @@ use Labstag\Entity\User;
 
 abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 {
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function add($entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if (!$flush) {
+            return;
+        }
+
+        $this->_em->flush();
+    }
+
     public function findAllForAdmin(array $get): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('a');
@@ -85,6 +101,20 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         );
 
         return $this->setQuery($query, $get);
+    }
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function remove($entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if (!$flush) {
+            return;
+        }
+
+        $this->_em->flush();
     }
 
     protected function getClassMetadataName(): string

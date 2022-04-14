@@ -41,8 +41,9 @@ class BookmarkService
         DateTime $date
     )
     {
-        $user     = $this->getRepository(User::class)->find($userid);
-        $bookmark = $this->getRepository(Bookmark::class)->findOneBy(
+        $user       = $this->getRepository(User::class)->find($userid);
+        $repository = $this->getRepository(Bookmark::class);
+        $bookmark   = $repository->findOneBy(
             ['url' => $url]
         );
         if ($bookmark instanceof Bookmark) {
@@ -74,8 +75,7 @@ class BookmarkService
             $image = $meta['twitter:image'] ?? null;
             $image = (is_null($image) && isset($meta['og:image'])) ? $meta['og:image'] : $image;
             $this->upload($bookmark, $image);
-            $this->entityManager->persist($bookmark);
-            $this->entityManager->flush();
+            $repository->add($bookmark);
             $this->requestHandler->handle($old, $bookmark);
         } catch (Exception $exception) {
             $this->errorService->set($exception);

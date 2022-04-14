@@ -91,12 +91,12 @@ class AttachmentController extends ApiControllerLib
 
     protected function deleteAttachment(?Attachment $attachment)
     {
+        $repository = $this->getRepository(Attachment::class);
         if (is_null($attachment)) {
             return;
         }
 
-        $this->entityManager->remove($attachment);
-        $this->entityManager->flush();
+        $repository->remove($attachment);
     }
 
     protected function verifToken($entity): bool

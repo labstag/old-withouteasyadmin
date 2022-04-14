@@ -99,8 +99,8 @@ class EntitySubscriber extends EventSubscriberLib
 
         $entity->setFrontslug((string) $slug);
 
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
+        $repository = $this->getRepository(get_class($entity));
+        $repository->add($entity);
     }
 
     public function onUserEntityEvent(UserEntityEvent $event): void
@@ -120,7 +120,8 @@ class EntitySubscriber extends EventSubscriberLib
                 continue;
             }
 
-            $configuration = $this->getRepository(Configuration::class)->findOneBy(['name' => $key]);
+            $repository    = $this->getRepository(Configuration::class);
+            $configuration = $repository->findOneBy(['name' => $key]);
             if (!$configuration instanceof Configuration) {
                 $configuration = new Configuration();
                 $configuration->setName($key);
@@ -131,10 +132,9 @@ class EntitySubscriber extends EventSubscriberLib
             }
 
             $configuration->setValue($value);
-            $this->entityManager->persist($configuration);
+            $repository->add($configuration);
         }
 
-        $this->entityManager->flush();
         $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('param.change')
@@ -194,8 +194,8 @@ class EntitySubscriber extends EventSubscriberLib
 
         $menu->setData($data);
 
-        $this->entityManager->persist($menu);
-        $this->entityManager->flush();
+        $repository = $this->getRepository(get_class($menu));
+        $repository->add($menu);
     }
 
     protected function setDeletedAt(User $oldEntity, User $newEntity): void
@@ -219,10 +219,9 @@ class EntitySubscriber extends EventSubscriberLib
         foreach ($states as $data) {
             foreach ($data as $entity) {
                 $entity->setDeletedAt($datetime);
-                $this->entityManager->persist($entity);
+                $repository = $this->getRepository(get_class($entity));
+                $repository->add($entity);
             }
-
-            $this->entityManager->flush();
         }
     }
 
@@ -243,8 +242,8 @@ class EntitySubscriber extends EventSubscriberLib
             $this->userMailService->changePassword($user);
         }
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $repository = $this->getRepository(get_class($user));
+        $repository->add($user);
         $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('user.subscriber.password.change')
@@ -268,7 +267,8 @@ class EntitySubscriber extends EventSubscriberLib
                 $trouver = true;
             }
 
-            $this->entityManager->persist($emailUser);
+            $repository = $this->getRepository(get_class($emailUser));
+            $repository->add($emailUser);
         }
 
         if ('valider' == $newEntity->getState()) {

@@ -60,10 +60,9 @@ class GuardService
     {
         $results = $this->getLostRoute();
         foreach ($results as $route) {
-            $this->entityManager->remove($route);
+            $repository = $this->getRepository(get_class($route));
+            $repository->remove($route);
         }
-
-        $this->entityManager->flush();
     }
 
     public function getGuardRoutesForGroupe(Groupe $groupe): array
@@ -185,8 +184,9 @@ class GuardService
 
     public function save($name): void
     {
-        $search = ['name' => $name];
-        $result = $this->getRepository(Route::class)->findOneBy(
+        $search     = ['name' => $name];
+        $repository = $this->getRepository(Route::class);
+        $result     = $repository->findOneBy(
             $search
         );
 
@@ -196,9 +196,7 @@ class GuardService
 
         $route = new Route();
         $route->setName($name);
-
-        $this->entityManager->persist($route);
-        $this->entityManager->flush();
+        $repository->add($route);
     }
 
     public function tables()

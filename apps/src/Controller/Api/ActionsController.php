@@ -306,8 +306,8 @@ class ActionsController extends ApiControllerLib
             return;
         }
 
-        $this->entityManager->remove($entity);
-        $this->entityManager->flush();
+        $repository = $this->getRepository(get_class($entity));
+        $repository->remove($entity);
     }
 
     private function deleteEntityByRepository($repository)
@@ -315,7 +315,7 @@ class ActionsController extends ApiControllerLib
         $all   = $repository->findTrashForAdmin([]);
         $files = [];
         foreach ($all as $entity) {
-            $this->entityManager->remove($entity);
+            $repository->remove($entity);
             if (!$entity instanceof Attachment) {
                 continue;
             }
@@ -323,7 +323,6 @@ class ActionsController extends ApiControllerLib
             $files[] = $entity->getName();
         }
 
-        $this->entityManager->flush();
         foreach ($files as $file) {
             if ('' == $file && is_file($file)) {
                 continue;
@@ -377,13 +376,13 @@ class ActionsController extends ApiControllerLib
             return;
         }
 
-        $file = '';
-        $this->entityManager->remove($entity);
+        $file       = '';
+        $repository = $this->getRepository(get_class($entity));
+        $repository->remove($entity);
         if ($entity instanceof Attachment) {
             $file = $entity->getName();
         }
 
-        $this->entityManager->flush();
         if ('' != $file && is_file($file)) {
             unlink($file);
         }
@@ -403,8 +402,8 @@ class ActionsController extends ApiControllerLib
         }
 
         $entity->setDeletedAt(null);
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
+        $repository = $this->getRepository(get_class($entity));
+        $repository->add($entity);
     }
 
     private function tokenVerif(string $action, $entity = null): bool

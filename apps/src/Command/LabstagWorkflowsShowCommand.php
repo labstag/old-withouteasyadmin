@@ -60,7 +60,6 @@ class LabstagWorkflowsShowCommand extends CommandLib
         }
 
         $this->delete($entities, $data);
-        $this->entityManager->flush();
         foreach ($data as $name => $transitions) {
             foreach ($transitions as $transition) {
                 $workflow = $this->getRepository(Workflow::class)->findOneBy(
@@ -88,15 +87,16 @@ class LabstagWorkflowsShowCommand extends CommandLib
 
     private function delete($entities, $data)
     {
-        $toDelete = $this->getRepository(Workflow::class)->toDeleteEntities($entities);
+        $repository = $this->getRepository(Workflow::class);
+        $toDelete   = $repository->toDeleteEntities($entities);
         foreach ($toDelete as $entity) {
-            $this->entityManager->remove($entity);
+            $repository->remove($entity);
         }
 
         foreach ($data as $entity => $transitions) {
-            $toDelete = $this->getRepository(Workflow::class)->toDeleteTransition($entity, $transitions);
+            $toDelete = $repository->toDeleteTransition($entity, $transitions);
             foreach ($toDelete as $entity) {
-                $this->entityManager->remove($entity);
+                $repository->remove($entity);
             }
         }
     }

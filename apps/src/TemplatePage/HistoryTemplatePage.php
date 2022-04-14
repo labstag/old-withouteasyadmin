@@ -9,6 +9,43 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class HistoryTemplatePage extends TemplatePageLib
 {
+    public function __invoke($matches)
+    {
+        [
+            $case,
+            $search,
+        ] = $this->getCaseSlug($matches[1]);
+        if ('' == $case) {
+            throw $this->createNotFoundException();
+        }
+
+        switch ($case) {
+            case 'list':
+                return $this->list();
+            case 'user':
+                return $this->user($search[1]);
+            default:
+                if (!empty($search[1])) {
+                    if (1 == substr_count($search[1], '/')) {
+                        [
+                            $historySlug,
+                            $chapterSlug,
+                        ] = explode('/', (string) $search[1]);
+
+                        return $this->chapter($historySlug, $chapterSlug);
+                    }
+
+                    $history = $this->getRepository(History::class)->findOneBy(['slug' => $search[1]]);
+                    if (!$history instanceof History) {
+                        throw $this->createNotFoundException();
+                    }
+
+                    return ('show' == $case) ? $this->show($history) : $this->pdf($history);
+                }
+                throw $this->createNotFoundException();
+        }
+    }
+
     public function chapter($historySlug, $chapterSlug)
     {
         $history = $this->getRepository(History::class)->findOneBy(['slug' => $historySlug]);
@@ -61,43 +98,6 @@ class HistoryTemplatePage extends TemplatePageLib
     public function getId(): string
     {
         return 'history';
-    }
-
-    public function __invoke($matches)
-    {
-        [
-            $case,
-            $search,
-        ] = $this->getCaseSlug($matches[1]);
-        if ('' == $case) {
-            throw $this->createNotFoundException();
-        }
-
-        switch ($case) {
-            case 'list':
-                return $this->list();
-            case 'user':
-                return $this->user($search[1]);
-            default:
-                if (!empty($search[1])) {
-                    if (1 == substr_count($search[1], '/')) {
-                        [
-                            $historySlug,
-                            $chapterSlug,
-                        ] = explode('/', (string) $search[1]);
-
-                        return $this->chapter($historySlug, $chapterSlug);
-                    }
-
-                    $history = $this->getRepository(History::class)->findOneBy(['slug' => $search[1]]);
-                    if (!$history instanceof History) {
-                        throw $this->createNotFoundException();
-                    }
-
-                    return ('show' == $case) ? $this->show($history) : $this->pdf($history);
-                }
-                throw $this->createNotFoundException();
-        }
     }
 
     public function list()

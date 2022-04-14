@@ -2,7 +2,6 @@
 
 namespace Labstag\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
@@ -81,16 +80,16 @@ class AdminController extends AdminControllerLib
     #[Route(path: '/param', name: 'admin_param', methods: ['GET', 'POST'])]
     public function param(
         Request $request,
-        EntityManagerInterface $entityManager,
         EventDispatcherInterface $dispatcher,
         DataService $dataService,
         CacheInterface $cache
     ): Response
     {
         $this->modalAttachmentDelete();
-        $images = [
-            'image'   => $this->getRepository(Attachment::class)->getImageDefault(),
-            'favicon' => $this->getRepository(Attachment::class)->getFavicon(),
+        $repository = $this->getRepository(Attachment::class);
+        $images     = [
+            'image'   => $repository->getImageDefault(),
+            'favicon' => $repository->getFavicon(),
         ];
         foreach ($images as $key => $value) {
             if (!is_null($value)) {
@@ -99,8 +98,7 @@ class AdminController extends AdminControllerLib
 
             $images[$key] = new Attachment();
             $images[$key]->setCode($key);
-            $entityManager->persist($images[$key]);
-            $entityManager->flush();
+            $repository->add($images[$key]);
         }
 
         $config = $dataService->getConfig();

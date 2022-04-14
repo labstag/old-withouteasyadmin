@@ -554,16 +554,15 @@ abstract class AdminControllerLib extends ControllerLib
 
         if (is_array($data)) {
             foreach ($data as $row) {
-                $id       = $row['id'];
-                $position = intval($row['position']);
-                $entity   = $this->getRepository($entityclass)->find($id);
+                $id         = $row['id'];
+                $position   = intval($row['position']);
+                $repository = $this->getRepository($entityclass);
+                $entity     = $repository->find($id);
                 if (!is_null($entity)) {
                     $entity->setPosition($position + 1);
-                    $this->entityManager->persist($entity);
+                    $repository->add($entity);
                 }
             }
-
-            $this->entityManager->flush();
         }
     }
 

@@ -11,6 +11,34 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class BookmarkTemplatePage extends TemplatePageLib
 {
+    public function __invoke($matches)
+    {
+        [
+            $case,
+            $search,
+        ] = $this->getCaseSlug($matches[1]);
+        if ('' == $case) {
+            throw $this->createNotFoundException();
+        }
+
+        switch ($case) {
+            case 'category':
+                return $this->category($search[1]);
+            case 'libelle':
+                return $this->libelle($search[1]);
+            case 'bookmark':
+                if (!empty($search[1])) {
+                    $history = $this->getRepository(Bookmark::class)->findOneBy(['slug' => $search[1]]);
+                    if (!$history instanceof Bookmark) {
+                        throw $this->createNotFoundException();
+                    }
+
+                    return $this->show($history);
+                }
+                return $this->index();
+        }
+    }
+
     public function category(string $code)
     {
         return $this->getList($code, 'findPublierCategory');
@@ -55,34 +83,6 @@ class BookmarkTemplatePage extends TemplatePageLib
                 'categories' => $this->getRepository(Category::class)->findByBookmark(),
             ]
         );
-    }
-
-    public function __invoke($matches)
-    {
-        [
-            $case,
-            $search,
-        ] = $this->getCaseSlug($matches[1]);
-        if ('' == $case) {
-            throw $this->createNotFoundException();
-        }
-
-        switch ($case) {
-            case 'category':
-                return $this->category($search[1]);
-            case 'libelle':
-                return $this->libelle($search[1]);
-            case 'bookmark':
-                if (!empty($search[1])) {
-                    $history = $this->getRepository(Bookmark::class)->findOneBy(['slug' => $search[1]]);
-                    if (!$history instanceof Bookmark) {
-                        throw $this->createNotFoundException();
-                    }
-
-                    return $this->show($history);
-                }
-                return $this->index();
-        }
     }
 
     public function libelle(string $code)

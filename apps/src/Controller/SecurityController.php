@@ -349,10 +349,10 @@ class SecurityController extends ControllerLib
             $referer = $url;
         }
 
-        $entity = $this->getRepository(OauthConnectUser::class)->findOneOauthByUser($oauthCode, $user);
+        $repository = $this->getRepository(OauthConnectUser::class);
+        $entity     = $repository->findOneOauthByUser($oauthCode, $user);
         if ($entity instanceof OauthConnectUser) {
-            $this->entityManager->remove($entity);
-            $this->entityManager->flush();
+            $repository->remove($entity);
             $paramtrans = ['%string%' => $oauthCode];
 
             $msg = $this->translator->trans('security.user.oauth.dissociated', $paramtrans);

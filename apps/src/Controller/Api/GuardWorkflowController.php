@@ -23,7 +23,6 @@ class GuardWorkflowController extends ApiControllerLib
         return $this->setWorkflow(
             $request,
             $group,
-            WorkflowGroupe::class,
             $workflowGroupeRH
         );
     }
@@ -113,7 +112,6 @@ class GuardWorkflowController extends ApiControllerLib
         $state = $request->request->all('state');
         $data  = $this->setWorkflowUser(
             $data,
-            $this->getRepository(WorkflowUser::class),
             $user,
             $workflow,
             $state,
@@ -129,7 +127,6 @@ class GuardWorkflowController extends ApiControllerLib
         return $this->setWorkflow(
             $request,
             $user,
-            WorkflowUser::class,
             $workflowUserRH
         );
     }
@@ -137,7 +134,6 @@ class GuardWorkflowController extends ApiControllerLib
     private function setWorkflow(
         $request,
         $entity,
-        $classEntity,
         $requestHandler
     )
     {
@@ -152,7 +148,6 @@ class GuardWorkflowController extends ApiControllerLib
         foreach ($workflows as $workflow) {
             $data = $this->setWorkflowUser(
                 $data,
-                $this->getRepository($classEntity),
                 $entity,
                 $workflow,
                 $state,
@@ -171,7 +166,8 @@ class GuardWorkflowController extends ApiControllerLib
         $workflowGroupeRH
     )
     {
-        $workflowGroupe = $this->getRepository(WorkflowGroupe::class)->findOneBy(
+        $repository     = $this->getRepository(WorkflowGroupe::class);
+        $workflowGroupe = $repository->findOneBy(
             [
                 'refgroupe'   => $group,
                 'refworkflow' => $workflow,
@@ -180,8 +176,7 @@ class GuardWorkflowController extends ApiControllerLib
         if ('0' === $state) {
             if ($workflowGroupe instanceof WorkflowGroupe) {
                 $data['delete'] = 1;
-                $this->entityManager->remove($workflowGroupe);
-                $this->entityManager->flush();
+                $repository->remove($workflowGroupe);
             }
 
             return $data;
@@ -206,19 +201,18 @@ class GuardWorkflowController extends ApiControllerLib
 
     private function setWorkflowUser(
         $data,
-        $workflowUserRepo,
         $user,
         $workflow,
         $state,
         $workflowUserRH
     )
     {
-        $workflowUser = $workflowUserRepo->findOneBy(['refuser' => $user, 'refworkflow' => $workflow]);
+        $repository   = $this->getRepository(WorkflowUser::class);
+        $workflowUser = $repository->findOneBy(['refuser' => $user, 'refworkflow' => $workflow]);
         if ('0' === $state) {
             if ($workflowUser instanceof WorkflowUser) {
                 $data['delete'] = 1;
-                $this->entityManager->remove($workflowUser);
-                $this->entityManager->flush();
+                $repository->remove($workflowUser);
             }
 
             return $data;

@@ -185,7 +185,8 @@ class GuardRouteController extends ApiControllerLib
         $routeGroupeRH
     )
     {
-        $routeGroupe = $this->getRepository(RouteGroupe::class)->findOneBy(
+        $repository  = $this->getRepository(RouteGroupe::class);
+        $routeGroupe = $repository->findOneBy(
             [
                 'refgroupe' => $group,
                 'refroute'  => $route,
@@ -194,8 +195,7 @@ class GuardRouteController extends ApiControllerLib
         if ('0' === $state) {
             if ($routeGroupe instanceof RouteGroupe) {
                 $data['delete'] = 1;
-                $this->entityManager->remove($routeGroupe);
-                $this->entityManager->flush();
+                $repository->remove($routeGroupe);
             }
 
             return $data;
@@ -228,12 +228,12 @@ class GuardRouteController extends ApiControllerLib
         RouteUserRequestHandler $routeUserRH
     )
     {
-        $routeUser = $this->getRepository(RouteUser::class)->findOneBy(['refuser' => $user, 'refroute' => $route]);
+        $repository = $this->getRepository(RouteUser::class);
+        $routeUser  = $repository->findOneBy(['refuser' => $user, 'refroute' => $route]);
         if ('0' === $state) {
             if ($routeUser instanceof RouteUser) {
                 $data['delete'] = 1;
-                $this->entityManager->remove($routeUser);
-                $this->entityManager->flush();
+                $repository->remove($routeUser);
             }
 
             return $data;

@@ -124,8 +124,7 @@ class SearchableType extends AbstractType
 
             $entity = clone $options['new'];
             $entity->setString($key);
-            $entityManager->persist($entity);
-            $entityManager->flush();
+            $repository->add($entity);
             $ids[$id] = $entity->getId();
         }
 

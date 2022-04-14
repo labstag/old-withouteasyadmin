@@ -164,13 +164,13 @@ class InstallService
 
     protected function addChild(int $index, Menu $menu, array $attr): void
     {
-        $child = new Menu();
+        $repository = $this->getRepository(Menu::class);
+        $child      = new Menu();
         $child->setPosition($index);
         $child->setParent($menu);
         if (isset($attr['separator'])) {
             $child->setSeparateur(true);
-            $this->entityManager->persist($child);
-            $this->entityManager->flush();
+            $repository->add($child);
 
             return;
         }
@@ -180,8 +180,7 @@ class InstallService
             $child->setData($attr['data']);
         }
 
-        $this->entityManager->persist($child);
-        $this->entityManager->flush();
+        $repository->add($child);
         if (isset($attr['childs'])) {
             $indexChild = 0;
             foreach ($attr['childs'] as $attrChild) {
@@ -321,18 +320,17 @@ class InstallService
     protected function saveMenu(string $key, array $childs): void
     {
         // $this->entityManager->getFilters()->disable('softdeleteable');
-        $search = ['clef' => $key];
-        $menu   = $this->getRepository(Menu::class)->findOneBy($search);
+        $search     = ['clef' => $key];
+        $repository = $this->getRepository(Menu::class);
+        $menu       = $repository->findOneBy($search);
         if ($menu instanceof Menu) {
-            $this->entityManager->remove($menu);
-            $this->entityManager->flush();
+            $repository->remove($menu);
         }
 
         $menu = new Menu();
         $menu->setPosition(0);
         $menu->setClef($key);
-        $this->entityManager->persist($menu);
-        $this->entityManager->flush();
+        $repository->add($menu);
         $indexChild = 0;
         foreach ($childs as $attr) {
             $this->addChild($indexChild, $menu, $attr);

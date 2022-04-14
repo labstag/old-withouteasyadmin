@@ -10,6 +10,34 @@ use Labstag\Lib\TemplatePageLib;
 
 class PostTemplatePage extends TemplatePageLib
 {
+    public function __invoke($matches)
+    {
+        [
+            $case,
+            $search,
+        ] = $this->getCaseSlug($matches[1]);
+        if ('' == $case) {
+            throw $this->createNotFoundException();
+        }
+
+        switch ($case) {
+            case 'user':
+                return $this->user($search[1]);
+            case 'archive':
+                return $this->archive($search[1]);
+            case 'category':
+                return $this->category($search[1]);
+            case 'libelle':
+                return $this->libelle($search[1]);
+            case 'show':
+                $post = $this->getRepository(Post::class)->findOneBy(['slug' => $search[1]]);
+                if (!$post instanceof Post) {
+                    throw $this->createNotFoundException();
+                }
+                return $this->show($post);
+        }
+    }
+
     public function archive(string $code)
     {
         return $this->getList($code, 'findPublierArchive');
@@ -42,34 +70,6 @@ class PostTemplatePage extends TemplatePageLib
     public function getId(): string
     {
         return 'post';
-    }
-
-    public function __invoke($matches)
-    {
-        [
-            $case,
-            $search,
-        ] = $this->getCaseSlug($matches[1]);
-        if ('' == $case) {
-            throw $this->createNotFoundException();
-        }
-
-        switch ($case) {
-            case 'user':
-                return $this->user($search[1]);
-            case 'archive':
-                return $this->archive($search[1]);
-            case 'category':
-                return $this->category($search[1]);
-            case 'libelle':
-                return $this->libelle($search[1]);
-            case 'show':
-                $post = $this->getRepository(Post::class)->findOneBy(['slug' => $search[1]]);
-                if (!$post instanceof Post) {
-                    throw $this->createNotFoundException();
-                }
-                return $this->show($post);
-        }
     }
 
     public function libelle(string $code)
