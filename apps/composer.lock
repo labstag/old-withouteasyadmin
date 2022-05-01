@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "956bbd82d00cc133a6959e23cf236e82",
+    "content-hash": "6f758dc547a182678ef42dc23aa2137e",
     "packages": [
         {
             "name": "adam-paterson/oauth2-slack",
@@ -12014,20 +12014,20 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.4.2",
+            "version": "1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "1dd8f3e40bf7aa30031a75c65cece99220a161b8"
+                "reference": "6128620b98292e0b69ea6d799871d77163681c8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1dd8f3e40bf7aa30031a75c65cece99220a161b8",
-                "reference": "1dd8f3e40bf7aa30031a75c65cece99220a161b8",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/6128620b98292e0b69ea6d799871d77163681c8e",
+                "reference": "6128620b98292e0b69ea6d799871d77163681c8e",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1|^8.0"
+                "php": "^7.2|^8.0"
             },
             "conflict": {
                 "phpstan/phpstan-shim": "*"
@@ -12037,11 +12037,6 @@
                 "phpstan.phar"
             ],
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.4-dev"
-                }
-            },
             "autoload": {
                 "files": [
                     "bootstrap.php"
@@ -12054,7 +12049,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.4.2"
+                "source": "https://github.com/phpstan/phpstan/tree/1.6.3"
             },
             "funding": [
                 {
@@ -12074,7 +12069,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-18T16:09:11+00:00"
+            "time": "2022-04-28T11:27:53+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -12499,21 +12494,21 @@
         },
         {
             "name": "rector/rector",
-            "version": "0.12.15",
+            "version": "0.12.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "e923bcd0d675dc4d8746da0554089b484044d0b5"
+                "reference": "690b31768b322db886b35845f8452025eba2cacb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/e923bcd0d675dc4d8746da0554089b484044d0b5",
-                "reference": "e923bcd0d675dc4d8746da0554089b484044d0b5",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/690b31768b322db886b35845f8452025eba2cacb",
+                "reference": "690b31768b322db886b35845f8452025eba2cacb",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1|^8.0",
-                "phpstan/phpstan": "^1.4.2"
+                "php": "^7.2|^8.0",
+                "phpstan/phpstan": "^1.6"
             },
             "conflict": {
                 "phpstan/phpdoc-parser": "<1.2",
@@ -12547,7 +12542,7 @@
             "description": "Instant Upgrade and Automated Refactoring of any PHP code",
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/0.12.15"
+                "source": "https://github.com/rectorphp/rector/tree/0.12.23"
             },
             "funding": [
                 {
@@ -12555,7 +12550,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-26T12:02:35+00:00"
+            "time": "2022-05-01T15:50:16+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -14059,5 +14054,5 @@
     "platform-overrides": {
         "php": "8.0.9"
     },
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
