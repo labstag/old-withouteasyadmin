@@ -31,15 +31,13 @@ docker swarm
 Hosts:
 
 - labstag.traefik.me
-- mailhog-labstag.traefik.me
-- mercure-labstag.traefik.me
-- phpmyadmin-labstag.traefik.me
-- phpldapadmin-labstag.traefik.me
 
-## Init
+## Download
 
 ```sh
-git submodule update --init --recursive --remote
+git clone git@github.com:koromerzhin/labstag.git labstag
+cd labstag
+git submodule update --init
 ```
 
 ## Récupérer les images docker
