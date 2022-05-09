@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "48be6dabec0ab3b57395d734eed69ed0",
+    "content-hash": "01cf2228fb98b35a7aeeb5e0b233bf89",
     "packages": [
         {
             "name": "adam-paterson/oauth2-slack",
@@ -4613,16 +4613,16 @@
         },
         {
             "name": "spipu/html2pdf",
-            "version": "v5.2.4",
+            "version": "v5.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spipu/html2pdf.git",
-                "reference": "dcb5671cac3d60ff486cf16df389e3bd0dc16ba4"
+                "reference": "c002749cf21733d53fb9e50d082ca3d1bde06c85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spipu/html2pdf/zipball/dcb5671cac3d60ff486cf16df389e3bd0dc16ba4",
-                "reference": "dcb5671cac3d60ff486cf16df389e3bd0dc16ba4",
+                "url": "https://api.github.com/repos/spipu/html2pdf/zipball/c002749cf21733d53fb9e50d082ca3d1bde06c85",
+                "reference": "c002749cf21733d53fb9e50d082ca3d1bde06c85",
                 "shasum": ""
             },
             "require": {
@@ -4632,7 +4632,6 @@
                 "tecnickcom/tcpdf": "^6.3"
             },
             "require-dev": {
-                "phake/phake": "^2.0",
                 "phpunit/phpunit": "^5.0"
             },
             "suggest": {
@@ -4665,9 +4664,9 @@
             ],
             "support": {
                 "issues": "https://github.com/spipu/html2pdf/issues",
-                "source": "https://github.com/spipu/html2pdf/tree/v5.2.4"
+                "source": "https://github.com/spipu/html2pdf/tree/v5.2.5"
             },
-            "time": "2021-12-16T15:23:31+00:00"
+            "time": "2022-04-03T22:05:23+00:00"
         },
         {
             "name": "stevenmaguire/oauth2-bitbucket",
