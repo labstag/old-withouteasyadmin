@@ -9,6 +9,10 @@
 			"path": "apps\\src"
 		},
 		{
+			"name": "github",
+			"path": ".github"
+		},
+		{
 			"name": "templates",
 			"path": "apps\\templates"
 		},
