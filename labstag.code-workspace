@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"name": "assets",
+			"path": "assets"
+		},
+		{
+			"name": "src",
+			"path": "apps\\src"
+		},
+		{
+			"name": "templates",
+			"path": "apps\\templates"
+		},
+		{
+ 			"name": "/",
+ 			"path": "."
+		}
+	]
+}
