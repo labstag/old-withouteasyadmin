@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormView;
 
 class CoreTextareaType extends AbstractType
 {
-    public const ROWS = 20;
+    final public const ROWS = 20;
 
     public function buildView(
         FormView $view,

@@ -64,6 +64,16 @@ class Post implements Stringable
     private $libelles;
 
     /**
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $metas;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $paragraphs;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $published;
@@ -104,7 +114,9 @@ class Post implements Stringable
 
     public function __construct()
     {
-        $this->libelles = new ArrayCollection();
+        $this->libelles   = new ArrayCollection();
+        $this->paragraphs = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -117,6 +129,26 @@ class Post implements Stringable
         if (!$this->libelles->contains($libelle)) {
             $this->libelles[] = $libelle;
             $libelle->addPost($this);
+        }
+
+        return $this;
+    }
+
+    public function addMeta(Meta $meta): self
+    {
+        if (!$this->metas->contains($meta)) {
+            $this->metas[] = $meta;
+            $meta->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setPost($this);
         }
 
         return $this;
@@ -150,6 +182,22 @@ class Post implements Stringable
     public function getLibelles(): Collection
     {
         return $this->libelles;
+    }
+
+    /**
+     * @return Collection<int, Meta>
+     */
+    public function getMetas(): Collection
+    {
+        return $this->metas;
+    }
+
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
     }
 
     public function getPublished(): ?DateTimeInterface
@@ -191,6 +239,30 @@ class Post implements Stringable
     {
         if ($this->libelles->removeElement($libelle)) {
             $libelle->removePost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeta(Meta $meta): self
+    {
+        if ($this->metas->removeElement($meta)) {
+            // set the owning side to null (unless already changed)
+            if ($meta->getPost() === $this) {
+                $meta->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        if ($this->paragraphs->removeElement($paragraph)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraph->getPost() === $this) {
+                $paragraph->setPost(null);
+            }
         }
 
         return $this;

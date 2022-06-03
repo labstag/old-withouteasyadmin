@@ -19,14 +19,14 @@ use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
 {
-    public const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
+    final public const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
 
-    public const ERROR_CONTROLLER = [
+    final public const ERROR_CONTROLLER = [
         'error_controller',
         'error_controller::preview',
     ];
 
-    public const LABSTAG_CONTROLLER = '/(Labstag)/';
+    final public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
     public function __construct(
         protected EntityManagerInterface $entityManager,

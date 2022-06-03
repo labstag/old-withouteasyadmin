@@ -182,6 +182,7 @@ ifeq ($(COMMANDS_ARGS),all)
 	@make linter yaml -i
 	@make linter phpaudit -i
 	@make linter readme -i
+	@make linter rector -i
 else ifeq ($(COMMANDS_ARGS),phpaudit)
 	@make linter phpcs -i
 	@make linter phpmd -i

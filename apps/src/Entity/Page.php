@@ -49,10 +49,20 @@ class Page implements Stringable
     private $id;
 
     /**
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $metas;
+
+    /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      */
     private $name;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $paragraphs;
 
     /**
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children")
@@ -76,13 +86,16 @@ class Page implements Stringable
     private $reflayout;
 
     /**
+     * @Gedmo\Slug(updatable=false, fields={"name"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $slug;
 
     public function __construct()
     {
-        $this->children = new ArrayCollection();
+        $this->children   = new ArrayCollection();
+        $this->paragraphs = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -95,6 +108,26 @@ class Page implements Stringable
         if (!$this->children->contains($child)) {
             $this->children[] = $child;
             $child->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function addMeta(Meta $meta): self
+    {
+        if (!$this->metas->contains($meta)) {
+            $this->metas[] = $meta;
+            $meta->setPage($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setPage($this);
         }
 
         return $this;
@@ -125,9 +158,25 @@ class Page implements Stringable
         return $this->id;
     }
 
+    /**
+     * @return Collection<int, Meta>
+     */
+    public function getMetas(): Collection
+    {
+        return $this->metas;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
     }
 
     public function getParent(): ?Page
@@ -156,6 +205,30 @@ class Page implements Stringable
             // set the owning side to null (unless already changed)
             if ($child->getParent() === $this) {
                 $child->setParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeMeta(Meta $meta): self
+    {
+        if ($this->metas->removeElement($meta)) {
+            // set the owning side to null (unless already changed)
+            if ($meta->getPage() === $this) {
+                $meta->setPage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        if ($this->paragraphs->removeElement($paragraph)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraph->getPage() === $this) {
+                $paragraph->setPage(null);
             }
         }
 

@@ -3,6 +3,8 @@
 namespace Labstag\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -72,15 +74,47 @@ class Memo implements Stringable
      */
     protected $title;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="memo", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $metas;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="memo", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $paragraphs;
+
     public function __construct()
     {
-        $this->dateStart = new DateTime();
-        $this->dateEnd   = new DateTime();
+        $this->dateStart  = new DateTime();
+        $this->dateEnd    = new DateTime();
+        $this->paragraphs = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
     }
 
     public function __toString(): string
     {
         return (string) $this->getTitle();
+    }
+
+    public function addMeta(Meta $meta): self
+    {
+        if (!$this->metas->contains($meta)) {
+            $this->metas[] = $meta;
+            $meta->setMemo($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setMemo($this);
+        }
+
+        return $this;
     }
 
     public function getContent(): ?string
@@ -113,6 +147,22 @@ class Memo implements Stringable
         return $this->id;
     }
 
+    /**
+     * @return Collection<int, Meta>
+     */
+    public function getMetas(): Collection
+    {
+        return $this->metas;
+    }
+
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
+    }
+
     public function getRefuser(): ?User
     {
         return $this->refuser;
@@ -121,6 +171,30 @@ class Memo implements Stringable
     public function getTitle(): ?string
     {
         return $this->title;
+    }
+
+    public function removeMeta(Meta $meta): self
+    {
+        if ($this->metas->removeElement($meta)) {
+            // set the owning side to null (unless already changed)
+            if ($meta->getMemo() === $this) {
+                $meta->setMemo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        if ($this->paragraphs->removeElement($paragraph)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraph->getMemo() === $this) {
+                $paragraph->setMemo(null);
+            }
+        }
+
+        return $this;
     }
 
     public function setContent(string $content): self

@@ -12,6 +12,7 @@ networks:
 services:
   apache:
     image: httpd:2.4.53
+    user: '${USER_ID}:${GROUP_ID}'
     depends_on:
       - phpfpm
     volumes:
@@ -28,7 +29,8 @@ services:
         - "traefik.http.routers.labstag.tls=true"
         - "traefik.http.services.labstag.loadbalancer.server.port=80"
   phpfpm:
-    image: koromerzhin/phpfpm:8.1.5
+    image: koromerzhin/phpfpm:8.1.6
+    user: '${USER_ID}:${GROUP_ID}'
     command: sh -c "php-fpm"
     depends_on:
       - mariadb
@@ -55,7 +57,8 @@ services:
       labels:
         - "traefik.enable=false"
   phpfpmexec:
-    image: koromerzhin/phpfpm:8.1.5
+    image: koromerzhin/phpfpm:8.1.6
+    user: '${USER_ID}:${GROUP_ID}'
     command: sh -c "composer install"
     depends_on:
       - mariadb

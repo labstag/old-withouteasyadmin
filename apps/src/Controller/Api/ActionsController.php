@@ -306,7 +306,7 @@ class ActionsController extends ApiControllerLib
             return;
         }
 
-        $repository = $this->getRepository(get_class($entity));
+        $repository = $this->getRepository($entity::class);
         $repository->remove($entity);
     }
 
@@ -377,7 +377,7 @@ class ActionsController extends ApiControllerLib
         }
 
         $file       = '';
-        $repository = $this->getRepository(get_class($entity));
+        $repository = $this->getRepository($entity::class);
         $repository->remove($entity);
         if ($entity instanceof Attachment) {
             $file = $entity->getName();
@@ -402,7 +402,7 @@ class ActionsController extends ApiControllerLib
         }
 
         $entity->setDeletedAt(null);
-        $repository = $this->getRepository(get_class($entity));
+        $repository = $this->getRepository($entity::class);
         $repository->add($entity);
     }
 

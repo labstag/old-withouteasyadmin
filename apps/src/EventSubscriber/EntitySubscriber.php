@@ -99,7 +99,7 @@ class EntitySubscriber extends EventSubscriberLib
 
         $entity->setFrontslug((string) $slug);
 
-        $repository = $this->getRepository(get_class($entity));
+        $repository = $this->getRepository($entity::class);
         $repository->add($entity);
     }
 
@@ -194,7 +194,7 @@ class EntitySubscriber extends EventSubscriberLib
 
         $menu->setData($data);
 
-        $repository = $this->getRepository(get_class($menu));
+        $repository = $this->getRepository($menu::class);
         $repository->add($menu);
     }
 
@@ -219,7 +219,7 @@ class EntitySubscriber extends EventSubscriberLib
         foreach ($states as $data) {
             foreach ($data as $entity) {
                 $entity->setDeletedAt($datetime);
-                $repository = $this->getRepository(get_class($entity));
+                $repository = $this->getRepository($entity::class);
                 $repository->add($entity);
             }
         }
@@ -242,7 +242,7 @@ class EntitySubscriber extends EventSubscriberLib
             $this->userMailService->changePassword($user);
         }
 
-        $repository = $this->getRepository(get_class($user));
+        $repository = $this->getRepository($user::class);
         $repository->add($user);
         $this->sessionService->flashBagAdd(
             'success',
@@ -267,7 +267,7 @@ class EntitySubscriber extends EventSubscriberLib
                 $trouver = true;
             }
 
-            $repository = $this->getRepository(get_class($emailUser));
+            $repository = $this->getRepository($emailUser::class);
             $repository->add($emailUser);
         }
 

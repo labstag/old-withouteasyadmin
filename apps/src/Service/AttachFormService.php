@@ -10,8 +10,8 @@ class AttachFormService
 {
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        private UploadAnnotationReader $uploadAnnotReader,
-        private AttachmentRequestHandler $attachmentRH
+        private readonly UploadAnnotationReader $uploadAnnotReader,
+        private readonly AttachmentRequestHandler $attachmentRH
     )
     {
     }

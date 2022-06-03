@@ -33,7 +33,7 @@ class OauthAuthenticator extends AbstractAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    final public const LOGIN_ROUTE = 'app_login';
 
     protected string $oauthCode;
 

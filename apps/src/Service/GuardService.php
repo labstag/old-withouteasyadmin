@@ -14,16 +14,16 @@ use Symfony\Component\Workflow\Registry;
 
 class GuardService
 {
-    public const GROUPE_ENABLE = ['visiteur'];
+    final public const GROUPE_ENABLE = ['visiteur'];
 
-    public const REGEX = [
+    final public const REGEX = [
         '/(SecurityController)/',
         '/(web_profiler.controller)/',
         '/(error_controller)/',
         '/(api_platform)/',
     ];
 
-    public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
+    final public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     public function __construct(
         protected RouterInterface $router,
@@ -60,7 +60,7 @@ class GuardService
     {
         $results = $this->getLostRoute();
         foreach ($results as $route) {
-            $repository = $this->getRepository(get_class($route));
+            $repository = $this->getRepository($route::class);
             $repository->remove($route);
         }
     }

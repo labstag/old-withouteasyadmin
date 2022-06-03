@@ -29,7 +29,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class EntityVoter extends Voter
 {
-    public const NBR_CHAPTER = 2;
+    final public const NBR_CHAPTER = 2;
 
     protected function canEditEdito(Edito $entity, TokenInterface $token): bool
     {

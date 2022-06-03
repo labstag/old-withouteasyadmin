@@ -33,13 +33,13 @@ abstract class RequestHandlerLib
             $workflow->apply($entity, $state);
         }
 
-        $repository = $this->getRepository(get_class($entity));
+        $repository = $this->getRepository($entity::class);
         $repository->add($entity);
     }
 
     public function handle($oldEntity, $entity)
     {
-        $repository = $this->getRepository(get_class($entity));
+        $repository = $this->getRepository($entity::class);
         $repository->add($entity);
         if ($oldEntity->getId() != $entity->getId()) {
             $this->initWorkflow($entity);
@@ -67,7 +67,7 @@ abstract class RequestHandlerLib
             }
 
             $workflow->apply($entity, $name);
-            $repository = $this->getRepository(get_class($entity));
+            $repository = $this->getRepository($entity::class);
             $repository->add($entity);
 
             break;

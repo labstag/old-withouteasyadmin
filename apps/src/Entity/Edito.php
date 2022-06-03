@@ -4,6 +4,8 @@ namespace Labstag\Entity;
 
 use DateTime;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -64,13 +66,49 @@ class Edito implements Stringable
     protected $title;
 
     /**
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $metas;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $paragraphs;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $published;
 
+    public function __construct()
+    {
+        $this->paragraphs = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
+    }
+
     public function __toString(): string
     {
         return (string) $this->getTitle();
+    }
+
+    public function addMeta(Meta $meta): self
+    {
+        if (!$this->metas->contains($meta)) {
+            $this->metas[] = $meta;
+            $meta->setEdito($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setEdito($this);
+        }
+
+        return $this;
     }
 
     public function getContent(): ?string
@@ -93,6 +131,22 @@ class Edito implements Stringable
         return $this->id;
     }
 
+    /**
+     * @return Collection<int, Meta>
+     */
+    public function getMetas(): Collection
+    {
+        return $this->metas;
+    }
+
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
+    }
+
     public function getPublished(): ?DateTimeInterface
     {
         return $this->published;
@@ -106,6 +160,30 @@ class Edito implements Stringable
     public function getTitle(): ?string
     {
         return $this->title;
+    }
+
+    public function removeMeta(Meta $meta): self
+    {
+        if ($this->metas->removeElement($meta)) {
+            // set the owning side to null (unless already changed)
+            if ($meta->getEdito() === $this) {
+                $meta->setEdito(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        if ($this->paragraphs->removeElement($paragraph)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraph->getEdito() === $this) {
+                $paragraph->setEdito(null);
+            }
+        }
+
+        return $this;
     }
 
     public function setContent(string $content): self
