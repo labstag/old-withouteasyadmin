@@ -39,7 +39,6 @@ class PrincipalType extends AbstractTypeLib
             ]
         );
         $this->setContent($builder);
-        $this->setMeta($builder);
         $builder->add(
             'file',
             FileType::class,
@@ -97,6 +96,7 @@ class PrincipalType extends AbstractTypeLib
                 ],
             ]
         );
+        $this->setMeta($builder);
         unset($options);
     }
 

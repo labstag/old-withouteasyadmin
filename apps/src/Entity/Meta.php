@@ -21,6 +21,11 @@ class Meta
     protected $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Chapter::class, inversedBy="metas")
+     */
+    private $chapter;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
@@ -31,14 +36,14 @@ class Meta
     private $edito;
 
     /**
+     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="metas")
+     */
+    private $history;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $keywords;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Memo::class, inversedBy="metas")
-     */
-    private $memo;
 
     /**
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="metas")
@@ -55,6 +60,11 @@ class Meta
      */
     private $title;
 
+    public function getChapter(): ?Chapter
+    {
+        return $this->chapter;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
@@ -65,6 +75,11 @@ class Meta
         return $this->edito;
     }
 
+    public function getHistory(): ?History
+    {
+        return $this->history;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -73,11 +88,6 @@ class Meta
     public function getKeywords(): ?string
     {
         return $this->keywords;
-    }
-
-    public function getMemo(): ?Memo
-    {
-        return $this->memo;
     }
 
     public function getPage(): ?Page
@@ -95,6 +105,13 @@ class Meta
         return $this->title;
     }
 
+    public function setChapter(?Chapter $chapter): self
+    {
+        $this->chapter = $chapter;
+
+        return $this;
+    }
+
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -109,16 +126,16 @@ class Meta
         return $this;
     }
 
-    public function setKeywords(?string $keywords): self
+    public function setHistory(?History $history): self
     {
-        $this->keywords = $keywords;
+        $this->history = $history;
 
         return $this;
     }
 
-    public function setMemo(?Memo $memo): self
+    public function setKeywords(?string $keywords): self
     {
-        $this->memo = $memo;
+        $this->keywords = $keywords;
 
         return $this;
     }

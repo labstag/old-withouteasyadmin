@@ -27,7 +27,6 @@ class PostType extends AbstractTypeLib
         $this->setTextType($builder);
         $this->addPublished($builder);
         $this->setContent($builder);
-        $this->setMeta($builder);
         $builder->add(
             'file',
             FileType::class,
@@ -89,6 +88,7 @@ class PostType extends AbstractTypeLib
                 ],
             ]
         );
+        $this->setMeta($builder);
         unset($options);
     }
 

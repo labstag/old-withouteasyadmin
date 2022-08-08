@@ -2,7 +2,10 @@
 
 namespace Labstag\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Entity\Paragraph\Text;
 use Labstag\Repository\ParagraphRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
@@ -11,6 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  */
 class Paragraph
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -55,9 +59,30 @@ class Paragraph
     private $post;
 
     /**
+     * @ORM\OneToMany(targetEntity=Text::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $texts;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $type;
+
+    public function __construct()
+    {
+        $this->position = 0;
+        $this->texts    = new ArrayCollection();
+    }
+
+    public function addText(Text $text): self
+    {
+        if (!$this->texts->contains($text)) {
+            $this->texts[] = $text;
+            $text->setParagraph($this);
+        }
+
+        return $this;
+    }
 
     public function getBackground(): ?string
     {
@@ -74,7 +99,7 @@ class Paragraph
         return $this->edito;
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -99,9 +124,29 @@ class Paragraph
         return $this->post;
     }
 
+    /**
+     * @return Collection<int, Text>
+     */
+    public function getTexts(): Collection
+    {
+        return $this->texts;
+    }
+
     public function getType(): ?string
     {
         return $this->type;
+    }
+
+    public function removeText(Text $text): self
+    {
+        if ($this->texts->removeElement($text)) {
+            // set the owning side to null (unless already changed)
+            if ($text->getParagraph() === $this) {
+                $text->setParagraph(null);
+            }
+        }
+
+        return $this;
     }
 
     public function setBackground(?string $background): self

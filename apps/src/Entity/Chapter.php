@@ -3,10 +3,11 @@
 namespace Labstag\Entity;
 
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\ChapterRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -18,7 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Chapter
 {
-    use MetatagsEntity;
     use SoftDeleteableEntity;
     use StateableEntity;
 
@@ -40,6 +40,11 @@ class Chapter
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="chapter")
+     */
+    private $metas;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -84,6 +89,17 @@ class Chapter
     public function __construct()
     {
         $this->pages = 0;
+        $this->metas = new ArrayCollection();
+    }
+
+    public function addMeta(Meta $meta): self
+    {
+        if (!$this->metas->contains($meta)) {
+            $this->metas[] = $meta;
+            $meta->setChapter($this);
+        }
+
+        return $this;
     }
 
     public function getContent(): ?string
@@ -99,6 +115,14 @@ class Chapter
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection<int, Meta>
+     */
+    public function getMetas(): Collection
+    {
+        return $this->metas;
     }
 
     public function getName(): ?string
@@ -134,6 +158,18 @@ class Chapter
     public function getUpdated(): ?DateTimeInterface
     {
         return $this->updated;
+    }
+
+    public function removeMeta(Meta $meta): self
+    {
+        if ($this->metas->removeElement($meta)) {
+            // set the owning side to null (unless already changed)
+            if ($meta->getChapter() === $this) {
+                $meta->setChapter(null);
+            }
+        }
+
+        return $this;
     }
 
     public function setContent(?string $content): self

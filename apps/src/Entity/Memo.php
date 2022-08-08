@@ -75,11 +75,6 @@ class Memo implements Stringable
     protected $title;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="memo", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $metas;
-
-    /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="memo", cascade={"persist"}, orphanRemoval=true)
      */
     private $paragraphs;
@@ -89,22 +84,11 @@ class Memo implements Stringable
         $this->dateStart  = new DateTime();
         $this->dateEnd    = new DateTime();
         $this->paragraphs = new ArrayCollection();
-        $this->metas      = new ArrayCollection();
     }
 
     public function __toString(): string
     {
         return (string) $this->getTitle();
-    }
-
-    public function addMeta(Meta $meta): self
-    {
-        if (!$this->metas->contains($meta)) {
-            $this->metas[] = $meta;
-            $meta->setMemo($this);
-        }
-
-        return $this;
     }
 
     public function addParagraph(Paragraph $paragraph): self
@@ -148,14 +132,6 @@ class Memo implements Stringable
     }
 
     /**
-     * @return Collection<int, Meta>
-     */
-    public function getMetas(): Collection
-    {
-        return $this->metas;
-    }
-
-    /**
      * @return Collection<int, Paragraph>
      */
     public function getParagraphs(): Collection
@@ -171,18 +147,6 @@ class Memo implements Stringable
     public function getTitle(): ?string
     {
         return $this->title;
-    }
-
-    public function removeMeta(Meta $meta): self
-    {
-        if ($this->metas->removeElement($meta)) {
-            // set the owning side to null (unless already changed)
-            if ($meta->getMemo() === $this) {
-                $meta->setMemo(null);
-            }
-        }
-
-        return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self

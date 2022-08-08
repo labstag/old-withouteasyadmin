@@ -2,6 +2,7 @@
 
 namespace Labstag\EventSubscriber;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\EmailUser;
@@ -14,16 +15,24 @@ use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Event\HistoryEntityEvent;
 use Labstag\Event\MenuEntityEvent;
 use Labstag\Event\PageEntityEvent;
+use Labstag\Event\ParagraphEntityEvent;
 use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\EventSubscriberLib;
 use Labstag\Service\HistoryService;
+use Labstag\Service\ParagraphService;
 
 class EntitySubscriber extends EventSubscriberLib
 {
+
+    public function __construct(protected EntityManagerInterface $entityManager, protected ParagraphService $paragraphService)
+    {
+    }
+
     public static function getSubscribedEvents(): array
     {
         return [
             AttachmentEntityEvent::class    => 'onAttachmentEntityEvent',
+            ParagraphEntityEvent::class     => 'onParagraphEntityEvent',
             ConfigurationEntityEvent::class => 'onConfigurationEntityEvent',
             BookmarkEntityEvent::class      => 'onBookmarkEntityEvent',
             ChapterEntityEvent::class       => 'onChapterEntityEvent',
@@ -101,6 +110,28 @@ class EntitySubscriber extends EventSubscriberLib
 
         $repository = $this->getRepository($entity::class);
         $repository->add($entity);
+    }
+
+    public function onParagraphEntityEvent(ParagraphEntityEvent $event)
+    {
+        $newEntity = $event->getNewEntity();
+        $oldEntity = $event->getOldEntity();
+        if (0 != $oldEntity->getPosition()) {
+            return;
+        }
+
+        $classentity = $this->paragraphService->getTypeEntity($newEntity);
+        if (is_null($classentity)) {
+            $this->entityManager->remove($newEntity);
+            $this->entityManager->flush();
+
+            return;
+        }
+
+        $entity = new $classentity();
+        $entity->setParagraph($newEntity);
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
     }
 
     public function onUserEntityEvent(UserEntityEvent $event): void

@@ -31,7 +31,6 @@ class HistoryType extends AbstractTypeLib
                 'help'  => $this->translator->trans('history.summary.help', [], 'admin.form'),
             ]
         );
-        $this->setMeta($builder);
         $builder->add(
             'refuser',
             SearchableType::class,
@@ -46,6 +45,7 @@ class HistoryType extends AbstractTypeLib
                 ],
             ]
         );
+        $this->setMeta($builder);
         unset($options);
     }
 

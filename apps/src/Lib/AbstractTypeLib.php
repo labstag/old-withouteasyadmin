@@ -2,11 +2,13 @@
 
 namespace Labstag\Lib;
 
+use Labstag\Form\Admin\Collections\MetaType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\FormType\WysiwygType;
 use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -145,33 +147,17 @@ abstract class AbstractTypeLib extends AbstractType
 
     protected function setMeta($builder)
     {
-        $meta = [
-            'metaDescription' => [
-                'label' => $this->translator->trans('metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('metaDescription.help', [], 'admin.form'),
-                'attr'  => [
-                    'placeholder' => $this->translator->trans('metaDescription.placeholder', [], 'admin.form'),
-                ],
-            ],
-            'metaKeywords'    => [
-                'label' => $this->translator->trans('metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('metaKeywords.help', [], 'admin.form'),
-            ],
-        ];
-        $this->setMetas($builder, $meta);
-    }
-
-    protected function setMetas($builder, $metas)
-    {
-        foreach ($metas as $key => $values) {
-            $builder->add(
-                $key,
-                TextType::class,
-                array_merge(
-                    $values,
-                    ['required' => false]
-                )
-            );
-        }
+        $builder->add(
+            'metas',
+            CollectionType::class,
+            [
+                'attr'         => ['data-limit' => 1],
+                'label'        => 'Metatags',
+                'entry_type'   => MetaType::class,
+                'by_reference' => false,
+                'allow_add'    => true,
+                'allow_delete' => false,
+            ]
+        );
     }
 }

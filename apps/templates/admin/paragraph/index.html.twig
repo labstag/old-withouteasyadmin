@@ -1,0 +1,15 @@
+{% if configparagraphs.types|length != 0 %}
+<fieldset>
+  <div id="paragraph-list">
+    {% include "admin/paragraph/list.html.twig" with {'addurl': addurl, 'urledit': urledit, 'urldelete': urldelete, 'paragraphs': paragraphs} %}
+  </div>
+  {% if addurl != '' %}
+    <select class="form-select tomselected" id="add-paragraph" is="select-paragraph" data-url="{{ addurl }}">
+        <option value="">Ajouter paragraphe</option>
+        {% for row in configparagraphs.default %}
+        <option value="{{ row }}">{{ configparagraphs.types[row] }}</option>
+        {% endfor %}
+    </select>
+    {% endif %}
+</fieldset>
+{% endif %}

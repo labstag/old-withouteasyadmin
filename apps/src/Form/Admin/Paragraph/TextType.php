@@ -1,0 +1,35 @@
+<?php
+
+namespace Labstag\Form\Admin\Paragraph;
+
+use Labstag\Entity\Paragraph\Text;
+use Labstag\FormType\WysiwygType;
+use Labstag\Lib\ParagraphAbstractTypeLib;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class TextType extends ParagraphAbstractTypeLib
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->add(
+            'content',
+            WysiwygType::class,
+            [
+                'label'     => 'Texte',
+                'help_html' => true,
+                'help'      => $this->getRender('admin/paragraph/shortcode.html.twig'),
+            ]
+        );
+        unset($options);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults(
+            [
+                'data_class' => Text::class,
+            ]
+        );
+    }
+}

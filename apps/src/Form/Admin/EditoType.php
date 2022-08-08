@@ -34,7 +34,6 @@ class EditoType extends AbstractTypeLib
         );
         $this->addPublished($builder);
         $this->setContent($builder);
-        $this->setMeta($builder);
         $builder->add(
             'file',
             FileType::class,
@@ -59,6 +58,7 @@ class EditoType extends AbstractTypeLib
                 ],
             ]
         );
+        $this->setMeta($builder);
         unset($options);
     }
 

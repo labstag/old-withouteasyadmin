@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -21,7 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class History
 {
-    use MetatagsEntity;
     use SoftDeleteableEntity;
     use StateableEntity;
 
@@ -44,6 +42,11 @@ class History
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="history")
+     */
+    private $metas;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -88,6 +91,7 @@ class History
     {
         $this->pages    = 0;
         $this->chapters = new ArrayCollection();
+        $this->metas    = new ArrayCollection();
     }
 
     public function addChapter(Chapter $chapter): self
@@ -95,6 +99,16 @@ class History
         if (!$this->chapters->contains($chapter)) {
             $this->chapters[] = $chapter;
             $chapter->setRefhistory($this);
+        }
+
+        return $this;
+    }
+
+    public function addMeta(Meta $meta): self
+    {
+        if (!$this->metas->contains($meta)) {
+            $this->metas[] = $meta;
+            $meta->setHistory($this);
         }
 
         return $this;
@@ -128,6 +142,14 @@ class History
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection<int, Meta>
+     */
+    public function getMetas(): Collection
+    {
+        return $this->metas;
     }
 
     public function getName(): ?string
@@ -171,6 +193,18 @@ class History
             // set the owning side to null (unless already changed)
             if ($chapter->getRefhistory() === $this) {
                 $chapter->setRefhistory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeMeta(Meta $meta): self
+    {
+        if ($this->metas->removeElement($meta)) {
+            // set the owning side to null (unless already changed)
+            if ($meta->getHistory() === $this) {
+                $meta->setHistory(null);
             }
         }
 

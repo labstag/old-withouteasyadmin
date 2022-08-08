@@ -310,9 +310,9 @@
 
 {% block form_row %}
 	{% set label_attr = {} %}
-	{% set element_attr = {
+	{% set element_attr =  attr|merge({
 		'class': 'form-group'
-	} %}
+	}) %}
     {% if form.children.date is defined and form.children.time is defined %}
         {% set element = 'div' %}
     {% elseif compound is defined and form.children.hour is defined %}
@@ -325,9 +325,9 @@
         {% set element = 'div' %}
     {% elseif compound is defined and compound %}
         {% set element = 'fieldset' %}
-        {% set element_attr = {
+        {% set element_attr = element_attr|merge({
             'class': 'form-group fieldcollection'
-        } %}
+        }) %}
         {% if "collection" in form.vars.block_prefixes %}
             {% if prototype is defined and allow_add %}
                 {% set label_attr = label_attr|merge({

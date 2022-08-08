@@ -6,6 +6,11 @@
 parameters:
   file_directory: '%kernel.project_dir%/public/uploads'
   metatags: ['disclaimer', 'meta', 'tarteaucitron', 'format_datetime']
+  paragraphs:
+    types:
+      text: "Texte"
+    default:
+      - text
 
 services:
     # default configuration for services in *this* file
@@ -22,6 +27,18 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - "../src/Reader/"
+    Labstag\Paragraph\:
+        resource: "../src/Paragraph/"
+        public: true
+        tags: [paragraphsclass]
+    Labstag\Form\Front\:
+      resource: "../src/Form/Front/"
+      public: true
+      tags: [formfront]
+    Labstag\PostForm\:
+      resource: "../src/PostForm/"
+      public: true
+      tags: [postform]
 
   # controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class
@@ -45,6 +62,13 @@ services:
     Labstag\Command\LabstagInstallCommand:
         arguments:
           - serverenv: "env"
+    Labstag\Service\FormService:
+        arguments:
+            - !tagged_iterator formfront
+            - !tagged_iterator postform
+    Labstag\Service\ParagraphService:
+        arguments:
+            - !tagged_iterator paragraphsclass
       # add more service definitions when explicit configuration is needed
       # please note that last definitions always *replace* previous ones
 

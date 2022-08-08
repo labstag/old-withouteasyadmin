@@ -11,7 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
-use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Repository\BookmarkRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,7 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Bookmark
 {
-    use MetatagsEntity;
     use SoftDeleteableEntity;
 
     /**

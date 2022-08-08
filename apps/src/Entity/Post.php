@@ -11,7 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
-use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\PostRepository;
 use Stringable;
@@ -25,7 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Post implements Stringable
 {
-    use MetatagsEntity;
     use SoftDeleteableEntity;
     use StateableEntity;
 
