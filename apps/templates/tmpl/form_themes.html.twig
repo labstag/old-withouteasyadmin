@@ -24,16 +24,10 @@
 {% endblock %}
 {% block form_rows %}
     {% set template = formClass(form) %}
-    {% if template == '' %}
-        {% for child in form|filter(child => not child.rendered) %}
-            {{ form_row(child) }}
-        {% endfor %}
-    {% else %}
-        {% include template with {
-            'row': form|filter(child => not child.rendered),
-            'allow_delete': false
-        } %}
-    {% endif %}
+    {% include template with {
+        'row': form|filter(child => not child.rendered),
+        'allow_delete': false
+    } %}
 {% endblock %}
 
 {% block fieldset_widget %}
@@ -449,22 +443,7 @@
             {% if prototype is defined %}
                 <div class="collection-row">
             {% endif %}
-            {% if template == '' %}
-                <div class="row">
-                    {% for input in row %}
-                        <div class="col-6">
-                            {{ form_row(input) }}
-                        </div>
-                    {% endfor %}
-                    {% if allow_delete %}
-                        <div class="text-center col-12">
-                            {{ block('collection_delete') }}
-                        </div>
-                    {% endif %}
-                </div>
-            {% else %}
-                {% include template with {'row': row, 'allow_delete': allow_delete} %}
-            {% endif %}
+            {% include template with {'row': row, 'allow_delete': allow_delete} %}
             {% if prototype is defined %}
                 </div>
             {% endif %}

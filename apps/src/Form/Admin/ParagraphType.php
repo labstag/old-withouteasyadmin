@@ -7,6 +7,7 @@ use Labstag\Lib\AbstractTypeLib;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -41,6 +42,8 @@ class ParagraphType extends AbstractTypeLib
                 ]
             );
         }
+
+        $builder->add('Enregistrer', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

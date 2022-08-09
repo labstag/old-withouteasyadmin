@@ -12,6 +12,7 @@ use Labstag\Service\PhoneService;
 use Labstag\Service\TemplatePageService;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -28,6 +29,7 @@ class LabstagExtension extends AbstractExtension
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
+        protected ContainerBagInterface $containerBag,
         protected RouterInterface $router,
         protected PhoneService $phoneService,
         protected CacheManager $cache,
@@ -38,6 +40,11 @@ class LabstagExtension extends AbstractExtension
         protected GuardService $guardService
     )
     {
+    }
+
+    private function getParameter($name)
+    {
+        return $this->containerBag->get($name);
     }
 
     public function classEntity($entity)
@@ -57,21 +64,41 @@ class LabstagExtension extends AbstractExtension
         }
 
         $vars = $class->vars;
+        $classtype = get_class($class->vars['value']);
 
         if (!array_key_exists('data', $vars) || is_null($vars['data'])) {
             return $file;
         }
 
-        $type = $this->setTypeformClass($vars);
-
-        $newFile = 'forms/'.$type.'.html.twig';
-        if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
-            $this->logger->info('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
-
-            return $file;
+        $type = strtolower($this->setTypeformClass($vars));
+        $folder = __DIR__.'/../../templates/';
+        $htmltwig = '.html.twig';
+        $files = [
+            'forms/'.$type.$htmltwig,
+        ];
+        
+        if (substr_count($classtype, '\Paragraph') == 1) {
+            $files[] = 'forms/paragraph/'.$type.$htmltwig;
+            $files[] = 'forms/paragraph/default'.$htmltwig;
         }
 
-        return $newFile;
+        $files[] = 'forms/default'.$htmltwig;
+
+        $view = end($files);
+
+        foreach ($files as $file) {
+            if (is_file($folder.$file)) {
+                $view = $file;
+
+                break;
+            }
+        }
+
+        if ('dev' == $this->getParameter('kernel.debug')) {
+            dump(['templates-form', $type, $files, $view]);
+        }
+
+        return $view;
     }
 
     public function formPrototype(array $blockPrefixes): string
