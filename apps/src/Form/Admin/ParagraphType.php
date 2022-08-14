@@ -29,6 +29,7 @@ class ParagraphType extends AbstractTypeLib
         $field    = $this->paragraphService->getEntityField($options['data']);
         $builder->add('background');
         $builder->add('color');
+        $builder->add('fond');
         if (!is_null($formType) || is_null($field)) {
             $builder->add(
                 $field,

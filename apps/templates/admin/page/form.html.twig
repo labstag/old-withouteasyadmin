@@ -5,7 +5,11 @@
     {{ form_row(form.slug) }}
     {{ form_row(form.parent) }}
     {{ form_row(form.front) }}
-    {{ form_row(form.reflayout) }}
     {{ form_row(form.function) }}
+    {% include "admin/paragraph/index.html.twig" with {'addurl': path('admin_page_paragraph_add', {'id': entity.id}), 'urledit': 'admin_page_paragraph_show', 'urldelete': 'admin_page_paragraph_delete', 'paragraphs': entity.paragraphs} %}
     {{ form_end(form) }}
+{% endblock %}
+{% block modal %}
+    {{ parent() }}
+    {% include "admin/paragraph/modal.html.twig" with {'paragraphurl': 'admin_page_paragraph_index' } %}
 {% endblock %}

@@ -8,36 +8,35 @@ import Sortable from 'sortablejs'
 
 window.customElements.define('workflow-action', WorkflowAction)
 window.customElements.define('entity-move', EntityMove, { extends: 'ul' })
-function loadAdmin() {
+function loadAdmin () {
   document.querySelectorAll('.paragraph_show').forEach(
     element => {
       element.addEventListener('click', () => {
         document.getElementById('iframe_paragaph').setAttribute('src', element.getAttribute('href'))
       })
-  })
+    })
   sortableElement()
 }
 
-function sortableElement() {
-  var $elementSortable = document.getElementById('paragraphs-list');
+function sortableElement () {
+  const $elementSortable = document.getElementById('paragraphs-list')
 
   if ($elementSortable !== undefined) {
     Sortable.create(
       $elementSortable,
       {
         onChange: function (event) {
-          changeParagraphInputPosition();
+          changeParagraphInputPosition()
         }
       }
-    );
+    )
   }
 }
 
-function changeParagraphInputPosition()
-{
+function changeParagraphInputPosition () {
   document.querySelectorAll('.paragraph_input').forEach(
     (element, position) => {
-      element.ariaValueMax(position+1)
+      element.ariaValueMax(position + 1)
     }
   )
 }

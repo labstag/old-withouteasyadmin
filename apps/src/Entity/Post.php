@@ -33,7 +33,7 @@ class Post implements Stringable
     protected $file;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $content;
 
@@ -266,7 +266,7 @@ class Post implements Stringable
         return $this;
     }
 
-    public function setContent(string $content): self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 

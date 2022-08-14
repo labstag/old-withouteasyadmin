@@ -2,10 +2,8 @@
 
 namespace Labstag\Form\Admin;
 
-use Labstag\Entity\Layout;
 use Labstag\Entity\Page;
 use Labstag\Lib\AbstractTypeLib;
-use Labstag\Repository\LayoutRepository;
 use Labstag\Repository\PageRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -58,17 +56,6 @@ class PageType extends AbstractTypeLib
                 'required'      => false,
                 'class'         => Page::class,
                 'query_builder' => fn (PageRepository $er) => $er->formType($options),
-            ]
-        );
-
-        $builder->add(
-            'reflayout',
-            EntityType::class,
-            [
-                'label'         => $this->translator->trans('page.reflayout.label', [], 'admin.form'),
-                'help'          => $this->translator->trans('page.reflayout.help', [], 'admin.form'),
-                'class'         => Layout::class,
-                'query_builder' => fn (LayoutRepository $er) => $er->formType(),
             ]
         );
 

@@ -39,6 +39,11 @@ class Paragraph
     private $edito;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $fond;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Memo::class, inversedBy="paragraphs")
      */
     private $memo;
@@ -97,6 +102,11 @@ class Paragraph
     public function getEdito(): ?Edito
     {
         return $this->edito;
+    }
+
+    public function getFond(): ?string
+    {
+        return $this->fond;
     }
 
     public function getId(): ?string
@@ -166,6 +176,13 @@ class Paragraph
     public function setEdito(?Edito $edito): self
     {
         $this->edito = $edito;
+
+        return $this;
+    }
+
+    public function setFond(?string $fond): self
+    {
+        $this->fond = $fond;
 
         return $this;
     }

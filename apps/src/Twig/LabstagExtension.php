@@ -42,11 +42,6 @@ class LabstagExtension extends AbstractExtension
     {
     }
 
-    private function getParameter($name)
-    {
-        return $this->containerBag->get($name);
-    }
-
     public function classEntity($entity)
     {
         $class = substr($entity::class, strpos($entity::class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY));
@@ -63,21 +58,21 @@ class LabstagExtension extends AbstractExtension
             return $file;
         }
 
-        $vars = $class->vars;
-        $classtype = get_class($class->vars['value']);
+        $vars      = $class->vars;
+        $classtype = $class->vars['value']::class;
 
         if (!array_key_exists('data', $vars) || is_null($vars['data'])) {
             return $file;
         }
 
-        $type = strtolower($this->setTypeformClass($vars));
-        $folder = __DIR__.'/../../templates/';
+        $type     = strtolower($this->setTypeformClass($vars));
+        $folder   = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';
-        $files = [
+        $files    = [
             'forms/'.$type.$htmltwig,
         ];
-        
-        if (substr_count($classtype, '\Paragraph') == 1) {
+
+        if (1 == substr_count($classtype, '\Paragraph')) {
             $files[] = 'forms/paragraph/'.$type.$htmltwig;
             $files[] = 'forms/paragraph/default'.$htmltwig;
         }
@@ -140,6 +135,14 @@ class LabstagExtension extends AbstractExtension
         return $attachment;
     }
 
+    public function getBackgroundSection($data)
+    {
+        $paragraph = $data->getParagraph();
+        $code      = $paragraph->getFond();
+
+        return !empty($code) ? 'm--background-'.$code : '';
+    }
+
     public function getFilters(): array
     {
         $dataFilters = $this->getFiltersFunctions();
@@ -160,6 +163,21 @@ class LabstagExtension extends AbstractExtension
         }
 
         return $functions;
+    }
+
+    public function getParagraphId($data)
+    {
+        $paragraph = $data->getParagraph();
+
+        return $paragraph->getType();
+    }
+
+    public function getTextColorSection($data)
+    {
+        $paragraph = $data->getParagraph();
+        $code      = $paragraph->getColor();
+
+        return !empty($code) ? 'm--theme-'.$code : '';
     }
 
     public function guardAccessGroupRoutes(Groupe $groupe): bool
@@ -284,6 +302,9 @@ class LabstagExtension extends AbstractExtension
     private function getFiltersFunctions()
     {
         return [
+            'txtcolor_section'         => 'getTextColorSection',
+            'background_section'       => 'getBackgroundSection',
+            'paragraph_id'             => 'getParagraphId',
             'page'                     => 'page',
             'attachment'               => 'getAttachment',
             'class_entity'             => 'classEntity',
@@ -299,5 +320,10 @@ class LabstagExtension extends AbstractExtension
             'verifPhone'               => 'verifPhone',
             'workflow_has'             => 'workflowHas',
         ];
+    }
+
+    private function getParameter($name)
+    {
+        return $this->containerBag->get($name);
     }
 }

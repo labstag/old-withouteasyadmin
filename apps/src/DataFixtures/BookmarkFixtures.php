@@ -37,8 +37,6 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
         // @var string $content
         $content = $faker->paragraphs(random_int(4, 10), true);
         $bookmark->setContent(str_replace("\n\n", "<br />\n", $content));
-        $bookmark->setMetaKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
-        $bookmark->setMetaDescription($faker->unique()->sentence);
         $indexLibelle = $faker->numberBetween(0, self::NUMBER_CATEGORY - 1);
         $category     = $this->getReference('category_'.$indexLibelle);
         $bookmark->setRefcategory($category);

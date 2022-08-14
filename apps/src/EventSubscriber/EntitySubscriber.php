@@ -23,7 +23,6 @@ use Labstag\Service\ParagraphService;
 
 class EntitySubscriber extends EventSubscriberLib
 {
-
     public function __construct(protected EntityManagerInterface $entityManager, protected ParagraphService $paragraphService)
     {
     }

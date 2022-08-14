@@ -14,5 +14,12 @@
         ) }}
     {% endif %}
     {{ form_row(form.file) }}
+    {{ form_row(form.content) }}
+    {% include "admin/paragraph/index.html.twig" with {'addurl': path('admin_memo_paragraph_add', {'id': entity.id}), 'urledit': 'admin_memo_paragraph_show', 'urldelete': 'admin_memo_paragraph_delete', 'paragraphs': entity.paragraphs} %}
     {{ form_end(form) }}
 {% endblock %}
+{% block modal %}
+    {{ parent() }}
+    {% include "admin/paragraph/modal.html.twig" with {'paragraphurl': 'admin_memo_paragraph_index' } %}
+{% endblock %}
+

@@ -2,22 +2,25 @@
 
 namespace Labstag\Controller\Admin;
 
+use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\PostType;
 use Labstag\Form\Admin\Search\PostType as SearchPostType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\PostRepository;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\Search\PostSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/post')]
 class PostController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_post_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_post_new', methods: ['GET', 'POST'])]
     public function edit(AttachFormService $service, ?Post $post, PostRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
@@ -42,6 +45,22 @@ class PostController extends AdminControllerLib
             Post::class,
             'admin/post/index.html.twig',
         );
+    }
+
+    #[Route(path: '/new', name: 'admin_post_new', methods: ['GET', 'POST'])]
+    public function new(PostRepository $repository, PostRequestHandler $requestHandler, Security $security): Response
+    {
+        $user = $user = $security->getUser();
+        $post = new Post();
+        $post->setPublished(new DateTime());
+        $post->setRemark(false);
+        $post->setTitle(Uuid::v1());
+        $post->setRefuser($user);
+        $old = clone $post;
+        $repository->add($post);
+        $requestHandler->handle($old, $post);
+
+        return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
     }
 
     /**

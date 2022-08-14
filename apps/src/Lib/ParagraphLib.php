@@ -20,9 +20,7 @@ abstract class ParagraphLib extends AbstractController
     {
         $folder   = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';
-        $slug     = $content->getSlug();
         $files    = [
-            'paragraph/'.$slug.'-'.$type.$htmltwig,
             'paragraph/'.$type.$htmltwig,
             'paragraph/default'.$htmltwig,
         ];

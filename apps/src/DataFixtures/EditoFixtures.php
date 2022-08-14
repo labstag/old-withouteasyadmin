@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\Edito;
+use Labstag\Entity\Meta;
 use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
 
@@ -36,8 +37,10 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         $old    = clone $edito;
         $random = $faker->numberBetween(5, 50);
         $edito->setTitle($faker->unique()->text($random));
-        $edito->setMetaKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
-        $edito->setMetaDescription($faker->unique()->sentence);
+        $meta = new Meta();
+        $meta->setKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
+        $meta->setDescription($faker->unique()->sentence);
+        $edito->addMeta($meta);
         // @var string $content
         $content = $faker->paragraphs(random_int(4, 10), true);
         $edito->setContent(str_replace("\n\n", "<br />\n", $content));

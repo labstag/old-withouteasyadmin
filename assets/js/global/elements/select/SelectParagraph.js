@@ -12,7 +12,7 @@ export class SelectParagraph extends HTMLSelectElement {
   }
 
   async onChange (element) {
-    if (element != '') {
+    if (element !== '') {
       const params = {
         data: element
       }

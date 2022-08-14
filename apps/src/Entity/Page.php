@@ -80,12 +80,6 @@ class Page implements Stringable
     private $password;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Layout::class, inversedBy="pages")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $reflayout;
-
-    /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -189,11 +183,6 @@ class Page implements Stringable
         return $this->password;
     }
 
-    public function getReflayout(): ?Layout
-    {
-        return $this->reflayout;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -273,13 +262,6 @@ class Page implements Stringable
     public function setPassword(?string $password): self
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    public function setReflayout(?Layout $reflayout): self
-    {
-        $this->reflayout = $reflayout;
 
         return $this;
     }

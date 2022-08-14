@@ -5,6 +5,7 @@ namespace Labstag\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
+use Labstag\Entity\Meta;
 use Labstag\Entity\Post;
 use Labstag\Lib\FixtureLib;
 
@@ -30,8 +31,10 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $post    = new Post();
         $oldPost = clone $post;
         $post->setTitle($faker->unique()->colorName);
-        $post->setMetaKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
-        $post->setMetaDescription($faker->unique()->sentence);
+        $meta = new Meta();
+        $meta->setKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
+        $meta->setDescription($faker->unique()->sentence);
+        $post->addMeta($meta);
         // @var string $content
         $content = $faker->paragraphs(random_int(4, 10), true);
         $post->setContent(str_replace("\n\n", "<br />\n", $content));

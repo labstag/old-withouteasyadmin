@@ -7,17 +7,19 @@ use Labstag\Entity\Memo;
 use Labstag\Form\Admin\MemoType;
 use Labstag\Form\Admin\Search\MemoType as SearchMemoType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\MemoRepository;
 use Labstag\RequestHandler\MemoRequestHandler;
 use Labstag\Search\MemoSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/memo')]
 class MemoController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_memo_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_memo_new', methods: ['GET', 'POST'])]
     public function edit(AttachFormService $service, ?Memo $noteInterne, MemoRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
@@ -42,6 +44,20 @@ class MemoController extends AdminControllerLib
             Memo::class,
             'admin/memo/index.html.twig',
         );
+    }
+
+    #[Route(path: '/new', name: 'admin_memo_new', methods: ['GET', 'POST'])]
+    public function new(MemoRepository $repository, MemoRequestHandler $requestHandler, Security $security): Response
+    {
+        $user = $user = $security->getUser();
+        $memo = new Memo();
+        $memo->setTitle(Uuid::v1());
+        $memo->setRefuser($user);
+        $old = clone $memo;
+        $repository->add($memo);
+        $requestHandler->handle($old, $memo);
+
+        return $this->redirectToRoute('admin_memo_edit', ['id' => $memo->getId()]);
     }
 
     /**

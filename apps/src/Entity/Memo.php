@@ -27,7 +27,7 @@ class Memo implements Stringable
     use StateableEntity;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      * @Assert\NotBlank
      */
     protected $content;
@@ -161,7 +161,7 @@ class Memo implements Stringable
         return $this;
     }
 
-    public function setContent(string $content): self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 

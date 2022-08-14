@@ -2,22 +2,25 @@
 
 namespace Labstag\Controller\Admin;
 
+use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
 use Labstag\Form\Admin\EditoType;
 use Labstag\Form\Admin\Search\EditoType as SearchEditoType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\EditoRepository;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\Search\EditoSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/edito')]
 class EditoController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_edito_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_edito_new', methods: ['GET', 'POST'])]
     public function edit(AttachFormService $service, ?Edito $edito, EditoRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
@@ -42,6 +45,21 @@ class EditoController extends AdminControllerLib
             Edito::class,
             'admin/edito/index.html.twig',
         );
+    }
+
+    #[Route(path: '/new', name: 'admin_edito_new', methods: ['GET', 'POST'])]
+    public function new(EditoRepository $repository, EditoRequestHandler $requestHandler, Security $security): Response
+    {
+        $user  = $user = $security->getUser();
+        $edito = new Edito();
+        $edito->setPublished(new DateTime());
+        $edito->setTitle(Uuid::v1());
+        $edito->setRefuser($user);
+        $old = clone $edito;
+        $repository->add($edito);
+        $requestHandler->handle($old, $edito);
+
+        return $this->redirectToRoute('admin_edito_edit', ['id' => $edito->getId()]);
     }
 
     /**

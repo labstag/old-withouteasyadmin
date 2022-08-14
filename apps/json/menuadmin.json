@@ -55,12 +55,6 @@
                 "data": {
                     "route": "admin_menu_index"
                 }
-            },
-            {
-                "name": "Layout",
-                "data": {
-                    "route": "admin_layout_index"
-                }
             }
         ]
     },

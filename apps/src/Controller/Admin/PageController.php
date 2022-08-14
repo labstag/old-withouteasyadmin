@@ -7,17 +7,18 @@ use Labstag\Entity\Page;
 use Labstag\Form\Admin\PageType;
 use Labstag\Form\Admin\Search\PageType as SearchPageType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\PageRepository;
 use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\Search\PageSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/page')]
 class PageController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_page_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_page_new', methods: ['GET', 'POST'])]
     public function edit(AttachFormService $service, ?Page $page, PageRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
@@ -42,6 +43,19 @@ class PageController extends AdminControllerLib
             Page::class,
             'admin/page/index.html.twig'
         );
+    }
+
+    #[Route(path: '/new', name: 'admin_page_new', methods: ['GET', 'POST'])]
+    public function new(PageRepository $repository, PageRequestHandler $requestHandler): Response
+    {
+        $page = new Page();
+        $page->setName(Uuid::v1());
+        $page->setFront(false);
+        $old = clone $page;
+        $repository->add($page);
+        $requestHandler->handle($old, $page);
+
+        return $this->redirectToRoute('admin_page_edit', ['id' => $page->getId()]);
     }
 
     /**

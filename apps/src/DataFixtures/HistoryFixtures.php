@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\History;
+use Labstag\Entity\Meta;
 use Labstag\Lib\FixtureLib;
 
 class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
@@ -34,8 +35,10 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         $history    = new History();
         $oldHistory = clone $history;
         $history->setName($faker->unique()->colorName);
-        $history->setMetaKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
-        $history->setMetaDescription($faker->unique()->sentence);
+        $meta = new Meta();
+        $meta->setKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
+        $meta->setDescription($faker->unique()->sentence);
+        $history->addMeta($meta);
         // @var string $content
         $content = $faker->paragraphs(random_int(2, 4), true);
         $history->setSummary(str_replace("\n\n", "<br />\n", $content));
