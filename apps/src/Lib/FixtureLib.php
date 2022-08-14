@@ -24,7 +24,6 @@ use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\RequestHandler\HistoryRequestHandler;
-use Labstag\RequestHandler\LayoutRequestHandler;
 use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\RequestHandler\LinkUserRequestHandler;
 use Labstag\RequestHandler\MemoRequestHandler;
@@ -89,7 +88,6 @@ abstract class FixtureLib extends Fixture
         protected LinkUserRequestHandler $linkUserRH,
         protected MemoRequestHandler $noteInterneRH,
         protected GroupeRequestHandler $groupeRH,
-        protected LayoutRequestHandler $layoutRH,
         protected EditoRequestHandler $editoRH,
         protected UserRequestHandler $userRH,
         protected PhoneUserRequestHandler $phoneUserRH,

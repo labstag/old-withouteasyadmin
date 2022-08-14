@@ -116,10 +116,9 @@ abstract class TemplatePageLib
         $image
     )
     {
-        $keywords    = (0 != (is_countable($metas) ? count($metas) : 0)) ? $metas[0]->getKeywords() : '';
-        $description = (0 != (is_countable($metas) ? count($metas) : 0)) ? $metas->getDescription() : '';
-        $globals     = $this->twig->getGlobals();
-        $config      = $globals['config'] ?? $this->dataService->getConfig();
+        $keywords = (0 != (is_countable($metas) ? count($metas) : 0)) ? $metas[0]->getKeywords() : '';
+        $globals  = $this->twig->getGlobals();
+        $config   = $globals['config'] ?? $this->dataService->getConfig();
 
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
 
@@ -129,7 +128,7 @@ abstract class TemplatePageLib
             $meta['keywords'] = $keywords;
         }
 
-        $this->setMetaOpenGraphDescription($description, $meta);
+        $this->setMetaOpenGraphDescription($meta, $metas);
         $this->setMetaOpenGraphTitle($title, $config, $meta);
         $this->setMetaOpenGraphImage($image, $meta);
         $config['meta'] = $meta;
@@ -139,8 +138,9 @@ abstract class TemplatePageLib
         $this->setMetatags($config['meta']);
     }
 
-    private function setMetaOpenGraphDescription($description, &$meta)
+    private function setMetaOpenGraphDescription(&$meta, $metas)
     {
+        $description = (0 != (is_countable($metas) ? count($metas) : 0)) ? $metas->getDescription() : '';
         if ('' == $description) {
             return;
         }

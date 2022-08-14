@@ -16,7 +16,7 @@ abstract class ParagraphLib extends AbstractController
     {
     }
 
-    protected function getParagraphFile(string $type, $content)
+    protected function getParagraphFile(string $type)
     {
         $folder   = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';

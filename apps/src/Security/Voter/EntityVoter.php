@@ -13,7 +13,6 @@ use Labstag\Entity\EmailUser;
 use Labstag\Entity\GeoCode;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\History;
-use Labstag\Entity\Layout;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\LinkUser;
 use Labstag\Entity\Memo;
@@ -70,7 +69,6 @@ class EntityVoter extends Voter
             GeoCode::class,
             Groupe::class,
             History::class,
-            Layout::class,
             Libelle::class,
             LinkUser::class,
             Memo::class,

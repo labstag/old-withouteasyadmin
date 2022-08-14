@@ -5,14 +5,12 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\Groupe;
-use Labstag\Entity\Layout;
 use Labstag\Entity\Menu;
 use Labstag\Entity\Page;
 use Labstag\Entity\Template;
 use Labstag\Entity\User;
 use Labstag\RequestHandler\ConfigurationRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
-use Labstag\RequestHandler\LayoutRequestHandler;
 use Labstag\RequestHandler\MenuRequestHandler;
 use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
@@ -26,7 +24,6 @@ class InstallService
     public function __construct(
         protected OauthService $oauthService,
         protected UserService $userService,
-        protected LayoutRequestHandler $layoutRH,
         protected PageRequestHandler $pageRH,
         protected MenuRequestHandler $menuRH,
         protected GroupeRequestHandler $groupeRH,
@@ -77,51 +74,11 @@ class InstallService
         return $data;
     }
 
-    public function getLayoutContent()
-    {
-        return <<<EOF
-        [header]
-        [main,aside]
-        [footer]
-        EOF;
-    }
-
-    public function getLayoutHome()
-    {
-        return <<<EOF
-        [header]
-        [main]
-        [footer]
-        EOF;
-    }
-
-    public function getLayoutLanding()
-    {
-        return <<<EOF
-        [header]
-        [main]
-        [footer]
-        EOF;
-    }
-
     public function group()
     {
         $groupes = $this->getData('group');
         foreach ($groupes as $row) {
             $this->addGroupe($row);
-        }
-    }
-
-    public function layouts()
-    {
-        $layouts = [
-            'content' => $this->getLayoutContent(),
-            'home'    => $this->getLayoutHome(),
-            'landing' => $this->getLayoutLanding(),
-        ];
-
-        foreach ($layouts as $id => $content) {
-            $this->addLayout($id, $content);
         }
     }
 
@@ -224,37 +181,10 @@ class InstallService
         $this->groupeRH->handle($old, $groupe);
     }
 
-    protected function addLayout(string $id, string $content): void
-    {
-        $layout = $this->getRepository(Layout::class)->findOneBy(
-            ['name' => $id]
-        );
-
-        if ($layout instanceof Layout) {
-            return;
-        }
-
-        $layout = new Layout();
-        $old    = clone $layout;
-        $layout->setName($id);
-        $layout->setContent($content);
-        $this->layoutRH->handle($old, $layout);
-    }
-
     protected function addPage(array $row, ?Page $parent): void
     {
-        $layout = $this->getRepository(Layout::class)->findOneBy(
-            [
-                'name' => $row['layout'],
-            ]
-        );
-        if (!$layout instanceof Layout) {
-            return;
-        }
-
         $page = new Page();
         $old  = clone $page;
-        $page->setReflayout($layout);
         $page->setParent($parent);
         $page->setSlug($row['slug']);
         $page->setName($row['name']);

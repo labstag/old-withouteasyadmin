@@ -41,7 +41,6 @@ class LabstagInstallCommand extends CommandLib
     protected function configure()
     {
         $this->setDescription('Add a short description for your command');
-        $this->addOption('layout', null, InputOption::VALUE_NONE, 'layout');
         $this->addOption('pages', null, InputOption::VALUE_NONE, 'pages');
         $this->addOption('menuadmin', null, InputOption::VALUE_NONE, 'menuadmin');
         $this->addOption('menuadminprofil', null, InputOption::VALUE_NONE, 'menuadminprofil');
@@ -72,7 +71,6 @@ class LabstagInstallCommand extends CommandLib
     protected function getExecutesFunction()
     {
         return [
-            'layout'          => 'setLayouts',
             'pages'           => 'setPages',
             'menuadmin'       => 'setMenuAdmin',
             'menuadminprofil' => 'setMenuAdminProfil',
@@ -96,14 +94,6 @@ class LabstagInstallCommand extends CommandLib
     {
         $inputOutput->note('Ajout des groupes');
         $this->installService->group();
-
-        return true;
-    }
-
-    protected function setLayouts($inputOutput): bool
-    {
-        $inputOutput->note('Ajout des layouts');
-        $this->installService->layouts();
 
         return true;
     }
