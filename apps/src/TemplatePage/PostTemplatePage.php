@@ -4,7 +4,6 @@ namespace Labstag\TemplatePage;
 
 use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
-use Labstag\Entity\Meta;
 use Labstag\Entity\Page;
 use Labstag\Entity\Post;
 use Labstag\Lib\TemplatePageLib;

@@ -116,10 +116,10 @@ abstract class TemplatePageLib
         $image
     )
     {
-        $keywords = (count($metas) != 0) ? $metas[0]->getKeywords() : '';
-        $description = (count($metas) != 0) ? $metas->getDescription() : '';
-        $globals = $this->twig->getGlobals();
-        $config  = $globals['config'] ?? $this->dataService->getConfig();
+        $keywords    = (0 != (is_countable($metas) ? count($metas) : 0)) ? $metas[0]->getKeywords() : '';
+        $description = (0 != (is_countable($metas) ? count($metas) : 0)) ? $metas->getDescription() : '';
+        $globals     = $this->twig->getGlobals();
+        $config      = $globals['config'] ?? $this->dataService->getConfig();
 
         $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
 

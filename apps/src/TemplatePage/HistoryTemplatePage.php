@@ -3,7 +3,6 @@
 namespace Labstag\TemplatePage;
 
 use Labstag\Entity\History;
-use Labstag\Entity\Meta;
 use Labstag\Entity\Page;
 use Labstag\Lib\TemplatePageLib;
 use Symfony\Component\HttpFoundation\RedirectResponse;

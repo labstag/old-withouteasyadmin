@@ -3,7 +3,6 @@
 namespace Labstag\TemplatePage;
 
 use Labstag\Entity\Edito;
-use Labstag\Entity\Meta;
 use Labstag\Entity\Page;
 use Labstag\Lib\TemplatePageLib;
 
