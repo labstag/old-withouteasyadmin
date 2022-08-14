@@ -112,11 +112,12 @@ abstract class TemplatePageLib
 
     protected function setMetaOpenGraph(
         string $title,
-        string $keywords,
-        string $description,
+        $metas,
         $image
     )
     {
+        $keywords = (count($metas) != 0) ? $metas[0]->getKeywords() : '';
+        $description = (count($metas) != 0) ? $metas->getDescription() : '';
         $globals = $this->twig->getGlobals();
         $config  = $globals['config'] ?? $this->dataService->getConfig();
 

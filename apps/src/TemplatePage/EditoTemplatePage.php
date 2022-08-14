@@ -3,6 +3,7 @@
 namespace Labstag\TemplatePage;
 
 use Labstag\Entity\Edito;
+use Labstag\Entity\Meta;
 use Labstag\Entity\Page;
 use Labstag\Lib\TemplatePageLib;
 
@@ -15,8 +16,7 @@ class EditoTemplatePage extends TemplatePageLib
         $edito = $this->getRepository(Edito::class)->findOnePublier();
         $this->setMetaOpenGraph(
             $edito->getTitle(),
-            $edito->getMetaKeywords(),
-            $edito->getMetaDescription(),
+            $edito->getMetas(),
             $edito->getFond()
         );
 

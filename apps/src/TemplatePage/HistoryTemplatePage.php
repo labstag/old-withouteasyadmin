@@ -3,6 +3,7 @@
 namespace Labstag\TemplatePage;
 
 use Labstag\Entity\History;
+use Labstag\Entity\Meta;
 use Labstag\Entity\Page;
 use Labstag\Lib\TemplatePageLib;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -140,8 +141,7 @@ class HistoryTemplatePage extends TemplatePageLib
     {
         $this->setMetaOpenGraph(
             $history->getName(),
-            $history->getMetaKeywords(),
-            $history->getMetaDescription(),
+            $history->getMetas(),
             null
         );
 
