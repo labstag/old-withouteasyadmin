@@ -63,8 +63,6 @@ ifeq ($(COMMANDS_ARGS),fixtures)
 	${SYMFONY_EXEC} doctrine:fixtures:load -n
 else ifeq ($(COMMANDS_ARGS),migrate)
 	${SYMFONY_EXEC} doctrine:migrations:migrate -n
-else ifeq ($(COMMANDS_ARGS),updatesql)
-	${SYMFONY_EXEC} d:s:u --force
 else ifeq ($(COMMANDS_ARGS),validate)
 	${SYMFONY_EXEC} doctrine:schema:validate
 else

@@ -42,7 +42,7 @@ class Chapter
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="chapter")
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="chapter", orphanRemoval=true)
      */
     private $metas;
 

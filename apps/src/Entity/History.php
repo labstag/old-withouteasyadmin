@@ -44,7 +44,7 @@ class History
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="history")
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="history", orphanRemoval=true)
      */
     private $metas;
 

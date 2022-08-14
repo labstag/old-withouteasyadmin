@@ -18,12 +18,27 @@ use Labstag\Event\PageEntityEvent;
 use Labstag\Event\ParagraphEntityEvent;
 use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\EventSubscriberLib;
+use Labstag\Queue\EnqueueMethod;
+use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Service\HistoryService;
 use Labstag\Service\ParagraphService;
+use Labstag\Service\SessionService;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EntitySubscriber extends EventSubscriberLib
 {
-    public function __construct(protected EntityManagerInterface $entityManager, protected ParagraphService $paragraphService)
+    public function __construct(
+        protected ParameterBagInterface $containerBag,
+        protected EnqueueMethod $enqueue,
+        protected EntityManagerInterface $entityManager,
+        protected ParagraphService $paragraphService,
+        protected UserPasswordHasherInterface $passwordEncoder,
+        protected SessionService $sessionService,
+        protected EmailUserRequestHandler $emailUserRH,
+        protected TranslatorInterface $translator
+    )
     {
     }
 

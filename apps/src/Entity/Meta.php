@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 /**
  * @ORM\Entity(repositoryClass=MetaRepository::class)
  */
-class Meta
+class Meta implements \Stringable
 {
 
     /**
@@ -36,7 +36,7 @@ class Meta
     private $edito;
 
     /**
-     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="metas")
+     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="metas", cascade={"persist"})
      */
     private $history;
 
@@ -46,12 +46,12 @@ class Meta
     private $keywords;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="metas")
+     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="metas", cascade={"persist"})
      */
     private $page;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="metas")
+     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="metas", cascade={"persist"})
      */
     private $post;
 
@@ -59,6 +59,18 @@ class Meta
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $title;
+
+    public function __toString(): string
+    {
+        return implode(
+            ' ',
+            [
+                $this->getTitle(),
+                $this->getDescription(),
+                $this->getKeywords(),
+            ]
+        );
+    }
 
     public function getChapter(): ?Chapter
     {
