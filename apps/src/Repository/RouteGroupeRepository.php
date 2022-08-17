@@ -7,12 +7,6 @@ use Labstag\Entity\Groupe;
 use Labstag\Entity\RouteGroupe;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @method null|RouteGroupe find($id, $lockMode = null, $lockVersion = null)
- * @method null|RouteGroupe findOneBy(array $criteria, array $orderBy = null)
- * @method RouteGroupe[]    findAll()
- * @method RouteGroupe[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
 class RouteGroupeRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $registry)

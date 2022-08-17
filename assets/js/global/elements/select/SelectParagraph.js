@@ -1,14 +1,46 @@
 import TomSelect from 'tom-select'
+import Sortable from 'sortablejs'
 export class SelectParagraph extends HTMLSelectElement {
   connectedCallback () {
     const idElement = this.getAttribute('id')
     this.url = this.getAttribute('data-url')
     this.select = new TomSelect(`#${idElement}`)
     this.select.on('change', element => { this.onChange(element) })
+    this.initShow()
   }
 
-  fetchResponse (response) {
-    console.log('response', response)
+  changeParagraphInputPosition() {
+    console.log(document.querySelectorAll('.paragraph_input').length)
+    document.querySelectorAll('.paragraph_input').forEach(
+      (element, position) => {
+        element.setAttribute('value', position + 1)
+      }
+    )
+  }
+
+  sortableElement () {
+    const $elementSortable = document.getElementById('paragraphs-list')
+    if ($elementSortable !== undefined) {
+      Sortable.create(
+        $elementSortable,
+        {
+          onChange: (event) => {
+            this.changeParagraphInputPosition()
+          }
+        }
+      )
+    }
+  }
+
+  initShow() {
+    document.querySelectorAll('.paragraph_show').forEach(
+      element => {
+        element.addEventListener('click', () => {
+          document.getElementById('iframe_paragaph').setAttribute('src', element.getAttribute('href'))
+        })
+      }
+    )
+    this.sortableElement()
   }
 
   async onChange (element) {
@@ -17,8 +49,8 @@ export class SelectParagraph extends HTMLSelectElement {
         data: element
       }
 
-      const response = await fetch(this.url + '?' + new URLSearchParams(params))
-      this.fetchResponse(response)
+      const html = await fetch(this.url + '?' + new URLSearchParams(params)).then(response => response.text())
+      document.getElementById('paragraph-list').innerHTML = html
       this.select.clear()
     }
   }

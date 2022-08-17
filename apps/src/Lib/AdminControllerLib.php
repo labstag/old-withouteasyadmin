@@ -5,6 +5,7 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Attachment;
+use Labstag\Entity\Paragraph;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\RequestHandler\AttachmentRequestHandler;
@@ -34,6 +35,25 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected string $urlHome = '';
 
+    private function setPositionParagraphs()
+    {
+        $request = $this->requeststack->getCurrentRequest();
+        $paragraphs = $request->request->get('paragraphs');
+        if (!is_array($paragraphs)) {
+            return;
+        }
+
+        $repository = $this->getRepository(Paragraph::class);
+        foreach ($paragraphs as $id => $position) {
+            $paragraph = $repository->find($id);
+            if (!$paragraph instanceof Paragraph) {
+                continue;
+            }
+            $paragraph->setPosition($position);
+            $repository->add($paragraph);
+        }
+    }
+
     public function form(
         AttachFormService $service,
         RequestHandlerLib $handler,
@@ -56,6 +76,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
         $form->handleRequest($this->requeststack->getCurrentRequest());
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->setPositionParagraphs();
             $this->upload(
                 $service->getUploadAnnotationReader(),
                 $entity

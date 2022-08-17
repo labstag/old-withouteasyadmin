@@ -8,6 +8,7 @@ use tidy;
 class KernelSubscriber implements EventSubscriberInterface
 {
     final public const API_CONTROLLER = '/(Api)/';
+    final public const PARAGRAPH_CONTROLLER = '/(Paragraph)/';
 
     final public const CLIENTNUMBER = 400;
 
@@ -91,7 +92,8 @@ class KernelSubscriber implements EventSubscriberInterface
         $controller = $request->attributes->get('_controller');
         preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
         preg_match(self::API_CONTROLLER, (string) $controller, $apis);
-        if (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER) || 0 != count($apis)) {
+        preg_match(self::PARAGRAPH_CONTROLLER, (string) $controller, $paragraphs);
+        if (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER) || 0 != count($apis) || 0 != count($paragraphs)) {
             return;
         }
 
