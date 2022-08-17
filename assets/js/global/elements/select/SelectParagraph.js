@@ -16,6 +16,7 @@ export class SelectParagraph extends HTMLSelectElement {
         element.setAttribute('value', position + 1)
       }
     )
+    document.getElementById('paragraphs-list').classList.add('sortable-save')
   }
 
   sortableElement () {
