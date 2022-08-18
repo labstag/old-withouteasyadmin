@@ -54,10 +54,9 @@ class LabstagExtension extends AbstractExtension
         $file = '';
 
         $methods = get_class_vars($class::class);
-        if (
-            !array_key_exists('vars', $methods)
-             || !array_key_exists('data', $class->vars)
-              || is_null($class->vars['data'])
+        if (!array_key_exists('vars', $methods)
+            || !array_key_exists('data', $class->vars)
+            || is_null($class->vars['data'])
         ) {
             return $file;
         }
@@ -328,7 +327,7 @@ class LabstagExtension extends AbstractExtension
             'forms/'.$type.$htmltwig,
         ];
 
-        $vars = $class->vars;
+        $vars      = $class->vars;
         $classtype = (isset($vars['value']) && is_string($vars['value'])) ? $vars['value']::class : null;
         if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
             $files[] = 'forms/paragraph/'.$type.$htmltwig;

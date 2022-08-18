@@ -1,0 +1,33 @@
+<?php
+
+namespace Labstag\Block;
+
+use Labstag\Entity\Block\Header;
+use Labstag\Form\Admin\Block\HeaderType;
+use Labstag\Lib\BlockLib;
+
+class HeaderBlock extends BlockLib
+{
+    public function getEntity()
+    {
+        return Header::class;
+    }
+
+    public function getForm()
+    {
+        return HeaderType::class;
+    }
+
+    public function getType()
+    {
+        return 'header';
+    }
+
+    public function show(Header $header)
+    {
+        return $this->render(
+            $this->getBlockFile('header'),
+            ['block' => $header]
+        );
+    }
+}

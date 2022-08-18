@@ -4,8 +4,7 @@ namespace Labstag\Controller\Admin\Page;
 
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph;
-use Labstag\Form\Admin\ParagraphType;
-use Labstag\Lib\ControllerLib;
+use Labstag\Lib\ParagraphControllerLib;
 use Labstag\Repository\ParagraphRepository;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/admin/page/paragraph')]
-class ParagraphController extends ControllerLib
+class ParagraphController extends ParagraphControllerLib
 {
     #[Route(path: '/add/{id}', name: 'admin_page_paragraph_add')]
     public function add(
@@ -36,13 +35,13 @@ class ParagraphController extends ControllerLib
     }
 
     #[Route(path: '/delete/{id}', name: 'admin_page_paragraph_delete')]
-    public function delete(Paragraph $paragraph, ParagraphRepository $repository): Response
+    public function delete(Paragraph $paragraph): Response
     {
-        $page = $paragraph->getPage();
-        $repository->remove($paragraph);
-        $this->addFlash('success', 'Paragraph supprimée.');
-
-        return $this->redirectToRoute('admin_page_edit', ['id' => $page->getId(), '_fragment' => 'paragraph-list']);
+        return $this->deleteParagraph(
+            $paragraph,
+            $paragraph->getPage(),
+            'admin_page_edit'
+        );
     }
 
     #[Route(path: '/', name: 'admin_page_paragraph_index', methods: ['GET'])]
@@ -54,52 +53,16 @@ class ParagraphController extends ControllerLib
     #[Route(path: '/list/{id}', name: 'admin_page_paragraph_list')]
     public function list(Page $page): Response
     {
-        $typeparagraphs = $this->getParameter('paragraphs');
-
-        return $this->render(
-            'admin/paragraph/list.html.twig',
-            [
-                'paragraphs' => $page->getParagraphs(),
-                'urledit'    => 'admin_page_paragraph_show',
-                'urldelete'  => 'admin_page_paragraph_delete',
-                'types'      => $typeparagraphs['types'],
-            ]
+        return $this->listTwig(
+            'admin_page_paragraph_show',
+            $page->getParagraphs(),
+            'admin_page_paragraph_delete'
         );
     }
 
     #[Route(path: '/show/{id}', name: 'admin_page_paragraph_show')]
-    public function show(
-        ParagraphRequestHandler $handler,
-        Paragraph $paragraph,
-        ParagraphRepository $repository,
-        Request $request
-    )
+    public function show(Paragraph $paragraph, ParagraphRequestHandler $handler)
     {
-        $form = $this->createForm(
-            ParagraphType::class,
-            $paragraph
-        );
-        $form->handleRequest($request);
-        $old = clone $paragraph;
-        if ($form->isSubmitted() && $form->isValid()) {
-            $repository->add($paragraph);
-            $this->addFlash('success', 'Paragraph sauvegardé.');
-            $handler->handle($old, $paragraph);
-        }
-
-        if ($form->isSubmitted() && !$form->isValid()) {
-            $this->addFlash('danger', 'Erreur lors de la modification.');
-        }
-
-        $typeparagraphs = $this->getParameter('paragraphs');
-
-        return $this->renderForm(
-            'admin/paragraph/show.html.twig',
-            [
-                'types'     => $typeparagraphs['types'],
-                'paragraph' => $paragraph,
-                'form'      => $form,
-            ]
-        );
+        return parent::showTwig($paragraph, $handler);
     }
 }
