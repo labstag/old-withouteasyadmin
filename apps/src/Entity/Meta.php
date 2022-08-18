@@ -4,12 +4,13 @@ namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\MetaRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=MetaRepository::class)
  */
-class Meta implements \Stringable
+class Meta implements Stringable
 {
 
     /**

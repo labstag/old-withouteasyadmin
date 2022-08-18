@@ -12,7 +12,14 @@ use Twig\Environment;
 
 abstract class ParagraphLib extends AbstractController
 {
-    public function __construct(protected MailerInterface $mailer, protected Environment $twig, protected ParagraphService $paragraphService, protected RequestStack $requestStack, protected FormService $formService, protected EntityManagerInterface $entityManager)
+    public function __construct(
+        protected MailerInterface $mailer,
+        protected Environment $twig,
+        protected ParagraphService $paragraphService,
+        protected RequestStack $requestStack,
+        protected FormService $formService,
+        protected EntityManagerInterface $entityManager
+    )
     {
     }
 

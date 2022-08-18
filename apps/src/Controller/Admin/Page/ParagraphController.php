@@ -17,7 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ParagraphController extends ControllerLib
 {
     #[Route(path: '/add/{id}', name: 'admin_page_paragraph_add')]
-    public function add(ParagraphRequestHandler $handler, Page $page, ParagraphRepository $repository, Request $request): RedirectResponse
+    public function add(
+        ParagraphRequestHandler $handler,
+        Page $page,
+        ParagraphRepository $repository,
+        Request $request
+    ): RedirectResponse
     {
         $paragraph = new Paragraph();
         $old       = clone $paragraph;
@@ -63,7 +68,12 @@ class ParagraphController extends ControllerLib
     }
 
     #[Route(path: '/show/{id}', name: 'admin_page_paragraph_show')]
-    public function show(ParagraphRequestHandler $handler, Paragraph $paragraph, ParagraphRepository $repository, Request $request)
+    public function show(
+        ParagraphRequestHandler $handler,
+        Paragraph $paragraph,
+        ParagraphRepository $repository,
+        Request $request
+    )
     {
         $form = $this->createForm(
             ParagraphType::class,

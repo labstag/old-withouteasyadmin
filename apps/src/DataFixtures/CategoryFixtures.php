@@ -23,7 +23,7 @@ class CategoryFixtures extends DataFixtureLib implements DependentFixtureInterfa
     {
         $category    = new Category();
         $oldCategory = clone $category;
-        $category->setName($faker->unique()->colorName);
+        $category->setName($faker->unique()->colorName());
         $indexCategory = $faker->numberBetween(0, $index);
         $code          = 'category_'.$indexCategory;
         if ($this->hasReference($code) && 1 == random_int(0, 1)) {

@@ -23,7 +23,7 @@ class LibelleFixtures extends DataFixtureLib implements DependentFixtureInterfac
     {
         $libelle    = new Libelle();
         $oldLibelle = clone $libelle;
-        $libelle->setName($faker->unique()->colorName);
+        $libelle->setName($faker->unique()->colorName());
         $this->addReference('libelle_'.$index, $libelle);
         $this->libelleRH->handle($oldLibelle, $libelle);
     }

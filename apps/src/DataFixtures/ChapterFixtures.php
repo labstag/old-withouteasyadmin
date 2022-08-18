@@ -36,7 +36,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
     {
         $chapter    = new Chapter();
         $oldChapter = clone $chapter;
-        $chapter->setName($faker->unique()->colorName);
+        $chapter->setName($faker->unique()->colorName());
         // @var string $content
         $content = $faker->paragraphs(random_int(4, 10), true);
         $chapter->setContent(str_replace("\n\n", "<br />\n", $content));

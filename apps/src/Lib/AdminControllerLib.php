@@ -35,25 +35,6 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected string $urlHome = '';
 
-    private function setPositionParagraphs()
-    {
-        $request = $this->requeststack->getCurrentRequest();
-        $paragraphs = $request->request->get('paragraphs');
-        if (!is_array($paragraphs)) {
-            return;
-        }
-
-        $repository = $this->getRepository(Paragraph::class);
-        foreach ($paragraphs as $id => $position) {
-            $paragraph = $repository->find($id);
-            if (!$paragraph instanceof Paragraph) {
-                continue;
-            }
-            $paragraph->setPosition($position);
-            $repository->add($paragraph);
-        }
-    }
-
     public function form(
         AttachFormService $service,
         RequestHandlerLib $handler,
@@ -800,6 +781,26 @@ abstract class AdminControllerLib extends ControllerLib
 
         if (isset($url['trash'])) {
             $this->setTrashIcon($methods, $repository, $url, $entityManager);
+        }
+    }
+
+    private function setPositionParagraphs()
+    {
+        $request    = $this->requeststack->getCurrentRequest();
+        $paragraphs = $request->request->get('paragraphs');
+        if (!is_array($paragraphs)) {
+            return;
+        }
+
+        $repository = $this->getRepository(Paragraph::class);
+        foreach ($paragraphs as $id => $position) {
+            $paragraph = $repository->find($id);
+            if (!$paragraph instanceof Paragraph) {
+                continue;
+            }
+
+            $paragraph->setPosition($position);
+            $repository->add($paragraph);
         }
     }
 }

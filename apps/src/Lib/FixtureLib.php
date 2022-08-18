@@ -218,7 +218,7 @@ abstract class FixtureLib extends Fixture
             $slug     = $slugger->slug($title);
 
             try {
-                $image   = $faker->imageUrl(1920, 1920);
+                $image   = $faker->imageUrl();
                 $content = file_get_contents($image);
                 // @var resource $tmpfile
                 $tmpfile = tmpfile();

@@ -23,7 +23,7 @@ class TemplatesFixtures extends DataFixtureLib implements DependentFixtureInterf
     {
         $template    = new Template();
         $oldTemplate = clone $template;
-        $template->setName($faker->unique()->colorName);
+        $template->setName($faker->unique()->colorName());
         // @var string $content
         $content = $faker->unique()->paragraphs(10, true);
         $template->setHtml(str_replace("\n\n", "<br />\n", $content));

@@ -23,10 +23,10 @@ class TextParagraph extends ParagraphLib
         return 'text';
     }
 
-    public function show(Text $text, $content)
+    public function show(Text $text)
     {
         return $this->render(
-            $this->getParagraphFile('text', $content),
+            $this->getParagraphFile('text'),
             ['paragraph' => $text]
         );
     }

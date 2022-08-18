@@ -9,7 +9,7 @@ export class SelectParagraph extends HTMLSelectElement {
     this.initShow()
   }
 
-  changeParagraphInputPosition() {
+  changeParagraphInputPosition () {
     console.log(document.querySelectorAll('.paragraph_input').length)
     document.querySelectorAll('.paragraph_input').forEach(
       (element, position) => {
@@ -33,7 +33,7 @@ export class SelectParagraph extends HTMLSelectElement {
     }
   }
 
-  initShow() {
+  initShow () {
     document.querySelectorAll('.paragraph_show').forEach(
       element => {
         element.addEventListener('click', () => {

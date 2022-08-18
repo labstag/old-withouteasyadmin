@@ -33,7 +33,7 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         $users      = $this->userRepository->findAll();
         $history    = new History();
         $oldHistory = clone $history;
-        $history->setName($faker->unique()->colorName);
+        $history->setName($faker->unique()->colorName());
         // @var string $content
         $content = $faker->paragraphs(random_int(2, 4), true);
         $history->setSummary(str_replace("\n\n", "<br />\n", $content));

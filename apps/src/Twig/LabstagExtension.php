@@ -54,32 +54,19 @@ class LabstagExtension extends AbstractExtension
         $file = '';
 
         $methods = get_class_vars($class::class);
-        if (!array_key_exists('vars', $methods)) {
+        if (
+            !array_key_exists('vars', $methods)
+             || !array_key_exists('data', $class->vars)
+              || is_null($class->vars['data'])
+        ) {
             return $file;
         }
 
-        $vars      = $class->vars;
-        $classtype = (isset($class->vars['value']) && is_string($class->vars['value'])) ? $class->vars['value']::class : null;
-
-        if (!array_key_exists('data', $vars) || is_null($vars['data'])) {
-            return $file;
-        }
-
-        $type     = strtolower($this->setTypeformClass($vars));
-        $folder   = __DIR__.'/../../templates/';
-        $htmltwig = '.html.twig';
-        $files    = [
-            'forms/'.$type.$htmltwig,
-        ];
-
-        if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
-            $files[] = 'forms/paragraph/'.$type.$htmltwig;
-            $files[] = 'forms/paragraph/default'.$htmltwig;
-        }
-
-        $files[] = 'forms/default'.$htmltwig;
-
-        $view = end($files);
+        $vars   = $class->vars;
+        $type   = strtolower($this->setTypeformClass($vars));
+        $folder = __DIR__.'/../../templates/';
+        $files  = $this->setFilesformClass($type, $class);
+        $view   = end($files);
 
         foreach ($files as $file) {
             if (is_file($folder.$file)) {
@@ -89,9 +76,7 @@ class LabstagExtension extends AbstractExtension
             }
         }
 
-        if ('dev' == $this->getParameter('kernel.debug')) {
-            dump(['templates-form', $type, $files, $view]);
-        }
+        $this->dump(['templates-form', $type, $files, $view]);
 
         return $view;
     }
@@ -299,6 +284,15 @@ class LabstagExtension extends AbstractExtension
         return $class['form']->vars['unique_block_prefix'];
     }
 
+    private function dump(mixed $var)
+    {
+        if ('dev' != $this->getParameter('kernel.debug')) {
+            return;
+        }
+
+        dump($var);
+    }
+
     private function getFiltersFunctions()
     {
         return [
@@ -325,5 +319,24 @@ class LabstagExtension extends AbstractExtension
     private function getParameter($name)
     {
         return $this->containerBag->get($name);
+    }
+
+    private function setFilesformClass($type, $class)
+    {
+        $htmltwig = '.html.twig';
+        $files    = [
+            'forms/'.$type.$htmltwig,
+        ];
+
+        $vars = $class->vars;
+        $classtype = (isset($vars['value']) && is_string($vars['value'])) ? $vars['value']::class : null;
+        if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
+            $files[] = 'forms/paragraph/'.$type.$htmltwig;
+            $files[] = 'forms/paragraph/default'.$htmltwig;
+        }
+
+        $files[] = 'forms/default'.$htmltwig;
+
+        return $files;
     }
 }

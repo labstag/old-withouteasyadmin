@@ -5,7 +5,6 @@ namespace Labstag\Lib;
 use Labstag\Service\FormService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\TemplatePageService;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -15,12 +14,10 @@ abstract class ParagraphAbstractTypeLib extends AbstractTypeLib
         TranslatorInterface $translator,
         TemplatePageService $templatePageService,
         protected ParagraphService $paragraphService,
-        Environment $twig,
-        FormService $formService,
-        ContainerBagInterface $containerBag
+        protected Environment $twig,
+        protected FormService $formService
     )
     {
-        $this->twig = $twig;
         parent::__construct($translator, $templatePageService);
     }
 

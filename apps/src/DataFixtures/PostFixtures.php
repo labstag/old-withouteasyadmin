@@ -29,7 +29,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
     {
         $post    = new Post();
         $oldPost = clone $post;
-        $post->setTitle($faker->unique()->colorName);
+        $post->setTitle($faker->unique()->colorName());
         // @var string $content
         $content = $faker->paragraphs(random_int(4, 10), true);
         $post->setContent(str_replace("\n\n", "<br />\n", $content));

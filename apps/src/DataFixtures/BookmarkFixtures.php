@@ -41,7 +41,7 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
         $category     = $this->getReference('category_'.$indexLibelle);
         $bookmark->setRefcategory($category);
         $bookmark->setName($faker->word());
-        $bookmark->setUrl($faker->url);
+        $bookmark->setUrl($faker->url());
         $bookmark->setPublished($faker->unique()->dateTime('now'));
         $this->upload($bookmark, $faker);
         $this->addReference('bookmark_'.$index, $bookmark);

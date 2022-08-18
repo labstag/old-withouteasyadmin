@@ -1,8 +1,7 @@
 import './global/elements/index'
 require('bootstrap')
 require('ckeditor4')
-function loadGlobal()
-{
+function loadGlobal () {
   document.querySelectorAll('.wysiwyg').forEach(element => {
     const idinput = element.getAttribute('id')
 

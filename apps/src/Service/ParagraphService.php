@@ -63,14 +63,13 @@ class ParagraphService
 
     public function showContent(Paragraph $paragraph)
     {
-        $parent = null;
         $type   = $paragraph->getType();
         $entity = $this->getEntity($paragraph);
         $html   = new Response();
         if (!is_null($entity)) {
             foreach ($this->paragraphsclass as $row) {
                 if ($type == $row->getType()) {
-                    $html = $row->show($entity, $parent);
+                    $html = $row->show($entity);
 
                     break;
                 }
