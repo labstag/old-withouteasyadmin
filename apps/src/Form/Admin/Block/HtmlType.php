@@ -2,8 +2,8 @@
 
 namespace Labstag\Form\Admin\Block;
 
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Labstag\Entity\Block\Html;
+use Labstag\FormType\WysiwygType;
 use Labstag\Lib\BlockAbstractTypeLib;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +15,7 @@ class HtmlType extends BlockAbstractTypeLib
         $builder->add('title');
         $builder->add(
             'content',
-            CKEditorType::class,
+            WysiwygType::class,
             [
                 'attr'     => ['data-ckeditor' => 0],
                 'label'    => 'Texte',

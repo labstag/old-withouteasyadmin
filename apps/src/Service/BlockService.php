@@ -12,8 +12,6 @@ class BlockService
 {
     public function __construct(
         protected $blocksclass,
-        protected $blockstype,
-        protected $blocksentity,
         protected BlockRepository $blockRepository
     )
     {

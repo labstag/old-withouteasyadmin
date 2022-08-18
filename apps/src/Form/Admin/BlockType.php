@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Form\Gestion;
+namespace Labstag\Form\Admin;
 
 use Labstag\Entity\Block;
 use Labstag\Lib\BlockAbstractTypeLib;
