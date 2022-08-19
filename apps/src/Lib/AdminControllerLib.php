@@ -85,7 +85,8 @@ abstract class AdminControllerLib extends ControllerLib
 
     public function listOrTrash(
         $entity,
-        string $html
+        string $html,
+        array $parameters = []
     ): Response
     {
         $repository  = $this->getRepository($entity);
@@ -136,10 +137,13 @@ abstract class AdminControllerLib extends ControllerLib
             throw new AccessDeniedException();
         }
 
-        $parameters = [
-            'pagination' => $pagination,
-            'actions'    => $url,
-        ];
+        $parameters = array_merge(
+            $parameters,
+            [
+                'pagination' => $pagination,
+                'actions'    => $url,
+            ]
+        );
         $search     = $this->searchForm();
         if (0 != count($search) && array_key_exists('form', $search) && array_key_exists('data', $search)) {
             $get         = $query->all();

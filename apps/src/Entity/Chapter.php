@@ -57,6 +57,11 @@ class Chapter
     private $pages;
 
     /**
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="chapter", orphanRemoval=true)
+     */
+    private $paragraphs;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $position;
@@ -88,8 +93,9 @@ class Chapter
 
     public function __construct()
     {
-        $this->pages = 0;
-        $this->metas = new ArrayCollection();
+        $this->pages      = 0;
+        $this->metas      = new ArrayCollection();
+        $this->paragraphs = new ArrayCollection();
     }
 
     public function addMeta(Meta $meta): self
@@ -97,6 +103,16 @@ class Chapter
         if (!$this->metas->contains($meta)) {
             $this->metas[] = $meta;
             $meta->setChapter($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setChapter($this);
         }
 
         return $this;
@@ -135,6 +151,14 @@ class Chapter
         return $this->pages;
     }
 
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
+    }
+
     public function getPosition(): ?int
     {
         return $this->position;
@@ -166,6 +190,18 @@ class Chapter
             // set the owning side to null (unless already changed)
             if ($meta->getChapter() === $this) {
                 $meta->setChapter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        if ($this->paragraphs->removeElement($paragraph)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraph->getChapter() === $this) {
+                $paragraph->setChapter(null);
             }
         }
 

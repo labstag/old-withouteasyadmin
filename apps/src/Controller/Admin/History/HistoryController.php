@@ -2,12 +2,14 @@
 
 namespace Labstag\Controller\Admin\History;
 
+use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Form\Admin\HistoryType;
 use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\HistoryRepository;
 use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Search\HistorySearch;
 use Labstag\Service\AttachFormService;
@@ -15,12 +17,13 @@ use Labstag\Service\HistoryService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/history')]
 class HistoryController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_history_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_history_new', methods: ['GET', 'POST'])]
     public function edit(AttachFormService $service, ?History $history, HistoryRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
@@ -45,6 +48,25 @@ class HistoryController extends AdminControllerLib
             History::class,
             'admin/history/index.html.twig',
         );
+    }
+
+    #[Route(path: '/new', name: 'admin_history_new', methods: ['GET', 'POST'])]
+    public function new(
+        HistoryRepository $repository,
+        HistoryRequestHandler $requestHandler,
+        Security $security
+    ): Response
+    {
+        $user    = $user = $security->getUser();
+        $history = new History();
+        $history->setPublished(new DateTime());
+        $history->setName(Uuid::v1());
+        $history->setRefuser($user);
+        $old = clone $history;
+        $repository->add($history);
+        $requestHandler->handle($old, $history);
+
+        return $this->redirectToRoute('admin_history_edit', ['id' => $history->getId()]);
     }
 
     #[Route(path: '/{id}/pdf', name: 'admin_history_pdf', methods: ['GET'])]

@@ -5,6 +5,8 @@ namespace Labstag\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Block\Footer;
 use Labstag\Entity\Block\Header;
 use Labstag\Entity\Block\Html;
@@ -13,9 +15,11 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=BlockRepository::class)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Block
 {
+    use SoftDeleteableEntity;
 
     /**
      * @ORM\OneToMany(targetEntity=Footer::class, mappedBy="block")

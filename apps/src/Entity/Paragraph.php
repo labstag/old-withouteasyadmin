@@ -29,6 +29,11 @@ class Paragraph
     private $background;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Chapter::class, inversedBy="paragraphs")
+     */
+    private $chapter;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $color;
@@ -42,6 +47,11 @@ class Paragraph
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $fond;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="paragraphs")
+     */
+    private $history;
 
     /**
      * @ORM\ManyToOne(targetEntity=Memo::class, inversedBy="paragraphs")
@@ -94,6 +104,11 @@ class Paragraph
         return $this->background;
     }
 
+    public function getChapter(): ?Chapter
+    {
+        return $this->chapter;
+    }
+
     public function getColor(): ?string
     {
         return $this->color;
@@ -107,6 +122,11 @@ class Paragraph
     public function getFond(): ?string
     {
         return $this->fond;
+    }
+
+    public function getHistory(): ?History
+    {
+        return $this->history;
     }
 
     public function getId(): ?string
@@ -166,6 +186,13 @@ class Paragraph
         return $this;
     }
 
+    public function setChapter(?Chapter $chapter): self
+    {
+        $this->chapter = $chapter;
+
+        return $this;
+    }
+
     public function setColor(?string $color): self
     {
         $this->color = $color;
@@ -183,6 +210,13 @@ class Paragraph
     public function setFond(?string $fond): self
     {
         $this->fond = $fond;
+
+        return $this;
+    }
+
+    public function setHistory(?History $history): self
+    {
+        $this->history = $history;
 
         return $this;
     }

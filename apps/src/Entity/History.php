@@ -59,6 +59,11 @@ class History
     private $pages;
 
     /**
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="history", orphanRemoval=true)
+     */
+    private $paragraphs;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $published;
@@ -77,7 +82,7 @@ class History
     private $slug;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $summary;
 
@@ -89,9 +94,10 @@ class History
 
     public function __construct()
     {
-        $this->pages    = 0;
-        $this->chapters = new ArrayCollection();
-        $this->metas    = new ArrayCollection();
+        $this->pages      = 0;
+        $this->chapters   = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
+        $this->paragraphs = new ArrayCollection();
     }
 
     public function addChapter(Chapter $chapter): self
@@ -109,6 +115,16 @@ class History
         if (!$this->metas->contains($meta)) {
             $this->metas[] = $meta;
             $meta->setHistory($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setHistory($this);
         }
 
         return $this;
@@ -162,6 +178,14 @@ class History
         return $this->pages;
     }
 
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
+    }
+
     public function getPublished(): ?DateTimeInterface
     {
         return $this->published;
@@ -205,6 +229,18 @@ class History
             // set the owning side to null (unless already changed)
             if ($meta->getHistory() === $this) {
                 $meta->setHistory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        if ($this->paragraphs->removeElement($paragraph)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraph->getHistory() === $this) {
+                $paragraph->setHistory(null);
             }
         }
 

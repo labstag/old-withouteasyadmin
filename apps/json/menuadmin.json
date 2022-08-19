@@ -27,6 +27,12 @@
                 }
             },
             {
+                "name": "Block",
+                "data": {
+                    "route": "admin_block_index"
+                }
+            },
+            {
                 "name": "Geocode",
                 "data": {
                     "route": "admin_geocode_index"

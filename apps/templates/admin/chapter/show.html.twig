@@ -11,6 +11,12 @@
                 <td>{{ entity.content|raw }}</td>
             </tr>
             <tr>
+                <th>{{ 'chapter.paragraphs'|trans({}, 'admin.messages') }}</th>
+                <td>
+                    {% include "paragraphs.html.twig" with {'paragraphs': entity.paragraphs} %}
+                </td>
+            </tr>
+            <tr>
                 <th>{{ 'chapter.published'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
             </tr>

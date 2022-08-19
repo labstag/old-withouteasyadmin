@@ -5,7 +5,12 @@
     {{ form_row(form.published) }}
     {{ form_row(form.slug) }}
     {{ form_row(form.summary) }}
+    {% include "admin/paragraph/index.html.twig" with {'addurl': path('admin_history_paragraph_add', {'id': entity.id}), 'urledit': 'admin_history_paragraph_show', 'urldelete': 'admin_history_paragraph_delete', 'paragraphs': entity.paragraphs} %}
     {{ form_row(form.refuser) }}
     {{ form_row(form.metas) }}
     {{ form_end(form) }}
+{% endblock %}
+{% block modal %}
+    {{ parent() }}
+    {% include "admin/paragraph/modal.html.twig" with {'paragraphurl': 'admin_history_paragraph_index' } %}
 {% endblock %}

@@ -4,20 +4,22 @@ namespace Labstag\Controller\Admin\History;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
+use Labstag\Entity\History;
 use Labstag\Form\Admin\ChapterType;
 use Labstag\Form\Admin\Search\ChapterType as SearchChapterType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\ChapterRepository;
 use Labstag\RequestHandler\ChapterRequestHandler;
 use Labstag\Search\ChapterSearch;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/chapter')]
 class ChapterController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_chapter_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_chapter_new', methods: ['GET', 'POST'])]
     public function edit(AttachFormService $service, ?Chapter $chapter, ChapterRequestHandler $requestHandler): Response
     {
         $this->modalAttachmentDelete();
@@ -44,6 +46,24 @@ class ChapterController extends AdminControllerLib
         );
     }
 
+    #[Route(path: '/new/{id}', name: 'admin_chapter_new', methods: ['GET', 'POST'])]
+    public function new(
+        History $history,
+        ChapterRepository $repository,
+        ChapterRequestHandler $requestHandler
+    ): Response
+    {
+        $chapter = new Chapter();
+        $chapter->setRefhistory($history);
+        $chapter->setName(Uuid::v1());
+        $chapter->setPosition(count($history->getChapters()) + 1);
+        $old = clone $chapter;
+        $repository->add($chapter);
+        $requestHandler->handle($old, $chapter);
+
+        return $this->redirectToRoute('admin_chapter_edit', ['id' => $chapter->getId()]);
+    }
+
     /**
      * @IgnoreSoftDelete
      */
@@ -65,7 +85,6 @@ class ChapterController extends AdminControllerLib
             'edit'     => 'admin_chapter_edit',
             'empty'    => 'api_action_empty',
             'list'     => 'admin_chapter_index',
-            'new'      => 'admin_chapter_new',
             'preview'  => 'admin_chapter_preview',
             'restore'  => 'api_action_restore',
             'show'     => 'admin_chapter_show',
