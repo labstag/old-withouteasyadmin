@@ -57,7 +57,7 @@ services:
         - "traefik.enable=false"
   phpfpmexec:
     image: koromerzhin/phpfpm:8.1.9
-    command: sh -c "rm -rf var/cache/de* && composer install"
+    command: sh -c "composer install"
     depends_on:
       - mariadb
       - mercure
