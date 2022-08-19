@@ -273,11 +273,11 @@ class InstallService
         $env   = $this->getEnv($serverEnv);
         $oauth = [];
         foreach ($env as $key => $val) {
-            if (0 == substr_count($key, 'OAUTH_')) {
+            if (0 == substr_count((string) $key, 'OAUTH_')) {
                 continue;
             }
 
-            $code    = str_replace('OAUTH_', '', $key);
+            $code    = str_replace('OAUTH_', '', (string) $key);
             $code    = strtolower($code);
             $explode = explode('_', $code);
             $type    = $explode[0];

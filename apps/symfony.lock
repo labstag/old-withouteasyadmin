@@ -236,6 +236,12 @@
     "phar-io/version": {
         "version": "3.1.0"
     },
+    "php-parallel-lint/php-console-color": {
+        "version": "v1.0.1"
+    },
+    "php-parallel-lint/php-console-highlighter": {
+        "version": "v1.0.0"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },
@@ -282,6 +288,9 @@
             "phpunit.xml.dist",
             "tests/bootstrap.php"
         ]
+    },
+    "povils/phpmnd": {
+        "version": "v3.0.1"
     },
     "psr/cache": {
         "version": "1.0.1"

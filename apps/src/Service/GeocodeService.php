@@ -82,7 +82,7 @@ class GeocodeService
     {
         $data = [];
         foreach ($csv as $line) {
-            $row    = str_getcsv($line, "\t");
+            $row    = str_getcsv((string) $line, "\t");
             $data[] = $row;
         }
 

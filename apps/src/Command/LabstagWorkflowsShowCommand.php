@@ -39,7 +39,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
         $list      = $container->getServiceIds();
         $workflows = [];
         foreach ($list as $name) {
-            if (0 == substr_count($name, 'state_machine')) {
+            if (0 == substr_count((string) $name, 'state_machine')) {
                 continue;
             }
 

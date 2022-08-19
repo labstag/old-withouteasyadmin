@@ -274,7 +274,7 @@ class ActionsController extends ApiControllerLib
         $files        = glob($this->getParameter('kernel.project_dir').'/src/Entity/*.php');
         $repositories = [];
         foreach ($files as $file) {
-            $path                                = pathinfo($file);
+            $path                                = pathinfo((string) $file);
             $filename                            = $path['filename'];
             $repositories[strtolower($filename)] = 'Labstag\\Entity\\'.$filename;
         }

@@ -84,10 +84,7 @@ class DataService
     {
         $config = $this->cache->get(
             'configuration',
-            [
-                $this,
-                'compute',
-            ]
+            $this->compute(...)
         );
         if (0 === (is_countable($config) ? count($config) : 0)) {
             $config = $this->getConfiguration();

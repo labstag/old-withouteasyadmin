@@ -45,19 +45,19 @@ class DisclaimerSubscriber implements EventSubscriberInterface
             return false;
         }
 
-        if (0 === substr_count($controller, 'Labstag')) {
+        if (0 === substr_count((string) $controller, 'Labstag')) {
             return false;
         }
 
-        if (0 !== substr_count($controller, 'Controller\\Api')) {
+        if (0 !== substr_count((string) $controller, 'Controller\\Api')) {
             return false;
         }
 
-        if (0 !== substr_count($controller, 'Controller\\Admin')) {
+        if (0 !== substr_count((string) $controller, 'Controller\\Admin')) {
             return false;
         }
 
-        if (0 !== substr_count($controller, 'SecurityController')) {
+        if (0 !== substr_count((string) $controller, 'SecurityController')) {
             return false;
         }
 

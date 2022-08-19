@@ -68,7 +68,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 
         $find = 0;
         foreach ($routes as $route) {
-            if (0 != substr_count($routeCurrent, $route)) {
+            if (0 != substr_count((string) $routeCurrent, $route)) {
                 $find = 1;
 
                 break;

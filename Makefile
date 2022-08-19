@@ -25,25 +25,25 @@ apps/phploc.phar:
 	wget https://phar.phpunit.de/phploc-7.0.2.phar -O apps/phploc.phar
 
 apps/php-cs-fixer.phar:
-	wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.5.0/php-cs-fixer.phar -O apps/php-cs-fixer.phar
+	wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.10.0/php-cs-fixer.phar -O apps/php-cs-fixer.phar
 
 apps/phpmd.phar:
-	wget https://github.com/phpmd/phpmd/releases/download/2.11.1/phpmd.phar -O apps/phpmd.phar
+	wget https://github.com/phpmd/phpmd/releases/download/2.12.0/phpmd.phar -O apps/phpmd.phar
 
 apps/phpcbf.phar:
-	wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.2/phpcbf.phar -O apps/phpcbf.phar
+	wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.7.1/phpcbf.phar -O apps/phpcbf.phar
 
 apps/phpcs.phar:
-	wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.2/phpcs.phar -O apps/phpcs.phar
+	wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.7.1/phpcs.phar -O apps/phpcs.phar
 
 apps/phpstan.phar:
-	wget https://github.com/phpstan/phpstan/releases/download/1.4.0/phpstan.phar -O apps/phpstan.phar
+	wget https://github.com/phpstan/phpstan/releases/download/1.8.2/phpstan.phar -O apps/phpstan.phar
 
 apps/phpDocumentor.phar:
-	wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.3.0/phpDocumentor.phar -O apps/phpDocumentor.phar
+	wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.3.1/phpDocumentor.phar -O apps/phpDocumentor.phar
 
 apps/behat.phar:
-	wget https://github.com/Behat/Behat/releases/download/v3.10.0/behat.phar -O apps/behat.phar
+	wget https://github.com/Behat/Behat/releases/download/v3.11.0/behat.phar -O apps/behat.phar
 
 phar: apps/phploc.phar apps/phpmd.phar apps/php-cs-fixer.phar apps/phpcbf.phar apps/phpcs.phar apps/phpstan.phar apps/phpDocumentor.phar apps/behat.phar
 
@@ -227,7 +227,7 @@ else ifeq ($(COMMANDS_ARGS),rector)
 else ifeq ($(COMMANDS_ARGS),phpmd)
 	$(PHP_EXEC) -d error_reporting=24575 phpmd.phar src,features/bootstrap ansi phpmd.xml
 else ifeq ($(COMMANDS_ARGS),phpmnd)
-	# ${COMPOSER_EXEC} run phpmnd
+	${COMPOSER_EXEC} run phpmnd
 else ifeq ($(COMMANDS_ARGS),phpstan)
 	${PHP_EXEC} phpstan.phar analyse src
 else ifeq ($(COMMANDS_ARGS),twig)

@@ -233,7 +233,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
                 continue;
             }
 
-            if (0 != substr_count($key, 'og:')) {
+            if (0 != substr_count((string) $key, 'og:')) {
                 $metatags[] = [
                     'property' => $key,
                     'content'  => $value,

@@ -182,7 +182,7 @@ abstract class TemplatePageLib
                     $config['site_title'],
                     $title,
                 ],
-                $config['title_format']
+                (string) $config['title_format']
             );
         }
 
@@ -199,7 +199,7 @@ abstract class TemplatePageLib
                 continue;
             }
 
-            if (0 != substr_count($key, 'og:')) {
+            if (0 != substr_count((string) $key, 'og:')) {
                 $metatags[] = [
                     'property' => $key,
                     'content'  => $value,

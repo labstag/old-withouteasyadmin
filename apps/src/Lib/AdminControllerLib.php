@@ -96,7 +96,7 @@ abstract class AdminControllerLib extends ControllerLib
         $all         = $request->attributes->all();
         $route       = $all['_route'];
         $routeParams = $all['_route_params'];
-        $routeType   = (0 != substr_count($route, 'trash')) ? 'trash' : 'all';
+        $routeType   = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
         $method      = $methods[$routeType];
         $this->addNewImport($this->entityManager, $repository, $methods, $routeType, $url);
 
@@ -114,7 +114,7 @@ abstract class AdminControllerLib extends ControllerLib
                                 str_replace(
                                     'Labstag\\Entity\\',
                                     '',
-                                    $repository->getClassName()
+                                    (string) $repository->getClassName()
                                 )
                             ),
                         ],
@@ -198,7 +198,7 @@ abstract class AdminControllerLib extends ControllerLib
                 break;
             }
 
-            if (0 != substr_count($route, $key)) {
+            if (0 != substr_count((string) $route, $key)) {
                 $header = $title;
             }
         }
@@ -219,7 +219,7 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $url          = $this->getUrlAdmin();
         $routeCurrent = $this->requeststack->getCurrentRequest()->get('_route');
-        $routeType    = (0 != substr_count($routeCurrent, 'preview')) ? 'preview' : 'show';
+        $routeType    = (0 != substr_count((string) $routeCurrent, 'preview')) ? 'preview' : 'show';
         $this->showOrPreviewadd($url, $routeType, $entity);
 
         if (isset($url['delete']) && 'show' == $routeType) {
@@ -257,7 +257,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function classEntity($entity)
     {
-        $class = str_replace('Labstag\\Entity\\', '', $entity::class);
+        $class = str_replace('Labstag\\Entity\\', '', (string) $entity::class);
 
         return strtolower($class);
     }
@@ -555,7 +555,7 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $data = $request->request->all('position');
         if (!empty($data)) {
-            $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+            $data = json_decode((string) $data, true, 512, JSON_THROW_ON_ERROR);
         }
 
         if (is_array($data)) {

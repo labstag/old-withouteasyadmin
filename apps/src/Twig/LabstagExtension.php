@@ -44,7 +44,10 @@ class LabstagExtension extends AbstractExtension
 
     public function classEntity($entity)
     {
-        $class = substr($entity::class, strpos($entity::class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY));
+        $class = substr(
+            (string) $entity::class,
+            strpos((string) $entity::class,self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY)
+        );
 
         return trim(strtolower($class));
     }
@@ -329,7 +332,7 @@ class LabstagExtension extends AbstractExtension
 
         $vars      = $class->vars;
         $classtype = (isset($vars['value']) && is_string($vars['value'])) ? $vars['value']::class : null;
-        if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
+        if (!is_null($classtype) && 1 == substr_count((string) $classtype, '\Paragraph')) {
             $files[] = 'forms/paragraph/'.$type.$htmltwig;
             $files[] = 'forms/paragraph/default'.$htmltwig;
         }

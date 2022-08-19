@@ -60,7 +60,7 @@ class BookmarkService
 
         try {
             $headers = get_headers($url, 1);
-            if (self::CLIENTNUMBER < substr($headers[0], 9, 3)) {
+            if (self::CLIENTNUMBER < substr((string) $headers[0], 9, 3)) {
                 return;
             }
 
@@ -109,7 +109,7 @@ class BookmarkService
             $slug     = $slugger->slug($title);
 
             try {
-                $pathinfo = pathinfo($image);
+                $pathinfo = pathinfo((string) $image);
                 $content  = file_get_contents($image);
                 // @var resource $tmpfile
                 $tmpfile = tmpfile();

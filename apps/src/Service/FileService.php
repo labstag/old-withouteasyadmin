@@ -28,7 +28,7 @@ class FileService
             str_replace(
                 $this->getParameter('kernel.project_dir').'/public/',
                 '',
-                $file
+                (string) $file
             )
         );
         $this->attachmentRH->handle($old, $attachment);

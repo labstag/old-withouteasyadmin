@@ -26,7 +26,7 @@ class HistoryTemplatePage extends TemplatePageLib
                 return $this->user($search[1]);
             default:
                 if (!empty($search[1])) {
-                    if (1 == substr_count($search[1], '/')) {
+                    if (1 == substr_count((string) $search[1], '/')) {
                         [
                             $historySlug,
                             $chapterSlug,

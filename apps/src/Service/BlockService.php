@@ -20,7 +20,7 @@ class BlockService
     public function getEntity(Block $block)
     {
         $field    = $this->getEntityField($block);
-        $method   = 'get'.ucfirst($field).'s';
+        $method   = 'get'.ucfirst((string) $field).'s';
         $entities = $block->{$method}();
 
         return $entities[0];
