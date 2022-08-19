@@ -46,7 +46,7 @@ class LabstagExtension extends AbstractExtension
     {
         $class = substr(
             (string) $entity::class,
-            strpos((string) $entity::class,self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY)
+            strpos((string) $entity::class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY)
         );
 
         return trim(strtolower($class));
