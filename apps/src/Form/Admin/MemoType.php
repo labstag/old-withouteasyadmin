@@ -22,7 +22,6 @@ class MemoType extends AbstractTypeLib
         array $options
     ): void
     {
-        unset($options);
         $builder->add(
             'title',
             TextType::class,
@@ -35,6 +34,15 @@ class MemoType extends AbstractTypeLib
             ]
         );
         $this->setContent($builder);
+        $this->addParagraph(
+            $builder,
+            $options,
+            [
+                'add'    => 'admin_memo_paragraph_add',
+                'edit'   => 'admin_memo_paragraph_show',
+                'delete' => 'admin_memo_paragraph_delete',
+            ]
+        );
         $builder->add(
             'date_start',
             DateTimeType::class,

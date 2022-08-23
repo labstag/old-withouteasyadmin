@@ -32,16 +32,7 @@ abstract class AddressType extends AbstractTypeLib
         );
         $builder->add(
             'country',
-            FlagCountryType::class,
-            [
-                'label' => $this->translator->trans('address.country.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('address.country.help', [], 'admin.form'),
-                'attr'  => [
-                    'is'          => 'select-country',
-                    'choices'     => 'true',
-                    'placeholder' => $this->translator->trans('address.country.placeholder', [], 'admin.form'),
-                ],
-            ]
+            FlagCountryType::class
         );
         $builder->add(
             'zipcode',

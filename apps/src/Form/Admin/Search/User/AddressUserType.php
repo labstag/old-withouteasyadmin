@@ -21,19 +21,7 @@ class AddressUserType extends SearchAbstractTypeLib
     {
         $builder->add(
             'country',
-            FlagCountryType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('addressuser.country.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('addressuser.country.help', [], 'admin.search.form'),
-                'attr'     => [
-                    'placeholder' => $this->translator->trans(
-                        'addressuser.country.placeholder',
-                        [],
-                        'admin.search.form'
-                    ),
-                ],
-            ]
+            FlagCountryType::class
         );
         $builder->add(
             'city',

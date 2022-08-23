@@ -21,19 +21,7 @@ class GeocodeType extends SearchAbstractTypeLib
     {
         $builder->add(
             'countrycode',
-            FlagCountryType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('geocode.countrycode.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('geocode.countrycode.help', [], 'admin.search.form'),
-                'attr'     => [
-                    'placeholder' => $this->translator->trans(
-                        'geocode.countrycode.placeholder',
-                        [],
-                        'admin.search.form'
-                    ),
-                ],
-            ]
+            FlagCountryType::class
         );
         $this->setTextType($builder);
         parent::buildForm($builder, $options);

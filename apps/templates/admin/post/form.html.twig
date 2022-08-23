@@ -6,7 +6,7 @@
     {{ form_row(form.published) }}
     {{ form_row(form.slug) }}
     {{ form_row(form.content) }}
-    {% include "admin/paragraph/index.html.twig" with {'addurl': path('admin_post_paragraph_add', {'id': entity.id}), 'urledit': 'admin_post_paragraph_show', 'urldelete': 'admin_post_paragraph_delete', 'paragraphs': entity.paragraphs} %}
+    {{ form_row(form.paragraph) }}
     {% if entity.id is not null %}
         {{ macro_admin.form_img(
             entity,

@@ -30,6 +30,15 @@ class PageType extends AbstractTypeLib
                 'help'  => $this->translator->trans('page.name.help', [], 'admin.form'),
             ]
         );
+        $this->addParagraph(
+            $builder,
+            $options,
+            [
+                'add'    => 'admin_page_paragraph_add',
+                'edit'   => 'admin_page_paragraph_show',
+                'delete' => 'admin_page_paragraph_delete',
+            ]
+        );
         $builder->add(
             'password',
             TextType::class,
@@ -75,7 +84,6 @@ class PageType extends AbstractTypeLib
             ChoiceType::class,
             ['choices' => $choices]
         );
-        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

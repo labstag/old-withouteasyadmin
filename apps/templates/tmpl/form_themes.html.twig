@@ -22,6 +22,19 @@
         {{- block('choice_widget_options') -}}
     </select>
 {% endblock %}
+
+{% block paragraph_row %}
+    <fieldset data-url="{{ urlAdd }}">
+        <legend>{{ form.vars.label }}</legend>
+        <div id="paragraph-list">
+            {% include "admin/paragraph/list.html.twig" with {'addurl': urlAdd, 'urledit': urlEdit, 'urldelete': urlDelete, 'paragraphs': paragraphs} %}
+        </div>
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+        {{ form_help(form) }}
+    </fieldset>
+{% endblock %}
+
 {% block form_rows %}
     {% set template = formClass(form) %}
     {% include template with {

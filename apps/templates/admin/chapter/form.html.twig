@@ -5,7 +5,7 @@
     {{ form_row(form.published) }}
     {{ form_row(form.slug) }}
     {{ form_row(form.content) }}
-    {% include "admin/paragraph/index.html.twig" with {'addurl': path('admin_chapter_paragraph_add', {'id': entity.id}), 'urledit': 'admin_chapter_paragraph_show', 'urldelete': 'admin_chapter_paragraph_delete', 'paragraphs': entity.paragraphs} %}
+    {{ form_row(form.paragraph) }}
     {{ form_row(form.metas) }}
     {{ form_end(form) }}
 {% endblock %}

@@ -15,14 +15,7 @@ class GeoCodeType extends AbstractTypeLib
         unset($options);
         $builder->add(
             'countryCode',
-            FlagCountryType::class,
-            [
-                'label' => $this->translator->trans('geocode.countryCode.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('geocode.countryCode.help', [], 'admin.form'),
-                'attr'  => [
-                    'placeholder' => $this->translator->trans('geocode.countryCode.placeholder', [], 'admin.form'),
-                ],
-            ]
+            FlagCountryType::class
         );
         $tab = [
             'postalCode'    => [

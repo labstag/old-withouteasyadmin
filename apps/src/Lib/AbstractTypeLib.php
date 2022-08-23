@@ -4,6 +4,7 @@ namespace Labstag\Lib;
 
 use Labstag\Form\Admin\Collections\MetaType;
 use Labstag\FormType\MinMaxCollectionType;
+use Labstag\FormType\ParagraphType;
 use Labstag\FormType\WysiwygType;
 use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\AbstractType;
@@ -13,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractTypeLib extends AbstractType
@@ -58,6 +60,22 @@ abstract class AbstractTypeLib extends AbstractType
                     'placeholder' => $this->translator->trans('email.placeholder', [], 'admin.form'),
                 ],
             ]
+        );
+    }
+
+    protected function addParagraph(FormBuilderInterface $builder, array $options, array $urls)
+    {
+        $builder->add(
+            'paragraph',
+            ParagraphType::class,
+            array_merge(
+                $urls,
+                [
+                    'mapped'   => false,
+                    'required' => false,
+                    'data'     => $options['data'],
+                ]
+            )
         );
     }
 

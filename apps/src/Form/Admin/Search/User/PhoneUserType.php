@@ -21,15 +21,7 @@ class PhoneUserType extends SearchAbstractTypeLib
     {
         $builder->add(
             'country',
-            FlagCountryType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('phoneuser.country.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('phoneuser.country.help', [], 'admin.search.form'),
-                'attr'     => [
-                    'placeholder' => $this->translator->trans('phoneuser.country.placeholder', [], 'admin.search.form'),
-                ],
-            ]
+            FlagCountryType::class
         );
         $this->addRefUser($builder);
         $this->showState(

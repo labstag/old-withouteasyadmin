@@ -27,6 +27,15 @@ class PostType extends AbstractTypeLib
         $this->setTextType($builder);
         $this->addPublished($builder);
         $this->setContent($builder);
+        $this->addParagraph(
+            $builder,
+            $options,
+            [
+                'add'    => 'admin_post_paragraph_add',
+                'edit'   => 'admin_post_paragraph_show',
+                'delete' => 'admin_post_paragraph_delete',
+            ]
+        );
         $builder->add(
             'file',
             FileType::class,
@@ -89,7 +98,6 @@ class PostType extends AbstractTypeLib
             ]
         );
         $this->setMeta($builder);
-        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

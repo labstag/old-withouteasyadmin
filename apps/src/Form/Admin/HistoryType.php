@@ -31,6 +31,15 @@ class HistoryType extends AbstractTypeLib
                 'help'  => $this->translator->trans('history.summary.help', [], 'admin.form'),
             ]
         );
+        $this->addParagraph(
+            $builder,
+            $options,
+            [
+                'add'    => 'admin_history_paragraph_add',
+                'edit'   => 'admin_history_paragraph_show',
+                'delete' => 'admin_history_paragraph_delete',
+            ]
+        );
         $builder->add(
             'refuser',
             SearchableType::class,
@@ -46,7 +55,6 @@ class HistoryType extends AbstractTypeLib
             ]
         );
         $this->setMeta($builder);
-        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

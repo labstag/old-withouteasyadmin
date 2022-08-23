@@ -58,8 +58,16 @@ class EditoType extends AbstractTypeLib
                 ],
             ]
         );
+        $this->addParagraph(
+            $builder,
+            $options,
+            [
+                'add'    => 'admin_edito_paragraph_add',
+                'edit'   => 'admin_edito_paragraph_show',
+                'delete' => 'admin_edito_paragraph_delete',
+            ]
+        );
         $this->setMeta($builder);
-        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
