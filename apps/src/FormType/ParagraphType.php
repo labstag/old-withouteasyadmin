@@ -2,6 +2,7 @@
 
 namespace Labstag\FormType;
 
+use Labstag\Service\ParagraphService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\Routing\RouterInterface;
 class ParagraphType extends AbstractType
 {
     public function __construct(
+        protected ParagraphService $paragraphService,
         protected RouterInterface $router
     )
     {
@@ -23,14 +25,13 @@ class ParagraphType extends AbstractType
         array $options
     ): void
     {
-        $attr                     = $options['attr'];
-        $attr['is']               = 'select-paragraph';
+        $entity                   = $form->getParent()->getData();
         $view->vars['label']      = 'Paragraphs';
-        $view->vars['urlAdd']     = $this->router->generate($options['add'], ['id' => $options['data']->getId()]);
-        $view->vars['paragraphs'] = $options['data']->getParagraphs();
+        $view->vars['urlAdd']     = $this->router->generate($options['add'], ['id' => $entity->getId()]);
+        $view->vars['paragraphs'] = $entity->getParagraphs();
         $view->vars['urlEdit']    = $options['edit'];
         $view->vars['urlDelete']  = $options['delete'];
-        $view->vars['attr']       = $attr;
+        $view->vars['attr']['is'] = 'select-paragraph';
         unset($form);
     }
 
@@ -39,7 +40,7 @@ class ParagraphType extends AbstractType
         $resolver->setDefaults(
             [
                 'placeholder' => 'Choisir le paragraphe',
-                'choices'     => ['Texte' => 'text'],
+                'choices'     => $this->paragraphService->getAll(),
                 'add'         => null,
                 'edit'        => null,
                 'delete'      => null,

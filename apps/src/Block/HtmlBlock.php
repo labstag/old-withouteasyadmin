@@ -18,6 +18,11 @@ class HtmlBlock extends BlockLib
         return HtmlType::class;
     }
 
+    public function getName()
+    {
+        return $this->translator->trans('html.name', [], 'block');
+    }
+
     public function getType()
     {
         return 'html';

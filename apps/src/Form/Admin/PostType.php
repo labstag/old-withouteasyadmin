@@ -29,7 +29,6 @@ class PostType extends AbstractTypeLib
         $this->setContent($builder);
         $this->addParagraph(
             $builder,
-            $options,
             [
                 'add'    => 'admin_post_paragraph_add',
                 'edit'   => 'admin_post_paragraph_show',
@@ -98,6 +97,7 @@ class PostType extends AbstractTypeLib
             ]
         );
         $this->setMeta($builder);
+        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

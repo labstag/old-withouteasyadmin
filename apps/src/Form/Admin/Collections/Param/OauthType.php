@@ -2,26 +2,15 @@
 
 namespace Labstag\Form\Admin\Collections\Param;
 
+use Labstag\FormType\OauthChoiceType;
 use Labstag\Lib\AbstractTypeLib;
-use Labstag\Service\OauthService;
-use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OauthType extends AbstractTypeLib
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        protected OauthService $oauthService,
-        TemplatePageService $templatePageService
-    )
-    {
-        parent::__construct($translator, $templatePageService);
-    }
-
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
@@ -46,21 +35,13 @@ class OauthType extends AbstractTypeLib
                 ],
             ]
         );
-        $types   = $this->oauthService->getTypes();
-        $choices = [];
-        foreach ($types as $type) {
-            $choices[$type] = $type;
-        }
-
-        ksort($choices);
         $builder->add(
             'type',
-            ChoiceType::class,
+            OauthChoiceType::class,
             [
-                'label'   => $this->translator->trans('param.oauth.type.label', [], 'admin.form'),
-                'help'    => $this->translator->trans('param.oauth.type.help', [], 'admin.form'),
-                'choices' => $choices,
-                'attr'    => [
+                'label' => $this->translator->trans('param.oauth.type.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('param.oauth.type.help', [], 'admin.form'),
+                'attr'  => [
                     'placeholder' => $this->translator->trans('param.oauth.type.placeholder', [], 'admin.form'),
                 ],
             ]

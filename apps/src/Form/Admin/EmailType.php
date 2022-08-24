@@ -5,6 +5,7 @@ namespace Labstag\Form\Admin;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\EmailType as TypeEmailType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class EmailType extends AbstractTypeLib
 {
@@ -27,6 +28,14 @@ abstract class EmailType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans('email.address.placeholder', [], 'admin.form'),
                 ],
             ]
+        );
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        // Configure your form options here
+        $resolver->setDefaults(
+            ['entity' => null]
         );
     }
 }

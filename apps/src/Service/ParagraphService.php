@@ -14,6 +14,18 @@ class ParagraphService
     {
     }
 
+    public function getAll()
+    {
+        $data = [];
+        foreach ($this->paragraphsclass as $row) {
+            $type        = $row->getType();
+            $name        = $row->getName();
+            $data[$name] = $type;
+        }
+
+        return $data;
+    }
+
     public function getEntityField(Paragraph $entity)
     {
         $childentity = $this->getTypeEntity($entity);

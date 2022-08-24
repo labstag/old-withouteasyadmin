@@ -18,6 +18,11 @@ class TextParagraph extends ParagraphLib
         return TextType::class;
     }
 
+    public function getName()
+    {
+        return $this->translator->trans('text.name', [], 'paragraph');
+    }
+
     public function getType()
     {
         return 'text';

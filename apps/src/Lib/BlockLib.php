@@ -3,11 +3,15 @@
 namespace Labstag\Lib;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 abstract class BlockLib extends AbstractController
 {
-    public function __construct(protected Environment $twig)
+    public function __construct(
+        protected TranslatorInterface $translator,
+        protected Environment $twig
+    )
     {
     }
 

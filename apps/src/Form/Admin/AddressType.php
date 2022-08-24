@@ -7,6 +7,7 @@ use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AddressType extends AbstractTypeLib
 {
@@ -88,6 +89,14 @@ abstract class AddressType extends AbstractTypeLib
                 'label' => $this->translator->trans('address.pmr.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('address.pmr.help', [], 'admin.form'),
             ]
+        );
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        // Configure your form options here
+        $resolver->setDefaults(
+            ['entity' => null]
         );
     }
 }

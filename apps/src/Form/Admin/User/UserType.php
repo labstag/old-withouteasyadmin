@@ -8,27 +8,16 @@ use Labstag\Form\Admin\Collections\User\AddressType;
 use Labstag\Form\Admin\Collections\User\EmailType;
 use Labstag\Form\Admin\Collections\User\LinkType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
+use Labstag\FormType\EmailVerifChoiceType;
 use Labstag\FormType\SearchableType;
 use Labstag\Lib\AbstractTypeLib;
-use Labstag\Repository\EmailUserRepository;
-use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserType extends AbstractTypeLib
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        protected EmailUserRepository $repository,
-        TemplatePageService $templatePageService
-    )
-    {
-        parent::__construct($translator, $templatePageService);
-    }
-
     /**
      * @inheritDoc
      */
@@ -73,9 +62,13 @@ class UserType extends AbstractTypeLib
                 'attr'     => ['accept' => 'image/*'],
             ]
         );
-        $this->addEmails($builder, $options, $this->repository);
+        $builder->add(
+            'email',
+            EmailVerifChoiceType::class
+        );
 
         $this->setCollectionTypeAll($builder);
+        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

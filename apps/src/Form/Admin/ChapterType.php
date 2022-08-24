@@ -23,7 +23,6 @@ class ChapterType extends AbstractTypeLib
         $this->setContent($builder);
         $this->addParagraph(
             $builder,
-            $options,
             [
                 'add'    => 'admin_chapter_paragraph_add',
                 'edit'   => 'admin_chapter_paragraph_show',
@@ -31,6 +30,7 @@ class ChapterType extends AbstractTypeLib
             ]
         );
         $this->setMeta($builder);
+        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

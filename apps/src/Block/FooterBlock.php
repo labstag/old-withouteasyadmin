@@ -18,6 +18,11 @@ class FooterBlock extends BlockLib
         return FooterType::class;
     }
 
+    public function getName()
+    {
+        return $this->translator->trans('footer.name', [], 'block');
+    }
+
     public function getType()
     {
         return 'footer';

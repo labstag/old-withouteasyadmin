@@ -36,7 +36,6 @@ class MemoType extends AbstractTypeLib
         $this->setContent($builder);
         $this->addParagraph(
             $builder,
-            $options,
             [
                 'add'    => 'admin_memo_paragraph_add',
                 'edit'   => 'admin_memo_paragraph_show',
@@ -90,6 +89,7 @@ class MemoType extends AbstractTypeLib
                 ],
             ]
         );
+        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

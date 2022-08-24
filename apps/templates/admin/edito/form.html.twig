@@ -13,8 +13,8 @@
             path('api_attachment_editofond', {'entity': entity.id})
         ) }}
     {% endif %}
-    {{ form_row(form.paragraph) }}
     {{ form_row(form.file) }}
+    {{ form_row(form.paragraph) }}
     {{ form_row(form.refuser) }}
     {{ form_row(form.metas) }}
     {{ form_end(form) }}

@@ -17,6 +17,18 @@ class BlockService
     {
     }
 
+    public function getAll()
+    {
+        $data = [];
+        foreach ($this->blocksclass as $row) {
+            $type        = $row->getType();
+            $name        = $row->getName();
+            $data[$name] = $type;
+        }
+
+        return $data;
+    }
+
     public function getEntity(Block $block)
     {
         $field    = $this->getEntityField($block);

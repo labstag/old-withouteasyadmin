@@ -2,17 +2,17 @@
 
 namespace Labstag\FormType;
 
+use Labstag\Service\BlockService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\RouterInterface;
 
-class OauthType extends AbstractType
+class BlockType extends AbstractType
 {
     public function __construct(
-        protected RouterInterface $router
+        protected BlockService $blockService
     )
     {
     }
@@ -23,15 +23,20 @@ class OauthType extends AbstractType
         array $options
     ): void
     {
-        $attr               = $options['attr'];
-        $view->vars['attr'] = $attr;
-        unset($form);
+        $view->vars['attr']['is'] = 'select-paragraph';
+        unset($form, $options);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            []
+            [
+                'placeholder' => 'Choisir le block',
+                'choices'     => $this->blockService->getAll(),
+                'add'         => null,
+                'edit'        => null,
+                'delete'      => null,
+            ]
         );
     }
 

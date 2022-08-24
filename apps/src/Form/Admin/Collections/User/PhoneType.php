@@ -10,6 +10,7 @@ class PhoneType extends AbstractPhoneType
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
+        parent::configureOptions($resolver);
         // Configure your form options here
         $resolver->setDefaults(
             [

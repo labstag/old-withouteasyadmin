@@ -13,8 +13,8 @@ class BlockType extends BlockAbstractTypeLib
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formType = $this->blockService->getTypeForm($options['data']);
-        $field    = $this->blockService->getEntityField($options['data']);
+        $formType = $this->blockService->getTypeForm($builder->getData());
+        $field    = $this->blockService->getEntityField($builder->getData());
         $builder->add('code');
         if (!is_null($formType) || is_null($field)) {
             $builder->add(
@@ -31,6 +31,7 @@ class BlockType extends BlockAbstractTypeLib
         }
 
         $builder->add('Enregistrer', SubmitType::class);
+        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

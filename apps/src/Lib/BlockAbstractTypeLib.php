@@ -13,12 +13,12 @@ abstract class BlockAbstractTypeLib extends AbstractTypeLib
     public function __construct(
         TranslatorInterface $translator,
         TemplatePageService $templatePageService,
-        RouterInterface $router,
+        protected RouterInterface $router,
         protected BlockService $blockService,
         protected Environment $twig
     )
     {
-        parent::__construct($translator, $templatePageService, $router);
+        parent::__construct($translator, $templatePageService);
     }
 
     public function getFieldEntity()

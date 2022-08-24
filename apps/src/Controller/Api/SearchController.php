@@ -5,6 +5,7 @@ namespace Labstag\Controller\Api;
 use Labstag\Entity\Category;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Libelle;
+use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +25,7 @@ class SearchController extends ApiControllerLib
         $entityName = ('api_search_category' == $route) ? Category::class : null;
         $entityName = ('api_search_group' == $route) ? Groupe::class : null;
         $entityName = ('api_search_postlibelle' == $route) ? Libelle::class : null;
+        $entityName = ('api_search_user' == $route) ? User::class : null;
         $function   = ('api_search_user' == $route) ? 'findUserName' : 'findName';
 
         return $this->showData($request, $entityName, $function);
@@ -33,7 +35,7 @@ class SearchController extends ApiControllerLib
     {
         $get    = $request->query->all();
         $return = ['isvalid' => false];
-        if (!array_key_exists('name', $get)) {
+        if (!array_key_exists('name', $get) || is_null($entity)) {
             return $this->json($return);
         }
 

@@ -33,7 +33,6 @@ class HistoryType extends AbstractTypeLib
         );
         $this->addParagraph(
             $builder,
-            $options,
             [
                 'add'    => 'admin_history_paragraph_add',
                 'edit'   => 'admin_history_paragraph_show',
@@ -55,6 +54,7 @@ class HistoryType extends AbstractTypeLib
             ]
         );
         $this->setMeta($builder);
+        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

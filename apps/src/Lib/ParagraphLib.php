@@ -8,11 +8,13 @@ use Labstag\Service\ParagraphService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 abstract class ParagraphLib extends AbstractController
 {
     public function __construct(
+        protected TranslatorInterface $translator,
         protected MailerInterface $mailer,
         protected Environment $twig,
         protected ParagraphService $paragraphService,

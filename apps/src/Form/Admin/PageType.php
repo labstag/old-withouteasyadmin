@@ -32,7 +32,6 @@ class PageType extends AbstractTypeLib
         );
         $this->addParagraph(
             $builder,
-            $options,
             [
                 'add'    => 'admin_page_paragraph_add',
                 'edit'   => 'admin_page_paragraph_show',

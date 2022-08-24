@@ -6,6 +6,7 @@ use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class LinkType extends AbstractTypeLib
 {
@@ -39,6 +40,14 @@ abstract class LinkType extends AbstractTypeLib
                     'placeholder' => $this->translator->trans('link.address.placeholder', [], 'admin.form'),
                 ],
             ]
+        );
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        // Configure your form options here
+        $resolver->setDefaults(
+            ['entity' => null]
         );
     }
 }

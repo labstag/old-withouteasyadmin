@@ -60,7 +60,6 @@ class EditoType extends AbstractTypeLib
         );
         $this->addParagraph(
             $builder,
-            $options,
             [
                 'add'    => 'admin_edito_paragraph_add',
                 'edit'   => 'admin_edito_paragraph_show',
@@ -68,6 +67,7 @@ class EditoType extends AbstractTypeLib
             ]
         );
         $this->setMeta($builder);
+        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

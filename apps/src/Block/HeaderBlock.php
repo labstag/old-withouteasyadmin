@@ -18,6 +18,11 @@ class HeaderBlock extends BlockLib
         return HeaderType::class;
     }
 
+    public function getName()
+    {
+        return $this->translator->trans('header.name', [], 'block');
+    }
+
     public function getType()
     {
         return 'header';

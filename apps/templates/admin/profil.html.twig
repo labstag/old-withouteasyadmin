@@ -4,9 +4,7 @@
 	{{ form_start(form) }}
 	{{ form_row(form.username) }}
 	{{ form_row(form.plainPassword) }}
-	{% if form.email is defined %}
-		{{ form_row(form.email) }}
-	{% endif %}
+    {{ form_row(form.email) }}
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
 		<li class="nav-item" role="presentation">
 			<a class="nav-link active" id="emails-tab" data-bs-toggle="tab" href="#emails" role="tab" aria-controls="emails" aria-selected="true">{{ 'form.profil.emails'|trans({}, 'admin.messages') }}</a>

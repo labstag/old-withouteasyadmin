@@ -14,37 +14,13 @@ abstract class ParagraphAbstractTypeLib extends AbstractTypeLib
     public function __construct(
         TranslatorInterface $translator,
         TemplatePageService $templatePageService,
-        RouterInterface $router,
+        protected RouterInterface $router,
         protected ParagraphService $paragraphService,
         protected Environment $twig,
         protected FormService $formService
     )
     {
-        parent::__construct($translator, $templatePageService, $router);
-    }
-
-    public function getFieldEntity()
-    {
-        return '';
-    }
-
-    public function getForm()
-    {
-        $forms = $this->formService->all();
-        $data  = [];
-        foreach ($forms as $form) {
-            $name        = $form->getName();
-            $data[$name] = $name;
-        }
-
-        ksort($data);
-
-        return $data;
-    }
-
-    public function getFormType()
-    {
-        return '';
+        parent::__construct($translator, $templatePageService);
     }
 
     protected function getRender($view, $param = [])

@@ -3,30 +3,18 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\Paragraph;
-use Labstag\Lib\AbstractTypeLib;
-use Labstag\Service\ParagraphService;
-use Labstag\Service\TemplatePageService;
+use Labstag\Lib\ParagraphAbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ParagraphType extends AbstractTypeLib
+class ParagraphType extends ParagraphAbstractTypeLib
 {
-    public function __construct(
-        protected ParagraphService $paragraphService,
-        protected TranslatorInterface $translator,
-        protected TemplatePageService $templatePageService
-    )
-    {
-        parent::__construct($translator, $templatePageService);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formType = $this->paragraphService->getTypeForm($options['data']);
-        $field    = $this->paragraphService->getEntityField($options['data']);
+        $formType = $this->paragraphService->getTypeForm($builder->getData());
+        $field    = $this->paragraphService->getEntityField($builder->getData());
         $builder->add('background');
         $builder->add('color');
         $builder->add('fond');
@@ -45,6 +33,7 @@ class ParagraphType extends AbstractTypeLib
         }
 
         $builder->add('Enregistrer', SubmitType::class);
+        unset($options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
