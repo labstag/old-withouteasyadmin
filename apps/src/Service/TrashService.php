@@ -6,12 +6,12 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use ReflectionClass;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class TrashService
 {
     public function __construct(
+        protected $repositories,
         protected ManagerRegistry $manager,
         protected CsrfTokenManagerInterface $csrfTokenManager
     )
@@ -20,21 +20,14 @@ class TrashService
 
     public function all()
     {
-        $finder = new Finder();
-        $finder->files()->in(__DIR__.'/../Repository');
         $data = [];
-        foreach ($finder as $file) {
-            $repositoryFile = 'Labstag\\Repository\\'.$file->getFilenameWithoutExtension();
-            $isTrashable    = $this->isTrashable($repositoryFile);
+        foreach ($this->repositories as $repository) {
+            $isTrashable = $this->isTrashable($repository::class);
             if (!$isTrashable) {
                 continue;
             }
 
-            $entity     = str_replace(
-                'Repository',
-                '',
-                'Labstag\\Entity\\'.$file->getFilenameWithoutExtension()
-            );
+            $entity     = $repository->getClassName();
             $repository = $this->manager->getRepository($entity);
             $trash      = $repository->findTrashForAdmin([]);
             $result     = $trash->getQuery()->getResult();
@@ -44,15 +37,9 @@ class TrashService
             }
 
             $data[] = [
-                'name'       => strtolower(
-                    str_replace(
-                        'Repository',
-                        '',
-                        $file->getFilenameWithoutExtension()
-                    )
-                ),
-                'properties' => $this->getProperties($repositoryFile),
-                'entity'     => $entity,
+                'name'       => strtolower(substr((string) $entity, strrpos((string) $entity, '\\') + 1)),
+                'properties' => $this->getProperties($repository::class),
+                'entity'     => substr((string) $entity, strrpos((string) $entity, '\\') + 1),
                 'total'      => $test,
                 'token'      => $this->csrfTokenManager->getToken('empty')->getValue(),
             ];

@@ -49,6 +49,7 @@ services:
     Labstag\Repository\:
       resource: "../src/Repository/"
       public: true
+      tags: [repositories]
     Labstag\RequestHandler\:
       resource: "../src/RequestHandler/"
       public: true
@@ -60,6 +61,9 @@ services:
     Labstag\Controller\:
       resource: "../src/Controller/"
       tags: ["controller.service_arguments"]
+    Labstag\Service\TrashService:
+        arguments:  
+            - !tagged_iterator repositories
     Labstag\Service\TemplatePageService:
         arguments:  
             - !tagged_iterator templatepage
