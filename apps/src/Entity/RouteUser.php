@@ -35,7 +35,7 @@ class RouteUser
      */
     protected $state;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }

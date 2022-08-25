@@ -37,7 +37,7 @@ class Text
         return $this->content;
     }
 
-    public function getId(): ?text
+    public function getId(): ?string
     {
         return $this->id;
     }
