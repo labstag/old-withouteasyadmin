@@ -40,7 +40,8 @@ abstract class AdminControllerLib extends ControllerLib
         RequestHandlerLib $handler,
         string $formType,
         object $entity,
-        string $twig = 'admin/crud/form.html.twig'
+        string $twig = 'admin/crud/form.html.twig',
+        array $parameters = []
     ): Response
     {
         $url = $this->getUrlAdmin();
@@ -76,10 +77,13 @@ abstract class AdminControllerLib extends ControllerLib
 
         return $this->renderForm(
             $twig,
-            [
-                'entity' => $entity,
-                'form'   => $form,
-            ]
+            array_merge(
+                $parameters,
+                [
+                    'entity' => $entity,
+                    'form'   => $form,
+                ]
+            )
         );
     }
 

@@ -31,11 +31,20 @@ class BlockService
 
     public function getEntity(Block $block)
     {
-        $field    = $this->getEntityField($block);
-        $method   = 'get'.ucfirst((string) $field).'s';
-        $entities = $block->{$method}();
+        $field      = $this->getEntityField($block);
+        $reflection = $this->setReflection($block);
+        $entity     = null;
+        $accessor   = PropertyAccess::createPropertyAccessor();
+        foreach ($reflection->getProperties() as $property) {
+            if ($property->getName() == $field) {
+                $entities = $accessor->getValue($block, $field);
+                $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
 
-        return $entities[0];
+                break;
+            }
+        }
+
+        return $entity;
     }
 
     public function getEntityField(Block $entity)
@@ -70,6 +79,21 @@ class BlockService
         return $entity;
     }
 
+    public function getName(Block $entity)
+    {
+        $type = $entity->getType();
+        $form = null;
+        foreach ($this->blocksclass as $row) {
+            if ($row->getType() == $type) {
+                $form = $row->getName();
+
+                break;
+            }
+        }
+
+        return $form;
+    }
+
     public function getTypeForm(Block $entity)
     {
         $type = $entity->getType();
@@ -94,19 +118,8 @@ class BlockService
             return new Response();
         }
 
-        $type       = $block->getType();
-        $field      = $this->getEntityField($block);
-        $reflection = $this->setReflection($block);
-        $entity     = null;
-        $accessor   = PropertyAccess::createPropertyAccessor();
-        foreach ($reflection->getProperties() as $property) {
-            if ($property->getName() == $field) {
-                $entities = $accessor->getValue($block, $field);
-                $entity   = $entities[0];
-
-                break;
-            }
-        }
+        $type   = $block->getType();
+        $entity = $this->getEntity($block);
 
         $html = new Response();
         if (!is_null($entity)) {

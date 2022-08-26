@@ -16,7 +16,7 @@ export class BtnAddCollection extends ElementHTML {
     const fieldcollection = element.closest('.fieldcollection')
     const limit = fieldcollection.getAttribute('data-limit')
     const counter = fieldcollection.querySelectorAll('.collection-row').length
-    element.style.display = (limit === undefined || counter < limit) ? 'block' : 'none'
+    element.style.display = (limit === null || counter < limit) ? 'block' : 'none'
   }
 
   onClick (element) {
@@ -26,7 +26,7 @@ export class BtnAddCollection extends ElementHTML {
     const counter = fieldcollection.querySelectorAll('.collection-row').length
     const html = fieldcollection.dataset.prototype.replace(/__name__/g, counter)
     const fieldRow = fieldcollection.querySelector('.field-row')
-    if (fieldRow !== null && (limit === undefined || counter <= limit)) {
+    if (fieldRow !== null && (limit === null || counter <= limit)) {
       fieldRow.innerHTML += html
     }
     this.disconnectedCallback(this)

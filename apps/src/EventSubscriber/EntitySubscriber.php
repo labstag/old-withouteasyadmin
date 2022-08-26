@@ -9,6 +9,7 @@ use Labstag\Entity\EmailUser;
 use Labstag\Entity\Menu;
 use Labstag\Entity\User;
 use Labstag\Event\AttachmentEntityEvent;
+use Labstag\Event\BlockEntityEvent;
 use Labstag\Event\BookmarkEntityEvent;
 use Labstag\Event\ChapterEntityEvent;
 use Labstag\Event\ConfigurationEntityEvent;
@@ -20,6 +21,7 @@ use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\EventSubscriberLib;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\RequestHandler\EmailUserRequestHandler;
+use Labstag\Service\BlockService;
 use Labstag\Service\HistoryService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\SessionService;
@@ -34,6 +36,7 @@ class EntitySubscriber extends EventSubscriberLib
         protected EnqueueMethod $enqueue,
         protected EntityManagerInterface $entityManager,
         protected ParagraphService $paragraphService,
+        protected BlockService $blockService,
         protected UserPasswordHasherInterface $passwordEncoder,
         protected SessionService $sessionService,
         protected EmailUserRequestHandler $emailUserRH,
@@ -47,6 +50,7 @@ class EntitySubscriber extends EventSubscriberLib
         return [
             AttachmentEntityEvent::class    => 'onAttachmentEntityEvent',
             ParagraphEntityEvent::class     => 'onParagraphEntityEvent',
+            BlockEntityEvent::class         => 'onBlockEntityEvent',
             ConfigurationEntityEvent::class => 'onConfigurationEntityEvent',
             BookmarkEntityEvent::class      => 'onBookmarkEntityEvent',
             ChapterEntityEvent::class       => 'onChapterEntityEvent',
@@ -60,6 +64,28 @@ class EntitySubscriber extends EventSubscriberLib
     public function onAttachmentEntityEvent(AttachmentEntityEvent $event): void
     {
         unset($event);
+    }
+
+    public function onBlockEntityEvent(BlockEntityEvent $event)
+    {
+        $newEntity   = $event->getNewEntity();
+        $classentity = $this->blockService->getTypeEntity($newEntity);
+        if (is_null($classentity)) {
+            $this->entityManager->remove($newEntity);
+            $this->entityManager->flush();
+
+            return;
+        }
+
+        $entity = $this->blockService->getEntity($newEntity);
+        if (!is_null($entity)) {
+            return;
+        }
+
+        $entity = new $classentity();
+        $entity->setBlock($newEntity);
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
     }
 
     public function onBookmarkEntityEvent(BookmarkEntityEvent $event): void
@@ -139,6 +165,11 @@ class EntitySubscriber extends EventSubscriberLib
             $this->entityManager->remove($newEntity);
             $this->entityManager->flush();
 
+            return;
+        }
+
+        $entity = $this->paragraphService->getEntity($newEntity);
+        if (!is_null($entity)) {
             return;
         }
 

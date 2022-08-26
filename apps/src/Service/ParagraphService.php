@@ -26,6 +26,24 @@ class ParagraphService
         return $data;
     }
 
+    public function getEntity(Paragraph $paragraph)
+    {
+        $field      = $this->getEntityField($paragraph);
+        $reflection = $this->setReflection($paragraph);
+        $entity     = null;
+        $accessor   = PropertyAccess::createPropertyAccessor();
+        foreach ($reflection->getProperties() as $property) {
+            if ($property->getName() == $field) {
+                $entities = $accessor->getValue($paragraph, $field);
+                $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
+
+                break;
+            }
+        }
+
+        return $entity;
+    }
+
     public function getEntityField(Paragraph $entity)
     {
         $childentity = $this->getTypeEntity($entity);
@@ -89,24 +107,6 @@ class ParagraphService
         }
 
         return $html;
-    }
-
-    private function getEntity(Paragraph $paragraph)
-    {
-        $field      = $this->getEntityField($paragraph);
-        $reflection = $this->setReflection($paragraph);
-        $entity     = null;
-        $accessor   = PropertyAccess::createPropertyAccessor();
-        foreach ($reflection->getProperties() as $property) {
-            if ($property->getName() == $field) {
-                $entities = $accessor->getValue($paragraph, $field);
-                $entity   = $entities[0];
-
-                break;
-            }
-        }
-
-        return $entity;
     }
 
     private function setReflection($entity): ReflectionClass

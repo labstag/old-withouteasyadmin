@@ -8,27 +8,36 @@ use Labstag\Form\Admin\BlockType;
 use Labstag\Form\Admin\NewBlockType;
 use Labstag\Form\Admin\Search\BlockType as SearchBlockType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\BlockRepository;
 use Labstag\RequestHandler\BlockRequestHandler;
 use Labstag\Search\BlockSearch;
 use Labstag\Service\AttachFormService;
+use Labstag\Service\BlockService;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/block')]
 class BlockController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_block_edit', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $service,
-        ?Block $block,
+        AttachFormService $attachService,
+        BlockService $blockService,
+        Block $block,
         BlockRequestHandler $requestHandler
     ): Response
     {
+        $field = $blockService->getEntityField($block);
+
         return $this->form(
-            $service,
+            $attachService,
             $requestHandler,
             BlockType::class,
-            !is_null($block) ? $block : new Block()
+            !is_null($block) ? $block : new Block(),
+            'admin/block/form.html.twig',
+            ['field' => $field]
         );
     }
 
@@ -48,7 +57,13 @@ class BlockController extends AdminControllerLib
             ]
         );
         $entity = new Block();
-        $form   = $this->createForm(NewBlockType::class, $entity);
+        $form   = $this->createForm(
+            NewBlockType::class,
+            $entity,
+            [
+                'action' => $this->routerInterface->generate('admin_block_new'),
+            ]
+        );
 
         return $this->listOrTrash(
             Block::class,
@@ -57,19 +72,23 @@ class BlockController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/new', name: 'admin_block_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'admin_block_new', methods: ['POST'])]
     public function new(
-        AttachFormService $service,
+        Request $request,
         ?Block $block,
-        BlockRequestHandler $requestHandler
-    ): Response
+        BlockRepository $repository,
+        BlockRequestHandler $handler
+    )
     {
-        return $this->form(
-            $service,
-            $requestHandler,
-            BlockType::class,
-            !is_null($block) ? $block : new Block()
-        );
+        $post  = $request->request->all('new_block');
+        $block = new Block();
+        $old   = clone $block;
+        $block->setTitle(Uuid::v1());
+        $block->setType($post['type']);
+        $repository->add($block);
+        $handler->handle($old, $block);
+
+        return $this->redirectToRoute('admin_block_edit', ['id' => $block->getId()]);
     }
 
     protected function getUrlAdmin(): array
@@ -93,7 +112,7 @@ class BlockController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminTemplace(): array
+    protected function setBreadcrumbsPageAdminBlock(): array
     {
         return [
             [
@@ -103,7 +122,7 @@ class BlockController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminTemplaceEdit(): array
+    protected function setBreadcrumbsPageAdminBlockEdit(): array
     {
         return [
             [
@@ -113,7 +132,7 @@ class BlockController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminTemplaceTrash(): array
+    protected function setBreadcrumbsPageAdminBlockTrash(): array
     {
         return [
             [

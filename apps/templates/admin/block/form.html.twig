@@ -1,0 +1,9 @@
+{% import "admin/macro.html.twig" as macro_admin %}
+{% extends 'admin.html.twig' %}
+{% block body %}
+    {{ form_start(form) }}
+    {% if form[field] is defined %}
+        {{ form_row(form[field]) }}
+    {% endif %}
+    {{ form_end(form) }}
+{% endblock %}

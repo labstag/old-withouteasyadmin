@@ -14,14 +14,14 @@ class BlockType extends BlockAbstractTypeLib
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $formType = $this->blockService->getTypeForm($builder->getData());
+        $label    = $this->blockService->getName($builder->getData());
         $field    = $this->blockService->getEntityField($builder->getData());
-        $builder->add('code');
         if (!is_null($formType) || is_null($field)) {
             $builder->add(
                 $field,
                 CollectionType::class,
                 [
-                    'label'         => ' ',
+                    'label'         => $label,
                     'entry_type'    => $formType,
                     'entry_options' => ['label' => false],
                     'allow_add'     => false,

@@ -5,8 +5,12 @@
         {% block thead %}
             {% set theads = [
                 {
-                    'field': 'a.name',
-                    'name': 'attachment.name'|trans({}, 'admin.messages')
+                    'field': 'a.title',
+                    'name': 'block.title'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.type',
+                    'name': 'block.type'|trans({}, 'admin.messages')
                 }
             ] %}
             {{ macro_admin.thead(theads, pagination, true) }}
@@ -14,7 +18,8 @@
         {% block tbody %}
             {% for entity in pagination %}
                 <tr data-id="{{ entity.id }}">
-                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.title }}</td>
+                    <td>{{ entity.type }}</td>
                     <td>
                         {{ macro_admin.actions(entity, actions) }}
                     </td>

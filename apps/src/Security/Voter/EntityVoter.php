@@ -4,6 +4,7 @@ namespace Labstag\Security\Voter;
 
 use Labstag\Entity\AddressUser;
 use Labstag\Entity\Attachment;
+use Labstag\Entity\Block;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\Category;
 use Labstag\Entity\Chapter;
@@ -61,6 +62,7 @@ class EntityVoter extends Voter
             AddressUser::class,
             Attachment::class,
             Bookmark::class,
+            Block::class,
             Category::class,
             Chapter::class,
             Configuration::class,

@@ -36,7 +36,9 @@
 {% endblock %}
 
 {% block form_rows %}
+    aa
     {% set template = formClass(form) %}
+    bb
     {% include template with {
         'row': form|filter(child => not child.rendered),
         'allow_delete': false
