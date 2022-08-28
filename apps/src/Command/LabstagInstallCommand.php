@@ -31,7 +31,7 @@ class LabstagInstallCommand extends CommandLib
         $executes = $this->getExecutesFunction();
         foreach ($executes as $function) {
             if ('all' != $function) {
-                $this->{$function}($inputOutput);
+                call_user_func([$this, $function], $inputOutput);
             }
         }
 
@@ -59,7 +59,7 @@ class LabstagInstallCommand extends CommandLib
         foreach ($options as $option => $state) {
             $execute = $state ? $option : '';
             if (isset($executes[$execute])) {
-                $this->{$executes[$execute]}($inputOutput);
+                call_user_func([$this, $executes[$execute]], $inputOutput);
             }
         }
 

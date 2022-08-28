@@ -125,9 +125,9 @@ class AttachmentController extends ApiControllerLib
         }
 
         $old        = clone $entity;
-        $attachment = $entity->{$methodGet}();
+        $attachment = call_user_func([$entity, $methodGet]);
         $this->deleteAttachment($attachment);
-        $entity->{$methodSet}(null);
+        call_user_func([$entity, $methodSet], null);
         $requesthandler->handle($old, $entity);
         $return['state'] = true;
 
@@ -136,7 +136,7 @@ class AttachmentController extends ApiControllerLib
 
     private function setDataAttachment($method)
     {
-        $entity = $this->getRepository(Attachment::class)->{$method}();
+        $entity = call_user_func([$this->getRepository(Attachment::class), $method]);
         $return = [
             'state' => false,
             'error' => '',

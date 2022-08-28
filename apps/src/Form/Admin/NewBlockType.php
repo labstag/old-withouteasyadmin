@@ -5,6 +5,7 @@ namespace Labstag\Form\Admin;
 use Labstag\Entity\Block;
 use Labstag\FormType\BlockType;
 use Labstag\Lib\BlockAbstractTypeLib;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,6 +15,17 @@ class NewBlockType extends BlockAbstractTypeLib
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         unset($options);
+        $builder->add(
+            'region',
+            ChoiceType::class,
+            [
+                'choices' => [
+                    'header' => 'header',
+                    'content' => 'content',
+                    'footer' => 'footer',
+                ]
+            ]
+        );
         $builder->add(
             'type',
             BlockType::class

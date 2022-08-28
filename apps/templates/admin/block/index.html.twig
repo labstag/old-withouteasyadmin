@@ -11,19 +11,43 @@
                 {
                     'field': 'a.type',
                     'name': 'block.type'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.region',
+                    'name': 'block.region'|trans({}, 'admin.messages')
+                },
+                {
+                    'field': 'a.position',
+                    'name': 'block.position'|trans({}, 'admin.messages')
                 }
             ] %}
-            {{ macro_admin.thead(theads, pagination, true) }}
+            <tr>
+                {% for thead in theads %}
+                    <th>
+                        {% if thead.name is defined %}
+                            {{ thead.name }}
+                        {% endif %}
+                    </th>
+                {% endfor %}
+                <th></th>
+            <tr>
         {% endblock %}
         {% block tbody %}
-            {% for entity in pagination %}
-                <tr data-id="{{ entity.id }}">
-                    <td>{{ entity.title }}</td>
-                    <td>{{ entity.type }}</td>
-                    <td>
-                        {{ macro_admin.actions(entity, actions) }}
-                    </td>
+            {% for type, row in data %}
+                <tr>
+                    <td colspan=6 style="text-align: left;">{{ type }}</td>
                 </tr>
+                {% for entity in row %}
+                    <tr data-id="{{ entity.id }}">
+                        <td>{{ entity.title }}</td>
+                        <td>{{ entity.type }}</td>
+                        <td>{{ entity.region }}</td>
+                        <td>{{ entity.position }}</td>
+                        <td>
+                            {{ macro_admin.actions(entity, actions) }}
+                        </td>
+                    </tr>
+                {% endfor %}
             {% endfor %}
         {% endblock %}
     {% endembed %}

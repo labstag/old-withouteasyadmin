@@ -190,6 +190,7 @@ class ParamType extends AbstractTypeLib
                 $key,
                 MinMaxCollectionType::class,
                 [
+                    'required'     => false,
                     'label'        => ' ',
                     'allow_add'    => false,
                     'allow_delete' => false,

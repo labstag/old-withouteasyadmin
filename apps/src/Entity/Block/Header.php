@@ -30,7 +30,7 @@ class Header
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Link::class, mappedBy="header")
+     * @ORM\OneToMany(targetEntity=Link::class, mappedBy="header", cascade={"persist"}, orphanRemoval=true)
      */
     private $links;
 

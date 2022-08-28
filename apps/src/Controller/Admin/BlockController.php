@@ -6,7 +6,6 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Block;
 use Labstag\Form\Admin\BlockType;
 use Labstag\Form\Admin\NewBlockType;
-use Labstag\Form\Admin\Search\BlockType as SearchBlockType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\BlockRepository;
 use Labstag\RequestHandler\BlockRequestHandler;
@@ -17,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[Route(path: '/admin/block')]
 class BlockController extends AdminControllerLib
@@ -46,7 +46,9 @@ class BlockController extends AdminControllerLib
      */
     #[Route(path: '/trash', name: 'admin_block_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_block_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    public function indexOrTrash(
+        BlockRepository $repository
+    ): Response
     {
         $this->btnInstance()->add(
             'btn-admin-header-new',
@@ -57,18 +59,36 @@ class BlockController extends AdminControllerLib
             ]
         );
         $entity = new Block();
-        $form   = $this->createForm(
+        $newform   = $this->createForm(
             NewBlockType::class,
             $entity,
             [
                 'action' => $this->routerInterface->generate('admin_block_new'),
             ]
         );
+        $url         = $this->getUrlAdmin();
+        $request     = $this->requeststack->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $route       = $all['_route'];
+        $routeType   = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
+        $this->setBtnListOrTrash($repository, $routeType);
+        $data = $repository->getDataByRegion();
+        $total = 0;
+        foreach ($data as $region) {
+            $total += count($region);
+        }
 
-        return $this->listOrTrash(
-            Block::class,
+        if ('trash' == $routeType && 0 == $region) {
+            throw new AccessDeniedException();
+        }
+
+        return $this->renderForm(
             'admin/block/index.html.twig',
-            ['newform' => $form]
+            [
+                'data'       => $data,
+                'actions'    => $url,
+                'newform'    => $newform
+            ]
         );
     }
 
@@ -84,6 +104,7 @@ class BlockController extends AdminControllerLib
         $block = new Block();
         $old   = clone $block;
         $block->setTitle(Uuid::v1());
+        $block->setRegion($post['region']);
         $block->setType($post['type']);
         $repository->add($block);
         $handler->handle($old, $block);
@@ -101,14 +122,6 @@ class BlockController extends AdminControllerLib
             'list'    => 'admin_block_index',
             'restore' => 'api_action_restore',
             'trash'   => 'admin_block_trash',
-        ];
-    }
-
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchBlockType::class,
-            'data' => new BlockSearch(),
         ];
     }
 

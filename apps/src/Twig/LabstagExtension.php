@@ -331,8 +331,7 @@ class LabstagExtension extends AbstractExtension
         ];
 
         $vars      = $class->vars;
-        $classtype = (isset($vars['value']) && !is_string($vars['value'])) ? $vars['value']::class : null;
-        dump($classtype);
+        $classtype = (isset($vars['value']) && is_object($vars['value'])) ? $vars['value']::class : null;
         if (!is_null($classtype) && 1 == substr_count((string) $classtype, '\Paragraph')) {
             $files[] = 'forms/paragraph/'.$type.$htmltwig;
             $files[] = 'forms/paragraph/default'.$htmltwig;

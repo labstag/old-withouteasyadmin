@@ -354,7 +354,7 @@ class ActionsController extends ApiControllerLib
         foreach ($entities as $id) {
             try {
                 $entity = $repository->find($id);
-                $this->{$method}($entity);
+                call_user_func([$this, $method], $entity);
             } catch (Exception $exception) {
                 $error[] = $exception->getMessage();
             }

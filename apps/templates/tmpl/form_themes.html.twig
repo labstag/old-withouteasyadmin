@@ -36,9 +36,7 @@
 {% endblock %}
 
 {% block form_rows %}
-    aa
     {% set template = formClass(form) %}
-    bb
     {% include template with {
         'row': form|filter(child => not child.rendered),
         'allow_delete': false
@@ -334,9 +332,11 @@
         {% set element = 'div' %}
     {% elseif compound is defined and compound %}
         {% set element = 'fieldset' %}
-        {% set element_attr = element_attr|merge({
-            'class': 'form-group fieldcollection'
-        }) %}
+        {% if prototype is defined %}
+            {% set element_attr = element_attr|merge({
+                'class': 'form-group fieldcollection'
+            }) %}
+        {% endif %}
         {% if "collection" in form.vars.block_prefixes %}
             {% if prototype is defined and allow_add %}
                 {% set label_attr = label_attr|merge({
@@ -346,6 +346,9 @@
                     'data-prototype': block('collection_item_widget')|replace({'"': "'", "\n": "", "\t": ""})
                 }) %}
             {% endif %}
+        {% endif %}
+        {% if prototype is not defined %}
+            {% set element = 'div' %}
         {% endif %}
     {% endif %}
     {% set widget_attr = {} %}
@@ -388,7 +391,7 @@
             {% set element = 'label' %}
         {% elseif expanded is defined and expanded %}
             {% set element = 'label' %}
-        {% elseif compound is defined and compound %}
+        {% elseif compound is defined and compound and prototype is defined %}
             {% set element = 'legend' %}
             {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' col-form-label')|trim}) %}
         {% else %}

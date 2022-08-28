@@ -107,7 +107,7 @@ class BookmarkTemplatePage extends TemplatePageLib
     private function getList($code, $method)
     {
         $pagination = $this->paginator->paginate(
-            $this->getRepository(Bookmark::class)->{$method}($code),
+            call_user_func([$this->getRepository(Bookmark::class), $method], $code),
             $this->request->query->getInt('page', 1),
             10
         );

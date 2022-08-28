@@ -17,10 +17,8 @@ class HtmlType extends BlockAbstractTypeLib
             'content',
             WysiwygType::class,
             [
-                'attr'     => ['data-ckeditor' => 0],
                 'label'    => 'Texte',
                 'required' => false,
-                'config'   => ['height' => '500px'],
             ]
         );
         unset($options);

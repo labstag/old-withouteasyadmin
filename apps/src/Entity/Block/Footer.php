@@ -30,7 +30,7 @@ class Footer
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Link::class, mappedBy="footer")
+     * @ORM\OneToMany(targetEntity=Link::class, mappedBy="footer", cascade={"persist"}, orphanRemoval=true)
      */
     private $links;
 

@@ -5,4 +5,9 @@
             {{ form_row(input) }}
         </div>
     {% endfor %}
+    {% if allow_delete %}
+        <div class="text-center col-12">
+            {{ block('collection_delete') }}
+        </div>
+    {% endif %}
 </div>

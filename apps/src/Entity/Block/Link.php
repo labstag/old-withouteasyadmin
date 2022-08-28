@@ -46,6 +46,17 @@ class Link
      */
     private $url;
 
+    public function __toString(): string
+    {
+        return implode(
+            ' ',
+            [
+                $this->getUrl(),
+                $this->getTitle(),
+            ]
+        );
+    }
+
     public function getExternal(): ?bool
     {
         return $this->external;

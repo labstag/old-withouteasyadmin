@@ -87,6 +87,18 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
+    protected function setBtnListOrTrash($repository, $routeType)
+    {
+        $url         = $this->getUrlAdmin();
+        $request     = $this->requeststack->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $route       = $all['_route'];
+        $routeParams = $all['_route_params'];
+        $methods     = $this->getMethodsList();
+        $this->addNewImport($this->entityManager, $repository, $methods, $routeType, $url);
+        $this->setBtnDeleties($routeType, $route, $routeParams, $repository);
+    }
+
     public function listOrTrash(
         $entity,
         string $html,
@@ -99,43 +111,9 @@ abstract class AdminControllerLib extends ControllerLib
         $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $route       = $all['_route'];
-        $routeParams = $all['_route_params'];
         $routeType   = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
-        $method      = $methods[$routeType];
-        $this->addNewImport($this->entityManager, $repository, $methods, $routeType, $url);
-
-        if ('trash' != $routeType) {
-            $this->btnInstance()->addSupprimerSelection(
-                [
-                    'redirect' => [
-                        'href'   => $route,
-                        'params' => $routeParams,
-                    ],
-                    'url'      => [
-                        'href'   => 'api_action_deleties',
-                        'params' => [
-                            'entity' => strtolower(
-                                str_replace(
-                                    'Labstag\\Entity\\',
-                                    '',
-                                    (string) $repository->getClassName()
-                                )
-                            ),
-                        ],
-                    ],
-                ],
-                'deleties'
-            );
-        }
-
-        $query      = $this->requeststack->getCurrentRequest()->query;
-        $get        = $query->all();
-        $limit      = $query->getInt('limit', 10);
-        $pagination = $this->paginator->paginate(
-            $repository->{$method}($get),
-            $query->getInt('page', 1),
-            $limit
-        );
+        $this->setBtnListOrTrash($repository, $routeType);
+        $pagination = $this->setPagination($repository, $routeType);
 
         if ('trash' == $routeType && 0 == $pagination->count()) {
             throw new AccessDeniedException();
@@ -148,29 +126,87 @@ abstract class AdminControllerLib extends ControllerLib
                 'actions'    => $url,
             ]
         );
-        $search     = $this->searchForm();
-        if (0 != count($search) && array_key_exists('form', $search) && array_key_exists('data', $search)) {
-            $get         = $query->all();
-            $data        = $search['data'];
-            $data->limit = $limit;
-            $data->search($get, $this->entityManager);
-            $route      = $this->requeststack->getCurrentRequest()->get('_route');
-            $url        = $this->generateUrl($route);
-            $searchForm = $this->createForm(
-                $search['form'],
-                $data,
-                [
-                    'attr'   => ['id' => 'searchform'],
-                    'action' => $url,
-                ]
-            );
-
-            $parameters['searchform'] = $searchForm;
-        }
+        $parameters = $this->setSearchForms($parameters);
 
         return $this->renderForm(
             $html,
             $parameters
+        );
+    }
+
+    protected function setPagination($repository, $routeType)
+    {
+        $methods    = $this->getMethodsList();
+        $method     = $methods[$routeType];
+        $query      = $this->requeststack->getCurrentRequest()->query;
+        $get        = $query->all();
+        $limit      = $query->getInt('limit', 10);
+        $pagination = $this->paginator->paginate(
+            call_user_func([$repository, $method], $get),
+            $query->getInt('page', 1),
+            $limit
+        );
+
+        return $pagination;
+    }
+
+    protected function setSearchForms($parameters)
+    {
+
+        $query      = $this->requeststack->getCurrentRequest()->query;
+        $get        = $query->all();
+        $limit      = $query->getInt('limit', 10);
+        $search     = $this->searchForm();
+        if (!(0 != count($search) && array_key_exists('form', $search) && array_key_exists('data', $search))) {
+            return $parameters;
+        }
+
+        $get         = $query->all();
+        $data        = $search['data'];
+        $data->limit = $limit;
+        $data->search($get, $this->entityManager);
+        $route      = $this->requeststack->getCurrentRequest()->get('_route');
+        $url        = $this->generateUrl($route);
+        $searchForm = $this->createForm(
+            $search['form'],
+            $data,
+            [
+                'attr'   => ['id' => 'searchform'],
+                'action' => $url,
+            ]
+        );
+
+        $parameters['searchform'] = $searchForm;
+
+        return $parameters;
+    }
+
+    protected function setBtnDeleties($routeType, $route, $routeParams, $repository)
+    {
+        if ('trash' == $routeType) {
+            return;
+        }
+
+        $this->btnInstance()->addSupprimerSelection(
+            [
+                'redirect' => [
+                    'href'   => $route,
+                    'params' => $routeParams,
+                ],
+                'url'      => [
+                    'href'   => 'api_action_deleties',
+                    'params' => [
+                        'entity' => strtolower(
+                            str_replace(
+                                'Labstag\\Entity\\',
+                                '',
+                                (string) $repository->getClassName()
+                            )
+                        ),
+                    ],
+                ],
+            ],
+            'deleties'
         );
     }
 
@@ -440,7 +476,7 @@ abstract class AdminControllerLib extends ControllerLib
                 continue;
             }
 
-            $infos = $this->{$method}();
+            $infos = call_user_func([$this, $method]);
             foreach ($infos as $breadcrumb) {
                 $this->setSingletons()->add(
                     $breadcrumb['title'],
@@ -587,7 +623,7 @@ abstract class AdminControllerLib extends ControllerLib
         $methodTrash = $methods['trash'];
         $filters     = $entityManager->getFilters();
         $filters->disable('softdeleteable');
-        $trash  = $repository->{$methodTrash}([]);
+        $trash  = call_user_func([$repository, $methodTrash], []);
         $result = $trash->getQuery()->getResult();
         $total  = is_countable($result) ? count($result) : 0;
         $filters->enable('softdeleteable');
@@ -744,7 +780,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
     }
 
-    private function addNewImport(
+    protected function addNewImport(
         EntityManagerInterface $entityManager,
         ServiceEntityRepositoryLib $repository,
         array $methods,

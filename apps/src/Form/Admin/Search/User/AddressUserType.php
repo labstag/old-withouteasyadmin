@@ -21,7 +21,10 @@ class AddressUserType extends SearchAbstractTypeLib
     {
         $builder->add(
             'country',
-            FlagCountryType::class
+            FlagCountryType::class,
+            [
+                'required' => false
+            ]
         );
         $builder->add(
             'city',

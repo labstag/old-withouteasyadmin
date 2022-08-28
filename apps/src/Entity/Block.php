@@ -22,17 +22,17 @@ class Block
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Footer::class, mappedBy="block")
+     * @ORM\OneToMany(targetEntity=Footer::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
     private $footers;
 
     /**
-     * @ORM\OneToMany(targetEntity=Header::class, mappedBy="block")
+     * @ORM\OneToMany(targetEntity=Header::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
     private $headers;
 
     /**
-     * @ORM\OneToMany(targetEntity=Html::class, mappedBy="block")
+     * @ORM\OneToMany(targetEntity=Html::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
     private $htmls;
 
@@ -54,11 +54,22 @@ class Block
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $position;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $region;
+
     public function __construct()
     {
-        $this->headers = new ArrayCollection();
-        $this->htmls   = new ArrayCollection();
-        $this->footers = new ArrayCollection();
+        $this->position = 0;
+        $this->headers  = new ArrayCollection();
+        $this->htmls    = new ArrayCollection();
+        $this->footers  = new ArrayCollection();
     }
 
     public function addFooter(Footer $footer): self
@@ -176,6 +187,30 @@ class Block
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): self
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    public function setRegion(string $region): self
+    {
+        $this->region = $region;
 
         return $this;
     }
