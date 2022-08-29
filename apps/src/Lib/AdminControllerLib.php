@@ -87,31 +87,19 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function setBtnListOrTrash($repository, $routeType)
-    {
-        $url         = $this->getUrlAdmin();
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $route       = $all['_route'];
-        $routeParams = $all['_route_params'];
-        $methods     = $this->getMethodsList();
-        $this->addNewImport($this->entityManager, $repository, $methods, $routeType, $url);
-        $this->setBtnDeleties($routeType, $route, $routeParams, $repository);
-    }
-
     public function listOrTrash(
         $entity,
         string $html,
         array $parameters = []
     ): Response
     {
-        $repository  = $this->getRepository($entity);
-        $methods     = $this->getMethodsList();
-        $url         = $this->getUrlAdmin();
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $route       = $all['_route'];
-        $routeType   = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
+        $repository = $this->getRepository($entity);
+        $methods    = $this->getMethodsList();
+        $url        = $this->getUrlAdmin();
+        $request    = $this->requeststack->getCurrentRequest();
+        $all        = $request->attributes->all();
+        $route      = $all['_route'];
+        $routeType  = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
         $this->setBtnListOrTrash($repository, $routeType);
         $pagination = $this->setPagination($repository, $routeType);
 
@@ -131,82 +119,6 @@ abstract class AdminControllerLib extends ControllerLib
         return $this->renderForm(
             $html,
             $parameters
-        );
-    }
-
-    protected function setPagination($repository, $routeType)
-    {
-        $methods    = $this->getMethodsList();
-        $method     = $methods[$routeType];
-        $query      = $this->requeststack->getCurrentRequest()->query;
-        $get        = $query->all();
-        $limit      = $query->getInt('limit', 10);
-        $pagination = $this->paginator->paginate(
-            call_user_func([$repository, $method], $get),
-            $query->getInt('page', 1),
-            $limit
-        );
-
-        return $pagination;
-    }
-
-    protected function setSearchForms($parameters)
-    {
-
-        $query      = $this->requeststack->getCurrentRequest()->query;
-        $get        = $query->all();
-        $limit      = $query->getInt('limit', 10);
-        $search     = $this->searchForm();
-        if (!(0 != count($search) && array_key_exists('form', $search) && array_key_exists('data', $search))) {
-            return $parameters;
-        }
-
-        $get         = $query->all();
-        $data        = $search['data'];
-        $data->limit = $limit;
-        $data->search($get, $this->entityManager);
-        $route      = $this->requeststack->getCurrentRequest()->get('_route');
-        $url        = $this->generateUrl($route);
-        $searchForm = $this->createForm(
-            $search['form'],
-            $data,
-            [
-                'attr'   => ['id' => 'searchform'],
-                'action' => $url,
-            ]
-        );
-
-        $parameters['searchform'] = $searchForm;
-
-        return $parameters;
-    }
-
-    protected function setBtnDeleties($routeType, $route, $routeParams, $repository)
-    {
-        if ('trash' == $routeType) {
-            return;
-        }
-
-        $this->btnInstance()->addSupprimerSelection(
-            [
-                'redirect' => [
-                    'href'   => $route,
-                    'params' => $routeParams,
-                ],
-                'url'      => [
-                    'href'   => 'api_action_deleties',
-                    'params' => [
-                        'entity' => strtolower(
-                            str_replace(
-                                'Labstag\\Entity\\',
-                                '',
-                                (string) $repository->getClassName()
-                            )
-                        ),
-                    ],
-                ],
-            ],
-            'deleties'
         );
     }
 
@@ -274,6 +186,35 @@ abstract class AdminControllerLib extends ControllerLib
             $twigShow,
             ['entity' => $entity]
         );
+    }
+
+    protected function addNewImport(
+        EntityManagerInterface $entityManager,
+        ServiceEntityRepositoryLib $repository,
+        array $methods,
+        string $routeType,
+        array $url = [],
+    )
+    {
+        $this->listOrTrashRouteTrashsetTrashIcon(
+            $methods,
+            $repository,
+            $url,
+            $routeType,
+            $entityManager
+        );
+
+        if (isset($url['new']) && 'trash' != $routeType) {
+            $this->btnInstance()->addBtnNew(
+                $url['new']
+            );
+        }
+
+        if (isset($url['import']) && 'trash' != $routeType) {
+            $this->btnInstance()->addBtnImport(
+                $url['import']
+            );
+        }
     }
 
     protected function btnInstance()
@@ -527,6 +468,35 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
+    protected function setBtnDeleties($routeType, $route, $routeParams, $repository)
+    {
+        if ('trash' == $routeType) {
+            return;
+        }
+
+        $this->btnInstance()->addSupprimerSelection(
+            [
+                'redirect' => [
+                    'href'   => $route,
+                    'params' => $routeParams,
+                ],
+                'url'      => [
+                    'href'   => 'api_action_deleties',
+                    'params' => [
+                        'entity' => strtolower(
+                            str_replace(
+                                'Labstag\\Entity\\',
+                                '',
+                                (string) $repository->getClassName()
+                            )
+                        ),
+                    ],
+                ],
+            ],
+            'deleties'
+        );
+    }
+
     protected function setBtnGuard(array $url, object $entity): void
     {
         if (!isset($url['guard']) || !$this->enableBtnGuard($entity)) {
@@ -552,6 +522,18 @@ abstract class AdminControllerLib extends ControllerLib
             $url['list'],
             'Liste',
         );
+    }
+
+    protected function setBtnListOrTrash($repository, $routeType)
+    {
+        $url         = $this->getUrlAdmin();
+        $request     = $this->requeststack->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $route       = $all['_route'];
+        $routeParams = $all['_route_params'];
+        $methods     = $this->getMethodsList();
+        $this->addNewImport($this->entityManager, $repository, $methods, $routeType, $url);
+        $this->setBtnDeleties($routeType, $route, $routeParams, $repository);
     }
 
     protected function setBtnShow(array $url, object $entity): void
@@ -591,15 +573,30 @@ abstract class AdminControllerLib extends ControllerLib
         ];
     }
 
+    protected function setPagination($repository, $routeType)
+    {
+        $methods = $this->getMethodsList();
+        $method  = $methods[$routeType];
+        $query   = $this->requeststack->getCurrentRequest()->query;
+        $get     = $query->all();
+        $limit   = $query->getInt('limit', 10);
+
+        return $this->paginator->paginate(
+            call_user_func([$repository, $method], $get),
+            $query->getInt('page', 1),
+            $limit
+        );
+    }
+
     protected function setPositionEntity($request, $entityclass)
     {
-        $data = $request->request->all('position');
-        if (!empty($data)) {
-            $data = json_decode((string) $data, true, 512, JSON_THROW_ON_ERROR);
+        $position = $request->request->get('position');
+        if (!empty($position)) {
+            $position = json_decode((string) $position, true, 512, JSON_THROW_ON_ERROR);
         }
 
-        if (is_array($data)) {
-            foreach ($data as $row) {
+        if (is_array($position)) {
+            foreach ($position as $row) {
                 $id         = $row['id'];
                 $position   = intval($row['position']);
                 $repository = $this->getRepository($entityclass);
@@ -610,6 +607,36 @@ abstract class AdminControllerLib extends ControllerLib
                 }
             }
         }
+    }
+
+    protected function setSearchForms($parameters)
+    {
+        $query  = $this->requeststack->getCurrentRequest()->query;
+        $get    = $query->all();
+        $limit  = $query->getInt('limit', 10);
+        $search = $this->searchForm();
+        if (!(0 != count($search) && array_key_exists('form', $search) && array_key_exists('data', $search))) {
+            return $parameters;
+        }
+
+        $get         = $query->all();
+        $data        = $search['data'];
+        $data->limit = $limit;
+        $data->search($get, $this->entityManager);
+        $route      = $this->requeststack->getCurrentRequest()->get('_route');
+        $url        = $this->generateUrl($route);
+        $searchForm = $this->createForm(
+            $search['form'],
+            $data,
+            [
+                'attr'   => ['id' => 'searchform'],
+                'action' => $url,
+            ]
+        );
+
+        $parameters['searchform'] = $searchForm;
+
+        return $parameters;
     }
 
     protected function setTrashIcon(
@@ -777,35 +804,6 @@ abstract class AdminControllerLib extends ControllerLib
 
             $this->moveFile($file, $path, $filename, $attachment, $old);
             $accessor->setValue($entity, $annotation->getFilename(), $attachment);
-        }
-    }
-
-    protected function addNewImport(
-        EntityManagerInterface $entityManager,
-        ServiceEntityRepositoryLib $repository,
-        array $methods,
-        string $routeType,
-        array $url = [],
-    )
-    {
-        $this->listOrTrashRouteTrashsetTrashIcon(
-            $methods,
-            $repository,
-            $url,
-            $routeType,
-            $entityManager
-        );
-
-        if (isset($url['new']) && 'trash' != $routeType) {
-            $this->btnInstance()->addBtnNew(
-                $url['new']
-            );
-        }
-
-        if (isset($url['import']) && 'trash' != $routeType) {
-            $this->btnInstance()->addBtnImport(
-                $url['import']
-            );
         }
     }
 

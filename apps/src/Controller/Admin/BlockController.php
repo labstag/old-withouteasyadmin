@@ -9,14 +9,13 @@ use Labstag\Form\Admin\NewBlockType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\BlockRepository;
 use Labstag\RequestHandler\BlockRequestHandler;
-use Labstag\Search\BlockSearch;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\BlockService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/block')]
 class BlockController extends AdminControllerLib
@@ -50,6 +49,7 @@ class BlockController extends AdminControllerLib
         BlockRepository $repository
     ): Response
     {
+        $region = null;
         $this->btnInstance()->add(
             'btn-admin-header-new',
             'Nouveau',
@@ -58,7 +58,11 @@ class BlockController extends AdminControllerLib
                 'data-url' => $this->routerInterface->generate('admin_block_new'),
             ]
         );
-        $entity = new Block();
+        $this->btnInstance()->addBtnList(
+            'admin_block_move',
+            'Move',
+        );
+        $entity    = new Block();
         $newform   = $this->createForm(
             NewBlockType::class,
             $entity,
@@ -66,16 +70,16 @@ class BlockController extends AdminControllerLib
                 'action' => $this->routerInterface->generate('admin_block_new'),
             ]
         );
-        $url         = $this->getUrlAdmin();
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $route       = $all['_route'];
-        $routeType   = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
+        $url       = $this->getUrlAdmin();
+        $request   = $this->requeststack->getCurrentRequest();
+        $all       = $request->attributes->all();
+        $route     = $all['_route'];
+        $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
         $this->setBtnListOrTrash($repository, $routeType);
-        $data = $repository->getDataByRegion();
+        $data  = $repository->getDataByRegion();
         $total = 0;
         foreach ($data as $region) {
-            $total += count($region);
+            $total += is_countable($region) ? count($region) : 0;
         }
 
         if ('trash' == $routeType && 0 == $region) {
@@ -85,10 +89,42 @@ class BlockController extends AdminControllerLib
         return $this->renderForm(
             'admin/block/index.html.twig',
             [
-                'data'       => $data,
-                'actions'    => $url,
-                'newform'    => $newform
+                'data'    => $data,
+                'actions' => $url,
+                'newform' => $newform,
             ]
+        );
+    }
+
+    #[Route(path: '/move', name: 'admin_block_move', methods: ['GET', 'POST'])]
+    public function move(
+        BlockRepository $repository,
+        Request $request
+    ): Response
+    {
+        $currentUrl = $this->generateUrl('admin_block_move');
+        if ('POST' == $request->getMethod()) {
+            $this->setPositionEntity($request, Block::class);
+        }
+
+        $this->btnInstance()->addBtnList(
+            'admin_block_index',
+            'Liste',
+        );
+        $this->btnInstance()->add(
+            'btn-admin-save-move',
+            'Enregistrer',
+            [
+                'is'   => 'link-btnadminmove',
+                'href' => $currentUrl,
+            ]
+        );
+
+        $data = $repository->getDataByRegion();
+
+        return $this->render(
+            'admin/block/move.html.twig',
+            ['data' => $data]
         );
     }
 
@@ -141,6 +177,16 @@ class BlockController extends AdminControllerLib
             [
                 'title' => $this->translator->trans('block.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_block_edit',
+            ],
+        ];
+    }
+
+    protected function setBreadcrumbsPageAdminBlockMove(): array
+    {
+        return [
+            [
+                'title' => $this->translator->trans('block.move', [], 'admin.breadcrumb'),
+                'route' => 'admin_block_move',
             ],
         ];
     }

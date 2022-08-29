@@ -22,9 +22,7 @@ class GeocodeType extends SearchAbstractTypeLib
         $builder->add(
             'countrycode',
             FlagCountryType::class,
-            [
-                'required' => false,
-            ]
+            ['required' => false]
         );
         $this->setTextType($builder);
         parent::buildForm($builder, $options);

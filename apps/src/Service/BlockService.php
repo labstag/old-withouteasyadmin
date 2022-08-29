@@ -64,21 +64,6 @@ class BlockService
         return $field;
     }
 
-    public function getTypeEntity(Block $entity)
-    {
-        $type   = $entity->getType();
-        $entity = null;
-        foreach ($this->blocksclass as $row) {
-            if ($row->getType() == $type) {
-                $entity = $row->getEntity();
-
-                break;
-            }
-        }
-
-        return $entity;
-    }
-
     public function getName(Block $entity)
     {
         $type = $entity->getType();
@@ -92,6 +77,30 @@ class BlockService
         }
 
         return $form;
+    }
+
+    public function getRegions()
+    {
+        return [
+            'header'  => 'header',
+            'content' => 'content',
+            'footer'  => 'footer',
+        ];
+    }
+
+    public function getTypeEntity(Block $entity)
+    {
+        $type   = $entity->getType();
+        $entity = null;
+        foreach ($this->blocksclass as $row) {
+            if ($row->getType() == $type) {
+                $entity = $row->getEntity();
+
+                break;
+            }
+        }
+
+        return $entity;
     }
 
     public function getTypeForm(Block $entity)

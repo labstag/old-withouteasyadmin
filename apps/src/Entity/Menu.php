@@ -3,9 +3,11 @@
 namespace Labstag\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Entity\Block\Navbar;
 use Labstag\Repository\MenuRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -81,10 +83,16 @@ class Menu implements Stringable
      */
     protected $separateur;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="menu")
+     */
+    private $navbars;
+
     public function __construct()
     {
         $this->children   = new ArrayCollection();
         $this->separateur = false;
+        $this->navbars    = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -106,6 +114,16 @@ class Menu implements Stringable
         if (!$this->children->contains($child)) {
             $this->children[] = $child;
             $child->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function addNavbar(Navbar $navbar): self
+    {
+        if (!$this->navbars->contains($navbar)) {
+            $this->navbars[] = $navbar;
+            $navbar->setMenu($this);
         }
 
         return $this;
@@ -141,6 +159,14 @@ class Menu implements Stringable
         return $this->name;
     }
 
+    /**
+     * @return Collection<int, Navbar>
+     */
+    public function getNavbars(): Collection
+    {
+        return $this->navbars;
+    }
+
     public function getParent(): ?Menu
     {
         return $this->parent;
@@ -167,6 +193,18 @@ class Menu implements Stringable
             // set the owning side to null (unless already changed)
             if ($child->getParent() === $this) {
                 $child->setParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeNavbar(Navbar $navbar): self
+    {
+        if ($this->navbars->removeElement($navbar)) {
+            // set the owning side to null (unless already changed)
+            if ($navbar->getMenu() === $this) {
+                $navbar->setMenu(null);
             }
         }
 

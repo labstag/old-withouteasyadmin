@@ -19,11 +19,7 @@ class NewBlockType extends BlockAbstractTypeLib
             'region',
             ChoiceType::class,
             [
-                'choices' => [
-                    'header' => 'header',
-                    'content' => 'content',
-                    'footer' => 'footer',
-                ]
+                'choices' => $this->blockService->getRegions(),
             ]
         );
         $builder->add(

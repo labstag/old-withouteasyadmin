@@ -28,11 +28,14 @@ class HeaderBlock extends BlockLib
         return 'header';
     }
 
-    public function show(Header $header)
+    public function show(Header $header, $content)
     {
         return $this->render(
             $this->getBlockFile('header'),
-            ['block' => $header]
+            [
+                'block'   => $header,
+                'content' => $content,
+            ]
         );
     }
 }

@@ -96,7 +96,6 @@ class PrincipalType extends AbstractTypeLib
                 ],
             ]
         );
-        $this->setMeta($builder);
         unset($options);
     }
 

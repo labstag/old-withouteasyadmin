@@ -11,14 +11,6 @@
                 {
                     'field': 'a.type',
                     'name': 'block.type'|trans({}, 'admin.messages')
-                },
-                {
-                    'field': 'a.region',
-                    'name': 'block.region'|trans({}, 'admin.messages')
-                },
-                {
-                    'field': 'a.position',
-                    'name': 'block.position'|trans({}, 'admin.messages')
                 }
             ] %}
             <tr>
@@ -41,8 +33,6 @@
                     <tr data-id="{{ entity.id }}">
                         <td>{{ entity.title }}</td>
                         <td>{{ entity.type }}</td>
-                        <td>{{ entity.region }}</td>
-                        <td>{{ entity.position }}</td>
                         <td>
                             {{ macro_admin.actions(entity, actions) }}
                         </td>

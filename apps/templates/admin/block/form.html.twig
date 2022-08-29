@@ -3,6 +3,7 @@
 {% block body %}
     {{ form_start(form) }}
     {{ form_row(form.title) }}
+    {{ form_row(form.region) }}
     {% if form[field] is defined %}
         {{ form_row(form[field]) }}
     {% endif %}

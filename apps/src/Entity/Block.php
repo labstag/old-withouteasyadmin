@@ -7,9 +7,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Entity\Block\Breadcrumb;
 use Labstag\Entity\Block\Footer;
 use Labstag\Entity\Block\Header;
 use Labstag\Entity\Block\Html;
+use Labstag\Entity\Block\Navbar;
+use Labstag\Entity\Block\Paragraph;
 use Labstag\Repository\BlockRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
@@ -20,6 +23,11 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class Block
 {
     use SoftDeleteableEntity;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Breadcrumb::class, mappedBy="block")
+     */
+    private $breadcrumbs;
 
     /**
      * @ORM\OneToMany(targetEntity=Footer::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
@@ -45,14 +53,14 @@ class Block
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="block")
      */
-    private $title;
+    private $menu;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
-    private $type;
+    private $paragraphs;
 
     /**
      * @ORM\Column(type="integer")
@@ -64,12 +72,35 @@ class Block
      */
     private $region;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $type;
+
     public function __construct()
     {
-        $this->position = 0;
-        $this->headers  = new ArrayCollection();
-        $this->htmls    = new ArrayCollection();
-        $this->footers  = new ArrayCollection();
+        $this->position    = 0;
+        $this->headers     = new ArrayCollection();
+        $this->htmls       = new ArrayCollection();
+        $this->footers     = new ArrayCollection();
+        $this->paragraphs  = new ArrayCollection();
+        $this->breadcrumbs = new ArrayCollection();
+        $this->menu        = new ArrayCollection();
+    }
+
+    public function addBreadcrumb(Breadcrumb $breadcrumb): self
+    {
+        if (!$this->breadcrumbs->contains($breadcrumb)) {
+            $this->breadcrumbs[] = $breadcrumb;
+            $breadcrumb->setBlock($this);
+        }
+
+        return $this;
     }
 
     public function addFooter(Footer $footer): self
@@ -102,6 +133,34 @@ class Block
         return $this;
     }
 
+    public function addMenu(Navbar $menu): self
+    {
+        if (!$this->menu->contains($menu)) {
+            $this->menu[] = $menu;
+            $menu->setBlock($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setBlock($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Breadcrumb>
+     */
+    public function getBreadcrumbs(): Collection
+    {
+        return $this->breadcrumbs;
+    }
+
     /**
      * @return Collection<int, Footer>
      */
@@ -131,6 +190,32 @@ class Block
         return $this->id;
     }
 
+    /**
+     * @return Collection<int, Navbar>
+     */
+    public function getMenu(): Collection
+    {
+        return $this->menu;
+    }
+
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;
@@ -139,6 +224,18 @@ class Block
     public function getType(): ?string
     {
         return $this->type;
+    }
+
+    public function removeBreadcrumb(Breadcrumb $breadcrumb): self
+    {
+        if ($this->breadcrumbs->removeElement($breadcrumb)) {
+            // set the owning side to null (unless already changed)
+            if ($breadcrumb->getBlock() === $this) {
+                $breadcrumb->setBlock(null);
+            }
+        }
+
+        return $this;
     }
 
     public function removeFooter(Footer $footer): self
@@ -177,6 +274,44 @@ class Block
         return $this;
     }
 
+    public function removeMenu(Navbar $menu): self
+    {
+        if ($this->menu->removeElement($menu)) {
+            // set the owning side to null (unless already changed)
+            if ($menu->getBlock() === $this) {
+                $menu->setBlock(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        if ($this->paragraphs->removeElement($paragraph)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraph->getBlock() === $this) {
+                $paragraph->setBlock(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setPosition(int $position): self
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function setRegion(string $region): self
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
     public function setTitle(?string $title): self
     {
         $this->title = $title;
@@ -187,30 +322,6 @@ class Block
     public function setType(string $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getPosition(): ?int
-    {
-        return $this->position;
-    }
-
-    public function setPosition(int $position): self
-    {
-        $this->position = $position;
-
-        return $this;
-    }
-
-    public function getRegion(): ?string
-    {
-        return $this->region;
-    }
-
-    public function setRegion(string $region): self
-    {
-        $this->region = $region;
 
         return $this;
     }

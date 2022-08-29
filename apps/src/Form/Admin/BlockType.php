@@ -6,7 +6,6 @@ use Labstag\Entity\Block;
 use Labstag\Lib\BlockAbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,10 +21,10 @@ class BlockType extends BlockAbstractTypeLib
             'title',
             TextType::class,
             [
-                'label' => $this->translator->trans('block.html.title.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('block.html.title.help', [], 'admin.form'),
+                'label' => $this->translator->trans('block.title.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('block.title.help', [], 'admin.form'),
                 'attr'  => [
-                    'placeholder' => $this->translator->trans('block.html.title.placeholder', [], 'admin.form'),
+                    'placeholder' => $this->translator->trans('block.title.placeholder', [], 'admin.form'),
                 ],
             ]
         );
@@ -33,16 +32,12 @@ class BlockType extends BlockAbstractTypeLib
             'region',
             ChoiceType::class,
             [
-                'label' => $this->translator->trans('block.region.title.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('block.region.title.help', [], 'admin.form'),
-                'attr'  => [
-                    'placeholder' => $this->translator->trans('block.region.title.placeholder', [], 'admin.form'),
+                'label'   => $this->translator->trans('block.region.label', [], 'admin.form'),
+                'help'    => $this->translator->trans('block.region.help', [], 'admin.form'),
+                'attr'    => [
+                    'placeholder' => $this->translator->trans('block.region.placeholder', [], 'admin.form'),
                 ],
-                'choices' => [
-                    'header' => 'header',
-                    'content' => 'content',
-                    'footer' => 'footer',
-                ]
+                'choices' => $this->blockService->getRegions(),
             ]
         );
         if (!is_null($formType) || is_null($field)) {
@@ -58,6 +53,7 @@ class BlockType extends BlockAbstractTypeLib
                 ]
             );
         }
+
         unset($options);
     }
 

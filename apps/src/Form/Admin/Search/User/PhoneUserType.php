@@ -22,9 +22,7 @@ class PhoneUserType extends SearchAbstractTypeLib
         $builder->add(
             'country',
             FlagCountryType::class,
-            [
-                'required' => false,
-            ]
+            ['required' => false]
         );
         $this->addRefUser($builder);
         $this->showState(

@@ -7,6 +7,7 @@ use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Menu\LinkType;
 use Labstag\Form\Admin\Menu\PrincipalType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\MenuRepository;
 use Labstag\RequestHandler\MenuRequestHandler;
 use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -86,9 +87,12 @@ class MenuController extends AdminControllerLib
     }
 
     #[Route(path: '/', name: 'admin_menu_index', methods: ['GET'])]
-    public function index(Environment $twig)
+    public function index(
+        Environment $twig,
+        MenuRepository $repository
+    )
     {
-        $all             = $this->getRepository(Menu::class)->findAllCode();
+        $all             = $repository->findAllCode();
         $globals         = $twig->getGlobals();
         $modal           = $globals['modal'] ?? [];
         $modal['delete'] = true;

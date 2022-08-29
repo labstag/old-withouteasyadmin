@@ -19,6 +19,13 @@ class MenuRepository extends ServiceEntityRepositoryLib
 
     public function findAllCode()
     {
+        $query = $this->findAllCodeQuery();
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findAllCodeQuery()
+    {
         $queryBuilder = $this->createQueryBuilder('u');
         $query        = $queryBuilder->where(
             'u.position=0'
@@ -27,6 +34,6 @@ class MenuRepository extends ServiceEntityRepositoryLib
             'u.clef IS NOT NULL'
         );
 
-        return $query->getQuery()->getResult();
+        return $query;
     }
 }
