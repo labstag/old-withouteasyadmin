@@ -82,7 +82,7 @@ class BlockController extends AdminControllerLib
             $total += is_countable($region) ? count($region) : 0;
         }
 
-        if ('trash' == $routeType && 0 == $region) {
+        if ('trash' == $routeType && 0 == $total) {
             throw new AccessDeniedException();
         }
 
@@ -161,39 +161,21 @@ class BlockController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminBlock(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('block.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_block_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminBlockEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('block.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_block_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminBlockMove(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('block.move', [], 'admin.breadcrumb'),
                 'route' => 'admin_block_move',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminBlockTrash(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('block.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_block_trash',

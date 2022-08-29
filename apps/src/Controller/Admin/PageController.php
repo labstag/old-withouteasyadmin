@@ -96,39 +96,21 @@ class PageController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminPage(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('page.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_page_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPageEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('page.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_page_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPageNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('page.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_page_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPagePreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('page.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_page_trash',
@@ -137,25 +119,9 @@ class PageController extends AdminControllerLib
                 'title' => $this->translator->trans('page.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_page_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPageShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('page.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_page_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPageTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('page.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_page_trash',
             ],
         ];
     }

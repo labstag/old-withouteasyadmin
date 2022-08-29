@@ -83,39 +83,21 @@ class EmailUserController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminEmailuser(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('emailuser.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_emailuser_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminEmailuserEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('emailuser.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_emailuser_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminEmailuserNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('emailuser.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_emailuser_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminEmailuserPreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('emailuser.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_emailuser_trash',
@@ -124,25 +106,9 @@ class EmailUserController extends AdminControllerLib
                 'title' => $this->translator->trans('emailuser.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_emailuser_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminEmailuserShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('emailuser.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_emailuser_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminEmailuserTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('emailuser.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_emailuser_trash',
             ],
         ];
     }

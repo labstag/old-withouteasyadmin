@@ -83,39 +83,21 @@ class PhoneUserController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminPhoneuser(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('phoneuser.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_phoneuser_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPhoneuserEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('phoneuser.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_phoneuser_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPhoneuserNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('phoneuser.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_phoneuser_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPhoneuserPreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('phoneuser.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_phoneuser_trash',
@@ -124,25 +106,9 @@ class PhoneUserController extends AdminControllerLib
                 'title' => $this->translator->trans('phoneuser.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_phoneuser_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPhoneuserShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('phoneuser.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_phoneuser_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPhoneuserTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('phoneuser.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_trash',
             ],
         ];
     }

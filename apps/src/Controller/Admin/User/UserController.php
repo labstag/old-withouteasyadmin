@@ -133,49 +133,25 @@ class UserController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminUser(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_user_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUserEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('user.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_user_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUserGuard(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('user.guard', [], 'admin.breadcrumb'),
                 'route' => 'admin_user_guard',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUserNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('user.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_user_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUserPreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_user_trash',
@@ -184,25 +160,9 @@ class UserController extends AdminControllerLib
                 'title' => $this->translator->trans('user.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_user_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUserShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('user.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_user_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUserTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_trash',
             ],
         ];
     }

@@ -82,39 +82,21 @@ class AddressUserController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminAddressuser(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('addressuser.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_addressuser_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminAddressuserEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('addressuser.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_addressuser_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminAddressuserNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('addressuser.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_addressuser_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminAddressuserPreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_addressuser_trash',
@@ -123,25 +105,9 @@ class AddressUserController extends AdminControllerLib
                 'title' => $this->translator->trans('addressuser.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_addressuser_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminAddressuserShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('addressuser.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_addressuser_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminAddressuserTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_addressuser_trash',
             ],
         ];
     }

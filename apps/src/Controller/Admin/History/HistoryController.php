@@ -162,49 +162,25 @@ class HistoryController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminHistory(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('history.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_history_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminHistoryEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('history.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_history_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminHistoryMove(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('history.move', [], 'admin.breadcrumb'),
                 'route' => 'admin_history_move',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminHistoryNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('history.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_history_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminHistoryPreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_history_trash',
@@ -213,25 +189,9 @@ class HistoryController extends AdminControllerLib
                 'title' => $this->translator->trans('history.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_history_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminHistoryShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('history.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_history_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminHistoryTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_history_trash',
             ],
         ];
     }

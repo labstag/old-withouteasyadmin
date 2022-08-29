@@ -81,39 +81,21 @@ class LibelleController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminlibelle(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('libelle.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_libelle_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminlibelleEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('libelle.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_libelle_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminlibelleNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('libelle.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_libelle_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminlibellePreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('libelle.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_libelle_trash',
@@ -122,25 +104,9 @@ class LibelleController extends AdminControllerLib
                 'title' => $this->translator->trans('libelle.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_libelle_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminlibelleShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('libelle.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_libelle_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminlibelleTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('libelle.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_libelle_trash',
             ],
         ];
     }

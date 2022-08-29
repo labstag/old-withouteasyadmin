@@ -107,7 +107,7 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $entities = explode(',', (string) $request->request->all('entities'));
+        $entities = explode(',', (string) $request->request->get('entities'));
         $error    = [];
         foreach ($entities as $entity) {
             $repository = $this->getRepoByEntity($entity);
@@ -346,7 +346,7 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $entities   = explode(',', (string) $request->request->all('entities'));
+        $entities   = explode(',', (string) $request->request->get('entities'));
         $error      = [];
         $repository = $this->getRepoByEntity($entity);
         $method     = ('deleties' == $token) ? 'deleteEntity' : 'restoreEntity';

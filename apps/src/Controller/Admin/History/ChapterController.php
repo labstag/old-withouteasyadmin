@@ -101,39 +101,21 @@ class ChapterController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminChapter(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('chapter.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_chapter_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminChapterEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('chapter.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_chapter_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminChapterNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('chapter.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_chapter_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminChapterPreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('chapter.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_chapter_trash',
@@ -142,25 +124,9 @@ class ChapterController extends AdminControllerLib
                 'title' => $this->translator->trans('chapter.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_chapter_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminChapterShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('chapter.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_chapter_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminChapterTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('chapter.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_trash',
             ],
         ];
     }

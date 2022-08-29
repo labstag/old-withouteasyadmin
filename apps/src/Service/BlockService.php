@@ -118,19 +118,11 @@ class BlockService
         return $form;
     }
 
-    public function showContent(string $code)
+    public function showContent(Block $block)
     {
-        $block = $this->blockRepository->findOneBy(
-            ['code' => $code]
-        );
-        if (!$block instanceof Block) {
-            return new Response();
-        }
-
         $type   = $block->getType();
         $entity = $this->getEntity($block);
-
-        $html = new Response();
+        $html   = new Response();
         if (!is_null($entity)) {
             foreach ($this->blocksclass as $row) {
                 if ($type == $row->getType()) {

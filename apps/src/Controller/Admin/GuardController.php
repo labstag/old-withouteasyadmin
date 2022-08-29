@@ -33,7 +33,7 @@ class GuardController extends AdminControllerLib
         );
     }
 
-    protected function setBreadcrumbsPageAdminGuard(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [

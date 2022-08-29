@@ -82,39 +82,21 @@ class TemplateController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminTemplace(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('template.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_template_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTemplaceEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('template.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_template_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTemplaceNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('template.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_template_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTemplacePreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_template_trash',
@@ -123,25 +105,9 @@ class TemplateController extends AdminControllerLib
                 'title' => $this->translator->trans('template.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_template_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTemplaceShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('template.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_template_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTemplaceTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_trash',
             ],
         ];
     }

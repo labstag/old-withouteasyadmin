@@ -11,7 +11,7 @@ class ParagraphType extends BlockAbstractTypeLib
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        unset($options);
+        unset($builder, $options);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

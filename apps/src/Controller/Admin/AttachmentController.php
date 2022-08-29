@@ -37,7 +37,7 @@ class AttachmentController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminAttachment(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [

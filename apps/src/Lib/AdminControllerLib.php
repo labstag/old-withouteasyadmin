@@ -94,7 +94,6 @@ abstract class AdminControllerLib extends ControllerLib
     ): Response
     {
         $repository = $this->getRepository($entity);
-        $methods    = $this->getMethodsList();
         $url        = $this->getUrlAdmin();
         $request    = $this->requeststack->getCurrentRequest();
         $all        = $request->attributes->all();

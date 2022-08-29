@@ -175,69 +175,33 @@ class MenuController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminMenu(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('menu.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_menu_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminMenuAdd(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('menu.add', [], 'admin.breadcrumb'),
                 'route' => 'admin_menu_add',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminMenuDivider(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('menu.divider', [], 'admin.breadcrumb'),
                 'route' => 'admin_menu_divider',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminMenuMove(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('menu.move', [], 'admin.breadcrumb'),
                 'route' => 'admin_menu_move',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminMenuNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('menu.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_menu_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminMenuTrash(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('menu.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_menu_trash',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminMenuUpdate(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('menu.update', [], 'admin.breadcrumb'),
                 'route' => 'admin_menu_update',

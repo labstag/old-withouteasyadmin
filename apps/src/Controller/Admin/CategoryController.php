@@ -93,63 +93,29 @@ class CategoryController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminCategory(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('category.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_category_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminCategoryEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('category.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_category_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminCategoryNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('category.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_category_new',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminCategoryPreview(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_category_trash',
             ],
             [
                 'title' => $this->translator->trans('category.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_category_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminCategoryShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('category.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_category_show',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminCategoryTrash(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_category_trash',

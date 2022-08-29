@@ -1,14 +1,25 @@
-[{
-    "name": "Mon compte",
-    "childs": [{
-        "name": "Mon profil",
+[
+    {
+        "name": "Accueil",
         "data": {
-            "route": "admin_profil"
+            "route": "front"
         }
-    }, {
-        "name": "Logout",
-        "data": {
-            "route": "app_logout"
-        }
-    }]
-}]
+    },
+    {
+        "name": "Mon compte",
+        "childs": [
+            {
+                "name": "Mon profil",
+                "data": {
+                    "route": "admin_profil"
+                }
+            },
+            {
+                "name": "Logout",
+                "data": {
+                    "route": "app_logout"
+                }
+            }
+        ]
+    }
+]

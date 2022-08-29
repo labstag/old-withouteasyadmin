@@ -229,7 +229,7 @@ class AdminController extends AdminControllerLib
         );
     }
 
-    protected function setBreadcrumbsPageAdminParam(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
@@ -237,26 +237,19 @@ class AdminController extends AdminControllerLib
                 'route'        => 'admin_param',
                 'route_params' => [],
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminProfil(): array
-    {
-        return [
             [
                 'title'        => $this->translator->trans('profil.title', [], 'admin.breadcrumb'),
                 'route'        => 'admin_profil',
                 'route_params' => [],
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTrash(): array
-    {
-        return [
             [
                 'title'        => $this->translator->trans('trash.title', [], 'admin.breadcrumb'),
                 'route'        => 'admin_trash',
+                'route_params' => [],
+            ],
+            [
+                'title'        => $this->translator->trans('oauth.title', [], 'admin.breadcrumb'),
+                'route'        => 'admin_oauth',
                 'route_params' => [],
             ],
         ];

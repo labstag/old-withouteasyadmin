@@ -82,39 +82,21 @@ class LinkUserController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminLinkuser(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('linkuser.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_linkuser_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminLinkuserEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('linkuser.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_linkuser_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminLinkuserNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('linkuser.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_linkuser_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminLinkuserPreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_linkuser_trash',
@@ -123,25 +105,9 @@ class LinkUserController extends AdminControllerLib
                 'title' => $this->translator->trans('linkuser.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_linkuser_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminLinkuserShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('linkuser.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_linkuser_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminLinkuserTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_linkuser_trash',
             ],
         ];
     }

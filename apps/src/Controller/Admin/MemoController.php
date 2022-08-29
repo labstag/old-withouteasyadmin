@@ -98,39 +98,21 @@ class MemoController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminNoteinterne(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('memo.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_memo_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminNoteinterneEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('memo.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_memo_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminNoteinterneNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('memo.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_memo_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminNoteinternePreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('memo.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_memo_trash',
@@ -139,25 +121,9 @@ class MemoController extends AdminControllerLib
                 'title' => $this->translator->trans('memo.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_memo_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminNoteinterneShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('memo.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_memo_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminNoteinterneTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('memo.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_memo_trash',
             ],
         ];
     }

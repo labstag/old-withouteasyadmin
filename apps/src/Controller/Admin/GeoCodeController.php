@@ -78,39 +78,21 @@ class GeoCodeController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminGeocode(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('geocode.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_geocode_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminGeocodeEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('geocode.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_geocode_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminGeocodeNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('geocode.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_geocode_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminGeocodePreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('geocode.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_geocode_trash',
@@ -119,25 +101,9 @@ class GeoCodeController extends AdminControllerLib
                 'title' => $this->translator->trans('geocode.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_geocode_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminGeocodeShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('geocode.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_geocode_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminGeocodeTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('geocode.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_geocode_trash',
             ],
         ];
     }

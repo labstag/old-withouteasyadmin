@@ -129,49 +129,25 @@ class GroupeController extends AdminControllerLib
         ];
     }
 
-    protected function setBreadcrumbsPageAdminGroupuser(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
                 'title' => $this->translator->trans('groupuser.title', [], 'admin.breadcrumb'),
                 'route' => 'admin_groupuser_index',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminGroupuserEdit(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('groupuser.edit', [], 'admin.breadcrumb'),
                 'route' => 'admin_groupuser_edit',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminGroupuserGuard(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('groupuser.guard', [], 'admin.breadcrumb'),
                 'route' => 'admin_groupuser_guard',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminGroupuserNew(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('groupuser.new', [], 'admin.breadcrumb'),
                 'route' => 'admin_groupuser_new',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminGroupuserPreview(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
                 'route' => 'admin_groupuser_trash',
@@ -180,25 +156,9 @@ class GroupeController extends AdminControllerLib
                 'title' => $this->translator->trans('groupuser.preview', [], 'admin.breadcrumb'),
                 'route' => 'admin_groupuser_preview',
             ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminGroupuserShow(): array
-    {
-        return [
             [
                 'title' => $this->translator->trans('groupuser.show', [], 'admin.breadcrumb'),
                 'route' => 'admin_groupuser_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminGroupuserTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_groupuser_trash',
             ],
         ];
     }
