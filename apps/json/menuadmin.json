@@ -1,5 +1,12 @@
 [
     {
+        "name": "Accueil",
+        "data": {
+            "route": "front",
+            "target": "_blank"
+        }
+    },
+    {
         "name": "Home",
         "data": {
             "route": "admin"

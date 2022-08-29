@@ -1,11 +1,5 @@
 [
     {
-        "name": "Accueil",
-        "data": {
-            "route": "front"
-        }
-    },
-    {
         "name": "Mon compte",
         "childs": [
             {
