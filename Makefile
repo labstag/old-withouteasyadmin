@@ -63,12 +63,15 @@ ifeq ($(COMMANDS_ARGS),fixtures)
 	${SYMFONY_EXEC} doctrine:fixtures:load -n
 else ifeq ($(COMMANDS_ARGS),migrate)
 	${SYMFONY_EXEC} doctrine:migrations:migrate -n
+else ifeq ($(COMMANDS_ARGS),schemaupdate)
+	${SYMFONY_EXEC} doctrine:schema:update --force
 else ifeq ($(COMMANDS_ARGS),validate)
 	${SYMFONY_EXEC} doctrine:schema:validate
 else
 	@printf "${MISSING_ARGUMENTS}" "bdd"
 	$(call array_arguments, \
 		["fixtures"]="fixtures" \
+		["shemaupdate"]="schema update" \
 		["migrate"]="migrate database" \
 		["validate"]="bdd validate" \
 	)

@@ -73,6 +73,8 @@ jobs:
       #   run: make linter phpstan
       - name: 'BDD MIGRATE'
         run: make bdd migrate
+      - name: 'BDD Schema update'
+        run: make bdd schemaupdate
       - name: 'Run the fixtures'
         run: make bdd fixtures
       - name: Run Acceptance Tests
