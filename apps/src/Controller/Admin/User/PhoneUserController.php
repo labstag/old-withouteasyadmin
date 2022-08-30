@@ -85,32 +85,39 @@ class PhoneUserController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('phoneuser.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_index',
-            ],
-            [
-                'title' => $this->translator->trans('phoneuser.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_edit',
-            ],
-            [
-                'title' => $this->translator->trans('phoneuser.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_new',
-            ],
-            [
-                'title' => $this->translator->trans('phoneuser.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_trash',
-            ],
-            [
-                'title' => $this->translator->trans('phoneuser.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_preview',
-            ],
-            [
-                'title' => $this->translator->trans('phoneuser.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_user_index',
+                ],
+                [
+                    'title' => $this->translator->trans('phoneuser.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_phoneuser_index',
+                ],
+                [
+                    'title' => $this->translator->trans('phoneuser.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_phoneuser_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('phoneuser.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_phoneuser_new',
+                ],
+                [
+                    'title' => $this->translator->trans('phoneuser.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_phoneuser_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('phoneuser.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_phoneuser_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('phoneuser.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_phoneuser_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

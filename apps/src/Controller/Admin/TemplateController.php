@@ -84,32 +84,35 @@ class TemplateController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('template.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_index',
-            ],
-            [
-                'title' => $this->translator->trans('template.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_edit',
-            ],
-            [
-                'title' => $this->translator->trans('template.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_new',
-            ],
-            [
-                'title' => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_trash',
-            ],
-            [
-                'title' => $this->translator->trans('template.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_preview',
-            ],
-            [
-                'title' => $this->translator->trans('template.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('template.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_template_index',
+                ],
+                [
+                    'title' => $this->translator->trans('template.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_template_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('template.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_template_new',
+                ],
+                [
+                    'title' => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_template_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('template.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_template_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('template.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_template_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

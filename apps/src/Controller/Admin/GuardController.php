@@ -35,12 +35,15 @@ class GuardController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('guard.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_guard_index',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('guard.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_guard_index',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

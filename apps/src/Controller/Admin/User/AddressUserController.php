@@ -84,32 +84,39 @@ class AddressUserController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('addressuser.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_addressuser_index',
-            ],
-            [
-                'title' => $this->translator->trans('addressuser.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_addressuser_edit',
-            ],
-            [
-                'title' => $this->translator->trans('addressuser.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_addressuser_new',
-            ],
-            [
-                'title' => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_addressuser_trash',
-            ],
-            [
-                'title' => $this->translator->trans('addressuser.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_addressuser_preview',
-            ],
-            [
-                'title' => $this->translator->trans('addressuser.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_addressuser_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_user_index',
+                ],
+                [
+                    'title' => $this->translator->trans('addressuser.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_addressuser_index',
+                ],
+                [
+                    'title' => $this->translator->trans('addressuser.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_addressuser_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('addressuser.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_addressuser_new',
+                ],
+                [
+                    'title' => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_addressuser_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('addressuser.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_addressuser_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('addressuser.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_addressuser_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

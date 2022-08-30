@@ -69,7 +69,7 @@ class GroupeController extends AdminControllerLib
         );
 
         return $this->render(
-            'admin/user/guard/group.html.twig',
+            'admin/guard/group.html.twig',
             [
                 'group'     => $groupe,
                 'routes'    => $routes,
@@ -131,36 +131,43 @@ class GroupeController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('groupuser.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_groupuser_index',
-            ],
-            [
-                'title' => $this->translator->trans('groupuser.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_groupuser_edit',
-            ],
-            [
-                'title' => $this->translator->trans('groupuser.guard', [], 'admin.breadcrumb'),
-                'route' => 'admin_groupuser_guard',
-            ],
-            [
-                'title' => $this->translator->trans('groupuser.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_groupuser_new',
-            ],
-            [
-                'title' => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_groupuser_trash',
-            ],
-            [
-                'title' => $this->translator->trans('groupuser.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_groupuser_preview',
-            ],
-            [
-                'title' => $this->translator->trans('groupuser.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_groupuser_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_user_index',
+                ],
+                [
+                    'title' => $this->translator->trans('groupuser.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_groupuser_index',
+                ],
+                [
+                    'title' => $this->translator->trans('groupuser.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_groupuser_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('groupuser.guard', [], 'admin.breadcrumb'),
+                    'route' => 'admin_groupuser_guard',
+                ],
+                [
+                    'title' => $this->translator->trans('groupuser.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_groupuser_new',
+                ],
+                [
+                    'title' => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_groupuser_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('groupuser.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_groupuser_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('groupuser.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_groupuser_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

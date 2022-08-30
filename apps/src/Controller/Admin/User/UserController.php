@@ -135,36 +135,39 @@ class UserController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_index',
-            ],
-            [
-                'title' => $this->translator->trans('user.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_edit',
-            ],
-            [
-                'title' => $this->translator->trans('user.guard', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_guard',
-            ],
-            [
-                'title' => $this->translator->trans('user.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_new',
-            ],
-            [
-                'title' => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_trash',
-            ],
-            [
-                'title' => $this->translator->trans('user.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_preview',
-            ],
-            [
-                'title' => $this->translator->trans('user.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_user_index',
+                ],
+                [
+                    'title' => $this->translator->trans('user.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_user_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('user.guard', [], 'admin.breadcrumb'),
+                    'route' => 'admin_user_guard',
+                ],
+                [
+                    'title' => $this->translator->trans('user.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_user_new',
+                ],
+                [
+                    'title' => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_user_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('user.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_user_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('user.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_user_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

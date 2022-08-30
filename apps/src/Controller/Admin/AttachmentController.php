@@ -39,12 +39,15 @@ class AttachmentController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_attachment_index',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_attachment_index',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

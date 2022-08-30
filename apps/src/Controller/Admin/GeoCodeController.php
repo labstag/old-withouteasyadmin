@@ -80,32 +80,35 @@ class GeoCodeController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('geocode.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_geocode_index',
-            ],
-            [
-                'title' => $this->translator->trans('geocode.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_geocode_edit',
-            ],
-            [
-                'title' => $this->translator->trans('geocode.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_geocode_new',
-            ],
-            [
-                'title' => $this->translator->trans('geocode.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_geocode_trash',
-            ],
-            [
-                'title' => $this->translator->trans('geocode.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_geocode_preview',
-            ],
-            [
-                'title' => $this->translator->trans('geocode.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_geocode_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('geocode.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_geocode_index',
+                ],
+                [
+                    'title' => $this->translator->trans('geocode.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_geocode_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('geocode.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_geocode_new',
+                ],
+                [
+                    'title' => $this->translator->trans('geocode.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_geocode_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('geocode.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_geocode_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('geocode.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_geocode_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

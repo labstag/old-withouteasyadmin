@@ -177,36 +177,39 @@ class MenuController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('menu.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_menu_index',
-            ],
-            [
-                'title' => $this->translator->trans('menu.add', [], 'admin.breadcrumb'),
-                'route' => 'admin_menu_add',
-            ],
-            [
-                'title' => $this->translator->trans('menu.divider', [], 'admin.breadcrumb'),
-                'route' => 'admin_menu_divider',
-            ],
-            [
-                'title' => $this->translator->trans('menu.move', [], 'admin.breadcrumb'),
-                'route' => 'admin_menu_move',
-            ],
-            [
-                'title' => $this->translator->trans('menu.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_menu_new',
-            ],
-            [
-                'title' => $this->translator->trans('menu.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_menu_trash',
-            ],
-            [
-                'title' => $this->translator->trans('menu.update', [], 'admin.breadcrumb'),
-                'route' => 'admin_menu_update',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('menu.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_menu_index',
+                ],
+                [
+                    'title' => $this->translator->trans('menu.add', [], 'admin.breadcrumb'),
+                    'route' => 'admin_menu_add',
+                ],
+                [
+                    'title' => $this->translator->trans('menu.divider', [], 'admin.breadcrumb'),
+                    'route' => 'admin_menu_divider',
+                ],
+                [
+                    'title' => $this->translator->trans('menu.move', [], 'admin.breadcrumb'),
+                    'route' => 'admin_menu_move',
+                ],
+                [
+                    'title' => $this->translator->trans('menu.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_menu_new',
+                ],
+                [
+                    'title' => $this->translator->trans('menu.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_menu_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('menu.update', [], 'admin.breadcrumb'),
+                    'route' => 'admin_menu_update',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

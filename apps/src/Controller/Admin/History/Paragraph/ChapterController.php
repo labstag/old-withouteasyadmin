@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/chapter/paragraph')]
+#[Route(path: '/admin/history/chapter/paragraph')]
 class ChapterController extends ParagraphControllerLib
 {
     #[Route(path: '/add/{id}', name: 'admin_chapter_paragraph_add')]

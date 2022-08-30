@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
 
-#[Route(path: '/admin/chapter')]
+#[Route(path: '/admin/history/chapter')]
 class ChapterController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_chapter_edit', methods: ['GET', 'POST'])]
@@ -103,32 +103,39 @@ class ChapterController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('chapter.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_index',
-            ],
-            [
-                'title' => $this->translator->trans('chapter.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_edit',
-            ],
-            [
-                'title' => $this->translator->trans('chapter.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_new',
-            ],
-            [
-                'title' => $this->translator->trans('chapter.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_trash',
-            ],
-            [
-                'title' => $this->translator->trans('chapter.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_preview',
-            ],
-            [
-                'title' => $this->translator->trans('chapter.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('history.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_history_index',
+                ],
+                [
+                    'title' => $this->translator->trans('chapter.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_chapter_index',
+                ],
+                [
+                    'title' => $this->translator->trans('chapter.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_chapter_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('chapter.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_chapter_new',
+                ],
+                [
+                    'title' => $this->translator->trans('chapter.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_chapter_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('chapter.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_chapter_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('chapter.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_chapter_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

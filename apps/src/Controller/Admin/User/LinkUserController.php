@@ -84,32 +84,39 @@ class LinkUserController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('linkuser.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_linkuser_index',
-            ],
-            [
-                'title' => $this->translator->trans('linkuser.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_linkuser_edit',
-            ],
-            [
-                'title' => $this->translator->trans('linkuser.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_linkuser_new',
-            ],
-            [
-                'title' => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_linkuser_trash',
-            ],
-            [
-                'title' => $this->translator->trans('linkuser.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_linkuser_preview',
-            ],
-            [
-                'title' => $this->translator->trans('linkuser.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_linkuser_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_user_index',
+                ],
+                [
+                    'title' => $this->translator->trans('linkuser.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_linkuser_index',
+                ],
+                [
+                    'title' => $this->translator->trans('linkuser.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_linkuser_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('linkuser.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_linkuser_new',
+                ],
+                [
+                    'title' => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_linkuser_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('linkuser.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_linkuser_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('linkuser.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_linkuser_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

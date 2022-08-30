@@ -102,32 +102,35 @@ class EditoController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('edito.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_edito_index',
-            ],
-            [
-                'title' => $this->translator->trans('edito.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_edito_edit',
-            ],
-            [
-                'title' => $this->translator->trans('edito.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_edito_new',
-            ],
-            [
-                'title' => $this->translator->trans('edito.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_edito_trash',
-            ],
-            [
-                'title' => $this->translator->trans('edito.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_edito_preview',
-            ],
-            [
-                'title' => $this->translator->trans('edito.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_edito_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('edito.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_edito_index',
+                ],
+                [
+                    'title' => $this->translator->trans('edito.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_edito_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('edito.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_edito_new',
+                ],
+                [
+                    'title' => $this->translator->trans('edito.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_edito_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('edito.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_edito_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('edito.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_edito_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

@@ -163,24 +163,27 @@ class BlockController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('block.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_block_index',
-            ],
-            [
-                'title' => $this->translator->trans('block.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_block_edit',
-            ],
-            [
-                'title' => $this->translator->trans('block.move', [], 'admin.breadcrumb'),
-                'route' => 'admin_block_move',
-            ],
-            [
-                'title' => $this->translator->trans('block.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_block_trash',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('block.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_block_index',
+                ],
+                [
+                    'title' => $this->translator->trans('block.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_block_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('block.move', [], 'admin.breadcrumb'),
+                    'route' => 'admin_block_move',
+                ],
+                [
+                    'title' => $this->translator->trans('block.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_block_trash',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

@@ -164,36 +164,39 @@ class HistoryController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('history.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_history_index',
-            ],
-            [
-                'title' => $this->translator->trans('history.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_history_edit',
-            ],
-            [
-                'title' => $this->translator->trans('history.move', [], 'admin.breadcrumb'),
-                'route' => 'admin_history_move',
-            ],
-            [
-                'title' => $this->translator->trans('history.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_history_new',
-            ],
-            [
-                'title' => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_history_trash',
-            ],
-            [
-                'title' => $this->translator->trans('history.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_history_preview',
-            ],
-            [
-                'title' => $this->translator->trans('history.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_history_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('history.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_history_index',
+                ],
+                [
+                    'title' => $this->translator->trans('history.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_history_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('history.move', [], 'admin.breadcrumb'),
+                    'route' => 'admin_history_move',
+                ],
+                [
+                    'title' => $this->translator->trans('history.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_history_new',
+                ],
+                [
+                    'title' => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_history_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('history.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_history_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('history.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_history_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

@@ -98,32 +98,35 @@ class PageController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('page.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_page_index',
-            ],
-            [
-                'title' => $this->translator->trans('page.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_page_edit',
-            ],
-            [
-                'title' => $this->translator->trans('page.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_page_new',
-            ],
-            [
-                'title' => $this->translator->trans('page.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_page_trash',
-            ],
-            [
-                'title' => $this->translator->trans('page.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_page_preview',
-            ],
-            [
-                'title' => $this->translator->trans('page.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_page_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('page.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_page_index',
+                ],
+                [
+                    'title' => $this->translator->trans('page.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_page_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('page.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_page_new',
+                ],
+                [
+                    'title' => $this->translator->trans('page.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_page_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('page.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_page_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('page.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_page_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

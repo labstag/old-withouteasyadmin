@@ -2,9 +2,9 @@
 
 namespace Labstag\Form\Admin\User;
 
-use Doctrine\DBAL\Types\TextType;
 use Labstag\Entity\Groupe;
 use Labstag\Lib\AbstractTypeLib;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

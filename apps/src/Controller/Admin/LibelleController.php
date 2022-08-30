@@ -83,32 +83,35 @@ class LibelleController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('libelle.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_libelle_index',
-            ],
-            [
-                'title' => $this->translator->trans('libelle.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_libelle_edit',
-            ],
-            [
-                'title' => $this->translator->trans('libelle.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_libelle_new',
-            ],
-            [
-                'title' => $this->translator->trans('libelle.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_libelle_trash',
-            ],
-            [
-                'title' => $this->translator->trans('libelle.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_libelle_preview',
-            ],
-            [
-                'title' => $this->translator->trans('libelle.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_libelle_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('libelle.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_libelle_index',
+                ],
+                [
+                    'title' => $this->translator->trans('libelle.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_libelle_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('libelle.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_libelle_new',
+                ],
+                [
+                    'title' => $this->translator->trans('libelle.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_libelle_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('libelle.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_libelle_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('libelle.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_libelle_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

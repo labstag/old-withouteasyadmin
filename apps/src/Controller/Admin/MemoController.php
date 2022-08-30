@@ -100,32 +100,35 @@ class MemoController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('memo.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_memo_index',
-            ],
-            [
-                'title' => $this->translator->trans('memo.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_memo_edit',
-            ],
-            [
-                'title' => $this->translator->trans('memo.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_memo_new',
-            ],
-            [
-                'title' => $this->translator->trans('memo.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_memo_trash',
-            ],
-            [
-                'title' => $this->translator->trans('memo.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_memo_preview',
-            ],
-            [
-                'title' => $this->translator->trans('memo.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_memo_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('memo.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_memo_index',
+                ],
+                [
+                    'title' => $this->translator->trans('memo.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_memo_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('memo.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_memo_new',
+                ],
+                [
+                    'title' => $this->translator->trans('memo.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_memo_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('memo.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_memo_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('memo.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_memo_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

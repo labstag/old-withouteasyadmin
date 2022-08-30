@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Routing\Matcher\TraceableUrlMatcher;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -184,6 +186,44 @@ abstract class AdminControllerLib extends ControllerLib
         return $this->render(
             $twigShow,
             ['entity' => $entity]
+        );
+    }
+
+    protected function addNewBreadcrumb($data, $routeParam, $route)
+    {
+        $compiled        = $data->compile();
+        $breadcrumbTitle = $this->setBreadcrumbsData();
+        $title           = '';
+        foreach ($breadcrumbTitle as $row) {
+            if ($row['route'] == $route) {
+                $title = $row['title'];
+
+                break;
+            }
+        }
+
+        if ('' == $title) {
+            return;
+        }
+
+        $variables = $compiled->getPathVariables();
+        $params    = [];
+        foreach ($variables as $key) {
+            if (isset($routeParam[$key])) {
+                $params[$key] = $routeParam[$key];
+            }
+        }
+
+        if ((is_countable($variables) ? count($variables) : 0) != count($params)) {
+            return;
+        }
+
+        $this->setSingletons()->add(
+            $title,
+            $this->routerInterface->generate(
+                $route,
+                $params,
+            )
         );
     }
 
@@ -397,42 +437,7 @@ abstract class AdminControllerLib extends ControllerLib
         return $attachment;
     }
 
-    protected function setBreadcrumbsPage()
-    {
-        $request   = $this->requeststack->getCurrentRequest();
-        $all       = $request->attributes->all();
-        $route     = $all['_route'];
-        $data      = explode('_', (string) $route);
-        $method    = 'setBreadcrumbsPage';
-        $callables = get_class_methods($this);
-        $router    = $this->routerInterface;
-
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-        foreach ($data as $row) {
-            $method .= ucfirst($row);
-            if (!in_array($method, $callables)) {
-                continue;
-            }
-
-            $infos = call_user_func([$this, $method]);
-            foreach ($infos as $breadcrumb) {
-                $this->setSingletons()->add(
-                    $breadcrumb['title'],
-                    $router->generate(
-                        $breadcrumb['route'],
-                        $routeParams,
-                    )
-                );
-            }
-        }
-
-        $data = $this->setSingletons()->get();
-        $this->twig->addGlobal('breadcrumbs', $data);
-    }
-
-    protected function setBreadcrumbsPageAdmin(): array
+    protected function setBreadcrumbsData(): array
     {
         return [
             [
@@ -441,6 +446,29 @@ abstract class AdminControllerLib extends ControllerLib
                 'route_params' => [],
             ],
         ];
+    }
+
+    protected function setBreadcrumbsPage()
+    {
+        $collection  = $this->routerInterface->getRouteCollection();
+        $context     = $this->routerInterface->getContext();
+        $matcher     = new TraceableUrlMatcher($collection, $context);
+        $request     = $this->requeststack->getCurrentRequest();
+        $attributes  = $request->attributes->all();
+        $pathinfo    = $request->getPathInfo();
+        $breadcrumb  = $this->getBreadcrumb($matcher, $pathinfo, []);
+        $breadcrumb  = array_reverse($breadcrumb);
+        $collection  = $this->routerInterface->getRouteCollection();
+        $all         = $collection->all();
+        $routeParams = $attributes['_route_params'];
+        foreach ($breadcrumb as $row) {
+            $name  = $row['name'];
+            $route = $all[$name];
+            $this->addNewBreadcrumb($route, $routeParams, $name);
+        }
+
+        $data = $this->setSingletons()->get();
+        $this->twig->addGlobal('breadcrumbs', $data);
     }
 
     protected function setBtnDelete(array $url, object $entity): void
@@ -804,6 +832,50 @@ abstract class AdminControllerLib extends ControllerLib
             $this->moveFile($file, $path, $filename, $attachment, $old);
             $accessor->setValue($entity, $annotation->getFilename(), $attachment);
         }
+    }
+
+    private function addInBreadcrumb($breadcrumb, $trace)
+    {
+        $add = true;
+        foreach ($breadcrumb as $row) {
+            if ($row['name'] == $trace['name']) {
+                $add = false;
+
+                break;
+            }
+        }
+
+        if ($add) {
+            $breadcrumb[] = $trace;
+        }
+
+        return $breadcrumb;
+    }
+
+    private function getBreadcrumb($matcher, $pathinfo, $breadcrumb)
+    {
+        $traces = $matcher->getTraces($pathinfo);
+        foreach ($traces as $trace) {
+            $testadmin = 0 != substr_count((string) $trace['name'], 'admin');
+            if (TraceableUrlMatcher::ROUTE_MATCHES == $trace['level'] && $testadmin) {
+                $breadcrumb = $this->addInBreadcrumb($breadcrumb, $trace);
+            }
+        }
+
+        if (0 != substr_count((string) $pathinfo, '/')) {
+            $newpathinfo = substr((string) $pathinfo, 0, strrpos((string) $pathinfo, '/') + 1);
+            if ($newpathinfo == $pathinfo) {
+                $newpathinfo = substr((string) $pathinfo, 0, strrpos((string) $pathinfo, '/'));
+            }
+
+            $breadcrumb = $this->getBreadcrumb(
+                $matcher,
+                $newpathinfo,
+                $breadcrumb
+            );
+        }
+
+        return $breadcrumb;
     }
 
     private function listOrTrashRouteTrashsetTrashIcon(

@@ -95,32 +95,35 @@ class CategoryController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('category.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_category_index',
-            ],
-            [
-                'title' => $this->translator->trans('category.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_category_edit',
-            ],
-            [
-                'title' => $this->translator->trans('category.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_category_new',
-            ],
-            [
-                'title' => $this->translator->trans('category.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_category_preview',
-            ],
-            [
-                'title' => $this->translator->trans('category.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_category_show',
-            ],
-            [
-                'title' => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_category_trash',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('category.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_category_index',
+                ],
+                [
+                    'title' => $this->translator->trans('category.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_category_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('category.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_category_new',
+                ],
+                [
+                    'title' => $this->translator->trans('category.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_category_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('category.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_category_show',
+                ],
+                [
+                    'title' => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_category_trash',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

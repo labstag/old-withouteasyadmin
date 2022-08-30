@@ -116,36 +116,39 @@ class BookmarkController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('bookmark.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_index',
-            ],
-            [
-                'title' => $this->translator->trans('bookmark.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_edit',
-            ],
-            [
-                'title' => $this->translator->trans('bookmark.import', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_import',
-            ],
-            [
-                'title' => $this->translator->trans('bookmark.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_new',
-            ],
-            [
-                'title' => $this->translator->trans('bookmark.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_trash',
-            ],
-            [
-                'title' => $this->translator->trans('bookmark.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_preview',
-            ],
-            [
-                'title' => $this->translator->trans('bookmark.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('bookmark.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_bookmark_index',
+                ],
+                [
+                    'title' => $this->translator->trans('bookmark.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_bookmark_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('bookmark.import', [], 'admin.breadcrumb'),
+                    'route' => 'admin_bookmark_import',
+                ],
+                [
+                    'title' => $this->translator->trans('bookmark.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_bookmark_new',
+                ],
+                [
+                    'title' => $this->translator->trans('bookmark.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_bookmark_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('bookmark.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_bookmark_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('bookmark.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_bookmark_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array

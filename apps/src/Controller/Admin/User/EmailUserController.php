@@ -85,32 +85,39 @@ class EmailUserController extends AdminControllerLib
 
     protected function setBreadcrumbsData(): array
     {
-        return [
+        return array_merge(
+            parent::setBreadcrumbsData(),
             [
-                'title' => $this->translator->trans('emailuser.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_emailuser_index',
-            ],
-            [
-                'title' => $this->translator->trans('emailuser.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_emailuser_edit',
-            ],
-            [
-                'title' => $this->translator->trans('emailuser.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_emailuser_new',
-            ],
-            [
-                'title' => $this->translator->trans('emailuser.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_emailuser_trash',
-            ],
-            [
-                'title' => $this->translator->trans('emailuser.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_emailuser_preview',
-            ],
-            [
-                'title' => $this->translator->trans('emailuser.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_emailuser_show',
-            ],
-        ];
+                [
+                    'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_user_index',
+                ],
+                [
+                    'title' => $this->translator->trans('emailuser.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_emailuser_index',
+                ],
+                [
+                    'title' => $this->translator->trans('emailuser.edit', [], 'admin.breadcrumb'),
+                    'route' => 'admin_emailuser_edit',
+                ],
+                [
+                    'title' => $this->translator->trans('emailuser.new', [], 'admin.breadcrumb'),
+                    'route' => 'admin_emailuser_new',
+                ],
+                [
+                    'title' => $this->translator->trans('emailuser.trash', [], 'admin.breadcrumb'),
+                    'route' => 'admin_emailuser_trash',
+                ],
+                [
+                    'title' => $this->translator->trans('emailuser.preview', [], 'admin.breadcrumb'),
+                    'route' => 'admin_emailuser_preview',
+                ],
+                [
+                    'title' => $this->translator->trans('emailuser.show', [], 'admin.breadcrumb'),
+                    'route' => 'admin_emailuser_show',
+                ],
+            ]
+        );
     }
 
     protected function setHeaderTitle(): array
