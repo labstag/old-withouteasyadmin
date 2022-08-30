@@ -5,12 +5,13 @@ namespace Labstag\Controller;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
-use Labstag\Entity\Memo;
 use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ParamType;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\AttachmentRepository;
+use Labstag\Repository\MemoRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\DataService;
@@ -56,9 +57,11 @@ class AdminController extends AdminControllerLib
     }
 
     #[Route(path: '/', name: 'admin')]
-    public function index(): Response
+    public function index(
+        MemoRepository $memoRepo
+    ): Response
     {
-        $memos = $this->getRepository(Memo::class)->findPublier();
+        $memos = $memoRepo->findPublier();
 
         return $this->render(
             'admin/index.html.twig',
@@ -82,14 +85,14 @@ class AdminController extends AdminControllerLib
         Request $request,
         EventDispatcherInterface $dispatcher,
         DataService $dataService,
-        CacheInterface $cache
+        CacheInterface $cache,
+        AttachmentRepository $attachmentRepo
     ): Response
     {
         $this->modalAttachmentDelete();
-        $repository = $this->getRepository(Attachment::class);
-        $images     = [
-            'image'   => $repository->getImageDefault(),
-            'favicon' => $repository->getFavicon(),
+        $images = [
+            'image'   => $attachmentRepo->getImageDefault(),
+            'favicon' => $attachmentRepo->getFavicon(),
         ];
         foreach ($images as $key => $value) {
             if (!is_null($value)) {
@@ -98,7 +101,7 @@ class AdminController extends AdminControllerLib
 
             $images[$key] = new Attachment();
             $images[$key]->setCode($key);
-            $repository->add($images[$key]);
+            $attachmentRepo->add($images[$key]);
         }
 
         $config = $dataService->getConfig();

@@ -4,10 +4,10 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
-use Labstag\Entity\Workflow;
 use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\Search\GroupeSearch;
 use Labstag\Service\AttachFormService;
@@ -30,7 +30,10 @@ class GroupeController extends AdminControllerLib
     }
 
     #[Route(path: '/{id}/guard', name: 'admin_groupuser_guard')]
-    public function guard(Groupe $groupe): Response
+    public function guard(
+        Groupe $groupe,
+        WorkflowRepository $repository
+    ): Response
     {
         $this->btnInstance()->addBtnList(
             'admin_groupuser_index',
@@ -60,7 +63,7 @@ class GroupeController extends AdminControllerLib
             return $this->redirectToRoute('admin_groupuser_index');
         }
 
-        $workflows = $this->getRepository(Workflow::class)->findBy(
+        $workflows = $repository->findBy(
             [],
             [
                 'entity'     => 'ASC',

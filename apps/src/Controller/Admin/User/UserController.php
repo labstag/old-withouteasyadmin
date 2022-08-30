@@ -4,10 +4,10 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
-use Labstag\Entity\Workflow;
 use Labstag\Form\Admin\Search\UserType as SearchUserType;
 use Labstag\Form\Admin\User\UserType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Search\UserSearch;
 use Labstag\Service\AttachFormService;
@@ -49,7 +49,10 @@ class UserController extends AdminControllerLib
     }
 
     #[Route(path: '/{id}/guard', name: 'admin_user_guard')]
-    public function guard(User $user): Response
+    public function guard(
+        User $user,
+        WorkflowRepository $repository
+    ): Response
     {
         $this->btnInstance()->addBtnList(
             'admin_user_index',
@@ -79,7 +82,7 @@ class UserController extends AdminControllerLib
             return $this->redirectToRoute('admin_user_index');
         }
 
-        $workflows = $this->getRepository(Workflow::class)->findBy(
+        $workflows = $repository->findBy(
             [],
             [
                 'entity'     => 'ASC',

@@ -7,7 +7,6 @@ use Labstag\Lib\AbstractTypeLib;
 use Labstag\Repository\PageRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -74,14 +73,6 @@ class PageType extends AbstractTypeLib
                 'label' => $this->translator->trans('page.front.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('page.front.help', [], 'admin.form'),
             ]
-        );
-
-        $choices = $this->templatePageService->getChoices();
-
-        $builder->add(
-            'function',
-            ChoiceType::class,
-            ['choices' => $choices]
         );
     }
 

@@ -12,6 +12,7 @@ use Labstag\Form\Security\DisclaimerType;
 use Labstag\Form\Security\LoginType;
 use Labstag\Form\Security\LostPasswordType;
 use Labstag\Lib\ControllerLib;
+use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\RequestHandler\EmailRequestHandler;
 use Labstag\RequestHandler\PhoneRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
@@ -161,7 +162,10 @@ class SecurityController extends ControllerLib
     }
 
     #[Route(path: '/login', name: 'app_login', priority: 1)]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(
+        AuthenticationUtils $authenticationUtils,
+        OauthConnectUserRepository $OauthConnectUserRepo
+    ): Response
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -171,7 +175,7 @@ class SecurityController extends ControllerLib
             LoginType::class,
             ['username' => $lastUsername]
         );
-        $oauths       = $this->getRepository(OauthConnectUser::class)->findDistinctAllOauth();
+        $oauths       = $OauthConnectUserRepo->findDistinctAllOauth();
 
         return $this->renderForm(
             'security/login.html.twig',
@@ -334,7 +338,12 @@ class SecurityController extends ControllerLib
      * Link to this controller to start the "connect" process.
      */
     #[Route(path: '/oauth/lost/{oauthCode}', name: 'connect_lost', priority: 1)]
-    public function oauthLost(Request $request, string $oauthCode, Security $security): RedirectResponse
+    public function oauthLost(
+        Request $request,
+        string $oauthCode,
+        Security $security,
+        OauthConnectUserRepository $OauthConnectUserRepo
+    ): RedirectResponse
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         // @var User $user
@@ -349,10 +358,9 @@ class SecurityController extends ControllerLib
             $referer = $url;
         }
 
-        $repository = $this->getRepository(OauthConnectUser::class);
-        $entity     = $repository->findOneOauthByUser($oauthCode, $user);
+        $entity = $OauthConnectUserRepo->findOneOauthByUser($oauthCode, $user);
         if ($entity instanceof OauthConnectUser) {
-            $repository->remove($entity);
+            $OauthConnectUserRepo->remove($entity);
             $paramtrans = ['%string%' => $oauthCode];
 
             $msg = $this->translator->trans('security.user.oauth.dissociated', $paramtrans);

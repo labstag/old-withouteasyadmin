@@ -20,7 +20,12 @@ use Twig\Environment;
 class MenuController extends AdminControllerLib
 {
     #[Route(path: '/add', name: 'admin_menu_add', methods: ['GET', 'POST'])]
-    public function add(AttachFormService $service, Request $request, MenuRequestHandler $requestHandler): Response
+    public function add(
+        AttachFormService $service,
+        Request $request,
+        MenuRequestHandler $requestHandler,
+        MenuRepository $repository
+    ): Response
     {
         $get = $request->query->all();
         $url = $this->generateUrl('admin_menu_index');
@@ -28,7 +33,7 @@ class MenuController extends AdminControllerLib
             return new RedirectResponse($url);
         }
 
-        $parent = $this->getRepository(Menu::class)->find($get['id']);
+        $parent = $repository->find($get['id']);
         if (!$parent instanceof Menu) {
             return new RedirectResponse($url);
         }

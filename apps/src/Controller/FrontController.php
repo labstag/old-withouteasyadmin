@@ -2,50 +2,85 @@
 
 namespace Labstag\Controller;
 
+use Labstag\Entity\History;
 use Labstag\Entity\Page;
+use Labstag\Entity\Post;
 use Labstag\Lib\ControllerLib;
+use Labstag\Repository\HistoryRepository;
+use Labstag\Repository\PageRepository;
+use Labstag\Repository\PostRepository;
 use Labstag\Service\TemplatePageService;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends ControllerLib
 {
-    #[Route(path: '/{slug}', name: 'front', requirements: ['slug' => '.+'], defaults: ['slug' => ''], priority: -1)]
-    public function front(string $slug, TemplatePageService $templatePageService): mixed
+    #[Route(path: '/article/{slug}', name: 'front_article', requirements: ['slug' => '.+'], defaults: ['slug' => ''])]
+    public function article(
+        string $slug,
+        TemplatePageService $templatePageService,
+        PostRepository $postRepo
+    ): mixed
     {
-        $slug = trim($slug);
-        if ('' == $slug) {
-            $page = $this->getRepository(Page::class)->findOneBy(['front' => 1]);
-        }
+        $page = null;
+        $post = $postRepo->findOneBy(
+            ['frontslug' => $slug]
+        );
 
-        $search = $slug;
-        $find   = 0;
-        $page   = null;
-        $strlen = strlen($search);
-        while (0 == $find || 0 != $strlen) {
-            $searchPage = $this->getRepository(Page::class)->findOneBy(['frontslug' => $search]);
-            if ($searchPage instanceof Page) {
-                $page = $searchPage;
-
-                break;
-            }
-
-            $search = substr($search, 0, -1);
-            $strlen = strlen($search);
-        }
-
-        if (!isset($page)) {
+        if (!$post instanceof Post) {
             throw $this->createNotFoundException();
         }
+        
+        return $this->render(
+            'front/post/index.html.twig',
+            [
+                'content' => $post
+            ]
+        );
+    }
 
-        $slugFront = $page->getFrontslug();
-        preg_match('/'.$slugFront.'(.*)/', $slug, $matches);
-        $class = $templatePageService->getClass($page->getFunction());
-        if (is_null($class)) {
+    #[Route(path: '/{slug}', name: 'front', requirements: ['slug' => '.+'], defaults: ['slug' => ''], priority: -1)]
+    public function front(
+        string $slug,
+        TemplatePageService $templatePageService,
+        PageRepository $pageRepo
+    ): mixed
+    {
+        $page = $pageRepo->findOneBy(
+            ['frontslug' => $slug]
+        );
+
+        if (!$page instanceof Page) {
             throw $this->createNotFoundException();
         }
+        
+        return $this->render(
+            'front/index.html.twig',
+            [
+                'content' => $page
+            ]
+        );
+    }
 
-        $slug = strstr($slug, (string) $page->getSlug());
+    #[Route(path: '/histoire/{slug}', name: 'front_history', requirements: ['slug' => '.+'], defaults: ['slug' => ''])]
+    public function history(
+        string $slug,
+        TemplatePageService $templatePageService,
+        HistoryRepository $historyRepo
+    ): mixed
+    {
+        $history = $historyRepo->findOneBy(
+            ['frontslug' => $slug]
+        );
 
-        return $class->__invoke($matches);
+        if (!$history instanceof History) {
+            throw $this->createNotFoundException();
+        }
+        
+        return $this->render(
+            'front/history/index.html.twig',
+            [
+                'content' => $history
+            ]
+        );
     }
 }
