@@ -41,7 +41,7 @@ class GuardWorkflowController extends ApiControllerLib
 
     #[Route(path: '/groups/{workflow}', name: 'api_guard_workflowgroups', methods: ['POST'])]
     public function groups(
-        WorkflowGroupeRepository $WorkflowGroupeRepo,
+        WorkflowGroupeRepository $workflowGroupeRepo,
         Workflow $workflow,
         WorkflowGroupeRequestHandler $workflowGroupeRH,
         Request $request,
@@ -57,7 +57,7 @@ class GuardWorkflowController extends ApiControllerLib
         $groupes = $groupeRepo->findAll();
         foreach ($groupes as $group) {
             $data = $this->setWorkflowGroupe(
-                $WorkflowGroupeRepo,
+                $workflowGroupeRepo,
                 $data,
                 $group,
                 $workflow,

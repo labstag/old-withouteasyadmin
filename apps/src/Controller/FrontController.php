@@ -9,7 +9,6 @@ use Labstag\Lib\ControllerLib;
 use Labstag\Repository\HistoryRepository;
 use Labstag\Repository\PageRepository;
 use Labstag\Repository\PostRepository;
-use Labstag\Service\TemplatePageService;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends ControllerLib
@@ -17,11 +16,9 @@ class FrontController extends ControllerLib
     #[Route(path: '/article/{slug}', name: 'front_article', requirements: ['slug' => '.+'], defaults: ['slug' => ''])]
     public function article(
         string $slug,
-        TemplatePageService $templatePageService,
         PostRepository $postRepo
     ): mixed
     {
-        $page = null;
         $post = $postRepo->findOneBy(
             ['frontslug' => $slug]
         );
@@ -29,19 +26,16 @@ class FrontController extends ControllerLib
         if (!$post instanceof Post) {
             throw $this->createNotFoundException();
         }
-        
+
         return $this->render(
             'front/post/index.html.twig',
-            [
-                'content' => $post
-            ]
+            ['content' => $post]
         );
     }
 
     #[Route(path: '/{slug}', name: 'front', requirements: ['slug' => '.+'], defaults: ['slug' => ''], priority: -1)]
     public function front(
         string $slug,
-        TemplatePageService $templatePageService,
         PageRepository $pageRepo
     ): mixed
     {
@@ -52,19 +46,16 @@ class FrontController extends ControllerLib
         if (!$page instanceof Page) {
             throw $this->createNotFoundException();
         }
-        
+
         return $this->render(
             'front/index.html.twig',
-            [
-                'content' => $page
-            ]
+            ['content' => $page]
         );
     }
 
     #[Route(path: '/histoire/{slug}', name: 'front_history', requirements: ['slug' => '.+'], defaults: ['slug' => ''])]
     public function history(
         string $slug,
-        TemplatePageService $templatePageService,
         HistoryRepository $historyRepo
     ): mixed
     {
@@ -75,12 +66,10 @@ class FrontController extends ControllerLib
         if (!$history instanceof History) {
             throw $this->createNotFoundException();
         }
-        
+
         return $this->render(
             'front/history/index.html.twig',
-            [
-                'content' => $history
-            ]
+            ['content' => $history]
         );
     }
 }

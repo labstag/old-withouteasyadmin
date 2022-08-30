@@ -164,7 +164,7 @@ class SecurityController extends ControllerLib
     #[Route(path: '/login', name: 'app_login', priority: 1)]
     public function login(
         AuthenticationUtils $authenticationUtils,
-        OauthConnectUserRepository $OauthConnectUserRepo
+        OauthConnectUserRepository $oauthConnectUserRepo
     ): Response
     {
         // get the login error if there is one
@@ -175,7 +175,7 @@ class SecurityController extends ControllerLib
             LoginType::class,
             ['username' => $lastUsername]
         );
-        $oauths       = $OauthConnectUserRepo->findDistinctAllOauth();
+        $oauths       = $oauthConnectUserRepo->findDistinctAllOauth();
 
         return $this->renderForm(
             'security/login.html.twig',
@@ -342,7 +342,7 @@ class SecurityController extends ControllerLib
         Request $request,
         string $oauthCode,
         Security $security,
-        OauthConnectUserRepository $OauthConnectUserRepo
+        OauthConnectUserRepository $oauthConnectUserRepo
     ): RedirectResponse
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -358,9 +358,9 @@ class SecurityController extends ControllerLib
             $referer = $url;
         }
 
-        $entity = $OauthConnectUserRepo->findOneOauthByUser($oauthCode, $user);
+        $entity = $oauthConnectUserRepo->findOneOauthByUser($oauthCode, $user);
         if ($entity instanceof OauthConnectUser) {
-            $OauthConnectUserRepo->remove($entity);
+            $oauthConnectUserRepo->remove($entity);
             $paramtrans = ['%string%' => $oauthCode];
 
             $msg = $this->translator->trans('security.user.oauth.dissociated', $paramtrans);

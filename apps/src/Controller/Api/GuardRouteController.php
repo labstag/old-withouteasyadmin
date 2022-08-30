@@ -55,12 +55,12 @@ class GuardRouteController extends ApiControllerLib
 
     #[Route(path: '/groups/{route}', name: 'api_guard_routegroups', methods: ['POST'])]
     public function groups(
-        RouteGroupeRepository $repository,
+        RouteGroupeRepository $routeRepo,
         GuardService $guardService,
         EntityRoute $route,
         RouteGroupeRequestHandler $routeGroupeRH,
         Request $request,
-        GroupeRepository $repository
+        GroupeRepository $groupeRepo
     )
     {
         $data    = [
@@ -69,10 +69,10 @@ class GuardRouteController extends ApiControllerLib
             'error'  => '',
         ];
         $state   = $request->request->get('state');
-        $groupes = $repository->findAll();
+        $groupes = $groupeRepo->findAll();
         foreach ($groupes as $group) {
             $data = $this->setRouteGroupe(
-                $repository,
+                $routeRepo,
                 $guardService,
                 $data,
                 $group,

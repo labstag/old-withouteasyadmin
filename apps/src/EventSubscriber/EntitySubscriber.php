@@ -146,10 +146,10 @@ class EntitySubscriber extends EventSubscriberLib
             $slug = ('' == $frontSlug) ? $entity->getSlug() : ($frontSlug.'/'.$entity->getSlug());
 
             $entity->setFrontslug((string) $slug);
-        } else {
-            $entity->setSlug('');
-            $entity->setFrontSlug('');
         }
+
+        $entity->setSlug(is_null($parent) ? '' : $entity->getSlug());
+        $entity->setFrontSlug(is_null($parent) ? '' : $entity->getFrontSlug());
 
         $entity->setFrontslug((string) $slug);
 

@@ -23,7 +23,11 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 class AttachmentController extends ApiControllerLib
 {
     #[Route(path: '/bookmark/img/{entity}', name: 'api_attachment_bookmarkimg')]
-    public function bookmarkImg(AttachmentRepository $repository, Bookmark $entity, PostRequestHandler $postRequestHandler): Response
+    public function bookmarkImg(
+        AttachmentRepository $repository,
+        Bookmark $entity,
+        PostRequestHandler $postRequestHandler
+    ): Response
     {
         return $this->deleteFile($repository, $entity, $postRequestHandler, 'getImg', 'setImg');
     }
@@ -51,13 +55,21 @@ class AttachmentController extends ApiControllerLib
     }
 
     #[Route(path: '/memo/fond/{entity}', name: 'api_attachment_memofond')]
-    public function memoFond(AttachmentRepository $repository, Memo $entity, MemoRequestHandler $noteInterneRH): Response
+    public function memoFond(
+        AttachmentRepository $repository,
+        Memo $entity,
+        MemoRequestHandler $noteInterneRH
+    ): Response
     {
         return $this->deleteFile($repository, $entity, $noteInterneRH, 'getFond', 'setFond');
     }
 
     #[Route(path: '/post/img/{entity}', name: 'api_attachment_postimg')]
-    public function postImg(AttachmentRepository $repository, Post $entity, PostRequestHandler $postRequestHandler): Response
+    public function postImg(
+        AttachmentRepository $repository,
+        Post $entity,
+        PostRequestHandler $postRequestHandler
+    ): Response
     {
         return $this->deleteFile($repository, $entity, $postRequestHandler, 'getImg', 'setImg');
     }
@@ -92,7 +104,11 @@ class AttachmentController extends ApiControllerLib
     }
 
     #[Route(path: '/user/avatar/{entity}', name: 'api_attachment_useravatar')]
-    public function userAvatar(AttachmentRepository $repository, User $entity, UserRequestHandler $userRequestHandler): Response
+    public function userAvatar(
+        AttachmentRepository $repository,
+        User $entity,
+        UserRequestHandler $userRequestHandler
+    ): Response
     {
         return $this->deleteFile($repository, $entity, $userRequestHandler, 'getAvatar', 'setAvatar');
     }
