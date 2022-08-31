@@ -9,6 +9,11 @@ use Labstag\Entity\Menu;
 use Labstag\Entity\Page;
 use Labstag\Entity\Template;
 use Labstag\Entity\User;
+use Labstag\Repository\ConfigurationRepository;
+use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\MenuRepository;
+use Labstag\Repository\TemplateRepository;
+use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\ConfigurationRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\RequestHandler\MenuRequestHandler;
@@ -32,7 +37,12 @@ class InstallService
         protected TemplateRequestHandler $templateRH,
         protected EntityManagerInterface $entityManager,
         protected Environment $twig,
-        protected CacheInterface $cache
+        protected CacheInterface $cache,
+        protected GroupeRepository $groupeRepo,
+        protected MenuRepository $menuRepo,
+        protected ConfigurationRepository $configurationRepo,
+        protected TemplateRepository $templateRepo,
+        protected UserRepository $userRepo
     )
     {
     }
@@ -113,7 +123,7 @@ class InstallService
     public function users()
     {
         $users   = $this->getData('user');
-        $groupes = $this->getRepository(Groupe::class)->findAll();
+        $groupes = $this->groupeRepo->findAll();
         foreach ($users as $user) {
             $this->addUser($groupes, $user);
         }
@@ -121,13 +131,12 @@ class InstallService
 
     protected function addChild(int $index, Menu $menu, array $attr): void
     {
-        $repository = $this->getRepository(Menu::class);
-        $child      = new Menu();
+        $child = new Menu();
         $child->setPosition($index);
         $child->setParent($menu);
         if (isset($attr['separator'])) {
             $child->setSeparateur(true);
-            $repository->add($child);
+            $this->menuRepo->add($child);
 
             return;
         }
@@ -137,7 +146,7 @@ class InstallService
             $child->setData($attr['data']);
         }
 
-        $repository->add($child);
+        $this->menuRepo->add($child);
         if (isset($attr['childs'])) {
             $indexChild = 0;
             foreach ($attr['childs'] as $attrChild) {
@@ -153,7 +162,7 @@ class InstallService
     ): void
     {
         $search        = ['name' => $key];
-        $configuration = $this->getRepository(Configuration::class)->findOneBy($search);
+        $configuration = $this->configurationRepo->findOneBy($search);
         if (!$configuration instanceof Configuration) {
             $configuration = new Configuration();
         }
@@ -169,7 +178,7 @@ class InstallService
     ): void
     {
         $search = ['code' => $row];
-        $groupe = $this->getRepository(Groupe::class)->findOneBy($search);
+        $groupe = $this->groupeRepo->findOneBy($search);
         if ($groupe instanceof Groupe) {
             return;
         }
@@ -204,7 +213,7 @@ class InstallService
     ): void
     {
         $search   = ['code' => $key];
-        $template = $this->getRepository(Template::class)->findOneBy($search);
+        $template = $this->templateRepo->findOneBy($search);
         if ($template instanceof Template) {
             return;
         }
@@ -234,7 +243,7 @@ class InstallService
         $search = [
             'username' => $dataUser['username'],
         ];
-        $user   = $this->getRepository(User::class)->findOneBy($search);
+        $user   = $this->userRepo->findOneBy($search);
         if ($user instanceof User) {
             return;
         }
@@ -242,25 +251,19 @@ class InstallService
         $this->userService->create($groupes, $dataUser);
     }
 
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
-    }
-
     protected function saveMenu(string $key, array $childs): void
     {
         // $this->entityManager->getFilters()->disable('softdeleteable');
-        $search     = ['clef' => $key];
-        $repository = $this->getRepository(Menu::class);
-        $menu       = $repository->findOneBy($search);
+        $search = ['clef' => $key];
+        $menu   = $this->menuRepo->findOneBy($search);
         if ($menu instanceof Menu) {
-            $repository->remove($menu);
+            $this->menuRepo->remove($menu);
         }
 
         $menu = new Menu();
         $menu->setPosition(0);
         $menu->setClef($key);
-        $repository->add($menu);
+        $this->menuRepo->add($menu);
         $indexChild = 0;
         foreach ($childs as $attr) {
             $this->addChild($indexChild, $menu, $attr);

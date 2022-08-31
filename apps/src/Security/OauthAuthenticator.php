@@ -5,6 +5,7 @@ namespace Labstag\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\User;
+use Labstag\Repository\UserRepository;
 use Labstag\Service\ErrorService;
 use Labstag\Service\OauthService;
 use League\OAuth2\Client\Provider\AbstractProvider;
@@ -51,7 +52,8 @@ class OauthAuthenticator extends AbstractAuthenticator
         protected OauthService $oauthService,
         protected RequestStack $requestStack,
         protected TokenStorageInterface $token,
-        protected LoggerInterface $logger
+        protected LoggerInterface $logger,
+        protected UserRepository $userRepo
     )
     {
         // @var Request $request
@@ -93,7 +95,7 @@ class OauthAuthenticator extends AbstractAuthenticator
             $data      = $userOauth->toArray();
             $client    = $attributes['_route_params']['oauthCode'];
             $identity  = $this->oauthService->getIdentity($data, $client);
-            $user      = $this->getRepository(User::class)->findOauth(
+            $user      = $this->userRepo->findOauth(
                 $identity,
                 $client
             );
@@ -154,11 +156,6 @@ class OauthAuthenticator extends AbstractAuthenticator
         unset($request);
 
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
-    }
-
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
     }
 
     protected function setOauthCode(ParameterBag $attributes): string

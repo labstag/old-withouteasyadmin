@@ -2,8 +2,7 @@
 
 namespace Labstag\EventSubscriber;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Labstag\Entity\Attachment;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\DataService;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
@@ -29,14 +28,14 @@ class TwigEventSubscriber implements EventSubscriberInterface
     final public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
     public function __construct(
-        protected EntityManagerInterface $entityManager,
         protected RouterInterface $router,
         protected Environment $twig,
         protected UrlGeneratorInterface $urlGenerator,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected DataService $dataService,
         protected Security $security,
-        protected TranslatorInterface $translator
+        protected TranslatorInterface $translator,
+        protected AttachmentRepository $attachmentRepo
     )
     {
     }
@@ -53,14 +52,9 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->setConfig($event, $request);
     }
 
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
-    }
-
     protected function setConfig(ControllerEvent $event, Request $request): void
     {
-        $favicon    = $this->getRepository(Attachment::class)->getFavicon();
+        $favicon    = $this->attachmentRepo->getFavicon();
         $controller = $event->getRequest()->attributes->get('_controller');
         $matches    = [];
         preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
@@ -201,7 +195,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     private function setMetaImage(&$config)
     {
-        $image = $this->getRepository(Attachment::class)->getImageDefault();
+        $image = $this->attachmentRepo->getImageDefault();
         $this->twig->AddGlobal('imageglobal', $image);
         $meta  = $config['meta'];
         $tests = [

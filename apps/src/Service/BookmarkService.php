@@ -6,8 +6,9 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\Bookmark;
-use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\BookmarkRepository;
+use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\BookmarkRequestHandler;
 use Psr\Log\LoggerInterface;
@@ -28,7 +29,9 @@ class BookmarkService
         private readonly AttachmentRequestHandler $attachmentRH,
         private readonly UploadAnnotationReader $uploadAnnotReader,
         private readonly ContainerBagInterface $containerBag,
-        private readonly BookmarkRequestHandler $requestHandler
+        private readonly BookmarkRequestHandler $requestHandler,
+        protected UserRepository $userRepo,
+        protected BookmarkRepository $bookmarkRepo
     )
     {
     }
@@ -41,9 +44,8 @@ class BookmarkService
         DateTime $date
     )
     {
-        $user       = $this->getRepository(User::class)->find($userid);
-        $repository = $this->getRepository(Bookmark::class);
-        $bookmark   = $repository->findOneBy(
+        $user     = $this->userRepo->find($userid);
+        $bookmark = $this->bookmarkRepo->findOneBy(
             ['url' => $url]
         );
         if ($bookmark instanceof Bookmark) {
@@ -75,7 +77,7 @@ class BookmarkService
             $image = $meta['twitter:image'] ?? null;
             $image = (is_null($image) && isset($meta['og:image'])) ? $meta['og:image'] : $image;
             $this->upload($bookmark, $image);
-            $repository->add($bookmark);
+            $this->bookmarkRepo->add($bookmark);
             $this->requestHandler->handle($old, $bookmark);
         } catch (Exception $exception) {
             $this->errorService->set($exception);

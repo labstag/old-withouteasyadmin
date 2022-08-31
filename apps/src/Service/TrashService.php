@@ -27,11 +27,10 @@ class TrashService
                 continue;
             }
 
-            $entity     = $repository->getClassName();
-            $repository = $this->manager->getRepository($entity);
-            $trash      = $repository->findTrashForAdmin([]);
-            $result     = $trash->getQuery()->getResult();
-            $test       = is_countable($result) ? count($result) : 0;
+            $entity = $repository->getClassName();
+            $trash  = $repository->findTrashForAdmin([]);
+            $result = $trash->getQuery()->getResult();
+            $test   = is_countable($result) ? count($result) : 0;
             if (0 == $test) {
                 continue;
             }

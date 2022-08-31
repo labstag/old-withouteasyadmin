@@ -5,9 +5,12 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Route;
-use Labstag\Entity\RouteGroupe;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
+use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\RouteGroupeRepository;
+use Labstag\Repository\RouteRepository;
+use Labstag\Repository\RouteUserRepository;
 use Symfony\Component\Routing\Route as Routing;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\Registry;
@@ -28,7 +31,11 @@ class GuardService
     public function __construct(
         protected RouterInterface $router,
         protected EntityManagerInterface $entityManager,
-        protected Registry $workflows
+        protected Registry $workflows,
+        protected GroupeRepository $groupeRepo,
+        protected RouteRepository $routeRepo,
+        protected RouteGroupeRepository $routeGroupeRepo,
+        protected RouteUserRepository $routeUserRepo
     )
     {
     }
@@ -60,8 +67,7 @@ class GuardService
     {
         $results = $this->getLostRoute();
         foreach ($results as $route) {
-            $repository = $this->getRepository($route::class);
-            $repository->remove($route);
+            $this->routeRepo->remove($route);
         }
     }
 
@@ -93,7 +99,7 @@ class GuardService
         }
 
         if (empty($token) || !$token->getUser() instanceof User) {
-            $groupe = $this->getRepository(Groupe::class)->findOneBy(['code' => 'visiteur']);
+            $groupe = $this->groupeRepo->findOneBy(['code' => 'visiteur']);
 
             return !(!$this->searchRouteGroupe($groupe, $route));
         }
@@ -152,7 +158,7 @@ class GuardService
 
     public function routesEnableGroupe(Groupe $groupe): array
     {
-        $data   = $this->getRepository(Route::class)->findBy([], ['name' => 'ASC']);
+        $data   = $this->routeRepo->findBy([], ['name' => 'ASC']);
         $routes = [];
         foreach ($data as $route) {
             $state = $this->guardRouteEnableGroupe($route, $groupe);
@@ -168,7 +174,7 @@ class GuardService
 
     public function routesEnableUser(User $user): array
     {
-        $data   = $this->getRepository(Route::class)->findBy([], ['name' => 'ASC']);
+        $data   = $this->routeRepo->findBy([], ['name' => 'ASC']);
         $routes = [];
         foreach ($data as $route) {
             $state = $this->guardRouteEnableUser($route, $user);
@@ -184,9 +190,8 @@ class GuardService
 
     public function save($name): void
     {
-        $search     = ['name' => $name];
-        $repository = $this->getRepository(Route::class);
-        $result     = $repository->findOneBy(
+        $search = ['name' => $name];
+        $result = $this->routeRepo->findOneBy(
             $search
         );
 
@@ -196,7 +201,7 @@ class GuardService
 
         $route = new Route();
         $route->setName($name);
-        $repository->add($route);
+        $this->routeRepo->add($route);
     }
 
     public function tables()
@@ -215,14 +220,9 @@ class GuardService
         return $data;
     }
 
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
-    }
-
     protected function searchRouteGroupe(Groupe $groupe, string $route): bool
     {
-        $entity = $this->getRepository(RouteGroupe::class)->findRoute($groupe, $route);
+        $entity = $this->routeGroupeRepo->findRoute($groupe, $route);
         if (empty($entity)) {
             return false;
         }
@@ -233,7 +233,7 @@ class GuardService
     protected function searchRouteUser(User $user, string $route): bool
     {
         $stateGroupe = $this->searchRouteGroupe($user->getRefgroupe(), $route);
-        $entity      = $this->getRepository(RouteUser::class)->findRoute($user, $route);
+        $entity      = $this->routeUserRepo->findRoute($user, $route);
         $stateUser   = ($entity instanceof RouteUser) ? $entity->isState() : false;
 
         return $stateGroupe || $stateUser;
@@ -247,7 +247,7 @@ class GuardService
             $routes[] = $name;
         }
 
-        return $this->getRepository(Route::class)->findLost($routes);
+        return $this->routeRepo->findLost($routes);
     }
 
     private function isRouteGroupe(

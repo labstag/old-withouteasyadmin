@@ -6,7 +6,7 @@
     <div class="history_data">
         <h2 class="history_name">
             {{ history.name }}
-            <a href="{{ page('history', 'pdf', {'slug': history.slug}) }}" target="_blank">
+            <a href="{{ path('history', 'pdf', {'slug': history.slug}) }}" target="_blank">
                 pdf
             </a>
         </h2>
@@ -14,7 +14,7 @@
             {{ 'history.infodateuser'|trans(
                 {
                     '%date%': history.published|format_datetime(pattern=formatdatetime.public),
-                    '%user%': macro_site.user(history.refuser, page('history', 'user', {'username': history.refuser.username}))
+                    '%user%': macro_site.user(history.refuser, path('history', 'user', {'username': history.refuser.username}))
                 }
             )|raw }}
             {% set state = guard_route('admin_history_edit') %}
@@ -29,7 +29,7 @@
             <ul>
                 {% for chapter in history.chapterspublished %}
                     <li>
-                        <a href="{{ page('history', 'chapter', {'history': history.slug, 'chapter': chapter.slug}) }}">
+                        <a href="{{ path('history', 'chapter', {'history': history.slug, 'chapter': chapter.slug}) }}">
                             {{ chapter.name }}
                         </a>
                     </li>

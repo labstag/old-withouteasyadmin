@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Lib\CommandLib;
+use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +25,9 @@ class LabstagUserCommand extends CommandLib
     public function __construct(
         EntityManagerInterface $entityManager,
         protected Registry $workflows,
-        protected UserRequestHandler $userRequestHandler
+        protected UserRequestHandler $userRequestHandler,
+        protected GroupeRepository $groupeRepo,
+        protected UserRepository $userRepo
     )
     {
         parent::__construct($entityManager);
@@ -111,7 +115,7 @@ class LabstagUserCommand extends CommandLib
         $question = new Question("Entrer l'email de l'utilisateur : ");
         $email    = $helper->ask($input, $output, $question);
         $user->setEmail($email);
-        $groupes = $this->getRepository(Groupe::class)->findBy([], ['name' => 'DESC']);
+        $groupes = $this->groupeRepo->findBy([], ['name' => 'DESC']);
         $data    = [];
         foreach ($groupes as $groupe) {
             // @var Groupe $groupe
@@ -142,8 +146,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function delete($helper, string $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $repository = $this->getRepository(User::class);
-        $entity     = $repository->findOneBy(['username' => $username]);
+        $entity = $this->userRepo->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -166,14 +169,14 @@ class LabstagUserCommand extends CommandLib
         }
 
         $old = clone $entity;
-        $repository->remove($entity);
+        $this->userRepo->remove($entity);
         $this->userRequestHandler->handle($old, $entity);
         $inputOutput->success('Utilisateur supprimé');
     }
 
     protected function disable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->getRepository(User::class)->findOneBy(['username' => $username]);
+        $entity = $this->userRepo->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -217,7 +220,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function enable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->getRepository(User::class)->findOneBy(['username' => $username]);
+        $entity = $this->userRepo->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -307,7 +310,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function list($inputOutput, OutputInterface $output)
     {
-        $users = $this->getRepository(User::class)->findBy([], ['username' => 'ASC']);
+        $users = $this->userRepo->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
             // @var User $user
@@ -333,7 +336,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function state($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->getRepository(User::class)->findOneBy(['username' => $username]);
+        $entity = $this->userRepo->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -370,7 +373,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function tableQuestionUser()
     {
-        $users = $this->getRepository(User::class)->findBy([], ['username' => 'ASC']);
+        $users = $this->userRepo->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
             // @var User $user
@@ -390,7 +393,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function updatePassword($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->getRepository(User::class)->findOneBy(['username' => $username]);
+        $entity = $this->userRepo->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']

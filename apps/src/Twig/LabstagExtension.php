@@ -2,11 +2,10 @@
 
 namespace Labstag\Twig;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Groupe;
-use Labstag\Entity\Page;
 use Labstag\Entity\User;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\GuardService;
 use Labstag\Service\PhoneService;
 use Labstag\Service\TemplatePageService;
@@ -28,7 +27,6 @@ class LabstagExtension extends AbstractExtension
     final public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     public function __construct(
-        protected EntityManagerInterface $entityManager,
         protected ContainerBagInterface $containerBag,
         protected RouterInterface $router,
         protected PhoneService $phoneService,
@@ -37,7 +35,8 @@ class LabstagExtension extends AbstractExtension
         protected TokenStorageInterface $token,
         protected LoggerInterface $logger,
         protected TemplatePageService $templatePageService,
-        protected GuardService $guardService
+        protected GuardService $guardService,
+        protected AttachmentRepository $attachmentRepo
     )
     {
     }
@@ -109,7 +108,7 @@ class LabstagExtension extends AbstractExtension
         }
 
         $id         = $data->getId();
-        $attachment = $this->getRepository(Attachment::class)->findOneBy(['id' => $id]);
+        $attachment = $this->attachmentRepo->findOneBy(['id' => $id]);
         if (is_null($attachment)) {
             return null;
         }
@@ -234,30 +233,6 @@ class LabstagExtension extends AbstractExtension
         return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
     }
 
-    public function page(string $template, string $route = '', array $params = []): string
-    {
-        $templates = $this->templatePageService->getChoices();
-        foreach ($templates as $row) {
-            $class = $this->templatePageService->getclass($row);
-            if ($class->getId() != $template) {
-                continue;
-            }
-
-            $page = $this->getRepository(Page::class)->findOneBy(
-                ['function' => $row]
-            );
-
-            return $class->generateUrl(
-                $page,
-                $route,
-                $params,
-                false
-            );
-        }
-
-        return '';
-    }
-
     public function verifPhone(string $country, string $phone)
     {
         $verif = $this->phoneService->verif($phone, $country);
@@ -268,11 +243,6 @@ class LabstagExtension extends AbstractExtension
     public function workflowHas($entity)
     {
         return $this->workflows->has($entity);
-    }
-
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
     }
 
     protected function setTypeformClass(array $class): string
@@ -301,7 +271,6 @@ class LabstagExtension extends AbstractExtension
             'txtcolor_section'         => 'getTextColorSection',
             'background_section'       => 'getBackgroundSection',
             'paragraph_id'             => 'getParagraphId',
-            'page'                     => 'page',
             'attachment'               => 'getAttachment',
             'class_entity'             => 'classEntity',
             'formClass'                => 'formClass',

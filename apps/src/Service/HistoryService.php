@@ -5,6 +5,7 @@ namespace Labstag\Service;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\History;
+use Labstag\Repository\HistoryRepository;
 use Spipu\Html2Pdf\Html2Pdf;
 use Twig\Environment;
 
@@ -15,7 +16,8 @@ class HistoryService
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        private readonly Environment $twig
+        private readonly Environment $twig,
+        protected HistoryRepository $historyRepo
     )
     {
     }
@@ -31,7 +33,7 @@ class HistoryService
         bool $all
     )
     {
-        $history = $this->getRepository(History::class)->find($historyId);
+        $history = $this->historyRepo->find($historyId);
         if (!$history instanceof History || (false == $all && !in_array('publie', (array) $history->getState()))) {
             return;
         }
@@ -57,11 +59,6 @@ class HistoryService
             $history->getSlug().($all ? '-all' : '')
         );
         $pdf->output($this->filename, 'F');
-    }
-
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
     }
 
     private function generateHistoryPdf(History $history, Collection $dataChapters): Html2Pdf

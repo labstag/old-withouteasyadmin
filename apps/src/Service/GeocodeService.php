@@ -4,6 +4,7 @@ namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\GeoCode;
+use Labstag\Repository\GeoCodeRepository;
 use Labstag\RequestHandler\GeoCodeRequestHandler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use ZipArchive;
@@ -15,14 +16,15 @@ class GeocodeService
     public function __construct(
         protected HttpClientInterface $client,
         protected EntityManagerInterface $entityManager,
-        protected GeoCodeRequestHandler $geoCodeRH
+        protected GeoCodeRequestHandler $geoCodeRH,
+        protected GeoCodeRepository $geoCodeRepo
     )
     {
     }
 
     public function add(array $row)
     {
-        $entity = $this->getRepository(GeoCode::class)->findOneBy(
+        $entity = $this->geoCodeRepo->findOneBy(
             [
                 'countryCode' => $row[0],
                 'postalCode'  => $row[1],
@@ -87,10 +89,5 @@ class GeocodeService
         }
 
         return $data;
-    }
-
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
     }
 }

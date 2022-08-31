@@ -20,6 +20,10 @@ use Labstag\Event\ParagraphEntityEvent;
 use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\EventSubscriberLib;
 use Labstag\Queue\EnqueueMethod;
+use Labstag\Repository\ConfigurationRepository;
+use Labstag\Repository\MenuRepository;
+use Labstag\Repository\PageRepository;
+use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Service\BlockService;
 use Labstag\Service\HistoryService;
@@ -40,7 +44,11 @@ class EntitySubscriber extends EventSubscriberLib
         protected UserPasswordHasherInterface $passwordEncoder,
         protected SessionService $sessionService,
         protected EmailUserRequestHandler $emailUserRH,
-        protected TranslatorInterface $translator
+        protected TranslatorInterface $translator,
+        protected ConfigurationRepository $configurationRepo,
+        protected PageRepository $pageRepo,
+        protected MenuRepository $menuRepo,
+        protected UserRepository $userRepo
     )
     {
     }
@@ -152,9 +160,7 @@ class EntitySubscriber extends EventSubscriberLib
         $entity->setFrontSlug(is_null($parent) ? '' : $entity->getFrontSlug());
 
         $entity->setFrontslug((string) $slug);
-
-        $repository = $this->getRepository($entity::class);
-        $repository->add($entity);
+        $this->pageRepo->add($entity);
     }
 
     public function onParagraphEntityEvent(ParagraphEntityEvent $event)
@@ -201,8 +207,7 @@ class EntitySubscriber extends EventSubscriberLib
                 continue;
             }
 
-            $repository    = $this->getRepository(Configuration::class);
-            $configuration = $repository->findOneBy(['name' => $key]);
+            $configuration = $this->configurationRepo->findOneBy(['name' => $key]);
             if (!$configuration instanceof Configuration) {
                 $configuration = new Configuration();
                 $configuration->setName($key);
@@ -213,7 +218,7 @@ class EntitySubscriber extends EventSubscriberLib
             }
 
             $configuration->setValue($value);
-            $repository->add($configuration);
+            $this->configurationRepo->add($configuration);
         }
 
         $this->sessionService->flashBagAdd(
@@ -274,9 +279,7 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $menu->setData($data);
-
-        $repository = $this->getRepository($menu::class);
-        $repository->add($menu);
+        $this->menuRepo->add($menu);
     }
 
     protected function setDeletedAt(User $oldEntity, User $newEntity): void
@@ -323,8 +326,7 @@ class EntitySubscriber extends EventSubscriberLib
             $this->userMailService->changePassword($user);
         }
 
-        $repository = $this->getRepository($user::class);
-        $repository->add($user);
+        $this->userRepo->add($user);
         $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('user.subscriber.password.change')

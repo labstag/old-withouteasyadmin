@@ -2,9 +2,9 @@
 
 namespace Labstag\Controller\Admin;
 
-use Doctrine\ORM\EntityRepository;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\RouteRepository;
 use Labstag\Repository\WorkflowRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,12 +14,12 @@ class GuardController extends AdminControllerLib
 {
     #[Route(path: '/', name: 'admin_guard_index', methods: ['GET', 'POST'])]
     public function index(
-        WorkflowRepository $workflowRepository,
-        GroupeRepository $groupeRepository,
-        EntityRepository $entityRepository
+        WorkflowRepository $workflowRepo,
+        GroupeRepository $groupeRepo,
+        RouteRepository $routeRepo
     ): Response
     {
-        $workflows = $workflowRepository->findBy(
+        $workflows = $workflowRepo->findBy(
             [],
             [
                 'entity'     => 'ASC',
@@ -30,8 +30,8 @@ class GuardController extends AdminControllerLib
         return $this->render(
             'admin/guard/index.html.twig',
             [
-                'groups'    => $groupeRepository->findBy([], ['name' => 'ASC']),
-                'routes'    => $entityRepository->findBy([], ['name' => 'ASC']),
+                'groups'    => $groupeRepo->findBy([], ['name' => 'ASC']),
+                'routes'    => $routeRepo->findBy([], ['name' => 'ASC']),
                 'workflows' => $workflows,
             ]
         );

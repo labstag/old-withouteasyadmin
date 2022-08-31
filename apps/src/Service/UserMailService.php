@@ -11,6 +11,7 @@ use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\Template;
 use Labstag\Entity\User;
+use Labstag\Repository\TemplateRepository;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Locale;
 use Symfony\Component\Routing\RouterInterface;
@@ -24,7 +25,8 @@ class UserMailService
         protected EntityManagerInterface $entityManager,
         protected RouterInterface $router,
         protected MailerService $mailerService,
-        protected DataService $dataService
+        protected DataService $dataService,
+        protected TemplateRepository $templateRpeo
     )
     {
         $config       = $dataService->getConfig();
@@ -38,7 +40,7 @@ class UserMailService
     public function changeEmailPrincipal(User $user): void
     {
         // @var Template $template
-        $template = $this->getRepository(Template::class)->findOneBy(
+        $template = $this->templateRpeo->findOneBy(
             ['code' => 'change-email-principal']
         );
         if (!$template instanceof Template) {
@@ -54,7 +56,7 @@ class UserMailService
     public function changePassword(User $user): void
     {
         // @var Template $template
-        $template = $this->getRepository(Template::class)->findOneBy(
+        $template = $this->templateRpeo->findOneBy(
             ['code' => 'change-password']
         );
         if (!$template instanceof Template) {
@@ -92,7 +94,7 @@ class UserMailService
     public function checkNewAddress(User $user, AddressUser $addressUser): void
     {
         // @var Template $template
-        $template = $this->getRepository(Template::class)->findOneBy(
+        $template = $this->templateRpeo->findOneBy(
             ['code' => 'check-new-address']
         );
         if (!$template instanceof Template) {
@@ -117,7 +119,7 @@ class UserMailService
     public function checkNewLink(User $user, LinkUser $linkUser): void
     {
         // @var Template $template
-        $template = $this->getRepository(Template::class)->findOneBy(
+        $template = $this->templateRpeo->findOneBy(
             ['code' => 'check-new-link']
         );
         if (!$template instanceof Template) {
@@ -137,7 +139,7 @@ class UserMailService
     public function checkNewMail(User $user, EmailUser $emailUser): void
     {
         // @var Template $template
-        $template = $this->getRepository(Template::class)->findOneBy(
+        $template = $this->templateRpeo->findOneBy(
             ['code' => 'check-new-mail']
         );
         if (!$template instanceof Template) {
@@ -167,7 +169,7 @@ class UserMailService
     ): void
     {
         // @var Template $template
-        $template = $this->getRepository(Template::class)->findOneBy(
+        $template = $this->templateRpeo->findOneBy(
             ['code' => 'check-new-oauthconnectuser']
         );
         if (!$template instanceof Template) {
@@ -187,7 +189,7 @@ class UserMailService
     public function checkNewPhone(User $user, PhoneUser $phoneUser): void
     {
         // @var Template $template
-        $template = $this->getRepository(Template::class)->findOneBy(
+        $template = $this->templateRpeo->findOneBy(
             ['code' => 'check-new-phone']
         );
         if (!$template instanceof Template) {
@@ -214,7 +216,7 @@ class UserMailService
     public function lostPassword(User $user): void
     {
         // @var Template $template
-        $template = $this->getRepository(Template::class)->findOneBy(
+        $template = $this->templateRpeo->findOneBy(
             ['code' => 'lost-password']
         );
         if (!$template instanceof Template) {
@@ -240,7 +242,7 @@ class UserMailService
     public function newUser(User $user): void
     {
         // @var Template $template
-        $template = $this->getRepository(Template::class)->findOneBy(
+        $template = $this->templateRpeo->findOneBy(
             ['code' => 'check-user']
         );
         if (!$template instanceof Template) {
@@ -261,11 +263,6 @@ class UserMailService
             $user,
             $change
         );
-    }
-
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
     }
 
     private function setEmail(

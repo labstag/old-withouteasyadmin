@@ -6,7 +6,7 @@
     {% for history in pagination %}
         <div class="history_data">
 			<h2 class="history_name">
-				<a href="{{ page('history', 'show', {'slug': history.slug}) }}">
+				<a href="{{ path('history', 'show', {'slug': history.slug}) }}">
 					{{ history.name }}
 				</a>
 			</h2>
@@ -14,7 +14,7 @@
 				{{ 'history.infodateuser'|trans(
                     {
                         '%date%': history.published|format_datetime(pattern=formatdatetime.public),
-                        '%user%': macro_site.user(history.refuser, page('history', 'user', {'username': history.refuser.username}))
+                        '%user%': macro_site.user(history.refuser, path('history', 'user', {'username': history.refuser.username}))
                     }
                 )|raw }}
 				{% set state = guard_route('admin_history_edit') %}

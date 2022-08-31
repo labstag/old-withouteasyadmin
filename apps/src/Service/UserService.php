@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
+use Labstag\Repository\OauthConnectUserRepository;
+use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\OauthConnectUserRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use League\OAuth2\Client\Provider\AbstractProvider;
@@ -25,7 +27,9 @@ class UserService
         protected EntityManagerInterface $entityManager,
         protected UserRequestHandler $userRH,
         protected OauthConnectUserRequestHandler $oauthConnectUserRH,
-        protected TranslatorInterface $translator
+        protected TranslatorInterface $translator,
+        protected OauthConnectUserRepository $oauthConnectUserRepo,
+        protected UserRepository $userRepo
     )
     {
     }
@@ -44,11 +48,9 @@ class UserService
             $client,
             $oauthConnect
         );
-        // @var OauthConnectUserRepository $repository
-        $repository = $this->getRepository(OauthConnectUser::class);
         if (false === $find) {
             // @var null|OauthConnectUser $oauthConnect
-            $oauthConnect = $repository->findOauthNotUser(
+            $oauthConnect = $this->oauthConnectUserRepo->findOauthNotUser(
                 $user,
                 $identity,
                 $client
@@ -124,7 +126,7 @@ class UserService
         }
 
         // @var User $user
-        $user = $this->getRepository(User::class)->findUserEnable($post['value']);
+        $user = $this->userRepo->findUserEnable($post['value']);
         if (!$user instanceof User) {
             return;
         }
@@ -169,10 +171,5 @@ class UserService
         }
 
         return $return;
-    }
-
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
     }
 }

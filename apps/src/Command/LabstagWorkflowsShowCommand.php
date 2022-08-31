@@ -5,6 +5,7 @@ namespace Labstag\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Workflow;
 use Labstag\Lib\CommandLib;
+use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\WorkflowRequestHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,7 +21,8 @@ class LabstagWorkflowsShowCommand extends CommandLib
     public function __construct(
         EntityManagerInterface $entityManager,
         protected EventDispatcherInterface $dispatcher,
-        protected WorkflowRequestHandler $workflowRH
+        protected WorkflowRequestHandler $workflowRH,
+        protected WorkflowRepository $workflowRepo
     )
     {
         parent::__construct($entityManager);
@@ -62,7 +64,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
         $this->delete($entities, $data);
         foreach ($data as $name => $transitions) {
             foreach ($transitions as $transition) {
-                $workflow = $this->getRepository(Workflow::class)->findOneBy(
+                $workflow = $this->workflowRepo->findOneBy(
                     [
                         'entity'     => $name,
                         'transition' => $transition,
@@ -87,16 +89,15 @@ class LabstagWorkflowsShowCommand extends CommandLib
 
     private function delete($entities, $data)
     {
-        $repository = $this->getRepository(Workflow::class);
-        $toDelete   = $repository->toDeleteEntities($entities);
+        $toDelete = $this->workflowRepo->toDeleteEntities($entities);
         foreach ($toDelete as $entity) {
-            $repository->remove($entity);
+            $this->workflowRepo->remove($entity);
         }
 
         foreach ($data as $entity => $transitions) {
-            $toDelete = $repository->toDeleteTransition($entity, $transitions);
+            $toDelete = $this->workflowRepo->toDeleteTransition($entity, $transitions);
             foreach ($toDelete as $entity) {
-                $repository->remove($entity);
+                $this->workflowRepo->remove($entity);
             }
         }
     }
