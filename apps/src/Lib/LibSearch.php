@@ -12,16 +12,6 @@ abstract class LibSearch
 
     public $limit;
 
-    protected function __get($prop)
-    {
-        return $this->{$prop};
-    }
-
-    protected function __set($prop, $val)
-    {
-        $this->{$prop} = $val;
-    }
-
     public function search(array $get, $doctrine)
     {
         $userRepo     = $doctrine->getRepository(User::class);
@@ -29,7 +19,7 @@ abstract class LibSearch
         $groupeRepo   = $doctrine->getRepository(Groupe::class);
         $date         = new DateTime();
         foreach ($get as $key => $value) {
-            $this->__set($key, $value);
+            $this->{$key} = $value;
             if ('published' == $key) {
                 if (!empty($value)) {
                     [
@@ -38,19 +28,19 @@ abstract class LibSearch
                         $day,
                     ] = explode('-', (string) $value);
                     $date->setDate($year, $month, $day);
-                    $this->__set($key, $date);
+                    $this->{$key} = $date;
 
                     continue;
                 }
 
-                $this->__set($key, null);
+                $this->{$key} = null;
 
                 continue;
             }
 
-            $this->__set($key, ('refuser' == $key) ? $userRepo->find($value) : $this->__get($key));
-            $this->__set($key, ('refcategory' == $key) ? $categoryRepo->find($value) : $this->__get($key));
-            $this->__set($key, ('refgroup' == $key) ? $groupeRepo->find($value) : $this->__get($key));
+            $this->{$key} = ('refuser' == $key) ? $userRepo->find($value) : $this->{$key};
+            $this->{$key} = ('refcategory' == $key) ? $categoryRepo->find($value) : $this->{$key};
+            $this->{$key} = ('refgroup' == $key) ? $groupeRepo->find($value) : $this->{$key};
         }
     }
 }
