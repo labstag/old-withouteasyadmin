@@ -5,19 +5,20 @@ namespace Labstag\Controller;
 use Labstag\Entity\History;
 use Labstag\Entity\Page;
 use Labstag\Entity\Post;
-use Labstag\Lib\ControllerLib;
+use Labstag\Lib\FrontControllerLib;
+use Labstag\Repository\EditoRepository;
 use Labstag\Repository\HistoryRepository;
 use Labstag\Repository\PageRepository;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FrontController extends ControllerLib
+class FrontController extends FrontControllerLib
 {
     #[Route(path: '/article/{slug}', name: 'front_article', requirements: ['slug' => '.+'], defaults: ['slug' => ''])]
     public function article(
         string $slug,
         PostRepository $postRepo
-    ): mixed
+    )
     {
         $post = $postRepo->findOneBy(
             ['frontslug' => $slug]
@@ -33,11 +34,32 @@ class FrontController extends ControllerLib
         );
     }
 
+    #[Route(path: '/edito', name: 'edito')]
+    public function edio(
+        EditoRepository $editoRepo
+    )
+    {
+        $page = $pageRepo->findOneBy(
+            ['frontslug' => $slug]
+        );
+
+        if (!$page instanceof Page) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render(
+            'front/edito.html.twig',
+            [
+                'content' => $page,
+            ]
+        );
+    }
+
     #[Route(path: '/{slug}', name: 'front', requirements: ['slug' => '.+'], defaults: ['slug' => ''], priority: -1)]
     public function front(
         string $slug,
         PageRepository $pageRepo
-    ): mixed
+    )
     {
         $page = $pageRepo->findOneBy(
             ['frontslug' => $slug]
@@ -49,7 +71,9 @@ class FrontController extends ControllerLib
 
         return $this->render(
             'front/index.html.twig',
-            ['content' => $page]
+            [
+                'content' => $page,
+            ]
         );
     }
 
@@ -57,7 +81,7 @@ class FrontController extends ControllerLib
     public function history(
         string $slug,
         HistoryRepository $historyRepo
-    ): mixed
+    )
     {
         $history = $historyRepo->findOneBy(
             ['frontslug' => $slug]

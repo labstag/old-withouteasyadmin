@@ -4,6 +4,7 @@ namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Service\BlockService;
 use Labstag\Service\DataService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
@@ -39,7 +40,8 @@ abstract class ControllerLib extends AbstractController
         protected GuardService $guardService,
         protected DataService $dataService,
         protected PaginatorInterface $paginator,
-        protected TranslatorInterface $translator
+        protected TranslatorInterface $translator,
+        protected BlockService $blockService
     )
     {
         $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();

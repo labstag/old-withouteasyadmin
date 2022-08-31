@@ -1,0 +1,5 @@
+{% if content.paragraphs is defined %}
+    {% for paragraph in content.paragraphs %}
+        {{ render(controller('Labstag\\Controller\\TwigController::paragraph', {'id': paragraph.id})) }}
+    {% endfor %}
+{% endif %}

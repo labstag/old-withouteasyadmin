@@ -118,7 +118,7 @@ class BlockService
         return $form;
     }
 
-    public function showContent(Block $block)
+    public function showContent(Block $block, $content)
     {
         $type   = $block->getType();
         $entity = $this->getEntity($block);
@@ -126,7 +126,7 @@ class BlockService
         if (!is_null($entity)) {
             foreach ($this->blocksclass as $row) {
                 if ($type == $row->getType()) {
-                    $html = $row->show($entity);
+                    $html = $row->show($entity, $content);
 
                     break;
                 }

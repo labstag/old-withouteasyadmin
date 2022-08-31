@@ -28,11 +28,14 @@ class NavbarBlock extends BlockLib
         return 'navbar';
     }
 
-    public function show(Navbar $navbar)
+    public function show(Navbar $navbar, $content)
     {
         return $this->render(
             $this->getBlockFile('navbar'),
-            ['block' => $navbar]
+            [
+                'block' => $navbar,
+                'content' => $content
+            ]
         );
     }
 }

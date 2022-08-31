@@ -21,8 +21,8 @@ abstract class BlockLib extends AbstractController
         $htmltwig = '.html.twig';
 
         $files = [
-            'block/default/'.$type.$htmltwig,
-            'block/default/default'.$htmltwig,
+            'block/'.$type.$htmltwig,
+            'block/default'.$htmltwig,
         ];
 
         $view = end($files);
