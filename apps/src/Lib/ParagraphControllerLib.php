@@ -52,12 +52,9 @@ abstract class ParagraphControllerLib extends ControllerLib
             $this->addFlash('danger', 'Erreur lors de la modification.');
         }
 
-        $typeparagraphs = $this->getParameter('paragraphs');
-
         return $this->renderForm(
             'admin/paragraph/show.html.twig',
             [
-                'types'     => $typeparagraphs['types'],
                 'paragraph' => $paragraph,
                 'form'      => $form,
             ]

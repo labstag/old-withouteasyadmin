@@ -9,7 +9,6 @@
 	</div>
 {% endblock %}
 {% block header %}
-    {#
 	{% if edito.id is defined %}
 		<div class="header_edito">
 			<h1 class="header_edito_title">
@@ -28,10 +27,8 @@
 			</div>
 		</div>
 	{% endif %}
-    #}
 {% endblock %}
 {% block section %}
-    {#
 	{% for post in pagination %}
 		<div class="post_data">
 			<h2 class="post_title">
@@ -75,5 +72,4 @@
 	{% if pagination is defined %}
 		{{ knp_pagination_render(pagination) }}
 	{% endif %}
-    #}
 {% endblock %}

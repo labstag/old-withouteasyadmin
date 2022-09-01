@@ -90,6 +90,7 @@ class Menu implements Stringable
 
     public function __construct()
     {
+        $this->position   = 0;
         $this->children   = new ArrayCollection();
         $this->separateur = false;
         $this->navbars    = new ArrayCollection();

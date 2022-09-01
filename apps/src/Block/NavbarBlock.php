@@ -33,8 +33,8 @@ class NavbarBlock extends BlockLib
         return $this->render(
             $this->getBlockFile('navbar'),
             [
-                'block' => $navbar,
-                'content' => $content
+                'block'   => $navbar,
+                'content' => $content,
             ]
         );
     }

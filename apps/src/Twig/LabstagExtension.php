@@ -7,6 +7,7 @@ use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\GuardService;
+use Labstag\Service\ParagraphService;
 use Labstag\Service\PhoneService;
 use Labstag\Service\TemplatePageService;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -36,6 +37,7 @@ class LabstagExtension extends AbstractExtension
         protected LoggerInterface $logger,
         protected TemplatePageService $templatePageService,
         protected GuardService $guardService,
+        protected ParagraphService $paragraphService,
         protected AttachmentRepository $attachmentRepo
     )
     {
@@ -158,6 +160,11 @@ class LabstagExtension extends AbstractExtension
         return $paragraph->getType();
     }
 
+    public function getParagraphName($code)
+    {
+        return $this->paragraphService->getName($code);
+    }
+
     public function getTextColorSection($data)
     {
         $paragraph = $data->getParagraph();
@@ -268,6 +275,7 @@ class LabstagExtension extends AbstractExtension
     private function getFiltersFunctions()
     {
         return [
+            'paragraph_name'           => 'getParagraphName',
             'txtcolor_section'         => 'getTextColorSection',
             'background_section'       => 'getBackgroundSection',
             'paragraph_id'             => 'getParagraphId',

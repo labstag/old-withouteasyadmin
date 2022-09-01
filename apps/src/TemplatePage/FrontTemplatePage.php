@@ -21,7 +21,7 @@ class FrontTemplatePage extends TemplatePageLib
         );
 
         return $this->render(
-            'front/index.html.twig',
+            'front/old.html.twig',
             [
                 'edito'      => $this->getRepository(Edito::class)->findOnePublier(),
                 'pagination' => $pagination,

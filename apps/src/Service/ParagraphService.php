@@ -14,13 +14,16 @@ class ParagraphService
     {
     }
 
-    public function getAll()
+    public function getAll($entity)
     {
         $data = [];
         foreach ($this->paragraphsclass as $row) {
-            $type        = $row->getType();
-            $name        = $row->getName();
-            $data[$name] = $type;
+            $inUse = $row->useIn();
+            $type  = $row->getType();
+            $name  = $row->getName();
+            if (in_array($entity::class, $inUse)) {
+                $data[$name] = $type;
+            }
         }
 
         return $data;
@@ -59,6 +62,20 @@ class ParagraphService
         }
 
         return $field;
+    }
+
+    public function getName($code)
+    {
+        $name = '';
+        foreach ($this->paragraphsclass as $row) {
+            if ($row->getType() == $code) {
+                $name = $row->getName();
+
+                break;
+            }
+        }
+
+        return $name;
     }
 
     public function getTypeEntity(Paragraph $entity)

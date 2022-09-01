@@ -6,11 +6,6 @@
 parameters:
   file_directory: '%kernel.project_dir%/public/uploads'
   metatags: ['disclaimer', 'meta', 'tarteaucitron', 'format_datetime']
-  paragraphs:
-    types:
-      text: "Texte"
-    default:
-      - text
 
 services:
     # default configuration for services in *this* file

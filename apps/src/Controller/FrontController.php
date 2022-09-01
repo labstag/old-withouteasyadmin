@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller;
 
+use Labstag\Entity\Edito;
 use Labstag\Entity\History;
 use Labstag\Entity\Page;
 use Labstag\Entity\Post;
@@ -39,19 +40,15 @@ class FrontController extends FrontControllerLib
         EditoRepository $editoRepo
     )
     {
-        $page = $pageRepo->findOneBy(
-            ['frontslug' => $slug]
-        );
+        $edito = $editoRepo->findOnePublier();
 
-        if (!$page instanceof Page) {
+        if (!$edito instanceof Edito) {
             throw $this->createNotFoundException();
         }
 
         return $this->render(
             'front/edito.html.twig',
-            [
-                'content' => $page,
-            ]
+            ['content' => $edito]
         );
     }
 
@@ -71,9 +68,7 @@ class FrontController extends FrontControllerLib
 
         return $this->render(
             'front/index.html.twig',
-            [
-                'content' => $page,
-            ]
+            ['content' => $page]
         );
     }
 

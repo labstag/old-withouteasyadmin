@@ -2,9 +2,9 @@
 
 namespace Labstag\Form\Admin\Menu;
 
-use Doctrine\DBAL\Types\TextType;
 use Labstag\Entity\Menu;
 use Labstag\Lib\AbstractTypeLib;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

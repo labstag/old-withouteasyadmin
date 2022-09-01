@@ -4,6 +4,7 @@ namespace Labstag\FormType;
 
 use Labstag\Service\ParagraphService;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -25,12 +26,19 @@ class ParagraphType extends AbstractType
         array $options
     ): void
     {
-        $entity                   = $form->getParent()->getData();
+        $entity     = $form->getParent()->getData();
+        $paragraphs = $this->paragraphService->getAll($entity);
+        $choices    = [];
+        foreach ($paragraphs as $name => $type) {
+            $choices[$type] = new ChoiceView('', $type, $name);
+        }
+
         $view->vars['label']      = 'Paragraphs';
         $view->vars['urlAdd']     = $this->router->generate($options['add'], ['id' => $entity->getId()]);
         $view->vars['paragraphs'] = $entity->getParagraphs();
         $view->vars['urlEdit']    = $options['edit'];
         $view->vars['urlDelete']  = $options['delete'];
+        $view->vars['choices']    = $choices;
         $view->vars['attr']['is'] = 'select-paragraph';
         unset($form);
     }
@@ -40,7 +48,7 @@ class ParagraphType extends AbstractType
         $resolver->setDefaults(
             [
                 'placeholder' => 'Choisir le paragraphe',
-                'choices'     => $this->paragraphService->getAll(),
+                'choices'     => [],
                 'add'         => null,
                 'edit'        => null,
                 'delete'      => null,

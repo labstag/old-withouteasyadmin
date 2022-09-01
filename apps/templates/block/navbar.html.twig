@@ -1,2 +1,4 @@
-navbar
-{{ dump(content) }}
+{% if block.menu.id is defined %}
+    navbar
+ {{ dump(block.menu) }}
+{% endif %}

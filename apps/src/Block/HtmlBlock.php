@@ -33,7 +33,7 @@ class HtmlBlock extends BlockLib
         return $this->render(
             $this->getBlockFile('html'),
             [
-                'block' => $html,
+                'block'   => $html,
                 'content' => $content,
             ]
         );

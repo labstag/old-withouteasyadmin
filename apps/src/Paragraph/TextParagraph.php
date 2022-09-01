@@ -2,7 +2,13 @@
 
 namespace Labstag\Paragraph;
 
+use Labstag\Entity\Chapter;
+use Labstag\Entity\Edito;
+use Labstag\Entity\History;
+use Labstag\Entity\Memo;
+use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Text;
+use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\TextType;
 use Labstag\Lib\ParagraphLib;
 
@@ -34,5 +40,17 @@ class TextParagraph extends ParagraphLib
             $this->getParagraphFile('text'),
             ['paragraph' => $text]
         );
+    }
+
+    public function useIn()
+    {
+        return [
+            Chapter::class,
+            Edito::class,
+            History::class,
+            Memo::class,
+            Page::class,
+            Post::class,
+        ];
     }
 }

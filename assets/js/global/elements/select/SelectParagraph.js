@@ -3,7 +3,7 @@ import Sortable from 'sortablejs'
 export class SelectParagraph extends HTMLSelectElement {
   connectedCallback () {
     const idElement = this.getAttribute('id')
-    this.url = this.getAttribute('data-url')
+    this.url = this.closest('fieldset').getAttribute('data-url')
     this.select = new TomSelect(`#${idElement}`)
     this.select.on('change', element => { this.onChange(element) })
     this.initShow()
