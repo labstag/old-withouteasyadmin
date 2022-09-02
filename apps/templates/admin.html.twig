@@ -23,8 +23,11 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbar-supported-content">
-					{{ knp_menu_render('admin_menu', {'style': 'navbar', 'currentClass': 'active'}) }}
-					{{ knp_menu_render('admin_profilmenu', {'style': 'navbar', 'currentClass': 'active'}) }}
+                    {% for key, menu in allmenu %}
+                        {% if key == 'admin' or key == 'admin-profil' %}
+                            {{ knp_menu_render(menu, {'style': 'navbar', 'currentClass': 'active'}) }}
+                        {% endif %}
+                    {% endfor %}
 				</div>
 			</div>
 		</div>

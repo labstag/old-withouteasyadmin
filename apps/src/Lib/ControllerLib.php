@@ -9,6 +9,7 @@ use Labstag\Service\DataService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
 use Labstag\Service\GuardService;
+use Labstag\Service\MenuService;
 use Labstag\Service\SessionService;
 use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,7 +42,8 @@ abstract class ControllerLib extends AbstractController
         protected DataService $dataService,
         protected PaginatorInterface $paginator,
         protected TranslatorInterface $translator,
-        protected BlockService $blockService
+        protected BlockService $blockService,
+        protected MenuService $menuService
     )
     {
         $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();

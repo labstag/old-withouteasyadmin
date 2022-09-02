@@ -1,4 +1,5 @@
-{% if block.menu.id is defined %}
-    navbar
- {{ dump(block.menu) }}
+{% if block.menu.id is defined and show %}
+    <div class="collapse navbar-collapse" id="navbar-{{ block.menu.clef }}">
+        {{ knp_menu_render(item, {'style': 'navbar', 'currentClass': 'active'}) }}
+    </div>
 {% endif %}

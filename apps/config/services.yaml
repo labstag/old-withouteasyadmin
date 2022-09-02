@@ -77,28 +77,6 @@ services:
             - !tagged_iterator paragraphsclass
       # add more service definitions when explicit configuration is needed
       # please note that last definitions always *replace* previous ones
-
-    app.admin_menu_builder:
-      class: Labstag\Menu\AdminMenuBuilder
-      arguments: ["@knp_menu.factory"]
-
-    app.admin_profil_menu_builder:
-      class: Labstag\Menu\AdminProfilMenuBuilder
-      arguments: ["@knp_menu.factory"]
-
-    app.adminmain_menu:
-      class: Knp\Menu\MenuItem # the service definition requires setting the class
-      factory: ["@app.admin_menu_builder", createMainMenu]
-      arguments: ["@request_stack"]
-      tags:
-        - { name: knp_menu.menu, alias: admin_menu }
-
-    app.adminprofil_menu:
-      class: Knp\Menu\MenuItem # the service definition requires setting the class
-      factory: ["@app.admin_profil_menu_builder", createMainMenu]
-      arguments: ["@request_stack"]
-      tags:
-        - { name: knp_menu.menu, alias: admin_profilmenu }
     Labstag\Swagger\CheckSwaggerDecorator:
       decorates: 'api_platform.swagger.normalizer.api_gateway'
     Labstag\Swagger\SearchSwaggerDecorator:

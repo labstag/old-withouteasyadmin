@@ -137,6 +137,7 @@ abstract class AdminControllerLib extends ControllerLib
         ?Response $response = null
     ): Response
     {
+        $parameters = $this->generateMenus($parameters);
         $this->setBreadcrumbsPage();
         $request = $this->requeststack->getCurrentRequest();
         $all     = $request->attributes->all();
@@ -410,6 +411,13 @@ abstract class AdminControllerLib extends ControllerLib
         );
         $file = $path.'/'.$filename;
         $this->fileService->setAttachment($file, $attachment, $old);
+    }
+
+    protected function renderForm(string $view, array $parameters = [], ?Response $response = null): Response
+    {
+        $parameters = $this->generateMenus($parameters);
+
+        return parent::renderForm($view, $parameters, $response);
     }
 
     protected function searchForm(): array
@@ -849,6 +857,16 @@ abstract class AdminControllerLib extends ControllerLib
         }
 
         return $breadcrumb;
+    }
+
+    private function generateMenus(array $parameters = []): array
+    {
+        return array_merge(
+            $parameters,
+            [
+                'allmenu' => $this->menuService->createMenus(),
+            ]
+        );
     }
 
     private function getBreadcrumb($matcher, $pathinfo, $breadcrumb)
