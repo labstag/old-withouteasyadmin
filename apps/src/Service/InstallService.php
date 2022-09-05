@@ -197,7 +197,6 @@ class InstallService
         $page->setParent($parent);
         $page->setSlug($row['slug']);
         $page->setName($row['name']);
-        $page->setFunction($row['template']);
         $page->setFront(isset($row['front']));
         $this->pageRH->handle($old, $page);
         if (isset($row['childs'])) {

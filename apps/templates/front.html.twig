@@ -6,8 +6,13 @@
 {% endblock %}
 {% block content %}
     {{ macro_site.flashbag(app) }}
-    {% block body %}
-    {% endblock %}
+    {% for row, block in blocks %}
+        <{{ row }}>
+            {% for html in block %}
+                {{ html.content|raw }}
+            {% endfor %}
+        </{{ row }}>
+    {% endfor %}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

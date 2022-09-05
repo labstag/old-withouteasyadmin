@@ -146,20 +146,12 @@ class EntitySubscriber extends EventSubscriberLib
     public function onPageEntityEvent(PageEntityEvent $event): void
     {
         $entity = $event->getNewEntity();
-        $slug   = $entity->getSlug();
         $parent = $entity->getParent();
         if (!is_null($parent)) {
-            $frontSlug = $parent->getFrontSlug();
-
-            $slug = ('' == $frontSlug) ? $entity->getSlug() : ($frontSlug.'/'.$entity->getSlug());
-
-            $entity->setFrontslug((string) $slug);
+            return;
         }
 
-        $entity->setSlug(is_null($parent) ? '' : $entity->getSlug());
-        $entity->setFrontSlug(is_null($parent) ? '' : $entity->getFrontSlug());
-
-        $entity->setFrontslug((string) $slug);
+        $entity->setSlug('');
         $this->pageRepo->add($entity);
     }
 

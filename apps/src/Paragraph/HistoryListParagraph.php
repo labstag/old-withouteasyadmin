@@ -4,31 +4,31 @@ namespace Labstag\Paragraph;
 
 use Labstag\Entity\History as EntityHistory;
 use Labstag\Entity\Page;
-use Labstag\Entity\Paragraph\History;
-use Labstag\Form\Admin\Paragraph\HistoryType;
+use Labstag\Entity\Paragraph\HistoryList;
+use Labstag\Form\Admin\Paragraph\HistoryListType;
 use Labstag\Lib\ParagraphLib;
-use Labstag\Repository\HistoryRepository;
+use Labstag\Repository\Paragraph\HistoryListRepository;
 
-class HistoryParagraph extends ParagraphLib
+class HistoryListParagraph extends ParagraphLib
 {
     public function getEntity()
     {
-        return History::class;
+        return HistoryList::class;
     }
 
     public function getForm()
     {
-        return HistoryType::class;
+        return HistoryListType::class;
     }
 
     public function getName()
     {
-        return $this->translator->trans('history.name', [], 'paragraph');
+        return $this->translator->trans('historylist.name', [], 'paragraph');
     }
 
     public function getType()
     {
-        return 'history';
+        return 'historylist';
     }
 
     public function isShowForm()
@@ -36,17 +36,17 @@ class HistoryParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(History $history)
+    public function show(HistoryList $historylist)
     {
-        /** @var HistoryRepository $repository */
+        /** @var HistoryListRepository $repository */
         $repository = $this->getRepository(EntityHistory::class);
         $histories  = $repository->getLimitOffsetResult($repository->findPublier(), 5, 0);
 
         return $this->render(
-            $this->getParagraphFile('history'),
+            $this->getParagraphFile('historylist'),
             [
                 'histories' => $histories,
-                'paragraph' => $history,
+                'paragraph' => $historylist,
             ]
         );
     }

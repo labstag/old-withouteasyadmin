@@ -31,16 +31,6 @@ class Page implements Stringable
     private $front;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $frontslug;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $function;
-
-    /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
@@ -80,8 +70,13 @@ class Page implements Stringable
     private $password;
 
     /**
-     * @Gedmo\Slug(updatable=false, fields={"name"})
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Gedmo\Slug(handlers={
+     * @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\TreeSlugHandler", options={
+     * @Gedmo\SlugHandlerOption(name="parentRelationField", value="parent"),
+     * @Gedmo\SlugHandlerOption(name="separator", value="/")
+     *      })
+     * }, fields={"name"})
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $slug;
 
@@ -135,16 +130,6 @@ class Page implements Stringable
     public function getFront(): ?bool
     {
         return $this->front;
-    }
-
-    public function getFrontslug(): string
-    {
-        return $this->frontslug;
-    }
-
-    public function getFunction(): ?string
-    {
-        return $this->function;
     }
 
     public function getId(): ?string
@@ -227,20 +212,6 @@ class Page implements Stringable
     public function setFront(bool $front): self
     {
         $this->front = $front;
-
-        return $this;
-    }
-
-    public function setFrontslug(string $frontslug): self
-    {
-        $this->frontslug = $frontslug;
-
-        return $this;
-    }
-
-    public function setFunction(?string $function): self
-    {
-        $this->function = $function;
 
         return $this;
     }

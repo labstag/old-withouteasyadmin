@@ -39,7 +39,7 @@ class FrontTemplatePage extends TemplatePageLib
         return $this->router->generate(
             'front',
             [
-                'slug' => $page->getFrontslug(),
+                'slug' => $page->getSlug(),
             ],
             $relative
         );

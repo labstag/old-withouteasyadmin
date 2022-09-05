@@ -11,10 +11,6 @@
                 {
                     'field': 'a.slug',
                     'name': 'page.slug'|trans({}, 'admin.messages')
-                },
-                {
-                    'field': 'a.frontslug',
-                    'name': 'page.frontslug'|trans({}, 'admin.messages')
                 }
             ] %}
             {{ macro_admin.thead(theads, pagination, true) }}
@@ -24,7 +20,6 @@
                 <tr data-id="{{ entity.id }}">
                     <td>{{ entity.name }}</td>
                     <td>{{ entity.slug }}</td>
-                    <td>{{ entity.frontslug }}</td>
                     <td>
                         {{ macro_admin.actions(entity, actions) }}
                     </td>

@@ -99,6 +99,14 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $this->setQuery($query, $get);
     }
 
+    public function getLimitOffsetResult($query, $limit, $offset)
+    {
+        $query->setMaxResults($limit ?: null);
+        $query->setFirstResult($offset ?: null);
+
+        return $query->getResult();
+    }
+
     /**
      * @throws ORMException
      * @throws OptimisticLockException

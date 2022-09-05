@@ -3,32 +3,32 @@
 namespace Labstag\Paragraph;
 
 use Labstag\Entity\Page;
-use Labstag\Entity\Paragraph\Post;
+use Labstag\Entity\Paragraph\PostList;
 use Labstag\Entity\Post as EntityPost;
-use Labstag\Form\Admin\Paragraph\PostType;
+use Labstag\Form\Admin\Paragraph\PostListType;
 use Labstag\Lib\ParagraphLib;
-use Labstag\Repository\PostRepository;
+use Labstag\Repository\Paragraph\PostListRepository;
 
-class PostParagraph extends ParagraphLib
+class PostListParagraph extends ParagraphLib
 {
     public function getEntity()
     {
-        return Post::class;
+        return PostList::class;
     }
 
     public function getForm()
     {
-        return PostType::class;
+        return PostListType::class;
     }
 
     public function getName()
     {
-        return $this->translator->trans('post.name', [], 'paragraph');
+        return $this->translator->trans('postlist.name', [], 'paragraph');
     }
 
     public function getType()
     {
-        return 'post';
+        return 'postlist';
     }
 
     public function isShowForm()
@@ -36,17 +36,17 @@ class PostParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Post $post)
+    public function show(PostList $postlist)
     {
-        /** @var PostRepository $repository */
+        /** @var PostListRepository $repository */
         $repository = $this->getRepository(EntityPost::class);
         $posts      = $repository->getLimitOffsetResult($repository->findPublier(), 5, 0);
 
         return $this->render(
-            $this->getParagraphFile('post'),
+            $this->getParagraphFile('postlist'),
             [
                 'posts'     => $posts,
-                'paragraph' => $post,
+                'paragraph' => $postlist,
             ]
         );
     }

@@ -2,37 +2,69 @@
 
 namespace Labstag\Controller;
 
+use Labstag\Entity\Bookmark;
 use Labstag\Entity\Edito;
 use Labstag\Entity\History;
 use Labstag\Entity\Page;
 use Labstag\Entity\Post;
 use Labstag\Lib\FrontControllerLib;
+use Labstag\Repository\BookmarkRepository;
 use Labstag\Repository\EditoRepository;
 use Labstag\Repository\HistoryRepository;
 use Labstag\Repository\PageRepository;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends FrontControllerLib
 {
-    #[Route(path: '/article/{slug}', name: 'front_article', requirements: ['slug' => '.+'], defaults: ['slug' => ''])]
+    #[Route(
+        path: '/mes-articles/{slug}',
+        name: 'front_article',
+        requirements: ['slug' => '.+'],
+        defaults: ['slug' => '']
+    )]
     public function article(
         string $slug,
-        PostRepository $postRepo
+        PostRepository $postRepo,
+        PageRepository $pageRepo
     )
     {
         $post = $postRepo->findOneBy(
-            ['frontslug' => $slug]
+            ['slug' => $slug]
         );
 
-        if (!$post instanceof Post) {
-            throw $this->createNotFoundException();
+        if ($post instanceof Post) {
+            return $this->render(
+                'font.html.twig',
+                ['content' => $post]
+            );
         }
 
-        return $this->render(
-            'front/post/index.html.twig',
-            ['content' => $post]
+        return $this->front('mes-articles', $pageRepo);
+    }
+
+    #[Route(
+        path: '/mes-liens/{slug}',
+        name: 'front_bookmark',
+        requirements: ['slug' => '.+'],
+        defaults: ['slug' => '']
+    )]
+    public function bookmark(
+        string $slug,
+        BookmarkRepository $bookmarkRepo,
+        PageRepository $pageRepo
+    )
+    {
+        $bookmark = $bookmarkRepo->findOneBy(
+            ['slug' => $slug]
         );
+
+        if ($bookmark instanceof Bookmark) {
+            return new RedirectResponse($bookmark->getUrl(), 302);
+        }
+
+        return $this->front('mes-liens', $pageRepo);
     }
 
     #[Route(path: '/edito', name: 'edito')]
@@ -47,7 +79,7 @@ class FrontController extends FrontControllerLib
         }
 
         return $this->render(
-            'front/edito.html.twig',
+            'font.html.twig',
             ['content' => $edito]
         );
     }
@@ -59,7 +91,7 @@ class FrontController extends FrontControllerLib
     )
     {
         $page = $pageRepo->findOneBy(
-            ['frontslug' => $slug]
+            ['slug' => $slug]
         );
 
         if (!$page instanceof Page) {
@@ -67,28 +99,34 @@ class FrontController extends FrontControllerLib
         }
 
         return $this->render(
-            'front/index.html.twig',
+            'font.html.twig',
             ['content' => $page]
         );
     }
 
-    #[Route(path: '/histoire/{slug}', name: 'front_history', requirements: ['slug' => '.+'], defaults: ['slug' => ''])]
+    #[Route(
+        path: '/mes-histoires/{slug}',
+        name: 'front_history',
+        requirements: ['slug' => '.+'],
+        defaults: ['slug' => '']
+    )]
     public function history(
         string $slug,
-        HistoryRepository $historyRepo
+        HistoryRepository $historyRepo,
+        PageRepository $pageRepo
     )
     {
         $history = $historyRepo->findOneBy(
-            ['frontslug' => $slug]
+            ['slug' => $slug]
         );
 
-        if (!$history instanceof History) {
-            throw $this->createNotFoundException();
+        if ($history instanceof History) {
+            return $this->render(
+                'font.html.twig',
+                ['content' => $history]
+            );
         }
 
-        return $this->render(
-            'front/history/index.html.twig',
-            ['content' => $history]
-        );
+        return $this->front('mes-histoires', $pageRepo);
     }
 }

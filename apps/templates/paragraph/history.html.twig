@@ -1,3 +1,11 @@
 <section id="{{ paragraph_id(paragraph) }}" class="{{ paragraph_class(paragraph) }}">
-    history
+    <ul>
+        {% for history in histories %}
+            <li>
+                <a href="{{ path('front_history', {'slug': history.slug}) }}">
+					{{ history.name }}
+				</a>
+            </li>
+        {% endfor %}
+    </ul>
 </section>

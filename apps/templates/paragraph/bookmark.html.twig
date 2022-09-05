@@ -1,4 +1,11 @@
 <section id="{{ paragraph_id(paragraph) }}" class="{{ paragraph_class(paragraph) }}">
-    bookmark
-    {{ dump(app.request.attributes) }}
+    <ul>
+        {% for bookmark in bookmarks %}
+            <li>
+				<a href="{{ path('front_bookmark', {'slug': bookmark.slug}) }}" target="_blank">
+					{{ bookmark.name }}
+				</a>
+            </li>
+        {% endfor %}
+    </ul>
 </section>

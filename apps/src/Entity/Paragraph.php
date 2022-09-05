@@ -6,9 +6,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph\Bookmark as ParagraphBookmark;
+use Labstag\Entity\Paragraph\BookmarkList;
 use Labstag\Entity\Paragraph\Edito as ParagraphEdito;
 use Labstag\Entity\Paragraph\History as ParagraphHistory;
+use Labstag\Entity\Paragraph\HistoryList;
 use Labstag\Entity\Paragraph\Post as ParagraphPost;
+use Labstag\Entity\Paragraph\PostList;
 use Labstag\Entity\Paragraph\Text;
 use Labstag\Repository\ParagraphRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -31,6 +34,11 @@ class Paragraph
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $background;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BookmarkList::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $bookmarkLists;
 
     /**
      * @ORM\OneToMany(targetEntity=ParagraphBookmark::class, mappedBy="paragraph", orphanRemoval=true)
@@ -68,6 +76,11 @@ class Paragraph
     private $history;
 
     /**
+     * @ORM\OneToMany(targetEntity=HistoryList::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $historyLists;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Memo::class, inversedBy="paragraphs")
      */
     private $memo;
@@ -88,6 +101,11 @@ class Paragraph
     private $post;
 
     /**
+     * @ORM\OneToMany(targetEntity=PostList::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $postLists;
+
+    /**
      * @ORM\OneToMany(targetEntity=ParagraphPost::class, mappedBy="paragraph", orphanRemoval=true)
      */
     private $posts;
@@ -104,12 +122,15 @@ class Paragraph
 
     public function __construct()
     {
-        $this->position  = 0;
-        $this->texts     = new ArrayCollection();
-        $this->bookmarks = new ArrayCollection();
-        $this->histories = new ArrayCollection();
-        $this->editos    = new ArrayCollection();
-        $this->posts     = new ArrayCollection();
+        $this->position      = 0;
+        $this->texts         = new ArrayCollection();
+        $this->bookmarks     = new ArrayCollection();
+        $this->histories     = new ArrayCollection();
+        $this->editos        = new ArrayCollection();
+        $this->posts         = new ArrayCollection();
+        $this->postLists     = new ArrayCollection();
+        $this->historyLists  = new ArrayCollection();
+        $this->bookmarkLists = new ArrayCollection();
     }
 
     public function addBookmark(ParagraphBookmark $bookmark): self
@@ -117,6 +138,16 @@ class Paragraph
         if (!$this->bookmarks->contains($bookmark)) {
             $this->bookmarks[] = $bookmark;
             $bookmark->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addBookmarkList(BookmarkList $bookmarkList): self
+    {
+        if (!$this->bookmarkLists->contains($bookmarkList)) {
+            $this->bookmarkLists[] = $bookmarkList;
+            $bookmarkList->setParagraph($this);
         }
 
         return $this;
@@ -142,11 +173,31 @@ class Paragraph
         return $this;
     }
 
+    public function addHistoryList(HistoryList $historyList): self
+    {
+        if (!$this->historyLists->contains($historyList)) {
+            $this->historyLists[] = $historyList;
+            $historyList->setParagraph($this);
+        }
+
+        return $this;
+    }
+
     public function addPost(ParagraphPost $post): self
     {
         if (!$this->posts->contains($post)) {
             $this->posts[] = $post;
             $post->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addPostList(PostList $postList): self
+    {
+        if (!$this->postLists->contains($postList)) {
+            $this->postLists[] = $postList;
+            $postList->setParagraph($this);
         }
 
         return $this;
@@ -165,6 +216,14 @@ class Paragraph
     public function getBackground(): ?string
     {
         return $this->background;
+    }
+
+    /**
+     * @return Collection<int, BookmarkList>
+     */
+    public function getBookmarkLists(): Collection
+    {
+        return $this->bookmarkLists;
     }
 
     /**
@@ -211,6 +270,14 @@ class Paragraph
         return $this->history;
     }
 
+    /**
+     * @return Collection<int, HistoryList>
+     */
+    public function getHistoryLists(): Collection
+    {
+        return $this->historyLists;
+    }
+
     public function getId(): ?string
     {
         return $this->id;
@@ -234,6 +301,14 @@ class Paragraph
     public function getPost(): ?Post
     {
         return $this->post;
+    }
+
+    /**
+     * @return Collection<int, PostList>
+     */
+    public function getPostLists(): Collection
+    {
+        return $this->postLists;
     }
 
     /**
@@ -269,6 +344,18 @@ class Paragraph
         return $this;
     }
 
+    public function removeBookmarkList(BookmarkList $bookmarkList): self
+    {
+        if ($this->bookmarkLists->removeElement($bookmarkList)) {
+            // set the owning side to null (unless already changed)
+            if ($bookmarkList->getParagraph() === $this) {
+                $bookmarkList->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function removeEdito(ParagraphEdito $edito): self
     {
         if ($this->editos->removeElement($edito)) {
@@ -293,12 +380,36 @@ class Paragraph
         return $this;
     }
 
+    public function removeHistoryList(HistoryList $historyList): self
+    {
+        if ($this->historyLists->removeElement($historyList)) {
+            // set the owning side to null (unless already changed)
+            if ($historyList->getParagraph() === $this) {
+                $historyList->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function removePost(ParagraphPost $post): self
     {
         if ($this->posts->removeElement($post)) {
             // set the owning side to null (unless already changed)
             if ($post->getParagraph() === $this) {
                 $post->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removePostList(PostList $postList): self
+    {
+        if ($this->postLists->removeElement($postList)) {
+            // set the owning side to null (unless already changed)
+            if ($postList->getParagraph() === $this) {
+                $postList->setParagraph(null);
             }
         }
 
