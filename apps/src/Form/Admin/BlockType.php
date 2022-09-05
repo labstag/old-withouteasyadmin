@@ -17,6 +17,7 @@ class BlockType extends BlockAbstractTypeLib
         $formType = $this->blockService->getTypeForm($builder->getData());
         $label    = $this->blockService->getName($builder->getData());
         $field    = $this->blockService->getEntityField($builder->getData());
+        $show     = $this->blockService->isShow($builder->getData());
         $builder->add(
             'title',
             TextType::class,
@@ -40,7 +41,7 @@ class BlockType extends BlockAbstractTypeLib
                 'choices' => $this->blockService->getRegions(),
             ]
         );
-        if (!is_null($formType) || is_null($field)) {
+        if ((!is_null($formType) || is_null($field)) && $show) {
             $builder->add(
                 $field,
                 CollectionType::class,

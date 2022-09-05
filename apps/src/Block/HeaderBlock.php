@@ -28,6 +28,11 @@ class HeaderBlock extends BlockLib
         return 'header';
     }
 
+    public function isShowForm()
+    {
+        return true;
+    }
+
     public function show(Header $header, $content)
     {
         return $this->render(

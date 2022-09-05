@@ -9,6 +9,8 @@ class KernelSubscriber implements EventSubscriberInterface
 {
     final public const API_CONTROLLER = '/(Api)/';
 
+    final public const BLOCK_CONTROLLER = '/(Labstag\/Block)/';
+
     final public const CLIENTNUMBER = 400;
 
     final public const ERROR_CONTROLLER = [
@@ -18,7 +20,7 @@ class KernelSubscriber implements EventSubscriberInterface
 
     final public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
-    final public const PARAGRAPH_CONTROLLER = '/(Paragraph)/';
+    final public const PARAGRAPH_CONTROLLER = '/(Labstag\/Paragraph)/';
 
     final public const TAGS = [
         'attachment-delete',
@@ -95,16 +97,16 @@ class KernelSubscriber implements EventSubscriberInterface
         preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
         preg_match(self::API_CONTROLLER, (string) $controller, $apis);
         preg_match(self::PARAGRAPH_CONTROLLER, (string) $controller, $paragraphs);
-        $apisparagraphscount = count($apis) + count($paragraphs);
-        if (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER) || 0 != $apisparagraphscount) {
-            return;
-        }
-
-        if ('html' != $request->getRequestFormat() || $response->getStatusCode() >= self::CLIENTNUMBER) {
+        preg_match(self::BLOCK_CONTROLLER, (string) $controller, $blocks);
+        $count = count($apis) + count($paragraphs) + count($blocks);
+        $test1 = (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER) || 0 != $count);
+        $test2 = ('html' != $request->getRequestFormat() || $response->getStatusCode() >= self::CLIENTNUMBER);
+        if ($test1 || $test2) {
             return;
         }
 
         $content = $response->getContent();
+        $content = preg_replace('/<script>/i', '<script type="text/javascript">', $content);
         $config  = [
             'indent'                      => true,
             'indent-spaces'               => 2,

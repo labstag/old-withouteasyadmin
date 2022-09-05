@@ -13,17 +13,18 @@ class ParagraphType extends ParagraphAbstractTypeLib
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $label    = $this->paragraphService->getName($builder->getData());
         $formType = $this->paragraphService->getTypeForm($builder->getData());
         $field    = $this->paragraphService->getEntityField($builder->getData());
+        $show     = $this->paragraphService->isShow($builder->getData());
         $builder->add('background');
         $builder->add('color');
-        $builder->add('fond');
-        if (!is_null($formType) || is_null($field)) {
+        if ((!is_null($formType) || is_null($field)) && $show) {
             $builder->add(
                 $field,
                 CollectionType::class,
                 [
-                    'label'         => ' ',
+                    'label'         => $label,
                     'entry_type'    => $formType,
                     'entry_options' => ['label' => false],
                     'allow_add'     => false,

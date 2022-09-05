@@ -34,6 +34,11 @@ class TextParagraph extends ParagraphLib
         return 'text';
     }
 
+    public function isShowForm()
+    {
+        return true;
+    }
+
     public function show(Text $text)
     {
         return $this->render(

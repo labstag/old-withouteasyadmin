@@ -41,6 +41,11 @@ class NavbarBlock extends BlockLib
         return 'navbar';
     }
 
+    public function isShowForm()
+    {
+        return true;
+    }
+
     public function show(Navbar $navbar, $content)
     {
         $menu = $navbar->getMenu();

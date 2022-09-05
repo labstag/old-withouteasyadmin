@@ -1,5 +1,7 @@
 {% if block.menu.id is defined and show %}
-    <div class="collapse navbar-collapse" id="navbar-{{ block.menu.clef }}">
-        {{ knp_menu_render(item, {'style': 'navbar', 'currentClass': 'active'}) }}
-    </div>
+    <section id="{{ block_id(block) }}" class="{{ block_class(block) }}">
+        <nav class="collapse navbar-collapse" id="navbar-{{ block.menu.clef }}">
+            {{ knp_menu_render(item, {'style': 'navbar', 'currentClass': 'active'}) }}
+        </nav>
+    </section>
 {% endif %}

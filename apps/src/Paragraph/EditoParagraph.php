@@ -30,12 +30,20 @@ class EditoParagraph extends ParagraphLib
         return 'edito';
     }
 
+    public function isShowForm()
+    {
+        return false;
+    }
+
     public function show(Edito $edito)
     {
+        /** @var EditoryRepository $repository */
+        $repository = $this->getRepository(EntityEdito::class);
+
         return $this->render(
             $this->getParagraphFile('edito'),
             [
-                'edito'     => $this->getRepository(EntityEdito::class)->findOnePublier(),
+                'edito'     => $repository->findOnePublier(),
                 'paragraph' => $edito,
             ]
         );

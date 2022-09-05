@@ -64,7 +64,22 @@ class ParagraphService
         return $field;
     }
 
-    public function getName($code)
+    public function getName(Paragraph $entity)
+    {
+        $type = $entity->getType();
+        $name = '';
+        foreach ($this->paragraphsclass as $row) {
+            if ($row->getType() == $type) {
+                $name = $row->getName();
+
+                break;
+            }
+        }
+
+        return $name;
+    }
+
+    public function getNameByCode($code)
     {
         $name = '';
         foreach ($this->paragraphsclass as $row) {
@@ -106,6 +121,21 @@ class ParagraphService
         }
 
         return $form;
+    }
+
+    public function isShow(Paragraph $entity)
+    {
+        $type = $entity->getType();
+        $show = false;
+        foreach ($this->paragraphsclass as $row) {
+            if ($row->getType() == $type) {
+                $show = $row->isShowForm();
+
+                break;
+            }
+        }
+
+        return $show;
     }
 
     public function showContent(Paragraph $paragraph)

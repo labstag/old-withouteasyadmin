@@ -89,11 +89,6 @@ class BookmarkService
         return $this->containerBag->get($name);
     }
 
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
-    }
-
     protected function upload(Bookmark $bookmark, $image)
     {
         if (is_null($image) || !$this->uploadAnnotReader->isUploadable($bookmark)) {

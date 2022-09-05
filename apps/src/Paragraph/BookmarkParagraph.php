@@ -29,6 +29,11 @@ class BookmarkParagraph extends ParagraphLib
         return 'bookmark';
     }
 
+    public function isShowForm()
+    {
+        return false;
+    }
+
     public function show(Bookmark $bookmark)
     {
         return $this->render(

@@ -58,11 +58,6 @@ class Paragraph
     private $editos;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $fond;
-
-    /**
      * @ORM\OneToMany(targetEntity=ParagraphHistory::class, mappedBy="paragraph", orphanRemoval=true)
      */
     private $histories;
@@ -201,11 +196,6 @@ class Paragraph
     public function getEditos(): Collection
     {
         return $this->editos;
-    }
-
-    public function getFond(): ?string
-    {
-        return $this->fond;
     }
 
     /**
@@ -351,13 +341,6 @@ class Paragraph
     public function setEdito(?Edito $edito): self
     {
         $this->edito = $edito;
-
-        return $this;
-    }
-
-    public function setFond(?string $fond): self
-    {
-        $this->fond = $fond;
 
         return $this;
     }

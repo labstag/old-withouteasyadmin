@@ -28,6 +28,11 @@ class HtmlBlock extends BlockLib
         return 'html';
     }
 
+    public function isShowForm()
+    {
+        return true;
+    }
+
     public function show(Html $html, $content)
     {
         return $this->render(

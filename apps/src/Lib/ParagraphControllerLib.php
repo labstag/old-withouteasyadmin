@@ -4,12 +4,14 @@ namespace Labstag\Lib;
 
 use Labstag\Entity\Paragraph;
 use Labstag\Form\Admin\ParagraphType;
+use Labstag\Repository\ParagraphRepository;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 
 abstract class ParagraphControllerLib extends ControllerLib
 {
     protected function deleteParagraph(Paragraph $paragraph, $entity, $urledit)
     {
+        /** @var ParagraphRepository $repository */
         $repository = $this->getRepository(Paragraph::class);
         $repository->remove($paragraph);
         $this->addFlash('success', 'Paragraph supprimée.');
@@ -19,15 +21,12 @@ abstract class ParagraphControllerLib extends ControllerLib
 
     protected function listTwig($urledit, $paragraphs, $urldelete)
     {
-        $typeparagraphs = $this->getParameter('paragraphs');
-
         return $this->render(
             'admin/paragraph/list.html.twig',
             [
                 'paragraphs' => $paragraphs,
                 'urledit'    => $urledit,
                 'urldelete'  => $urldelete,
-                'types'      => $typeparagraphs['types'],
             ]
         );
     }

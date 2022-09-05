@@ -4,8 +4,10 @@ namespace Labstag\Paragraph;
 
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post;
+use Labstag\Entity\Post as EntityPost;
 use Labstag\Form\Admin\Paragraph\PostType;
 use Labstag\Lib\ParagraphLib;
+use Labstag\Repository\PostRepository;
 
 class PostParagraph extends ParagraphLib
 {
@@ -29,11 +31,23 @@ class PostParagraph extends ParagraphLib
         return 'post';
     }
 
+    public function isShowForm()
+    {
+        return false;
+    }
+
     public function show(Post $post)
     {
+        /** @var PostRepository $repository */
+        $repository = $this->getRepository(EntityPost::class);
+        $posts      = $repository->findPublier();
+
         return $this->render(
             $this->getParagraphFile('post'),
-            ['paragraph' => $post]
+            [
+                'posts'     => $posts,
+                'paragraph' => $post,
+            ]
         );
     }
 

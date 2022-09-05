@@ -5,6 +5,7 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
+use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\PhoneService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +27,8 @@ abstract class ApiControllerLib extends AbstractController
         protected PhoneService $phoneService,
         protected EntityManagerInterface $entityManager,
         protected AttachmentRequestHandler $attachmentRH,
-        protected Registry $workflows
+        protected Registry $workflows,
+        protected UserRepository $userRepo
     )
     {
         // @var Request $request
@@ -41,7 +43,7 @@ abstract class ApiControllerLib extends AbstractController
         }
 
         $data['user'] = [];
-        $user         = $this->getRepository(User::class)->find($get['user']);
+        $user         = $this->userRepo->find($get['user']);
         if (!$user instanceof User) {
             return $data;
         }

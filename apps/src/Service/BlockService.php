@@ -118,6 +118,21 @@ class BlockService
         return $form;
     }
 
+    public function isShow(Block $entity)
+    {
+        $type = $entity->getType();
+        $show = false;
+        foreach ($this->blocksclass as $row) {
+            if ($row->getType() == $type) {
+                $show = $row->isShowForm();
+
+                break;
+            }
+        }
+
+        return $show;
+    }
+
     public function showContent(Block $block, $content)
     {
         $type   = $block->getType();

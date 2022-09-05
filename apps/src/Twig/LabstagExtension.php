@@ -123,12 +123,18 @@ class LabstagExtension extends AbstractExtension
         return $attachment;
     }
 
-    public function getBackgroundSection($data)
+    public function getBlockClass($data)
     {
-        $paragraph = $data->getParagraph();
-        $code      = $paragraph->getFond();
+        $block = $data->getBlock();
 
-        return !empty($code) ? 'm--background-'.$code : '';
+        return 'block-'.$block->getType();
+    }
+
+    public function getBlockId($data)
+    {
+        $block = $data->getBlock();
+
+        return 'block-'.$block->getType().'-'.$block->getId();
     }
 
     public function getFilters(): array
@@ -153,16 +159,36 @@ class LabstagExtension extends AbstractExtension
         return $functions;
     }
 
+    public function getParagraphClass($data)
+    {
+        $paragraph = $data->getParagraph();
+        $dataClass = [
+            'paragraph-'.$paragraph->getType(),
+        ];
+
+        $code = $paragraph->getBackground();
+        if (!empty($code)) {
+            $dataClass[] = 'm--background-'.$code;
+        }
+
+        $code = $paragraph->getColor();
+        if (!empty($code)) {
+            $dataClass[] = 'm--theme-'.$code;
+        }
+
+        return implode(' ', $dataClass);
+    }
+
     public function getParagraphId($data)
     {
         $paragraph = $data->getParagraph();
 
-        return $paragraph->getType();
+        return 'paragraph-'.$paragraph->getType().'-'.$paragraph->getId();
     }
 
     public function getParagraphName($code)
     {
-        return $this->paragraphService->getName($code);
+        return $this->paragraphService->getNameByCode($code);
     }
 
     public function getTextColorSection($data)
@@ -276,9 +302,10 @@ class LabstagExtension extends AbstractExtension
     {
         return [
             'paragraph_name'           => 'getParagraphName',
-            'txtcolor_section'         => 'getTextColorSection',
-            'background_section'       => 'getBackgroundSection',
             'paragraph_id'             => 'getParagraphId',
+            'block_id'                 => 'getBlockId',
+            'paragraph_class'          => 'getParagraphClass',
+            'block_class'              => 'getBlockClass',
             'attachment'               => 'getAttachment',
             'class_entity'             => 'classEntity',
             'formClass'                => 'formClass',

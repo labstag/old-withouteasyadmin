@@ -28,6 +28,11 @@ class ParagraphBlock extends BlockLib
         return 'paragraph';
     }
 
+    public function isShowForm()
+    {
+        return false;
+    }
+
     public function show(Paragraph $paragraph, $content)
     {
         return $this->render(

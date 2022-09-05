@@ -2,10 +2,12 @@
 
 namespace Labstag\Paragraph;
 
+use Labstag\Entity\History as EntityHistory;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\History;
 use Labstag\Form\Admin\Paragraph\HistoryType;
 use Labstag\Lib\ParagraphLib;
+use Labstag\Repository\HistoryRepository;
 
 class HistoryParagraph extends ParagraphLib
 {
@@ -29,11 +31,23 @@ class HistoryParagraph extends ParagraphLib
         return 'history';
     }
 
+    public function isShowForm()
+    {
+        return false;
+    }
+
     public function show(History $history)
     {
+        /** @var HistoryRepository $repository */
+        $repository = $this->getRepository(EntityHistory::class);
+        $histories  = $repository->findPublier();
+
         return $this->render(
             $this->getParagraphFile('history'),
-            ['paragraph' => $history]
+            [
+                'histories' => $histories,
+                'paragraph' => $history,
+            ]
         );
     }
 

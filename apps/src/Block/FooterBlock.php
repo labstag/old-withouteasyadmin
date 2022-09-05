@@ -28,6 +28,11 @@ class FooterBlock extends BlockLib
         return 'footer';
     }
 
+    public function isShowForm()
+    {
+        return true;
+    }
+
     public function show(Footer $footer, $content)
     {
         return $this->render(

@@ -8,6 +8,7 @@ use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\AttachFormService;
 use Labstag\Singleton\AdminBtnSingleton;
@@ -436,7 +437,9 @@ abstract class AdminControllerLib extends ControllerLib
             return new Attachment();
         }
 
-        $attachment = $this->getRepository(Attachment::class)->findOneBy(['id' => $attachmentField->getId()]);
+        /** @var AttachmentRepository $repository */
+        $repository = $this->getRepository(Attachment::class);
+        $attachment = $repository->findOneBy(['id' => $attachmentField->getId()]);
         if (!$attachment instanceof Attachment) {
             $attachment = new Attachment();
         }
@@ -917,7 +920,7 @@ abstract class AdminControllerLib extends ControllerLib
     private function setPositionParagraphs()
     {
         $request    = $this->requeststack->getCurrentRequest();
-        $paragraphs = $request->request->get('paragraphs');
+        $paragraphs = $request->request->all('paragraphs');
         if (!is_array($paragraphs)) {
             return;
         }
