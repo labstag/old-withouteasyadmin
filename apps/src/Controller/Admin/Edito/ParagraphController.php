@@ -44,12 +44,6 @@ class ParagraphController extends ParagraphControllerLib
         );
     }
 
-    #[Route(path: '/', name: 'admin_edito_paragraph_index', methods: ['GET'])]
-    public function iframe()
-    {
-        return $this->render('admin/paragraph/iframe.html.twig');
-    }
-
     #[Route(path: '/list/{id}', name: 'admin_edito_paragraph_list')]
     public function list(Edito $edito): Response
     {

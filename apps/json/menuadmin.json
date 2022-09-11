@@ -184,6 +184,12 @@
                 "data": {
                     "route": "admin_page_index"
                 }
+            },
+            {
+                "name": "Layout",
+                "data": {
+                    "route": "admin_layout_index"
+                }
             }
         ]
     }

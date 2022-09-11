@@ -40,13 +40,17 @@ class PostListParagraph extends ParagraphLib
     {
         /** @var PostListRepository $repository */
         $repository = $this->getRepository(EntityPost::class);
-        $posts      = $repository->getLimitOffsetResult($repository->findPublier(), 5, 0);
+        $pagination = $this->paginator->paginate(
+            $repository->findPublier(),
+            $this->request->query->getInt('page', 1),
+            10
+        );
 
         return $this->render(
             $this->getParagraphFile('postlist'),
             [
-                'posts'     => $posts,
-                'paragraph' => $postlist,
+                'pagination' => $pagination,
+                'paragraph'  => $postlist,
             ]
         );
     }

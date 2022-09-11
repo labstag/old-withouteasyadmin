@@ -3,18 +3,19 @@
     <table>
         <tbody>
             <tr>
+                <th colspan=2>
+                    <a href="{{ path('front_history', {'slug': entity.slug}) }}" target="_blank">
+                        {{ 'history.url'|trans({}, 'admin.messages') }}
+                    </a>
+                </th>
+            </tr>
+            <tr>
                 <th>{{ 'history.name'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.name }}</td>
             </tr>
             <tr>
                 <th>{{ 'history.summary'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.summary|raw }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'history.paragraphs'|trans({}, 'admin.messages') }}</th>
-                <td>
-                    {% include "paragraphs.html.twig" with {'paragraphs': entity.paragraphs} %}
-                </td>
             </tr>
             <tr>
                 <th>{{ 'history.published'|trans({}, 'admin.messages') }}</th>

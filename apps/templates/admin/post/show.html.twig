@@ -4,9 +4,9 @@
         <tbody>
             <tr>
                 <th colspan=2>
-                    {# <a href="{{ path('post', 'show', {'slug': entity.slug}) }}" target="_blank">
+                    <a href="{{ path('front_article', {'slug': entity.slug}) }}" target="_blank">
                         {{ 'post.url'|trans({}, 'admin.messages') }}
-                    </a> #}
+                    </a>
                 </th>
             </tr>
             <tr>
@@ -16,12 +16,6 @@
             <tr>
                 <th>{{ 'post.content'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.content|raw }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'post.paragraphs'|trans({}, 'admin.messages') }}</th>
-                <td>
-                    {% include "paragraphs.html.twig" with {'paragraphs': entity.paragraphs} %}
-                </td>
             </tr>
             <tr>
                 <th>{{ 'post.published'|trans({}, 'admin.messages') }}</th>

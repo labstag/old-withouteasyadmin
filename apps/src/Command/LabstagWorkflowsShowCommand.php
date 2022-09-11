@@ -12,6 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Workflow\Registry;
 
 class LabstagWorkflowsShowCommand extends CommandLib
 {
@@ -19,7 +20,9 @@ class LabstagWorkflowsShowCommand extends CommandLib
     protected static $defaultName = 'labstag:workflows-show';
 
     public function __construct(
+        protected $entitiesclass,
         EntityManagerInterface $entityManager,
+        protected Registry $workflows,
         protected EventDispatcherInterface $dispatcher,
         protected WorkflowRequestHandler $workflowRH,
         protected WorkflowRepository $workflowRepo
@@ -37,27 +40,18 @@ class LabstagWorkflowsShowCommand extends CommandLib
     {
         $inputOutput = new SymfonyStyle($input, $output);
         $inputOutput->title('Ajout des workflows dans la base de données');
-        $container = $this->getApplication()->getKernel()->getContainer();
-        $list      = $container->getServiceIds();
-        $workflows = [];
-        foreach ($list as $name) {
-            if (0 == substr_count((string) $name, 'state_machine')) {
-                continue;
-            }
-
-            $workflows[$name] = $container->get($name);
-        }
-
         $data     = [];
         $entities = [];
-        foreach ($workflows as $name => $workflow) {
-            $definition  = $workflow->getDefinition();
-            $name        = $workflow->getName();
-            $entities[]  = $name;
-            $data[$name] = [];
-            $transitions = $definition->getTransitions();
-            foreach ($transitions as $transition) {
-                $data[$name][] = $transition->getName();
+        foreach ($this->entitiesclass as $entity) {
+            if ($this->workflows->has($entity)) {
+                $workflow    = $this->workflows->get($entity);
+                $definition  = $workflow->getDefinition();
+                $name        = $workflow->getName();
+                $entities[]  = $name;
+                $transitions = $definition->getTransitions();
+                foreach ($transitions as $transition) {
+                    $data[$name][] = $transition->getName();
+                }
             }
         }
 

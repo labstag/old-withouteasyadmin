@@ -5,6 +5,7 @@ namespace Labstag\Paragraph;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
 use Labstag\Entity\History;
+use Labstag\Entity\Layout;
 use Labstag\Entity\Memo;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Text;
@@ -53,6 +54,7 @@ class TextParagraph extends ParagraphLib
             Chapter::class,
             Edito::class,
             History::class,
+            Layout::class,
             Memo::class,
             Page::class,
             Post::class,

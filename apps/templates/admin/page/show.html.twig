@@ -3,14 +3,15 @@
     <table>
         <tbody>
             <tr>
-                <th>{{ 'page.name'|trans({}, 'admin.messages') }}</th>
-                <td>{{ entity.name }}</td>
+                <th colspan=2>
+                    <a href="{{ path('front', {'slug': entity.slug}) }}" target="_blank">
+                        {{ 'page.url'|trans({}, 'admin.messages') }}
+                    </a>
+                </th>
             </tr>
             <tr>
-                <th>{{ 'page.paragraphs'|trans({}, 'admin.messages') }}</th>
-                <td>
-                    {% include "paragraphs.html.twig" with {'paragraphs': entity.paragraphs} %}
-                </td>
+                <th>{{ 'page.name'|trans({}, 'admin.messages') }}</th>
+                <td>{{ entity.name }}</td>
             </tr>
             <tr>
                 <th>{{ 'page.slug'|trans({}, 'admin.messages') }}</th>

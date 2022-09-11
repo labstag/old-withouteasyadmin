@@ -3,9 +3,11 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Service\FormService;
 use Labstag\Service\ParagraphService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -13,7 +15,11 @@ use Twig\Environment;
 
 abstract class ParagraphLib extends AbstractController
 {
+
+    protected Request $request;
+
     public function __construct(
+        protected PaginatorInterface $paginator,
         protected TranslatorInterface $translator,
         protected MailerInterface $mailer,
         protected Environment $twig,
@@ -23,6 +29,8 @@ abstract class ParagraphLib extends AbstractController
         protected EntityManagerInterface $entityManager
     )
     {
+        $request       = $requestStack->getCurrentRequest();
+        $this->request = $request;
     }
 
     protected function getParagraphFile(string $type)

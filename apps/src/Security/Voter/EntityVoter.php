@@ -14,6 +14,7 @@ use Labstag\Entity\EmailUser;
 use Labstag\Entity\GeoCode;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\History;
+use Labstag\Entity\Layout;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\LinkUser;
 use Labstag\Entity\Memo;
@@ -31,22 +32,6 @@ class EntityVoter extends Voter
 {
     final public const NBR_CHAPTER = 2;
 
-    protected function canEditEdito(Edito $entity, TokenInterface $token): bool
-    {
-        unset($token);
-        $state = $entity->getState();
-
-        return !(in_array($state, ['publie', 'rejete']));
-    }
-
-    protected function canEditMemo(Memo $entity, TokenInterface $token): bool
-    {
-        unset($token);
-        $state = $entity->getState();
-
-        return !(in_array($state, ['publie', 'rejete']));
-    }
-
     protected function canMoveHistory(History $entity, TokenInterface $token): bool
     {
         unset($token);
@@ -61,8 +46,8 @@ class EntityVoter extends Voter
         $entities = [
             AddressUser::class,
             Attachment::class,
-            Bookmark::class,
             Block::class,
+            Bookmark::class,
             Category::class,
             Chapter::class,
             Configuration::class,
@@ -71,6 +56,7 @@ class EntityVoter extends Voter
             GeoCode::class,
             Groupe::class,
             History::class,
+            Layout::class,
             Libelle::class,
             LinkUser::class,
             Memo::class,
@@ -98,19 +84,9 @@ class EntityVoter extends Voter
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $state = true;
-        if ($subject instanceof Edito) {
-            $state = match ($attribute) {
-                'edit' => $this->canEditEdito($subject, $token),
-                default => true,
-            };
-        } elseif ($subject instanceof History) {
+        if ($subject instanceof History) {
             $state = match ($attribute) {
                 'move' => $this->canMoveHistory($subject, $token),
-                default => true,
-            };
-        } elseif ($subject instanceof Memo) {
-            $state = match ($attribute) {
-                'edit' => $this->canEditMemo($subject, $token),
                 default => true,
             };
         }

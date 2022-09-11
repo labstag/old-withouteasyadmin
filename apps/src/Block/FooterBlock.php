@@ -35,12 +35,11 @@ class FooterBlock extends BlockLib
 
     public function show(Footer $footer, $content)
     {
+        unset($content);
+
         return $this->render(
             $this->getBlockFile('footer'),
-            [
-                'block'   => $footer,
-                'content' => $content,
-            ]
+            ['block' => $footer]
         );
     }
 }

@@ -23,6 +23,9 @@
                     'name': 'workflow.state'|trans({}, 'admin.messages')
                 },
                 {
+                    'name': 'post.url'|trans({}, 'admin.messages')
+                },
+                {
                     'name': 'post.workflow'|trans({}, 'admin.messages')
                 }
             ] %}
@@ -39,6 +42,11 @@
                         {% for state in workflow_marked_places(entity) %}
                             {{ state }}
                         {% endfor %}
+                    </td>
+                    <td>
+                        <a href="{{ path('front_article', {'slug': entity.slug}) }}" target="_blank">
+                            {{ 'page.url'|trans({}, 'admin.messages') }}
+                        </a>
                     </td>
                     <td>
                         {{ macro_admin.workflow(entity, actions) }}

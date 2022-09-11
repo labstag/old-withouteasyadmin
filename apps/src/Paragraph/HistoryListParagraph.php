@@ -40,13 +40,18 @@ class HistoryListParagraph extends ParagraphLib
     {
         /** @var HistoryListRepository $repository */
         $repository = $this->getRepository(EntityHistory::class);
-        $histories  = $repository->getLimitOffsetResult($repository->findPublier(), 5, 0);
+
+        $pagination = $this->paginator->paginate(
+            $repository->findPublier(),
+            $this->request->query->getInt('page', 1),
+            10
+        );
 
         return $this->render(
             $this->getParagraphFile('historylist'),
             [
-                'histories' => $histories,
-                'paragraph' => $historylist,
+                'pagination' => $pagination,
+                'paragraph'  => $historylist,
             ]
         );
     }

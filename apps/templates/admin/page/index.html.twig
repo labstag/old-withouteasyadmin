@@ -11,6 +11,9 @@
                 {
                     'field': 'a.slug',
                     'name': 'page.slug'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'page.url'|trans({}, 'admin.messages')
                 }
             ] %}
             {{ macro_admin.thead(theads, pagination, true) }}
@@ -20,6 +23,11 @@
                 <tr data-id="{{ entity.id }}">
                     <td>{{ entity.name }}</td>
                     <td>{{ entity.slug }}</td>
+                    <td>
+                        <a href="{{ path('front', {'slug': entity.slug}) }}" target="_blank">
+                            {{ 'page.url'|trans({}, 'admin.messages') }}
+                        </a>
+                    </td>
                     <td>
                         {{ macro_admin.actions(entity, actions) }}
                     </td>

@@ -7,6 +7,15 @@
                 {
                     'field': 'a.name',
                     'name': 'layout.name'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'layout.custom'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'layout.url'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'layout.paragraphs'|trans({}, 'admin.messages')
                 }
             ] %}
             {{ macro_admin.thead(theads, pagination, true) }}
@@ -15,6 +24,15 @@
             {% for entity in pagination %}
                 <tr data-id="{{ entity.id }}">
                     <td>{{ entity.name }}</td>
+                    <td>{{ entity.custom.block.title }}</td>
+                    <td>
+                        <ul>
+                            {% for url in entity.url %}
+                                <li>{{ url }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>{{ entity.paragraphs|length }}</td>
                     <td>
                         {{ macro_admin.actions(entity, actions) }}
                     </td>
@@ -22,4 +40,8 @@
             {% endfor %}
         {% endblock %}
     {% endembed %}
+{% endblock %}
+{% block modal %}
+    {{ parent() }}
+    {% include "admin/block/add.html.twig" %}
 {% endblock %}

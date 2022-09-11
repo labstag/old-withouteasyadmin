@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Block\Breadcrumb;
+use Labstag\Entity\Block\Custom;
+use Labstag\Entity\Block\Flashbag;
 use Labstag\Entity\Block\Footer;
 use Labstag\Entity\Block\Header;
 use Labstag\Entity\Block\Html;
@@ -28,6 +30,16 @@ class Block
      * @ORM\OneToMany(targetEntity=Breadcrumb::class, mappedBy="block")
      */
     private $breadcrumbs;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Custom::class, mappedBy="block")
+     */
+    private $customs;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Flashbag::class, mappedBy="block")
+     */
+    private $flashbags;
 
     /**
      * @ORM\OneToMany(targetEntity=Footer::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
@@ -91,6 +103,8 @@ class Block
         $this->paragraphs  = new ArrayCollection();
         $this->breadcrumbs = new ArrayCollection();
         $this->menu        = new ArrayCollection();
+        $this->flashbags   = new ArrayCollection();
+        $this->customs     = new ArrayCollection();
     }
 
     public function addBreadcrumb(Breadcrumb $breadcrumb): self
@@ -98,6 +112,26 @@ class Block
         if (!$this->breadcrumbs->contains($breadcrumb)) {
             $this->breadcrumbs[] = $breadcrumb;
             $breadcrumb->setBlock($this);
+        }
+
+        return $this;
+    }
+
+    public function addCustom(Custom $custom): self
+    {
+        if (!$this->customs->contains($custom)) {
+            $this->customs[] = $custom;
+            $custom->setBlock($this);
+        }
+
+        return $this;
+    }
+
+    public function addFlashbag(Flashbag $flashbag): self
+    {
+        if (!$this->flashbags->contains($flashbag)) {
+            $this->flashbags[] = $flashbag;
+            $flashbag->setBlock($this);
         }
 
         return $this;
@@ -159,6 +193,22 @@ class Block
     public function getBreadcrumbs(): Collection
     {
         return $this->breadcrumbs;
+    }
+
+    /**
+     * @return Collection<int, Custom>
+     */
+    public function getCustoms(): Collection
+    {
+        return $this->customs;
+    }
+
+    /**
+     * @return Collection<int, Flashbag>
+     */
+    public function getFlashbags(): Collection
+    {
+        return $this->flashbags;
     }
 
     /**
@@ -232,6 +282,30 @@ class Block
             // set the owning side to null (unless already changed)
             if ($breadcrumb->getBlock() === $this) {
                 $breadcrumb->setBlock(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeCustom(Custom $custom): self
+    {
+        if ($this->customs->removeElement($custom)) {
+            // set the owning side to null (unless already changed)
+            if ($custom->getBlock() === $this) {
+                $custom->setBlock(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeFlashbag(Flashbag $flashbag): self
+    {
+        if ($this->flashbags->removeElement($flashbag)) {
+            // set the owning side to null (unless already changed)
+            if ($flashbag->getBlock() === $this) {
+                $flashbag->setBlock(null);
             }
         }
 

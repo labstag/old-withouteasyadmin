@@ -1,3 +1,0 @@
-make/make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-/bin/sh: line 1: make/make: No such file or directory
-

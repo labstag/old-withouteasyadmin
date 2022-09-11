@@ -40,13 +40,17 @@ class BookmarkListParagraph extends ParagraphLib
     {
         /** @var BookmarkListRepository $repository */
         $repository = $this->getRepository(EntityBookmark::class);
-        $bookmarks  = $repository->getLimitOffsetResult($repository->findPublier(), 5, 0);
+        $pagination = $this->paginator->paginate(
+            $repository->findPublier(),
+            $this->request->query->getInt('page', 1),
+            10
+        );
 
         return $this->render(
             $this->getParagraphFile('bookmarklist'),
             [
-                'paragraph' => $bookmarklist,
-                'bookmarks' => $bookmarks,
+                'pagination' => $pagination,
+                'paragraph'  => $bookmarklist,
             ]
         );
     }

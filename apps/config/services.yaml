@@ -26,6 +26,10 @@ services:
         resource: "../src/Paragraph/"
         public: true
         tags: [paragraphsclass]
+    Labstag\Entity\:
+        resource: "../src/Entity/"
+        public: true
+        tags: [entitiesclass]
     Labstag\Block\:
         resource: "../src/Block/"
         public: true
@@ -56,6 +60,9 @@ services:
     Labstag\Controller\:
       resource: "../src/Controller/"
       tags: ["controller.service_arguments"]
+    Labstag\Command\LabstagWorkflowsShowCommand:
+        arguments:  
+            - !tagged_iterator entitiesclass
     Labstag\Service\TrashService:
         arguments:  
             - !tagged_iterator repositories

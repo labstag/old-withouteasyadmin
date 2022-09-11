@@ -3,10 +3,31 @@
 namespace Labstag\Lib;
 
 use Labstag\Entity\Block;
+use Labstag\Entity\Page;
+use Labstag\Repository\PageRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class FrontControllerLib extends ControllerLib
 {
+    public function page(
+        string $slug,
+        PageRepository $pageRepo
+    )
+    {
+        $page = $pageRepo->findOneBy(
+            ['slug' => $slug]
+        );
+
+        if (!$page instanceof Page) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render(
+            'front.html.twig',
+            ['content' => $page]
+        );
+    }
+
     protected function render(
         string $view,
         array $parameters = [],

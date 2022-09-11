@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Entity\Menu;
 use Labstag\Repository\Block\NavbarRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Table(name="block_navbar")
@@ -21,8 +22,9 @@ class Navbar
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\Column(type="guid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 

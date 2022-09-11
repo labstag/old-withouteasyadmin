@@ -52,13 +52,14 @@ class NavbarBlock extends BlockLib
         $item = ($menu instanceof Menu) ? $this->menuService->createMenu($menu) : '';
         $show = (0 != count($item->getChildren()));
 
+        unset($content);
+
         return $this->render(
             $this->getBlockFile('navbar'),
             [
-                'show'    => $show,
-                'item'    => $item,
-                'block'   => $navbar,
-                'content' => $content,
+                'show'  => $show,
+                'item'  => $item,
+                'block' => $navbar,
             ]
         );
     }

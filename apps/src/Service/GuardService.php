@@ -28,6 +28,13 @@ class GuardService
 
     final public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
+    final public const REGEX_PUBLIC = [
+        '/(ElfinderBundle)/',
+        '/(Admin)/',
+        '/(ImagineBundle)/',
+        '/(Api)/',
+    ];
+
     public function __construct(
         protected RouterInterface $router,
         protected EntityManagerInterface $entityManager,
@@ -89,6 +96,31 @@ class GuardService
         }
 
         return $routes;
+    }
+
+    public function getPublicRoute()
+    {
+        $data       = [];
+        $collection = $this->router->getRouteCollection();
+        $all        = $collection->all();
+        foreach ($all as $name => $route) {
+            // @var Routing $route
+            $defaults = $route->getDefaults();
+            if (!isset($defaults['_controller'])) {
+                continue;
+            }
+
+            $matches = $this->regexPublic($defaults['_controller']);
+            if (0 != (is_countable($matches) ? count($matches) : 0)) {
+                continue;
+            }
+
+            $data[$name] = $route;
+        }
+
+        ksort($data);
+
+        return $data;
     }
 
     public function guardRoute($route, $token)
@@ -270,5 +302,18 @@ class GuardService
         preg_match(self::REGEX_CONTROLLER_ADMIN, (string) $defaults['_controller'], $matches);
 
         return !(0 != count($matches) && 'visiteur' == $groupe->getCode());
+    }
+
+    private function regexPublic(string $string)
+    {
+        $data = $this->regex($string);
+        foreach (self::REGEX_PUBLIC as $regex) {
+            preg_match($regex, $string, $matches);
+            foreach ($matches as $info) {
+                $data[] = $info;
+            }
+        }
+
+        return $data;
     }
 }

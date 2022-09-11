@@ -6,7 +6,6 @@ use Labstag\Entity\Page;
 use Labstag\Lib\AbstractTypeLib;
 use Labstag\Repository\PageRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -63,15 +62,6 @@ class PageType extends AbstractTypeLib
                 'required'      => false,
                 'class'         => Page::class,
                 'query_builder' => fn (PageRepository $er) => $er->formType($options),
-            ]
-        );
-
-        $builder->add(
-            'front',
-            CheckboxType::class,
-            [
-                'label' => $this->translator->trans('page.front.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('page.front.help', [], 'admin.form'),
             ]
         );
     }

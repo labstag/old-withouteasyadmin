@@ -56,6 +56,12 @@ class AdminController extends AdminControllerLib
         return $this->redirectToRoute('admin_param');
     }
 
+    #[Route(path: '/paragraph', name: 'admin_paragraph', methods: ['GET'])]
+    public function iframe()
+    {
+        return $this->render('admin/paragraph/iframe.html.twig');
+    }
+
     #[Route(path: '/', name: 'admin')]
     public function index(
         MemoRepository $memoRepo

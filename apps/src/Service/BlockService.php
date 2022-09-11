@@ -29,6 +29,22 @@ class BlockService
         return $data;
     }
 
+    public function getCustomBlock()
+    {
+        $blocks = $this->blockRepository->findBy(
+            ['type' => 'custom']
+        );
+
+        $data = [];
+        foreach ($blocks as $block) {
+            $title        = $block->getTitle();
+            $id           = $block->getId();
+            $data[$title] = $id;
+        }
+
+        return $data;
+    }
+
     public function getEntity(Block $block)
     {
         $field      = $this->getEntityField($block);

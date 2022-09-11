@@ -23,8 +23,7 @@ class BlockType extends AbstractType
         array $options
     ): void
     {
-        $view->vars['attr']['is'] = 'select-paragraph';
-        unset($form, $options);
+        unset($view, $form, $options);
     }
 
     public function configureOptions(OptionsResolver $resolver)

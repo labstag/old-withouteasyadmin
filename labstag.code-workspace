@@ -1,20 +1,32 @@
 {
 	"folders": [
 		{
+			"name": "github",
+			"path": ".github"
+		},
+		{
 			"name": "assets",
 			"path": "assets"
 		},
 		{
 			"name": "src",
-			"path": "apps\\src"
-		},
-		{
-			"name": "github",
-			"path": ".github"
+			"path": "apps/src"
 		},
 		{
 			"name": "templates",
-			"path": "apps\\templates"
+			"path": "apps/templates"
+		},
+		{
+			"name": "migrations",
+			"path": "apps/migrations"
+		},
+		{
+			"name": "json",
+			"path": "apps/json"
+		},
+		{
+			"name": "translations",
+			"path": "apps/translations"
 		},
 		{
  			"name": "/",
@@ -22,6 +34,6 @@
 		}
     ],
     "settings": {
-        "makefile.extensionOutputFolder": "./.vscode"
+		"terminal.integrated.cwd": "/home/dvp/perso/labstag"
     }
 }

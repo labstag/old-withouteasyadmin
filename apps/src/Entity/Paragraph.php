@@ -6,12 +6,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph\Bookmark as ParagraphBookmark;
+use Labstag\Entity\Paragraph\BookmarkCategory;
+use Labstag\Entity\Paragraph\BookmarkLibelle;
 use Labstag\Entity\Paragraph\BookmarkList;
 use Labstag\Entity\Paragraph\Edito as ParagraphEdito;
 use Labstag\Entity\Paragraph\History as ParagraphHistory;
 use Labstag\Entity\Paragraph\HistoryList;
 use Labstag\Entity\Paragraph\Post as ParagraphPost;
+use Labstag\Entity\Paragraph\PostArchive;
+use Labstag\Entity\Paragraph\PostLibelle;
 use Labstag\Entity\Paragraph\PostList;
+use Labstag\Entity\Paragraph\PostUser;
 use Labstag\Entity\Paragraph\Text;
 use Labstag\Repository\ParagraphRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -34,6 +39,16 @@ class Paragraph
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $background;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BookmarkCategory::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $bookmarkCategories;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BookmarkLibelle::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $bookmarkLibelles;
 
     /**
      * @ORM\OneToMany(targetEntity=BookmarkList::class, mappedBy="paragraph", orphanRemoval=true)
@@ -81,6 +96,11 @@ class Paragraph
     private $historyLists;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Layout::class, inversedBy="paragraphs")
+     */
+    private $layout;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Memo::class, inversedBy="paragraphs")
      */
     private $memo;
@@ -101,6 +121,16 @@ class Paragraph
     private $post;
 
     /**
+     * @ORM\OneToMany(targetEntity=PostArchive::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $postArchives;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PostLibelle::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $postLibelles;
+
+    /**
      * @ORM\OneToMany(targetEntity=PostList::class, mappedBy="paragraph", orphanRemoval=true)
      */
     private $postLists;
@@ -109,6 +139,11 @@ class Paragraph
      * @ORM\OneToMany(targetEntity=ParagraphPost::class, mappedBy="paragraph", orphanRemoval=true)
      */
     private $posts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PostUser::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $postUsers;
 
     /**
      * @ORM\OneToMany(targetEntity=Text::class, mappedBy="paragraph", orphanRemoval=true)
@@ -122,15 +157,20 @@ class Paragraph
 
     public function __construct()
     {
-        $this->position      = 0;
-        $this->texts         = new ArrayCollection();
-        $this->bookmarks     = new ArrayCollection();
-        $this->histories     = new ArrayCollection();
-        $this->editos        = new ArrayCollection();
-        $this->posts         = new ArrayCollection();
-        $this->postLists     = new ArrayCollection();
-        $this->historyLists  = new ArrayCollection();
-        $this->bookmarkLists = new ArrayCollection();
+        $this->position           = 0;
+        $this->texts              = new ArrayCollection();
+        $this->bookmarks          = new ArrayCollection();
+        $this->histories          = new ArrayCollection();
+        $this->editos             = new ArrayCollection();
+        $this->posts              = new ArrayCollection();
+        $this->postLists          = new ArrayCollection();
+        $this->historyLists       = new ArrayCollection();
+        $this->bookmarkLists      = new ArrayCollection();
+        $this->postArchives       = new ArrayCollection();
+        $this->postUsers          = new ArrayCollection();
+        $this->postLibelles       = new ArrayCollection();
+        $this->bookmarkLibelles   = new ArrayCollection();
+        $this->bookmarkCategories = new ArrayCollection();
     }
 
     public function addBookmark(ParagraphBookmark $bookmark): self
@@ -138,6 +178,26 @@ class Paragraph
         if (!$this->bookmarks->contains($bookmark)) {
             $this->bookmarks[] = $bookmark;
             $bookmark->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addBookmarkCategory(BookmarkCategory $bookmarkCategory): self
+    {
+        if (!$this->bookmarkCategories->contains($bookmarkCategory)) {
+            $this->bookmarkCategories[] = $bookmarkCategory;
+            $bookmarkCategory->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addBookmarkLibelle(BookmarkLibelle $bookmarkLibelle): self
+    {
+        if (!$this->bookmarkLibelles->contains($bookmarkLibelle)) {
+            $this->bookmarkLibelles[] = $bookmarkLibelle;
+            $bookmarkLibelle->setParagraph($this);
         }
 
         return $this;
@@ -193,11 +253,41 @@ class Paragraph
         return $this;
     }
 
+    public function addPostArchive(PostArchive $postArchive): self
+    {
+        if (!$this->postArchives->contains($postArchive)) {
+            $this->postArchives[] = $postArchive;
+            $postArchive->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addPostLibelle(PostLibelle $postLibelle): self
+    {
+        if (!$this->postLibelles->contains($postLibelle)) {
+            $this->postLibelles[] = $postLibelle;
+            $postLibelle->setParagraph($this);
+        }
+
+        return $this;
+    }
+
     public function addPostList(PostList $postList): self
     {
         if (!$this->postLists->contains($postList)) {
             $this->postLists[] = $postList;
             $postList->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addPostUser(PostUser $postUser): self
+    {
+        if (!$this->postUsers->contains($postUser)) {
+            $this->postUsers[] = $postUser;
+            $postUser->setParagraph($this);
         }
 
         return $this;
@@ -216,6 +306,22 @@ class Paragraph
     public function getBackground(): ?string
     {
         return $this->background;
+    }
+
+    /**
+     * @return Collection<int, BookmarkCategory>
+     */
+    public function getBookmarkCategories(): Collection
+    {
+        return $this->bookmarkCategories;
+    }
+
+    /**
+     * @return Collection<int, BookmarkLibelle>
+     */
+    public function getBookmarkLibelles(): Collection
+    {
+        return $this->bookmarkLibelles;
     }
 
     /**
@@ -283,6 +389,11 @@ class Paragraph
         return $this->id;
     }
 
+    public function getLayout(): ?Layout
+    {
+        return $this->layout;
+    }
+
     public function getMemo(): ?Memo
     {
         return $this->memo;
@@ -304,6 +415,22 @@ class Paragraph
     }
 
     /**
+     * @return Collection<int, PostArchive>
+     */
+    public function getPostArchives(): Collection
+    {
+        return $this->postArchives;
+    }
+
+    /**
+     * @return Collection<int, PostLibelle>
+     */
+    public function getPostLibelles(): Collection
+    {
+        return $this->postLibelles;
+    }
+
+    /**
      * @return Collection<int, PostList>
      */
     public function getPostLists(): Collection
@@ -317,6 +444,14 @@ class Paragraph
     public function getPosts(): Collection
     {
         return $this->posts;
+    }
+
+    /**
+     * @return Collection<int, PostUser>
+     */
+    public function getPostUsers(): Collection
+    {
+        return $this->postUsers;
     }
 
     /**
@@ -338,6 +473,30 @@ class Paragraph
             // set the owning side to null (unless already changed)
             if ($bookmark->getParagraph() === $this) {
                 $bookmark->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeBookmarkCategory(BookmarkCategory $bookmarkCategory): self
+    {
+        if ($this->bookmarkCategories->removeElement($bookmarkCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($bookmarkCategory->getParagraph() === $this) {
+                $bookmarkCategory->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeBookmarkLibelle(BookmarkLibelle $bookmarkLibelle): self
+    {
+        if ($this->bookmarkLibelles->removeElement($bookmarkLibelle)) {
+            // set the owning side to null (unless already changed)
+            if ($bookmarkLibelle->getParagraph() === $this) {
+                $bookmarkLibelle->setParagraph(null);
             }
         }
 
@@ -404,12 +563,48 @@ class Paragraph
         return $this;
     }
 
+    public function removePostArchive(PostArchive $postArchive): self
+    {
+        if ($this->postArchives->removeElement($postArchive)) {
+            // set the owning side to null (unless already changed)
+            if ($postArchive->getParagraph() === $this) {
+                $postArchive->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removePostLibelle(PostLibelle $postLibelle): self
+    {
+        if ($this->postLibelles->removeElement($postLibelle)) {
+            // set the owning side to null (unless already changed)
+            if ($postLibelle->getParagraph() === $this) {
+                $postLibelle->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function removePostList(PostList $postList): self
     {
         if ($this->postLists->removeElement($postList)) {
             // set the owning side to null (unless already changed)
             if ($postList->getParagraph() === $this) {
                 $postList->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removePostUser(PostUser $postUser): self
+    {
+        if ($this->postUsers->removeElement($postUser)) {
+            // set the owning side to null (unless already changed)
+            if ($postUser->getParagraph() === $this) {
+                $postUser->setParagraph(null);
             }
         }
 
@@ -459,6 +654,13 @@ class Paragraph
     public function setHistory(?History $history): self
     {
         $this->history = $history;
+
+        return $this;
+    }
+
+    public function setLayout(?Layout $layout): self
+    {
+        $this->layout = $layout;
 
         return $this;
     }

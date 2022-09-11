@@ -35,12 +35,11 @@ class HtmlBlock extends BlockLib
 
     public function show(Html $html, $content)
     {
+        unset($content);
+
         return $this->render(
             $this->getBlockFile('html'),
-            [
-                'block'   => $html,
-                'content' => $content,
-            ]
+            ['block' => $html]
         );
     }
 }

@@ -62,10 +62,9 @@ class BlockController extends AdminControllerLib
             'admin_block_move',
             'Move',
         );
-        $entity    = new Block();
         $newform   = $this->createForm(
             NewBlockType::class,
-            $entity,
+            new Block(),
             [
                 'action' => $this->routerInterface->generate('admin_block_new'),
             ]
