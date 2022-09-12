@@ -29,7 +29,7 @@ class PostController extends FrontControllerLib
 
         if (!$post instanceof Post) {
             if ('' != $slug) {
-                throw $this->createNotFoundException();
+                return $this->page('mes-articles/'.$slug, $pageRepo);
             }
 
             return $this->page('mes-articles', $pageRepo);

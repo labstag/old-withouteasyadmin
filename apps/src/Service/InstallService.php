@@ -104,14 +104,6 @@ class InstallService
         $this->saveMenu('admin-profil', $childs);
     }
 
-    public function pages()
-    {
-        $pages = $this->getData('pages');
-        foreach ($pages as $row) {
-            $this->addPage($row, null);
-        }
-    }
-
     public function templates()
     {
         $templates = $this->getData('template');
@@ -188,22 +180,6 @@ class InstallService
         $groupe->setCode($row);
         $groupe->setName($row);
         $this->groupeRH->handle($old, $groupe);
-    }
-
-    protected function addPage(array $row, ?Page $parent): void
-    {
-        $page = new Page();
-        $old  = clone $page;
-        $page->setParent($parent);
-        $page->setSlug($row['slug']);
-        $page->setName($row['name']);
-        $page->setFront(isset($row['front']));
-        $this->pageRH->handle($old, $page);
-        if (isset($row['childs'])) {
-            foreach ($row['childs'] as $child) {
-                $this->addPage($child, $page);
-            }
-        }
     }
 
     protected function addTemplate(

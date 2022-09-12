@@ -13,6 +13,9 @@
                     'name': 'page.slug'|trans({}, 'admin.messages')
                 },
                 {
+                    'name': 'page.paragraphs'|trans({}, 'admin.messages')
+                },
+                {
                     'name': 'page.url'|trans({}, 'admin.messages')
                 }
             ] %}
@@ -23,6 +26,7 @@
                 <tr data-id="{{ entity.id }}">
                     <td>{{ entity.name }}</td>
                     <td>{{ entity.slug }}</td>
+                    <td>{{ entity.paragraphs|length }}</td>
                     <td>
                         <a href="{{ path('front', {'slug': entity.slug}) }}" target="_blank">
                             {{ 'page.url'|trans({}, 'admin.messages') }}
