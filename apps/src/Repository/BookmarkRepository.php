@@ -19,8 +19,8 @@ class BookmarkRepository extends ServiceEntityRepositoryLib
 
     public function findPublier()
     {
-        $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
+        $query = $this->createQueryBuilder('p');
+        $query->innerjoin('p.refuser', 'u');
         $query->where(
             'p.state LIKE :state'
         );
@@ -34,8 +34,8 @@ class BookmarkRepository extends ServiceEntityRepositoryLib
 
     public function findPublierCategory($code)
     {
-        $queryBuilder = $this->createQueryBuilder('b');
-        $query        = $queryBuilder->where('b.state LIKE :state');
+        $query = $this->createQueryBuilder('b');
+        $query->where('b.state LIKE :state');
         $query->orderBy('b.published', 'DESC');
         $query->leftJoin('b.refcategory', 'c');
         $query->andWhere('c.slug=:slug');
@@ -51,8 +51,8 @@ class BookmarkRepository extends ServiceEntityRepositoryLib
 
     public function findPublierLibelle($code)
     {
-        $queryBuilder = $this->createQueryBuilder('b');
-        $query        = $queryBuilder->where('b.state LIKE :state');
+        $query = $this->createQueryBuilder('b');
+        $query->where('b.state LIKE :state');
         $query->orderBy('b.published', 'DESC');
         $query->leftJoin('b.libelles', 'l');
         $query->andWhere('l.slug=:slug');

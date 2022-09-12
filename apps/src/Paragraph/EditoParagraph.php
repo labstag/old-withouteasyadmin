@@ -7,6 +7,7 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Edito;
 use Labstag\Form\Admin\Paragraph\EditoType;
 use Labstag\Lib\ParagraphLib;
+use Labstag\Repository\EditoRepository;
 
 class EditoParagraph extends ParagraphLib
 {
@@ -37,7 +38,7 @@ class EditoParagraph extends ParagraphLib
 
     public function show(Edito $edito)
     {
-        /** @var EditoryRepository $repository */
+        /** @var EditoRepository $repository */
         $repository = $this->getRepository(EntityEdito::class);
 
         return $this->render(

@@ -16,8 +16,8 @@ class RouteUserRepository extends ServiceEntityRepositoryLib
 
     public function findRoute(User $user, string $route)
     {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin(
+        $query = $this->createQueryBuilder('a');
+        $query->leftJoin(
             'a.refuser',
             'u'
         );

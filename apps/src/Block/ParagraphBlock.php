@@ -66,13 +66,10 @@ class ParagraphBlock extends BlockLib
         }
 
         $methods = get_class_methods($content);
-        if (in_array('getParagraphs', $methods)) {
-            $paragraphsArray = $content->getParagraphs();
-            foreach ($paragraphsArray as $paragraph) {
-                $paragraphs[] = $this->paragraphService->showContent($paragraph);
-            }
+        if (!in_array('getParagraphs', $methods)) {
+            return $paragraphs;
         }
 
-        return $paragraphs;
+        return $this->getParagraphsArray($this->paragraphService, $content, $paragraphs);
     }
 }

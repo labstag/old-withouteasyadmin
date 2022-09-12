@@ -46,4 +46,19 @@ abstract class BlockLib extends AbstractController
 
         return $view;
     }
+
+    protected function getParagraphsArray($service, $content, $paragraphs)
+    {
+        $paragraphsArray = $content->getParagraphs();
+        foreach ($paragraphsArray as $paragraph) {
+            $data = $service->showContent($paragraph);
+            if (is_null($data)) {
+                continue;
+            }
+
+            $paragraphs[] = $data;
+        }
+
+        return $paragraphs;
+    }
 }

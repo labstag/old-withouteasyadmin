@@ -74,6 +74,10 @@ class MenuService
             return;
         }
 
+        if (isset($dataChild['target']) && empty($dataChild['target'])) {
+            unset($dataChild['target']);
+        }
+
         if (isset($dataChild['route'])) {
             $token = $this->token->getToken();
             $state = $this->guardService->guardRoute($dataChild['route'], $token);
@@ -85,19 +89,7 @@ class MenuService
             unset($dataChild['route']);
         }
 
-        if (isset($dataChild['url'])) {
-            $data['uri'] = $dataChild['url'];
-            unset($dataChild['url']);
-        }
-
-        if (isset($dataChild['params'])) {
-            $data['routeParameters'] = $dataChild['params'];
-            unset($dataChild['params']);
-        }
-
-        if (0 != count((array) $dataChild)) {
-            $data['linkAttributes'] = $dataChild;
-        }
+        $this->setDataChild($dataChild, $data);
 
         $menu      = $parent->addChild(
             $child->getName(),
@@ -141,6 +133,23 @@ class MenuService
 
         if ($divider == (is_countable($children) ? count($children) : 0)) {
             $menu->removeChild($key);
+        }
+    }
+
+    private function setDataChild(&$dataChild, &$data)
+    {
+        if (isset($dataChild['url'])) {
+            $data['uri'] = $dataChild['url'];
+            unset($dataChild['url']);
+        }
+
+        if (isset($dataChild['params'])) {
+            $data['routeParameters'] = $dataChild['params'];
+            unset($dataChild['params']);
+        }
+
+        if (0 != count((array) $dataChild)) {
+            $data['linkAttributes'] = $dataChild;
         }
     }
 }

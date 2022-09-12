@@ -1,3 +1,6 @@
 <section id="{{ block_id(block) }}" class="{{ block_class(block) }}">
+    {% if block.title != '' %}
+        <h2>{{ block.title }}</h2>
+    {% endif %}
     {{ block.content|raw }}
 </section>

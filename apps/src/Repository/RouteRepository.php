@@ -15,8 +15,8 @@ class RouteRepository extends ServiceEntityRepositoryLib
 
     public function findLost(array $routes)
     {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $query = $this->createQueryBuilder('u');
+        $query->where(
             'u.name NOT IN (:routes)'
         );
         $query->setParameters(

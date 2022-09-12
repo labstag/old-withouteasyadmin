@@ -71,15 +71,21 @@ class CustomBlock extends BlockLib
 
     private function setParagraphs(Custom $custom)
     {
-        $all        = $this->request->attributes->all();
-        $route      = $all['_route'];
-        $layouts    = $this->layoutRepo->findByUrlAndCustom($custom, $route);
+        $all         = $this->request->attributes->all();
+        $route       = $all['_route'];
+        $dataLayouts = $this->layoutRepo->findByCustom($custom);
+        $layouts     = [];
+        foreach ($dataLayouts as $layout) {
+            if (!in_array($route, $layout->getUrl())) {
+                continue;
+            }
+
+            $layouts[] = $layout;
+        }
+
         $paragraphs = [];
         foreach ($layouts as $layout) {
-            $paragraphsArray = $layout->getParagraphs();
-            foreach ($paragraphsArray as $paragraph) {
-                $paragraphs[] = $this->paragraphService->showContent($paragraph);
-            }
+            $paragraphs = $this->getParagraphsArray($this->paragraphService, $layout, $paragraphs);
         }
 
         return $paragraphs;

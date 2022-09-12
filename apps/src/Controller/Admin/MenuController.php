@@ -78,8 +78,9 @@ class MenuController extends AdminControllerLib
     public function edit(AttachFormService $service, Menu $menu, MenuRequestHandler $requestHandler)
     {
         $this->modalAttachmentDelete();
-        $form = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
-        $data = [$menu->getData()];
+        $form             = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
+        $data             = [$menu->getData()];
+        $data[0]['param'] = isset($data[0]['params']) ? json_encode($data[0]['params'], JSON_THROW_ON_ERROR) : '';
         $menu->setData($data);
 
         return $this->form(

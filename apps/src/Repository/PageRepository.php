@@ -19,13 +19,13 @@ class PageRepository extends ServiceEntityRepositoryLib
 
     public function formType(array $options)
     {
-        $queryBuilder = $this->createQueryBuilder('p');
-        $id           = $options['data']->getId();
+        $query = $this->createQueryBuilder('p');
+        $id    = $options['data']->getId();
         if (empty($id)) {
-            return $queryBuilder;
+            return $query;
         }
 
-        $query = $queryBuilder->where(
+        $query->where(
             'p.id != :id'
         );
         $query->setParameters(

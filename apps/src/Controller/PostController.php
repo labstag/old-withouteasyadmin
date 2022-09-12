@@ -14,7 +14,8 @@ class PostController extends FrontControllerLib
     #[Route(
         path: '/{slug}',
         name: 'front_article',
-        priority: 2
+        priority: 2,
+        defaults: ['slug' => '']
     )]
     public function article(
         string $slug,
@@ -27,7 +28,11 @@ class PostController extends FrontControllerLib
         );
 
         if (!$post instanceof Post) {
-            return $this->page('mes-articles/'.$slug, $pageRepo);
+            if ('' != $slug) {
+                throw $this->createNotFoundException();
+            }
+
+            return $this->page('mes-articles', $pageRepo);
         }
 
         return $this->render(
@@ -54,15 +59,15 @@ class PostController extends FrontControllerLib
     }
 
     #[Route(
-        path: '/libelle/{code}',
+        path: '/libelle/{slug}',
         name: 'front_article_libelle',
         priority: 2
     )]
     public function libelle(
-        string $code
+        string $slug
     )
     {
-        unset($code);
+        unset($slug);
 
         return $this->render(
             'front.html.twig',
@@ -80,6 +85,23 @@ class PostController extends FrontControllerLib
     )
     {
         unset($username);
+
+        return $this->render(
+            'front.html.twig',
+            ['content' => null]
+        );
+    }
+
+    #[Route(
+        path: '/archive/{year}',
+        name: 'front_article_year',
+        priority: 2
+    )]
+    public function year(
+        string $year
+    )
+    {
+        unset($year);
 
         return $this->render(
             'front.html.twig',

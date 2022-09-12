@@ -70,6 +70,18 @@ class GuardService
         return $data;
     }
 
+    public function allRoutes(): array
+    {
+        $data       = [];
+        $collection = $this->router->getRouteCollection();
+        $all        = $collection->all();
+        foreach ($all as $name => $route) {
+            $data[$name] = $route;
+        }
+
+        return $data;
+    }
+
     public function delete(): void
     {
         $results = $this->getLostRoute();

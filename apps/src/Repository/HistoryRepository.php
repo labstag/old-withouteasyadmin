@@ -19,11 +19,11 @@ class HistoryRepository extends ServiceEntityRepositoryLib
 
     public function findPublier()
     {
-        $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
-        $query->where(
-            'p.state LIKE :state'
-        );
+        $query = $this->createQueryBuilder('p');
+        $query->innerjoin('p.refuser', 'u');
+        $query->leftJoin('p.chapters', 'c');
+        $query->where('p.state LIKE :state');
+        $query->andWhere('c.state LIKE :state');
         $query->orderBy('p.published', 'DESC');
         $query->setParameters(
             ['state' => '%publie%']
@@ -35,9 +35,11 @@ class HistoryRepository extends ServiceEntityRepositoryLib
 
     public function findPublierUsername($username)
     {
-        $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->leftJoin('p.refuser', 'u');
-        $query        = $query->where('p.state LIKE :state');
+        $query = $this->createQueryBuilder('p');
+        $query->leftJoin('p.refuser', 'u');
+        $query->leftJoin('p.chapters', 'c');
+        $query->where('p.state LIKE :state');
+        $query->andWhere('c.state LIKE :state');
         $query->andWhere('u.username = :username');
         $query->orderBy('p.published', 'DESC');
         $query->setParameters(

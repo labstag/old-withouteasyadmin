@@ -6,17 +6,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph\Bookmark as ParagraphBookmark;
-use Labstag\Entity\Paragraph\BookmarkCategory;
-use Labstag\Entity\Paragraph\BookmarkLibelle;
-use Labstag\Entity\Paragraph\BookmarkList;
+use Labstag\Entity\Paragraph\Bookmark\Category as BookmarkCategory;
+use Labstag\Entity\Paragraph\Bookmark\Libelle as BookmarkLibelle;
+use Labstag\Entity\Paragraph\Bookmark\Liste as BookmarkList;
 use Labstag\Entity\Paragraph\Edito as ParagraphEdito;
 use Labstag\Entity\Paragraph\History as ParagraphHistory;
-use Labstag\Entity\Paragraph\HistoryList;
+use Labstag\Entity\Paragraph\History\Chapter as HistoryChapter;
+use Labstag\Entity\Paragraph\History\Liste as HistoryList;
+use Labstag\Entity\Paragraph\History\Show as HistoryShow;
+use Labstag\Entity\Paragraph\History\User as HistoryUser;
+use Labstag\Entity\Paragraph\Post\Archive as PostArchive;
 use Labstag\Entity\Paragraph\Post as ParagraphPost;
-use Labstag\Entity\Paragraph\PostArchive;
-use Labstag\Entity\Paragraph\PostLibelle;
-use Labstag\Entity\Paragraph\PostList;
-use Labstag\Entity\Paragraph\PostUser;
+use Labstag\Entity\Paragraph\Post\Category as PostCategory;
+use Labstag\Entity\Paragraph\Post\Header as PostHeader;
+use Labstag\Entity\Paragraph\Post\Libelle as PostLibelle;
+use Labstag\Entity\Paragraph\Post\Liste as PostList;
+use Labstag\Entity\Paragraph\Post\Show as PostShow;
+use Labstag\Entity\Paragraph\Post\User as PostUser;
+use Labstag\Entity\Paragraph\Post\Year as PostYear;
 use Labstag\Entity\Paragraph\Text;
 use Labstag\Repository\ParagraphRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -91,9 +98,24 @@ class Paragraph
     private $history;
 
     /**
+     * @ORM\OneToMany(targetEntity=HistoryChapter::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $historyChapters;
+
+    /**
      * @ORM\OneToMany(targetEntity=HistoryList::class, mappedBy="paragraph", orphanRemoval=true)
      */
     private $historyLists;
+
+    /**
+     * @ORM\OneToMany(targetEntity=HistoryShow::class, mappedBy="paragraph")
+     */
+    private $historyShows;
+
+    /**
+     * @ORM\OneToMany(targetEntity=HistoryUser::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $historyUsers;
 
     /**
      * @ORM\ManyToOne(targetEntity=Layout::class, inversedBy="paragraphs")
@@ -126,6 +148,16 @@ class Paragraph
     private $postArchives;
 
     /**
+     * @ORM\OneToMany(targetEntity=PostCategory::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $postCategories;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PostHeader::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $postHeaders;
+
+    /**
      * @ORM\OneToMany(targetEntity=PostLibelle::class, mappedBy="paragraph", orphanRemoval=true)
      */
     private $postLibelles;
@@ -141,9 +173,19 @@ class Paragraph
     private $posts;
 
     /**
+     * @ORM\OneToMany(targetEntity=PostShow::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $postShows;
+
+    /**
      * @ORM\OneToMany(targetEntity=PostUser::class, mappedBy="paragraph", orphanRemoval=true)
      */
     private $postUsers;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PostYear::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $postYears;
 
     /**
      * @ORM\OneToMany(targetEntity=Text::class, mappedBy="paragraph", orphanRemoval=true)
@@ -171,6 +213,13 @@ class Paragraph
         $this->postLibelles       = new ArrayCollection();
         $this->bookmarkLibelles   = new ArrayCollection();
         $this->bookmarkCategories = new ArrayCollection();
+        $this->postYears          = new ArrayCollection();
+        $this->postShows          = new ArrayCollection();
+        $this->postCategories     = new ArrayCollection();
+        $this->postHeaders        = new ArrayCollection();
+        $this->historyUsers       = new ArrayCollection();
+        $this->historyChapters    = new ArrayCollection();
+        $this->historyShows       = new ArrayCollection();
     }
 
     public function addBookmark(ParagraphBookmark $bookmark): self
@@ -233,11 +282,41 @@ class Paragraph
         return $this;
     }
 
+    public function addHistoryChapter(HistoryChapter $historyChapter): self
+    {
+        if (!$this->historyChapters->contains($historyChapter)) {
+            $this->historyChapters[] = $historyChapter;
+            $historyChapter->setParagraph($this);
+        }
+
+        return $this;
+    }
+
     public function addHistoryList(HistoryList $historyList): self
     {
         if (!$this->historyLists->contains($historyList)) {
             $this->historyLists[] = $historyList;
             $historyList->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addHistoryShow(HistoryShow $historyShow): self
+    {
+        if (!$this->historyShows->contains($historyShow)) {
+            $this->historyShows[] = $historyShow;
+            $historyShow->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addHistoryUser(HistoryUser $historyUser): self
+    {
+        if (!$this->historyUsers->contains($historyUser)) {
+            $this->historyUsers[] = $historyUser;
+            $historyUser->setParagraph($this);
         }
 
         return $this;
@@ -263,6 +342,26 @@ class Paragraph
         return $this;
     }
 
+    public function addPostCategory(PostCategory $postCategory): self
+    {
+        if (!$this->postCategories->contains($postCategory)) {
+            $this->postCategories[] = $postCategory;
+            $postCategory->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addPostHeader(PostHeader $postHeader): self
+    {
+        if (!$this->postHeaders->contains($postHeader)) {
+            $this->postHeaders[] = $postHeader;
+            $postHeader->setParagraph($this);
+        }
+
+        return $this;
+    }
+
     public function addPostLibelle(PostLibelle $postLibelle): self
     {
         if (!$this->postLibelles->contains($postLibelle)) {
@@ -283,11 +382,31 @@ class Paragraph
         return $this;
     }
 
+    public function addPostShow(PostShow $postShow): self
+    {
+        if (!$this->postShows->contains($postShow)) {
+            $this->postShows[] = $postShow;
+            $postShow->setParagraph($this);
+        }
+
+        return $this;
+    }
+
     public function addPostUser(PostUser $postUser): self
     {
         if (!$this->postUsers->contains($postUser)) {
             $this->postUsers[] = $postUser;
             $postUser->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addPostYear(PostYear $postYear): self
+    {
+        if (!$this->postYears->contains($postYear)) {
+            $this->postYears[] = $postYear;
+            $postYear->setParagraph($this);
         }
 
         return $this;
@@ -377,11 +496,35 @@ class Paragraph
     }
 
     /**
+     * @return Collection<int, HistoryChapter>
+     */
+    public function getHistoryChapters(): Collection
+    {
+        return $this->historyChapters;
+    }
+
+    /**
      * @return Collection<int, HistoryList>
      */
     public function getHistoryLists(): Collection
     {
         return $this->historyLists;
+    }
+
+    /**
+     * @return Collection<int, HistoryShow>
+     */
+    public function getHistoryShows(): Collection
+    {
+        return $this->historyShows;
+    }
+
+    /**
+     * @return Collection<int, HistoryUser>
+     */
+    public function getHistoryUsers(): Collection
+    {
+        return $this->historyUsers;
     }
 
     public function getId(): ?string
@@ -423,6 +566,22 @@ class Paragraph
     }
 
     /**
+     * @return Collection<int, PostCategory>
+     */
+    public function getPostCategories(): Collection
+    {
+        return $this->postCategories;
+    }
+
+    /**
+     * @return Collection<int, PostHeader>
+     */
+    public function getPostHeaders(): Collection
+    {
+        return $this->postHeaders;
+    }
+
+    /**
      * @return Collection<int, PostLibelle>
      */
     public function getPostLibelles(): Collection
@@ -447,11 +606,27 @@ class Paragraph
     }
 
     /**
+     * @return Collection<int, PostShow>
+     */
+    public function getPostShows(): Collection
+    {
+        return $this->postShows;
+    }
+
+    /**
      * @return Collection<int, PostUser>
      */
     public function getPostUsers(): Collection
     {
         return $this->postUsers;
+    }
+
+    /**
+     * @return Collection<int, PostYear>
+     */
+    public function getPostYears(): Collection
+    {
+        return $this->postYears;
     }
 
     /**
@@ -539,12 +714,48 @@ class Paragraph
         return $this;
     }
 
+    public function removeHistoryChapter(HistoryChapter $historyChapter): self
+    {
+        if ($this->historyChapters->removeElement($historyChapter)) {
+            // set the owning side to null (unless already changed)
+            if ($historyChapter->getParagraph() === $this) {
+                $historyChapter->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function removeHistoryList(HistoryList $historyList): self
     {
         if ($this->historyLists->removeElement($historyList)) {
             // set the owning side to null (unless already changed)
             if ($historyList->getParagraph() === $this) {
                 $historyList->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeHistoryShow(HistoryShow $historyShow): self
+    {
+        if ($this->historyShows->removeElement($historyShow)) {
+            // set the owning side to null (unless already changed)
+            if ($historyShow->getParagraph() === $this) {
+                $historyShow->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeHistoryUser(HistoryUser $historyUser): self
+    {
+        if ($this->historyUsers->removeElement($historyUser)) {
+            // set the owning side to null (unless already changed)
+            if ($historyUser->getParagraph() === $this) {
+                $historyUser->setParagraph(null);
             }
         }
 
@@ -575,6 +786,30 @@ class Paragraph
         return $this;
     }
 
+    public function removePostCategory(PostCategory $postCategory): self
+    {
+        if ($this->postCategories->removeElement($postCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($postCategory->getParagraph() === $this) {
+                $postCategory->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removePostHeader(PostHeader $postHeader): self
+    {
+        if ($this->postHeaders->removeElement($postHeader)) {
+            // set the owning side to null (unless already changed)
+            if ($postHeader->getParagraph() === $this) {
+                $postHeader->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function removePostLibelle(PostLibelle $postLibelle): self
     {
         if ($this->postLibelles->removeElement($postLibelle)) {
@@ -599,12 +834,36 @@ class Paragraph
         return $this;
     }
 
+    public function removePostShow(PostShow $postShow): self
+    {
+        if ($this->postShows->removeElement($postShow)) {
+            // set the owning side to null (unless already changed)
+            if ($postShow->getParagraph() === $this) {
+                $postShow->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function removePostUser(PostUser $postUser): self
     {
         if ($this->postUsers->removeElement($postUser)) {
             // set the owning side to null (unless already changed)
             if ($postUser->getParagraph() === $this) {
                 $postUser->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removePostYear(PostYear $postYear): self
+    {
+        if ($this->postYears->removeElement($postYear)) {
+            // set the owning side to null (unless already changed)
+            if ($postYear->getParagraph() === $this) {
+                $postYear->setParagraph(null);
             }
         }
 

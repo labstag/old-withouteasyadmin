@@ -19,8 +19,8 @@ class EditoRepository extends ServiceEntityRepositoryLib
 
     public function findOnePublier()
     {
-        $queryBuilder = $this->createQueryBuilder('e');
-        $query        = $queryBuilder->leftjoin('e.refuser', 'u');
+        $query = $this->createQueryBuilder('e');
+        $query->leftjoin('e.refuser', 'u');
         $query->where(
             'e.state LIKE :state'
         );

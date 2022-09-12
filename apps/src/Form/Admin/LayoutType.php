@@ -5,6 +5,7 @@ namespace Labstag\Form\Admin;
 use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
 use Labstag\Lib\AbstractTypeLib;
+use Labstag\Repository\Block\CustomRepository;
 use Labstag\Service\GuardService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -47,7 +48,8 @@ class LayoutType extends AbstractTypeLib
             'custom',
             EntityType::class,
             [
-                'class' => Custom::class,
+                'class'         => Custom::class,
+                'query_builder' => fn (CustomRepository $er) => $er->formType(),
             ]
         );
         $all     = $this->service->getPublicRoute();

@@ -4,8 +4,8 @@ namespace Labstag\Controller;
 
 use Labstag\Entity\Bookmark;
 use Labstag\Lib\FrontControllerLib;
+use Labstag\Repository\BookmarkRepository;
 use Labstag\Repository\PageRepository;
-use Labstag\Repository\Paragraph\BookmarkRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,7 +15,8 @@ class BookmarkController extends FrontControllerLib
     #[Route(
         path: '/{slug}',
         name: 'front_bookmark',
-        priority: 2
+        priority: 2,
+        defaults: ['slug' => '']
     )]
     public function bookmark(
         string $slug,
@@ -28,7 +29,11 @@ class BookmarkController extends FrontControllerLib
         );
 
         if (!$bookmark instanceof Bookmark) {
-            return $this->page('mes-liens/'.$slug, $pageRepo);
+            if ('' != $slug) {
+                throw $this->createNotFoundException();
+            }
+
+            return $this->page('mes-liens', $pageRepo);
         }
 
         return new RedirectResponse($bookmark->getUrl(), 302);
@@ -52,15 +57,15 @@ class BookmarkController extends FrontControllerLib
     }
 
     #[Route(
-        path: '/libelle/{code}',
+        path: '/libelle/{slug}',
         name: 'front_bookmark_libelle',
         priority: 2
     )]
     public function libelle(
-        string $code
+        string $slug
     )
     {
-        unset($code);
+        unset($slug);
 
         return $this->render(
             'front.html.twig',

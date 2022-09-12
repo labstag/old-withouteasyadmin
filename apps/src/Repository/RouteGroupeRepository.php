@@ -16,8 +16,8 @@ class RouteGroupeRepository extends ServiceEntityRepositoryLib
 
     public function findRoute(Groupe $groupe, string $route)
     {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin(
+        $query = $this->createQueryBuilder('a');
+        $query->leftJoin(
             'a.refgroupe',
             'g'
         );

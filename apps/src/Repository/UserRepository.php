@@ -19,8 +19,8 @@ class UserRepository extends ServiceEntityRepositoryLib
 
     public function findOauth(string $identity, $name)
     {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->leftJoin('u.oauthConnectUsers', 'o');
+        $query = $this->createQueryBuilder('u');
+        $query->leftJoin('u.oauthConnectUsers', 'o');
         $query->where('o.name = :name');
         $query->andWhere('o.identity=:identity');
         $query->setParameters(
@@ -35,8 +35,8 @@ class UserRepository extends ServiceEntityRepositoryLib
 
     public function findUserEnable(string $field): ?User
     {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $query = $this->createQueryBuilder('u');
+        $query->where(
             'u.username=:username OR u.email=:email'
         );
         $query->andWhere('u.state LIKE :state1 OR u.state LIKE :state2');
@@ -54,8 +54,8 @@ class UserRepository extends ServiceEntityRepositoryLib
 
     public function findUserName(string $field)
     {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $query = $this->createQueryBuilder('u');
+        $query->where(
             'u.username LIKE :username OR u.email LIKE :email'
         );
         $query->setParameters(

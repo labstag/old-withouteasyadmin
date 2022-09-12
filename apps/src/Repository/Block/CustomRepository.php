@@ -12,4 +12,14 @@ class CustomRepository extends ServiceEntityRepositoryLib
     {
         parent::__construct($registry, Custom::class);
     }
+
+    public function formType()
+    {
+        $query = $this->createQueryBuilder('c');
+        $query->leftJoin('c.block', 'b');
+        $query->where('b.deletedAt IS NULL');
+        $query->andWhere('b.region IS NOT NULL');
+
+        return $query;
+    }
 }

@@ -14,17 +14,12 @@ class LayoutRepository extends ServiceEntityRepositoryLib
         parent::__construct($registry, Layout::class);
     }
 
-    public function findByUrlAndCustom(Custom $custom, string $url)
+    public function findByCustom(Custom $custom)
     {
         $query = $this->createQueryBuilder('a');
-        $query = $query->where(
-            $query->expr()->like(
-                'a.url',
-                $query->expr()->literal('%'.$url.'%')
-            )
-        );
-        $query = $query->andWhere('a.custom = :custom');
-        $query = $query->setParameter('custom', $custom);
+        $query->leftJoin('a.custom', 'c');
+        $query->where('c.id = :customid');
+        $query->setParameter('customid', $custom->getId());
 
         return $query->getQuery()->getResult();
     }

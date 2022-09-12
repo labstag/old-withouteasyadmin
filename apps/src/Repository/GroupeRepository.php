@@ -19,8 +19,8 @@ class GroupeRepository extends ServiceEntityRepositoryLib
 
     public function findName(string $field)
     {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $query = $this->createQueryBuilder('u');
+        $query->where(
             'u.name LIKE :name'
         );
         $query->setParameters(

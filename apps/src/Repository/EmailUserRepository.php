@@ -19,8 +19,8 @@ class EmailUserRepository extends EmailRepository
 
     public function getEmailsUserVerif(User $user, bool $verif): array
     {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $query = $this->createQueryBuilder('u');
+        $query->where(
             'u.refuser=:user AND u.state LIKE :state'
         );
         $query->setParameters(

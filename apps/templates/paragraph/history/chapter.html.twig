@@ -1,0 +1,48 @@
+{% import "macro.html.twig" as macro_site %}
+<section id="{{ paragraph_id(paragraph) }}" class="{{ paragraph_class(paragraph) }}">
+    <div class="history_data">
+        <h2 class="history_name">
+            <a href="{{ path('front_history', {'slug': history.slug}) }}">
+                {{ history.name }}
+            </a>
+            <a href="{{ path('front_history_pdf', {'slug': history.slug}) }}" target="_blank">
+                pdf
+            </a>
+        </h2>
+        <div class="history_date">
+            {{ 'history.infodateuser'|trans(
+                {
+                    '%date%': history.published|format_datetime(pattern=formatdatetime.public),
+                    '%user%': macro_site.user(history.refuser, path('front_history_user', {'username': history.refuser.username}))
+                }
+            )|raw }}
+            {% set state = guard_route('admin_history_edit') %}
+            {% if state == true %}
+                <a href="{{ path('admin_history_edit', {'id': history.id}) }}" target="_blank">Modifier</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="history_chapter_content">
+        {{ chapter.content|raw }}
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if prev is not null %}
+            <li class="page-item">
+                <a class="page-link" href="{{ path('front_history_chapter', {'history': history.slug, 'chapter': prev.slug}) }}">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    Page précédent : {{ prev.name }}
+                </a>
+            </li>
+            {% endif %}
+            {% if next is not null %}
+            <li class="page-item">
+                <a class="page-link" href="{{ path('front_history_chapter', {'history': history.slug, 'chapter': next.slug}) }}">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    Page suivante : {{ next.name }}
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</section>

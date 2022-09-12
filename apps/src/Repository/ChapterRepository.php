@@ -16,4 +16,20 @@ class ChapterRepository extends ServiceEntityRepositoryLib
     {
         parent::__construct($registry, Chapter::class);
     }
+
+    public function findChapterByHistory($history, $chapter)
+    {
+        $query = $this->createQueryBuilder('c');
+        $query->leftJoin('c.refhistory', 'h');
+        $query->where('h.slug = :slughistory');
+        $query->andWhere('c.slug = :slugchapter');
+        $query->setParameters(
+            [
+                'slugchapter' => $chapter,
+                'slughistory' => $history,
+            ]
+        );
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
 }

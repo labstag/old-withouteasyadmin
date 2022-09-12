@@ -262,6 +262,11 @@ class EntitySubscriber extends EventSubscriberLib
             unset($data[$key]);
         }
 
+        if (isset($data['param'], $data['route'])) {
+            $data['params'] = json_decode((string) $data['param'], null, 512, JSON_THROW_ON_ERROR);
+            unset($data['param']);
+        }
+
         if (isset($data['url'], $data['route'])) {
             unset($data['route']);
         }
