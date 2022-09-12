@@ -97,7 +97,7 @@ class LayoutController extends AdminControllerLib
         $post   = $request->request->all('new_layout');
         $custom = $customRepo->findOneBy(
             [
-                'block' => $post['custom'],
+                'id' => $post['custom'],
             ]
         );
         if (!$custom instanceof Custom) {

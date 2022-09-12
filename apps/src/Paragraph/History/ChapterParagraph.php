@@ -36,7 +36,7 @@ class ChapterParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Chapter $historychapter)
+    public function show(HistoryChapter $historychapter)
     {
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
