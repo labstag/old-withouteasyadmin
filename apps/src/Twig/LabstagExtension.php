@@ -9,7 +9,6 @@ use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\GuardService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\PhoneService;
-use Labstag\Service\TemplatePageService;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -35,7 +34,6 @@ class LabstagExtension extends AbstractExtension
         protected Registry $workflows,
         protected TokenStorageInterface $token,
         protected LoggerInterface $logger,
-        protected TemplatePageService $templatePageService,
         protected GuardService $guardService,
         protected ParagraphService $paragraphService,
         protected AttachmentRepository $attachmentRepo

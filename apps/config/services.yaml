@@ -53,10 +53,6 @@ services:
       resource: "../src/RequestHandler/"
       public: true
       tags: [requestHandler]
-    Labstag\TemplatePage\:
-      resource: "../src/TemplatePage/"
-      public: true
-      tags: [templatepage]
     Labstag\Controller\:
       resource: "../src/Controller/"
       tags: ["controller.service_arguments"]
@@ -66,9 +62,6 @@ services:
     Labstag\Service\TrashService:
         arguments:  
             - !tagged_iterator repositories
-    Labstag\Service\TemplatePageService:
-        arguments:  
-            - !tagged_iterator templatepage
     Labstag\Command\LabstagInstallCommand:
         arguments:
           - serverenv: "env"
