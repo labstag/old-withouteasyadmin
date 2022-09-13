@@ -10,13 +10,12 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Block\BreadcrumbType;
 use Labstag\Lib\BlockLib;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
-use Symfony\Component\Routing\RouterInterface;
 
 class BreadcrumbBlock extends BlockLib
 {
-
     public function __construct(
         TranslatorInterface $translator,
         Environment $twig,
@@ -72,18 +71,8 @@ class BreadcrumbBlock extends BlockLib
         $data = $this->setBreadcrumbEdito($data, $content);
         $data = $this->setBreadcrumbHistory($data, $content);
         $data = $this->setBreadcrumbChapter($data, $content);
-        $data = array_reverse($data);
 
-        return $data;
-    }
-
-    private function setBreadcrumbPage($data, $content)
-    {
-        if (!$content instanceof Page) {
-            return $data;
-        }
-
-        return $data;
+        return array_reverse($data);
     }
 
     private function setBreadcrumbArticle($data, $content)
@@ -99,40 +88,7 @@ class BreadcrumbBlock extends BlockLib
                     'slug' => $content->getSlug(),
                 ]
             ),
-            'title' => $content->getTitle()
-        ];
-
-        return $data;
-    }
-
-    private function setBreadcrumbEdito($data, $content)
-    {
-        if (!$content instanceof Edito) {
-            return $data;
-        }
-
-        $data[] = [
-            'route' => $this->routerInterface->generate('front_edito'),
-            'title' => $content->getTitle()
-        ];
-
-        return $data;
-    }
-
-    private function setBreadcrumbHistory($data, $content)
-    {
-        if (!$content instanceof History) {
-            return $data;
-        }
-
-        $data[] = [
-            'route' => $this->routerInterface->generate(
-                'front_history',
-                [
-                    'slug' => $content->getSlug(),
-                ]
-            ),
-            'title' => $content->getName()
+            'title' => $content->getTitle(),
         ];
 
         return $data;
@@ -152,10 +108,50 @@ class BreadcrumbBlock extends BlockLib
                     'chapter' => $content->getSlug(),
                 ]
             ),
-            'title' => $content->getName()
+            'title' => $content->getName(),
         ];
 
-        $data = $this->setBreadcrumbHistory($data, $content->getRefhistory());
+        return $this->setBreadcrumbHistory($data, $content->getRefhistory());
+    }
+
+    private function setBreadcrumbEdito($data, $content)
+    {
+        if (!$content instanceof Edito) {
+            return $data;
+        }
+
+        $data[] = [
+            'route' => $this->routerInterface->generate('front_edito'),
+            'title' => $content->getTitle(),
+        ];
+
+        return $data;
+    }
+
+    private function setBreadcrumbHistory($data, $content)
+    {
+        if (!$content instanceof History) {
+            return $data;
+        }
+
+        $data[] = [
+            'route' => $this->routerInterface->generate(
+                'front_history',
+                [
+                    'slug' => $content->getSlug(),
+                ]
+            ),
+            'title' => $content->getName(),
+        ];
+
+        return $data;
+    }
+
+    private function setBreadcrumbPage($data, $content)
+    {
+        if (!$content instanceof Page) {
+            return $data;
+        }
 
         return $data;
     }

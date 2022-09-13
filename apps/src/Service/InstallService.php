@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Menu;
-use Labstag\Entity\Page;
 use Labstag\Entity\Template;
 use Labstag\Entity\User;
 use Labstag\Repository\ConfigurationRepository;

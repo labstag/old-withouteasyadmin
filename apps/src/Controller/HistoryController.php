@@ -68,7 +68,7 @@ class HistoryController extends FrontControllerLib
         $test = [
             !$history instanceof History,
             !$chapter instanceof Chapter,
-            $chapter->getRefhistory()->getId() != $history->getId()
+            $chapter->getRefhistory()->getId() != $history->getId(),
         ];
 
         foreach ($test as $row) {

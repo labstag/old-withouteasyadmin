@@ -89,6 +89,11 @@ class Paragraph
     private $editos;
 
     /**
+     * @ORM\OneToMany(targetEntity=EditoShow::class, mappedBy="paragraph", orphanRemoval=true)
+     */
+    private $editoShows;
+
+    /**
      * @ORM\OneToMany(targetEntity=ParagraphHistory::class, mappedBy="paragraph", orphanRemoval=true)
      */
     private $histories;
@@ -198,11 +203,6 @@ class Paragraph
      */
     private $type;
 
-    /**
-     * @ORM\OneToMany(targetEntity=EditoShow::class, mappedBy="paragraph")
-     */
-    private $editoShows;
-
     public function __construct()
     {
         $this->position           = 0;
@@ -226,7 +226,7 @@ class Paragraph
         $this->historyUsers       = new ArrayCollection();
         $this->historyChapters    = new ArrayCollection();
         $this->historyShows       = new ArrayCollection();
-        $this->editoShows = new ArrayCollection();
+        $this->editoShows         = new ArrayCollection();
     }
 
     public function addBookmark(ParagraphBookmark $bookmark): self
@@ -414,6 +414,16 @@ class Paragraph
         if (!$this->postYears->contains($postYear)) {
             $this->postYears[] = $postYear;
             $postYear->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addShow(EditoShow $show): self
+    {
+        if (!$this->editoShows->contains($show)) {
+            $this->editoShows[] = $show;
+            $show->setParagraph($this);
         }
 
         return $this;
@@ -634,6 +644,14 @@ class Paragraph
     public function getPostYears(): Collection
     {
         return $this->postYears;
+    }
+
+    /**
+     * @return Collection<int, Show>
+     */
+    public function getEditoShows(): Collection
+    {
+        return $this->editoShows;
     }
 
     /**
@@ -877,6 +895,18 @@ class Paragraph
         return $this;
     }
 
+    public function removeShow(EditoShow $show): self
+    {
+        if ($this->editoShows->removeElement($show)) {
+            // set the owning side to null (unless already changed)
+            if ($show->getParagraph() === $this) {
+                $show->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function removeText(Text $text): self
     {
         if ($this->texts->removeElement($text)) {
@@ -962,36 +992,6 @@ class Paragraph
     public function setType(string $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Show>
-     */
-    public function getShows(): Collection
-    {
-        return $this->shows;
-    }
-
-    public function addShow(EditoShow $show): self
-    {
-        if (!$this->editoShows->contains($show)) {
-            $this->editoShows[] = $show;
-            $show->setParagraph($this);
-        }
-
-        return $this;
-    }
-
-    public function removeShow(EditoShow $show): self
-    {
-        if ($this->editoShows->removeElement($show)) {
-            // set the owning side to null (unless already changed)
-            if ($show->getParagraph() === $this) {
-                $show->setParagraph(null);
-            }
-        }
 
         return $this;
     }

@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  */
 class Show
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")

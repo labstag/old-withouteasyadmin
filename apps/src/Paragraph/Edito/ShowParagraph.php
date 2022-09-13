@@ -2,9 +2,9 @@
 
 namespace Labstag\Paragraph\Edito;
 
+use Labstag\Entity\Edito;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Edito\Show;
-use Labstag\Entity\Edito;
 use Labstag\Form\Admin\Paragraph\Edito\ShowType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\EditoRepository;
@@ -40,7 +40,7 @@ class ShowParagraph extends ParagraphLib
     {
         /** @var EditoRepository $repository */
         $repository = $this->getRepository(Edito::class);
-        $edito = $repository->findOnePublier();
+        $edito      = $repository->findOnePublier();
 
         if (!$edito instanceof Edito) {
             return;
@@ -50,7 +50,7 @@ class ShowParagraph extends ParagraphLib
             $this->getParagraphFile('edito/show'),
             [
                 'edito'     => $edito,
-                'paragraph' => $edito,
+                'paragraph' => $editoshow,
             ]
         );
     }
