@@ -10,6 +10,7 @@ use Labstag\Entity\Paragraph\Bookmark\Category as BookmarkCategory;
 use Labstag\Entity\Paragraph\Bookmark\Libelle as BookmarkLibelle;
 use Labstag\Entity\Paragraph\Bookmark\Liste as BookmarkList;
 use Labstag\Entity\Paragraph\Edito as ParagraphEdito;
+use Labstag\Entity\Paragraph\Edito\Show as EditoShow;
 use Labstag\Entity\Paragraph\History as ParagraphHistory;
 use Labstag\Entity\Paragraph\History\Chapter as HistoryChapter;
 use Labstag\Entity\Paragraph\History\Liste as HistoryList;
@@ -197,6 +198,11 @@ class Paragraph
      */
     private $type;
 
+    /**
+     * @ORM\OneToMany(targetEntity=EditoShow::class, mappedBy="paragraph")
+     */
+    private $editoShows;
+
     public function __construct()
     {
         $this->position           = 0;
@@ -220,6 +226,7 @@ class Paragraph
         $this->historyUsers       = new ArrayCollection();
         $this->historyChapters    = new ArrayCollection();
         $this->historyShows       = new ArrayCollection();
+        $this->editoShows = new ArrayCollection();
     }
 
     public function addBookmark(ParagraphBookmark $bookmark): self
@@ -955,6 +962,36 @@ class Paragraph
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Show>
+     */
+    public function getShows(): Collection
+    {
+        return $this->shows;
+    }
+
+    public function addShow(EditoShow $show): self
+    {
+        if (!$this->editoShows->contains($show)) {
+            $this->editoShows[] = $show;
+            $show->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShow(EditoShow $show): self
+    {
+        if ($this->editoShows->removeElement($show)) {
+            // set the owning side to null (unless already changed)
+            if ($show->getParagraph() === $this) {
+                $show->setParagraph(null);
+            }
+        }
 
         return $this;
     }

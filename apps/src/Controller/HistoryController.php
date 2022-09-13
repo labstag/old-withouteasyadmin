@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller;
 
+use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\ChapterRepository;
@@ -53,15 +54,32 @@ class HistoryController extends FrontControllerLib
         string $history,
         string $chapter,
         ChapterRepository $chapterRepo,
-        HistoryRepository $historyRepo,
-        PageRepository $pageRepo
+        HistoryRepository $historyRepo
     )
     {
-        unset($history, $chapter, $chapterRepo, $historyRepo, $pageRepo);
+        $history = $historyRepo->findOneBy(
+            ['slug' => $history]
+        );
+
+        $chapter = $chapterRepo->findOneBy(
+            ['slug' => $chapter]
+        );
+
+        $test = [
+            !$history instanceof History,
+            !$chapter instanceof Chapter,
+            $chapter->getRefhistory()->getId() != $history->getId()
+        ];
+
+        foreach ($test as $row) {
+            if ($row) {
+                throw $this->createNotFoundException();
+            }
+        }
 
         return $this->render(
             'front.html.twig',
-            ['content' => null]
+            ['content' => $chapter]
         );
     }
 

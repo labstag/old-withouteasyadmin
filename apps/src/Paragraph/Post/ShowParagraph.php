@@ -46,7 +46,6 @@ class ShowParagraph extends ParagraphLib
         $post       = $repository->findOneBy(
             ['slug' => $slug]
         );
-        dump($post);
 
         if (!$post instanceof Post) {
             return;

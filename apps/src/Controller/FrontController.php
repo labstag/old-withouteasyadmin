@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends FrontControllerLib
 {
-    #[Route(path: '/edito', name: 'edito', priority: 1)]
+    #[Route(path: '/edito', name: 'front_edito', priority: 1)]
     public function edio(
         EditoRepository $editoRepo
     )

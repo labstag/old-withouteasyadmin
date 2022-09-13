@@ -40,7 +40,6 @@ class YearParagraph extends ParagraphLib
     {
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        dump($routeParam);
         $year = $routeParam['year'] ?? null;
         /** @var PostRepository $repository */
         $repository = $this->getRepository(Post::class);
