@@ -10,6 +10,7 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Block\BreadcrumbType;
 use Labstag\Lib\BlockLib;
+use Labstag\Repository\PageRepository;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -19,7 +20,8 @@ class BreadcrumbBlock extends BlockLib
     public function __construct(
         TranslatorInterface $translator,
         Environment $twig,
-        protected RouterInterface $routerInterface
+        protected RouterInterface $routerInterface,
+        protected PageRepository $pageRepo
     )
     {
         parent::__construct($translator, $twig);
@@ -91,7 +93,11 @@ class BreadcrumbBlock extends BlockLib
             'title' => $content->getTitle(),
         ];
 
-        return $data;
+        $page = $this->pageRepo->findOneBy(
+            ['slug' => 'mes-articles']
+        );
+
+        return $this->setBreadcrumbPage($data, $page);
     }
 
     private function setBreadcrumbChapter($data, $content)
@@ -125,7 +131,11 @@ class BreadcrumbBlock extends BlockLib
             'title' => $content->getTitle(),
         ];
 
-        return $data;
+        $page = $this->pageRepo->findOneBy(
+            ['slug' => '']
+        );
+
+        return $this->setBreadcrumbPage($data, $page);
     }
 
     private function setBreadcrumbHistory($data, $content)
@@ -144,13 +154,30 @@ class BreadcrumbBlock extends BlockLib
             'title' => $content->getName(),
         ];
 
-        return $data;
+        $page = $this->pageRepo->findOneBy(
+            ['slug' => 'mes-histoires']
+        );
+
+        return $this->setBreadcrumbPage($data, $page);
     }
 
     private function setBreadcrumbPage($data, $content)
     {
         if (!$content instanceof Page) {
             return $data;
+        }
+
+        $data[] = [
+            'route' => $this->routerInterface->generate(
+                'front',
+                [
+                    'slug' => $content->getSlug(),
+                ]
+            ),
+            'title' => $content->getName(),
+        ];
+        if ($content->getParent() instanceof Page) {
+            $data = $this->setBreadcrumbPage($data, $content->getParent());
         }
 
         return $data;

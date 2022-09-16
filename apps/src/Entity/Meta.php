@@ -57,6 +57,11 @@ class Meta implements Stringable
     private $post;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Render::class, inversedBy="metas", cascade={"persist"})
+     */
+    private $render;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $title;
@@ -113,6 +118,11 @@ class Meta implements Stringable
         return $this->post;
     }
 
+    public function getRender(): ?Render
+    {
+        return $this->render;
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;
@@ -163,6 +173,13 @@ class Meta implements Stringable
     public function setPost(?Post $post): self
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function setRender(?Render $render): self
+    {
+        $this->render = $render;
 
         return $this;
     }

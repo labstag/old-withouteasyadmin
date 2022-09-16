@@ -47,6 +47,7 @@ abstract class AdminControllerLib extends ControllerLib
     ): Response
     {
         $url = $this->getUrlAdmin();
+        dump($entity);
         $this->denyAccessUnlessGranted(
             empty($entity->getId()) ? 'new' : 'edit',
             $entity
@@ -468,7 +469,6 @@ abstract class AdminControllerLib extends ControllerLib
         $pathinfo    = $request->getPathInfo();
         $breadcrumb  = $this->getBreadcrumb($matcher, $pathinfo, []);
         $breadcrumb  = array_reverse($breadcrumb);
-        $collection  = $this->routerInterface->getRouteCollection();
         $all         = $collection->all();
         $routeParams = $attributes['_route_params'];
         foreach ($breadcrumb as $row) {

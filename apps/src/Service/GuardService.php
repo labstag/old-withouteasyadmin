@@ -135,6 +135,26 @@ class GuardService
         return $data;
     }
 
+    public function getPublicRouteWithParams()
+    {
+        $data = $this->getPublicRoute();
+        if (isset($data['front'])) {
+            unset($data['front']);
+        }
+
+        foreach ($data as $id => $row) {
+            $defaults = $row->getDefaults();
+            unset($defaults['_controller']);
+            if (0 != (is_countable($defaults) ? count($defaults) : 0)) {
+                continue;
+            }
+
+            unset($data[$id]);
+        }
+
+        return $data;
+    }
+
     public function guardRoute($route, $token)
     {
         $all = $this->all();

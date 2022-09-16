@@ -22,6 +22,7 @@ use Labstag\Entity\Menu;
 use Labstag\Entity\Page;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\Post;
+use Labstag\Entity\Render;
 use Labstag\Entity\Route;
 use Labstag\Entity\Template;
 use Labstag\Entity\User;
@@ -64,6 +65,7 @@ class EntityVoter extends Voter
             Page::class,
             PhoneUser::class,
             Post::class,
+            Render::class,
             Route::class,
             Template::class,
             User::class,
