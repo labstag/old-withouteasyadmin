@@ -54,7 +54,7 @@ class Chapter
     /**
      * @ORM\Column(type="integer")
      */
-    private $pages;
+    private int $pages = 0;
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="chapter", orphanRemoval=true)
@@ -93,7 +93,6 @@ class Chapter
 
     public function __construct()
     {
-        $this->pages      = 0;
         $this->metas      = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
     }

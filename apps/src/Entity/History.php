@@ -56,7 +56,7 @@ class History
     /**
      * @ORM\Column(type="integer")
      */
-    private $pages;
+    private int $pages = 0;
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="history", orphanRemoval=true)
@@ -94,7 +94,6 @@ class History
 
     public function __construct()
     {
-        $this->pages      = 0;
         $this->chapters   = new ArrayCollection();
         $this->metas      = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();

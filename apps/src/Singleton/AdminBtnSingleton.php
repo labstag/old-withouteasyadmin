@@ -11,7 +11,7 @@ use Twig\Environment;
 class AdminBtnSingleton
 {
 
-    protected $bouton;
+    protected $bouton = [];
 
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
@@ -29,7 +29,6 @@ class AdminBtnSingleton
 
     protected function __construct()
     {
-        $this->bouton = [];
     }
 
     public function add(

@@ -76,12 +76,12 @@ class Menu implements Stringable
      * @ORM\Column(type="integer")
      * @Assert\NotNull
      */
-    protected int $position;
+    protected int $position = 0;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $separateur;
+    protected $separateur = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="menu")
@@ -90,9 +90,7 @@ class Menu implements Stringable
 
     public function __construct()
     {
-        $this->position   = 0;
         $this->children   = new ArrayCollection();
-        $this->separateur = false;
         $this->navbars    = new ArrayCollection();
     }
 

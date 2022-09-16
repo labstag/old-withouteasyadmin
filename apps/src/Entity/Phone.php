@@ -46,7 +46,7 @@ abstract class Phone implements Stringable
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $principal;
+    protected $principal = false;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -56,7 +56,6 @@ abstract class Phone implements Stringable
 
     public function __construct()
     {
-        $this->principal = false;
     }
 
     public function __toString(): string

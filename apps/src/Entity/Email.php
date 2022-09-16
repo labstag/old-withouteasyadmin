@@ -43,11 +43,10 @@ abstract class Email implements Stringable
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $principal;
+    protected $principal = false;
 
     public function __construct()
     {
-        $this->principal = false;
     }
 
     public function __toString(): string

@@ -77,7 +77,7 @@ class Block
     /**
      * @ORM\Column(type="integer")
      */
-    private $position;
+    private int $position = 0;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -96,7 +96,6 @@ class Block
 
     public function __construct()
     {
-        $this->position    = 0;
         $this->headers     = new ArrayCollection();
         $this->htmls       = new ArrayCollection();
         $this->footers     = new ArrayCollection();

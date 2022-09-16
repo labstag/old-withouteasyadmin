@@ -153,6 +153,29 @@
         ]
     },
     {
+        "name": "Pages",
+        "childs": [
+            {
+                "name": "Pages",
+                "data": {
+                    "route": "admin_page_index"
+                }
+            },
+            {
+                "name": "Layout",
+                "data": {
+                    "route": "admin_layout_index"
+                }
+            },
+            {
+                "name": "Render",
+                "data": {
+                    "route": "admin_render_index"
+                }
+            }
+        ]
+    },
+    {
         "name": "Contenu",
         "childs": [
             {
@@ -177,18 +200,6 @@
                 "name": "Chapters",
                 "data": {
                     "route": "admin_chapter_index"
-                }
-            },
-            {
-                "name": "Pages",
-                "data": {
-                    "route": "admin_page_index"
-                }
-            },
-            {
-                "name": "Layout",
-                "data": {
-                    "route": "admin_layout_index"
                 }
             }
         ]

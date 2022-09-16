@@ -64,7 +64,7 @@ class Paragraph
     /**
      * @ORM\Column(type="integer")
      */
-    private $position;
+    private int $position = 0;
 
     /**
      * @ORM\OneToMany(targetEntity=Text::class, mappedBy="paragraph", orphanRemoval=true)
@@ -78,7 +78,6 @@ class Paragraph
 
     public function __construct()
     {
-        $this->position           = 0;
         $this->texts              = new ArrayCollection();
         $this->bookmarks          = new ArrayCollection();
         $this->histories          = new ArrayCollection();

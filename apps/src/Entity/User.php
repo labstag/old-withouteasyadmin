@@ -140,7 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     /**
      * @ORM\Column(type="json")
      */
-    protected array $roles = [];
+    protected array $roles = ['ROLE_USER'];
 
     /**
      * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser", orphanRemoval=true)
@@ -182,7 +182,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         $this->phoneUsers        = new ArrayCollection();
         $this->addressUsers      = new ArrayCollection();
         $this->oauthConnectUsers = new ArrayCollection();
-        $this->roles             = ['ROLE_USER'];
         $this->routes            = new ArrayCollection();
         $this->workflowUsers     = new ArrayCollection();
         $this->posts             = new ArrayCollection();
