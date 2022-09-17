@@ -18,12 +18,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Matcher\TraceableUrlMatcher;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 abstract class AdminControllerLib extends ControllerLib
 {
+
     protected AttachmentRequestHandler $attachmentRH;
 
     protected ?AdminBtnSingleton $btns = null;
@@ -291,6 +290,7 @@ abstract class AdminControllerLib extends ControllerLib
         ServiceEntityRepositoryLib $serviceEntityRepositoryLib
     )
     {
+        $environment = null;
         $entity = strtolower(
             str_replace(
                 'Labstag\\Entity\\',
@@ -708,13 +708,12 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        $twig              = $this->environment;
-        $globals           = $twig->getGlobals();
+        $globals           = $this->environment->getGlobals();
         $modal             = $globals['modal'] ?? [];
         $modal['delete']   = (isset($url['delete']));
         $modal['workflow'] = (isset($url['workflow']));
 
-        $environment->addGlobal('modal', $modal);
+        $this->environment->addGlobal('modal', $modal);
     }
 
     protected function showOrPreviewadd(array $url, string $routeType, $entity): void

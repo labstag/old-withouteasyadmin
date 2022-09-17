@@ -25,7 +25,7 @@ class AdminBtnSingleton
 
     protected TokenStorageInterface $token;
 
-    protected Environment $twig;
+    protected Environment $environment;
 
     protected function __construct()
     {
@@ -362,7 +362,7 @@ class AdminBtnSingleton
         GuardService $guardService
     ): void
     {
-        $this->environment             = $environment;
+        $this->environment      = $environment;
         $this->router           = $router;
         $this->token            = $tokenStorage;
         $this->csrfTokenManager = $csrfTokenManager;
