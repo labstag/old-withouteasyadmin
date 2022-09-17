@@ -13,8 +13,8 @@ class MenuService
 {
     public function __construct(
         protected FactoryInterface $menuFactory,
-        protected MenuRepository $repository,
-        protected TokenStorageInterface $token,
+        protected MenuRepository $menuRepository,
+        protected TokenStorageInterface $tokenStorage,
         protected GuardService $guardService,
     )
     {
@@ -22,17 +22,17 @@ class MenuService
 
     public function createMenu(Menu $menu): ItemInterface
     {
-        $key      = $menu->getClef();
+        $clef      = $menu->getClef();
         $menuItem = $this->menuFactory->createItem('menulabstag');
-        $menuItem->setChildrenAttribute('class', 'navbar-nav menu-'.$key);
+        $menuItem->setChildrenAttribute('class', 'navbar-nav menu-'.$clef);
 
-        return $this->setData($menuItem, $key);
+        return $this->setData($menuItem, $clef);
     }
 
     public function createMenus()
     {
         $menus = [];
-        $all   = $this->repository->findAllCode();
+        $all   = $this->menuRepository->findAllCode();
         foreach ($all as $row) {
             $key         = $row->getClef();
             $menus[$key] = $this->createMenu($row);
@@ -41,9 +41,9 @@ class MenuService
         return $menus;
     }
 
-    public function setData(ItemInterface $menu, string $clef): ItemInterface
+    public function setData(ItemInterface $item, string $clef): ItemInterface
     {
-        $data = $this->repository->findOneBy(
+        $data = $this->menuRepository->findOneBy(
             [
                 'clef'   => $clef,
                 'parent' => null,
@@ -51,25 +51,25 @@ class MenuService
         );
 
         if (!$data instanceof Menu) {
-            return $menu;
+            return $item;
         }
 
         $childrens = $data->getChildren();
-        foreach ($childrens as $child) {
-            $this->addMenu($menu, $child);
+        foreach ($childrens as $children) {
+            $this->addMenu($item, $children);
         }
 
-        $this->correctionMenu($menu);
+        $this->correctionMenu($item);
 
-        return $menu;
+        return $item;
     }
 
-    protected function addMenu(MenuItem &$parent, Menu $child): void
+    protected function addMenu(MenuItem &$menuItem, Menu $child): void
     {
         $data      = [];
         $dataChild = $child->getData();
         if ($child->isSeparateur()) {
-            $parent->addChild('')->setExtra('divider', true);
+            $menuItem->addChild('')->setExtra('divider', true);
 
             return;
         }
@@ -79,7 +79,7 @@ class MenuService
         }
 
         if (isset($dataChild['route'])) {
-            $token = $this->token->getToken();
+            $token = $this->tokenStorage->getToken();
             $state = $this->guardService->guardRoute($dataChild['route'], $token);
             if (!$state) {
                 return;
@@ -91,19 +91,19 @@ class MenuService
 
         $this->setDataChild($dataChild, $data);
 
-        $menu      = $parent->addChild(
+        $item      = $menuItem->addChild(
             $child->getName(),
             $data
         );
         $childrens = $child->getChildren();
-        foreach ($childrens as $child) {
-            $this->addMenu($menu, $child);
+        foreach ($childrens as $children) {
+            $this->addMenu($item, $children);
         }
     }
 
-    protected function correctionMenu(MenuItem $menu)
+    protected function correctionMenu(MenuItem $menuItem)
     {
-        $data = $menu->getChildren();
+        $data = $menuItem->getChildren();
         foreach ($data as $key => $row) {
             $extras = $row->getExtras();
             if (0 != count($extras) || '' != $row->getUri()) {
@@ -112,12 +112,12 @@ class MenuService
 
             $children = $row->getChildren();
             if (0 == count($children)) {
-                $menu->removeChild($key);
+                $menuItem->removeChild($key);
 
                 continue;
             }
 
-            $this->deleteParent($children, $key, $menu);
+            $this->deleteParent($children, $key, $menuItem);
         }
     }
 

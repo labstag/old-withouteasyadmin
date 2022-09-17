@@ -20,11 +20,11 @@ class BookmarkController extends FrontControllerLib
     )]
     public function bookmark(
         string $slug,
-        BookmarkRepository $bookmarkRepo,
-        PageRepository $pageRepo
+        BookmarkRepository $bookmarkRepository,
+        PageRepository $pageRepository
     )
     {
-        $bookmark = $bookmarkRepo->findOneBy(
+        $bookmark = $bookmarkRepository->findOneBy(
             ['slug' => $slug]
         );
 
@@ -33,7 +33,7 @@ class BookmarkController extends FrontControllerLib
                 throw $this->createNotFoundException();
             }
 
-            return $this->page('mes-liens', $pageRepo);
+            return $this->page('mes-liens', $pageRepository);
         }
 
         return new RedirectResponse($bookmark->getUrl(), 302);

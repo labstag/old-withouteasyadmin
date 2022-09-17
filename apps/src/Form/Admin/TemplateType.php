@@ -16,12 +16,12 @@ class TemplateType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'name',
             TextType::class,
             [
@@ -32,7 +32,7 @@ class TemplateType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'code',
             TextType::class,
             [
@@ -43,7 +43,7 @@ class TemplateType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'html',
             WysiwygType::class,
             [
@@ -51,7 +51,7 @@ class TemplateType extends AbstractTypeLib
                 'help'  => $this->translator->trans('template.html.help', [], 'admin.form'),
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'text',
             CoreTextareaType::class,
             [
@@ -61,9 +61,9 @@ class TemplateType extends AbstractTypeLib
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Template::class,
             ]

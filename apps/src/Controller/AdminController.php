@@ -64,10 +64,10 @@ class AdminController extends AdminControllerLib
 
     #[Route(path: '/', name: 'admin')]
     public function index(
-        MemoRepository $memoRepo
+        MemoRepository $memoRepository
     ): Response
     {
-        $memos = $memoRepo->findPublier();
+        $memos = $memoRepository->findPublier();
 
         return $this->render(
             'admin/index.html.twig',
@@ -89,16 +89,16 @@ class AdminController extends AdminControllerLib
     #[Route(path: '/param', name: 'admin_param', methods: ['GET', 'POST'])]
     public function param(
         Request $request,
-        EventDispatcherInterface $dispatcher,
+        EventDispatcherInterface $eventDispatcher,
         DataService $dataService,
         CacheInterface $cache,
-        AttachmentRepository $attachmentRepo
+        AttachmentRepository $attachmentRepository
     ): Response
     {
         $this->modalAttachmentDelete();
         $images = [
-            'image'   => $attachmentRepo->getImageDefault(),
-            'favicon' => $attachmentRepo->getFavicon(),
+            'image'   => $attachmentRepository->getImageDefault(),
+            'favicon' => $attachmentRepository->getFavicon(),
         ];
         foreach ($images as $key => $value) {
             if (!is_null($value)) {
@@ -107,7 +107,7 @@ class AdminController extends AdminControllerLib
 
             $images[$key] = new Attachment();
             $images[$key]->setCode($key);
-            $attachmentRepo->add($images[$key]);
+            $attachmentRepository->add($images[$key]);
         }
 
         $config = $dataService->getConfig();
@@ -125,7 +125,7 @@ class AdminController extends AdminControllerLib
             $this->setUpload($request, $images);
             $cache->delete('configuration');
             $post = $request->request->all($form->getName());
-            $dispatcher->dispatch(new ConfigurationEntityEvent($post));
+            $eventDispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
 
         $this->btnInstance()->add(
@@ -146,13 +146,13 @@ class AdminController extends AdminControllerLib
     }
 
     #[Route(path: '/profil', name: 'admin_profil', methods: ['GET', 'POST'])]
-    public function profil(AttachFormService $service, Security $security, UserRequestHandler $requestHandler): Response
+    public function profil(AttachFormService $attachFormService, Security $security, UserRequestHandler $userRequestHandler): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $userRequestHandler,
             ProfilType::class,
             $security->getUser(),
             'admin/profil.html.twig'
@@ -185,7 +185,7 @@ class AdminController extends AdminControllerLib
     #[Route(path: '/trash', name: 'admin_trash')]
     public function trash(
         CsrfTokenManagerInterface $csrfTokenManager,
-        Environment $twig,
+        Environment $environment,
         TrashService $trashService
     ): Response
     {
@@ -199,25 +199,25 @@ class AdminController extends AdminControllerLib
             return $this->redirectToRoute('admin');
         }
 
-        $globals        = $twig->getGlobals();
+        $globals        = $environment->getGlobals();
         $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
         if ($this->isRouteEnable('api_action_emptyall')) {
-            $token             = $csrfTokenManager->getToken('emptyall')->getValue();
+            $value             = $csrfTokenManager->getToken('emptyall')->getValue();
             $modal['emptyall'] = true;
             $this->btnInstance()->add(
                 'btn-admin-header-emptyall',
                 'Tout vider',
                 [
                     'is'       => 'link-btnadminemptyall',
-                    'token'    => $token,
+                    'token'    => $value,
                     'redirect' => $this->generateUrl('admin_trash'),
                     'url'      => $this->generateUrl('api_action_emptyall'),
                 ]
             );
         }
 
-        $twig->addGlobal('modal', $modal);
+        $environment->addGlobal('modal', $modal);
         $this->btnInstance()->addViderSelection(
             [
                 'redirect' => [

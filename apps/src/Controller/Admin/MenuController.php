@@ -21,10 +21,10 @@ class MenuController extends AdminControllerLib
 {
     #[Route(path: '/add', name: 'admin_menu_add', methods: ['GET', 'POST'])]
     public function add(
-        AttachFormService $service,
+        AttachFormService $attachFormService,
         Request $request,
-        MenuRequestHandler $requestHandler,
-        MenuRepository $repository
+        MenuRequestHandler $menuRequestHandler,
+        MenuRepository $menuRepository
     ): Response
     {
         $get = $request->query->all();
@@ -33,7 +33,7 @@ class MenuController extends AdminControllerLib
             return new RedirectResponse($url);
         }
 
-        $parent = $repository->find($get['id']);
+        $parent = $menuRepository->find($get['id']);
         if (!$parent instanceof Menu) {
             return new RedirectResponse($url);
         }
@@ -50,8 +50,8 @@ class MenuController extends AdminControllerLib
         $menu->setParent($parent);
 
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $menuRequestHandler,
             LinkType::class,
             $menu,
             'admin/menu/form.html.twig'
@@ -59,7 +59,7 @@ class MenuController extends AdminControllerLib
     }
 
     #[Route(path: '/divider/{id}', name: 'admin_menu_divider')]
-    public function divider(Menu $menu, MenuRequestHandler $requestHandler): RedirectResponse
+    public function divider(Menu $menu, MenuRequestHandler $menuRequestHandler): RedirectResponse
     {
         $entity    = new Menu();
         $oldEntity = clone $entity;
@@ -69,7 +69,7 @@ class MenuController extends AdminControllerLib
         $entity->setSeparateur(true);
         $entity->setParent($menu);
 
-        $requestHandler->handle($oldEntity, $entity);
+        $menuRequestHandler->handle($oldEntity, $entity);
 
         return new RedirectResponse(
             $this->generateUrl('admin_menu_index')
@@ -77,7 +77,7 @@ class MenuController extends AdminControllerLib
     }
 
     #[Route(path: '/update/{id}', name: 'admin_menu_update', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, Menu $menu, MenuRequestHandler $requestHandler)
+    public function edit(AttachFormService $attachFormService, Menu $menu, MenuRequestHandler $menuRequestHandler)
     {
         $this->modalAttachmentDelete();
         $form             = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
@@ -86,8 +86,8 @@ class MenuController extends AdminControllerLib
         $menu->setData($data);
 
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $menuRequestHandler,
             $form,
             $menu,
             'admin/menu/form.html.twig'
@@ -96,15 +96,15 @@ class MenuController extends AdminControllerLib
 
     #[Route(path: '/', name: 'admin_menu_index', methods: ['GET'])]
     public function index(
-        Environment $twig,
-        MenuRepository $repository
+        Environment $environment,
+        MenuRepository $menuRepository
     )
     {
-        $all             = $repository->findAllCode();
-        $globals         = $twig->getGlobals();
+        $all             = $menuRepository->findAllCode();
+        $globals         = $environment->getGlobals();
         $modal           = $globals['modal'] ?? [];
         $modal['delete'] = true;
-        $twig->addGlobal('modal', $modal);
+        $environment->addGlobal('modal', $modal);
         $this->btnInstance()->addBtnNew('admin_menu_new');
 
         return $this->render(
@@ -146,11 +146,11 @@ class MenuController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_menu_new', methods: ['GET', 'POST'])]
-    public function new(AttachFormService $service, MenuRequestHandler $requestHandler): Response
+    public function new(AttachFormService $attachFormService, MenuRequestHandler $menuRequestHandler): Response
     {
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $menuRequestHandler,
             PrincipalType::class,
             new Menu(),
             'admin/menu/form.html.twig'

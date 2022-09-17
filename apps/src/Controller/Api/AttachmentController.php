@@ -24,60 +24,60 @@ class AttachmentController extends ApiControllerLib
 {
     #[Route(path: '/bookmark/img/{entity}', name: 'api_attachment_bookmarkimg')]
     public function bookmarkImg(
-        AttachmentRepository $repository,
-        Bookmark $entity,
+        AttachmentRepository $attachmentRepository,
+        Bookmark $bookmark,
         PostRequestHandler $postRequestHandler
     ): Response
     {
-        return $this->deleteFile($repository, $entity, $postRequestHandler, 'getImg', 'setImg');
+        return $this->deleteFile($attachmentRepository, $bookmark, $postRequestHandler, 'getImg', 'setImg');
     }
 
     #[Route(path: '/edito/fond/{entity}', name: 'api_attachment_editofond')]
-    public function editoFond(AttachmentRepository $repository, Edito $entity, EditoRequestHandler $editoRH): Response
+    public function editoFond(AttachmentRepository $attachmentRepository, Edito $edito, EditoRequestHandler $editoRequestHandler): Response
     {
-        return $this->deleteFile($repository, $entity, $editoRH, 'getFond', 'setFond');
+        return $this->deleteFile($attachmentRepository, $edito, $editoRequestHandler, 'getFond', 'setFond');
     }
 
     #[Route(path: '/favicon', name: 'api_attachment_favicon')]
     public function favicon(
-        AttachmentRepository $repository
+        AttachmentRepository $attachmentRepository
     ): Response
     {
-        return $this->setDataAttachment($repository, 'getFavicon');
+        return $this->setDataAttachment($attachmentRepository, 'getFavicon');
     }
 
     #[Route(path: '/imagedefault', name: 'api_attachment_image')]
     public function imageDefault(
-        AttachmentRepository $repository
+        AttachmentRepository $attachmentRepository
     ): Response
     {
-        return $this->setDataAttachment($repository, 'getImageDefault');
+        return $this->setDataAttachment($attachmentRepository, 'getImageDefault');
     }
 
     #[Route(path: '/memo/fond/{entity}', name: 'api_attachment_memofond')]
     public function memoFond(
-        AttachmentRepository $repository,
-        Memo $entity,
-        MemoRequestHandler $noteInterneRH
+        AttachmentRepository $attachmentRepository,
+        Memo $memo,
+        MemoRequestHandler $memoRequestHandler
     ): Response
     {
-        return $this->deleteFile($repository, $entity, $noteInterneRH, 'getFond', 'setFond');
+        return $this->deleteFile($attachmentRepository, $memo, $memoRequestHandler, 'getFond', 'setFond');
     }
 
     #[Route(path: '/post/img/{entity}', name: 'api_attachment_postimg')]
     public function postImg(
-        AttachmentRepository $repository,
-        Post $entity,
+        AttachmentRepository $attachmentRepository,
+        Post $post,
         PostRequestHandler $postRequestHandler
     ): Response
     {
-        return $this->deleteFile($repository, $entity, $postRequestHandler, 'getImg', 'setImg');
+        return $this->deleteFile($attachmentRepository, $post, $postRequestHandler, 'getImg', 'setImg');
     }
 
     #[Route(path: '/profil/avatar', name: 'api_attachment_profilavatar')]
     public function profilAvatar(
         UserRequestHandler $userRequestHandler,
-        AttachmentRepository $repository
+        AttachmentRepository $attachmentRepository
     ): Response
     {
         $return = [
@@ -85,19 +85,19 @@ class AttachmentController extends ApiControllerLib
             'error' => '',
         ];
         $token  = $this->token->getToken();
-        $entity = $token->getUser();
-        $token  = $this->verifToken($entity);
+        $user = $token->getUser();
+        $token  = $this->verifToken($user);
         if (!$token) {
             $return['error'] = 'Token incorrect';
 
             return new JsonResponse($return);
         }
 
-        $old        = clone $entity;
-        $attachment = $entity->getAvatar();
-        $this->deleteAttachment($repository, $attachment);
-        $entity->setAvatar(null);
-        $userRequestHandler->handle($old, $entity);
+        $old        = clone $user;
+        $attachment = $user->getAvatar();
+        $this->deleteAttachment($attachmentRepository, $attachment);
+        $user->setAvatar(null);
+        $userRequestHandler->handle($old, $user);
         $return['state'] = true;
 
         return new JsonResponse($return);
@@ -105,21 +105,21 @@ class AttachmentController extends ApiControllerLib
 
     #[Route(path: '/user/avatar/{entity}', name: 'api_attachment_useravatar')]
     public function userAvatar(
-        AttachmentRepository $repository,
-        User $entity,
+        AttachmentRepository $attachmentRepository,
+        User $user,
         UserRequestHandler $userRequestHandler
     ): Response
     {
-        return $this->deleteFile($repository, $entity, $userRequestHandler, 'getAvatar', 'setAvatar');
+        return $this->deleteFile($attachmentRepository, $user, $userRequestHandler, 'getAvatar', 'setAvatar');
     }
 
-    protected function deleteAttachment(AttachmentRepository $repository, ?Attachment $attachment)
+    protected function deleteAttachment(AttachmentRepository $attachmentRepository, ?Attachment $attachment)
     {
         if (is_null($attachment)) {
             return;
         }
 
-        $repository->remove($attachment);
+        $attachmentRepository->remove($attachment);
     }
 
     protected function verifToken($entity): bool

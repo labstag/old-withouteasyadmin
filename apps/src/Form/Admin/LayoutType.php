@@ -18,7 +18,7 @@ class LayoutType extends AbstractTypeLib
 {
     public function __construct(
         TranslatorInterface $translator,
-        protected GuardService $service
+        protected GuardService $guardService
     )
     {
         parent::__construct($translator);
@@ -28,12 +28,12 @@ class LayoutType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'name',
             TextType::class,
             [
@@ -44,21 +44,21 @@ class LayoutType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'custom',
             EntityType::class,
             [
                 'class'         => Custom::class,
-                'query_builder' => static fn(CustomRepository $er) => $er->formType(),
+                'query_builder' => static fn(CustomRepository $customRepository) => $customRepository->formType(),
             ]
         );
-        $all     = $this->service->getPublicRoute();
+        $all     = $this->guardService->getPublicRoute();
         $choices = [];
         foreach (array_keys($all) as $key) {
             $choices[$key] = $key;
         }
 
-        $builder->add(
+        $formBuilder->add(
             'url',
             ChoiceType::class,
             [
@@ -68,7 +68,7 @@ class LayoutType extends AbstractTypeLib
             ]
         );
         $this->addParagraph(
-            $builder,
+            $formBuilder,
             [
                 'add'    => 'admin_layout_paragraph_add',
                 'edit'   => 'admin_layout_paragraph_show',
@@ -77,9 +77,9 @@ class LayoutType extends AbstractTypeLib
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Layout::class,
             ]

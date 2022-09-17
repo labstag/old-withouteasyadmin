@@ -35,7 +35,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends ControllerLib
 {
     #[Route(path: '/change-password/{id}', name: 'app_changepassword', priority: 1)]
-    public function changePassword(User $user, Request $request, UserRequestHandler $requestHandler): Response
+    public function changePassword(User $user, Request $request, UserRequestHandler $userRequestHandler): Response
     {
         if ('lostpassword' != $user->getState()) {
             $this->sessionService->flashBagAdd(
@@ -49,7 +49,7 @@ class SecurityController extends ControllerLib
         $form = $this->createForm(ChangePasswordType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $requestHandler->changeWorkflowState($user, ['valider']);
+            $userRequestHandler->changeWorkflowState($user, ['valider']);
 
             return $this->redirectToRoute('front');
         }
@@ -82,7 +82,7 @@ class SecurityController extends ControllerLib
     }
 
     #[Route(path: '/confirm/phone/{id}', name: 'app_confirm_phone', priority: 1)]
-    public function confirmPhone(Phone $phone, PhoneRequestHandler $emailRequestHandler): RedirectResponse
+    public function confirmPhone(Phone $phone, PhoneRequestHandler $phoneRequestHandler): RedirectResponse
     {
         if ('averifier' != $phone->getState()) {
             $this->sessionService->flashBagAdd(
@@ -93,7 +93,7 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('front');
         }
 
-        $emailRequestHandler->changeWorkflowState($phone, ['valider']);
+        $phoneRequestHandler->changeWorkflowState($phone, ['valider']);
         $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('security.phone.activate.win')
@@ -165,25 +165,25 @@ class SecurityController extends ControllerLib
     #[Route(path: '/login', name: 'app_login', priority: 1)]
     public function login(
         AuthenticationUtils $authenticationUtils,
-        OauthConnectUserRepository $oauthConnectUserRepo
+        OauthConnectUserRepository $oauthConnectUserRepository
     ): Response
     {
         // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        $authenticationException = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
         $form         = $this->createForm(
             LoginType::class,
             ['username' => $lastUsername]
         );
-        $oauths       = $oauthConnectUserRepo->findDistinctAllOauth();
+        $oauths       = $oauthConnectUserRepository->findDistinctAllOauth();
 
         return $this->renderForm(
             'security/login.html.twig',
             [
                 'oauths'    => $oauths,
                 'formLogin' => $form,
-                'error'     => $error,
+                'error'     => $authenticationException,
             ]
         );
     }
@@ -246,13 +246,13 @@ class SecurityController extends ControllerLib
             return $this->redirect($referer);
         }
 
-        $authUrl = $provider->getAuthorizationUrl();
+        $authorizationUrl = $provider->getAuthorizationUrl();
         $session = $request->getSession();
         $referer = $request->headers->get('referer');
         $session->set('referer', $referer);
         $session->set('oauth2state', $provider->getState());
 
-        return $this->redirect($authUrl);
+        return $this->redirect($authorizationUrl);
     }
 
     /**
@@ -264,7 +264,7 @@ class SecurityController extends ControllerLib
     public function oauthConnectCheck(
         Request $request,
         string $oauthCode,
-        UsageTrackingTokenStorage $tokenStorage,
+        UsageTrackingTokenStorage $usageTrackingTokenStorage,
         ErrorService $errorService,
         OauthService $oauthService,
         UserService $userService
@@ -296,7 +296,7 @@ class SecurityController extends ControllerLib
 
         try {
             // @var AccessToken $tokenProvider
-            $tokenProvider = $provider->getAccessToken(
+            $accessToken = $provider->getAccessToken(
                 'authorization_code',
                 [
                     'code' => $query['code'],
@@ -304,9 +304,9 @@ class SecurityController extends ControllerLib
             );
 
             $session->remove('oauth2state');
-            $userOauth = $provider->getResourceOwner($tokenProvider);
+            $resourceOwner = $provider->getResourceOwner($accessToken);
             // @var TokenInterface $token
-            $user = $tokenStorage->getToken()->getUser();
+            $user = $usageTrackingTokenStorage->getToken()->getUser();
             if (!$user instanceof User) {
                 $this->sessionService->flashBagAdd(
                     'warning',
@@ -319,7 +319,7 @@ class SecurityController extends ControllerLib
             $userService->addOauthToUser(
                 $oauthCode,
                 $user,
-                $userOauth
+                $resourceOwner
             );
 
             $session->remove('referer');
@@ -343,7 +343,7 @@ class SecurityController extends ControllerLib
         Request $request,
         string $oauthCode,
         Security $security,
-        OauthConnectUserRepository $oauthConnectUserRepo
+        OauthConnectUserRepository $oauthConnectUserRepository
     ): RedirectResponse
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -359,9 +359,9 @@ class SecurityController extends ControllerLib
             $referer = $url;
         }
 
-        $entity = $oauthConnectUserRepo->findOneOauthByUser($oauthCode, $user);
-        if ($entity instanceof OauthConnectUser) {
-            $oauthConnectUserRepo->remove($entity);
+        $oauthConnectUser = $oauthConnectUserRepository->findOneOauthByUser($oauthCode, $user);
+        if ($oauthConnectUser instanceof OauthConnectUser) {
+            $oauthConnectUserRepository->remove($oauthConnectUser);
             $paramtrans = ['%string%' => $oauthCode];
 
             $msg = $this->translator->trans('security.user.oauth.dissociated', $paramtrans);

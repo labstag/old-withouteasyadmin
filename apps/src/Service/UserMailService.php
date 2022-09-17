@@ -26,7 +26,7 @@ class UserMailService
         protected RouterInterface $router,
         protected MailerService $mailerService,
         protected DataService $dataService,
-        protected TemplateRepository $templateRpeo
+        protected TemplateRepository $templateRepository
     )
     {
         $config       = $dataService->getConfig();
@@ -40,7 +40,7 @@ class UserMailService
     public function changeEmailPrincipal(User $user): void
     {
         // @var Template $template
-        $template = $this->templateRpeo->findOneBy(
+        $template = $this->templateRepository->findOneBy(
             ['code' => 'change-email-principal']
         );
         if (!$template instanceof Template) {
@@ -56,7 +56,7 @@ class UserMailService
     public function changePassword(User $user): void
     {
         // @var Template $template
-        $template = $this->templateRpeo->findOneBy(
+        $template = $this->templateRepository->findOneBy(
             ['code' => 'change-password']
         );
         if (!$template instanceof Template) {
@@ -75,10 +75,10 @@ class UserMailService
         array $otherchange = []
     ): string
     {
-        $time   = new DateTime();
+        $dateTime   = new DateTime();
         $change = [
             'username' => $user->getUsername(),
-            'datetime' => $time->format('d/m/Y H:i'),
+            'datetime' => $dateTime->format('d/m/Y H:i'),
         ];
 
         $change = array_merge($change, $otherchange);
@@ -94,7 +94,7 @@ class UserMailService
     public function checkNewAddress(User $user, AddressUser $addressUser): void
     {
         // @var Template $template
-        $template = $this->templateRpeo->findOneBy(
+        $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-address']
         );
         if (!$template instanceof Template) {
@@ -119,7 +119,7 @@ class UserMailService
     public function checkNewLink(User $user, LinkUser $linkUser): void
     {
         // @var Template $template
-        $template = $this->templateRpeo->findOneBy(
+        $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-link']
         );
         if (!$template instanceof Template) {
@@ -139,7 +139,7 @@ class UserMailService
     public function checkNewMail(User $user, EmailUser $emailUser): void
     {
         // @var Template $template
-        $template = $this->templateRpeo->findOneBy(
+        $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-mail']
         );
         if (!$template instanceof Template) {
@@ -169,7 +169,7 @@ class UserMailService
     ): void
     {
         // @var Template $template
-        $template = $this->templateRpeo->findOneBy(
+        $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-oauthconnectuser']
         );
         if (!$template instanceof Template) {
@@ -189,7 +189,7 @@ class UserMailService
     public function checkNewPhone(User $user, PhoneUser $phoneUser): void
     {
         // @var Template $template
-        $template = $this->templateRpeo->findOneBy(
+        $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-phone']
         );
         if (!$template instanceof Template) {
@@ -216,7 +216,7 @@ class UserMailService
     public function lostPassword(User $user): void
     {
         // @var Template $template
-        $template = $this->templateRpeo->findOneBy(
+        $template = $this->templateRepository->findOneBy(
             ['code' => 'lost-password']
         );
         if (!$template instanceof Template) {
@@ -242,7 +242,7 @@ class UserMailService
     public function newUser(User $user): void
     {
         // @var Template $template
-        $template = $this->templateRpeo->findOneBy(
+        $template = $this->templateRepository->findOneBy(
             ['code' => 'check-user']
         );
         if (!$template instanceof Template) {

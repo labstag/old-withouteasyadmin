@@ -12,9 +12,9 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class BookmarkRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Bookmark::class);
+        parent::__construct($managerRegistry, Bookmark::class);
     }
 
     public function findPublier()

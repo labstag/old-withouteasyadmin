@@ -14,26 +14,26 @@ class BookmarkType extends SearchAbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $this->addName($builder);
-        $this->addRefUser($builder);
-        $this->addRefCategory($builder);
+        $this->addName($formBuilder);
+        $this->addRefUser($formBuilder);
+        $this->addRefCategory($formBuilder);
         $this->showState(
-            $builder,
+            $formBuilder,
             new Bookmark(),
             $this->translator->trans('bookmark.etape.label', [], 'admin.search.form'),
             $this->translator->trans('bookmark.etape.help', [], 'admin.search.form'),
             $this->translator->trans('bookmark.etape.placeholder', [], 'admin.search.form')
         );
-        parent::buildForm($builder, $options);
+        parent::buildForm($formBuilder, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class'      => BookmarkSearch::class,
                 'csrf_protection' => false,

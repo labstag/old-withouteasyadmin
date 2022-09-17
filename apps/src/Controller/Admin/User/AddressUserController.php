@@ -19,14 +19,14 @@ class AddressUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_addressuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_addressuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $service,
+        AttachFormService $attachFormService,
         ?AddressUser $addressUser,
-        AddressUserRequestHandler $requestHandler
+        AddressUserRequestHandler $addressUserRequestHandler
     ): Response
     {
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $addressUserRequestHandler,
             AddressUserType::class,
             is_null($addressUser) ? new AddressUser() : $addressUser
         );

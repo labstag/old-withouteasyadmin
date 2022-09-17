@@ -19,14 +19,14 @@ class LinkUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_linkuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_linkuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $service,
+        AttachFormService $attachFormService,
         ?LinkUser $linkUser,
-        LinkUserRequestHandler $requestHandler
+        LinkUserRequestHandler $linkUserRequestHandler
     ): Response
     {
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $linkUserRequestHandler,
             LinkUserType::class,
             is_null($linkUser) ? new LinkUser() : $linkUser
         );

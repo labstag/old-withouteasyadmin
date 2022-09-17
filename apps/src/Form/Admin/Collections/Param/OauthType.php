@@ -12,11 +12,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class OauthType extends AbstractTypeLib
 {
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'activate',
             ChoiceType::class,
             [
@@ -35,7 +35,7 @@ class OauthType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'type',
             OauthChoiceType::class,
             [
@@ -46,7 +46,7 @@ class OauthType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'id',
             TextType::class,
             [
@@ -58,7 +58,7 @@ class OauthType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'secret',
             TextType::class,
             [
@@ -77,10 +77,10 @@ class OauthType extends AbstractTypeLib
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         // Configure your form options here
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

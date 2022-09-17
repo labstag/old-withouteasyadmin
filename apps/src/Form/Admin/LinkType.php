@@ -14,12 +14,12 @@ abstract class LinkType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'name',
             TextType::class,
             [
@@ -30,7 +30,7 @@ abstract class LinkType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'address',
             UrlType::class,
             [
@@ -43,10 +43,10 @@ abstract class LinkType extends AbstractTypeLib
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         // Configure your form options here
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             ['entity' => null]
         );
     }

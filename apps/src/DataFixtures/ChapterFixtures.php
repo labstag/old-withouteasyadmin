@@ -22,32 +22,32 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         ];
     }
 
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $objectManager): void
     {
-        unset($manager);
+        unset($objectManager);
         $this->loadForeach(self::NUMBER_HISTORY, 'addChapter');
     }
 
     protected function addChapter(
-        Generator $faker,
+        Generator $generator,
         int $index,
         array $states
     ): void
     {
         $chapter    = new Chapter();
         $oldChapter = clone $chapter;
-        $chapter->setName($faker->unique()->colorName());
+        $chapter->setName($generator->unique()->colorName());
         // @var string $content
-        $content = $faker->paragraphs(random_int(4, 10), true);
+        $content = $generator->paragraphs(random_int(4, 10), true);
         $chapter->setContent(str_replace("\n\n", "<br />\n", $content));
-        $indexHistory = $faker->numberBetween(0, self::NUMBER_HISTORY - 1);
+        $indexHistory = $generator->numberBetween(0, self::NUMBER_HISTORY - 1);
         $history      = $this->getReference('history_'.$indexHistory);
         if (!isset($this->position[$indexHistory])) {
             $this->position[$indexHistory] = [];
         }
 
         $chapter->setRefhistory($history);
-        $chapter->setPublished($faker->unique()->dateTime('now'));
+        $chapter->setPublished($generator->unique()->dateTime('now'));
 
         $indexposition = $this->position[$indexHistory];
         $position      = is_countable($indexposition) ? count($indexposition) : 0;

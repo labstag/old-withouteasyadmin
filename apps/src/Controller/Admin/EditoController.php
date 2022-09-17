@@ -21,13 +21,13 @@ use Symfony\Component\Uid\Uuid;
 class EditoController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_edito_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Edito $edito, EditoRequestHandler $requestHandler): Response
+    public function edit(AttachFormService $attachFormService, ?Edito $edito, EditoRequestHandler $editoRequestHandler): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $editoRequestHandler,
             EditoType::class,
             is_null($edito) ? new Edito() : $edito,
             'admin/edito/form.html.twig'
@@ -48,7 +48,7 @@ class EditoController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_edito_new', methods: ['GET', 'POST'])]
-    public function new(EditoRepository $repository, EditoRequestHandler $requestHandler, Security $security): Response
+    public function new(EditoRepository $editoRepository, EditoRequestHandler $editoRequestHandler, Security $security): Response
     {
         $user = $security->getUser();
 
@@ -58,8 +58,8 @@ class EditoController extends AdminControllerLib
         $edito->setRefuser($user);
 
         $old = clone $edito;
-        $repository->add($edito);
-        $requestHandler->handle($old, $edito);
+        $editoRepository->add($edito);
+        $editoRequestHandler->handle($old, $edito);
 
         return $this->redirectToRoute('admin_edito_edit', ['id' => $edito->getId()]);
     }

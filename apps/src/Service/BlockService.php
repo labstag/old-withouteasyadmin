@@ -50,10 +50,10 @@ class BlockService
         $field      = $this->getEntityField($block);
         $reflection = $this->setReflection($block);
         $entity     = null;
-        $accessor   = PropertyAccess::createPropertyAccessor();
-        foreach ($reflection->getProperties() as $property) {
-            if ($property->getName() == $field) {
-                $entities = $accessor->getValue($block, $field);
+        $propertyAccessor   = PropertyAccess::createPropertyAccessor();
+        foreach ($reflection->getProperties() as $reflectionProperty) {
+            if ($reflectionProperty->getName() == $field) {
+                $entities = $propertyAccessor->getValue($block, $field);
                 $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
 
                 break;
@@ -63,14 +63,14 @@ class BlockService
         return $entity;
     }
 
-    public function getEntityField(Block $entity)
+    public function getEntityField(Block $block)
     {
-        $childentity = $this->getTypeEntity($entity);
+        $childentity = $this->getTypeEntity($block);
         $field       = null;
         $reflection  = $this->setReflection($childentity);
-        foreach ($reflection->getProperties() as $property) {
-            if ('block' == $property->getName()) {
-                preg_match('#inversedBy=\"(.*)\"#m', (string) $property->getDocComment(), $matches);
+        foreach ($reflection->getProperties() as $reflectionProperty) {
+            if ('block' == $reflectionProperty->getName()) {
+                preg_match('#inversedBy=\"(.*)\"#m', (string) $reflectionProperty->getDocComment(), $matches);
                 $field = $matches[1] ?? $field;
 
                 break;
@@ -80,9 +80,9 @@ class BlockService
         return $field;
     }
 
-    public function getName(Block $entity)
+    public function getName(Block $block)
     {
-        $type = $entity->getType();
+        $type = $block->getType();
         $form = null;
         foreach ($this->blocksclass as $row) {
             if ($row->getType() == $type) {
@@ -104,24 +104,24 @@ class BlockService
         ];
     }
 
-    public function getTypeEntity(Block $entity)
+    public function getTypeEntity(Block $block)
     {
-        $type   = $entity->getType();
-        $entity = null;
+        $type   = $block->getType();
+        $block = null;
         foreach ($this->blocksclass as $row) {
             if ($row->getType() == $type) {
-                $entity = $row->getEntity();
+                $block = $row->getEntity();
 
                 break;
             }
         }
 
-        return $entity;
+        return $block;
     }
 
-    public function getTypeForm(Block $entity)
+    public function getTypeForm(Block $block)
     {
-        $type = $entity->getType();
+        $type = $block->getType();
         $form = null;
         foreach ($this->blocksclass as $row) {
             if ($row->getType() == $type) {
@@ -134,9 +134,9 @@ class BlockService
         return $form;
     }
 
-    public function isShow(Block $entity)
+    public function isShow(Block $block)
     {
-        $type = $entity->getType();
+        $type = $block->getType();
         $show = false;
         foreach ($this->blocksclass as $row) {
             if ($row->getType() == $type) {

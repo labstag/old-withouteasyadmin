@@ -10,9 +10,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LinkType extends BlockAbstractTypeLib
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder->add(
+        $formBuilder->add(
             'url',
             TextType::class,
             [
@@ -20,7 +20,7 @@ class LinkType extends BlockAbstractTypeLib
                 'label'    => 'Url',
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'title',
             TextType::class,
             [
@@ -28,13 +28,13 @@ class LinkType extends BlockAbstractTypeLib
                 'label'    => 'title',
             ]
         );
-        $builder->add('external');
+        $formBuilder->add('external');
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Link::class,
             ]

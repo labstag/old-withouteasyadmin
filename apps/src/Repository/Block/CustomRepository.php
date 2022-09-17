@@ -8,18 +8,18 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class CustomRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Custom::class);
+        parent::__construct($managerRegistry, Custom::class);
     }
 
     public function formType()
     {
-        $query = $this->createQueryBuilder('c');
-        $query->leftJoin('c.block', 'b');
-        $query->where('b.deletedAt IS NULL');
-        $query->andWhere('b.region IS NOT NULL');
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder->leftJoin('c.block', 'b');
+        $queryBuilder->where('b.deletedAt IS NULL');
+        $queryBuilder->andWhere('b.region IS NOT NULL');
 
-        return $query;
+        return $queryBuilder;
     }
 }

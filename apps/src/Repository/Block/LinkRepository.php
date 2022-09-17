@@ -8,8 +8,8 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class LinkRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Link::class);
+        parent::__construct($managerRegistry, Link::class);
     }
 }

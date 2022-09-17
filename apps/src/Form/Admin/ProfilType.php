@@ -20,12 +20,12 @@ class ProfilType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'username',
             TextType::class,
             [
@@ -36,12 +36,12 @@ class ProfilType extends AbstractTypeLib
                 ],
             ]
         );
-        $this->addPlainPassword($builder);
-        $builder->add(
+        $this->addPlainPassword($formBuilder);
+        $formBuilder->add(
             'email',
             EmailVerifChoiceType::class,
         );
-        $builder->add(
+        $formBuilder->add(
             'file',
             FileType::class,
             [
@@ -58,12 +58,12 @@ class ProfilType extends AbstractTypeLib
             'addressUsers' => AddressType::class,
             'linkUsers'    => LinkType::class,
         ];
-        $this->setCollectionType($builder, $tab);
+        $this->setCollectionType($formBuilder, $tab);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => User::class,
             ]

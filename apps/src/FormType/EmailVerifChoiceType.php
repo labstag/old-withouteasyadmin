@@ -14,20 +14,20 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class EmailVerifChoiceType extends AbstractType
 {
     public function __construct(
-        protected EmailUserRepository $repository,
+        protected EmailUserRepository $emailUserRepository,
         protected TranslatorInterface $translator
     )
     {
     }
 
     public function buildView(
-        FormView $view,
+        FormView $formView,
         FormInterface $form,
         array $options
     ): void
     {
         $entity  = $form->getParent()->getData();
-        $data    = $this->repository->getEmailsUserVerif($entity, true);
+        $data    = $this->emailUserRepository->getEmailsUserVerif($entity, true);
         $choices = [];
         foreach ($data as $email) {
             // @var EmailUser $email
@@ -38,17 +38,17 @@ class EmailVerifChoiceType extends AbstractType
         ksort($choices);
 
         if (0 != count($choices)) {
-            $view->vars['required'] = false;
+            $formView->vars['required'] = false;
         }
 
-        $view->vars['value']   = $entity->getEmail();
-        $view->vars['choices'] = $choices;
+        $formView->vars['value']   = $entity->getEmail();
+        $formView->vars['choices'] = $choices;
         unset($options, $form);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $optionsResolver)
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'label' => $this->translator->trans('forms.email.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('forms.email.help', [], 'admin.form'),

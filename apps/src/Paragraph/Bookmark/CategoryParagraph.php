@@ -36,7 +36,7 @@ class CategoryParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Category $bookmarkcategory)
+    public function show(Category $category)
     {
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -53,7 +53,7 @@ class CategoryParagraph extends ParagraphLib
             $this->getParagraphFile('bookmark/category'),
             [
                 'pagination' => $pagination,
-                'paragraph'  => $bookmarkcategory,
+                'paragraph'  => $category,
             ]
         );
     }

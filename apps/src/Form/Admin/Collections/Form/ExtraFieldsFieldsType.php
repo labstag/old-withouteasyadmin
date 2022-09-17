@@ -14,26 +14,26 @@ class ExtraFieldsFieldsType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'html',
             WysiwygType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'textarea',
             CoreTextareaType::class,
             ['help' => 'help']
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

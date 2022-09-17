@@ -9,32 +9,32 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class RouteGroupeRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, RouteGroupe::class);
+        parent::__construct($managerRegistry, RouteGroupe::class);
     }
 
     public function findRoute(Groupe $groupe, string $route)
     {
-        $query = $this->createQueryBuilder('a');
-        $query->leftJoin(
+        $queryBuilder = $this->createQueryBuilder('a');
+        $queryBuilder->leftJoin(
             'a.refgroupe',
             'g'
         );
-        $query->leftJoin(
+        $queryBuilder->leftJoin(
             'a.refroute',
             'r'
         );
-        $query->where(
+        $queryBuilder->where(
             'g.id=:gid AND r.name=:route'
         );
-        $query->setParameters(
+        $queryBuilder->setParameters(
             [
                 'gid'   => $groupe->getId(),
                 'route' => $route,
             ]
         );
 
-        return $query->getQuery()->getOneOrNullResult();
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 }

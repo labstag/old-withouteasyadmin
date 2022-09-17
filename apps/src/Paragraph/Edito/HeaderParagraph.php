@@ -36,7 +36,7 @@ class HeaderParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Header $editoheader)
+    public function show(Header $header)
     {
         /** @var EditoRepository $repository */
         $repository = $this->getRepository(Edito::class);
@@ -50,7 +50,7 @@ class HeaderParagraph extends ParagraphLib
             $this->getParagraphFile('edito/header'),
             [
                 'edito'     => $edito,
-                'paragraph' => $editoheader,
+                'paragraph' => $header,
             ]
         );
     }

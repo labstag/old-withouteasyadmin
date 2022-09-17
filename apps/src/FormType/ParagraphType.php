@@ -21,7 +21,7 @@ class ParagraphType extends AbstractType
     }
 
     public function buildView(
-        FormView $view,
+        FormView $formView,
         FormInterface $form,
         array $options
     ): void
@@ -33,19 +33,19 @@ class ParagraphType extends AbstractType
             $choices[$type] = new ChoiceView('', $type, $name);
         }
 
-        $view->vars['label']      = 'Paragraphs';
-        $view->vars['urlAdd']     = $this->router->generate($options['add'], ['id' => $entity->getId()]);
-        $view->vars['paragraphs'] = $entity->getParagraphs();
-        $view->vars['urlEdit']    = $options['edit'];
-        $view->vars['urlDelete']  = $options['delete'];
-        $view->vars['choices']    = $choices;
-        $view->vars['attr']['is'] = 'select-paragraph';
+        $formView->vars['label']      = 'Paragraphs';
+        $formView->vars['urlAdd']     = $this->router->generate($options['add'], ['id' => $entity->getId()]);
+        $formView->vars['paragraphs'] = $entity->getParagraphs();
+        $formView->vars['urlEdit']    = $options['edit'];
+        $formView->vars['urlDelete']  = $options['delete'];
+        $formView->vars['choices']    = $choices;
+        $formView->vars['attr']['is'] = 'select-paragraph';
         unset($form);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $optionsResolver)
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'placeholder' => 'Choisir le paragraphe',
                 'choices'     => [],

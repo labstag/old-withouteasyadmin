@@ -13,9 +13,9 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class CategoryRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Category::class);
+        parent::__construct($managerRegistry, Category::class);
     }
 
     public function findAllParentForAdmin(array $get): QueryBuilder

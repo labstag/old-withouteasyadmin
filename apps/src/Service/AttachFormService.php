@@ -10,19 +10,19 @@ class AttachFormService
 {
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        private readonly UploadAnnotationReader $uploadAnnotReader,
-        private readonly AttachmentRequestHandler $attachmentRH
+        private readonly UploadAnnotationReader $uploadAnnotationReader,
+        private readonly AttachmentRequestHandler $attachmentRequestHandler
     )
     {
     }
 
     public function getRequestHandler(): AttachmentRequestHandler
     {
-        return $this->attachmentRH;
+        return $this->attachmentRequestHandler;
     }
 
     public function getUploadAnnotationReader(): UploadAnnotationReader
     {
-        return $this->uploadAnnotReader;
+        return $this->uploadAnnotationReader;
     }
 }

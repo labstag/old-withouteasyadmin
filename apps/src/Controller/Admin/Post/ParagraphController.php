@@ -17,9 +17,9 @@ class ParagraphController extends ParagraphControllerLib
 {
     #[Route(path: '/add/{id}', name: 'admin_post_paragraph_add')]
     public function add(
-        ParagraphRequestHandler $handler,
+        ParagraphRequestHandler $paragraphRequestHandler,
         Post $post,
-        ParagraphRepository $repository,
+        ParagraphRepository $paragraphRepository,
         Request $request
     ): RedirectResponse
     {
@@ -29,8 +29,8 @@ class ParagraphController extends ParagraphControllerLib
         $paragraph->setPost($post);
         $paragraph->settype($request->get('data'));
 
-        $repository->add($paragraph);
-        $handler->handle($old, $paragraph);
+        $paragraphRepository->add($paragraph);
+        $paragraphRequestHandler->handle($old, $paragraph);
 
         return $this->redirectToRoute('admin_post_paragraph_list', ['id' => $post->getId()]);
     }
@@ -56,8 +56,8 @@ class ParagraphController extends ParagraphControllerLib
     }
 
     #[Route(path: '/show/{id}', name: 'admin_post_paragraph_show')]
-    public function show(Paragraph $paragraph, ParagraphRequestHandler $handler)
+    public function show(Paragraph $paragraph, ParagraphRequestHandler $paragraphRequestHandler)
     {
-        return parent::showTwig($paragraph, $handler);
+        return parent::showTwig($paragraph, $paragraphRequestHandler);
     }
 }

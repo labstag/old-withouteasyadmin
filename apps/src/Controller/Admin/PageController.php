@@ -19,13 +19,13 @@ use Symfony\Component\Uid\Uuid;
 class PageController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_page_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Page $page, PageRequestHandler $requestHandler): Response
+    public function edit(AttachFormService $attachFormService, ?Page $page, PageRequestHandler $pageRequestHandler): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $pageRequestHandler,
             PageType::class,
             is_null($page) ? new Page() : $page,
             'admin/page/form.html.twig'
@@ -46,15 +46,15 @@ class PageController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_page_new', methods: ['GET', 'POST'])]
-    public function new(PageRepository $repository, PageRequestHandler $requestHandler): Response
+    public function new(PageRepository $pageRepository, PageRequestHandler $pageRequestHandler): Response
     {
         $page = new Page();
         $page->setName(Uuid::v1());
         $page->setFront(false);
 
         $old = clone $page;
-        $repository->add($page);
-        $requestHandler->handle($old, $page);
+        $pageRepository->add($page);
+        $pageRequestHandler->handle($old, $page);
 
         return $this->redirectToRoute('admin_page_edit', ['id' => $page->getId()]);
     }

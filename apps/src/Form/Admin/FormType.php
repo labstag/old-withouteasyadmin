@@ -21,55 +21,55 @@ class FormType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
 
-        $builder->add(
+        $formBuilder->add(
             'buttons',
             CollectionType::class,
             [
                 'entry_type' => ButtonsFieldsType::class,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'choice',
             CollectionType::class,
             [
                 'entry_type' => ChoiceFieldsType::class,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'dateandtime',
             CollectionType::class,
             [
                 'entry_type' => DateAndTimeFieldsType::class,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'extra',
             CollectionType::class,
             [
                 'entry_type' => ExtraFieldsFieldsType::class,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'hidden',
             CollectionType::class,
             [
                 'entry_type' => HiddenFieldsType::class,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'other',
             MinMaxCollectionType::class,
             [
                 'entry_type' => OtherFieldsType::class,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'text',
             MinMaxCollectionType::class,
             [
@@ -78,12 +78,12 @@ class FormType extends AbstractTypeLib
                 'allow_delete' => true,
             ]
         );
-        $this->addPlainPassword($builder);
+        $this->addPlainPassword($formBuilder);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

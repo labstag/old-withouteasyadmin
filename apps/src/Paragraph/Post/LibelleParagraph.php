@@ -36,7 +36,7 @@ class LibelleParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Libelle $postlibelle)
+    public function show(Libelle $libelle)
     {
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -53,7 +53,7 @@ class LibelleParagraph extends ParagraphLib
             $this->getParagraphFile('post/libelle'),
             [
                 'pagination' => $pagination,
-                'paragraph'  => $postlibelle,
+                'paragraph'  => $libelle,
             ]
         );
     }

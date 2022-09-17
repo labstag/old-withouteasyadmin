@@ -15,12 +15,12 @@ abstract class AddressType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'street',
             TextType::class,
             [
@@ -31,11 +31,11 @@ abstract class AddressType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'country',
             FlagCountryType::class
         );
-        $builder->add(
+        $formBuilder->add(
             'zipcode',
             TextType::class,
             [
@@ -47,7 +47,7 @@ abstract class AddressType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'city',
             TextType::class,
             [
@@ -59,7 +59,7 @@ abstract class AddressType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'gps',
             TextType::class,
             [
@@ -71,7 +71,7 @@ abstract class AddressType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'type',
             TextType::class,
             [
@@ -82,7 +82,7 @@ abstract class AddressType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'pmr',
             CheckboxType::class,
             [
@@ -92,10 +92,10 @@ abstract class AddressType extends AbstractTypeLib
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         // Configure your form options here
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             ['entity' => null]
         );
     }

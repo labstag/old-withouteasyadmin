@@ -36,7 +36,7 @@ class ShowParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Show $editoshow)
+    public function show(Show $show)
     {
         /** @var EditoRepository $repository */
         $repository = $this->getRepository(Edito::class);
@@ -50,7 +50,7 @@ class ShowParagraph extends ParagraphLib
             $this->getParagraphFile('edito/show'),
             [
                 'edito'     => $edito,
-                'paragraph' => $editoshow,
+                'paragraph' => $show,
             ]
         );
     }

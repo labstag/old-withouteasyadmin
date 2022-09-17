@@ -13,11 +13,11 @@ class ParagraphBlock extends BlockLib
 {
     public function __construct(
         TranslatorInterface $translator,
-        Environment $twig,
+        Environment $environment,
         protected ParagraphService $paragraphService
     )
     {
-        parent::__construct($translator, $twig);
+        parent::__construct($translator, $environment);
     }
 
     public function getEntity()

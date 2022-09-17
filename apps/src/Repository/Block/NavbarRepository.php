@@ -8,8 +8,8 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class NavbarRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Navbar::class);
+        parent::__construct($managerRegistry, Navbar::class);
     }
 }

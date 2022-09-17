@@ -8,8 +8,8 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class ParagraphRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Paragraph::class);
+        parent::__construct($managerRegistry, Paragraph::class);
     }
 }

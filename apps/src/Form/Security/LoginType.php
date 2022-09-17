@@ -13,11 +13,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class LoginType extends AbstractTypeLib
 {
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'username',
             TextType::class,
             [
@@ -28,7 +28,7 @@ class LoginType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'password',
             PasswordType::class,
             [
@@ -37,7 +37,7 @@ class LoginType extends AbstractTypeLib
             ]
         );
 
-        $builder->add(
+        $formBuilder->add(
             'remember_me',
             CheckboxType::class,
             [
@@ -46,7 +46,7 @@ class LoginType extends AbstractTypeLib
                 'required' => false,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'submit',
             SubmitType::class,
             [
@@ -56,10 +56,10 @@ class LoginType extends AbstractTypeLib
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         // Configure your form options here
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'csrf_field_name' => '_csrf_token',
                 'csrf_token_id'   => 'authenticate',

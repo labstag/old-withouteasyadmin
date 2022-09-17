@@ -19,14 +19,14 @@ class CustomBlock extends BlockLib
 
     public function __construct(
         TranslatorInterface $translator,
-        Environment $twig,
+        Environment $environment,
         protected RequestStack $requestStack,
         protected ParagraphService $paragraphService,
-        protected LayoutRepository $layoutRepo
+        protected LayoutRepository $layoutRepository
     )
     {
         $this->request       = $requestStack->getCurrentRequest();
-        parent::__construct($translator, $twig);
+        parent::__construct($translator, $environment);
     }
 
     public function getEntity()
@@ -72,7 +72,7 @@ class CustomBlock extends BlockLib
     {
         $all         = $this->request->attributes->all();
         $route       = $all['_route'];
-        $dataLayouts = $this->layoutRepo->findByCustom($custom);
+        $dataLayouts = $this->layoutRepository->findByCustom($custom);
         $layouts     = [];
         foreach ($dataLayouts as $layout) {
             if (!in_array($route, $layout->getUrl())) {

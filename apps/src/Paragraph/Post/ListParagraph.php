@@ -36,7 +36,7 @@ class ListParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Liste $postlist)
+    public function show(Liste $liste)
     {
         /** @var PostRepository $repository */
         $repository = $this->getRepository(Post::class);
@@ -50,7 +50,7 @@ class ListParagraph extends ParagraphLib
             $this->getParagraphFile('post/list'),
             [
                 'pagination' => $pagination,
-                'paragraph'  => $postlist,
+                'paragraph'  => $liste,
             ]
         );
     }

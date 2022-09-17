@@ -12,26 +12,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewBlockType extends BlockAbstractTypeLib
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'region',
             ChoiceType::class,
             [
                 'choices' => $this->blockService->getRegions(),
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'type',
             BlockType::class
         );
-        $builder->add('Enregistrer', SubmitType::class);
+        $formBuilder->add('Enregistrer', SubmitType::class);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Block::class,
             ]

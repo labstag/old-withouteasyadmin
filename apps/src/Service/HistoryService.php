@@ -16,8 +16,8 @@ class HistoryService
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        private readonly Environment $twig,
-        protected HistoryRepository $historyRepo
+        private readonly Environment $environment,
+        protected HistoryRepository $historyRepository
     )
     {
     }
@@ -33,17 +33,17 @@ class HistoryService
         bool $all
     )
     {
-        $history = $this->historyRepo->find($historyId);
+        $history = $this->historyRepository->find($historyId);
         if (!$history instanceof History || (false == $all && !in_array('publie', (array) $history->getState()))) {
             return;
         }
 
-        $dataChapters = $this->getChapters($history, $all);
-        if (0 == count($dataChapters)) {
+        $collection = $this->getChapters($history, $all);
+        if (0 == count($collection)) {
             return;
         }
 
-        $pdf  = $this->generateHistoryPdf($history, $dataChapters);
+        $html2Pdf  = $this->generateHistoryPdf($history, $collection);
         $path = sprintf(
             '%s/%s',
             $fileDirectory,
@@ -58,28 +58,28 @@ class HistoryService
             $path,
             $history->getSlug().($all ? '-all' : '')
         );
-        $pdf->output($this->filename, 'F');
+        $html2Pdf->output($this->filename, 'F');
     }
 
-    private function generateHistoryPdf(History $history, Collection $dataChapters): Html2Pdf
+    private function generateHistoryPdf(History $history, Collection $collection): Html2Pdf
     {
         $tmpfile = tmpfile();
         $data    = stream_get_meta_data($tmpfile);
-        $pdf     = new Html2Pdf();
-        $html    = $this->twig->render(
+        $html2Pdf     = new Html2Pdf();
+        $html    = $this->environment->render(
             'pdf/history/index.html.twig',
             [
                 'history'  => $history,
-                'chapters' => $dataChapters,
+                'chapters' => $collection,
             ]
         );
-        $pdf->writeHTML($html);
-        $pdf->createIndex('Table des matières', 25, 12, false, true, 3);
+        $html2Pdf->writeHTML($html);
+        $html2Pdf->createIndex('Table des matières', 25, 12, false, true, 3);
 
         $file = $data['uri'].'.pdf';
-        $pdf->output($file, 'F');
+        $html2Pdf->output($file, 'F');
 
-        return $pdf;
+        return $html2Pdf;
     }
 
     private function getChapters(History $history, bool $all): Collection

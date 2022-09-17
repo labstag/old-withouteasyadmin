@@ -11,16 +11,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ParagraphType extends ParagraphAbstractTypeLib
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $label    = $this->paragraphService->getName($builder->getData());
-        $formType = $this->paragraphService->getTypeForm($builder->getData());
-        $field    = $this->paragraphService->getEntityField($builder->getData());
-        $show     = $this->paragraphService->isShow($builder->getData());
-        $builder->add('background');
-        $builder->add('color');
+        $label    = $this->paragraphService->getName($formBuilder->getData());
+        $formType = $this->paragraphService->getTypeForm($formBuilder->getData());
+        $field    = $this->paragraphService->getEntityField($formBuilder->getData());
+        $show     = $this->paragraphService->isShow($formBuilder->getData());
+        $formBuilder->add('background');
+        $formBuilder->add('color');
         if ((!is_null($formType) || is_null($field)) && $show) {
-            $builder->add(
+            $formBuilder->add(
                 $field,
                 CollectionType::class,
                 [
@@ -33,13 +33,13 @@ class ParagraphType extends ParagraphAbstractTypeLib
             );
         }
 
-        $builder->add('Enregistrer', SubmitType::class);
+        $formBuilder->add('Enregistrer', SubmitType::class);
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Paragraph::class,
             ]

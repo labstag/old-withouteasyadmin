@@ -28,20 +28,20 @@ class InstallService
     public function __construct(
         protected OauthService $oauthService,
         protected UserService $userService,
-        protected PageRequestHandler $pageRH,
-        protected MenuRequestHandler $menuRH,
-        protected GroupeRequestHandler $groupeRH,
-        protected ConfigurationRequestHandler $configurationRH,
-        protected UserRequestHandler $userRH,
-        protected TemplateRequestHandler $templateRH,
+        protected PageRequestHandler $pageRequestHandler,
+        protected MenuRequestHandler $menuRequestHandler,
+        protected GroupeRequestHandler $groupeRequestHandler,
+        protected ConfigurationRequestHandler $configurationRequestHandler,
+        protected UserRequestHandler $userRequestHandler,
+        protected TemplateRequestHandler $templateRequestHandler,
         protected EntityManagerInterface $entityManager,
-        protected Environment $twig,
+        protected Environment $environment,
         protected CacheInterface $cache,
-        protected GroupeRepository $groupeRepo,
-        protected MenuRepository $menuRepo,
-        protected ConfigurationRepository $configurationRepo,
-        protected TemplateRepository $templateRepo,
-        protected UserRepository $userRepo
+        protected GroupeRepository $groupeRepository,
+        protected MenuRepository $menuRepository,
+        protected ConfigurationRepository $configurationRepository,
+        protected TemplateRepository $templateRepository,
+        protected UserRepository $userRepository
     )
     {
     }
@@ -86,8 +86,8 @@ class InstallService
     public function group()
     {
         $groupes = $this->getData('group');
-        foreach ($groupes as $row) {
-            $this->addGroupe($row);
+        foreach ($groupes as $groupe) {
+            $this->addGroupe($groupe);
         }
     }
 
@@ -114,7 +114,7 @@ class InstallService
     public function users()
     {
         $users   = $this->getData('user');
-        $groupes = $this->groupeRepo->findAll();
+        $groupes = $this->groupeRepository->findAll();
         foreach ($users as $user) {
             $this->addUser($groupes, $user);
         }
@@ -127,7 +127,7 @@ class InstallService
         $child->setParent($menu);
         if (isset($attr['separator'])) {
             $child->setSeparateur(true);
-            $this->menuRepo->add($child);
+            $this->menuRepository->add($child);
 
             return;
         }
@@ -137,7 +137,7 @@ class InstallService
             $child->setData($attr['data']);
         }
 
-        $this->menuRepo->add($child);
+        $this->menuRepository->add($child);
         if (isset($attr['childs'])) {
             $indexChild = 0;
             foreach ($attr['childs'] as $attrChild) {
@@ -153,7 +153,7 @@ class InstallService
     ): void
     {
         $search        = ['name' => $key];
-        $configuration = $this->configurationRepo->findOneBy($search);
+        $configuration = $this->configurationRepository->findOneBy($search);
         if (!$configuration instanceof Configuration) {
             $configuration = new Configuration();
         }
@@ -162,7 +162,7 @@ class InstallService
         $configuration->setName($key);
         $configuration->setValue($value);
 
-        $this->configurationRH->handle($old, $configuration);
+        $this->configurationRequestHandler->handle($old, $configuration);
     }
 
     protected function addGroupe(
@@ -170,7 +170,7 @@ class InstallService
     ): void
     {
         $search = ['code' => $row];
-        $groupe = $this->groupeRepo->findOneBy($search);
+        $groupe = $this->groupeRepository->findOneBy($search);
         if ($groupe instanceof Groupe) {
             return;
         }
@@ -180,7 +180,7 @@ class InstallService
         $groupe->setCode($row);
         $groupe->setName($row);
 
-        $this->groupeRH->handle($old, $groupe);
+        $this->groupeRequestHandler->handle($old, $groupe);
     }
 
     protected function addTemplate(
@@ -189,7 +189,7 @@ class InstallService
     ): void
     {
         $search   = ['code' => $key];
-        $template = $this->templateRepo->findOneBy($search);
+        $template = $this->templateRepository->findOneBy($search);
         if ($template instanceof Template) {
             return;
         }
@@ -201,15 +201,15 @@ class InstallService
 
         $htmlfile = 'tpl/mail-'.$key.'.html.twig';
         if (is_file('templates/'.$htmlfile)) {
-            $template->setHtml($this->twig->render($htmlfile));
+            $template->setHtml($this->environment->render($htmlfile));
         }
 
         $txtfile = 'tpl/mail-'.$key.'.txt.twig';
         if (is_file('templates/'.$txtfile)) {
-            $template->setText($this->twig->render($txtfile));
+            $template->setText($this->environment->render($txtfile));
         }
 
-        $this->templateRH->handle($old, $template);
+        $this->templateRequestHandler->handle($old, $template);
     }
 
     protected function addUser(
@@ -220,7 +220,7 @@ class InstallService
         $search = [
             'username' => $dataUser['username'],
         ];
-        $user   = $this->userRepo->findOneBy($search);
+        $user   = $this->userRepository->findOneBy($search);
         if ($user instanceof User) {
             return;
         }
@@ -232,19 +232,19 @@ class InstallService
     {
         // $this->entityManager->getFilters()->disable('softdeleteable');
         $search = ['clef' => $key];
-        $menu   = $this->menuRepo->findOneBy($search);
+        $menu   = $this->menuRepository->findOneBy($search);
         if ($menu instanceof Menu) {
-            $this->menuRepo->remove($menu);
+            $this->menuRepository->remove($menu);
         }
 
         $menu = new Menu();
         $menu->setPosition(0);
         $menu->setClef($key);
 
-        $this->menuRepo->add($menu);
+        $this->menuRepository->add($menu);
         $indexChild = 0;
-        foreach ($childs as $attr) {
-            $this->addChild($indexChild, $menu, $attr);
+        foreach ($childs as $child) {
+            $this->addChild($indexChild, $menu, $child);
             ++$indexChild;
         }
     }

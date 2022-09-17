@@ -36,7 +36,7 @@ class HeaderParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Header $postheader)
+    public function show(Header $header)
     {
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -55,7 +55,7 @@ class HeaderParagraph extends ParagraphLib
             $this->getParagraphFile('post/header'),
             [
                 'post'      => $post,
-                'paragraph' => $postheader,
+                'paragraph' => $header,
             ]
         );
     }

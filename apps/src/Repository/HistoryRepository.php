@@ -12,9 +12,9 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class HistoryRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, History::class);
+        parent::__construct($managerRegistry, History::class);
     }
 
     public function findPublier()

@@ -10,7 +10,7 @@ class FileService
 {
     public function __construct(
         protected ContainerBagInterface $containerBag,
-        private readonly AttachmentRequestHandler $attachmentRH
+        private readonly AttachmentRequestHandler $attachmentRequestHandler
     )
     {
     }
@@ -31,7 +31,7 @@ class FileService
                 (string) $file
             )
         );
-        $this->attachmentRH->handle($old, $attachment);
+        $this->attachmentRequestHandler->handle($old, $attachment);
 
         return $attachment;
     }

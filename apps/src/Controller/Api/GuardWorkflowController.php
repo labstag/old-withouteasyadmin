@@ -23,29 +23,29 @@ class GuardWorkflowController extends ApiControllerLib
 {
     #[Route(path: '/group/{group}', name: 'api_guard_workflowgroup', methods: ['POST'])]
     public function group(
-        WorkflowUserRepository $workflowUserRepo,
-        WorkflowRepository $workflowRepo,
+        WorkflowUserRepository $workflowUserRepository,
+        WorkflowRepository $workflowRepository,
         Request $request,
-        Groupe $group,
-        WorkflowGroupeRequestHandler $workflowGroupeRH
+        Groupe $groupe,
+        WorkflowGroupeRequestHandler $workflowGroupeRequestHandler
     )
     {
         return $this->setWorkflow(
-            $workflowUserRepo,
-            $workflowRepo,
+            $workflowUserRepository,
+            $workflowRepository,
             $request,
-            $group,
-            $workflowGroupeRH
+            $groupe,
+            $workflowGroupeRequestHandler
         );
     }
 
     #[Route(path: '/groups/{workflow}', name: 'api_guard_workflowgroups', methods: ['POST'])]
     public function groups(
-        WorkflowGroupeRepository $workflowGroupeRepo,
+        WorkflowGroupeRepository $workflowGroupeRepository,
         Workflow $workflow,
-        WorkflowGroupeRequestHandler $workflowGroupeRH,
+        WorkflowGroupeRequestHandler $workflowGroupeRequestHandler,
         Request $request,
-        GroupeRepository $groupeRepo
+        GroupeRepository $groupeRepository
     )
     {
         $data    = [
@@ -54,15 +54,15 @@ class GuardWorkflowController extends ApiControllerLib
             'error'  => '',
         ];
         $state   = $request->request->all('state');
-        $groupes = $groupeRepo->findAll();
-        foreach ($groupes as $group) {
+        $groupes = $groupeRepository->findAll();
+        foreach ($groupes as $groupe) {
             $data = $this->setWorkflowGroupe(
-                $workflowGroupeRepo,
+                $workflowGroupeRepository,
                 $data,
-                $group,
+                $groupe,
                 $workflow,
                 $state,
-                $workflowGroupeRH
+                $workflowGroupeRequestHandler
             );
         }
 
@@ -78,12 +78,12 @@ class GuardWorkflowController extends ApiControllerLib
         $get     = $request->query->all();
         $data    = $this->getGuardRouteOrWorkflow($data, $get, WorkflowUser::class);
         $results = $this->getResultWorkflow($request, WorkflowGroupe::class);
-        foreach ($results as $row) {
+        foreach ($results as $result) {
             // @var WorkflowGroupe $row
             $data['group'][] = [
-                'groupe'     => $row->getRefgroupe()->getCode(),
-                'entity'     => $row->getRefworkflow()->getEntity(),
-                'transition' => $row->getRefworkflow()->getTransition(),
+                'groupe'     => $result->getRefgroupe()->getCode(),
+                'entity'     => $result->getRefworkflow()->getEntity(),
+                'transition' => $result->getRefworkflow()->getTransition(),
             ];
         }
 
@@ -92,11 +92,11 @@ class GuardWorkflowController extends ApiControllerLib
 
     #[Route(path: '/setgroup/{group}/{workflow}', name: 'api_guard_workflowsetgroup', methods: ['POST'])]
     public function setgroup(
-        WorkflowGroupeRepository $repository,
-        Groupe $group,
+        WorkflowGroupeRepository $workflowGroupeRepository,
+        Groupe $groupe,
         Workflow $workflow,
         Request $request,
-        WorkflowGroupeRequestHandler $workflowGroupeRH
+        WorkflowGroupeRequestHandler $workflowGroupeRequestHandler
     )
     {
         $data  = [
@@ -106,12 +106,12 @@ class GuardWorkflowController extends ApiControllerLib
         ];
         $state = $request->request->all('state');
         $data  = $this->setWorkflowGroupe(
-            $repository,
+            $workflowGroupeRepository,
             $data,
-            $group,
+            $groupe,
             $workflow,
             $state,
-            $workflowGroupeRH
+            $workflowGroupeRequestHandler
         );
 
         return new JsonResponse($data);
@@ -119,11 +119,11 @@ class GuardWorkflowController extends ApiControllerLib
 
     #[Route(path: '/setuser/{user}/{workflow}', name: 'api_guard_workflowsetuser', methods: ['POST'])]
     public function setuser(
-        WorkflowUserRepository $repository,
+        WorkflowUserRepository $workflowUserRepository,
         User $user,
         Workflow $workflow,
         Request $request,
-        WorkflowUserRequestHandler $workflowUserRH
+        WorkflowUserRequestHandler $workflowUserRequestHandler
     )
     {
         $data  = [
@@ -133,12 +133,12 @@ class GuardWorkflowController extends ApiControllerLib
         ];
         $state = $request->request->all('state');
         $data  = $this->setWorkflowUser(
-            $repository,
+            $workflowUserRepository,
             $data,
             $user,
             $workflow,
             $state,
-            $workflowUserRH
+            $workflowUserRequestHandler
         );
 
         return new JsonResponse($data);
@@ -146,25 +146,25 @@ class GuardWorkflowController extends ApiControllerLib
 
     #[Route(path: '/user/{user}', name: 'api_guard_workflowuser', methods: ['POST'])]
     public function user(
-        WorkflowUserRepository $workflowUserRepo,
-        WorkflowRepository $workflowRepo,
+        WorkflowUserRepository $workflowUserRepository,
+        WorkflowRepository $workflowRepository,
         User $user,
         Request $request,
-        WorkflowUserRequestHandler $workflowUserRH
+        WorkflowUserRequestHandler $workflowUserRequestHandler
     )
     {
         return $this->setWorkflow(
-            $workflowUserRepo,
-            $workflowRepo,
+            $workflowUserRepository,
+            $workflowRepository,
             $request,
             $user,
-            $workflowUserRH
+            $workflowUserRequestHandler
         );
     }
 
     private function setWorkflow(
-        WorkflowUserRepository $workflowUserRepo,
-        WorkflowRepository $workflowRepo,
+        WorkflowUserRepository $workflowUserRepository,
+        WorkflowRepository $workflowRepository,
         $request,
         $entity,
         $requestHandler
@@ -176,11 +176,11 @@ class GuardWorkflowController extends ApiControllerLib
             'error'  => '',
         ];
         $state     = $request->request->all('state');
-        $workflows = $workflowRepo->findAll();
+        $workflows = $workflowRepository->findAll();
         // @var WorkflowUser $route
         foreach ($workflows as $workflow) {
             $data = $this->setWorkflowUser(
-                $workflowUserRepo,
+                $workflowUserRepository,
                 $data,
                 $entity,
                 $workflow,
@@ -193,7 +193,7 @@ class GuardWorkflowController extends ApiControllerLib
     }
 
     private function setWorkflowGroupe(
-        WorkflowGroupeRepository $repository,
+        WorkflowGroupeRepository $workflowGroupeRepository,
         $data,
         $group,
         $workflow,
@@ -201,7 +201,7 @@ class GuardWorkflowController extends ApiControllerLib
         $workflowGroupeRH
     )
     {
-        $workflowGroupe = $repository->findOneBy(
+        $workflowGroupe = $workflowGroupeRepository->findOneBy(
             [
                 'refgroupe'   => $group,
                 'refworkflow' => $workflow,
@@ -210,7 +210,7 @@ class GuardWorkflowController extends ApiControllerLib
         if ('0' === $state) {
             if ($workflowGroupe instanceof WorkflowGroupe) {
                 $data['delete'] = 1;
-                $repository->remove($workflowGroupe);
+                $workflowGroupeRepository->remove($workflowGroupe);
             }
 
             return $data;
@@ -234,7 +234,7 @@ class GuardWorkflowController extends ApiControllerLib
     }
 
     private function setWorkflowUser(
-        WorkflowUserRepository $repository,
+        WorkflowUserRepository $workflowUserRepository,
         $data,
         $user,
         $workflow,
@@ -242,11 +242,11 @@ class GuardWorkflowController extends ApiControllerLib
         $workflowUserRH
     )
     {
-        $workflowUser = $repository->findOneBy(['refuser' => $user, 'refworkflow' => $workflow]);
+        $workflowUser = $workflowUserRepository->findOneBy(['refuser' => $user, 'refworkflow' => $workflow]);
         if ('0' === $state) {
             if ($workflowUser instanceof WorkflowUser) {
                 $data['delete'] = 1;
-                $repository->remove($workflowUser);
+                $workflowUserRepository->remove($workflowUser);
             }
 
             return $data;

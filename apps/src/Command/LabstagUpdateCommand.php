@@ -23,7 +23,7 @@ class LabstagUpdateCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $inputOutput     = new SymfonyStyle($input, $output);
+        $symfonyStyle     = new SymfonyStyle($input, $output);
         $publicIndex     = 'public/index.php';
         $maintenanceFile = 'maintenance.html';
         $actifFile       = 'public.php';
@@ -34,16 +34,16 @@ class LabstagUpdateCommand extends CommandLib
         if ($input->getOption('maintenanceon') && is_file($maintenanceFile)) {
             $maintanceFile = file_get_contents($maintenanceFile);
             file_put_contents($publicIndex, $maintanceFile);
-            $inputOutput->note('Maintenance activé');
+            $symfonyStyle->note('Maintenance activé');
         }
 
         if ($input->getOption('maintenanceoff') && is_file($actifFile)) {
             $publicFile = file_get_contents($actifFile);
             file_put_contents($publicIndex, $publicFile);
-            $inputOutput->note('Maintenance désactivé');
+            $symfonyStyle->note('Maintenance désactivé');
         }
 
-        $inputOutput->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $symfonyStyle->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;
     }

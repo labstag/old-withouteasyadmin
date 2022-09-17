@@ -18,17 +18,17 @@ class BlockType extends AbstractType
     }
 
     public function buildView(
-        FormView $view,
+        FormView $formView,
         FormInterface $form,
         array $options
     ): void
     {
-        unset($view, $form, $options);
+        unset($formView, $form, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $optionsResolver)
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'placeholder' => 'Choisir le block',
                 'choices'     => $this->blockService->getAll(),

@@ -51,12 +51,12 @@ class OauthAuthenticator extends AbstractAuthenticator
         protected EntityManagerInterface $entityManager,
         protected UrlGeneratorInterface $urlGenerator,
         protected CsrfTokenManagerInterface $csrfTokenManager,
-        protected UserPasswordHasherInterface $passwordEncoder,
+        protected UserPasswordHasherInterface $userPasswordHasher,
         protected OauthService $oauthService,
         protected RequestStack $requestStack,
-        protected TokenStorageInterface $token,
+        protected TokenStorageInterface $tokenStorage,
         protected LoggerInterface $logger,
-        protected UserRepository $userRepo
+        protected UserRepository $userRepository
     )
     {
         // @var Request $request
@@ -84,18 +84,18 @@ class OauthAuthenticator extends AbstractAuthenticator
 
         try {
             // @var AccessToken $tokenProvider
-            $tokenProvider = $provider->getAccessToken(
+            $accessToken = $provider->getAccessToken(
                 'authorization_code',
                 [
                     'code' => $query['code'],
                 ]
             );
             // @var mixed $userOauth
-            $userOauth = $provider->getResourceOwner($tokenProvider);
-            $data      = $userOauth->toArray();
+            $resourceOwner = $provider->getResourceOwner($accessToken);
+            $data      = $resourceOwner->toArray();
             $client    = $attributes['_route_params']['oauthCode'];
             $identity  = $this->oauthService->getIdentity($data, $client);
-            $user      = $this->userRepo->findOauth(
+            $user      = $this->userRepository->findOauth(
                 $identity,
                 $client
             );
@@ -111,10 +111,10 @@ class OauthAuthenticator extends AbstractAuthenticator
         }
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    public function onAuthenticationFailure(Request $request, AuthenticationException $authenticationException): ?Response
     {
         if ($request->hasSession()) {
-            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
+            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $authenticationException);
         }
 
         $url = $this->getLoginUrl($request);
@@ -145,7 +145,7 @@ class OauthAuthenticator extends AbstractAuthenticator
         $route       = $request->attributes->get('_route');
         $this->route = $route;
 
-        $token       = $this->token->getToken();
+        $token       = $this->tokenStorage->getToken();
         $test1       = 'connect_check' === $route && !array_key_exists('link', $session);
         $test2       = (is_null($token) || !$token->getUser() instanceof User);
 
@@ -159,10 +159,10 @@ class OauthAuthenticator extends AbstractAuthenticator
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 
-    protected function setOauthCode(ParameterBag $attributes): string
+    protected function setOauthCode(ParameterBag $parameterBag): string
     {
-        if ($attributes->has('oauthCode')) {
-            return $attributes->get('oauthCode');
+        if ($parameterBag->has('oauthCode')) {
+            return $parameterBag->get('oauthCode');
         }
 
         return '';

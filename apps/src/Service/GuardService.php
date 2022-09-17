@@ -50,11 +50,11 @@ class GuardService
     public function __construct(
         protected RouterInterface $router,
         protected EntityManagerInterface $entityManager,
-        protected Registry $workflows,
-        protected GroupeRepository $groupeRepo,
-        protected RouteRepository $routeRepo,
-        protected RouteGroupeRepository $routeGroupeRepo,
-        protected RouteUserRepository $routeUserRepo
+        protected Registry $registry,
+        protected GroupeRepository $groupeRepository,
+        protected RouteRepository $routeRepository,
+        protected RouteGroupeRepository $routeGroupeRepository,
+        protected RouteUserRepository $routeUserRepository
     )
     {
     }
@@ -97,8 +97,8 @@ class GuardService
     public function delete(): void
     {
         $results = $this->getLostRoute();
-        foreach ($results as $route) {
-            $this->routeRepo->remove($route);
+        foreach ($results as $result) {
+            $this->routeRepository->remove($result);
         }
     }
 
@@ -175,7 +175,7 @@ class GuardService
         }
 
         if (empty($token) || !$token->getUser() instanceof User) {
-            $groupe = $this->groupeRepo->findOneBy(['code' => 'visiteur']);
+            $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
 
             return $this->searchRouteGroupe($groupe, $route);
         }
@@ -210,8 +210,8 @@ class GuardService
     {
         $results = $this->getLostRoute();
         $data    = [];
-        foreach ($results as $route) {
-            $data[] = [$route];
+        foreach ($results as $result) {
+            $data[] = [$result];
         }
 
         return $data;
@@ -222,8 +222,8 @@ class GuardService
         $data = [];
         foreach (self::REGEX as $regex) {
             preg_match($regex, $string, $matches);
-            foreach ($matches as $info) {
-                $data[] = $info;
+            foreach ($matches as $match) {
+                $data[] = $match;
             }
         }
 
@@ -232,7 +232,7 @@ class GuardService
 
     public function routesEnableGroupe(Groupe $groupe): array
     {
-        $data   = $this->routeRepo->findBy([], ['name' => 'ASC']);
+        $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
         $routes = [];
         foreach ($data as $route) {
             $state = $this->guardRouteEnableGroupe($route, $groupe);
@@ -248,7 +248,7 @@ class GuardService
 
     public function routesEnableUser(User $user): array
     {
-        $data   = $this->routeRepo->findBy([], ['name' => 'ASC']);
+        $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
         $routes = [];
         foreach ($data as $route) {
             $state = $this->guardRouteEnableUser($route, $user);
@@ -265,7 +265,7 @@ class GuardService
     public function save($name): void
     {
         $search = ['name' => $name];
-        $result = $this->routeRepo->findOneBy(
+        $result = $this->routeRepository->findOneBy(
             $search
         );
 
@@ -276,7 +276,7 @@ class GuardService
         $route = new Route();
         $route->setName($name);
 
-        $this->routeRepo->add($route);
+        $this->routeRepository->add($route);
     }
 
     public function tables()
@@ -297,7 +297,7 @@ class GuardService
 
     protected function searchRouteGroupe(Groupe $groupe, string $route): bool
     {
-        $entity = $this->routeGroupeRepo->findRoute($groupe, $route);
+        $entity = $this->routeGroupeRepository->findRoute($groupe, $route);
         if (empty($entity)) {
             return false;
         }
@@ -308,7 +308,7 @@ class GuardService
     protected function searchRouteUser(User $user, string $route): bool
     {
         $stateGroupe = $this->searchRouteGroupe($user->getRefgroupe(), $route);
-        $entity      = $this->routeUserRepo->findRoute($user, $route);
+        $entity      = $this->routeUserRepository->findRoute($user, $route);
         $stateUser   = ($entity instanceof RouteUser) ? $entity->isState() : false;
 
         return $stateGroupe || $stateUser;
@@ -319,7 +319,7 @@ class GuardService
         $all    = $this->all();
         $routes = array_keys($all);
 
-        return $this->routeRepo->findLost($routes);
+        return $this->routeRepository->findLost($routes);
     }
 
     private function isRouteGroupe(
@@ -349,8 +349,8 @@ class GuardService
         $data = $this->regex($string);
         foreach (self::REGEX_PUBLIC as $regex) {
             preg_match($regex, $string, $matches);
-            foreach ($matches as $info) {
-                $data[] = $info;
+            foreach ($matches as $match) {
+                $data[] = $match;
             }
         }
 

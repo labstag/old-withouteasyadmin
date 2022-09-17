@@ -14,12 +14,12 @@ class GuardController extends AdminControllerLib
 {
     #[Route(path: '/', name: 'admin_guard_index', methods: ['GET', 'POST'])]
     public function index(
-        WorkflowRepository $workflowRepo,
-        GroupeRepository $groupeRepo,
-        RouteRepository $routeRepo
+        WorkflowRepository $workflowRepository,
+        GroupeRepository $groupeRepository,
+        RouteRepository $routeRepository
     ): Response
     {
-        $workflows = $workflowRepo->findBy(
+        $workflows = $workflowRepository->findBy(
             [],
             [
                 'entity'     => 'ASC',
@@ -30,8 +30,8 @@ class GuardController extends AdminControllerLib
         return $this->render(
             'admin/guard/index.html.twig',
             [
-                'groups'    => $groupeRepo->findBy([], ['name' => 'ASC']),
-                'routes'    => $routeRepo->findBy([], ['name' => 'ASC']),
+                'groups'    => $groupeRepository->findBy([], ['name' => 'ASC']),
+                'routes'    => $routeRepository->findBy([], ['name' => 'ASC']),
                 'workflows' => $workflows,
             ]
         );

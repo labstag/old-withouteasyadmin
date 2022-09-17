@@ -16,11 +16,11 @@ class PageType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'name',
             TextType::class,
             [
@@ -29,14 +29,14 @@ class PageType extends AbstractTypeLib
             ]
         );
         $this->addParagraph(
-            $builder,
+            $formBuilder,
             [
                 'add'    => 'admin_page_paragraph_add',
                 'edit'   => 'admin_page_paragraph_show',
                 'delete' => 'admin_page_paragraph_delete',
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'password',
             TextType::class,
             [
@@ -45,7 +45,7 @@ class PageType extends AbstractTypeLib
                 'required' => false,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'slug',
             TextType::class,
             [
@@ -55,20 +55,20 @@ class PageType extends AbstractTypeLib
             ]
         );
 
-        $builder->add(
+        $formBuilder->add(
             'parent',
             EntityType::class,
             [
                 'required'      => false,
                 'class'         => Page::class,
-                'query_builder' => static fn(PageRepository $er) => $er->formType($options),
+                'query_builder' => static fn(PageRepository $pageRepository) => $pageRepository->formType($options),
             ]
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Page::class,
             ]

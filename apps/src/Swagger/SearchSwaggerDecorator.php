@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class SearchSwaggerDecorator implements NormalizerInterface
 {
-    public function __construct(private readonly NormalizerInterface $decorated)
+    public function __construct(private readonly NormalizerInterface $normalizer)
     {
     }
 
@@ -27,7 +27,7 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         array $context = []
     ): array|string|int|float|bool|ArrayObject|null
     {
-        $docs = $this->decorated->normalize($object, $format, $context);
+        $docs = $this->normalizer->normalize($object, $format, $context);
         $this->setUsers($docs);
         $this->setLibelles($docs);
         $this->setGroupes($docs);
@@ -41,7 +41,7 @@ final class SearchSwaggerDecorator implements NormalizerInterface
      */
     public function supportsNormalization($data, ?string $format = null): bool
     {
-        return $this->decorated->supportsNormalization($data, $format);
+        return $this->normalizer->supportsNormalization($data, $format);
     }
 
     private function getResponses()

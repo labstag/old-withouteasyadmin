@@ -10,7 +10,7 @@ use Twig\Environment;
 
 class ParagraphService
 {
-    public function __construct(protected $paragraphsclass, protected Environment $twig)
+    public function __construct(protected $paragraphsclass, protected Environment $environment)
     {
     }
 
@@ -34,10 +34,10 @@ class ParagraphService
         $field      = $this->getEntityField($paragraph);
         $reflection = $this->setReflection($paragraph);
         $entity     = null;
-        $accessor   = PropertyAccess::createPropertyAccessor();
-        foreach ($reflection->getProperties() as $property) {
-            if ($property->getName() == $field) {
-                $entities = $accessor->getValue($paragraph, $field);
+        $propertyAccessor   = PropertyAccess::createPropertyAccessor();
+        foreach ($reflection->getProperties() as $reflectionProperty) {
+            if ($reflectionProperty->getName() == $field) {
+                $entities = $propertyAccessor->getValue($paragraph, $field);
                 $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
 
                 break;
@@ -47,14 +47,14 @@ class ParagraphService
         return $entity;
     }
 
-    public function getEntityField(Paragraph $entity)
+    public function getEntityField(Paragraph $paragraph)
     {
-        $childentity = $this->getTypeEntity($entity);
+        $childentity = $this->getTypeEntity($paragraph);
         $field       = null;
         $reflection  = $this->setReflection($childentity);
-        foreach ($reflection->getProperties() as $property) {
-            if ('paragraph' == $property->getName()) {
-                preg_match('#inversedBy=\"(.*)\"#m', (string) $property->getDocComment(), $matches);
+        foreach ($reflection->getProperties() as $reflectionProperty) {
+            if ('paragraph' == $reflectionProperty->getName()) {
+                preg_match('#inversedBy=\"(.*)\"#m', (string) $reflectionProperty->getDocComment(), $matches);
                 $field = $matches[1] ?? $field;
 
                 break;
@@ -64,9 +64,9 @@ class ParagraphService
         return $field;
     }
 
-    public function getName(Paragraph $entity)
+    public function getName(Paragraph $paragraph)
     {
-        $type = $entity->getType();
+        $type = $paragraph->getType();
         $name = '';
         foreach ($this->paragraphsclass as $row) {
             if ($row->getType() == $type) {
@@ -93,24 +93,24 @@ class ParagraphService
         return $name;
     }
 
-    public function getTypeEntity(Paragraph $entity)
+    public function getTypeEntity(Paragraph $paragraph)
     {
-        $type   = $entity->getType();
-        $entity = null;
+        $type   = $paragraph->getType();
+        $paragraph = null;
         foreach ($this->paragraphsclass as $row) {
             if ($row->getType() == $type) {
-                $entity = $row->getEntity();
+                $paragraph = $row->getEntity();
 
                 break;
             }
         }
 
-        return $entity;
+        return $paragraph;
     }
 
-    public function getTypeForm(Paragraph $entity)
+    public function getTypeForm(Paragraph $paragraph)
     {
-        $type = $entity->getType();
+        $type = $paragraph->getType();
         $form = null;
         foreach ($this->paragraphsclass as $row) {
             if ($row->getType() == $type) {
@@ -123,9 +123,9 @@ class ParagraphService
         return $form;
     }
 
-    public function isShow(Paragraph $entity)
+    public function isShow(Paragraph $paragraph)
     {
-        $type = $entity->getType();
+        $type = $paragraph->getType();
         $show = false;
         foreach ($this->paragraphsclass as $row) {
             if ($row->getType() == $type) {

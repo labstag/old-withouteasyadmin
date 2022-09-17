@@ -19,12 +19,12 @@ class BreadcrumbBlock extends BlockLib
 {
     public function __construct(
         TranslatorInterface $translator,
-        Environment $twig,
-        protected RouterInterface $routerInterface,
-        protected PageRepository $pageRepo
+        Environment $environment,
+        protected RouterInterface $router,
+        protected PageRepository $pageRepository
     )
     {
-        parent::__construct($translator, $twig);
+        parent::__construct($translator, $environment);
     }
 
     public function getEntity()
@@ -84,7 +84,7 @@ class BreadcrumbBlock extends BlockLib
         }
 
         $data[] = [
-            'route' => $this->routerInterface->generate(
+            'route' => $this->router->generate(
                 'front_article',
                 [
                     'slug' => $content->getSlug(),
@@ -93,7 +93,7 @@ class BreadcrumbBlock extends BlockLib
             'title' => $content->getTitle(),
         ];
 
-        $page = $this->pageRepo->findOneBy(
+        $page = $this->pageRepository->findOneBy(
             ['slug' => 'mes-articles']
         );
 
@@ -107,7 +107,7 @@ class BreadcrumbBlock extends BlockLib
         }
 
         $data[] = [
-            'route' => $this->routerInterface->generate(
+            'route' => $this->router->generate(
                 'front_history_chapter',
                 [
                     'history' => $content->getRefhistory()->getSlug(),
@@ -127,11 +127,11 @@ class BreadcrumbBlock extends BlockLib
         }
 
         $data[] = [
-            'route' => $this->routerInterface->generate('front_edito'),
+            'route' => $this->router->generate('front_edito'),
             'title' => $content->getTitle(),
         ];
 
-        $page = $this->pageRepo->findOneBy(
+        $page = $this->pageRepository->findOneBy(
             ['slug' => '']
         );
 
@@ -145,7 +145,7 @@ class BreadcrumbBlock extends BlockLib
         }
 
         $data[] = [
-            'route' => $this->routerInterface->generate(
+            'route' => $this->router->generate(
                 'front_history',
                 [
                     'slug' => $content->getSlug(),
@@ -154,7 +154,7 @@ class BreadcrumbBlock extends BlockLib
             'title' => $content->getName(),
         ];
 
-        $page = $this->pageRepo->findOneBy(
+        $page = $this->pageRepository->findOneBy(
             ['slug' => 'mes-histoires']
         );
 
@@ -168,7 +168,7 @@ class BreadcrumbBlock extends BlockLib
         }
 
         $data[] = [
-            'route' => $this->routerInterface->generate(
+            'route' => $this->router->generate(
                 'front',
                 [
                     'slug' => $content->getSlug(),

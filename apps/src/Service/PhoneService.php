@@ -35,8 +35,8 @@ class PhoneService
     {
         $numero         = str_replace([' ', '-', '.'], '', (string) $numero);
         $data           = [];
-        $timeZoneMapper = PhoneNumberToTimeZonesMapper::getInstance();
-        $carrier        = PhoneNumberToCarrierMapper::getInstance();
+        $phoneNumberToTimeZonesMapper = PhoneNumberToTimeZonesMapper::getInstance();
+        $phoneNumberToCarrierMapper        = PhoneNumberToCarrierMapper::getInstance();
 
         try {
             $parse   = $this->phoneUtil->parse(
@@ -60,8 +60,8 @@ class PhoneService
                     PhoneNumberFormat::INTERNATIONAL
                 ),
             ];
-            $data['timezones'] = $timeZoneMapper->getTimeZonesForNumber($parse);
-            $data['carrier']   = $carrier->getNameForNumber(
+            $data['timezones'] = $phoneNumberToTimeZonesMapper->getTimeZonesForNumber($parse);
+            $data['carrier']   = $phoneNumberToCarrierMapper->getNameForNumber(
                 $parse,
                 strtoupper($locale)
             );

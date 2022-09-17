@@ -18,11 +18,11 @@ class GeoCodeController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_geocode_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_geocode_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?GeoCode $geoCode, GeoCodeRequestHandler $requestHandler): Response
+    public function edit(AttachFormService $attachFormService, ?GeoCode $geoCode, GeoCodeRequestHandler $geoCodeRequestHandler): Response
     {
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $geoCodeRequestHandler,
             GeoCodeType::class,
             is_null($geoCode) ? new GeoCode() : $geoCode
         );

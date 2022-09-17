@@ -22,10 +22,10 @@ class LabstagWorkflowsShowCommand extends CommandLib
     public function __construct(
         protected $entitiesclass,
         EntityManagerInterface $entityManager,
-        protected Registry $workflows,
-        protected EventDispatcherInterface $dispatcher,
-        protected WorkflowRequestHandler $workflowRH,
-        protected WorkflowRepository $workflowRepo
+        protected Registry $registry,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected WorkflowRequestHandler $workflowRequestHandler,
+        protected WorkflowRepository $workflowRepository
     )
     {
         parent::__construct($entityManager);
@@ -38,14 +38,14 @@ class LabstagWorkflowsShowCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $inputOutput = new SymfonyStyle($input, $output);
-        $inputOutput->title('Ajout des workflows dans la base de données');
+        $symfonyStyle = new SymfonyStyle($input, $output);
+        $symfonyStyle->title('Ajout des workflows dans la base de données');
 
         $data     = [];
         $entities = [];
         foreach ($this->entitiesclass as $entity) {
-            if ($this->workflows->has($entity)) {
-                $workflow    = $this->workflows->get($entity);
+            if ($this->registry->has($entity)) {
+                $workflow    = $this->registry->get($entity);
                 $definition  = $workflow->getDefinition();
                 $name        = $workflow->getName();
                 $entities[]  = $name;
@@ -59,7 +59,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
         $this->delete($entities, $data);
         foreach ($data as $name => $transitions) {
             foreach ($transitions as $transition) {
-                $workflow = $this->workflowRepo->findOneBy(
+                $workflow = $this->workflowRepository->findOneBy(
                     [
                         'entity'     => $name,
                         'transition' => $transition,
@@ -73,26 +73,26 @@ class LabstagWorkflowsShowCommand extends CommandLib
                 $workflow->setEntity($name);
                 $workflow->setTransition($transition);
                 $old = clone $workflow;
-                $this->workflowRH->handle($old, $workflow);
+                $this->workflowRequestHandler->handle($old, $workflow);
             }
         }
 
-        $inputOutput->success('Fin de traitement');
+        $symfonyStyle->success('Fin de traitement');
 
         return Command::SUCCESS;
     }
 
     private function delete($entities, $data)
     {
-        $toDelete = $this->workflowRepo->toDeleteEntities($entities);
+        $toDelete = $this->workflowRepository->toDeleteEntities($entities);
         foreach ($toDelete as $entity) {
-            $this->workflowRepo->remove($entity);
+            $this->workflowRepository->remove($entity);
         }
 
         foreach ($data as $entity => $transitions) {
-            $toDelete = $this->workflowRepo->toDeleteTransition($entity, $transitions);
+            $toDelete = $this->workflowRepository->toDeleteTransition($entity, $transitions);
             foreach ($toDelete as $entity) {
-                $this->workflowRepo->remove($entity);
+                $this->workflowRepository->remove($entity);
             }
         }
     }

@@ -17,9 +17,9 @@ class HistoryController extends ParagraphControllerLib
 {
     #[Route(path: '/add/{id}', name: 'admin_history_paragraph_add')]
     public function add(
-        ParagraphRequestHandler $handler,
+        ParagraphRequestHandler $paragraphRequestHandler,
         History $history,
-        ParagraphRepository $repository,
+        ParagraphRepository $paragraphRepository,
         Request $request
     ): RedirectResponse
     {
@@ -29,8 +29,8 @@ class HistoryController extends ParagraphControllerLib
         $paragraph->setHistory($history);
         $paragraph->settype($request->get('data'));
 
-        $repository->add($paragraph);
-        $handler->handle($old, $paragraph);
+        $paragraphRepository->add($paragraph);
+        $paragraphRequestHandler->handle($old, $paragraph);
 
         return $this->redirectToRoute('admin_history_paragraph_list', ['id' => $history->getId()]);
     }
@@ -56,8 +56,8 @@ class HistoryController extends ParagraphControllerLib
     }
 
     #[Route(path: '/show/{id}', name: 'admin_history_paragraph_show')]
-    public function show(Paragraph $paragraph, ParagraphRequestHandler $handler)
+    public function show(Paragraph $paragraph, ParagraphRequestHandler $paragraphRequestHandler)
     {
-        return parent::showTwig($paragraph, $handler);
+        return parent::showTwig($paragraph, $paragraphRequestHandler);
     }
 }

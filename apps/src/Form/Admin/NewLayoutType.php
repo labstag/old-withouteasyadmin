@@ -17,29 +17,29 @@ class NewLayoutType extends AbstractTypeLib
 {
     public function __construct(
         TranslatorInterface $translator,
-        protected GuardService $service
+        protected GuardService $guardService
     )
     {
         parent::__construct($translator);
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'custom',
             EntityType::class,
             [
                 'class'         => Custom::class,
-                'query_builder' => static fn(CustomRepository $er) => $er->formType(),
+                'query_builder' => static fn(CustomRepository $customRepository) => $customRepository->formType(),
             ]
         );
-        $builder->add('Enregistrer', SubmitType::class);
+        $formBuilder->add('Enregistrer', SubmitType::class);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Layout::class,
             ]

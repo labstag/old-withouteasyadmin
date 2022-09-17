@@ -36,7 +36,7 @@ class ShowParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Show $historyshow)
+    public function show(Show $show)
     {
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -55,7 +55,7 @@ class ShowParagraph extends ParagraphLib
             $this->getParagraphFile('history/show'),
             [
                 'history'   => $history,
-                'paragraph' => $historyshow,
+                'paragraph' => $show,
             ]
         );
     }

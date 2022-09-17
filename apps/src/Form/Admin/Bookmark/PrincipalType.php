@@ -20,13 +20,13 @@ class PrincipalType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $this->setTextType($builder);
-        $this->addPublished($builder);
-        $builder->add(
+        $this->setTextType($formBuilder);
+        $this->addPublished($formBuilder);
+        $formBuilder->add(
             'url',
             UrlType::class,
             [
@@ -38,8 +38,8 @@ class PrincipalType extends AbstractTypeLib
                 ],
             ]
         );
-        $this->setContent($builder);
-        $builder->add(
+        $this->setContent($formBuilder);
+        $formBuilder->add(
             'file',
             FileType::class,
             [
@@ -49,7 +49,7 @@ class PrincipalType extends AbstractTypeLib
                 'attr'     => ['accept' => 'image/*'],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'refuser',
             SearchableType::class,
             [
@@ -63,7 +63,7 @@ class PrincipalType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'refcategory',
             SearchableType::class,
             [
@@ -81,7 +81,7 @@ class PrincipalType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'libelles',
             SearchableType::class,
             [
@@ -99,9 +99,9 @@ class PrincipalType extends AbstractTypeLib
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Bookmark::class,
             ]

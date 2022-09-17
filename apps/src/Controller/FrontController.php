@@ -12,10 +12,10 @@ class FrontController extends FrontControllerLib
 {
     #[Route(path: '/edito', name: 'front_edito', priority: 1)]
     public function edio(
-        EditoRepository $editoRepo
+        EditoRepository $editoRepository
     )
     {
-        $edito = $editoRepo->findOnePublier();
+        $edito = $editoRepository->findOnePublier();
 
         if (!$edito instanceof Edito) {
             throw $this->createNotFoundException();
@@ -38,9 +38,9 @@ class FrontController extends FrontControllerLib
     )]
     public function index(
         string $slug,
-        PageRepository $pageRepo
+        PageRepository $pageRepository
     )
     {
-        return $this->page($slug, $pageRepo);
+        return $this->page($slug, $pageRepository);
     }
 }

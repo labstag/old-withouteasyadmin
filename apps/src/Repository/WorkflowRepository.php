@@ -8,9 +8,9 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class WorkflowRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Workflow::class);
+        parent::__construct($managerRegistry, Workflow::class);
     }
 
     public function toDeleteEntities(array $entities)

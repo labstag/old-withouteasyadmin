@@ -18,19 +18,19 @@ class FlagCountryType extends AbstractType
     }
 
     public function buildView(
-        FormView $view,
+        FormView $formView,
         FormInterface $form,
         array $options
     ): void
     {
-        $view->vars['attr']['is'] = 'select-country';
+        $formView->vars['attr']['is'] = 'select-country';
 
         unset($form, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $optionsResolver)
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'label' => $this->translator->trans('forms.country.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('forms.country.help', [], 'admin.form'),

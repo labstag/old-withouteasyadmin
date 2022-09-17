@@ -8,8 +8,8 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class YearRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Year::class);
+        parent::__construct($managerRegistry, Year::class);
     }
 }

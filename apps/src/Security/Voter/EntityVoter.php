@@ -36,12 +36,12 @@ class EntityVoter extends Voter
      */
     final public const NBR_CHAPTER = 2;
 
-    protected function canMoveHistory(History $entity, TokenInterface $token): bool
+    protected function canMoveHistory(History $history, TokenInterface $token): bool
     {
         unset($token);
-        $chapters = $entity->getChapters();
+        $collection = $history->getChapters();
 
-        return count($chapters) >= self::NBR_CHAPTER;
+        return count($collection) >= self::NBR_CHAPTER;
     }
 
     protected function supports($attribute, $subject): bool

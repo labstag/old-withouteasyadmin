@@ -10,22 +10,22 @@ use Labstag\Lib\DataFixtureLib;
 
 class TemplatesFixtures extends DataFixtureLib implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $objectManager): void
     {
-        unset($manager);
+        unset($objectManager);
         $faker = $this->setFaker();
         for ($index = 0; $index < self::NUMBER_TEMPLATES; ++$index) {
             $this->addTemplate($faker);
         }
     }
 
-    protected function addTemplate(Generator $faker): void
+    protected function addTemplate(Generator $generator): void
     {
         $template    = new Template();
         $oldTemplate = clone $template;
-        $template->setName($faker->unique()->colorName());
+        $template->setName($generator->unique()->colorName());
         // @var string $content
-        $content = $faker->unique()->paragraphs(10, true);
+        $content = $generator->unique()->paragraphs(10, true);
         $template->setHtml(str_replace("\n\n", "<br />\n", $content));
         $template->setText($content);
 

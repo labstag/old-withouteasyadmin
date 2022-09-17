@@ -19,16 +19,16 @@ class CategoryController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_category_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_category_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $service,
+        AttachFormService $attachFormService,
         ?Category $category,
-        CategoryRequestHandler $requestHandler
+        CategoryRequestHandler $categoryRequestHandler
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $categoryRequestHandler,
             CategoryType::class,
             is_null($category) ? new Category() : $category
         );

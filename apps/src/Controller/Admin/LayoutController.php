@@ -24,13 +24,13 @@ use Symfony\Component\Uid\Uuid;
 class LayoutController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_layout_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Layout $layout, LayoutRequestHandler $requestHandler): Response
+    public function edit(AttachFormService $attachFormService, ?Layout $layout, LayoutRequestHandler $layoutRequestHandler): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $layoutRequestHandler,
             LayoutType::class,
             is_null($layout) ? new Layout() : $layout,
             'admin/layout/form.html.twig'
@@ -52,7 +52,7 @@ class LayoutController extends AdminControllerLib
                 'data-url' => $this->routerInterface->generate('admin_layout_new'),
             ]
         );
-        $newform = $this->createForm(
+        $form = $this->createForm(
             NewLayoutType::class,
             new Layout(),
             [
@@ -74,7 +74,7 @@ class LayoutController extends AdminControllerLib
         }
 
         $parameters = [
-            'newform'    => $newform,
+            'newform'    => $form,
             'pagination' => $pagination,
             'actions'    => $url,
         ];
@@ -89,13 +89,13 @@ class LayoutController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_layout_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
-        LayoutRepository $layoutRepo,
-        LayoutRequestHandler $requestHandler,
-        CustomRepository $customRepo
+        LayoutRepository $layoutRepository,
+        LayoutRequestHandler $layoutRequestHandler,
+        CustomRepository $customRepository
     ): Response
     {
         $post   = $request->request->all('new_layout');
-        $custom = $customRepo->findOneBy(
+        $custom = $customRepository->findOneBy(
             [
                 'id' => $post['custom'],
             ]
@@ -109,8 +109,8 @@ class LayoutController extends AdminControllerLib
         $layout->setName(Uuid::v1());
 
         $old = clone $layout;
-        $layoutRepo->add($layout);
-        $requestHandler->handle($old, $layout);
+        $layoutRepository->add($layout);
+        $layoutRequestHandler->handle($old, $layout);
 
         return $this->redirectToRoute('admin_layout_edit', ['id' => $layout->getId()]);
     }

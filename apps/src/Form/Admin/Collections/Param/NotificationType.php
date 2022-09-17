@@ -11,11 +11,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class NotificationType extends AbstractTypeLib
 {
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'type',
             TextType::class,
             [
@@ -30,7 +30,7 @@ class NotificationType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'mail',
             ChoiceType::class,
             [
@@ -49,7 +49,7 @@ class NotificationType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'notify',
             ChoiceType::class,
             [
@@ -71,10 +71,10 @@ class NotificationType extends AbstractTypeLib
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         // Configure your form options here
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

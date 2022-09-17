@@ -16,11 +16,11 @@ use Symfony\Component\Workflow\Event\GuardEvent;
 class WorkflowGuardSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        protected TokenStorageInterface $token,
-        protected WorkflowRepository $workflowRepo,
-        protected GroupeRepository $groupeRepo,
-        protected WorkflowGroupeRepository $workflowGroupeRepo,
-        protected WorkflowUserRepository $workflowUserRepo
+        protected TokenStorageInterface $tokenStorage,
+        protected WorkflowRepository $workflowRepository,
+        protected GroupeRepository $groupeRepository,
+        protected WorkflowGroupeRepository $workflowGroupeRepository,
+        protected WorkflowUserRepository $workflowUserRepository
     )
     {
     }
@@ -30,14 +30,14 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
         return ['workflow.guard' => 'onWorkflowAttachmentGuard'];
     }
 
-    public function onWorkflowAttachmentGuard(GuardEvent $event)
+    public function onWorkflowAttachmentGuard(GuardEvent $guardEvent)
     {
         $stategroupe = false;
         $stateuser   = false;
-        $token       = $this->token->getToken();
-        $name        = $event->getWorkflowName();
-        $transition  = $event->getTransition()->getName();
-        $workflow    = $this->workflowRepo->findOneBy(
+        $token       = $this->tokenStorage->getToken();
+        $name        = $guardEvent->getWorkflowName();
+        $transition  = $guardEvent->getTransition()->getName();
+        $workflow    = $this->workflowRepository->findOneBy(
             [
                 'entity'     => $name,
                 'transition' => $transition,
@@ -51,8 +51,8 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
         // @var User $user
         $user = $token->getUser();
         if (!$user instanceof User) {
-            $groupe         = $this->groupeRepo->findOneBy(['code' => 'visiteur']);
-            $workflowGroupe = $this->workflowGroupeRepo->findOneBy(
+            $groupe         = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
+            $workflowGroupe = $this->workflowGroupeRepository->findOneBy(
                 [
                     'refgroupe'   => $groupe,
                     'refworkflow' => $workflow,
@@ -60,7 +60,7 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
             );
 
             $stategroupe = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
-            $event->setBlocked(!$stategroupe);
+            $guardEvent->setBlocked(!$stategroupe);
 
             return;
         }
@@ -70,14 +70,14 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $workflowGroupe = $this->workflowGroupeRepo->findOneBy(
+        $workflowGroupe = $this->workflowGroupeRepository->findOneBy(
             [
                 'refgroupe'   => $groupe,
                 'refworkflow' => $workflow,
             ]
         );
         $stategroupe    = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
-        $workflowUser   = $this->workflowUserRepo->findOneBy(
+        $workflowUser   = $this->workflowUserRepository->findOneBy(
             [
                 'refuser'     => $user,
                 'refworkflow' => $workflow,
@@ -85,6 +85,6 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
         );
         $stategroupe    = ($workflowUser instanceof WorkflowUser) ? $workflowUser->getState() : $stategroupe;
 
-        $event->setBlocked(!$stategroupe || !$stateuser);
+        $guardEvent->setBlocked(!$stategroupe || !$stateuser);
     }
 }

@@ -27,11 +27,11 @@ class BookmarkService
     public function __construct(
         protected FileService $fileService,
         private readonly ErrorService $errorService,
-        private readonly UploadAnnotationReader $uploadAnnotReader,
+        private readonly UploadAnnotationReader $uploadAnnotationReader,
         private readonly ContainerBagInterface $containerBag,
-        private readonly BookmarkRequestHandler $requestHandler,
-        protected UserRepository $userRepo,
-        protected BookmarkRepository $bookmarkRepo
+        private readonly BookmarkRequestHandler $bookmarkRequestHandler,
+        protected UserRepository $userRepository,
+        protected BookmarkRepository $bookmarkRepository
     )
     {
     }
@@ -41,11 +41,11 @@ class BookmarkService
         string $url,
         string $name,
         string $icon,
-        DateTime $date
+        DateTime $dateTime
     )
     {
-        $user     = $this->userRepo->find($userid);
-        $bookmark = $this->bookmarkRepo->findOneBy(
+        $user     = $this->userRepository->find($userid);
+        $bookmark = $this->bookmarkRepository->findOneBy(
             ['url' => $url]
         );
         if ($bookmark instanceof Bookmark) {
@@ -58,7 +58,7 @@ class BookmarkService
         $bookmark->setUrl($url);
         $bookmark->setIcon($icon);
         $bookmark->setName($name);
-        $bookmark->setPublished($date);
+        $bookmark->setPublished($dateTime);
 
         try {
             $headers = get_headers($url, 1);
@@ -77,8 +77,8 @@ class BookmarkService
             $image = $meta['twitter:image'] ?? null;
             $image = (is_null($image) && isset($meta['og:image'])) ? $meta['og:image'] : $image;
             $this->upload($bookmark, $image);
-            $this->bookmarkRepo->add($bookmark);
-            $this->requestHandler->handle($old, $bookmark);
+            $this->bookmarkRepository->add($bookmark);
+            $this->bookmarkRequestHandler->handle($old, $bookmark);
         } catch (Exception $exception) {
             $this->errorService->set($exception);
         }
@@ -91,19 +91,19 @@ class BookmarkService
 
     protected function upload(Bookmark $bookmark, $image)
     {
-        if (is_null($image) || !$this->uploadAnnotReader->isUploadable($bookmark)) {
+        if (is_null($image) || !$this->uploadAnnotationReader->isUploadable($bookmark)) {
             return;
         }
 
         // @var resource $finfo
         $finfo       = finfo_open(FILEINFO_MIME_TYPE);
-        $annotations = $this->uploadAnnotReader->getUploadableFields($bookmark);
-        $slugger     = new AsciiSlugger();
+        $annotations = $this->uploadAnnotationReader->getUploadableFields($bookmark);
+        $asciiSlugger     = new AsciiSlugger();
         foreach ($annotations as $annotation) {
             $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
             $title    = $accessor->getValue($bookmark, $annotation->getSlug());
-            $slug     = $slugger->slug($title);
+            $slug     = $asciiSlugger->slug($title);
 
             try {
                 $pathinfo = pathinfo((string) $image);

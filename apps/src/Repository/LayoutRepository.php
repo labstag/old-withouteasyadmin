@@ -9,18 +9,18 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class LayoutRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Layout::class);
+        parent::__construct($managerRegistry, Layout::class);
     }
 
     public function findByCustom(Custom $custom)
     {
-        $query = $this->createQueryBuilder('a');
-        $query->leftJoin('a.custom', 'c');
-        $query->where('c.id = :customid');
-        $query->setParameter('customid', $custom->getId());
+        $queryBuilder = $this->createQueryBuilder('a');
+        $queryBuilder->leftJoin('a.custom', 'c');
+        $queryBuilder->where('c.id = :customid');
+        $queryBuilder->setParameter('customid', $custom->getId());
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 }

@@ -8,9 +8,9 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class BlockRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Block::class);
+        parent::__construct($managerRegistry, Block::class);
     }
 
     public function getDataByRegion()

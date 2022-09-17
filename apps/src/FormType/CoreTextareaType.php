@@ -15,14 +15,14 @@ class CoreTextareaType extends AbstractType
     final public const ROWS = 20;
 
     public function buildView(
-        FormView $view,
+        FormView $formView,
         FormInterface $form,
         array $options
     ): void
     {
         $attr               = $options['attr'];
         $attr['rows']     ??= self::ROWS;
-        $view->vars['attr'] = $attr;
+        $formView->vars['attr'] = $attr;
         unset($form);
     }
 

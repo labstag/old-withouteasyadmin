@@ -12,11 +12,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TarteaucitronType extends AbstractTypeLib
 {
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'privacyUrl',
             UrlType::class,
             [
@@ -33,9 +33,9 @@ class TarteaucitronType extends AbstractTypeLib
             ]
         );
 
-        $this->setInputTextAll($builder);
-        $this->setInputTrueFalsePartie1($builder);
-        $builder->add(
+        $this->setInputTextAll($formBuilder);
+        $this->setInputTrueFalsePartie1($formBuilder);
+        $formBuilder->add(
             'iconPosition',
             ChoiceType::class,
             [
@@ -56,8 +56,8 @@ class TarteaucitronType extends AbstractTypeLib
                 ],
             ]
         );
-        $this->setInputTrueFalsePartie2($builder);
-        $builder->add(
+        $this->setInputTrueFalsePartie2($formBuilder);
+        $formBuilder->add(
             'readmoreLink',
             UrlType::class,
             [
@@ -73,7 +73,7 @@ class TarteaucitronType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'mandatory',
             ChoiceType::class,
             [
@@ -92,7 +92,7 @@ class TarteaucitronType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'job',
             CoreTextareaType::class,
             [
@@ -103,10 +103,10 @@ class TarteaucitronType extends AbstractTypeLib
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         // Configure your form options here
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

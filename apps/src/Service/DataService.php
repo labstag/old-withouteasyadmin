@@ -19,7 +19,7 @@ class DataService
     public function __construct(
         protected EntityManagerInterface $entityManager,
         protected CacheInterface $cache,
-        protected ConfigurationRepository $configurationRepo
+        protected ConfigurationRepository $configurationRepository
     )
     {
         $this->setData();
@@ -65,7 +65,7 @@ class DataService
 
     protected function getConfiguration()
     {
-        $data   = $this->configurationRepo->findAll();
+        $data   = $this->configurationRepository->findAll();
         $config = [];
         // @var Configuration $row
         foreach ($data as $row) {

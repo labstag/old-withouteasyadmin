@@ -17,17 +17,17 @@ class GeocodeService
     final public const HTTP_OK = 200;
 
     public function __construct(
-        protected HttpClientInterface $client,
+        protected HttpClientInterface $httpClient,
         protected EntityManagerInterface $entityManager,
-        protected GeoCodeRequestHandler $geoCodeRH,
-        protected GeoCodeRepository $geoCodeRepo
+        protected GeoCodeRequestHandler $geoCodeRequestHandler,
+        protected GeoCodeRepository $geoCodeRepository
     )
     {
     }
 
     public function add(array $row)
     {
-        $entity = $this->geoCodeRepo->findOneBy(
+        $entity = $this->geoCodeRepository->findOneBy(
             [
                 'countryCode' => $row[0],
                 'postalCode'  => $row[1],
@@ -52,14 +52,14 @@ class GeocodeService
         $entity->setLongitude($row[10]);
         $entity->setAccuracy((int) $row[11]);
 
-        $this->geoCodeRH->handle($old, $entity);
+        $this->geoCodeRequestHandler->handle($old, $entity);
     }
 
     public function csv(string $country)
     {
         $country    = strtoupper($country);
         $file       = 'http://download.geonames.org/export/zip/'.$country.'.zip';
-        $response   = $this->client->request(
+        $response   = $this->httpClient->request(
             'GET',
             $file
         );
@@ -72,14 +72,14 @@ class GeocodeService
         $tempFile = tmpfile();
         $path     = stream_get_meta_data($tempFile)['uri'];
         file_put_contents($path, $content);
-        $zip = new ZipArchive();
-        if (!$zip->open($path)) {
+        $zipArchive = new ZipArchive();
+        if (!$zipArchive->open($path)) {
             return [];
         }
 
-        $content = $zip->getFromName($country.'.txt');
+        $content = $zipArchive->getFromName($country.'.txt');
         $csv     = str_getcsv($content, "\n");
-        $zip->close();
+        $zipArchive->close();
 
         return $csv;
     }

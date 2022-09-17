@@ -29,9 +29,9 @@ class LabstagInstallCommand extends CommandLib
     {
         $inputOutput->note('Installations');
         $executes = $this->getExecutesFunction();
-        foreach ($executes as $function) {
-            if ('all' != $function) {
-                call_user_func([$this, $function], $inputOutput);
+        foreach ($executes as $execute) {
+            if ('all' != $execute) {
+                call_user_func([$this, $execute], $inputOutput);
             }
         }
 
@@ -52,17 +52,17 @@ class LabstagInstallCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $inputOutput = new SymfonyStyle($input, $output);
+        $symfonyStyle = new SymfonyStyle($input, $output);
         $options     = $input->getOptions();
         $executes    = $this->getExecutesFunction();
         foreach ($options as $option => $state) {
             $execute = $state ? $option : '';
             if (isset($executes[$execute])) {
-                call_user_func([$this, $executes[$execute]], $inputOutput);
+                call_user_func([$this, $executes[$execute]], $symfonyStyle);
             }
         }
 
-        $inputOutput->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $symfonyStyle->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;
     }

@@ -38,13 +38,13 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     public function __construct(
         protected RouterInterface $router,
-        protected Environment $twig,
+        protected Environment $environment,
         protected UrlGeneratorInterface $urlGenerator,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected DataService $dataService,
         protected Security $security,
         protected TranslatorInterface $translator,
-        protected AttachmentRepository $attachmentRepo
+        protected AttachmentRepository $attachmentRepository
     )
     {
     }
@@ -54,24 +54,24 @@ class TwigEventSubscriber implements EventSubscriberInterface
         return [ControllerEvent::class => 'onControllerEvent'];
     }
 
-    public function onControllerEvent(ControllerEvent $event): void
+    public function onControllerEvent(ControllerEvent $controllerEvent): void
     {
-        $request = $event->getRequest();
-        $this->setLoginPage($event);
-        $this->setConfig($event, $request);
+        $request = $controllerEvent->getRequest();
+        $this->setLoginPage($controllerEvent);
+        $this->setConfig($controllerEvent, $request);
     }
 
-    protected function setConfig(ControllerEvent $event, Request $request): void
+    protected function setConfig(ControllerEvent $controllerEvent, Request $request): void
     {
-        $favicon    = $this->attachmentRepo->getFavicon();
-        $controller = $event->getRequest()->attributes->get('_controller');
+        $favicon    = $this->attachmentRepository->getFavicon();
+        $controller = $controllerEvent->getRequest()->attributes->get('_controller');
         $matches    = [];
         preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
         if (0 == count($matches) && !in_array($controller, self::ERROR_CONTROLLER)) {
             return;
         }
 
-        $globals   = $this->twig->getGlobals();
+        $globals   = $this->environment->getGlobals();
         $canonical = $globals['canonical'] ?? $request->getUri();
 
         $config = $globals['config'] ?? $this->dataService->getConfig();
@@ -91,9 +91,9 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->setConfigTac($config);
         $this->setFormatDatetime($config);
 
-        $this->twig->AddGlobal('config', $config);
-        $this->twig->AddGlobal('favicon', $favicon);
-        $this->twig->AddGlobal('canonical', $canonical);
+        $this->environment->AddGlobal('config', $config);
+        $this->environment->AddGlobal('favicon', $favicon);
+        $this->environment->AddGlobal('canonical', $canonical);
     }
 
     protected function setConfigTac(array $config)
@@ -125,12 +125,12 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
         unset($tarteaucitron['job']);
 
-        $this->twig->AddGlobal('configtarteaucitron', $tarteaucitron);
+        $this->environment->AddGlobal('configtarteaucitron', $tarteaucitron);
     }
 
-    protected function setLoginPage(ControllerEvent $event): void
+    protected function setLoginPage(ControllerEvent $controllerEvent): void
     {
-        $currentRoute = $event->getRequest()->attributes->get('_route');
+        $currentRoute = $controllerEvent->getRequest()->attributes->get('_route');
         $routes       = [
             'app_login',
             'admin_profil',
@@ -141,7 +141,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         }
 
         $oauthActivated = $this->dataService->getOauthActivated($this->security->getUser());
-        $this->twig->AddGlobal('oauthActivated', $oauthActivated);
+        $this->environment->AddGlobal('oauthActivated', $oauthActivated);
     }
 
     private function arrayKeyExists(array $var, $data)
@@ -182,7 +182,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     private function setFormatDatetime($config)
     {
-        $this->twig->AddGlobal('formatdatetime', $config['format_datetime']);
+        $this->environment->AddGlobal('formatdatetime', $config['format_datetime']);
     }
 
     private function setMetaDescription(&$config)
@@ -204,8 +204,8 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     private function setMetaImage(&$config)
     {
-        $image = $this->attachmentRepo->getImageDefault();
-        $this->twig->AddGlobal('imageglobal', $image);
+        $image = $this->attachmentRepository->getImageDefault();
+        $this->environment->AddGlobal('imageglobal', $image);
         $meta  = $config['meta'];
         $tests = [
             'og:image',
@@ -219,8 +219,8 @@ class TwigEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $package = new PathPackage('/', new EmptyVersionStrategy());
-        $url     = $package->getUrl($image->getName());
+        $pathPackage = new PathPackage('/', new EmptyVersionStrategy());
+        $url     = $pathPackage->getUrl($image->getName());
 
         $meta['og:image']      = $url;
         $meta['twitter:image'] = $url;
@@ -264,7 +264,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
             ];
         }
 
-        $this->twig->AddGlobal('sitemetatags', $metatags);
+        $this->environment->AddGlobal('sitemetatags', $metatags);
     }
 
     private function setMetaTitle(&$config)

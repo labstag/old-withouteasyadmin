@@ -352,16 +352,16 @@ class AdminBtnSingleton
     }
 
     public function setConf(
-        Environment $twig,
+        Environment $environment,
         RouterInterface $router,
-        TokenStorageInterface $token,
+        TokenStorageInterface $tokenStorage,
         CsrfTokenManagerInterface $csrfTokenManager,
         GuardService $guardService
     )
     {
-        $this->twig             = $twig;
+        $this->twig             = $environment;
         $this->router           = $router;
-        $this->token            = $token;
+        $this->token            = $tokenStorage;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->guardService     = $guardService;
         $this->init             = true;

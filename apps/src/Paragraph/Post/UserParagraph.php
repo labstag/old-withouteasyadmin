@@ -36,7 +36,7 @@ class UserParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(User $postuser)
+    public function show(User $user)
     {
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -53,7 +53,7 @@ class UserParagraph extends ParagraphLib
             $this->getParagraphFile('post/user'),
             [
                 'pagination' => $pagination,
-                'paragraph'  => $postuser,
+                'paragraph'  => $user,
             ]
         );
     }

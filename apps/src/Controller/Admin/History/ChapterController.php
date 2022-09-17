@@ -20,13 +20,13 @@ use Symfony\Component\Uid\Uuid;
 class ChapterController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_chapter_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Chapter $chapter, ChapterRequestHandler $requestHandler): Response
+    public function edit(AttachFormService $attachFormService, ?Chapter $chapter, ChapterRequestHandler $chapterRequestHandler): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $chapterRequestHandler,
             ChapterType::class,
             is_null($chapter) ? new Chapter() : $chapter,
             'admin/chapter/form.html.twig'
@@ -49,8 +49,8 @@ class ChapterController extends AdminControllerLib
     #[Route(path: '/new/{id}', name: 'admin_chapter_new', methods: ['GET', 'POST'])]
     public function new(
         History $history,
-        ChapterRepository $repository,
-        ChapterRequestHandler $requestHandler
+        ChapterRepository $chapterRepository,
+        ChapterRequestHandler $chapterRequestHandler
     ): Response
     {
         $chapter = new Chapter();
@@ -59,8 +59,8 @@ class ChapterController extends AdminControllerLib
         $chapter->setPosition(count($history->getChapters()) + 1);
 
         $old = clone $chapter;
-        $repository->add($chapter);
-        $requestHandler->handle($old, $chapter);
+        $chapterRepository->add($chapter);
+        $chapterRequestHandler->handle($old, $chapter);
 
         return $this->redirectToRoute('admin_chapter_edit', ['id' => $chapter->getId()]);
     }

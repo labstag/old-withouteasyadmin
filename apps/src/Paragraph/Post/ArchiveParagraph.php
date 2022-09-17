@@ -36,7 +36,7 @@ class ArchiveParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Archive $postarchive)
+    public function show(Archive $archive)
     {
         /** @var PostRepository $repository */
         $repository = $this->getRepository(Post::class);
@@ -46,7 +46,7 @@ class ArchiveParagraph extends ParagraphLib
             $this->getParagraphFile('post/archive'),
             [
                 'archives'  => $archives,
-                'paragraph' => $postarchive,
+                'paragraph' => $archive,
             ]
         );
     }

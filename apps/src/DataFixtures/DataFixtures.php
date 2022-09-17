@@ -7,9 +7,9 @@ use Labstag\Lib\FixtureLib;
 
 class DataFixtures extends FixtureLib
 {
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $objectManager): void
     {
-        unset($manager);
+        unset($objectManager);
         $this->cache->clear();
         $folder = 'public/uploads';
         if (is_dir($folder)) {

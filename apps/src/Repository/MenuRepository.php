@@ -12,9 +12,9 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class MenuRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Menu::class);
+        parent::__construct($managerRegistry, Menu::class);
     }
 
     public function findAllCode()
@@ -26,14 +26,14 @@ class MenuRepository extends ServiceEntityRepositoryLib
 
     public function findAllCodeQuery()
     {
-        $query = $this->createQueryBuilder('u');
-        $query->where(
+        $queryBuilder = $this->createQueryBuilder('u');
+        $queryBuilder->where(
             'u.position=0'
         );
-        $query->andWhere(
+        $queryBuilder->andWhere(
             'u.clef IS NOT NULL'
         );
 
-        return $query;
+        return $queryBuilder;
     }
 }

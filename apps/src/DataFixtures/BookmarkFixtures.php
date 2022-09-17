@@ -15,35 +15,35 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
         return $this->getDependenciesBookmarkPost();
     }
 
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $objectManager): void
     {
-        unset($manager);
+        unset($objectManager);
         $this->loadForeach(self::NUMBER_BOOKMARK, 'addLink');
     }
 
     protected function addLink(
-        Generator $faker,
+        Generator $generator,
         int $index,
         array $states
     ): void
     {
         $bookmark = new Bookmark();
         $old      = clone $bookmark;
-        $this->setLibelles($faker, $bookmark);
+        $this->setLibelles($generator, $bookmark);
         $users     = $this->installService->getData('user');
-        $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
+        $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
         $user      = $this->getReference('user_'.$indexUser);
         $bookmark->setRefuser($user);
         // @var string $content
-        $content = $faker->paragraphs(random_int(4, 10), true);
+        $content = $generator->paragraphs(random_int(4, 10), true);
         $bookmark->setContent(str_replace("\n\n", "<br />\n", $content));
-        $indexLibelle = $faker->numberBetween(0, self::NUMBER_CATEGORY - 1);
+        $indexLibelle = $generator->numberBetween(0, self::NUMBER_CATEGORY - 1);
         $category     = $this->getReference('category_'.$indexLibelle);
         $bookmark->setRefcategory($category);
-        $bookmark->setName($faker->word());
-        $bookmark->setUrl($faker->url());
-        $bookmark->setPublished($faker->unique()->dateTime('now'));
-        $this->upload($bookmark, $faker);
+        $bookmark->setName($generator->word());
+        $bookmark->setUrl($generator->url());
+        $bookmark->setPublished($generator->unique()->dateTime('now'));
+        $this->upload($bookmark, $generator);
         $this->addReference('bookmark_'.$index, $bookmark);
         $this->bookmarkRH->handle($old, $bookmark);
         $this->bookmarkRH->changeWorkflowState($bookmark, $states);

@@ -15,10 +15,10 @@ class NavbarBlock extends BlockLib
     public function __construct(
         protected MenuService $menuService,
         TranslatorInterface $translator,
-        Environment $twig
+        Environment $environment
     )
     {
-        parent::__construct($translator, $twig);
+        parent::__construct($translator, $environment);
     }
 
     public function getEntity()

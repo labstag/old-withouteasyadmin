@@ -16,15 +16,15 @@ class ServiceMethodMessageHandler implements MessageHandlerInterface, ServiceSub
     {
     }
 
-    public function __invoke(ServiceMethodMessage $message): void
+    public function __invoke(ServiceMethodMessage $serviceMethodMessage): void
     {
         // @var callable $callable
         $callable = [
-            $this->container->get($message->getServiceName()),
-            $message->getMethod(),
+            $this->container->get($serviceMethodMessage->getServiceName()),
+            $serviceMethodMessage->getMethod(),
         ];
 
-        call_user_func_array($callable, $message->getParams());
+        call_user_func_array($callable, $serviceMethodMessage->getParams());
     }
 
     public static function getSubscribedServices(): array

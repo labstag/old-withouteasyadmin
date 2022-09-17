@@ -18,11 +18,11 @@ class UserType extends SearchAbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'username',
             TextType::class,
             [
@@ -34,7 +34,7 @@ class UserType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'email',
             EmailType::class,
             [
@@ -46,7 +46,7 @@ class UserType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'refgroup',
             SearchableType::class,
             [
@@ -66,18 +66,18 @@ class UserType extends SearchAbstractTypeLib
             ]
         );
         $this->showState(
-            $builder,
+            $formBuilder,
             new User(),
             $this->translator->trans('user.etape.label', [], 'admin.search.form'),
             $this->translator->trans('user.etape.help', [], 'admin.search.form'),
             $this->translator->trans('user.etape.placeholder', [], 'admin.search.form')
         );
-        parent::buildForm($builder, $options);
+        parent::buildForm($formBuilder, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class'      => UserSearch::class,
                 'csrf_protection' => false,

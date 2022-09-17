@@ -24,17 +24,17 @@ class TextFieldsType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'text',
             TextType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'email',
             EmailType::class,
             [
@@ -42,42 +42,42 @@ class TextFieldsType extends AbstractTypeLib
                 'attr' => ['placeholder' => 'aa'],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'integer',
             IntegerType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'money',
             MoneyType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'number',
             NumberType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'password',
             PasswordType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'percent',
             PercentType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'search',
             SearchType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'url',
             UrlType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'range',
             RangeType::class,
             [
@@ -88,21 +88,21 @@ class TextFieldsType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'tel',
             TelType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'color',
             ColorType::class,
             ['help' => 'help']
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

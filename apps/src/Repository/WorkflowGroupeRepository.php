@@ -8,8 +8,8 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class WorkflowGroupeRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, WorkflowGroupe::class);
+        parent::__construct($managerRegistry, WorkflowGroupe::class);
     }
 }

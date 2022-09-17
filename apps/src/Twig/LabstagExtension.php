@@ -36,13 +36,13 @@ class LabstagExtension extends AbstractExtension
         protected ContainerBagInterface $containerBag,
         protected RouterInterface $router,
         protected PhoneService $phoneService,
-        protected CacheManager $cache,
-        protected Registry $workflows,
-        protected TokenStorageInterface $token,
+        protected CacheManager $cacheManager,
+        protected Registry $registry,
+        protected TokenStorageInterface $tokenStorage,
         protected LoggerInterface $logger,
         protected GuardService $guardService,
         protected ParagraphService $paragraphService,
-        protected AttachmentRepository $attachmentRepo
+        protected AttachmentRepository $attachmentRepository
     )
     {
     }
@@ -114,7 +114,7 @@ class LabstagExtension extends AbstractExtension
         }
 
         $id         = $data->getId();
-        $attachment = $this->attachmentRepo->findOneBy(['id' => $id]);
+        $attachment = $this->attachmentRepository->findOneBy(['id' => $id]);
         if (is_null($attachment)) {
             return null;
         }
@@ -219,7 +219,7 @@ class LabstagExtension extends AbstractExtension
 
     public function guardRoute(string $route): bool
     {
-        $token = $this->token->getToken();
+        $token = $this->tokenStorage->getToken();
 
         return $this->guardService->guardRoute($route, $token);
     }
@@ -252,7 +252,7 @@ class LabstagExtension extends AbstractExtension
         $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
     )
     {
-        $url = $this->cache->getBrowserPath(
+        $url = $this->cacheManager->getBrowserPath(
             parse_url($path, PHP_URL_PATH),
             $filter,
             $config,
@@ -279,7 +279,7 @@ class LabstagExtension extends AbstractExtension
 
     public function workflowHas($entity)
     {
-        return $this->workflows->has($entity);
+        return $this->registry->has($entity);
     }
 
     protected function setTypeformClass(array $class): string

@@ -23,11 +23,11 @@ class HistoryController extends FrontControllerLib
     )]
     public function bookmark(
         string $slug,
-        HistoryRepository $historyRepo,
-        PageRepository $pageRepo
+        HistoryRepository $historyRepository,
+        PageRepository $pageRepository
     )
     {
-        $history = $historyRepo->findOneBy(
+        $history = $historyRepository->findOneBy(
             ['slug' => $slug]
         );
 
@@ -36,7 +36,7 @@ class HistoryController extends FrontControllerLib
                 throw $this->createNotFoundException();
             }
 
-            return $this->page('mes-histoires', $pageRepo);
+            return $this->page('mes-histoires', $pageRepository);
         }
 
         return $this->render(
@@ -53,15 +53,15 @@ class HistoryController extends FrontControllerLib
     public function chapter(
         string $history,
         string $chapter,
-        ChapterRepository $chapterRepo,
-        HistoryRepository $historyRepo
+        ChapterRepository $chapterRepository,
+        HistoryRepository $historyRepository
     )
     {
-        $history = $historyRepo->findOneBy(
+        $history = $historyRepository->findOneBy(
             ['slug' => $history]
         );
 
-        $chapter = $chapterRepo->findOneBy(
+        $chapter = $chapterRepository->findOneBy(
             ['slug' => $chapter]
         );
 
@@ -91,10 +91,10 @@ class HistoryController extends FrontControllerLib
     public function pdf(
         string $slug,
         HistoryService $historyService,
-        HistoryRepository $historyRepo
+        HistoryRepository $historyRepository
     )
     {
-        $history = $historyRepo->findOneBy(
+        $history = $historyRepository->findOneBy(
             ['slug' => $slug]
         );
 

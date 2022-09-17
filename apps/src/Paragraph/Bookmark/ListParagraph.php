@@ -36,7 +36,7 @@ class ListParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Liste $bookmarklist)
+    public function show(Liste $liste)
     {
         /** @var BookmarkRepository $repository */
         $repository = $this->getRepository(Bookmark::class);
@@ -50,7 +50,7 @@ class ListParagraph extends ParagraphLib
             $this->getParagraphFile('bookmark/list'),
             [
                 'pagination' => $pagination,
-                'paragraph'  => $bookmarklist,
+                'paragraph'  => $liste,
             ]
         );
     }

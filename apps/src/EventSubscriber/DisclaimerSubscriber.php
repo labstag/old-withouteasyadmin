@@ -20,15 +20,15 @@ class DisclaimerSubscriber implements EventSubscriberInterface
         return ['kernel.request' => 'onKernelRequest'];
     }
 
-    public function onKernelRequest(RequestEvent $event): void
+    public function onKernelRequest(RequestEvent $requestEvent): void
     {
-        $request = $event->getRequest();
+        $request = $requestEvent->getRequest();
         $state   = $this->disclaimerActivate($request);
         if (!$state) {
             return;
         }
 
-        $event->setResponse(
+        $requestEvent->setResponse(
             new RedirectResponse(
                 $this->router->generate('disclaimer')
             )

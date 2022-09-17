@@ -12,13 +12,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BlockType extends BlockAbstractTypeLib
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $formType = $this->blockService->getTypeForm($builder->getData());
-        $label    = $this->blockService->getName($builder->getData());
-        $field    = $this->blockService->getEntityField($builder->getData());
-        $show     = $this->blockService->isShow($builder->getData());
-        $builder->add(
+        $formType = $this->blockService->getTypeForm($formBuilder->getData());
+        $label    = $this->blockService->getName($formBuilder->getData());
+        $field    = $this->blockService->getEntityField($formBuilder->getData());
+        $show     = $this->blockService->isShow($formBuilder->getData());
+        $formBuilder->add(
             'title',
             TextType::class,
             [
@@ -29,7 +29,7 @@ class BlockType extends BlockAbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'region',
             ChoiceType::class,
             [
@@ -42,7 +42,7 @@ class BlockType extends BlockAbstractTypeLib
             ]
         );
         if ((!is_null($formType) || is_null($field)) && $show) {
-            $builder->add(
+            $formBuilder->add(
                 $field,
                 CollectionType::class,
                 [
@@ -58,9 +58,9 @@ class BlockType extends BlockAbstractTypeLib
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Block::class,
             ]

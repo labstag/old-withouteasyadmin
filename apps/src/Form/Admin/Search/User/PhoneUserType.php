@@ -15,29 +15,29 @@ class PhoneUserType extends SearchAbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'country',
             FlagCountryType::class,
             ['required' => false]
         );
-        $this->addRefUser($builder);
+        $this->addRefUser($formBuilder);
         $this->showState(
-            $builder,
+            $formBuilder,
             new PhoneUser(),
             $this->translator->trans('phoneuser.etape.label', [], 'admin.search.form'),
             $this->translator->trans('phoneuser.etape.help', [], 'admin.search.form'),
             $this->translator->trans('phoneuser.etape.placeholder', [], 'admin.search.form')
         );
-        parent::buildForm($builder, $options);
+        parent::buildForm($formBuilder, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class'      => PhoneUserSearch::class,
                 'csrf_protection' => false,

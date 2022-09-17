@@ -12,24 +12,24 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class ChapterRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Chapter::class);
+        parent::__construct($managerRegistry, Chapter::class);
     }
 
     public function findChapterByHistory($history, $chapter)
     {
-        $query = $this->createQueryBuilder('c');
-        $query->leftJoin('c.refhistory', 'h');
-        $query->where('h.slug = :slughistory');
-        $query->andWhere('c.slug = :slugchapter');
-        $query->setParameters(
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder->leftJoin('c.refhistory', 'h');
+        $queryBuilder->where('h.slug = :slughistory');
+        $queryBuilder->andWhere('c.slug = :slugchapter');
+        $queryBuilder->setParameters(
             [
                 'slugchapter' => $chapter,
                 'slughistory' => $history,
             ]
         );
 
-        return $query->getQuery()->getOneOrNullResult();
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 }

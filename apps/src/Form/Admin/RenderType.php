@@ -15,7 +15,7 @@ class RenderType extends AbstractTypeLib
 {
     public function __construct(
         TranslatorInterface $translator,
-        protected GuardService $service
+        protected GuardService $guardService
     )
     {
         parent::__construct($translator);
@@ -25,11 +25,11 @@ class RenderType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'name',
             TextType::class,
             [
@@ -37,13 +37,13 @@ class RenderType extends AbstractTypeLib
                 'help'  => $this->translator->trans('render.name.help', [], 'admin.form'),
             ]
         );
-        $all     = $this->service->getPublicRouteWithParams();
+        $all     = $this->guardService->getPublicRouteWithParams();
         $choices = [];
         foreach (array_keys($all) as $key) {
             $choices[$key] = $key;
         }
 
-        $builder->add(
+        $formBuilder->add(
             'url',
             ChoiceType::class,
             [
@@ -52,13 +52,13 @@ class RenderType extends AbstractTypeLib
                 'choices'  => $choices,
             ]
         );
-        $this->setMeta($builder);
+        $this->setMeta($formBuilder);
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Render::class,
             ]

@@ -20,15 +20,15 @@ use Symfony\Component\Uid\Uuid;
 class MemoController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_memo_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Memo $noteInterne, MemoRequestHandler $requestHandler): Response
+    public function edit(AttachFormService $attachFormService, ?Memo $memo, MemoRequestHandler $memoRequestHandler): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $memoRequestHandler,
             MemoType::class,
-            is_null($noteInterne) ? new Memo() : $noteInterne,
+            is_null($memo) ? new Memo() : $memo,
             'admin/memo/form.html.twig'
         );
     }
@@ -47,7 +47,7 @@ class MemoController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_memo_new', methods: ['GET', 'POST'])]
-    public function new(MemoRepository $repository, MemoRequestHandler $requestHandler, Security $security): Response
+    public function new(MemoRepository $memoRepository, MemoRequestHandler $memoRequestHandler, Security $security): Response
     {
         $user = $security->getUser();
 
@@ -56,8 +56,8 @@ class MemoController extends AdminControllerLib
         $memo->setRefuser($user);
 
         $old = clone $memo;
-        $repository->add($memo);
-        $requestHandler->handle($old, $memo);
+        $memoRepository->add($memo);
+        $memoRequestHandler->handle($old, $memo);
 
         return $this->redirectToRoute('admin_memo_edit', ['id' => $memo->getId()]);
     }
@@ -67,10 +67,10 @@ class MemoController extends AdminControllerLib
      */
     #[Route(path: '/{id}', name: 'admin_memo_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_memo_preview', methods: ['GET'])]
-    public function showOrPreview(Memo $noteInterne): Response
+    public function showOrPreview(Memo $memo): Response
     {
         return $this->renderShowOrPreview(
-            $noteInterne,
+            $memo,
             'admin/memo/show.html.twig'
         );
     }

@@ -18,13 +18,13 @@ class RenderController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_render_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_render_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Render $render, RenderRequestHandler $requestHandler): Response
+    public function edit(AttachFormService $attachFormService, ?Render $render, RenderRequestHandler $renderRequestHandler): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $renderRequestHandler,
             RenderType::class,
             is_null($render) ? new Render() : $render,
             'admin/render/form.html.twig'

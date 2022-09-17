@@ -14,18 +14,18 @@ class ButtonsFieldsType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add('button', ButtonType::class);
-        $builder->add('reset', ResetType::class);
+        $formBuilder->add('button', ButtonType::class);
+        $formBuilder->add('reset', ResetType::class);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

@@ -16,11 +16,11 @@ class MemoType extends SearchAbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'title',
             TextType::class,
             [
@@ -32,8 +32,8 @@ class MemoType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $this->addRefUser($builder);
-        $builder->add(
+        $this->addRefUser($formBuilder);
+        $formBuilder->add(
             'dateStart',
             DateType::class,
             [
@@ -43,7 +43,7 @@ class MemoType extends SearchAbstractTypeLib
                 'help'     => $this->translator->trans('memo.date_start.help', [], 'admin.search.form'),
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'dateEnd',
             DateType::class,
             [
@@ -54,18 +54,18 @@ class MemoType extends SearchAbstractTypeLib
             ]
         );
         $this->showState(
-            $builder,
+            $formBuilder,
             new Memo(),
             $this->translator->trans('memo.etape.label', [], 'admin.search.form'),
             $this->translator->trans('memo.etape.help', [], 'admin.search.form'),
             $this->translator->trans('memo.etape.placeholder', [], 'admin.search.form')
         );
-        parent::buildForm($builder, $options);
+        parent::buildForm($formBuilder, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class'      => MemoSearch::class,
                 'csrf_protection' => false,

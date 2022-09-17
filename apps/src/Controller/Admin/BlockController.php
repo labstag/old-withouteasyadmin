@@ -22,17 +22,17 @@ class BlockController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_block_edit', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachService,
+        AttachFormService $attachFormService,
         BlockService $blockService,
         Block $block,
-        BlockRequestHandler $requestHandler
+        BlockRequestHandler $blockRequestHandler
     ): Response
     {
         $field = $blockService->getEntityField($block);
 
         return $this->form(
-            $attachService,
-            $requestHandler,
+            $attachFormService,
+            $blockRequestHandler,
             BlockType::class,
             is_null($block) ? new Block() : $block,
             'admin/block/form.html.twig',
@@ -46,7 +46,7 @@ class BlockController extends AdminControllerLib
     #[Route(path: '/trash', name: 'admin_block_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_block_index', methods: ['GET'])]
     public function indexOrTrash(
-        BlockRepository $repository
+        BlockRepository $blockRepository
     ): Response
     {
         $region = null;
@@ -62,7 +62,7 @@ class BlockController extends AdminControllerLib
             'admin_block_move',
             'Move',
         );
-        $newform   = $this->createForm(
+        $form   = $this->createForm(
             NewBlockType::class,
             new Block(),
             [
@@ -74,8 +74,8 @@ class BlockController extends AdminControllerLib
         $all       = $request->attributes->all();
         $route     = $all['_route'];
         $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
-        $this->setBtnListOrTrash($repository, $routeType);
-        $data  = $repository->getDataByRegion();
+        $this->setBtnListOrTrash($blockRepository, $routeType);
+        $data  = $blockRepository->getDataByRegion();
         $total = 0;
         foreach ($data as $region) {
             $total += is_countable($region) ? count($region) : 0;
@@ -90,14 +90,14 @@ class BlockController extends AdminControllerLib
             [
                 'data'    => $data,
                 'actions' => $url,
-                'newform' => $newform,
+                'newform' => $form,
             ]
         );
     }
 
     #[Route(path: '/move', name: 'admin_block_move', methods: ['GET', 'POST'])]
     public function move(
-        BlockRepository $repository,
+        BlockRepository $blockRepository,
         Request $request
     ): Response
     {
@@ -119,7 +119,7 @@ class BlockController extends AdminControllerLib
             ]
         );
 
-        $data = $repository->getDataByRegion();
+        $data = $blockRepository->getDataByRegion();
 
         return $this->render(
             'admin/block/move.html.twig',
@@ -131,8 +131,8 @@ class BlockController extends AdminControllerLib
     public function new(
         Request $request,
         ?Block $block,
-        BlockRepository $repository,
-        BlockRequestHandler $handler
+        BlockRepository $blockRepository,
+        BlockRequestHandler $blockRequestHandler
     )
     {
         $post  = $request->request->all('new_block');
@@ -142,8 +142,8 @@ class BlockController extends AdminControllerLib
         $block->setRegion($post['region']);
         $block->setType($post['type']);
 
-        $repository->add($block);
-        $handler->handle($old, $block);
+        $blockRepository->add($block);
+        $blockRequestHandler->handle($old, $block);
 
         return $this->redirectToRoute('admin_block_edit', ['id' => $block->getId()]);
     }

@@ -12,12 +12,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class LinkType extends AbstractTypeLib
 {
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'name',
             TextType::class,
             [
@@ -28,7 +28,7 @@ class LinkType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'icon',
             TextType::class,
             [
@@ -40,7 +40,7 @@ class LinkType extends AbstractTypeLib
                 'required' => false,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'data',
             CollectionType::class,
             [
@@ -51,9 +51,9 @@ class LinkType extends AbstractTypeLib
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Menu::class,
             ]

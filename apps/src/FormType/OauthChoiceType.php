@@ -19,7 +19,7 @@ class OauthChoiceType extends AbstractType
     }
 
     public function buildView(
-        FormView $view,
+        FormView $formView,
         FormInterface $form,
         array $options
     ): void
@@ -33,16 +33,16 @@ class OauthChoiceType extends AbstractType
 
         ksort($choices);
         if (isset($entity['type'])) {
-            $view->vars['value'] = $entity['type'];
+            $formView->vars['value'] = $entity['type'];
         }
 
-        $view->vars['choices'] = $choices;
+        $formView->vars['choices'] = $choices;
         unset($options, $form);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $optionsResolver)
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

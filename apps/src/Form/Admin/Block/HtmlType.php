@@ -10,10 +10,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HtmlType extends BlockAbstractTypeLib
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder->add('title');
-        $builder->add(
+        $formBuilder->add('title');
+        $formBuilder->add(
             'content',
             WysiwygType::class,
             [
@@ -24,9 +24,9 @@ class HtmlType extends BlockAbstractTypeLib
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Html::class,
             ]

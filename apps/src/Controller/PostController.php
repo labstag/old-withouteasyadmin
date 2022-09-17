@@ -19,20 +19,20 @@ class PostController extends FrontControllerLib
     )]
     public function article(
         string $slug,
-        PostRepository $postRepo,
-        PageRepository $pageRepo
+        PostRepository $postRepository,
+        PageRepository $pageRepository
     )
     {
-        $post = $postRepo->findOneBy(
+        $post = $postRepository->findOneBy(
             ['slug' => $slug]
         );
 
         if (!$post instanceof Post) {
             if ('' != $slug) {
-                return $this->page('mes-articles/'.$slug, $pageRepo);
+                return $this->page('mes-articles/'.$slug, $pageRepository);
             }
 
-            return $this->page('mes-articles', $pageRepo);
+            return $this->page('mes-articles', $pageRepository);
         }
 
         return $this->render(

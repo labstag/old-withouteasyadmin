@@ -21,7 +21,7 @@ class PhoneVerifType extends AbstractType
     }
 
     public function buildView(
-        FormView $view,
+        FormView $formView,
         FormInterface $form,
         array $options
     ): void
@@ -36,14 +36,14 @@ class PhoneVerifType extends AbstractType
             $verif     = array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
         }
 
-        $view->vars['attr']['class'] = $verif ? 'is-valid' : 'is-invalid';
+        $formView->vars['attr']['class'] = $verif ? 'is-valid' : 'is-invalid';
 
         unset($options, $form);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $optionsResolver)
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'label' => $this->translator->trans('forms.numero.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('forms.numero.help', [], 'admin.form'),

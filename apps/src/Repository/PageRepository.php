@@ -12,26 +12,26 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class PageRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Page::class);
+        parent::__construct($managerRegistry, Page::class);
     }
 
     public function formType(array $options)
     {
-        $query = $this->createQueryBuilder('p');
+        $queryBuilder = $this->createQueryBuilder('p');
         $id    = $options['data']->getId();
         if (empty($id)) {
-            return $query;
+            return $queryBuilder;
         }
 
-        $query->where(
+        $queryBuilder->where(
             'p.id != :id'
         );
-        $query->setParameters(
+        $queryBuilder->setParameters(
             ['id' => $id]
         );
 
-        return $query;
+        return $queryBuilder;
     }
 }

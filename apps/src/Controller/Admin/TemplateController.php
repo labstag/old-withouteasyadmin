@@ -19,14 +19,14 @@ class TemplateController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_template_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_template_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $service,
+        AttachFormService $attachFormService,
         ?Template $template,
-        TemplateRequestHandler $requestHandler
+        TemplateRequestHandler $templateRequestHandler
     ): Response
     {
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $templateRequestHandler,
             TemplateType::class,
             is_null($template) ? new Template() : $template
         );

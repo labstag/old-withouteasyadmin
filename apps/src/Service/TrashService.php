@@ -12,7 +12,7 @@ class TrashService
 {
     public function __construct(
         protected $repositories,
-        protected ManagerRegistry $manager,
+        protected ManagerRegistry $managerRegistry,
         protected CsrfTokenManagerInterface $csrfTokenManager
     )
     {
@@ -49,25 +49,25 @@ class TrashService
 
     public function getProperties(string $repository)
     {
-        $reader     = new AnnotationReader();
+        $annotationReader     = new AnnotationReader();
         $properties = [];
         if (!$this->isTrashable($repository)) {
             return $properties;
         }
 
         $reflection = $this->setReflection($repository);
-        $properties = $reader->getClassAnnotations($reflection);
+        $properties = $annotationReader->getClassAnnotations($reflection);
 
         return $properties[0];
     }
 
     public function isTrashable(string $repository): bool
     {
-        $reader     = new AnnotationReader();
+        $annotationReader     = new AnnotationReader();
         $reflection = $this->setReflection($repository);
-        $annotation = $reader->getClassAnnotation($reflection, Trashable::class);
+        $trashable = $annotationReader->getClassAnnotation($reflection, Trashable::class);
 
-        return !is_null($annotation);
+        return !is_null($trashable);
     }
 
     protected function setReflection(string $repository): ReflectionClass

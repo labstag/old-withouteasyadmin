@@ -19,11 +19,11 @@ class GroupeController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_groupuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_groupuser_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Groupe $groupe, GroupeRequestHandler $requestHandler): Response
+    public function edit(AttachFormService $attachFormService, ?Groupe $groupe, GroupeRequestHandler $groupeRequestHandler): Response
     {
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $groupeRequestHandler,
             GroupeType::class,
             is_null($groupe) ? new Groupe() : $groupe
         );
@@ -32,7 +32,7 @@ class GroupeController extends AdminControllerLib
     #[Route(path: '/{id}/guard', name: 'admin_groupuser_guard')]
     public function guard(
         Groupe $groupe,
-        WorkflowRepository $repository
+        WorkflowRepository $workflowRepository
     ): Response
     {
         $this->btnInstance()->addBtnList(
@@ -63,7 +63,7 @@ class GroupeController extends AdminControllerLib
             return $this->redirectToRoute('admin_groupuser_index');
         }
 
-        $workflows = $repository->findBy(
+        $workflows = $workflowRepository->findBy(
             [],
             [
                 'entity'     => 'ASC',

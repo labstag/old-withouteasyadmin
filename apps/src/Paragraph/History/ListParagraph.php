@@ -36,7 +36,7 @@ class ListParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Liste $historylist)
+    public function show(Liste $liste)
     {
         /** @var HistoryRepository $repository */
         $repository = $this->getRepository(History::class);
@@ -51,7 +51,7 @@ class ListParagraph extends ParagraphLib
             $this->getParagraphFile('history/list'),
             [
                 'pagination' => $pagination,
-                'paragraph'  => $historylist,
+                'paragraph'  => $liste,
             ]
         );
     }

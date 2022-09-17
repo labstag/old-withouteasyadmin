@@ -14,28 +14,28 @@ class ChapterType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $this->setTextType($builder);
-        $this->addPublished($builder);
-        $this->setContent($builder);
+        $this->setTextType($formBuilder);
+        $this->addPublished($formBuilder);
+        $this->setContent($formBuilder);
         $this->addParagraph(
-            $builder,
+            $formBuilder,
             [
                 'add'    => 'admin_chapter_paragraph_add',
                 'edit'   => 'admin_chapter_paragraph_show',
                 'delete' => 'admin_chapter_paragraph_delete',
             ]
         );
-        $this->setMeta($builder);
+        $this->setMeta($formBuilder);
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Chapter::class,
             ]

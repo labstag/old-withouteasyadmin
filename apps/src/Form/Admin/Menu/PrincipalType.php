@@ -11,12 +11,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PrincipalType extends AbstractTypeLib
 {
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'clef',
             TextType::class,
             [
@@ -29,9 +29,9 @@ class PrincipalType extends AbstractTypeLib
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Menu::class,
             ]

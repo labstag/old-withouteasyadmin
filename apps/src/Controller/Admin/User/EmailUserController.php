@@ -19,14 +19,14 @@ class EmailUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_emailuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_emailuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $service,
+        AttachFormService $attachFormService,
         ?EmailUser $emailUser,
-        EmailUserRequestHandler $requestHandler
+        EmailUserRequestHandler $emailUserRequestHandler
     ): Response
     {
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $emailUserRequestHandler,
             EmailUserType::class,
             is_null($emailUser) ? new EmailUser() : $emailUser
         );

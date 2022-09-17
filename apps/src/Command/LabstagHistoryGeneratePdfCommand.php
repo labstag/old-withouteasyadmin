@@ -21,9 +21,9 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
 {
     public function __construct(
         EntityManagerInterface $entityManager,
-        protected ParameterBagInterface $containerBag,
+        protected ParameterBagInterface $parameterBag,
         protected HistoryService $historyService,
-        protected HistoryRepository $historyRepo
+        protected HistoryRepository $historyRepository
     )
     {
         parent::__construct($entityManager);
@@ -36,10 +36,10 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $inoutput  = new SymfonyStyle($input, $output);
-        $histories = $this->historyRepo->findAll();
-        $inoutput->title('Génération des PDF');
-        $inoutput->progressStart(is_countable($histories) ? count($histories) : 0);
+        $symfonyStyle  = new SymfonyStyle($input, $output);
+        $histories = $this->historyRepository->findAll();
+        $symfonyStyle->title('Génération des PDF');
+        $symfonyStyle->progressStart(is_countable($histories) ? count($histories) : 0);
         foreach ($histories as $history) {
             $this->historyService->process(
                 $this->getParameter('file_directory'),
@@ -51,16 +51,16 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
                 $history->getId(),
                 false
             );
-            $inoutput->progressAdvance();
+            $symfonyStyle->progressAdvance();
         }
 
-        $inoutput->progressFinish();
+        $symfonyStyle->progressFinish();
 
         return Command::SUCCESS;
     }
 
     protected function getParameter(string $name)
     {
-        return $this->containerBag->get($name);
+        return $this->parameterBag->get($name);
     }
 }

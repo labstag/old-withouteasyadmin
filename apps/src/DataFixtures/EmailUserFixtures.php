@@ -19,9 +19,9 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
         ];
     }
 
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $objectManager): void
     {
-        unset($manager);
+        unset($objectManager);
         $faker = $this->setFaker();
         $users = $this->installService->getData('user');
         for ($index = 0; $index < self::NUMBER_EMAIL; ++$index) {
@@ -32,15 +32,15 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
     }
 
     protected function addEmail(
-        Generator $faker,
+        Generator $generator,
         User $user
     ): void
     {
-        $email = new EmailUser();
-        $old   = clone $email;
-        $email->setRefuser($user);
-        $email->setAddress($faker->safeEmail);
+        $emailUser = new EmailUser();
+        $old   = clone $emailUser;
+        $emailUser->setRefuser($user);
+        $emailUser->setAddress($generator->safeEmail);
 
-        $this->emailUserRH->handle($old, $email);
+        $this->emailUserRH->handle($old, $emailUser);
     }
 }

@@ -19,14 +19,14 @@ class PhoneUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_phoneuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_phoneuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $service,
+        AttachFormService $attachFormService,
         ?PhoneUser $phoneUser,
-        PhoneUserRequestHandler $requestHandler
+        PhoneUserRequestHandler $phoneUserRequestHandler
     ): Response
     {
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $phoneUserRequestHandler,
             PhoneUserType::class,
             is_null($phoneUser) ? new PhoneUser() : $phoneUser
         );

@@ -19,7 +19,7 @@ class LabstagGeocodeInstallCommand extends CommandLib
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        protected GeocodeService $service
+        protected GeocodeService $geocodeService
     )
     {
         parent::__construct($entityManager);
@@ -33,12 +33,12 @@ class LabstagGeocodeInstallCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $inputOutput = new SymfonyStyle($input, $output);
-        $inputOutput->title('Récupération des code postaux');
+        $symfonyStyle = new SymfonyStyle($input, $output);
+        $symfonyStyle->title('Récupération des code postaux');
 
         $country = $input->getArgument('country');
         if (empty($country)) {
-            $inputOutput->note(
+            $symfonyStyle->note(
                 sprintf(
                     'Argument countrie obligatoire: %s',
                     $country
@@ -48,9 +48,9 @@ class LabstagGeocodeInstallCommand extends CommandLib
             return COMMAND::FAILURE;
         }
 
-        $csv = $this->service->csv($country);
+        $csv = $this->geocodeService->csv($country);
         if (0 == $csv) {
-            $inputOutput->warning(
+            $symfonyStyle->warning(
                 ['fichier inexistant']
             );
 
@@ -58,16 +58,16 @@ class LabstagGeocodeInstallCommand extends CommandLib
         }
 
         $progressBar = new ProgressBar($output, is_countable($csv) ? count($csv) : 0);
-        $table       = $this->service->tables($csv);
+        $table       = $this->geocodeService->tables($csv);
         $progressBar->start();
         foreach ($table as $row) {
-            $this->service->add($row);
+            $this->geocodeService->add($row);
             $progressBar->advance();
         }
 
         $progressBar->finish();
-        $inputOutput->newLine();
-        $inputOutput->success("Fin d'enregistrement");
+        $symfonyStyle->newLine();
+        $symfonyStyle->success("Fin d'enregistrement");
 
         return Command::SUCCESS;
     }

@@ -16,12 +16,12 @@ class PhoneUserType extends PhoneType
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        parent::buildForm($builder, $options);
-        $builder->add(
+        parent::buildForm($formBuilder, $options);
+        $formBuilder->add(
             'principal',
             CheckboxType::class,
             [
@@ -29,7 +29,7 @@ class PhoneUserType extends PhoneType
                 'help'  => $this->translator->trans('phoneuser.principal.help', [], 'admin.form'),
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'refuser',
             SearchableType::class,
             [
@@ -45,9 +45,9 @@ class PhoneUserType extends PhoneType
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => PhoneUser::class,
             ]

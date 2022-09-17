@@ -19,11 +19,11 @@ class UserController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_user_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_user_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?User $user, UserRequestHandler $requestHandler): Response
+    public function edit(AttachFormService $attachFormService, ?User $user, UserRequestHandler $userRequestHandler): Response
     {
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $userRequestHandler,
             UserType::class,
             is_null($user) ? new User() : $user,
             'admin/user/form.html.twig'
@@ -51,7 +51,7 @@ class UserController extends AdminControllerLib
     #[Route(path: '/{id}/guard', name: 'admin_user_guard')]
     public function guard(
         User $user,
-        WorkflowRepository $repository
+        WorkflowRepository $workflowRepository
     ): Response
     {
         $this->btnInstance()->addBtnList(
@@ -82,7 +82,7 @@ class UserController extends AdminControllerLib
             return $this->redirectToRoute('admin_user_index');
         }
 
-        $workflows = $repository->findBy(
+        $workflows = $workflowRepository->findBy(
             [],
             [
                 'entity'     => 'ASC',

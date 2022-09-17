@@ -29,16 +29,16 @@ class BookmarkController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_bookmark_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_bookmark_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $service,
+        AttachFormService $attachFormService,
         ?Bookmark $bookmark,
-        BookmarkRequestHandler $requestHandler
+        BookmarkRequestHandler $bookmarkRequestHandler
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $bookmarkRequestHandler,
             PrincipalType::class,
             is_null($bookmark) ? new Bookmark() : $bookmark,
             'admin/bookmark/form.html.twig'
@@ -46,14 +46,14 @@ class BookmarkController extends AdminControllerLib
     }
 
     #[Route(path: '/import', name: 'admin_bookmark_import', methods: ['GET', 'POST'])]
-    public function import(Request $request, Security $security, EnqueueMethod $enqueue)
+    public function import(Request $request, Security $security, EnqueueMethod $enqueueMethod)
     {
         $this->setBtnList($this->getUrlAdmin());
         $form = $this->createForm(ImportType::class, []);
         $this->btnInstance()->addBtnSave($form->getName(), 'Import');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->uploadFile($form, $security, $enqueue);
+            $this->uploadFile($form, $security, $enqueueMethod);
         }
 
         return $this->renderForm(
@@ -166,7 +166,7 @@ class BookmarkController extends AdminControllerLib
     private function uploadFile(
         FormInterface $form,
         Security $security,
-        EnqueueMethod $enqueue
+        EnqueueMethod $enqueueMethod
     )
     {
         $file = $form->get('file')->getData();
@@ -174,16 +174,16 @@ class BookmarkController extends AdminControllerLib
             return;
         }
 
-        $doc = new DOMDocument();
-        $doc->loadHTMLFile($file->getPathname(), LIBXML_NOWARNING | LIBXML_NOERROR);
+        $domDocument = new DOMDocument();
+        $domDocument->loadHTMLFile($file->getPathname(), LIBXML_NOWARNING | LIBXML_NOERROR);
 
-        $tags = $doc->getElementsByTagName('a');
-        $date = new DateTime();
+        $domNodeList = $domDocument->getElementsByTagName('a');
+        $dateTime = new DateTime();
         /** @var User $user */
         $user   = $security->getUser();
         $userId = $user->getId();
-        foreach ($tags as $tag) {
-            $enqueue->enqueue(
+        foreach ($domNodeList as $tag) {
+            $enqueueMethod->enqueue(
                 BookmarkService::class,
                 'process',
                 [
@@ -191,7 +191,7 @@ class BookmarkController extends AdminControllerLib
                     'url'    => $tag->getAttribute('href'),
                     'name'   => $tag->nodeValue,
                     'icon'   => $tag->getAttribute('icon'),
-                    'date'   => $date->setTimestamp((int) $tag->getAttribute('add_date')),
+                    'date'   => $dateTime->setTimestamp((int) $tag->getAttribute('add_date')),
                 ]
             );
         }

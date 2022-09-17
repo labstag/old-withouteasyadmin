@@ -20,11 +20,11 @@ class UserCollectionSubscriber implements EventSubscriberInterface
         return [UserCollectionEvent::class => 'onUserCollectionEvent'];
     }
 
-    public function onUserCollectionEvent(UserCollectionEvent $event): void
+    public function onUserCollectionEvent(UserCollectionEvent $userCollectionEvent): void
     {
-        $oauthConnectUser = $event->getOauthConnectUser();
-        $linkUser         = $event->getLinkUser();
-        $addressUser      = $event->getAddressUser();
+        $oauthConnectUser = $userCollectionEvent->getOauthConnectUser();
+        $linkUser         = $userCollectionEvent->getLinkUser();
+        $addressUser      = $userCollectionEvent->getAddressUser();
 
         $this->setOauthConnectUser($oauthConnectUser);
         $this->setLinkUser($linkUser);

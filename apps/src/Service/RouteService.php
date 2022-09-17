@@ -7,15 +7,15 @@ use Symfony\Component\Routing\RouterInterface;
 class RouteService
 {
     public function __construct(
-        protected RouterInterface $routerInterface
+        protected RouterInterface $router
     )
     {
     }
 
     public function getAll()
     {
-        $collection = $this->routerInterface->getRouteCollection();
+        $routeCollection = $this->router->getRouteCollection();
 
-        return $collection->all();
+        return $routeCollection->all();
     }
 }

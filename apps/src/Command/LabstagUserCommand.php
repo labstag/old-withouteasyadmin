@@ -24,10 +24,10 @@ class LabstagUserCommand extends CommandLib
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        protected Registry $workflows,
+        protected Registry $registry,
         protected UserRequestHandler $userRequestHandler,
-        protected GroupeRepository $groupeRepo,
-        protected UserRepository $userRepo
+        protected GroupeRepository $groupeRepository,
+        protected UserRepository $userRepository
     )
     {
         parent::__construct($entityManager);
@@ -36,13 +36,13 @@ class LabstagUserCommand extends CommandLib
     protected function actionEnableDisableDelete($input, $output, $inputOutput, $action)
     {
         $helper   = $this->getHelper('question');
-        $question = new ChoiceQuestion(
+        $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
             $this->tableQuestionUser()
         );
-        $question->setMultiselect(true);
+        $choiceQuestion->setMultiselect(true);
 
-        $usernames = $helper->ask($input, $output, $question);
+        $usernames = $helper->ask($input, $output, $choiceQuestion);
         foreach ($usernames as $username) {
             if ('' == $username) {
                 continue;
@@ -68,22 +68,22 @@ class LabstagUserCommand extends CommandLib
     protected function actionState($input, $output, $inputOutput)
     {
         $helper   = $this->getHelper('question');
-        $question = new ChoiceQuestion(
+        $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
             $this->tableQuestionUser()
         );
-        $username = $helper->ask($input, $output, $question);
+        $username = $helper->ask($input, $output, $choiceQuestion);
         $this->state($helper, $username, $inputOutput, $input, $output);
     }
 
     protected function actionUpdatePassword($input, $output, $inputOutput)
     {
         $helper   = $this->getHelper('question');
-        $question = new ChoiceQuestion(
+        $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
             $this->tableQuestionUser()
         );
-        $username = $helper->ask($input, $output, $question);
+        $username = $helper->ask($input, $output, $choiceQuestion);
         $this->updatePassword($helper, $username, $inputOutput, $input, $output);
     }
 
@@ -118,7 +118,7 @@ class LabstagUserCommand extends CommandLib
         $question = new Question("Entrer l'email de l'utilisateur : ");
         $email    = $helper->ask($input, $output, $question);
         $user->setEmail($email);
-        $groupes = $this->groupeRepo->findBy([], ['name' => 'DESC']);
+        $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
         $data    = [];
         foreach ($groupes as $groupe) {
             // @var Groupe $groupe
@@ -149,7 +149,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function delete($helper, string $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->userRepo->findOneBy(['username' => $username]);
+        $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -158,7 +158,7 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $question = new ChoiceQuestion(
+        $choiceQuestion = new ChoiceQuestion(
             "Êtes-vous sûr de bien vouloir supprimer l'utilisateur ".$username.' ?',
             [
                 'non' => 'non',
@@ -166,20 +166,20 @@ class LabstagUserCommand extends CommandLib
             ]
         );
 
-        $action = $helper->ask($input, $output, $question);
+        $action = $helper->ask($input, $output, $choiceQuestion);
         if ('oui' !== $action) {
             return;
         }
 
         $old = clone $entity;
-        $this->userRepo->remove($entity);
+        $this->userRepository->remove($entity);
         $this->userRequestHandler->handle($old, $entity);
         $inputOutput->success('Utilisateur supprimé');
     }
 
     protected function disable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->userRepo->findOneBy(['username' => $username]);
+        $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -188,7 +188,7 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $question = new ChoiceQuestion(
+        $choiceQuestion = new ChoiceQuestion(
             "Êtes-vous sûr de bien vouloir désactiver l'utilisateur ".$username.' ?',
             [
                 'non' => 'non',
@@ -196,8 +196,8 @@ class LabstagUserCommand extends CommandLib
             ]
         );
 
-        $action = $helper->ask($input, $output, $question);
-        if ('oui' !== $action || !$this->workflows->has($entity)) {
+        $action = $helper->ask($input, $output, $choiceQuestion);
+        if ('oui' !== $action || !$this->registry->has($entity)) {
             $inputOutput->warning(
                 ['Action impossible']
             );
@@ -205,7 +205,7 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $workflow = $this->workflows->get($entity);
+        $workflow = $this->registry->get($entity);
         if (!$workflow->can($entity, 'desactiver')) {
             $inputOutput->warning(
                 ['Action impossible']
@@ -223,7 +223,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function enable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->userRepo->findOneBy(['username' => $username]);
+        $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -232,7 +232,7 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $question = new ChoiceQuestion(
+        $choiceQuestion = new ChoiceQuestion(
             "Êtes-vous sûr de bien vouloir activer l'utilisateur ".$username.' ?',
             [
                 'non' => 'non',
@@ -240,8 +240,8 @@ class LabstagUserCommand extends CommandLib
             ]
         );
 
-        $action = $helper->ask($input, $output, $question);
-        if ('oui' !== $action || !$this->workflows->has($entity)) {
+        $action = $helper->ask($input, $output, $choiceQuestion);
+        if ('oui' !== $action || !$this->registry->has($entity)) {
             $inputOutput->warning(
                 ['Action impossible']
             );
@@ -249,7 +249,7 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $workflow = $this->workflows->get($entity);
+        $workflow = $this->registry->get($entity);
         if (!$workflow->can($entity, 'activer')) {
             $inputOutput->warning(
                 ['Action impossible']
@@ -267,9 +267,9 @@ class LabstagUserCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $inputOutput = new SymfonyStyle($input, $output);
+        $symfonyStyle = new SymfonyStyle($input, $output);
         $helper      = $this->getHelper('question');
-        $question    = new ChoiceQuestion(
+        $choiceQuestion    = new ChoiceQuestion(
             'Action à effectué',
             [
                 'list'           => 'list',
@@ -282,13 +282,13 @@ class LabstagUserCommand extends CommandLib
             ]
         );
 
-        $action = $helper->ask($input, $output, $question);
+        $action = $helper->ask($input, $output, $choiceQuestion);
         match ($action) {
-            'list' => $this->list($inputOutput, $output),
-            'create' => $this->create($helper, $inputOutput, $input, $output),
-            'updatepassword' => $this->actionUpdatePassword($input, $output, $inputOutput),
-            'state' => $this->actionState($input, $output, $inputOutput),
-            'enable', 'disable', 'delete' => $this->actionEnableDisableDelete($input, $output, $inputOutput, $action),
+            'list' => $this->list($symfonyStyle, $output),
+            'create' => $this->create($helper, $symfonyStyle, $input, $output),
+            'updatepassword' => $this->actionUpdatePassword($input, $output, $symfonyStyle),
+            'state' => $this->actionState($input, $output, $symfonyStyle),
+            'enable', 'disable', 'delete' => $this->actionEnableDisableDelete($input, $output, $symfonyStyle, $action),
         };
 
         return Command::SUCCESS;
@@ -296,7 +296,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function list($inputOutput, OutputInterface $output)
     {
-        $users = $this->userRepo->findBy([], ['username' => 'ASC']);
+        $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
             // @var User $user
@@ -322,7 +322,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function state($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->userRepo->findOneBy(['username' => $username]);
+        $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']
@@ -332,18 +332,18 @@ class LabstagUserCommand extends CommandLib
         }
 
         $states      = [];
-        $workflow    = $this->workflows->get($entity);
+        $workflow    = $this->registry->get($entity);
         $transitions = $workflow->getEnabledTransitions($entity);
         foreach ($transitions as $transition) {
             $name          = $transition->getName();
             $states[$name] = $name;
         }
 
-        $question = new ChoiceQuestion(
+        $choiceQuestion = new ChoiceQuestion(
             "Passer l'utilisateur à l'épage : ",
             $states
         );
-        $state    = $helper->ask($input, $output, $question);
+        $state    = $helper->ask($input, $output, $choiceQuestion);
         if (!$workflow->can($entity, $state)) {
             $inputOutput->warning(
                 ['Action impossible']
@@ -359,7 +359,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function tableQuestionUser()
     {
-        $users = $this->userRepo->findBy([], ['username' => 'ASC']);
+        $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
             // @var User $user
@@ -379,7 +379,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function updatePassword($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
     {
-        $entity = $this->userRepo->findOneBy(['username' => $username]);
+        $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
             $inputOutput->warning(
                 ['Utilisateur introuvable']

@@ -17,13 +17,13 @@ class HistoryType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $this->setTextType($builder);
-        $this->addPublished($builder);
-        $builder->add(
+        $this->setTextType($formBuilder);
+        $this->addPublished($formBuilder);
+        $formBuilder->add(
             'summary',
             WysiwygType::class,
             [
@@ -32,14 +32,14 @@ class HistoryType extends AbstractTypeLib
             ]
         );
         $this->addParagraph(
-            $builder,
+            $formBuilder,
             [
                 'add'    => 'admin_history_paragraph_add',
                 'edit'   => 'admin_history_paragraph_show',
                 'delete' => 'admin_history_paragraph_delete',
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'refuser',
             SearchableType::class,
             [
@@ -53,13 +53,13 @@ class HistoryType extends AbstractTypeLib
                 ],
             ]
         );
-        $this->setMeta($builder);
+        $this->setMeta($formBuilder);
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => History::class,
             ]

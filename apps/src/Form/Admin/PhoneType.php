@@ -14,26 +14,26 @@ abstract class PhoneType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'numero',
             PhoneVerifType::class
         );
-        $builder->add(
+        $formBuilder->add(
             'country',
             FlagCountryType::class
         );
-        $builder->add('type');
+        $formBuilder->add('type');
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         // Configure your form options here
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             ['entity' => null]
         );
     }

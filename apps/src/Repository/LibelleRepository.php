@@ -12,9 +12,9 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class LibelleRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Libelle::class);
+        parent::__construct($managerRegistry, Libelle::class);
     }
 
     public function findByBookmark()

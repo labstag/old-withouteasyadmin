@@ -17,8 +17,8 @@ class UserRequestHandler extends RequestHandlerLib
         );
     }
 
-    protected function setArrayCollection(User $entity)
+    protected function setArrayCollection(User $user)
     {
-        $this->setArrayCollectionUser($entity);
+        $this->setArrayCollectionUser($user);
     }
 }

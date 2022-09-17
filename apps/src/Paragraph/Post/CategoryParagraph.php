@@ -36,7 +36,7 @@ class CategoryParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Category $postcategory)
+    public function show(Category $category)
     {
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -53,7 +53,7 @@ class CategoryParagraph extends ParagraphLib
             $this->getParagraphFile('post/category'),
             [
                 'pagination' => $pagination,
-                'paragraph'  => $postcategory,
+                'paragraph'  => $category,
             ]
         );
     }

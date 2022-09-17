@@ -12,9 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NavbarType extends BlockAbstractTypeLib
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder->add(
+        $formBuilder->add(
             'menu',
             EntityType::class,
             [
@@ -25,15 +25,15 @@ class NavbarType extends BlockAbstractTypeLib
                 ],
                 'required'      => false,
                 'class'         => Menu::class,
-                'query_builder' => static fn(MenuRepository $er) => $er->findAllCodeQuery(),
+                'query_builder' => static fn(MenuRepository $menuRepository) => $menuRepository->findAllCodeQuery(),
             ]
         );
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Navbar::class,
             ]

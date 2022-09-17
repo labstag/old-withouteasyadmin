@@ -24,13 +24,13 @@ use Symfony\Component\Uid\Uuid;
 class HistoryController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_history_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?History $history, HistoryRequestHandler $requestHandler): Response
+    public function edit(AttachFormService $attachFormService, ?History $history, HistoryRequestHandler $historyRequestHandler): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
+            $attachFormService,
+            $historyRequestHandler,
             HistoryType::class,
             is_null($history) ? new History() : $history,
             'admin/history/form.html.twig'
@@ -52,8 +52,8 @@ class HistoryController extends AdminControllerLib
 
     #[Route(path: '/new', name: 'admin_history_new', methods: ['GET', 'POST'])]
     public function new(
-        HistoryRepository $repository,
-        HistoryRequestHandler $requestHandler,
+        HistoryRepository $historyRepository,
+        HistoryRequestHandler $historyRequestHandler,
         Security $security
     ): Response
     {
@@ -65,21 +65,21 @@ class HistoryController extends AdminControllerLib
         $history->setRefuser($user);
 
         $old = clone $history;
-        $repository->add($history);
-        $requestHandler->handle($old, $history);
+        $historyRepository->add($history);
+        $historyRequestHandler->handle($old, $history);
 
         return $this->redirectToRoute('admin_history_edit', ['id' => $history->getId()]);
     }
 
     #[Route(path: '/{id}/pdf', name: 'admin_history_pdf', methods: ['GET'])]
-    public function pdf(HistoryService $service, History $history)
+    public function pdf(HistoryService $historyService, History $history)
     {
-        $service->process(
+        $historyService->process(
             $this->getParameter('file_directory'),
             $history->getId(),
             true
         );
-        $filename = $service->getFilename();
+        $filename = $historyService->getFilename();
         if (empty($filename)) {
             throw $this->createNotFoundException('Pas de fichier');
         }

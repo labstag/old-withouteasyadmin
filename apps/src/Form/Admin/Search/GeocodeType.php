@@ -15,22 +15,22 @@ class GeocodeType extends SearchAbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'countrycode',
             FlagCountryType::class,
             ['required' => false]
         );
-        $this->setTextType($builder);
-        parent::buildForm($builder, $options);
+        $this->setTextType($formBuilder);
+        parent::buildForm($formBuilder, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class'      => GeocodeSearch::class,
                 'csrf_protection' => false,

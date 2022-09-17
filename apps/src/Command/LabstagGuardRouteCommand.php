@@ -18,7 +18,7 @@ class LabstagGuardRouteCommand extends CommandLib
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        protected GuardService $service
+        protected GuardService $guardService
     )
     {
         parent::__construct($entityManager);
@@ -31,40 +31,40 @@ class LabstagGuardRouteCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $inputOutput = new SymfonyStyle($input, $output);
-        $inputOutput->title('Installation du système de droit utilisateurs');
-        $inputOutput->section('Enregistrement des routes');
+        $symfonyStyle = new SymfonyStyle($input, $output);
+        $symfonyStyle->title('Installation du système de droit utilisateurs');
+        $symfonyStyle->section('Enregistrement des routes');
 
-        $all         = $this->service->all();
-        $progressBar = new ProgressBar($output, count($all));
+        $all         = $this->guardService->all();
+        $progressBar = new ProgressBar($output, is_countable($all) ? count($all) : 0);
         $progressBar->start();
         foreach (array_keys($all) as $name) {
             $progressBar->advance();
-            $this->service->save($name);
+            $this->guardService->save($name);
         }
 
         $progressBar->finish();
-        $inputOutput->newLine();
-        $inputOutput->success("Fin d'enregistrement");
+        $symfonyStyle->newLine();
+        $symfonyStyle->success("Fin d'enregistrement");
 
-        $table = $this->service->tables();
-        $inputOutput->table(
+        $table = $this->guardService->tables();
+        $symfonyStyle->table(
             [
                 'route',
                 'controller',
             ],
             $table
         );
-        $table = $this->service->old();
+        $table = $this->guardService->old();
         if (0 != (is_countable($table) ? count($table) : 0)) {
-            $inputOutput->section('Suppression des anciennes routes');
-            $inputOutput->table(
+            $symfonyStyle->section('Suppression des anciennes routes');
+            $symfonyStyle->table(
                 ['route'],
                 $table
             );
-            $table = $this->service->delete();
-            $inputOutput->newLine();
-            $inputOutput->success('Fin de suppression');
+            $table = $this->guardService->delete();
+            $symfonyStyle->newLine();
+            $symfonyStyle->success('Fin de suppression');
         }
 
         return Command::SUCCESS;

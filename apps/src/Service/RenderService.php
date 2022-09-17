@@ -7,15 +7,15 @@ use Symfony\Component\Routing\RouterInterface;
 class RenderService
 {
     public function __construct(
-        protected RouterInterface $routerInterface
+        protected RouterInterface $router
     )
     {
     }
 
     public function getAllFrontRoutes()
     {
-        $collection = $this->routerInterface->getRouteCollection();
+        $routeCollection = $this->router->getRouteCollection();
 
-        return $collection->all();
+        return $routeCollection->all();
     }
 }
