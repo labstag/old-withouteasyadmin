@@ -25,7 +25,7 @@ class GroupeController extends AdminControllerLib
             $service,
             $requestHandler,
             GroupeType::class,
-            !is_null($groupe) ? $groupe : new Groupe()
+            is_null($groupe) ? new Groupe() : $groupe
         );
     }
 

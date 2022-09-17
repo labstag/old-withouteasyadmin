@@ -69,11 +69,9 @@ class Footer
 
     public function removeLink(Link $link): self
     {
-        if ($this->links->removeElement($link)) {
-            // set the owning side to null (unless already changed)
-            if ($link->getFooter() === $this) {
-                $link->setFooter(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->links->removeElement($link) && $link->getFooter() === $this) {
+            $link->setFooter(null);
         }
 
         return $this;

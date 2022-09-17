@@ -90,11 +90,9 @@ class Layout
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        if ($this->paragraphs->removeElement($paragraph)) {
-            // set the owning side to null (unless already changed)
-            if ($paragraph->getLayout() === $this) {
-                $paragraph->setLayout(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphs->removeElement($paragraph) && $paragraph->getLayout() === $this) {
+            $paragraph->setLayout(null);
         }
 
         return $this;

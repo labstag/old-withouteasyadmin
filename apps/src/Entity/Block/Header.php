@@ -69,11 +69,9 @@ class Header
 
     public function removeLink(Link $link): self
     {
-        if ($this->links->removeElement($link)) {
-            // set the owning side to null (unless already changed)
-            if ($link->getHeader() === $this) {
-                $link->setHeader(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->links->removeElement($link) && $link->getHeader() === $this) {
+            $link->setHeader(null);
         }
 
         return $this;

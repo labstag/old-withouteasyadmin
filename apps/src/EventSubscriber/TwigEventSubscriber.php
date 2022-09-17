@@ -67,7 +67,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
         $config = $globals['config'] ?? $this->dataService->getConfig();
 
-        $config['meta'] = !array_key_exists('meta', $config) ? [] : $config['meta'];
+        $config['meta'] = array_key_exists('meta', $config) ? $config['meta'] : [];
         $this->setMetaTitleGlobal($config);
         preg_match(self::ADMIN_CONTROLLER, (string) $controller, $matches);
         $state = (0 == count($matches) || !in_array($controller, self::ERROR_CONTROLLER));

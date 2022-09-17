@@ -244,11 +244,9 @@ class Post implements Stringable
 
     public function removeMeta(Meta $meta): self
     {
-        if ($this->metas->removeElement($meta)) {
-            // set the owning side to null (unless already changed)
-            if ($meta->getPost() === $this) {
-                $meta->setPost(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->metas->removeElement($meta) && $meta->getPost() === $this) {
+            $meta->setPost(null);
         }
 
         return $this;
@@ -256,11 +254,9 @@ class Post implements Stringable
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        if ($this->paragraphs->removeElement($paragraph)) {
-            // set the owning side to null (unless already changed)
-            if ($paragraph->getPost() === $this) {
-                $paragraph->setPost(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphs->removeElement($paragraph) && $paragraph->getPost() === $this) {
+            $paragraph->setPost(null);
         }
 
         return $this;

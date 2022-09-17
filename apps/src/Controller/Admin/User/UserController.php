@@ -25,7 +25,7 @@ class UserController extends AdminControllerLib
             $service,
             $requestHandler,
             UserType::class,
-            !is_null($user) ? $user : new User(),
+            is_null($user) ? new User() : $user,
             'admin/user/form.html.twig'
         );
     }

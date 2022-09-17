@@ -145,11 +145,9 @@ class Category implements Stringable
 
     public function removeBookmark(Bookmark $bookmark): self
     {
-        if ($this->bookmarks->removeElement($bookmark)) {
-            // set the owning side to null (unless already changed)
-            if ($bookmark->getRefcategory() === $this) {
-                $bookmark->setRefcategory(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->bookmarks->removeElement($bookmark) && $bookmark->getRefcategory() === $this) {
+            $bookmark->setRefcategory(null);
         }
 
         return $this;
@@ -157,11 +155,9 @@ class Category implements Stringable
 
     public function removeChild(self $child): self
     {
-        if ($this->children->removeElement($child)) {
-            // set the owning side to null (unless already changed)
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->children->removeElement($child) && $child->getParent() === $this) {
+            $child->setParent(null);
         }
 
         return $this;
@@ -169,11 +165,9 @@ class Category implements Stringable
 
     public function removePost(Post $post): self
     {
-        if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
-            if ($post->getRefcategory() === $this) {
-                $post->setRefcategory(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->posts->removeElement($post) && $post->getRefcategory() === $this) {
+            $post->setRefcategory(null);
         }
 
         return $this;

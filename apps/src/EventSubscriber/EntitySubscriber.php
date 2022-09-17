@@ -281,7 +281,7 @@ class EntitySubscriber extends EventSubscriberLib
 
     protected function setDeletedAt(User $oldEntity, User $newEntity): void
     {
-        if ($oldEntity->getDeletedAt() == $newEntity->getDeletedAt()) {
+        if ($oldEntity->getDeletedAt() === $newEntity->getDeletedAt()) {
             return;
         }
 
@@ -332,7 +332,7 @@ class EntitySubscriber extends EventSubscriberLib
 
     protected function setPrincipalMail(User $oldEntity, User $newEntity): void
     {
-        if ($oldEntity->getEmail() == $newEntity->getEmail()) {
+        if ($oldEntity->getEmail() === $newEntity->getEmail()) {
             return;
         }
 

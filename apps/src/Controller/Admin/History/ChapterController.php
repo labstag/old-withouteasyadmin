@@ -28,7 +28,7 @@ class ChapterController extends AdminControllerLib
             $service,
             $requestHandler,
             ChapterType::class,
-            !is_null($chapter) ? $chapter : new Chapter(),
+            is_null($chapter) ? new Chapter() : $chapter,
             'admin/chapter/form.html.twig'
         );
     }

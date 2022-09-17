@@ -40,7 +40,7 @@ class UserService
         $userOauth
     ): void
     {
-        $data     = !is_array($userOauth) ? $userOauth->toArray() : $userOauth;
+        $data     = is_array($userOauth) ? $userOauth : $userOauth->toArray();
         $identity = $this->oauthService->getIdentity($data, $client);
         $find     = $this->findOAuthIdentity(
             $user,

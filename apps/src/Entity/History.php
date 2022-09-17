@@ -212,11 +212,9 @@ class History
 
     public function removeChapter(Chapter $chapter): self
     {
-        if ($this->chapters->removeElement($chapter)) {
-            // set the owning side to null (unless already changed)
-            if ($chapter->getRefhistory() === $this) {
-                $chapter->setRefhistory(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->chapters->removeElement($chapter) && $chapter->getRefhistory() === $this) {
+            $chapter->setRefhistory(null);
         }
 
         return $this;
@@ -224,11 +222,9 @@ class History
 
     public function removeMeta(Meta $meta): self
     {
-        if ($this->metas->removeElement($meta)) {
-            // set the owning side to null (unless already changed)
-            if ($meta->getHistory() === $this) {
-                $meta->setHistory(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->metas->removeElement($meta) && $meta->getHistory() === $this) {
+            $meta->setHistory(null);
         }
 
         return $this;
@@ -236,11 +232,9 @@ class History
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        if ($this->paragraphs->removeElement($paragraph)) {
-            // set the owning side to null (unless already changed)
-            if ($paragraph->getHistory() === $this) {
-                $paragraph->setHistory(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphs->removeElement($paragraph) && $paragraph->getHistory() === $this) {
+            $paragraph->setHistory(null);
         }
 
         return $this;

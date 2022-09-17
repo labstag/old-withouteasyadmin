@@ -28,7 +28,7 @@ class MemoController extends AdminControllerLib
             $service,
             $requestHandler,
             MemoType::class,
-            !is_null($noteInterne) ? $noteInterne : new Memo(),
+            is_null($noteInterne) ? new Memo() : $noteInterne,
             'admin/memo/form.html.twig'
         );
     }

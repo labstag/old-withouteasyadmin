@@ -30,7 +30,7 @@ class CategoryController extends AdminControllerLib
             $service,
             $requestHandler,
             CategoryType::class,
-            !is_null($category) ? $category : new Category()
+            is_null($category) ? new Category() : $category
         );
     }
 

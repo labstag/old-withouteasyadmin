@@ -76,11 +76,9 @@ class Custom implements Stringable
 
     public function removeLayout(Layout $layout): self
     {
-        if ($this->layouts->removeElement($layout)) {
-            // set the owning side to null (unless already changed)
-            if ($layout->getCustom() === $this) {
-                $layout->setCustom(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->layouts->removeElement($layout) && $layout->getCustom() === $this) {
+            $layout->setCustom(null);
         }
 
         return $this;

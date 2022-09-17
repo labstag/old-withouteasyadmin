@@ -194,21 +194,21 @@ class LabstagExtension extends AbstractExtension
         $paragraph = $data->getParagraph();
         $code      = $paragraph->getColor();
 
-        return !empty($code) ? 'm--theme-'.$code : '';
+        return empty($code) ? '' : 'm--theme-'.$code;
     }
 
     public function guardAccessGroupRoutes(Groupe $groupe): bool
     {
         $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
 
-        return (0 != count($routes)) ? true : false;
+        return 0 != count($routes);
     }
 
     public function guardAccessUserRoutes(User $user): bool
     {
         $routes = $this->guardService->getGuardRoutesForUser($user);
 
-        return (0 != count($routes)) ? true : false;
+        return 0 != count($routes);
     }
 
     public function guardRoute(string $route): bool

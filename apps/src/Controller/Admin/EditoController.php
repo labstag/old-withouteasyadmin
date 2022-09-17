@@ -29,7 +29,7 @@ class EditoController extends AdminControllerLib
             $service,
             $requestHandler,
             EditoType::class,
-            !is_null($edito) ? $edito : new Edito(),
+            is_null($edito) ? new Edito() : $edito,
             'admin/edito/form.html.twig'
         );
     }

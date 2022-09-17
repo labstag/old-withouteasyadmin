@@ -28,7 +28,7 @@ class LinkUserController extends AdminControllerLib
             $service,
             $requestHandler,
             LinkUserType::class,
-            !is_null($linkUser) ? $linkUser : new LinkUser()
+            is_null($linkUser) ? new LinkUser() : $linkUser
         );
     }
 

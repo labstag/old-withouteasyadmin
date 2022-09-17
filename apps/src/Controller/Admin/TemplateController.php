@@ -28,7 +28,7 @@ class TemplateController extends AdminControllerLib
             $service,
             $requestHandler,
             TemplateType::class,
-            !is_null($template) ? $template : new Template()
+            is_null($template) ? new Template() : $template
         );
     }
 

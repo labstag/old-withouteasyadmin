@@ -24,7 +24,7 @@ class GeoCodeController extends AdminControllerLib
             $service,
             $requestHandler,
             GeoCodeType::class,
-            !is_null($geoCode) ? $geoCode : new GeoCode()
+            is_null($geoCode) ? new GeoCode() : $geoCode
         );
     }
 

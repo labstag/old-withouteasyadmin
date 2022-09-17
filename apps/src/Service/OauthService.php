@@ -72,12 +72,7 @@ class OauthService
 
     public function getTypes(): array
     {
-        $types = [];
-        foreach (array_keys($this->configProvider) as $key) {
-            $types[] = $key;
-        }
-
-        return $types;
+        return array_keys($this->configProvider);
     }
 
     public function ifConfigProviderEnable(string $clientName): bool

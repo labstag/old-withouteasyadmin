@@ -140,11 +140,9 @@ trait HistoryEntity
 
     public function removeHistory(ParagraphHistory $history): self
     {
-        if ($this->histories->removeElement($history)) {
-            // set the owning side to null (unless already changed)
-            if ($history->getParagraph() === $this) {
-                $history->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->histories->removeElement($history) && $history->getParagraph() === $this) {
+            $history->setParagraph(null);
         }
 
         return $this;
@@ -152,11 +150,9 @@ trait HistoryEntity
 
     public function removeHistoryChapter(HistoryChapter $historyChapter): self
     {
-        if ($this->historyChapters->removeElement($historyChapter)) {
-            // set the owning side to null (unless already changed)
-            if ($historyChapter->getParagraph() === $this) {
-                $historyChapter->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->historyChapters->removeElement($historyChapter) && $historyChapter->getParagraph() === $this) {
+            $historyChapter->setParagraph(null);
         }
 
         return $this;
@@ -164,11 +160,9 @@ trait HistoryEntity
 
     public function removeHistoryList(HistoryList $historyList): self
     {
-        if ($this->historyLists->removeElement($historyList)) {
-            // set the owning side to null (unless already changed)
-            if ($historyList->getParagraph() === $this) {
-                $historyList->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->historyLists->removeElement($historyList) && $historyList->getParagraph() === $this) {
+            $historyList->setParagraph(null);
         }
 
         return $this;
@@ -176,11 +170,9 @@ trait HistoryEntity
 
     public function removeHistoryShow(HistoryShow $historyShow): self
     {
-        if ($this->historyShows->removeElement($historyShow)) {
-            // set the owning side to null (unless already changed)
-            if ($historyShow->getParagraph() === $this) {
-                $historyShow->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->historyShows->removeElement($historyShow) && $historyShow->getParagraph() === $this) {
+            $historyShow->setParagraph(null);
         }
 
         return $this;
@@ -188,11 +180,9 @@ trait HistoryEntity
 
     public function removeHistoryUser(HistoryUser $historyUser): self
     {
-        if ($this->historyUsers->removeElement($historyUser)) {
-            // set the owning side to null (unless already changed)
-            if ($historyUser->getParagraph() === $this) {
-                $historyUser->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->historyUsers->removeElement($historyUser) && $historyUser->getParagraph() === $this) {
+            $historyUser->setParagraph(null);
         }
 
         return $this;

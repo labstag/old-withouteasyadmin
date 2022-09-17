@@ -92,11 +92,9 @@ trait EditoEntity
 
     public function removeEdito(ParagraphEdito $edito): self
     {
-        if ($this->editos->removeElement($edito)) {
-            // set the owning side to null (unless already changed)
-            if ($edito->getParagraph() === $this) {
-                $edito->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->editos->removeElement($edito) && $edito->getParagraph() === $this) {
+            $edito->setParagraph(null);
         }
 
         return $this;
@@ -104,11 +102,9 @@ trait EditoEntity
 
     public function removeEditoHeader(EditoHeader $header): self
     {
-        if ($this->editoHeaders->removeElement($header)) {
-            // set the owning side to null (unless already changed)
-            if ($header->getParagraph() === $this) {
-                $header->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->editoHeaders->removeElement($header) && $header->getParagraph() === $this) {
+            $header->setParagraph(null);
         }
 
         return $this;
@@ -116,11 +112,9 @@ trait EditoEntity
 
     public function removeShow(EditoShow $show): self
     {
-        if ($this->editoShows->removeElement($show)) {
-            // set the owning side to null (unless already changed)
-            if ($show->getParagraph() === $this) {
-                $show->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->editoShows->removeElement($show) && $show->getParagraph() === $this) {
+            $show->setParagraph(null);
         }
 
         return $this;

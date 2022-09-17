@@ -280,30 +280,13 @@ class LabstagUserCommand extends CommandLib
         );
 
         $action = $helper->ask($input, $output, $question);
-        switch ($action) {
-            case 'list':
-                $this->list($inputOutput, $output);
-
-                break;
-            case 'create':
-                $this->create($helper, $inputOutput, $input, $output);
-
-                break;
-            case 'updatepassword':
-                $this->actionUpdatePassword($input, $output, $inputOutput);
-
-                break;
-            case 'state':
-                $this->actionState($input, $output, $inputOutput);
-
-                break;
-            case 'enable':
-            case 'disable':
-            case 'delete':
-                $this->actionEnableDisableDelete($input, $output, $inputOutput, $action);
-
-                break;
-        }
+        match ($action) {
+            'list' => $this->list($inputOutput, $output),
+            'create' => $this->create($helper, $inputOutput, $input, $output),
+            'updatepassword' => $this->actionUpdatePassword($input, $output, $inputOutput),
+            'state' => $this->actionState($input, $output, $inputOutput),
+            'enable', 'disable', 'delete' => $this->actionEnableDisableDelete($input, $output, $inputOutput, $action),
+        };
 
         return Command::SUCCESS;
     }

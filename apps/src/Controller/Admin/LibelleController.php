@@ -26,7 +26,7 @@ class LibelleController extends AdminControllerLib
             $service,
             $requestHandler,
             LibelleType::class,
-            !is_null($libelle) ? $libelle : new Libelle()
+            is_null($libelle) ? new Libelle() : $libelle
         );
     }
 

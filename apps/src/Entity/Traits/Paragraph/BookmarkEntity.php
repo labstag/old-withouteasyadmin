@@ -105,11 +105,9 @@ trait BookmarkEntity
 
     public function removeBookmark(ParagraphBookmark $bookmark): self
     {
-        if ($this->bookmarks->removeElement($bookmark)) {
-            // set the owning side to null (unless already changed)
-            if ($bookmark->getParagraph() === $this) {
-                $bookmark->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->bookmarks->removeElement($bookmark) && $bookmark->getParagraph() === $this) {
+            $bookmark->setParagraph(null);
         }
 
         return $this;
@@ -117,11 +115,9 @@ trait BookmarkEntity
 
     public function removeBookmarkCategory(BookmarkCategory $bookmarkCategory): self
     {
-        if ($this->bookmarkCategories->removeElement($bookmarkCategory)) {
-            // set the owning side to null (unless already changed)
-            if ($bookmarkCategory->getParagraph() === $this) {
-                $bookmarkCategory->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->bookmarkCategories->removeElement($bookmarkCategory) && $bookmarkCategory->getParagraph() === $this) {
+            $bookmarkCategory->setParagraph(null);
         }
 
         return $this;
@@ -129,11 +125,9 @@ trait BookmarkEntity
 
     public function removeBookmarkLibelle(BookmarkLibelle $bookmarkLibelle): self
     {
-        if ($this->bookmarkLibelles->removeElement($bookmarkLibelle)) {
-            // set the owning side to null (unless already changed)
-            if ($bookmarkLibelle->getParagraph() === $this) {
-                $bookmarkLibelle->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->bookmarkLibelles->removeElement($bookmarkLibelle) && $bookmarkLibelle->getParagraph() === $this) {
+            $bookmarkLibelle->setParagraph(null);
         }
 
         return $this;
@@ -141,11 +135,9 @@ trait BookmarkEntity
 
     public function removeBookmarkList(BookmarkList $bookmarkList): self
     {
-        if ($this->bookmarkLists->removeElement($bookmarkList)) {
-            // set the owning side to null (unless already changed)
-            if ($bookmarkList->getParagraph() === $this) {
-                $bookmarkList->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->bookmarkLists->removeElement($bookmarkList) && $bookmarkList->getParagraph() === $this) {
+            $bookmarkList->setParagraph(null);
         }
 
         return $this;

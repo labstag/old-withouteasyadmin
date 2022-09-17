@@ -26,7 +26,7 @@ class RenderController extends AdminControllerLib
             $service,
             $requestHandler,
             RenderType::class,
-            !is_null($render) ? $render : new Render(),
+            is_null($render) ? new Render() : $render,
             'admin/render/form.html.twig'
         );
     }

@@ -120,7 +120,7 @@ class ActionsController extends ApiControllerLib
         }
 
         $data['error'] = $error;
-        if (0 === count($error)) {
+        if ([] === $error) {
             $data['action'] = true;
         }
 
@@ -361,7 +361,7 @@ class ActionsController extends ApiControllerLib
         }
 
         $data['error'] = $error;
-        if (0 === count($error)) {
+        if ([] === $error) {
             $data['action'] = true;
         }
 

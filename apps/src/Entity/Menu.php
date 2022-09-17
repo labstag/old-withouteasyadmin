@@ -90,8 +90,8 @@ class Menu implements Stringable
 
     public function __construct()
     {
-        $this->children   = new ArrayCollection();
-        $this->navbars    = new ArrayCollection();
+        $this->children = new ArrayCollection();
+        $this->navbars  = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -188,11 +188,9 @@ class Menu implements Stringable
 
     public function removeChild(Menu $child): self
     {
-        if ($this->children->removeElement($child)) {
-            // set the owning side to null (unless already changed)
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->children->removeElement($child) && $child->getParent() === $this) {
+            $child->setParent(null);
         }
 
         return $this;
@@ -200,11 +198,9 @@ class Menu implements Stringable
 
     public function removeNavbar(Navbar $navbar): self
     {
-        if ($this->navbars->removeElement($navbar)) {
-            // set the owning side to null (unless already changed)
-            if ($navbar->getMenu() === $this) {
-                $navbar->setMenu(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->navbars->removeElement($navbar) && $navbar->getMenu() === $this) {
+            $navbar->setMenu(null);
         }
 
         return $this;

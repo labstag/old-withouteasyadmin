@@ -199,11 +199,9 @@ class Attachment
 
     public function removeBookmark(Bookmark $bookmark): self
     {
-        if ($this->bookmarks->removeElement($bookmark)) {
-            // set the owning side to null (unless already changed)
-            if ($bookmark->getImg() === $this) {
-                $bookmark->setImg(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->bookmarks->removeElement($bookmark) && $bookmark->getImg() === $this) {
+            $bookmark->setImg(null);
         }
 
         return $this;
@@ -211,11 +209,9 @@ class Attachment
 
     public function removeEdito(Edito $edito): self
     {
-        if ($this->editos->removeElement($edito)) {
-            // set the owning side to null (unless already changed)
-            if ($edito->getFond() === $this) {
-                $edito->setFond(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->editos->removeElement($edito) && $edito->getFond() === $this) {
+            $edito->setFond(null);
         }
 
         return $this;
@@ -223,11 +219,9 @@ class Attachment
 
     public function removeMemo(Memo $noteInterne): self
     {
-        if ($this->noteInternes->removeElement($noteInterne)) {
-            // set the owning side to null (unless already changed)
-            if ($noteInterne->getFond() === $this) {
-                $noteInterne->setFond(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->noteInternes->removeElement($noteInterne) && $noteInterne->getFond() === $this) {
+            $noteInterne->setFond(null);
         }
 
         return $this;
@@ -235,11 +229,9 @@ class Attachment
 
     public function removeNoteInterne(Memo $noteInterne): self
     {
-        if ($this->noteInternes->removeElement($noteInterne)) {
-            // set the owning side to null (unless already changed)
-            if ($noteInterne->getFond() === $this) {
-                $noteInterne->setFond(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->noteInternes->removeElement($noteInterne) && $noteInterne->getFond() === $this) {
+            $noteInterne->setFond(null);
         }
 
         return $this;
@@ -247,11 +239,9 @@ class Attachment
 
     public function removePost(Post $post): self
     {
-        if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
-            if ($post->getImg() === $this) {
-                $post->setImg(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->posts->removeElement($post) && $post->getImg() === $this) {
+            $post->setImg(null);
         }
 
         return $this;
@@ -259,11 +249,9 @@ class Attachment
 
     public function removeUser(User $user): self
     {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getAvatar() === $this) {
-                $user->setAvatar(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->users->removeElement($user) && $user->getAvatar() === $this) {
+            $user->setAvatar(null);
         }
 
         return $this;

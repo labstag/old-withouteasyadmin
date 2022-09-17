@@ -79,11 +79,9 @@ class Render
 
     public function removeMeta(Meta $meta): self
     {
-        if ($this->metas->removeElement($meta)) {
-            // set the owning side to null (unless already changed)
-            if ($meta->getRender() === $this) {
-                $meta->setRender(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->metas->removeElement($meta) && $meta->getRender() === $this) {
+            $meta->setRender(null);
         }
 
         return $this;

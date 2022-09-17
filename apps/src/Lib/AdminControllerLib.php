@@ -289,12 +289,12 @@ abstract class AdminControllerLib extends ControllerLib
         if ($entity instanceof User) {
             $routes = $this->guardService->getGuardRoutesForUser($entity);
 
-            return (0 != count($routes)) ? true : false;
+            return 0 != count($routes);
         }
 
         $routes = $this->guardService->getGuardRoutesForGroupe($entity);
 
-        return (0 != count($routes)) ? true : false;
+        return 0 != count($routes);
     }
 
     protected function getMethodsList(): array
@@ -635,7 +635,7 @@ abstract class AdminControllerLib extends ControllerLib
         if (is_array($position)) {
             foreach ($position as $row) {
                 $id         = $row['id'];
-                $position   = intval($row['position']);
+                $position   = (int) $row['position'];
                 $repository = $this->getRepository($entityclass);
                 $entity     = $repository->find($id);
                 if (!is_null($entity)) {

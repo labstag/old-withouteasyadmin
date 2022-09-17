@@ -29,7 +29,7 @@ class PostController extends AdminControllerLib
             $service,
             $requestHandler,
             PostType::class,
-            !is_null($post) ? $post : new Post(),
+            is_null($post) ? new Post() : $post,
             'admin/post/form.html.twig'
         );
     }

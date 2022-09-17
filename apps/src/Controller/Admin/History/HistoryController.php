@@ -32,7 +32,7 @@ class HistoryController extends AdminControllerLib
             $service,
             $requestHandler,
             HistoryType::class,
-            !is_null($history) ? $history : new History(),
+            is_null($history) ? new History() : $history,
             'admin/history/form.html.twig'
         );
     }

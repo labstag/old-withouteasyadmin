@@ -34,7 +34,7 @@ class BlockController extends AdminControllerLib
             $attachService,
             $requestHandler,
             BlockType::class,
-            !is_null($block) ? $block : new Block(),
+            is_null($block) ? new Block() : $block,
             'admin/block/form.html.twig',
             ['field' => $field]
         );

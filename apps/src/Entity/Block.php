@@ -277,11 +277,9 @@ class Block
 
     public function removeBreadcrumb(Breadcrumb $breadcrumb): self
     {
-        if ($this->breadcrumbs->removeElement($breadcrumb)) {
-            // set the owning side to null (unless already changed)
-            if ($breadcrumb->getBlock() === $this) {
-                $breadcrumb->setBlock(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->breadcrumbs->removeElement($breadcrumb) && $breadcrumb->getBlock() === $this) {
+            $breadcrumb->setBlock(null);
         }
 
         return $this;
@@ -289,11 +287,9 @@ class Block
 
     public function removeCustom(Custom $custom): self
     {
-        if ($this->customs->removeElement($custom)) {
-            // set the owning side to null (unless already changed)
-            if ($custom->getBlock() === $this) {
-                $custom->setBlock(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->customs->removeElement($custom) && $custom->getBlock() === $this) {
+            $custom->setBlock(null);
         }
 
         return $this;
@@ -301,11 +297,9 @@ class Block
 
     public function removeFlashbag(Flashbag $flashbag): self
     {
-        if ($this->flashbags->removeElement($flashbag)) {
-            // set the owning side to null (unless already changed)
-            if ($flashbag->getBlock() === $this) {
-                $flashbag->setBlock(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->flashbags->removeElement($flashbag) && $flashbag->getBlock() === $this) {
+            $flashbag->setBlock(null);
         }
 
         return $this;
@@ -313,11 +307,9 @@ class Block
 
     public function removeFooter(Footer $footer): self
     {
-        if ($this->footers->removeElement($footer)) {
-            // set the owning side to null (unless already changed)
-            if ($footer->getBlock() === $this) {
-                $footer->setBlock(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->footers->removeElement($footer) && $footer->getBlock() === $this) {
+            $footer->setBlock(null);
         }
 
         return $this;
@@ -325,11 +317,9 @@ class Block
 
     public function removeHeader(Header $header): self
     {
-        if ($this->headers->removeElement($header)) {
-            // set the owning side to null (unless already changed)
-            if ($header->getBlock() === $this) {
-                $header->setBlock(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->headers->removeElement($header) && $header->getBlock() === $this) {
+            $header->setBlock(null);
         }
 
         return $this;
@@ -337,11 +327,9 @@ class Block
 
     public function removeHtml(Html $html): self
     {
-        if ($this->htmls->removeElement($html)) {
-            // set the owning side to null (unless already changed)
-            if ($html->getBlock() === $this) {
-                $html->setBlock(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->htmls->removeElement($html) && $html->getBlock() === $this) {
+            $html->setBlock(null);
         }
 
         return $this;
@@ -349,11 +337,9 @@ class Block
 
     public function removeMenu(Navbar $menu): self
     {
-        if ($this->menu->removeElement($menu)) {
-            // set the owning side to null (unless already changed)
-            if ($menu->getBlock() === $this) {
-                $menu->setBlock(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->menu->removeElement($menu) && $menu->getBlock() === $this) {
+            $menu->setBlock(null);
         }
 
         return $this;
@@ -361,11 +347,9 @@ class Block
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        if ($this->paragraphs->removeElement($paragraph)) {
-            // set the owning side to null (unless already changed)
-            if ($paragraph->getBlock() === $this) {
-                $paragraph->setBlock(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphs->removeElement($paragraph) && $paragraph->getBlock() === $this) {
+            $paragraph->setBlock(null);
         }
 
         return $this;

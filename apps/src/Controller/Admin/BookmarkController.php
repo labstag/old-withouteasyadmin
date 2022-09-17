@@ -40,7 +40,7 @@ class BookmarkController extends AdminControllerLib
             $service,
             $requestHandler,
             PrincipalType::class,
-            !is_null($bookmark) ? $bookmark : new Bookmark(),
+            is_null($bookmark) ? new Bookmark() : $bookmark,
             'admin/bookmark/form.html.twig'
         );
     }

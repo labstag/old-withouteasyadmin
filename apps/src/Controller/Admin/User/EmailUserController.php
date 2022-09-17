@@ -28,7 +28,7 @@ class EmailUserController extends AdminControllerLib
             $service,
             $requestHandler,
             EmailUserType::class,
-            !is_null($emailUser) ? $emailUser : new EmailUser()
+            is_null($emailUser) ? new EmailUser() : $emailUser
         );
     }
 

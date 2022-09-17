@@ -32,7 +32,7 @@ class LayoutController extends AdminControllerLib
             $service,
             $requestHandler,
             LayoutType::class,
-            !is_null($layout) ? $layout : new Layout(),
+            is_null($layout) ? new Layout() : $layout,
             'admin/layout/form.html.twig'
         );
     }

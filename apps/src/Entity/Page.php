@@ -175,11 +175,9 @@ class Page implements Stringable
 
     public function removeChild(self $child): self
     {
-        if ($this->children->removeElement($child)) {
-            // set the owning side to null (unless already changed)
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->children->removeElement($child) && $child->getParent() === $this) {
+            $child->setParent(null);
         }
 
         return $this;
@@ -187,11 +185,9 @@ class Page implements Stringable
 
     public function removeMeta(Meta $meta): self
     {
-        if ($this->metas->removeElement($meta)) {
-            // set the owning side to null (unless already changed)
-            if ($meta->getPage() === $this) {
-                $meta->setPage(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->metas->removeElement($meta) && $meta->getPage() === $this) {
+            $meta->setPage(null);
         }
 
         return $this;
@@ -199,11 +195,9 @@ class Page implements Stringable
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        if ($this->paragraphs->removeElement($paragraph)) {
-            // set the owning side to null (unless already changed)
-            if ($paragraph->getPage() === $this) {
-                $paragraph->setPage(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphs->removeElement($paragraph) && $paragraph->getPage() === $this) {
+            $paragraph->setPage(null);
         }
 
         return $this;

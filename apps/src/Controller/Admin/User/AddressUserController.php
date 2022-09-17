@@ -28,7 +28,7 @@ class AddressUserController extends AdminControllerLib
             $service,
             $requestHandler,
             AddressUserType::class,
-            !is_null($addressUser) ? $addressUser : new AddressUser()
+            is_null($addressUser) ? new AddressUser() : $addressUser
         );
     }
 

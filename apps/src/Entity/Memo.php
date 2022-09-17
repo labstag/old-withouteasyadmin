@@ -151,11 +151,9 @@ class Memo implements Stringable
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        if ($this->paragraphs->removeElement($paragraph)) {
-            // set the owning side to null (unless already changed)
-            if ($paragraph->getMemo() === $this) {
-                $paragraph->setMemo(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphs->removeElement($paragraph) && $paragraph->getMemo() === $this) {
+            $paragraph->setMemo(null);
         }
 
         return $this;

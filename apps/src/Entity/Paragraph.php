@@ -167,11 +167,9 @@ class Paragraph
 
     public function removeText(Text $text): self
     {
-        if ($this->texts->removeElement($text)) {
-            // set the owning side to null (unless already changed)
-            if ($text->getParagraph() === $this) {
-                $text->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->texts->removeElement($text) && $text->getParagraph() === $this) {
+            $text->setParagraph(null);
         }
 
         return $this;

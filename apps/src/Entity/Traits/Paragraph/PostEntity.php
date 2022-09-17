@@ -236,11 +236,9 @@ trait PostEntity
 
     public function removePost(ParagraphPost $post): self
     {
-        if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
-            if ($post->getParagraph() === $this) {
-                $post->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->posts->removeElement($post) && $post->getParagraph() === $this) {
+            $post->setParagraph(null);
         }
 
         return $this;
@@ -248,11 +246,9 @@ trait PostEntity
 
     public function removePostArchive(PostArchive $postArchive): self
     {
-        if ($this->postArchives->removeElement($postArchive)) {
-            // set the owning side to null (unless already changed)
-            if ($postArchive->getParagraph() === $this) {
-                $postArchive->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->postArchives->removeElement($postArchive) && $postArchive->getParagraph() === $this) {
+            $postArchive->setParagraph(null);
         }
 
         return $this;
@@ -260,11 +256,9 @@ trait PostEntity
 
     public function removePostCategory(PostCategory $postCategory): self
     {
-        if ($this->postCategories->removeElement($postCategory)) {
-            // set the owning side to null (unless already changed)
-            if ($postCategory->getParagraph() === $this) {
-                $postCategory->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->postCategories->removeElement($postCategory) && $postCategory->getParagraph() === $this) {
+            $postCategory->setParagraph(null);
         }
 
         return $this;
@@ -272,11 +266,9 @@ trait PostEntity
 
     public function removePostHeader(PostHeader $postHeader): self
     {
-        if ($this->postHeaders->removeElement($postHeader)) {
-            // set the owning side to null (unless already changed)
-            if ($postHeader->getParagraph() === $this) {
-                $postHeader->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->postHeaders->removeElement($postHeader) && $postHeader->getParagraph() === $this) {
+            $postHeader->setParagraph(null);
         }
 
         return $this;
@@ -284,11 +276,9 @@ trait PostEntity
 
     public function removePostLibelle(PostLibelle $postLibelle): self
     {
-        if ($this->postLibelles->removeElement($postLibelle)) {
-            // set the owning side to null (unless already changed)
-            if ($postLibelle->getParagraph() === $this) {
-                $postLibelle->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->postLibelles->removeElement($postLibelle) && $postLibelle->getParagraph() === $this) {
+            $postLibelle->setParagraph(null);
         }
 
         return $this;
@@ -296,11 +286,9 @@ trait PostEntity
 
     public function removePostList(PostList $postList): self
     {
-        if ($this->postLists->removeElement($postList)) {
-            // set the owning side to null (unless already changed)
-            if ($postList->getParagraph() === $this) {
-                $postList->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->postLists->removeElement($postList) && $postList->getParagraph() === $this) {
+            $postList->setParagraph(null);
         }
 
         return $this;
@@ -308,11 +296,9 @@ trait PostEntity
 
     public function removePostShow(PostShow $postShow): self
     {
-        if ($this->postShows->removeElement($postShow)) {
-            // set the owning side to null (unless already changed)
-            if ($postShow->getParagraph() === $this) {
-                $postShow->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->postShows->removeElement($postShow) && $postShow->getParagraph() === $this) {
+            $postShow->setParagraph(null);
         }
 
         return $this;
@@ -320,11 +306,9 @@ trait PostEntity
 
     public function removePostUser(PostUser $postUser): self
     {
-        if ($this->postUsers->removeElement($postUser)) {
-            // set the owning side to null (unless already changed)
-            if ($postUser->getParagraph() === $this) {
-                $postUser->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->postUsers->removeElement($postUser) && $postUser->getParagraph() === $this) {
+            $postUser->setParagraph(null);
         }
 
         return $this;
@@ -332,11 +316,9 @@ trait PostEntity
 
     public function removePostYear(PostYear $postYear): self
     {
-        if ($this->postYears->removeElement($postYear)) {
-            // set the owning side to null (unless already changed)
-            if ($postYear->getParagraph() === $this) {
-                $postYear->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->postYears->removeElement($postYear) && $postYear->getParagraph() === $this) {
+            $postYear->setParagraph(null);
         }
 
         return $this;

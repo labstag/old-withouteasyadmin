@@ -28,7 +28,7 @@ class PhoneUserController extends AdminControllerLib
             $service,
             $requestHandler,
             PhoneUserType::class,
-            !is_null($phoneUser) ? $phoneUser : new PhoneUser()
+            is_null($phoneUser) ? new PhoneUser() : $phoneUser
         );
     }
 

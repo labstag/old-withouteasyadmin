@@ -27,7 +27,7 @@ class PageController extends AdminControllerLib
             $service,
             $requestHandler,
             PageType::class,
-            !is_null($page) ? $page : new Page(),
+            is_null($page) ? new Page() : $page,
             'admin/page/form.html.twig'
         );
     }

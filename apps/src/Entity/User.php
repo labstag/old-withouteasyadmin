@@ -504,11 +504,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeBookmark(Bookmark $bookmark): self
     {
-        if ($this->bookmarks->removeElement($bookmark)) {
-            // set the owning side to null (unless already changed)
-            if ($bookmark->getRefuser() === $this) {
-                $bookmark->setRefuser(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->bookmarks->removeElement($bookmark) && $bookmark->getRefuser() === $this) {
+            $bookmark->setRefuser(null);
         }
 
         return $this;
@@ -542,11 +540,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeHistory(History $history): self
     {
-        if ($this->histories->removeElement($history)) {
-            // set the owning side to null (unless already changed)
-            if ($history->getRefuser() === $this) {
-                $history->setRefuser(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->histories->removeElement($history) && $history->getRefuser() === $this) {
+            $history->setRefuser(null);
         }
 
         return $this;
@@ -580,11 +576,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeNoteInterne(Memo $noteInterne): self
     {
-        if ($this->noteInternes->removeElement($noteInterne)) {
-            // set the owning side to null (unless already changed)
-            if ($noteInterne->getRefuser() === $this) {
-                $noteInterne->setRefuser(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->noteInternes->removeElement($noteInterne) && $noteInterne->getRefuser() === $this) {
+            $noteInterne->setRefuser(null);
         }
 
         return $this;
@@ -592,11 +586,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeOauthConnectUser(OauthConnectUser $oauthConnectUser): self
     {
-        if ($this->oauthConnectUsers->removeElement($oauthConnectUser)) {
-            // set the owning side to null (unless already changed)
-            if ($oauthConnectUser->getRefuser() === $this) {
-                $oauthConnectUser->setRefuser(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->oauthConnectUsers->removeElement($oauthConnectUser) && $oauthConnectUser->getRefuser() === $this) {
+            $oauthConnectUser->setRefuser(null);
         }
 
         return $this;
@@ -632,11 +624,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removePost(Post $post): self
     {
-        if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
-            if ($post->getRefuser() === $this) {
-                $post->setRefuser(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->posts->removeElement($post) && $post->getRefuser() === $this) {
+            $post->setRefuser(null);
         }
 
         return $this;
@@ -644,11 +634,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeRoute(RouteUser $route): self
     {
-        if ($this->routes->removeElement($route)) {
-            // set the owning side to null (unless already changed)
-            if ($route->getRefuser() === $this) {
-                $route->setRefuser(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->routes->removeElement($route) && $route->getRefuser() === $this) {
+            $route->setRefuser(null);
         }
 
         return $this;
@@ -656,11 +644,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeWorkflowUser(WorkflowUser $workflowUser): self
     {
-        if ($this->workflowUsers->removeElement($workflowUser)) {
-            // set the owning side to null (unless already changed)
-            if ($workflowUser->getRefuser() === $this) {
-                $workflowUser->setRefuser(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->workflowUsers->removeElement($workflowUser) && $workflowUser->getRefuser() === $this) {
+            $workflowUser->setRefuser(null);
         }
 
         return $this;

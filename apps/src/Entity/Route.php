@@ -91,11 +91,9 @@ class Route implements Stringable
 
     public function removeGroupe(RouteGroupe $groupe): self
     {
-        if ($this->groupes->removeElement($groupe)) {
-            // set the owning side to null (unless already changed)
-            if ($groupe->getRefroute() === $this) {
-                $groupe->setRefroute(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->groupes->removeElement($groupe) && $groupe->getRefroute() === $this) {
+            $groupe->setRefroute(null);
         }
 
         return $this;
@@ -103,11 +101,9 @@ class Route implements Stringable
 
     public function removeUser(RouteUser $user): self
     {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getRefroute() === $this) {
-                $user->setRefroute(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->users->removeElement($user) && $user->getRefroute() === $this) {
+            $user->setRefroute(null);
         }
 
         return $this;
