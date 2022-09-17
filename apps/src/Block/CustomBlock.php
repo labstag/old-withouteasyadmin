@@ -25,8 +25,7 @@ class CustomBlock extends BlockLib
         protected LayoutRepository $layoutRepo
     )
     {
-        $request       = $requestStack->getCurrentRequest();
-        $this->request = $request;
+        $this->request       = $requestStack->getCurrentRequest();
         parent::__construct($translator, $twig);
     }
 

@@ -32,8 +32,7 @@ abstract class ApiControllerLib extends AbstractController
     )
     {
         // @var Request $request
-        $request       = $this->requeststack->getCurrentRequest();
-        $this->request = $request;
+        $this->request       = $this->requeststack->getCurrentRequest();
     }
 
     protected function getGuardRouteOrWorkflow($data, $get, $entityClass)

@@ -60,13 +60,10 @@ class OauthAuthenticator extends AbstractAuthenticator
     )
     {
         // @var Request $request
-        $request = $this->requestStack->getCurrentRequest();
-
-        $this->request = $request;
+        $this->request = $this->requestStack->getCurrentRequest();
 
         $attributes      = $this->request->attributes;
-        $oauthCode       = $this->setOauthCode($attributes);
-        $this->oauthCode = $oauthCode;
+        $this->oauthCode       = $this->setOauthCode($attributes);
     }
 
     public function authenticate(Request $request): Passport

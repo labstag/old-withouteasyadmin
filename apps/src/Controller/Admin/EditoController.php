@@ -51,7 +51,7 @@ class EditoController extends AdminControllerLib
     public function new(EditoRepository $repository, EditoRequestHandler $requestHandler, Security $security): Response
     {
         $user = $security->getUser();
-        $user = $user;
+
         $edito = new Edito();
         $edito->setPublished(new DateTime());
         $edito->setTitle(Uuid::v1());

@@ -27,9 +27,6 @@ class BookmarkService
     public function __construct(
         protected FileService $fileService,
         private readonly ErrorService $errorService,
-        private readonly LoggerInterface $logger,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly AttachmentRequestHandler $attachmentRH,
         private readonly UploadAnnotationReader $uploadAnnotReader,
         private readonly ContainerBagInterface $containerBag,
         private readonly BookmarkRequestHandler $requestHandler,

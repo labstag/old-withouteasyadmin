@@ -29,8 +29,7 @@ abstract class ParagraphLib extends AbstractController
         protected EntityManagerInterface $entityManager
     )
     {
-        $request       = $requestStack->getCurrentRequest();
-        $this->request = $request;
+        $this->request       = $requestStack->getCurrentRequest();
     }
 
     protected function getParagraphFile(string $type)

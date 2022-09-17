@@ -58,7 +58,7 @@ class HistoryController extends AdminControllerLib
     ): Response
     {
         $user = $security->getUser();
-        $user = $user;
+
         $history = new History();
         $history->setPublished(new DateTime());
         $history->setName(Uuid::v1());

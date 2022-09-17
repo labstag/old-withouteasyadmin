@@ -54,10 +54,6 @@ abstract class Phone implements Stringable
      */
     protected $type;
 
-    public function __construct()
-    {
-    }
-
     public function __toString(): string
     {
         return implode(

@@ -340,12 +340,12 @@ class LabstagExtension extends AbstractExtension
 
         $vars      = $class->vars;
         $classtype = (isset($vars['value']) && is_object($vars['value'])) ? $vars['value']::class : null;
-        if (!is_null($classtype) && 1 == substr_count((string) $classtype, '\Paragraph')) {
+        if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
             $files[] = 'forms/paragraph/'.$type.$htmltwig;
             $files[] = 'forms/paragraph/default'.$htmltwig;
         }
 
-        if (!is_null($classtype) && 1 == substr_count((string) $classtype, '\Block')) {
+        if (!is_null($classtype) && 1 == substr_count($classtype, '\Block')) {
             $files[] = 'forms/block/'.$type.$htmltwig;
             $files[] = 'forms/block/default'.$htmltwig;
         }

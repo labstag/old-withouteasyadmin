@@ -51,7 +51,7 @@ class PostController extends AdminControllerLib
     public function new(PostRepository $repository, PostRequestHandler $requestHandler, Security $security): Response
     {
         $user = $security->getUser();
-        $user = $user;
+
         $post = new Post();
         $post->setPublished(new DateTime());
         $post->setRemark(false);

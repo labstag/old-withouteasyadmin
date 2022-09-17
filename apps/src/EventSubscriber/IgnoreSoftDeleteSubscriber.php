@@ -30,8 +30,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
     )
     {
         // @var Request $request
-        $request       = $this->requestStack->getCurrentRequest();
-        $this->request = $request;
+        $this->request       = $this->requestStack->getCurrentRequest();
     }
 
     public static function getSubscribedEvents(): array

@@ -177,7 +177,7 @@ class GuardService
         if (empty($token) || !$token->getUser() instanceof User) {
             $groupe = $this->groupeRepo->findOneBy(['code' => 'visiteur']);
 
-            return (bool) $this->searchRouteGroupe($groupe, $route);
+            return $this->searchRouteGroupe($groupe, $route);
         }
 
         // @var User $user
@@ -187,9 +187,7 @@ class GuardService
             return true;
         }
 
-        $state = $this->searchRouteUser($user, $route);
-
-        return (bool) $state;
+        return $this->searchRouteUser($user, $route);
     }
 
     public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
@@ -319,7 +317,6 @@ class GuardService
     private function getLostRoute()
     {
         $all    = $this->all();
-        $routes = [];
         $routes = array_keys($all);
 
         return $this->routeRepo->findLost($routes);

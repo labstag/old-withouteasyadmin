@@ -45,10 +45,6 @@ abstract class Email implements Stringable
      */
     protected $principal = false;
 
-    public function __construct()
-    {
-    }
-
     public function __toString(): string
     {
         return (string) $this->getAddress();

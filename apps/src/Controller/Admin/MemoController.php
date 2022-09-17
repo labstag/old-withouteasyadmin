@@ -50,7 +50,7 @@ class MemoController extends AdminControllerLib
     public function new(MemoRepository $repository, MemoRequestHandler $requestHandler, Security $security): Response
     {
         $user = $security->getUser();
-        $user = $user;
+
         $memo = new Memo();
         $memo->setTitle(Uuid::v1());
         $memo->setRefuser($user);

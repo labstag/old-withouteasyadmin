@@ -685,7 +685,6 @@ abstract class AdminControllerLib extends ControllerLib
         EntityManagerInterface $entityManager
     )
     {
-        /** @var EntityManager $entityManager */
         $methodTrash = $methods['trash'];
         $filters     = $entityManager->getFilters();
         $filters->disable('softdeleteable');
