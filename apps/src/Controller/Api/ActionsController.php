@@ -250,8 +250,8 @@ class ActionsController extends ApiControllerLib
         }
 
         $data['action'] = true;
-        if ($this->workflows->has($entity)) {
-            $workflow = $this->workflows->get($entity);
+        if ($this->registry->has($entity)) {
+            $workflow = $this->registry->get($entity);
             $workflow->apply($entity, $state);
             $this->entityManager->flush();
         }

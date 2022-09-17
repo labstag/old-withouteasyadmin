@@ -39,9 +39,9 @@ class ArchiveParagraph extends ParagraphLib
 
     public function show(Archive $archive): Response
     {
-        /** @var PostRepository $repository */
-        $repository = $this->getRepository(Post::class);
-        $archives   = $repository->findDateArchive();
+        /** @var PostRepository $entityRepository */
+        $entityRepository = $this->getRepository(Post::class);
+        $archives   = $entityRepository->findDateArchive();
 
         return $this->render(
             $this->getParagraphFile('post/archive'),

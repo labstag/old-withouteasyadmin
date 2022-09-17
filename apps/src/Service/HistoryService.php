@@ -39,12 +39,12 @@ class HistoryService
             return;
         }
 
-        $collection = $this->getChapters($history, $all);
-        if (0 == count($collection)) {
+        $arrayCollection = $this->getChapters($history, $all);
+        if (0 == count($arrayCollection)) {
             return;
         }
 
-        $html2Pdf  = $this->generateHistoryPdf($history, $collection);
+        $html2Pdf  = $this->generateHistoryPdf($history, $arrayCollection);
         $path = sprintf(
             '%s/%s',
             $fileDirectory,

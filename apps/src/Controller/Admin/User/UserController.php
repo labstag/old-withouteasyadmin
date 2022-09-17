@@ -186,11 +186,8 @@ class UserController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_user' => $this->translator->trans('user.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_user' => $this->translator->trans('user.title', [], 'admin.header'),
+        ]];
     }
 }

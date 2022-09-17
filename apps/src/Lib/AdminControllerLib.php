@@ -39,8 +39,8 @@ abstract class AdminControllerLib extends ControllerLib
     protected string $urlHome = '';
 
     public function form(
-        AttachFormService $service,
-        RequestHandlerLib $handler,
+        AttachFormService $attachFormService,
+        RequestHandlerLib $requestHandlerLib,
         string $formType,
         object $entity,
         string $twig = 'admin/crud/form.html.twig',
@@ -64,10 +64,10 @@ abstract class AdminControllerLib extends ControllerLib
         if ($form->isSubmitted() && $form->isValid()) {
             $this->setPositionParagraphs();
             $this->upload(
-                $service->getUploadAnnotationReader(),
+                $attachFormService->getUploadAnnotationReader(),
                 $entity
             );
-            $handler->handle($oldEntity, $entity);
+            $requestHandlerLib->handle($oldEntity, $entity);
             $this->sessionService->flashBagAdd(
                 'success',
                 $this->translator->trans('data.save')
@@ -211,9 +211,9 @@ abstract class AdminControllerLib extends ControllerLib
 
         $variables = $compiled->getPathVariables();
         $params    = [];
-        foreach ($variables as $key) {
-            if (isset($routeParam[$key])) {
-                $params[$key] = $routeParam[$key];
+        foreach ($variables as $variable) {
+            if (isset($routeParam[$variable])) {
+                $params[$variable] = $routeParam[$variable];
             }
         }
 
@@ -232,7 +232,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function addNewImport(
         EntityManagerInterface $entityManager,
-        ServiceEntityRepositoryLib $repository,
+        ServiceEntityRepositoryLib $serviceEntityRepositoryLib,
         array $methods,
         string $routeType,
         array $url = [],
@@ -240,7 +240,7 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $this->listOrTrashRouteTrashsetTrashIcon(
             $methods,
-            $repository,
+            $serviceEntityRepositoryLib,
             $url,
             $routeType,
             $entityManager
@@ -329,14 +329,14 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function listOrTrashRouteTrash(
         array $url,
-        ServiceEntityRepositoryLib $repository
+        ServiceEntityRepositoryLib $serviceEntityRepositoryLib
     )
     {
         $entity = strtolower(
             str_replace(
                 'Labstag\\Entity\\',
                 '',
-                $repository->getClassName()
+                $serviceEntityRepositoryLib->getClassName()
             )
         );
         if (isset($url['list'])) {
@@ -380,7 +380,7 @@ abstract class AdminControllerLib extends ControllerLib
                             str_replace(
                                 'Labstag\\Entity\\',
                                 '',
-                                $repository->getClassName()
+                                $serviceEntityRepositoryLib->getClassName()
                             )
                         ),
                     ],
@@ -402,7 +402,7 @@ abstract class AdminControllerLib extends ControllerLib
                             str_replace(
                                 'Labstag\\Entity\\',
                                 '',
-                                $repository->getClassName()
+                                $serviceEntityRepositoryLib->getClassName()
                             )
                         ),
                     ],
@@ -475,16 +475,16 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function setBreadcrumbsPage()
     {
-        $collection  = $this->routerInterface->getRouteCollection();
-        $context     = $this->routerInterface->getContext();
-        $matcher     = new TraceableUrlMatcher($collection, $context);
+        $routeCollection  = $this->routerInterface->getRouteCollection();
+        $requestContext     = $this->routerInterface->getContext();
+        $traceableUrlMatcher     = new TraceableUrlMatcher($routeCollection, $requestContext);
         $request     = $this->requeststack->getCurrentRequest();
         $attributes  = $request->attributes->all();
         $pathinfo    = $request->getPathInfo();
-        $breadcrumb  = $this->getBreadcrumb($matcher, $pathinfo, []);
+        $breadcrumb  = $this->getBreadcrumb($traceableUrlMatcher, $pathinfo, []);
         $breadcrumb  = array_reverse($breadcrumb);
 
-        $all         = $collection->all();
+        $all         = $routeCollection->all();
         $routeParams = $attributes['_route_params'];
         foreach ($breadcrumb as $row) {
             $name  = $row['name'];
@@ -576,7 +576,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function setBtnListOrTrash(ServiceEntityRepositoryLib $repository, string $routeType)
+    protected function setBtnListOrTrash(ServiceEntityRepositoryLib $serviceEntityRepositoryLib, string $routeType)
     {
         $url         = $this->getUrlAdmin();
         $request     = $this->requeststack->getCurrentRequest();
@@ -584,8 +584,8 @@ abstract class AdminControllerLib extends ControllerLib
         $route       = $all['_route'];
         $routeParams = $all['_route_params'];
         $methods     = $this->getMethodsList();
-        $this->addNewImport($this->entityManager, $repository, $methods, $routeType, $url);
-        $this->setBtnDeleties($routeType, $route, $routeParams, $repository);
+        $this->addNewImport($this->entityManager, $serviceEntityRepositoryLib, $methods, $routeType, $url);
+        $this->setBtnDeleties($routeType, $route, $routeParams, $serviceEntityRepositoryLib);
     }
 
     protected function setBtnShow(array $url, object $entity): void
@@ -702,13 +702,13 @@ abstract class AdminControllerLib extends ControllerLib
     )
     {
         $methodTrash = $methods['trash'];
-        $filters     = $entityManager->getFilters();
-        $filters->disable('softdeleteable');
+        $filterCollection     = $entityManager->getFilters();
+        $filterCollection->disable('softdeleteable');
 
         $trash  = call_user_func([$repository, $methodTrash], []);
         $result = $trash->getQuery()->getResult();
         $total  = is_countable($result) ? count($result) : 0;
-        $filters->enable('softdeleteable');
+        $filterCollection->enable('softdeleteable');
         if (0 != $total) {
             $this->btnInstance()->addBtnTrash(
                 $url['trash']
@@ -830,13 +830,13 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function upload(UploadAnnotationReader $uploadAnnotReader, $entity): void
+    protected function upload(UploadAnnotationReader $uploadAnnotationReader, $entity): void
     {
-        if (!$uploadAnnotReader->isUploadable($entity)) {
+        if (!$uploadAnnotationReader->isUploadable($entity)) {
             return;
         }
 
-        $annotations = $uploadAnnotReader->getUploadableFields($entity);
+        $annotations = $uploadAnnotationReader->getUploadableFields($entity);
         foreach ($annotations as $property => $annotation) {
             $accessor = PropertyAccess::createPropertyAccessor();
             $file     = $accessor->getValue($entity, $property);

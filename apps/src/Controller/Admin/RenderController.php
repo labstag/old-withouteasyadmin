@@ -128,11 +128,8 @@ class RenderController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_bookmark' => $this->translator->trans('render.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_bookmark' => $this->translator->trans('render.title', [], 'admin.header'),
+        ]];
     }
 }

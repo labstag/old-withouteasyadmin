@@ -46,7 +46,7 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         $history->setRefuser($user);
         $history->setPublished($generator->unique()->dateTime('now'));
         $this->addReference('history_'.$index, $history);
-        $this->historyRH->handle($oldHistory, $history);
-        $this->historyRH->changeWorkflowState($history, $states);
+        $this->historyRequestHandler->handle($oldHistory, $history);
+        $this->historyRequestHandler->changeWorkflowState($history, $states);
     }
 }

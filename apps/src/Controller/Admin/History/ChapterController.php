@@ -153,11 +153,8 @@ class ChapterController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_chapter' => $this->translator->trans('chapter.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_chapter' => $this->translator->trans('chapter.title', [], 'admin.header'),
+        ]];
     }
 }

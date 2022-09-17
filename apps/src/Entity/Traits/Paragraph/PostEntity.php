@@ -67,11 +67,11 @@ trait PostEntity
      */
     private $postYears;
 
-    public function addPost(ParagraphPost $post): self
+    public function addPost(ParagraphPost $paragraphPost): self
     {
-        if (!$this->posts->contains($post)) {
-            $this->posts[] = $post;
-            $post->setParagraph($this);
+        if (!$this->posts->contains($paragraphPost)) {
+            $this->posts[] = $paragraphPost;
+            $paragraphPost->setParagraph($this);
         }
 
         return $this;
@@ -234,11 +234,11 @@ trait PostEntity
         return $this->postYears;
     }
 
-    public function removePost(ParagraphPost $post): self
+    public function removePost(ParagraphPost $paragraphPost): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->posts->removeElement($post) && $post->getParagraph() === $this) {
-            $post->setParagraph(null);
+        if ($this->posts->removeElement($paragraphPost) && $paragraphPost->getParagraph() === $this) {
+            $paragraphPost->setParagraph(null);
         }
 
         return $this;

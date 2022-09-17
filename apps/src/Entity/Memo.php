@@ -166,16 +166,16 @@ class Memo implements Stringable
         return $this;
     }
 
-    public function setDateEnd(?DateTime $dateEnd): self
+    public function setDateEnd(?DateTime $dateTime): self
     {
-        $this->dateEnd = $dateEnd;
+        $this->dateEnd = $dateTime;
 
         return $this;
     }
 
-    public function setDateStart(DateTime $dateStart): self
+    public function setDateStart(DateTime $dateTime): self
     {
-        $this->dateStart = $dateStart;
+        $this->dateStart = $dateTime;
 
         return $this;
     }
@@ -187,16 +187,16 @@ class Memo implements Stringable
         return $this;
     }
 
-    public function setFond(?Attachment $fond): self
+    public function setFond(?Attachment $attachment): self
     {
-        $this->fond = $fond;
+        $this->fond = $attachment;
 
         return $this;
     }
 
-    public function setRefuser(?User $refuser): self
+    public function setRefuser(?User $user): self
     {
-        $this->refuser = $refuser;
+        $this->refuser = $user;
 
         return $this;
     }

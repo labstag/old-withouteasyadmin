@@ -43,11 +43,11 @@ trait HistoryEntity
      */
     private $historyUsers;
 
-    public function addHistory(ParagraphHistory $history): self
+    public function addHistory(ParagraphHistory $paragraphHistory): self
     {
-        if (!$this->histories->contains($history)) {
-            $this->histories[] = $history;
-            $history->setParagraph($this);
+        if (!$this->histories->contains($paragraphHistory)) {
+            $this->histories[] = $paragraphHistory;
+            $paragraphHistory->setParagraph($this);
         }
 
         return $this;
@@ -138,11 +138,11 @@ trait HistoryEntity
         return $this->historyUsers;
     }
 
-    public function removeHistory(ParagraphHistory $history): self
+    public function removeHistory(ParagraphHistory $paragraphHistory): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->histories->removeElement($history) && $history->getParagraph() === $this) {
-            $history->setParagraph(null);
+        if ($this->histories->removeElement($paragraphHistory) && $paragraphHistory->getParagraph() === $this) {
+            $paragraphHistory->setParagraph(null);
         }
 
         return $this;

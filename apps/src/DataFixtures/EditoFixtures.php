@@ -49,7 +49,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         $user = $users[$tabIndex];
         $edito->setRefuser($user);
         $this->upload($edito, $generator);
-        $this->editoRH->handle($old, $edito);
-        $this->editoRH->changeWorkflowState($edito, $states);
+        $this->editoRequestHandler->handle($old, $edito);
+        $this->editoRequestHandler->changeWorkflowState($edito, $states);
     }
 }

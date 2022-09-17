@@ -55,16 +55,16 @@ class WorkflowGroupe
         return $this->state;
     }
 
-    public function setRefgroupe(?Groupe $refgroupe): self
+    public function setRefgroupe(?Groupe $groupe): self
     {
-        $this->refgroupe = $refgroupe;
+        $this->refgroupe = $groupe;
 
         return $this;
     }
 
-    public function setRefworkflow(?Workflow $refworkflow): self
+    public function setRefworkflow(?Workflow $workflow): self
     {
-        $this->refworkflow = $refworkflow;
+        $this->refworkflow = $workflow;
 
         return $this;
     }

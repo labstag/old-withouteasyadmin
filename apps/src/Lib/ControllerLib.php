@@ -30,13 +30,13 @@ abstract class ControllerLib extends AbstractController
 
     public function __construct(
         protected FileService $fileService,
-        protected Environment $twig,
+        protected Environment $environment,
         protected ErrorService $errorService,
         protected SessionService $sessionService,
         protected EntityManagerInterface $entityManager,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected TokenStorageInterface $tokenStorage,
-        protected RouterInterface $routerInterface,
+        protected RouterInterface $router,
         protected RequestStack $requeststack,
         protected GuardService $guardService,
         protected DataService $dataService,

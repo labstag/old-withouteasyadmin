@@ -133,11 +133,8 @@ class PhoneUserController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_phoneuser' => $this->translator->trans('phoneuser.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_phoneuser' => $this->translator->trans('phoneuser.title', [], 'admin.header'),
+        ]];
     }
 }

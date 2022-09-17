@@ -195,8 +195,8 @@ class TwigEventSubscriber extends EventSubscriberLib
 
     private function setMetaImage(&$config): void
     {
-        $image = $this->attachmentRepository->getImageDefault();
-        $this->environment->AddGlobal('imageglobal', $image);
+        $imageDefault = $this->attachmentRepository->getImageDefault();
+        $this->environment->AddGlobal('imageglobal', $imageDefault);
         $meta  = $config['meta'];
         $tests = [
             'og:image',
@@ -206,12 +206,12 @@ class TwigEventSubscriber extends EventSubscriberLib
             return;
         }
 
-        if (is_null($image) || is_null($image->getName())) {
+        if (is_null($imageDefault) || is_null($imageDefault->getName())) {
             return;
         }
 
         $pathPackage = new PathPackage('/', new EmptyVersionStrategy());
-        $url     = $pathPackage->getUrl($image->getName());
+        $url     = $pathPackage->getUrl($imageDefault->getName());
 
         $meta['og:image']      = $url;
         $meta['twitter:image'] = $url;

@@ -10,7 +10,7 @@ class ParagraphRequestHandler extends RequestHandlerLib
     public function handle($oldEntity, $entity): void
     {
         parent::handle($oldEntity, $entity);
-        $this->dispatcher->dispatch(
+        $this->eventDispatcher->dispatch(
             new ParagraphEntityEvent($oldEntity, $entity)
         );
     }

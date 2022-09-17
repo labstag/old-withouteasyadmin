@@ -42,10 +42,10 @@ class LibelleParagraph extends ParagraphLib
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
         $slug       = $routeParam['slug'] ?? null;
-        /** @var BookmarkRepository $repository */
-        $repository = $this->getRepository(Bookmark::class);
+        /** @var BookmarkRepository $entityRepository */
+        $entityRepository = $this->getRepository(Bookmark::class);
         $pagination = $this->paginator->paginate(
-            $repository->findPublierLibelle($slug),
+            $entityRepository->findPublierLibelle($slug),
             $this->request->query->getInt('page', 1),
             10
         );

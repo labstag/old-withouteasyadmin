@@ -128,11 +128,8 @@ class TemplateController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_template' => $this->translator->trans('template.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_template' => $this->translator->trans('template.title', [], 'admin.header'),
+        ]];
     }
 }

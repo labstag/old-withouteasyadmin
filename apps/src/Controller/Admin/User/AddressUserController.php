@@ -132,11 +132,8 @@ class AddressUserController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_addressuser' => $this->translator->trans('addressuser.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_addressuser' => $this->translator->trans('addressuser.title', [], 'admin.header'),
+        ]];
     }
 }

@@ -72,11 +72,11 @@ class Groupe implements Stringable
         return (string) $this->getName();
     }
 
-    public function addRoute(RouteGroupe $route): self
+    public function addRoute(RouteGroupe $routeGroupe): self
     {
-        if (!$this->routes->contains($route)) {
-            $this->routes[] = $route;
-            $route->setRefgroupe($this);
+        if (!$this->routes->contains($routeGroupe)) {
+            $this->routes[] = $routeGroupe;
+            $routeGroupe->setRefgroupe($this);
         }
 
         return $this;
@@ -132,11 +132,11 @@ class Groupe implements Stringable
         return $this->workflowGroupes;
     }
 
-    public function removeRoute(RouteGroupe $route): self
+    public function removeRoute(RouteGroupe $routeGroupe): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->routes->removeElement($route) && $route->getRefgroupe() === $this) {
-            $route->setRefgroupe(null);
+        if ($this->routes->removeElement($routeGroupe) && $routeGroupe->getRefgroupe() === $this) {
+            $routeGroupe->setRefgroupe(null);
         }
 
         return $this;

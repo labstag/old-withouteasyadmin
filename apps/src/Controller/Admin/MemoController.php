@@ -147,11 +147,8 @@ class MemoController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_memo' => $this->translator->trans('memo.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_memo' => $this->translator->trans('memo.title', [], 'admin.header'),
+        ]];
     }
 }

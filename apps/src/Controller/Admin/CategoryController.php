@@ -142,11 +142,8 @@ class CategoryController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_category' => $this->translator->trans('category.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_category' => $this->translator->trans('category.title', [], 'admin.header'),
+        ]];
     }
 }

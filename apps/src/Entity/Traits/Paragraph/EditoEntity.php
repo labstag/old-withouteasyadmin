@@ -31,31 +31,31 @@ trait EditoEntity
      */
     private $editoShows;
 
-    public function addEdito(ParagraphEdito $edito): self
+    public function addEdito(ParagraphEdito $paragraphEdito): self
     {
-        if (!$this->editos->contains($edito)) {
-            $this->editos[] = $edito;
-            $edito->setParagraph($this);
+        if (!$this->editos->contains($paragraphEdito)) {
+            $this->editos[] = $paragraphEdito;
+            $paragraphEdito->setParagraph($this);
         }
 
         return $this;
     }
 
-    public function addEditoHeader(EditoHeader $header): self
+    public function addEditoHeader(EditoHeader $editoHeader): self
     {
-        if (!$this->editoHeaders->contains($header)) {
-            $this->editoHeaders[] = $header;
-            $header->setParagraph($this);
+        if (!$this->editoHeaders->contains($editoHeader)) {
+            $this->editoHeaders[] = $editoHeader;
+            $editoHeader->setParagraph($this);
         }
 
         return $this;
     }
 
-    public function addShow(EditoShow $show): self
+    public function addShow(EditoShow $editoShow): self
     {
-        if (!$this->editoShows->contains($show)) {
-            $this->editoShows[] = $show;
-            $show->setParagraph($this);
+        if (!$this->editoShows->contains($editoShow)) {
+            $this->editoShows[] = $editoShow;
+            $editoShow->setParagraph($this);
         }
 
         return $this;
@@ -90,31 +90,31 @@ trait EditoEntity
         return $this->editoShows;
     }
 
-    public function removeEdito(ParagraphEdito $edito): self
+    public function removeEdito(ParagraphEdito $paragraphEdito): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->editos->removeElement($edito) && $edito->getParagraph() === $this) {
-            $edito->setParagraph(null);
+        if ($this->editos->removeElement($paragraphEdito) && $paragraphEdito->getParagraph() === $this) {
+            $paragraphEdito->setParagraph(null);
         }
 
         return $this;
     }
 
-    public function removeEditoHeader(EditoHeader $header): self
+    public function removeEditoHeader(EditoHeader $editoHeader): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->editoHeaders->removeElement($header) && $header->getParagraph() === $this) {
-            $header->setParagraph(null);
+        if ($this->editoHeaders->removeElement($editoHeader) && $editoHeader->getParagraph() === $this) {
+            $editoHeader->setParagraph(null);
         }
 
         return $this;
     }
 
-    public function removeShow(EditoShow $show): self
+    public function removeShow(EditoShow $editoShow): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->editoShows->removeElement($show) && $show->getParagraph() === $this) {
-            $show->setParagraph(null);
+        if ($this->editoShows->removeElement($editoShow) && $editoShow->getParagraph() === $this) {
+            $editoShow->setParagraph(null);
         }
 
         return $this;

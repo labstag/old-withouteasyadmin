@@ -50,6 +50,6 @@ class AddressUserFixtures extends FixtureLib implements DependentInterface
         $addressUser->setGps($gps);
         $addressUser->setPmr((bool) random_int(0, 1));
 
-        $this->addressUserRH->handle($old, $addressUser);
+        $this->addressUserRequestHandler->handle($old, $addressUser);
     }
 }

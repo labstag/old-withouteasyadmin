@@ -166,11 +166,11 @@ class Block
         return $this;
     }
 
-    public function addMenu(Navbar $menu): self
+    public function addMenu(Navbar $navbar): self
     {
-        if (!$this->menu->contains($menu)) {
-            $this->menu[] = $menu;
-            $menu->setBlock($this);
+        if (!$this->menu->contains($navbar)) {
+            $this->menu[] = $navbar;
+            $navbar->setBlock($this);
         }
 
         return $this;
@@ -335,11 +335,11 @@ class Block
         return $this;
     }
 
-    public function removeMenu(Navbar $menu): self
+    public function removeMenu(Navbar $navbar): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->menu->removeElement($menu) && $menu->getBlock() === $this) {
-            $menu->setBlock(null);
+        if ($this->menu->removeElement($navbar) && $navbar->getBlock() === $this) {
+            $navbar->setBlock(null);
         }
 
         return $this;

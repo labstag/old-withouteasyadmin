@@ -28,6 +28,6 @@ class GroupFixtures extends DataFixtureLib implements DependentFixtureInterface
         $groupe->setCode($row);
         $groupe->setName($row);
         $this->addReference('groupe_'.$key, $groupe);
-        $this->groupeRH->handle($old, $groupe);
+        $this->groupeRequestHandler->handle($old, $groupe);
     }
 }

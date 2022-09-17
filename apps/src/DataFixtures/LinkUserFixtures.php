@@ -39,6 +39,6 @@ class LinkUserFixtures extends FixtureLib implements DependentFixtureInterface
         $linkUser->setName($generator->word());
         $linkUser->setAddress($generator->url());
 
-        $this->linkUserRH->handle($old, $linkUser);
+        $this->linkUserRequestHandler->handle($old, $linkUser);
     }
 }

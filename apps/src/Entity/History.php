@@ -136,17 +136,17 @@ class History
 
     public function getChaptersPublished(): Collection
     {
-        $enableChapter = new ArrayCollection();
-        $chapters      = $this->getChapters();
-        foreach ($chapters as $chapter) {
+        $arrayCollection = new ArrayCollection();
+        $collection      = $this->getChapters();
+        foreach ($collection as $chapter) {
             $state     = in_array('publie', (array) $chapter->getState());
             $published = $chapter->getPublished() <= new DateTime();
             if ($state && $published) {
-                $enableChapter->add($chapter);
+                $arrayCollection->add($chapter);
             }
         }
 
-        return $enableChapter;
+        return $arrayCollection;
     }
 
     public function getCreated(): ?DateTimeInterface
@@ -240,9 +240,9 @@ class History
         return $this;
     }
 
-    public function setCreated(DateTimeInterface $created): self
+    public function setCreated(DateTimeInterface $dateTime): self
     {
-        $this->created = $created;
+        $this->created = $dateTime;
 
         return $this;
     }
@@ -261,16 +261,16 @@ class History
         return $this;
     }
 
-    public function setPublished(DateTimeInterface $published): self
+    public function setPublished(DateTimeInterface $dateTime): self
     {
-        $this->published = $published;
+        $this->published = $dateTime;
 
         return $this;
     }
 
-    public function setRefuser(?User $refuser): self
+    public function setRefuser(?User $user): self
     {
-        $this->refuser = $refuser;
+        $this->refuser = $user;
 
         return $this;
     }
@@ -289,9 +289,9 @@ class History
         return $this;
     }
 
-    public function setUpdated(DateTimeInterface $updated): self
+    public function setUpdated(DateTimeInterface $dateTime): self
     {
-        $this->updated = $updated;
+        $this->updated = $dateTime;
 
         return $this;
     }

@@ -29,6 +29,6 @@ class TemplatesFixtures extends DataFixtureLib implements DependentFixtureInterf
         $template->setHtml(str_replace("\n\n", "<br />\n", $content));
         $template->setText($content);
 
-        $this->templateRH->handle($oldTemplate, $template);
+        $this->templateRequestHandler->handle($oldTemplate, $template);
     }
 }

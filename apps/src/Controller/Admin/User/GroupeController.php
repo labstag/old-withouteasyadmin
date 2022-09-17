@@ -186,11 +186,8 @@ class GroupeController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_groupuser' => $this->translator->trans('groupuser.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_groupuser' => $this->translator->trans('groupuser.title', [], 'admin.header'),
+        ]];
     }
 }

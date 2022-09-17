@@ -62,17 +62,17 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected RouterInterface $router,
         protected DataService $dataService,
         protected GuardService $guardService,
-        protected TokenStorageInterface $token,
+        protected TokenStorageInterface $tokenStorage,
         protected LoggerInterface $logger,
-        protected ParameterBagInterface $containerBag,
+        protected ParameterBagInterface $parameterBag,
         protected EntityManagerInterface $entityManager,
-        protected EnqueueMethod $enqueue,
+        protected EnqueueMethod $enqueueMethod,
         protected CacheInterface $cache,
         protected SessionService $sessionService,
         protected RequestStack $requestStack,
-        protected UserPasswordHasherInterface $passwordEncoder,
+        protected UserPasswordHasherInterface $userPasswordHasher,
         protected UserMailService $userMailService,
-        protected EmailUserRequestHandler $emailUserRH,
+        protected EmailUserRequestHandler $emailUserRequestHandler,
         protected TranslatorInterface $translator
     )
     {

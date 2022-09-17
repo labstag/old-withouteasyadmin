@@ -117,29 +117,29 @@ abstract class FixtureLib extends Fixture
         protected ErrorService $errorService,
         protected LoggerInterface $logger,
         protected ContainerBagInterface $containerBag,
-        protected UploadAnnotationReader $uploadAnnotReader,
+        protected UploadAnnotationReader $uploadAnnotationReader,
         protected InstallService $installService,
         protected UserRepository $userRepository,
         protected GroupeRepository $groupeRepository,
         protected GuardService $guardService,
-        protected Environment $twig,
-        protected EmailUserRequestHandler $emailUserRH,
-        protected LinkUserRequestHandler $linkUserRH,
-        protected MemoRequestHandler $noteInterneRH,
-        protected GroupeRequestHandler $groupeRH,
-        protected EditoRequestHandler $editoRH,
-        protected UserRequestHandler $userRH,
-        protected PhoneUserRequestHandler $phoneUserRH,
-        protected AttachmentRequestHandler $attachmentRH,
-        protected AddressUserRequestHandler $addressUserRH,
-        protected TemplateRequestHandler $templateRH,
-        protected LibelleRequestHandler $libelleRH,
+        protected Environment $environment,
+        protected EmailUserRequestHandler $emailUserRequestHandler,
+        protected LinkUserRequestHandler $linkUserRequestHandler,
+        protected MemoRequestHandler $memoRequestHandler,
+        protected GroupeRequestHandler $groupeRequestHandler,
+        protected EditoRequestHandler $editoRequestHandler,
+        protected UserRequestHandler $userRequestHandler,
+        protected PhoneUserRequestHandler $phoneUserRequestHandler,
+        protected AttachmentRequestHandler $attachmentRequestHandler,
+        protected AddressUserRequestHandler $addressUserRequestHandler,
+        protected TemplateRequestHandler $templateRequestHandler,
+        protected LibelleRequestHandler $libelleRequestHandler,
         protected CacheInterface $cache,
-        protected BookmarkRequestHandler $bookmarkRH,
-        protected PostRequestHandler $postRH,
-        protected CategoryRequestHandler $categoryRH,
-        protected HistoryRequestHandler $historyRH,
-        protected ChapterRequestHandler $chapterRH
+        protected BookmarkRequestHandler $bookmarkRequestHandler,
+        protected PostRequestHandler $postRequestHandler,
+        protected CategoryRequestHandler $categoryRequestHandler,
+        protected HistoryRequestHandler $historyRequestHandler,
+        protected ChapterRequestHandler $chapterRequestHandler
     )
     {
     }
@@ -220,10 +220,10 @@ abstract class FixtureLib extends Fixture
 
     protected function setFaker()
     {
-        $faker = Factory::create('fr_FR');
-        $faker->addProvider(new PicsumPhotosProvider($faker));
+        $generator = Factory::create('fr_FR');
+        $generator->addProvider(new PicsumPhotosProvider($generator));
 
-        return $faker;
+        return $generator;
     }
 
     protected function setLibelles($faker, $entity): void
@@ -240,24 +240,24 @@ abstract class FixtureLib extends Fixture
         }
     }
 
-    protected function upload($entity, Generator $faker): void
+    protected function upload($entity, Generator $generator): void
     {
-        if (!$this->uploadAnnotReader->isUploadable($entity)) {
+        if (!$this->uploadAnnotationReader->isUploadable($entity)) {
             return;
         }
 
         // @var resource $finfo
         $finfo       = finfo_open(FILEINFO_MIME_TYPE);
-        $annotations = $this->uploadAnnotReader->getUploadableFields($entity);
-        $slugger     = new AsciiSlugger();
+        $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
+        $asciiSlugger     = new AsciiSlugger();
         foreach ($annotations as $annotation) {
             $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
             $title    = $accessor->getValue($entity, $annotation->getSlug());
-            $slug     = $slugger->slug($title);
+            $slug     = $asciiSlugger->slug($title);
 
             try {
-                $image   = $faker->imageUrl();
+                $image   = $generator->imageUrl();
                 $content = file_get_contents($image);
                 // @var resource $tmpfile
                 $tmpfile = tmpfile();

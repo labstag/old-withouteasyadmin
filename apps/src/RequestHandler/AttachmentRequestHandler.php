@@ -6,6 +6,7 @@ use Labstag\Lib\RequestHandlerLib;
 
 class AttachmentRequestHandler extends RequestHandlerLib
 {
+    public $workflows;
     public function handle($oldEntity, $entity): void
     {
         parent::handle($oldEntity, $entity);
@@ -15,7 +16,7 @@ class AttachmentRequestHandler extends RequestHandlerLib
             unlink($oldFile);
         }
 
-        $workflow = $this->workflows->get($entity);
+        $workflow = $this->registry->get($entity);
         if ($workflow->can($entity, 'reenvoyer')) {
             $workflow->apply($entity, 'reenvoyer');
         }

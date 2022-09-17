@@ -226,7 +226,7 @@ else ifeq ($(COMMANDS_ARGS),phploc)
 else ifeq ($(COMMANDS_ARGS),phpdoc)
 	$(PHP_EXEC) phpDocumentor.phar -d src -t public/docs
 else ifeq ($(COMMANDS_ARGS),rector)
-	$(PHP_EXEC) bin/rector process src
+	$(PHP_EXEC) bin/rector process --clear-cache
 else ifeq ($(COMMANDS_ARGS),phpmd)
 	$(PHP_EXEC) -d error_reporting=24575 phpmd.phar src,features/bootstrap ansi phpmd.xml
 else ifeq ($(COMMANDS_ARGS),phpmnd)

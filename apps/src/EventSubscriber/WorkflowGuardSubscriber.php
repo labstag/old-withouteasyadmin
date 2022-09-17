@@ -28,7 +28,7 @@ class WorkflowGuardSubscriber extends EventSubscriberLib
     {
         $stategroupe = false;
         $stateuser   = false;
-        $token       = $this->token->getToken();
+        $token       = $this->tokenStorage->getToken();
         $name        = $guardEvent->getWorkflowName();
         $transition  = $guardEvent->getTransition()->getName();
         $workflow    = $this->workflowRepository->findOneBy(

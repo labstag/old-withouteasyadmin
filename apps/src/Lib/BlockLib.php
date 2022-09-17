@@ -14,7 +14,7 @@ abstract class BlockLib extends AbstractController
 
     public function __construct(
         protected TranslatorInterface $translator,
-        protected Environment $twig
+        protected Environment $environment
     )
     {
     }
@@ -39,7 +39,7 @@ abstract class BlockLib extends AbstractController
             }
         }
 
-        $globals = $this->twig->getGlobals();
+        $globals = $this->environment->getGlobals();
         if ('dev' == $globals['app']->getDebug()) {
             dump(['block', $type, $files, $view]);
         }
@@ -50,8 +50,8 @@ abstract class BlockLib extends AbstractController
     protected function getParagraphsArray($service, $content, $paragraphs)
     {
         $paragraphsArray = $content->getParagraphs();
-        foreach ($paragraphsArray as $paragraph) {
-            $data = $service->showContent($paragraph);
+        foreach ($paragraphsArray as $paragraphArray) {
+            $data = $service->showContent($paragraphArray);
             if (is_null($data)) {
                 continue;
             }

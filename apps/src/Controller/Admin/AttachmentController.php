@@ -42,15 +42,12 @@ class AttachmentController extends AdminControllerLib
      */
     protected function setBreadcrumbsData(): array
     {
-        return array_merge(
-            parent::setBreadcrumbsData(),
+        return [...parent::setBreadcrumbsData(), ...[
             [
-                [
-                    'title' => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_attachment_index',
-                ],
-            ]
-        );
+                'title' => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
+                'route' => 'admin_attachment_index',
+            ],
+        ]];
     }
 
     /**
@@ -60,11 +57,8 @@ class AttachmentController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_attachment' => $this->translator->trans('attachment.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_attachment' => $this->translator->trans('attachment.title', [], 'admin.header'),
+        ]];
     }
 }

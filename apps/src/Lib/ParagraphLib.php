@@ -23,7 +23,7 @@ abstract class ParagraphLib extends AbstractController
         protected PaginatorInterface $paginator,
         protected TranslatorInterface $translator,
         protected MailerInterface $mailer,
-        protected Environment $twig,
+        protected Environment $environment,
         protected ParagraphService $paragraphService,
         protected RequestStack $requestStack,
         protected FormService $formService,

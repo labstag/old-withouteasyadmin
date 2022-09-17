@@ -164,12 +164,9 @@ class BookmarkController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_bookmark' => $this->translator->trans('bookmark.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_bookmark' => $this->translator->trans('bookmark.title', [], 'admin.header'),
+        ]];
     }
 
     private function uploadFile(

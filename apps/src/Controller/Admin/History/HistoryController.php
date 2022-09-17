@@ -215,11 +215,8 @@ class HistoryController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_history' => $this->translator->trans('history.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_history' => $this->translator->trans('history.title', [], 'admin.header'),
+        ]];
     }
 }

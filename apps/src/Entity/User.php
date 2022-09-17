@@ -254,21 +254,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function addMemo(Memo $noteInterne): self
+    public function addMemo(Memo $memo): self
     {
-        if (!$this->noteInternes->contains($noteInterne)) {
-            $this->noteInternes[] = $noteInterne;
-            $noteInterne->setRefuser($this);
+        if (!$this->noteInternes->contains($memo)) {
+            $this->noteInternes[] = $memo;
+            $memo->setRefuser($this);
         }
 
         return $this;
     }
 
-    public function addNoteInterne(Memo $noteInterne): self
+    public function addNoteInterne(Memo $memo): self
     {
-        if (!$this->noteInternes->contains($noteInterne)) {
-            $this->noteInternes[] = $noteInterne;
-            $noteInterne->setRefuser($this);
+        if (!$this->noteInternes->contains($memo)) {
+            $this->noteInternes[] = $memo;
+            $memo->setRefuser($this);
         }
 
         return $this;
@@ -316,11 +316,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function addRoute(RouteUser $route): self
+    public function addRoute(RouteUser $routeUser): self
     {
-        if (!$this->routes->contains($route)) {
-            $this->routes[] = $route;
-            $route->setRefuser($this);
+        if (!$this->routes->contains($routeUser)) {
+            $this->routes[] = $routeUser;
+            $routeUser->setRefuser($this);
         }
 
         return $this;
@@ -561,24 +561,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function removeMemo(Memo $noteInterne): self
+    public function removeMemo(Memo $memo): self
     {
-        if ($this->noteInternes->contains($noteInterne)) {
-            $this->noteInternes->removeElement($noteInterne);
+        if ($this->noteInternes->contains($memo)) {
+            $this->noteInternes->removeElement($memo);
             // set the owning side to null (unless already changed)
-            if ($noteInterne->getRefuser() === $this) {
-                $noteInterne->setRefuser(null);
+            if ($memo->getRefuser() === $this) {
+                $memo->setRefuser(null);
             }
         }
 
         return $this;
     }
 
-    public function removeNoteInterne(Memo $noteInterne): self
+    public function removeNoteInterne(Memo $memo): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->noteInternes->removeElement($noteInterne) && $noteInterne->getRefuser() === $this) {
-            $noteInterne->setRefuser(null);
+        if ($this->noteInternes->removeElement($memo) && $memo->getRefuser() === $this) {
+            $memo->setRefuser(null);
         }
 
         return $this;
@@ -632,11 +632,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function removeRoute(RouteUser $route): self
+    public function removeRoute(RouteUser $routeUser): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->routes->removeElement($route) && $route->getRefuser() === $this) {
-            $route->setRefuser(null);
+        if ($this->routes->removeElement($routeUser) && $routeUser->getRefuser() === $this) {
+            $routeUser->setRefuser(null);
         }
 
         return $this;
@@ -663,9 +663,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         );
     }
 
-    public function setAvatar(?Attachment $avatar): self
+    public function setAvatar(?Attachment $attachment): self
     {
-        $this->avatar = $avatar;
+        $this->avatar = $attachment;
 
         return $this;
     }

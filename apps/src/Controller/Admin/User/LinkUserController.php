@@ -132,11 +132,8 @@ class LinkUserController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_linkuser' => $this->translator->trans('linkuser.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_linkuser' => $this->translator->trans('linkuser.title', [], 'admin.header'),
+        ]];
     }
 }

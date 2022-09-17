@@ -92,7 +92,7 @@ class EntitySubscriber extends EventSubscriberLib
     public function onChapterEntityEvent(ChapterEntityEvent $chapterEntityEvent): void
     {
         $chapter = $chapterEntityEvent->getNewEntity();
-        $this->enqueue->enqueue(
+        $this->enqueueMethod->enqueue(
             HistoryService::class,
             'process',
             [
@@ -114,7 +114,7 @@ class EntitySubscriber extends EventSubscriberLib
     public function onHistoryEntityEvent(HistoryEntityEvent $historyEntityEvent): void
     {
         $history = $historyEntityEvent->getNewEntity();
-        $this->enqueue->enqueue(
+        $this->enqueueMethod->enqueue(
             HistoryService::class,
             'process',
             [
@@ -210,7 +210,7 @@ class EntitySubscriber extends EventSubscriberLib
 
     protected function getParameter(string $name)
     {
-        return $this->containerBag->get($name);
+        return $this->parameterBag->get($name);
     }
 
     protected function getRepository(string $entity): EntityRepository
@@ -302,7 +302,7 @@ class EntitySubscriber extends EventSubscriberLib
             return;
         }
 
-        $encodePassword = $this->passwordEncoder->hashPassword(
+        $encodePassword = $this->userPasswordHasher->hashPassword(
             $user,
             $plainPassword
         );
@@ -360,8 +360,8 @@ class EntitySubscriber extends EventSubscriberLib
         $emailUser->setPrincipal(true);
         $emailUser->setAddress($address);
 
-        $this->emailUserRH->handle($old, $emailUser);
-        $this->emailUserRH->changeWorkflowState($emailUser, ['submit', 'valider']);
+        $this->emailUserRequestHandler->handle($old, $emailUser);
+        $this->emailUserRequestHandler->changeWorkflowState($emailUser, ['submit', 'valider']);
     }
 
     protected function setRobotsTxt(array $post): void

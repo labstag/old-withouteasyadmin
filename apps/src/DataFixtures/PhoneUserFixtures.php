@@ -44,8 +44,8 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
         $phoneUser->setType($generator->word());
         $phoneUser->setCountry($generator->countryCode);
         $this->addReference('phone_'.$index, $phoneUser);
-        $this->phoneUserRH->handle($old, $phoneUser);
-        $this->phoneUserRH->changeWorkflowState($phoneUser, $states);
+        $this->phoneUserRequestHandler->handle($old, $phoneUser);
+        $this->phoneUserRequestHandler->changeWorkflowState($phoneUser, $states);
     }
 
     /**

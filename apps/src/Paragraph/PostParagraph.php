@@ -39,9 +39,9 @@ class PostParagraph extends ParagraphLib
 
     public function show(Post $post): Response
     {
-        /** @var PostRepository $repository */
-        $repository = $this->getRepository(EntityPost::class);
-        $posts      = $repository->getLimitOffsetResult($repository->findPublier(), 5, 0);
+        /** @var PostRepository $entityRepository */
+        $entityRepository = $this->getRepository(EntityPost::class);
+        $posts      = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
 
         return $this->render(
             $this->getParagraphFile('post'),

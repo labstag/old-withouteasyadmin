@@ -24,12 +24,12 @@ abstract class ApiControllerLib extends AbstractController
     public function __construct(
         protected RequestStack $requeststack,
         protected CsrfTokenManagerInterface $csrfTokenManager,
-        protected TokenStorageInterface $token,
+        protected TokenStorageInterface $tokenStorage,
         protected PhoneService $phoneService,
         protected EntityManagerInterface $entityManager,
-        protected AttachmentRequestHandler $attachmentRH,
-        protected Registry $workflows,
-        protected UserRepository $userRepo
+        protected AttachmentRequestHandler $attachmentRequestHandler,
+        protected Registry $registry,
+        protected UserRepository $userRepository
     )
     {
         // @var Request $request
@@ -43,7 +43,7 @@ abstract class ApiControllerLib extends AbstractController
         }
 
         $data['user'] = [];
-        $user         = $this->userRepo->find($get['user']);
+        $user         = $this->userRepository->find($get['user']);
         if (!$user instanceof User) {
             return $data;
         }
@@ -60,11 +60,11 @@ abstract class ApiControllerLib extends AbstractController
             return $data;
         }
 
-        foreach ($results as $row) {
+        foreach ($results as $result) {
             // @var WorkflowGroupe $row
             $data['group'][] = [
-                'entity'     => $row->getRefworkflow()->getEntity(),
-                'transition' => $row->getRefworkflow()->getTransition(),
+                'entity'     => $result->getRefworkflow()->getEntity(),
+                'transition' => $result->getRefworkflow()->getTransition(),
             ];
         }
 

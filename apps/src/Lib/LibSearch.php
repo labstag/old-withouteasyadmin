@@ -17,7 +17,7 @@ abstract class LibSearch
         $userRepo     = $doctrine->getRepository(User::class);
         $categoryRepo = $doctrine->getRepository(Category::class);
         $groupeRepo   = $doctrine->getRepository(Groupe::class);
-        $date         = new DateTime();
+        $dateTime         = new DateTime();
         foreach ($get as $key => $value) {
             $this->{$key} = $value;
             if ('published' == $key) {
@@ -27,8 +27,8 @@ abstract class LibSearch
                         $month,
                         $day,
                     ] = explode('-', (string) $value);
-                    $date->setDate($year, $month, $day);
-                    $this->{$key} = $date;
+                    $dateTime->setDate($year, $month, $day);
+                    $this->{$key} = $dateTime;
 
                     continue;
                 }

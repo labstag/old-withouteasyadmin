@@ -79,8 +79,8 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
      */
     public function findOneRandom(): object
     {
-        $name          = $this->getClassMetadataName();
-        $dql           = 'SELECT p FROM '.$name.' p ORDER BY RAND()';
+        $classMetadataName          = $this->getClassMetadataName();
+        $dql           = 'SELECT p FROM '.$classMetadataName.' p ORDER BY RAND()';
         $entityManager = $this->getEntityManager();
         $query         = $entityManager->createQuery($dql);
         $query         = $query->setMaxResults(1);
@@ -128,108 +128,108 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $name;
     }
 
-    protected function setQuery(QueryBuilder $query, array $get): QueryBuilder
+    protected function setQuery(QueryBuilder $queryBuilder, array $get): QueryBuilder
     {
-        $this->setQueryCity($query, $get);
-        $this->setQueryCommunityName($query, $get);
-        $this->setQueryCountry($query, $get);
-        $this->setQueryCountryCode($query, $get);
-        $this->setQueryDateEnd($query, $get);
-        $this->setQueryDateStart($query, $get);
-        $this->setQueryEmail($query, $get);
-        $this->setQueryEtape($query, $get);
-        $this->setQueryName($query, $get);
-        $this->setQueryPlaceName($query, $get);
-        $this->setQueryPostalCode($query, $get);
-        $this->setQueryProvinceName($query, $get);
-        $this->setQueryPublished($query, $get);
-        $this->setQueryRefCategory($query, $get);
-        $this->setQueryRefGroup($query, $get);
-        $this->setQueryRefUser($query, $get);
-        $this->setQueryStateName($query, $get);
-        $this->setQueryTitle($query, $get);
+        $this->setQueryCity($queryBuilder, $get);
+        $this->setQueryCommunityName($queryBuilder, $get);
+        $this->setQueryCountry($queryBuilder, $get);
+        $this->setQueryCountryCode($queryBuilder, $get);
+        $this->setQueryDateEnd($queryBuilder, $get);
+        $this->setQueryDateStart($queryBuilder, $get);
+        $this->setQueryEmail($queryBuilder, $get);
+        $this->setQueryEtape($queryBuilder, $get);
+        $this->setQueryName($queryBuilder, $get);
+        $this->setQueryPlaceName($queryBuilder, $get);
+        $this->setQueryPostalCode($queryBuilder, $get);
+        $this->setQueryProvinceName($queryBuilder, $get);
+        $this->setQueryPublished($queryBuilder, $get);
+        $this->setQueryRefCategory($queryBuilder, $get);
+        $this->setQueryRefGroup($queryBuilder, $get);
+        $this->setQueryRefUser($queryBuilder, $get);
+        $this->setQueryStateName($queryBuilder, $get);
+        $this->setQueryTitle($queryBuilder, $get);
 
-        return $query;
+        return $queryBuilder;
     }
 
-    protected function setQueryCity(QueryBuilder &$query, array $get): void
+    protected function setQueryCity(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = AddressUser::class == $this->_entityName;
         if (!$launch || !isset($get['city']) || empty($get['city'])) {
             return;
         }
 
-        $query->andWhere('a.city LIKE :city');
-        $query->setParameter('city', '%'.$get['city'].'%');
+        $queryBuilder->andWhere('a.city LIKE :city');
+        $queryBuilder->setParameter('city', '%'.$get['city'].'%');
     }
 
-    protected function setQueryCommunityName(QueryBuilder &$query, array $get): void
+    protected function setQueryCommunityName(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = GeoCode::class == $this->_entityName;
         if (!$launch || !isset($get['communityname']) || empty($get['communityname'])) {
             return;
         }
 
-        $query->andWhere('a.communityName LIKE :communityname');
-        $query->setParameter('communityname', '%'.$get['communityname'].'%');
+        $queryBuilder->andWhere('a.communityName LIKE :communityname');
+        $queryBuilder->setParameter('communityname', '%'.$get['communityname'].'%');
     }
 
-    protected function setQueryCountry(QueryBuilder &$query, array $get): void
+    protected function setQueryCountry(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = in_array($this->_entityName, [AddressUser::class, PhoneUser::class]);
         if (!$launch || !isset($get['country']) || empty($get['country'])) {
             return;
         }
 
-        $query->andWhere('a.country LIKE :country');
-        $query->setParameter('country', '%'.$get['country'].'%');
+        $queryBuilder->andWhere('a.country LIKE :country');
+        $queryBuilder->setParameter('country', '%'.$get['country'].'%');
     }
 
-    protected function setQueryCountryCode(QueryBuilder &$query, array $get): void
+    protected function setQueryCountryCode(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = GeoCode::class == $this->_entityName;
         if (!$launch || !isset($get['countrycode']) || empty($get['countrycode'])) {
             return;
         }
 
-        $query->andWhere('a.countryCode LIKE :countrycode');
-        $query->setParameter('countrycode', '%'.$get['countrycode'].'%');
+        $queryBuilder->andWhere('a.countryCode LIKE :countrycode');
+        $queryBuilder->setParameter('countrycode', '%'.$get['countrycode'].'%');
     }
 
-    protected function setQueryDateEnd(QueryBuilder &$query, array $get): void
+    protected function setQueryDateEnd(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = Memo::class == $this->_entityName;
         if (!$launch || !isset($get['dateEnd']) || empty($get['dateEnd'])) {
             return;
         }
 
-        $query->andWhere('DATE(a.dateEnd) = :dateEnd');
-        $query->setParameter('dateEnd', $get['dateEnd']);
+        $queryBuilder->andWhere('DATE(a.dateEnd) = :dateEnd');
+        $queryBuilder->setParameter('dateEnd', $get['dateEnd']);
     }
 
-    protected function setQueryDateStart(QueryBuilder &$query, array $get): void
+    protected function setQueryDateStart(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = Memo::class == $this->_entityName;
         if (!$launch || !isset($get['dateStart']) || empty($get['dateStart'])) {
             return;
         }
 
-        $query->andWhere('DATE(a.dateStart) = :dateStart');
-        $query->setParameter('dateStart', $get['dateStart']);
+        $queryBuilder->andWhere('DATE(a.dateStart) = :dateStart');
+        $queryBuilder->setParameter('dateStart', $get['dateStart']);
     }
 
-    protected function setQueryEmail(QueryBuilder &$query, array $get): void
+    protected function setQueryEmail(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = User::class == $this->_entityName;
         if (!$launch || !isset($get['email']) || empty($get['email'])) {
             return;
         }
 
-        $query->andWhere('a.email = :email');
-        $query->setParameter('email', $get['email']);
+        $queryBuilder->andWhere('a.email = :email');
+        $queryBuilder->setParameter('email', $get['email']);
     }
 
-    protected function setQueryEtape(QueryBuilder &$query, array $get): void
+    protected function setQueryEtape(QueryBuilder &$queryBuilder, array $get): void
     {
         $entities = [
             Bookmark::class,
@@ -245,11 +245,11 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
             return;
         }
 
-        $query->andWhere('a.state LIKE :state');
-        $query->setParameter('state', '%'.$get['etape'].'%');
+        $queryBuilder->andWhere('a.state LIKE :state');
+        $queryBuilder->setParameter('state', '%'.$get['etape'].'%');
     }
 
-    protected function setQueryName(QueryBuilder &$query, array $get): void
+    protected function setQueryName(QueryBuilder &$queryBuilder, array $get): void
     {
         $entities = [
             Bookmark::class,
@@ -263,79 +263,79 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
             return;
         }
 
-        $query->andWhere('a.name LIKE :name');
-        $query->setParameter('name', '%'.$get['name'].'%');
+        $queryBuilder->andWhere('a.name LIKE :name');
+        $queryBuilder->setParameter('name', '%'.$get['name'].'%');
     }
 
-    protected function setQueryPlaceName(QueryBuilder &$query, array $get): void
+    protected function setQueryPlaceName(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = GeoCode::class == $this->_entityName;
         if (!$launch || !isset($get['placename']) || empty($get['placename'])) {
             return;
         }
 
-        $query->andWhere('a.placeName LIKE :placename');
-        $query->setParameter('placename', '%'.$get['placename'].'%');
+        $queryBuilder->andWhere('a.placeName LIKE :placename');
+        $queryBuilder->setParameter('placename', '%'.$get['placename'].'%');
     }
 
-    protected function setQueryPostalCode(QueryBuilder &$query, array $get): void
+    protected function setQueryPostalCode(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = GeoCode::class == $this->_entityName;
         if (!$launch || !isset($get['postalcode']) || empty($get['postalcode'])) {
             return;
         }
 
-        $query->andWhere('a.postalCode LIKE :postalcode');
-        $query->setParameter('postalcode', '%'.$get['postalcode'].'%');
+        $queryBuilder->andWhere('a.postalCode LIKE :postalcode');
+        $queryBuilder->setParameter('postalcode', '%'.$get['postalcode'].'%');
     }
 
-    protected function setQueryProvinceName(QueryBuilder &$query, array $get): void
+    protected function setQueryProvinceName(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = GeoCode::class == $this->_entityName;
         if (!$launch || !isset($get['provincename']) || empty($get['provincename'])) {
             return;
         }
 
-        $query->andWhere('a.provinceName LIKE :provincename');
-        $query->setParameter('provincename', '%'.$get['provincename'].'%');
+        $queryBuilder->andWhere('a.provinceName LIKE :provincename');
+        $queryBuilder->setParameter('provincename', '%'.$get['provincename'].'%');
     }
 
-    protected function setQueryPublished(QueryBuilder &$query, array $get): void
+    protected function setQueryPublished(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = in_array($this->_entityName, [Edito::class, Post::class]);
         if (!$launch || !isset($get['published']) || empty($get['published'])) {
             return;
         }
 
-        $query->andWhere('DATE(a.published) = :published');
-        $query->setParameter('published', $get['published']);
+        $queryBuilder->andWhere('DATE(a.published) = :published');
+        $queryBuilder->setParameter('published', $get['published']);
     }
 
-    protected function setQueryRefCategory(QueryBuilder &$query, array $get): void
+    protected function setQueryRefCategory(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = in_array($this->_entityName, [Bookmark::class, Post::class]);
         if (!$launch || !isset($get['refcategory']) || empty($get['refcategory'])) {
             return;
         }
 
-        $query->leftJoin('a.refcategory', 'u');
-        $query->andWhere('u.id = :refcategory');
-        $query->setParameter('refcategory', $get['refcategory']);
+        $queryBuilder->leftJoin('a.refcategory', 'u');
+        $queryBuilder->andWhere('u.id = :refcategory');
+        $queryBuilder->setParameter('refcategory', $get['refcategory']);
     }
 
-    protected function setQueryRefGroup(QueryBuilder &$query, array $get): void
+    protected function setQueryRefGroup(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = User::class == $this->_entityName;
         if (!$launch || !isset($get['refgroup']) || empty($get['refgroup'])) {
             return;
         }
 
-        $query->leftJoin('a.refgroupe', 'g');
-        $query->andWhere('g.id = :refgroup');
-        $query->setParameter('refgroup', $get['refgroup']);
+        $queryBuilder->leftJoin('a.refgroupe', 'g');
+        $queryBuilder->andWhere('g.id = :refgroup');
+        $queryBuilder->setParameter('refgroup', $get['refgroup']);
     }
 
-    protected function setQueryRefUser(QueryBuilder &$query, array $get): void
+    protected function setQueryRefUser(QueryBuilder &$queryBuilder, array $get): void
     {
         $entities = [
             AddressUser::class,
@@ -353,41 +353,41 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
             return;
         }
 
-        $query->leftJoin('a.refuser', 'u');
-        $query->andWhere('u.id = :refuser');
-        $query->setParameter('refuser', $get['refuser']);
+        $queryBuilder->leftJoin('a.refuser', 'u');
+        $queryBuilder->andWhere('u.id = :refuser');
+        $queryBuilder->setParameter('refuser', $get['refuser']);
     }
 
-    protected function setQueryStateName(QueryBuilder &$query, array $get): void
+    protected function setQueryStateName(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = GeoCode::class == $this->_entityName;
         if (!$launch || !isset($get['statename']) || empty($get['statename'])) {
             return;
         }
 
-        $query->andWhere('a.stateName LIKE :statename');
-        $query->setParameter('statename', '%'.$get['statename'].'%');
+        $queryBuilder->andWhere('a.stateName LIKE :statename');
+        $queryBuilder->setParameter('statename', '%'.$get['statename'].'%');
     }
 
-    protected function setQueryTitle(QueryBuilder &$query, array $get): void
+    protected function setQueryTitle(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = in_array($this->_entityName, [Edito::class, Memo::class, Post::class]);
         if (!$launch || !isset($get['title']) || empty($get['title'])) {
             return;
         }
 
-        $query->andWhere('a.title LIKE :title');
-        $query->setParameter('title', '%'.$get['title'].'%');
+        $queryBuilder->andWhere('a.title LIKE :title');
+        $queryBuilder->setParameter('title', '%'.$get['title'].'%');
     }
 
-    protected function setQueryUsername(QueryBuilder &$query, array $get): void
+    protected function setQueryUsername(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = User::class == $this->_entityName;
         if (!$launch || !isset($get['username']) || empty($get['username'])) {
             return;
         }
 
-        $query->andWhere('a.username LIKE :username');
-        $query->setParameter('username', '%'.$get['username'].'%');
+        $queryBuilder->andWhere('a.username LIKE :username');
+        $queryBuilder->setParameter('username', '%'.$get['username'].'%');
     }
 }

@@ -194,23 +194,23 @@ class Edito implements Stringable
         return $this;
     }
 
-    public function setFond(?Attachment $fond): self
+    public function setFond(?Attachment $attachment): self
     {
-        $this->fond = $fond;
+        $this->fond = $attachment;
 
         return $this;
     }
 
-    public function setPublished(DateTimeInterface $published): self
+    public function setPublished(DateTimeInterface $dateTime): self
     {
-        $this->published = $published;
+        $this->published = $dateTime;
 
         return $this;
     }
 
-    public function setRefuser(?User $refuser): self
+    public function setRefuser(?User $user): self
     {
-        $this->refuser = $refuser;
+        $this->refuser = $user;
 
         return $this;
     }

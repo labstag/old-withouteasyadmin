@@ -17,6 +17,7 @@ use Rector\Set\ValueObject\SetList;
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->cacheClass(FileCacheStorage::class);
     $rectorConfig->cacheDirectory('./var/cache/rector');
+    $rectorConfig->importNames();
     $rectorConfig->paths([
         __DIR__ . '/src',
         __DIR__ . '/tests'
@@ -40,7 +41,14 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->phpstanConfig(__DIR__ . '/phpstan.neon');
     // define sets of rules
     $rectorConfig->sets([
+        SetList::ACTION_INJECTION_TO_CONSTRUCTOR_INJECTION,
         SetList::CODE_QUALITY,
+        SetList::CODING_STYLE,
+        // SetList::DEAD_CODE,
+        SetList::NAMING,
+        SetList::PHP_81,
+        SetList::PSR_4,
+        // SetList::TYPE_DECLARATION,
         LevelSetList::UP_TO_PHP_81
     ]);
 };

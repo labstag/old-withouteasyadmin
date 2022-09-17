@@ -42,8 +42,8 @@ class ChapterParagraph extends ParagraphLib
         $routeParam = $all['_route_params'];
         $history    = $routeParam['history'] ?? null;
         $chapter    = $routeParam['chapter'] ?? null;
-        $chapterRepo = $this->getRepository(Chapter::class);
-        $chapter     = $chapterRepo->findChapterByHistory($history, $chapter);
+        $entityRepository = $this->getRepository(Chapter::class);
+        $chapter     = $entityRepository->findChapterByHistory($history, $chapter);
         if (!$chapter instanceof Chapter) {
             return;
         }

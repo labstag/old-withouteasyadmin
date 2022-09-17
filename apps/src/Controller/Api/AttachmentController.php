@@ -84,7 +84,7 @@ class AttachmentController extends ApiControllerLib
             'state' => false,
             'error' => '',
         ];
-        $token  = $this->token->getToken();
+        $token  = $this->tokenStorage->getToken();
         $user = $token->getUser();
         $token  = $this->verifToken($user);
         if (!$token) {
@@ -134,7 +134,7 @@ class AttachmentController extends ApiControllerLib
         return $this->csrfTokenManager->isTokenValid($csrfToken);
     }
 
-    private function deleteFile(AttachmentRepository $repository, $entity, $requesthandler, $methodGet, $methodSet): JsonResponse
+    private function deleteFile(AttachmentRepository $attachmentRepository, $entity, $requesthandler, $methodGet, $methodSet): JsonResponse
     {
         $return = [
             'state' => false,
@@ -149,7 +149,7 @@ class AttachmentController extends ApiControllerLib
 
         $old        = clone $entity;
         $attachment = call_user_func([$entity, $methodGet]);
-        $this->deleteAttachment($repository, $attachment);
+        $this->deleteAttachment($attachmentRepository, $attachment);
         call_user_func([$entity, $methodSet], null);
         $requesthandler->handle($old, $entity);
         $return['state'] = true;
@@ -157,9 +157,9 @@ class AttachmentController extends ApiControllerLib
         return new JsonResponse($return);
     }
 
-    private function setDataAttachment(AttachmentRepository $repository, $method): JsonResponse
+    private function setDataAttachment(AttachmentRepository $attachmentRepository, $method): JsonResponse
     {
-        $entity = call_user_func([$repository, $method]);
+        $entity = call_user_func([$attachmentRepository, $method]);
         $return = [
             'state' => false,
             'error' => '',
@@ -171,7 +171,7 @@ class AttachmentController extends ApiControllerLib
             return new JsonResponse($return);
         }
 
-        $this->deleteAttachment($repository, $entity);
+        $this->deleteAttachment($attachmentRepository, $entity);
 
         return new JsonResponse($return);
     }

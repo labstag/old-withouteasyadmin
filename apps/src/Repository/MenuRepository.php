@@ -20,9 +20,9 @@ class MenuRepository extends ServiceEntityRepositoryLib
 
     public function findAllCode()
     {
-        $query = $this->findAllCodeQuery();
+        $queryBuilder = $this->findAllCodeQuery();
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 
     public function findAllCodeQuery(): QueryBuilder

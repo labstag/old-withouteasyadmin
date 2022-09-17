@@ -133,11 +133,8 @@ class EmailUserController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_emailuser' => $this->translator->trans('emailuser.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_emailuser' => $this->translator->trans('emailuser.title', [], 'admin.header'),
+        ]];
     }
 }

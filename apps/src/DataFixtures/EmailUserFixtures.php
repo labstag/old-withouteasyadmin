@@ -44,6 +44,6 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
         $emailUser->setRefuser($user);
         $emailUser->setAddress($generator->safeEmail);
 
-        $this->emailUserRH->handle($old, $emailUser);
+        $this->emailUserRequestHandler->handle($old, $emailUser);
     }
 }

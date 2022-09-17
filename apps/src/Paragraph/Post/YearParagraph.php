@@ -42,10 +42,10 @@ class YearParagraph extends ParagraphLib
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
         $year       = $routeParam['year'] ?? null;
-        /** @var PostRepository $repository */
-        $repository = $this->getRepository(Post::class);
+        /** @var PostRepository $entityRepository */
+        $entityRepository = $this->getRepository(Post::class);
         $pagination = $this->paginator->paginate(
-            $repository->findPublierArchive($year),
+            $entityRepository->findPublierArchive($year),
             $this->request->query->getInt('page', 1),
             10
         );

@@ -124,11 +124,8 @@ class GeoCodeController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_geocode' => $this->translator->trans('geocode.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_geocode' => $this->translator->trans('geocode.title', [], 'admin.header'),
+        ]];
     }
 }

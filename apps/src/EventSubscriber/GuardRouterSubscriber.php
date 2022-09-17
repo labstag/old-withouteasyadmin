@@ -20,7 +20,7 @@ class GuardRouterSubscriber extends EventSubscriberLib
     {
         $request = $requestEvent->getRequest();
         $route   = $request->attributes->get('_route');
-        $token   = $this->token->getToken();
+        $token   = $this->tokenStorage->getToken();
         $acces   = $this->guardService->guardRoute($route, $token);
         if ($acces) {
             return;

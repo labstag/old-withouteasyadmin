@@ -60,16 +60,16 @@ class RouteGroupe
         return $this->state;
     }
 
-    public function setRefgroupe(?Groupe $refgroupe): self
+    public function setRefgroupe(?Groupe $groupe): self
     {
-        $this->refgroupe = $refgroupe;
+        $this->refgroupe = $groupe;
 
         return $this;
     }
 
-    public function setRefroute(?Route $refroute): self
+    public function setRefroute(?Route $route): self
     {
-        $this->refroute = $refroute;
+        $this->refroute = $route;
 
         return $this;
     }

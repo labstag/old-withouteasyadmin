@@ -38,9 +38,9 @@ class ShowParagraph extends ParagraphLib
 
     public function show(Show $show)
     {
-        /** @var EditoRepository $repository */
-        $repository = $this->getRepository(Edito::class);
-        $edito      = $repository->findOnePublier();
+        /** @var EditoRepository $entityRepository */
+        $entityRepository = $this->getRepository(Edito::class);
+        $edito      = $entityRepository->findOnePublier();
 
         if (!$edito instanceof Edito) {
             return;

@@ -23,9 +23,9 @@ abstract class AbstractTypeLib extends AbstractType
     {
     }
 
-    protected function addParagraph(FormBuilderInterface $builder, array $urls)
+    protected function addParagraph(FormBuilderInterface $formBuilder, array $urls)
     {
-        $builder->add(
+        $formBuilder->add(
             'paragraph',
             ParagraphType::class,
             array_merge(

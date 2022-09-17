@@ -67,11 +67,11 @@ class MenuService
         return $item;
     }
 
-    protected function addMenu(MenuItem &$menuItem, Menu $child): void
+    protected function addMenu(MenuItem &$menuItem, Menu $menu): void
     {
         $data      = [];
-        $dataChild = $child->getData();
-        if ($child->isSeparateur()) {
+        $dataChild = $menu->getData();
+        if ($menu->isSeparateur()) {
             $menuItem->addChild('')->setExtra('divider', true);
 
             return;
@@ -95,10 +95,10 @@ class MenuService
         $this->setDataChild($dataChild, $data);
 
         $item      = $menuItem->addChild(
-            $child->getName(),
+            $menu->getName(),
             $data
         );
-        $childrens = $child->getChildren();
+        $childrens = $menu->getChildren();
         foreach ($childrens as $children) {
             $this->addMenu($item, $children);
         }

@@ -38,9 +38,9 @@ class HeaderParagraph extends ParagraphLib
 
     public function show(Header $header)
     {
-        /** @var EditoRepository $repository */
-        $repository = $this->getRepository(Edito::class);
-        $edito      = $repository->findOnePublier();
+        /** @var EditoRepository $entityRepository */
+        $entityRepository = $this->getRepository(Edito::class);
+        $edito      = $entityRepository->findOnePublier();
 
         if (!$edito instanceof Edito) {
             return;

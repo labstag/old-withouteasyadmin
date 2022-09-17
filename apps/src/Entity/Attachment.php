@@ -102,21 +102,21 @@ class Attachment
         return $this;
     }
 
-    public function addMemo(Memo $noteInterne): self
+    public function addMemo(Memo $memo): self
     {
-        if (!$this->noteInternes->contains($noteInterne)) {
-            $this->noteInternes[] = $noteInterne;
-            $noteInterne->setFond($this);
+        if (!$this->noteInternes->contains($memo)) {
+            $this->noteInternes[] = $memo;
+            $memo->setFond($this);
         }
 
         return $this;
     }
 
-    public function addNoteInterne(Memo $noteInterne): self
+    public function addNoteInterne(Memo $memo): self
     {
-        if (!$this->noteInternes->contains($noteInterne)) {
-            $this->noteInternes[] = $noteInterne;
-            $noteInterne->setFond($this);
+        if (!$this->noteInternes->contains($memo)) {
+            $this->noteInternes[] = $memo;
+            $memo->setFond($this);
         }
 
         return $this;
@@ -217,21 +217,21 @@ class Attachment
         return $this;
     }
 
-    public function removeMemo(Memo $noteInterne): self
+    public function removeMemo(Memo $memo): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->noteInternes->removeElement($noteInterne) && $noteInterne->getFond() === $this) {
-            $noteInterne->setFond(null);
+        if ($this->noteInternes->removeElement($memo) && $memo->getFond() === $this) {
+            $memo->setFond(null);
         }
 
         return $this;
     }
 
-    public function removeNoteInterne(Memo $noteInterne): self
+    public function removeNoteInterne(Memo $memo): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->noteInternes->removeElement($noteInterne) && $noteInterne->getFond() === $this) {
-            $noteInterne->setFond(null);
+        if ($this->noteInternes->removeElement($memo) && $memo->getFond() === $this) {
+            $memo->setFond(null);
         }
 
         return $this;

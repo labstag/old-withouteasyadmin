@@ -32,7 +32,7 @@ class CategoryFixtures extends DataFixtureLib implements DependentFixtureInterfa
         }
 
         $this->addReference('category_'.$index, $category);
-        $this->categoryRH->handle($oldCategory, $category);
+        $this->categoryRequestHandler->handle($oldCategory, $category);
 
         return $category;
     }

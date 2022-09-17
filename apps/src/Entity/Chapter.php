@@ -210,9 +210,9 @@ class Chapter
         return $this;
     }
 
-    public function setCreated(DateTimeInterface $created): self
+    public function setCreated(DateTimeInterface $dateTime): self
     {
-        $this->created = $created;
+        $this->created = $dateTime;
 
         return $this;
     }
@@ -238,16 +238,16 @@ class Chapter
         return $this;
     }
 
-    public function setPublished(DateTimeInterface $published): self
+    public function setPublished(DateTimeInterface $dateTime): self
     {
-        $this->published = $published;
+        $this->published = $dateTime;
 
         return $this;
     }
 
-    public function setRefhistory(?History $refhistory): self
+    public function setRefhistory(?History $history): self
     {
-        $this->refhistory = $refhistory;
+        $this->refhistory = $history;
 
         return $this;
     }
@@ -259,9 +259,9 @@ class Chapter
         return $this;
     }
 
-    public function setUpdated(DateTimeInterface $updated): self
+    public function setUpdated(DateTimeInterface $dateTime): self
     {
-        $this->updated = $updated;
+        $this->updated = $dateTime;
 
         return $this;
     }

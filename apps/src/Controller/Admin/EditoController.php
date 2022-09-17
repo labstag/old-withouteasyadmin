@@ -149,11 +149,8 @@ class EditoController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_edito' => $this->translator->trans('edito.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_edito' => $this->translator->trans('edito.title', [], 'admin.header'),
+        ]];
     }
 }

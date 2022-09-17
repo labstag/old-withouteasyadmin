@@ -41,9 +41,9 @@ class ShowParagraph extends ParagraphLib
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
         $slug       = $routeParam['slug'] ?? null;
-        /** @var HistoryRepository $repository */
-        $repository = $this->getRepository(History::class);
-        $history    = $repository->findOneBy(
+        /** @var HistoryRepository $entityRepository */
+        $entityRepository = $this->getRepository(History::class);
+        $history    = $entityRepository->findOneBy(
             ['slug' => $slug]
         );
 

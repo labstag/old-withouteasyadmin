@@ -14,7 +14,7 @@ abstract class ParagraphAbstractTypeLib extends AbstractTypeLib
         TranslatorInterface $translator,
         protected RouterInterface $router,
         protected ParagraphService $paragraphService,
-        protected Environment $twig,
+        protected Environment $environment,
         protected FormService $formService
     )
     {
@@ -23,6 +23,6 @@ abstract class ParagraphAbstractTypeLib extends AbstractTypeLib
 
     protected function getRender($view, array $param = []): string
     {
-        return $this->twig->render($view, $param);
+        return $this->environment->render($view, $param);
     }
 }

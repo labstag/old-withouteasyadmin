@@ -12,7 +12,7 @@ class UserRequestHandler extends RequestHandlerLib
     {
         $this->setArrayCollection($entity);
         parent::handle($oldEntity, $entity);
-        $this->dispatcher->dispatch(
+        $this->eventDispatcher->dispatch(
             new UserEntityEvent($oldEntity, $entity)
         );
     }

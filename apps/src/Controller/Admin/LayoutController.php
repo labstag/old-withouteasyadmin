@@ -50,14 +50,14 @@ class LayoutController extends AdminControllerLib
             'Nouveau',
             [
                 'is'       => 'link-btnadminnewblock',
-                'data-url' => $this->routerInterface->generate('admin_layout_new'),
+                'data-url' => $this->router->generate('admin_layout_new'),
             ]
         );
         $form = $this->createForm(
             NewLayoutType::class,
             new Layout(),
             [
-                'action' => $this->routerInterface->generate('admin_layout_new'),
+                'action' => $this->router->generate('admin_layout_new'),
             ]
         );
 
@@ -199,11 +199,8 @@ class LayoutController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_bookmark' => $this->translator->trans('layout.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_bookmark' => $this->translator->trans('layout.title', [], 'admin.header'),
+        ]];
     }
 }

@@ -31,7 +31,7 @@ abstract class ParagraphControllerLib extends ControllerLib
         );
     }
 
-    protected function showTwig(Paragraph $paragraph, ParagraphRequestHandler $handler)
+    protected function showTwig(Paragraph $paragraph, ParagraphRequestHandler $paragraphRequestHandler)
     {
         $form       = $this->createForm(
             ParagraphType::class,
@@ -44,7 +44,7 @@ abstract class ParagraphControllerLib extends ControllerLib
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->add($paragraph);
             $this->addFlash('success', 'Paragraph sauvegardé.');
-            $handler->handle($old, $paragraph);
+            $paragraphRequestHandler->handle($old, $paragraph);
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {

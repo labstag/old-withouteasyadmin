@@ -55,7 +55,7 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
         $user = $users[$tabIndex];
         $memo->setRefuser($user);
         $this->upload($memo, $generator);
-        $this->noteInterneRH->handle($old, $memo);
-        $this->noteInterneRH->changeWorkflowState($memo, $states);
+        $this->memoRequestHandler->handle($old, $memo);
+        $this->memoRequestHandler->changeWorkflowState($memo, $states);
     }
 }

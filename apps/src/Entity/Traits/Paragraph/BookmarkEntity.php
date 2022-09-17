@@ -31,11 +31,11 @@ trait BookmarkEntity
      */
     private $bookmarks;
 
-    public function addBookmark(ParagraphBookmark $bookmark): self
+    public function addBookmark(ParagraphBookmark $paragraphBookmark): self
     {
-        if (!$this->bookmarks->contains($bookmark)) {
-            $this->bookmarks[] = $bookmark;
-            $bookmark->setParagraph($this);
+        if (!$this->bookmarks->contains($paragraphBookmark)) {
+            $this->bookmarks[] = $paragraphBookmark;
+            $paragraphBookmark->setParagraph($this);
         }
 
         return $this;
@@ -103,11 +103,11 @@ trait BookmarkEntity
         return $this->bookmarks;
     }
 
-    public function removeBookmark(ParagraphBookmark $bookmark): self
+    public function removeBookmark(ParagraphBookmark $paragraphBookmark): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->bookmarks->removeElement($bookmark) && $bookmark->getParagraph() === $this) {
-            $bookmark->setParagraph(null);
+        if ($this->bookmarks->removeElement($paragraphBookmark) && $paragraphBookmark->getParagraph() === $this) {
+            $paragraphBookmark->setParagraph(null);
         }
 
         return $this;

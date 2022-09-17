@@ -42,10 +42,10 @@ class UserParagraph extends ParagraphLib
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
         $username   = $routeParam['username'] ?? null;
-        /** @var HistoryRepository $repository */
-        $repository = $this->getRepository(History::class);
+        /** @var HistoryRepository $entityRepository */
+        $entityRepository = $this->getRepository(History::class);
         $pagination = $this->paginator->paginate(
-            $repository->findPublierUsername($username),
+            $entityRepository->findPublierUsername($username),
             $this->request->query->getInt('page', 1),
             10
         );

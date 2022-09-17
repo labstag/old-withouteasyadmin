@@ -39,11 +39,11 @@ class ListParagraph extends ParagraphLib
 
     public function show(Liste $liste): Response
     {
-        /** @var HistoryRepository $repository */
-        $repository = $this->getRepository(History::class);
+        /** @var HistoryRepository $entityRepository */
+        $entityRepository = $this->getRepository(History::class);
 
         $pagination = $this->paginator->paginate(
-            $repository->findPublier(),
+            $entityRepository->findPublier(),
             $this->request->query->getInt('page', 1),
             10
         );

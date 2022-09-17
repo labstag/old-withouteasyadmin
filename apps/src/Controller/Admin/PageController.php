@@ -144,11 +144,8 @@ class PageController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return array_merge(
-            $headers,
-            [
-                'admin_bookmark' => $this->translator->trans('page.title', [], 'admin.header'),
-            ]
-        );
+        return [...$headers, ...[
+            'admin_bookmark' => $this->translator->trans('page.title', [], 'admin.header'),
+        ]];
     }
 }
