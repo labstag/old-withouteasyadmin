@@ -27,5 +27,6 @@ class UserChecker implements UserCheckerInterface
 
     public function checkPreAuth(UserInterface $user): void
     {
+        unset($user);
     }
 }
