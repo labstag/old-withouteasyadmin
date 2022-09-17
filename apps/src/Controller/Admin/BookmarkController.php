@@ -46,7 +46,7 @@ class BookmarkController extends AdminControllerLib
     }
 
     #[Route(path: '/import', name: 'admin_bookmark_import', methods: ['GET', 'POST'])]
-    public function import(Request $request, Security $security, EnqueueMethod $enqueueMethod)
+    public function import(Request $request, Security $security, EnqueueMethod $enqueueMethod): Response
     {
         $this->setBtnList($this->getUrlAdmin());
         $form = $this->createForm(ImportType::class, []);
@@ -106,6 +106,9 @@ class BookmarkController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, \BookmarkSearch>|array<string, string>
+     */
     protected function searchForm(): array
     {
         return [
@@ -114,6 +117,9 @@ class BookmarkController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -151,6 +157,9 @@ class BookmarkController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();
@@ -167,7 +176,7 @@ class BookmarkController extends AdminControllerLib
         FormInterface $form,
         Security $security,
         EnqueueMethod $enqueueMethod
-    )
+    ): void
     {
         $file = $form->get('file')->getData();
         if (!$file instanceof UploadedFile) {

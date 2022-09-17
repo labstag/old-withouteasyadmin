@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
@@ -92,7 +93,7 @@ class LayoutController extends AdminControllerLib
         LayoutRepository $layoutRepository,
         LayoutRequestHandler $layoutRequestHandler,
         CustomRepository $customRepository
-    ): Response
+    ): RedirectResponse
     {
         $post   = $request->request->all('new_layout');
         $custom = $customRepository->findOneBy(
@@ -144,6 +145,9 @@ class LayoutController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\LayoutType>>|array<string, \LayoutSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -152,6 +156,9 @@ class LayoutController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -185,6 +192,9 @@ class LayoutController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

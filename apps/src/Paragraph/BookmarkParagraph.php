@@ -2,6 +2,7 @@
 
 namespace Labstag\Paragraph;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Bookmark as EntityBookmark;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Bookmark;
@@ -11,32 +12,32 @@ use Labstag\Repository\BookmarkRepository;
 
 class BookmarkParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return Bookmark::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return BookmarkType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('bookmark.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'bookmark';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
 
-    public function show(Bookmark $bookmark)
+    public function show(Bookmark $bookmark): Response
     {
         /** @var BookmarkRepository $repository */
         $repository = $this->getRepository(EntityBookmark::class);
@@ -51,7 +52,10 @@ class BookmarkParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return array<class-string<Page>>
+     */
+    public function useIn(): array
     {
         return [
             Page::class,

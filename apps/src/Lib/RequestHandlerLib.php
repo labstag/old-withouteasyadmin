@@ -18,7 +18,7 @@ abstract class RequestHandlerLib
     {
     }
 
-    public function changeWorkflowState($entity, array $states)
+    public function changeWorkflowState($entity, array $states): void
     {
         if (!$this->workflows->has($entity)) {
             return;
@@ -51,7 +51,7 @@ abstract class RequestHandlerLib
         return $this->entityManager->getRepository($entity);
     }
 
-    protected function initWorkflow($entity)
+    protected function initWorkflow($entity): void
     {
         if (!$this->workflows->has($entity)) {
             return;

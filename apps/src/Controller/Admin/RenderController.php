@@ -74,6 +74,9 @@ class RenderController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\RenderType>>|array<string, \RenderSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -82,6 +85,9 @@ class RenderController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -115,6 +121,9 @@ class RenderController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

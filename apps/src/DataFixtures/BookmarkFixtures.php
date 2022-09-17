@@ -10,7 +10,10 @@ use Labstag\Lib\FixtureLib;
 
 class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return $this->getDependenciesBookmarkPost();
     }
@@ -36,7 +39,7 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
         $bookmark->setRefuser($user);
         // @var string $content
         $content = $generator->paragraphs(random_int(4, 10), true);
-        $bookmark->setContent(str_replace("\n\n", "<br />\n", $content));
+        $bookmark->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $indexLibelle = $generator->numberBetween(0, self::NUMBER_CATEGORY - 1);
         $category     = $this->getReference('category_'.$indexLibelle);
         $bookmark->setRefcategory($category);

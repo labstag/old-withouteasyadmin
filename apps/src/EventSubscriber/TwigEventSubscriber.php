@@ -49,6 +49,9 @@ class TwigEventSubscriber implements EventSubscriberInterface
     {
     }
 
+    /**
+     * @return array<class-string<ControllerEvent>, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [ControllerEvent::class => 'onControllerEvent'];
@@ -96,7 +99,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->environment->AddGlobal('canonical', $canonical);
     }
 
-    protected function setConfigTac(array $config)
+    protected function setConfigTac(array $config): void
     {
         if (!array_key_exists('tarteaucitron', $config)) {
             return;
@@ -144,7 +147,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->environment->AddGlobal('oauthActivated', $oauthActivated);
     }
 
-    private function arrayKeyExists(array $var, $data)
+    private function arrayKeyExists(array $var, $data): bool
     {
         $find = 0;
         foreach ($var as $name) {
@@ -154,7 +157,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         return 0 != $find;
     }
 
-    private function setConfigGlobal(bool $enable, array &$config, Request $request)
+    private function setConfigGlobal(bool $enable, array &$config, Request $request): void
     {
         if (!$enable) {
             return;
@@ -180,12 +183,12 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $config['meta']['twitter:card'] = 'summary_large_image';
     }
 
-    private function setFormatDatetime($config)
+    private function setFormatDatetime($config): void
     {
         $this->environment->AddGlobal('formatdatetime', $config['format_datetime']);
     }
 
-    private function setMetaDescription(&$config)
+    private function setMetaDescription(&$config): void
     {
         $meta  = $config['meta'];
         $tests = [
@@ -202,7 +205,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $config['meta'] = $meta;
     }
 
-    private function setMetaImage(&$config)
+    private function setMetaImage(&$config): void
     {
         $image = $this->attachmentRepository->getImageDefault();
         $this->environment->AddGlobal('imageglobal', $image);
@@ -228,7 +231,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $config['meta'] = $meta;
     }
 
-    private function setMetatags($meta)
+    private function setMetatags($meta): void
     {
         $metatags = [];
         foreach ($meta as $key => $value) {
@@ -267,7 +270,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->environment->AddGlobal('sitemetatags', $metatags);
     }
 
-    private function setMetaTitle(&$config)
+    private function setMetaTitle(&$config): void
     {
         if (!array_key_exists('site_title', $config)) {
             return;
@@ -284,7 +287,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $config['meta'] = $meta;
     }
 
-    private function setMetaTitleGlobal(&$config)
+    private function setMetaTitleGlobal(&$config): void
     {
         $meta = $config['meta'];
         if (!array_key_exists('site_title', $config) && array_key_exists('title', $meta)) {

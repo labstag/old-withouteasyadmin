@@ -11,27 +11,27 @@ use Labstag\Repository\PostRepository;
 
 class HeaderParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return Header::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return HeaderType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('postheader.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'postheader';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
@@ -60,7 +60,10 @@ class HeaderParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return array<class-string<Layout>>
+     */
+    public function useIn(): array
     {
         return [
             Layout::class,

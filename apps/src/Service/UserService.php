@@ -87,7 +87,7 @@ class UserService
         );
     }
 
-    public function create($groupes, $dataUser)
+    public function create(array $groupes, $dataUser): User
     {
         $user = new User();
         $old  = clone $user;

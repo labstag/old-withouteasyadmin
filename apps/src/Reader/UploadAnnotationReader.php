@@ -15,6 +15,7 @@ class UploadAnnotationReader
 
     /**
      * Liste les champs uploadable d'une entité (sous forme de tableau associatif).
+     * @return mixed[]
      */
     public function getUploadableFields($entity): array
     {

@@ -19,7 +19,7 @@ abstract class BlockLib extends AbstractController
     {
     }
 
-    protected function getBlockFile(string $type)
+    protected function getBlockFile(string $type): string
     {
         $folder   = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';

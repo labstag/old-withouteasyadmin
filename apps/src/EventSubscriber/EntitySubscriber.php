@@ -2,6 +2,7 @@
 
 namespace Labstag\EventSubscriber;
 
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\Configuration;
@@ -53,6 +54,9 @@ class EntitySubscriber extends EventSubscriberLib
     {
     }
 
+    /**
+     * @return array<class-string<AttachmentEntityEvent>|class-string<BlockEntityEvent>|class-string<BookmarkEntityEvent>|class-string<ChapterEntityEvent>|class-string<ConfigurationEntityEvent>|class-string<HistoryEntityEvent>|class-string<MenuEntityEvent>|class-string<PageEntityEvent>|class-string<ParagraphEntityEvent>|class-string<UserEntityEvent>, mixed>
+     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -74,7 +78,7 @@ class EntitySubscriber extends EventSubscriberLib
         unset($attachmentEntityEvent);
     }
 
-    public function onBlockEntityEvent(BlockEntityEvent $blockEntityEvent)
+    public function onBlockEntityEvent(BlockEntityEvent $blockEntityEvent): void
     {
         $block   = $blockEntityEvent->getNewEntity();
         $classentity = $this->blockService->getTypeEntity($block);
@@ -156,7 +160,7 @@ class EntitySubscriber extends EventSubscriberLib
         $this->pageRepository->add($entity);
     }
 
-    public function onParagraphEntityEvent(ParagraphEntityEvent $paragraphEntityEvent)
+    public function onParagraphEntityEvent(ParagraphEntityEvent $paragraphEntityEvent): void
     {
         $paragraph = $paragraphEntityEvent->getNewEntity();
         $oldEntity = $paragraphEntityEvent->getOldEntity();
@@ -226,7 +230,7 @@ class EntitySubscriber extends EventSubscriberLib
         return $this->parameterBag->get($name);
     }
 
-    protected function getRepository(string $entity)
+    protected function getRepository(string $entity): EntityRepository
     {
         return $this->entityManager->getRepository($entity);
     }

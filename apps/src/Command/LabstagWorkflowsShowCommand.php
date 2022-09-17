@@ -17,6 +17,9 @@ use Symfony\Component\Workflow\Registry;
 class LabstagWorkflowsShowCommand extends CommandLib
 {
 
+    /**
+     * @var string
+     */
     protected static $defaultName = 'labstag:workflows-show';
 
     public function __construct(
@@ -31,7 +34,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
         parent::__construct($entityManager);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Ajout des workflows en base de données');
     }
@@ -82,7 +85,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
         return Command::SUCCESS;
     }
 
-    private function delete($entities, $data)
+    private function delete(array $entities, $data): void
     {
         $toDelete = $this->workflowRepository->toDeleteEntities($entities);
         foreach ($toDelete as $entity) {

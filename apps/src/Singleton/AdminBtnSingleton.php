@@ -11,7 +11,7 @@ use Twig\Environment;
 class AdminBtnSingleton
 {
 
-    protected $bouton = [];
+    protected array $bouton = [];
 
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
@@ -106,7 +106,7 @@ class AdminBtnSingleton
         array $route,
         string $text = 'Destroy',
         array $routeParam = []
-    )
+    ): void
     {
         $this->addBtnDestroyRestore('destroy', $entity, $route, $routeParam, $text);
     }
@@ -248,7 +248,7 @@ class AdminBtnSingleton
         array $route,
         string $text = 'Restore',
         array $routeParam = []
-    )
+    ): void
     {
         $this->addBtnDestroyRestore('restore', $entity, $route, $routeParam, $text);
     }
@@ -309,7 +309,7 @@ class AdminBtnSingleton
         array $routes,
         string $code,
         string $title = 'Restaurer'
-    )
+    ): void
     {
         $this->addBtnVider('restories', $routes, $code, $title);
     }
@@ -318,7 +318,7 @@ class AdminBtnSingleton
         array $routes,
         string $code,
         string $title = 'Supprimer'
-    )
+    ): void
     {
         $this->addBtnVider('deleties', $routes, $code, $title);
     }
@@ -327,17 +327,20 @@ class AdminBtnSingleton
         array $routes,
         string $code,
         string $title = 'Supprimer'
-    )
+    ): void
     {
         $this->addBtnVider('empties', $routes, $code, $title);
     }
 
+    /**
+     * @return array<mixed, array{icon: string, text: string, attr: mixed[]}>
+     */
     public function get(): array
     {
         return $this->bouton;
     }
 
-    public static function getInstance()
+    public static function getInstance(): ?\Labstag\Singleton\AdminBtnSingleton
     {
         if (is_null(self::$instance)) {
             self::$instance = new AdminBtnSingleton();
@@ -346,7 +349,7 @@ class AdminBtnSingleton
         return self::$instance;
     }
 
-    public function isInit()
+    public function isInit(): bool
     {
         return $this->init;
     }
@@ -357,7 +360,7 @@ class AdminBtnSingleton
         TokenStorageInterface $tokenStorage,
         CsrfTokenManagerInterface $csrfTokenManager,
         GuardService $guardService
-    )
+    ): void
     {
         $this->twig             = $environment;
         $this->router           = $router;
@@ -372,7 +375,7 @@ class AdminBtnSingleton
         array $routes,
         string $code,
         string $title = 'Restaurer',
-    )
+    ): void
     {
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
@@ -395,14 +398,14 @@ class AdminBtnSingleton
         );
     }
 
-    protected function classEntity($entity)
+    protected function classEntity($entity): string
     {
         $class = str_replace('Labstag\\Entity\\', '', (string) $entity::class);
 
         return strtolower($class);
     }
 
-    protected function isRouteEnable(string $route)
+    protected function isRouteEnable(string $route): bool
     {
         $token = $this->token->getToken();
 
@@ -426,7 +429,7 @@ class AdminBtnSingleton
         return $return;
     }
 
-    private function addBtnDestroyRestore($word, $entity, $route, $routeParam, $text)
+    private function addBtnDestroyRestore($word, $entity, $route, array $routeParam, string $text)
     {
         if (!isset($route['list']) || !isset($route[$word])) {
             return $this;
@@ -464,7 +467,7 @@ class AdminBtnSingleton
         );
     }
 
-    private function arrayKeyExistsRedirect($routes)
+    private function arrayKeyExistsRedirect($routes): bool
     {
         return !array_key_exists('redirect', $routes)
         || !array_key_exists('href', $routes['redirect'])
@@ -472,7 +475,7 @@ class AdminBtnSingleton
         || !$this->isRouteEnable($routes['redirect']['href']);
     }
 
-    private function arrayKeyExistsUrl($routes)
+    private function arrayKeyExistsUrl($routes): bool
     {
         return !array_key_exists('url', $routes)
         || !array_key_exists('href', $routes['url'])

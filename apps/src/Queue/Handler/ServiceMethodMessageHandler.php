@@ -27,6 +27,9 @@ class ServiceMethodMessageHandler implements MessageHandlerInterface, ServiceSub
         call_user_func_array($callable, $serviceMethodMessage->getParams());
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedServices(): array
     {
         return [

@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Lib\FrontControllerLib;
@@ -25,7 +26,7 @@ class HistoryController extends FrontControllerLib
         string $slug,
         HistoryRepository $historyRepository,
         PageRepository $pageRepository
-    )
+    ): Response
     {
         $history = $historyRepository->findOneBy(
             ['slug' => $slug]
@@ -55,7 +56,7 @@ class HistoryController extends FrontControllerLib
         string $chapter,
         ChapterRepository $chapterRepository,
         HistoryRepository $historyRepository
-    )
+    ): Response
     {
         $history = $historyRepository->findOneBy(
             ['slug' => $history]
@@ -92,7 +93,7 @@ class HistoryController extends FrontControllerLib
         string $slug,
         HistoryService $historyService,
         HistoryRepository $historyRepository
-    )
+    ): RedirectResponse
     {
         $history = $historyRepository->findOneBy(
             ['slug' => $slug]
@@ -126,7 +127,7 @@ class HistoryController extends FrontControllerLib
     )]
     public function user(
         string $username
-    )
+    ): Response
     {
         unset($username);
 

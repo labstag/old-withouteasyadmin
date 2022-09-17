@@ -41,6 +41,9 @@ class OauthService
         return array_key_exists($clientName, $this->configProvider);
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getConfigProvider(): array
     {
         return $this->configProvider;
@@ -70,6 +73,9 @@ class OauthService
         return $data[$identity];
     }
 
+    /**
+     * @return int[]|string[]
+     */
     public function getTypes(): array
     {
         return array_keys($this->configProvider);
@@ -201,6 +207,9 @@ class OauthService
         return ('twitch' == $clientName) ? new TwitchHelix($params) : $provider;
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getConfig(string $clientName): array
     {
         if (isset($this->configProvider[$clientName])) {

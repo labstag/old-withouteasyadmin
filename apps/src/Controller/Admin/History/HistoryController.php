@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\History;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
@@ -55,7 +56,7 @@ class HistoryController extends AdminControllerLib
         HistoryRepository $historyRepository,
         HistoryRequestHandler $historyRequestHandler,
         Security $security
-    ): Response
+    ): RedirectResponse
     {
         $user = $security->getUser();
 
@@ -72,7 +73,7 @@ class HistoryController extends AdminControllerLib
     }
 
     #[Route(path: '/{id}/pdf', name: 'admin_history_pdf', methods: ['GET'])]
-    public function pdf(HistoryService $historyService, History $history)
+    public function pdf(HistoryService $historyService, History $history): RedirectResponse
     {
         $historyService->process(
             $this->getParameter('file_directory'),
@@ -94,7 +95,7 @@ class HistoryController extends AdminControllerLib
     }
 
     #[Route(path: '/{id}/move', name: 'admin_history_move', methods: ['GET', 'POST'])]
-    public function position(History $history, Request $request)
+    public function position(History $history, Request $request): Response
     {
         $currentUrl = $this->generateUrl(
             'admin_history_move',
@@ -156,6 +157,9 @@ class HistoryController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\HistoryType>>|array<string, \HistorySearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -164,6 +168,9 @@ class HistoryController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -201,6 +208,9 @@ class HistoryController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

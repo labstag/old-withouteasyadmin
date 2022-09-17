@@ -28,7 +28,7 @@ class GuardRouteController extends ApiControllerLib
         GuardService $guardService,
         RouteGroupeRequestHandler $routeGroupeRequestHandler,
         Request $request
-    )
+    ): JsonResponse
     {
         $data   = [
             'delete' => 0,
@@ -61,7 +61,7 @@ class GuardRouteController extends ApiControllerLib
         RouteGroupeRequestHandler $routeGroupeRequestHandler,
         Request $request,
         GroupeRepository $groupeRepository
-    )
+    ): JsonResponse
     {
         $data    = [
             'delete' => 0,
@@ -86,7 +86,7 @@ class GuardRouteController extends ApiControllerLib
     }
 
     #[Route(path: '/', name: 'api_guard_route')]
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $data    = [
             'group' => [],
@@ -113,7 +113,7 @@ class GuardRouteController extends ApiControllerLib
         EntityRoute $entityRoute,
         Request $request,
         RouteGroupeRequestHandler $routeGroupeRequestHandler
-    )
+    ): JsonResponse
     {
         $data  = [
             'delete' => 0,
@@ -142,7 +142,7 @@ class GuardRouteController extends ApiControllerLib
         EntityRoute $entityRoute,
         Request $request,
         RouteUserRequestHandler $routeUserRequestHandler
-    )
+    ): JsonResponse
     {
         $data  = [
             'delete' => 0,
@@ -170,7 +170,7 @@ class GuardRouteController extends ApiControllerLib
         User $user,
         Request $request,
         RouteUserRequestHandler $routeUserRequestHandler
-    )
+    ): JsonResponse
     {
         $data   = [
             'delete' => 0,
@@ -238,6 +238,9 @@ class GuardRouteController extends ApiControllerLib
         return $data;
     }
 
+    /**
+     * @return mixed[]
+     */
     private function setRouteUser(
         RouteUserRepository $routeUserRepository,
         guardService $guardService,
@@ -246,7 +249,7 @@ class GuardRouteController extends ApiControllerLib
         $state,
         EntityRoute $entityRoute,
         RouteUserRequestHandler $routeUserRequestHandler
-    )
+    ): array
     {
         $routeUser = $routeUserRepository->findOneBy(['refuser' => $user, 'refroute' => $entityRoute]);
         if ('0' === $state) {

@@ -2,6 +2,7 @@
 
 namespace Labstag\Block;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Block\Paragraph;
 use Labstag\Form\Admin\Block\ParagraphType;
 use Labstag\Lib\BlockLib;
@@ -20,32 +21,32 @@ class ParagraphBlock extends BlockLib
         parent::__construct($translator, $environment);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Paragraph::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return ParagraphType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('paragraph.name', [], 'block');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'paragraph';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
 
-    public function show(Paragraph $paragraph, $content)
+    public function show(Paragraph $paragraph, $content): Response
     {
         $data = $this->setParagraphs($content);
 

@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Bookmark;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\BookmarkRepository;
@@ -22,7 +23,7 @@ class BookmarkController extends FrontControllerLib
         string $slug,
         BookmarkRepository $bookmarkRepository,
         PageRepository $pageRepository
-    )
+    ): Response|RedirectResponse
     {
         $bookmark = $bookmarkRepository->findOneBy(
             ['slug' => $slug]
@@ -46,7 +47,7 @@ class BookmarkController extends FrontControllerLib
     )]
     public function category(
         string $slug
-    )
+    ): Response
     {
         unset($slug);
 
@@ -63,7 +64,7 @@ class BookmarkController extends FrontControllerLib
     )]
     public function libelle(
         string $slug
-    )
+    ): Response
     {
         unset($slug);
 

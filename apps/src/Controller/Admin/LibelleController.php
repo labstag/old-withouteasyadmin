@@ -73,6 +73,9 @@ class LibelleController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\LibelleType>>|array<string, \LibelleSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -81,6 +84,9 @@ class LibelleController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -114,6 +120,9 @@ class LibelleController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

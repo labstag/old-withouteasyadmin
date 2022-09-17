@@ -111,7 +111,7 @@ class TarteaucitronType extends AbstractTypeLib
         );
     }
 
-    private function setInputTextAll($builder)
+    private function setInputTextAll($builder): void
     {
         $tab = [
             'hashtag'     => [
@@ -145,7 +145,7 @@ class TarteaucitronType extends AbstractTypeLib
         $this->setInputText($builder, $tab);
     }
 
-    private function setInputTrueFalse($builder, $tab)
+    private function setInputTrueFalse($builder, $tab): void
     {
         foreach ($tab as $id => $row) {
             $builder->add(
@@ -166,7 +166,7 @@ class TarteaucitronType extends AbstractTypeLib
         }
     }
 
-    private function setInputTrueFalsePartie1($builder)
+    private function setInputTrueFalsePartie1($builder): void
     {
         $tab = [
             'groupServices'  => [
@@ -218,7 +218,7 @@ class TarteaucitronType extends AbstractTypeLib
         $this->setInputTrueFalse($builder, $tab);
     }
 
-    private function setInputTrueFalsePartie2($builder)
+    private function setInputTrueFalsePartie2($builder): void
     {
         $tab = [
             'adblocker'               => [

@@ -11,27 +11,27 @@ use Labstag\Repository\HistoryRepository;
 
 class ShowParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return Show::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return ShowType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('historyshow.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'historyshow';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
@@ -60,7 +60,10 @@ class ShowParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return array<class-string<Layout>>
+     */
+    public function useIn(): array
     {
         return [
             Layout::class,

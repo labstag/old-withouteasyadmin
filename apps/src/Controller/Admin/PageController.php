@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Page;
 use Labstag\Form\Admin\PageType;
@@ -46,7 +47,7 @@ class PageController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_page_new', methods: ['GET', 'POST'])]
-    public function new(PageRepository $pageRepository, PageRequestHandler $pageRequestHandler): Response
+    public function new(PageRepository $pageRepository, PageRequestHandler $pageRequestHandler): RedirectResponse
     {
         $page = new Page();
         $page->setName(Uuid::v1());
@@ -89,6 +90,9 @@ class PageController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\PageType>>|array<string, \PageSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -97,6 +101,9 @@ class PageController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -130,6 +137,9 @@ class PageController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

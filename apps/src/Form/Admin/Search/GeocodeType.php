@@ -39,7 +39,7 @@ class GeocodeType extends SearchAbstractTypeLib
         );
     }
 
-    protected function setTextType($builder)
+    protected function setTextType($builder): void
     {
         $texttype = [
             'postalcode'    => [

@@ -75,6 +75,9 @@ class EmailUserController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\User\EmailUserType>>|array<string, \EmailUserSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -83,6 +86,9 @@ class EmailUserController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -120,6 +126,9 @@ class EmailUserController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Post;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\PageRepository;
@@ -21,7 +22,7 @@ class PostController extends FrontControllerLib
         string $slug,
         PostRepository $postRepository,
         PageRepository $pageRepository
-    )
+    ): Response
     {
         $post = $postRepository->findOneBy(
             ['slug' => $slug]
@@ -48,7 +49,7 @@ class PostController extends FrontControllerLib
     )]
     public function category(
         string $slug
-    )
+    ): Response
     {
         unset($slug);
 
@@ -65,7 +66,7 @@ class PostController extends FrontControllerLib
     )]
     public function libelle(
         string $slug
-    )
+    ): Response
     {
         unset($slug);
 
@@ -82,7 +83,7 @@ class PostController extends FrontControllerLib
     )]
     public function user(
         string $username
-    )
+    ): Response
     {
         unset($username);
 
@@ -99,7 +100,7 @@ class PostController extends FrontControllerLib
     )]
     public function year(
         string $year
-    )
+    ): Response
     {
         unset($year);
 

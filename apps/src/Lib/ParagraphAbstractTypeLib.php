@@ -21,7 +21,7 @@ abstract class ParagraphAbstractTypeLib extends AbstractTypeLib
         parent::__construct($translator);
     }
 
-    protected function getRender($view, $param = [])
+    protected function getRender($view, array $param = []): string
     {
         return $this->twig->render($view, $param);
     }

@@ -2,6 +2,7 @@
 
 namespace Labstag\Paragraph\Bookmark;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Bookmark\Libelle;
@@ -11,32 +12,32 @@ use Labstag\Repository\BookmarkRepository;
 
 class LibelleParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return Libelle::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return LibelleType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('bookmarklibelle.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'bookmarklibelle';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
 
-    public function show(Libelle $libelle)
+    public function show(Libelle $libelle): Response
     {
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -58,7 +59,10 @@ class LibelleParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return array<class-string<Layout>>
+     */
+    public function useIn(): array
     {
         return [
             Layout::class,

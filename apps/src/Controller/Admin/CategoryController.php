@@ -60,6 +60,9 @@ class CategoryController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getMethodsList(): array
     {
         return [
@@ -85,6 +88,9 @@ class CategoryController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\CategoryType>>|array<string, \CategorySearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -93,6 +99,9 @@ class CategoryController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -126,6 +135,9 @@ class CategoryController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

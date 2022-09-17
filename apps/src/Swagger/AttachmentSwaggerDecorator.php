@@ -45,7 +45,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         return $this->normalizer->supportsNormalization($data, $format);
     }
 
-    private function setEditoFond(&$docs)
+    private function setEditoFond(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'edito fond.',
@@ -57,7 +57,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/edito/fond/{entity}']['delete'] = $statsEndpoint;
     }
 
-    private function setMemoFond(&$docs)
+    private function setMemoFond(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'node interne Fond.',
@@ -69,7 +69,10 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/memo/fond/{entity}']['delete'] = $statsEndpoint;
     }
 
-    private function setParameters()
+    /**
+     * @return array<int, mixed[]>
+     */
+    private function setParameters(): array
     {
         return [
             [
@@ -89,7 +92,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setPostImg(&$docs)
+    private function setPostImg(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'Post Img.',
@@ -101,7 +104,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/post/img/{entity}']['delete'] = $statsEndpoint;
     }
 
-    private function setProfilAvatar(&$docs)
+    private function setProfilAvatar(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'Profil avatar.',
@@ -121,7 +124,10 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/profil/avatar']['delete'] = $statsEndpoint;
     }
 
-    private function setResponses()
+    /**
+     * @return array<int, array{content: array{application/json: array{schema: array{type: string, properties: array{isvalid: array{type: string, example: bool}}}}}}>
+     */
+    private function setResponses(): array
     {
         return [
             Response::HTTP_OK => [
@@ -142,7 +148,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setUserAvatar(&$docs)
+    private function setUserAvatar(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'User avatar.',

@@ -226,7 +226,7 @@ abstract class FixtureLib extends Fixture
         return $faker;
     }
 
-    protected function setLibelles($faker, $entity)
+    protected function setLibelles($faker, $entity): void
     {
         if (1 != random_int(0, 1)) {
             return;
@@ -240,7 +240,7 @@ abstract class FixtureLib extends Fixture
         }
     }
 
-    protected function upload($entity, Generator $faker)
+    protected function upload($entity, Generator $faker): void
     {
         if (!$this->uploadAnnotReader->isUploadable($entity)) {
             return;

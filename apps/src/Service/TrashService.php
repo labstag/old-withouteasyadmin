@@ -18,7 +18,10 @@ class TrashService
     {
     }
 
-    public function all()
+    /**
+     * @return array<int, array{name: string, properties: mixed, entity: string, total: int, token: string}>
+     */
+    public function all(): array
     {
         $data = [];
         foreach ($this->repositories as $repository) {

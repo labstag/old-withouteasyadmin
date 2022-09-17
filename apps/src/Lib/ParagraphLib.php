@@ -2,6 +2,7 @@
 
 namespace Labstag\Lib;
 
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Service\FormService;
@@ -32,7 +33,7 @@ abstract class ParagraphLib extends AbstractController
         $this->request       = $requestStack->getCurrentRequest();
     }
 
-    protected function getParagraphFile(string $type)
+    protected function getParagraphFile(string $type): string
     {
         $folder   = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';
@@ -58,7 +59,7 @@ abstract class ParagraphLib extends AbstractController
         return $view;
     }
 
-    protected function getRepository(string $entity)
+    protected function getRepository(string $entity): EntityRepository
     {
         return $this->entityManager->getRepository($entity);
     }

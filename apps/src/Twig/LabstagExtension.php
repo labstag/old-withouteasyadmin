@@ -47,7 +47,7 @@ class LabstagExtension extends AbstractExtension
     {
     }
 
-    public function classEntity($entity)
+    public function classEntity($entity): string
     {
         $class = substr(
             (string) $entity::class,
@@ -127,20 +127,23 @@ class LabstagExtension extends AbstractExtension
         return $attachment;
     }
 
-    public function getBlockClass($data)
+    public function getBlockClass($data): string
     {
         $block = $data->getBlock();
 
         return 'block-'.$block->getType();
     }
 
-    public function getBlockId($data)
+    public function getBlockId($data): string
     {
         $block = $data->getBlock();
 
         return 'block-'.$block->getType().'-'.$block->getId();
     }
 
+    /**
+     * @return TwigFilter[]
+     */
     public function getFilters(): array
     {
         $dataFilters = $this->getFiltersFunctions();
@@ -152,6 +155,9 @@ class LabstagExtension extends AbstractExtension
         return $filters;
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     public function getFunctions(): array
     {
         $dataFunctions = $this->getFiltersFunctions();
@@ -163,7 +169,7 @@ class LabstagExtension extends AbstractExtension
         return $functions;
     }
 
-    public function getParagraphClass($data)
+    public function getParagraphClass($data): string
     {
         $paragraph = $data->getParagraph();
         $dataClass = [
@@ -183,7 +189,7 @@ class LabstagExtension extends AbstractExtension
         return implode(' ', $dataClass);
     }
 
-    public function getParagraphId($data)
+    public function getParagraphId($data): string
     {
         $paragraph = $data->getParagraph();
 
@@ -195,7 +201,7 @@ class LabstagExtension extends AbstractExtension
         return $this->paragraphService->getNameByCode($code);
     }
 
-    public function getTextColorSection($data)
+    public function getTextColorSection($data): string
     {
         $paragraph = $data->getParagraph();
         $code      = $paragraph->getColor();
@@ -237,19 +243,16 @@ class LabstagExtension extends AbstractExtension
     /**
      * Gets the browser path for the image and filter to apply.
      *
-     * @param string      $path
-     * @param string      $filter
      * @param null|string $resolver
-     * @param int         $referenceType
      *
      * @return string
      */
     public function imagefilter(
-        $path,
-        $filter,
+        string $path,
+        string $filter,
         array $config = [],
         $resolver = null,
-        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
     )
     {
         $url = $this->cacheManager->getBrowserPath(
@@ -277,7 +280,7 @@ class LabstagExtension extends AbstractExtension
         return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
     }
 
-    public function workflowHas($entity)
+    public function workflowHas(object $entity): bool
     {
         return $this->registry->has($entity);
     }
@@ -293,7 +296,7 @@ class LabstagExtension extends AbstractExtension
         return $class['form']->vars['unique_block_prefix'];
     }
 
-    private function dump(mixed $var)
+    private function dump(mixed $var): void
     {
         if ('dev' != $this->getParameter('kernel.debug')) {
             return;
@@ -302,7 +305,7 @@ class LabstagExtension extends AbstractExtension
         dump($var);
     }
 
-    private function getFiltersFunctions()
+    private function getFiltersFunctions(): array
     {
         return [
             'paragraph_name'           => 'getParagraphName',
@@ -326,12 +329,15 @@ class LabstagExtension extends AbstractExtension
         ];
     }
 
-    private function getParameter($name)
+    private function getParameter(string $name)
     {
         return $this->containerBag->get($name);
     }
 
-    private function setFilesformClass($type, $class)
+    /**
+     * @return mixed[]
+     */
+    private function setFilesformClass($type, $class): array
     {
         $htmltwig = '.html.twig';
         $files    = [

@@ -267,9 +267,9 @@ class UserMailService
 
     private function setEmail(
         $template,
-        $user,
-        $change = []
-    )
+        User $user,
+        array $change = []
+    ): void
     {
         $html    = $template->getHtml();
         $txt     = $template->getText();

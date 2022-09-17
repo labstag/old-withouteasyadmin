@@ -14,6 +14,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class LabstagInstallCommand extends CommandLib
 {
 
+    /**
+     * @var string
+     */
     protected static $defaultName = 'labstag:install';
 
     public function __construct(
@@ -38,7 +41,7 @@ class LabstagInstallCommand extends CommandLib
         return true;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Add a short description for your command');
         $this->addOption('menuadmin', null, InputOption::VALUE_NONE, 'menuadmin');
@@ -67,7 +70,7 @@ class LabstagInstallCommand extends CommandLib
         return Command::SUCCESS;
     }
 
-    protected function getExecutesFunction()
+    protected function getExecutesFunction(): array
     {
         return [
             'menuadmin'       => 'setMenuAdmin',

@@ -14,7 +14,10 @@ class ParagraphService
     {
     }
 
-    public function getAll($entity)
+    /**
+     * @return array<int|string, mixed>
+     */
+    public function getAll($entity): array
     {
         $data = [];
         foreach ($this->paragraphsclass as $row) {

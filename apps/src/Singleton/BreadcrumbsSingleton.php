@@ -39,12 +39,15 @@ class BreadcrumbsSingleton
         $this->data = $newbreadcrumbs;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function get(): array
     {
         return $this->data;
     }
 
-    public static function getInstance()
+    public static function getInstance(): ?\Labstag\Singleton\BreadcrumbsSingleton
     {
         if (is_null(self::$instance)) {
             self::$instance = new BreadcrumbsSingleton();
@@ -53,6 +56,9 @@ class BreadcrumbsSingleton
         return self::$instance;
     }
 
+    /**
+     * @param mixed[] $breadcrumbs
+     */
     public function set(array $breadcrumbs): void
     {
         $this->data = $breadcrumbs;

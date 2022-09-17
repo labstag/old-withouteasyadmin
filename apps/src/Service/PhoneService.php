@@ -26,8 +26,8 @@ class PhoneService
     /**
      * Verifie le numéro de téléphone en fonction du pays.
      *
-     * @param string $numero Numéro de téléphone
-     * @param string $locale code du pays
+     * @param string|null $numero Numéro de téléphone
+     * @param string|null $locale code du pays
      *
      * @throws NumberParseException
      */

@@ -28,7 +28,7 @@ class FlagCountryType extends AbstractType
         unset($form, $options);
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver)
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         $optionsResolver->setDefaults(
             [

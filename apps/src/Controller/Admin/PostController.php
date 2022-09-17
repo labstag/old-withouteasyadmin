@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
@@ -48,7 +49,7 @@ class PostController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_post_new', methods: ['GET', 'POST'])]
-    public function new(PostRepository $postRepository, PostRequestHandler $postRequestHandler, Security $security): Response
+    public function new(PostRepository $postRepository, PostRequestHandler $postRequestHandler, Security $security): RedirectResponse
     {
         $user = $security->getUser();
 
@@ -95,6 +96,9 @@ class PostController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\PostType>>|array<string, \PostSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -103,6 +107,9 @@ class PostController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -136,6 +143,9 @@ class PostController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

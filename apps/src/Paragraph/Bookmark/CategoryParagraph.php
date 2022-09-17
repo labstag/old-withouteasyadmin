@@ -2,6 +2,7 @@
 
 namespace Labstag\Paragraph\Bookmark;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Bookmark\Category;
@@ -11,32 +12,32 @@ use Labstag\Repository\BookmarkRepository;
 
 class CategoryParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return Category::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return CategoryType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('bookmarkcategory.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'bookmarkcategory';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
 
-    public function show(Category $category)
+    public function show(Category $category): Response
     {
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -58,7 +59,10 @@ class CategoryParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return array<class-string<Layout>>
+     */
+    public function useIn(): array
     {
         return [
             Layout::class,

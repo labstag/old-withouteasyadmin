@@ -102,7 +102,7 @@ class ParamType extends AbstractTypeLib
         );
     }
 
-    private function setFileType($builder)
+    private function setFileType($builder): void
     {
         $images = [
             'image'   => [
@@ -128,7 +128,7 @@ class ParamType extends AbstractTypeLib
         }
     }
 
-    private function setInputs($builder)
+    private function setInputs($builder): void
     {
         $inputs = [
             'title_format'    => [
@@ -177,7 +177,7 @@ class ParamType extends AbstractTypeLib
         }
     }
 
-    private function setMinMaxCollectionType($builder)
+    private function setMinMaxCollectionType($builder): void
     {
         $mixmax = [
             'tarteaucitron' => TarteaucitronType::class,

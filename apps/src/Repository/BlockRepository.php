@@ -13,7 +13,10 @@ class BlockRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Block::class);
     }
 
-    public function getDataByRegion()
+    /**
+     * @return array<string, mixed[]>
+     */
+    public function getDataByRegion(): array
     {
         $types = [
             'header',

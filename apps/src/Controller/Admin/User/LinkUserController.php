@@ -74,6 +74,9 @@ class LinkUserController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\User\LinkUserType>>|array<string, \LinkUserSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -82,6 +85,9 @@ class LinkUserController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -119,6 +125,9 @@ class LinkUserController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

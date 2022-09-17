@@ -25,7 +25,7 @@ class GeocodeService
     {
     }
 
-    public function add(array $row)
+    public function add(array $row): void
     {
         $entity = $this->geoCodeRepository->findOneBy(
             [
@@ -84,6 +84,9 @@ class GeocodeService
         return $csv;
     }
 
+    /**
+     * @return array<int, mixed[]>
+     */
     public function tables(array $csv): array
     {
         $data = [];

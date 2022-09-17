@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Block;
 use Labstag\Form\Admin\BlockType;
@@ -133,7 +134,7 @@ class BlockController extends AdminControllerLib
         ?Block $block,
         BlockRepository $blockRepository,
         BlockRequestHandler $blockRequestHandler
-    )
+    ): RedirectResponse
     {
         $post  = $request->request->all('new_block');
         $block = new Block();
@@ -161,6 +162,9 @@ class BlockController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -186,6 +190,9 @@ class BlockController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

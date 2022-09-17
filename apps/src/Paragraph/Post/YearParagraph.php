@@ -2,6 +2,7 @@
 
 namespace Labstag\Paragraph\Post;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Year;
 use Labstag\Entity\Post;
@@ -11,32 +12,32 @@ use Labstag\Repository\PostRepository;
 
 class YearParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return Year::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return YearType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('postyear.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'postyear';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
 
-    public function show(Year $postyear)
+    public function show(Year $postyear): Response
     {
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -58,7 +59,10 @@ class YearParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return array<class-string<Layout>>
+     */
+    public function useIn(): array
     {
         return [
             Layout::class,

@@ -2,6 +2,7 @@
 
 namespace Labstag\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\History;
@@ -12,7 +13,7 @@ use Twig\Environment;
 class HistoryService
 {
 
-    private $filename;
+    private ?string $filename = null;
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
@@ -31,7 +32,7 @@ class HistoryService
         string $fileDirectory,
         string $historyId,
         bool $all
-    )
+    ): void
     {
         $history = $this->historyRepository->find($historyId);
         if (!$history instanceof History || (false == $all && !in_array('publie', (array) $history->getState()))) {
@@ -82,7 +83,7 @@ class HistoryService
         return $html2Pdf;
     }
 
-    private function getChapters(History $history, bool $all): Collection
+    private function getChapters(History $history, bool $all): ArrayCollection
     {
         return $all ? $history->getChapters() : $history->getChaptersPublished();
     }

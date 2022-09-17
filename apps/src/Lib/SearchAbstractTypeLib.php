@@ -134,7 +134,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
 
     protected function showState(
         $builder,
-        $entityclass,
+        object $entityclass,
         $label,
         $help,
         $placeholder

@@ -105,12 +105,15 @@ class KernelSubscriber implements EventSubscriberInterface
         'workflow-action',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return ['kernel.response' => 'onKernelResponse'];
     }
 
-    public function onKernelResponse($event)
+    public function onKernelResponse($event): void
     {
         $response   = $event->getResponse();
         $request    = $event->getRequest();

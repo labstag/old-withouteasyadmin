@@ -44,7 +44,10 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         return $this->normalizer->supportsNormalization($data, $format);
     }
 
-    private function getResponses()
+    /**
+     * @return array<int, array{content: array{application/json: array{schema: array{type: string, properties: array{id: array{type: string, example: string}, name: array{type: string, example: string}}}}}}>
+     */
+    private function getResponses(): array
     {
         return [
             Response::HTTP_OK => [
@@ -69,7 +72,7 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setCategories(&$docs)
+    private function setCategories(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'get Categories.',
@@ -81,7 +84,7 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/search/category']['get'] = $statsEndpoint;
     }
 
-    private function setGroupes(&$docs)
+    private function setGroupes(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'get Groupe.',
@@ -93,7 +96,7 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/search/group']['get'] = $statsEndpoint;
     }
 
-    private function setLibelles(&$docs)
+    private function setLibelles(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'get Libelle.',
@@ -105,7 +108,10 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/search/libelle']['get'] = $statsEndpoint;
     }
 
-    private function setParameters()
+    /**
+     * @return array<int, array{name: string, in: string, required: bool, description: string, schema: array{type: string}}>
+     */
+    private function setParameters(): array
     {
         return [
             [
@@ -118,7 +124,7 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setUsers(&$docs)
+    private function setUsers(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'get Users.',

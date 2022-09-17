@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
@@ -48,7 +49,7 @@ class EditoController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_edito_new', methods: ['GET', 'POST'])]
-    public function new(EditoRepository $editoRepository, EditoRequestHandler $editoRequestHandler, Security $security): Response
+    public function new(EditoRepository $editoRepository, EditoRequestHandler $editoRequestHandler, Security $security): RedirectResponse
     {
         $user = $security->getUser();
 
@@ -94,6 +95,9 @@ class EditoController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\EditoType>>|array<string, \EditoSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -102,6 +106,9 @@ class EditoController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -135,6 +142,9 @@ class EditoController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

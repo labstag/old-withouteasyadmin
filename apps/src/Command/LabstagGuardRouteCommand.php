@@ -14,6 +14,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class LabstagGuardRouteCommand extends CommandLib
 {
 
+    /**
+     * @var string
+     */
     protected static $defaultName = 'labstag:guard-route';
 
     public function __construct(
@@ -24,7 +27,7 @@ class LabstagGuardRouteCommand extends CommandLib
         parent::__construct($entityManager);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Enregistre les routes pour le système de GUARD');
     }

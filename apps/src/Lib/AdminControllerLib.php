@@ -2,6 +2,7 @@
 
 namespace Labstag\Lib;
 
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Attachment;
@@ -91,7 +92,7 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     public function listOrTrash(
-        $entity,
+        string $entity,
         string $html,
         array $parameters = []
     ): Response
@@ -191,7 +192,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function addNewBreadcrumb($data, $routeParam, $route)
+    protected function addNewBreadcrumb($data, $routeParam, $route): void
     {
         $compiled        = $data->compile();
         $breadcrumbTitle = $this->setBreadcrumbsData();
@@ -277,7 +278,7 @@ abstract class AdminControllerLib extends ControllerLib
         return $this->btns;
     }
 
-    protected function classEntity($entity)
+    protected function classEntity($entity): string
     {
         $class = str_replace('Labstag\\Entity\\', '', (string) $entity::class);
 
@@ -297,6 +298,9 @@ abstract class AdminControllerLib extends ControllerLib
         return 0 != count($routes);
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getMethodsList(): array
     {
         return [
@@ -305,6 +309,9 @@ abstract class AdminControllerLib extends ControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getUrlAdmin(): array
     {
         return [];
@@ -312,7 +319,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function isRouteEnable(
         string $route
-    )
+    ): bool
     {
         return $this->guardService->guardRoute(
             $route,
@@ -423,6 +430,9 @@ abstract class AdminControllerLib extends ControllerLib
         return parent::renderForm($view, $parameters, $response);
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function searchForm(): array
     {
         return [];
@@ -449,6 +459,9 @@ abstract class AdminControllerLib extends ControllerLib
         return $attachment;
     }
 
+    /**
+     * @return array<int, array{title: string, route: string, route_params: array{}}>
+     */
     protected function setBreadcrumbsData(): array
     {
         return [
@@ -507,7 +520,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function setBtnDeleties($routeType, $route, $routeParams, $repository)
+    protected function setBtnDeleties($routeType, $route, $routeParams, $repository): void
     {
         if ('trash' == $routeType) {
             return;
@@ -563,7 +576,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function setBtnListOrTrash($repository, $routeType)
+    protected function setBtnListOrTrash(ServiceEntityRepositoryLib $repository, string $routeType)
     {
         $url         = $this->getUrlAdmin();
         $request     = $this->requeststack->getCurrentRequest();
@@ -605,6 +618,9 @@ abstract class AdminControllerLib extends ControllerLib
         $this->setBtnDelete($url, $entity);
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function setHeaderTitle(): array
     {
         return [
@@ -612,7 +628,7 @@ abstract class AdminControllerLib extends ControllerLib
         ];
     }
 
-    protected function setPagination($repository, $routeType)
+    protected function setPagination($repository, $routeType): PaginationInterface
     {
         $methods = $this->getMethodsList();
         $method  = $methods[$routeType];
@@ -718,7 +734,7 @@ abstract class AdminControllerLib extends ControllerLib
         $this->showOrPreviewaddBtnDestroy($url, $routeType, $entity);
     }
 
-    protected function showOrPreviewaddBtnDestroy($url, $routeType, $entity)
+    protected function showOrPreviewaddBtnDestroy($url, $routeType, $entity): void
     {
         if (!(isset($url['destroy']) && 'preview' == $routeType)) {
             return;
@@ -738,7 +754,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function showOrPreviewaddBtnEdit($url, $routeType, $entity)
+    protected function showOrPreviewaddBtnEdit($url, $routeType, $entity): void
     {
         if (!(isset($url['edit']) && 'show' == $routeType) || !$this->isGranted('edit', $entity)) {
             return;
@@ -757,7 +773,7 @@ abstract class AdminControllerLib extends ControllerLib
         $url,
         $routeType,
         $entity
-    )
+    ): void
     {
         if (!(isset($url['guard']) && 'show' == $routeType) || !$this->enableBtnGuard($entity)) {
             return;
@@ -772,7 +788,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function showOrPreviewaddBtnList($url, $routeType)
+    protected function showOrPreviewaddBtnList($url, $routeType): void
     {
         if (!(isset($url['list']) && 'show' == $routeType)) {
             return;
@@ -802,7 +818,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
     }
 
-    protected function showOrPreviewaddBtnTrash($url, $routeType)
+    protected function showOrPreviewaddBtnTrash($url, $routeType): void
     {
         if (!(isset($url['trash']) && 'preview' == $routeType)) {
             return;
@@ -814,7 +830,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function upload(UploadAnnotationReader $uploadAnnotReader, $entity)
+    protected function upload(UploadAnnotationReader $uploadAnnotReader, $entity): void
     {
         if (!$uploadAnnotReader->isUploadable($entity)) {
             return;
@@ -864,6 +880,9 @@ abstract class AdminControllerLib extends ControllerLib
         return $breadcrumb;
     }
 
+    /**
+     * @return mixed[]
+     */
     private function generateMenus(array $parameters = []): array
     {
         return array_merge(
@@ -906,7 +925,7 @@ abstract class AdminControllerLib extends ControllerLib
         $url,
         $routeType,
         EntityManagerInterface $entityManager
-    )
+    ): void
     {
         if ('trash' == $routeType) {
             $this->listOrTrashRouteTrash($url, $repository);
@@ -919,7 +938,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
     }
 
-    private function setPositionParagraphs()
+    private function setPositionParagraphs(): void
     {
         $request    = $this->requeststack->getCurrentRequest();
         $paragraphs = $request->request->all('paragraphs');

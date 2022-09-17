@@ -10,7 +10,10 @@ use Labstag\Lib\FixtureLib;
 
 class MemoFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return [
             DataFixtures::class,
@@ -45,7 +48,7 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
         $memo->setDateEnd($dateEnd);
         // @var string $content
         $content = $generator->paragraphs(4, true);
-        $memo->setContent(str_replace("\n\n", "<br />\n", $content));
+        $memo->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $this->addReference('memo_'.$index, $memo);
         $tabIndex = array_rand($users);
         // @var User $user

@@ -70,6 +70,9 @@ class GeoCodeController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\GeocodeType>>|array<string, \GeocodeSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -78,6 +81,9 @@ class GeoCodeController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -111,6 +117,9 @@ class GeoCodeController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

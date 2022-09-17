@@ -47,7 +47,7 @@ class UploadableField
         return $this->path;
     }
 
-    public function getSlug()
+    public function getSlug(): string
     {
         return strtolower((string) $this->slug);
     }

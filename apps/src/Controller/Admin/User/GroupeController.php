@@ -124,6 +124,9 @@ class GroupeController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\GroupeType>>|array<string, \GroupeSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -132,6 +135,9 @@ class GroupeController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -173,6 +179,9 @@ class GroupeController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

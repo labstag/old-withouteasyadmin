@@ -109,7 +109,7 @@ class PostType extends AbstractTypeLib
         );
     }
 
-    protected function setTextType($builder)
+    protected function setTextType($builder): void
     {
         $texttype = [
             'title' => [

@@ -12,9 +12,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class LabstagUpdateCommand extends CommandLib
 {
 
+    /**
+     * @var string
+     */
     protected static $defaultName = 'labstag:update';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Add a short description for your command');
         $this->addOption('maintenanceon', null, InputOption::VALUE_NONE, 'Enable maintenance');

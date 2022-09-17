@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Memo;
 use Labstag\Form\Admin\MemoType;
@@ -47,7 +48,7 @@ class MemoController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_memo_new', methods: ['GET', 'POST'])]
-    public function new(MemoRepository $memoRepository, MemoRequestHandler $memoRequestHandler, Security $security): Response
+    public function new(MemoRepository $memoRepository, MemoRequestHandler $memoRequestHandler, Security $security): RedirectResponse
     {
         $user = $security->getUser();
 
@@ -92,6 +93,9 @@ class MemoController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\MemoType>>|array<string, \MemoSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -100,6 +104,9 @@ class MemoController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -133,6 +140,9 @@ class MemoController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

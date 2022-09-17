@@ -2,6 +2,7 @@
 
 namespace Labstag\Paragraph\History;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\History\User;
@@ -11,32 +12,32 @@ use Labstag\Repository\HistoryRepository;
 
 class UserParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return User::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return UserType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('historyuser.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'historyuser';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
 
-    public function show(User $user)
+    public function show(User $user): Response
     {
         $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -58,7 +59,10 @@ class UserParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return array<class-string<Layout>>
+     */
+    public function useIn(): array
     {
         return [
             Layout::class,

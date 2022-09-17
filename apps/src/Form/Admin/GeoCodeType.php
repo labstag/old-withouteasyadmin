@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GeoCodeType extends AbstractTypeLib
 {
-    public function buildForm(FormBuilderInterface $formBuilder, array $options)
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         unset($options);
         $formBuilder->add(
@@ -78,7 +78,7 @@ class GeoCodeType extends AbstractTypeLib
         $this->setInputText($formBuilder, $tab);
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver)
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         $optionsResolver->setDefaults(
             [

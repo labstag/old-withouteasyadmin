@@ -2,6 +2,7 @@
 
 namespace Labstag\Block;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Block\Navbar;
 use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Block\NavbarType;
@@ -21,32 +22,32 @@ class NavbarBlock extends BlockLib
         parent::__construct($translator, $environment);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Navbar::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return NavbarType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('navbar.name', [], 'block');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'navbar';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return true;
     }
 
-    public function show(Navbar $navbar, $content)
+    public function show(Navbar $navbar, $content): Response
     {
         $menu = $navbar->getMenu();
         $item = ($menu instanceof Menu) ? $this->menuService->createMenu($menu) : '';

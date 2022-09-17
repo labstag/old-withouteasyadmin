@@ -15,6 +15,9 @@ class DisclaimerSubscriber implements EventSubscriberInterface
     {
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return ['kernel.request' => 'onKernelRequest'];

@@ -25,12 +25,15 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
     {
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return ['workflow.guard' => 'onWorkflowAttachmentGuard'];
     }
 
-    public function onWorkflowAttachmentGuard(GuardEvent $guardEvent)
+    public function onWorkflowAttachmentGuard(GuardEvent $guardEvent): void
     {
         $stategroupe = false;
         $stateuser   = false;

@@ -17,7 +17,10 @@ class BlockService
     {
     }
 
-    public function getAll()
+    /**
+     * @return array<int|string, mixed>
+     */
+    public function getAll(): array
     {
         $data = [];
         foreach ($this->blocksclass as $row) {
@@ -29,7 +32,10 @@ class BlockService
         return $data;
     }
 
-    public function getCustomBlock()
+    /**
+     * @return array<int|string, mixed>
+     */
+    public function getCustomBlock(): array
     {
         $blocks = $this->blockRepository->findBy(
             ['type' => 'custom']
@@ -95,7 +101,10 @@ class BlockService
         return $form;
     }
 
-    public function getRegions()
+    /**
+     * @return array<string, string>
+     */
+    public function getRegions(): array
     {
         return [
             'header'  => 'header',

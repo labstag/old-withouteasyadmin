@@ -6,7 +6,10 @@ use Labstag\DataFixtures\DataFixtures;
 
 abstract class DataFixtureLib extends FixtureLib
 {
-    public function getDependencies()
+    /**
+     * @return array<class-string<DataFixtures>>
+     */
+    public function getDependencies(): array
     {
         return [DataFixtures::class];
     }

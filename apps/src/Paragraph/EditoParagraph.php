@@ -2,6 +2,7 @@
 
 namespace Labstag\Paragraph;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Edito as EntityEdito;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Edito;
@@ -11,32 +12,32 @@ use Labstag\Repository\EditoRepository;
 
 class EditoParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return Edito::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return EditoType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('edito.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'edito';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
 
-    public function show(Edito $edito)
+    public function show(Edito $edito): Response
     {
         /** @var EditoRepository $repository */
         $repository = $this->getRepository(EntityEdito::class);
@@ -50,7 +51,10 @@ class EditoParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return array<class-string<Page>>
+     */
+    public function useIn(): array
     {
         return [
             Page::class,

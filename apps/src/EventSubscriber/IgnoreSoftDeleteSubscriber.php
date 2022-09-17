@@ -33,12 +33,15 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
         $this->request       = $this->requestStack->getCurrentRequest();
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return ['kernel.controller' => 'onKernelController'];
     }
 
-    public function onKernelController(ControllerEvent $controllerEvent)
+    public function onKernelController(ControllerEvent $controllerEvent): void
     {
         $controller = $controllerEvent->getController();
         if (!is_array($controller)) {
@@ -53,7 +56,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
         $this->ignoreSoftDeleteAnnotation($controller, $method);
     }
 
-    protected function ignoreSoftDeleteAnnotation($controller, $method)
+    protected function ignoreSoftDeleteAnnotation($controller, $method): void
     {
         $routeCurrent = $this->request->attributes->get('_route');
         $routes       = [
@@ -87,7 +90,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
         }
     }
 
-    protected function readAnnotation($controller, $method, $annotation)
+    protected function readAnnotation($controller, $method, $annotation): bool|array
     {
         $classUtils           = new ClassUtils();
         $reflectionClass = new ReflectionClass($classUtils->getClass($controller));

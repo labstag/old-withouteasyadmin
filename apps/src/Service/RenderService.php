@@ -2,6 +2,7 @@
 
 namespace Labstag\Service;
 
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 
 class RenderService
@@ -12,7 +13,10 @@ class RenderService
     {
     }
 
-    public function getAllFrontRoutes()
+    /**
+     * @return array<string, Route>
+     */
+    public function getAllFrontRoutes(): array
     {
         $routeCollection = $this->router->getRouteCollection();
 

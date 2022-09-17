@@ -80,7 +80,7 @@ class UserType extends AbstractTypeLib
         );
     }
 
-    protected function setCollectionTypeAll(FormBuilderInterface $formBuilder)
+    protected function setCollectionTypeAll(FormBuilderInterface $formBuilder): void
     {
         $tab = [
             'emailUsers'   => EmailType::class,

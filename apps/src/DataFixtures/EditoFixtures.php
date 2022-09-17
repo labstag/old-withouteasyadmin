@@ -11,7 +11,10 @@ use Labstag\Lib\FixtureLib;
 
 class EditoFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return [
             DataFixtures::class,
@@ -38,7 +41,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         $edito->setTitle($generator->unique()->text($random));
         // @var string $content
         $content = $generator->paragraphs(random_int(4, 10), true);
-        $edito->setContent(str_replace("\n\n", "<br />\n", $content));
+        $edito->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $edito->setPublished($generator->unique()->dateTime('now'));
         $this->addReference('edito_'.$index, $edito);
         $tabIndex = array_rand($users);

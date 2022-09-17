@@ -2,6 +2,7 @@
 
 namespace Labstag\Block;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Block\Custom;
 use Labstag\Form\Admin\Block\CustomType;
 use Labstag\Lib\BlockLib;
@@ -29,32 +30,32 @@ class CustomBlock extends BlockLib
         parent::__construct($translator, $environment);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Custom::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return CustomType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('custom.name', [], 'block');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'custom';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
 
-    public function show(Custom $custom, $content)
+    public function show(Custom $custom, $content): Response
     {
         unset($content);
         $paragraphs = $this->setParagraphs($custom);

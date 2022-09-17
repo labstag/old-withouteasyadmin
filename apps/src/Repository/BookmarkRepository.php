@@ -2,6 +2,7 @@
 
 namespace Labstag\Repository;
 
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Bookmark;
@@ -17,7 +18,7 @@ class BookmarkRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Bookmark::class);
     }
 
-    public function findPublier()
+    public function findPublier(): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->innerjoin('p.refuser', 'u');
@@ -32,7 +33,7 @@ class BookmarkRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierCategory($code)
+    public function findPublierCategory($code): Query
     {
         $query = $this->createQueryBuilder('b');
         $query->where('b.state LIKE :state');
@@ -49,7 +50,7 @@ class BookmarkRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierLibelle($code)
+    public function findPublierLibelle($code): Query
     {
         $query = $this->createQueryBuilder('b');
         $query->where('b.state LIKE :state');

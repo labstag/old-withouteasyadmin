@@ -9,7 +9,7 @@ use Labstag\RequestHandler\ParagraphRequestHandler;
 
 abstract class ParagraphControllerLib extends ControllerLib
 {
-    protected function deleteParagraph(Paragraph $paragraph, $entity, $urledit)
+    protected function deleteParagraph(Paragraph $paragraph, $entity, string $urledit)
     {
         /** @var ParagraphRepository $repository */
         $repository = $this->getRepository(Paragraph::class);

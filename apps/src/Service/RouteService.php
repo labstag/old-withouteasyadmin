@@ -2,6 +2,7 @@
 
 namespace Labstag\Service;
 
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 
 class RouteService
@@ -12,7 +13,10 @@ class RouteService
     {
     }
 
-    public function getAll()
+    /**
+     * @return array<string, Route>
+     */
+    public function getAll(): array
     {
         $routeCollection = $this->router->getRouteCollection();
 

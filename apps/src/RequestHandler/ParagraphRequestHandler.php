@@ -7,7 +7,7 @@ use Labstag\Lib\RequestHandlerLib;
 
 class ParagraphRequestHandler extends RequestHandlerLib
 {
-    public function handle($oldEntity, $entity)
+    public function handle($oldEntity, $entity): void
     {
         parent::handle($oldEntity, $entity);
         $this->dispatcher->dispatch(

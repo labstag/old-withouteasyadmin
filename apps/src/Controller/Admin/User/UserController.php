@@ -128,6 +128,9 @@ class UserController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\UserType>>|array<string, \UserSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -136,6 +139,9 @@ class UserController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -173,6 +179,9 @@ class UserController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

@@ -25,7 +25,7 @@ class SearchableType extends AbstractType
     {
     }
 
-    public function buildForm(FormBuilderInterface $formBuilder, array $options)
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         $formBuilder->addModelTransformer(
             new CallbackTransformer(
@@ -54,7 +54,7 @@ class SearchableType extends AbstractType
         );
     }
 
-    public function buildView(FormView $formView, FormInterface $form, array $options)
+    public function buildView(FormView $formView, FormInterface $form, array $options): void
     {
         $formView->vars['expanded'] = false;
 
@@ -85,7 +85,7 @@ class SearchableType extends AbstractType
         $formView->vars['attr'] = $attr;
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver)
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         $optionsResolver->setRequired('class');
         $optionsResolver->setRequired('route');
@@ -108,7 +108,10 @@ class SearchableType extends AbstractType
         return 'choice';
     }
 
-    protected function addToentity(array $ids, $options)
+    /**
+     * @return mixed[]
+     */
+    protected function addToentity(array $ids, $options): array
     {
         if (is_null($options['new'])) {
             return $ids;
@@ -131,7 +134,7 @@ class SearchableType extends AbstractType
         return $ids;
     }
 
-    private function choices($values, array $options)
+    private function choices($values, array $options): ?array
     {
         if (is_null($values)) {
             return ($options['multiple']) ? [] : null;

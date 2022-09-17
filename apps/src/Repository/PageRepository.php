@@ -2,6 +2,7 @@
 
 namespace Labstag\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Page;
@@ -17,7 +18,7 @@ class PageRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Page::class);
     }
 
-    public function formType(array $options)
+    public function formType(array $options): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('p');
         $id    = $options['data']->getId();

@@ -42,7 +42,7 @@ class BookmarkService
         string $name,
         string $icon,
         DateTime $dateTime
-    )
+    ): void
     {
         $user     = $this->userRepository->find($userid);
         $bookmark = $this->bookmarkRepository->findOneBy(
@@ -89,7 +89,7 @@ class BookmarkService
         return $this->containerBag->get($name);
     }
 
-    protected function upload(Bookmark $bookmark, $image)
+    protected function upload(Bookmark $bookmark, $image): void
     {
         if (is_null($image) || !$this->uploadAnnotationReader->isUploadable($bookmark)) {
             return;

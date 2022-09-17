@@ -2,6 +2,7 @@
 
 namespace Labstag\Repository;
 
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Post;
@@ -36,7 +37,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getResult();
     }
 
-    public function findPublier()
+    public function findPublier(): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->innerjoin('p.refuser', 'u');
@@ -51,7 +52,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierArchive($published)
+    public function findPublierArchive($published): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->innerjoin('p.refuser', 'u');
@@ -68,7 +69,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierCategory($code)
+    public function findPublierCategory($code): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->where('p.state LIKE :state');
@@ -85,7 +86,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierLibelle($code)
+    public function findPublierLibelle($code): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->where('p.state LIKE :state');
@@ -102,7 +103,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierUsername($username)
+    public function findPublierUsername($username): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->leftJoin('p.refuser', 'u');

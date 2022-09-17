@@ -10,7 +10,10 @@ use Labstag\Lib\FixtureLib;
 
 class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return [
             DataFixtures::class,
@@ -45,7 +48,10 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
         $this->phoneUserRH->changeWorkflowState($phoneUser, $states);
     }
 
-    protected function getStatePhone()
+    /**
+     * @return array<int, mixed[]>
+     */
+    protected function getStatePhone(): array
     {
         return [
             ['submit'],

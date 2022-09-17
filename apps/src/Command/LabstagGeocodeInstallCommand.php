@@ -15,6 +15,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class LabstagGeocodeInstallCommand extends CommandLib
 {
 
+    /**
+     * @var string
+     */
     protected static $defaultName = 'labstag:geocode:install';
 
     public function __construct(
@@ -25,7 +28,7 @@ class LabstagGeocodeInstallCommand extends CommandLib
         parent::__construct($entityManager);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Récupération des géocodes');
         $this->addArgument('country', InputArgument::REQUIRED, 'code pays');

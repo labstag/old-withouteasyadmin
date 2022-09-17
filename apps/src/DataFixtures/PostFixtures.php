@@ -10,7 +10,10 @@ use Labstag\Lib\FixtureLib;
 
 class PostFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return $this->getDependenciesBookmarkPost();
     }
@@ -32,7 +35,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $post->setTitle($generator->unique()->colorName());
         // @var string $content
         $content = $generator->paragraphs(random_int(4, 10), true);
-        $post->setContent(str_replace("\n\n", "<br />\n", $content));
+        $post->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $users     = $this->installService->getData('user');
         $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
         $user      = $this->getReference('user_'.$indexUser);

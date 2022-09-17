@@ -15,6 +15,9 @@ class UserCollectionSubscriber implements EventSubscriberInterface
     {
     }
 
+    /**
+     * @return array<class-string<UserCollectionEvent>, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [UserCollectionEvent::class => 'onUserCollectionEvent'];

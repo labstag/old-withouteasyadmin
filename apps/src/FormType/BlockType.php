@@ -26,7 +26,7 @@ class BlockType extends AbstractType
         unset($formView, $form, $options);
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver)
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         $optionsResolver->setDefaults(
             [

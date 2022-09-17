@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\History;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
@@ -51,12 +52,12 @@ class ChapterController extends AdminControllerLib
         History $history,
         ChapterRepository $chapterRepository,
         ChapterRequestHandler $chapterRequestHandler
-    ): Response
+    ): RedirectResponse
     {
         $chapter = new Chapter();
         $chapter->setRefhistory($history);
         $chapter->setName(Uuid::v1());
-        $chapter->setPosition(count($history->getChapters()) + 1);
+        $chapter->setPosition((is_countable($history->getChapters()) ? count($history->getChapters()) : 0) + 1);
 
         $old = clone $chapter;
         $chapterRepository->add($chapter);
@@ -94,6 +95,9 @@ class ChapterController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return array<string, class-string<\Labstag\Form\Admin\Search\ChapterType>>|array<string, \ChapterSearch>
+     */
     protected function searchForm(): array
     {
         return [
@@ -102,6 +106,9 @@ class ChapterController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -139,6 +146,9 @@ class ChapterController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

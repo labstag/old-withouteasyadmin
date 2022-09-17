@@ -2,6 +2,7 @@
 
 namespace Labstag\Paragraph;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
 use Labstag\Entity\History;
@@ -15,32 +16,32 @@ use Labstag\Lib\ParagraphLib;
 
 class TextParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return Text::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return TextType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('text.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'text';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return true;
     }
 
-    public function show(Text $text)
+    public function show(Text $text): Response
     {
         return $this->render(
             $this->getParagraphFile('text'),
@@ -48,7 +49,10 @@ class TextParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return class-string[]
+     */
+    public function useIn(): array
     {
         return [
             Chapter::class,

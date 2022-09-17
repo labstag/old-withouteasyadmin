@@ -28,7 +28,7 @@ class GuardWorkflowController extends ApiControllerLib
         Request $request,
         Groupe $groupe,
         WorkflowGroupeRequestHandler $workflowGroupeRequestHandler
-    )
+    ): JsonResponse
     {
         return $this->setWorkflow(
             $workflowUserRepository,
@@ -46,7 +46,7 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowGroupeRequestHandler $workflowGroupeRequestHandler,
         Request $request,
         GroupeRepository $groupeRepository
-    )
+    ): JsonResponse
     {
         $data    = [
             'delete' => 0,
@@ -70,7 +70,7 @@ class GuardWorkflowController extends ApiControllerLib
     }
 
     #[Route(path: '/', name: 'api_guard_workflow')]
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $data    = [
             'group' => [],
@@ -97,7 +97,7 @@ class GuardWorkflowController extends ApiControllerLib
         Workflow $workflow,
         Request $request,
         WorkflowGroupeRequestHandler $workflowGroupeRequestHandler
-    )
+    ): JsonResponse
     {
         $data  = [
             'delete' => 0,
@@ -124,7 +124,7 @@ class GuardWorkflowController extends ApiControllerLib
         Workflow $workflow,
         Request $request,
         WorkflowUserRequestHandler $workflowUserRequestHandler
-    )
+    ): JsonResponse
     {
         $data  = [
             'delete' => 0,
@@ -151,7 +151,7 @@ class GuardWorkflowController extends ApiControllerLib
         User $user,
         Request $request,
         WorkflowUserRequestHandler $workflowUserRequestHandler
-    )
+    ): JsonResponse
     {
         return $this->setWorkflow(
             $workflowUserRepository,
@@ -168,7 +168,7 @@ class GuardWorkflowController extends ApiControllerLib
         $request,
         $entity,
         $requestHandler
-    )
+    ): JsonResponse
     {
         $data      = [
             'delete' => 0,

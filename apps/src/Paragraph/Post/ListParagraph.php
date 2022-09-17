@@ -2,6 +2,7 @@
 
 namespace Labstag\Paragraph\Post;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post\Liste;
 use Labstag\Entity\Post;
@@ -11,32 +12,32 @@ use Labstag\Repository\PostRepository;
 
 class ListParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return Liste::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return ListType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('postlist.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'postlist';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
 
-    public function show(Liste $liste)
+    public function show(Liste $liste): Response
     {
         /** @var PostRepository $repository */
         $repository = $this->getRepository(Post::class);
@@ -55,7 +56,10 @@ class ListParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return array<class-string<Page>>
+     */
+    public function useIn(): array
     {
         return [
             Page::class,

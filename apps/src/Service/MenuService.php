@@ -29,7 +29,10 @@ class MenuService
         return $this->setData($menuItem, $clef);
     }
 
-    public function createMenus()
+    /**
+     * @return array<int|string, ItemInterface>
+     */
+    public function createMenus(): array
     {
         $menus = [];
         $all   = $this->menuRepository->findAllCode();
@@ -101,7 +104,7 @@ class MenuService
         }
     }
 
-    protected function correctionMenu(MenuItem $menuItem)
+    protected function correctionMenu(MenuItem $menuItem): void
     {
         $data = $menuItem->getChildren();
         foreach ($data as $key => $row) {
@@ -121,7 +124,7 @@ class MenuService
         }
     }
 
-    protected function deleteParent($children, $key, $menu)
+    protected function deleteParent($children, $key, $menu): void
     {
         $divider = 0;
         foreach ($children as $child) {
@@ -136,7 +139,7 @@ class MenuService
         }
     }
 
-    private function setDataChild(&$dataChild, &$data)
+    private function setDataChild(&$dataChild, &$data): void
     {
         if (isset($dataChild['url'])) {
             $data['uri'] = $dataChild['url'];

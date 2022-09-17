@@ -11,27 +11,27 @@ use Labstag\Repository\ChapterRepository;
 
 class ChapterParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return HistoryChapter::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return ChapterType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('historychapter.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'historychapter';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
@@ -62,14 +62,20 @@ class ChapterParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return array<class-string<Layout>>
+     */
+    public function useIn(): array
     {
         return [
             Layout::class,
         ];
     }
 
-    private function getPrevNext($chapter, $history)
+    /**
+     * @return array<string, mixed>
+     */
+    private function getPrevNext($chapter, $history): array
     {
         $chapters = $history->getchapters();
         $prev     = null;

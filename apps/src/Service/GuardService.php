@@ -59,6 +59,9 @@ class GuardService
     {
     }
 
+    /**
+     * @return array<string, \Symfony\Component\Routing\Route>
+     */
     public function all(): array
     {
         $data       = [];
@@ -82,6 +85,9 @@ class GuardService
         return $data;
     }
 
+    /**
+     * @return array<string, \Symfony\Component\Routing\Route>
+     */
     public function allRoutes(): array
     {
         $data       = [];
@@ -102,6 +108,9 @@ class GuardService
         }
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getGuardRoutesForGroupe(Groupe $groupe): array
     {
         $routes = $this->routesEnableGroupe($groupe);
@@ -112,6 +121,9 @@ class GuardService
         return $routes;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getGuardRoutesForUser(User $user): array
     {
         $routes = $this->routesEnableUser($user);
@@ -122,7 +134,10 @@ class GuardService
         return $routes;
     }
 
-    public function getPublicRoute()
+    /**
+     * @return array<string, \Symfony\Component\Routing\Route>
+     */
+    public function getPublicRoute(): array
     {
         $data       = [];
         $collection = $this->router->getRouteCollection();
@@ -167,7 +182,7 @@ class GuardService
         return $data;
     }
 
-    public function guardRoute($route, $token)
+    public function guardRoute($route, $token): bool
     {
         $all = $this->all();
         if (!array_key_exists($route, $all)) {
@@ -206,7 +221,10 @@ class GuardService
         );
     }
 
-    public function old()
+    /**
+     * @return array<int, mixed[]>
+     */
+    public function old(): array
     {
         $results = $this->getLostRoute();
         $data    = [];
@@ -217,7 +235,10 @@ class GuardService
         return $data;
     }
 
-    public function regex(string $string)
+    /**
+     * @return mixed[]
+     */
+    public function regex(string $string): array
     {
         $data = [];
         foreach (self::REGEX as $regex) {
@@ -230,6 +251,9 @@ class GuardService
         return $data;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function routesEnableGroupe(Groupe $groupe): array
     {
         $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
@@ -246,6 +270,9 @@ class GuardService
         return $routes;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function routesEnableUser(User $user): array
     {
         $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
@@ -262,7 +289,7 @@ class GuardService
         return $routes;
     }
 
-    public function save($name): void
+    public function save(string $name): void
     {
         $search = ['name' => $name];
         $result = $this->routeRepository->findOneBy(
@@ -279,7 +306,10 @@ class GuardService
         $this->routeRepository->add($route);
     }
 
-    public function tables()
+    /**
+     * @return array<int, mixed[]>
+     */
+    public function tables(): array
     {
         $data = [];
         $all  = $this->all();
@@ -325,7 +355,7 @@ class GuardService
     private function isRouteGroupe(
         $groupe,
         $route
-    )
+    ): bool
     {
         $all = $this->all();
         if ('superadmin' == $groupe->getCode()) {

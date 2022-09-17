@@ -2,6 +2,7 @@
 
 namespace Labstag\Lib;
 
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
@@ -70,7 +71,7 @@ abstract class ApiControllerLib extends AbstractController
         return $data;
     }
 
-    protected function getRepository(string $entity)
+    protected function getRepository(string $entity): EntityRepository
     {
         return $this->entityManager->getRepository($entity);
     }

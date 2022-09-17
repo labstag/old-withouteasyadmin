@@ -77,7 +77,7 @@ class MenuController extends AdminControllerLib
     }
 
     #[Route(path: '/update/{id}', name: 'admin_menu_update', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $attachFormService, Menu $menu, MenuRequestHandler $menuRequestHandler)
+    public function edit(AttachFormService $attachFormService, Menu $menu, MenuRequestHandler $menuRequestHandler): Response
     {
         $this->modalAttachmentDelete();
         $form             = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
@@ -98,7 +98,7 @@ class MenuController extends AdminControllerLib
     public function index(
         Environment $environment,
         MenuRepository $menuRepository
-    )
+    ): Response
     {
         $all             = $menuRepository->findAllCode();
         $globals         = $environment->getGlobals();
@@ -114,7 +114,7 @@ class MenuController extends AdminControllerLib
     }
 
     #[Route(path: '/move/{id}', name: 'admin_menu_move', methods: ['GET', 'POST'])]
-    public function move(Menu $menu, Request $request)
+    public function move(Menu $menu, Request $request): Response
     {
         $currentUrl = $this->generateUrl(
             'admin_menu_move',
@@ -183,6 +183,9 @@ class MenuController extends AdminControllerLib
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -220,6 +223,9 @@ class MenuController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();

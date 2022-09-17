@@ -12,7 +12,7 @@ class SessionService
     {
     }
 
-    public function flashBagAdd(string $type, $message)
+    public function flashBagAdd(string $type, $message): void
     {
         $requestStack = $this->requestStack;
         $request      = $requestStack->getCurrentRequest();

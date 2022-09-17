@@ -27,13 +27,13 @@ class AttachmentController extends ApiControllerLib
         AttachmentRepository $attachmentRepository,
         Bookmark $bookmark,
         PostRequestHandler $postRequestHandler
-    ): Response
+    ): JsonResponse
     {
         return $this->deleteFile($attachmentRepository, $bookmark, $postRequestHandler, 'getImg', 'setImg');
     }
 
     #[Route(path: '/edito/fond/{entity}', name: 'api_attachment_editofond')]
-    public function editoFond(AttachmentRepository $attachmentRepository, Edito $edito, EditoRequestHandler $editoRequestHandler): Response
+    public function editoFond(AttachmentRepository $attachmentRepository, Edito $edito, EditoRequestHandler $editoRequestHandler): JsonResponse
     {
         return $this->deleteFile($attachmentRepository, $edito, $editoRequestHandler, 'getFond', 'setFond');
     }
@@ -41,7 +41,7 @@ class AttachmentController extends ApiControllerLib
     #[Route(path: '/favicon', name: 'api_attachment_favicon')]
     public function favicon(
         AttachmentRepository $attachmentRepository
-    ): Response
+    ): JsonResponse
     {
         return $this->setDataAttachment($attachmentRepository, 'getFavicon');
     }
@@ -49,7 +49,7 @@ class AttachmentController extends ApiControllerLib
     #[Route(path: '/imagedefault', name: 'api_attachment_image')]
     public function imageDefault(
         AttachmentRepository $attachmentRepository
-    ): Response
+    ): JsonResponse
     {
         return $this->setDataAttachment($attachmentRepository, 'getImageDefault');
     }
@@ -59,7 +59,7 @@ class AttachmentController extends ApiControllerLib
         AttachmentRepository $attachmentRepository,
         Memo $memo,
         MemoRequestHandler $memoRequestHandler
-    ): Response
+    ): JsonResponse
     {
         return $this->deleteFile($attachmentRepository, $memo, $memoRequestHandler, 'getFond', 'setFond');
     }
@@ -69,7 +69,7 @@ class AttachmentController extends ApiControllerLib
         AttachmentRepository $attachmentRepository,
         Post $post,
         PostRequestHandler $postRequestHandler
-    ): Response
+    ): JsonResponse
     {
         return $this->deleteFile($attachmentRepository, $post, $postRequestHandler, 'getImg', 'setImg');
     }
@@ -78,7 +78,7 @@ class AttachmentController extends ApiControllerLib
     public function profilAvatar(
         UserRequestHandler $userRequestHandler,
         AttachmentRepository $attachmentRepository
-    ): Response
+    ): JsonResponse
     {
         $return = [
             'state' => false,
@@ -108,12 +108,12 @@ class AttachmentController extends ApiControllerLib
         AttachmentRepository $attachmentRepository,
         User $user,
         UserRequestHandler $userRequestHandler
-    ): Response
+    ): JsonResponse
     {
         return $this->deleteFile($attachmentRepository, $user, $userRequestHandler, 'getAvatar', 'setAvatar');
     }
 
-    protected function deleteAttachment(AttachmentRepository $attachmentRepository, ?Attachment $attachment)
+    protected function deleteAttachment(AttachmentRepository $attachmentRepository, ?Attachment $attachment): void
     {
         if (is_null($attachment)) {
             return;
@@ -134,7 +134,7 @@ class AttachmentController extends ApiControllerLib
         return $this->csrfTokenManager->isTokenValid($csrfToken);
     }
 
-    private function deleteFile($repository, $entity, $requesthandler, $methodGet, $methodSet)
+    private function deleteFile(AttachmentRepository $repository, $entity, $requesthandler, $methodGet, $methodSet): JsonResponse
     {
         $return = [
             'state' => false,
@@ -157,7 +157,7 @@ class AttachmentController extends ApiControllerLib
         return new JsonResponse($return);
     }
 
-    private function setDataAttachment($repository, $method)
+    private function setDataAttachment(AttachmentRepository $repository, $method): JsonResponse
     {
         $entity = call_user_func([$repository, $method]);
         $return = [

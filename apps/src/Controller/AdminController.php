@@ -57,7 +57,7 @@ class AdminController extends AdminControllerLib
     }
 
     #[Route(path: '/paragraph', name: 'admin_paragraph', methods: ['GET'])]
-    public function iframe()
+    public function iframe(): Response
     {
         return $this->render('admin/paragraph/iframe.html.twig');
     }
@@ -238,6 +238,9 @@ class AdminController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setBreadcrumbsData(): array
     {
         return array_merge(
@@ -267,6 +270,9 @@ class AdminController extends AdminControllerLib
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         $headers = parent::setHeaderTitle();
@@ -282,7 +288,7 @@ class AdminController extends AdminControllerLib
         );
     }
 
-    private function setUpload(Request $request, array $images)
+    private function setUpload(Request $request, array $images): void
     {
         $all   = $request->files->all();
         $files = $all['param'];

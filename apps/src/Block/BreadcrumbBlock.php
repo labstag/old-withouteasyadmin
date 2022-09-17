@@ -2,6 +2,7 @@
 
 namespace Labstag\Block;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Block\Breadcrumb;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
@@ -27,32 +28,32 @@ class BreadcrumbBlock extends BlockLib
         parent::__construct($translator, $environment);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Breadcrumb::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return BreadcrumbType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('breadcrumb.name', [], 'block');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'breadcrumb';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
 
-    public function show(Breadcrumb $breadcrumb, $content)
+    public function show(Breadcrumb $breadcrumb, $content): Response
     {
         $breadcrumbs = $this->setBreadcrumb($content);
 
@@ -65,7 +66,10 @@ class BreadcrumbBlock extends BlockLib
         );
     }
 
-    private function setBreadcrumb($content)
+    /**
+     * @return mixed[]
+     */
+    private function setBreadcrumb($content): array
     {
         $data = [];
         $data = $this->setBreadcrumbPage($data, $content);

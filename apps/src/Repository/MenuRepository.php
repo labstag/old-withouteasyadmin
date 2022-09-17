@@ -2,6 +2,7 @@
 
 namespace Labstag\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Menu;
@@ -24,7 +25,7 @@ class MenuRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getResult();
     }
 
-    public function findAllCodeQuery()
+    public function findAllCodeQuery(): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('u');
         $queryBuilder->where(

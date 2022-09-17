@@ -11,9 +11,12 @@ use Labstag\Lib\FixtureLib;
 class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
 {
 
-    protected $position = [];
+    protected array $position = [];
 
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return [
             DataFixtures::class,
@@ -39,7 +42,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         $chapter->setName($generator->unique()->colorName());
         // @var string $content
         $content = $generator->paragraphs(random_int(4, 10), true);
-        $chapter->setContent(str_replace("\n\n", "<br />\n", $content));
+        $chapter->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $indexHistory = $generator->numberBetween(0, self::NUMBER_HISTORY - 1);
         $history      = $this->getReference('history_'.$indexHistory);
         if (!isset($this->position[$indexHistory])) {

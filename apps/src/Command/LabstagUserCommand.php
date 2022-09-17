@@ -20,6 +20,9 @@ use Symfony\Component\Workflow\Registry;
 class LabstagUserCommand extends CommandLib
 {
 
+    /**
+     * @var string
+     */
     protected static $defaultName = 'labstag:user';
 
     public function __construct(
@@ -33,7 +36,7 @@ class LabstagUserCommand extends CommandLib
         parent::__construct($entityManager);
     }
 
-    protected function actionEnableDisableDelete($input, $output, $inputOutput, $action)
+    protected function actionEnableDisableDelete(InputInterface $input, OutputInterface $output, $inputOutput, $action): void
     {
         $helper   = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
@@ -65,7 +68,7 @@ class LabstagUserCommand extends CommandLib
         }
     }
 
-    protected function actionState($input, $output, $inputOutput)
+    protected function actionState(InputInterface $input, OutputInterface $output, $inputOutput): void
     {
         $helper   = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
@@ -76,7 +79,7 @@ class LabstagUserCommand extends CommandLib
         $this->state($helper, $username, $inputOutput, $input, $output);
     }
 
-    protected function actionUpdatePassword($input, $output, $inputOutput)
+    protected function actionUpdatePassword(InputInterface $input, OutputInterface $output, $inputOutput): void
     {
         $helper   = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
@@ -87,12 +90,12 @@ class LabstagUserCommand extends CommandLib
         $this->updatePassword($helper, $username, $inputOutput, $input, $output);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('command for admin user');
     }
 
-    protected function create($helper, $inputOutput, InputInterface $input, OutputInterface $output)
+    protected function create($helper, $inputOutput, InputInterface $input, OutputInterface $output): void
     {
         $inputOutput = new SymfonyStyle($input, $output);
         $user        = new User();
@@ -147,7 +150,7 @@ class LabstagUserCommand extends CommandLib
         $inputOutput->success('Utilisateur ajouté');
     }
 
-    protected function delete($helper, string $username, $inputOutput, InputInterface $input, OutputInterface $output)
+    protected function delete($helper, string $username, $inputOutput, InputInterface $input, OutputInterface $output): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
@@ -177,7 +180,7 @@ class LabstagUserCommand extends CommandLib
         $inputOutput->success('Utilisateur supprimé');
     }
 
-    protected function disable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
+    protected function disable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
@@ -221,7 +224,7 @@ class LabstagUserCommand extends CommandLib
         $inputOutput->success('Utilisateur désactivé');
     }
 
-    protected function enable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
+    protected function enable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
@@ -294,7 +297,7 @@ class LabstagUserCommand extends CommandLib
         return Command::SUCCESS;
     }
 
-    protected function list($inputOutput, OutputInterface $output)
+    protected function list($inputOutput, OutputInterface $output): void
     {
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
@@ -320,7 +323,7 @@ class LabstagUserCommand extends CommandLib
         $output->writeln('list');
     }
 
-    protected function state($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
+    protected function state($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
@@ -357,7 +360,10 @@ class LabstagUserCommand extends CommandLib
         $inputOutput->success('Utilisateur passé au stade "'.$state.'"');
     }
 
-    protected function tableQuestionUser()
+    /**
+     * @return array<int|string, string>
+     */
+    protected function tableQuestionUser(): array
     {
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
@@ -377,7 +383,7 @@ class LabstagUserCommand extends CommandLib
         return $table;
     }
 
-    protected function updatePassword($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output)
+    protected function updatePassword($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {

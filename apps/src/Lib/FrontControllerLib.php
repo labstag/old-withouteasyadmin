@@ -12,7 +12,7 @@ abstract class FrontControllerLib extends ControllerLib
     public function page(
         string $slug,
         PageRepository $pageRepo
-    )
+    ): Response
     {
         $page = $pageRepo->findOneBy(
             ['slug' => $slug]

@@ -2,6 +2,7 @@
 
 namespace Labstag\Repository\Block;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Block\Custom;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -13,7 +14,7 @@ class CustomRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Custom::class);
     }
 
-    public function formType()
+    public function formType(): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('c');
         $queryBuilder->leftJoin('c.block', 'b');

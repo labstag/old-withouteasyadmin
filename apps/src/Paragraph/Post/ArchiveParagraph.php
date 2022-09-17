@@ -2,6 +2,7 @@
 
 namespace Labstag\Paragraph\Post;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post\Archive;
 use Labstag\Entity\Post;
@@ -11,32 +12,32 @@ use Labstag\Repository\PostRepository;
 
 class ArchiveParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return Archive::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return ArchiveType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('postarchive.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'postarchive';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
 
-    public function show(Archive $archive)
+    public function show(Archive $archive): Response
     {
         /** @var PostRepository $repository */
         $repository = $this->getRepository(Post::class);
@@ -51,7 +52,10 @@ class ArchiveParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return array<class-string<Page>>
+     */
+    public function useIn(): array
     {
         return [
             Page::class,

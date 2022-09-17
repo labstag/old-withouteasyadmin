@@ -46,7 +46,7 @@ class InstallService
     {
     }
 
-    public function config($serverEnv)
+    public function config(array $serverEnv): void
     {
         $config = $this->getData('config');
         $this->setOauth($serverEnv, $config);
@@ -68,7 +68,10 @@ class InstallService
         return $data;
     }
 
-    public function getEnv($serverEnv)
+    /**
+     * @return mixed[]
+     */
+    public function getEnv($serverEnv): array
     {
         $file   = __DIR__.'/../../.env';
         $data   = [];
@@ -83,7 +86,7 @@ class InstallService
         return $data;
     }
 
-    public function group()
+    public function group(): void
     {
         $groupes = $this->getData('group');
         foreach ($groupes as $groupe) {
@@ -91,19 +94,19 @@ class InstallService
         }
     }
 
-    public function menuadmin()
+    public function menuadmin(): void
     {
         $childs = $this->getData('menuadmin');
         $this->saveMenu('admin', $childs);
     }
 
-    public function menuadminprofil()
+    public function menuadminprofil(): void
     {
         $childs = $this->getData('menuadminprofil');
         $this->saveMenu('admin-profil', $childs);
     }
 
-    public function templates()
+    public function templates(): void
     {
         $templates = $this->getData('template');
         foreach ($templates as $key => $row) {
@@ -111,7 +114,7 @@ class InstallService
         }
     }
 
-    public function users()
+    public function users(): void
     {
         $users   = $this->getData('user');
         $groupes = $this->groupeRepository->findAll();

@@ -11,7 +11,10 @@ use Labstag\Lib\FixtureLib;
 
 class LinkUserFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return [
             DataFixtures::class,

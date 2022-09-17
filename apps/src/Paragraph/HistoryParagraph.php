@@ -2,6 +2,7 @@
 
 namespace Labstag\Paragraph;
 
+use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\History as EntityHistory;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\History;
@@ -11,32 +12,32 @@ use Labstag\Repository\HistoryRepository;
 
 class HistoryParagraph extends ParagraphLib
 {
-    public function getEntity()
+    public function getEntity(): string
     {
         return History::class;
     }
 
-    public function getForm()
+    public function getForm(): string
     {
         return HistoryType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->translator->trans('history.name', [], 'paragraph');
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'history';
     }
 
-    public function isShowForm()
+    public function isShowForm(): bool
     {
         return false;
     }
 
-    public function show(History $history)
+    public function show(History $history): Response
     {
         /** @var HistoryRepository $repository */
         $repository = $this->getRepository(EntityHistory::class);
@@ -51,7 +52,10 @@ class HistoryParagraph extends ParagraphLib
         );
     }
 
-    public function useIn()
+    /**
+     * @return array<class-string<Page>>
+     */
+    public function useIn(): array
     {
         return [
             Page::class,

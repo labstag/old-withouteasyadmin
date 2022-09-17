@@ -8,6 +8,9 @@ class ConfigurationEntityEvent
     {
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getPost(): array
     {
         return $this->post;
