@@ -7,12 +7,9 @@ use Labstag\Entity\LinkUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Event\UserCollectionEvent;
 use Labstag\Lib\EventSubscriberLib;
-use Labstag\Service\UserMailService;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserCollectionSubscriber extends EventSubscriberLib
 {
-
     /**
      * @return array<class-string<UserCollectionEvent>, string>
      */

@@ -2,8 +2,8 @@
 
 namespace Labstag\Lib;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Service\FormService;
 use Labstag\Service\ParagraphService;
@@ -30,7 +30,7 @@ abstract class ParagraphLib extends AbstractController
         protected EntityManagerInterface $entityManager
     )
     {
-        $this->request       = $requestStack->getCurrentRequest();
+        $this->request = $requestStack->getCurrentRequest();
     }
 
     protected function getParagraphFile(string $type): string

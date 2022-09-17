@@ -2,11 +2,11 @@
 
 namespace Labstag\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Post;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\PageRepository;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/mes-articles')]

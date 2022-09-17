@@ -26,7 +26,7 @@ class LabstagUpdateCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $symfonyStyle     = new SymfonyStyle($input, $output);
+        $symfonyStyle    = new SymfonyStyle($input, $output);
         $publicIndex     = 'public/index.php';
         $maintenanceFile = 'maintenance.html';
         $actifFile       = 'public.php';

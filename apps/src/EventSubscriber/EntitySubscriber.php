@@ -3,7 +3,6 @@
 namespace Labstag\EventSubscriber;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\EmailUser;
@@ -20,23 +19,10 @@ use Labstag\Event\PageEntityEvent;
 use Labstag\Event\ParagraphEntityEvent;
 use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\EventSubscriberLib;
-use Labstag\Queue\EnqueueMethod;
-use Labstag\Repository\ConfigurationRepository;
-use Labstag\Repository\MenuRepository;
-use Labstag\Repository\PageRepository;
-use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\EmailUserRequestHandler;
-use Labstag\Service\BlockService;
 use Labstag\Service\HistoryService;
-use Labstag\Service\ParagraphService;
-use Labstag\Service\SessionService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EntitySubscriber extends EventSubscriberLib
 {
-
     /**
      * @return array<class-string<AttachmentEntityEvent>|class-string<BlockEntityEvent>|class-string<BookmarkEntityEvent>|class-string<ChapterEntityEvent>|class-string<ConfigurationEntityEvent>|class-string<HistoryEntityEvent>|class-string<MenuEntityEvent>|class-string<PageEntityEvent>|class-string<ParagraphEntityEvent>|class-string<UserEntityEvent>, mixed>
      */
@@ -63,7 +49,7 @@ class EntitySubscriber extends EventSubscriberLib
 
     public function onBlockEntityEvent(BlockEntityEvent $blockEntityEvent): void
     {
-        $block   = $blockEntityEvent->getNewEntity();
+        $block       = $blockEntityEvent->getNewEntity();
         $classentity = $this->blockService->getTypeEntity($block);
         if (is_null($classentity)) {
             $this->entityManager->remove($block);
@@ -134,7 +120,7 @@ class EntitySubscriber extends EventSubscriberLib
     public function onPageEntityEvent(PageEntityEvent $pageEntityEvent): void
     {
         $entity = $pageEntityEvent->getNewEntity();
-        $page = $entity->getParent();
+        $page   = $entity->getParent();
         if (!is_null($page)) {
             return;
         }
@@ -173,7 +159,7 @@ class EntitySubscriber extends EventSubscriberLib
 
     public function onUserEntityEvent(UserEntityEvent $userEntityEvent): void
     {
-        $user = $userEntityEvent->getOldEntity();
+        $user      = $userEntityEvent->getOldEntity();
         $newEntity = $userEntityEvent->getNewEntity();
         $this->setPassword($newEntity);
         $this->setPrincipalMail($user, $newEntity);

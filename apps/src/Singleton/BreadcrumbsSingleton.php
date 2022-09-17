@@ -47,7 +47,7 @@ class BreadcrumbsSingleton
         return $this->data;
     }
 
-    public static function getInstance(): ?\Labstag\Singleton\BreadcrumbsSingleton
+    public static function getInstance(): ?BreadcrumbsSingleton
     {
         if (is_null(self::$instance)) {
             self::$instance = new BreadcrumbsSingleton();

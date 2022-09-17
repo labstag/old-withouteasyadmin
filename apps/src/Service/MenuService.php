@@ -22,7 +22,7 @@ class MenuService
 
     public function createMenu(Menu $menu): ItemInterface
     {
-        $clef      = $menu->getClef();
+        $clef     = $menu->getClef();
         $menuItem = $this->menuFactory->createItem('menulabstag');
         $menuItem->setChildrenAttribute('class', 'navbar-nav menu-'.$clef);
 

@@ -71,7 +71,7 @@ class GeoCodeController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\GeocodeType>>|array<string, \GeocodeSearch>
+     * @return array<string, \GeocodeSearch>|array<string, class-string<\Labstag\Form\Admin\Search\GeocodeType>>
      */
     protected function searchForm(): array
     {
@@ -124,8 +124,11 @@ class GeoCodeController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_geocode' => $this->translator->trans('geocode.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_geocode' => $this->translator->trans('geocode.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

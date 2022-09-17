@@ -2,7 +2,6 @@
 
 namespace Labstag\Controller\Admin\History;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
@@ -13,6 +12,7 @@ use Labstag\Repository\ChapterRepository;
 use Labstag\RequestHandler\ChapterRequestHandler;
 use Labstag\Search\ChapterSearch;
 use Labstag\Service\AttachFormService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
@@ -96,7 +96,7 @@ class ChapterController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\ChapterType>>|array<string, \ChapterSearch>
+     * @return array<string, \ChapterSearch>|array<string, class-string<\Labstag\Form\Admin\Search\ChapterType>>
      */
     protected function searchForm(): array
     {
@@ -153,8 +153,11 @@ class ChapterController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_chapter' => $this->translator->trans('chapter.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_chapter' => $this->translator->trans('chapter.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Labstag\Block;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Block\Breadcrumb;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
@@ -12,6 +11,7 @@ use Labstag\Entity\Post;
 use Labstag\Form\Admin\Block\BreadcrumbType;
 use Labstag\Lib\BlockLib;
 use Labstag\Repository\PageRepository;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;

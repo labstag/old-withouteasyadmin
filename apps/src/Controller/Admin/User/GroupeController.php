@@ -125,7 +125,7 @@ class GroupeController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\GroupeType>>|array<string, \GroupeSearch>
+     * @return array<string, \GroupeSearch>|array<string, class-string<\Labstag\Form\Admin\Search\GroupeType>>
      */
     protected function searchForm(): array
     {
@@ -186,8 +186,11 @@ class GroupeController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_groupuser' => $this->translator->trans('groupuser.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_groupuser' => $this->translator->trans('groupuser.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

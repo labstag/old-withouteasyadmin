@@ -2,13 +2,13 @@
 
 namespace Labstag\Paragraph\Post;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post\Archive;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\ArchiveType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class ArchiveParagraph extends ParagraphLib
 {
@@ -41,7 +41,7 @@ class ArchiveParagraph extends ParagraphLib
     {
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $archives   = $entityRepository->findDateArchive();
+        $archives         = $entityRepository->findDateArchive();
 
         return $this->render(
             $this->getParagraphFile('post/archive'),

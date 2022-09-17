@@ -2,7 +2,6 @@
 
 namespace Labstag\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Lib\FrontControllerLib;
@@ -11,6 +10,7 @@ use Labstag\Repository\HistoryRepository;
 use Labstag\Repository\PageRepository;
 use Labstag\Service\HistoryService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/mes-histoires')]

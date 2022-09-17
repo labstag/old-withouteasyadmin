@@ -2,12 +2,12 @@
 
 namespace Labstag\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Bookmark;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\BookmarkRepository;
 use Labstag\Repository\PageRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/mes-liens')]

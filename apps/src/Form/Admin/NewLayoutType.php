@@ -31,7 +31,7 @@ class NewLayoutType extends AbstractTypeLib
             EntityType::class,
             [
                 'class'         => Custom::class,
-                'query_builder' => static fn(CustomRepository $customRepository) => $customRepository->formType(),
+                'query_builder' => static fn (CustomRepository $customRepository) => $customRepository->formType(),
             ]
         );
         $formBuilder->add('Enregistrer', SubmitType::class);

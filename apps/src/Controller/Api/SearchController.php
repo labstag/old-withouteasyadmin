@@ -2,9 +2,6 @@
 
 namespace Labstag\Controller\Api;
 
-use Labstag\Entity\Category;
-use Labstag\Entity\Groupe;
-use Labstag\Entity\Libelle;
 use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,7 +21,7 @@ class SearchController extends ApiControllerLib
         $route      = $attributes['_route'];
         $entityName = ('api_search_user' == $route) ? User::class : null;
 
-        $function   = ('api_search_user' == $route) ? 'findUserName' : 'findName';
+        $function = ('api_search_user' == $route) ? 'findUserName' : 'findName';
 
         return $this->showData($request, $entityName, $function);
     }

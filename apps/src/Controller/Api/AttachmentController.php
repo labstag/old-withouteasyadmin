@@ -15,7 +15,6 @@ use Labstag\RequestHandler\MemoRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
@@ -85,7 +84,7 @@ class AttachmentController extends ApiControllerLib
             'error' => '',
         ];
         $token  = $this->tokenStorage->getToken();
-        $user = $token->getUser();
+        $user   = $token->getUser();
         $token  = $this->verifToken($user);
         if (!$token) {
             $return['error'] = 'Token incorrect';

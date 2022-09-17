@@ -75,7 +75,7 @@ class TemplateController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\TemplateType>>|array<string, \TemplateSearch>
+     * @return array<string, \TemplateSearch>|array<string, class-string<\Labstag\Form\Admin\Search\TemplateType>>
      */
     protected function searchForm(): array
     {
@@ -128,8 +128,11 @@ class TemplateController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_template' => $this->translator->trans('template.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_template' => $this->translator->trans('template.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

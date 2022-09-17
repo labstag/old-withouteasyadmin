@@ -3,15 +3,12 @@
 namespace Labstag\Service;
 
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\Bookmark;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\BookmarkRepository;
 use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\RequestHandler\BookmarkRequestHandler;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -96,9 +93,9 @@ class BookmarkService
         }
 
         // @var resource $finfo
-        $finfo       = finfo_open(FILEINFO_MIME_TYPE);
-        $annotations = $this->uploadAnnotationReader->getUploadableFields($bookmark);
-        $asciiSlugger     = new AsciiSlugger();
+        $finfo        = finfo_open(FILEINFO_MIME_TYPE);
+        $annotations  = $this->uploadAnnotationReader->getUploadableFields($bookmark);
+        $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
             $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();

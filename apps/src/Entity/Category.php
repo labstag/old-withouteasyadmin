@@ -73,7 +73,7 @@ class Category implements Stringable
     public function __toString(): string
     {
         $category = $this->getParent();
-        $text   = is_null($category) ? '' : $category.' - ';
+        $text     = is_null($category) ? '' : $category.' - ';
 
         return $text.$this->getName();
     }

@@ -49,7 +49,7 @@ class LayoutType extends AbstractTypeLib
             EntityType::class,
             [
                 'class'         => Custom::class,
-                'query_builder' => static fn(CustomRepository $customRepository) => $customRepository->formType(),
+                'query_builder' => static fn (CustomRepository $customRepository) => $customRepository->formType(),
             ]
         );
         $all     = $this->guardService->getPublicRoute();

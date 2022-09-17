@@ -36,7 +36,7 @@ class AddressUserFixtures extends FixtureLib implements DependentInterface
     ): void
     {
         $addressUser = new AddressUser();
-        $old     = clone $addressUser;
+        $old         = clone $addressUser;
         $addressUser->setRefuser($user);
         $addressUser->setStreet($generator->streetAddress);
         $addressUser->setCity($generator->city);

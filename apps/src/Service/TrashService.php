@@ -52,8 +52,8 @@ class TrashService
 
     public function getProperties(string $repository)
     {
-        $annotationReader     = new AnnotationReader();
-        $properties = [];
+        $annotationReader = new AnnotationReader();
+        $properties       = [];
         if (!$this->isTrashable($repository)) {
             return $properties;
         }
@@ -66,9 +66,9 @@ class TrashService
 
     public function isTrashable(string $repository): bool
     {
-        $annotationReader     = new AnnotationReader();
-        $reflection = $this->setReflection($repository);
-        $trashable = $annotationReader->getClassAnnotation($reflection, Trashable::class);
+        $annotationReader = new AnnotationReader();
+        $reflection       = $this->setReflection($repository);
+        $trashable        = $annotationReader->getClassAnnotation($reflection, Trashable::class);
 
         return !is_null($trashable);
     }

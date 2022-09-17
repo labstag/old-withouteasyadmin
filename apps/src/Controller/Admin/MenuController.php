@@ -230,8 +230,11 @@ class MenuController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_menu' => $this->translator->trans('menu.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_menu' => $this->translator->trans('menu.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

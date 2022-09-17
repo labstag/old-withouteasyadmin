@@ -75,7 +75,7 @@ class AddressUserController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\User\AddressUserType>>|array<string, \AddressUserSearch>
+     * @return array<string, \AddressUserSearch>|array<string, class-string<\Labstag\Form\Admin\Search\User\AddressUserType>>
      */
     protected function searchForm(): array
     {
@@ -132,8 +132,11 @@ class AddressUserController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_addressuser' => $this->translator->trans('addressuser.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_addressuser' => $this->translator->trans('addressuser.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

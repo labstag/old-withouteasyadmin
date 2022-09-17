@@ -25,7 +25,7 @@ class NavbarType extends BlockAbstractTypeLib
                 ],
                 'required'      => false,
                 'class'         => Menu::class,
-                'query_builder' => static fn(MenuRepository $menuRepository) => $menuRepository->findAllCodeQuery(),
+                'query_builder' => static fn (MenuRepository $menuRepository) => $menuRepository->findAllCodeQuery(),
             ]
         );
         unset($options);

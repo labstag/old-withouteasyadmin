@@ -38,7 +38,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function actionEnableDisableDelete(InputInterface $input, OutputInterface $output, $inputOutput, $action): void
     {
-        $helper   = $this->getHelper('question');
+        $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
             $this->tableQuestionUser()
@@ -70,23 +70,23 @@ class LabstagUserCommand extends CommandLib
 
     protected function actionState(InputInterface $input, OutputInterface $output, $inputOutput): void
     {
-        $helper   = $this->getHelper('question');
+        $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
             $this->tableQuestionUser()
         );
-        $username = $helper->ask($input, $output, $choiceQuestion);
+        $username       = $helper->ask($input, $output, $choiceQuestion);
         $this->state($helper, $username, $inputOutput, $input, $output);
     }
 
     protected function actionUpdatePassword(InputInterface $input, OutputInterface $output, $inputOutput): void
     {
-        $helper   = $this->getHelper('question');
+        $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
             $this->tableQuestionUser()
         );
-        $username = $helper->ask($input, $output, $choiceQuestion);
+        $username       = $helper->ask($input, $output, $choiceQuestion);
         $this->updatePassword($helper, $username, $inputOutput, $input, $output);
     }
 
@@ -270,9 +270,9 @@ class LabstagUserCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $symfonyStyle = new SymfonyStyle($input, $output);
-        $helper      = $this->getHelper('question');
-        $choiceQuestion    = new ChoiceQuestion(
+        $symfonyStyle   = new SymfonyStyle($input, $output);
+        $helper         = $this->getHelper('question');
+        $choiceQuestion = new ChoiceQuestion(
             'Action à effectué',
             [
                 'list'           => 'list',
@@ -346,7 +346,7 @@ class LabstagUserCommand extends CommandLib
             "Passer l'utilisateur à l'épage : ",
             $states
         );
-        $state    = $helper->ask($input, $output, $choiceQuestion);
+        $state          = $helper->ask($input, $output, $choiceQuestion);
         if (!$workflow->can($entity, $state)) {
             $inputOutput->warning(
                 ['Action impossible']

@@ -5,17 +5,11 @@ namespace Labstag\EventSubscriber;
 use Labstag\Entity\User;
 use Labstag\Entity\WorkflowGroupe;
 use Labstag\Entity\WorkflowUser;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\WorkflowGroupeRepository;
-use Labstag\Repository\WorkflowRepository;
-use Labstag\Repository\WorkflowUserRepository;
 use Labstag\Lib\EventSubscriberLib;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Event\GuardEvent;
 
 class WorkflowGuardSubscriber extends EventSubscriberLib
 {
-
     /**
      * @return array<string, string>
      */

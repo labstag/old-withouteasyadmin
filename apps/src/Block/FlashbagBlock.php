@@ -2,10 +2,10 @@
 
 namespace Labstag\Block;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Block\Flashbag;
 use Labstag\Form\Admin\Block\FlashbagType;
 use Labstag\Lib\BlockLib;
+use Symfony\Component\HttpFoundation\Response;
 
 class FlashbagBlock extends BlockLib
 {

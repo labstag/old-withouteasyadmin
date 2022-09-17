@@ -2,7 +2,6 @@
 
 namespace Labstag\Controller\Admin;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Page;
 use Labstag\Form\Admin\PageType;
@@ -12,6 +11,7 @@ use Labstag\Repository\PageRepository;
 use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\Search\PageSearch;
 use Labstag\Service\AttachFormService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
@@ -91,7 +91,7 @@ class PageController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\PageType>>|array<string, \PageSearch>
+     * @return array<string, \PageSearch>|array<string, class-string<\Labstag\Form\Admin\Search\PageType>>
      */
     protected function searchForm(): array
     {
@@ -144,8 +144,11 @@ class PageController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_bookmark' => $this->translator->trans('page.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_bookmark' => $this->translator->trans('page.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

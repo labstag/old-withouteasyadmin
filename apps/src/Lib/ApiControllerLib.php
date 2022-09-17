@@ -2,8 +2,8 @@
 
 namespace Labstag\Lib;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
 use Labstag\Repository\UserRepository;
@@ -33,7 +33,7 @@ abstract class ApiControllerLib extends AbstractController
     )
     {
         // @var Request $request
-        $this->request       = $this->requeststack->getCurrentRequest();
+        $this->request = $this->requeststack->getCurrentRequest();
     }
 
     protected function getGuardRouteOrWorkflow($data, $get, $entityClass)

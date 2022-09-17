@@ -2,11 +2,11 @@
 
 namespace Labstag\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Edito;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\EditoRepository;
 use Labstag\Repository\PageRepository;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends FrontControllerLib

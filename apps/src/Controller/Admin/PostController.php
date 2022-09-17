@@ -2,7 +2,6 @@
 
 namespace Labstag\Controller\Admin;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
@@ -13,6 +12,7 @@ use Labstag\Repository\PostRepository;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\Search\PostSearch;
 use Labstag\Service\AttachFormService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
@@ -97,7 +97,7 @@ class PostController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\PostType>>|array<string, \PostSearch>
+     * @return array<string, \PostSearch>|array<string, class-string<\Labstag\Form\Admin\Search\PostType>>
      */
     protected function searchForm(): array
     {
@@ -150,8 +150,11 @@ class PostController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_post' => $this->translator->trans('post.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_post' => $this->translator->trans('post.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

@@ -34,10 +34,10 @@ class ParagraphService
 
     public function getEntity(Paragraph $paragraph)
     {
-        $field      = $this->getEntityField($paragraph);
-        $reflection = $this->setReflection($paragraph);
-        $entity     = null;
-        $propertyAccessor   = PropertyAccess::createPropertyAccessor();
+        $field            = $this->getEntityField($paragraph);
+        $reflection       = $this->setReflection($paragraph);
+        $entity           = null;
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() == $field) {
                 $entities = $propertyAccessor->getValue($paragraph, $field);
@@ -98,7 +98,7 @@ class ParagraphService
 
     public function getTypeEntity(Paragraph $paragraph)
     {
-        $type   = $paragraph->getType();
+        $type      = $paragraph->getType();
         $paragraph = null;
         foreach ($this->paragraphsclass as $row) {
             if ($row->getType() == $type) {

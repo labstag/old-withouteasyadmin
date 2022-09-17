@@ -2,13 +2,13 @@
 
 namespace Labstag\Paragraph\Post;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\User;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\UserType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserParagraph extends ParagraphLib
 {
@@ -44,7 +44,7 @@ class UserParagraph extends ParagraphLib
         $username   = $routeParam['username'] ?? null;
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $pagination = $this->paginator->paginate(
+        $pagination       = $this->paginator->paginate(
             $entityRepository->findPublierUsername($username),
             $this->request->query->getInt('page', 1),
             10

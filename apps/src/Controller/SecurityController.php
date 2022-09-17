@@ -247,8 +247,8 @@ class SecurityController extends ControllerLib
         }
 
         $authorizationUrl = $provider->getAuthorizationUrl();
-        $session = $request->getSession();
-        $referer = $request->headers->get('referer');
+        $session          = $request->getSession();
+        $referer          = $request->headers->get('referer');
         $session->set('referer', $referer);
         $session->set('oauth2state', $provider->getState());
 

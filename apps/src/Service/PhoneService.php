@@ -26,17 +26,17 @@ class PhoneService
     /**
      * Verifie le numéro de téléphone en fonction du pays.
      *
-     * @param string|null $numero Numéro de téléphone
-     * @param string|null $locale code du pays
+     * @param null|string $numero Numéro de téléphone
+     * @param null|string $locale code du pays
      *
      * @throws NumberParseException
      */
     public function verif(?string $numero, ?string $locale): array
     {
-        $numero         = str_replace([' ', '-', '.'], '', (string) $numero);
-        $data           = [];
+        $numero                       = str_replace([' ', '-', '.'], '', (string) $numero);
+        $data                         = [];
         $phoneNumberToTimeZonesMapper = PhoneNumberToTimeZonesMapper::getInstance();
-        $phoneNumberToCarrierMapper        = PhoneNumberToCarrierMapper::getInstance();
+        $phoneNumberToCarrierMapper   = PhoneNumberToCarrierMapper::getInstance();
 
         try {
             $parse   = $this->phoneUtil->parse(

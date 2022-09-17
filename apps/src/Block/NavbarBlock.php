@@ -2,12 +2,12 @@
 
 namespace Labstag\Block;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Block\Navbar;
 use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Block\NavbarType;
 use Labstag\Lib\BlockLib;
 use Labstag\Service\MenuService;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 

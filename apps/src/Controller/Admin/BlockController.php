@@ -2,7 +2,6 @@
 
 namespace Labstag\Controller\Admin;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Block;
 use Labstag\Form\Admin\BlockType;
@@ -12,6 +11,7 @@ use Labstag\Repository\BlockRepository;
 use Labstag\RequestHandler\BlockRequestHandler;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\BlockService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,18 +56,18 @@ class BlockController extends AdminControllerLib
             'Nouveau',
             [
                 'is'       => 'link-btnadminnewblock',
-                'data-url' => $this->router->generate('admin_block_new'),
+                'data-url' => $this->routerInterface->generate('admin_block_new'),
             ]
         );
         $this->btnInstance()->addBtnList(
             'admin_block_move',
             'Move',
         );
-        $form   = $this->createForm(
+        $form      = $this->createForm(
             NewBlockType::class,
             new Block(),
             [
-                'action' => $this->router->generate('admin_block_new'),
+                'action' => $this->routerInterface->generate('admin_block_new'),
             ]
         );
         $url       = $this->getUrlAdmin();
@@ -197,8 +197,11 @@ class BlockController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_block' => $this->translator->trans('block.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_block' => $this->translator->trans('block.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

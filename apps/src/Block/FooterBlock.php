@@ -2,10 +2,10 @@
 
 namespace Labstag\Block;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Block\Footer;
 use Labstag\Form\Admin\Block\FooterType;
 use Labstag\Lib\BlockLib;
+use Symfony\Component\HttpFoundation\Response;
 
 class FooterBlock extends BlockLib
 {

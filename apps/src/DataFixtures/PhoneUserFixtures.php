@@ -37,7 +37,7 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
         $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
         $user      = $this->getReference('user_'.$indexUser);
         $number    = $generator->e164PhoneNumber;
-        $phoneUser     = new PhoneUser();
+        $phoneUser = new PhoneUser();
         $old       = clone $phoneUser;
         $phoneUser->setRefuser($user);
         $phoneUser->setNumero($number);

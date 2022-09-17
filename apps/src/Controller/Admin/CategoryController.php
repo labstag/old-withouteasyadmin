@@ -89,7 +89,7 @@ class CategoryController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\CategoryType>>|array<string, \CategorySearch>
+     * @return array<string, \CategorySearch>|array<string, class-string<\Labstag\Form\Admin\Search\CategoryType>>
      */
     protected function searchForm(): array
     {
@@ -142,8 +142,11 @@ class CategoryController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_category' => $this->translator->trans('category.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_category' => $this->translator->trans('category.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

@@ -76,7 +76,7 @@ class PhoneUserController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\User\PhoneUserType>>|array<string, \PhoneUserSearch>
+     * @return array<string, \PhoneUserSearch>|array<string, class-string<\Labstag\Form\Admin\Search\User\PhoneUserType>>
      */
     protected function searchForm(): array
     {
@@ -133,8 +133,11 @@ class PhoneUserController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_phoneuser' => $this->translator->trans('phoneuser.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_phoneuser' => $this->translator->trans('phoneuser.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

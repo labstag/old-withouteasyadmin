@@ -2,13 +2,24 @@
 
 namespace Labstag\Lib;
 
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\Repository\AttachmentRepository;
+use Labstag\Repository\ConfigurationRepository;
+use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\MenuRepository;
+use Labstag\Repository\PageRepository;
+use Labstag\Repository\UserRepository;
+use Labstag\Repository\WorkflowGroupeRepository;
+use Labstag\Repository\WorkflowRepository;
+use Labstag\Repository\WorkflowUserRepository;
 use Labstag\RequestHandler\EmailUserRequestHandler;
+use Labstag\Service\BlockService;
 use Labstag\Service\DataService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\GuardService;
+use Labstag\Service\ParagraphService;
 use Labstag\Service\SessionService;
 use Labstag\Service\UserMailService;
 use Psr\Log\LoggerInterface;
@@ -23,21 +34,11 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Doctrine\Common\Annotations\Reader;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\WorkflowGroupeRepository;
-use Labstag\Repository\WorkflowRepository;
-use Labstag\Repository\WorkflowUserRepository;
-use Labstag\Repository\MenuRepository;
-use Labstag\Repository\PageRepository;
-use Labstag\Repository\UserRepository;
-use Labstag\Repository\ConfigurationRepository;
-use Labstag\Service\BlockService;
-use Labstag\Service\ParagraphService;
 use Twig\Environment;
 
 abstract class EventSubscriberLib implements EventSubscriberInterface
 {
+
     // @var null|Request
     protected $request;
 
@@ -77,6 +78,6 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
     )
     {
         // @var Request $request
-        $this->request       = $this->requestStack->getCurrentRequest();
+        $this->request = $this->requestStack->getCurrentRequest();
     }
 }

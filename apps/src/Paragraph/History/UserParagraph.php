@@ -2,13 +2,13 @@
 
 namespace Labstag\Paragraph\History;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\History\User;
 use Labstag\Form\Admin\Paragraph\History\UserType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserParagraph extends ParagraphLib
 {
@@ -44,7 +44,7 @@ class UserParagraph extends ParagraphLib
         $username   = $routeParam['username'] ?? null;
         /** @var HistoryRepository $entityRepository */
         $entityRepository = $this->getRepository(History::class);
-        $pagination = $this->paginator->paginate(
+        $pagination       = $this->paginator->paginate(
             $entityRepository->findPublierUsername($username),
             $this->request->query->getInt('page', 1),
             10

@@ -63,7 +63,7 @@ class OauthAuthenticator extends AbstractAuthenticator
         $this->request = $this->requestStack->getCurrentRequest();
 
         $attributes      = $this->request->attributes;
-        $this->oauthCode       = $this->setOauthCode($attributes);
+        $this->oauthCode = $this->setOauthCode($attributes);
     }
 
     public function authenticate(Request $request): Passport
@@ -92,10 +92,10 @@ class OauthAuthenticator extends AbstractAuthenticator
             );
             // @var mixed $userOauth
             $resourceOwner = $provider->getResourceOwner($accessToken);
-            $data      = $resourceOwner->toArray();
-            $client    = $attributes['_route_params']['oauthCode'];
-            $identity  = $this->oauthService->getIdentity($data, $client);
-            $user      = $this->userRepository->findOauth(
+            $data          = $resourceOwner->toArray();
+            $client        = $attributes['_route_params']['oauthCode'];
+            $identity      = $this->oauthService->getIdentity($data, $client);
+            $user          = $this->userRepository->findOauth(
                 $identity,
                 $client
             );
@@ -145,9 +145,9 @@ class OauthAuthenticator extends AbstractAuthenticator
         $route       = $request->attributes->get('_route');
         $this->route = $route;
 
-        $token       = $this->tokenStorage->getToken();
-        $test1       = 'connect_check' === $route && !array_key_exists('link', $session);
-        $test2       = (is_null($token) || !$token->getUser() instanceof User);
+        $token = $this->tokenStorage->getToken();
+        $test1 = 'connect_check' === $route && !array_key_exists('link', $session);
+        $test2 = (is_null($token) || !$token->getUser() instanceof User);
 
         return $test1 && $test2;
     }

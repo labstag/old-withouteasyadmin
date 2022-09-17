@@ -3,7 +3,6 @@
 namespace Labstag\EventSubscriber;
 
 use Labstag\Lib\EventSubscriberLib;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use tidy;
 
 class KernelSubscriber extends EventSubscriberLib
@@ -133,7 +132,7 @@ class KernelSubscriber extends EventSubscriberLib
         $content = $response->getContent();
         $content = preg_replace('#<script>#i', '<script type="text/javascript">', $content);
 
-        $config  = [
+        $config = [
             'indent'                      => true,
             'indent-spaces'               => 2,
             'output-xhtml'                => true,
@@ -142,7 +141,7 @@ class KernelSubscriber extends EventSubscriberLib
             'new-inline-tags'             => implode(' ', self::TAGS),
             'wrap'                        => 200,
         ];
-        $tidy    = new tidy();
+        $tidy   = new tidy();
         $tidy->parseString($content, $config, 'utf8');
         $tidy->cleanRepair();
 

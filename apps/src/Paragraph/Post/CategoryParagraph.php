@@ -2,13 +2,13 @@
 
 namespace Labstag\Paragraph\Post;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Category;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\CategoryType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryParagraph extends ParagraphLib
 {
@@ -44,7 +44,7 @@ class CategoryParagraph extends ParagraphLib
         $slug       = $routeParam['slug'] ?? null;
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $pagination = $this->paginator->paginate(
+        $pagination       = $this->paginator->paginate(
             $entityRepository->findPublierCategory($slug),
             $this->request->query->getInt('page', 1),
             10

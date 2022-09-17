@@ -30,24 +30,6 @@ class UserController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
-    {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_user_edit',
-            'empty'    => 'api_action_empty',
-            'guard'    => 'admin_user_guard',
-            'list'     => 'admin_user_index',
-            'new'      => 'admin_user_new',
-            'preview'  => 'admin_user_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_user_show',
-            'trash'    => 'admin_user_trash',
-            'workflow' => 'api_action_workflow',
-        ];
-    }
-
     #[Route(path: '/{id}/guard', name: 'admin_user_guard')]
     public function guard(
         User $user,
@@ -128,8 +110,26 @@ class UserController extends AdminControllerLib
         );
     }
 
+    protected function getUrlAdmin(): array
+    {
+        return [
+            'delete'   => 'api_action_delete',
+            'destroy'  => 'api_action_destroy',
+            'edit'     => 'admin_user_edit',
+            'empty'    => 'api_action_empty',
+            'guard'    => 'admin_user_guard',
+            'list'     => 'admin_user_index',
+            'new'      => 'admin_user_new',
+            'preview'  => 'admin_user_preview',
+            'restore'  => 'api_action_restore',
+            'show'     => 'admin_user_show',
+            'trash'    => 'admin_user_trash',
+            'workflow' => 'api_action_workflow',
+        ];
+    }
+
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\UserType>>|array<string, \UserSearch>
+     * @return array<string, \UserSearch>|array<string, class-string<\Labstag\Form\Admin\Search\UserType>>
      */
     protected function searchForm(): array
     {
@@ -186,8 +186,11 @@ class UserController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_user' => $this->translator->trans('user.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_user' => $this->translator->trans('user.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

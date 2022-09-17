@@ -36,8 +36,8 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $symfonyStyle  = new SymfonyStyle($input, $output);
-        $histories = $this->historyRepository->findAll();
+        $symfonyStyle = new SymfonyStyle($input, $output);
+        $histories    = $this->historyRepository->findAll();
         $symfonyStyle->title('Génération des PDF');
         $symfonyStyle->progressStart(is_countable($histories) ? count($histories) : 0);
         foreach ($histories as $history) {

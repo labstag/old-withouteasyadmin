@@ -2,7 +2,6 @@
 
 namespace Labstag\Controller\Admin\History;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
@@ -15,6 +14,7 @@ use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Search\HistorySearch;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\HistoryService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -158,7 +158,7 @@ class HistoryController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\HistoryType>>|array<string, \HistorySearch>
+     * @return array<string, \HistorySearch>|array<string, class-string<\Labstag\Form\Admin\Search\HistoryType>>
      */
     protected function searchForm(): array
     {
@@ -215,8 +215,11 @@ class HistoryController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_history' => $this->translator->trans('history.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_history' => $this->translator->trans('history.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

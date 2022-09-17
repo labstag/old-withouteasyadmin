@@ -75,7 +75,7 @@ class LinkUserController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\User\LinkUserType>>|array<string, \LinkUserSearch>
+     * @return array<string, \LinkUserSearch>|array<string, class-string<\Labstag\Form\Admin\Search\User\LinkUserType>>
      */
     protected function searchForm(): array
     {
@@ -132,8 +132,11 @@ class LinkUserController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_linkuser' => $this->translator->trans('linkuser.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_linkuser' => $this->translator->trans('linkuser.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

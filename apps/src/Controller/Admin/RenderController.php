@@ -75,7 +75,7 @@ class RenderController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\RenderType>>|array<string, \RenderSearch>
+     * @return array<string, \RenderSearch>|array<string, class-string<\Labstag\Form\Admin\Search\RenderType>>
      */
     protected function searchForm(): array
     {
@@ -128,8 +128,11 @@ class RenderController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_bookmark' => $this->translator->trans('render.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_bookmark' => $this->translator->trans('render.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

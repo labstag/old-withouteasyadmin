@@ -75,10 +75,10 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $globals         = $this->twig->getGlobals();
+        $globals         = $this->environment->getGlobals();
         $modal           = $globals['modal'] ?? [];
         $modal['delete'] = true;
-        $this->twig->addGlobal('modal', $modal);
+        $this->environment->addGlobal('modal', $modal);
         $code  = 'delete'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
@@ -146,10 +146,10 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $globals        = $this->twig->getGlobals();
+        $globals        = $this->environment->getGlobals();
         $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
-        $this->twig->addGlobal('modal', $modal);
+        $this->environment->addGlobal('modal', $modal);
         $code  = 'empty';
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
@@ -340,7 +340,7 @@ class AdminBtnSingleton
         return $this->bouton;
     }
 
-    public static function getInstance(): ?\Labstag\Singleton\AdminBtnSingleton
+    public static function getInstance(): ?AdminBtnSingleton
     {
         if (is_null(self::$instance)) {
             self::$instance = new AdminBtnSingleton();
@@ -362,7 +362,7 @@ class AdminBtnSingleton
         GuardService $guardService
     ): void
     {
-        $this->twig             = $environment;
+        $this->environment             = $environment;
         $this->router           = $router;
         $this->token            = $tokenStorage;
         $this->csrfTokenManager = $csrfTokenManager;
@@ -382,10 +382,10 @@ class AdminBtnSingleton
             return;
         }
 
-        $globals           = $this->twig->getGlobals();
+        $globals           = $this->environment->getGlobals();
         $modal             = $globals['modal'] ?? [];
         $modal[$codemodal] = true;
-        $this->twig->addGlobal('modal', $modal);
+        $this->environment->addGlobal('modal', $modal);
         $this->add(
             'btn-admin-header-'.$codemodal,
             $title,
@@ -444,10 +444,10 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $globals      = $this->twig->getGlobals();
+        $globals      = $this->environment->getGlobals();
         $modal        = $globals['modal'] ?? [];
         $modal[$word] = true;
-        $this->twig->addGlobal('modal', $modal);
+        $this->environment->addGlobal('modal', $modal);
         $code  = $word.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [

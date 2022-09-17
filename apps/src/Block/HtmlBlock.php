@@ -2,10 +2,10 @@
 
 namespace Labstag\Block;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Block\Html;
 use Labstag\Form\Admin\Block\HtmlType;
 use Labstag\Lib\BlockLib;
+use Symfony\Component\HttpFoundation\Response;
 
 class HtmlBlock extends BlockLib
 {

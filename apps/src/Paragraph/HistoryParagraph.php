@@ -2,13 +2,13 @@
 
 namespace Labstag\Paragraph;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\History as EntityHistory;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\History;
 use Labstag\Form\Admin\Paragraph\HistoryType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class HistoryParagraph extends ParagraphLib
 {
@@ -41,7 +41,7 @@ class HistoryParagraph extends ParagraphLib
     {
         /** @var HistoryRepository $entityRepository */
         $entityRepository = $this->getRepository(EntityHistory::class);
-        $histories  = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
+        $histories        = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
 
         return $this->render(
             $this->getParagraphFile('history'),

@@ -2,10 +2,10 @@
 
 namespace Labstag\Block;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Block\Header;
 use Labstag\Form\Admin\Block\HeaderType;
 use Labstag\Lib\BlockLib;
+use Symfony\Component\HttpFoundation\Response;
 
 class HeaderBlock extends BlockLib
 {

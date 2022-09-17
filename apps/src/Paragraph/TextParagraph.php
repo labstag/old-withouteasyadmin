@@ -2,7 +2,6 @@
 
 namespace Labstag\Paragraph;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
 use Labstag\Entity\History;
@@ -13,6 +12,7 @@ use Labstag\Entity\Paragraph\Text;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\TextType;
 use Labstag\Lib\ParagraphLib;
+use Symfony\Component\HttpFoundation\Response;
 
 class TextParagraph extends ParagraphLib
 {

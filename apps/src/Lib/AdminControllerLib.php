@@ -2,9 +2,8 @@
 
 namespace Labstag\Lib;
 
-use Knp\Component\Pager\Pagination\PaginationInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
 use Labstag\Entity\User;
@@ -25,16 +24,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 abstract class AdminControllerLib extends ControllerLib
 {
-
     protected AttachmentRequestHandler $attachmentRH;
 
     protected ?AdminBtnSingleton $btns = null;
 
     protected FlashBagInterface $flashbag;
-
-    protected RouterInterface $router;
-
-    protected TokenStorageInterface $token;
 
     protected string $urlHome = '';
 
@@ -127,45 +121,10 @@ abstract class AdminControllerLib extends ControllerLib
 
     public function modalAttachmentDelete(): void
     {
-        $twig                      = $this->twig;
-        $globals                   = $twig->getGlobals();
+        $globals                   = $this->environment->getGlobals();
         $modal                     = $globals['modal'] ?? [];
         $modal['attachmentdelete'] = true;
-        $twig->addGlobal('modal', $modal);
-    }
-
-    protected function render(
-        string $view,
-        array $parameters = [],
-        ?Response $response = null
-    ): Response
-    {
-        $parameters = $this->generateMenus($parameters);
-        $this->setBreadcrumbsPage();
-        $request = $this->requeststack->getCurrentRequest();
-        $all     = $request->attributes->all();
-        $route   = $all['_route'];
-        $headers = $this->setHeaderTitle();
-        $header  = '';
-        foreach ($headers as $key => $title) {
-            if ($key == $route) {
-                $header = $title;
-
-                break;
-            }
-
-            if (0 != substr_count((string) $route, $key)) {
-                $header = $title;
-            }
-        }
-
-        if (!empty($header)) {
-            $parameters['headerTitle'] = $header;
-        }
-
-        $parameters['btnadmin'] = $this->btnInstance()->get();
-
-        return parent::render($view, $parameters, $response);
+        $this->environment->addGlobal('modal', $modal);
     }
 
     public function renderShowOrPreview(
@@ -267,7 +226,7 @@ abstract class AdminControllerLib extends ControllerLib
 
         if (!$this->btns->isInit()) {
             $this->btns->setConf(
-                $this->twig,
+                $this->environment,
                 $this->routerInterface,
                 $this->tokenStorage,
                 $this->csrfTokenManager,
@@ -355,12 +314,12 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        $twig             = $this->twig;
+        $twig             = $this->environment;
         $globals          = $twig->getGlobals();
         $modal            = $globals['modal'] ?? [];
         $modal['destroy'] = (isset($url['destroy']));
         $modal['restore'] = (isset($url['restore']));
-        $twig->addGlobal('modal', $modal);
+        $environment->addGlobal('modal', $modal);
 
         $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
@@ -423,6 +382,40 @@ abstract class AdminControllerLib extends ControllerLib
         $this->fileService->setAttachment($file, $attachment, $old);
     }
 
+    protected function render(
+        string $view,
+        array $parameters = [],
+        ?Response $response = null
+    ): Response
+    {
+        $parameters = $this->generateMenus($parameters);
+        $this->setBreadcrumbsPage();
+        $request = $this->requeststack->getCurrentRequest();
+        $all     = $request->attributes->all();
+        $route   = $all['_route'];
+        $headers = $this->setHeaderTitle();
+        $header  = '';
+        foreach ($headers as $key => $title) {
+            if ($key == $route) {
+                $header = $title;
+
+                break;
+            }
+
+            if (0 != substr_count((string) $route, $key)) {
+                $header = $title;
+            }
+        }
+
+        if (!empty($header)) {
+            $parameters['headerTitle'] = $header;
+        }
+
+        $parameters['btnadmin'] = $this->btnInstance()->get();
+
+        return parent::render($view, $parameters, $response);
+    }
+
     protected function renderForm(string $view, array $parameters = [], ?Response $response = null): Response
     {
         $parameters = $this->generateMenus($parameters);
@@ -475,14 +468,14 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function setBreadcrumbsPage()
     {
-        $routeCollection  = $this->routerInterface->getRouteCollection();
-        $requestContext     = $this->routerInterface->getContext();
-        $traceableUrlMatcher     = new TraceableUrlMatcher($routeCollection, $requestContext);
-        $request     = $this->requeststack->getCurrentRequest();
-        $attributes  = $request->attributes->all();
-        $pathinfo    = $request->getPathInfo();
-        $breadcrumb  = $this->getBreadcrumb($traceableUrlMatcher, $pathinfo, []);
-        $breadcrumb  = array_reverse($breadcrumb);
+        $routeCollection     = $this->routerInterface->getRouteCollection();
+        $requestContext      = $this->routerInterface->getContext();
+        $traceableUrlMatcher = new TraceableUrlMatcher($routeCollection, $requestContext);
+        $request             = $this->requeststack->getCurrentRequest();
+        $attributes          = $request->attributes->all();
+        $pathinfo            = $request->getPathInfo();
+        $breadcrumb          = $this->getBreadcrumb($traceableUrlMatcher, $pathinfo, []);
+        $breadcrumb          = array_reverse($breadcrumb);
 
         $all         = $routeCollection->all();
         $routeParams = $attributes['_route_params'];
@@ -493,7 +486,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
 
         $data = $this->setSingletons()->get();
-        $this->twig->addGlobal('breadcrumbs', $data);
+        $this->environment->addGlobal('breadcrumbs', $data);
     }
 
     protected function setBtnDelete(array $url, object $entity): void
@@ -701,8 +694,8 @@ abstract class AdminControllerLib extends ControllerLib
         EntityManagerInterface $entityManager
     )
     {
-        $methodTrash = $methods['trash'];
-        $filterCollection     = $entityManager->getFilters();
+        $methodTrash      = $methods['trash'];
+        $filterCollection = $entityManager->getFilters();
         $filterCollection->disable('softdeleteable');
 
         $trash  = call_user_func([$repository, $methodTrash], []);
@@ -715,13 +708,13 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        $twig              = $this->twig;
+        $twig              = $this->environment;
         $globals           = $twig->getGlobals();
         $modal             = $globals['modal'] ?? [];
         $modal['delete']   = (isset($url['delete']));
         $modal['workflow'] = (isset($url['workflow']));
 
-        $twig->addGlobal('modal', $modal);
+        $environment->addGlobal('modal', $modal);
     }
 
     protected function showOrPreviewadd(array $url, string $routeType, $entity): void

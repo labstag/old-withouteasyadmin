@@ -2,13 +2,13 @@
 
 namespace Labstag\Paragraph;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post;
 use Labstag\Entity\Post as EntityPost;
 use Labstag\Form\Admin\Paragraph\PostType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostParagraph extends ParagraphLib
 {
@@ -41,7 +41,7 @@ class PostParagraph extends ParagraphLib
     {
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(EntityPost::class);
-        $posts      = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
+        $posts            = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
 
         return $this->render(
             $this->getParagraphFile('post'),

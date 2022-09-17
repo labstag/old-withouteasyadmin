@@ -7,7 +7,9 @@ use Labstag\Lib\RequestHandlerLib;
 
 class MenuRequestHandler extends RequestHandlerLib
 {
+
     public $dispatcher;
+
     public function handle($oldEntity, $entity): void
     {
         parent::handle($oldEntity, $entity);

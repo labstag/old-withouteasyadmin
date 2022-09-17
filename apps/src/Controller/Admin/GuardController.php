@@ -42,12 +42,15 @@ class GuardController extends AdminControllerLib
      */
     protected function setBreadcrumbsData(): array
     {
-        return [...parent::setBreadcrumbsData(), ...[
+        return [
+            ...parent::setBreadcrumbsData(), ...
             [
-                'title' => $this->translator->trans('guard.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_guard_index',
+                [
+                    'title' => $this->translator->trans('guard.title', [], 'admin.breadcrumb'),
+                    'route' => 'admin_guard_index',
+                ],
             ],
-        ]];
+        ];
     }
 
     /**
@@ -57,8 +60,11 @@ class GuardController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_guard' => $this->translator->trans('guard.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_guard' => $this->translator->trans('guard.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

@@ -53,10 +53,10 @@ class BlockService
 
     public function getEntity(Block $block)
     {
-        $field      = $this->getEntityField($block);
-        $reflection = $this->setReflection($block);
-        $entity     = null;
-        $propertyAccessor   = PropertyAccess::createPropertyAccessor();
+        $field            = $this->getEntityField($block);
+        $reflection       = $this->setReflection($block);
+        $entity           = null;
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() == $field) {
                 $entities = $propertyAccessor->getValue($block, $field);
@@ -115,7 +115,7 @@ class BlockService
 
     public function getTypeEntity(Block $block)
     {
-        $type   = $block->getType();
+        $type  = $block->getType();
         $block = null;
         foreach ($this->blocksclass as $row) {
             if ($row->getType() == $type) {

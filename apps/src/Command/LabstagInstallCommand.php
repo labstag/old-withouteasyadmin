@@ -56,8 +56,8 @@ class LabstagInstallCommand extends CommandLib
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
-        $options     = $input->getOptions();
-        $executes    = $this->getExecutesFunction();
+        $options      = $input->getOptions();
+        $executes     = $this->getExecutesFunction();
         foreach ($options as $option => $state) {
             $execute = $state ? $option : '';
             if (isset($executes[$execute])) {

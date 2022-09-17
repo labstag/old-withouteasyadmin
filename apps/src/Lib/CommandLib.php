@@ -2,8 +2,8 @@
 
 namespace Labstag\Lib;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Console\Command\Command;
 
 abstract class CommandLib extends Command

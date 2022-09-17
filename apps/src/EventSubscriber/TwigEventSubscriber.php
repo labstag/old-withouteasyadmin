@@ -3,19 +3,11 @@
 namespace Labstag\EventSubscriber;
 
 use Labstag\Lib\EventSubscriberLib;
-use Labstag\Repository\AttachmentRepository;
-use Labstag\Service\DataService;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 class TwigEventSubscriber extends EventSubscriberLib
 {
@@ -211,7 +203,7 @@ class TwigEventSubscriber extends EventSubscriberLib
         }
 
         $pathPackage = new PathPackage('/', new EmptyVersionStrategy());
-        $url     = $pathPackage->getUrl($imageDefault->getName());
+        $url         = $pathPackage->getUrl($imageDefault->getName());
 
         $meta['og:image']      = $url;
         $meta['twitter:image'] = $url;

@@ -2,13 +2,13 @@
 
 namespace Labstag\Paragraph\Post;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Libelle;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\LibelleType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class LibelleParagraph extends ParagraphLib
 {
@@ -44,7 +44,7 @@ class LibelleParagraph extends ParagraphLib
         $slug       = $routeParam['slug'] ?? null;
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $pagination = $this->paginator->paginate(
+        $pagination       = $this->paginator->paginate(
             $entityRepository->findPublierLibelle($slug),
             $this->request->query->getInt('page', 1),
             10

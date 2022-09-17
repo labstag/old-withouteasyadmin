@@ -2,13 +2,13 @@
 
 namespace Labstag\Paragraph;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Edito as EntityEdito;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Edito;
 use Labstag\Form\Admin\Paragraph\EditoType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\EditoRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class EditoParagraph extends ParagraphLib
 {

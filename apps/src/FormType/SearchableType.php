@@ -32,7 +32,7 @@ class SearchableType extends AbstractType
                 static function ($value) {
                     if ($value instanceof Collection) {
                         return $value->map(
-                            static fn($d) => (string) $d->getId()
+                            static fn ($d) => (string) $d->getId()
                         )->toArray();
                     }
                 },
@@ -117,8 +117,8 @@ class SearchableType extends AbstractType
             return $ids;
         }
 
-        $entityManager = $this->entityManager;
-        $entityRepository    = $entityManager->getRepository($options['class']);
+        $entityManager    = $this->entityManager;
+        $entityRepository = $entityManager->getRepository($options['class']);
         foreach ($ids as $id => $key) {
             $entity = $entityRepository->find($key);
             if ($entity instanceof $options['class']) {
@@ -141,7 +141,7 @@ class SearchableType extends AbstractType
         }
 
         if ($values instanceof Collection) {
-            return $values->map(static fn($d) => new ChoiceView($d, (string) $d->getId(), (string) $d))->toArray();
+            return $values->map(static fn ($d) => new ChoiceView($d, (string) $d->getId(), (string) $d))->toArray();
         }
 
         return [new ChoiceView($values, (string) $values->getId(), (string) $values)];

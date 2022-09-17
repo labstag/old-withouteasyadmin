@@ -2,11 +2,11 @@
 
 namespace Labstag\Block;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Block\Paragraph;
 use Labstag\Form\Admin\Block\ParagraphType;
 use Labstag\Lib\BlockLib;
 use Labstag\Service\ParagraphService;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 

@@ -2,13 +2,13 @@
 
 namespace Labstag\Paragraph\Bookmark;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Bookmark\Liste;
 use Labstag\Form\Admin\Paragraph\Bookmark\ListType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\BookmarkRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib
 {
@@ -41,7 +41,7 @@ class ListParagraph extends ParagraphLib
     {
         /** @var BookmarkRepository $entityRepository */
         $entityRepository = $this->getRepository(Bookmark::class);
-        $pagination = $this->paginator->paginate(
+        $pagination       = $this->paginator->paginate(
             $entityRepository->findPublier(),
             $this->request->query->getInt('page', 1),
             10

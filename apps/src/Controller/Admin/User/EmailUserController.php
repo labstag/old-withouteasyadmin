@@ -76,7 +76,7 @@ class EmailUserController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\User\EmailUserType>>|array<string, \EmailUserSearch>
+     * @return array<string, \EmailUserSearch>|array<string, class-string<\Labstag\Form\Admin\Search\User\EmailUserType>>
      */
     protected function searchForm(): array
     {
@@ -133,8 +133,11 @@ class EmailUserController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_emailuser' => $this->translator->trans('emailuser.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_emailuser' => $this->translator->trans('emailuser.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

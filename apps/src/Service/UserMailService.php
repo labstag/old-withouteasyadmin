@@ -75,8 +75,8 @@ class UserMailService
         array $otherchange = []
     ): string
     {
-        $dateTime   = new DateTime();
-        $change = [
+        $dateTime = new DateTime();
+        $change   = [
             'username' => $user->getUsername(),
             'datetime' => $dateTime->format('d/m/Y H:i'),
         ];

@@ -2,7 +2,6 @@
 
 namespace Labstag\Controller\Admin;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Memo;
 use Labstag\Form\Admin\MemoType;
@@ -12,6 +11,7 @@ use Labstag\Repository\MemoRepository;
 use Labstag\RequestHandler\MemoRequestHandler;
 use Labstag\Search\MemoSearch;
 use Labstag\Service\AttachFormService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
@@ -94,7 +94,7 @@ class MemoController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\MemoType>>|array<string, \MemoSearch>
+     * @return array<string, \MemoSearch>|array<string, class-string<\Labstag\Form\Admin\Search\MemoType>>
      */
     protected function searchForm(): array
     {
@@ -147,8 +147,11 @@ class MemoController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_memo' => $this->translator->trans('memo.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_memo' => $this->translator->trans('memo.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

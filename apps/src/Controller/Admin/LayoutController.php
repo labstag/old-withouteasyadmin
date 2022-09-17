@@ -2,7 +2,6 @@
 
 namespace Labstag\Controller\Admin;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
@@ -15,6 +14,7 @@ use Labstag\Repository\LayoutRepository;
 use Labstag\RequestHandler\LayoutRequestHandler;
 use Labstag\Search\LayoutSearch;
 use Labstag\Service\AttachFormService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -50,14 +50,14 @@ class LayoutController extends AdminControllerLib
             'Nouveau',
             [
                 'is'       => 'link-btnadminnewblock',
-                'data-url' => $this->router->generate('admin_layout_new'),
+                'data-url' => $this->routerInterface->generate('admin_layout_new'),
             ]
         );
         $form = $this->createForm(
             NewLayoutType::class,
             new Layout(),
             [
-                'action' => $this->router->generate('admin_layout_new'),
+                'action' => $this->routerInterface->generate('admin_layout_new'),
             ]
         );
 
@@ -146,7 +146,7 @@ class LayoutController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\LayoutType>>|array<string, \LayoutSearch>
+     * @return array<string, \LayoutSearch>|array<string, class-string<\Labstag\Form\Admin\Search\LayoutType>>
      */
     protected function searchForm(): array
     {
@@ -199,8 +199,11 @@ class LayoutController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_bookmark' => $this->translator->trans('layout.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_bookmark' => $this->translator->trans('layout.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

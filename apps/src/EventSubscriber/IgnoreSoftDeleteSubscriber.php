@@ -2,16 +2,11 @@
 
 namespace Labstag\EventSubscriber;
 
-use Labstag\Annotation\IgnoreSoftDelete;
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Lib\EventSubscriberLib;
 use ReflectionClass;
 use ReflectionObject;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
@@ -80,7 +75,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
 
     protected function readAnnotation($controller, $method, $annotation): bool|array
     {
-        $classUtils           = new ClassUtils();
+        $classUtils      = new ClassUtils();
         $reflectionClass = new ReflectionClass($classUtils->getClass($controller));
         $classAnnotation = $this->reader->getClassAnnotation($reflectionClass, $annotation);
 

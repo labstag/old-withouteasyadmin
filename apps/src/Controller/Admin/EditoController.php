@@ -2,7 +2,6 @@
 
 namespace Labstag\Controller\Admin;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
@@ -13,6 +12,7 @@ use Labstag\Repository\EditoRepository;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\Search\EditoSearch;
 use Labstag\Service\AttachFormService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
@@ -96,7 +96,7 @@ class EditoController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\EditoType>>|array<string, \EditoSearch>
+     * @return array<string, \EditoSearch>|array<string, class-string<\Labstag\Form\Admin\Search\EditoType>>
      */
     protected function searchForm(): array
     {
@@ -149,8 +149,11 @@ class EditoController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_edito' => $this->translator->trans('edito.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_edito' => $this->translator->trans('edito.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Labstag\Block;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Block\Custom;
 use Labstag\Form\Admin\Block\CustomType;
 use Labstag\Lib\BlockLib;
@@ -10,6 +9,7 @@ use Labstag\Repository\LayoutRepository;
 use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -26,7 +26,7 @@ class CustomBlock extends BlockLib
         protected LayoutRepository $layoutRepository
     )
     {
-        $this->request       = $requestStack->getCurrentRequest();
+        $this->request = $requestStack->getCurrentRequest();
         parent::__construct($translator, $environment);
     }
 

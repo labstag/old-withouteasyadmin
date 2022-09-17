@@ -79,11 +79,11 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
      */
     public function findOneRandom(): object
     {
-        $classMetadataName          = $this->getClassMetadataName();
-        $dql           = 'SELECT p FROM '.$classMetadataName.' p ORDER BY RAND()';
-        $entityManager = $this->getEntityManager();
-        $query         = $entityManager->createQuery($dql);
-        $query         = $query->setMaxResults(1);
+        $classMetadataName = $this->getClassMetadataName();
+        $dql               = 'SELECT p FROM '.$classMetadataName.' p ORDER BY RAND()';
+        $entityManager     = $this->getEntityManager();
+        $query             = $entityManager->createQuery($dql);
+        $query             = $query->setMaxResults(1);
 
         return $query->getOneOrNullResult();
     }

@@ -74,7 +74,7 @@ class LibelleController extends AdminControllerLib
     }
 
     /**
-     * @return array<string, class-string<\Labstag\Form\Admin\Search\LibelleType>>|array<string, \LibelleSearch>
+     * @return array<string, \LibelleSearch>|array<string, class-string<\Labstag\Form\Admin\Search\LibelleType>>
      */
     protected function searchForm(): array
     {
@@ -127,8 +127,11 @@ class LibelleController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_libelle' => $this->translator->trans('libelle.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_libelle' => $this->translator->trans('libelle.title', [], 'admin.header'),
+            ],
+        ];
     }
 }

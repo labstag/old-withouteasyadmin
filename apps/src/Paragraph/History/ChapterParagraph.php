@@ -7,7 +7,6 @@ use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\History\Chapter as HistoryChapter;
 use Labstag\Form\Admin\Paragraph\History\ChapterType;
 use Labstag\Lib\ParagraphLib;
-use Labstag\Repository\ChapterRepository;
 
 class ChapterParagraph extends ParagraphLib
 {
@@ -38,12 +37,12 @@ class ChapterParagraph extends ParagraphLib
 
     public function show(HistoryChapter $historychapter)
     {
-        $all        = $this->request->attributes->all();
-        $routeParam = $all['_route_params'];
-        $history    = $routeParam['history'] ?? null;
-        $chapter    = $routeParam['chapter'] ?? null;
+        $all              = $this->request->attributes->all();
+        $routeParam       = $all['_route_params'];
+        $history          = $routeParam['history'] ?? null;
+        $chapter          = $routeParam['chapter'] ?? null;
         $entityRepository = $this->getRepository(Chapter::class);
-        $chapter     = $entityRepository->findChapterByHistory($history, $chapter);
+        $chapter          = $entityRepository->findChapterByHistory($history, $chapter);
         if (!$chapter instanceof Chapter) {
             return;
         }

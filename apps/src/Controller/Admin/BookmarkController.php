@@ -164,9 +164,12 @@ class BookmarkController extends AdminControllerLib
     {
         $headers = parent::setHeaderTitle();
 
-        return [...$headers, ...[
-            'admin_bookmark' => $this->translator->trans('bookmark.title', [], 'admin.header'),
-        ]];
+        return [
+            ...$headers, ...
+            [
+                'admin_bookmark' => $this->translator->trans('bookmark.title', [], 'admin.header'),
+            ],
+        ];
     }
 
     private function uploadFile(
@@ -184,7 +187,7 @@ class BookmarkController extends AdminControllerLib
         $domDocument->loadHTMLFile($file->getPathname(), LIBXML_NOWARNING | LIBXML_NOERROR);
 
         $domNodeList = $domDocument->getElementsByTagName('a');
-        $dateTime = new DateTime();
+        $dateTime    = new DateTime();
         /** @var User $user */
         $user   = $security->getUser();
         $userId = $user->getId();

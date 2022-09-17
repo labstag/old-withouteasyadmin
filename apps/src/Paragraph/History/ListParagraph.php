@@ -2,13 +2,13 @@
 
 namespace Labstag\Paragraph\History;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\History;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\History\Liste;
 use Labstag\Form\Admin\Paragraph\History\ListType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib
 {

@@ -2,13 +2,13 @@
 
 namespace Labstag\Paragraph;
 
-use Symfony\Component\HttpFoundation\Response;
 use Labstag\Entity\Bookmark as EntityBookmark;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Bookmark;
 use Labstag\Form\Admin\Paragraph\BookmarkType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\BookmarkRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class BookmarkParagraph extends ParagraphLib
 {
@@ -41,7 +41,7 @@ class BookmarkParagraph extends ParagraphLib
     {
         /** @var BookmarkRepository $entityRepository */
         $entityRepository = $this->getRepository(EntityBookmark::class);
-        $bookmarks  = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
+        $bookmarks        = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
 
         return $this->render(
             $this->getParagraphFile('bookmark'),

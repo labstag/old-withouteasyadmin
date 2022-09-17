@@ -21,7 +21,7 @@ class PageRepository extends ServiceEntityRepositoryLib
     public function formType(array $options): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('p');
-        $id    = $options['data']->getId();
+        $id           = $options['data']->getId();
         if (empty($id)) {
             return $queryBuilder;
         }

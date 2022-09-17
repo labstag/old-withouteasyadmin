@@ -247,9 +247,9 @@ abstract class FixtureLib extends Fixture
         }
 
         // @var resource $finfo
-        $finfo       = finfo_open(FILEINFO_MIME_TYPE);
-        $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
-        $asciiSlugger     = new AsciiSlugger();
+        $finfo        = finfo_open(FILEINFO_MIME_TYPE);
+        $annotations  = $this->uploadAnnotationReader->getUploadableFields($entity);
+        $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
             $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
