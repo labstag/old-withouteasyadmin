@@ -49,10 +49,12 @@ class MemoController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_memo_new', methods: ['GET', 'POST'])]
     public function new(MemoRepository $repository, MemoRequestHandler $requestHandler, Security $security): Response
     {
-        $user = $user = $security->getUser();
+        $user = $security->getUser();
+        $user = $user;
         $memo = new Memo();
         $memo->setTitle(Uuid::v1());
         $memo->setRefuser($user);
+
         $old = clone $memo;
         $repository->add($memo);
         $requestHandler->handle($old, $memo);

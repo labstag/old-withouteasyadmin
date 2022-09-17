@@ -28,6 +28,7 @@ class ChapterController extends ParagraphControllerLib
         $paragraph->setPosition(count($chapter->getParagraphs()) + 1);
         $paragraph->setChapter($chapter);
         $paragraph->settype($request->get('data'));
+
         $repository->add($paragraph);
         $handler->handle($old, $paragraph);
 

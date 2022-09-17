@@ -41,6 +41,7 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
         $dateEnd = clone $dateStart;
         $dateEnd->modify('+'.$faker->numberBetween(10, 50).' days');
         $dateEnd->modify('+'.$faker->numberBetween(2, 24).' hours');
+
         $memo->setDateEnd($dateEnd);
         // @var string $content
         $content = $faker->paragraphs(4, true);

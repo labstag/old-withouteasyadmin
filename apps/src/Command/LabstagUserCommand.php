@@ -41,6 +41,7 @@ class LabstagUserCommand extends CommandLib
             $this->tableQuestionUser()
         );
         $question->setMultiselect(true);
+
         $usernames = $helper->ask($input, $output, $question);
         foreach ($usernames as $username) {
             if ('' == $username) {
@@ -101,9 +102,11 @@ class LabstagUserCommand extends CommandLib
         $user->setUsername($username);
         $question = new Question("Entrer le password de l'utilisateur : ");
         $question->setHidden(true);
+
         $password1 = $helper->ask($input, $output, $question);
         $question  = new Question("Resaisir le password de l'utilisateur : ");
         $question->setHidden(true);
+
         $password2 = $helper->ask($input, $output, $question);
         if ($password1 !== $password2) {
             $inputOutput->error('Mot de passe incorrect');
@@ -387,9 +390,11 @@ class LabstagUserCommand extends CommandLib
 
         $question = new Question("Entrer le password de l'utilisateur : ");
         $question->setHidden(true);
+
         $password1 = $helper->ask($input, $output, $question);
         $question  = new Question("Resaisir le password de l'utilisateur : ");
         $question->setHidden(true);
+
         $password2 = $helper->ask($input, $output, $question);
         if ($password1 !== $password2) {
             $inputOutput->error('Mot de passe incorrect');

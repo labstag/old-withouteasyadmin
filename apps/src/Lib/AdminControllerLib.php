@@ -133,7 +133,7 @@ abstract class AdminControllerLib extends ControllerLib
         $twig->addGlobal('modal', $modal);
     }
 
-    public function render(
+    protected function render(
         string $view,
         array $parameters = [],
         ?Response $response = null
@@ -412,6 +412,7 @@ abstract class AdminControllerLib extends ControllerLib
             $filename
         );
         $file = $path.'/'.$filename;
+
         $this->fileService->setAttachment($file, $attachment, $old);
     }
 
@@ -469,6 +470,7 @@ abstract class AdminControllerLib extends ControllerLib
         $pathinfo    = $request->getPathInfo();
         $breadcrumb  = $this->getBreadcrumb($matcher, $pathinfo, []);
         $breadcrumb  = array_reverse($breadcrumb);
+
         $all         = $collection->all();
         $routeParams = $attributes['_route_params'];
         foreach ($breadcrumb as $row) {
@@ -687,6 +689,7 @@ abstract class AdminControllerLib extends ControllerLib
         $methodTrash = $methods['trash'];
         $filters     = $entityManager->getFilters();
         $filters->disable('softdeleteable');
+
         $trash  = call_user_func([$repository, $methodTrash], []);
         $result = $trash->getQuery()->getResult();
         $total  = is_countable($result) ? count($result) : 0;

@@ -29,10 +29,10 @@ class SearchableType extends AbstractType
     {
         $builder->addModelTransformer(
             new CallbackTransformer(
-                function ($value) {
+                static function ($value) {
                     if ($value instanceof Collection) {
                         return $value->map(
-                            fn ($d) => (string) $d->getId()
+                            static fn($d) => (string) $d->getId()
                         )->toArray();
                     }
                 },
@@ -138,7 +138,7 @@ class SearchableType extends AbstractType
         }
 
         if ($values instanceof Collection) {
-            return $values->map(fn ($d) => new ChoiceView($d, (string) $d->getId(), (string) $d))->toArray();
+            return $values->map(static fn($d) => new ChoiceView($d, (string) $d->getId(), (string) $d))->toArray();
         }
 
         return [new ChoiceView($values, (string) $values->getId(), (string) $values)];

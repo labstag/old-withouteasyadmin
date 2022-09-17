@@ -18,13 +18,22 @@ use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var string
+     */
     final public const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
 
+    /**
+     * @var string[]
+     */
     final public const ERROR_CONTROLLER = [
         'error_controller',
         'error_controller::preview',
     ];
 
+    /**
+     * @var string
+     */
     final public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
     public function __construct(

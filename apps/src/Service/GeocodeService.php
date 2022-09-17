@@ -11,6 +11,9 @@ use ZipArchive;
 
 class GeocodeService
 {
+    /**
+     * @var int
+     */
     final public const HTTP_OK = 200;
 
     public function __construct(
@@ -48,6 +51,7 @@ class GeocodeService
         $entity->setLatitude($row[9]);
         $entity->setLongitude($row[10]);
         $entity->setAccuracy((int) $row[11]);
+
         $this->geoCodeRH->handle($old, $entity);
     }
 

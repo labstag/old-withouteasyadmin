@@ -46,30 +46,69 @@ use Twig\Environment;
 
 abstract class FixtureLib extends Fixture
 {
+    /**
+     * @var int
+     */
     protected const NUMBER_ADRESSE = 25;
 
+    /**
+     * @var int
+     */
     protected const NUMBER_BOOKMARK = 25;
 
+    /**
+     * @var int
+     */
     protected const NUMBER_CATEGORY = 50;
 
+    /**
+     * @var int
+     */
     protected const NUMBER_CHAPTER = 25;
 
+    /**
+     * @var int
+     */
     protected const NUMBER_EDITO = 25;
 
+    /**
+     * @var int
+     */
     protected const NUMBER_EMAIL = 25;
 
+    /**
+     * @var int
+     */
     protected const NUMBER_HISTORY = 25;
 
+    /**
+     * @var int
+     */
     protected const NUMBER_LIBELLE = 10;
 
+    /**
+     * @var int
+     */
     protected const NUMBER_LINK = 25;
 
+    /**
+     * @var int
+     */
     protected const NUMBER_NOTEINTERNE = 25;
 
+    /**
+     * @var int
+     */
     protected const NUMBER_PHONE = 25;
 
+    /**
+     * @var int
+     */
     protected const NUMBER_POST = 100;
 
+    /**
+     * @var int
+     */
     protected const NUMBER_TEMPLATES = 10;
 
     public function __construct(

@@ -141,6 +141,7 @@ class BlockController extends AdminControllerLib
         $block->setTitle(Uuid::v1());
         $block->setRegion($post['region']);
         $block->setType($post['type']);
+
         $repository->add($block);
         $handler->handle($old, $block);
 

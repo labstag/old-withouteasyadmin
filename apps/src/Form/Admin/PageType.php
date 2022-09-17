@@ -61,7 +61,7 @@ class PageType extends AbstractTypeLib
             [
                 'required'      => false,
                 'class'         => Page::class,
-                'query_builder' => fn (PageRepository $er) => $er->formType($options),
+                'query_builder' => static fn(PageRepository $er) => $er->formType($options),
             ]
         );
     }

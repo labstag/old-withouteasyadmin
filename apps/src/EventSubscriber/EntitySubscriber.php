@@ -92,6 +92,7 @@ class EntitySubscriber extends EventSubscriberLib
 
         $entity = new $classentity();
         $entity->setBlock($newEntity);
+
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
     }
@@ -178,6 +179,7 @@ class EntitySubscriber extends EventSubscriberLib
 
         $entity = new $classentity();
         $entity->setParagraph($newEntity);
+
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
     }
@@ -370,6 +372,7 @@ class EntitySubscriber extends EventSubscriberLib
         $emailUser->setRefuser($newEntity);
         $emailUser->setPrincipal(true);
         $emailUser->setAddress($address);
+
         $this->emailUserRH->handle($old, $emailUser);
         $this->emailUserRH->changeWorkflowState($emailUser, ['submit', 'valider']);
     }

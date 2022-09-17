@@ -75,6 +75,7 @@ class HistoryService
         );
         $pdf->writeHTML($html);
         $pdf->createIndex('Table des matières', 25, 12, false, true, 3);
+
         $file = $data['uri'].'.pdf';
         $pdf->output($file, 'F');
 

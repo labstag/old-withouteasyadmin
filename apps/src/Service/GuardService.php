@@ -17,8 +17,14 @@ use Symfony\Component\Workflow\Registry;
 
 class GuardService
 {
+    /**
+     * @var string[]
+     */
     final public const GROUPE_ENABLE = ['visiteur'];
 
+    /**
+     * @var string[]
+     */
     final public const REGEX = [
         '/(SecurityController)/',
         '/(web_profiler.controller)/',
@@ -26,8 +32,14 @@ class GuardService
         '/(api_platform)/',
     ];
 
+    /**
+     * @var string
+     */
     final public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
+    /**
+     * @var string[]
+     */
     final public const REGEX_PUBLIC = [
         '/(ElfinderBundle)/',
         '/(Admin)/',
@@ -265,6 +277,7 @@ class GuardService
 
         $route = new Route();
         $route->setName($name);
+
         $this->routeRepo->add($route);
     }
 

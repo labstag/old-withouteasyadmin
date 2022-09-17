@@ -161,6 +161,7 @@ class InstallService
         $old = clone $configuration;
         $configuration->setName($key);
         $configuration->setValue($value);
+
         $this->configurationRH->handle($old, $configuration);
     }
 
@@ -178,6 +179,7 @@ class InstallService
         $old    = clone $groupe;
         $groupe->setCode($row);
         $groupe->setName($row);
+
         $this->groupeRH->handle($old, $groupe);
     }
 
@@ -196,6 +198,7 @@ class InstallService
         $old      = clone $template;
         $template->setName($value);
         $template->setCode($key);
+
         $htmlfile = 'tpl/mail-'.$key.'.html.twig';
         if (is_file('templates/'.$htmlfile)) {
             $template->setHtml($this->twig->render($htmlfile));
@@ -237,6 +240,7 @@ class InstallService
         $menu = new Menu();
         $menu->setPosition(0);
         $menu->setClef($key);
+
         $this->menuRepo->add($menu);
         $indexChild = 0;
         foreach ($childs as $attr) {

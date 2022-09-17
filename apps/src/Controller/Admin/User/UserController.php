@@ -30,7 +30,7 @@ class UserController extends AdminControllerLib
         );
     }
 
-    public function getUrlAdmin(): array
+    protected function getUrlAdmin(): array
     {
         return [
             'delete'   => 'api_action_delete',

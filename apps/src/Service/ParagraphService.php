@@ -54,7 +54,7 @@ class ParagraphService
         $reflection  = $this->setReflection($childentity);
         foreach ($reflection->getProperties() as $property) {
             if ('paragraph' == $property->getName()) {
-                preg_match('/inversedBy=\"(.*)\"/m', (string) $property->getDocComment(), $matches);
+                preg_match('#inversedBy=\"(.*)\"#m', (string) $property->getDocComment(), $matches);
                 $field = $matches[1] ?? $field;
 
                 break;

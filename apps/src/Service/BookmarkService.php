@@ -19,6 +19,9 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class BookmarkService
 {
+    /**
+     * @var int
+     */
     final public const CLIENTNUMBER = 400;
 
     public function __construct(

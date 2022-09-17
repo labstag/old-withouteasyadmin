@@ -40,11 +40,13 @@ class AddressUserFixtures extends FixtureLib implements DependentInterface
         $address->setCountry($faker->countryCode);
         $address->setZipcode($faker->postcode);
         $address->setType($faker->unique()->colorName());
+
         $latitude  = $faker->latitude;
         $longitude = $faker->longitude;
         $gps       = $latitude.','.$longitude;
         $address->setGps($gps);
         $address->setPmr((bool) random_int(0, 1));
+
         $this->addressUserRH->handle($old, $address);
     }
 }

@@ -21,7 +21,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     {
         $query = $this->createQueryBuilder('p');
         $query->select(
-            'date_format(p.published,\'%Y-%m\') as code, p.published, COUNT(p)'
+            "date_format(p.published,'%Y-%m') as code, p.published, COUNT(p)"
         );
         $query->where(
             'p.state LIKE :state'
@@ -56,7 +56,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         $query = $this->createQueryBuilder('p');
         $query->innerjoin('p.refuser', 'u');
         $query->where('p.state LIKE :state');
-        $query->andWhere('date_format(p.published,\'%Y-%m\') = :published');
+        $query->andWhere("date_format(p.published,'%Y-%m') = :published");
         $query->orderBy('p.published', 'DESC');
         $query->setParameters(
             [

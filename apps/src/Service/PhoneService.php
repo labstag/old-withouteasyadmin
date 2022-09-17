@@ -66,9 +66,9 @@ class PhoneService
                 strtoupper($locale)
             );
             $data['parse']     = $parse;
-        } catch (NumberParseException $exception) {
-            $this->errorService->set($exception);
-            $data['error'] = $exception->getMessage();
+        } catch (NumberParseException $numberParseException) {
+            $this->errorService->set($numberParseException);
+            $data['error'] = $numberParseException->getMessage();
         }
 
         return $data;

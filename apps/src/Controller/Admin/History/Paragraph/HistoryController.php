@@ -28,6 +28,7 @@ class HistoryController extends ParagraphControllerLib
         $paragraph->setPosition(count($history->getParagraphs()) + 1);
         $paragraph->setHistory($history);
         $paragraph->settype($request->get('data'));
+
         $repository->add($paragraph);
         $handler->handle($old, $paragraph);
 

@@ -282,6 +282,7 @@ class UserMailService
         );
         $email->subject($subject);
         $email->to($user->getEmail());
+
         $this->mailerService->send($email);
     }
 }

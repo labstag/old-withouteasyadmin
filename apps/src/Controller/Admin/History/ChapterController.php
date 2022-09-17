@@ -57,6 +57,7 @@ class ChapterController extends AdminControllerLib
         $chapter->setRefhistory($history);
         $chapter->setName(Uuid::v1());
         $chapter->setPosition(count($history->getChapters()) + 1);
+
         $old = clone $chapter;
         $repository->add($chapter);
         $requestHandler->handle($old, $chapter);

@@ -2,6 +2,7 @@
 
 namespace Labstag\EventSubscriber;
 
+use Labstag\Annotation\IgnoreSoftDelete;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,6 +15,9 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var class-string<IgnoreSoftDelete>
+     */
     final public const ANNOTATION = 'Labstag\Annotation\IgnoreSoftDelete';
 
     // @var null|Request

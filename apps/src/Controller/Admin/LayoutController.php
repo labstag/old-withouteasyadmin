@@ -107,6 +107,7 @@ class LayoutController extends AdminControllerLib
         $layout = new Layout();
         $layout->setCustom($custom);
         $layout->setName(Uuid::v1());
+
         $old = clone $layout;
         $layoutRepo->add($layout);
         $requestHandler->handle($old, $layout);

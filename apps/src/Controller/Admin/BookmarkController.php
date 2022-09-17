@@ -176,6 +176,7 @@ class BookmarkController extends AdminControllerLib
 
         $doc = new DOMDocument();
         $doc->loadHTMLFile($file->getPathname(), LIBXML_NOWARNING | LIBXML_NOERROR);
+
         $tags = $doc->getElementsByTagName('a');
         $date = new DateTime();
         /** @var User $user */

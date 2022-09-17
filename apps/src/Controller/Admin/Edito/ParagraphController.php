@@ -28,6 +28,7 @@ class ParagraphController extends ParagraphControllerLib
         $paragraph->setPosition(count($edito->getParagraphs()) + 1);
         $paragraph->setEdito($edito);
         $paragraph->settype($request->get('data'));
+
         $repository->add($paragraph);
         $handler->handle($old, $paragraph);
 

@@ -96,6 +96,7 @@ class UserService
         $user->setUsername($dataUser['username']);
         $user->setPlainPassword($dataUser['password']);
         $user->setEmail($dataUser['email']);
+
         $this->userRH->handle($old, $user);
         $this->userRH->changeWorkflowState($user, $dataUser['state']);
 

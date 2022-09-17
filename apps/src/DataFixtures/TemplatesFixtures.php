@@ -28,6 +28,7 @@ class TemplatesFixtures extends DataFixtureLib implements DependentFixtureInterf
         $content = $faker->unique()->paragraphs(10, true);
         $template->setHtml(str_replace("\n\n", "<br />\n", $content));
         $template->setText($content);
+
         $this->templateRH->handle($oldTemplate, $template);
     }
 }

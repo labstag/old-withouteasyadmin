@@ -26,6 +26,7 @@ class SearchController extends ApiControllerLib
         $entityName = ('api_search_group' == $route) ? Groupe::class : null;
         $entityName = ('api_search_postlibelle' == $route) ? Libelle::class : null;
         $entityName = ('api_search_user' == $route) ? User::class : null;
+
         $function   = ('api_search_user' == $route) ? 'findUserName' : 'findName';
 
         return $this->showData($request, $entityName, $function);

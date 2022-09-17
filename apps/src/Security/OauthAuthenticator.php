@@ -34,6 +34,9 @@ class OauthAuthenticator extends AbstractAuthenticator
 {
     use TargetPathTrait;
 
+    /**
+     * @var string
+     */
     final public const LOGIN_ROUTE = 'app_login';
 
     protected string $oauthCode;
@@ -144,6 +147,7 @@ class OauthAuthenticator extends AbstractAuthenticator
         $session     = $request->getSession()->all();
         $route       = $request->attributes->get('_route');
         $this->route = $route;
+
         $token       = $this->token->getToken();
         $test1       = 'connect_check' === $route && !array_key_exists('link', $session);
         $test2       = (is_null($token) || !$token->getUser() instanceof User);

@@ -35,6 +35,7 @@ class LinkUserFixtures extends FixtureLib implements DependentFixtureInterface
         $link->setRefUser($user);
         $link->setName($faker->word());
         $link->setAddress($faker->url());
+
         $this->linkUserRH->handle($old, $link);
     }
 }

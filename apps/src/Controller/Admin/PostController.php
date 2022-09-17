@@ -50,12 +50,14 @@ class PostController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_post_new', methods: ['GET', 'POST'])]
     public function new(PostRepository $repository, PostRequestHandler $requestHandler, Security $security): Response
     {
-        $user = $user = $security->getUser();
+        $user = $security->getUser();
+        $user = $user;
         $post = new Post();
         $post->setPublished(new DateTime());
         $post->setRemark(false);
         $post->setTitle(Uuid::v1());
         $post->setRefuser($user);
+
         $old = clone $post;
         $repository->add($post);
         $requestHandler->handle($old, $post);

@@ -51,6 +51,7 @@ class PageController extends AdminControllerLib
         $page = new Page();
         $page->setName(Uuid::v1());
         $page->setFront(false);
+
         $old = clone $page;
         $repository->add($page);
         $requestHandler->handle($old, $page);

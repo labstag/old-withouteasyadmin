@@ -28,6 +28,7 @@ class ParagraphController extends ParagraphControllerLib
         $paragraph->setPosition(count($memo->getParagraphs()) + 1);
         $paragraph->setMemo($memo);
         $paragraph->settype($request->get('data'));
+
         $repository->add($paragraph);
         $handler->handle($old, $paragraph);
 

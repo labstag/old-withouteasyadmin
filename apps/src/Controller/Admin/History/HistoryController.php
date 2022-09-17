@@ -57,11 +57,13 @@ class HistoryController extends AdminControllerLib
         Security $security
     ): Response
     {
-        $user    = $user = $security->getUser();
+        $user = $security->getUser();
+        $user = $user;
         $history = new History();
         $history->setPublished(new DateTime());
         $history->setName(Uuid::v1());
         $history->setRefuser($user);
+
         $old = clone $history;
         $repository->add($history);
         $requestHandler->handle($old, $history);

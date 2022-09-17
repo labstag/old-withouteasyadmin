@@ -40,6 +40,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
     {
         $inputOutput = new SymfonyStyle($input, $output);
         $inputOutput->title('Ajout des workflows dans la base de données');
+
         $data     = [];
         $entities = [];
         foreach ($this->entitiesclass as $entity) {

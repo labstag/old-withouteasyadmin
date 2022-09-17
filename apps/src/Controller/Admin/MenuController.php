@@ -43,6 +43,7 @@ class MenuController extends AdminControllerLib
         $menu->setClef(null);
         $menu->setData($data);
         $menu->setSeparateur(false);
+
         $children = $parent->getChildren();
         $position = is_countable($children) ? count($children) : 0;
         $menu->setPosition($position + 1);
@@ -67,6 +68,7 @@ class MenuController extends AdminControllerLib
         $entity->setPosition($position + 1);
         $entity->setSeparateur(true);
         $entity->setParent($menu);
+
         $requestHandler->handle($oldEntity, $entity);
 
         return new RedirectResponse(

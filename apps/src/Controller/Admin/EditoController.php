@@ -50,11 +50,13 @@ class EditoController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_edito_new', methods: ['GET', 'POST'])]
     public function new(EditoRepository $repository, EditoRequestHandler $requestHandler, Security $security): Response
     {
-        $user  = $user = $security->getUser();
+        $user = $security->getUser();
+        $user = $user;
         $edito = new Edito();
         $edito->setPublished(new DateTime());
         $edito->setTitle(Uuid::v1());
         $edito->setRefuser($user);
+
         $old = clone $edito;
         $repository->add($edito);
         $requestHandler->handle($old, $edito);

@@ -34,6 +34,7 @@ class LabstagGuardRouteCommand extends CommandLib
         $inputOutput = new SymfonyStyle($input, $output);
         $inputOutput->title('Installation du système de droit utilisateurs');
         $inputOutput->section('Enregistrement des routes');
+
         $all         = $this->service->all();
         $progressBar = new ProgressBar($output, count($all));
         $progressBar->start();
@@ -45,6 +46,7 @@ class LabstagGuardRouteCommand extends CommandLib
         $progressBar->finish();
         $inputOutput->newLine();
         $inputOutput->success("Fin d'enregistrement");
+
         $table = $this->service->tables();
         $inputOutput->table(
             [

@@ -31,6 +31,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class EntityVoter extends Voter
 {
+    /**
+     * @var int
+     */
     final public const NBR_CHAPTER = 2;
 
     protected function canMoveHistory(History $entity, TokenInterface $token): bool

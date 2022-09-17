@@ -22,8 +22,14 @@ use Twig\TwigFunction;
 
 class LabstagExtension extends AbstractExtension
 {
+    /**
+     * @var string
+     */
     final public const FOLDER_ENTITY = 'Labstag\\Entity\\';
 
+    /**
+     * @var string
+     */
     final public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     public function __construct(

@@ -7,21 +7,42 @@ use tidy;
 
 class KernelSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var string
+     */
     final public const API_CONTROLLER = '/(Api)/';
 
+    /**
+     * @var string
+     */
     final public const BLOCK_CONTROLLER = '/(Labstag\/Block)/';
 
+    /**
+     * @var int
+     */
     final public const CLIENTNUMBER = 400;
 
+    /**
+     * @var string[]
+     */
     final public const ERROR_CONTROLLER = [
         'error_controller',
         'error_controller::preview',
     ];
 
+    /**
+     * @var string
+     */
     final public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
+    /**
+     * @var string
+     */
     final public const PARAGRAPH_CONTROLLER = '/(Labstag\/Paragraph)/';
 
+    /**
+     * @var string[]
+     */
     final public const TAGS = [
         'attachment-delete',
         'attachment-img',
@@ -106,7 +127,8 @@ class KernelSubscriber implements EventSubscriberInterface
         }
 
         $content = $response->getContent();
-        $content = preg_replace('/<script>/i', '<script type="text/javascript">', $content);
+        $content = preg_replace('#<script>#i', '<script type="text/javascript">', $content);
+
         $config  = [
             'indent'                      => true,
             'indent-spaces'               => 2,
@@ -119,6 +141,7 @@ class KernelSubscriber implements EventSubscriberInterface
         $tidy    = new tidy();
         $tidy->parseString($content, $config, 'utf8');
         $tidy->cleanRepair();
+
         $response->setContent($tidy);
         $event->setResponse($response);
     }
