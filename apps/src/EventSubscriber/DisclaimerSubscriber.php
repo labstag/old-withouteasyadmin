@@ -2,6 +2,7 @@
 
 namespace Labstag\EventSubscriber;
 
+use Labstag\Lib\EventSubscriberLib;
 use Labstag\Service\DataService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -9,12 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\RouterInterface;
 
-class DisclaimerSubscriber implements EventSubscriberInterface
+class DisclaimerSubscriber extends EventSubscriberLib
 {
-    public function __construct(protected RouterInterface $router, protected DataService $dataService)
-    {
-    }
-
     /**
      * @return array<string, string>
      */

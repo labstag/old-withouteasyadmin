@@ -2,10 +2,11 @@
 
 namespace Labstag\EventSubscriber;
 
+use Labstag\Lib\EventSubscriberLib;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use tidy;
 
-class KernelSubscriber implements EventSubscriberInterface
+class KernelSubscriber extends EventSubscriberLib
 {
     /**
      * @var string

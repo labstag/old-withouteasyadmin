@@ -2,6 +2,7 @@
 
 namespace Labstag\EventSubscriber;
 
+use Labstag\Lib\EventSubscriberLib;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\DataService;
 use Symfony\Component\Asset\PathPackage;
@@ -16,7 +17,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class TwigEventSubscriber implements EventSubscriberInterface
+class TwigEventSubscriber extends EventSubscriberLib
 {
     /**
      * @var string
@@ -35,19 +36,6 @@ class TwigEventSubscriber implements EventSubscriberInterface
      * @var string
      */
     final public const LABSTAG_CONTROLLER = '/(Labstag)/';
-
-    public function __construct(
-        protected RouterInterface $router,
-        protected Environment $environment,
-        protected UrlGeneratorInterface $urlGenerator,
-        protected CsrfTokenManagerInterface $csrfTokenManager,
-        protected DataService $dataService,
-        protected Security $security,
-        protected TranslatorInterface $translator,
-        protected AttachmentRepository $attachmentRepository
-    )
-    {
-    }
 
     /**
      * @return array<class-string<ControllerEvent>, string>

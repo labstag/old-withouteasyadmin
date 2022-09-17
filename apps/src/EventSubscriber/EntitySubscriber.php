@@ -36,23 +36,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EntitySubscriber extends EventSubscriberLib
 {
-    public function __construct(
-        protected ParameterBagInterface $parameterBag,
-        protected EnqueueMethod $enqueueMethod,
-        protected EntityManagerInterface $entityManager,
-        protected ParagraphService $paragraphService,
-        protected BlockService $blockService,
-        protected UserPasswordHasherInterface $userPasswordHasher,
-        protected SessionService $sessionService,
-        protected EmailUserRequestHandler $emailUserRequestHandler,
-        protected TranslatorInterface $translator,
-        protected ConfigurationRepository $configurationRepository,
-        protected PageRepository $pageRepository,
-        protected MenuRepository $menuRepository,
-        protected UserRepository $userRepository
-    )
-    {
-    }
 
     /**
      * @return array<class-string<AttachmentEntityEvent>|class-string<BlockEntityEvent>|class-string<BookmarkEntityEvent>|class-string<ChapterEntityEvent>|class-string<ConfigurationEntityEvent>|class-string<HistoryEntityEvent>|class-string<MenuEntityEvent>|class-string<PageEntityEvent>|class-string<ParagraphEntityEvent>|class-string<UserEntityEvent>, mixed>
@@ -109,7 +92,7 @@ class EntitySubscriber extends EventSubscriberLib
     public function onChapterEntityEvent(ChapterEntityEvent $chapterEntityEvent): void
     {
         $chapter = $chapterEntityEvent->getNewEntity();
-        $this->enqueueMethod->enqueue(
+        $this->enqueue->enqueue(
             HistoryService::class,
             'process',
             [
@@ -131,7 +114,7 @@ class EntitySubscriber extends EventSubscriberLib
     public function onHistoryEntityEvent(HistoryEntityEvent $historyEntityEvent): void
     {
         $history = $historyEntityEvent->getNewEntity();
-        $this->enqueueMethod->enqueue(
+        $this->enqueue->enqueue(
             HistoryService::class,
             'process',
             [
@@ -227,7 +210,7 @@ class EntitySubscriber extends EventSubscriberLib
 
     protected function getParameter(string $name)
     {
-        return $this->parameterBag->get($name);
+        return $this->containerBag->get($name);
     }
 
     protected function getRepository(string $entity): EntityRepository
@@ -319,7 +302,7 @@ class EntitySubscriber extends EventSubscriberLib
             return;
         }
 
-        $encodePassword = $this->userPasswordHasher->hashPassword(
+        $encodePassword = $this->passwordEncoder->hashPassword(
             $user,
             $plainPassword
         );
@@ -377,8 +360,8 @@ class EntitySubscriber extends EventSubscriberLib
         $emailUser->setPrincipal(true);
         $emailUser->setAddress($address);
 
-        $this->emailUserRequestHandler->handle($old, $emailUser);
-        $this->emailUserRequestHandler->changeWorkflowState($emailUser, ['submit', 'valider']);
+        $this->emailUserRH->handle($old, $emailUser);
+        $this->emailUserRH->changeWorkflowState($emailUser, ['submit', 'valider']);
     }
 
     protected function setRobotsTxt(array $post): void

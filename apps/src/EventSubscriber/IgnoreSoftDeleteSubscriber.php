@@ -6,6 +6,7 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Lib\EventSubscriberLib;
 use ReflectionClass;
 use ReflectionObject;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -13,25 +14,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
-class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
+class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
 {
     /**
      * @var class-string<IgnoreSoftDelete>
      */
     final public const ANNOTATION = 'Labstag\Annotation\IgnoreSoftDelete';
-
-    // @var null|Request
-    protected $request;
-
-    public function __construct(
-        protected Reader $reader,
-        protected EntityManagerInterface $entityManager,
-        protected RequestStack $requestStack
-    )
-    {
-        // @var Request $request
-        $this->request       = $this->requestStack->getCurrentRequest();
-    }
 
     /**
      * @return array<string, string>

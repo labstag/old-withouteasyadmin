@@ -6,14 +6,12 @@ use Labstag\Entity\AddressUser;
 use Labstag\Entity\LinkUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Event\UserCollectionEvent;
+use Labstag\Lib\EventSubscriberLib;
 use Labstag\Service\UserMailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class UserCollectionSubscriber implements EventSubscriberInterface
+class UserCollectionSubscriber extends EventSubscriberLib
 {
-    public function __construct(protected UserMailService $userMailService)
-    {
-    }
 
     /**
      * @return array<class-string<UserCollectionEvent>, string>

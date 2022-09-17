@@ -9,21 +9,12 @@ use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\WorkflowGroupeRepository;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\Repository\WorkflowUserRepository;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Labstag\Lib\EventSubscriberLib;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Event\GuardEvent;
 
-class WorkflowGuardSubscriber implements EventSubscriberInterface
+class WorkflowGuardSubscriber extends EventSubscriberLib
 {
-    public function __construct(
-        protected TokenStorageInterface $tokenStorage,
-        protected WorkflowRepository $workflowRepository,
-        protected GroupeRepository $groupeRepository,
-        protected WorkflowGroupeRepository $workflowGroupeRepository,
-        protected WorkflowUserRepository $workflowUserRepository
-    )
-    {
-    }
 
     /**
      * @return array<string, string>
@@ -37,7 +28,7 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
     {
         $stategroupe = false;
         $stateuser   = false;
-        $token       = $this->tokenStorage->getToken();
+        $token       = $this->token->getToken();
         $name        = $guardEvent->getWorkflowName();
         $transition  = $guardEvent->getTransition()->getName();
         $workflow    = $this->workflowRepository->findOneBy(
