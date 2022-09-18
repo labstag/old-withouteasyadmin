@@ -19,7 +19,11 @@ class GroupeController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_groupuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_groupuser_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $attachFormService, ?Groupe $groupe, GroupeRequestHandler $groupeRequestHandler): Response
+    public function edit(
+        AttachFormService $attachFormService,
+        ?Groupe $groupe,
+        GroupeRequestHandler $groupeRequestHandler
+    ): Response
     {
         return $this->form(
             $attachFormService,

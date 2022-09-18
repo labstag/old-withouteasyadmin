@@ -20,7 +20,11 @@ use Symfony\Component\Uid\Uuid;
 class PageController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_page_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $attachFormService, ?Page $page, PageRequestHandler $pageRequestHandler): Response
+    public function edit(
+        AttachFormService $attachFormService,
+        ?Page $page,
+        PageRequestHandler $pageRequestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 

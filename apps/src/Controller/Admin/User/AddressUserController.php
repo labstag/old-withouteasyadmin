@@ -74,9 +74,6 @@ class AddressUserController extends AdminControllerLib
         ];
     }
 
-    /**
-     * @return array<string, \AddressUserSearch>|array<string, class-string<\Labstag\Form\Admin\Search\User\AddressUserType>>
-     */
     protected function searchForm(): array
     {
         return [

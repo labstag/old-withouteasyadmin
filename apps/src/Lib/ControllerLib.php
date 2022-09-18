@@ -36,7 +36,7 @@ abstract class ControllerLib extends AbstractController
         protected EntityManagerInterface $entityManager,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected TokenStorageInterface $tokenStorage,
-        protected RouterInterface $router,
+        protected RouterInterface $routerInterface,
         protected RequestStack $requeststack,
         protected GuardService $guardService,
         protected DataService $dataService,

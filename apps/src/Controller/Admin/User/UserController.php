@@ -19,7 +19,11 @@ class UserController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_user_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_user_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $attachFormService, ?User $user, UserRequestHandler $userRequestHandler): Response
+    public function edit(
+        AttachFormService $attachFormService,
+        ?User $user,
+        UserRequestHandler $userRequestHandler
+    ): Response
     {
         return $this->form(
             $attachFormService,

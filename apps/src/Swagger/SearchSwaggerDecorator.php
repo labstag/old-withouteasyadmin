@@ -44,9 +44,6 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         return $this->normalizer->supportsNormalization($data, $format);
     }
 
-    /**
-     * @return array<int, array{content: array{application/json: array{schema: array{type: string, properties: array{id: array{type: string, example: string}, name: array{type: string, example: string}}}}}}>
-     */
     private function getResponses(): array
     {
         return [

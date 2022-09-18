@@ -64,9 +64,9 @@ class GuardService
      */
     public function all(): array
     {
-        $data       = [];
-        $collection = $this->router->getRouteCollection();
-        $all        = $collection->all();
+        $data            = [];
+        $routeCollection = $this->router->getRouteCollection();
+        $all             = $routeCollection->all();
         foreach ($all as $name => $route) {
             // @var Routing $route
             $defaults = $route->getDefaults();
@@ -90,9 +90,9 @@ class GuardService
      */
     public function allRoutes(): array
     {
-        $data       = [];
-        $collection = $this->router->getRouteCollection();
-        $all        = $collection->all();
+        $data            = [];
+        $routeCollection = $this->router->getRouteCollection();
+        $all             = $routeCollection->all();
         foreach ($all as $name => $route) {
             $data[$name] = $route;
         }
@@ -139,9 +139,9 @@ class GuardService
      */
     public function getPublicRoute(): array
     {
-        $data       = [];
-        $collection = $this->router->getRouteCollection();
-        $all        = $collection->all();
+        $data            = [];
+        $routeCollection = $this->router->getRouteCollection();
+        $all             = $routeCollection->all();
         foreach ($all as $name => $route) {
             // @var Routing $route
             $defaults = $route->getDefaults();

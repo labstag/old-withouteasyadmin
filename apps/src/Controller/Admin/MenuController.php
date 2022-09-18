@@ -77,7 +77,11 @@ class MenuController extends AdminControllerLib
     }
 
     #[Route(path: '/update/{id}', name: 'admin_menu_update', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $attachFormService, Menu $menu, MenuRequestHandler $menuRequestHandler): Response
+    public function edit(
+        AttachFormService $attachFormService,
+        Menu $menu,
+        MenuRequestHandler $menuRequestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
         $form             = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;

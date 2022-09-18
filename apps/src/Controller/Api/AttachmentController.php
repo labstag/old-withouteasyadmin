@@ -32,7 +32,11 @@ class AttachmentController extends ApiControllerLib
     }
 
     #[Route(path: '/edito/fond/{entity}', name: 'api_attachment_editofond')]
-    public function editoFond(AttachmentRepository $attachmentRepository, Edito $edito, EditoRequestHandler $editoRequestHandler): JsonResponse
+    public function editoFond(
+        AttachmentRepository $attachmentRepository,
+        Edito $edito,
+        EditoRequestHandler $editoRequestHandler
+    ): JsonResponse
     {
         return $this->deleteFile($attachmentRepository, $edito, $editoRequestHandler, 'getFond', 'setFond');
     }
@@ -133,7 +137,13 @@ class AttachmentController extends ApiControllerLib
         return $this->csrfTokenManager->isTokenValid($csrfToken);
     }
 
-    private function deleteFile(AttachmentRepository $attachmentRepository, $entity, $requesthandler, $methodGet, $methodSet): JsonResponse
+    private function deleteFile(
+        AttachmentRepository $attachmentRepository,
+        $entity,
+        $requesthandler,
+        $methodGet,
+        $methodSet
+    ): JsonResponse
     {
         $return = [
             'state' => false,

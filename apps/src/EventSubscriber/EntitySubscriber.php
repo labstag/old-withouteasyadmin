@@ -23,9 +23,6 @@ use Labstag\Service\HistoryService;
 
 class EntitySubscriber extends EventSubscriberLib
 {
-    /**
-     * @return array<class-string<AttachmentEntityEvent>|class-string<BlockEntityEvent>|class-string<BookmarkEntityEvent>|class-string<ChapterEntityEvent>|class-string<ConfigurationEntityEvent>|class-string<HistoryEntityEvent>|class-string<MenuEntityEvent>|class-string<PageEntityEvent>|class-string<ParagraphEntityEvent>|class-string<UserEntityEvent>, mixed>
-     */
     public static function getSubscribedEvents(): array
     {
         return [

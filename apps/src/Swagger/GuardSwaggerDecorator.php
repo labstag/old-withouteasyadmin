@@ -181,9 +181,6 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/guard/setuser/{route}/{user}']['post'] = $statsEndpoint;
     }
 
-    /**
-     * @return array<int, array{content: array{application/json: array{schema: array{type: string, properties: array{ok: array{type: string, example: bool}}}}}}>
-     */
     private function setResponses(): array
     {
         return [

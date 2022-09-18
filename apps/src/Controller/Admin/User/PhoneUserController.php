@@ -75,9 +75,6 @@ class PhoneUserController extends AdminControllerLib
         ];
     }
 
-    /**
-     * @return array<string, \PhoneUserSearch>|array<string, class-string<\Labstag\Form\Admin\Search\User\PhoneUserType>>
-     */
     protected function searchForm(): array
     {
         return [

@@ -25,7 +25,11 @@ use Symfony\Component\Uid\Uuid;
 class LayoutController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_layout_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $attachFormService, ?Layout $layout, LayoutRequestHandler $layoutRequestHandler): Response
+    public function edit(
+        AttachFormService $attachFormService,
+        ?Layout $layout,
+        LayoutRequestHandler $layoutRequestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 

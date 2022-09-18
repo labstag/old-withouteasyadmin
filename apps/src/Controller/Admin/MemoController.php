@@ -21,7 +21,11 @@ use Symfony\Component\Uid\Uuid;
 class MemoController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_memo_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $attachFormService, ?Memo $memo, MemoRequestHandler $memoRequestHandler): Response
+    public function edit(
+        AttachFormService $attachFormService,
+        ?Memo $memo,
+        MemoRequestHandler $memoRequestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 
@@ -48,7 +52,11 @@ class MemoController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_memo_new', methods: ['GET', 'POST'])]
-    public function new(MemoRepository $memoRepository, MemoRequestHandler $memoRequestHandler, Security $security): RedirectResponse
+    public function new(
+        MemoRepository $memoRepository,
+        MemoRequestHandler $memoRequestHandler,
+        Security $security
+    ): RedirectResponse
     {
         $user = $security->getUser();
 

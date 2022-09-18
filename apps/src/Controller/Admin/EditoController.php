@@ -22,7 +22,11 @@ use Symfony\Component\Uid\Uuid;
 class EditoController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_edito_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $attachFormService, ?Edito $edito, EditoRequestHandler $editoRequestHandler): Response
+    public function edit(
+        AttachFormService $attachFormService,
+        ?Edito $edito,
+        EditoRequestHandler $editoRequestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 
@@ -49,7 +53,11 @@ class EditoController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_edito_new', methods: ['GET', 'POST'])]
-    public function new(EditoRepository $editoRepository, EditoRequestHandler $editoRequestHandler, Security $security): RedirectResponse
+    public function new(
+        EditoRepository $editoRepository,
+        EditoRequestHandler $editoRequestHandler,
+        Security $security
+    ): RedirectResponse
     {
         $user = $security->getUser();
 

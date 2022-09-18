@@ -18,7 +18,11 @@ class LibelleController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_libelle_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_libelle_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $attachFormService, ?Libelle $libelle, LibelleRequestHandler $libelleRequestHandler): Response
+    public function edit(
+        AttachFormService $attachFormService,
+        ?Libelle $libelle,
+        LibelleRequestHandler $libelleRequestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 

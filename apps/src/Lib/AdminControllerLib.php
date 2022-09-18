@@ -9,25 +9,18 @@ use Labstag\Entity\Paragraph;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\AttachFormService;
 use Labstag\Singleton\AdminBtnSingleton;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Matcher\TraceableUrlMatcher;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 abstract class AdminControllerLib extends ControllerLib
 {
-
-    protected AttachmentRequestHandler $attachmentRH;
-
     protected ?AdminBtnSingleton $btns = null;
-
-    protected FlashBagInterface $flashbag;
 
     protected string $urlHome = '';
 
@@ -291,7 +284,7 @@ abstract class AdminControllerLib extends ControllerLib
     )
     {
         $environment = null;
-        $entity = strtolower(
+        $entity      = strtolower(
             str_replace(
                 'Labstag\\Entity\\',
                 '',

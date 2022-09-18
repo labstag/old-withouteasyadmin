@@ -146,7 +146,11 @@ class AdminController extends AdminControllerLib
     }
 
     #[Route(path: '/profil', name: 'admin_profil', methods: ['GET', 'POST'])]
-    public function profil(AttachFormService $attachFormService, Security $security, UserRequestHandler $userRequestHandler): Response
+    public function profil(
+        AttachFormService $attachFormService,
+        Security $security,
+        UserRequestHandler $userRequestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 

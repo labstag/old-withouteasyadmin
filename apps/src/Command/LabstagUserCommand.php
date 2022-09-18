@@ -36,7 +36,12 @@ class LabstagUserCommand extends CommandLib
         parent::__construct($entityManager);
     }
 
-    protected function actionEnableDisableDelete(InputInterface $input, OutputInterface $output, $inputOutput, $action): void
+    protected function actionEnableDisableDelete(
+        InputInterface $input,
+        OutputInterface $output,
+        $inputOutput,
+        $action
+    ): void
     {
         $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
@@ -150,7 +155,13 @@ class LabstagUserCommand extends CommandLib
         $inputOutput->success('Utilisateur ajouté');
     }
 
-    protected function delete($helper, string $username, $inputOutput, InputInterface $input, OutputInterface $output): void
+    protected function delete(
+        $helper,
+        string $username,
+        $inputOutput,
+        InputInterface $input,
+        OutputInterface $output
+    ): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
@@ -383,7 +394,13 @@ class LabstagUserCommand extends CommandLib
         return $table;
     }
 
-    protected function updatePassword($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output): void
+    protected function updatePassword(
+        $helper,
+        $username,
+        $inputOutput,
+        InputInterface $input,
+        OutputInterface $output
+    ): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {

@@ -22,7 +22,11 @@ use Symfony\Component\Uid\Uuid;
 class PostController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_post_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $attachFormService, ?Post $post, PostRequestHandler $postRequestHandler): Response
+    public function edit(
+        AttachFormService $attachFormService,
+        ?Post $post,
+        PostRequestHandler $postRequestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 
@@ -49,7 +53,11 @@ class PostController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_post_new', methods: ['GET', 'POST'])]
-    public function new(PostRepository $postRepository, PostRequestHandler $postRequestHandler, Security $security): RedirectResponse
+    public function new(
+        PostRepository $postRepository,
+        PostRequestHandler $postRequestHandler,
+        Security $security
+    ): RedirectResponse
     {
         $user = $security->getUser();
 

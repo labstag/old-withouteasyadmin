@@ -75,9 +75,6 @@ class EmailUserController extends AdminControllerLib
         ];
     }
 
-    /**
-     * @return array<string, \EmailUserSearch>|array<string, class-string<\Labstag\Form\Admin\Search\User\EmailUserType>>
-     */
     protected function searchForm(): array
     {
         return [

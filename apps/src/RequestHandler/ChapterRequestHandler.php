@@ -7,9 +7,6 @@ use Labstag\Lib\RequestHandlerLib;
 
 class ChapterRequestHandler extends RequestHandlerLib
 {
-
-    public $dispatcher;
-
     public function handle($oldEntity, $entity): void
     {
         parent::handle($oldEntity, $entity);

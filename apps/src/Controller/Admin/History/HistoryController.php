@@ -25,7 +25,11 @@ use Symfony\Component\Uid\Uuid;
 class HistoryController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_history_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $attachFormService, ?History $history, HistoryRequestHandler $historyRequestHandler): Response
+    public function edit(
+        AttachFormService $attachFormService,
+        ?History $history,
+        HistoryRequestHandler $historyRequestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 

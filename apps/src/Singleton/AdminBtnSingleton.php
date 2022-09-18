@@ -15,17 +15,17 @@ class AdminBtnSingleton
 
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
+    protected Environment $environment;
+
     protected GuardService $guardService;
 
     protected bool $init = false;
 
     protected static $instance;
 
-    protected RouterInterface $router;
+    protected RouterInterface $routerInterface;
 
     protected TokenStorageInterface $token;
-
-    protected Environment $environment;
 
     protected function __construct()
     {
@@ -85,8 +85,8 @@ class AdminBtnSingleton
             'id'       => 'DeleteForm',
             'is'       => 'link-btnadmindelete',
             'token'    => $token,
-            'redirect' => $this->router->generate($route['list']),
-            'url'      => $this->router->generate(
+            'redirect' => $this->routerInterface->generate($route['list']),
+            'url'      => $this->routerInterface->generate(
                 $route['delete'],
                 $routeParam
             ),
@@ -125,7 +125,7 @@ class AdminBtnSingleton
             'btn-admin-header-edit',
             $text,
             [
-                'href' => $this->router->generate($route, $routeParam),
+                'href' => $this->routerInterface->generate($route, $routeParam),
             ]
         );
 
@@ -155,8 +155,8 @@ class AdminBtnSingleton
         $attr  = [
             'is'       => 'link-btnadminempty',
             'token'    => $token,
-            'redirect' => $this->router->generate($route['list']),
-            'url'      => $this->router->generate(
+            'redirect' => $this->routerInterface->generate($route['list']),
+            'url'      => $this->routerInterface->generate(
                 $route['empty'],
                 ['entity' => $entity]
             ),
@@ -185,7 +185,7 @@ class AdminBtnSingleton
             'btn-admin-header-guard',
             $text,
             [
-                'href' => $this->router->generate($route, $routeParam),
+                'href' => $this->routerInterface->generate($route, $routeParam),
             ]
         );
 
@@ -202,7 +202,7 @@ class AdminBtnSingleton
             'btn-admin-header-import',
             $text,
             [
-                'href' => $this->router->generate($route),
+                'href' => $this->routerInterface->generate($route),
             ]
         );
 
@@ -219,7 +219,7 @@ class AdminBtnSingleton
             'btn-admin-header-list',
             $text,
             [
-                'href' => $this->router->generate($route),
+                'href' => $this->routerInterface->generate($route),
             ]
         );
 
@@ -236,7 +236,7 @@ class AdminBtnSingleton
             'btn-admin-header-new',
             $text,
             [
-                'href' => $this->router->generate($route),
+                'href' => $this->routerInterface->generate($route),
             ]
         );
 
@@ -281,7 +281,7 @@ class AdminBtnSingleton
             'btn-admin-header-show',
             $text,
             [
-                'href' => $this->router->generate($route, $routeParam),
+                'href' => $this->routerInterface->generate($route, $routeParam),
             ]
         );
 
@@ -298,7 +298,7 @@ class AdminBtnSingleton
             'btn-admin-header-trash',
             $text,
             [
-                'href' => $this->router->generate($route),
+                'href' => $this->routerInterface->generate($route),
             ]
         );
 
@@ -363,7 +363,7 @@ class AdminBtnSingleton
     ): void
     {
         $this->environment      = $environment;
-        $this->router           = $router;
+        $this->routerInterface  = $router;
         $this->token            = $tokenStorage;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->guardService     = $guardService;
@@ -392,8 +392,14 @@ class AdminBtnSingleton
             [
                 'is'       => 'link-btnadmin'.$codemodal,
                 'token'    => $token,
-                'redirect' => $this->router->generate($routes['redirect']['href'], $routes['redirect']['params']),
-                'url'      => $this->router->generate($routes['url']['href'], $routes['url']['params']),
+                'redirect' => $this->routerInterface->generate(
+                    $routes['redirect']['href'],
+                    $routes['redirect']['params']
+                ),
+                'url'      => $this->routerInterface->generate(
+                    $routes['url']['href'],
+                    $routes['url']['params']
+                ),
             ]
         );
     }
@@ -453,8 +459,8 @@ class AdminBtnSingleton
         $attr  = [
             'token'    => $token,
             'is'       => 'link-btnadmin'.$word,
-            'redirect' => $this->router->generate($route['list']),
-            'url'      => $this->router->generate(
+            'redirect' => $this->routerInterface->generate($route['list']),
+            'url'      => $this->routerInterface->generate(
                 $route[$word],
                 $routeParam
             ),

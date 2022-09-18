@@ -21,7 +21,11 @@ use Symfony\Component\Uid\Uuid;
 class ChapterController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_chapter_edit', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $attachFormService, ?Chapter $chapter, ChapterRequestHandler $chapterRequestHandler): Response
+    public function edit(
+        AttachFormService $attachFormService,
+        ?Chapter $chapter,
+        ChapterRequestHandler $chapterRequestHandler
+    ): Response
     {
         $this->modalAttachmentDelete();
 
