@@ -54,14 +54,14 @@ class LayoutController extends AdminControllerLib
             'Nouveau',
             [
                 'is'       => 'link-btnadminnewblock',
-                'data-url' => $this->routerInterface->generate('admin_layout_new'),
+                'data-url' => $this->router->generate('admin_layout_new'),
             ]
         );
         $form = $this->createForm(
             NewLayoutType::class,
             new Layout(),
             [
-                'action' => $this->routerInterface->generate('admin_layout_new'),
+                'action' => $this->router->generate('admin_layout_new'),
             ]
         );
 

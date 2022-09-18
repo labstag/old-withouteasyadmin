@@ -56,7 +56,7 @@ class BlockController extends AdminControllerLib
             'Nouveau',
             [
                 'is'       => 'link-btnadminnewblock',
-                'data-url' => $this->routerInterface->generate('admin_block_new'),
+                'data-url' => $this->router->generate('admin_block_new'),
             ]
         );
         $this->btnInstance()->addBtnList(
@@ -67,7 +67,7 @@ class BlockController extends AdminControllerLib
             NewBlockType::class,
             new Block(),
             [
-                'action' => $this->routerInterface->generate('admin_block_new'),
+                'action' => $this->router->generate('admin_block_new'),
             ]
         );
         $url       = $this->getUrlAdmin();

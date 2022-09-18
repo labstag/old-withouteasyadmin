@@ -27,7 +27,7 @@ class DisclaimerSubscriber extends EventSubscriberLib
 
         $requestEvent->setResponse(
             new RedirectResponse(
-                $this->routerInterface->generate('disclaimer')
+                $this->router->generate('disclaimer')
             )
         );
     }

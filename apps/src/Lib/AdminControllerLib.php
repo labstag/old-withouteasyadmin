@@ -20,6 +20,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 abstract class AdminControllerLib extends ControllerLib
 {
+
     protected ?AdminBtnSingleton $btns = null;
 
     protected string $urlHome = '';
@@ -174,7 +175,7 @@ abstract class AdminControllerLib extends ControllerLib
 
         $this->setSingletons()->add(
             $title,
-            $this->routerInterface->generate(
+            $this->router->generate(
                 $route,
                 $params,
             )
@@ -219,7 +220,7 @@ abstract class AdminControllerLib extends ControllerLib
         if (!$this->btns->isInit()) {
             $this->btns->setConf(
                 $this->environment,
-                $this->routerInterface,
+                $this->router,
                 $this->tokenStorage,
                 $this->csrfTokenManager,
                 $this->guardService
@@ -461,8 +462,8 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function setBreadcrumbsPage()
     {
-        $routeCollection     = $this->routerInterface->getRouteCollection();
-        $requestContext      = $this->routerInterface->getContext();
+        $routeCollection     = $this->router->getRouteCollection();
+        $requestContext      = $this->router->getContext();
         $traceableUrlMatcher = new TraceableUrlMatcher($routeCollection, $requestContext);
         $request             = $this->requeststack->getCurrentRequest();
         $attributes          = $request->attributes->all();
