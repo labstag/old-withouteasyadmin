@@ -11,7 +11,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\ChapterRepository;
 use Labstag\RequestHandler\ChapterRequestHandler;
 use Labstag\Search\ChapterSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +21,6 @@ class ChapterController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_chapter_edit', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?Chapter $chapter,
         ChapterRequestHandler $chapterRequestHandler
     ): Response
@@ -30,7 +28,6 @@ class ChapterController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $attachFormService,
             $chapterRequestHandler,
             ChapterType::class,
             is_null($chapter) ? new Chapter() : $chapter,

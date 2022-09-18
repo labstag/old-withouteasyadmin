@@ -13,7 +13,6 @@ use Labstag\Repository\Block\CustomRepository;
 use Labstag\Repository\LayoutRepository;
 use Labstag\RequestHandler\LayoutRequestHandler;
 use Labstag\Search\LayoutSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +25,6 @@ class LayoutController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_layout_edit', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?Layout $layout,
         LayoutRequestHandler $layoutRequestHandler
     ): Response
@@ -34,7 +32,6 @@ class LayoutController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $attachFormService,
             $layoutRequestHandler,
             LayoutType::class,
             is_null($layout) ? new Layout() : $layout,

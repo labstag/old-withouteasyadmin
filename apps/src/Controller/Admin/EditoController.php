@@ -11,7 +11,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\EditoRepository;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\Search\EditoSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +22,6 @@ class EditoController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_edito_edit', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?Edito $edito,
         EditoRequestHandler $editoRequestHandler
     ): Response
@@ -31,7 +29,6 @@ class EditoController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $attachFormService,
             $editoRequestHandler,
             EditoType::class,
             is_null($edito) ? new Edito() : $edito,

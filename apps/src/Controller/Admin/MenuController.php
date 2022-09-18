@@ -9,7 +9,6 @@ use Labstag\Form\Admin\Menu\PrincipalType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\MenuRepository;
 use Labstag\RequestHandler\MenuRequestHandler;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +20,6 @@ class MenuController extends AdminControllerLib
 {
     #[Route(path: '/add', name: 'admin_menu_add', methods: ['GET', 'POST'])]
     public function add(
-        AttachFormService $attachFormService,
         Request $request,
         MenuRequestHandler $menuRequestHandler,
         MenuRepository $menuRepository
@@ -50,7 +48,6 @@ class MenuController extends AdminControllerLib
         $menu->setParent($parent);
 
         return $this->form(
-            $attachFormService,
             $menuRequestHandler,
             LinkType::class,
             $menu,
@@ -78,7 +75,6 @@ class MenuController extends AdminControllerLib
 
     #[Route(path: '/update/{id}', name: 'admin_menu_update', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         Menu $menu,
         MenuRequestHandler $menuRequestHandler
     ): Response
@@ -90,7 +86,6 @@ class MenuController extends AdminControllerLib
         $menu->setData($data);
 
         return $this->form(
-            $attachFormService,
             $menuRequestHandler,
             $form,
             $menu,
@@ -150,10 +145,9 @@ class MenuController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_menu_new', methods: ['GET', 'POST'])]
-    public function new(AttachFormService $attachFormService, MenuRequestHandler $menuRequestHandler): Response
+    public function new(MenuRequestHandler $menuRequestHandler): Response
     {
         return $this->form(
-            $attachFormService,
             $menuRequestHandler,
             PrincipalType::class,
             new Menu(),

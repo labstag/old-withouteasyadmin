@@ -12,7 +12,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\HistoryRepository;
 use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Search\HistorySearch;
-use Labstag\Service\AttachFormService;
 use Labstag\Service\HistoryService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +25,6 @@ class HistoryController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_history_edit', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?History $history,
         HistoryRequestHandler $historyRequestHandler
     ): Response
@@ -34,7 +32,6 @@ class HistoryController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $attachFormService,
             $historyRequestHandler,
             HistoryType::class,
             is_null($history) ? new History() : $history,

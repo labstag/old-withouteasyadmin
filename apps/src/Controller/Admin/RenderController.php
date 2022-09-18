@@ -9,7 +9,6 @@ use Labstag\Form\Admin\Search\RenderType as SearchRenderType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\RenderRequestHandler;
 use Labstag\Search\RenderSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,7 +18,6 @@ class RenderController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_render_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_render_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?Render $render,
         RenderRequestHandler $renderRequestHandler
     ): Response
@@ -27,7 +25,6 @@ class RenderController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $attachFormService,
             $renderRequestHandler,
             RenderType::class,
             is_null($render) ? new Render() : $render,

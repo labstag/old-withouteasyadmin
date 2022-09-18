@@ -9,7 +9,6 @@ use Labstag\Entity\Paragraph;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
-use Labstag\Service\AttachFormService;
 use Labstag\Singleton\AdminBtnSingleton;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,7 +25,6 @@ abstract class AdminControllerLib extends ControllerLib
     protected string $urlHome = '';
 
     public function form(
-        AttachFormService $attachFormService,
         RequestHandlerLib $requestHandlerLib,
         string $formType,
         object $entity,
@@ -50,10 +48,7 @@ abstract class AdminControllerLib extends ControllerLib
         $form->handleRequest($this->requeststack->getCurrentRequest());
         if ($form->isSubmitted() && $form->isValid()) {
             $this->setPositionParagraphs();
-            $this->upload(
-                $attachFormService->getUploadAnnotationReader(),
-                $entity
-            );
+            $this->attachFormService->upload($entity);
             $requestHandlerLib->handle($oldEntity, $entity);
             $this->sessionService->flashBagAdd(
                 'success',
@@ -816,8 +811,9 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function upload(UploadAnnotationReader $uploadAnnotationReader, $entity): void
+    protected function upload($entity): void
     {
+        $uploadAnnotationReader = $this->attachFormService->getUploadAnnotationReader();
         if (!$uploadAnnotationReader->isUploadable($entity)) {
             return;
         }

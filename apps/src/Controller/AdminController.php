@@ -13,7 +13,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\MemoRepository;
 use Labstag\RequestHandler\UserRequestHandler;
-use Labstag\Service\AttachFormService;
 use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
@@ -147,7 +146,6 @@ class AdminController extends AdminControllerLib
 
     #[Route(path: '/profil', name: 'admin_profil', methods: ['GET', 'POST'])]
     public function profil(
-        AttachFormService $attachFormService,
         Security $security,
         UserRequestHandler $userRequestHandler
     ): Response
@@ -155,7 +153,6 @@ class AdminController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $attachFormService,
             $userRequestHandler,
             ProfilType::class,
             $security->getUser(),

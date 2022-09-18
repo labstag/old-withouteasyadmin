@@ -9,7 +9,6 @@ use Labstag\Form\Admin\User\EmailUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Search\User\EmailUserSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,13 +18,11 @@ class EmailUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_emailuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_emailuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?EmailUser $emailUser,
         EmailUserRequestHandler $emailUserRequestHandler
     ): Response
     {
         return $this->form(
-            $attachFormService,
             $emailUserRequestHandler,
             EmailUserType::class,
             is_null($emailUser) ? new EmailUser() : $emailUser

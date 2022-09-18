@@ -14,7 +14,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\RequestHandler\BookmarkRequestHandler;
 use Labstag\Search\BookmarkSearch;
-use Labstag\Service\AttachFormService;
 use Labstag\Service\BookmarkService;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -29,7 +28,6 @@ class BookmarkController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_bookmark_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_bookmark_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?Bookmark $bookmark,
         BookmarkRequestHandler $bookmarkRequestHandler
     ): Response
@@ -37,7 +35,6 @@ class BookmarkController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $attachFormService,
             $bookmarkRequestHandler,
             PrincipalType::class,
             is_null($bookmark) ? new Bookmark() : $bookmark,

@@ -11,7 +11,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\PostRepository;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\Search\PostSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +22,6 @@ class PostController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_post_edit', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?Post $post,
         PostRequestHandler $postRequestHandler
     ): Response
@@ -31,7 +29,6 @@ class PostController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $attachFormService,
             $postRequestHandler,
             PostType::class,
             is_null($post) ? new Post() : $post,

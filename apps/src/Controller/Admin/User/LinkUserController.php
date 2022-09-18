@@ -9,7 +9,6 @@ use Labstag\Form\Admin\User\LinkUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\LinkUserRequestHandler;
 use Labstag\Search\User\LinkUserSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,13 +18,11 @@ class LinkUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_linkuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_linkuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?LinkUser $linkUser,
         LinkUserRequestHandler $linkUserRequestHandler
     ): Response
     {
         return $this->form(
-            $attachFormService,
             $linkUserRequestHandler,
             LinkUserType::class,
             is_null($linkUser) ? new LinkUser() : $linkUser

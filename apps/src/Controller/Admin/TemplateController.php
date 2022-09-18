@@ -9,7 +9,6 @@ use Labstag\Form\Admin\TemplateType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\Search\TemplateSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,13 +18,11 @@ class TemplateController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_template_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_template_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?Template $template,
         TemplateRequestHandler $templateRequestHandler
     ): Response
     {
         return $this->form(
-            $attachFormService,
             $templateRequestHandler,
             TemplateType::class,
             is_null($template) ? new Template() : $template

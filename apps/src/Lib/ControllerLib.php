@@ -4,6 +4,7 @@ namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Service\AttachFormService;
 use Labstag\Service\BlockService;
 use Labstag\Service\DataService;
 use Labstag\Service\ErrorService;
@@ -29,6 +30,7 @@ abstract class ControllerLib extends AbstractController
     protected Request $request;
 
     public function __construct(
+        protected AttachFormService $attachFormService,
         protected FileService $fileService,
         protected Environment $environment,
         protected ErrorService $errorService,

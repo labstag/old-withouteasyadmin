@@ -10,7 +10,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\MemoRepository;
 use Labstag\RequestHandler\MemoRequestHandler;
 use Labstag\Search\MemoSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +21,6 @@ class MemoController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_memo_edit', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?Memo $memo,
         MemoRequestHandler $memoRequestHandler
     ): Response
@@ -30,7 +28,6 @@ class MemoController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $attachFormService,
             $memoRequestHandler,
             MemoType::class,
             is_null($memo) ? new Memo() : $memo,

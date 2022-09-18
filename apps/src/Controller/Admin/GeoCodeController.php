@@ -9,7 +9,6 @@ use Labstag\Form\Admin\Search\GeocodeType as SearchGeocodeType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\GeoCodeRequestHandler;
 use Labstag\Search\GeocodeSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,13 +18,11 @@ class GeoCodeController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_geocode_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_geocode_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?GeoCode $geoCode,
         GeoCodeRequestHandler $geoCodeRequestHandler
     ): Response
     {
         return $this->form(
-            $attachFormService,
             $geoCodeRequestHandler,
             GeoCodeType::class,
             is_null($geoCode) ? new GeoCode() : $geoCode

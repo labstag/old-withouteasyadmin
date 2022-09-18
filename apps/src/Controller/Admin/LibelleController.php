@@ -9,7 +9,6 @@ use Labstag\Form\Admin\Search\LibelleType as SearchLibelleType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\Search\LibelleSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,7 +18,6 @@ class LibelleController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_libelle_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_libelle_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?Libelle $libelle,
         LibelleRequestHandler $libelleRequestHandler
     ): Response
@@ -27,7 +25,6 @@ class LibelleController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $attachFormService,
             $libelleRequestHandler,
             LibelleType::class,
             is_null($libelle) ? new Libelle() : $libelle

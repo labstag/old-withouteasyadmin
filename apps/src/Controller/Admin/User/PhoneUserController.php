@@ -9,7 +9,6 @@ use Labstag\Form\Admin\User\PhoneUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\Search\User\PhoneUserSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,13 +18,11 @@ class PhoneUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_phoneuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_phoneuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?PhoneUser $phoneUser,
         PhoneUserRequestHandler $phoneUserRequestHandler
     ): Response
     {
         return $this->form(
-            $attachFormService,
             $phoneUserRequestHandler,
             PhoneUserType::class,
             is_null($phoneUser) ? new PhoneUser() : $phoneUser

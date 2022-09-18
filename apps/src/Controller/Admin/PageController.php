@@ -10,7 +10,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\PageRepository;
 use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\Search\PageSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +20,6 @@ class PageController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_page_edit', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?Page $page,
         PageRequestHandler $pageRequestHandler
     ): Response
@@ -29,7 +27,6 @@ class PageController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $attachFormService,
             $pageRequestHandler,
             PageType::class,
             is_null($page) ? new Page() : $page,

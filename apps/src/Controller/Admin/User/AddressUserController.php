@@ -9,7 +9,6 @@ use Labstag\Form\Admin\User\AddressUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\AddressUserRequestHandler;
 use Labstag\Search\User\AddressUserSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,13 +18,11 @@ class AddressUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_addressuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_addressuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?AddressUser $addressUser,
         AddressUserRequestHandler $addressUserRequestHandler
     ): Response
     {
         return $this->form(
-            $attachFormService,
             $addressUserRequestHandler,
             AddressUserType::class,
             is_null($addressUser) ? new AddressUser() : $addressUser

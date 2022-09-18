@@ -9,7 +9,6 @@ use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\CategoryRequestHandler;
 use Labstag\Search\CategorySearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,7 +18,6 @@ class CategoryController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_category_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_category_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?Category $category,
         CategoryRequestHandler $categoryRequestHandler
     ): Response
@@ -27,7 +25,6 @@ class CategoryController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $attachFormService,
             $categoryRequestHandler,
             CategoryType::class,
             is_null($category) ? new Category() : $category

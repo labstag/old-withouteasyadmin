@@ -10,7 +10,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Search\UserSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,13 +19,11 @@ class UserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_user_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_user_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?User $user,
         UserRequestHandler $userRequestHandler
     ): Response
     {
         return $this->form(
-            $attachFormService,
             $userRequestHandler,
             UserType::class,
             is_null($user) ? new User() : $user,

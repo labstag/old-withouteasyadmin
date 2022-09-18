@@ -10,7 +10,6 @@ use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\Search\GroupeSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,13 +19,11 @@ class GroupeController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_groupuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_groupuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         ?Groupe $groupe,
         GroupeRequestHandler $groupeRequestHandler
     ): Response
     {
         return $this->form(
-            $attachFormService,
             $groupeRequestHandler,
             GroupeType::class,
             is_null($groupe) ? new Groupe() : $groupe

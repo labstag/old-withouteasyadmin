@@ -9,7 +9,6 @@ use Labstag\Form\Admin\NewBlockType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\BlockRepository;
 use Labstag\RequestHandler\BlockRequestHandler;
-use Labstag\Service\AttachFormService;
 use Labstag\Service\BlockService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +22,6 @@ class BlockController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_block_edit', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $attachFormService,
         BlockService $blockService,
         Block $block,
         BlockRequestHandler $blockRequestHandler
@@ -32,7 +30,6 @@ class BlockController extends AdminControllerLib
         $field = $blockService->getEntityField($block);
 
         return $this->form(
-            $attachFormService,
             $blockRequestHandler,
             BlockType::class,
             is_null($block) ? new Block() : $block,
