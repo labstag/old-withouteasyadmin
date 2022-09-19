@@ -28,13 +28,13 @@ class LabstagInstallCommand extends CommandLib
         parent::__construct($entityManager);
     }
 
-    protected function all($inputOutput): bool
+    protected function all(SymfonyStyle $symfonyStyle): bool
     {
-        $inputOutput->note('Installations');
+        $symfonyStyle->note('Installations');
         $executes = $this->getExecutesFunction();
         foreach ($executes as $execute) {
             if ('all' != $execute) {
-                call_user_func([$this, $execute], $inputOutput);
+                call_user_func([$this, $execute], $symfonyStyle);
             }
         }
 
@@ -83,49 +83,49 @@ class LabstagInstallCommand extends CommandLib
         ];
     }
 
-    protected function setConfig($inputOutput): bool
+    protected function setConfig(SymfonyStyle $symfonyStyle): bool
     {
-        $inputOutput->note('Ajout de la configuration');
+        $symfonyStyle->note('Ajout de la configuration');
         $this->installService->config($this->serverenv);
 
         return true;
     }
 
-    protected function setGroup($inputOutput): bool
+    protected function setGroup(SymfonyStyle $symfonyStyle): bool
     {
-        $inputOutput->note('Ajout des groupes');
+        $symfonyStyle->note('Ajout des groupes');
         $this->installService->group();
 
         return true;
     }
 
-    protected function setMenuAdmin($inputOutput): bool
+    protected function setMenuAdmin(SymfonyStyle $symfonyStyle): bool
     {
-        $inputOutput->note('Ajout du menu admin');
+        $symfonyStyle->note('Ajout du menu admin');
         $this->installService->menuadmin();
 
         return true;
     }
 
-    protected function setMenuAdminProfil($inputOutput): bool
+    protected function setMenuAdminProfil(SymfonyStyle $symfonyStyle): bool
     {
-        $inputOutput->note('Ajout du menu admin profil');
+        $symfonyStyle->note('Ajout du menu admin profil');
         $this->installService->menuadminprofil();
 
         return true;
     }
 
-    protected function setTemplates($inputOutput): bool
+    protected function setTemplates(SymfonyStyle $symfonyStyle): bool
     {
-        $inputOutput->note('Ajout des templates');
+        $symfonyStyle->note('Ajout des templates');
         $this->installService->templates();
 
         return true;
     }
 
-    protected function setUsers($inputOutput): bool
+    protected function setUsers(SymfonyStyle $symfonyStyle): bool
     {
-        $inputOutput->note('Ajout des users');
+        $symfonyStyle->note('Ajout des users');
         $this->installService->users();
 
         return true;

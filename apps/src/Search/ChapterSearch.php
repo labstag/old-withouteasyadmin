@@ -2,9 +2,9 @@
 
 namespace Labstag\Search;
 
-use Labstag\Lib\LibSearch;
+use Labstag\Lib\SearchLib;
 
-class ChapterSearch extends LibSearch
+class ChapterSearch extends SearchLib
 {
 
     public $etape;

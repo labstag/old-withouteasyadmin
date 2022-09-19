@@ -266,13 +266,6 @@ class LabstagExtension extends AbstractExtension
         return parse_url($url, PHP_URL_PATH);
     }
 
-    public function isPhoneValid(string $number, string $country): bool
-    {
-        $verif = $this->phoneService->verif($number, $country);
-
-        return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
-    }
-
     public function verifPhone(string $country, string $phone)
     {
         $verif = $this->phoneService->verif($phone, $country);
@@ -323,7 +316,6 @@ class LabstagExtension extends AbstractExtension
             'guard_route'              => 'guardRoute',
             'guard_user_access'        => 'guardAccessUserRoutes',
             'imagefilter'              => 'imagefilter',
-            'phone_valid'              => 'isPhoneValid',
             'verifPhone'               => 'verifPhone',
             'workflow_has'             => 'workflowHas',
         ];

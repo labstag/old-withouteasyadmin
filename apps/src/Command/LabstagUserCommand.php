@@ -39,7 +39,7 @@ class LabstagUserCommand extends CommandLib
     protected function actionEnableDisableDelete(
         InputInterface $input,
         OutputInterface $output,
-        $inputOutput,
+        SymfonyStyle $symfonyStyle,
         $action
     ): void
     {
@@ -58,22 +58,22 @@ class LabstagUserCommand extends CommandLib
 
             switch ($action) {
                 case 'enable':
-                    $this->enable($helper, $username, $inputOutput, $input, $output);
+                    $this->enable($helper, $username, $symfonyStyle, $input, $output);
 
                     break;
                 case 'disable':
-                    $this->disable($helper, $username, $inputOutput, $input, $output);
+                    $this->disable($helper, $username, $symfonyStyle, $input, $output);
 
                     break;
                 case 'delete':
-                    $this->delete($helper, $username, $inputOutput, $input, $output);
+                    $this->delete($helper, $username, $symfonyStyle, $input, $output);
 
                     break;
             }
         }
     }
 
-    protected function actionState(InputInterface $input, OutputInterface $output, $inputOutput): void
+    protected function actionState(InputInterface $input, OutputInterface $output, SymfonyStyle $symfonyStyle): void
     {
         $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
@@ -81,10 +81,10 @@ class LabstagUserCommand extends CommandLib
             $this->tableQuestionUser()
         );
         $username       = $helper->ask($input, $output, $choiceQuestion);
-        $this->state($helper, $username, $inputOutput, $input, $output);
+        $this->state($helper, $username, $symfonyStyle, $input, $output);
     }
 
-    protected function actionUpdatePassword(InputInterface $input, OutputInterface $output, $inputOutput): void
+    protected function actionUpdatePassword(InputInterface $input, OutputInterface $output, SymfonyStyle $symfonyStyle): void
     {
         $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
@@ -92,7 +92,7 @@ class LabstagUserCommand extends CommandLib
             $this->tableQuestionUser()
         );
         $username       = $helper->ask($input, $output, $choiceQuestion);
-        $this->updatePassword($helper, $username, $inputOutput, $input, $output);
+        $this->updatePassword($helper, $username, $symfonyStyle, $input, $output);
     }
 
     protected function configure(): void
@@ -100,13 +100,13 @@ class LabstagUserCommand extends CommandLib
         $this->setDescription('command for admin user');
     }
 
-    protected function create($helper, $inputOutput, InputInterface $input, OutputInterface $output): void
+    protected function create($helper, SymfonyStyle $symfonyStyle, InputInterface $input, OutputInterface $output): void
     {
-        $inputOutput = new SymfonyStyle($input, $output);
-        $user        = new User();
-        $old         = clone $user;
-        $question    = new Question("Entrer le username de l'utilisateur : ");
-        $username    = $helper->ask($input, $output, $question);
+        $symfonyStyle = new SymfonyStyle($input, $output);
+        $user         = new User();
+        $old          = clone $user;
+        $question     = new Question("Entrer le username de l'utilisateur : ");
+        $username     = $helper->ask($input, $output, $question);
         $user->setUsername($username);
         $question = new Question("Entrer le password de l'utilisateur : ");
         $question->setHidden(true);
@@ -117,7 +117,7 @@ class LabstagUserCommand extends CommandLib
 
         $password2 = $helper->ask($input, $output, $question);
         if ($password1 !== $password2) {
-            $inputOutput->error('Mot de passe incorrect');
+            $symfonyStyle->error('Mot de passe incorrect');
 
             return;
         }
@@ -152,20 +152,20 @@ class LabstagUserCommand extends CommandLib
         }
 
         $this->userRequestHandler->handle($old, $user);
-        $inputOutput->success('Utilisateur ajouté');
+        $symfonyStyle->success('Utilisateur ajouté');
     }
 
     protected function delete(
         $helper,
         string $username,
-        $inputOutput,
+        SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
     ): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
-            $inputOutput->warning(
+            $symfonyStyle->warning(
                 ['Utilisateur introuvable']
             );
 
@@ -188,14 +188,14 @@ class LabstagUserCommand extends CommandLib
         $old = clone $entity;
         $this->userRepository->remove($entity);
         $this->userRequestHandler->handle($old, $entity);
-        $inputOutput->success('Utilisateur supprimé');
+        $symfonyStyle->success('Utilisateur supprimé');
     }
 
-    protected function disable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output): void
+    protected function disable($helper, $username, SymfonyStyle $symfonyStyle, InputInterface $input, OutputInterface $output): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
-            $inputOutput->warning(
+            $symfonyStyle->warning(
                 ['Utilisateur introuvable']
             );
 
@@ -212,7 +212,7 @@ class LabstagUserCommand extends CommandLib
 
         $action = $helper->ask($input, $output, $choiceQuestion);
         if ('oui' !== $action || !$this->registry->has($entity)) {
-            $inputOutput->warning(
+            $symfonyStyle->warning(
                 ['Action impossible']
             );
 
@@ -221,7 +221,7 @@ class LabstagUserCommand extends CommandLib
 
         $workflow = $this->registry->get($entity);
         if (!$workflow->can($entity, 'desactiver')) {
-            $inputOutput->warning(
+            $symfonyStyle->warning(
                 ['Action impossible']
             );
 
@@ -232,14 +232,14 @@ class LabstagUserCommand extends CommandLib
         $workflow->apply($entity, 'desactiver');
         $this->entityManager->flush();
         $this->userRequestHandler->handle($old, $entity);
-        $inputOutput->success('Utilisateur désactivé');
+        $symfonyStyle->success('Utilisateur désactivé');
     }
 
-    protected function enable($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output): void
+    protected function enable($helper, $username, SymfonyStyle $symfonyStyle, InputInterface $input, OutputInterface $output): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
-            $inputOutput->warning(
+            $symfonyStyle->warning(
                 ['Utilisateur introuvable']
             );
 
@@ -256,7 +256,7 @@ class LabstagUserCommand extends CommandLib
 
         $action = $helper->ask($input, $output, $choiceQuestion);
         if ('oui' !== $action || !$this->registry->has($entity)) {
-            $inputOutput->warning(
+            $symfonyStyle->warning(
                 ['Action impossible']
             );
 
@@ -265,7 +265,7 @@ class LabstagUserCommand extends CommandLib
 
         $workflow = $this->registry->get($entity);
         if (!$workflow->can($entity, 'activer')) {
-            $inputOutput->warning(
+            $symfonyStyle->warning(
                 ['Action impossible']
             );
 
@@ -276,7 +276,7 @@ class LabstagUserCommand extends CommandLib
         $workflow->apply($entity, 'activer');
         $this->entityManager->flush();
         $this->userRequestHandler->handle($old, $entity);
-        $inputOutput->success('Utilisateur activé');
+        $symfonyStyle->success('Utilisateur activé');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -308,7 +308,7 @@ class LabstagUserCommand extends CommandLib
         return Command::SUCCESS;
     }
 
-    protected function list($inputOutput, OutputInterface $output): void
+    protected function list(SymfonyStyle $symfonyStyle, OutputInterface $output): void
     {
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
@@ -322,7 +322,7 @@ class LabstagUserCommand extends CommandLib
             ];
         }
 
-        $inputOutput->table(
+        $symfonyStyle->table(
             [
                 'username',
                 'email',
@@ -334,11 +334,11 @@ class LabstagUserCommand extends CommandLib
         $output->writeln('list');
     }
 
-    protected function state($helper, $username, $inputOutput, InputInterface $input, OutputInterface $output): void
+    protected function state($helper, $username, SymfonyStyle $symfonyStyle, InputInterface $input, OutputInterface $output): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
-            $inputOutput->warning(
+            $symfonyStyle->warning(
                 ['Utilisateur introuvable']
             );
 
@@ -359,7 +359,7 @@ class LabstagUserCommand extends CommandLib
         );
         $state          = $helper->ask($input, $output, $choiceQuestion);
         if (!$workflow->can($entity, $state)) {
-            $inputOutput->warning(
+            $symfonyStyle->warning(
                 ['Action impossible']
             );
 
@@ -368,7 +368,7 @@ class LabstagUserCommand extends CommandLib
 
         $workflow->apply($entity, $state);
         $this->entityManager->flush();
-        $inputOutput->success('Utilisateur passé au stade "'.$state.'"');
+        $symfonyStyle->success('Utilisateur passé au stade "'.$state.'"');
     }
 
     /**
@@ -397,14 +397,14 @@ class LabstagUserCommand extends CommandLib
     protected function updatePassword(
         $helper,
         $username,
-        $inputOutput,
+        SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
     ): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
-            $inputOutput->warning(
+            $symfonyStyle->warning(
                 ['Utilisateur introuvable']
             );
 
@@ -420,7 +420,7 @@ class LabstagUserCommand extends CommandLib
 
         $password2 = $helper->ask($input, $output, $question);
         if ($password1 !== $password2) {
-            $inputOutput->error('Mot de passe incorrect');
+            $symfonyStyle->error('Mot de passe incorrect');
 
             return;
         }
@@ -428,6 +428,6 @@ class LabstagUserCommand extends CommandLib
         $old = clone $entity;
         $entity->setPlainPassword($password1);
         $this->userRequestHandler->handle($old, $entity);
-        $inputOutput->success('Mot de passe changé');
+        $symfonyStyle->success('Mot de passe changé');
     }
 }

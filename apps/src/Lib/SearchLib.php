@@ -7,7 +7,7 @@ use Labstag\Entity\Category;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 
-abstract class LibSearch
+abstract class SearchLib
 {
 
     public $limit;
@@ -38,9 +38,12 @@ abstract class LibSearch
                 continue;
             }
 
-            $this->{$key} = ('refuser' == $key) ? $userRepo->find($value) : $this->{$key};
-            $this->{$key} = ('refcategory' == $key) ? $categoryRepo->find($value) : $this->{$key};
-            $this->{$key} = ('refgroup' == $key) ? $groupeRepo->find($value) : $this->{$key};
+            $this->{$key} = match ($key) {
+                'refuser' => $userRepo->find($value),
+                'refcategory' => $categoryRepo->find($value),
+                'refgroup' => $groupeRepo->find($value),
+                default => $this->{$key}
+            };
         }
     }
 }

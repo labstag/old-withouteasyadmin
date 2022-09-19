@@ -354,8 +354,12 @@ class ActionsController extends ApiControllerLib
         $entities   = explode(',', (string) $request->request->get('entities'));
         $error      = [];
         $repository = $this->getRepoByEntity($entity);
-        $method     = ('deleties' == $token) ? 'deleteEntity' : 'restoreEntity';
-        $method     = ('destroies' == $token) ? 'destroyEntity' : $method;
+        $method     = match ($token) {
+            'deleties' => 'deleteEntity',
+            'destroies' => 'destroyEntity',
+            default => 'restoreEntity'
+        };
+
         foreach ($entities as $id) {
             try {
                 $entity = $repository->find($id);

@@ -2,9 +2,9 @@
 
 namespace Labstag\Search\User;
 
-use Labstag\Lib\LibSearch;
+use Labstag\Lib\SearchLib;
 
-class PhoneUserSearch extends LibSearch
+class PhoneUserSearch extends SearchLib
 {
 
     public $country;

@@ -29,6 +29,10 @@
 			"path": "apps/translations"
 		},
 		{
+			"name": "apps",
+			"path": "apps"
+		},
+		{
  			"name": "/",
  			"path": "."
 		}

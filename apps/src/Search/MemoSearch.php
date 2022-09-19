@@ -2,9 +2,9 @@
 
 namespace Labstag\Search;
 
-use Labstag\Lib\LibSearch;
+use Labstag\Lib\SearchLib;
 
-class MemoSearch extends LibSearch
+class MemoSearch extends SearchLib
 {
 
     public $dateEnd;
