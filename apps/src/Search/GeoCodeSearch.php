@@ -4,7 +4,7 @@ namespace Labstag\Search;
 
 use Labstag\Lib\LibSearch;
 
-class GeocodeSearch extends LibSearch
+class GeoCodeSearch extends LibSearch
 {
 
     public $communityname;

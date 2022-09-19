@@ -4,12 +4,12 @@ namespace Labstag\Form\Admin\Search;
 
 use Labstag\FormType\FlagCountryType;
 use Labstag\Lib\SearchAbstractTypeLib;
-use Labstag\Search\GeocodeSearch;
+use Labstag\Search\GeoCodeSearch;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class GeocodeType extends SearchAbstractTypeLib
+class GeoCodeType extends SearchAbstractTypeLib
 {
     /**
      * @inheritDoc
@@ -32,7 +32,7 @@ class GeocodeType extends SearchAbstractTypeLib
     {
         $optionsResolver->setDefaults(
             [
-                'data_class'      => GeocodeSearch::class,
+                'data_class'      => GeoCodeSearch::class,
                 'csrf_protection' => false,
                 'method'          => 'GET',
             ]

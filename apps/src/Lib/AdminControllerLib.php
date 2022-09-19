@@ -7,7 +7,6 @@ use Knp\Component\Pager\Pagination\PaginationInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
 use Labstag\Entity\User;
-use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Singleton\AdminBtnSingleton;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

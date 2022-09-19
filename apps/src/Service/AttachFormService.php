@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\AttachmentRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -14,36 +13,13 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class AttachFormService
 {
     public function __construct(
+        protected FileService $fileService,
         protected EntityManagerInterface $entityManager,
         protected ContainerBagInterface $containerBag,
         protected AttachmentRepository $attachmentRepository,
         private readonly UploadAnnotationReader $uploadAnnotationReader
     )
     {
-    }
-
-    protected function setAttachment(
-        $accessor,
-        $entity,
-        $annotation
-    ): Attachment
-    {
-        $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
-        if (is_null($attachmentField)) {
-            return new Attachment();
-        }
-
-        $attachment = $this->attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
-        if (!$attachment instanceof Attachment) {
-            $attachment = new Attachment();
-        }
-
-        return $attachment;
-    }
-
-    protected function getParameter(string $name)
-    {
-        return $this->containerBag->get($name);
     }
 
     public function upload($entity): void
@@ -78,6 +54,11 @@ class AttachFormService
         }
     }
 
+    protected function getParameter(string $name)
+    {
+        return $this->containerBag->get($name);
+    }
+
     protected function moveFile($file, $path, $filename, $attachment, $old)
     {
         $file->move(
@@ -87,5 +68,24 @@ class AttachFormService
         $file = $path.'/'.$filename;
 
         $this->fileService->setAttachment($file, $attachment, $old);
+    }
+
+    protected function setAttachment(
+        $accessor,
+        $entity,
+        $annotation
+    ): Attachment
+    {
+        $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
+        if (is_null($attachmentField)) {
+            return new Attachment();
+        }
+
+        $attachment = $this->attachmentRepository->findOneBy(['id' => $attachmentField->getId()]);
+        if (!$attachment instanceof Attachment) {
+            $attachment = new Attachment();
+        }
+
+        return $attachment;
     }
 }

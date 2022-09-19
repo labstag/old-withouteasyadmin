@@ -363,7 +363,7 @@ class AdminBtnSingleton
     ): void
     {
         $this->environment      = $environment;
-        $this->router  = $router;
+        $this->router           = $router;
         $this->token            = $tokenStorage;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->guardService     = $guardService;
