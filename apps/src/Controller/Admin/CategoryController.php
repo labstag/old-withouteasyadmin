@@ -4,7 +4,6 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Category;
-use Labstag\Form\Admin\CategoryType;
 use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\CategoryRequestHandler;
@@ -25,8 +24,6 @@ class CategoryController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $categoryRequestHandler,
-            CategoryType::class,
             is_null($category) ? new Category() : $category
         );
     }
@@ -39,7 +36,6 @@ class CategoryController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Category::class,
             'admin/category/index.html.twig'
         );
     }
@@ -57,6 +53,11 @@ class CategoryController extends AdminControllerLib
         );
     }
 
+    protected function getDomainEntity()
+    {
+        return $this->domainService->getDomain(Category::class);
+    }
+
     /**
      * @return array<string, string>
      */
@@ -65,23 +66,6 @@ class CategoryController extends AdminControllerLib
         return [
             'trash' => 'findTrashParentForAdmin',
             'all'   => 'findAllParentForAdmin',
-        ];
-    }
-
-    protected function getUrlAdmin(): array
-    {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_category_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_category_index',
-            'new'      => 'admin_category_new',
-            'preview'  => 'admin_category_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_category_show',
-            'trash'    => 'admin_category_trash',
-            'workflow' => 'api_action_workflow',
         ];
     }
 

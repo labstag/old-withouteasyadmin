@@ -5,7 +5,6 @@ namespace Labstag\Controller\Admin\User;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\AddressUser;
 use Labstag\Form\Admin\Search\User\AddressUserType as UserAddressUserType;
-use Labstag\Form\Admin\User\AddressUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\AddressUserRequestHandler;
 use Labstag\Search\User\AddressUserSearch;
@@ -23,8 +22,6 @@ class AddressUserController extends AdminControllerLib
     ): Response
     {
         return $this->form(
-            $addressUserRequestHandler,
-            AddressUserType::class,
             is_null($addressUser) ? new AddressUser() : $addressUser
         );
     }
@@ -37,7 +34,6 @@ class AddressUserController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            AddressUser::class,
             'admin/user/address_user/index.html.twig'
         );
     }
@@ -55,20 +51,9 @@ class AddressUserController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'  => 'api_action_delete',
-            'destroy' => 'api_action_destroy',
-            'edit'    => 'admin_addressuser_edit',
-            'empty'   => 'api_action_empty',
-            'list'    => 'admin_addressuser_index',
-            'new'     => 'admin_addressuser_new',
-            'preview' => 'admin_addressuser_preview',
-            'restore' => 'api_action_restore',
-            'show'    => 'admin_addressuser_show',
-            'trash'   => 'admin_addressuser_trash',
-        ];
+        return $this->domainService->getDomain(AddressUser::class);
     }
 
     protected function searchForm(): array

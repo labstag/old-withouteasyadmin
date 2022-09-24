@@ -5,7 +5,6 @@ namespace Labstag\Controller\Admin\User;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
 use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
-use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\GroupeRequestHandler;
@@ -24,8 +23,6 @@ class GroupeController extends AdminControllerLib
     ): Response
     {
         return $this->form(
-            $groupeRequestHandler,
-            GroupeType::class,
             is_null($groupe) ? new Groupe() : $groupe
         );
     }
@@ -90,7 +87,6 @@ class GroupeController extends AdminControllerLib
     public function index(): Response
     {
         return $this->listOrTrash(
-            Groupe::class,
             'admin/user/groupe/index.html.twig'
         );
     }
@@ -108,21 +104,9 @@ class GroupeController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'  => 'api_action_delete',
-            'destroy' => 'api_action_destroy',
-            'edit'    => 'admin_groupuser_edit',
-            'empty'   => 'api_action_empty',
-            'guard'   => 'admin_groupuser_guard',
-            'list'    => 'admin_groupuser_index',
-            'new'     => 'admin_groupuser_new',
-            'preview' => 'admin_groupuser_preview',
-            'restore' => 'api_action_restore',
-            'show'    => 'admin_groupuser_show',
-            'trash'   => 'admin_groupuser_trash',
-        ];
+        return $this->domainService->getDomain(Groupe::class);
     }
 
     /**

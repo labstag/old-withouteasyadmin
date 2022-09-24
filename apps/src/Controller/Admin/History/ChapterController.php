@@ -5,7 +5,6 @@ namespace Labstag\Controller\Admin\History;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
-use Labstag\Form\Admin\ChapterType;
 use Labstag\Form\Admin\Search\ChapterType as SearchChapterType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\ChapterRepository;
@@ -28,8 +27,6 @@ class ChapterController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $chapterRequestHandler,
-            ChapterType::class,
             is_null($chapter) ? new Chapter() : $chapter,
             'admin/chapter/form.html.twig'
         );
@@ -43,7 +40,6 @@ class ChapterController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Chapter::class,
             'admin/chapter/index.html.twig',
         );
     }
@@ -80,20 +76,9 @@ class ChapterController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_chapter_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_chapter_index',
-            'preview'  => 'admin_chapter_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_chapter_show',
-            'trash'    => 'admin_chapter_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(Chapter::class);
     }
 
     /**

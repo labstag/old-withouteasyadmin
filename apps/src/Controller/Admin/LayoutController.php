@@ -5,7 +5,6 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
-use Labstag\Form\Admin\LayoutType;
 use Labstag\Form\Admin\NewLayoutType;
 use Labstag\Form\Admin\Search\LayoutType as SearchLayoutType;
 use Labstag\Lib\AdminControllerLib;
@@ -32,8 +31,6 @@ class LayoutController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $layoutRequestHandler,
-            LayoutType::class,
             is_null($layout) ? new Layout() : $layout,
             'admin/layout/form.html.twig'
         );
@@ -62,14 +59,15 @@ class LayoutController extends AdminControllerLib
             ]
         );
 
-        $repository = $this->getRepository(Layout::class);
-        $url        = $this->getUrlAdmin();
+        $domain     = $this->getDomainEntity();
+        $url        = $domain->getUrlAdmin();
+        $repository = $domain->getRepository();
         $request    = $this->requeststack->getCurrentRequest();
         $all        = $request->attributes->all();
         $route      = $all['_route'];
         $routeType  = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
-        $this->setBtnListOrTrash($repository, $routeType);
-        $pagination = $this->setPagination($repository, $routeType);
+        $this->setBtnListOrTrash($routeType);
+        $pagination = $this->setPagination($routeType);
 
         if ('trash' == $routeType && 0 == $pagination->count()) {
             throw new AccessDeniedException();
@@ -130,20 +128,9 @@ class LayoutController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_layout_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_layout_index',
-            'preview'  => 'admin_layout_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_layout_show',
-            'trash'    => 'admin_layout_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(Layout::class);
     }
 
     /**

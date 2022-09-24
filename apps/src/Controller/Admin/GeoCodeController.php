@@ -4,7 +4,6 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\GeoCode;
-use Labstag\Form\Admin\GeoCodeType;
 use Labstag\Form\Admin\Search\GeoCodeType as SearchGeoCodeType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\GeoCodeRequestHandler;
@@ -23,8 +22,6 @@ class GeoCodeController extends AdminControllerLib
     ): Response
     {
         return $this->form(
-            $geoCodeRequestHandler,
-            GeoCodeType::class,
             is_null($geoCode) ? new GeoCode() : $geoCode
         );
     }
@@ -37,7 +34,6 @@ class GeoCodeController extends AdminControllerLib
     public function index(): Response
     {
         return $this->listOrTrash(
-            GeoCode::class,
             'admin/geocode/index.html.twig'
         );
     }
@@ -55,20 +51,9 @@ class GeoCodeController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'      => 'api_action_delete',
-            'destroy'     => 'api_action_destroy',
-            'edit'        => 'admin_geocode_edit',
-            'empty'       => 'api_action_empty',
-            'list'        => 'admin_geocode_index',
-            'new'         => 'admin_geocode_new',
-            'restore'     => 'api_action_restore',
-            'show'        => 'admin_geocode_show',
-            'trash'       => 'admin_geocode_trash',
-            'trashdelete' => 'admin_geocode_destroy',
-        ];
+        return $this->domainService->getDomain(GeoCode::class);
     }
 
     /**

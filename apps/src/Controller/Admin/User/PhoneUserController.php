@@ -5,7 +5,6 @@ namespace Labstag\Controller\Admin\User;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\PhoneUser;
 use Labstag\Form\Admin\Search\User\PhoneUserType as UserPhoneUserType;
-use Labstag\Form\Admin\User\PhoneUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\Search\User\PhoneUserSearch;
@@ -23,8 +22,6 @@ class PhoneUserController extends AdminControllerLib
     ): Response
     {
         return $this->form(
-            $phoneUserRequestHandler,
-            PhoneUserType::class,
             is_null($phoneUser) ? new PhoneUser() : $phoneUser
         );
     }
@@ -37,7 +34,6 @@ class PhoneUserController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            PhoneUser::class,
             'admin/user/phone_user/index.html.twig'
         );
     }
@@ -55,21 +51,9 @@ class PhoneUserController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_phoneuser_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_phoneuser_index',
-            'new'      => 'admin_phoneuser_new',
-            'preview'  => 'admin_phoneuser_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_phoneuser_show',
-            'trash'    => 'admin_phoneuser_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(PhoneUser::class);
     }
 
     protected function searchForm(): array

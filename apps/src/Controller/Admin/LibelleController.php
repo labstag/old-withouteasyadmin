@@ -4,7 +4,6 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Libelle;
-use Labstag\Form\Admin\LibelleType;
 use Labstag\Form\Admin\Search\LibelleType as SearchLibelleType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\LibelleRequestHandler;
@@ -25,8 +24,6 @@ class LibelleController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $libelleRequestHandler,
-            LibelleType::class,
             is_null($libelle) ? new Libelle() : $libelle
         );
     }
@@ -39,7 +36,6 @@ class LibelleController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Libelle::class,
             'admin/libelle/index.html.twig'
         );
     }
@@ -57,21 +53,9 @@ class LibelleController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_libelle_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_libelle_index',
-            'new'      => 'admin_libelle_new',
-            'preview'  => 'admin_libelle_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_libelle_show',
-            'trash'    => 'admin_libelle_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(Libelle::class);
     }
 
     /**

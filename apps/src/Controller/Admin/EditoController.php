@@ -5,7 +5,6 @@ namespace Labstag\Controller\Admin;
 use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
-use Labstag\Form\Admin\EditoType;
 use Labstag\Form\Admin\Search\EditoType as SearchEditoType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\EditoRepository;
@@ -29,8 +28,6 @@ class EditoController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $editoRequestHandler,
-            EditoType::class,
             is_null($edito) ? new Edito() : $edito,
             'admin/edito/form.html.twig'
         );
@@ -44,7 +41,6 @@ class EditoController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Edito::class,
             'admin/edito/index.html.twig',
         );
     }
@@ -83,21 +79,9 @@ class EditoController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_edito_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_edito_index',
-            'new'      => 'admin_edito_new',
-            'preview'  => 'admin_edito_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_edito_show',
-            'trash'    => 'admin_edito_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(Edito::class);
     }
 
     /**

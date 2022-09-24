@@ -155,8 +155,7 @@ class AdminController extends AdminControllerLib
         return $this->form(
             $userRequestHandler,
             ProfilType::class,
-            $security->getUser(),
-            'admin/profil.html.twig'
+            $security->getUser()
         );
     }
 

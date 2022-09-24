@@ -19,10 +19,10 @@
 		<div class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="#">{{ config.meta.title }}</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbar-supported-content" aria-controls="navbar-supported-content" aria-expanded="false" aria-label="{{ 'admin.togglenavigation'|trans|e('html_attr') }}">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbar-supported-content">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-supported-content" aria-controls="navbar-supported-content" aria-expanded="false" aria-label="{{ 'admin.togglenavigation'|trans|e('html_attr') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbar-supported-content">
                     {% for key, menu in allmenu %}
                         {% if key == 'admin' or key == 'admin-profil' %}
                             {{ knp_menu_render(menu, {'style': 'navbar', 'currentClass': 'active'}) }}

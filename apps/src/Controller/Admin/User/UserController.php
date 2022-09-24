@@ -5,7 +5,6 @@ namespace Labstag\Controller\Admin\User;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Search\UserType as SearchUserType;
-use Labstag\Form\Admin\User\UserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\UserRequestHandler;
@@ -24,8 +23,6 @@ class UserController extends AdminControllerLib
     ): Response
     {
         return $this->form(
-            $userRequestHandler,
-            UserType::class,
             is_null($user) ? new User() : $user,
             'admin/user/form.html.twig'
         );
@@ -91,7 +88,6 @@ class UserController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            User::class,
             'admin/user/index.html.twig'
         );
     }
@@ -111,22 +107,9 @@ class UserController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_user_edit',
-            'empty'    => 'api_action_empty',
-            'guard'    => 'admin_user_guard',
-            'list'     => 'admin_user_index',
-            'new'      => 'admin_user_new',
-            'preview'  => 'admin_user_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_user_show',
-            'trash'    => 'admin_user_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(User::class);
     }
 
     /**

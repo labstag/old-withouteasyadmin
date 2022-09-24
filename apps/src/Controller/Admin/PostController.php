@@ -5,7 +5,6 @@ namespace Labstag\Controller\Admin;
 use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
-use Labstag\Form\Admin\PostType;
 use Labstag\Form\Admin\Search\PostType as SearchPostType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\PostRepository;
@@ -29,8 +28,6 @@ class PostController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $postRequestHandler,
-            PostType::class,
             is_null($post) ? new Post() : $post,
             'admin/post/form.html.twig'
         );
@@ -44,7 +41,6 @@ class PostController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Post::class,
             'admin/post/index.html.twig',
         );
     }
@@ -84,21 +80,9 @@ class PostController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_post_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_post_index',
-            'new'      => 'admin_post_new',
-            'preview'  => 'admin_post_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_post_show',
-            'trash'    => 'admin_post_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(Post::class);
     }
 
     /**

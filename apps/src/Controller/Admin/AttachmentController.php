@@ -19,22 +19,13 @@ class AttachmentController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Attachment::class,
             'admin/attachment/index.html.twig'
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_attachment_index',
-            'restore'  => 'api_action_restore',
-            'trash'    => 'admin_attachment_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(Attachment::class);
     }
 
     /**

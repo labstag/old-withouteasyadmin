@@ -4,7 +4,6 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Page;
-use Labstag\Form\Admin\PageType;
 use Labstag\Form\Admin\Search\PageType as SearchPageType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\PageRepository;
@@ -27,8 +26,6 @@ class PageController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $pageRequestHandler,
-            PageType::class,
             is_null($page) ? new Page() : $page,
             'admin/page/form.html.twig'
         );
@@ -42,7 +39,6 @@ class PageController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Page::class,
             'admin/page/index.html.twig'
         );
     }
@@ -74,21 +70,9 @@ class PageController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_page_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_page_index',
-            'new'      => 'admin_page_new',
-            'preview'  => 'admin_page_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_page_show',
-            'trash'    => 'admin_page_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(Page::class);
     }
 
     /**

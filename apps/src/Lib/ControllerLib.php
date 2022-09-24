@@ -7,6 +7,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\BlockService;
 use Labstag\Service\DataService;
+use Labstag\Service\DomainService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
 use Labstag\Service\GuardService;
@@ -30,6 +31,7 @@ abstract class ControllerLib extends AbstractController
     protected Request $request;
 
     public function __construct(
+        protected DomainService $domainService,
         protected AttachFormService $attachFormService,
         protected FileService $fileService,
         protected Environment $environment,

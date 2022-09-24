@@ -4,7 +4,6 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Memo;
-use Labstag\Form\Admin\MemoType;
 use Labstag\Form\Admin\Search\MemoType as SearchMemoType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\MemoRepository;
@@ -28,8 +27,6 @@ class MemoController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $memoRequestHandler,
-            MemoType::class,
             is_null($memo) ? new Memo() : $memo,
             'admin/memo/form.html.twig'
         );
@@ -43,7 +40,6 @@ class MemoController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Memo::class,
             'admin/memo/index.html.twig',
         );
     }
@@ -81,21 +77,9 @@ class MemoController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_memo_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_memo_index',
-            'new'      => 'admin_memo_new',
-            'preview'  => 'admin_memo_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_memo_show',
-            'trash'    => 'admin_memo_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(Memo::class);
     }
 
     /**

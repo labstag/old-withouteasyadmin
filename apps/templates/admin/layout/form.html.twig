@@ -1,4 +1,3 @@
-{% import "admin/macro.html.twig" as macro_admin %}
 {% extends 'admin.html.twig' %}
 {% block body %}
     {{ form_start(form) }}
@@ -8,8 +7,3 @@
     {{ form_row(form.paragraph) }}
     {{ form_end(form) }}
 {% endblock %}
-{% block modal %}
-    {{ parent() }}
-    {% include "admin/paragraph/modal.html.twig" %}
-{% endblock %}
-

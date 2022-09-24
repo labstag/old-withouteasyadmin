@@ -6,7 +6,6 @@ use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
-use Labstag\Form\Admin\HistoryType;
 use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\HistoryRepository;
@@ -32,8 +31,6 @@ class HistoryController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $historyRequestHandler,
-            HistoryType::class,
             is_null($history) ? new History() : $history,
             'admin/history/form.html.twig'
         );
@@ -140,22 +137,9 @@ class HistoryController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'move'     => 'admin_history_move',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_history_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_history_index',
-            'new'      => 'admin_history_new',
-            'preview'  => 'admin_history_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_history_show',
-            'trash'    => 'admin_history_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(History::class);
     }
 
     /**

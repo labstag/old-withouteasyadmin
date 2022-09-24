@@ -5,7 +5,6 @@ namespace Labstag\Controller\Admin\User;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\LinkUser;
 use Labstag\Form\Admin\Search\User\LinkUserType as UserLinkUserType;
-use Labstag\Form\Admin\User\LinkUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\LinkUserRequestHandler;
 use Labstag\Search\User\LinkUserSearch;
@@ -23,8 +22,6 @@ class LinkUserController extends AdminControllerLib
     ): Response
     {
         return $this->form(
-            $linkUserRequestHandler,
-            LinkUserType::class,
             is_null($linkUser) ? new LinkUser() : $linkUser
         );
     }
@@ -37,7 +34,6 @@ class LinkUserController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            LinkUser::class,
             'admin/user/link_user/index.html.twig'
         );
     }
@@ -55,20 +51,9 @@ class LinkUserController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'  => 'api_action_delete',
-            'destroy' => 'api_action_destroy',
-            'edit'    => 'admin_linkuser_edit',
-            'empty'   => 'api_action_empty',
-            'list'    => 'admin_linkuser_index',
-            'new'     => 'admin_linkuser_new',
-            'preview' => 'admin_linkuser_preview',
-            'restore' => 'api_action_restore',
-            'show'    => 'admin_linkuser_show',
-            'trash'   => 'admin_linkuser_trash',
-        ];
+        return $this->domainService->getDomain(LinkUser::class);
     }
 
     /**

@@ -5,7 +5,6 @@ namespace Labstag\Controller\Admin\User;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\EmailUser;
 use Labstag\Form\Admin\Search\User\EmailUserType as UserEmailUserType;
-use Labstag\Form\Admin\User\EmailUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Search\User\EmailUserSearch;
@@ -23,8 +22,6 @@ class EmailUserController extends AdminControllerLib
     ): Response
     {
         return $this->form(
-            $emailUserRequestHandler,
-            EmailUserType::class,
             is_null($emailUser) ? new EmailUser() : $emailUser
         );
     }
@@ -37,7 +34,6 @@ class EmailUserController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            EmailUser::class,
             'admin/user/email_user/index.html.twig'
         );
     }
@@ -55,21 +51,9 @@ class EmailUserController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_emailuser_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_emailuser_index',
-            'new'      => 'admin_emailuser_new',
-            'preview'  => 'admin_emailuser_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_emailuser_show',
-            'trash'    => 'admin_emailuser_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(EmailUser::class);
     }
 
     protected function searchForm(): array

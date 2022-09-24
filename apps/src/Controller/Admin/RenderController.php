@@ -4,7 +4,6 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Render;
-use Labstag\Form\Admin\RenderType;
 use Labstag\Form\Admin\Search\RenderType as SearchRenderType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\RequestHandler\RenderRequestHandler;
@@ -25,8 +24,6 @@ class RenderController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $renderRequestHandler,
-            RenderType::class,
             is_null($render) ? new Render() : $render,
             'admin/render/form.html.twig'
         );
@@ -40,7 +37,6 @@ class RenderController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Render::class,
             'admin/render/index.html.twig'
         );
     }
@@ -58,21 +54,9 @@ class RenderController extends AdminControllerLib
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_render_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_render_index',
-            'new'      => 'admin_render_new',
-            'preview'  => 'admin_render_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_render_show',
-            'trash'    => 'admin_render_trash',
-            'workflow' => 'api_action_workflow',
-        ];
+        return $this->domainService->getDomain(Render::class);
     }
 
     /**

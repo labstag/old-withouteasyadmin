@@ -24,15 +24,15 @@ abstract class AdminControllerLib extends ControllerLib
     protected string $urlHome = '';
 
     public function form(
-        RequestHandlerLib $requestHandlerLib,
-        string $formType,
         object $entity,
         string $twig = 'admin/crud/form.html.twig',
         array $parameters = []
     ): Response
     {
-        $url = $this->getUrlAdmin();
-        dump($entity);
+        $domain            = $this->getDomainEntity();
+        $requestHandlerLib = $domain->getRequestHandler();
+        $formType          = $domain->getType();
+        $url               = $domain->getUrlAdmin();
         $this->denyAccessUnlessGranted(
             empty($entity->getId()) ? 'new' : 'edit',
             $entity
@@ -44,6 +44,10 @@ abstract class AdminControllerLib extends ControllerLib
             $form->getName(),
             empty($entity->getId()) ? 'Ajouter' : 'Sauvegarder'
         );
+        if ($form->has('paragraph')) {
+            $this->modalParagraphs();
+        }
+
         $form->handleRequest($this->requeststack->getCurrentRequest());
         if ($form->isSubmitted() && $form->isValid()) {
             $this->setPositionParagraphs();
@@ -73,19 +77,19 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     public function listOrTrash(
-        string $entity,
         string $html,
         array $parameters = []
     ): Response
     {
-        $repository = $this->getRepository($entity);
-        $url        = $this->getUrlAdmin();
+        $domain     = $this->getDomainEntity();
+        $repository = $domain->getRepository();
+        $url        = $domain->getUrlAdmin();
         $request    = $this->requeststack->getCurrentRequest();
         $all        = $request->attributes->all();
         $route      = $all['_route'];
         $routeType  = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
-        $this->setBtnListOrTrash($repository, $routeType);
-        $pagination = $this->setPagination($repository, $routeType);
+        $this->setBtnListOrTrash($routeType);
+        $pagination = $this->setPagination($routeType);
 
         if ('trash' == $routeType && 0 == $pagination->count()) {
             throw new AccessDeniedException();
@@ -119,7 +123,8 @@ abstract class AdminControllerLib extends ControllerLib
         string $twigShow
     ): Response
     {
-        $url          = $this->getUrlAdmin();
+        $domain       = $this->getDomainEntity();
+        $url          = $domain->getUrlAdmin();
         $routeCurrent = $this->requeststack->getCurrentRequest()->get('_route');
         $routeType    = (0 != substr_count((string) $routeCurrent, 'preview')) ? 'preview' : 'show';
         $this->showOrPreviewadd($url, $routeType, $entity);
@@ -253,14 +258,6 @@ abstract class AdminControllerLib extends ControllerLib
             'trash' => 'findTrashForAdmin',
             'all'   => 'findAllForAdmin',
         ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function getUrlAdmin(): array
-    {
-        return [];
     }
 
     protected function isRouteEnable(
@@ -557,14 +554,16 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function setBtnListOrTrash(ServiceEntityRepositoryLib $serviceEntityRepositoryLib, string $routeType)
+    protected function setBtnListOrTrash(string $routeType)
     {
-        $url         = $this->getUrlAdmin();
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $route       = $all['_route'];
-        $routeParams = $all['_route_params'];
-        $methods     = $this->getMethodsList();
+        $domain                     = $this->getDomainEntity();
+        $url                        = $domain->getUrlAdmin();
+        $serviceEntityRepositoryLib = $domain->getRepository();
+        $request                    = $this->requeststack->getCurrentRequest();
+        $all                        = $request->attributes->all();
+        $route                      = $all['_route'];
+        $routeParams                = $all['_route_params'];
+        $methods                    = $this->getMethodsList();
         $this->addNewImport($this->entityManager, $serviceEntityRepositoryLib, $methods, $routeType, $url);
         $this->setBtnDeleties($routeType, $route, $routeParams, $serviceEntityRepositoryLib);
     }
@@ -609,13 +608,16 @@ abstract class AdminControllerLib extends ControllerLib
         ];
     }
 
-    protected function setPagination($repository, $routeType): PaginationInterface
+    protected function setPagination($routeType): PaginationInterface
     {
-        $methods = $this->getMethodsList();
-        $method  = $methods[$routeType];
-        $query   = $this->requeststack->getCurrentRequest()->query;
-        $get     = $query->all();
-        $limit   = $query->getInt('limit', 10);
+        $domain     = $this->getDomainEntity();
+        $url        = $domain->getUrlAdmin();
+        $repository = $domain->getRepository();
+        $methods    = $this->getMethodsList();
+        $method     = $methods[$routeType];
+        $query      = $this->requeststack->getCurrentRequest()->query;
+        $get        = $query->all();
+        $limit      = $query->getInt('limit', 10);
 
         return $this->paginator->paginate(
             call_user_func([$repository, $method], $get),
@@ -917,6 +919,14 @@ abstract class AdminControllerLib extends ControllerLib
         if (isset($url['trash'])) {
             $this->setTrashIcon($methods, $repository, $url, $entityManager);
         }
+    }
+
+    private function modalParagraphs(): void
+    {
+        $globals             = $this->environment->getGlobals();
+        $modal               = $globals['modal'] ?? [];
+        $modal['paragraphs'] = true;
+        $this->environment->addGlobal('modal', $modal);
     }
 
     private function setPositionParagraphs(): void

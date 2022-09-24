@@ -50,8 +50,7 @@ class MenuController extends AdminControllerLib
         return $this->form(
             $menuRequestHandler,
             LinkType::class,
-            $menu,
-            'admin/menu/form.html.twig'
+            $menu
         );
     }
 
@@ -88,8 +87,7 @@ class MenuController extends AdminControllerLib
         return $this->form(
             $menuRequestHandler,
             $form,
-            $menu,
-            'admin/menu/form.html.twig'
+            $menu
         );
     }
 
@@ -150,8 +148,7 @@ class MenuController extends AdminControllerLib
         return $this->form(
             $menuRequestHandler,
             PrincipalType::class,
-            new Menu(),
-            'admin/menu/form.html.twig'
+            new Menu()
         );
     }
 
@@ -162,23 +159,13 @@ class MenuController extends AdminControllerLib
     public function trash(): Response
     {
         return $this->listOrTrash(
-            Menu::class,
             'admin/menu/trash.html.twig',
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'  => 'api_action_delete',
-            'destroy' => 'api_action_destroy',
-            'edit'    => 'admin_menu_edit',
-            'empty'   => 'api_action_empty',
-            'list'    => 'admin_menu_index',
-            'new'     => 'admin_menu_new',
-            'restore' => 'api_action_restore',
-            'trash'   => 'admin_menu_trash',
-        ];
+        return $this->domainService->getDomain(Menu::class);
     }
 
     /**

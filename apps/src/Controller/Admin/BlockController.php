@@ -4,7 +4,6 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Block;
-use Labstag\Form\Admin\BlockType;
 use Labstag\Form\Admin\NewBlockType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\BlockRepository;
@@ -30,8 +29,6 @@ class BlockController extends AdminControllerLib
         $field = $blockService->getEntityField($block);
 
         return $this->form(
-            $blockRequestHandler,
-            BlockType::class,
             is_null($block) ? new Block() : $block,
             'admin/block/form.html.twig',
             ['field' => $field]
@@ -43,9 +40,7 @@ class BlockController extends AdminControllerLib
      */
     #[Route(path: '/trash', name: 'admin_block_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_block_index', methods: ['GET'])]
-    public function indexOrTrash(
-        BlockRepository $blockRepository
-    ): Response
+    public function indexOrTrash(): Response
     {
         $region = null;
         $this->btnInstance()->add(
@@ -60,20 +55,22 @@ class BlockController extends AdminControllerLib
             'admin_block_move',
             'Move',
         );
-        $form      = $this->createForm(
+        $form       = $this->createForm(
             NewBlockType::class,
             new Block(),
             [
                 'action' => $this->router->generate('admin_block_new'),
             ]
         );
-        $url       = $this->getUrlAdmin();
-        $request   = $this->requeststack->getCurrentRequest();
-        $all       = $request->attributes->all();
-        $route     = $all['_route'];
-        $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
-        $this->setBtnListOrTrash($blockRepository, $routeType);
-        $data  = $blockRepository->getDataByRegion();
+        $domain     = $this->getDomainEntity();
+        $url        = $domain->getUrlAdmin();
+        $repository = $domain->getRepository();
+        $request    = $this->requeststack->getCurrentRequest();
+        $all        = $request->attributes->all();
+        $route      = $all['_route'];
+        $routeType  = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
+        $this->setBtnListOrTrash($routeType);
+        $data  = $repository->getDataByRegion();
         $total = 0;
         foreach ($data as $region) {
             $total += is_countable($region) ? count($region) : 0;
@@ -146,17 +143,9 @@ class BlockController extends AdminControllerLib
         return $this->redirectToRoute('admin_block_edit', ['id' => $block->getId()]);
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'  => 'api_action_delete',
-            'destroy' => 'api_action_destroy',
-            'edit'    => 'admin_block_edit',
-            'empty'   => 'api_action_empty',
-            'list'    => 'admin_block_index',
-            'restore' => 'api_action_restore',
-            'trash'   => 'admin_block_trash',
-        ];
+        return $this->domainService->getDomain(Block::class);
     }
 
     /**
