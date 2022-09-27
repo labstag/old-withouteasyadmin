@@ -84,7 +84,11 @@ class LabstagUserCommand extends CommandLib
         $this->state($helper, $username, $symfonyStyle, $input, $output);
     }
 
-    protected function actionUpdatePassword(InputInterface $input, OutputInterface $output, SymfonyStyle $symfonyStyle): void
+    protected function actionUpdatePassword(
+        InputInterface $input,
+        OutputInterface $output,
+        SymfonyStyle $symfonyStyle
+    ): void
     {
         $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
@@ -191,7 +195,13 @@ class LabstagUserCommand extends CommandLib
         $symfonyStyle->success('Utilisateur supprimé');
     }
 
-    protected function disable($helper, $username, SymfonyStyle $symfonyStyle, InputInterface $input, OutputInterface $output): void
+    protected function disable(
+        $helper,
+        $username,
+        SymfonyStyle $symfonyStyle,
+        InputInterface $input,
+        OutputInterface $output
+    ): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
@@ -235,7 +245,13 @@ class LabstagUserCommand extends CommandLib
         $symfonyStyle->success('Utilisateur désactivé');
     }
 
-    protected function enable($helper, $username, SymfonyStyle $symfonyStyle, InputInterface $input, OutputInterface $output): void
+    protected function enable(
+        $helper,
+        $username,
+        SymfonyStyle $symfonyStyle,
+        InputInterface $input,
+        OutputInterface $output
+    ): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {
@@ -334,7 +350,13 @@ class LabstagUserCommand extends CommandLib
         $output->writeln('list');
     }
 
-    protected function state($helper, $username, SymfonyStyle $symfonyStyle, InputInterface $input, OutputInterface $output): void
+    protected function state(
+        $helper,
+        $username,
+        SymfonyStyle $symfonyStyle,
+        InputInterface $input,
+        OutputInterface $output
+    ): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User || is_null($entity)) {

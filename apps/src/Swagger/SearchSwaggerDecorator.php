@@ -105,9 +105,6 @@ final class SearchSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/search/libelle']['get'] = $statsEndpoint;
     }
 
-    /**
-     * @return array<int, array{name: string, in: string, required: bool, description: string, schema: array{type: string}}>
-     */
     private function setParameters(): array
     {
         return [

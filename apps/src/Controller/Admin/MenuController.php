@@ -19,7 +19,6 @@ class MenuController extends AdminControllerLib
     #[Route(path: '/add', name: 'admin_menu_add', methods: ['GET', 'POST'])]
     public function add(
         Request $request,
-        MenuRequestHandler $menuRequestHandler,
         MenuRepository $menuRepository
     ): Response
     {
@@ -71,8 +70,7 @@ class MenuController extends AdminControllerLib
 
     #[Route(path: '/update/{id}', name: 'admin_menu_update', methods: ['GET', 'POST'])]
     public function edit(
-        Menu $menu,
-        MenuRequestHandler $menuRequestHandler
+        Menu $menu
     ): Response
     {
         $this->modalAttachmentDelete();
@@ -138,7 +136,7 @@ class MenuController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'admin_menu_new', methods: ['GET', 'POST'])]
-    public function new(MenuRequestHandler $menuRequestHandler): Response
+    public function new(): Response
     {
         return $this->form(
             $this->getDomainEntity(),

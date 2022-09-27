@@ -111,7 +111,10 @@ class OauthAuthenticator extends AbstractAuthenticator
         }
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $authenticationException): ?Response
+    public function onAuthenticationFailure(
+        Request $request,
+        AuthenticationException $authenticationException
+    ): ?Response
     {
         if ($request->hasSession()) {
             $request->getSession()->set(Security::AUTHENTICATION_ERROR, $authenticationException);

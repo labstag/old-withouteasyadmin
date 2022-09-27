@@ -124,9 +124,6 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/profil/avatar']['delete'] = $statsEndpoint;
     }
 
-    /**
-     * @return array<int, array{content: array{application/json: array{schema: array{type: string, properties: array{isvalid: array{type: string, example: bool}}}}}}>
-     */
     private function setResponses(): array
     {
         return [
