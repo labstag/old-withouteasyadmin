@@ -24,13 +24,13 @@ class HistoryController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_history_edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?History $history,
-        HistoryRequestHandler $historyRequestHandler
+        ?History $history
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
+            $this->getDomainEntity(),
             is_null($history) ? new History() : $history,
             'admin/history/form.html.twig'
         );
@@ -44,7 +44,7 @@ class HistoryController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            History::class,
+            $this->getDomainEntity(),
             'admin/history/index.html.twig',
         );
     }
@@ -132,6 +132,7 @@ class HistoryController extends AdminControllerLib
     public function showOrPreview(History $history): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $history,
             'admin/history/show.html.twig'
         );

@@ -48,8 +48,7 @@ class MenuController extends AdminControllerLib
         $menu->setParent($parent);
 
         return $this->form(
-            $menuRequestHandler,
-            LinkType::class,
+            $this->getDomainEntity(),
             $menu
         );
     }
@@ -79,14 +78,12 @@ class MenuController extends AdminControllerLib
     ): Response
     {
         $this->modalAttachmentDelete();
-        $form             = empty($menu->getClef()) ? LinkType::class : PrincipalType::class;
         $data             = [$menu->getData()];
         $data[0]['param'] = isset($data[0]['params']) ? json_encode($data[0]['params'], JSON_THROW_ON_ERROR) : '';
         $menu->setData($data);
 
         return $this->form(
-            $menuRequestHandler,
-            $form,
+            $this->getDomainEntity(),
             $menu
         );
     }
@@ -146,8 +143,7 @@ class MenuController extends AdminControllerLib
     public function new(MenuRequestHandler $menuRequestHandler): Response
     {
         return $this->form(
-            $menuRequestHandler,
-            PrincipalType::class,
+            $this->getDomainEntity(),
             new Menu()
         );
     }
@@ -159,6 +155,7 @@ class MenuController extends AdminControllerLib
     public function trash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/menu/trash.html.twig',
         );
     }

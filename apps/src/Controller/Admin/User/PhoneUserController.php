@@ -6,7 +6,6 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\PhoneUser;
 use Labstag\Form\Admin\Search\User\PhoneUserType as UserPhoneUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\Search\User\PhoneUserSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,11 +16,11 @@ class PhoneUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_phoneuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_phoneuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        ?PhoneUser $phoneUser,
-        PhoneUserRequestHandler $phoneUserRequestHandler
+        ?PhoneUser $phoneUser
     ): Response
     {
         return $this->form(
+            $this->getDomainEntity(),
             is_null($phoneUser) ? new PhoneUser() : $phoneUser
         );
     }
@@ -34,6 +33,7 @@ class PhoneUserController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/user/phone_user/index.html.twig'
         );
     }
@@ -46,6 +46,7 @@ class PhoneUserController extends AdminControllerLib
     public function showOrPreview(PhoneUser $phoneUser): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $phoneUser,
             'admin/user/phone_user/show.html.twig'
         );

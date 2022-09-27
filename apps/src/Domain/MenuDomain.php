@@ -5,6 +5,7 @@ namespace Labstag\Domain;
 use Labstag\Entity\Menu;
 
 use Labstag\Lib\DomainLib;
+use Labstag\Form\Admin\MenuType;
 use Labstag\Repository\MenuRepository;
 use Labstag\RequestHandler\MenuRequestHandler;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -33,6 +34,11 @@ class MenuDomain extends DomainLib
     public function getRequestHandler()
     {
         return $this->menuRequestHandler;
+    }
+
+    public function getType()
+    {
+        return MenuType::class;
     }
 
     /**

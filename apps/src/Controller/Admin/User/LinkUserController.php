@@ -6,7 +6,6 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\LinkUser;
 use Labstag\Form\Admin\Search\User\LinkUserType as UserLinkUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\RequestHandler\LinkUserRequestHandler;
 use Labstag\Search\User\LinkUserSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,11 +16,11 @@ class LinkUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_linkuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_linkuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        ?LinkUser $linkUser,
-        LinkUserRequestHandler $linkUserRequestHandler
+        ?LinkUser $linkUser
     ): Response
     {
         return $this->form(
+            $this->getDomainEntity(),
             is_null($linkUser) ? new LinkUser() : $linkUser
         );
     }
@@ -34,6 +33,7 @@ class LinkUserController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/user/link_user/index.html.twig'
         );
     }
@@ -46,6 +46,7 @@ class LinkUserController extends AdminControllerLib
     public function showOrPreview(LinkUser $linkUser): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $linkUser,
             'admin/user/link_user/show.html.twig'
         );

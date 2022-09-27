@@ -20,13 +20,13 @@ class ChapterController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_chapter_edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Chapter $chapter,
-        ChapterRequestHandler $chapterRequestHandler
+        ?Chapter $chapter
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
+            $this->getDomainEntity(),
             is_null($chapter) ? new Chapter() : $chapter,
             'admin/chapter/form.html.twig'
         );
@@ -40,6 +40,7 @@ class ChapterController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/chapter/index.html.twig',
         );
     }
@@ -71,6 +72,7 @@ class ChapterController extends AdminControllerLib
     public function showOrPreview(Chapter $chapter): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $chapter,
             'admin/chapter/show.html.twig'
         );

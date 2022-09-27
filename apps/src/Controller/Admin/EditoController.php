@@ -21,13 +21,13 @@ class EditoController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_edito_edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Edito $edito,
-        EditoRequestHandler $editoRequestHandler
+        ?Edito $edito
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
+            $this->getDomainEntity(),
             is_null($edito) ? new Edito() : $edito,
             'admin/edito/form.html.twig'
         );
@@ -41,6 +41,7 @@ class EditoController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/edito/index.html.twig',
         );
     }
@@ -74,6 +75,7 @@ class EditoController extends AdminControllerLib
     public function showOrPreview(Edito $edito): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $edito,
             'admin/edito/show.html.twig'
         );

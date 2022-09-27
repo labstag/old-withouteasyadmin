@@ -6,7 +6,6 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Template;
 use Labstag\Form\Admin\Search\TemplateType as SearchTemplateType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\Search\TemplateSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,11 +16,11 @@ class TemplateController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_template_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_template_new', methods: ['GET', 'POST'])]
     public function edit(
-        ?Template $template,
-        TemplateRequestHandler $templateRequestHandler
+        ?Template $template
     ): Response
     {
         return $this->form(
+            $this->getDomainEntity(),
             is_null($template) ? new Template() : $template
         );
     }
@@ -34,6 +33,7 @@ class TemplateController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/template/index.html.twig'
         );
     }
@@ -46,6 +46,7 @@ class TemplateController extends AdminControllerLib
     public function showOrPreview(Template $template): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $template,
             'admin/template/show.html.twig'
         );

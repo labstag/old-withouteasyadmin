@@ -11,7 +11,6 @@ use Labstag\Form\Admin\Bookmark\ImportType;
 use Labstag\Form\Admin\Search\BookmarkType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Queue\EnqueueMethod;
-use Labstag\RequestHandler\BookmarkRequestHandler;
 use Labstag\Search\BookmarkSearch;
 use Labstag\Service\BookmarkService;
 use Symfony\Component\Form\FormInterface;
@@ -27,13 +26,13 @@ class BookmarkController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_bookmark_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_bookmark_new', methods: ['GET', 'POST'])]
     public function edit(
-        ?Bookmark $bookmark,
-        BookmarkRequestHandler $bookmarkRequestHandler
+        ?Bookmark $bookmark
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
+            $this->getDomainEntity(),
             is_null($bookmark) ? new Bookmark() : $bookmark,
             'admin/bookmark/form.html.twig'
         );
@@ -66,6 +65,7 @@ class BookmarkController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/bookmark/index.html.twig'
         );
     }
@@ -78,6 +78,7 @@ class BookmarkController extends AdminControllerLib
     public function showOrPreview(Bookmark $bookmark): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $bookmark,
             'admin/bookmark/show.html.twig'
         );

@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Form\Admin\Menu;
+namespace Labstag\Form\Admin\Collections;
 
 use Labstag\Lib\AbstractTypeLib;
 use Labstag\Service\GuardService;
@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class DataType extends AbstractTypeLib
+class MenuType extends AbstractTypeLib
 {
     public function __construct(
         TranslatorInterface $translator,

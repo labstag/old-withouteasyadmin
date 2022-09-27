@@ -19,13 +19,13 @@ class PageController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_page_edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Page $page,
-        PageRequestHandler $pageRequestHandler
+        ?Page $page
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
+            $this->getDomainEntity(),
             is_null($page) ? new Page() : $page,
             'admin/page/form.html.twig'
         );
@@ -39,6 +39,7 @@ class PageController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/page/index.html.twig'
         );
     }
@@ -65,6 +66,7 @@ class PageController extends AdminControllerLib
     public function showOrPreview(Page $page): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $page,
             'admin/page/show.html.twig'
         );

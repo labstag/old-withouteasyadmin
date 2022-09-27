@@ -19,6 +19,7 @@ class AttachmentController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/attachment/index.html.twig'
         );
     }

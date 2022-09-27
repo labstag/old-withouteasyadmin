@@ -1,15 +1,16 @@
 <?php
 
-namespace Labstag\Form\Admin\Menu;
+namespace Labstag\Form\Admin;
 
 use Labstag\Entity\Menu;
+use Labstag\Form\Admin\Collections\MenuType as DataType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LinkType extends AbstractTypeLib
+class MenuType extends AbstractTypeLib
 {
     public function buildForm(
         FormBuilderInterface $formBuilder,
@@ -47,6 +48,17 @@ class LinkType extends AbstractTypeLib
                 'allow_add'    => false,
                 'allow_delete' => false,
                 'entry_type'   => DataType::class,
+            ]
+        );
+        $formBuilder->add(
+            'clef',
+            TextType::class,
+            [
+                'label' => $this->translator->trans('menu.principal.clef.label', [], 'admin.form'),
+                'help'  => $this->translator->trans('menu.principal.clef.help', [], 'admin.form'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('menu.principal.clef.placeholder', [], 'admin.form'),
+                ],
             ]
         );
     }

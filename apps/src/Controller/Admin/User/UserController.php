@@ -7,7 +7,6 @@ use Labstag\Entity\User;
 use Labstag\Form\Admin\Search\UserType as SearchUserType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\WorkflowRepository;
-use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Search\UserSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,11 +17,11 @@ class UserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_user_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_user_new', methods: ['GET', 'POST'])]
     public function edit(
-        ?User $user,
-        UserRequestHandler $userRequestHandler
+        ?User $user
     ): Response
     {
         return $this->form(
+            $this->getDomainEntity(),
             is_null($user) ? new User() : $user,
             'admin/user/form.html.twig'
         );
@@ -88,6 +87,7 @@ class UserController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/user/index.html.twig'
         );
     }
@@ -102,6 +102,7 @@ class UserController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $user,
             'admin/user/show.html.twig'
         );

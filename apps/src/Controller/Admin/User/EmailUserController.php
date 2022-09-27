@@ -6,7 +6,6 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\EmailUser;
 use Labstag\Form\Admin\Search\User\EmailUserType as UserEmailUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Search\User\EmailUserSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,11 +16,11 @@ class EmailUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_emailuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_emailuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        ?EmailUser $emailUser,
-        EmailUserRequestHandler $emailUserRequestHandler
+        ?EmailUser $emailUser
     ): Response
     {
         return $this->form(
+            $this->getDomainEntity(),
             is_null($emailUser) ? new EmailUser() : $emailUser
         );
     }
@@ -34,6 +33,7 @@ class EmailUserController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/user/email_user/index.html.twig'
         );
     }
@@ -46,6 +46,7 @@ class EmailUserController extends AdminControllerLib
     public function showOrPreview(EmailUser $emailUser): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $emailUser,
             'admin/user/email_user/show.html.twig'
         );

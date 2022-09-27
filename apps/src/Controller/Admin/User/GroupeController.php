@@ -7,7 +7,6 @@ use Labstag\Entity\Groupe;
 use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\WorkflowRepository;
-use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\Search\GroupeSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,11 +17,11 @@ class GroupeController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_groupuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_groupuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        ?Groupe $groupe,
-        GroupeRequestHandler $groupeRequestHandler
+        ?Groupe $groupe
     ): Response
     {
         return $this->form(
+            $this->getDomainEntity(),
             is_null($groupe) ? new Groupe() : $groupe
         );
     }
@@ -87,6 +86,7 @@ class GroupeController extends AdminControllerLib
     public function index(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/user/groupe/index.html.twig'
         );
     }
@@ -99,6 +99,7 @@ class GroupeController extends AdminControllerLib
     public function showOrPreview(Groupe $groupe): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $groupe,
             'admin/user/groupe/show.html.twig'
         );

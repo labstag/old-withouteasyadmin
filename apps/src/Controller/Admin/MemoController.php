@@ -20,13 +20,13 @@ class MemoController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_memo_edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Memo $memo,
-        MemoRequestHandler $memoRequestHandler
+        ?Memo $memo
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
+            $this->getDomainEntity(),
             is_null($memo) ? new Memo() : $memo,
             'admin/memo/form.html.twig'
         );
@@ -40,6 +40,7 @@ class MemoController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/memo/index.html.twig',
         );
     }
@@ -72,6 +73,7 @@ class MemoController extends AdminControllerLib
     public function showOrPreview(Memo $memo): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $memo,
             'admin/memo/show.html.twig'
         );

@@ -21,13 +21,13 @@ class PostController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_post_edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Post $post,
-        PostRequestHandler $postRequestHandler
+        ?Post $post
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
+            $this->getDomainEntity(),
             is_null($post) ? new Post() : $post,
             'admin/post/form.html.twig'
         );
@@ -41,6 +41,7 @@ class PostController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/post/index.html.twig',
         );
     }
@@ -75,6 +76,7 @@ class PostController extends AdminControllerLib
     public function showOrPreview(Post $post): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $post,
             'admin/post/show.html.twig'
         );

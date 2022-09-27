@@ -22,13 +22,13 @@ class BlockController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_block_edit', methods: ['GET', 'POST'])]
     public function edit(
         BlockService $blockService,
-        Block $block,
-        BlockRequestHandler $blockRequestHandler
+        Block $block
     ): Response
     {
         $field = $blockService->getEntityField($block);
 
         return $this->form(
+            $this->getDomainEntity(),
             is_null($block) ? new Block() : $block,
             'admin/block/form.html.twig',
             ['field' => $field]
@@ -69,7 +69,7 @@ class BlockController extends AdminControllerLib
         $all        = $request->attributes->all();
         $route      = $all['_route'];
         $routeType  = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
-        $this->setBtnListOrTrash($routeType);
+        $this->setBtnListOrTrash($routeType, $domain);
         $data  = $repository->getDataByRegion();
         $total = 0;
         foreach ($data as $region) {

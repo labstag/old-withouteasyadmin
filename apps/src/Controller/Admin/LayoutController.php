@@ -24,13 +24,13 @@ class LayoutController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_layout_edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Layout $layout,
-        LayoutRequestHandler $layoutRequestHandler
+        ?Layout $layout
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
+            $this->getDomainEntity(),
             is_null($layout) ? new Layout() : $layout,
             'admin/layout/form.html.twig'
         );
@@ -59,15 +59,14 @@ class LayoutController extends AdminControllerLib
             ]
         );
 
-        $domain     = $this->getDomainEntity();
-        $url        = $domain->getUrlAdmin();
-        $repository = $domain->getRepository();
-        $request    = $this->requeststack->getCurrentRequest();
-        $all        = $request->attributes->all();
-        $route      = $all['_route'];
-        $routeType  = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
-        $this->setBtnListOrTrash($routeType);
-        $pagination = $this->setPagination($routeType);
+        $domain    = $this->getDomainEntity();
+        $url       = $domain->getUrlAdmin();
+        $request   = $this->requeststack->getCurrentRequest();
+        $all       = $request->attributes->all();
+        $route     = $all['_route'];
+        $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
+        $this->setBtnListOrTrash($routeType, $domain);
+        $pagination = $this->setPagination($routeType, $domain);
 
         if ('trash' == $routeType && 0 == $pagination->count()) {
             throw new AccessDeniedException();
@@ -123,6 +122,7 @@ class LayoutController extends AdminControllerLib
     public function showOrPreview(Layout $layout): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $layout,
             'admin/layout/show.html.twig'
         );

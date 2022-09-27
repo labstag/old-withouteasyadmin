@@ -6,7 +6,6 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Render;
 use Labstag\Form\Admin\Search\RenderType as SearchRenderType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\RequestHandler\RenderRequestHandler;
 use Labstag\Search\RenderSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,13 +16,13 @@ class RenderController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_render_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_render_new', methods: ['GET', 'POST'])]
     public function edit(
-        ?Render $render,
-        RenderRequestHandler $renderRequestHandler
+        ?Render $render
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
+            $this->getDomainEntity(),
             is_null($render) ? new Render() : $render,
             'admin/render/form.html.twig'
         );
@@ -37,6 +36,7 @@ class RenderController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/render/index.html.twig'
         );
     }
@@ -49,6 +49,7 @@ class RenderController extends AdminControllerLib
     public function showOrPreview(Render $render): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $render,
             'admin/render/show.html.twig'
         );

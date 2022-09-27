@@ -24,12 +24,12 @@ abstract class AdminControllerLib extends ControllerLib
     protected string $urlHome = '';
 
     public function form(
+        $domain,
         object $entity,
         string $twig = 'admin/crud/form.html.twig',
         array $parameters = []
     ): Response
     {
-        $domain            = $this->getDomainEntity();
         $requestHandlerLib = $domain->getRequestHandler();
         $formType          = $domain->getType();
         $url               = $domain->getUrlAdmin();
@@ -77,19 +77,18 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     public function listOrTrash(
+        $domain,
         string $html,
         array $parameters = []
     ): Response
     {
-        $domain     = $this->getDomainEntity();
-        $repository = $domain->getRepository();
-        $url        = $domain->getUrlAdmin();
-        $request    = $this->requeststack->getCurrentRequest();
-        $all        = $request->attributes->all();
-        $route      = $all['_route'];
-        $routeType  = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
-        $this->setBtnListOrTrash($routeType);
-        $pagination = $this->setPagination($routeType);
+        $url       = $domain->getUrlAdmin();
+        $request   = $this->requeststack->getCurrentRequest();
+        $all       = $request->attributes->all();
+        $route     = $all['_route'];
+        $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
+        $this->setBtnListOrTrash($routeType, $domain);
+        $pagination = $this->setPagination($routeType, $domain);
 
         if ('trash' == $routeType && 0 == $pagination->count()) {
             throw new AccessDeniedException();
@@ -119,11 +118,11 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     public function renderShowOrPreview(
+        $domain,
         object $entity,
         string $twigShow
     ): Response
     {
-        $domain       = $this->getDomainEntity();
         $url          = $domain->getUrlAdmin();
         $routeCurrent = $this->requeststack->getCurrentRequest()->get('_route');
         $routeType    = (0 != substr_count((string) $routeCurrent, 'preview')) ? 'preview' : 'show';
@@ -554,9 +553,8 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function setBtnListOrTrash(string $routeType)
+    protected function setBtnListOrTrash(string $routeType, $domain)
     {
-        $domain                     = $this->getDomainEntity();
         $url                        = $domain->getUrlAdmin();
         $serviceEntityRepositoryLib = $domain->getRepository();
         $request                    = $this->requeststack->getCurrentRequest();
@@ -608,10 +606,8 @@ abstract class AdminControllerLib extends ControllerLib
         ];
     }
 
-    protected function setPagination($routeType): PaginationInterface
+    protected function setPagination($routeType, $domain): PaginationInterface
     {
-        $domain     = $this->getDomainEntity();
-        $url        = $domain->getUrlAdmin();
         $repository = $domain->getRepository();
         $methods    = $this->getMethodsList();
         $method     = $methods[$routeType];

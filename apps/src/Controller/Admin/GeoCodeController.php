@@ -6,7 +6,6 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\GeoCode;
 use Labstag\Form\Admin\Search\GeoCodeType as SearchGeoCodeType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\RequestHandler\GeoCodeRequestHandler;
 use Labstag\Search\GeoCodeSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,11 +16,11 @@ class GeoCodeController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_geocode_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_geocode_new', methods: ['GET', 'POST'])]
     public function edit(
-        ?GeoCode $geoCode,
-        GeoCodeRequestHandler $geoCodeRequestHandler
+        ?GeoCode $geoCode
     ): Response
     {
         return $this->form(
+            $this->getDomainEntity(),
             is_null($geoCode) ? new GeoCode() : $geoCode
         );
     }
@@ -34,6 +33,7 @@ class GeoCodeController extends AdminControllerLib
     public function index(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/geocode/index.html.twig'
         );
     }
@@ -46,6 +46,7 @@ class GeoCodeController extends AdminControllerLib
     public function showOrPreview(GeoCode $geoCode): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $geoCode,
             'admin/geocode/show.html.twig'
         );

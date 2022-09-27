@@ -8,11 +8,9 @@ use Labstag\Entity\Attachment;
 use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ParamType;
-use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\MemoRepository;
-use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
@@ -21,7 +19,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
@@ -141,21 +138,6 @@ class AdminController extends AdminControllerLib
                 'images' => $images,
                 'form'   => $form,
             ]
-        );
-    }
-
-    #[Route(path: '/profil', name: 'admin_profil', methods: ['GET', 'POST'])]
-    public function profil(
-        Security $security,
-        UserRequestHandler $userRequestHandler
-    ): Response
-    {
-        $this->modalAttachmentDelete();
-
-        return $this->form(
-            $userRequestHandler,
-            ProfilType::class,
-            $security->getUser()
         );
     }
 

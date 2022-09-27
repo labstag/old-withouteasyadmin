@@ -6,7 +6,6 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Category;
 use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\RequestHandler\CategoryRequestHandler;
 use Labstag\Search\CategorySearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,13 +16,13 @@ class CategoryController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_category_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_category_new', methods: ['GET', 'POST'])]
     public function edit(
-        ?Category $category,
-        CategoryRequestHandler $categoryRequestHandler
+        ?Category $category
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
+            $this->getDomainEntity(),
             is_null($category) ? new Category() : $category
         );
     }
@@ -36,6 +35,7 @@ class CategoryController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/category/index.html.twig'
         );
     }
@@ -48,6 +48,7 @@ class CategoryController extends AdminControllerLib
     public function showOrPreview(Category $category): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $category,
             'admin/category/show.html.twig'
         );

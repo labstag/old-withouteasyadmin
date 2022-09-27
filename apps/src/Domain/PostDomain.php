@@ -15,7 +15,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class PostDomain extends DomainLib
 {
     public function __construct(
-        protected PostRequestHandler $PostRequestHandler,
+        protected PostRequestHandler $postRequestHandler,
         protected PostRepository $postRepository,
         TranslatorInterface $translator
     )
@@ -35,7 +35,7 @@ class PostDomain extends DomainLib
 
     public function getRequestHandler()
     {
-        return $this->PostRequestHandler;
+        return $this->postRequestHandler;
     }
 
     public function getSearchData()

@@ -6,7 +6,6 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Libelle;
 use Labstag\Form\Admin\Search\LibelleType as SearchLibelleType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\Search\LibelleSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,13 +16,13 @@ class LibelleController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_libelle_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_libelle_new', methods: ['GET', 'POST'])]
     public function edit(
-        ?Libelle $libelle,
-        LibelleRequestHandler $libelleRequestHandler
+        ?Libelle $libelle
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
+            $this->getDomainEntity(),
             is_null($libelle) ? new Libelle() : $libelle
         );
     }
@@ -36,6 +35,7 @@ class LibelleController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
+            $this->getDomainEntity(),
             'admin/libelle/index.html.twig'
         );
     }
@@ -48,6 +48,7 @@ class LibelleController extends AdminControllerLib
     public function showOrPreview(Libelle $libelle): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $libelle,
             'admin/libelle/show.html.twig'
         );

@@ -11,4 +11,9 @@ abstract class DomainLib
     )
     {
     }
+
+    public function getUrlAdmin()
+    {
+        return [];
+    }
 }
