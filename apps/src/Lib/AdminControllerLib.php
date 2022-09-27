@@ -940,6 +940,7 @@ abstract class AdminControllerLib extends ControllerLib
                 continue;
             }
 
+            dump($id);
             $paragraph->setPosition($position);
             $repository->add($paragraph);
         }

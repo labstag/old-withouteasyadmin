@@ -70,6 +70,7 @@ class Edito implements Stringable
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
 

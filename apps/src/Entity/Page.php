@@ -51,6 +51,7 @@ class Page implements Stringable
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
 

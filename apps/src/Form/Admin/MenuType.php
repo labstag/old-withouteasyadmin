@@ -18,6 +18,27 @@ class MenuType extends AbstractTypeLib
     ): void
     {
         unset($options);
+        $entity = $formBuilder->getData();
+        if (empty($entity->getClef())) {
+            $this->setChildren($formBuilder);
+
+            return;
+        }
+
+        $this->setNew($formBuilder);
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        $optionsResolver->setDefaults(
+            [
+                'data_class' => Menu::class,
+            ]
+        );
+    }
+
+    private function setChildren(FormBuilderInterface $formBuilder)
+    {
         $formBuilder->add(
             'name',
             TextType::class,
@@ -50,6 +71,10 @@ class MenuType extends AbstractTypeLib
                 'entry_type'   => DataType::class,
             ]
         );
+    }
+
+    private function setNew(FormBuilderInterface $formBuilder)
+    {
         $formBuilder->add(
             'clef',
             TextType::class,
@@ -59,15 +84,6 @@ class MenuType extends AbstractTypeLib
                 'attr'  => [
                     'placeholder' => $this->translator->trans('menu.principal.clef.placeholder', [], 'admin.form'),
                 ],
-            ]
-        );
-    }
-
-    public function configureOptions(OptionsResolver $optionsResolver): void
-    {
-        $optionsResolver->setDefaults(
-            [
-                'data_class' => Menu::class,
             ]
         );
     }

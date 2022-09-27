@@ -58,6 +58,7 @@ class Chapter
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="chapter", orphanRemoval=true)
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
 
