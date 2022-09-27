@@ -4,8 +4,8 @@ namespace Labstag\Domain;
 
 use Labstag\Entity\Menu;
 
-use Labstag\Lib\DomainLib;
 use Labstag\Form\Admin\MenuType;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\MenuRepository;
 use Labstag\RequestHandler\MenuRequestHandler;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -36,11 +36,6 @@ class MenuDomain extends DomainLib
         return $this->menuRequestHandler;
     }
 
-    public function getType()
-    {
-        return MenuType::class;
-    }
-
     /**
      * @return mixed[]
      */
@@ -55,6 +50,11 @@ class MenuDomain extends DomainLib
             'admin_menu_trash'   => $this->translator->trans('menu.trash', [], 'admin.breadcrumb'),
             'admin_menu_update'  => $this->translator->trans('menu.update', [], 'admin.breadcrumb'),
         ];
+    }
+
+    public function getType()
+    {
+        return MenuType::class;
     }
 
     public function getUrlAdmin(): array

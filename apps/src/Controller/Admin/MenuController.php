@@ -4,8 +4,6 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
-use Labstag\Form\Admin\Menu\LinkType;
-use Labstag\Form\Admin\Menu\PrincipalType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\MenuRepository;
 use Labstag\RequestHandler\MenuRequestHandler;

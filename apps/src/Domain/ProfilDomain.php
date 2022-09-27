@@ -41,7 +41,7 @@ class ProfilDomain extends DomainLib
     public function getTitles(): array
     {
         return [
-            'admin_profil'   => $this->translator->trans('profil.title', [], 'admin.breadcrumb'),
+            'admin_profil' => $this->translator->trans('profil.title', [], 'admin.breadcrumb'),
         ];
     }
 
