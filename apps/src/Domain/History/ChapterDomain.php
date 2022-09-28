@@ -40,12 +40,27 @@ class ChapterDomain extends DomainLib
 
     public function getSearchData()
     {
-        return ChapterSearch::class;
+        return new ChapterSearch();
     }
 
     public function getSearchForm()
     {
         return SearchChapterType::class;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getTitles(): array
+    {
+        return [
+            'admin_chapter_index'   => $this->translator->trans('chapter.title', [], 'admin.breadcrumb'),
+            'admin_chapter_edit'    => $this->translator->trans('chapter.edit', [], 'admin.breadcrumb'),
+            'admin_chapter_new'     => $this->translator->trans('chapter.new', [], 'admin.breadcrumb'),
+            'admin_chapter_trash'   => $this->translator->trans('chapter.trash', [], 'admin.breadcrumb'),
+            'admin_chapter_preview' => $this->translator->trans('chapter.preview', [], 'admin.breadcrumb'),
+            'admin_chapter_show'    => $this->translator->trans('chapter.show', [], 'admin.breadcrumb'),
+        ];
     }
 
     public function getType()
@@ -66,21 +81,6 @@ class ChapterDomain extends DomainLib
             'show'     => 'admin_chapter_show',
             'trash'    => 'admin_chapter_trash',
             'workflow' => 'api_action_workflow',
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return [
-            'admin_chapter_index'   => $this->translator->trans('chapter.title', [], 'admin.breadcrumb'),
-            'admin_chapter_edit'    => $this->translator->trans('chapter.edit', [], 'admin.breadcrumb'),
-            'admin_chapter_new'     => $this->translator->trans('chapter.new', [], 'admin.breadcrumb'),
-            'admin_chapter_trash'   => $this->translator->trans('chapter.trash', [], 'admin.breadcrumb'),
-            'admin_chapter_preview' => $this->translator->trans('chapter.preview', [], 'admin.breadcrumb'),
-            'admin_chapter_show'    => $this->translator->trans('chapter.show', [], 'admin.breadcrumb'),
         ];
     }
 }

@@ -5,11 +5,9 @@ namespace Labstag\Controller\Admin\History;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
-use Labstag\Form\Admin\Search\ChapterType as SearchChapterType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\ChapterRepository;
 use Labstag\RequestHandler\ChapterRequestHandler;
-use Labstag\Search\ChapterSearch;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -81,71 +79,5 @@ class ChapterController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(Chapter::class);
-    }
-
-    /**
-     * @return array<string, \ChapterSearch>|array<string, class-string<\Labstag\Form\Admin\Search\ChapterType>>
-     */
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchChapterType::class,
-            'data' => new ChapterSearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('history.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_history_index',
-                ],
-                [
-                    'title' => $this->translator->trans('chapter.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_chapter_index',
-                ],
-                [
-                    'title' => $this->translator->trans('chapter.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_chapter_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('chapter.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_chapter_new',
-                ],
-                [
-                    'title' => $this->translator->trans('chapter.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_chapter_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('chapter.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_chapter_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('chapter.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_chapter_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_chapter' => $this->translator->trans('chapter.title', [], 'admin.header'),
-            ],
-        ];
     }
 }

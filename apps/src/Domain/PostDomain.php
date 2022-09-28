@@ -40,7 +40,7 @@ class PostDomain extends DomainLib
 
     public function getSearchData()
     {
-        return PostSearch::class;
+        return new PostSearch();
     }
 
     public function getSearchForm()

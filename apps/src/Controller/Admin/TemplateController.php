@@ -4,9 +4,7 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Template;
-use Labstag\Form\Admin\Search\TemplateType as SearchTemplateType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Search\TemplateSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -55,67 +53,5 @@ class TemplateController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(Template::class);
-    }
-
-    /**
-     * @return array<string, \TemplateSearch>|array<string, class-string<\Labstag\Form\Admin\Search\TemplateType>>
-     */
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchTemplateType::class,
-            'data' => new TemplateSearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('template.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_template_index',
-                ],
-                [
-                    'title' => $this->translator->trans('template.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_template_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('template.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_template_new',
-                ],
-                [
-                    'title' => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_template_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('template.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_template_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('template.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_template_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_template' => $this->translator->trans('template.title', [], 'admin.header'),
-            ],
-        ];
     }
 }

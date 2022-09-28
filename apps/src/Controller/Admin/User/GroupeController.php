@@ -4,10 +4,8 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
-use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\WorkflowRepository;
-use Labstag\Search\GroupeSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -108,75 +106,5 @@ class GroupeController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(Groupe::class);
-    }
-
-    /**
-     * @return array<string, \GroupeSearch>|array<string, class-string<\Labstag\Form\Admin\Search\GroupeType>>
-     */
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchGroupeType::class,
-            'data' => new GroupeSearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_user_index',
-                ],
-                [
-                    'title' => $this->translator->trans('groupuser.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_groupuser_index',
-                ],
-                [
-                    'title' => $this->translator->trans('groupuser.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_groupuser_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('groupuser.guard', [], 'admin.breadcrumb'),
-                    'route' => 'admin_groupuser_guard',
-                ],
-                [
-                    'title' => $this->translator->trans('groupuser.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_groupuser_new',
-                ],
-                [
-                    'title' => $this->translator->trans('groupuser.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_groupuser_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('groupuser.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_groupuser_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('groupuser.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_groupuser_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_groupuser' => $this->translator->trans('groupuser.title', [], 'admin.header'),
-            ],
-        ];
     }
 }

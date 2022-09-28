@@ -624,30 +624,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removePost(Post $post): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->posts->removeElement($post) && $post->getRefuser() === $this) {
-            $post->setRefuser(null);
-        }
+        $this->removeElement($this->posts, $post);
 
         return $this;
     }
 
     public function removeRoute(RouteUser $routeUser): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->routes->removeElement($routeUser) && $routeUser->getRefuser() === $this) {
-            $routeUser->setRefuser(null);
-        }
+        $this->removeElement($this->routes, $routeUser);
 
         return $this;
     }
 
     public function removeWorkflowUser(WorkflowUser $workflowUser): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->workflowUsers->removeElement($workflowUser) && $workflowUser->getRefuser() === $this) {
-            $workflowUser->setRefuser(null);
-        }
+        $this->removeElement($this->workflowUsers, $workflowUser);
 
         return $this;
     }
@@ -727,5 +718,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
             $this->username,
             $this->password,
         ] = unserialize($serialized);
+    }
+
+    private function removeElement($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getRefuser() === $this) {
+            $variable->setRefuser(null);
+        }
     }
 }

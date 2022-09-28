@@ -236,90 +236,63 @@ trait PostEntity
 
     public function removePost(ParagraphPost $paragraphPost): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->posts->removeElement($paragraphPost) && $paragraphPost->getParagraph() === $this) {
-            $paragraphPost->setParagraph(null);
-        }
+        $this->removeElementPost($this->posts, $paragraphPost);
 
         return $this;
     }
 
     public function removePostArchive(PostArchive $postArchive): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->postArchives->removeElement($postArchive) && $postArchive->getParagraph() === $this) {
-            $postArchive->setParagraph(null);
-        }
+        $this->removeElementPost($this->postArchives, $postArchive);
 
         return $this;
     }
 
     public function removePostCategory(PostCategory $postCategory): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->postCategories->removeElement($postCategory) && $postCategory->getParagraph() === $this) {
-            $postCategory->setParagraph(null);
-        }
+        $this->removeElementPost($this->postCategories, $postCategory);
 
         return $this;
     }
 
     public function removePostHeader(PostHeader $postHeader): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->postHeaders->removeElement($postHeader) && $postHeader->getParagraph() === $this) {
-            $postHeader->setParagraph(null);
-        }
+        $this->removeElementPost($this->postHeaders, $postHeader);
 
         return $this;
     }
 
     public function removePostLibelle(PostLibelle $postLibelle): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->postLibelles->removeElement($postLibelle) && $postLibelle->getParagraph() === $this) {
-            $postLibelle->setParagraph(null);
-        }
+        $this->removeElementPost($this->postLibelles, $postLibelle);
 
         return $this;
     }
 
     public function removePostList(PostList $postList): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->postLists->removeElement($postList) && $postList->getParagraph() === $this) {
-            $postList->setParagraph(null);
-        }
+        $this->removeElementPost($this->postLists, $postList);
 
         return $this;
     }
 
     public function removePostShow(PostShow $postShow): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->postShows->removeElement($postShow) && $postShow->getParagraph() === $this) {
-            $postShow->setParagraph(null);
-        }
+        $this->removeElementPost($this->postShows, $postShow);
 
         return $this;
     }
 
     public function removePostUser(PostUser $postUser): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->postUsers->removeElement($postUser) && $postUser->getParagraph() === $this) {
-            $postUser->setParagraph(null);
-        }
+        $this->removeElementPost($this->postUsers, $postUser);
 
         return $this;
     }
 
     public function removePostYear(PostYear $postYear): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->postYears->removeElement($postYear) && $postYear->getParagraph() === $this) {
-            $postYear->setParagraph(null);
-        }
+        $this->removeElementPost($this->postYears, $postYear);
 
         return $this;
     }
@@ -329,5 +302,12 @@ trait PostEntity
         $this->post = $post;
 
         return $this;
+    }
+
+    private function removeElementPost($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
+            $variable->setParagraph(null);
+        }
     }
 }

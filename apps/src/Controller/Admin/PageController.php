@@ -4,11 +4,9 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Page;
-use Labstag\Form\Admin\Search\PageType as SearchPageType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\PageRepository;
 use Labstag\RequestHandler\PageRequestHandler;
-use Labstag\Search\PageSearch;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -75,67 +73,5 @@ class PageController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(Page::class);
-    }
-
-    /**
-     * @return array<string, \PageSearch>|array<string, class-string<\Labstag\Form\Admin\Search\PageType>>
-     */
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchPageType::class,
-            'data' => new PageSearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('page.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_page_index',
-                ],
-                [
-                    'title' => $this->translator->trans('page.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_page_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('page.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_page_new',
-                ],
-                [
-                    'title' => $this->translator->trans('page.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_page_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('page.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_page_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('page.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_page_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_bookmark' => $this->translator->trans('page.title', [], 'admin.header'),
-            ],
-        ];
     }
 }

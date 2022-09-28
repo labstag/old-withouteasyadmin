@@ -40,7 +40,7 @@ class PhoneUserDomain extends DomainLib
 
     public function getSearchData()
     {
-        return PhoneUserSearch::class;
+        return new PhoneUserSearch();
     }
 
     public function getSearchForm()

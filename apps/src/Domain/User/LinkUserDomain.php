@@ -40,7 +40,7 @@ class LinkUserDomain extends DomainLib
 
     public function getSearchData()
     {
-        return LinkUserSearch::class;
+        return new LinkUserSearch();
     }
 
     public function getSearchForm()

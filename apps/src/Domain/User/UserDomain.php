@@ -39,7 +39,7 @@ class UserDomain extends DomainLib
 
     public function getSearchData()
     {
-        return UserSearch::class;
+        return new UserSearch();
     }
 
     public function getSearchForm()

@@ -220,56 +220,6 @@ class AdminController extends AdminControllerLib
         );
     }
 
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title'        => $this->translator->trans('param.title', [], 'admin.breadcrumb'),
-                    'route'        => 'admin_param',
-                    'route_params' => [],
-                ],
-                [
-                    'title'        => $this->translator->trans('profil.title', [], 'admin.breadcrumb'),
-                    'route'        => 'admin_profil',
-                    'route_params' => [],
-                ],
-                [
-                    'title'        => $this->translator->trans('trash.title', [], 'admin.breadcrumb'),
-                    'route'        => 'admin_trash',
-                    'route_params' => [],
-                ],
-                [
-                    'title'        => $this->translator->trans('oauth.title', [], 'admin.breadcrumb'),
-                    'route'        => 'admin_oauth',
-                    'route_params' => [],
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return array_merge(
-            $headers,
-            [
-                'admin_oauth'  => $this->translator->trans('oauth.title', [], 'admin.header'),
-                'admin_param'  => $this->translator->trans('param.title', [], 'admin.header'),
-                'admin_profil' => $this->translator->trans('profil.title', [], 'admin.header'),
-                'admin_trash'  => $this->translator->trans('trash.title', [], 'admin.header'),
-            ]
-        );
-    }
-
     private function setUpload(Request $request, array $images): void
     {
         $all   = $request->files->all();

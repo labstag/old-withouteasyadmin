@@ -92,30 +92,21 @@ trait EditoEntity
 
     public function removeEdito(ParagraphEdito $paragraphEdito): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->editos->removeElement($paragraphEdito) && $paragraphEdito->getParagraph() === $this) {
-            $paragraphEdito->setParagraph(null);
-        }
+        $this->removeElementEdito($this->editos, $paragraphEdito);
 
         return $this;
     }
 
     public function removeEditoHeader(EditoHeader $editoHeader): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->editoHeaders->removeElement($editoHeader) && $editoHeader->getParagraph() === $this) {
-            $editoHeader->setParagraph(null);
-        }
+        $this->removeElementEdito($this->editoHeaders, $editoHeader);
 
         return $this;
     }
 
     public function removeShow(EditoShow $editoShow): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->editoShows->removeElement($editoShow) && $editoShow->getParagraph() === $this) {
-            $editoShow->setParagraph(null);
-        }
+        $this->removeElementEdito($this->editoShows, $editoShow);
 
         return $this;
     }
@@ -125,5 +116,12 @@ trait EditoEntity
         $this->edito = $edito;
 
         return $this;
+    }
+
+    private function removeElementEdito($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
+            $variable->setParagraph(null);
+        }
     }
 }

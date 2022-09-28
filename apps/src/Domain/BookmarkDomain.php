@@ -40,7 +40,7 @@ class BookmarkDomain extends DomainLib
 
     public function getSearchData()
     {
-        return BookmarkSearch::class;
+        return new BookmarkSearch();
     }
 
     public function getSearchForm()

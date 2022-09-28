@@ -6,11 +6,9 @@ use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
-use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\HistoryRepository;
 use Labstag\RequestHandler\HistoryRequestHandler;
-use Labstag\Search\HistorySearch;
 use Labstag\Service\HistoryService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -141,71 +139,5 @@ class HistoryController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(History::class);
-    }
-
-    /**
-     * @return array<string, \HistorySearch>|array<string, class-string<\Labstag\Form\Admin\Search\HistoryType>>
-     */
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchHistoryType::class,
-            'data' => new HistorySearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('history.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_history_index',
-                ],
-                [
-                    'title' => $this->translator->trans('history.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_history_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('history.move', [], 'admin.breadcrumb'),
-                    'route' => 'admin_history_move',
-                ],
-                [
-                    'title' => $this->translator->trans('history.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_history_new',
-                ],
-                [
-                    'title' => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_history_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('history.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_history_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('history.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_history_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_history' => $this->translator->trans('history.title', [], 'admin.header'),
-            ],
-        ];
     }
 }

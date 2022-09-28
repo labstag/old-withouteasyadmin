@@ -40,7 +40,7 @@ class EditoDomain extends DomainLib
 
     public function getSearchData()
     {
-        return EditoSearch::class;
+        return new EditoSearch();
     }
 
     public function getSearchForm()

@@ -4,9 +4,7 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Render;
-use Labstag\Form\Admin\Search\RenderType as SearchRenderType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Search\RenderSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -58,67 +56,5 @@ class RenderController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(Render::class);
-    }
-
-    /**
-     * @return array<string, \RenderSearch>|array<string, class-string<\Labstag\Form\Admin\Search\RenderType>>
-     */
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchRenderType::class,
-            'data' => new RenderSearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('render.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_render_index',
-                ],
-                [
-                    'title' => $this->translator->trans('render.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_render_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('render.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_render_new',
-                ],
-                [
-                    'title' => $this->translator->trans('render.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_render_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('render.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_render_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('render.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_render_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_bookmark' => $this->translator->trans('render.title', [], 'admin.header'),
-            ],
-        ];
     }
 }

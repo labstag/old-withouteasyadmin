@@ -4,9 +4,7 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Category;
-use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Search\CategorySearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -67,68 +65,6 @@ class CategoryController extends AdminControllerLib
         return [
             'trash' => 'findTrashParentForAdmin',
             'all'   => 'findAllParentForAdmin',
-        ];
-    }
-
-    /**
-     * @return array<string, \CategorySearch>|array<string, class-string<\Labstag\Form\Admin\Search\CategoryType>>
-     */
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchCategoryType::class,
-            'data' => new CategorySearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('category.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_category_index',
-                ],
-                [
-                    'title' => $this->translator->trans('category.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_category_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('category.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_category_new',
-                ],
-                [
-                    'title' => $this->translator->trans('category.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_category_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('category.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_category_show',
-                ],
-                [
-                    'title' => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_category_trash',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_category' => $this->translator->trans('category.title', [], 'admin.header'),
-            ],
         ];
     }
 }

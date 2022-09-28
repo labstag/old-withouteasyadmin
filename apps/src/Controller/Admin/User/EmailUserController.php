@@ -4,9 +4,7 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\EmailUser;
-use Labstag\Form\Admin\Search\User\EmailUserType as UserEmailUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Search\User\EmailUserSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -55,68 +53,5 @@ class EmailUserController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(EmailUser::class);
-    }
-
-    protected function searchForm(): array
-    {
-        return [
-            'form' => UserEmailUserType::class,
-            'data' => new EmailUserSearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_user_index',
-                ],
-                [
-                    'title' => $this->translator->trans('emailuser.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_emailuser_index',
-                ],
-                [
-                    'title' => $this->translator->trans('emailuser.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_emailuser_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('emailuser.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_emailuser_new',
-                ],
-                [
-                    'title' => $this->translator->trans('emailuser.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_emailuser_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('emailuser.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_emailuser_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('emailuser.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_emailuser_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_emailuser' => $this->translator->trans('emailuser.title', [], 'admin.header'),
-            ],
-        ];
     }
 }

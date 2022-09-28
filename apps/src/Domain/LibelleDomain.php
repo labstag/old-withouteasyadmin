@@ -40,7 +40,7 @@ class LibelleDomain extends DomainLib
 
     public function getSearchData()
     {
-        return LibelleSearch::class;
+        return new LibelleSearch();
     }
 
     public function getSearchForm()

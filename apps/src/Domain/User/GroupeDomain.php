@@ -40,7 +40,7 @@ class GroupeDomain extends DomainLib
 
     public function getSearchData()
     {
-        return GroupeSearch::class;
+        return new GroupeSearch();
     }
 
     public function getSearchForm()

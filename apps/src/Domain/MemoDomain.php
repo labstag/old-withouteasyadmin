@@ -40,7 +40,7 @@ class MemoDomain extends DomainLib
 
     public function getSearchData()
     {
-        return MemoSearch::class;
+        return new MemoSearch();
     }
 
     public function getSearchForm()

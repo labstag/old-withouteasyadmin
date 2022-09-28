@@ -40,7 +40,7 @@ class RenderDomain extends DomainLib
 
     public function getSearchData()
     {
-        return RenderSearch::class;
+        return new RenderSearch();
     }
 
     public function getSearchForm()

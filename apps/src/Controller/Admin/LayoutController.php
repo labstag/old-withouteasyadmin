@@ -6,12 +6,10 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
 use Labstag\Form\Admin\NewLayoutType;
-use Labstag\Form\Admin\Search\LayoutType as SearchLayoutType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\Block\CustomRepository;
 use Labstag\Repository\LayoutRepository;
 use Labstag\RequestHandler\LayoutRequestHandler;
-use Labstag\Search\LayoutSearch;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -77,7 +75,7 @@ class LayoutController extends AdminControllerLib
             'pagination' => $pagination,
             'actions'    => $url,
         ];
-        $parameters = $this->setSearchForms($parameters);
+        $parameters = $this->setSearchForms($parameters, $domain);
 
         return $this->renderForm(
             'admin/layout/index.html.twig',
@@ -131,67 +129,5 @@ class LayoutController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(Layout::class);
-    }
-
-    /**
-     * @return array<string, \LayoutSearch>|array<string, class-string<\Labstag\Form\Admin\Search\LayoutType>>
-     */
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchLayoutType::class,
-            'data' => new LayoutSearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('layout.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_layout_index',
-                ],
-                [
-                    'title' => $this->translator->trans('layout.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_layout_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('layout.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_layout_new',
-                ],
-                [
-                    'title' => $this->translator->trans('layout.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_layout_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('layout.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_layout_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('layout.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_layout_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_bookmark' => $this->translator->trans('layout.title', [], 'admin.header'),
-            ],
-        ];
     }
 }

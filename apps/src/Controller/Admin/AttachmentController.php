@@ -28,35 +28,4 @@ class AttachmentController extends AdminControllerLib
     {
         return $this->domainService->getDomain(Attachment::class);
     }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return [
-            ...parent::setBreadcrumbsData(), ...
-            [
-                [
-                    'title' => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_attachment_index',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_attachment' => $this->translator->trans('attachment.title', [], 'admin.header'),
-            ],
-        ];
-    }
 }

@@ -101,7 +101,7 @@ abstract class AdminControllerLib extends ControllerLib
                 'actions'    => $url,
             ]
         );
-        $parameters = $this->setSearchForms($parameters);
+        $parameters = $this->setSearchForms($parameters, $domain);
 
         return $this->renderForm(
             $html,
@@ -145,11 +145,14 @@ abstract class AdminControllerLib extends ControllerLib
     protected function addNewBreadcrumb($data, $routeParam, $route): void
     {
         $compiled        = $data->compile();
-        $breadcrumbTitle = $this->setBreadcrumbsData();
+        $breadcrumbTitle = array_merge(
+            $this->setHeaderTitle(),
+            $this->domainService->getTitles()
+        );
         $title           = '';
-        foreach ($breadcrumbTitle as $row) {
-            if ($row['route'] == $route) {
-                $title = $row['title'];
+        foreach ($breadcrumbTitle as $key => $value) {
+            if ($key == $route) {
+                $title = $value;
 
                 break;
             }
@@ -374,26 +377,7 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $parameters = $this->generateMenus($parameters);
         $this->setBreadcrumbsPage();
-        $request = $this->requeststack->getCurrentRequest();
-        $all     = $request->attributes->all();
-        $route   = $all['_route'];
-        $headers = $this->setHeaderTitle();
-        $header  = '';
-        foreach ($headers as $key => $title) {
-            if ($key == $route) {
-                $header = $title;
-
-                break;
-            }
-
-            if (0 != substr_count((string) $route, $key)) {
-                $header = $title;
-            }
-        }
-
-        if (!empty($header)) {
-            $parameters['headerTitle'] = $header;
-        }
+        $parameters = $this->setTitleHeader($parameters);
 
         $parameters['btnadmin'] = $this->btnInstance()->get();
 
@@ -436,20 +420,6 @@ abstract class AdminControllerLib extends ControllerLib
         return $attachment;
     }
 
-    /**
-     * @return array<int, array{title: string, route: string, route_params: array{}}>
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return [
-            [
-                'title'        => $this->translator->trans('admin.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin',
-                'route_params' => [],
-            ],
-        ];
-    }
-
     protected function setBreadcrumbsPage()
     {
         $routeCollection     = $this->router->getRouteCollection();
@@ -460,7 +430,7 @@ abstract class AdminControllerLib extends ControllerLib
         $pathinfo            = $request->getPathInfo();
         $breadcrumb          = $this->getBreadcrumb($traceableUrlMatcher, $pathinfo, []);
         $breadcrumb          = array_reverse($breadcrumb);
-
+        dump($breadcrumb);
         $all         = $routeCollection->all();
         $routeParams = $attributes['_route_params'];
         foreach ($breadcrumb as $row) {
@@ -597,12 +567,16 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     /**
-     * @return array<string, string>
+     * @return mixed[]
      */
     protected function setHeaderTitle(): array
     {
         return [
-            'admin' => $this->translator->trans('admin.title', [], 'admin.header'),
+            'admin'        => $this->translator->trans('admin.title', [], 'admin.header'),
+            'admin_oauth'  => $this->translator->trans('oauth.title', [], 'admin.header'),
+            'admin_param'  => $this->translator->trans('param.title', [], 'admin.header'),
+            'admin_profil' => $this->translator->trans('profil.title', [], 'admin.header'),
+            'admin_trash'  => $this->translator->trans('trash.title', [], 'admin.header'),
         ];
     }
 
@@ -643,24 +617,24 @@ abstract class AdminControllerLib extends ControllerLib
         }
     }
 
-    protected function setSearchForms($parameters)
+    protected function setSearchForms($parameters, $domain)
     {
-        $query  = $this->requeststack->getCurrentRequest()->query;
-        $get    = $query->all();
-        $limit  = $query->getInt('limit', 10);
-        $search = $this->searchForm();
-        if (!(0 != count($search) && array_key_exists('form', $search) && array_key_exists('data', $search))) {
+        $query = $this->requeststack->getCurrentRequest()->query;
+        $get   = $query->all();
+        $limit = $query->getInt('limit', 10);
+        $form  = $domain->getSearchForm();
+        if (is_null($form)) {
             return $parameters;
         }
 
         $get         = $query->all();
-        $data        = $search['data'];
+        $data        = $domain->getSearchData();
         $data->limit = $limit;
         $data->search($get, $this->entityManager);
         $route      = $this->requeststack->getCurrentRequest()->get('_route');
         $url        = $this->generateUrl($route);
         $searchForm = $this->createForm(
-            $search['form'],
+            $form,
             $data,
             [
                 'attr'   => ['id' => 'searchform'],
@@ -944,5 +918,31 @@ abstract class AdminControllerLib extends ControllerLib
             $paragraph->setPosition($position);
             $repository->add($paragraph);
         }
+    }
+
+    private function setTitleHeader($parameters)
+    {
+        $request = $this->requeststack->getCurrentRequest();
+        $all     = $request->attributes->all();
+        $route   = $all['_route'];
+        $headers = $this->domainService->getTitles();
+        $header  = '';
+        foreach ($headers as $key => $title) {
+            if ($key == $route) {
+                $header = $title;
+
+                break;
+            }
+
+            if (0 != substr_count((string) $route, (string) $key)) {
+                $header = $title;
+            }
+        }
+
+        if (!empty($header)) {
+            $parameters['headerTitle'] = $header;
+        }
+
+        return $parameters;
     }
 }

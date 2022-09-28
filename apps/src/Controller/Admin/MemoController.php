@@ -4,11 +4,9 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Memo;
-use Labstag\Form\Admin\Search\MemoType as SearchMemoType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\MemoRepository;
 use Labstag\RequestHandler\MemoRequestHandler;
-use Labstag\Search\MemoSearch;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -82,67 +80,5 @@ class MemoController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(Memo::class);
-    }
-
-    /**
-     * @return array<string, \MemoSearch>|array<string, class-string<\Labstag\Form\Admin\Search\MemoType>>
-     */
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchMemoType::class,
-            'data' => new MemoSearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('memo.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_memo_index',
-                ],
-                [
-                    'title' => $this->translator->trans('memo.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_memo_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('memo.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_memo_new',
-                ],
-                [
-                    'title' => $this->translator->trans('memo.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_memo_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('memo.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_memo_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('memo.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_memo_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_memo' => $this->translator->trans('memo.title', [], 'admin.header'),
-            ],
-        ];
     }
 }

@@ -105,30 +105,21 @@ trait BookmarkEntity
 
     public function removeBookmark(ParagraphBookmark $paragraphBookmark): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->bookmarks->removeElement($paragraphBookmark) && $paragraphBookmark->getParagraph() === $this) {
-            $paragraphBookmark->setParagraph(null);
-        }
+        $this->removeElementBookmark($this->bookmarks, $paragraphBookmark);
 
         return $this;
     }
 
     public function removeBookmarkCategory(BookmarkCategory $bookmarkCategory): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->bookmarkCategories->removeElement($bookmarkCategory) && $bookmarkCategory->getParagraph() === $this) {
-            $bookmarkCategory->setParagraph(null);
-        }
+        $this->removeElementBookmark($this->bookmarkCategories, $bookmarkCategory);
 
         return $this;
     }
 
     public function removeBookmarkLibelle(BookmarkLibelle $bookmarkLibelle): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->bookmarkLibelles->removeElement($bookmarkLibelle) && $bookmarkLibelle->getParagraph() === $this) {
-            $bookmarkLibelle->setParagraph(null);
-        }
+        $this->removeElementBookmark($this->bookmarkLibelles, $bookmarkLibelle);
 
         return $this;
     }
@@ -136,10 +127,15 @@ trait BookmarkEntity
     public function removeBookmarkList(BookmarkList $bookmarkList): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->bookmarkLists->removeElement($bookmarkList) && $bookmarkList->getParagraph() === $this) {
-            $bookmarkList->setParagraph(null);
-        }
+        $this->removeElementBookmark($this->bookmarkLists, $bookmarkList);
 
         return $this;
+    }
+
+    private function removeElementBookmark($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
+            $variable->setParagraph(null);
+        }
     }
 }

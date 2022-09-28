@@ -40,7 +40,7 @@ class EmailUserDomain extends DomainLib
 
     public function getSearchData()
     {
-        return EmailUserSearch::class;
+        return new EmailUserSearch();
     }
 
     public function getSearchForm()

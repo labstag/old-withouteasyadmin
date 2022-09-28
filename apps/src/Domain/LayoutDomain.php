@@ -40,7 +40,7 @@ class LayoutDomain extends DomainLib
 
     public function getSearchData()
     {
-        return LayoutSearch::class;
+        return new LayoutSearch();
     }
 
     public function getSearchForm()

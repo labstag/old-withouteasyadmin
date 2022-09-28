@@ -40,7 +40,7 @@ class AddressUserDomain extends DomainLib
 
     public function getSearchData()
     {
-        return AddressUserSearch::class;
+        return new AddressUserSearch();
     }
 
     public function getSearchForm()

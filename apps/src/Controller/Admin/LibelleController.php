@@ -4,9 +4,7 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Libelle;
-use Labstag\Form\Admin\Search\LibelleType as SearchLibelleType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Search\LibelleSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -57,67 +55,5 @@ class LibelleController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(Libelle::class);
-    }
-
-    /**
-     * @return array<string, \LibelleSearch>|array<string, class-string<\Labstag\Form\Admin\Search\LibelleType>>
-     */
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchLibelleType::class,
-            'data' => new LibelleSearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('libelle.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_libelle_index',
-                ],
-                [
-                    'title' => $this->translator->trans('libelle.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_libelle_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('libelle.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_libelle_new',
-                ],
-                [
-                    'title' => $this->translator->trans('libelle.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_libelle_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('libelle.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_libelle_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('libelle.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_libelle_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_libelle' => $this->translator->trans('libelle.title', [], 'admin.header'),
-            ],
-        ];
     }
 }

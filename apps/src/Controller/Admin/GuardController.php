@@ -36,35 +36,4 @@ class GuardController extends AdminControllerLib
             ]
         );
     }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return [
-            ...parent::setBreadcrumbsData(), ...
-            [
-                [
-                    'title' => $this->translator->trans('guard.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_guard_index',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_guard' => $this->translator->trans('guard.title', [], 'admin.header'),
-            ],
-        ];
-    }
 }

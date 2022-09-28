@@ -40,7 +40,7 @@ class TemplateDomain extends DomainLib
 
     public function getSearchData()
     {
-        return TemplateSearch::class;
+        return new TemplateSearch();
     }
 
     public function getSearchForm()

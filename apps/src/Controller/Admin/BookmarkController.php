@@ -8,10 +8,8 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Bookmark\ImportType;
-use Labstag\Form\Admin\Search\BookmarkType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Queue\EnqueueMethod;
-use Labstag\Search\BookmarkSearch;
 use Labstag\Service\BookmarkService;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -87,72 +85,6 @@ class BookmarkController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(Bookmark::class);
-    }
-
-    /**
-     * @return array<string, \BookmarkSearch>|array<string, string>
-     */
-    protected function searchForm(): array
-    {
-        return [
-            'form' => BookmarkType::class,
-            'data' => new BookmarkSearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('bookmark.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_bookmark_index',
-                ],
-                [
-                    'title' => $this->translator->trans('bookmark.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_bookmark_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('bookmark.import', [], 'admin.breadcrumb'),
-                    'route' => 'admin_bookmark_import',
-                ],
-                [
-                    'title' => $this->translator->trans('bookmark.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_bookmark_new',
-                ],
-                [
-                    'title' => $this->translator->trans('bookmark.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_bookmark_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('bookmark.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_bookmark_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('bookmark.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_bookmark_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_bookmark' => $this->translator->trans('bookmark.title', [], 'admin.header'),
-            ],
-        ];
     }
 
     private function uploadFile(

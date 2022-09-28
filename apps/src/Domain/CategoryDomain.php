@@ -40,7 +40,7 @@ class CategoryDomain extends DomainLib
 
     public function getSearchData()
     {
-        return CategorySearch::class;
+        return new CategorySearch();
     }
 
     public function getSearchForm()

@@ -147,47 +147,4 @@ class BlockController extends AdminControllerLib
     {
         return $this->domainService->getDomain(Block::class);
     }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('block.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_block_index',
-                ],
-                [
-                    'title' => $this->translator->trans('block.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_block_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('block.move', [], 'admin.breadcrumb'),
-                    'route' => 'admin_block_move',
-                ],
-                [
-                    'title' => $this->translator->trans('block.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_block_trash',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_block' => $this->translator->trans('block.title', [], 'admin.header'),
-            ],
-        ];
-    }
 }

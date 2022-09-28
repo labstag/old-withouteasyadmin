@@ -5,11 +5,9 @@ namespace Labstag\Controller\Admin;
 use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
-use Labstag\Form\Admin\Search\EditoType as SearchEditoType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\EditoRepository;
 use Labstag\RequestHandler\EditoRequestHandler;
-use Labstag\Search\EditoSearch;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -84,67 +82,5 @@ class EditoController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(Edito::class);
-    }
-
-    /**
-     * @return array<string, \EditoSearch>|array<string, class-string<\Labstag\Form\Admin\Search\EditoType>>
-     */
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchEditoType::class,
-            'data' => new EditoSearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('edito.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_edito_index',
-                ],
-                [
-                    'title' => $this->translator->trans('edito.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_edito_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('edito.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_edito_new',
-                ],
-                [
-                    'title' => $this->translator->trans('edito.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_edito_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('edito.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_edito_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('edito.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_edito_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_edito' => $this->translator->trans('edito.title', [], 'admin.header'),
-            ],
-        ];
     }
 }

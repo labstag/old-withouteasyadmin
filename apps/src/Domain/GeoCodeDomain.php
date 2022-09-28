@@ -40,7 +40,7 @@ class GeoCodeDomain extends DomainLib
 
     public function getSearchData()
     {
-        return GeoCodeSearch::class;
+        return new GeoCodeSearch();
     }
 
     public function getSearchForm()

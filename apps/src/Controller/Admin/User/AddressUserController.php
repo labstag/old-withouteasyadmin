@@ -4,9 +4,7 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\AddressUser;
-use Labstag\Form\Admin\Search\User\AddressUserType as UserAddressUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Search\User\AddressUserSearch;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -55,68 +53,5 @@ class AddressUserController extends AdminControllerLib
     protected function getDomainEntity()
     {
         return $this->domainService->getDomain(AddressUser::class);
-    }
-
-    protected function searchForm(): array
-    {
-        return [
-            'form' => UserAddressUserType::class,
-            'data' => new AddressUserSearch(),
-        ];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setBreadcrumbsData(): array
-    {
-        return array_merge(
-            parent::setBreadcrumbsData(),
-            [
-                [
-                    'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_user_index',
-                ],
-                [
-                    'title' => $this->translator->trans('addressuser.title', [], 'admin.breadcrumb'),
-                    'route' => 'admin_addressuser_index',
-                ],
-                [
-                    'title' => $this->translator->trans('addressuser.edit', [], 'admin.breadcrumb'),
-                    'route' => 'admin_addressuser_edit',
-                ],
-                [
-                    'title' => $this->translator->trans('addressuser.new', [], 'admin.breadcrumb'),
-                    'route' => 'admin_addressuser_new',
-                ],
-                [
-                    'title' => $this->translator->trans('addressuser.trash', [], 'admin.breadcrumb'),
-                    'route' => 'admin_addressuser_trash',
-                ],
-                [
-                    'title' => $this->translator->trans('addressuser.preview', [], 'admin.breadcrumb'),
-                    'route' => 'admin_addressuser_preview',
-                ],
-                [
-                    'title' => $this->translator->trans('addressuser.show', [], 'admin.breadcrumb'),
-                    'route' => 'admin_addressuser_show',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return [
-            ...$headers, ...
-            [
-                'admin_addressuser' => $this->translator->trans('addressuser.title', [], 'admin.header'),
-            ],
-        ];
     }
 }

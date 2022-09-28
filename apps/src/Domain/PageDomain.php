@@ -40,7 +40,7 @@ class PageDomain extends DomainLib
 
     public function getSearchData()
     {
-        return PageSearch::class;
+        return new PageSearch();
     }
 
     public function getSearchForm()

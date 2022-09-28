@@ -40,7 +40,7 @@ class HistoryDomain extends DomainLib
 
     public function getSearchData()
     {
-        return HistorySearch::class;
+        return new HistorySearch();
     }
 
     public function getSearchForm()
