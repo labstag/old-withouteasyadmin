@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
-    {# {{ encore_entry_link_tags('front') }} #}
+    {{ encore_entry_link_tags('front') }}
 {% endblock %}
 {% block content %}
     {% for row, block in blocks %}
