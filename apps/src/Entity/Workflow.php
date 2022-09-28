@@ -95,14 +95,14 @@ class Workflow
 
     public function removeWorkflowGroupe(WorkflowGroupe $workflowGroupe): self
     {
-        $this->removeElement($this->workflowGroupes, $workflowGroupe);
+        $this->removeElementWorkflow($this->workflowGroupes, $workflowGroupe);
 
         return $this;
     }
 
     public function removeWorkflowUser(WorkflowUser $workflowUser): self
     {
-        $this->removeElement($this->workflowUsers, $workflowUser);
+        $this->removeElementWorkflow($this->workflowUsers, $workflowUser);
 
         return $this;
     }
@@ -121,7 +121,7 @@ class Workflow
         return $this;
     }
 
-    private function removeElement($element, $variable)
+    private function removeElementWorkflow($element, $variable)
     {
         if ($element->removeElement($variable) && $variable->getRefworkflow() === $this) {
             $variable->setRefworkflow(null);

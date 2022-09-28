@@ -186,20 +186,14 @@ class Chapter
 
     public function removeMeta(Meta $meta): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->metas->removeElement($meta) && $meta->getChapter() === $this) {
-            $meta->setChapter(null);
-        }
+        $this->removeElementChapter($this->metas, $meta);
 
         return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->paragraphs->removeElement($paragraph) && $paragraph->getChapter() === $this) {
-            $paragraph->setChapter(null);
-        }
+        $this->removeElementChapter($this->paragraphs, $paragraph);
 
         return $this;
     }
@@ -265,5 +259,12 @@ class Chapter
         $this->updated = $dateTime;
 
         return $this;
+    }
+
+    private function removeElementChapter($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getChapter() === $this) {
+            $variable->setChapter(null);
+        }
     }
 }

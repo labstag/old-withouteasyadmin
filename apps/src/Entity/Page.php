@@ -186,20 +186,14 @@ class Page implements Stringable
 
     public function removeMeta(Meta $meta): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->metas->removeElement($meta) && $meta->getPage() === $this) {
-            $meta->setPage(null);
-        }
+        $this->removeElementPage($this->metas, $meta);
 
         return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->paragraphs->removeElement($paragraph) && $paragraph->getPage() === $this) {
-            $paragraph->setPage(null);
-        }
+        $this->removeElementPage($this->paragraphs, $paragraph);
 
         return $this;
     }
@@ -237,5 +231,12 @@ class Page implements Stringable
         $this->slug = $slug;
 
         return $this;
+    }
+
+    private function removeElementPage($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getPage() === $this) {
+            $variable->setPage(null);
+        }
     }
 }

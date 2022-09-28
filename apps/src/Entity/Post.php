@@ -245,20 +245,14 @@ class Post implements Stringable
 
     public function removeMeta(Meta $meta): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->metas->removeElement($meta) && $meta->getPost() === $this) {
-            $meta->setPost(null);
-        }
+        $this->removeElementPost($this->metas, $meta);
 
         return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->paragraphs->removeElement($paragraph) && $paragraph->getPost() === $this) {
-            $paragraph->setPost(null);
-        }
+        $this->removeElementPost($this->paragraphs, $paragraph);
 
         return $this;
     }
@@ -338,5 +332,12 @@ class Post implements Stringable
         $this->updated = $dateTime;
 
         return $this;
+    }
+
+    private function removeElementPost($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getPost() === $this) {
+            $variable->setPost(null);
+        }
     }
 }

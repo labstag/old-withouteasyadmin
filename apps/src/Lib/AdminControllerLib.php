@@ -430,9 +430,8 @@ abstract class AdminControllerLib extends ControllerLib
         $pathinfo            = $request->getPathInfo();
         $breadcrumb          = $this->getBreadcrumb($traceableUrlMatcher, $pathinfo, []);
         $breadcrumb          = array_reverse($breadcrumb);
-        dump($breadcrumb);
-        $all         = $routeCollection->all();
-        $routeParams = $attributes['_route_params'];
+        $all                 = $routeCollection->all();
+        $routeParams         = $attributes['_route_params'];
         foreach ($breadcrumb as $row) {
             $name  = $row['name'];
             $route = $all[$name];
@@ -914,7 +913,6 @@ abstract class AdminControllerLib extends ControllerLib
                 continue;
             }
 
-            dump($id);
             $paragraph->setPosition($position);
             $repository->add($paragraph);
         }

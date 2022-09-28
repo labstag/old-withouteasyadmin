@@ -134,10 +134,7 @@ class Groupe implements Stringable
 
     public function removeRoute(RouteGroupe $routeGroupe): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->routes->removeElement($routeGroupe) && $routeGroupe->getRefgroupe() === $this) {
-            $routeGroupe->setRefgroupe(null);
-        }
+        $this->removeElementGroupe($this->routes, $routeGroupe);
 
         return $this;
     }
@@ -157,10 +154,7 @@ class Groupe implements Stringable
 
     public function removeWorkflowGroupe(WorkflowGroupe $workflowGroupe): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->workflowGroupes->removeElement($workflowGroupe) && $workflowGroupe->getRefgroupe() === $this) {
-            $workflowGroupe->setRefgroupe(null);
-        }
+        $this->removeElementGroupe($this->workflowGroupes, $workflowGroupe);
 
         return $this;
     }
@@ -177,5 +171,12 @@ class Groupe implements Stringable
         $this->name = $name;
 
         return $this;
+    }
+
+    private function removeElementGroupe($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getRefgroupe() === $this) {
+            $variable->setRefgroupe(null);
+        }
     }
 }

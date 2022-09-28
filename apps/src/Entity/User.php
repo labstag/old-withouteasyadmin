@@ -504,10 +504,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeBookmark(Bookmark $bookmark): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->bookmarks->removeElement($bookmark) && $bookmark->getRefuser() === $this) {
-            $bookmark->setRefuser(null);
-        }
+        $this->removeElementUser($this->bookmarks, $bookmark);
 
         return $this;
     }
@@ -540,10 +537,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeHistory(History $history): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->histories->removeElement($history) && $history->getRefuser() === $this) {
-            $history->setRefuser(null);
-        }
+        $this->removeElementUser($this->histories, $history);
 
         return $this;
     }
@@ -576,20 +570,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeNoteInterne(Memo $memo): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->noteInternes->removeElement($memo) && $memo->getRefuser() === $this) {
-            $memo->setRefuser(null);
-        }
+        $this->removeElementUser($this->noteInternes, $memo);
 
         return $this;
     }
 
     public function removeOauthConnectUser(OauthConnectUser $oauthConnectUser): self
     {
-        // set the owning side to null (unless already changed)
-        if ($this->oauthConnectUsers->removeElement($oauthConnectUser) && $oauthConnectUser->getRefuser() === $this) {
-            $oauthConnectUser->setRefuser(null);
-        }
+        $this->removeElementUser($this->oauthConnectUsers, $oauthConnectUser);
 
         return $this;
     }
@@ -624,21 +612,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removePost(Post $post): self
     {
-        $this->removeElement($this->posts, $post);
+        $this->removeElementUser($this->posts, $post);
 
         return $this;
     }
 
     public function removeRoute(RouteUser $routeUser): self
     {
-        $this->removeElement($this->routes, $routeUser);
+        $this->removeElementUser($this->routes, $routeUser);
 
         return $this;
     }
 
     public function removeWorkflowUser(WorkflowUser $workflowUser): self
     {
-        $this->removeElement($this->workflowUsers, $workflowUser);
+        $this->removeElementUser($this->workflowUsers, $workflowUser);
 
         return $this;
     }
@@ -720,7 +708,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         ] = unserialize($serialized);
     }
 
-    private function removeElement($element, $variable)
+    private function removeElementUser($element, $variable)
     {
         if ($element->removeElement($variable) && $variable->getRefuser() === $this) {
             $variable->setRefuser(null);
