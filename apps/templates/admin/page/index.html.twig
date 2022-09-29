@@ -26,7 +26,13 @@
                 <tr data-id="{{ entity.id }}">
                     <td>{{ entity.name }}</td>
                     <td>{{ entity.slug }}</td>
-                    <td>{{ entity.paragraphs|length }}</td>
+                    <td>
+                        <ul>
+                            {% for paragraph in entity.paragraphs %}
+                                <li>{{ paragraph_name(paragraph.type) }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
                     <td>
                         <a href="{{ path('front', {'slug': entity.slug}) }}" target="_blank">
                             {{ 'page.url'|trans({}, 'admin.messages') }}

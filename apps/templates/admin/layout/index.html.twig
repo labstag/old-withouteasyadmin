@@ -32,7 +32,13 @@
                             {% endfor %}
                         </ul>
                     </td>
-                    <td>{{ entity.paragraphs|length }}</td>
+                    <td>
+                        <ul>
+                            {% for paragraph in entity.paragraphs %}
+                                <li>{{ paragraph_name(paragraph.type) }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
                     <td>
                         {{ macro_admin.actions(entity, actions) }}
                     </td>
