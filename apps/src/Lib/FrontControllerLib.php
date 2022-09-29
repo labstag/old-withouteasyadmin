@@ -64,7 +64,12 @@ abstract class FrontControllerLib extends ControllerLib
             $key                        = ('content' == $key) ? 'main' : $key;
             $parameters['blocks'][$key] = [];
             foreach ($blocks as $block) {
-                $parameters['blocks'][$key][] = $this->blockService->showContent($block, $content);
+                $data = $this->blockService->showContent($block, $content);
+                if (is_null($data)) {
+                    continue;
+                }
+
+                $parameters['blocks'][$key][] = $data;
             }
         }
 

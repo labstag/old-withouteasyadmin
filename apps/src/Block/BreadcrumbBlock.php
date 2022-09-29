@@ -53,9 +53,14 @@ class BreadcrumbBlock extends BlockLib
         return false;
     }
 
-    public function show(Breadcrumb $breadcrumb, $content): Response
+    public function show(Breadcrumb $breadcrumb, $content)
     {
         $breadcrumbs = $this->setBreadcrumb($content);
+        dump($breadcrumbs);
+
+        if (count($breadcrumbs) <=1) {
+            return;
+        }
 
         return $this->render(
             $this->getBlockFile('breadcrumb'),
