@@ -430,8 +430,9 @@ abstract class AdminControllerLib extends ControllerLib
         $pathinfo            = $request->getPathInfo();
         $breadcrumb          = $this->getBreadcrumb($traceableUrlMatcher, $pathinfo, []);
         $breadcrumb          = array_reverse($breadcrumb);
-        $all                 = $routeCollection->all();
-        $routeParams         = $attributes['_route_params'];
+
+        $all         = $routeCollection->all();
+        $routeParams = $attributes['_route_params'];
         foreach ($breadcrumb as $row) {
             $name  = $row['name'];
             $route = $all[$name];

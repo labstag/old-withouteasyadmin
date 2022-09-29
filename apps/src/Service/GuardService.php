@@ -172,7 +172,7 @@ class GuardService
         foreach ($data as $id => $row) {
             $defaults = $row->getDefaults();
             unset($defaults['_controller']);
-            if (0 != (is_countable($defaults) ? count($defaults) : 0)) {
+            if (0 == (is_countable($defaults) ? count($defaults) : 0)) {
                 continue;
             }
 

@@ -6,6 +6,7 @@ use Labstag\Entity\Post;
 use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\PageRepository;
 use Labstag\Repository\PostRepository;
+use Labstag\Repository\RenderRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -48,14 +49,18 @@ class PostController extends FrontControllerLib
         priority: 2
     )]
     public function category(
-        string $slug
+        string $slug,
+        RenderRepository $renderRepository
     ): Response
     {
         unset($slug);
+        $render = $renderRepository->findOneBy(
+            ['url' => 'front_article_category']
+        );
 
         return $this->render(
             'front.html.twig',
-            ['content' => null]
+            ['content' => $render]
         );
     }
 
@@ -65,14 +70,18 @@ class PostController extends FrontControllerLib
         priority: 2
     )]
     public function libelle(
-        string $slug
+        string $slug,
+        RenderRepository $renderRepository
     ): Response
     {
         unset($slug);
+        $render = $renderRepository->findOneBy(
+            ['url' => 'front_article_libelle']
+        );
 
         return $this->render(
             'front.html.twig',
-            ['content' => null]
+            ['content' => $render]
         );
     }
 
@@ -82,14 +91,18 @@ class PostController extends FrontControllerLib
         priority: 2
     )]
     public function user(
-        string $username
+        string $username,
+        RenderRepository $renderRepository
     ): Response
     {
         unset($username);
+        $render = $renderRepository->findOneBy(
+            ['url' => 'front_article_user']
+        );
 
         return $this->render(
             'front.html.twig',
-            ['content' => null]
+            ['content' => $render]
         );
     }
 
@@ -99,14 +112,18 @@ class PostController extends FrontControllerLib
         priority: 2
     )]
     public function year(
-        string $year
+        string $year,
+        RenderRepository $renderRepository
     ): Response
     {
         unset($year);
+        $render = $renderRepository->findOneBy(
+            ['url' => 'front_article_year']
+        );
 
         return $this->render(
             'front.html.twig',
-            ['content' => null]
+            ['content' => $render]
         );
     }
 }

@@ -8,6 +8,7 @@ use Labstag\Lib\FrontControllerLib;
 use Labstag\Repository\ChapterRepository;
 use Labstag\Repository\HistoryRepository;
 use Labstag\Repository\PageRepository;
+use Labstag\Repository\RenderRepository;
 use Labstag\Service\HistoryService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -126,14 +127,18 @@ class HistoryController extends FrontControllerLib
         priority: 3
     )]
     public function user(
-        string $username
+        string $username,
+        RenderRepository $renderRepository
     ): Response
     {
         unset($username);
+        $render = $renderRepository->findOneBy(
+            ['url' => 'front_history_user']
+        );
 
         return $this->render(
             'front.html.twig',
-            ['content' => null]
+            ['content' => $render]
         );
     }
 }

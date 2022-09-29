@@ -39,6 +39,7 @@ class RenderType extends AbstractTypeLib
         );
         $all     = $this->guardService->getPublicRouteWithParams();
         $choices = [];
+        dump($all);
         foreach (array_keys($all) as $key) {
             $choices[$key] = $key;
         }

@@ -64,6 +64,7 @@ class PageType extends AbstractTypeLib
                 'query_builder' => static fn (PageRepository $pageRepository) => $pageRepository->formType($options),
             ]
         );
+        $this->setMeta($formBuilder);
     }
 
     public function configureOptions(OptionsResolver $optionsResolver): void
