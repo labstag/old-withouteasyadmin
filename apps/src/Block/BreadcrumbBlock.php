@@ -11,15 +11,16 @@ use Labstag\Entity\Post;
 use Labstag\Form\Admin\Block\BreadcrumbType;
 use Labstag\Lib\BlockLib;
 use Labstag\Repository\PageRepository;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class BreadcrumbBlock extends BlockLib
 {
-    public $router;
     public function __construct(
         TranslatorInterface $translator,
         Environment $environment,
+        protected RouterInterface $router,
         protected PageRepository $pageRepository
     )
     {

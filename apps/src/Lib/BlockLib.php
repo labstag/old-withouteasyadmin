@@ -3,14 +3,11 @@
 namespace Labstag\Lib;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 abstract class BlockLib extends AbstractController
 {
-
-    protected Request $request;
 
     public function __construct(
         protected TranslatorInterface $translator,
