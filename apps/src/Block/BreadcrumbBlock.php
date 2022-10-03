@@ -11,17 +11,15 @@ use Labstag\Entity\Post;
 use Labstag\Form\Admin\Block\BreadcrumbType;
 use Labstag\Lib\BlockLib;
 use Labstag\Repository\PageRepository;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class BreadcrumbBlock extends BlockLib
 {
+    public $router;
     public function __construct(
         TranslatorInterface $translator,
         Environment $environment,
-        protected RouterInterface $router,
         protected PageRepository $pageRepository
     )
     {
@@ -58,7 +56,7 @@ class BreadcrumbBlock extends BlockLib
         $breadcrumbs = $this->setBreadcrumb($content);
         dump($breadcrumbs);
 
-        if (count($breadcrumbs) <=1) {
+        if (count($breadcrumbs) <= 1) {
             return;
         }
 
@@ -79,6 +77,7 @@ class BreadcrumbBlock extends BlockLib
         $data = [];
         $data = $this->setBreadcrumbPage($data, $content);
         $data = $this->setBreadcrumbArticle($data, $content);
+        $data = $this->setBreadcrumbArticleArchive($data, $content);
         $data = $this->setBreadcrumbEdito($data, $content);
         $data = $this->setBreadcrumbHistory($data, $content);
         $data = $this->setBreadcrumbChapter($data, $content);
@@ -107,6 +106,11 @@ class BreadcrumbBlock extends BlockLib
         );
 
         return $this->setBreadcrumbPage($data, $page);
+    }
+
+    private function setBreadcrumbArticleArchive($data, $content)
+    {
+        return $data;
     }
 
     private function setBreadcrumbChapter($data, $content)
