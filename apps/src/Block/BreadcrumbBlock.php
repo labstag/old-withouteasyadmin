@@ -111,6 +111,7 @@ class BreadcrumbBlock extends BlockLib
 
     private function setBreadcrumbArticleArchive($data, $content)
     {
+        unset($content);
         return $data;
     }
 
