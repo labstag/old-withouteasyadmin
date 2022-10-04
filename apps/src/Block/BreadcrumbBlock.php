@@ -11,19 +11,26 @@ use Labstag\Entity\Post;
 use Labstag\Form\Admin\Block\BreadcrumbType;
 use Labstag\Lib\BlockLib;
 use Labstag\Repository\PageRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class BreadcrumbBlock extends BlockLib
 {
+
+    protected Request $request;
+
     public function __construct(
         TranslatorInterface $translator,
         Environment $environment,
+        protected RequestStack $requestStack,
         protected RouterInterface $router,
         protected PageRepository $pageRepository
     )
     {
+        $this->request = $requestStack->getCurrentRequest();
         parent::__construct($translator, $environment);
     }
 
@@ -55,7 +62,6 @@ class BreadcrumbBlock extends BlockLib
     public function show(Breadcrumb $breadcrumb, $content)
     {
         $breadcrumbs = $this->setBreadcrumb($content);
-        dump($breadcrumbs);
 
         if (count($breadcrumbs) <= 1) {
             return;
@@ -78,7 +84,7 @@ class BreadcrumbBlock extends BlockLib
         $data = [];
         $data = $this->setBreadcrumbPage($data, $content);
         $data = $this->setBreadcrumbArticle($data, $content);
-        $data = $this->setBreadcrumbArticleArchive($data, $content);
+        $data = $this->setBreadcrumbRouting($data);
         $data = $this->setBreadcrumbEdito($data, $content);
         $data = $this->setBreadcrumbHistory($data, $content);
         $data = $this->setBreadcrumbChapter($data, $content);
@@ -107,12 +113,6 @@ class BreadcrumbBlock extends BlockLib
         );
 
         return $this->setBreadcrumbPage($data, $page);
-    }
-
-    private function setBreadcrumbArticleArchive($data, $content)
-    {
-        unset($content);
-        return $data;
     }
 
     private function setBreadcrumbChapter($data, $content)
@@ -193,6 +193,28 @@ class BreadcrumbBlock extends BlockLib
         ];
         if ($content->getParent() instanceof Page) {
             $data = $this->setBreadcrumbPage($data, $content->getParent());
+        }
+
+        return $data;
+    }
+
+    private function setBreadcrumbRouting($data)
+    {
+        $all    = $this->request->attributes->all();
+        $route  = $all['_route'];
+        $params = $all['_route_params'];
+        if ('front_article_year' == $route && isset($params['year'])) {
+            $data[] = [
+                'route' => $this->router->generate(
+                    $route,
+                    $params
+                ),
+                'title' => $params['year'],
+            ];
+            $page   = $this->pageRepository->findOneBy(
+                ['slug' => 'mes-articles/archive']
+            );
+            $data   = $this->setBreadcrumbPage($data, $page);
         }
 
         return $data;

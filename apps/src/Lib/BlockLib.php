@@ -8,7 +8,6 @@ use Twig\Environment;
 
 abstract class BlockLib extends AbstractController
 {
-
     public function __construct(
         protected TranslatorInterface $translator,
         protected Environment $environment
