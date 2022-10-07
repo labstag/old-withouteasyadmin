@@ -23,7 +23,7 @@ class PageFront extends FrontLib
             'title' => $content->getName(),
         ];
         if ($content->getParent() instanceof Page) {
-            $breadcrumb = $this->setBreadcrumb($content->getParent(), $breadcrumb);
+            $breadcrumb = $this->setBreadcrumbPage($content->getParent(), $breadcrumb);
         }
 
         return $breadcrumb;
@@ -34,5 +34,23 @@ class PageFront extends FrontLib
         unset($content);
 
         return $meta;
+    }
+
+    private function setBreadcrumbPage($content, $breadcrumb)
+    {
+        $breadcrumb[] = [
+            'route' => $this->router->generate(
+                'front',
+                [
+                    'slug' => $content->getSlug(),
+                ]
+            ),
+            'title' => $content->getName(),
+        ];
+        if ($content->getParent() instanceof Page) {
+            $breadcrumb = $this->setBreadcrumbPage($content->getParent(), $breadcrumb);
+        }
+
+        return $breadcrumb;
     }
 }

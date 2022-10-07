@@ -20,7 +20,7 @@ class RouterFront extends PageFront
             $page         = $this->pageRepository->findOneBy(
                 ['slug' => 'mes-articles/archive']
             );
-            $breadcrumb   = $this->setBreadcrumb($page, $breadcrumb);
+            $breadcrumb   = parent::setBreadcrumb($page, $breadcrumb);
         }
 
         return $breadcrumb;

@@ -59,7 +59,6 @@ class BreadcrumbBlock extends BlockLib
     public function show(Breadcrumb $breadcrumb, $content)
     {
         $breadcrumbs = $this->frontService->setBreadcrumb($content);
-
         if ((is_countable($breadcrumbs) ? count($breadcrumbs) : 0) <= 1) {
             return;
         }
