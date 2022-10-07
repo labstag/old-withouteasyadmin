@@ -9,6 +9,10 @@
 			"path": "assets"
 		},
 		{
+			"name": "config",
+			"path": "apps/config"
+		},
+		{
 			"name": "src",
 			"path": "apps/src"
 		},

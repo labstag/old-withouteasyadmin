@@ -10,6 +10,7 @@ use Labstag\Service\DataService;
 use Labstag\Service\DomainService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
+use Labstag\Service\FrontService;
 use Labstag\Service\GuardService;
 use Labstag\Service\MenuService;
 use Labstag\Service\SessionService;
@@ -31,6 +32,7 @@ abstract class ControllerLib extends AbstractController
     protected Request $request;
 
     public function __construct(
+        protected FrontService $frontService,
         protected DomainService $domainService,
         protected AttachFormService $attachFormService,
         protected FileService $fileService,

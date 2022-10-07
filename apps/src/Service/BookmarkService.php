@@ -67,10 +67,7 @@ class BookmarkService
             $description = $meta['description'] ?? null;
             $code        = 'twitter:description';
             $description = (is_null($description) && isset($meta[$code])) ? $meta[$code] : $description;
-            $bookmark->setMetaDescription($description);
             $bookmark->setContent($description);
-            $keywords = $meta['keywords'] ?? null;
-            $bookmark->setMetaKeywords($keywords);
             $image = $meta['twitter:image'] ?? null;
             $image = (is_null($image) && isset($meta['og:image'])) ? $meta['og:image'] : $image;
             $this->upload($bookmark, $image);

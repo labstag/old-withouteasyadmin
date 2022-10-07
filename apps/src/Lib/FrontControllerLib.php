@@ -59,6 +59,9 @@ abstract class FrontControllerLib extends ControllerLib
             unset($parameters['content']);
         }
 
+        $meta = $this->frontService->setMeta($content);
+        dump($meta);
+
         $parameters['blocks'] = [];
         foreach ($blocksArray as $key => $blocks) {
             $key                        = ('content' == $key) ? 'main' : $key;
