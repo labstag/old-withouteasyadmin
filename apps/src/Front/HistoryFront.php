@@ -26,7 +26,7 @@ class HistoryFront extends PageFront
             ['slug' => 'mes-histoires']
         );
 
-        return parent::setBreadcrumb($page, $breadcrumb);
+        return $this->setBreadcrumbPage($page, $breadcrumb);
     }
 
     public function setMeta($content, $meta)

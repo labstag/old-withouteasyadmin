@@ -21,7 +21,7 @@ class EditoFront extends PageFront
             ['slug' => '']
         );
 
-        return $this->setBreadcrumb($page, $breadcrumb);
+        return $this->setBreadcrumbPage($page, $breadcrumb);
     }
 
     public function setMeta($content, $meta)

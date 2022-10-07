@@ -36,7 +36,7 @@ class PageFront extends FrontLib
         return $meta;
     }
 
-    private function setBreadcrumbPage($content, $breadcrumb)
+    protected function setBreadcrumbPage($content, $breadcrumb)
     {
         $breadcrumb[] = [
             'route' => $this->router->generate(

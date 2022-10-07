@@ -48,7 +48,6 @@ class RenderType extends AbstractTypeLib
             ChoiceType::class,
             [
                 'required' => false,
-                'multiple' => true,
                 'choices'  => $choices,
             ]
         );
