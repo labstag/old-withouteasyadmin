@@ -8,7 +8,6 @@ use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\ArchiveType;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
-use Symfony\Component\HttpFoundation\Response;
 
 class ArchiveParagraph extends ParagraphLib
 {
@@ -37,11 +36,15 @@ class ArchiveParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Archive $archive): Response
+    public function show(Archive $archive)
     {
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
         $archives         = $entityRepository->findDateArchive();
+        $page             = $this->request->query->getInt('page', 1);
+        if (1 != $page) {
+            return;
+        }
 
         return $this->render(
             $this->getParagraphFile('post/archive'),
