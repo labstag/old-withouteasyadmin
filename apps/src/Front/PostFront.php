@@ -34,9 +34,11 @@ class PostFront extends PageFront
 
     public function setMeta($content, $meta)
     {
-        unset($content);
+        if (!$content instanceof Post) {
+            return $meta;
+        }
 
-        return $meta;
+        return $this->getMeta($content->getMetas(), $meta);
     }
 
     private function setBreadcrumbRouting($breadcrumb)

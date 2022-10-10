@@ -31,9 +31,11 @@ class PageFront extends FrontLib
 
     public function setMeta($content, $meta)
     {
-        unset($content);
+        if (!$content instanceof Page) {
+            return $meta;
+        }
 
-        return $meta;
+        return $this->getMeta($content->getMetas(), $meta);
     }
 
     protected function setBreadcrumbPage($content, $breadcrumb)

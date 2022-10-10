@@ -4,19 +4,29 @@ namespace Labstag\EventSubscriber;
 
 use Doctrine\ORM\EntityRepository;
 use Exception;
+use Labstag\Entity\Chapter;
 use Labstag\Entity\Configuration;
+use Labstag\Entity\Edito;
 use Labstag\Entity\EmailUser;
+use Labstag\Entity\History;
 use Labstag\Entity\Menu;
+use Labstag\Entity\Meta;
+use Labstag\Entity\Page;
+use Labstag\Entity\Post;
+use Labstag\Entity\Render;
 use Labstag\Entity\User;
 use Labstag\Event\AttachmentEntityEvent;
 use Labstag\Event\BlockEntityEvent;
 use Labstag\Event\BookmarkEntityEvent;
 use Labstag\Event\ChapterEntityEvent;
 use Labstag\Event\ConfigurationEntityEvent;
+use Labstag\Event\EditoEntityEvent;
 use Labstag\Event\HistoryEntityEvent;
 use Labstag\Event\MenuEntityEvent;
 use Labstag\Event\PageEntityEvent;
 use Labstag\Event\ParagraphEntityEvent;
+use Labstag\Event\PostEntityEvent;
+use Labstag\Event\RenderEntityEvent;
 use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\EventSubscriberLib;
 use Labstag\Service\HistoryService;
@@ -27,14 +37,17 @@ class EntitySubscriber extends EventSubscriberLib
     {
         return [
             AttachmentEntityEvent::class    => 'onAttachmentEntityEvent',
-            ParagraphEntityEvent::class     => 'onParagraphEntityEvent',
             BlockEntityEvent::class         => 'onBlockEntityEvent',
-            ConfigurationEntityEvent::class => 'onConfigurationEntityEvent',
             BookmarkEntityEvent::class      => 'onBookmarkEntityEvent',
+            EditoEntityEvent::class         => 'onEditoEntityEvent',
             ChapterEntityEvent::class       => 'onChapterEntityEvent',
+            ConfigurationEntityEvent::class => 'onConfigurationEntityEvent',
             HistoryEntityEvent::class       => 'onHistoryEntityEvent',
             MenuEntityEvent::class          => 'onMenuEntityEvent',
             PageEntityEvent::class          => 'onPageEntityEvent',
+            ParagraphEntityEvent::class     => 'onParagraphEntityEvent',
+            PostEntityEvent::class          => 'onPostEntityEvent',
+            RenderEntityEvent::class        => 'onRenderEntityEvent',
             UserEntityEvent::class          => 'onUserEntityEvent',
         ];
     }
@@ -75,6 +88,7 @@ class EntitySubscriber extends EventSubscriberLib
     public function onChapterEntityEvent(ChapterEntityEvent $chapterEntityEvent): void
     {
         $chapter = $chapterEntityEvent->getNewEntity();
+        $this->verifMetas($chapter);
         $this->enqueueMethod->enqueue(
             HistoryService::class,
             'process',
@@ -94,9 +108,16 @@ class EntitySubscriber extends EventSubscriberLib
         $this->flushPostConfiguration($post);
     }
 
+    public function onEditoEntityEvent(EditoEntityEvent $editoEntityEvent): void
+    {
+        $edito = $editoEntityEvent->getNewEntity();
+        $this->verifMetas($edito);
+    }
+
     public function onHistoryEntityEvent(HistoryEntityEvent $historyEntityEvent): void
     {
         $history = $historyEntityEvent->getNewEntity();
+        $this->verifMetas($history);
         $this->enqueueMethod->enqueue(
             HistoryService::class,
             'process',
@@ -117,7 +138,8 @@ class EntitySubscriber extends EventSubscriberLib
     public function onPageEntityEvent(PageEntityEvent $pageEntityEvent): void
     {
         $entity = $pageEntityEvent->getNewEntity();
-        $page   = $entity->getParent();
+        $this->verifMetas($entity);
+        $page = $entity->getParent();
         if (!is_null($page)) {
             return;
         }
@@ -152,6 +174,18 @@ class EntitySubscriber extends EventSubscriberLib
 
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
+    }
+
+    public function onPostEntityEvent(PostEntityEvent $postEntityEvent): void
+    {
+        $post = $postEntityEvent->getNewEntity();
+        $this->verifMetas($post);
+    }
+
+    public function onRenderEntityEvent(RenderEntityEvent $renderEntityEvent): void
+    {
+        $render = $renderEntityEvent->getNewEntity();
+        $this->verifMetas($render);
     }
 
     public function onUserEntityEvent(UserEntityEvent $userEntityEvent): void
@@ -367,5 +401,41 @@ class EntitySubscriber extends EventSubscriberLib
         } catch (Exception $exception) {
             $this->errorService->set($exception);
         }
+    }
+
+    private function verifMetas($entity)
+    {
+        $title = null;
+        $metas = $entity->getMetas();
+        if (0 != count($metas)) {
+            return;
+        }
+
+        $meta   = new Meta();
+        $method = '';
+        if ($entity instanceof Chapter) {
+            $method = 'setChapter';
+            $title  = $entity->getName();
+        } elseif ($entity instanceof Edito) {
+            $method = 'setEdito';
+            $title  = $entity->getTitle();
+        } elseif ($entity instanceof History) {
+            $method = 'setHistory';
+            $title  = $entity->getName();
+        } elseif ($entity instanceof Page) {
+            $method = 'setPage';
+            $title  = $entity->getName();
+        } elseif ($entity instanceof Post) {
+            $method = 'setPost';
+            $title  = $entity->getTitle();
+        } elseif ($entity instanceof Render) {
+            $method = 'setRender';
+            $title  = $entity->getName();
+        }
+
+        call_user_func([$meta, $method], $entity);
+        $meta->setTitle($title);
+        $this->entityManager->persist($meta);
+        $this->entityManager->flush();
     }
 }

@@ -24,6 +24,17 @@ abstract class FrontLib
         $this->request = $requestStack->getCurrentRequest();
     }
 
+    protected function getMeta($metas, $meta)
+    {
+        foreach ($metas as $entity) {
+            $meta['description'] = $entity->getDescription();
+            $meta['keywords']    = $entity->getKeywords();
+            $meta['title']       = $entity->getTitle();
+        }
+
+        return $meta;
+    }
+
     protected function getRepository(string $entity): EntityRepository
     {
         return $this->entityManager->getRepository($entity);

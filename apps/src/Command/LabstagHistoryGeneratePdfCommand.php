@@ -14,8 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 #[AsCommand(
-    name: 'labstag:history:generate-pdf',
-    description: 'Add a short description for your command',
+    name: 'labstag:history:generate-pdf'
 )]
 class LabstagHistoryGeneratePdfCommand extends CommandLib
 {

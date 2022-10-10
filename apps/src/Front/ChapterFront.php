@@ -23,13 +23,21 @@ class ChapterFront extends HistoryFront
             'title' => $content->getName(),
         ];
 
-        return parent::setBreadcrumb($content->getRefhistory(), $breadcrumb);
+        return $this->setBreadcrumbHistory($content->getRefhistory(), $breadcrumb);
     }
 
     public function setMeta($content, $meta)
     {
-        unset($content);
+        if (!$content instanceof Chapter) {
+            return $meta;
+        }
 
-        return $meta;
+        $history = $this->getMeta($content->getRefhistory()->getMetas(), $meta);
+        $chapter = $this->getMeta($content->getMetas(), $meta);
+        if (isset($history['title'])) {
+            $chapter['title'] = $chapter['title'].' - '.$history['title'];
+        }
+
+        return $chapter;
     }
 }

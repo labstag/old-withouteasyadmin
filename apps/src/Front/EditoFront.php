@@ -26,8 +26,10 @@ class EditoFront extends PageFront
 
     public function setMeta($content, $meta)
     {
-        unset($content);
+        if (!$content instanceof Edito) {
+            return $meta;
+        }
 
-        return $meta;
+        return $this->getMeta($content->getMetas(), $meta);
     }
 }

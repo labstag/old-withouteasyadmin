@@ -6,6 +6,8 @@ class RouterFront extends PageFront
 {
     public function setBreadcrumb($content, $breadcrumb)
     {
+        unset($content);
+
         return $breadcrumb;
     }
 

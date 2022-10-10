@@ -8,6 +8,11 @@ class HistoryFront extends PageFront
 {
     public function setBreadcrumb($content, $breadcrumb)
     {
+        return $this->setBreadcrumbHistory($content, $breadcrumb);
+    }
+
+    public function setBreadcrumbHistory($content, $breadcrumb)
+    {
         if (!$content instanceof History) {
             return $breadcrumb;
         }
@@ -31,8 +36,10 @@ class HistoryFront extends PageFront
 
     public function setMeta($content, $meta)
     {
-        unset($content);
+        if (!$content instanceof History) {
+            return $meta;
+        }
 
-        return $meta;
+        return $this->getMeta($content->getMetas(), $meta);
     }
 }
