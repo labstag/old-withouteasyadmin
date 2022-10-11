@@ -413,29 +413,79 @@ class EntitySubscriber extends EventSubscriberLib
 
         $meta   = new Meta();
         $method = '';
-        if ($entity instanceof Chapter) {
-            $method = 'setChapter';
-            $title  = $entity->getName();
-        } elseif ($entity instanceof Edito) {
-            $method = 'setEdito';
-            $title  = $entity->getTitle();
-        } elseif ($entity instanceof History) {
-            $method = 'setHistory';
-            $title  = $entity->getName();
-        } elseif ($entity instanceof Page) {
-            $method = 'setPage';
-            $title  = $entity->getName();
-        } elseif ($entity instanceof Post) {
-            $method = 'setPost';
-            $title  = $entity->getTitle();
-        } elseif ($entity instanceof Render) {
-            $method = 'setRender';
-            $title  = $entity->getName();
+        $title  = '';
+        $this->verifMetasChapter($entity, $method, $title);
+        $this->verifMetasEdito($entity, $method, $title);
+        $this->verifMetasHistory($entity, $method, $title);
+        $this->verifMetasPage($entity, $method, $title);
+        $this->verifMetasPost($entity, $method, $title);
+        $this->verifMetasRender($entity, $method, $title);
+        if ('' != $method) {
+            call_user_func([$meta, $method], $entity);
         }
 
-        call_user_func([$meta, $method], $entity);
         $meta->setTitle($title);
         $this->entityManager->persist($meta);
         $this->entityManager->flush();
+    }
+
+    private function verifMetasChapter($entity, &$method, &$title)
+    {
+        if (!$entity instanceof Chapter) {
+            return;
+        }
+
+        $method = 'setChapter';
+        $title  = $entity->getName();
+    }
+
+    private function verifMetasEdito($entity, &$method, &$title)
+    {
+        if (!$entity instanceof Edito) {
+            return;
+        }
+
+        $method = 'setEdito';
+        $title  = $entity->getTitle();
+    }
+
+    private function verifMetasHistory($entity, &$method, &$title)
+    {
+        if (!$entity instanceof History) {
+            return;
+        }
+
+        $method = 'setHistory';
+        $title  = $entity->getName();
+    }
+
+    private function verifMetasPage($entity, &$method, &$title)
+    {
+        if (!$entity instanceof Page) {
+            return;
+        }
+
+        $method = 'setPage';
+        $title  = $entity->getName();
+    }
+
+    private function verifMetasPost($entity, &$method, &$title)
+    {
+        if (!$entity instanceof Post) {
+            return;
+        }
+
+        $method = 'setPost';
+        $title  = $entity->getTitle();
+    }
+
+    private function verifMetasRender($entity, &$method, &$title)
+    {
+        if (!$entity instanceof Render) {
+            return;
+        }
+
+        $method = 'setRender';
+        $title  = $entity->getName();
     }
 }
