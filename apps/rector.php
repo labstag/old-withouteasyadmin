@@ -13,6 +13,9 @@ use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\ValueObject\AnnotationToAttribute;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
+use Rector\Php80\Rector\Property\NestedAnnotationToAttributeRector;
+use Rector\Php80\ValueObject\NestedAnnotationToAttribute;
+use Rector\Doctrine\Set\DoctrineSetList;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->cacheClass(FileCacheStorage::class);
@@ -36,11 +39,28 @@ return static function (RectorConfig $rectorConfig): void {
         AnnotationToAttributeRector::class,
         [
             new AnnotationToAttribute('Symfony\Component\Routing\Annotation\Route'),
+            // new AnnotationToAttribute('Labstag\Annotation\IgnoreSoftDelete'),
+            // new AnnotationToAttribute('Labstag\Annotation\Trashable'),
+            // new AnnotationToAttribute('Labstag\Annotation\Uploadable'),
+            // new AnnotationToAttribute('Labstag\Annotation\UploadableField'),
         ]
     );
+    // $rectorConfig->ruleWithConfiguration(
+    //     NestedAnnotationToAttributeRector::class,
+    //     [
+    //         new NestedAnnotationToAttribute(
+    //             'Doctrine\ORM\Mapping\JoinTable',
+    //             [
+    //                 'joinColumns' => 'Doctrine\ORM\Mapping\JoinColumn',
+    //                 'inverseJoinColumns' => 'Doctrine\ORM\Mapping\InverseJoinColumn',
+    //             ]
+    //         ),
+    //     ]
+    // );
     $rectorConfig->phpstanConfig(__DIR__ . '/phpstan.neon');
     // define sets of rules
     $rectorConfig->sets([
+        // DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
         SetList::ACTION_INJECTION_TO_CONSTRUCTOR_INJECTION,
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
