@@ -52,6 +52,9 @@
     "url-loader": "4.1.1",
     "webpack-notifier": "1.15.0"
   },
+  "engines": {
+    "node": "18"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.4",
     "@popperjs/core": "2.11.2",
