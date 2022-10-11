@@ -134,6 +134,8 @@
       "symfony/polyfill-php72": "*"
     },
     "scripts": {
+      "rector": "rector process --clear-cache",
+      "rector-dry": "rector process --clear-cache --dry-run",
       "phpmnd": "phpmnd src features/bootstrap tests",
       "simple-phpunit": "simple-phpunit --verbose",
       "simple-phpunit-unit-integration": "simple-phpunit --testsuite unit,integration --verbose",

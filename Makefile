@@ -192,8 +192,8 @@ else ifeq ($(COMMANDS_ARGS),phpaudit)
 	@make linter phpmnd -i
 	@make linter phpstan -i
 else ifeq ($(COMMANDS_ARGS),compo)
-	@make composer validate -i
-	@make composer outdated -i
+	${COMPOSER_EXEC} validate
+	${COMPOSER_EXEC} outdated
 else ifeq ($(COMMANDS_ARGS),phpfix)
 	@make linter php-cs-fixer -i
 	@make linter phpcbf -i
@@ -226,7 +226,9 @@ else ifeq ($(COMMANDS_ARGS),phploc)
 else ifeq ($(COMMANDS_ARGS),phpdoc)
 	$(PHP_EXEC) phpDocumentor.phar -d src -t public/docs
 else ifeq ($(COMMANDS_ARGS),rector)
-	$(PHP_EXEC) bin/rector process --clear-cache
+	${COMPOSER_EXEC} run rector
+else ifeq ($(COMMANDS_ARGS),rector-dry)
+	${COMPOSER_EXEC} run rector-dry
 else ifeq ($(COMMANDS_ARGS),phpmd)
 	$(PHP_EXEC) -d error_reporting=24575 phpmd.phar src,features/bootstrap ansi phpmd.xml
 else ifeq ($(COMMANDS_ARGS),phpmnd)
@@ -263,6 +265,7 @@ else
 		["phpstan"]="regarde si le code PHP ne peux pas être optimisé" \
 		["readme"]="linter README.md" \
 		["rector"]="rector" \
+		["rector-dry"]="rector dry run" \
 		["stylelint-fix"]="fix les erreurs dans le code SCSS" \
 		["stylelint"]="indique les erreurs dans le code SCSS" \
 		["twig"]="indique les erreurs de code de twig" \
