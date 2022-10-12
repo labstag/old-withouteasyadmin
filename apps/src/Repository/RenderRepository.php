@@ -3,8 +3,8 @@
 namespace Labstag\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Labstag\Entity\Render;
 use Labstag\Annotation\Trashable;
+use Labstag\Entity\Render;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
 /**

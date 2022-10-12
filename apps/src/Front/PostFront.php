@@ -2,6 +2,7 @@
 
 namespace Labstag\Front;
 
+use Labstag\Entity\Attachment;
 use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\Post;
@@ -38,7 +39,12 @@ class PostFront extends PageFront
             return $meta;
         }
 
-        return $this->getMeta($content->getMetas(), $meta);
+        $meta = $this->getMeta($content->getMetas(), $meta);
+        if ($content->getImg() instanceof Attachment) {
+            $meta['image'] = $content->getImg()->getName();
+        }
+
+        return $meta;
     }
 
     private function setBreadcrumbRouting($breadcrumb)

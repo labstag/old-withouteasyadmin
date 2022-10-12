@@ -2,6 +2,7 @@
 
 namespace Labstag\Front;
 
+use Labstag\Entity\Attachment;
 use Labstag\Entity\Edito;
 
 class EditoFront extends PageFront
@@ -30,6 +31,11 @@ class EditoFront extends PageFront
             return $meta;
         }
 
-        return $this->getMeta($content->getMetas(), $meta);
+        $meta = $this->getMeta($content->getMetas(), $meta);
+        if ($content->getFond() instanceof Attachment) {
+            $meta['image'] = $content->getFond()->getName();
+        }
+
+        return $meta;
     }
 }
