@@ -2,8 +2,8 @@
 
 {% import "macro.html.twig" as macro_site %}
 {% set title = '' %}
-{% if config.meta.title is defined %}
-    {% set title = config.meta.title|trim %}
+{% if config.site_title is defined %}
+    {% set title = config.site_title|trim %}
 {% endif %}
 {% block content_title %}{{ title }}{% endblock %}
 {% if config['disclaimer']['title'] is defined %}

@@ -18,6 +18,7 @@ use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Service\BlockService;
 use Labstag\Service\DataService;
 use Labstag\Service\ErrorService;
+use Labstag\Service\FrontService;
 use Labstag\Service\GuardService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\SessionService;
@@ -55,6 +56,7 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected WorkflowUserRepository $workflowUserRepository,
         protected Reader $reader,
         protected Environment $environment,
+        protected FrontService $frontService,
         protected UrlGeneratorInterface $urlGenerator,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected Security $security,

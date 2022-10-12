@@ -59,13 +59,18 @@ abstract class FrontControllerLib extends ControllerLib
             unset($parameters['content']);
         }
 
-        $globals        = $this->environment->getGlobals();
-        $config         = $globals['config'] ?? $this->dataService->getConfig();
-        $config['meta'] = array_key_exists('meta', $config) ? $config['meta'] : [];
-        $config['meta'] = array_merge(
-            $config['meta'],
+        $globals = $this->environment->getGlobals();
+
+        $config   = $globals['config'] ?? $this->dataService->getConfig();
+        $tagsmeta = $config['meta'] ?? [];
+        $tagsmeta = array_merge(
+            $tagsmeta,
             $this->frontService->setMeta($content)
         );
+
+        $config['meta'] = $this->frontService->configMeta($config, $tagsmeta);
+
+        $this->frontService->setMetatags($config['meta']);
         $this->environment->AddGlobal('config', $config);
 
         $parameters['blocks'] = [];
