@@ -3,8 +3,6 @@
 namespace Labstag\EventSubscriber;
 
 use Labstag\Lib\EventSubscriberLib;
-use phpDocumentor\Reflection\Types\This;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class TwigEventSubscriber extends EventSubscriberLib
@@ -39,26 +37,29 @@ class TwigEventSubscriber extends EventSubscriberLib
     {
         $request = $controllerEvent->getRequest();
         $this->setLoginPage($controllerEvent);
-        $this->setConfig($controllerEvent, $request);
+        $this->setConfig($controllerEvent);
     }
 
-    protected function setConfig(ControllerEvent $controllerEvent, Request $request): void
+    protected function isStateConfig(ControllerEvent $controllerEvent)
     {
-        $this->setConfigFavicon();
-        $this->setConfigCanonical();
         $controller = $controllerEvent->getRequest()->attributes->get('_controller');
         $matches    = [];
         preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
-        if (0 == count($matches) && !in_array($controller, self::ERROR_CONTROLLER)) {
+
+        return 0 == count($matches) && !in_array($controller, self::ERROR_CONTROLLER);
+    }
+
+    protected function setConfig(ControllerEvent $controllerEvent): void
+    {
+        $this->setConfigFavicon();
+        $this->setConfigCanonical();
+        if ($this->isStateConfig($controllerEvent)) {
             return;
         }
 
         $globals = $this->environment->getGlobals();
         $config  = $globals['config'] ?? $this->dataService->getConfig();
-
-        $config['meta'] = array_key_exists('meta', $config) ? $config['meta'] : [];
-        $config['meta'] = $this->frontService->configMeta($config, $config['meta']);
-        $this->frontService->setMetatags($config['meta']);
+        $this->setConfigMeta($config);
         $this->setConfigTac($config);
         $this->setFormatDatetime($config);
         $this->environment->AddGlobal('config', $config);
@@ -75,6 +76,13 @@ class TwigEventSubscriber extends EventSubscriberLib
     {
         $favicon = $this->attachmentRepository->getFavicon();
         $this->environment->AddGlobal('favicon', $favicon);
+    }
+
+    protected function setConfigMeta($config)
+    {
+        $config['meta'] = array_key_exists('meta', $config) ? $config['meta'] : [];
+        $config['meta'] = $this->frontService->configMeta($config, $config['meta']);
+        $this->frontService->setMetatags($config['meta']);
     }
 
     protected function setConfigTac(array $config): void

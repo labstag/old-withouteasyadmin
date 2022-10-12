@@ -2,7 +2,7 @@
 <html lang="{{ config.languagedefault|e('html_attr') }}">
     <head>
         <meta charset="UTF-8">
-        <title>{{ (config.meta.title != config.site_title) ? config.meta.title~" - "~config.site_title : config.site_title}}</title>
+        <title>{{ (config.meta.title is defined and config.meta.title != config.site_title) ? config.meta.title~" - "~config.site_title : config.site_title}}</title>
         {% if sitemetatags is defined %}
             {% for attr in sitemetatags %}
                 <meta
