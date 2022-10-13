@@ -35,7 +35,6 @@ class TwigEventSubscriber extends EventSubscriberLib
 
     public function onControllerEvent(ControllerEvent $controllerEvent): void
     {
-        $request = $controllerEvent->getRequest();
         $this->setLoginPage($controllerEvent);
         $this->setConfig($controllerEvent);
     }
