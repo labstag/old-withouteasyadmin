@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\History;
+use Labstag\Entity\Meta;
 use Labstag\Lib\FixtureLib;
 
 class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
@@ -33,8 +34,11 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         array $states
     ): void
     {
-        $users      = $this->userRepository->findAll();
-        $history    = new History();
+        $users   = $this->userRepository->findAll();
+        $history = new History();
+        $meta    = new Meta();
+        $meta->setHistory($history);
+        $this->setMeta($meta);
         $oldHistory = clone $history;
         $history->setName($generator->unique()->colorName());
         // @var string $content

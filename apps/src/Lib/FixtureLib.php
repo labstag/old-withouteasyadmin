@@ -12,6 +12,7 @@ use Labstag\DataFixtures\DataFixtures;
 use Labstag\DataFixtures\LibelleFixtures;
 use Labstag\DataFixtures\UserFixtures;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Meta;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
@@ -238,6 +239,14 @@ abstract class FixtureLib extends Fixture
             $libelle      = $this->getReference('libelle_'.$indexLibelle);
             $entity->addLibelle($libelle);
         }
+    }
+
+    protected function setMeta(Meta $meta)
+    {
+        $faker = $this->setFaker();
+        $meta->setTitle($faker->unique()->colorName());
+        $meta->setDescription($faker->unique()->sentence());
+        $meta->setKeywords($faker->unique()->words(random_int(1, 5), true));
     }
 
     protected function upload($entity, Generator $generator): void

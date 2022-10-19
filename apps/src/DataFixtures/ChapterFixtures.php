@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\Chapter;
+use Labstag\Entity\Meta;
 use Labstag\Lib\FixtureLib;
 
 class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
@@ -37,7 +38,10 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         array $states
     ): void
     {
-        $chapter    = new Chapter();
+        $chapter = new Chapter();
+        $meta    = new Meta();
+        $meta->setChapter($chapter);
+        $this->setMeta($meta);
         $oldChapter = clone $chapter;
         $chapter->setName($generator->unique()->colorName());
         // @var string $content

@@ -5,6 +5,7 @@ namespace Labstag\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
+use Labstag\Entity\Meta;
 use Labstag\Entity\Post;
 use Labstag\Lib\FixtureLib;
 
@@ -30,7 +31,10 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         array $states
     ): void
     {
-        $post    = new Post();
+        $post = new Post();
+        $meta = new Meta();
+        $meta->setPost($post);
+        $this->setMeta($meta);
         $oldPost = clone $post;
         $post->setTitle($generator->unique()->colorName());
         // @var string $content

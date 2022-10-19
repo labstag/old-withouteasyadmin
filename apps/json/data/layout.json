@@ -1,0 +1,131 @@
+[
+    {
+        "block-type": "custom",
+        "block-region": "header",
+        "layouts": [
+            {
+                "name": "POST Header",
+                "url": ["front_article"],
+                "paragraphs": [
+                    {
+                        "type": "postheader"
+                    }
+                ]
+            },
+            {
+                "name": "EDITO Header",
+                "url": ["front_edito"],
+                "paragraphs": [
+                    {
+                        "type": "editoheader"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "block-type": "custom",
+        "block-region": "content",
+        "layouts": [
+            {
+                "name": "BOOKMARK Category",
+                "url": ["front_bookmark_category"],
+                "paragraphs": [
+                    {
+                        "type": "bookmarkcategory"
+                    }
+                ]
+            },
+            {
+                "name": "BOOKMARK Libelle",
+                "url": ["front_bookmark_libelle"],
+                "paragraphs": [
+                    {
+                        "type": "bookmarklibelle"
+                    }
+                ]
+            },
+            {
+                "name": "EDITO Show",
+                "url": ["front_edito"],
+                "paragraphs": [
+                    {
+                        "type": "editoshow"
+                    }
+                ]
+            },
+            {
+                "name": "HISTORY Chapter",
+                "url": ["front_history_chapter"],
+                "paragraphs": [
+                    {
+                        "type": "historychapter"
+                    }
+                ]
+            },
+            {
+                "name": "HISTORY Show",
+                "url": ["front_history"],
+                "paragraphs": [
+                    {
+                        "type": "historyshow"
+                    }
+                ]
+            },
+            {
+                "name": "HISTORY User",
+                "url": ["front_history_user"],
+                "paragraphs": [
+                    {
+                        "type": "historyuser"
+                    }
+                ]
+            },
+            {
+                "name": "POST Category",
+                "url": ["front_article_category"],
+                "paragraphs": [
+                    {
+                        "type": "postcategory"
+                    }
+                ]
+            },
+            {
+                "name": "POST Libelle",
+                "url": ["front_article_libelle"],
+                "paragraphs": [
+                    {
+                        "type": "postlibelle"
+                    }
+                ]
+            },
+            {
+                "name": "POST Show",
+                "url": ["front_article"],
+                "paragraphs": [
+                    {
+                        "type": "postshow"
+                    }
+                ]
+            },
+            {
+                "name": "POST User",
+                "url": ["front_article_user"],
+                "paragraphs": [
+                    {
+                        "type": "postuser"
+                    }
+                ]
+            },
+            {
+                "name": "POST Year",
+                "url": ["front_article_year"],
+                "paragraphs": [
+                    {
+                        "type": "postyear"
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -1,0 +1,45 @@
+[
+    {
+        "slug": "",
+        "name": "Home",
+        "paragraphs": [
+            "edito",
+            "post",
+            "history",
+            "bookmark"
+        ],
+        "pages": [
+            {
+                "slug": "mes-articles",
+                "name": "Mes articles",
+                "paragraphs": [
+                    "postlist",
+                    "postarchive"
+                ],
+                "pages": [
+                    {
+                        "slug": "mes-articles/archive",
+                        "name": "Archive",
+                        "paragraphs": [
+                            "postarchive"
+                        ]
+                    }
+                ]
+            },
+            {
+                "slug": "mes-liens",
+                "name": "Mes liens",
+                "paragraphs": [
+                    "bookmarklist"
+                ]
+            },
+            {
+                "slug": "mes-histoires",
+                "name": "Mes histoires",
+                "paragraphs": [
+                    "historylist"
+                ]
+            }
+        ]
+    }
+]

@@ -1,0 +1,49 @@
+[
+    {
+        "region": "header",
+        "blocks": [
+            {
+                "type": "navbar",
+                "code-menu": "front-header"
+            },
+            {
+                "type": "header"
+            },
+            {
+                "type": "custom"
+            }
+        ]
+    },
+    {
+        "region": "content",
+        "blocks": [
+            {
+                "type": "breadcrumb"
+            },
+            {
+                "type": "flashbag"
+            },
+            {
+                "type": "custom"
+            },
+            {
+                "type": "paragraph"
+            }
+        ]
+    },
+    {
+        "region": "footer",
+        "blocks": [
+            {
+                "type": "custom"
+            },
+            {
+                "type": "footer"
+            },
+            {
+                "type": "navbar",
+                "code-menu": "front-footer"
+            }
+        ]
+    }
+]
