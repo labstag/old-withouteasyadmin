@@ -5,8 +5,8 @@ namespace Labstag\Controller\Admin\History\Paragraph;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Paragraph;
 use Labstag\Lib\ParagraphControllerLib;
-use Labstag\Repository\ParagraphRepository;
 use Labstag\RequestHandler\ParagraphRequestHandler;
+use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,20 +17,12 @@ class ChapterController extends ParagraphControllerLib
 {
     #[Route(path: '/add/{id}', name: 'admin_chapter_paragraph_add')]
     public function add(
-        ParagraphRequestHandler $paragraphRequestHandler,
+        ParagraphService $paragraphService,
         Chapter $chapter,
-        ParagraphRepository $paragraphRepository,
         Request $request
     ): RedirectResponse
     {
-        $paragraph = new Paragraph();
-        $old       = clone $paragraph;
-        $paragraph->setPosition(count($chapter->getParagraphs()) + 1);
-        $paragraph->setChapter($chapter);
-        $paragraph->settype($request->get('data'));
-
-        $paragraphRepository->add($paragraph);
-        $paragraphRequestHandler->handle($old, $paragraph);
+        $paragraphService->add($chapter, $request->get('data'));
 
         return $this->redirectToRoute('admin_chapter_paragraph_list', ['id' => $chapter->getId()]);
     }

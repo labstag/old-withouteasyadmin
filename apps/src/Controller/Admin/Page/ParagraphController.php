@@ -5,8 +5,8 @@ namespace Labstag\Controller\Admin\Page;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph;
 use Labstag\Lib\ParagraphControllerLib;
-use Labstag\Repository\ParagraphRepository;
 use Labstag\RequestHandler\ParagraphRequestHandler;
+use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,20 +17,12 @@ class ParagraphController extends ParagraphControllerLib
 {
     #[Route(path: '/add/{id}', name: 'admin_page_paragraph_add')]
     public function add(
-        ParagraphRequestHandler $paragraphRequestHandler,
+        ParagraphService $paragraphService,
         Page $page,
-        ParagraphRepository $paragraphRepository,
         Request $request
     ): RedirectResponse
     {
-        $paragraph = new Paragraph();
-        $old       = clone $paragraph;
-        $paragraph->setPosition(count($page->getParagraphs()) + 1);
-        $paragraph->setPage($page);
-        $paragraph->settype($request->get('data'));
-
-        $paragraphRepository->add($paragraph);
-        $paragraphRequestHandler->handle($old, $paragraph);
+        $paragraphService->add($page, $request->get('data'));
 
         return $this->redirectToRoute('admin_page_paragraph_list', ['id' => $page->getId()]);
     }

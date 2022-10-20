@@ -5,8 +5,8 @@ namespace Labstag\Controller\Admin\Edito;
 use Labstag\Entity\Edito;
 use Labstag\Entity\Paragraph;
 use Labstag\Lib\ParagraphControllerLib;
-use Labstag\Repository\ParagraphRepository;
 use Labstag\RequestHandler\ParagraphRequestHandler;
+use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,20 +17,12 @@ class ParagraphController extends ParagraphControllerLib
 {
     #[Route(path: '/add/{id}', name: 'admin_edito_paragraph_add')]
     public function add(
-        ParagraphRequestHandler $paragraphRequestHandler,
+        ParagraphService $paragraphService,
         Edito $edito,
-        ParagraphRepository $paragraphRepository,
         Request $request
     ): RedirectResponse
     {
-        $paragraph = new Paragraph();
-        $old       = clone $paragraph;
-        $paragraph->setPosition(count($edito->getParagraphs()) + 1);
-        $paragraph->setEdito($edito);
-        $paragraph->settype($request->get('data'));
-
-        $paragraphRepository->add($paragraph);
-        $paragraphRequestHandler->handle($old, $paragraph);
+        $paragraphService->add($edito, $request->get('data'));
 
         return $this->redirectToRoute('admin_edito_paragraph_list', ['id' => $edito->getId()]);
     }

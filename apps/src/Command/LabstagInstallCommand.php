@@ -44,12 +44,8 @@ class LabstagInstallCommand extends CommandLib
     protected function configure(): void
     {
         $this->setDescription('Add a short description for your command');
-        $this->addOption('menuadmin', null, InputOption::VALUE_NONE, 'menuadmin');
-        $this->addOption('menuadminprofil', null, InputOption::VALUE_NONE, 'menuadminprofil');
-        $this->addOption('group', null, InputOption::VALUE_NONE, 'group');
         $this->addOption('config', null, InputOption::VALUE_NONE, 'config');
         $this->addOption('templates', null, InputOption::VALUE_NONE, 'templates');
-        $this->addOption('users', null, InputOption::VALUE_NONE, 'users');
         $this->addOption('all', null, InputOption::VALUE_NONE, 'all');
     }
 
@@ -73,13 +69,9 @@ class LabstagInstallCommand extends CommandLib
     protected function getExecutesFunction(): array
     {
         return [
-            'menuadmin'       => 'setMenuAdmin',
-            'menuadminprofil' => 'setMenuAdminProfil',
-            'group'           => 'setGroup',
-            'config'          => 'setConfig',
-            'templates'       => 'setTemplates',
-            'users'           => 'setUsers',
-            'all'             => 'all',
+            'config'    => 'setConfig',
+            'templates' => 'setTemplates',
+            'all'       => 'all',
         ];
     }
 
@@ -91,42 +83,10 @@ class LabstagInstallCommand extends CommandLib
         return true;
     }
 
-    protected function setGroup(SymfonyStyle $symfonyStyle): bool
-    {
-        $symfonyStyle->note('Ajout des groupes');
-        $this->installService->group();
-
-        return true;
-    }
-
-    protected function setMenuAdmin(SymfonyStyle $symfonyStyle): bool
-    {
-        $symfonyStyle->note('Ajout du menu admin');
-        $this->installService->menuadmin();
-
-        return true;
-    }
-
-    protected function setMenuAdminProfil(SymfonyStyle $symfonyStyle): bool
-    {
-        $symfonyStyle->note('Ajout du menu admin profil');
-        $this->installService->menuadminprofil();
-
-        return true;
-    }
-
     protected function setTemplates(SymfonyStyle $symfonyStyle): bool
     {
         $symfonyStyle->note('Ajout des templates');
         $this->installService->templates();
-
-        return true;
-    }
-
-    protected function setUsers(SymfonyStyle $symfonyStyle): bool
-    {
-        $symfonyStyle->note('Ajout des users');
-        $this->installService->users();
 
         return true;
     }

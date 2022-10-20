@@ -18,6 +18,7 @@ use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AddressUserRequestHandler;
 use Labstag\RequestHandler\AttachmentRequestHandler;
+use Labstag\RequestHandler\BlockRequestHandler;
 use Labstag\RequestHandler\BookmarkRequestHandler;
 use Labstag\RequestHandler\CategoryRequestHandler;
 use Labstag\RequestHandler\ChapterRequestHandler;
@@ -25,9 +26,13 @@ use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\RequestHandler\HistoryRequestHandler;
+use Labstag\RequestHandler\LayoutRequestHandler;
 use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\RequestHandler\LinkUserRequestHandler;
 use Labstag\RequestHandler\MemoRequestHandler;
+use Labstag\RequestHandler\MenuRequestHandler;
+use Labstag\RequestHandler\PageRequestHandler;
+use Labstag\RequestHandler\ParagraphRequestHandler;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
@@ -36,6 +41,7 @@ use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
 use Labstag\Service\GuardService;
 use Labstag\Service\InstallService;
+use Labstag\Service\ParagraphService;
 use Labstag\Service\UserService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -116,6 +122,7 @@ abstract class FixtureLib extends Fixture
         protected FileService $fileService,
         protected UserService $userService,
         protected ErrorService $errorService,
+        protected ParagraphService $paragraphService,
         protected LoggerInterface $logger,
         protected ContainerBagInterface $containerBag,
         protected UploadAnnotationReader $uploadAnnotationReader,
@@ -140,7 +147,12 @@ abstract class FixtureLib extends Fixture
         protected PostRequestHandler $postRequestHandler,
         protected CategoryRequestHandler $categoryRequestHandler,
         protected HistoryRequestHandler $historyRequestHandler,
-        protected ChapterRequestHandler $chapterRequestHandler
+        protected ChapterRequestHandler $chapterRequestHandler,
+        protected ParagraphRequestHandler $paragraphRequestHandler,
+        protected BlockRequestHandler $blockRequestHandler,
+        protected LayoutRequestHandler $layoutRequestHandler,
+        protected MenuRequestHandler $menuRequestHandler,
+        protected PageRequestHandler $pageRequestHandler
     )
     {
     }
@@ -153,6 +165,13 @@ abstract class FixtureLib extends Fixture
             LibelleFixtures::class,
             CategoryFixtures::class,
         ];
+    }
+
+    protected function addParagraphs($entity, $paragraphs)
+    {
+        foreach ($paragraphs as $paragraph) {
+            $this->paragraphService->add($entity, $paragraph);
+        }
     }
 
     protected function getParameter(string $name)

@@ -6,20 +6,12 @@
             {
                 "name": "POST Header",
                 "url": ["front_article"],
-                "paragraphs": [
-                    {
-                        "type": "postheader"
-                    }
-                ]
+                "paragraphs": ["postheader"]
             },
             {
                 "name": "EDITO Header",
                 "url": ["front_edito"],
-                "paragraphs": [
-                    {
-                        "type": "editoheader"
-                    }
-                ]
+                "paragraphs": ["editoheader"]
             }
         ]
     },
@@ -30,101 +22,57 @@
             {
                 "name": "BOOKMARK Category",
                 "url": ["front_bookmark_category"],
-                "paragraphs": [
-                    {
-                        "type": "bookmarkcategory"
-                    }
-                ]
+                "paragraphs": ["bookmarkcategory"]
             },
             {
                 "name": "BOOKMARK Libelle",
                 "url": ["front_bookmark_libelle"],
-                "paragraphs": [
-                    {
-                        "type": "bookmarklibelle"
-                    }
-                ]
+                "paragraphs": ["bookmarklibelle"]
             },
             {
                 "name": "EDITO Show",
                 "url": ["front_edito"],
-                "paragraphs": [
-                    {
-                        "type": "editoshow"
-                    }
-                ]
+                "paragraphs": ["editoshow"]
             },
             {
                 "name": "HISTORY Chapter",
                 "url": ["front_history_chapter"],
-                "paragraphs": [
-                    {
-                        "type": "historychapter"
-                    }
-                ]
+                "paragraphs": ["historychapter"]
             },
             {
                 "name": "HISTORY Show",
                 "url": ["front_history"],
-                "paragraphs": [
-                    {
-                        "type": "historyshow"
-                    }
-                ]
+                "paragraphs": ["historyshow"]
             },
             {
                 "name": "HISTORY User",
                 "url": ["front_history_user"],
-                "paragraphs": [
-                    {
-                        "type": "historyuser"
-                    }
-                ]
+                "paragraphs": ["historyuser"]
             },
             {
                 "name": "POST Category",
                 "url": ["front_article_category"],
-                "paragraphs": [
-                    {
-                        "type": "postcategory"
-                    }
-                ]
+                "paragraphs": ["postcategory"]
             },
             {
                 "name": "POST Libelle",
                 "url": ["front_article_libelle"],
-                "paragraphs": [
-                    {
-                        "type": "postlibelle"
-                    }
-                ]
+                "paragraphs": ["postlibelle"]
             },
             {
                 "name": "POST Show",
                 "url": ["front_article"],
-                "paragraphs": [
-                    {
-                        "type": "postshow"
-                    }
-                ]
+                "paragraphs": ["postshow"]
             },
             {
                 "name": "POST User",
                 "url": ["front_article_user"],
-                "paragraphs": [
-                    {
-                        "type": "postuser"
-                    }
-                ]
+                "paragraphs": ["postuser"]
             },
             {
                 "name": "POST Year",
                 "url": ["front_article_year"],
-                "paragraphs": [
-                    {
-                        "type": "postyear"
-                    }
-                ]
+                "paragraphs": ["postyear"]
             }
         ]
     }

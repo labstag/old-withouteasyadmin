@@ -4,19 +4,13 @@ namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
-use Labstag\Entity\Groupe;
-use Labstag\Entity\Menu;
 use Labstag\Entity\Template;
 use Labstag\Entity\User;
 use Labstag\Repository\ConfigurationRepository;
 use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\MenuRepository;
 use Labstag\Repository\TemplateRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\ConfigurationRequestHandler;
-use Labstag\RequestHandler\GroupeRequestHandler;
-use Labstag\RequestHandler\MenuRequestHandler;
-use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\Dotenv\Dotenv;
@@ -28,9 +22,6 @@ class InstallService
     public function __construct(
         protected OauthService $oauthService,
         protected UserService $userService,
-        protected PageRequestHandler $pageRequestHandler,
-        protected MenuRequestHandler $menuRequestHandler,
-        protected GroupeRequestHandler $groupeRequestHandler,
         protected ConfigurationRequestHandler $configurationRequestHandler,
         protected UserRequestHandler $userRequestHandler,
         protected TemplateRequestHandler $templateRequestHandler,
@@ -38,7 +29,6 @@ class InstallService
         protected Environment $environment,
         protected CacheInterface $cache,
         protected GroupeRepository $groupeRepository,
-        protected MenuRepository $menuRepository,
         protected ConfigurationRepository $configurationRepository,
         protected TemplateRepository $templateRepository,
         protected UserRepository $userRepository
@@ -86,26 +76,6 @@ class InstallService
         return $data;
     }
 
-    public function group(): void
-    {
-        $groupes = $this->getData('group');
-        foreach ($groupes as $groupe) {
-            $this->addGroupe($groupe);
-        }
-    }
-
-    public function menuadmin(): void
-    {
-        $childs = $this->getData('menuadmin');
-        $this->saveMenu('admin', $childs);
-    }
-
-    public function menuadminprofil(): void
-    {
-        $childs = $this->getData('menuadminprofil');
-        $this->saveMenu('admin-profil', $childs);
-    }
-
     public function templates(): void
     {
         $templates = $this->getData('template');
@@ -120,33 +90,6 @@ class InstallService
         $groupes = $this->groupeRepository->findAll();
         foreach ($users as $user) {
             $this->addUser($groupes, $user);
-        }
-    }
-
-    protected function addChild(int $index, Menu $menu, array $attr): void
-    {
-        $child = new Menu();
-        $child->setPosition($index);
-        $child->setParent($menu);
-        if (isset($attr['separator'])) {
-            $child->setSeparateur(true);
-            $this->menuRepository->add($child);
-
-            return;
-        }
-
-        $child->setName($attr['name']);
-        if (isset($attr['data'])) {
-            $child->setData($attr['data']);
-        }
-
-        $this->menuRepository->add($child);
-        if (isset($attr['childs'])) {
-            $indexChild = 0;
-            foreach ($attr['childs'] as $attrChild) {
-                $this->addChild($indexChild, $child, $attrChild);
-                ++$indexChild;
-            }
         }
     }
 
@@ -166,24 +109,6 @@ class InstallService
         $configuration->setValue($value);
 
         $this->configurationRequestHandler->handle($old, $configuration);
-    }
-
-    protected function addGroupe(
-        string $row
-    ): void
-    {
-        $search = ['code' => $row];
-        $groupe = $this->groupeRepository->findOneBy($search);
-        if ($groupe instanceof Groupe) {
-            return;
-        }
-
-        $groupe = new Groupe();
-        $old    = clone $groupe;
-        $groupe->setCode($row);
-        $groupe->setName($row);
-
-        $this->groupeRequestHandler->handle($old, $groupe);
     }
 
     protected function addTemplate(
@@ -229,27 +154,6 @@ class InstallService
         }
 
         $this->userService->create($groupes, $dataUser);
-    }
-
-    protected function saveMenu(string $key, array $childs): void
-    {
-        // $this->entityManager->getFilters()->disable('softdeleteable');
-        $search = ['clef' => $key];
-        $menu   = $this->menuRepository->findOneBy($search);
-        if ($menu instanceof Menu) {
-            $this->menuRepository->remove($menu);
-        }
-
-        $menu = new Menu();
-        $menu->setPosition(0);
-        $menu->setClef($key);
-
-        $this->menuRepository->add($menu);
-        $indexChild = 0;
-        foreach ($childs as $child) {
-            $this->addChild($indexChild, $menu, $child);
-            ++$indexChild;
-        }
     }
 
     protected function setOauth(array $serverEnv, array &$data): void

@@ -2,7 +2,15 @@
 
 namespace Labstag\Service;
 
+use Labstag\Entity\Chapter;
+use Labstag\Entity\History;
+use Labstag\Entity\Layout;
+use Labstag\Entity\Memo;
+use Labstag\Entity\Menu;
+use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph;
+use Labstag\Entity\Post;
+use Labstag\RequestHandler\ParagraphRequestHandler;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -10,8 +18,29 @@ use Twig\Environment;
 
 class ParagraphService
 {
-    public function __construct(protected $paragraphsclass, protected Environment $environment)
+    public function __construct(
+        protected $paragraphsclass,
+        protected Environment $environment,
+        protected ParagraphRequestHandler $paragraphRequestHandler
+    )
     {
+    }
+
+    public function add($entity, string $code)
+    {
+        $method = $this->getMethod($entity);
+        if (is_null($method)) {
+            return;
+        }
+
+        $position = (is_countable($entity->getParagraphs()) ? count($entity->getParagraphs()) : 0) + 1;
+
+        $paragraph = new Paragraph();
+        $old       = clone $paragraph;
+        $paragraph->setType($code);
+        $paragraph->setPosition($position);
+        call_user_func([$paragraph, $method], $entity);
+        $this->paragraphRequestHandler->handle($old, $paragraph);
     }
 
     /**
@@ -157,6 +186,19 @@ class ParagraphService
         }
 
         return $html;
+    }
+
+    private function getMethod($entity)
+    {
+        $method = null;
+        $method = ($entity instanceof Page) ? 'setPage' : $method;
+        $method = ($entity instanceof Menu) ? 'setMenu' : $method;
+        $method = ($entity instanceof Chapter) ? 'setChapter' : $method;
+        $method = ($entity instanceof History) ? 'setHistory' : $method;
+        $method = ($entity instanceof Layout) ? 'setLayout' : $method;
+        $method = ($entity instanceof Memo) ? 'setMemo' : $method;
+
+        return ($entity instanceof Post) ? 'setPost' : $method;
     }
 
     private function setReflection($entity): ReflectionClass
