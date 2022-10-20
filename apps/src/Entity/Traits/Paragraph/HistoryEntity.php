@@ -19,7 +19,7 @@ trait HistoryEntity
     private $histories;
 
     /**
-     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="paragraphs")
+     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="paragraphs", cascade={"persist"})
      */
     private $history;
 

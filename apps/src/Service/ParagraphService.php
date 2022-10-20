@@ -6,7 +6,6 @@ use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Memo;
-use Labstag\Entity\Menu;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph;
 use Labstag\Entity\Post;
@@ -191,12 +190,12 @@ class ParagraphService
     private function getMethod($entity)
     {
         $method = null;
-        $method = ($entity instanceof Page) ? 'setPage' : $method;
-        $method = ($entity instanceof Menu) ? 'setMenu' : $method;
         $method = ($entity instanceof Chapter) ? 'setChapter' : $method;
         $method = ($entity instanceof History) ? 'setHistory' : $method;
+
         $method = ($entity instanceof Layout) ? 'setLayout' : $method;
         $method = ($entity instanceof Memo) ? 'setMemo' : $method;
+        $method = ($entity instanceof Page) ? 'setPage' : $method;
 
         return ($entity instanceof Post) ? 'setPost' : $method;
     }

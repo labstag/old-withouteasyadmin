@@ -9,9 +9,6 @@ use Labstag\Lib\FixtureLib;
 
 class BlockFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
-    public $blockService;
-
     /**
      * @return class-string[]
      */
@@ -55,6 +52,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
             $entity = new $classentity();
             $entity->setBlock($block);
             $entity->setMenu($menu);
+            $block->addMenu($entity);
         }
 
         $this->blockRequestHandler->handle($old, $block);

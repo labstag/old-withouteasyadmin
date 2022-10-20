@@ -9,7 +9,6 @@ use Labstag\Entity\Configuration;
 use Labstag\Entity\Edito;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\History;
-use Labstag\Entity\Menu;
 use Labstag\Entity\Meta;
 use Labstag\Entity\Page;
 use Labstag\Entity\Post;
@@ -132,7 +131,35 @@ class EntitySubscriber extends EventSubscriberLib
     public function onMenuEntityEvent(MenuEntityEvent $menuEntityEvent): void
     {
         $menu = $menuEntityEvent->getNewEntity();
-        $this->setDataMenu($menu);
+        $data = $menu->getData();
+        if (0 == count((array) $data)) {
+            return;
+        }
+
+        $data = $data[0];
+        foreach ($data as $key => $value) {
+            if (!is_null($value)) {
+                continue;
+            }
+
+            unset($data[$key]);
+        }
+
+        if (isset($data['param'], $data['route'])) {
+            $data['params'] = json_decode((string) $data['param'], null, 512, JSON_THROW_ON_ERROR);
+            unset($data['param']);
+        }
+
+        if (isset($data['url'], $data['route'])) {
+            unset($data['route']);
+        }
+
+        if (isset($data['url'], $data['param'])) {
+            unset($data['param']);
+        }
+
+        $menu->setData($data);
+        $this->menuRepository->add($menu);
     }
 
     public function onPageEntityEvent(PageEntityEvent $pageEntityEvent): void
@@ -250,39 +277,6 @@ class EntitySubscriber extends EventSubscriberLib
             'success',
             'Changement de mot de passe effectué'
         );
-    }
-
-    protected function setDataMenu(Menu $menu): void
-    {
-        $data = $menu->getData();
-        if (0 == count((array) $data)) {
-            return;
-        }
-
-        $data = $data[0];
-        foreach ($data as $key => $value) {
-            if (!is_null($value)) {
-                continue;
-            }
-
-            unset($data[$key]);
-        }
-
-        if (isset($data['param'], $data['route'])) {
-            $data['params'] = json_decode((string) $data['param'], null, 512, JSON_THROW_ON_ERROR);
-            unset($data['param']);
-        }
-
-        if (isset($data['url'], $data['route'])) {
-            unset($data['route']);
-        }
-
-        if (isset($data['url'], $data['param'])) {
-            unset($data['param']);
-        }
-
-        $menu->setData($data);
-        $this->menuRepository->add($menu);
     }
 
     protected function setDeletedAt(User $oldEntity, User $newEntity): void

@@ -4,7 +4,6 @@ namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
-use Labstag\Entity\Template;
 use Labstag\Entity\User;
 use Labstag\Repository\ConfigurationRepository;
 use Labstag\Repository\GroupeRepository;
@@ -76,14 +75,6 @@ class InstallService
         return $data;
     }
 
-    public function templates(): void
-    {
-        $templates = $this->getData('template');
-        foreach ($templates as $key => $row) {
-            $this->addTemplate($key, $row);
-        }
-    }
-
     public function users(): void
     {
         $users   = $this->getData('user');
@@ -109,35 +100,6 @@ class InstallService
         $configuration->setValue($value);
 
         $this->configurationRequestHandler->handle($old, $configuration);
-    }
-
-    protected function addTemplate(
-        string $key,
-        string $value
-    ): void
-    {
-        $search   = ['code' => $key];
-        $template = $this->templateRepository->findOneBy($search);
-        if ($template instanceof Template) {
-            return;
-        }
-
-        $template = new Template();
-        $old      = clone $template;
-        $template->setName($value);
-        $template->setCode($key);
-
-        $htmlfile = 'tpl/mail-'.$key.'.html.twig';
-        if (is_file('templates/'.$htmlfile)) {
-            $template->setHtml($this->environment->render($htmlfile));
-        }
-
-        $txtfile = 'tpl/mail-'.$key.'.txt.twig';
-        if (is_file('templates/'.$txtfile)) {
-            $template->setText($this->environment->render($txtfile));
-        }
-
-        $this->templateRequestHandler->handle($old, $template);
     }
 
     protected function addUser(

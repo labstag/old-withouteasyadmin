@@ -243,7 +243,7 @@
             {
                 "name": "Twitter",
                 "data": {
-                    "route": "https://www.twitter.com/koromerzhin"
+                    "url": "https://www.twitter.com/koromerzhin"
                 }
             }
         ]

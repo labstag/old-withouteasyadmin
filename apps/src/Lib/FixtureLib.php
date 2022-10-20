@@ -37,6 +37,7 @@ use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
+use Labstag\Service\BlockService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
 use Labstag\Service\GuardService;
@@ -131,6 +132,7 @@ abstract class FixtureLib extends Fixture
         protected GroupeRepository $groupeRepository,
         protected GuardService $guardService,
         protected Environment $environment,
+        protected BlockService $blockService,
         protected EmailUserRequestHandler $emailUserRequestHandler,
         protected LinkUserRequestHandler $linkUserRequestHandler,
         protected MemoRequestHandler $memoRequestHandler,

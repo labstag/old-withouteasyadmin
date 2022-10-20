@@ -3,7 +3,7 @@
 namespace Labstag\Domain;
 
 use Labstag\Entity\Block;
-
+use Labstag\Form\Admin\BlockType;
 use Labstag\Lib\DomainLib;
 use Labstag\Repository\BlockRepository;
 use Labstag\RequestHandler\BlockRequestHandler;
@@ -46,6 +46,11 @@ class BlockDomain extends DomainLib
             'admin_block_move'  => $this->translator->trans('block.move', [], 'admin.breadcrumb'),
             'admin_block_trash' => $this->translator->trans('block.trash', [], 'admin.breadcrumb'),
         ];
+    }
+
+    public function getType()
+    {
+        return BlockType::class;
     }
 
     public function getUrlAdmin(): array

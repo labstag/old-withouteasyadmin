@@ -22,21 +22,23 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $objectManager): void
     {
         unset($objectManager);
-        $data = $this->installService->getData('menu');
+        $faker = $this->setFaker();
+        $data  = $this->installService->getData('menu');
         foreach ($data as $menu) {
-            $this->addMenu($menu);
+            $this->addMenu($faker, $menu);
         }
     }
 
     protected function addMenu(
+        $faker,
         array $dataMenu
     ): void
     {
         $menu = new Menu();
         $old  = clone $menu;
         if (array_key_exists('clef', $dataMenu)) {
-            $menu->setClef($dataMenu['clef']);
             $this->addReference('menu_'.$dataMenu['clef'], $menu);
+            $menu->setClef($dataMenu['clef']);
         }
 
         $this->menuRequestHandler->handle($old, $menu);
@@ -44,35 +46,35 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
             return;
         }
 
-        foreach ($dataMenu['childs'] as $child) {
-            $this->addMenuChild($menu, $child);
+        foreach ($dataMenu['childs'] as $position => $child) {
+            $this->addMenuChild($faker, $position, $menu, $child);
         }
     }
 
     protected function addMenuChild(
+        $faker,
+        int $position,
         Menu $parent,
         array $child
     )
     {
         $menu = new Menu();
         $old  = clone $menu;
+        $menu->setPosition($position + 1);
         $menu->setParent($parent);
-        if (array_key_exists('separator', $child)) {
-            $menu->setSeparateur(1);
-        }
-
+        $menu->setSeparateur(array_key_exists('separator', $child));
         if (array_key_exists('name', $child)) {
             $menu->setName($child['name']);
         }
 
         if (array_key_exists('data', $child)) {
-            $menu->setData($child['data']);
+            $menu->setData([$child['data']]);
         }
 
         $this->menuRequestHandler->handle($old, $menu);
         if (array_key_exists('childs', $child)) {
-            foreach ($child['childs'] as $row) {
-                $this->addMenuChild($menu, $row);
+            foreach ($child['childs'] as $i => $row) {
+                $this->addMenuChild($faker, $i, $menu, $row);
             }
         }
     }

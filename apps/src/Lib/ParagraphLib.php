@@ -17,7 +17,7 @@ use Twig\Environment;
 abstract class ParagraphLib extends AbstractController
 {
 
-    protected Request $request;
+    protected ?Request $request;
 
     public function __construct(
         protected PaginatorInterface $paginator,

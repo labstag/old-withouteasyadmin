@@ -16,7 +16,7 @@ use Twig\Environment;
 class BreadcrumbBlock extends BlockLib
 {
 
-    protected Request $request;
+    protected ?Request $request;
 
     public function __construct(
         TranslatorInterface $translator,

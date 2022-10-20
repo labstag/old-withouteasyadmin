@@ -4,7 +4,6 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Generator;
 use Labstag\Entity\Template;
 use Labstag\Lib\DataFixtureLib;
 
@@ -13,22 +12,32 @@ class TemplatesFixtures extends DataFixtureLib implements DependentFixtureInterf
     public function load(ObjectManager $objectManager): void
     {
         unset($objectManager);
-        $faker = $this->setFaker();
-        for ($index = 0; $index < self::NUMBER_TEMPLATES; ++$index) {
-            $this->addTemplate($faker);
+        $templates = $this->installService->getData('template');
+        foreach ($templates as $key => $row) {
+            $this->addTemplate($key, $row);
         }
     }
 
-    protected function addTemplate(Generator $generator): void
+    protected function addTemplate(
+        string $key,
+        string $value
+    ): void
     {
-        $template    = new Template();
-        $oldTemplate = clone $template;
-        $template->setName($generator->unique()->colorName());
-        // @var string $content
-        $content = $generator->unique()->paragraphs(10, true);
-        $template->setHtml(str_replace("\n\n", "<br />\n", $content));
-        $template->setText($content);
+        $template = new Template();
+        $old      = clone $template;
+        $template->setName($value);
+        $template->setCode($key);
 
-        $this->templateRequestHandler->handle($oldTemplate, $template);
+        $htmlfile = 'tpl/mail-'.$key.'.html.twig';
+        if (is_file('templates/'.$htmlfile)) {
+            $template->setHtml($this->environment->render($htmlfile));
+        }
+
+        $txtfile = 'tpl/mail-'.$key.'.txt.twig';
+        if (is_file('templates/'.$txtfile)) {
+            $template->setText($this->environment->render($txtfile));
+        }
+
+        $this->templateRequestHandler->handle($old, $template);
     }
 }

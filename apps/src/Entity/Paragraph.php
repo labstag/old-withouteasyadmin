@@ -37,7 +37,7 @@ class Paragraph
     private $background;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Chapter::class, inversedBy="paragraphs")
+     * @ORM\ManyToOne(targetEntity=Chapter::class, inversedBy="paragraphs", cascade={"persist"})
      */
     private $chapter;
 
@@ -47,17 +47,17 @@ class Paragraph
     private $color;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Layout::class, inversedBy="paragraphs")
+     * @ORM\ManyToOne(targetEntity=Layout::class, inversedBy="paragraphs", cascade={"persist"})
      */
     private $layout;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Memo::class, inversedBy="paragraphs")
+     * @ORM\ManyToOne(targetEntity=Memo::class, inversedBy="paragraphs", cascade={"persist"})
      */
     private $memo;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="paragraphs")
+     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="paragraphs", cascade={"persist"})
      */
     private $page;
 

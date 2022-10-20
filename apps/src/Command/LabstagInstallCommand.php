@@ -7,7 +7,6 @@ use Labstag\Lib\CommandLib;
 use Labstag\Service\InstallService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -28,66 +27,19 @@ class LabstagInstallCommand extends CommandLib
         parent::__construct($entityManager);
     }
 
-    protected function all(SymfonyStyle $symfonyStyle): bool
-    {
-        $symfonyStyle->note('Installations');
-        $executes = $this->getExecutesFunction();
-        foreach ($executes as $execute) {
-            if ('all' != $execute) {
-                call_user_func([$this, $execute], $symfonyStyle);
-            }
-        }
-
-        return true;
-    }
-
     protected function configure(): void
     {
         $this->setDescription('Add a short description for your command');
-        $this->addOption('config', null, InputOption::VALUE_NONE, 'config');
-        $this->addOption('templates', null, InputOption::VALUE_NONE, 'templates');
-        $this->addOption('all', null, InputOption::VALUE_NONE, 'all');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
-        $options      = $input->getOptions();
-        $executes     = $this->getExecutesFunction();
-        foreach ($options as $option => $state) {
-            $execute = $state ? $option : '';
-            if (isset($executes[$execute])) {
-                call_user_func([$this, $executes[$execute]], $symfonyStyle);
-            }
-        }
+        $symfonyStyle->note('Ajout de la configuration');
 
+        $this->installService->config($this->serverenv);
         $symfonyStyle->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;
-    }
-
-    protected function getExecutesFunction(): array
-    {
-        return [
-            'config'    => 'setConfig',
-            'templates' => 'setTemplates',
-            'all'       => 'all',
-        ];
-    }
-
-    protected function setConfig(SymfonyStyle $symfonyStyle): bool
-    {
-        $symfonyStyle->note('Ajout de la configuration');
-        $this->installService->config($this->serverenv);
-
-        return true;
-    }
-
-    protected function setTemplates(SymfonyStyle $symfonyStyle): bool
-    {
-        $symfonyStyle->note('Ajout des templates');
-        $this->installService->templates();
-
-        return true;
     }
 }

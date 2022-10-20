@@ -43,7 +43,7 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
         $layout->setName($dataLayout['name']);
         $layout->setUrl($dataLayout['url']);
 
-        $this->pageRequestHandler->handle($old, $layout);
+        $this->layoutRequestHandler->handle($old, $layout);
         if (isset($dataLayout['paragraphs'])) {
             $this->addParagraphs($layout, $dataLayout['paragraphs']);
         }

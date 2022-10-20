@@ -26,11 +26,6 @@ class Page implements Stringable
     private $children;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $front;
-
-    /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
@@ -128,11 +123,6 @@ class Page implements Stringable
         return $this->children;
     }
 
-    public function getFront(): ?bool
-    {
-        return $this->front;
-    }
-
     public function getId(): ?string
     {
         return $this->id;
@@ -194,13 +184,6 @@ class Page implements Stringable
     public function removeParagraph(Paragraph $paragraph): self
     {
         $this->removeElementPage($this->paragraphs, $paragraph);
-
-        return $this;
-    }
-
-    public function setFront(bool $front): self
-    {
-        $this->front = $front;
 
         return $this;
     }
