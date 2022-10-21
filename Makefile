@@ -169,7 +169,7 @@ endif
 
 .PHONY: commands
 commands: isdocker
-	$(SYMFONY_EXEC) labstag:install --all
+	$(SYMFONY_EXEC) labstag:install
 	$(SYMFONY_EXEC) labstag:guard-route
 	$(SYMFONY_EXEC) labstag:workflows-show
 
