@@ -20,7 +20,8 @@ class ProfilController extends AdminControllerLib
 
         return $this->form(
             $this->getDomainEntity(),
-            $security->getUser()
+            $security->getUser(),
+            'admin/profil.html.twig'
         );
     }
 

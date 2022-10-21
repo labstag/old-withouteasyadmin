@@ -2,7 +2,8 @@
 
 namespace Labstag\Lib;
 
-use Bluemmb\Faker\PicsumPhotosProvider;
+use Mmo\Faker\PicsumProvider;
+use Mmo\Faker\LoremSpaceProvider;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Exception;
 use Faker\Factory;
@@ -243,7 +244,8 @@ abstract class FixtureLib extends Fixture
     protected function setFaker()
     {
         $generator = Factory::create('fr_FR');
-        $generator->addProvider(new PicsumPhotosProvider($generator));
+        $generator->addProvider(new PicsumProvider($generator));
+        $generator->addProvider(new LoremSpaceProvider($generator));
 
         return $generator;
     }
@@ -287,7 +289,7 @@ abstract class FixtureLib extends Fixture
             $slug     = $asciiSlugger->slug($title);
 
             try {
-                $image   = $generator->imageUrl();
+                $image   = $generator->picsum(null, 640, 480, true);
                 $content = file_get_contents($image);
                 // @var resource $tmpfile
                 $tmpfile = tmpfile();

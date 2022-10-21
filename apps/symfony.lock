@@ -22,9 +22,6 @@
     "behat/transliterator": {
         "version": "v1.3.0"
     },
-    "bluemmb/faker-picsum-photos-provider": {
-        "version": "v2.0"
-    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -217,6 +214,9 @@
     },
     "michaelkaefer/oauth2-amazon": {
         "version": "1.0.3"
+    },
+    "mmo/faker-images": {
+        "version": "v0.6.1"
     },
     "monolog/monolog": {
         "version": "2.1.1"
