@@ -2,8 +2,6 @@
 
 namespace Labstag\Lib;
 
-use Mmo\Faker\PicsumProvider;
-use Mmo\Faker\LoremSpaceProvider;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Exception;
 use Faker\Factory;
@@ -45,6 +43,8 @@ use Labstag\Service\GuardService;
 use Labstag\Service\InstallService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\UserService;
+use Mmo\Faker\LoremSpaceProvider;
+use Mmo\Faker\PicsumProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
