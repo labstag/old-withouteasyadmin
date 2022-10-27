@@ -47,8 +47,8 @@ jobs:
         run: make docker image-pull
       - name: 'Build containers'
         run: make docker deploy
-      - name: 'sleep'
-        run: make sleep 90
+      - name: 'waiting PHPFPM'
+        run: make launch phpfpm
       - name: 'docker ls'
         run: make docker ls
       - name: linter readme.md

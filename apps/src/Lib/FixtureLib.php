@@ -34,6 +34,7 @@ use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
+use Labstag\RequestHandler\RenderRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\BlockService;
@@ -155,7 +156,8 @@ abstract class FixtureLib extends Fixture
         protected BlockRequestHandler $blockRequestHandler,
         protected LayoutRequestHandler $layoutRequestHandler,
         protected MenuRequestHandler $menuRequestHandler,
-        protected PageRequestHandler $pageRequestHandler
+        protected PageRequestHandler $pageRequestHandler,
+        protected RenderRequestHandler $renderRequestHandler
     )
     {
     }

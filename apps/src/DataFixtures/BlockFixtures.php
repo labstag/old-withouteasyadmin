@@ -38,6 +38,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         $type  = $blockData['type'];
         $block = new Block();
         $old   = clone $block;
+        $block->setTitle($region.' - '.$type. '('.($position+1).')');
         $block->setRegion($region);
         $block->setType($type);
         $block->setPosition($position + 1);
