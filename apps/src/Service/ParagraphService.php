@@ -62,9 +62,13 @@ class ParagraphService
 
     public function getEntity(Paragraph $paragraph)
     {
-        $field            = $this->getEntityField($paragraph);
+        $entity = null;
+        $field  = $this->getEntityField($paragraph);
+        if (is_null($field)) {
+            return $entity;
+        }
+
         $reflection       = $this->setReflection($paragraph);
-        $entity           = null;
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() == $field) {
@@ -80,9 +84,13 @@ class ParagraphService
 
     public function getEntityField(Paragraph $paragraph)
     {
-        $childentity = $this->getTypeEntity($paragraph);
         $field       = null;
-        $reflection  = $this->setReflection($childentity);
+        $childentity = $this->getTypeEntity($paragraph);
+        if (is_null($childentity)) {
+            return $field;
+        }
+
+        $reflection = $this->setReflection($childentity);
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ('paragraph' == $reflectionProperty->getName()) {
                 preg_match('#inversedBy=\"(.*)\"#m', (string) $reflectionProperty->getDocComment(), $matches);
@@ -174,13 +182,15 @@ class ParagraphService
         $type   = $paragraph->getType();
         $entity = $this->getEntity($paragraph);
         $html   = new Response();
-        if (!is_null($entity)) {
-            foreach ($this->paragraphsclass as $row) {
-                if ($type == $row->getType()) {
-                    $html = $row->show($entity);
+        if (is_null($entity)) {
+            return $html;
+        }
 
-                    break;
-                }
+        foreach ($this->paragraphsclass as $row) {
+            if ($type == $row->getType()) {
+                $html = $row->show($entity);
+
+                break;
             }
         }
 
@@ -192,7 +202,6 @@ class ParagraphService
         $method = null;
         $method = ($entity instanceof Chapter) ? 'setChapter' : $method;
         $method = ($entity instanceof History) ? 'setHistory' : $method;
-
         $method = ($entity instanceof Layout) ? 'setLayout' : $method;
         $method = ($entity instanceof Memo) ? 'setMemo' : $method;
         $method = ($entity instanceof Page) ? 'setPage' : $method;

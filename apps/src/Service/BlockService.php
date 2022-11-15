@@ -53,9 +53,13 @@ class BlockService
 
     public function getEntity(Block $block)
     {
-        $field            = $this->getEntityField($block);
+        $entity = null;
+        $field  = $this->getEntityField($block);
+        if (is_null($field)) {
+            return $entity;
+        }
+
         $reflection       = $this->setReflection($block);
-        $entity           = null;
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() == $field) {
@@ -71,9 +75,13 @@ class BlockService
 
     public function getEntityField(Block $block)
     {
-        $childentity = $this->getTypeEntity($block);
         $field       = null;
-        $reflection  = $this->setReflection($childentity);
+        $childentity = $this->getTypeEntity($block);
+        if (is_null($childentity)) {
+            return $field;
+        }
+
+        $reflection = $this->setReflection($childentity);
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ('block' == $reflectionProperty->getName()) {
                 preg_match('#inversedBy=\"(.*)\"#m', (string) $reflectionProperty->getDocComment(), $matches);
@@ -163,13 +171,15 @@ class BlockService
         $type   = $block->getType();
         $entity = $this->getEntity($block);
         $html   = new Response();
-        if (!is_null($entity)) {
-            foreach ($this->blocksclass as $row) {
-                if ($type == $row->getType()) {
-                    $html = $row->show($entity, $content);
+        if (is_null($entity)) {
+            return $html;
+        }
 
-                    break;
-                }
+        foreach ($this->blocksclass as $row) {
+            if ($type == $row->getType()) {
+                $html = $row->show($entity, $content);
+
+                break;
             }
         }
 

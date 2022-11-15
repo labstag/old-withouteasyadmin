@@ -25,7 +25,7 @@ class RenderFixtures extends FixtureLib implements DependentFixtureInterface
         $routes = $this->guardService->getPublicRouteWithParams();
         foreach (array_keys($routes) as $route) {
             $words  = explode('_', $route);
-            $words  = array_map(static fn($value) => ucfirst(strtolower((string) $value)), $words);
+            $words  = array_map(static fn ($value) => ucfirst(strtolower((string) $value)), $words);
             $words  = implode(' ', $words);
             $render = new Render();
             $old    = clone $render;
