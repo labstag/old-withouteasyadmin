@@ -48,7 +48,7 @@ jobs:
       - name: 'Build containers'
         run: make docker deploy
       - name: 'sleep'
-        run: make sleep 180
+        run: make sleep 90
       - name: 'docker ls'
         run: make docker ls
       - name: linter readme.md
