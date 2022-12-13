@@ -17,6 +17,10 @@
 			"path": "apps/src"
 		},
 		{
+			"name": "vendor",
+			"path": "apps/vendor"
+		},
+		{
 			"name": "templates",
 			"path": "apps/templates"
 		},
@@ -31,6 +35,10 @@
 		{
 			"name": "translations",
 			"path": "apps/translations"
+		},
+		{
+			"name": "public",
+			"path": "apps/public"
 		},
 		{
 			"name": "apps",
