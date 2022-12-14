@@ -17,6 +17,39 @@
 		</div>
 	{% endfor %}
 {% endmacro %}
+{% macro searchform(searchform) %}
+    {{ form_start(searchform) }}
+    <div class="row">
+        {% for input in searchform %}
+            <div class="col">
+                {{ form_row(input) }}
+            </div>
+        {% endfor %}
+    </div>
+    {{ form_end(searchform) }}
+{% endmacro %}
+{% macro breadcrumbs(breadcrumbs) %}
+    {% if breadcrumbs|length != 0 %}
+        <ol class="breadcrumb" itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList">
+            {% for i, breadcrumb in breadcrumbs %}
+                <li itemprop="itemListElement" itemscope="itemscope" itemtype="http://schema.org/ListItem">
+                    {% if loop.last == false %}
+                        <a href="{{ breadcrumb.route }}" itemprop="item">
+                        {% endif %}
+                        <span itemprop="name">{{ breadcrumb.title }}</span>
+
+                        {% if loop.last == false %}
+                        </a>
+                    {% endif %}
+                    <meta itemprop="position" content="{{ i+1 }}">
+                    {% if loop.last == false %}
+                        <span class="separator">/</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+{% endmacro %}
 {% macro user(user, url) %}
 	<i class="fas fa-user"></i>
 	<a href="{{ url }}">

@@ -2,25 +2,38 @@
 
 namespace Labstag\Form\Admin;
 
+use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
-use Labstag\FormType\CoreTextareaType;
 use Labstag\Lib\AbstractTypeLib;
+use Labstag\Repository\Block\CustomRepository;
+use Labstag\Service\GuardService;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LayoutType extends AbstractTypeLib
 {
+    public function __construct(
+        TranslatorInterface $translator,
+        protected GuardService $guardService
+    )
+    {
+        parent::__construct($translator);
+    }
+
     /**
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'name',
             TextType::class,
             [
@@ -31,19 +44,42 @@ class LayoutType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
-            'content',
-            CoreTextareaType::class,
+        $formBuilder->add(
+            'custom',
+            EntityType::class,
             [
-                'label' => $this->translator->trans('layout.content.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('layout.content.help', [], 'admin.form'),
+                'class'         => Custom::class,
+                'query_builder' => static fn (CustomRepository $customRepository) => $customRepository->formType(),
+            ]
+        );
+        $all     = $this->guardService->getPublicRoute();
+        $choices = [];
+        foreach (array_keys($all) as $key) {
+            $choices[$key] = $key;
+        }
+
+        $formBuilder->add(
+            'url',
+            ChoiceType::class,
+            [
+                'required' => false,
+                'multiple' => true,
+                'choices'  => $choices,
+            ]
+        );
+        $this->addParagraph(
+            $formBuilder,
+            [
+                'add'    => 'admin_layout_paragraph_add',
+                'edit'   => 'admin_layout_paragraph_show',
+                'delete' => 'admin_layout_paragraph_delete',
             ]
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Layout::class,
             ]

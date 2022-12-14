@@ -9,6 +9,11 @@ header {
   background-color: $hbg;
 }
 
+.menu-front-header,
+.menu-front-footer {
+  @extend .me-auto;
+}
+
 footer {
   @extend .container-fluid;
 
@@ -292,5 +297,18 @@ main {
     @extend .fa-folder;
 
     color: black;
+  }
+}
+
+#navbar-front-header,
+#navbar-front-footer {
+  .navbar-nav {
+    &:last-child {
+      li {
+        &.last {
+          right: 25px;
+        }
+      }
+    }
   }
 }

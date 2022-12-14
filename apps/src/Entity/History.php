@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -21,7 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class History
 {
-    use MetatagsEntity;
     use SoftDeleteableEntity;
     use StateableEntity;
 
@@ -46,6 +44,11 @@ class History
     private $id;
 
     /**
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="history", orphanRemoval=true)
+     */
+    private $metas;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
@@ -53,7 +56,13 @@ class History
     /**
      * @ORM\Column(type="integer")
      */
-    private $pages;
+    private int $pages = 0;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="history", orphanRemoval=true)
+     * @ORM\OrderBy({"position" = "ASC"})
+     */
+    private $paragraphs;
 
     /**
      * @ORM\Column(type="datetime")
@@ -74,7 +83,7 @@ class History
     private $slug;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $summary;
 
@@ -86,8 +95,9 @@ class History
 
     public function __construct()
     {
-        $this->pages    = 0;
-        $this->chapters = new ArrayCollection();
+        $this->chapters   = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
+        $this->paragraphs = new ArrayCollection();
     }
 
     public function addChapter(Chapter $chapter): self
@@ -100,6 +110,26 @@ class History
         return $this;
     }
 
+    public function addMeta(Meta $meta): self
+    {
+        if (!$this->metas->contains($meta)) {
+            $this->metas[] = $meta;
+            $meta->setHistory($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setHistory($this);
+        }
+
+        return $this;
+    }
+
     public function getChapters(): Collection
     {
         return $this->chapters;
@@ -107,17 +137,17 @@ class History
 
     public function getChaptersPublished(): Collection
     {
-        $enableChapter = new ArrayCollection();
-        $chapters      = $this->getChapters();
-        foreach ($chapters as $chapter) {
+        $arrayCollection = new ArrayCollection();
+        $collection      = $this->getChapters();
+        foreach ($collection as $chapter) {
             $state     = in_array('publie', (array) $chapter->getState());
             $published = $chapter->getPublished() <= new DateTime();
             if ($state && $published) {
-                $enableChapter->add($chapter);
+                $arrayCollection->add($chapter);
             }
         }
 
-        return $enableChapter;
+        return $arrayCollection;
     }
 
     public function getCreated(): ?DateTimeInterface
@@ -130,6 +160,14 @@ class History
         return $this->id;
     }
 
+    /**
+     * @return Collection<int, Meta>
+     */
+    public function getMetas(): Collection
+    {
+        return $this->metas;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -138,6 +176,14 @@ class History
     public function getPages(): ?int
     {
         return $this->pages;
+    }
+
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
     }
 
     public function getPublished(): ?DateTimeInterface
@@ -167,19 +213,28 @@ class History
 
     public function removeChapter(Chapter $chapter): self
     {
-        if ($this->chapters->removeElement($chapter)) {
-            // set the owning side to null (unless already changed)
-            if ($chapter->getRefhistory() === $this) {
-                $chapter->setRefhistory(null);
-            }
-        }
+        $this->removeElementHistory($this->chapters, $chapter);
 
         return $this;
     }
 
-    public function setCreated(DateTimeInterface $created): self
+    public function removeMeta(Meta $meta): self
     {
-        $this->created = $created;
+        $this->removeElementHistory($this->metas, $meta);
+
+        return $this;
+    }
+
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        $this->removeElementHistory($this->paragraphs, $paragraph);
+
+        return $this;
+    }
+
+    public function setCreated(DateTimeInterface $dateTime): self
+    {
+        $this->created = $dateTime;
 
         return $this;
     }
@@ -198,16 +253,16 @@ class History
         return $this;
     }
 
-    public function setPublished(DateTimeInterface $published): self
+    public function setPublished(DateTimeInterface $dateTime): self
     {
-        $this->published = $published;
+        $this->published = $dateTime;
 
         return $this;
     }
 
-    public function setRefuser(?User $refuser): self
+    public function setRefuser(?User $user): self
     {
-        $this->refuser = $refuser;
+        $this->refuser = $user;
 
         return $this;
     }
@@ -226,10 +281,17 @@ class History
         return $this;
     }
 
-    public function setUpdated(DateTimeInterface $updated): self
+    public function setUpdated(DateTimeInterface $dateTime): self
     {
-        $this->updated = $updated;
+        $this->updated = $dateTime;
 
         return $this;
+    }
+
+    private function removeElementHistory($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getHistory() === $this) {
+            $variable->setHistory(null);
+        }
     }
 }

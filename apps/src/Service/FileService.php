@@ -10,7 +10,7 @@ class FileService
 {
     public function __construct(
         protected ContainerBagInterface $containerBag,
-        private AttachmentRequestHandler $attachmentRH
+        private readonly AttachmentRequestHandler $attachmentRequestHandler
     )
     {
     }
@@ -28,10 +28,10 @@ class FileService
             str_replace(
                 $this->getParameter('kernel.project_dir').'/public/',
                 '',
-                $file
+                (string) $file
             )
         );
-        $this->attachmentRH->handle($old, $attachment);
+        $this->attachmentRequestHandler->handle($old, $attachment);
 
         return $attachment;
     }

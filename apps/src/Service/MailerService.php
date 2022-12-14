@@ -10,8 +10,8 @@ use Twig\Environment;
 class MailerService
 {
     public function __construct(
-        protected Environment $twig,
-        protected EnqueueMethod $enqueue,
+        protected Environment $environment,
+        protected EnqueueMethod $enqueueMethod,
         protected MailerInterface $mailer,
         protected DataService $dataService
     )
@@ -23,7 +23,7 @@ class MailerService
         $config = $this->dataService->getConfig();
         $email  = new Email();
         if (isset($data['html'])) {
-            $html = $this->twig->render(
+            $html = $this->environment->render(
                 'mails/base.html.twig',
                 [
                     'config'  => $config,
@@ -34,7 +34,7 @@ class MailerService
         }
 
         if (isset($data['txt'])) {
-            $text = $this->twig->render(
+            $text = $this->environment->render(
                 'mails/base.text.twig',
                 [
                     'config'  => $config,
@@ -53,7 +53,7 @@ class MailerService
 
     public function send(Email $email): void
     {
-        $this->enqueue->enqueue(
+        $this->enqueueMethod->enqueue(
             MailerInterface::class,
             'send',
             [$email]

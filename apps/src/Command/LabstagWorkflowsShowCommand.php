@@ -5,64 +5,64 @@ namespace Labstag\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Workflow;
 use Labstag\Lib\CommandLib;
+use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\WorkflowRequestHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Workflow\Registry;
 
 class LabstagWorkflowsShowCommand extends CommandLib
 {
 
+    /**
+     * @var string
+     */
     protected static $defaultName = 'labstag:workflows-show';
 
     public function __construct(
+        protected $entitiesclass,
         EntityManagerInterface $entityManager,
-        protected EventDispatcherInterface $dispatcher,
-        protected WorkflowRequestHandler $workflowRH
+        protected Registry $registry,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected WorkflowRequestHandler $workflowRequestHandler,
+        protected WorkflowRepository $workflowRepository
     )
     {
         parent::__construct($entityManager);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Ajout des workflows en base de données');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $inputOutput = new SymfonyStyle($input, $output);
-        $inputOutput->title('Ajout des workflows dans la base de données');
-        $container = $this->getApplication()->getKernel()->getContainer();
-        $list      = $container->getServiceIds();
-        $workflows = [];
-        foreach ($list as $name) {
-            if (0 == substr_count($name, 'state_machine')) {
-                continue;
-            }
-
-            $workflows[$name] = $container->get($name);
-        }
+        $symfonyStyle = new SymfonyStyle($input, $output);
+        $symfonyStyle->title('Ajout des workflows dans la base de données');
 
         $data     = [];
         $entities = [];
-        foreach ($workflows as $name => $workflow) {
-            $definition  = $workflow->getDefinition();
-            $name        = $workflow->getName();
-            $entities[]  = $name;
-            $data[$name] = [];
-            $transitions = $definition->getTransitions();
-            foreach ($transitions as $transition) {
-                $data[$name][] = $transition->getName();
+        foreach ($this->entitiesclass as $entity) {
+            if ($this->registry->has($entity)) {
+                $workflow    = $this->registry->get($entity);
+                $definition  = $workflow->getDefinition();
+                $name        = $workflow->getName();
+                $entities[]  = $name;
+                $transitions = $definition->getTransitions();
+                foreach ($transitions as $transition) {
+                    $data[$name][] = $transition->getName();
+                }
             }
         }
 
         $this->delete($entities, $data);
         foreach ($data as $name => $transitions) {
             foreach ($transitions as $transition) {
-                $workflow = $this->getRepository(Workflow::class)->findOneBy(
+                $workflow = $this->workflowRepository->findOneBy(
                     [
                         'entity'     => $name,
                         'transition' => $transition,
@@ -76,27 +76,26 @@ class LabstagWorkflowsShowCommand extends CommandLib
                 $workflow->setEntity($name);
                 $workflow->setTransition($transition);
                 $old = clone $workflow;
-                $this->workflowRH->handle($old, $workflow);
+                $this->workflowRequestHandler->handle($old, $workflow);
             }
         }
 
-        $inputOutput->success('Fin de traitement');
+        $symfonyStyle->success('Fin de traitement');
 
         return Command::SUCCESS;
     }
 
-    private function delete($entities, $data)
+    private function delete(array $entities, $data): void
     {
-        $repository = $this->getRepository(Workflow::class);
-        $toDelete   = $repository->toDeleteEntities($entities);
+        $toDelete = $this->workflowRepository->toDeleteEntities($entities);
         foreach ($toDelete as $entity) {
-            $repository->remove($entity);
+            $this->workflowRepository->remove($entity);
         }
 
         foreach ($data as $entity => $transitions) {
-            $toDelete = $repository->toDeleteTransition($entity, $transitions);
+            $toDelete = $this->workflowRepository->toDeleteTransition($entity, $transitions);
             foreach ($toDelete as $entity) {
-                $repository->remove($entity);
+                $this->workflowRepository->remove($entity);
             }
         }
     }

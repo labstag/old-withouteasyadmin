@@ -3,8 +3,10 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
+use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\PhoneService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,16 +24,16 @@ abstract class ApiControllerLib extends AbstractController
     public function __construct(
         protected RequestStack $requeststack,
         protected CsrfTokenManagerInterface $csrfTokenManager,
-        protected TokenStorageInterface $token,
+        protected TokenStorageInterface $tokenStorage,
         protected PhoneService $phoneService,
         protected EntityManagerInterface $entityManager,
-        protected AttachmentRequestHandler $attachmentRH,
-        protected Registry $workflows
+        protected AttachmentRequestHandler $attachmentRequestHandler,
+        protected Registry $registry,
+        protected UserRepository $userRepository
     )
     {
         // @var Request $request
-        $request       = $this->requeststack->getCurrentRequest();
-        $this->request = $request;
+        $this->request = $this->requeststack->getCurrentRequest();
     }
 
     protected function getGuardRouteOrWorkflow($data, $get, $entityClass)
@@ -41,7 +43,7 @@ abstract class ApiControllerLib extends AbstractController
         }
 
         $data['user'] = [];
-        $user         = $this->getRepository(User::class)->find($get['user']);
+        $user         = $this->userRepository->find($get['user']);
         if (!$user instanceof User) {
             return $data;
         }
@@ -58,18 +60,18 @@ abstract class ApiControllerLib extends AbstractController
             return $data;
         }
 
-        foreach ($results as $row) {
+        foreach ($results as $result) {
             // @var WorkflowGroupe $row
             $data['group'][] = [
-                'entity'     => $row->getRefworkflow()->getEntity(),
-                'transition' => $row->getRefworkflow()->getTransition(),
+                'entity'     => $result->getRefworkflow()->getEntity(),
+                'transition' => $result->getRefworkflow()->getTransition(),
             ];
         }
 
         return $data;
     }
 
-    protected function getRepository(string $entity)
+    protected function getRepository(string $entity): EntityRepository
     {
         return $this->entityManager->getRepository($entity);
     }

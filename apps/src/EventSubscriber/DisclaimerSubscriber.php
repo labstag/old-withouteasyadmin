@@ -2,33 +2,30 @@
 
 namespace Labstag\EventSubscriber;
 
-use Labstag\Service\DataService;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Labstag\Lib\EventSubscriberLib;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\Routing\RouterInterface;
 
-class DisclaimerSubscriber implements EventSubscriberInterface
+class DisclaimerSubscriber extends EventSubscriberLib
 {
-    public function __construct(protected RouterInterface $router, protected DataService $dataService)
-    {
-    }
-
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return ['kernel.request' => 'onKernelRequest'];
     }
 
-    public function onKernelRequest(RequestEvent $event): void
+    public function onKernelRequest(RequestEvent $requestEvent): void
     {
-        $request = $event->getRequest();
+        $request = $requestEvent->getRequest();
         $state   = $this->disclaimerActivate($request);
         if (!$state) {
             return;
         }
 
-        $event->setResponse(
+        $requestEvent->setResponse(
             new RedirectResponse(
                 $this->router->generate('disclaimer')
             )
@@ -45,19 +42,19 @@ class DisclaimerSubscriber implements EventSubscriberInterface
             return false;
         }
 
-        if (0 === substr_count($controller, 'Labstag')) {
+        if (0 === substr_count((string) $controller, 'Labstag')) {
             return false;
         }
 
-        if (0 !== substr_count($controller, 'Controller\\Api')) {
+        if (0 !== substr_count((string) $controller, 'Controller\\Api')) {
             return false;
         }
 
-        if (0 !== substr_count($controller, 'Controller\\Admin')) {
+        if (0 !== substr_count((string) $controller, 'Controller\\Admin')) {
             return false;
         }
 
-        if (0 !== substr_count($controller, 'SecurityController')) {
+        if (0 !== substr_count((string) $controller, 'SecurityController')) {
             return false;
         }
 

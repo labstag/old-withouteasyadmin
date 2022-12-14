@@ -3,20 +3,19 @@
     <table>
         <tbody>
             <tr>
+                <th colspan=2>
+                    <a href="{{ path('front', {'slug': entity.slug}) }}" target="_blank">
+                        {{ 'page.url'|trans({}, 'admin.messages') }}
+                    </a>
+                </th>
+            </tr>
+            <tr>
                 <th>{{ 'page.name'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.name }}</td>
             </tr>
             <tr>
                 <th>{{ 'page.slug'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.slug }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'page.frontslug'|trans({}, 'admin.messages') }}</th>
-                <td>{{ entity.frontslug }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'page.reflayout'|trans({}, 'admin.messages') }}</th>
-                <td>{{ entity.reflayout.name }}</td>
             </tr>
         </tbody>
     </table>

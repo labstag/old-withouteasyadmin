@@ -35,7 +35,7 @@ class RouteUser
      */
     protected $state;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -60,16 +60,16 @@ class RouteUser
         return $this->state;
     }
 
-    public function setRefroute(?Route $refroute): self
+    public function setRefroute(?Route $route): self
     {
-        $this->refroute = $refroute;
+        $this->refroute = $route;
 
         return $this;
     }
 
-    public function setRefuser(?User $refuser): self
+    public function setRefuser(?User $user): self
     {
-        $this->refuser = $refuser;
+        $this->refuser = $user;
 
         return $this;
     }

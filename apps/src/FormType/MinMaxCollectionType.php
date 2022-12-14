@@ -10,12 +10,12 @@ use Symfony\Component\Form\FormView;
 class MinMaxCollectionType extends AbstractType
 {
     public function buildView(
-        FormView $view,
+        FormView $formView,
         FormInterface $form,
         array $options
     ): void
     {
-        $view->vars['row_attr'] = 'minmax';
+        $formView->vars['row_attr'] = 'minmax';
         unset($form, $options);
     }
 

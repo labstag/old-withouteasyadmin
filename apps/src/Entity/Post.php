@@ -11,7 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
-use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\PostRepository;
 use Stringable;
@@ -25,7 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Post implements Stringable
 {
-    use MetatagsEntity;
     use SoftDeleteableEntity;
     use StateableEntity;
 
@@ -35,7 +33,7 @@ class Post implements Stringable
     protected $file;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $content;
 
@@ -62,6 +60,17 @@ class Post implements Stringable
      * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"})
      */
     private $libelles;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $metas;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"position" = "ASC"})
+     */
+    private $paragraphs;
 
     /**
      * @ORM\Column(type="datetime")
@@ -104,7 +113,9 @@ class Post implements Stringable
 
     public function __construct()
     {
-        $this->libelles = new ArrayCollection();
+        $this->libelles   = new ArrayCollection();
+        $this->paragraphs = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -117,6 +128,26 @@ class Post implements Stringable
         if (!$this->libelles->contains($libelle)) {
             $this->libelles[] = $libelle;
             $libelle->addPost($this);
+        }
+
+        return $this;
+    }
+
+    public function addMeta(Meta $meta): self
+    {
+        if (!$this->metas->contains($meta)) {
+            $this->metas[] = $meta;
+            $meta->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setPost($this);
         }
 
         return $this;
@@ -150,6 +181,22 @@ class Post implements Stringable
     public function getLibelles(): Collection
     {
         return $this->libelles;
+    }
+
+    /**
+     * @return Collection<int, Meta>
+     */
+    public function getMetas(): Collection
+    {
+        return $this->metas;
+    }
+
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
     }
 
     public function getPublished(): ?DateTimeInterface
@@ -196,16 +243,30 @@ class Post implements Stringable
         return $this;
     }
 
-    public function setContent(string $content): self
+    public function removeMeta(Meta $meta): self
+    {
+        $this->removeElementPost($this->metas, $meta);
+
+        return $this;
+    }
+
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        $this->removeElementPost($this->paragraphs, $paragraph);
+
+        return $this;
+    }
+
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 
         return $this;
     }
 
-    public function setCreated(DateTimeInterface $created): self
+    public function setCreated(DateTimeInterface $dateTime): self
     {
-        $this->created = $created;
+        $this->created = $dateTime;
 
         return $this;
     }
@@ -217,30 +278,30 @@ class Post implements Stringable
         return $this;
     }
 
-    public function setImg(?Attachment $img): self
+    public function setImg(?Attachment $attachment): self
     {
-        $this->img = $img;
+        $this->img = $attachment;
 
         return $this;
     }
 
-    public function setPublished(DateTimeInterface $published): self
+    public function setPublished(DateTimeInterface $dateTime): self
     {
-        $this->published = $published;
+        $this->published = $dateTime;
 
         return $this;
     }
 
-    public function setRefcategory(?Category $refcategory): self
+    public function setRefcategory(?Category $category): self
     {
-        $this->refcategory = $refcategory;
+        $this->refcategory = $category;
 
         return $this;
     }
 
-    public function setRefuser(?User $refuser): self
+    public function setRefuser(?User $user): self
     {
-        $this->refuser = $refuser;
+        $this->refuser = $user;
 
         return $this;
     }
@@ -266,10 +327,17 @@ class Post implements Stringable
         return $this;
     }
 
-    public function setUpdated(DateTimeInterface $updated): self
+    public function setUpdated(DateTimeInterface $dateTime): self
     {
-        $this->updated = $updated;
+        $this->updated = $dateTime;
 
         return $this;
+    }
+
+    private function removeElementPost($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getPost() === $this) {
+            $variable->setPost(null);
+        }
     }
 }

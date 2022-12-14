@@ -8,6 +8,9 @@ use Symfony\Component\Workflow\Event\Event;
 
 class WorkflowSubscriber extends EventSubscriberLib
 {
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -24,7 +27,7 @@ class WorkflowSubscriber extends EventSubscriberLib
         ];
     }
 
-    public function onTransition(Event $event)
+    public function onTransition(Event $event): void
     {
         $transition = $event->getTransition();
         $name       = $transition->getName();
@@ -43,12 +46,12 @@ class WorkflowSubscriber extends EventSubscriberLib
         $this->transitionDisable($event);
     }
 
-    public function transitionDisable(Event $event)
+    public function transitionDisable(Event $event): void
     {
         unset($event);
     }
 
-    public function transitionPasswordLost(Event $event)
+    public function transitionPasswordLost(Event $event): void
     {
         $entity = $event->getSubject();
         $this->userMailService->lostPassword($entity);
@@ -58,7 +61,7 @@ class WorkflowSubscriber extends EventSubscriberLib
         );
     }
 
-    public function transitionSubmit(Event $event)
+    public function transitionSubmit(Event $event): void
     {
         $entity = $event->getSubject();
         if (User::class == $entity::class) {

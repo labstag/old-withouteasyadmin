@@ -26,21 +26,6 @@ class Page implements Stringable
     private $children;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $front;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $frontslug;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $function;
-
-    /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\Column(type="guid", unique=true)
@@ -49,10 +34,21 @@ class Page implements Stringable
     private $id;
 
     /**
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $metas;
+
+    /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      */
     private $name;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"position" = "ASC"})
+     */
+    private $paragraphs;
 
     /**
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children")
@@ -70,19 +66,21 @@ class Page implements Stringable
     private $password;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Layout::class, inversedBy="pages")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $reflayout;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Gedmo\Slug(handlers={
+     * @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\TreeSlugHandler", options={
+     * @Gedmo\SlugHandlerOption(name="parentRelationField", value="parent"),
+     * @Gedmo\SlugHandlerOption(name="separator", value="/")
+     *      })
+     * }, fields={"name"})
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $slug;
 
     public function __construct()
     {
-        $this->children = new ArrayCollection();
+        $this->children   = new ArrayCollection();
+        $this->paragraphs = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -100,24 +98,29 @@ class Page implements Stringable
         return $this;
     }
 
+    public function addMeta(Meta $meta): self
+    {
+        if (!$this->metas->contains($meta)) {
+            $this->metas[] = $meta;
+            $meta->setPage($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setPage($this);
+        }
+
+        return $this;
+    }
+
     public function getChildren(): Collection
     {
         return $this->children;
-    }
-
-    public function getFront(): ?bool
-    {
-        return $this->front;
-    }
-
-    public function getFrontslug(): string
-    {
-        return $this->frontslug;
-    }
-
-    public function getFunction(): ?string
-    {
-        return $this->function;
     }
 
     public function getId(): ?string
@@ -125,9 +128,25 @@ class Page implements Stringable
         return $this->id;
     }
 
+    /**
+     * @return Collection<int, Meta>
+     */
+    public function getMetas(): Collection
+    {
+        return $this->metas;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
     }
 
     public function getParent(): ?Page
@@ -140,11 +159,6 @@ class Page implements Stringable
         return $this->password;
     }
 
-    public function getReflayout(): ?Layout
-    {
-        return $this->reflayout;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -152,33 +166,24 @@ class Page implements Stringable
 
     public function removeChild(self $child): self
     {
-        if ($this->children->removeElement($child)) {
-            // set the owning side to null (unless already changed)
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->children->removeElement($child) && $child->getParent() === $this) {
+            $child->setParent(null);
         }
 
         return $this;
     }
 
-    public function setFront(bool $front): self
+    public function removeMeta(Meta $meta): self
     {
-        $this->front = $front;
+        $this->removeElementPage($this->metas, $meta);
 
         return $this;
     }
 
-    public function setFrontslug(string $frontslug): self
+    public function removeParagraph(Paragraph $paragraph): self
     {
-        $this->frontslug = $frontslug;
-
-        return $this;
-    }
-
-    public function setFunction(?string $function): self
-    {
-        $this->function = $function;
+        $this->removeElementPage($this->paragraphs, $paragraph);
 
         return $this;
     }
@@ -204,17 +209,17 @@ class Page implements Stringable
         return $this;
     }
 
-    public function setReflayout(?Layout $reflayout): self
-    {
-        $this->reflayout = $reflayout;
-
-        return $this;
-    }
-
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
 
         return $this;
+    }
+
+    private function removeElementPage($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getPage() === $this) {
+            $variable->setPage(null);
+        }
     }
 }

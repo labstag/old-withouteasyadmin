@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class ActionsSwaggerDecorator implements NormalizerInterface
 {
-    public function __construct(private NormalizerInterface $decorated)
+    public function __construct(private readonly NormalizerInterface $normalizer)
     {
     }
 
@@ -27,7 +27,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         array $context = []
     ): array|string|int|float|bool|ArrayObject|null
     {
-        $docs = $this->decorated->normalize($object, $format, $context);
+        $docs = $this->normalizer->normalize($object, $format, $context);
         $this->setEmpty($docs);
         $this->setEmpties($docs);
         $this->setEmptyAll($docs);
@@ -47,10 +47,10 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
      */
     public function supportsNormalization($data, ?string $format = null): bool
     {
-        return $this->decorated->supportsNormalization($data, $format);
+        return $this->normalizer->supportsNormalization($data, $format);
     }
 
-    private function setDelete(&$docs)
+    private function setDelete(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'Delete.',
@@ -62,7 +62,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/delete/{entity}/{id}']['delete'] = $statsEndpoint;
     }
 
-    private function setDeleties(&$docs)
+    private function setDeleties(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'Delete.',
@@ -74,7 +74,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/deleties/{entity}']['delete'] = $statsEndpoint;
     }
 
-    private function setDestroies(&$docs)
+    private function setDestroies(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'destroy.',
@@ -86,7 +86,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/destroies/{entity}']['delete'] = $statsEndpoint;
     }
 
-    private function setDestroy(&$docs)
+    private function setDestroy(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'destroy.',
@@ -98,7 +98,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/destroy/{entity}/{id}']['delete'] = $statsEndpoint;
     }
 
-    private function setEmpties(&$docs)
+    private function setEmpties(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'empty entity.',
@@ -110,7 +110,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/empties']['delete'] = $statsEndpoint;
     }
 
-    private function setEmpty(&$docs)
+    private function setEmpty(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'empty entity.',
@@ -137,7 +137,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/empty/{entity}']['delete'] = $statsEndpoint;
     }
 
-    private function setEmptyAll(&$docs)
+    private function setEmptyAll(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'empty entity.',
@@ -157,7 +157,10 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/emptyall']['delete'] = $statsEndpoint;
     }
 
-    private function setParametersDeleteDestroyRestore()
+    /**
+     * @return array<int, mixed[]>
+     */
+    private function setParametersDeleteDestroyRestore(): array
     {
         return [
             [
@@ -184,7 +187,10 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setParametersDeletiesEmpties()
+    /**
+     * @return array<int, mixed[]>
+     */
+    private function setParametersDeletiesEmpties(): array
     {
         return [
             [
@@ -204,7 +210,10 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setParametersRestoreDestroy()
+    /**
+     * @return array<int, mixed[]>
+     */
+    private function setParametersRestoreDestroy(): array
     {
         return [
             [
@@ -231,7 +240,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setResponses()
+    private function setResponses(): array
     {
         return [
             Response::HTTP_OK => [
@@ -252,7 +261,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setRestore(&$docs)
+    private function setRestore(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'restore.',
@@ -264,7 +273,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/restore/{entity}/{id}']['post'] = $statsEndpoint;
     }
 
-    private function setRestories(&$docs)
+    private function setRestories(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'restore.',
@@ -276,7 +285,7 @@ final class ActionsSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/actions/restories/{entity}']['post'] = $statsEndpoint;
     }
 
-    private function setWorkflow(&$docs)
+    private function setWorkflow(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'workflow.',

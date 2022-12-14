@@ -3,9 +3,11 @@
 namespace Labstag\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Entity\Block\Navbar;
 use Labstag\Repository\MenuRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -74,17 +76,22 @@ class Menu implements Stringable
      * @ORM\Column(type="integer")
      * @Assert\NotNull
      */
-    protected int $position;
+    protected int $position = 0;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $separateur;
+    protected $separateur = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="menu")
+     */
+    private $navbars;
 
     public function __construct()
     {
-        $this->children   = new ArrayCollection();
-        $this->separateur = false;
+        $this->children = new ArrayCollection();
+        $this->navbars  = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -101,11 +108,21 @@ class Menu implements Stringable
         );
     }
 
-    public function addChild(Menu $child): self
+    public function addChild(Menu $menu): self
     {
-        if (!$this->children->contains($child)) {
-            $this->children[] = $child;
-            $child->setParent($this);
+        if (!$this->children->contains($menu)) {
+            $this->children[] = $menu;
+            $menu->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function addNavbar(Navbar $navbar): self
+    {
+        if (!$this->navbars->contains($navbar)) {
+            $this->navbars[] = $navbar;
+            $navbar->setMenu($this);
         }
 
         return $this;
@@ -141,6 +158,14 @@ class Menu implements Stringable
         return $this->name;
     }
 
+    /**
+     * @return Collection<int, Navbar>
+     */
+    public function getNavbars(): Collection
+    {
+        return $this->navbars;
+    }
+
     public function getParent(): ?Menu
     {
         return $this->parent;
@@ -161,13 +186,21 @@ class Menu implements Stringable
         return $this->separateur;
     }
 
-    public function removeChild(Menu $child): self
+    public function removeChild(Menu $menu): self
     {
-        if ($this->children->removeElement($child)) {
-            // set the owning side to null (unless already changed)
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->children->removeElement($menu) && $menu->getParent() === $this) {
+            $menu->setParent(null);
+        }
+
+        return $this;
+    }
+
+    public function removeNavbar(Navbar $navbar): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->navbars->removeElement($navbar) && $navbar->getMenu() === $this) {
+            $navbar->setMenu(null);
         }
 
         return $this;
@@ -201,9 +234,9 @@ class Menu implements Stringable
         return $this;
     }
 
-    public function setParent(Menu $parent): void
+    public function setParent(Menu $menu): void
     {
-        $this->parent = $parent;
+        $this->parent = $menu;
     }
 
     public function setPosition(int $position): self

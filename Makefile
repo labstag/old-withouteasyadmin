@@ -25,25 +25,25 @@ apps/phploc.phar:
 	wget https://phar.phpunit.de/phploc-7.0.2.phar -O apps/phploc.phar
 
 apps/php-cs-fixer.phar:
-	wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.5.0/php-cs-fixer.phar -O apps/php-cs-fixer.phar
+	wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.10.0/php-cs-fixer.phar -O apps/php-cs-fixer.phar
 
 apps/phpmd.phar:
-	wget https://github.com/phpmd/phpmd/releases/download/2.11.1/phpmd.phar -O apps/phpmd.phar
+	wget https://github.com/phpmd/phpmd/releases/download/2.12.0/phpmd.phar -O apps/phpmd.phar
 
 apps/phpcbf.phar:
-	wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.2/phpcbf.phar -O apps/phpcbf.phar
+	wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.7.1/phpcbf.phar -O apps/phpcbf.phar
 
 apps/phpcs.phar:
-	wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.6.2/phpcs.phar -O apps/phpcs.phar
+	wget https://github.com/squizlabs/PHP_CodeSniffer/releases/download/3.7.1/phpcs.phar -O apps/phpcs.phar
 
 apps/phpstan.phar:
-	wget https://github.com/phpstan/phpstan/releases/download/1.4.0/phpstan.phar -O apps/phpstan.phar
+	wget https://github.com/phpstan/phpstan/releases/download/1.8.2/phpstan.phar -O apps/phpstan.phar
 
 apps/phpDocumentor.phar:
-	wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.3.0/phpDocumentor.phar -O apps/phpDocumentor.phar
+	wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.3.1/phpDocumentor.phar -O apps/phpDocumentor.phar
 
 apps/behat.phar:
-	wget https://github.com/Behat/Behat/releases/download/v3.10.0/behat.phar -O apps/behat.phar
+	wget https://github.com/Behat/Behat/releases/download/v3.11.0/behat.phar -O apps/behat.phar
 
 phar: apps/phploc.phar apps/phpmd.phar apps/php-cs-fixer.phar apps/phpcbf.phar apps/phpcs.phar apps/phpstan.phar apps/phpDocumentor.phar apps/behat.phar
 
@@ -63,12 +63,15 @@ ifeq ($(COMMANDS_ARGS),fixtures)
 	${SYMFONY_EXEC} doctrine:fixtures:load -n
 else ifeq ($(COMMANDS_ARGS),migrate)
 	${SYMFONY_EXEC} doctrine:migrations:migrate -n
+else ifeq ($(COMMANDS_ARGS),schemaupdate)
+	${SYMFONY_EXEC} doctrine:schema:update --force
 else ifeq ($(COMMANDS_ARGS),validate)
 	${SYMFONY_EXEC} doctrine:schema:validate
 else
 	@printf "${MISSING_ARGUMENTS}" "bdd"
 	$(call array_arguments, \
 		["fixtures"]="fixtures" \
+		["shemaupdate"]="schema update" \
 		["migrate"]="migrate database" \
 		["validate"]="bdd validate" \
 	)
@@ -166,7 +169,7 @@ endif
 
 .PHONY: commands
 commands: isdocker
-	$(SYMFONY_EXEC) labstag:install --all
+	$(SYMFONY_EXEC) labstag:install
 	$(SYMFONY_EXEC) labstag:guard-route
 	$(SYMFONY_EXEC) labstag:workflows-show
 
@@ -182,14 +185,15 @@ ifeq ($(COMMANDS_ARGS),all)
 	@make linter yaml -i
 	@make linter phpaudit -i
 	@make linter readme -i
+	@make linter rector -i
 else ifeq ($(COMMANDS_ARGS),phpaudit)
 	@make linter phpcs -i
 	@make linter phpmd -i
 	@make linter phpmnd -i
 	@make linter phpstan -i
 else ifeq ($(COMMANDS_ARGS),compo)
-	@make composer validate -i
-	@make composer outdated -i
+	${COMPOSER_EXEC} validate
+	${COMPOSER_EXEC} outdated
 else ifeq ($(COMMANDS_ARGS),phpfix)
 	@make linter php-cs-fixer -i
 	@make linter phpcbf -i
@@ -222,11 +226,13 @@ else ifeq ($(COMMANDS_ARGS),phploc)
 else ifeq ($(COMMANDS_ARGS),phpdoc)
 	$(PHP_EXEC) phpDocumentor.phar -d src -t public/docs
 else ifeq ($(COMMANDS_ARGS),rector)
-	$(PHP_EXEC) bin/rector process src
+	${COMPOSER_EXEC} run rector
+else ifeq ($(COMMANDS_ARGS),rector-dry)
+	${COMPOSER_EXEC} run rector-dry
 else ifeq ($(COMMANDS_ARGS),phpmd)
 	$(PHP_EXEC) -d error_reporting=24575 phpmd.phar src,features/bootstrap ansi phpmd.xml
 else ifeq ($(COMMANDS_ARGS),phpmnd)
-	# ${COMPOSER_EXEC} run phpmnd
+	${COMPOSER_EXEC} run phpmnd
 else ifeq ($(COMMANDS_ARGS),phpstan)
 	${PHP_EXEC} phpstan.phar analyse src
 else ifeq ($(COMMANDS_ARGS),twig)
@@ -259,6 +265,7 @@ else
 		["phpstan"]="regarde si le code PHP ne peux pas être optimisé" \
 		["readme"]="linter README.md" \
 		["rector"]="rector" \
+		["rector-dry"]="rector dry run" \
 		["stylelint-fix"]="fix les erreurs dans le code SCSS" \
 		["stylelint"]="indique les erreurs dans le code SCSS" \
 		["twig"]="indique les erreurs de code de twig" \

@@ -20,6 +20,9 @@
                     'name': 'memo.user'|trans({}, 'admin.messages')
                 },
                 {
+                    'name': 'memo.pararaphs'|trans({}, 'admin.messages')
+                },
+                {
                     'field': 'a.state',
                     'name': 'workflow.state'|trans({}, 'admin.messages')
                 },
@@ -36,6 +39,7 @@
                     <td>{{ entity.dateStart ? entity.dateStart|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
                     <td>{{ entity.dateEnd ? entity.dateEnd|format_datetime(pattern=formatdatetime.admin) : '' }}</td>
                     <td>{{ entity.refuser }}</td>
+                    <td>{{ entity.paragraphs|length }}</td>
                     <td>
                         {% for state in workflow_marked_places(entity) %}
                             {{ state }}

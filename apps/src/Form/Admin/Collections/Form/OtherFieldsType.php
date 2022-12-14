@@ -15,31 +15,31 @@ class OtherFieldsType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'checkbox',
             CheckboxType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'file',
             FileType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'radio',
             RadioType::class,
             ['help' => 'help']
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

@@ -6,11 +6,15 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\History;
+use Labstag\Entity\Meta;
 use Labstag\Lib\FixtureLib;
 
 class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return [
             DataFixtures::class,
@@ -18,34 +22,35 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         ];
     }
 
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $objectManager): void
     {
-        unset($manager);
+        unset($objectManager);
         $this->loadForeach(self::NUMBER_HISTORY, 'addHistory');
     }
 
     protected function addHistory(
-        Generator $faker,
+        Generator $generator,
         int $index,
         array $states
     ): void
     {
-        $users      = $this->userRepository->findAll();
-        $history    = new History();
+        $users   = $this->userRepository->findAll();
+        $history = new History();
+        $meta    = new Meta();
+        $meta->setHistory($history);
+        $this->setMeta($meta);
         $oldHistory = clone $history;
-        $history->setName($faker->unique()->colorName);
-        $history->setMetaKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
-        $history->setMetaDescription($faker->unique()->sentence);
+        $history->setName($generator->unique()->colorName());
         // @var string $content
-        $content = $faker->paragraphs(random_int(2, 4), true);
-        $history->setSummary(str_replace("\n\n", "<br />\n", $content));
+        $content = $generator->paragraphs(random_int(2, 4), true);
+        $history->setSummary(str_replace("\n\n", "<br />\n", (string) $content));
         $users     = $this->installService->getData('user');
-        $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
+        $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
         $user      = $this->getReference('user_'.$indexUser);
         $history->setRefuser($user);
-        $history->setPublished($faker->unique()->dateTime('now'));
+        $history->setPublished($generator->unique()->dateTime('now'));
         $this->addReference('history_'.$index, $history);
-        $this->historyRH->handle($oldHistory, $history);
-        $this->historyRH->changeWorkflowState($history, $states);
+        $this->historyRequestHandler->handle($oldHistory, $history);
+        $this->historyRequestHandler->changeWorkflowState($history, $states);
     }
 }

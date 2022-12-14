@@ -11,8 +11,8 @@ use Labstag\Entity\AddressUser;
  */
 class AddressUserRepository extends AddressRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, AddressUser::class);
+        parent::__construct($managerRegistry, AddressUser::class);
     }
 }

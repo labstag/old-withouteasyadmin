@@ -13,11 +13,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class DisclaimerType extends AbstractTypeLib
 {
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'activate',
             ChoiceType::class,
             [
@@ -36,7 +36,7 @@ class DisclaimerType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'title',
             TextType::class,
             [
@@ -52,7 +52,7 @@ class DisclaimerType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'message',
             WysiwygType::class,
             [
@@ -61,7 +61,7 @@ class DisclaimerType extends AbstractTypeLib
                 'required' => false,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'url-redirect',
             UrlType::class,
             [
@@ -80,10 +80,10 @@ class DisclaimerType extends AbstractTypeLib
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         // Configure your form options here
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

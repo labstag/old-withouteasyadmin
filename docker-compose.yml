@@ -15,7 +15,7 @@ services:
     depends_on:
       - phpfpm
     volumes:
-      - ${PWD}/apps:/var/www/
+      - ${PWD}/apps:/var/www/:delegated
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     networks:
       - net
@@ -28,7 +28,7 @@ services:
         - "traefik.http.routers.labstag.tls=true"
         - "traefik.http.services.labstag.loadbalancer.server.port=80"
   phpfpm:
-    image: koromerzhin/phpfpm:8.1.5
+    image: koromerzhin/phpfpm:8.1.11
     command: sh -c "php-fpm"
     depends_on:
       - mariadb
@@ -44,18 +44,18 @@ services:
       LOCK_DNS: semaphore
       DATABASE_URL: "mysqli://labstag:password@mariadb:3306/labstag_bdd"
     volumes:
-      - ${PWD}/apps:/var/www/
+      - ${PWD}/apps:/var/www/:delegated
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ${PWD}/conf/php.ini-development:/usr/local/etc/php/php.ini
+      - ${PWD}/conf/docker-php-ram-limit.ini:/usr/local/etc/php/conf.d/docker-php-ram-limit.ini
     networks:
       - serverlampy
       - net
     deploy:
-      restart_policy:
-        condition: none
       labels:
         - "traefik.enable=false"
   phpfpmexec:
-    image: koromerzhin/phpfpm:8.1.5
+    image: koromerzhin/phpfpm:8.1.11
     command: sh -c "composer install"
     depends_on:
       - mariadb
@@ -71,8 +71,10 @@ services:
       LOCK_DNS: semaphore
       DATABASE_URL: "mysqli://labstag:password@mariadb:3306/labstag_bdd"
     volumes:
-      - ${PWD}/apps:/var/www/
+      - ${PWD}/apps:/var/www/:delegated
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ${PWD}/conf/php.ini-development:/usr/local/etc/php/php.ini
+      - ${PWD}/conf/docker-php-ram-limit.ini:/usr/local/etc/php/conf.d/docker-php-ram-limit.ini
     networks:
       - serverlampy
       - net

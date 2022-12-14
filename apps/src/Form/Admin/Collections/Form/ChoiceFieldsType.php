@@ -18,7 +18,7 @@ class ChoiceFieldsType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
@@ -28,7 +28,7 @@ class ChoiceFieldsType extends AbstractTypeLib
             'Yes'   => true,
             'No'    => false,
         ];
-        $builder->add(
+        $formBuilder->add(
             'choice',
             ChoiceType::class,
             [
@@ -36,7 +36,7 @@ class ChoiceFieldsType extends AbstractTypeLib
                 'choices' => $choices,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'choice_expanded',
             ChoiceType::class,
             [
@@ -45,7 +45,7 @@ class ChoiceFieldsType extends AbstractTypeLib
                 'expanded' => true,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'choice_multiple',
             ChoiceType::class,
             [
@@ -54,7 +54,7 @@ class ChoiceFieldsType extends AbstractTypeLib
                 'multiple' => true,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'choice_multiple_expanded',
             ChoiceType::class,
             [
@@ -64,36 +64,36 @@ class ChoiceFieldsType extends AbstractTypeLib
                 'expanded' => true,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'country',
             FlagCountryType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'language',
             LanguageType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'locale',
             LocaleType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'timezone',
             TimezoneType::class,
             ['help' => 'help']
         );
-        $builder->add(
+        $formBuilder->add(
             'currency',
             CurrencyType::class,
             ['help' => 'help']
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

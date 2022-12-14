@@ -3,6 +3,13 @@
     <table>
         <tbody>
             <tr>
+                <th colspan=2>
+                    <a href="{{ path('front_history', {'slug': entity.slug}) }}" target="_blank">
+                        {{ 'history.url'|trans({}, 'admin.messages') }}
+                    </a>
+                </th>
+            </tr>
+            <tr>
                 <th>{{ 'history.name'|trans({}, 'admin.messages') }}</th>
                 <td>{{ entity.name }}</td>
             </tr>

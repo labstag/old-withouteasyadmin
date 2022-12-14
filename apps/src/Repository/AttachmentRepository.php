@@ -12,17 +12,17 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class AttachmentRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Attachment::class);
+        parent::__construct($managerRegistry, Attachment::class);
     }
 
-    public function getFavicon()
+    public function getFavicon(): ?object
     {
         return $this->findOneBy(['code' => 'favicon']);
     }
 
-    public function getImageDefault()
+    public function getImageDefault(): ?object
     {
         return $this->findOneBy(['code' => 'image']);
     }

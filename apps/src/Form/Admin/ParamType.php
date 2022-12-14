@@ -24,14 +24,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ParamType extends AbstractTypeLib
 {
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add('site_title', TextType::class);
-        $this->setFileType($builder);
-        $this->setInputs($builder);
-        $builder->add(
+        $formBuilder->add('site_title', TextType::class);
+        $this->setFileType($formBuilder);
+        $this->setInputs($formBuilder);
+        $formBuilder->add(
             'language',
             LanguageType::class,
             [
@@ -43,7 +43,7 @@ class ParamType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'generator',
             ChoiceType::class,
             [
@@ -59,7 +59,7 @@ class ParamType extends AbstractTypeLib
             ]
         );
         $url = 'https://unicode-org.github.io/icu/userguide/format_parse/datetime/';
-        $builder->add(
+        $formBuilder->add(
             'format_datetime',
             MinMaxCollectionType::class,
             [
@@ -69,7 +69,7 @@ class ParamType extends AbstractTypeLib
                 'help'         => $url,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'oauth',
             MinMaxCollectionType::class,
             [
@@ -78,9 +78,9 @@ class ParamType extends AbstractTypeLib
                 'entry_type'   => OauthType::class,
             ]
         );
-        $this->setMinMaxCollectionType($builder);
+        $this->setMinMaxCollectionType($formBuilder);
 
-        $builder->add(
+        $formBuilder->add(
             'site_copyright',
             WysiwygType::class,
             [
@@ -94,15 +94,15 @@ class ParamType extends AbstractTypeLib
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         // Configure your form options here
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }
 
-    private function setFileType($builder)
+    private function setFileType($builder): void
     {
         $images = [
             'image'   => [
@@ -128,7 +128,7 @@ class ParamType extends AbstractTypeLib
         }
     }
 
-    private function setInputs($builder)
+    private function setInputs($builder): void
     {
         $inputs = [
             'title_format'    => [
@@ -177,7 +177,7 @@ class ParamType extends AbstractTypeLib
         }
     }
 
-    private function setMinMaxCollectionType($builder)
+    private function setMinMaxCollectionType($builder): void
     {
         $mixmax = [
             'tarteaucitron' => TarteaucitronType::class,
@@ -190,6 +190,7 @@ class ParamType extends AbstractTypeLib
                 $key,
                 MinMaxCollectionType::class,
                 [
+                    'required'     => false,
                     'label'        => ' ',
                     'allow_add'    => false,
                     'allow_delete' => false,

@@ -9,7 +9,10 @@ use Labstag\Lib\FixtureLib;
 
 class UserFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return [
             DataFixtures::class,
@@ -17,9 +20,9 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
         ];
     }
 
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $objectManager): void
     {
-        unset($manager);
+        unset($objectManager);
         $faker   = $this->setFaker();
         $users   = $this->installService->getData('user');
         $groupes = $this->groupeRepository->findAll();
@@ -32,11 +35,11 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
         array $groupes,
         int $index,
         array $dataUser,
-        Generator $faker
+        Generator $generator
     ): void
     {
         $user = $this->userService->create($groupes, $dataUser);
-        $this->upload($user, $faker);
+        $this->upload($user, $generator);
         $this->addReference('user_'.$index, $user);
     }
 }

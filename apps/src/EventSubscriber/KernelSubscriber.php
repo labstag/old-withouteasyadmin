@@ -2,105 +2,137 @@
 
 namespace Labstag\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Labstag\Lib\EventSubscriberLib;
 use tidy;
 
-class KernelSubscriber implements EventSubscriberInterface
+class KernelSubscriber extends EventSubscriberLib
 {
-    public const API_CONTROLLER = '/(Api)/';
+    /**
+     * @var string
+     */
+    final public const API_CONTROLLER = '/(Api)/';
 
-    public const CLIENTNUMBER = 400;
+    /**
+     * @var string
+     */
+    final public const BLOCK_CONTROLLER = '/(Labstag\/Block)/';
 
-    public const ERROR_CONTROLLER = [
+    /**
+     * @var int
+     */
+    final public const CLIENTNUMBER = 400;
+
+    /**
+     * @var string[]
+     */
+    final public const ERROR_CONTROLLER = [
         'error_controller',
         'error_controller::preview',
     ];
 
-    public const LABSTAG_CONTROLLER = '/(Labstag)/';
+    /**
+     * @var string
+     */
+    final public const LABSTAG_CONTROLLER = '/(Labstag)/';
 
-    public const TAGS = [
-        'workflow-action',
-        'link-show',
-        'link-guard',
-        'link-add',
-        'link-edit',
-        'link-delete',
-        'link-restore',
-        'link-destroy',
-        'link-trash',
-        'link-btnadmin',
-        'link-empty',
-        'link-move',
-        'link-btnadminempty',
-        'link-btnadminempties',
-        'link-btnadmindeleties',
-        'link-btnadminemptyall',
-        'link-btnadminrestore',
-        'link-btnadminrestories',
-        'link-btnadmindestroy',
-        'link-btnadmindelete',
-        'link-btnadminmove',
-        'guard-route',
-        'guard-workflow',
-        'guard-setworkflow',
-        'guard-setroute',
-        'guard-allworkflow',
-        'guard-allroute',
-        'guard-changeworkflow',
-        'guard-changeroute',
-        'guard-refgrouproute',
-        'guard-refgroupworkflow',
-        'confirm-close',
-        'confirm-delete',
-        'confirm-deleteattachment',
-        'confirm-destroy',
-        'confirm-restore',
-        'confirm-restories',
-        'confirm-empty',
-        'confirm-emptyall',
-        'confirm-empties',
-        'confirm-deleties',
-        'confirm-workflow',
-        'attachment-img',
+    /**
+     * @var string
+     */
+    final public const PARAGRAPH_CONTROLLER = '/(Labstag\/Paragraph)/';
+
+    /**
+     * @var string[]
+     */
+    final public const TAGS = [
         'attachment-delete',
+        'attachment-img',
         'btn-addcollection',
         'btn-delete',
         'btn-togglefieldset',
-        'select-country',
-        'select-selector',
-        'input-phone',
-        'input-email',
-        'input-url',
-        'input-gps',
-        'input-codepostal',
+        'confirm-close',
+        'confirm-delete',
+        'confirm-deleteattachment',
+        'confirm-deleties',
+        'confirm-destroy',
+        'confirm-empties',
+        'confirm-empty',
+        'confirm-emptyall',
+        'confirm-restore',
+        'confirm-restories',
+        'confirm-workflow',
+        'guard-allroute',
+        'guard-allworkflow',
+        'guard-changeroute',
+        'guard-changeworkflow',
+        'guard-refgrouproute',
+        'guard-refgroupworkflow',
+        'guard-route',
+        'guard-setroute',
+        'guard-setworkflow',
+        'guard-workflow',
         'input-city',
-        'table-datatable',
+        'input-codepostal',
+        'input-email',
+        'input-gps',
+        'input-phone',
+        'input-url',
+        'link-add',
+        'link-btnadmin',
+        'link-btnadmindelete',
+        'link-btnadmindeleties',
+        'link-btnadmindestroy',
+        'link-btnadminempties',
+        'link-btnadminempty',
+        'link-btnadminemptyall',
+        'link-btnadminmove',
+        'link-btnadminnewblock',
+        'link-btnadminrestore',
+        'link-btnadminrestories',
+        'link-delete',
+        'link-destroy',
+        'link-edit',
+        'link-empty',
+        'link-guard',
+        'link-move',
+        'link-restore',
+        'link-show',
+        'link-trash',
         'select-all',
+        'select-country',
         'select-element',
+        'select-selector',
+        'table-datatable',
+        'workflow-action',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return ['kernel.response' => 'onKernelResponse'];
     }
 
-    public function onKernelResponse($event)
+    public function onKernelResponse($event): void
     {
         $response   = $event->getResponse();
         $request    = $event->getRequest();
         $controller = $request->attributes->get('_controller');
         preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
         preg_match(self::API_CONTROLLER, (string) $controller, $apis);
-        if (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER) || 0 != count($apis)) {
-            return;
-        }
-
-        if ('html' != $request->getRequestFormat() || $response->getStatusCode() >= self::CLIENTNUMBER) {
+        preg_match(self::PARAGRAPH_CONTROLLER, (string) $controller, $paragraphs);
+        preg_match(self::BLOCK_CONTROLLER, (string) $controller, $blocks);
+        $count = count($apis) + count($paragraphs) + count($blocks);
+        $test1 = (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER) || 0 != $count);
+        $test2 = ('html' != $request->getRequestFormat() || $response->getStatusCode() >= self::CLIENTNUMBER);
+        if ($test1 || $test2) {
             return;
         }
 
         $content = $response->getContent();
-        $config  = [
+        $content = preg_replace('#<script>#i', '<script type="text/javascript">', $content);
+
+        $config = [
             'indent'                      => true,
             'indent-spaces'               => 2,
             'output-xhtml'                => true,
@@ -109,9 +141,10 @@ class KernelSubscriber implements EventSubscriberInterface
             'new-inline-tags'             => implode(' ', self::TAGS),
             'wrap'                        => 200,
         ];
-        $tidy    = new tidy();
+        $tidy   = new tidy();
         $tidy->parseString($content, $config, 'utf8');
         $tidy->cleanRepair();
+
         $response->setContent($tidy);
         $event->setResponse($response);
     }

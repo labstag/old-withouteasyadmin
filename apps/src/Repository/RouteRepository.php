@@ -8,21 +8,21 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class RouteRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Route::class);
+        parent::__construct($managerRegistry, Route::class);
     }
 
     public function findLost(array $routes)
     {
         $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $queryBuilder->where(
             'u.name NOT IN (:routes)'
         );
-        $query->setParameters(
+        $queryBuilder->setParameters(
             ['routes' => $routes]
         );
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ChangePasswordType extends AbstractTypeLib
 {
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
@@ -24,7 +24,7 @@ class ChangePasswordType extends AbstractTypeLib
             'label' => $this->translator->trans('changepassword.repeatpassword.label', [], 'security.form'),
             'help'  => $this->translator->trans('changepassword.repeatpassword.help', [], 'security.form'),
         ];
-        $builder->add(
+        $formBuilder->add(
             'plainPassword',
             RepeatedType::class,
             [
@@ -33,7 +33,7 @@ class ChangePasswordType extends AbstractTypeLib
                 'second_options' => $second,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'submit',
             SubmitType::class,
             [
@@ -43,10 +43,10 @@ class ChangePasswordType extends AbstractTypeLib
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         // Configure your form options here
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             ['csrf_token_id' => 'changepassword']
         );
     }

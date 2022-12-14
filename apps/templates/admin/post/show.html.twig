@@ -4,7 +4,7 @@
         <tbody>
             <tr>
                 <th colspan=2>
-                    <a href="{{ page('post', 'show', {'slug': entity.slug}) }}" target="_blank">
+                    <a href="{{ path('front_article', {'slug': entity.slug}) }}" target="_blank">
                         {{ 'post.url'|trans({}, 'admin.messages') }}
                     </a>
                 </th>

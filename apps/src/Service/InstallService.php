@@ -4,17 +4,12 @@ namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
-use Labstag\Entity\Groupe;
-use Labstag\Entity\Layout;
-use Labstag\Entity\Menu;
-use Labstag\Entity\Page;
-use Labstag\Entity\Template;
 use Labstag\Entity\User;
+use Labstag\Repository\ConfigurationRepository;
+use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\TemplateRepository;
+use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\ConfigurationRequestHandler;
-use Labstag\RequestHandler\GroupeRequestHandler;
-use Labstag\RequestHandler\LayoutRequestHandler;
-use Labstag\RequestHandler\MenuRequestHandler;
-use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\Dotenv\Dotenv;
@@ -26,21 +21,21 @@ class InstallService
     public function __construct(
         protected OauthService $oauthService,
         protected UserService $userService,
-        protected LayoutRequestHandler $layoutRH,
-        protected PageRequestHandler $pageRH,
-        protected MenuRequestHandler $menuRH,
-        protected GroupeRequestHandler $groupeRH,
-        protected ConfigurationRequestHandler $configurationRH,
-        protected UserRequestHandler $userRH,
-        protected TemplateRequestHandler $templateRH,
+        protected ConfigurationRequestHandler $configurationRequestHandler,
+        protected UserRequestHandler $userRequestHandler,
+        protected TemplateRequestHandler $templateRequestHandler,
         protected EntityManagerInterface $entityManager,
-        protected Environment $twig,
-        protected CacheInterface $cache
+        protected Environment $environment,
+        protected CacheInterface $cache,
+        protected GroupeRepository $groupeRepository,
+        protected ConfigurationRepository $configurationRepository,
+        protected TemplateRepository $templateRepository,
+        protected UserRepository $userRepository
     )
     {
     }
 
-    public function config($serverEnv)
+    public function config(array $serverEnv): void
     {
         $config = $this->getData('config');
         $this->setOauth($serverEnv, $config);
@@ -62,7 +57,10 @@ class InstallService
         return $data;
     }
 
-    public function getEnv($serverEnv)
+    /**
+     * @return mixed[]
+     */
+    public function getEnv($serverEnv): array
     {
         $file   = __DIR__.'/../../.env';
         $data   = [];
@@ -77,116 +75,12 @@ class InstallService
         return $data;
     }
 
-    public function getLayoutContent()
-    {
-        return <<<EOF
-        [header]
-        [main,aside]
-        [footer]
-        EOF;
-    }
-
-    public function getLayoutHome()
-    {
-        return <<<EOF
-        [header]
-        [main]
-        [footer]
-        EOF;
-    }
-
-    public function getLayoutLanding()
-    {
-        return <<<EOF
-        [header]
-        [main]
-        [footer]
-        EOF;
-    }
-
-    public function group()
-    {
-        $groupes = $this->getData('group');
-        foreach ($groupes as $row) {
-            $this->addGroupe($row);
-        }
-    }
-
-    public function layouts()
-    {
-        $layouts = [
-            'content' => $this->getLayoutContent(),
-            'home'    => $this->getLayoutHome(),
-            'landing' => $this->getLayoutLanding(),
-        ];
-
-        foreach ($layouts as $id => $content) {
-            $this->addLayout($id, $content);
-        }
-    }
-
-    public function menuadmin()
-    {
-        $childs = $this->getData('menuadmin');
-        $this->saveMenu('admin', $childs);
-    }
-
-    public function menuadminprofil()
-    {
-        $childs = $this->getData('menuadminprofil');
-        $this->saveMenu('admin-profil', $childs);
-    }
-
-    public function pages()
-    {
-        $pages = $this->getData('pages');
-        foreach ($pages as $row) {
-            $this->addPage($row, null);
-        }
-    }
-
-    public function templates()
-    {
-        $templates = $this->getData('template');
-        foreach ($templates as $key => $row) {
-            $this->addTemplate($key, $row);
-        }
-    }
-
-    public function users()
+    public function users(): void
     {
         $users   = $this->getData('user');
-        $groupes = $this->getRepository(Groupe::class)->findAll();
+        $groupes = $this->groupeRepository->findAll();
         foreach ($users as $user) {
             $this->addUser($groupes, $user);
-        }
-    }
-
-    protected function addChild(int $index, Menu $menu, array $attr): void
-    {
-        $repository = $this->getRepository(Menu::class);
-        $child      = new Menu();
-        $child->setPosition($index);
-        $child->setParent($menu);
-        if (isset($attr['separator'])) {
-            $child->setSeparateur(true);
-            $repository->add($child);
-
-            return;
-        }
-
-        $child->setName($attr['name']);
-        if (isset($attr['data'])) {
-            $child->setData($attr['data']);
-        }
-
-        $repository->add($child);
-        if (isset($attr['childs'])) {
-            $indexChild = 0;
-            foreach ($attr['childs'] as $attrChild) {
-                $this->addChild($indexChild, $child, $attrChild);
-                ++$indexChild;
-            }
         }
     }
 
@@ -196,7 +90,7 @@ class InstallService
     ): void
     {
         $search        = ['name' => $key];
-        $configuration = $this->getRepository(Configuration::class)->findOneBy($search);
+        $configuration = $this->configurationRepository->findOneBy($search);
         if (!$configuration instanceof Configuration) {
             $configuration = new Configuration();
         }
@@ -204,96 +98,8 @@ class InstallService
         $old = clone $configuration;
         $configuration->setName($key);
         $configuration->setValue($value);
-        $this->configurationRH->handle($old, $configuration);
-    }
 
-    protected function addGroupe(
-        string $row
-    ): void
-    {
-        $search = ['code' => $row];
-        $groupe = $this->getRepository(Groupe::class)->findOneBy($search);
-        if ($groupe instanceof Groupe) {
-            return;
-        }
-
-        $groupe = new Groupe();
-        $old    = clone $groupe;
-        $groupe->setCode($row);
-        $groupe->setName($row);
-        $this->groupeRH->handle($old, $groupe);
-    }
-
-    protected function addLayout(string $id, string $content): void
-    {
-        $layout = $this->getRepository(Layout::class)->findOneBy(
-            ['name' => $id]
-        );
-
-        if ($layout instanceof Layout) {
-            return;
-        }
-
-        $layout = new Layout();
-        $old    = clone $layout;
-        $layout->setName($id);
-        $layout->setContent($content);
-        $this->layoutRH->handle($old, $layout);
-    }
-
-    protected function addPage(array $row, ?Page $parent): void
-    {
-        $layout = $this->getRepository(Layout::class)->findOneBy(
-            [
-                'name' => $row['layout'],
-            ]
-        );
-        if (!$layout instanceof Layout) {
-            return;
-        }
-
-        $page = new Page();
-        $old  = clone $page;
-        $page->setReflayout($layout);
-        $page->setParent($parent);
-        $page->setSlug($row['slug']);
-        $page->setName($row['name']);
-        $page->setFunction($row['template']);
-        $page->setFront(isset($row['front']));
-        $this->pageRH->handle($old, $page);
-        if (isset($row['childs'])) {
-            foreach ($row['childs'] as $child) {
-                $this->addPage($child, $page);
-            }
-        }
-    }
-
-    protected function addTemplate(
-        string $key,
-        string $value
-    ): void
-    {
-        $search   = ['code' => $key];
-        $template = $this->getRepository(Template::class)->findOneBy($search);
-        if ($template instanceof Template) {
-            return;
-        }
-
-        $template = new Template();
-        $old      = clone $template;
-        $template->setName($value);
-        $template->setCode($key);
-        $htmlfile = 'tpl/mail-'.$key.'.html.twig';
-        if (is_file('templates/'.$htmlfile)) {
-            $template->setHtml($this->twig->render($htmlfile));
-        }
-
-        $txtfile = 'tpl/mail-'.$key.'.txt.twig';
-        if (is_file('templates/'.$txtfile)) {
-            $template->setText($this->twig->render($txtfile));
-        }
-
-        $this->templateRH->handle($old, $template);
+        $this->configurationRequestHandler->handle($old, $configuration);
     }
 
     protected function addUser(
@@ -304,7 +110,7 @@ class InstallService
         $search = [
             'username' => $dataUser['username'],
         ];
-        $user   = $this->getRepository(User::class)->findOneBy($search);
+        $user   = $this->userRepository->findOneBy($search);
         if ($user instanceof User) {
             return;
         }
@@ -312,42 +118,16 @@ class InstallService
         $this->userService->create($groupes, $dataUser);
     }
 
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
-    }
-
-    protected function saveMenu(string $key, array $childs): void
-    {
-        // $this->entityManager->getFilters()->disable('softdeleteable');
-        $search     = ['clef' => $key];
-        $repository = $this->getRepository(Menu::class);
-        $menu       = $repository->findOneBy($search);
-        if ($menu instanceof Menu) {
-            $repository->remove($menu);
-        }
-
-        $menu = new Menu();
-        $menu->setPosition(0);
-        $menu->setClef($key);
-        $repository->add($menu);
-        $indexChild = 0;
-        foreach ($childs as $attr) {
-            $this->addChild($indexChild, $menu, $attr);
-            ++$indexChild;
-        }
-    }
-
     protected function setOauth(array $serverEnv, array &$data): void
     {
         $env   = $this->getEnv($serverEnv);
         $oauth = [];
         foreach ($env as $key => $val) {
-            if (0 == substr_count($key, 'OAUTH_')) {
+            if (0 == substr_count((string) $key, 'OAUTH_')) {
                 continue;
             }
 
-            $code    = str_replace('OAUTH_', '', $key);
+            $code    = str_replace('OAUTH_', '', (string) $key);
             $code    = strtolower($code);
             $explode = explode('_', $code);
             $type    = $explode[0];

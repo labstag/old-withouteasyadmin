@@ -6,25 +6,23 @@ use Labstag\Entity\AddressUser;
 use Labstag\Entity\LinkUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Event\UserCollectionEvent;
-use Labstag\Service\UserMailService;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Labstag\Lib\EventSubscriberLib;
 
-class UserCollectionSubscriber implements EventSubscriberInterface
+class UserCollectionSubscriber extends EventSubscriberLib
 {
-    public function __construct(protected UserMailService $userMailService)
-    {
-    }
-
+    /**
+     * @return array<class-string<UserCollectionEvent>, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [UserCollectionEvent::class => 'onUserCollectionEvent'];
     }
 
-    public function onUserCollectionEvent(UserCollectionEvent $event): void
+    public function onUserCollectionEvent(UserCollectionEvent $userCollectionEvent): void
     {
-        $oauthConnectUser = $event->getOauthConnectUser();
-        $linkUser         = $event->getLinkUser();
-        $addressUser      = $event->getAddressUser();
+        $oauthConnectUser = $userCollectionEvent->getOauthConnectUser();
+        $linkUser         = $userCollectionEvent->getLinkUser();
+        $addressUser      = $userCollectionEvent->getAddressUser();
 
         $this->setOauthConnectUser($oauthConnectUser);
         $this->setLinkUser($linkUser);

@@ -2,16 +2,16 @@
 
 namespace Labstag\Twig;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Groupe;
-use Labstag\Entity\Page;
 use Labstag\Entity\User;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\GuardService;
+use Labstag\Service\ParagraphService;
 use Labstag\Service\PhoneService;
-use Labstag\Service\TemplatePageService;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -22,56 +22,70 @@ use Twig\TwigFunction;
 
 class LabstagExtension extends AbstractExtension
 {
-    public const FOLDER_ENTITY = 'Labstag\\Entity\\';
+    /**
+     * @var string
+     */
+    final public const FOLDER_ENTITY = 'Labstag\\Entity\\';
 
-    public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
+    /**
+     * @var string
+     */
+    final public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
     public function __construct(
-        protected EntityManagerInterface $entityManager,
+        protected ContainerBagInterface $containerBag,
         protected RouterInterface $router,
         protected PhoneService $phoneService,
-        protected CacheManager $cache,
-        protected Registry $workflows,
-        protected TokenStorageInterface $token,
+        protected CacheManager $cacheManager,
+        protected Registry $registry,
+        protected TokenStorageInterface $tokenStorage,
         protected LoggerInterface $logger,
-        protected TemplatePageService $templatePageService,
-        protected GuardService $guardService
+        protected GuardService $guardService,
+        protected ParagraphService $paragraphService,
+        protected AttachmentRepository $attachmentRepository
     )
     {
     }
 
-    public function classEntity($entity)
+    public function classEntity($entity): string
     {
-        $class = substr($entity::class, strpos($entity::class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY));
+        $class = substr(
+            (string) $entity::class,
+            strpos((string) $entity::class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY)
+        );
 
         return trim(strtolower($class));
     }
 
     public function formClass($class)
     {
-        $file = '';
+        $file = 'forms/default.html.twig';
 
         $methods = get_class_vars($class::class);
-        if (!array_key_exists('vars', $methods)) {
+        if (!array_key_exists('vars', $methods)
+            || !array_key_exists('data', $class->vars)
+            || is_null($class->vars['data'])
+        ) {
             return $file;
         }
 
-        $vars = $class->vars;
+        $vars   = $class->vars;
+        $type   = strtolower($this->setTypeformClass($vars));
+        $folder = __DIR__.'/../../templates/';
+        $files  = $this->setFilesformClass($type, $class);
+        $view   = end($files);
 
-        if (!array_key_exists('data', $vars) || is_null($vars['data'])) {
-            return $file;
+        foreach ($files as $file) {
+            if (is_file($folder.$file)) {
+                $view = $file;
+
+                break;
+            }
         }
 
-        $type = $this->setTypeformClass($vars);
+        $this->dump(['templates-form', $type, $files, $view]);
 
-        $newFile = 'forms/'.$type.'.html.twig';
-        if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
-            $this->logger->info('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
-
-            return $file;
-        }
-
-        return $newFile;
+        return $view;
     }
 
     public function formPrototype(array $blockPrefixes): string
@@ -100,7 +114,7 @@ class LabstagExtension extends AbstractExtension
         }
 
         $id         = $data->getId();
-        $attachment = $this->getRepository(Attachment::class)->findOneBy(['id' => $id]);
+        $attachment = $this->attachmentRepository->findOneBy(['id' => $id]);
         if (is_null($attachment)) {
             return null;
         }
@@ -113,6 +127,23 @@ class LabstagExtension extends AbstractExtension
         return $attachment;
     }
 
+    public function getBlockClass($data): string
+    {
+        $block = $data->getBlock();
+
+        return 'block-'.$block->getType();
+    }
+
+    public function getBlockId($data): string
+    {
+        $block = $data->getBlock();
+
+        return 'block-'.$block->getType().'-'.$block->getId();
+    }
+
+    /**
+     * @return TwigFilter[]
+     */
     public function getFilters(): array
     {
         $dataFilters = $this->getFiltersFunctions();
@@ -124,6 +155,9 @@ class LabstagExtension extends AbstractExtension
         return $filters;
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     public function getFunctions(): array
     {
         $dataFunctions = $this->getFiltersFunctions();
@@ -135,23 +169,63 @@ class LabstagExtension extends AbstractExtension
         return $functions;
     }
 
+    public function getParagraphClass($data): string
+    {
+        $paragraph = $data->getParagraph();
+        $dataClass = [
+            'paragraph-'.$paragraph->getType(),
+        ];
+
+        $code = $paragraph->getBackground();
+        if (!empty($code)) {
+            $dataClass[] = 'm--background-'.$code;
+        }
+
+        $code = $paragraph->getColor();
+        if (!empty($code)) {
+            $dataClass[] = 'm--theme-'.$code;
+        }
+
+        return implode(' ', $dataClass);
+    }
+
+    public function getParagraphId($data): string
+    {
+        $paragraph = $data->getParagraph();
+
+        return 'paragraph-'.$paragraph->getType().'-'.$paragraph->getId();
+    }
+
+    public function getParagraphName($code)
+    {
+        return $this->paragraphService->getNameByCode($code);
+    }
+
+    public function getTextColorSection($data): string
+    {
+        $paragraph = $data->getParagraph();
+        $code      = $paragraph->getColor();
+
+        return empty($code) ? '' : 'm--theme-'.$code;
+    }
+
     public function guardAccessGroupRoutes(Groupe $groupe): bool
     {
         $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
 
-        return (0 != count($routes)) ? true : false;
+        return 0 != count($routes);
     }
 
     public function guardAccessUserRoutes(User $user): bool
     {
         $routes = $this->guardService->getGuardRoutesForUser($user);
 
-        return (0 != count($routes)) ? true : false;
+        return 0 != count($routes);
     }
 
     public function guardRoute(string $route): bool
     {
-        $token = $this->token->getToken();
+        $token = $this->tokenStorage->getToken();
 
         return $this->guardService->guardRoute($route, $token);
     }
@@ -169,22 +243,19 @@ class LabstagExtension extends AbstractExtension
     /**
      * Gets the browser path for the image and filter to apply.
      *
-     * @param string      $path
-     * @param string      $filter
      * @param null|string $resolver
-     * @param int         $referenceType
      *
      * @return string
      */
     public function imagefilter(
-        $path,
-        $filter,
+        string $path,
+        string $filter,
         array $config = [],
         $resolver = null,
-        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
     )
     {
-        $url = $this->cache->getBrowserPath(
+        $url = $this->cacheManager->getBrowserPath(
             parse_url($path, PHP_URL_PATH),
             $filter,
             $config,
@@ -195,37 +266,6 @@ class LabstagExtension extends AbstractExtension
         return parse_url($url, PHP_URL_PATH);
     }
 
-    public function isPhoneValid(string $number, string $country): bool
-    {
-        $verif = $this->phoneService->verif($number, $country);
-
-        return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
-    }
-
-    public function page(string $template, string $route = '', array $params = []): string
-    {
-        $templates = $this->templatePageService->getChoices();
-        foreach ($templates as $row) {
-            $class = $this->templatePageService->getclass($row);
-            if ($class->getId() != $template) {
-                continue;
-            }
-
-            $page = $this->getRepository(Page::class)->findOneBy(
-                ['function' => $row]
-            );
-
-            return $class->generateUrl(
-                $page,
-                $route,
-                $params,
-                false
-            );
-        }
-
-        return '';
-    }
-
     public function verifPhone(string $country, string $phone)
     {
         $verif = $this->phoneService->verif($phone, $country);
@@ -233,14 +273,9 @@ class LabstagExtension extends AbstractExtension
         return array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
     }
 
-    public function workflowHas($entity)
+    public function workflowHas(object $entity): bool
     {
-        return $this->workflows->has($entity);
-    }
-
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
+        return $this->registry->has($entity);
     }
 
     protected function setTypeformClass(array $class): string
@@ -254,10 +289,23 @@ class LabstagExtension extends AbstractExtension
         return $class['form']->vars['unique_block_prefix'];
     }
 
-    private function getFiltersFunctions()
+    private function dump(mixed $var): void
+    {
+        if ('dev' != $this->getParameter('kernel.debug')) {
+            return;
+        }
+
+        dump($var);
+    }
+
+    private function getFiltersFunctions(): array
     {
         return [
-            'page'                     => 'page',
+            'paragraph_name'           => 'getParagraphName',
+            'paragraph_id'             => 'getParagraphId',
+            'block_id'                 => 'getBlockId',
+            'paragraph_class'          => 'getParagraphClass',
+            'block_class'              => 'getBlockClass',
             'attachment'               => 'getAttachment',
             'class_entity'             => 'classEntity',
             'formClass'                => 'formClass',
@@ -268,9 +316,40 @@ class LabstagExtension extends AbstractExtension
             'guard_route'              => 'guardRoute',
             'guard_user_access'        => 'guardAccessUserRoutes',
             'imagefilter'              => 'imagefilter',
-            'phone_valid'              => 'isPhoneValid',
             'verifPhone'               => 'verifPhone',
             'workflow_has'             => 'workflowHas',
         ];
+    }
+
+    private function getParameter(string $name)
+    {
+        return $this->containerBag->get($name);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function setFilesformClass($type, $class): array
+    {
+        $htmltwig = '.html.twig';
+        $files    = [
+            'forms/'.$type.$htmltwig,
+        ];
+
+        $vars      = $class->vars;
+        $classtype = (isset($vars['value']) && is_object($vars['value'])) ? $vars['value']::class : null;
+        if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
+            $files[] = 'forms/paragraph/'.$type.$htmltwig;
+            $files[] = 'forms/paragraph/default'.$htmltwig;
+        }
+
+        if (!is_null($classtype) && 1 == substr_count($classtype, '\Block')) {
+            $files[] = 'forms/block/'.$type.$htmltwig;
+            $files[] = 'forms/block/default'.$htmltwig;
+        }
+
+        $files[] = 'forms/default'.$htmltwig;
+
+        return $files;
     }
 }

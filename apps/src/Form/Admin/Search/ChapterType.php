@@ -15,11 +15,11 @@ class ChapterType extends SearchAbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'title',
             TextType::class,
             [
@@ -31,20 +31,20 @@ class ChapterType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $this->addPublished($builder);
+        $this->addPublished($formBuilder);
         $this->showState(
-            $builder,
+            $formBuilder,
             new Chapter(),
             $this->translator->trans('chapter.etape.label', [], 'admin.search.form'),
             $this->translator->trans('chapter.etape.help', [], 'admin.search.form'),
             $this->translator->trans('chapter.etape.placeholder', [], 'admin.search.form')
         );
-        parent::buildForm($builder, $options);
+        parent::buildForm($formBuilder, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class'      => ChapterSearch::class,
                 'csrf_protection' => false,

@@ -12,8 +12,8 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class ConfigurationRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Configuration::class);
+        parent::__construct($managerRegistry, Configuration::class);
     }
 }

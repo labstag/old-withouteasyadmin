@@ -18,12 +18,11 @@ class MemoType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        unset($options);
-        $builder->add(
+        $formBuilder->add(
             'title',
             TextType::class,
             [
@@ -34,8 +33,16 @@ class MemoType extends AbstractTypeLib
                 ],
             ]
         );
-        $this->setContent($builder);
-        $builder->add(
+        $this->setContent($formBuilder);
+        $this->addParagraph(
+            $formBuilder,
+            [
+                'add'    => 'admin_memo_paragraph_add',
+                'edit'   => 'admin_memo_paragraph_show',
+                'delete' => 'admin_memo_paragraph_delete',
+            ]
+        );
+        $formBuilder->add(
             'date_start',
             DateTimeType::class,
             [
@@ -46,7 +53,7 @@ class MemoType extends AbstractTypeLib
                 'with_seconds' => true,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'date_end',
             DateTimeType::class,
             [
@@ -58,7 +65,7 @@ class MemoType extends AbstractTypeLib
             ]
         );
 
-        $builder->add(
+        $formBuilder->add(
             'file',
             FileType::class,
             [
@@ -68,7 +75,7 @@ class MemoType extends AbstractTypeLib
                 'attr'     => ['accept' => 'image/*'],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'refuser',
             SearchableType::class,
             [
@@ -82,11 +89,12 @@ class MemoType extends AbstractTypeLib
                 ],
             ]
         );
+        unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Memo::class,
             ]

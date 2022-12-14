@@ -2,47 +2,37 @@
 
 namespace Labstag\Lib;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Labstag\Entity\Attachment;
+use Labstag\Entity\Paragraph;
 use Labstag\Entity\User;
-use Labstag\Reader\UploadAnnotationReader;
-use Labstag\RequestHandler\AttachmentRequestHandler;
-use Labstag\Service\AttachFormService;
+use Labstag\Repository\AttachmentRepository;
 use Labstag\Singleton\AdminBtnSingleton;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Routing\Matcher\TraceableUrlMatcher;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 abstract class AdminControllerLib extends ControllerLib
 {
 
-    protected AttachmentRequestHandler $attachmentRH;
-
     protected ?AdminBtnSingleton $btns = null;
-
-    protected FlashBagInterface $flashbag;
-
-    protected RouterInterface $router;
-
-    protected TokenStorageInterface $token;
 
     protected string $urlHome = '';
 
     public function form(
-        AttachFormService $service,
-        RequestHandlerLib $handler,
-        string $formType,
+        $domain,
         object $entity,
-        string $twig = 'admin/crud/form.html.twig'
+        string $twig = 'admin/crud/form.html.twig',
+        array $parameters = []
     ): Response
     {
-        $url = $this->getUrlAdmin();
+        $requestHandlerLib = $domain->getRequestHandler();
+        $formType          = $domain->getType();
+        $url               = $domain->getUrlAdmin();
         $this->denyAccessUnlessGranted(
             empty($entity->getId()) ? 'new' : 'edit',
             $entity
@@ -54,13 +44,15 @@ abstract class AdminControllerLib extends ControllerLib
             $form->getName(),
             empty($entity->getId()) ? 'Ajouter' : 'Sauvegarder'
         );
+        if ($form->has('paragraph')) {
+            $this->modalParagraphs();
+        }
+
         $form->handleRequest($this->requeststack->getCurrentRequest());
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->upload(
-                $service->getUploadAnnotationReader(),
-                $entity
-            );
-            $handler->handle($oldEntity, $entity);
+            $this->setPositionParagraphs();
+            $this->attachFormService->upload($entity);
+            $requestHandlerLib->handle($oldEntity, $entity);
             $this->sessionService->flashBagAdd(
                 'success',
                 $this->translator->trans('data.save')
@@ -74,89 +66,42 @@ abstract class AdminControllerLib extends ControllerLib
 
         return $this->renderForm(
             $twig,
-            [
-                'entity' => $entity,
-                'form'   => $form,
-            ]
+            array_merge(
+                $parameters,
+                [
+                    'entity' => $entity,
+                    'form'   => $form,
+                ]
+            )
         );
     }
 
     public function listOrTrash(
-        $entity,
-        string $html
+        $domain,
+        string $html,
+        array $parameters = []
     ): Response
     {
-        $repository  = $this->getRepository($entity);
-        $methods     = $this->getMethodsList();
-        $url         = $this->getUrlAdmin();
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $route       = $all['_route'];
-        $routeParams = $all['_route_params'];
-        $routeType   = (0 != substr_count($route, 'trash')) ? 'trash' : 'all';
-        $method      = $methods[$routeType];
-        $this->addNewImport($this->entityManager, $repository, $methods, $routeType, $url);
-
-        if ('trash' != $routeType) {
-            $this->btnInstance()->addSupprimerSelection(
-                [
-                    'redirect' => [
-                        'href'   => $route,
-                        'params' => $routeParams,
-                    ],
-                    'url'      => [
-                        'href'   => 'api_action_deleties',
-                        'params' => [
-                            'entity' => strtolower(
-                                str_replace(
-                                    'Labstag\\Entity\\',
-                                    '',
-                                    $repository->getClassName()
-                                )
-                            ),
-                        ],
-                    ],
-                ],
-                'deleties'
-            );
-        }
-
-        $query      = $this->requeststack->getCurrentRequest()->query;
-        $get        = $query->all();
-        $limit      = $query->getInt('limit', 10);
-        $pagination = $this->paginator->paginate(
-            $repository->{$method}($get),
-            $query->getInt('page', 1),
-            $limit
-        );
+        $url       = $domain->getUrlAdmin();
+        $request   = $this->requeststack->getCurrentRequest();
+        $all       = $request->attributes->all();
+        $route     = $all['_route'];
+        $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
+        $this->setBtnListOrTrash($routeType, $domain);
+        $pagination = $this->setPagination($routeType, $domain);
 
         if ('trash' == $routeType && 0 == $pagination->count()) {
             throw new AccessDeniedException();
         }
 
-        $parameters = [
-            'pagination' => $pagination,
-            'actions'    => $url,
-        ];
-        $search     = $this->searchForm();
-        if (0 != count($search) && array_key_exists('form', $search) && array_key_exists('data', $search)) {
-            $get         = $query->all();
-            $data        = $search['data'];
-            $data->limit = $limit;
-            $data->search($get, $this->entityManager);
-            $route      = $this->requeststack->getCurrentRequest()->get('_route');
-            $url        = $this->generateUrl($route);
-            $searchForm = $this->createForm(
-                $search['form'],
-                $data,
-                [
-                    'attr'   => ['id' => 'searchform'],
-                    'action' => $url,
-                ]
-            );
-
-            $parameters['searchform'] = $searchForm;
-        }
+        $parameters = array_merge(
+            $parameters,
+            [
+                'pagination' => $pagination,
+                'actions'    => $url,
+            ]
+        );
+        $parameters = $this->setSearchForms($parameters, $domain);
 
         return $this->renderForm(
             $html,
@@ -166,54 +111,21 @@ abstract class AdminControllerLib extends ControllerLib
 
     public function modalAttachmentDelete(): void
     {
-        $twig                      = $this->twig;
-        $globals                   = $twig->getGlobals();
+        $globals                   = $this->environment->getGlobals();
         $modal                     = $globals['modal'] ?? [];
         $modal['attachmentdelete'] = true;
-        $twig->addGlobal('modal', $modal);
-    }
-
-    public function render(
-        string $view,
-        array $parameters = [],
-        ?Response $response = null
-    ): Response
-    {
-        $this->setBreadcrumbsPage();
-        $request = $this->requeststack->getCurrentRequest();
-        $all     = $request->attributes->all();
-        $route   = $all['_route'];
-        $headers = $this->setHeaderTitle();
-        $header  = '';
-        foreach ($headers as $key => $title) {
-            if ($key == $route) {
-                $header = $title;
-
-                break;
-            }
-
-            if (0 != substr_count($route, $key)) {
-                $header = $title;
-            }
-        }
-
-        if (!empty($header)) {
-            $parameters['headerTitle'] = $header;
-        }
-
-        $parameters['btnadmin'] = $this->btnInstance()->get();
-
-        return parent::render($view, $parameters, $response);
+        $this->environment->addGlobal('modal', $modal);
     }
 
     public function renderShowOrPreview(
+        $domain,
         object $entity,
         string $twigShow
     ): Response
     {
-        $url          = $this->getUrlAdmin();
+        $url          = $domain->getUrlAdmin();
         $routeCurrent = $this->requeststack->getCurrentRequest()->get('_route');
-        $routeType    = (0 != substr_count($routeCurrent, 'preview')) ? 'preview' : 'show';
+        $routeType    = (0 != substr_count((string) $routeCurrent, 'preview')) ? 'preview' : 'show';
         $this->showOrPreviewadd($url, $routeType, $entity);
 
         if (isset($url['delete']) && 'show' == $routeType) {
@@ -230,6 +142,76 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
+    protected function addNewBreadcrumb($data, $routeParam, $route): void
+    {
+        $compiled        = $data->compile();
+        $breadcrumbTitle = array_merge(
+            $this->setHeaderTitle(),
+            $this->domainService->getTitles()
+        );
+        $title           = '';
+        foreach ($breadcrumbTitle as $key => $value) {
+            if ($key == $route) {
+                $title = $value;
+
+                break;
+            }
+        }
+
+        if ('' == $title) {
+            return;
+        }
+
+        $variables = $compiled->getPathVariables();
+        $params    = [];
+        foreach ($variables as $variable) {
+            if (isset($routeParam[$variable])) {
+                $params[$variable] = $routeParam[$variable];
+            }
+        }
+
+        if ((is_countable($variables) ? count($variables) : 0) != count($params)) {
+            return;
+        }
+
+        $this->setSingletons()->add(
+            $title,
+            $this->router->generate(
+                $route,
+                $params,
+            )
+        );
+    }
+
+    protected function addNewImport(
+        EntityManagerInterface $entityManager,
+        ServiceEntityRepositoryLib $serviceEntityRepositoryLib,
+        array $methods,
+        string $routeType,
+        array $url = [],
+    )
+    {
+        $this->listOrTrashRouteTrashsetTrashIcon(
+            $methods,
+            $serviceEntityRepositoryLib,
+            $url,
+            $routeType,
+            $entityManager
+        );
+
+        if (isset($url['new']) && 'trash' != $routeType) {
+            $this->btnInstance()->addBtnNew(
+                $url['new']
+            );
+        }
+
+        if (isset($url['import']) && 'trash' != $routeType) {
+            $this->btnInstance()->addBtnImport(
+                $url['import']
+            );
+        }
+    }
+
     protected function btnInstance()
     {
         if (is_null($this->btns)) {
@@ -238,8 +220,8 @@ abstract class AdminControllerLib extends ControllerLib
 
         if (!$this->btns->isInit()) {
             $this->btns->setConf(
-                $this->twig,
-                $this->routerInterface,
+                $this->environment,
+                $this->router,
                 $this->tokenStorage,
                 $this->csrfTokenManager,
                 $this->guardService
@@ -249,9 +231,9 @@ abstract class AdminControllerLib extends ControllerLib
         return $this->btns;
     }
 
-    protected function classEntity($entity)
+    protected function classEntity($entity): string
     {
-        $class = str_replace('Labstag\\Entity\\', '', $entity::class);
+        $class = str_replace('Labstag\\Entity\\', '', (string) $entity::class);
 
         return strtolower($class);
     }
@@ -261,14 +243,17 @@ abstract class AdminControllerLib extends ControllerLib
         if ($entity instanceof User) {
             $routes = $this->guardService->getGuardRoutesForUser($entity);
 
-            return (0 != count($routes)) ? true : false;
+            return 0 != count($routes);
         }
 
         $routes = $this->guardService->getGuardRoutesForGroupe($entity);
 
-        return (0 != count($routes)) ? true : false;
+        return 0 != count($routes);
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getMethodsList(): array
     {
         return [
@@ -277,14 +262,9 @@ abstract class AdminControllerLib extends ControllerLib
         ];
     }
 
-    protected function getUrlAdmin(): array
-    {
-        return [];
-    }
-
     protected function isRouteEnable(
         string $route
-    )
+    ): bool
     {
         return $this->guardService->guardRoute(
             $route,
@@ -294,14 +274,15 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function listOrTrashRouteTrash(
         array $url,
-        ServiceEntityRepositoryLib $repository
+        ServiceEntityRepositoryLib $serviceEntityRepositoryLib
     )
     {
-        $entity = strtolower(
+        $environment = null;
+        $entity      = strtolower(
             str_replace(
                 'Labstag\\Entity\\',
                 '',
-                $repository->getClassName()
+                $serviceEntityRepositoryLib->getClassName()
             )
         );
         if (isset($url['list'])) {
@@ -320,12 +301,12 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        $twig             = $this->twig;
+        $twig             = $this->environment;
         $globals          = $twig->getGlobals();
         $modal            = $globals['modal'] ?? [];
         $modal['destroy'] = (isset($url['destroy']));
         $modal['restore'] = (isset($url['restore']));
-        $twig->addGlobal('modal', $modal);
+        $environment->addGlobal('modal', $modal);
 
         $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
@@ -345,7 +326,7 @@ abstract class AdminControllerLib extends ControllerLib
                             str_replace(
                                 'Labstag\\Entity\\',
                                 '',
-                                $repository->getClassName()
+                                $serviceEntityRepositoryLib->getClassName()
                             )
                         ),
                     ],
@@ -367,7 +348,7 @@ abstract class AdminControllerLib extends ControllerLib
                             str_replace(
                                 'Labstag\\Entity\\',
                                 '',
-                                $repository->getClassName()
+                                $serviceEntityRepositoryLib->getClassName()
                             )
                         ),
                     ],
@@ -384,9 +365,35 @@ abstract class AdminControllerLib extends ControllerLib
             $filename
         );
         $file = $path.'/'.$filename;
+
         $this->fileService->setAttachment($file, $attachment, $old);
     }
 
+    protected function render(
+        string $view,
+        array $parameters = [],
+        ?Response $response = null
+    ): Response
+    {
+        $parameters = $this->generateMenus($parameters);
+        $this->setBreadcrumbsPage();
+        $parameters = $this->setTitleHeader($parameters);
+
+        $parameters['btnadmin'] = $this->btnInstance()->get();
+
+        return parent::render($view, $parameters, $response);
+    }
+
+    protected function renderForm(string $view, array $parameters = [], ?Response $response = null): Response
+    {
+        $parameters = $this->generateMenus($parameters);
+
+        return parent::renderForm($view, $parameters, $response);
+    }
+
+    /**
+     * @return mixed[]
+     */
     protected function searchForm(): array
     {
         return [];
@@ -403,7 +410,9 @@ abstract class AdminControllerLib extends ControllerLib
             return new Attachment();
         }
 
-        $attachment = $this->getRepository(Attachment::class)->findOneBy(['id' => $attachmentField->getId()]);
+        /** @var AttachmentRepository $repository */
+        $repository = $this->getRepository(Attachment::class);
+        $attachment = $repository->findOneBy(['id' => $attachmentField->getId()]);
         if (!$attachment instanceof Attachment) {
             $attachment = new Attachment();
         }
@@ -413,48 +422,25 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function setBreadcrumbsPage()
     {
-        $request   = $this->requeststack->getCurrentRequest();
-        $all       = $request->attributes->all();
-        $route     = $all['_route'];
-        $data      = explode('_', (string) $route);
-        $method    = 'setBreadcrumbsPage';
-        $callables = get_class_methods($this);
-        $router    = $this->routerInterface;
+        $routeCollection     = $this->router->getRouteCollection();
+        $requestContext      = $this->router->getContext();
+        $traceableUrlMatcher = new TraceableUrlMatcher($routeCollection, $requestContext);
+        $request             = $this->requeststack->getCurrentRequest();
+        $attributes          = $request->attributes->all();
+        $pathinfo            = $request->getPathInfo();
+        $breadcrumb          = $this->getBreadcrumb($traceableUrlMatcher, $pathinfo, []);
+        $breadcrumb          = array_reverse($breadcrumb);
 
-        $request     = $this->requeststack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $routeParams = $all['_route_params'];
-        foreach ($data as $row) {
-            $method .= ucfirst($row);
-            if (!in_array($method, $callables)) {
-                continue;
-            }
-
-            $infos = $this->{$method}();
-            foreach ($infos as $breadcrumb) {
-                $this->setSingletons()->add(
-                    $breadcrumb['title'],
-                    $router->generate(
-                        $breadcrumb['route'],
-                        $routeParams,
-                    )
-                );
-            }
+        $all         = $routeCollection->all();
+        $routeParams = $attributes['_route_params'];
+        foreach ($breadcrumb as $row) {
+            $name  = $row['name'];
+            $route = $all[$name];
+            $this->addNewBreadcrumb($route, $routeParams, $name);
         }
 
         $data = $this->setSingletons()->get();
-        $this->twig->addGlobal('breadcrumbs', $data);
-    }
-
-    protected function setBreadcrumbsPageAdmin(): array
-    {
-        return [
-            [
-                'title'        => $this->translator->trans('admin.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin',
-                'route_params' => [],
-            ],
-        ];
+        $this->environment->addGlobal('breadcrumbs', $data);
     }
 
     protected function setBtnDelete(array $url, object $entity): void
@@ -478,6 +464,35 @@ abstract class AdminControllerLib extends ControllerLib
                 'id'     => $entity->getId(),
                 'entity' => $this->classEntity($entity),
             ]
+        );
+    }
+
+    protected function setBtnDeleties($routeType, $route, $routeParams, $repository): void
+    {
+        if ('trash' == $routeType) {
+            return;
+        }
+
+        $this->btnInstance()->addSupprimerSelection(
+            [
+                'redirect' => [
+                    'href'   => $route,
+                    'params' => $routeParams,
+                ],
+                'url'      => [
+                    'href'   => 'api_action_deleties',
+                    'params' => [
+                        'entity' => strtolower(
+                            str_replace(
+                                'Labstag\\Entity\\',
+                                '',
+                                (string) $repository->getClassName()
+                            )
+                        ),
+                    ],
+                ],
+            ],
+            'deleties'
         );
     }
 
@@ -506,6 +521,19 @@ abstract class AdminControllerLib extends ControllerLib
             $url['list'],
             'Liste',
         );
+    }
+
+    protected function setBtnListOrTrash(string $routeType, $domain)
+    {
+        $url                        = $domain->getUrlAdmin();
+        $serviceEntityRepositoryLib = $domain->getRepository();
+        $request                    = $this->requeststack->getCurrentRequest();
+        $all                        = $request->attributes->all();
+        $route                      = $all['_route'];
+        $routeParams                = $all['_route_params'];
+        $methods                    = $this->getMethodsList();
+        $this->addNewImport($this->entityManager, $serviceEntityRepositoryLib, $methods, $routeType, $url);
+        $this->setBtnDeleties($routeType, $route, $routeParams, $serviceEntityRepositoryLib);
     }
 
     protected function setBtnShow(array $url, object $entity): void
@@ -538,24 +566,47 @@ abstract class AdminControllerLib extends ControllerLib
         $this->setBtnDelete($url, $entity);
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function setHeaderTitle(): array
     {
         return [
-            'admin' => $this->translator->trans('admin.title', [], 'admin.header'),
+            'admin'        => $this->translator->trans('admin.title', [], 'admin.header'),
+            'admin_oauth'  => $this->translator->trans('oauth.title', [], 'admin.header'),
+            'admin_param'  => $this->translator->trans('param.title', [], 'admin.header'),
+            'admin_profil' => $this->translator->trans('profil.title', [], 'admin.header'),
+            'admin_trash'  => $this->translator->trans('trash.title', [], 'admin.header'),
         ];
+    }
+
+    protected function setPagination($routeType, $domain): PaginationInterface
+    {
+        $repository = $domain->getRepository();
+        $methods    = $this->getMethodsList();
+        $method     = $methods[$routeType];
+        $query      = $this->requeststack->getCurrentRequest()->query;
+        $get        = $query->all();
+        $limit      = $query->getInt('limit', 10);
+
+        return $this->paginator->paginate(
+            call_user_func([$repository, $method], $get),
+            $query->getInt('page', 1),
+            $limit
+        );
     }
 
     protected function setPositionEntity($request, $entityclass)
     {
-        $data = $request->request->all('position');
-        if (!empty($data)) {
-            $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+        $position = $request->request->get('position');
+        if (!empty($position)) {
+            $position = json_decode((string) $position, true, 512, JSON_THROW_ON_ERROR);
         }
 
-        if (is_array($data)) {
-            foreach ($data as $row) {
+        if (is_array($position)) {
+            foreach ($position as $row) {
                 $id         = $row['id'];
-                $position   = intval($row['position']);
+                $position   = (int) $row['position'];
                 $repository = $this->getRepository($entityclass);
                 $entity     = $repository->find($id);
                 if (!is_null($entity)) {
@@ -566,6 +617,36 @@ abstract class AdminControllerLib extends ControllerLib
         }
     }
 
+    protected function setSearchForms($parameters, $domain)
+    {
+        $query = $this->requeststack->getCurrentRequest()->query;
+        $get   = $query->all();
+        $limit = $query->getInt('limit', 10);
+        $form  = $domain->getSearchForm();
+        if (is_null($form)) {
+            return $parameters;
+        }
+
+        $get         = $query->all();
+        $data        = $domain->getSearchData();
+        $data->limit = $limit;
+        $data->search($get, $this->entityManager);
+        $route      = $this->requeststack->getCurrentRequest()->get('_route');
+        $url        = $this->generateUrl($route);
+        $searchForm = $this->createForm(
+            $form,
+            $data,
+            [
+                'attr'   => ['id' => 'searchform'],
+                'action' => $url,
+            ]
+        );
+
+        $parameters['searchform'] = $searchForm;
+
+        return $parameters;
+    }
+
     protected function setTrashIcon(
         $methods,
         $repository,
@@ -573,27 +654,26 @@ abstract class AdminControllerLib extends ControllerLib
         EntityManagerInterface $entityManager
     )
     {
-        /** @var EntityManager $entityManager */
-        $methodTrash = $methods['trash'];
-        $filters     = $entityManager->getFilters();
-        $filters->disable('softdeleteable');
-        $trash  = $repository->{$methodTrash}([]);
+        $methodTrash      = $methods['trash'];
+        $filterCollection = $entityManager->getFilters();
+        $filterCollection->disable('softdeleteable');
+
+        $trash  = call_user_func([$repository, $methodTrash], []);
         $result = $trash->getQuery()->getResult();
         $total  = is_countable($result) ? count($result) : 0;
-        $filters->enable('softdeleteable');
+        $filterCollection->enable('softdeleteable');
         if (0 != $total) {
             $this->btnInstance()->addBtnTrash(
                 $url['trash']
             );
         }
 
-        $twig              = $this->twig;
-        $globals           = $twig->getGlobals();
+        $globals           = $this->environment->getGlobals();
         $modal             = $globals['modal'] ?? [];
         $modal['delete']   = (isset($url['delete']));
         $modal['workflow'] = (isset($url['workflow']));
 
-        $twig->addGlobal('modal', $modal);
+        $this->environment->addGlobal('modal', $modal);
     }
 
     protected function showOrPreviewadd(array $url, string $routeType, $entity): void
@@ -606,7 +686,7 @@ abstract class AdminControllerLib extends ControllerLib
         $this->showOrPreviewaddBtnDestroy($url, $routeType, $entity);
     }
 
-    protected function showOrPreviewaddBtnDestroy($url, $routeType, $entity)
+    protected function showOrPreviewaddBtnDestroy($url, $routeType, $entity): void
     {
         if (!(isset($url['destroy']) && 'preview' == $routeType)) {
             return;
@@ -626,7 +706,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function showOrPreviewaddBtnEdit($url, $routeType, $entity)
+    protected function showOrPreviewaddBtnEdit($url, $routeType, $entity): void
     {
         if (!(isset($url['edit']) && 'show' == $routeType) || !$this->isGranted('edit', $entity)) {
             return;
@@ -645,7 +725,7 @@ abstract class AdminControllerLib extends ControllerLib
         $url,
         $routeType,
         $entity
-    )
+    ): void
     {
         if (!(isset($url['guard']) && 'show' == $routeType) || !$this->enableBtnGuard($entity)) {
             return;
@@ -660,7 +740,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function showOrPreviewaddBtnList($url, $routeType)
+    protected function showOrPreviewaddBtnList($url, $routeType): void
     {
         if (!(isset($url['list']) && 'show' == $routeType)) {
             return;
@@ -690,7 +770,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
     }
 
-    protected function showOrPreviewaddBtnTrash($url, $routeType)
+    protected function showOrPreviewaddBtnTrash($url, $routeType): void
     {
         if (!(isset($url['trash']) && 'preview' == $routeType)) {
             return;
@@ -702,13 +782,14 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function upload(UploadAnnotationReader $uploadAnnotReader, $entity)
+    protected function upload($entity): void
     {
-        if (!$uploadAnnotReader->isUploadable($entity)) {
+        $uploadAnnotationReader = $this->attachFormService->getUploadAnnotationReader();
+        if (!$uploadAnnotationReader->isUploadable($entity)) {
             return;
         }
 
-        $annotations = $uploadAnnotReader->getUploadableFields($entity);
+        $annotations = $uploadAnnotationReader->getUploadableFields($entity);
         foreach ($annotations as $property => $annotation) {
             $accessor = PropertyAccess::createPropertyAccessor();
             $file     = $accessor->getValue($entity, $property);
@@ -734,33 +815,61 @@ abstract class AdminControllerLib extends ControllerLib
         }
     }
 
-    private function addNewImport(
-        EntityManagerInterface $entityManager,
-        ServiceEntityRepositoryLib $repository,
-        array $methods,
-        string $routeType,
-        array $url = [],
-    )
+    private function addInBreadcrumb($breadcrumb, $trace)
     {
-        $this->listOrTrashRouteTrashsetTrashIcon(
-            $methods,
-            $repository,
-            $url,
-            $routeType,
-            $entityManager
+        $add = true;
+        foreach ($breadcrumb as $row) {
+            if ($row['name'] == $trace['name']) {
+                $add = false;
+
+                break;
+            }
+        }
+
+        if ($add) {
+            $breadcrumb[] = $trace;
+        }
+
+        return $breadcrumb;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function generateMenus(array $parameters = []): array
+    {
+        return array_merge(
+            $parameters,
+            [
+                'allmenu' => $this->menuService->createMenus(),
+            ]
         );
+    }
 
-        if (isset($url['new']) && 'trash' != $routeType) {
-            $this->btnInstance()->addBtnNew(
-                $url['new']
+    private function getBreadcrumb($matcher, $pathinfo, $breadcrumb)
+    {
+        $traces = $matcher->getTraces($pathinfo);
+        foreach ($traces as $trace) {
+            $testadmin = 0 != substr_count((string) $trace['name'], 'admin');
+            if (TraceableUrlMatcher::ROUTE_MATCHES == $trace['level'] && $testadmin) {
+                $breadcrumb = $this->addInBreadcrumb($breadcrumb, $trace);
+            }
+        }
+
+        if (0 != substr_count((string) $pathinfo, '/')) {
+            $newpathinfo = substr((string) $pathinfo, 0, strrpos((string) $pathinfo, '/') + 1);
+            if ($newpathinfo == $pathinfo) {
+                $newpathinfo = substr((string) $pathinfo, 0, strrpos((string) $pathinfo, '/'));
+            }
+
+            $breadcrumb = $this->getBreadcrumb(
+                $matcher,
+                $newpathinfo,
+                $breadcrumb
             );
         }
 
-        if (isset($url['import']) && 'trash' != $routeType) {
-            $this->btnInstance()->addBtnImport(
-                $url['import']
-            );
-        }
+        return $breadcrumb;
     }
 
     private function listOrTrashRouteTrashsetTrashIcon(
@@ -769,7 +878,7 @@ abstract class AdminControllerLib extends ControllerLib
         $url,
         $routeType,
         EntityManagerInterface $entityManager
-    )
+    ): void
     {
         if ('trash' == $routeType) {
             $this->listOrTrashRouteTrash($url, $repository);
@@ -780,5 +889,59 @@ abstract class AdminControllerLib extends ControllerLib
         if (isset($url['trash'])) {
             $this->setTrashIcon($methods, $repository, $url, $entityManager);
         }
+    }
+
+    private function modalParagraphs(): void
+    {
+        $globals             = $this->environment->getGlobals();
+        $modal               = $globals['modal'] ?? [];
+        $modal['paragraphs'] = true;
+        $this->environment->addGlobal('modal', $modal);
+    }
+
+    private function setPositionParagraphs(): void
+    {
+        $request    = $this->requeststack->getCurrentRequest();
+        $paragraphs = $request->request->all('paragraphs');
+        if (!is_array($paragraphs)) {
+            return;
+        }
+
+        $repository = $this->getRepository(Paragraph::class);
+        foreach ($paragraphs as $id => $position) {
+            $paragraph = $repository->find($id);
+            if (!$paragraph instanceof Paragraph) {
+                continue;
+            }
+
+            $paragraph->setPosition($position);
+            $repository->add($paragraph);
+        }
+    }
+
+    private function setTitleHeader($parameters)
+    {
+        $request = $this->requeststack->getCurrentRequest();
+        $all     = $request->attributes->all();
+        $route   = $all['_route'];
+        $headers = $this->domainService->getTitles();
+        $header  = '';
+        foreach ($headers as $key => $title) {
+            if ($key == $route) {
+                $header = $title;
+
+                break;
+            }
+
+            if (0 != substr_count((string) $route, (string) $key)) {
+                $header = $title;
+            }
+        }
+
+        if (!empty($header)) {
+            $parameters['headerTitle'] = $header;
+        }
+
+        return $parameters;
     }
 }

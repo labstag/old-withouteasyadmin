@@ -12,24 +12,24 @@ use Labstag\Entity\User;
  */
 class EmailUserRepository extends EmailRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, EmailUser::class);
+        parent::__construct($managerRegistry, EmailUser::class);
     }
 
     public function getEmailsUserVerif(User $user, bool $verif): array
     {
         $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $queryBuilder->where(
             'u.refuser=:user AND u.state LIKE :state'
         );
-        $query->setParameters(
+        $queryBuilder->setParameters(
             [
                 'user'  => $user,
                 'state' => $verif ? '%valide%' : '%averifier%',
             ]
         );
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 }

@@ -11,8 +11,8 @@ use Labstag\Entity\PhoneUser;
  */
 class PhoneUserRepository extends PhoneRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, PhoneUser::class);
+        parent::__construct($managerRegistry, PhoneUser::class);
     }
 }

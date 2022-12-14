@@ -1,20 +1,48 @@
 {
 	"folders": [
 		{
-			"name": "assets",
-			"path": "assets"
-		},
-		{
-			"name": "src",
-			"path": "apps\\src"
-		},
-		{
 			"name": "github",
 			"path": ".github"
 		},
 		{
+			"name": "assets",
+			"path": "assets"
+		},
+		{
+			"name": "config",
+			"path": "apps/config"
+		},
+		{
+			"name": "src",
+			"path": "apps/src"
+		},
+		{
+			"name": "vendor",
+			"path": "apps/vendor"
+		},
+		{
 			"name": "templates",
-			"path": "apps\\templates"
+			"path": "apps/templates"
+		},
+		{
+			"name": "migrations",
+			"path": "apps/migrations"
+		},
+		{
+			"name": "json",
+			"path": "apps/json"
+		},
+		{
+			"name": "translations",
+			"path": "apps/translations"
+		},
+		{
+			"name": "public",
+			"path": "apps/public"
+		},
+		{
+			"name": "apps",
+			"path": "apps"
 		},
 		{
  			"name": "/",
@@ -22,6 +50,6 @@
 		}
     ],
     "settings": {
-        "makefile.extensionOutputFolder": "./.vscode"
+		"terminal.integrated.cwd": "/home/dvp/perso/labstag"
     }
 }

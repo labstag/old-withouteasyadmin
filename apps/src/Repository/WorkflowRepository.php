@@ -8,15 +8,15 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class WorkflowRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Workflow::class);
+        parent::__construct($managerRegistry, Workflow::class);
     }
 
     public function toDeleteEntities(array $entities)
     {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $query = $this->createQueryBuilder('u');
+        $query->where(
             'u.entity NOT IN (:entities)'
         );
         $query->setParameters(
@@ -28,8 +28,8 @@ class WorkflowRepository extends ServiceEntityRepositoryLib
 
     public function toDeletetransition(string $entity, array $transitions)
     {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $query = $this->createQueryBuilder('u');
+        $query->where(
             'u.entity=:entity AND u.transition NOT IN (:transitions)'
         );
         $query->setParameters(

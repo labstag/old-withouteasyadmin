@@ -13,7 +13,10 @@ use Labstag\Lib\FixtureLib;
 
 class AddressUserFixtures extends FixtureLib implements DependentInterface
 {
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return [
             DataFixtures::class,
@@ -21,30 +24,32 @@ class AddressUserFixtures extends FixtureLib implements DependentInterface
         ];
     }
 
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $objectManager): void
     {
-        unset($manager);
+        unset($objectManager);
         $this->loadForeachUser(self::NUMBER_ADRESSE, 'addAddress');
     }
 
     protected function addAddress(
-        Generator $faker,
+        Generator $generator,
         User $user
     ): void
     {
-        $address = new AddressUser();
-        $old     = clone $address;
-        $address->setRefuser($user);
-        $address->setStreet($faker->streetAddress);
-        $address->setCity($faker->city);
-        $address->setCountry($faker->countryCode);
-        $address->setZipcode($faker->postcode);
-        $address->setType($faker->unique()->colorName);
-        $latitude  = $faker->latitude;
-        $longitude = $faker->longitude;
+        $addressUser = new AddressUser();
+        $old         = clone $addressUser;
+        $addressUser->setRefuser($user);
+        $addressUser->setStreet($generator->streetAddress);
+        $addressUser->setCity($generator->city);
+        $addressUser->setCountry($generator->countryCode);
+        $addressUser->setZipcode($generator->postcode);
+        $addressUser->setType($generator->unique()->colorName());
+
+        $latitude  = $generator->latitude;
+        $longitude = $generator->longitude;
         $gps       = $latitude.','.$longitude;
-        $address->setGps($gps);
-        $address->setPmr((bool) random_int(0, 1));
-        $this->addressUserRH->handle($old, $address);
+        $addressUser->setGps($gps);
+        $addressUser->setPmr((bool) random_int(0, 1));
+
+        $this->addressUserRequestHandler->handle($old, $addressUser);
     }
 }

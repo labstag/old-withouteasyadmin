@@ -12,23 +12,23 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class GroupeRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Groupe::class);
+        parent::__construct($managerRegistry, Groupe::class);
     }
 
     public function findName(string $field)
     {
         $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $queryBuilder->where(
             'u.name LIKE :name'
         );
-        $query->setParameters(
+        $queryBuilder->setParameters(
             [
                 'name' => '%'.$field.'%',
             ]
         );
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 }

@@ -11,8 +11,8 @@ use Labstag\Entity\LinkUser;
  */
 class LinkUserRepository extends LinkRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, LinkUser::class);
+        parent::__construct($managerRegistry, LinkUser::class);
     }
 }

@@ -13,23 +13,23 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class CategoryRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Category::class);
+        parent::__construct($managerRegistry, Category::class);
     }
 
     public function findAllParentForAdmin(array $get): QueryBuilder
     {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->where('a.parent IS NULL');
+        $query = $this->createQueryBuilder('a');
+        $query->where('a.parent IS NULL');
 
         return $this->setQuery($query, $get);
     }
 
     public function findByBookmark()
     {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin('a.bookmarks', 'b');
+        $query = $this->createQueryBuilder('a');
+        $query->leftJoin('a.bookmarks', 'b');
         $query->where('b.state LIKE :state');
         $query->setParameters(
             ['state' => '%publie%']
@@ -40,9 +40,9 @@ class CategoryRepository extends ServiceEntityRepositoryLib
 
     public function findByPost()
     {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin('a.posts', 'p');
-        $query->innerjoin('p.refuser', 'u');
+        $query = $this->createQueryBuilder('a');
+        $query->leftJoin('a.posts', 'p');
+        $query->innerJoin('p.refuser', 'u');
         $query->where('p.state LIKE :state');
         $query->setParameters(
             ['state' => '%publie%']
@@ -53,8 +53,8 @@ class CategoryRepository extends ServiceEntityRepositoryLib
 
     public function findName(string $field)
     {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $query = $this->createQueryBuilder('u');
+        $query->where(
             'u.name LIKE :name'
         );
         $query->setParameters(
@@ -68,8 +68,8 @@ class CategoryRepository extends ServiceEntityRepositoryLib
 
     public function findTrashParentForAdmin(array $get): QueryBuilder
     {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->where('a.deletedAt IS NOT NULL');
+        $query = $this->createQueryBuilder('a');
+        $query->where('a.deletedAt IS NOT NULL');
         $query->andwhere('a.parent IS NULL');
 
         return $this->setQuery($query, $get);

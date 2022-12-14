@@ -10,7 +10,10 @@ use Labstag\Lib\FixtureLib;
 
 class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return [
             DataFixtures::class,
@@ -18,34 +21,37 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
         ];
     }
 
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $objectManager): void
     {
-        unset($manager);
+        unset($objectManager);
         $this->loadForeach(self::NUMBER_PHONE, 'addPhone');
     }
 
     protected function addPhone(
-        Generator $faker,
+        Generator $generator,
         int $index,
         array $states
     ): void
     {
         $users     = $this->installService->getData('user');
-        $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
+        $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
         $user      = $this->getReference('user_'.$indexUser);
-        $number    = $faker->e164PhoneNumber;
-        $phone     = new PhoneUser();
-        $old       = clone $phone;
-        $phone->setRefuser($user);
-        $phone->setNumero($number);
-        $phone->setType($faker->word());
-        $phone->setCountry($faker->countryCode);
-        $this->addReference('phone_'.$index, $phone);
-        $this->phoneUserRH->handle($old, $phone);
-        $this->phoneUserRH->changeWorkflowState($phone, $states);
+        $number    = $generator->e164PhoneNumber;
+        $phoneUser = new PhoneUser();
+        $old       = clone $phoneUser;
+        $phoneUser->setRefuser($user);
+        $phoneUser->setNumero($number);
+        $phoneUser->setType($generator->word());
+        $phoneUser->setCountry($generator->countryCode);
+        $this->addReference('phone_'.$index, $phoneUser);
+        $this->phoneUserRequestHandler->handle($old, $phoneUser);
+        $this->phoneUserRequestHandler->changeWorkflowState($phoneUser, $states);
     }
 
-    protected function getStatePhone()
+    /**
+     * @return array<int, mixed[]>
+     */
+    protected function getStatePhone(): array
     {
         return [
             ['submit'],

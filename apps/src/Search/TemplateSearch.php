@@ -2,9 +2,9 @@
 
 namespace Labstag\Search;
 
-use Labstag\Lib\LibSearch;
+use Labstag\Lib\SearchLib;
 
-class TemplateSearch extends LibSearch
+class TemplateSearch extends SearchLib
 {
 
     public $name;

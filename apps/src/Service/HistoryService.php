@@ -2,20 +2,23 @@
 
 namespace Labstag\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\History;
+use Labstag\Repository\HistoryRepository;
 use Spipu\Html2Pdf\Html2Pdf;
 use Twig\Environment;
 
 class HistoryService
 {
 
-    private $filename;
+    private ?string $filename = null;
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        private Environment $twig
+        private readonly Environment $environment,
+        protected HistoryRepository $historyRepository
     )
     {
     }
@@ -29,20 +32,20 @@ class HistoryService
         string $fileDirectory,
         string $historyId,
         bool $all
-    )
+    ): void
     {
-        $history = $this->getRepository(History::class)->find($historyId);
+        $history = $this->historyRepository->find($historyId);
         if (!$history instanceof History || (false == $all && !in_array('publie', (array) $history->getState()))) {
             return;
         }
 
-        $dataChapters = $this->getChapters($history, $all);
-        if (0 == count($dataChapters)) {
+        $arrayCollection = $this->getChapters($history, $all);
+        if (0 == count($arrayCollection)) {
             return;
         }
 
-        $pdf  = $this->generateHistoryPdf($history, $dataChapters);
-        $path = sprintf(
+        $html2Pdf = $this->generateHistoryPdf($history, $arrayCollection);
+        $path     = sprintf(
             '%s/%s',
             $fileDirectory,
             'history'
@@ -56,35 +59,31 @@ class HistoryService
             $path,
             $history->getSlug().($all ? '-all' : '')
         );
-        $pdf->output($this->filename, 'F');
+        $html2Pdf->output($this->filename, 'F');
     }
 
-    protected function getRepository(string $entity)
+    private function generateHistoryPdf(History $history, Collection $collection): Html2Pdf
     {
-        return $this->entityManager->getRepository($entity);
-    }
-
-    private function generateHistoryPdf(History $history, Collection $dataChapters): Html2Pdf
-    {
-        $tmpfile = tmpfile();
-        $data    = stream_get_meta_data($tmpfile);
-        $pdf     = new Html2Pdf();
-        $html    = $this->twig->render(
+        $tmpfile  = tmpfile();
+        $data     = stream_get_meta_data($tmpfile);
+        $html2Pdf = new Html2Pdf();
+        $html     = $this->environment->render(
             'pdf/history/index.html.twig',
             [
                 'history'  => $history,
-                'chapters' => $dataChapters,
+                'chapters' => $collection,
             ]
         );
-        $pdf->writeHTML($html);
-        $pdf->createIndex('Table des matières', 25, 12, false, true, 3);
-        $file = $data['uri'].'.pdf';
-        $pdf->output($file, 'F');
+        $html2Pdf->writeHTML($html);
+        $html2Pdf->createIndex('Table des matières', 25, 12, false, true, 3);
 
-        return $pdf;
+        $file = $data['uri'].'.pdf';
+        $html2Pdf->output($file, 'F');
+
+        return $html2Pdf;
     }
 
-    private function getChapters(History $history, bool $all): Collection
+    private function getChapters(History $history, bool $all): ArrayCollection
     {
         return $all ? $history->getChapters() : $history->getChaptersPublished();
     }

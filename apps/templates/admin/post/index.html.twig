@@ -12,6 +12,9 @@
                     'name': 'post.user'|trans({}, 'admin.messages')
                 },
                 {
+                    'name': 'post.paragraphs'|trans({}, 'admin.messages')
+                },
+                {
                     'name': 'post.category'|trans({}, 'admin.messages')
                 },
                 {
@@ -21,6 +24,9 @@
                 {
                     'field': 'a.state',
                     'name': 'workflow.state'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'post.url'|trans({}, 'admin.messages')
                 },
                 {
                     'name': 'post.workflow'|trans({}, 'admin.messages')
@@ -33,12 +39,18 @@
                 <tr data-id="{{ entity.id }}">
                     <td>{{ entity.title }}</td>
                     <td>{{ entity.refuser }}</td>
+                    <td>{{ entity.paragraphs|length }}</td>
                     <td>{{ entity.refcategory }}</td>
                     <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
                     <td>
                         {% for state in workflow_marked_places(entity) %}
                             {{ state }}
                         {% endfor %}
+                    </td>
+                    <td>
+                        <a href="{{ path('front_article', {'slug': entity.slug}) }}" target="_blank">
+                            {{ 'page.url'|trans({}, 'admin.messages') }}
+                        </a>
                     </td>
                     <td>
                         {{ macro_admin.workflow(entity, actions) }}

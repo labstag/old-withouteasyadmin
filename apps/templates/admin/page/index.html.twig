@@ -13,11 +13,10 @@
                     'name': 'page.slug'|trans({}, 'admin.messages')
                 },
                 {
-                    'field': 'a.frontslug',
-                    'name': 'page.frontslug'|trans({}, 'admin.messages')
+                    'name': 'page.paragraphs'|trans({}, 'admin.messages')
                 },
                 {
-                    'name': 'page.reflayout'|trans({}, 'admin.messages')
+                    'name': 'page.url'|trans({}, 'admin.messages')
                 }
             ] %}
             {{ macro_admin.thead(theads, pagination, true) }}
@@ -27,8 +26,18 @@
                 <tr data-id="{{ entity.id }}">
                     <td>{{ entity.name }}</td>
                     <td>{{ entity.slug }}</td>
-                    <td>{{ entity.frontslug }}</td>
-                    <td>{{ entity.reflayout.name }}</td>
+                    <td>
+                        <ul>
+                            {% for paragraph in entity.paragraphs %}
+                                <li>{{ paragraph_name(paragraph.type) }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <a href="{{ path('front', {'slug': entity.slug}) }}" target="_blank">
+                            {{ 'page.url'|trans({}, 'admin.messages') }}
+                        </a>
+                    </td>
                     <td>
                         {{ macro_admin.actions(entity, actions) }}
                     </td>

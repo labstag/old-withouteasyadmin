@@ -5,6 +5,7 @@ namespace Labstag\Controller\Api;
 use Labstag\Entity\Category;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Libelle;
+use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,23 +22,31 @@ class SearchController extends ApiControllerLib
     {
         $attributes = $request->attributes->all();
         $route      = $attributes['_route'];
-        $entityName = ('api_search_category' == $route) ? Category::class : null;
-        $entityName = ('api_search_group' == $route) ? Groupe::class : null;
-        $entityName = ('api_search_postlibelle' == $route) ? Libelle::class : null;
-        $function   = ('api_search_user' == $route) ? 'findUserName' : 'findName';
+        $entityName = match ($route) {
+            'api_search_user' => User::class,
+            'api_search_category' => Category::class,
+            'api_search_group' => Groupe::class,
+            'api_search_postlibelle' => Libelle::class,
+            default => null
+        };
+
+        $function = match ($route) {
+            'api_search_user' => 'findUserName',
+            default => 'fidName'
+        };
 
         return $this->showData($request, $entityName, $function);
     }
 
-    private function showData($request, $entity, $method)
+    private function showData($request, $entity, $method): JsonResponse
     {
         $get    = $request->query->all();
         $return = ['isvalid' => false];
-        if (!array_key_exists('name', $get)) {
+        if (!array_key_exists('name', $get) || is_null($entity)) {
             return $this->json($return);
         }
 
-        $data   = $this->getRepository($entity)->{$method}($get['name']);
+        $data   = call_user_func([$this->getRepository($entity), $method], $get['name']);
         $result = [
             'results' => [],
         ];

@@ -15,12 +15,12 @@ class AddressUserType extends AddressType
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        parent::buildForm($builder, $options);
-        $builder->add(
+        parent::buildForm($formBuilder, $options);
+        $formBuilder->add(
             'refuser',
             SearchableType::class,
             [
@@ -36,9 +36,9 @@ class AddressUserType extends AddressType
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => AddressUser::class,
             ]

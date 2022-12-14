@@ -7,6 +7,7 @@ use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AddressType extends AbstractTypeLib
 {
@@ -14,12 +15,12 @@ abstract class AddressType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'street',
             TextType::class,
             [
@@ -30,20 +31,11 @@ abstract class AddressType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'country',
-            FlagCountryType::class,
-            [
-                'label' => $this->translator->trans('address.country.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('address.country.help', [], 'admin.form'),
-                'attr'  => [
-                    'is'          => 'select-country',
-                    'choices'     => 'true',
-                    'placeholder' => $this->translator->trans('address.country.placeholder', [], 'admin.form'),
-                ],
-            ]
+            FlagCountryType::class
         );
-        $builder->add(
+        $formBuilder->add(
             'zipcode',
             TextType::class,
             [
@@ -55,7 +47,7 @@ abstract class AddressType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'city',
             TextType::class,
             [
@@ -67,7 +59,7 @@ abstract class AddressType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'gps',
             TextType::class,
             [
@@ -79,7 +71,7 @@ abstract class AddressType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'type',
             TextType::class,
             [
@@ -90,13 +82,21 @@ abstract class AddressType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'pmr',
             CheckboxType::class,
             [
                 'label' => $this->translator->trans('address.pmr.label', [], 'admin.form'),
                 'help'  => $this->translator->trans('address.pmr.help', [], 'admin.form'),
             ]
+        );
+    }
+
+    public function configureOptions(OptionsResolver $optionsResolver): void
+    {
+        // Configure your form options here
+        $optionsResolver->setDefaults(
+            ['entity' => null]
         );
     }
 }

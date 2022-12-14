@@ -11,11 +11,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class MetaSiteType extends AbstractTypeLib
 {
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'theme-color',
             ColorType::class,
             [
@@ -23,7 +23,7 @@ class MetaSiteType extends AbstractTypeLib
                 'help'  => $this->translator->trans('param.metasite.theme-color.help', [], 'admin.form'),
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'viewport',
             TextType::class,
             [
@@ -39,7 +39,7 @@ class MetaSiteType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'description',
             TextType::class,
             [
@@ -55,7 +55,7 @@ class MetaSiteType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'keywords',
             TextType::class,
             [
@@ -74,10 +74,10 @@ class MetaSiteType extends AbstractTypeLib
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         // Configure your form options here
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

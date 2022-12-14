@@ -9,7 +9,7 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 class EnqueueMethod
 {
-    public function __construct(protected MessageBusInterface $bus)
+    public function __construct(protected MessageBusInterface $messageBus)
     {
     }
 
@@ -17,19 +17,19 @@ class EnqueueMethod
         string $service,
         string $method,
         array $params = [],
-        ?DateTimeInterface $date = null
+        ?DateTimeInterface $dateTime = null
     ): void
     {
         $stamps = [];
         // Le service doit être appelé avec un délai
-        if (null !== $date) {
-            $delay = 1000 * ($date->getTimestamp() - time());
+        if (null !== $dateTime) {
+            $delay = 1000 * ($dateTime->getTimestamp() - time());
             if ($delay > 0) {
                 $stamps[] = new DelayStamp($delay);
             }
         }
 
-        $this->bus->dispatch(
+        $this->messageBus->dispatch(
             new ServiceMethodMessage($service, $method, $params),
             $stamps
         );

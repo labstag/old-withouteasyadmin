@@ -72,11 +72,11 @@ class Groupe implements Stringable
         return (string) $this->getName();
     }
 
-    public function addRoute(RouteGroupe $route): self
+    public function addRoute(RouteGroupe $routeGroupe): self
     {
-        if (!$this->routes->contains($route)) {
-            $this->routes[] = $route;
-            $route->setRefgroupe($this);
+        if (!$this->routes->contains($routeGroupe)) {
+            $this->routes[] = $routeGroupe;
+            $routeGroupe->setRefgroupe($this);
         }
 
         return $this;
@@ -132,14 +132,9 @@ class Groupe implements Stringable
         return $this->workflowGroupes;
     }
 
-    public function removeRoute(RouteGroupe $route): self
+    public function removeRoute(RouteGroupe $routeGroupe): self
     {
-        if ($this->routes->removeElement($route)) {
-            // set the owning side to null (unless already changed)
-            if ($route->getRefgroupe() === $this) {
-                $route->setRefgroupe(null);
-            }
-        }
+        $this->removeElementGroupe($this->routes, $routeGroupe);
 
         return $this;
     }
@@ -159,12 +154,7 @@ class Groupe implements Stringable
 
     public function removeWorkflowGroupe(WorkflowGroupe $workflowGroupe): self
     {
-        if ($this->workflowGroupes->removeElement($workflowGroupe)) {
-            // set the owning side to null (unless already changed)
-            if ($workflowGroupe->getRefgroupe() === $this) {
-                $workflowGroupe->setRefgroupe(null);
-            }
-        }
+        $this->removeElementGroupe($this->workflowGroupes, $workflowGroupe);
 
         return $this;
     }
@@ -181,5 +171,12 @@ class Groupe implements Stringable
         $this->name = $name;
 
         return $this;
+    }
+
+    private function removeElementGroupe($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getRefgroupe() === $this) {
+            $variable->setRefgroupe(null);
+        }
     }
 }

@@ -15,27 +15,16 @@ class AddressUserType extends SearchAbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'country',
             FlagCountryType::class,
-            [
-                'required' => false,
-                'label'    => $this->translator->trans('addressuser.country.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('addressuser.country.help', [], 'admin.search.form'),
-                'attr'     => [
-                    'placeholder' => $this->translator->trans(
-                        'addressuser.country.placeholder',
-                        [],
-                        'admin.search.form'
-                    ),
-                ],
-            ]
+            ['required' => false]
         );
-        $builder->add(
+        $formBuilder->add(
             'city',
             TextType::class,
             [
@@ -47,13 +36,13 @@ class AddressUserType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $this->addRefUser($builder);
-        parent::buildForm($builder, $options);
+        $this->addRefUser($formBuilder);
+        parent::buildForm($formBuilder, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class'      => AddressUserSearch::class,
                 'csrf_protection' => false,

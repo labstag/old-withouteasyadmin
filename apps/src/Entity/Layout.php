@@ -6,21 +6,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Entity\Block\Custom;
 use Labstag\Repository\LayoutRepository;
-use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=LayoutRepository::class)
  */
-class Layout implements Stringable
+class Layout
 {
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\ManyToOne(targetEntity=Custom::class, inversedBy="layouts")
      */
-    private $content;
+    private $custom;
 
     /**
      * @ORM\Id
@@ -36,33 +36,34 @@ class Layout implements Stringable
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Page::class, mappedBy="reflayout", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="layout", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $pages;
+    private $paragraphs;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $url = [];
 
     public function __construct()
     {
-        $this->pages = new ArrayCollection();
+        $this->paragraphs = new ArrayCollection();
     }
 
-    public function __toString(): string
+    public function addParagraph(Paragraph $paragraph): self
     {
-        return (string) $this->getName();
-    }
-
-    public function addPage(Page $page): self
-    {
-        if (!$this->pages->contains($page)) {
-            $this->pages[] = $page;
-            $page->setReflayout($this);
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setLayout($this);
         }
 
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getCustom(): ?Custom
     {
-        return $this->content;
+        return $this->custom;
     }
 
     public function getId(): ?string
@@ -75,26 +76,32 @@ class Layout implements Stringable
         return $this->name;
     }
 
-    public function getPages(): Collection
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
     {
-        return $this->pages;
+        return $this->paragraphs;
     }
 
-    public function removePage(Page $page): self
+    public function getUrl(): ?array
     {
-        if ($this->pages->removeElement($page)) {
-            // set the owning side to null (unless already changed)
-            if ($page->getReflayout() === $this) {
-                $page->setReflayout(null);
-            }
+        return $this->url;
+    }
+
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphs->removeElement($paragraph) && $paragraph->getLayout() === $this) {
+            $paragraph->setLayout(null);
         }
 
         return $this;
     }
 
-    public function setContent(?string $content): self
+    public function setCustom(?Custom $custom): self
     {
-        $this->content = $content;
+        $this->custom = $custom;
 
         return $this;
     }
@@ -102,6 +109,13 @@ class Layout implements Stringable
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function setUrl(?array $url): self
+    {
+        $this->url = $url;
 
         return $this;
     }

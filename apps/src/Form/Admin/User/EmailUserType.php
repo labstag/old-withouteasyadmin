@@ -16,12 +16,12 @@ class EmailUserType extends EmailType
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        parent::buildForm($builder, $options);
-        $builder->add(
+        parent::buildForm($formBuilder, $options);
+        $formBuilder->add(
             'principal',
             CheckboxType::class,
             [
@@ -29,7 +29,7 @@ class EmailUserType extends EmailType
                 'help'  => $this->translator->trans('emailuser.principal.help', [], 'admin.form'),
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'refuser',
             SearchableType::class,
             [
@@ -45,9 +45,9 @@ class EmailUserType extends EmailType
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => EmailUser::class,
             ]

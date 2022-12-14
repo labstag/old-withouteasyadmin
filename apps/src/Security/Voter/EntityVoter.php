@@ -4,6 +4,7 @@ namespace Labstag\Security\Voter;
 
 use Labstag\Entity\AddressUser;
 use Labstag\Entity\Attachment;
+use Labstag\Entity\Block;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\Category;
 use Labstag\Entity\Chapter;
@@ -21,6 +22,7 @@ use Labstag\Entity\Menu;
 use Labstag\Entity\Page;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\Post;
+use Labstag\Entity\Render;
 use Labstag\Entity\Route;
 use Labstag\Entity\Template;
 use Labstag\Entity\User;
@@ -29,30 +31,17 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class EntityVoter extends Voter
 {
-    public const NBR_CHAPTER = 2;
+    /**
+     * @var int
+     */
+    final public const NBR_CHAPTER = 2;
 
-    protected function canEditEdito(Edito $entity, TokenInterface $token): bool
+    protected function canMoveHistory(History $history, TokenInterface $token): bool
     {
         unset($token);
-        $state = $entity->getState();
+        $collection = $history->getChapters();
 
-        return !(in_array($state, ['publie', 'rejete']));
-    }
-
-    protected function canEditMemo(Memo $entity, TokenInterface $token): bool
-    {
-        unset($token);
-        $state = $entity->getState();
-
-        return !(in_array($state, ['publie', 'rejete']));
-    }
-
-    protected function canMoveHistory(History $entity, TokenInterface $token): bool
-    {
-        unset($token);
-        $chapters = $entity->getChapters();
-
-        return count($chapters) >= self::NBR_CHAPTER;
+        return count($collection) >= self::NBR_CHAPTER;
     }
 
     protected function supports($attribute, $subject): bool
@@ -61,6 +50,7 @@ class EntityVoter extends Voter
         $entities = [
             AddressUser::class,
             Attachment::class,
+            Block::class,
             Bookmark::class,
             Category::class,
             Chapter::class,
@@ -78,6 +68,7 @@ class EntityVoter extends Voter
             Page::class,
             PhoneUser::class,
             Post::class,
+            Render::class,
             Route::class,
             Template::class,
             User::class,
@@ -98,19 +89,9 @@ class EntityVoter extends Voter
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $state = true;
-        if ($subject instanceof Edito) {
-            $state = match ($attribute) {
-                'edit' => $this->canEditEdito($subject, $token),
-                default => true,
-            };
-        } elseif ($subject instanceof History) {
+        if ($subject instanceof History) {
             $state = match ($attribute) {
                 'move' => $this->canMoveHistory($subject, $token),
-                default => true,
-            };
-        } elseif ($subject instanceof Memo) {
-            $state = match ($attribute) {
-                'edit' => $this->canEditMemo($subject, $token),
                 default => true,
             };
         }

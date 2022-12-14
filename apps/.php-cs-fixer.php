@@ -1,18 +1,21 @@
 <?php
 /*
  * This document has been generated with
- * https://mlocati.github.io/php-cs-fixer-configurator/#version:3.1.0|configurator
+ * https://mlocati.github.io/php-cs-fixer-configurator/#version:3.11.0|configurator
  * you can change this configuration by importing this file.
  */
 $config = new PhpCsFixer\Config();
 return $config
     ->setRules([
+        '@PSR12' => true,
         // Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.
         'align_multiline_comment' => true,
         // Each element of an array must be indented exactly once.
         'array_indentation' => true,
         // PHP arrays should be declared using the configured syntax.
         'array_syntax' => true,
+        // Use the null coalescing assignment operator `??=` where possible.
+        'assign_null_coalescing_to_coalesce_equal' => true,
         // Converts backtick operators to `shell_exec` calls.
         'backtick_to_shell_exec' => true,
         // Binary operators should be surrounded by space as configured.
@@ -29,7 +32,7 @@ return $config
         'cast_spaces' => true,
         // Class, trait and interface elements must be separated with one or none blank line.
         'class_attributes_separation' => true,
-        // Whitespace around the keywords of a class, trait or interfaces definition should be one space.
+        // Whitespace around the keywords of a class, trait, enum or interfaces definition should be one space.
         'class_definition' => true,
         // Namespace must not contain spacing, comments or PHPDoc.
         'clean_namespace' => true,
@@ -43,6 +46,10 @@ return $config
         'concat_space' => true,
         // The PHP constants `true`, `false`, and `null` MUST be written using the correct casing.
         'constant_case' => true,
+        // The body of each control structure MUST be enclosed within braces.
+        'control_structure_braces' => true,
+        // Control structure continuation keyword must be on the configured line.
+        'control_structure_continuation_position' => true,
         // Equal sign in declare statement should be surrounded by spaces or not following configuration.
         'declare_equal_normalize' => true,
         // There must not be spaces around `declare` statement parentheses.
@@ -97,13 +104,15 @@ return $config
         'method_argument_space' => true,
         // Method chaining MUST be properly indented. Method chaining with different levels of indentation is not supported.
         'method_chaining_indentation' => true,
+        // DocBlocks must start with two asterisks, multiline comments must start with a single asterisk, after the opening slash. Both must end with a single asterisk before the closing slash.
+        'multiline_comment_opening_closing' => true,
         // Forbid multi-line whitespace before the closing semicolon or move the semicolon to the new line for chained calls.
         'multiline_whitespace_before_semicolons' => true,
         // Function defined by PHP should be called using the correct casing.
         'native_function_casing' => true,
         // Native type hints for functions should use the correct case.
         'native_function_type_declaration_casing' => true,
-        // All instances created with new keyword must be followed by braces.
+        // All instances created with `new` keyword must (not) be followed by braces.
         'new_with_braces' => true,
         // Master language constructs shall be used instead of aliases.
         'no_alias_language_construct_call' => true,
@@ -135,6 +144,8 @@ return $config
         'no_mixed_echo_print' => true,
         // Operator `=>` should not be surrounded by multi-line whitespaces.
         'no_multiline_whitespace_around_double_arrow' => true,
+        // There must not be more than one statement per line.
+        'no_multiple_statements_per_line' => true,
         // Short cast `bool` using double exclamation mark should not be used.
         'no_short_bool_cast' => true,
         // Single-line whitespace before closing semicolon are prohibited.
@@ -167,6 +178,8 @@ return $config
         'no_unused_imports' => true,
         // There should not be useless `else` cases.
         'no_useless_else' => true,
+        // There should not be an empty `return` statement at the end of a function.
+        'no_useless_return' => true,
         // In array declaration, there MUST NOT be a whitespace before each comma.
         'no_whitespace_before_comma_in_array' => true,
         // Remove trailing whitespace at the end of blank lines.
@@ -177,7 +190,7 @@ return $config
         'nullable_type_declaration_for_default_null_value' => true,
         // There should not be space before or after object operators `->` and `?->`.
         'object_operator_without_whitespace' => true,
-        // Orders the elements of classes/interfaces/traits.
+        // Orders the elements of classes/interfaces/traits/enums.
         'ordered_class_elements' => ['sort_algorithm'=>'alpha'],
         // Ordering `use` statements.
         'ordered_imports' => true,
@@ -207,7 +220,7 @@ return $config
         'phpdoc_return_self_reference' => true,
         // Scalar types should always be written in the same form. `int` not `integer`, `bool` not `boolean`, `float` not `real` or `double`.
         'phpdoc_scalar' => true,
-        // Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single blank line.
+        // Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line.
         'phpdoc_separation' => true,
         // Single line `@var` PHPDoc should have proper spacing.
         'phpdoc_single_line_var_spacing' => true,
@@ -233,7 +246,7 @@ return $config
         'protected_to_private' => true,
         // Local, dynamic and directly referenced variables should not be assigned and directly returned by a function or method.
         'return_assignment' => true,
-        // There should be one or no space before colon, and one space after it in return type declarations, according to configuration.
+        // Adjust spacing around colon in return type declarations and backed enum types.
         'return_type_declaration' => true,
         // Instructions must be terminated with a semicolon.
         'semicolon_after_instruction' => true,
@@ -281,11 +294,11 @@ return $config
         'ternary_operator_spaces' => true,
         // Use `null` coalescing operator `??` where possible. Requires PHP >= 7.0.
         'ternary_to_null_coalescing' => true,
-        // Multi-line arrays, arguments list and parameters list must have a trailing comma.
+        // Multi-line arrays, arguments list, parameters list and `match` expressions must have a trailing comma.
         'trailing_comma_in_multiline' => true,
         // Arrays should be formatted like function/method arguments, without leading or trailing single line space.
         'trim_array_spaces' => true,
-        // A single space or none should be around union type operator.
+        // A single space or none should be around union type and intersection type operators.
         'types_spaces' => true,
         // Unary operators should be placed adjacent to their operands.
         'unary_operator_spaces' => true,

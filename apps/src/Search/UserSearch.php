@@ -2,9 +2,9 @@
 
 namespace Labstag\Search;
 
-use Labstag\Lib\LibSearch;
+use Labstag\Lib\SearchLib;
 
-class UserSearch extends LibSearch
+class UserSearch extends SearchLib
 {
 
     public $email;

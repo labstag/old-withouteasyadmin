@@ -2,31 +2,31 @@
 
 namespace Labstag\Controller\Admin;
 
+use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
-use Labstag\Form\Admin\PostType;
-use Labstag\Form\Admin\Search\PostType as SearchPostType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\PostRepository;
 use Labstag\RequestHandler\PostRequestHandler;
-use Labstag\Search\PostSearch;
-use Labstag\Service\AttachFormService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/post')]
 class PostController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_post_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_post_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Post $post, PostRequestHandler $requestHandler): Response
+    public function edit(
+        ?Post $post
+    ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
-            PostType::class,
-            !is_null($post) ? $post : new Post(),
+            $this->getDomainEntity(),
+            is_null($post) ? new Post() : $post,
             'admin/post/form.html.twig'
         );
     }
@@ -39,9 +39,31 @@ class PostController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Post::class,
+            $this->getDomainEntity(),
             'admin/post/index.html.twig',
         );
+    }
+
+    #[Route(path: '/new', name: 'admin_post_new', methods: ['GET', 'POST'])]
+    public function new(
+        PostRepository $postRepository,
+        PostRequestHandler $postRequestHandler,
+        Security $security
+    ): RedirectResponse
+    {
+        $user = $security->getUser();
+
+        $post = new Post();
+        $post->setPublished(new DateTime());
+        $post->setRemark(false);
+        $post->setTitle(Uuid::v1());
+        $post->setRefuser($user);
+
+        $old = clone $post;
+        $postRepository->add($post);
+        $postRequestHandler->handle($old, $post);
+
+        return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
     }
 
     /**
@@ -52,109 +74,14 @@ class PostController extends AdminControllerLib
     public function showOrPreview(Post $post): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $post,
             'admin/post/show.html.twig'
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_post_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_post_index',
-            'new'      => 'admin_post_new',
-            'preview'  => 'admin_post_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_post_show',
-            'trash'    => 'admin_post_trash',
-            'workflow' => 'api_action_workflow',
-        ];
-    }
-
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchPostType::class,
-            'data' => new PostSearch(),
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPost(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('post.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_post_index',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPostEdit(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('post.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_post_edit',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPostNew(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('post.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_post_new',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPostPreview(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_post_trash',
-            ],
-            [
-                'title' => $this->translator->trans('post.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_post_preview',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPostShow(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('post.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_post_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPostTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_post_trash',
-            ],
-        ];
-    }
-
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return array_merge(
-            $headers,
-            [
-                'admin_post' => $this->translator->trans('post.title', [], 'admin.header'),
-            ]
-        );
+        return $this->domainService->getDomain(Post::class);
     }
 }

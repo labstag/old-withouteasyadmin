@@ -5,6 +5,7 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\User;
+use Labstag\Repository\ConfigurationRepository;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
@@ -17,12 +18,16 @@ class DataService
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        protected CacheInterface $cache
+        protected CacheInterface $cache,
+        protected ConfigurationRepository $configurationRepository
     )
     {
         $this->setData();
     }
 
+    /**
+     * @return array<int|string, mixed>
+     */
     public function compute(ItemInterface $item): array
     {
         $item->expiresAfter(1800);
@@ -30,11 +35,17 @@ class DataService
         return $this->getConfiguration();
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getConfig(): array
     {
         return $this->config;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getOauthActivated(?User $user = null): array
     {
         if (is_null($user)) {
@@ -61,9 +72,12 @@ class DataService
         return $oauthActivateds;
     }
 
-    protected function getConfiguration()
+    /**
+     * @return array<int|string, mixed>
+     */
+    protected function getConfiguration(): array
     {
-        $data   = $this->getRepository(Configuration::class)->findAll();
+        $data   = $this->configurationRepository->findAll();
         $config = [];
         // @var Configuration $row
         foreach ($data as $row) {
@@ -75,19 +89,11 @@ class DataService
         return $config;
     }
 
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
-    }
-
     protected function setData(): void
     {
         $config = $this->cache->get(
             'configuration',
-            [
-                $this,
-                'compute',
-            ]
+            $this->compute(...)
         );
         if (0 === (is_countable($config) ? count($config) : 0)) {
             $config = $this->getConfiguration();

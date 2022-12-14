@@ -5,6 +5,7 @@ namespace Labstag\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\User;
+use Labstag\Repository\UserRepository;
 use Labstag\Service\ErrorService;
 use Labstag\Service\OauthService;
 use League\OAuth2\Client\Provider\AbstractProvider;
@@ -33,7 +34,10 @@ class OauthAuthenticator extends AbstractAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    /**
+     * @var string
+     */
+    final public const LOGIN_ROUTE = 'app_login';
 
     protected string $oauthCode;
 
@@ -47,21 +51,19 @@ class OauthAuthenticator extends AbstractAuthenticator
         protected EntityManagerInterface $entityManager,
         protected UrlGeneratorInterface $urlGenerator,
         protected CsrfTokenManagerInterface $csrfTokenManager,
-        protected UserPasswordHasherInterface $passwordEncoder,
+        protected UserPasswordHasherInterface $userPasswordHasher,
         protected OauthService $oauthService,
         protected RequestStack $requestStack,
-        protected TokenStorageInterface $token,
-        protected LoggerInterface $logger
+        protected TokenStorageInterface $tokenStorage,
+        protected LoggerInterface $logger,
+        protected UserRepository $userRepository
     )
     {
         // @var Request $request
-        $request = $this->requestStack->getCurrentRequest();
-
-        $this->request = $request;
+        $this->request = $this->requestStack->getCurrentRequest();
 
         $attributes      = $this->request->attributes;
-        $oauthCode       = $this->setOauthCode($attributes);
-        $this->oauthCode = $oauthCode;
+        $this->oauthCode = $this->setOauthCode($attributes);
     }
 
     public function authenticate(Request $request): Passport
@@ -82,18 +84,18 @@ class OauthAuthenticator extends AbstractAuthenticator
 
         try {
             // @var AccessToken $tokenProvider
-            $tokenProvider = $provider->getAccessToken(
+            $accessToken = $provider->getAccessToken(
                 'authorization_code',
                 [
                     'code' => $query['code'],
                 ]
             );
             // @var mixed $userOauth
-            $userOauth = $provider->getResourceOwner($tokenProvider);
-            $data      = $userOauth->toArray();
-            $client    = $attributes['_route_params']['oauthCode'];
-            $identity  = $this->oauthService->getIdentity($data, $client);
-            $user      = $this->getRepository(User::class)->findOauth(
+            $resourceOwner = $provider->getResourceOwner($accessToken);
+            $data          = $resourceOwner->toArray();
+            $client        = $attributes['_route_params']['oauthCode'];
+            $identity      = $this->oauthService->getIdentity($data, $client);
+            $user          = $this->userRepository->findOauth(
                 $identity,
                 $client
             );
@@ -109,10 +111,13 @@ class OauthAuthenticator extends AbstractAuthenticator
         }
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    public function onAuthenticationFailure(
+        Request $request,
+        AuthenticationException $authenticationException
+    ): ?Response
     {
         if ($request->hasSession()) {
-            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
+            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $authenticationException);
         }
 
         $url = $this->getLoginUrl($request);
@@ -142,9 +147,10 @@ class OauthAuthenticator extends AbstractAuthenticator
         $session     = $request->getSession()->all();
         $route       = $request->attributes->get('_route');
         $this->route = $route;
-        $token       = $this->token->getToken();
-        $test1       = 'connect_check' === $route && !array_key_exists('link', $session);
-        $test2       = (is_null($token) || !$token->getUser() instanceof User);
+
+        $token = $this->tokenStorage->getToken();
+        $test1 = 'connect_check' === $route && !array_key_exists('link', $session);
+        $test2 = (is_null($token) || !$token->getUser() instanceof User);
 
         return $test1 && $test2;
     }
@@ -156,15 +162,10 @@ class OauthAuthenticator extends AbstractAuthenticator
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 
-    protected function getRepository(string $entity)
+    protected function setOauthCode(ParameterBag $parameterBag): string
     {
-        return $this->entityManager->getRepository($entity);
-    }
-
-    protected function setOauthCode(ParameterBag $attributes): string
-    {
-        if ($attributes->has('oauthCode')) {
-            return $attributes->get('oauthCode');
+        if ($parameterBag->has('oauthCode')) {
+            return $parameterBag->get('oauthCode');
         }
 
         return '';

@@ -12,19 +12,19 @@ abstract class RequestHandlerLib
 {
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        protected Registry $workflows,
-        protected EventDispatcherInterface $dispatcher
+        protected Registry $registry,
+        protected EventDispatcherInterface $eventDispatcher
     )
     {
     }
 
-    public function changeWorkflowState($entity, array $states)
+    public function changeWorkflowState($entity, array $states): void
     {
-        if (!$this->workflows->has($entity)) {
+        if (!$this->registry->has($entity)) {
             return;
         }
 
-        $workflow = $this->workflows->get($entity);
+        $workflow = $this->registry->get($entity);
         foreach ($states as $state) {
             if (!$workflow->can($entity, $state)) {
                 continue;
@@ -33,13 +33,13 @@ abstract class RequestHandlerLib
             $workflow->apply($entity, $state);
         }
 
-        $repository = $this->getRepository(get_class($entity));
+        $repository = $this->getRepository($entity::class);
         $repository->add($entity);
     }
 
     public function handle($oldEntity, $entity)
     {
-        $repository = $this->getRepository(get_class($entity));
+        $repository = $this->getRepository($entity::class);
         $repository->add($entity);
         if ($oldEntity->getId() != $entity->getId()) {
             $this->initWorkflow($entity);
@@ -51,13 +51,13 @@ abstract class RequestHandlerLib
         return $this->entityManager->getRepository($entity);
     }
 
-    protected function initWorkflow($entity)
+    protected function initWorkflow($entity): void
     {
-        if (!$this->workflows->has($entity)) {
+        if (!$this->registry->has($entity)) {
             return;
         }
 
-        $workflow    = $this->workflows->get($entity);
+        $workflow    = $this->registry->get($entity);
         $definition  = $workflow->getDefinition();
         $transitions = $definition->getTransitions();
         foreach ($transitions as $transition) {
@@ -67,54 +67,54 @@ abstract class RequestHandlerLib
             }
 
             $workflow->apply($entity, $name);
-            $repository = $this->getRepository(get_class($entity));
+            $repository = $this->getRepository($entity::class);
             $repository->add($entity);
 
             break;
         }
     }
 
-    protected function setArrayCollectionUser(User $entity)
+    protected function setArrayCollectionUser(User $user)
     {
         $userCollectionEvent = new UserCollectionEvent();
-        $oauthConnectUsers   = $entity->getOauthConnectUsers();
-        foreach ($oauthConnectUsers as $row) {
+        $oauthConnectUsers   = $user->getOauthConnectUsers();
+        foreach ($oauthConnectUsers as $oauthConnectUser) {
             // @var OauthConnectUser $row
-            $old = clone $row;
-            $row->setRefuser($entity);
-            $userCollectionEvent->addOauthConnectUser($old, $row);
+            $old = clone $oauthConnectUser;
+            $oauthConnectUser->setRefuser($user);
+            $userCollectionEvent->addOauthConnectUser($old, $oauthConnectUser);
         }
 
-        $linksUsers = $entity->getLinkUsers();
-        foreach ($linksUsers as $row) {
+        $linksUsers = $user->getLinkUsers();
+        foreach ($linksUsers as $linkUser) {
             // @var LinkUser $row
-            $old = clone $row;
-            $row->setRefuser($entity);
-            $userCollectionEvent->addLinkUser($old, $row);
+            $old = clone $linkUser;
+            $linkUser->setRefuser($user);
+            $userCollectionEvent->addLinkUser($old, $linkUser);
         }
 
-        $emailUsers = $entity->getEmailUsers();
-        foreach ($emailUsers as $row) {
+        $emailUsers = $user->getEmailUsers();
+        foreach ($emailUsers as $emailUser) {
             // @var EmailUser $row
-            $old = clone $row;
-            $row->setRefuser($entity);
-            $userCollectionEvent->addEmailUser($old, $row);
+            $old = clone $emailUser;
+            $emailUser->setRefuser($user);
+            $userCollectionEvent->addEmailUser($old, $emailUser);
         }
 
-        $phoneUsers = $entity->getPhoneUsers();
-        foreach ($phoneUsers as $row) {
+        $phoneUsers = $user->getPhoneUsers();
+        foreach ($phoneUsers as $phoneUser) {
             // @var PhoneUser $row
-            $old = clone $row;
-            $row->setRefuser($entity);
-            $userCollectionEvent->addPhoneUser($old, $row);
+            $old = clone $phoneUser;
+            $phoneUser->setRefuser($user);
+            $userCollectionEvent->addPhoneUser($old, $phoneUser);
         }
 
-        $addressUsers = $entity->getAddressUsers();
-        foreach ($addressUsers as $row) {
+        $addressUsers = $user->getAddressUsers();
+        foreach ($addressUsers as $addressUser) {
             // @var AddressUser $row
-            $old = clone $row;
-            $row->setRefuser($entity);
-            $userCollectionEvent->addAddressUser($old, $row);
+            $old = clone $addressUser;
+            $addressUser->setRefuser($user);
+            $userCollectionEvent->addAddressUser($old, $addressUser);
         }
     }
 }

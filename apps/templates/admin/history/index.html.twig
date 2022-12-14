@@ -12,6 +12,9 @@
                     'name': 'history.user'|trans({}, 'admin.messages')
                 },
                 {
+                    'name': 'history.paragraphs'|trans({}, 'admin.messages')
+                },
+                {
                     'field': 'a.published',
                     'name': 'history.published'|trans({}, 'admin.messages')
                 },
@@ -24,6 +27,9 @@
                 },
                 {
                     'name': 'history.workflow'|trans({}, 'admin.messages')
+                },
+                {
+                    'name': 'history.newchapter'|trans({}, 'admin.messages')
                 }
             ] %}
 			{{ macro_admin.thead(theads, pagination, true) }}
@@ -33,6 +39,7 @@
                 <tr data-id="{{ entity.id }}">
                     <td>{{ entity.name }}</td>
                     <td>{{ entity.refuser }}</td>
+                    <td>{{ entity.paragraphs|length }}</td>
                     <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
                     <td>{{ entity.chapters|length }}</td>
                     <td>
@@ -42,6 +49,11 @@
                     </td>
                     <td>
                         {{ macro_admin.workflow(entity, actions) }}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_chapter_new', {'id': entity.id}) }}">
+                            Ajouter un nouveau chapitre
+                        </a>
                     </td>
                     <td>
                         {{ macro_admin.actions(entity, actions) }}

@@ -4,13 +4,8 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
-use Labstag\Entity\Workflow;
-use Labstag\Form\Admin\Search\UserType as SearchUserType;
-use Labstag\Form\Admin\User\UserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\RequestHandler\UserRequestHandler;
-use Labstag\Search\UserSearch;
-use Labstag\Service\AttachFormService;
+use Labstag\Repository\WorkflowRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,37 +14,22 @@ class UserController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_user_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_user_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?User $user, UserRequestHandler $requestHandler): Response
+    public function edit(
+        ?User $user
+    ): Response
     {
         return $this->form(
-            $service,
-            $requestHandler,
-            UserType::class,
-            !is_null($user) ? $user : new User(),
+            $this->getDomainEntity(),
+            is_null($user) ? new User() : $user,
             'admin/user/form.html.twig'
         );
     }
 
-    public function getUrlAdmin(): array
-    {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_user_edit',
-            'empty'    => 'api_action_empty',
-            'guard'    => 'admin_user_guard',
-            'list'     => 'admin_user_index',
-            'new'      => 'admin_user_new',
-            'preview'  => 'admin_user_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_user_show',
-            'trash'    => 'admin_user_trash',
-            'workflow' => 'api_action_workflow',
-        ];
-    }
-
     #[Route(path: '/{id}/guard', name: 'admin_user_guard')]
-    public function guard(User $user): Response
+    public function guard(
+        User $user,
+        WorkflowRepository $workflowRepository
+    ): Response
     {
         $this->btnInstance()->addBtnList(
             'admin_user_index',
@@ -79,7 +59,7 @@ class UserController extends AdminControllerLib
             return $this->redirectToRoute('admin_user_index');
         }
 
-        $workflows = $this->getRepository(Workflow::class)->findBy(
+        $workflows = $workflowRepository->findBy(
             [],
             [
                 'entity'     => 'ASC',
@@ -105,7 +85,7 @@ class UserController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            User::class,
+            $this->getDomainEntity(),
             'admin/user/index.html.twig'
         );
     }
@@ -120,102 +100,14 @@ class UserController extends AdminControllerLib
         $this->modalAttachmentDelete();
 
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $user,
             'admin/user/show.html.twig'
         );
     }
 
-    protected function searchForm(): array
+    protected function getDomainEntity()
     {
-        return [
-            'form' => SearchUserType::class,
-            'data' => new UserSearch(),
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUser(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_index',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUserEdit(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('user.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_edit',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUserGuard(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('user.guard', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_guard',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUserNew(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('user.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_new',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUserPreview(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_trash',
-            ],
-            [
-                'title' => $this->translator->trans('user.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_preview',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUserShow(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('user.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminUserTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_user_trash',
-            ],
-        ];
-    }
-
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return array_merge(
-            $headers,
-            [
-                'admin_user' => $this->translator->trans('user.title', [], 'admin.header'),
-            ]
-        );
+        return $this->domainService->getDomain(User::class);
     }
 }

@@ -9,9 +9,9 @@ use Labstag\Lib\DataFixtureLib;
 
 class GroupFixtures extends DataFixtureLib implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $objectManager): void
     {
-        unset($manager);
+        unset($objectManager);
         $groupes = $this->installService->getData('group');
         foreach ($groupes as $key => $row) {
             $this->addGroupe($key, $row);
@@ -28,6 +28,6 @@ class GroupFixtures extends DataFixtureLib implements DependentFixtureInterface
         $groupe->setCode($row);
         $groupe->setName($row);
         $this->addReference('groupe_'.$key, $groupe);
-        $this->groupeRH->handle($old, $groupe);
+        $this->groupeRequestHandler->handle($old, $groupe);
     }
 }

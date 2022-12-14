@@ -95,24 +95,14 @@ class Workflow
 
     public function removeWorkflowGroupe(WorkflowGroupe $workflowGroupe): self
     {
-        if ($this->workflowGroupes->removeElement($workflowGroupe)) {
-            // set the owning side to null (unless already changed)
-            if ($workflowGroupe->getRefworkflow() === $this) {
-                $workflowGroupe->setRefworkflow(null);
-            }
-        }
+        $this->removeElementWorkflow($this->workflowGroupes, $workflowGroupe);
 
         return $this;
     }
 
     public function removeWorkflowUser(WorkflowUser $workflowUser): self
     {
-        if ($this->workflowUsers->removeElement($workflowUser)) {
-            // set the owning side to null (unless already changed)
-            if ($workflowUser->getRefworkflow() === $this) {
-                $workflowUser->setRefworkflow(null);
-            }
-        }
+        $this->removeElementWorkflow($this->workflowUsers, $workflowUser);
 
         return $this;
     }
@@ -129,5 +119,12 @@ class Workflow
         $this->transition = $transition;
 
         return $this;
+    }
+
+    private function removeElementWorkflow($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getRefworkflow() === $this) {
+            $variable->setRefworkflow(null);
+        }
     }
 }

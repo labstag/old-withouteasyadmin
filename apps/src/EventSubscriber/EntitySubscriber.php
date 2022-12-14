@@ -2,18 +2,30 @@
 
 namespace Labstag\EventSubscriber;
 
+use Doctrine\ORM\EntityRepository;
 use Exception;
+use Labstag\Entity\Chapter;
 use Labstag\Entity\Configuration;
+use Labstag\Entity\Edito;
 use Labstag\Entity\EmailUser;
-use Labstag\Entity\Menu;
+use Labstag\Entity\History;
+use Labstag\Entity\Meta;
+use Labstag\Entity\Page;
+use Labstag\Entity\Post;
+use Labstag\Entity\Render;
 use Labstag\Entity\User;
 use Labstag\Event\AttachmentEntityEvent;
+use Labstag\Event\BlockEntityEvent;
 use Labstag\Event\BookmarkEntityEvent;
 use Labstag\Event\ChapterEntityEvent;
 use Labstag\Event\ConfigurationEntityEvent;
+use Labstag\Event\EditoEntityEvent;
 use Labstag\Event\HistoryEntityEvent;
 use Labstag\Event\MenuEntityEvent;
 use Labstag\Event\PageEntityEvent;
+use Labstag\Event\ParagraphEntityEvent;
+use Labstag\Event\PostEntityEvent;
+use Labstag\Event\RenderEntityEvent;
 use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\EventSubscriberLib;
 use Labstag\Service\HistoryService;
@@ -24,93 +36,193 @@ class EntitySubscriber extends EventSubscriberLib
     {
         return [
             AttachmentEntityEvent::class    => 'onAttachmentEntityEvent',
-            ConfigurationEntityEvent::class => 'onConfigurationEntityEvent',
+            BlockEntityEvent::class         => 'onBlockEntityEvent',
             BookmarkEntityEvent::class      => 'onBookmarkEntityEvent',
+            EditoEntityEvent::class         => 'onEditoEntityEvent',
             ChapterEntityEvent::class       => 'onChapterEntityEvent',
+            ConfigurationEntityEvent::class => 'onConfigurationEntityEvent',
             HistoryEntityEvent::class       => 'onHistoryEntityEvent',
             MenuEntityEvent::class          => 'onMenuEntityEvent',
             PageEntityEvent::class          => 'onPageEntityEvent',
+            ParagraphEntityEvent::class     => 'onParagraphEntityEvent',
+            PostEntityEvent::class          => 'onPostEntityEvent',
+            RenderEntityEvent::class        => 'onRenderEntityEvent',
             UserEntityEvent::class          => 'onUserEntityEvent',
         ];
     }
 
-    public function onAttachmentEntityEvent(AttachmentEntityEvent $event): void
+    public function onAttachmentEntityEvent(AttachmentEntityEvent $attachmentEntityEvent): void
     {
-        unset($event);
+        unset($attachmentEntityEvent);
     }
 
-    public function onBookmarkEntityEvent(BookmarkEntityEvent $event): void
+    public function onBlockEntityEvent(BlockEntityEvent $blockEntityEvent): void
     {
-        unset($event);
+        $block       = $blockEntityEvent->getNewEntity();
+        $classentity = $this->blockService->getTypeEntity($block);
+        if (is_null($classentity)) {
+            $this->entityManager->remove($block);
+            $this->entityManager->flush();
+
+            return;
+        }
+
+        $entity = $this->blockService->getEntity($block);
+        if (!is_null($entity)) {
+            return;
+        }
+
+        $entity = new $classentity();
+        $entity->setBlock($block);
+
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
     }
 
-    public function onChapterEntityEvent(ChapterEntityEvent $event): void
+    public function onBookmarkEntityEvent(BookmarkEntityEvent $bookmarkEntityEvent): void
     {
-        $entity = $event->getNewEntity();
-        $this->enqueue->enqueue(
+        unset($bookmarkEntityEvent);
+    }
+
+    public function onChapterEntityEvent(ChapterEntityEvent $chapterEntityEvent): void
+    {
+        $chapter = $chapterEntityEvent->getNewEntity();
+        $this->verifMetas($chapter);
+        $this->enqueueMethod->enqueue(
             HistoryService::class,
             'process',
             [
                 'fileDirectory' => $this->getParameter('file_directory'),
-                'historyId'     => $entity->getRefhistory()->getId(),
+                'historyId'     => $chapter->getRefhistory()->getId(),
                 'all'           => false,
             ]
         );
     }
 
-    public function onConfigurationEntityEvent(ConfigurationEntityEvent $event): void
+    public function onConfigurationEntityEvent(ConfigurationEntityEvent $configurationEntityEvent): void
     {
         $this->cache->delete('configuration');
-        $post = $event->getPost();
+        $post = $configurationEntityEvent->getPost();
         $this->setRobotsTxt($post);
         $this->flushPostConfiguration($post);
     }
 
-    public function onHistoryEntityEvent(HistoryEntityEvent $event): void
+    public function onEditoEntityEvent(EditoEntityEvent $editoEntityEvent): void
     {
-        $entity = $event->getNewEntity();
-        $this->enqueue->enqueue(
+        $edito = $editoEntityEvent->getNewEntity();
+        $this->verifMetas($edito);
+    }
+
+    public function onHistoryEntityEvent(HistoryEntityEvent $historyEntityEvent): void
+    {
+        $history = $historyEntityEvent->getNewEntity();
+        $this->verifMetas($history);
+        $this->enqueueMethod->enqueue(
             HistoryService::class,
             'process',
             [
                 'fileDirectory' => $this->getParameter('file_directory'),
-                'historyId'     => $entity->getId(),
+                'historyId'     => $history->getId(),
                 'all'           => false,
             ]
         );
     }
 
-    public function onMenuEntityEvent(MenuEntityEvent $event): void
+    public function onMenuEntityEvent(MenuEntityEvent $menuEntityEvent): void
     {
-        $entity = $event->getNewEntity();
-        $this->setDataMenu($entity);
-    }
-
-    public function onPageEntityEvent(PageEntityEvent $event): void
-    {
-        $entity = $event->getNewEntity();
-        $slug   = $entity->getSlug();
-        $parent = $entity->getParent();
-        if (!is_null($parent)) {
-            $frontSlug = $parent->getFrontSlug();
-
-            $slug = ('' == $frontSlug) ? $entity->getSlug() : ($frontSlug.'/'.$entity->getSlug());
+        $menu = $menuEntityEvent->getNewEntity();
+        $data = $menu->getData();
+        if (0 == count((array) $data)) {
+            return;
         }
 
-        $entity->setFrontslug((string) $slug);
+        $data = $data[0];
+        foreach ($data as $key => $value) {
+            if (!is_null($value)) {
+                continue;
+            }
 
-        $repository = $this->getRepository(get_class($entity));
-        $repository->add($entity);
+            unset($data[$key]);
+        }
+
+        if (isset($data['param'], $data['route'])) {
+            $data['params'] = json_decode((string) $data['param'], null, 512, JSON_THROW_ON_ERROR);
+            unset($data['param']);
+        }
+
+        if (isset($data['url'], $data['route'])) {
+            unset($data['route']);
+        }
+
+        if (isset($data['url'], $data['param'])) {
+            unset($data['param']);
+        }
+
+        $menu->setData($data);
+        $this->menuRepository->add($menu);
     }
 
-    public function onUserEntityEvent(UserEntityEvent $event): void
+    public function onPageEntityEvent(PageEntityEvent $pageEntityEvent): void
     {
-        $oldEntity = $event->getOldEntity();
-        $newEntity = $event->getNewEntity();
+        $entity = $pageEntityEvent->getNewEntity();
+        $this->verifMetas($entity);
+        $page = $entity->getParent();
+        if (!is_null($page)) {
+            return;
+        }
+
+        $entity->setSlug('');
+        $this->pageRepository->add($entity);
+    }
+
+    public function onParagraphEntityEvent(ParagraphEntityEvent $paragraphEntityEvent): void
+    {
+        $paragraph = $paragraphEntityEvent->getNewEntity();
+        $oldEntity = $paragraphEntityEvent->getOldEntity();
+        if (0 != $oldEntity->getPosition()) {
+            return;
+        }
+
+        $classentity = $this->paragraphService->getTypeEntity($paragraph);
+        if (is_null($classentity)) {
+            $this->entityManager->remove($paragraph);
+            $this->entityManager->flush();
+
+            return;
+        }
+
+        $entity = $this->paragraphService->getEntity($paragraph);
+        if (!is_null($entity)) {
+            return;
+        }
+
+        $entity = new $classentity();
+        $entity->setParagraph($paragraph);
+
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+    }
+
+    public function onPostEntityEvent(PostEntityEvent $postEntityEvent): void
+    {
+        $post = $postEntityEvent->getNewEntity();
+        $this->verifMetas($post);
+    }
+
+    public function onRenderEntityEvent(RenderEntityEvent $renderEntityEvent): void
+    {
+        $render = $renderEntityEvent->getNewEntity();
+        $this->verifMetas($render);
+    }
+
+    public function onUserEntityEvent(UserEntityEvent $userEntityEvent): void
+    {
+        $user      = $userEntityEvent->getOldEntity();
+        $newEntity = $userEntityEvent->getNewEntity();
         $this->setPassword($newEntity);
-        $this->setPrincipalMail($oldEntity, $newEntity);
-        $this->setChangePassword($oldEntity, $newEntity);
-        $this->setDeletedAt($oldEntity, $newEntity);
+        $this->setPrincipalMail($user, $newEntity);
+        $this->setChangePassword($user, $newEntity);
+        $this->setDeletedAt($user, $newEntity);
     }
 
     protected function flushPostConfiguration(array $post): void
@@ -120,8 +232,7 @@ class EntitySubscriber extends EventSubscriberLib
                 continue;
             }
 
-            $repository    = $this->getRepository(Configuration::class);
-            $configuration = $repository->findOneBy(['name' => $key]);
+            $configuration = $this->configurationRepository->findOneBy(['name' => $key]);
             if (!$configuration instanceof Configuration) {
                 $configuration = new Configuration();
                 $configuration->setName($key);
@@ -132,7 +243,7 @@ class EntitySubscriber extends EventSubscriberLib
             }
 
             $configuration->setValue($value);
-            $repository->add($configuration);
+            $this->configurationRepository->add($configuration);
         }
 
         $this->sessionService->flashBagAdd(
@@ -143,10 +254,10 @@ class EntitySubscriber extends EventSubscriberLib
 
     protected function getParameter(string $name)
     {
-        return $this->containerBag->get($name);
+        return $this->parameterBag->get($name);
     }
 
-    protected function getRepository(string $entity)
+    protected function getRepository(string $entity): EntityRepository
     {
         return $this->entityManager->getRepository($entity);
     }
@@ -168,39 +279,9 @@ class EntitySubscriber extends EventSubscriberLib
         );
     }
 
-    protected function setDataMenu(Menu $menu): void
-    {
-        $data = $menu->getData();
-        if (0 == count((array) $data)) {
-            return;
-        }
-
-        $data = $data[0];
-        foreach ($data as $key => $value) {
-            if (!is_null($value)) {
-                continue;
-            }
-
-            unset($data[$key]);
-        }
-
-        if (isset($data['url'], $data['route'])) {
-            unset($data['route']);
-        }
-
-        if (isset($data['url'], $data['param'])) {
-            unset($data['param']);
-        }
-
-        $menu->setData($data);
-
-        $repository = $this->getRepository(get_class($menu));
-        $repository->add($menu);
-    }
-
     protected function setDeletedAt(User $oldEntity, User $newEntity): void
     {
-        if ($oldEntity->getDeletedAt() == $newEntity->getDeletedAt()) {
+        if ($oldEntity->getDeletedAt() === $newEntity->getDeletedAt()) {
             return;
         }
 
@@ -216,10 +297,10 @@ class EntitySubscriber extends EventSubscriberLib
         ];
 
         $datetime = $newEntity->getDeletedAt();
-        foreach ($states as $data) {
-            foreach ($data as $entity) {
+        foreach ($states as $state) {
+            foreach ($state as $entity) {
                 $entity->setDeletedAt($datetime);
-                $repository = $this->getRepository(get_class($entity));
+                $repository = $this->getRepository($entity::class);
                 $repository->add($entity);
             }
         }
@@ -232,7 +313,7 @@ class EntitySubscriber extends EventSubscriberLib
             return;
         }
 
-        $encodePassword = $this->passwordEncoder->hashPassword(
+        $encodePassword = $this->userPasswordHasher->hashPassword(
             $user,
             $plainPassword
         );
@@ -242,8 +323,7 @@ class EntitySubscriber extends EventSubscriberLib
             $this->userMailService->changePassword($user);
         }
 
-        $repository = $this->getRepository(get_class($user));
-        $repository->add($user);
+        $this->userRepository->add($user);
         $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('user.subscriber.password.change')
@@ -252,7 +332,7 @@ class EntitySubscriber extends EventSubscriberLib
 
     protected function setPrincipalMail(User $oldEntity, User $newEntity): void
     {
-        if ($oldEntity->getEmail() == $newEntity->getEmail()) {
+        if ($oldEntity->getEmail() === $newEntity->getEmail()) {
             return;
         }
 
@@ -267,7 +347,7 @@ class EntitySubscriber extends EventSubscriberLib
                 $trouver = true;
             }
 
-            $repository = $this->getRepository(get_class($emailUser));
+            $repository = $this->getRepository($emailUser::class);
             $repository->add($emailUser);
         }
 
@@ -290,8 +370,9 @@ class EntitySubscriber extends EventSubscriberLib
         $emailUser->setRefuser($newEntity);
         $emailUser->setPrincipal(true);
         $emailUser->setAddress($address);
-        $this->emailUserRH->handle($old, $emailUser);
-        $this->emailUserRH->changeWorkflowState($emailUser, ['submit', 'valider']);
+
+        $this->emailUserRequestHandler->handle($old, $emailUser);
+        $this->emailUserRequestHandler->changeWorkflowState($emailUser, ['submit', 'valider']);
     }
 
     protected function setRobotsTxt(array $post): void
@@ -314,5 +395,91 @@ class EntitySubscriber extends EventSubscriberLib
         } catch (Exception $exception) {
             $this->errorService->set($exception);
         }
+    }
+
+    private function verifMetas($entity)
+    {
+        $title = null;
+        $metas = $entity->getMetas();
+        if (0 != count($metas)) {
+            return;
+        }
+
+        $meta   = new Meta();
+        $method = '';
+        $title  = '';
+        $this->verifMetasChapter($entity, $method, $title);
+        $this->verifMetasEdito($entity, $method, $title);
+        $this->verifMetasHistory($entity, $method, $title);
+        $this->verifMetasPage($entity, $method, $title);
+        $this->verifMetasPost($entity, $method, $title);
+        $this->verifMetasRender($entity, $method, $title);
+        if ('' != $method) {
+            call_user_func([$meta, $method], $entity);
+        }
+
+        $meta->setTitle($title);
+        $this->entityManager->persist($meta);
+        $this->entityManager->flush();
+    }
+
+    private function verifMetasChapter($entity, &$method, &$title)
+    {
+        if (!$entity instanceof Chapter) {
+            return;
+        }
+
+        $method = 'setChapter';
+        $title  = $entity->getName();
+    }
+
+    private function verifMetasEdito($entity, &$method, &$title)
+    {
+        if (!$entity instanceof Edito) {
+            return;
+        }
+
+        $method = 'setEdito';
+        $title  = $entity->getTitle();
+    }
+
+    private function verifMetasHistory($entity, &$method, &$title)
+    {
+        if (!$entity instanceof History) {
+            return;
+        }
+
+        $method = 'setHistory';
+        $title  = $entity->getName();
+    }
+
+    private function verifMetasPage($entity, &$method, &$title)
+    {
+        if (!$entity instanceof Page) {
+            return;
+        }
+
+        $method = 'setPage';
+        $title  = $entity->getName();
+    }
+
+    private function verifMetasPost($entity, &$method, &$title)
+    {
+        if (!$entity instanceof Post) {
+            return;
+        }
+
+        $method = 'setPost';
+        $title  = $entity->getTitle();
+    }
+
+    private function verifMetasRender($entity, &$method, &$title)
+    {
+        if (!$entity instanceof Render) {
+            return;
+        }
+
+        $method = 'setRender';
+        $title  = $entity->getName();
     }
 }

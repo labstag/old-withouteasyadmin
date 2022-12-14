@@ -5,28 +5,58 @@ namespace Labstag\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Layout;
-use Labstag\Lib\DataFixtureLib;
+use Labstag\Lib\FixtureLib;
 
-class LayoutFixtures extends DataFixtureLib implements DependentFixtureInterface
+class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager): void
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
-        unset($manager);
-        $this->addLayout('content', $this->installService->getLayoutContent());
-        $this->addLayout('home', $this->installService->getLayoutHome());
-        $this->addLayout('landing', $this->installService->getLayoutLanding());
+        return [
+            DataFixtures::class,
+            BlockFixtures::class,
+        ];
     }
 
-    protected function addLayout(string $name, string $content): Layout
+    public function load(ObjectManager $objectManager): void
     {
-        $layout    = new Layout();
-        $oldLayout = clone $layout;
-        $layout->setName($name);
-        $layout->setContent($content);
+        unset($objectManager);
+        $json = $this->installService->getData('data/layout');
+        foreach ($json as $data) {
+            $this->addLayouts($data);
+        }
+    }
 
-        $this->addReference('layout_'.$name, $layout);
-        $this->layoutRH->handle($oldLayout, $layout);
+    protected function addLayout(
+        string $type,
+        string $region,
+        array $dataLayout
+    ): void
+    {
+        $block   = $this->getReference('block_'.$region.'-'.$type);
+        $layout  = new Layout();
+        $old     = clone $layout;
+        $customs = $block->getCustoms();
+        $layout->setCustom($customs[0]);
+        $layout->setName($dataLayout['name']);
+        $layout->setUrl($dataLayout['url']);
 
-        return $layout;
+        $this->layoutRequestHandler->handle($old, $layout);
+        if (isset($dataLayout['paragraphs'])) {
+            $this->addParagraphs($layout, $dataLayout['paragraphs']);
+        }
+
+        $this->addReference('layout_'.$type.'-'.$region.'-'.$dataLayout['name'], $layout);
+    }
+
+    protected function addLayouts($data)
+    {
+        $type   = $data['block-type'];
+        $region = $data['block-region'];
+        foreach ($data['layouts'] as $layout) {
+            $this->addLayout($type, $region, $layout);
+        }
     }
 }

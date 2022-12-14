@@ -2,6 +2,7 @@
 
 namespace Labstag\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Menu;
@@ -12,21 +13,28 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class MenuRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Menu::class);
+        parent::__construct($managerRegistry, Menu::class);
     }
 
     public function findAllCode()
     {
+        $queryBuilder = $this->findAllCodeQuery();
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function findAllCodeQuery(): QueryBuilder
+    {
         $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $queryBuilder->where(
             'u.position=0'
         );
-        $query->andWhere(
+        $queryBuilder->andWhere(
             'u.clef IS NOT NULL'
         );
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder;
     }
 }

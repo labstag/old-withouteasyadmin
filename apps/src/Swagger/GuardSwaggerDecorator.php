@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class GuardSwaggerDecorator implements NormalizerInterface
 {
-    public function __construct(private NormalizerInterface $decorated)
+    public function __construct(private readonly NormalizerInterface $normalizer)
     {
     }
 
@@ -27,7 +27,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         array $context = []
     ): array|string|int|float|bool|ArrayObject|null
     {
-        $docs = $this->decorated->normalize($object, $format, $context);
+        $docs = $this->normalizer->normalize($object, $format, $context);
         $this->setRefUser($docs);
         $this->setRefGroup($docs);
         $this->setGroups($docs);
@@ -42,10 +42,10 @@ final class GuardSwaggerDecorator implements NormalizerInterface
      */
     public function supportsNormalization($data, ?string $format = null): bool
     {
-        return $this->decorated->supportsNormalization($data, $format);
+        return $this->normalizer->supportsNormalization($data, $format);
     }
 
-    private function setGroup(&$docs)
+    private function setGroup(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'Group.',
@@ -65,7 +65,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/guard/groups/{groupe}']['get'] = $statsEndpoint;
     }
 
-    private function setGroups(&$docs)
+    private function setGroups(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'Groups.',
@@ -77,7 +77,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/guard/groups']['get'] = $statsEndpoint;
     }
 
-    private function setRefGroup(&$docs)
+    private function setRefGroup(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'Group.',
@@ -129,7 +129,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/guard/setgroup/{route}/{groupe}']['post'] = $statsEndpoint;
     }
 
-    private function setRefUser(&$docs)
+    private function setRefUser(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'User.',
@@ -181,7 +181,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/guard/setuser/{route}/{user}']['post'] = $statsEndpoint;
     }
 
-    private function setResponses()
+    private function setResponses(): array
     {
         return [
             Response::HTTP_OK => [
@@ -202,7 +202,10 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setReturnUserGroup()
+    /**
+     * @return array<string, mixed[]>
+     */
+    private function setReturnUserGroup(): array
     {
         return [
             'ok'      => [
@@ -216,7 +219,7 @@ final class GuardSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setUser(&$docs)
+    private function setUser(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'Group.',

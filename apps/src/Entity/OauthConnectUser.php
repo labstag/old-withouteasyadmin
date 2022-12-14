@@ -96,9 +96,9 @@ class OauthConnectUser
         return $this;
     }
 
-    public function setRefuser(?User $refuser): self
+    public function setRefuser(?User $user): self
     {
-        $this->refuser = $refuser;
+        $this->refuser = $user;
 
         return $this;
     }

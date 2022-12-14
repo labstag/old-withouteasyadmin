@@ -5,14 +5,12 @@ namespace Labstag\Controller;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
-use Labstag\Entity\Memo;
 use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ParamType;
-use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\RequestHandler\UserRequestHandler;
-use Labstag\Service\AttachFormService;
+use Labstag\Repository\AttachmentRepository;
+use Labstag\Repository\MemoRepository;
 use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
@@ -21,7 +19,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
@@ -55,10 +52,18 @@ class AdminController extends AdminControllerLib
         return $this->redirectToRoute('admin_param');
     }
 
-    #[Route(path: '/', name: 'admin')]
-    public function index(): Response
+    #[Route(path: '/paragraph', name: 'admin_paragraph', methods: ['GET'])]
+    public function iframe(): Response
     {
-        $memos = $this->getRepository(Memo::class)->findPublier();
+        return $this->render('admin/paragraph/iframe.html.twig');
+    }
+
+    #[Route(path: '/', name: 'admin')]
+    public function index(
+        MemoRepository $memoRepository
+    ): Response
+    {
+        $memos = $memoRepository->findPublier();
 
         return $this->render(
             'admin/index.html.twig',
@@ -80,16 +85,16 @@ class AdminController extends AdminControllerLib
     #[Route(path: '/param', name: 'admin_param', methods: ['GET', 'POST'])]
     public function param(
         Request $request,
-        EventDispatcherInterface $dispatcher,
+        EventDispatcherInterface $eventDispatcher,
         DataService $dataService,
-        CacheInterface $cache
+        CacheInterface $cache,
+        AttachmentRepository $attachmentRepository
     ): Response
     {
         $this->modalAttachmentDelete();
-        $repository = $this->getRepository(Attachment::class);
-        $images     = [
-            'image'   => $repository->getImageDefault(),
-            'favicon' => $repository->getFavicon(),
+        $images = [
+            'image'   => $attachmentRepository->getImageDefault(),
+            'favicon' => $attachmentRepository->getFavicon(),
         ];
         foreach ($images as $key => $value) {
             if (!is_null($value)) {
@@ -98,7 +103,7 @@ class AdminController extends AdminControllerLib
 
             $images[$key] = new Attachment();
             $images[$key]->setCode($key);
-            $repository->add($images[$key]);
+            $attachmentRepository->add($images[$key]);
         }
 
         $config = $dataService->getConfig();
@@ -116,7 +121,7 @@ class AdminController extends AdminControllerLib
             $this->setUpload($request, $images);
             $cache->delete('configuration');
             $post = $request->request->all($form->getName());
-            $dispatcher->dispatch(new ConfigurationEntityEvent($post));
+            $eventDispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
 
         $this->btnInstance()->add(
@@ -133,20 +138,6 @@ class AdminController extends AdminControllerLib
                 'images' => $images,
                 'form'   => $form,
             ]
-        );
-    }
-
-    #[Route(path: '/profil', name: 'admin_profil', methods: ['GET', 'POST'])]
-    public function profil(AttachFormService $service, Security $security, UserRequestHandler $requestHandler): Response
-    {
-        $this->modalAttachmentDelete();
-
-        return $this->form(
-            $service,
-            $requestHandler,
-            ProfilType::class,
-            $security->getUser(),
-            'admin/profil.html.twig'
         );
     }
 
@@ -176,7 +167,7 @@ class AdminController extends AdminControllerLib
     #[Route(path: '/trash', name: 'admin_trash')]
     public function trash(
         CsrfTokenManagerInterface $csrfTokenManager,
-        Environment $twig,
+        Environment $environment,
         TrashService $trashService
     ): Response
     {
@@ -190,25 +181,25 @@ class AdminController extends AdminControllerLib
             return $this->redirectToRoute('admin');
         }
 
-        $globals        = $twig->getGlobals();
+        $globals        = $environment->getGlobals();
         $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
         if ($this->isRouteEnable('api_action_emptyall')) {
-            $token             = $csrfTokenManager->getToken('emptyall')->getValue();
+            $value             = $csrfTokenManager->getToken('emptyall')->getValue();
             $modal['emptyall'] = true;
             $this->btnInstance()->add(
                 'btn-admin-header-emptyall',
                 'Tout vider',
                 [
                     'is'       => 'link-btnadminemptyall',
-                    'token'    => $token,
+                    'token'    => $value,
                     'redirect' => $this->generateUrl('admin_trash'),
                     'url'      => $this->generateUrl('api_action_emptyall'),
                 ]
             );
         }
 
-        $twig->addGlobal('modal', $modal);
+        $environment->addGlobal('modal', $modal);
         $this->btnInstance()->addViderSelection(
             [
                 'redirect' => [
@@ -229,55 +220,7 @@ class AdminController extends AdminControllerLib
         );
     }
 
-    protected function setBreadcrumbsPageAdminParam(): array
-    {
-        return [
-            [
-                'title'        => $this->translator->trans('param.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_param',
-                'route_params' => [],
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminProfil(): array
-    {
-        return [
-            [
-                'title'        => $this->translator->trans('profil.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_profil',
-                'route_params' => [],
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTrash(): array
-    {
-        return [
-            [
-                'title'        => $this->translator->trans('trash.title', [], 'admin.breadcrumb'),
-                'route'        => 'admin_trash',
-                'route_params' => [],
-            ],
-        ];
-    }
-
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return array_merge(
-            $headers,
-            [
-                'admin_oauth'  => $this->translator->trans('oauth.title', [], 'admin.header'),
-                'admin_param'  => $this->translator->trans('param.title', [], 'admin.header'),
-                'admin_profil' => $this->translator->trans('profil.title', [], 'admin.header'),
-                'admin_trash'  => $this->translator->trans('trash.title', [], 'admin.header'),
-            ]
-        );
-    }
-
-    private function setUpload(Request $request, array $images)
+    private function setUpload(Request $request, array $images): void
     {
         $all   = $request->files->all();
         $files = $all['param'];

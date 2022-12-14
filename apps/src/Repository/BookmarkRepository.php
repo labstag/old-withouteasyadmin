@@ -2,6 +2,7 @@
 
 namespace Labstag\Repository;
 
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Bookmark;
@@ -12,15 +13,15 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class BookmarkRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Bookmark::class);
+        parent::__construct($managerRegistry, Bookmark::class);
     }
 
-    public function findPublier()
+    public function findPublier(): Query
     {
-        $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
+        $query = $this->createQueryBuilder('p');
+        $query->innerjoin('p.refuser', 'u');
         $query->where(
             'p.state LIKE :state'
         );
@@ -32,10 +33,10 @@ class BookmarkRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierCategory($code)
+    public function findPublierCategory($code): Query
     {
-        $queryBuilder = $this->createQueryBuilder('b');
-        $query        = $queryBuilder->where('b.state LIKE :state');
+        $query = $this->createQueryBuilder('b');
+        $query->where('b.state LIKE :state');
         $query->orderBy('b.published', 'DESC');
         $query->leftJoin('b.refcategory', 'c');
         $query->andWhere('c.slug=:slug');
@@ -49,10 +50,10 @@ class BookmarkRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierLibelle($code)
+    public function findPublierLibelle($code): Query
     {
-        $queryBuilder = $this->createQueryBuilder('b');
-        $query        = $queryBuilder->where('b.state LIKE :state');
+        $query = $this->createQueryBuilder('b');
+        $query->where('b.state LIKE :state');
         $query->orderBy('b.published', 'DESC');
         $query->leftJoin('b.libelles', 'l');
         $query->andWhere('l.slug=:slug');

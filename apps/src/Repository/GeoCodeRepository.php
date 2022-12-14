@@ -12,8 +12,8 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class GeoCodeRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, GeoCode::class);
+        parent::__construct($managerRegistry, GeoCode::class);
     }
 }

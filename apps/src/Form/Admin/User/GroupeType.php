@@ -2,9 +2,9 @@
 
 namespace Labstag\Form\Admin\User;
 
-use Doctrine\DBAL\Types\TextType;
 use Labstag\Entity\Groupe;
 use Labstag\Lib\AbstractTypeLib;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,12 +14,12 @@ class GroupeType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'name',
             TextType::class,
             [
@@ -30,7 +30,7 @@ class GroupeType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'code',
             TextType::class,
             [
@@ -43,9 +43,9 @@ class GroupeType extends AbstractTypeLib
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Groupe::class,
             ]

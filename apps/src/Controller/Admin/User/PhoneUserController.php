@@ -4,12 +4,7 @@ namespace Labstag\Controller\Admin\User;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\PhoneUser;
-use Labstag\Form\Admin\Search\User\PhoneUserType as UserPhoneUserType;
-use Labstag\Form\Admin\User\PhoneUserType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\RequestHandler\PhoneUserRequestHandler;
-use Labstag\Search\User\PhoneUserSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,16 +14,12 @@ class PhoneUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_phoneuser_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_phoneuser_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $service,
-        ?PhoneUser $phoneUser,
-        PhoneUserRequestHandler $requestHandler
+        ?PhoneUser $phoneUser
     ): Response
     {
         return $this->form(
-            $service,
-            $requestHandler,
-            PhoneUserType::class,
-            !is_null($phoneUser) ? $phoneUser : new PhoneUser()
+            $this->getDomainEntity(),
+            is_null($phoneUser) ? new PhoneUser() : $phoneUser
         );
     }
 
@@ -40,7 +31,7 @@ class PhoneUserController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            PhoneUser::class,
+            $this->getDomainEntity(),
             'admin/user/phone_user/index.html.twig'
         );
     }
@@ -53,109 +44,14 @@ class PhoneUserController extends AdminControllerLib
     public function showOrPreview(PhoneUser $phoneUser): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $phoneUser,
             'admin/user/phone_user/show.html.twig'
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_phoneuser_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_phoneuser_index',
-            'new'      => 'admin_phoneuser_new',
-            'preview'  => 'admin_phoneuser_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_phoneuser_show',
-            'trash'    => 'admin_phoneuser_trash',
-            'workflow' => 'api_action_workflow',
-        ];
-    }
-
-    protected function searchForm(): array
-    {
-        return [
-            'form' => UserPhoneUserType::class,
-            'data' => new PhoneUserSearch(),
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPhoneuser(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('phoneuser.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_index',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPhoneuserEdit(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('phoneuser.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_edit',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPhoneuserNew(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('phoneuser.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_new',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPhoneuserPreview(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('phoneuser.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_trash',
-            ],
-            [
-                'title' => $this->translator->trans('phoneuser.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_preview',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPhoneuserShow(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('phoneuser.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminPhoneuserTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('phoneuser.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_phoneuser_trash',
-            ],
-        ];
-    }
-
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return array_merge(
-            $headers,
-            [
-                'admin_phoneuser' => $this->translator->trans('phoneuser.title', [], 'admin.header'),
-            ]
-        );
+        return $this->domainService->getDomain(PhoneUser::class);
     }
 }

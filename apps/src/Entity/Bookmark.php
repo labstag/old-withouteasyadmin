@@ -11,7 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
-use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Repository\BookmarkRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,7 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Bookmark
 {
-    use MetatagsEntity;
     use SoftDeleteableEntity;
 
     /**
@@ -215,9 +213,9 @@ class Bookmark
         return $this;
     }
 
-    public function setImg(?Attachment $img): self
+    public function setImg(?Attachment $attachment): self
     {
-        $this->img = $img;
+        $this->img = $attachment;
 
         return $this;
     }
@@ -229,23 +227,23 @@ class Bookmark
         return $this;
     }
 
-    public function setPublished(DateTimeInterface $published): self
+    public function setPublished(DateTimeInterface $dateTime): self
     {
-        $this->published = $published;
+        $this->published = $dateTime;
 
         return $this;
     }
 
-    public function setRefcategory(?Category $refcategory): self
+    public function setRefcategory(?Category $category): self
     {
-        $this->refcategory = $refcategory;
+        $this->refcategory = $category;
 
         return $this;
     }
 
-    public function setRefuser(?User $refuser): self
+    public function setRefuser(?User $user): self
     {
-        $this->refuser = $refuser;
+        $this->refuser = $user;
 
         return $this;
     }
@@ -264,9 +262,9 @@ class Bookmark
         return $this;
     }
 
-    public function setStateChanged(?DateTimeInterface $stateChanged): self
+    public function setStateChanged(?DateTimeInterface $dateTime): self
     {
-        $this->stateChanged = $stateChanged;
+        $this->stateChanged = $dateTime;
 
         return $this;
     }

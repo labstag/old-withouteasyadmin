@@ -1,0 +1,79 @@
+[
+    {
+        "block-type": "custom",
+        "block-region": "header",
+        "layouts": [
+            {
+                "name": "POST Header",
+                "url": ["front_article"],
+                "paragraphs": ["postheader"]
+            },
+            {
+                "name": "EDITO Header",
+                "url": ["front_edito"],
+                "paragraphs": ["editoheader"]
+            }
+        ]
+    },
+    {
+        "block-type": "custom",
+        "block-region": "content",
+        "layouts": [
+            {
+                "name": "BOOKMARK Category",
+                "url": ["front_bookmark_category"],
+                "paragraphs": ["bookmarkcategory"]
+            },
+            {
+                "name": "BOOKMARK Libelle",
+                "url": ["front_bookmark_libelle"],
+                "paragraphs": ["bookmarklibelle"]
+            },
+            {
+                "name": "EDITO Show",
+                "url": ["front_edito"],
+                "paragraphs": ["editoshow"]
+            },
+            {
+                "name": "HISTORY Chapter",
+                "url": ["front_history_chapter"],
+                "paragraphs": ["historychapter"]
+            },
+            {
+                "name": "HISTORY Show",
+                "url": ["front_history"],
+                "paragraphs": ["historyshow"]
+            },
+            {
+                "name": "HISTORY User",
+                "url": ["front_history_user"],
+                "paragraphs": ["historyuser"]
+            },
+            {
+                "name": "POST Category",
+                "url": ["front_article_category"],
+                "paragraphs": ["postcategory"]
+            },
+            {
+                "name": "POST Libelle",
+                "url": ["front_article_libelle"],
+                "paragraphs": ["postlibelle"]
+            },
+            {
+                "name": "POST Show",
+                "url": ["front_article"],
+                "paragraphs": ["postshow"]
+            },
+            {
+                "name": "POST User",
+                "url": ["front_article_user"],
+                "paragraphs": ["postuser"]
+            },
+            {
+                "name": "POST Year",
+                "url": ["front_article_year"],
+                "paragraphs": ["postyear"]
+            }
+        ]
+    }
+]

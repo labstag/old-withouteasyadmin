@@ -7,40 +7,34 @@ use Labstag\Entity\Groupe;
 use Labstag\Entity\RouteGroupe;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @method null|RouteGroupe find($id, $lockMode = null, $lockVersion = null)
- * @method null|RouteGroupe findOneBy(array $criteria, array $orderBy = null)
- * @method RouteGroupe[]    findAll()
- * @method RouteGroupe[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
 class RouteGroupeRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, RouteGroupe::class);
+        parent::__construct($managerRegistry, RouteGroupe::class);
     }
 
     public function findRoute(Groupe $groupe, string $route)
     {
         $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin(
+        $queryBuilder->leftJoin(
             'a.refgroupe',
             'g'
         );
-        $query->leftJoin(
+        $queryBuilder->leftJoin(
             'a.refroute',
             'r'
         );
-        $query->where(
+        $queryBuilder->where(
             'g.id=:gid AND r.name=:route'
         );
-        $query->setParameters(
+        $queryBuilder->setParameters(
             [
                 'gid'   => $groupe->getId(),
                 'route' => $route,
             ]
         );
 
-        return $query->getQuery()->getOneOrNullResult();
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 }

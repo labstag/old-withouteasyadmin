@@ -12,25 +12,25 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class EditoRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Edito::class);
+        parent::__construct($managerRegistry, Edito::class);
     }
 
     public function findOnePublier()
     {
         $queryBuilder = $this->createQueryBuilder('e');
-        $query        = $queryBuilder->leftjoin('e.refuser', 'u');
-        $query->where(
+        $queryBuilder->leftjoin('e.refuser', 'u');
+        $queryBuilder->where(
             'e.state LIKE :state'
         );
-        $query->orderBy('e.published', 'DESC');
-        $query->setParameters(
+        $queryBuilder->orderBy('e.published', 'DESC');
+        $queryBuilder->setParameters(
             ['state' => '%publie%']
         );
 
-        $query->setMaxResults(1);
+        $queryBuilder->setMaxResults(1);
 
-        return $query->getQuery()->getOneOrNullResult();
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 }

@@ -72,8 +72,8 @@ class Category implements Stringable
 
     public function __toString(): string
     {
-        $parent = $this->getParent();
-        $text   = is_null($parent) ? '' : $parent.' - ';
+        $category = $this->getParent();
+        $text     = is_null($category) ? '' : $category.' - ';
 
         return $text.$this->getName();
     }
@@ -145,23 +145,16 @@ class Category implements Stringable
 
     public function removeBookmark(Bookmark $bookmark): self
     {
-        if ($this->bookmarks->removeElement($bookmark)) {
-            // set the owning side to null (unless already changed)
-            if ($bookmark->getRefcategory() === $this) {
-                $bookmark->setRefcategory(null);
-            }
-        }
+        $this->removeElementCategory($this->bookmarks, $bookmark);
 
         return $this;
     }
 
     public function removeChild(self $child): self
     {
-        if ($this->children->removeElement($child)) {
-            // set the owning side to null (unless already changed)
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->children->removeElement($child) && $child->getParent() === $this) {
+            $child->setParent(null);
         }
 
         return $this;
@@ -169,12 +162,7 @@ class Category implements Stringable
 
     public function removePost(Post $post): self
     {
-        if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
-            if ($post->getRefcategory() === $this) {
-                $post->setRefcategory(null);
-            }
-        }
+        $this->removeElementCategory($this->posts, $post);
 
         return $this;
     }
@@ -198,5 +186,12 @@ class Category implements Stringable
         $this->slug = $slug;
 
         return $this;
+    }
+
+    private function removeElementCategory($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getRefcategory() === $this) {
+            $variable->setRefcategory(null);
+        }
     }
 }

@@ -9,32 +9,32 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class RouteUserRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, RouteUser::class);
+        parent::__construct($managerRegistry, RouteUser::class);
     }
 
     public function findRoute(User $user, string $route)
     {
         $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->leftJoin(
+        $queryBuilder->leftJoin(
             'a.refuser',
             'u'
         );
-        $query->leftJoin(
+        $queryBuilder->leftJoin(
             'a.refroute',
             'r'
         );
-        $query->where(
+        $queryBuilder->where(
             'u.id=:uid AND r.name=:route'
         );
-        $query->setParameters(
+        $queryBuilder->setParameters(
             [
                 'uid'   => $user->getId(),
                 'route' => $route,
             ]
         );
 
-        return $query->getQuery()->getOneOrNullResult();
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 }

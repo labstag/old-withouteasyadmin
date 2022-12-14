@@ -4,25 +4,30 @@ namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\GeoCode;
+use Labstag\Repository\GeoCodeRepository;
 use Labstag\RequestHandler\GeoCodeRequestHandler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use ZipArchive;
 
 class GeocodeService
 {
-    public const HTTP_OK = 200;
+    /**
+     * @var int
+     */
+    final public const HTTP_OK = 200;
 
     public function __construct(
-        protected HttpClientInterface $client,
+        protected HttpClientInterface $httpClient,
         protected EntityManagerInterface $entityManager,
-        protected GeoCodeRequestHandler $geoCodeRH
+        protected GeoCodeRequestHandler $geoCodeRequestHandler,
+        protected GeoCodeRepository $geoCodeRepository
     )
     {
     }
 
-    public function add(array $row)
+    public function add(array $row): void
     {
-        $entity = $this->getRepository(GeoCode::class)->findOneBy(
+        $entity = $this->geoCodeRepository->findOneBy(
             [
                 'countryCode' => $row[0],
                 'postalCode'  => $row[1],
@@ -46,14 +51,15 @@ class GeocodeService
         $entity->setLatitude($row[9]);
         $entity->setLongitude($row[10]);
         $entity->setAccuracy((int) $row[11]);
-        $this->geoCodeRH->handle($old, $entity);
+
+        $this->geoCodeRequestHandler->handle($old, $entity);
     }
 
     public function csv(string $country)
     {
         $country    = strtoupper($country);
         $file       = 'http://download.geonames.org/export/zip/'.$country.'.zip';
-        $response   = $this->client->request(
+        $response   = $this->httpClient->request(
             'GET',
             $file
         );
@@ -66,31 +72,29 @@ class GeocodeService
         $tempFile = tmpfile();
         $path     = stream_get_meta_data($tempFile)['uri'];
         file_put_contents($path, $content);
-        $zip = new ZipArchive();
-        if (!$zip->open($path)) {
+        $zipArchive = new ZipArchive();
+        if (!$zipArchive->open($path)) {
             return [];
         }
 
-        $content = $zip->getFromName($country.'.txt');
+        $content = $zipArchive->getFromName($country.'.txt');
         $csv     = str_getcsv($content, "\n");
-        $zip->close();
+        $zipArchive->close();
 
         return $csv;
     }
 
+    /**
+     * @return array<int, mixed[]>
+     */
     public function tables(array $csv): array
     {
         $data = [];
         foreach ($csv as $line) {
-            $row    = str_getcsv($line, "\t");
+            $row    = str_getcsv((string) $line, "\t");
             $data[] = $row;
         }
 
         return $data;
-    }
-
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
     }
 }

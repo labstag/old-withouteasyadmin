@@ -2,60 +2,39 @@
 
 namespace Labstag\Lib;
 
+use Labstag\Form\Admin\Collections\MetaType;
 use Labstag\FormType\MinMaxCollectionType;
+use Labstag\FormType\ParagraphType;
 use Labstag\FormType\WysiwygType;
-use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractTypeLib extends AbstractType
 {
     public function __construct(
-        protected TranslatorInterface $translator,
-        protected TemplatePageService $templatePageService
+        protected TranslatorInterface $translator
     )
     {
     }
 
-    protected function addEmails($builder, $options, $repository)
+    protected function addParagraph(FormBuilderInterface $formBuilder, array $urls)
     {
-        if (!(isset($options['data']) && !is_null($options['data']->getId()))) {
-            return;
-        }
-
-        $emails = [];
-        $data   = $repository->getEmailsUserVerif(
-            $options['data'],
-            true
-        );
-        foreach ($data as $email) {
-            // @var EmailUser $email
-            $address          = $email->getAddress();
-            $emails[$address] = $address;
-        }
-
-        ksort($emails);
-
-        if (0 == count($emails)) {
-            return;
-        }
-
-        $builder->add(
-            'email',
-            ChoiceType::class,
-            [
-                'label'   => $this->translator->trans('email.label', [], 'admin.form'),
-                'help'    => $this->translator->trans('email.help', [], 'admin.form'),
-                'choices' => $emails,
-                'attr'    => [
-                    'placeholder' => $this->translator->trans('email.placeholder', [], 'admin.form'),
-                ],
-            ]
+        $formBuilder->add(
+            'paragraph',
+            ParagraphType::class,
+            array_merge(
+                $urls,
+                [
+                    'mapped'   => false,
+                    'required' => false,
+                ]
+            )
         );
     }
 
@@ -145,33 +124,17 @@ abstract class AbstractTypeLib extends AbstractType
 
     protected function setMeta($builder)
     {
-        $meta = [
-            'metaDescription' => [
-                'label' => $this->translator->trans('metaDescription.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('metaDescription.help', [], 'admin.form'),
-                'attr'  => [
-                    'placeholder' => $this->translator->trans('metaDescription.placeholder', [], 'admin.form'),
-                ],
-            ],
-            'metaKeywords'    => [
-                'label' => $this->translator->trans('metaKeywords.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('metaKeywords.help', [], 'admin.form'),
-            ],
-        ];
-        $this->setMetas($builder, $meta);
-    }
-
-    protected function setMetas($builder, $metas)
-    {
-        foreach ($metas as $key => $values) {
-            $builder->add(
-                $key,
-                TextType::class,
-                array_merge(
-                    $values,
-                    ['required' => false]
-                )
-            );
-        }
+        $builder->add(
+            'metas',
+            CollectionType::class,
+            [
+                'attr'         => ['data-limit' => 1],
+                'label'        => 'Metatags',
+                'entry_type'   => MetaType::class,
+                'by_reference' => false,
+                'allow_add'    => true,
+                'allow_delete' => false,
+            ]
+        );
     }
 }

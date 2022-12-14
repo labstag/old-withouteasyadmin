@@ -49,21 +49,21 @@ class Route implements Stringable
         return (string) $this->getName();
     }
 
-    public function addGroupe(RouteGroupe $groupe): self
+    public function addGroupe(RouteGroupe $routeGroupe): self
     {
-        if (!$this->groupes->contains($groupe)) {
-            $this->groupes[] = $groupe;
-            $groupe->setRefroute($this);
+        if (!$this->groupes->contains($routeGroupe)) {
+            $this->groupes[] = $routeGroupe;
+            $routeGroupe->setRefroute($this);
         }
 
         return $this;
     }
 
-    public function addUser(RouteUser $user): self
+    public function addUser(RouteUser $routeUser): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setRefroute($this);
+        if (!$this->users->contains($routeUser)) {
+            $this->users[] = $routeUser;
+            $routeUser->setRefroute($this);
         }
 
         return $this;
@@ -89,26 +89,16 @@ class Route implements Stringable
         return $this->users;
     }
 
-    public function removeGroupe(RouteGroupe $groupe): self
+    public function removeGroupe(RouteGroupe $routeGroupe): self
     {
-        if ($this->groupes->removeElement($groupe)) {
-            // set the owning side to null (unless already changed)
-            if ($groupe->getRefroute() === $this) {
-                $groupe->setRefroute(null);
-            }
-        }
+        $this->removeElementRoute($this->groupes, $routeGroupe);
 
         return $this;
     }
 
-    public function removeUser(RouteUser $user): self
+    public function removeUser(RouteUser $routeUser): self
     {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getRefroute() === $this) {
-                $user->setRefroute(null);
-            }
-        }
+        $this->removeElementRoute($this->users, $routeUser);
 
         return $this;
     }
@@ -118,5 +108,12 @@ class Route implements Stringable
         $this->name = $name;
 
         return $this;
+    }
+
+    private function removeElementRoute($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getRefroute() === $this) {
+            $variable->setRefroute(null);
+        }
     }
 }

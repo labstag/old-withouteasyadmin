@@ -140,7 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     /**
      * @ORM\Column(type="json")
      */
-    protected array $roles = [];
+    protected array $roles = ['ROLE_USER'];
 
     /**
      * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser", orphanRemoval=true)
@@ -182,7 +182,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         $this->phoneUsers        = new ArrayCollection();
         $this->addressUsers      = new ArrayCollection();
         $this->oauthConnectUsers = new ArrayCollection();
-        $this->roles             = ['ROLE_USER'];
         $this->routes            = new ArrayCollection();
         $this->workflowUsers     = new ArrayCollection();
         $this->posts             = new ArrayCollection();
@@ -255,21 +254,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function addMemo(Memo $noteInterne): self
+    public function addMemo(Memo $memo): self
     {
-        if (!$this->noteInternes->contains($noteInterne)) {
-            $this->noteInternes[] = $noteInterne;
-            $noteInterne->setRefuser($this);
+        if (!$this->noteInternes->contains($memo)) {
+            $this->noteInternes[] = $memo;
+            $memo->setRefuser($this);
         }
 
         return $this;
     }
 
-    public function addNoteInterne(Memo $noteInterne): self
+    public function addNoteInterne(Memo $memo): self
     {
-        if (!$this->noteInternes->contains($noteInterne)) {
-            $this->noteInternes[] = $noteInterne;
-            $noteInterne->setRefuser($this);
+        if (!$this->noteInternes->contains($memo)) {
+            $this->noteInternes[] = $memo;
+            $memo->setRefuser($this);
         }
 
         return $this;
@@ -317,11 +316,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function addRoute(RouteUser $route): self
+    public function addRoute(RouteUser $routeUser): self
     {
-        if (!$this->routes->contains($route)) {
-            $this->routes[] = $route;
-            $route->setRefuser($this);
+        if (!$this->routes->contains($routeUser)) {
+            $this->routes[] = $routeUser;
+            $routeUser->setRefuser($this);
         }
 
         return $this;
@@ -505,12 +504,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeBookmark(Bookmark $bookmark): self
     {
-        if ($this->bookmarks->removeElement($bookmark)) {
-            // set the owning side to null (unless already changed)
-            if ($bookmark->getRefuser() === $this) {
-                $bookmark->setRefuser(null);
-            }
-        }
+        $this->removeElementUser($this->bookmarks, $bookmark);
 
         return $this;
     }
@@ -543,12 +537,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeHistory(History $history): self
     {
-        if ($this->histories->removeElement($history)) {
-            // set the owning side to null (unless already changed)
-            if ($history->getRefuser() === $this) {
-                $history->setRefuser(null);
-            }
-        }
+        $this->removeElementUser($this->histories, $history);
 
         return $this;
     }
@@ -566,39 +555,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function removeMemo(Memo $noteInterne): self
+    public function removeMemo(Memo $memo): self
     {
-        if ($this->noteInternes->contains($noteInterne)) {
-            $this->noteInternes->removeElement($noteInterne);
+        if ($this->noteInternes->contains($memo)) {
+            $this->noteInternes->removeElement($memo);
             // set the owning side to null (unless already changed)
-            if ($noteInterne->getRefuser() === $this) {
-                $noteInterne->setRefuser(null);
+            if ($memo->getRefuser() === $this) {
+                $memo->setRefuser(null);
             }
         }
 
         return $this;
     }
 
-    public function removeNoteInterne(Memo $noteInterne): self
+    public function removeNoteInterne(Memo $memo): self
     {
-        if ($this->noteInternes->removeElement($noteInterne)) {
-            // set the owning side to null (unless already changed)
-            if ($noteInterne->getRefuser() === $this) {
-                $noteInterne->setRefuser(null);
-            }
-        }
+        $this->removeElementUser($this->noteInternes, $memo);
 
         return $this;
     }
 
     public function removeOauthConnectUser(OauthConnectUser $oauthConnectUser): self
     {
-        if ($this->oauthConnectUsers->removeElement($oauthConnectUser)) {
-            // set the owning side to null (unless already changed)
-            if ($oauthConnectUser->getRefuser() === $this) {
-                $oauthConnectUser->setRefuser(null);
-            }
-        }
+        $this->removeElementUser($this->oauthConnectUsers, $oauthConnectUser);
 
         return $this;
     }
@@ -633,36 +612,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removePost(Post $post): self
     {
-        if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
-            if ($post->getRefuser() === $this) {
-                $post->setRefuser(null);
-            }
-        }
+        $this->removeElementUser($this->posts, $post);
 
         return $this;
     }
 
-    public function removeRoute(RouteUser $route): self
+    public function removeRoute(RouteUser $routeUser): self
     {
-        if ($this->routes->removeElement($route)) {
-            // set the owning side to null (unless already changed)
-            if ($route->getRefuser() === $this) {
-                $route->setRefuser(null);
-            }
-        }
+        $this->removeElementUser($this->routes, $routeUser);
 
         return $this;
     }
 
     public function removeWorkflowUser(WorkflowUser $workflowUser): self
     {
-        if ($this->workflowUsers->removeElement($workflowUser)) {
-            // set the owning side to null (unless already changed)
-            if ($workflowUser->getRefuser() === $this) {
-                $workflowUser->setRefuser(null);
-            }
-        }
+        $this->removeElementUser($this->workflowUsers, $workflowUser);
 
         return $this;
     }
@@ -678,9 +642,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         );
     }
 
-    public function setAvatar(?Attachment $avatar): self
+    public function setAvatar(?Attachment $attachment): self
     {
-        $this->avatar = $avatar;
+        $this->avatar = $attachment;
 
         return $this;
     }
@@ -742,5 +706,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
             $this->username,
             $this->password,
         ] = unserialize($serialized);
+    }
+
+    private function removeElementUser($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getRefuser() === $this) {
+            $variable->setRefuser(null);
+        }
     }
 }

@@ -1,7 +1,7 @@
 {% extends 'skeleton/error.html.twig' %}
 {% set title = '' %}
-{% if config.meta.title is defined %}
-    {% set title = config.meta.title|trim %}
+{% if config.site_title is defined %}
+    {% set title = config.site_title|trim %}
 {% endif %}
 {% block content_title %}{{ title }}{% endblock %}
 {% block box_title %}{{ 'error.page.404.title'|trans }}{% endblock %}

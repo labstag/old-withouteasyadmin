@@ -4,10 +4,15 @@ namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Service\AttachFormService;
+use Labstag\Service\BlockService;
 use Labstag\Service\DataService;
+use Labstag\Service\DomainService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
+use Labstag\Service\FrontService;
 use Labstag\Service\GuardService;
+use Labstag\Service\MenuService;
 use Labstag\Service\SessionService;
 use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,19 +32,24 @@ abstract class ControllerLib extends AbstractController
     protected Request $request;
 
     public function __construct(
+        protected FrontService $frontService,
+        protected DomainService $domainService,
+        protected AttachFormService $attachFormService,
         protected FileService $fileService,
-        protected Environment $twig,
+        protected Environment $environment,
         protected ErrorService $errorService,
         protected SessionService $sessionService,
         protected EntityManagerInterface $entityManager,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected TokenStorageInterface $tokenStorage,
-        protected RouterInterface $routerInterface,
+        protected RouterInterface $router,
         protected RequestStack $requeststack,
         protected GuardService $guardService,
         protected DataService $dataService,
         protected PaginatorInterface $paginator,
-        protected TranslatorInterface $translator
+        protected TranslatorInterface $translator,
+        protected BlockService $blockService,
+        protected MenuService $menuService
     )
     {
         $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();

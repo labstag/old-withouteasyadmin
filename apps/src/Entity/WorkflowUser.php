@@ -55,16 +55,16 @@ class WorkflowUser
         return $this->state;
     }
 
-    public function setRefuser(?User $refuser): self
+    public function setRefuser(?User $user): self
     {
-        $this->refuser = $refuser;
+        $this->refuser = $user;
 
         return $this;
     }
 
-    public function setRefworkflow(?Workflow $refworkflow): self
+    public function setRefworkflow(?Workflow $workflow): self
     {
-        $this->refworkflow = $refworkflow;
+        $this->refworkflow = $workflow;
 
         return $this;
     }

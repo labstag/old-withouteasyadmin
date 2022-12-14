@@ -9,9 +9,9 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
 
 class OauthConnectUserRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, OauthConnectUser::class);
+        parent::__construct($managerRegistry, OauthConnectUser::class);
     }
 
     public function findDistinctAllOauth(): array

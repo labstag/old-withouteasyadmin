@@ -18,12 +18,12 @@ class DateAndTimeFieldsType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'date',
             DateType::class,
             [
@@ -31,7 +31,7 @@ class DateAndTimeFieldsType extends AbstractTypeLib
                 'widget' => 'single_text',
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'dateintervale',
             DateIntervalType::class,
             [
@@ -43,7 +43,7 @@ class DateAndTimeFieldsType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'datetimedate',
             DateTimeType::class,
             [
@@ -53,7 +53,7 @@ class DateAndTimeFieldsType extends AbstractTypeLib
                 'with_seconds' => true,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'time',
             TimeType::class,
             [
@@ -62,7 +62,7 @@ class DateAndTimeFieldsType extends AbstractTypeLib
                 'widget'       => 'single_text',
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'birthday',
             BirthdayType::class,
             [
@@ -70,7 +70,7 @@ class DateAndTimeFieldsType extends AbstractTypeLib
                 'widget' => 'single_text',
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'week',
             WeekType::class,
             [
@@ -80,9 +80,9 @@ class DateAndTimeFieldsType extends AbstractTypeLib
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             []
         );
     }

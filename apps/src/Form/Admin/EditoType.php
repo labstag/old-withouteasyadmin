@@ -17,11 +17,11 @@ class EditoType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'title',
             TextType::class,
             [
@@ -32,10 +32,9 @@ class EditoType extends AbstractTypeLib
                 ],
             ]
         );
-        $this->addPublished($builder);
-        $this->setContent($builder);
-        $this->setMeta($builder);
-        $builder->add(
+        $this->addPublished($formBuilder);
+        $this->setContent($formBuilder);
+        $formBuilder->add(
             'file',
             FileType::class,
             [
@@ -45,7 +44,7 @@ class EditoType extends AbstractTypeLib
                 'attr'     => ['accept' => 'image/*'],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'refuser',
             SearchableType::class,
             [
@@ -59,12 +58,21 @@ class EditoType extends AbstractTypeLib
                 ],
             ]
         );
+        $this->addParagraph(
+            $formBuilder,
+            [
+                'add'    => 'admin_edito_paragraph_add',
+                'edit'   => 'admin_edito_paragraph_show',
+                'delete' => 'admin_edito_paragraph_delete',
+            ]
+        );
+        $this->setMeta($formBuilder);
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Edito::class,
             ]

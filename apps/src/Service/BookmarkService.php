@@ -3,14 +3,12 @@
 namespace Labstag\Service;
 
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\Bookmark;
-use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
-use Labstag\RequestHandler\AttachmentRequestHandler;
+use Labstag\Repository\BookmarkRepository;
+use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\BookmarkRequestHandler;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -18,17 +16,19 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class BookmarkService
 {
-    public const CLIENTNUMBER = 400;
+    /**
+     * @var int
+     */
+    final public const CLIENTNUMBER = 400;
 
     public function __construct(
         protected FileService $fileService,
-        private ErrorService $errorService,
-        private LoggerInterface $logger,
-        private EntityManagerInterface $entityManager,
-        private AttachmentRequestHandler $attachmentRH,
-        private UploadAnnotationReader $uploadAnnotReader,
-        private ContainerBagInterface $containerBag,
-        private BookmarkRequestHandler $requestHandler
+        private readonly ErrorService $errorService,
+        private readonly UploadAnnotationReader $uploadAnnotationReader,
+        private readonly ContainerBagInterface $containerBag,
+        private readonly BookmarkRequestHandler $bookmarkRequestHandler,
+        protected UserRepository $userRepository,
+        protected BookmarkRepository $bookmarkRepository
     )
     {
     }
@@ -38,12 +38,11 @@ class BookmarkService
         string $url,
         string $name,
         string $icon,
-        DateTime $date
-    )
+        DateTime $dateTime
+    ): void
     {
-        $user       = $this->getRepository(User::class)->find($userid);
-        $repository = $this->getRepository(Bookmark::class);
-        $bookmark   = $repository->findOneBy(
+        $user     = $this->userRepository->find($userid);
+        $bookmark = $this->bookmarkRepository->findOneBy(
             ['url' => $url]
         );
         if ($bookmark instanceof Bookmark) {
@@ -56,11 +55,11 @@ class BookmarkService
         $bookmark->setUrl($url);
         $bookmark->setIcon($icon);
         $bookmark->setName($name);
-        $bookmark->setPublished($date);
+        $bookmark->setPublished($dateTime);
 
         try {
             $headers = get_headers($url, 1);
-            if (self::CLIENTNUMBER < substr($headers[0], 9, 3)) {
+            if (self::CLIENTNUMBER < substr((string) $headers[0], 9, 3)) {
                 return;
             }
 
@@ -68,15 +67,12 @@ class BookmarkService
             $description = $meta['description'] ?? null;
             $code        = 'twitter:description';
             $description = (is_null($description) && isset($meta[$code])) ? $meta[$code] : $description;
-            $bookmark->setMetaDescription($description);
             $bookmark->setContent($description);
-            $keywords = $meta['keywords'] ?? null;
-            $bookmark->setMetaKeywords($keywords);
             $image = $meta['twitter:image'] ?? null;
             $image = (is_null($image) && isset($meta['og:image'])) ? $meta['og:image'] : $image;
             $this->upload($bookmark, $image);
-            $repository->add($bookmark);
-            $this->requestHandler->handle($old, $bookmark);
+            $this->bookmarkRepository->add($bookmark);
+            $this->bookmarkRequestHandler->handle($old, $bookmark);
         } catch (Exception $exception) {
             $this->errorService->set($exception);
         }
@@ -87,29 +83,24 @@ class BookmarkService
         return $this->containerBag->get($name);
     }
 
-    protected function getRepository(string $entity)
+    protected function upload(Bookmark $bookmark, $image): void
     {
-        return $this->entityManager->getRepository($entity);
-    }
-
-    protected function upload(Bookmark $bookmark, $image)
-    {
-        if (is_null($image) || !$this->uploadAnnotReader->isUploadable($bookmark)) {
+        if (is_null($image) || !$this->uploadAnnotationReader->isUploadable($bookmark)) {
             return;
         }
 
         // @var resource $finfo
-        $finfo       = finfo_open(FILEINFO_MIME_TYPE);
-        $annotations = $this->uploadAnnotReader->getUploadableFields($bookmark);
-        $slugger     = new AsciiSlugger();
+        $finfo        = finfo_open(FILEINFO_MIME_TYPE);
+        $annotations  = $this->uploadAnnotationReader->getUploadableFields($bookmark);
+        $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
             $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
             $title    = $accessor->getValue($bookmark, $annotation->getSlug());
-            $slug     = $slugger->slug($title);
+            $slug     = $asciiSlugger->slug($title);
 
             try {
-                $pathinfo = pathinfo($image);
+                $pathinfo = pathinfo((string) $image);
                 $content  = file_get_contents($image);
                 // @var resource $tmpfile
                 $tmpfile = tmpfile();

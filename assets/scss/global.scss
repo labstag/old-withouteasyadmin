@@ -210,3 +210,7 @@ picture {
 .pagination {
   @extend .justify-content-center;
 }
+
+.sortable-save {
+  border: 1px solid #f00;
+}

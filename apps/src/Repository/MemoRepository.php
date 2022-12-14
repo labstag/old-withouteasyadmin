@@ -12,26 +12,26 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class MemoRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Memo::class);
+        parent::__construct($managerRegistry, Memo::class);
     }
 
     public function findPublier()
     {
         $queryBuilder = $this->createQueryBuilder('n');
-        $query        = $queryBuilder->innerJoin('n.refuser', 'u');
-        $query->where(
+        $queryBuilder->innerJoin('n.refuser', 'u');
+        $queryBuilder->where(
             'n.state LIKE :state'
         );
-        $query->andWhere('n.dateStart >= now()');
-        $query->orderBy('n.dateStart', 'ASC');
-        $query->setParameters(
+        $queryBuilder->andWhere('n.dateStart >= now()');
+        $queryBuilder->orderBy('n.dateStart', 'ASC');
+        $queryBuilder->setParameters(
             ['state' => '%publie%']
         );
 
-        $query->setMaxResults(1);
+        $queryBuilder->setMaxResults(1);
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 }

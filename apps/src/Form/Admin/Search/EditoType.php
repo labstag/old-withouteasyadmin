@@ -15,11 +15,11 @@ class EditoType extends SearchAbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'title',
             TextType::class,
             [
@@ -31,21 +31,21 @@ class EditoType extends SearchAbstractTypeLib
                 ],
             ]
         );
-        $this->addRefUser($builder);
-        $this->addPublished($builder);
+        $this->addRefUser($formBuilder);
+        $this->addPublished($formBuilder);
         $this->showState(
-            $builder,
+            $formBuilder,
             new Edito(),
             $this->translator->trans('edito.etape.label', [], 'admin.search.form'),
             $this->translator->trans('edito.etape.help', [], 'admin.search.form'),
             $this->translator->trans('edito.etape.placeholder', [], 'admin.search.form')
         );
-        parent::buildForm($builder, $options);
+        parent::buildForm($formBuilder, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class'      => EditoSearch::class,
                 'csrf_protection' => false,

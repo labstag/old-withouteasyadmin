@@ -4,12 +4,7 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Template;
-use Labstag\Form\Admin\Search\TemplateType as SearchTemplateType;
-use Labstag\Form\Admin\TemplateType;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\RequestHandler\TemplateRequestHandler;
-use Labstag\Search\TemplateSearch;
-use Labstag\Service\AttachFormService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,16 +14,12 @@ class TemplateController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_template_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_template_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $service,
-        ?Template $template,
-        TemplateRequestHandler $requestHandler
+        ?Template $template
     ): Response
     {
         return $this->form(
-            $service,
-            $requestHandler,
-            TemplateType::class,
-            !is_null($template) ? $template : new Template()
+            $this->getDomainEntity(),
+            is_null($template) ? new Template() : $template
         );
     }
 
@@ -40,7 +31,7 @@ class TemplateController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Template::class,
+            $this->getDomainEntity(),
             'admin/template/index.html.twig'
         );
     }
@@ -53,108 +44,14 @@ class TemplateController extends AdminControllerLib
     public function showOrPreview(Template $template): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $template,
             'admin/template/show.html.twig'
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'  => 'api_action_delete',
-            'destroy' => 'api_action_destroy',
-            'edit'    => 'admin_template_edit',
-            'empty'   => 'api_action_empty',
-            'list'    => 'admin_template_index',
-            'new'     => 'admin_template_new',
-            'preview' => 'admin_template_preview',
-            'restore' => 'api_action_restore',
-            'show'    => 'admin_template_show',
-            'trash'   => 'admin_template_trash',
-        ];
-    }
-
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchTemplateType::class,
-            'data' => new TemplateSearch(),
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTemplace(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('template.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_index',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTemplaceEdit(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('template.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_edit',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTemplaceNew(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('template.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_new',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTemplacePreview(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_trash',
-            ],
-            [
-                'title' => $this->translator->trans('template.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_preview',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTemplaceShow(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('template.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminTemplaceTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('template.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_template_trash',
-            ],
-        ];
-    }
-
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return array_merge(
-            $headers,
-            [
-                'admin_template' => $this->translator->trans('template.title', [], 'admin.header'),
-            ]
-        );
+        return $this->domainService->getDomain(Template::class);
     }
 }

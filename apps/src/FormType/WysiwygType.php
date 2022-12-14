@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormView;
 class WysiwygType extends AbstractType
 {
     public function buildView(
-        FormView $view,
+        FormView $formView,
         FormInterface $form,
         array $options
     ): void
@@ -19,7 +19,7 @@ class WysiwygType extends AbstractType
         $attr['class'] ??= '';
         $attr['class']   = trim($attr['class'].' wysiwyg');
 
-        $view->vars['attr'] = $attr;
+        $formView->vars['attr'] = $attr;
         unset($form);
     }
 

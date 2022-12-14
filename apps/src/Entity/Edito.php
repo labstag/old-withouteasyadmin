@@ -4,12 +4,13 @@ namespace Labstag\Entity;
 
 use DateTime;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
-use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\EditoRepository;
 use Stringable;
@@ -23,12 +24,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Edito implements Stringable
 {
-    use MetatagsEntity;
     use SoftDeleteableEntity;
     use StateableEntity;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      * @Assert\NotBlank
      */
     protected $content;
@@ -64,13 +64,50 @@ class Edito implements Stringable
     protected $title;
 
     /**
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $metas;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"position" = "ASC"})
+     */
+    private $paragraphs;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $published;
 
+    public function __construct()
+    {
+        $this->paragraphs = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
+    }
+
     public function __toString(): string
     {
         return (string) $this->getTitle();
+    }
+
+    public function addMeta(Meta $meta): self
+    {
+        if (!$this->metas->contains($meta)) {
+            $this->metas[] = $meta;
+            $meta->setEdito($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setEdito($this);
+        }
+
+        return $this;
     }
 
     public function getContent(): ?string
@@ -93,6 +130,22 @@ class Edito implements Stringable
         return $this->id;
     }
 
+    /**
+     * @return Collection<int, Meta>
+     */
+    public function getMetas(): Collection
+    {
+        return $this->metas;
+    }
+
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
+    }
+
     public function getPublished(): ?DateTimeInterface
     {
         return $this->published;
@@ -108,7 +161,27 @@ class Edito implements Stringable
         return $this->title;
     }
 
-    public function setContent(string $content): self
+    public function removeMeta(Meta $meta): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->metas->removeElement($meta) && $meta->getEdito() === $this) {
+            $meta->setEdito(null);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphs->removeElement($paragraph) && $paragraph->getEdito() === $this) {
+            $paragraph->setEdito(null);
+        }
+
+        return $this;
+    }
+
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 
@@ -122,23 +195,23 @@ class Edito implements Stringable
         return $this;
     }
 
-    public function setFond(?Attachment $fond): self
+    public function setFond(?Attachment $attachment): self
     {
-        $this->fond = $fond;
+        $this->fond = $attachment;
 
         return $this;
     }
 
-    public function setPublished(DateTimeInterface $published): self
+    public function setPublished(DateTimeInterface $dateTime): self
     {
-        $this->published = $published;
+        $this->published = $dateTime;
 
         return $this;
     }
 
-    public function setRefuser(?User $refuser): self
+    public function setRefuser(?User $user): self
     {
-        $this->refuser = $refuser;
+        $this->refuser = $user;
 
         return $this;
     }

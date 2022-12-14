@@ -13,7 +13,7 @@ class ErrorService
     {
     }
 
-    public function set($exception)
+    public function set($exception): void
     {
         $errorMsg = sprintf(
             'Exception : Erreur %s dans %s L.%s : %s',

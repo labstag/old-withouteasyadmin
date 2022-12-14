@@ -9,17 +9,20 @@ use Symfony\Component\Form\FormView;
 
 class CoreTextareaType extends AbstractType
 {
-    public const ROWS = 20;
+    /**
+     * @var int
+     */
+    final public const ROWS = 20;
 
     public function buildView(
-        FormView $view,
+        FormView $formView,
         FormInterface $form,
         array $options
     ): void
     {
-        $attr               = $options['attr'];
-        $attr['rows']     ??= self::ROWS;
-        $view->vars['attr'] = $attr;
+        $attr                   = $options['attr'];
+        $attr['rows']         ??= self::ROWS;
+        $formView->vars['attr'] = $attr;
         unset($form);
     }
 

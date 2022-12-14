@@ -10,19 +10,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GeoCodeType extends AbstractTypeLib
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         unset($options);
-        $builder->add(
+        $formBuilder->add(
             'countryCode',
-            FlagCountryType::class,
-            [
-                'label' => $this->translator->trans('geocode.countryCode.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('geocode.countryCode.help', [], 'admin.form'),
-                'attr'  => [
-                    'placeholder' => $this->translator->trans('geocode.countryCode.placeholder', [], 'admin.form'),
-                ],
-            ]
+            FlagCountryType::class
         );
         $tab = [
             'postalCode'    => [
@@ -82,12 +75,12 @@ class GeoCodeType extends AbstractTypeLib
             ],
         ];
 
-        $this->setInputText($builder, $tab);
+        $this->setInputText($formBuilder, $tab);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => GeoCode::class,
             ]

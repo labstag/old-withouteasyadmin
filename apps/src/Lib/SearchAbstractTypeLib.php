@@ -18,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class SearchAbstractTypeLib extends AbstractType
 {
-    public function __construct(protected Registry $workflows, protected TranslatorInterface $translator)
+    public function __construct(protected Registry $registry, protected TranslatorInterface $translator)
     {
     }
 
@@ -26,11 +26,11 @@ abstract class SearchAbstractTypeLib extends AbstractType
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'limit',
             NumberType::class,
             [
@@ -42,7 +42,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'submit',
             SubmitType::class,
             [
@@ -50,7 +50,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
                 'attr'  => ['name' => ''],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'reset',
             ResetType::class,
             [
@@ -134,13 +134,13 @@ abstract class SearchAbstractTypeLib extends AbstractType
 
     protected function showState(
         $builder,
-        $entityclass,
+        object $entityclass,
         $label,
         $help,
         $placeholder
     )
     {
-        $workflow   = $this->workflows->get($entityclass);
+        $workflow   = $this->registry->get($entityclass);
         $definition = $workflow->getDefinition();
         $places     = $definition->getPlaces();
         $builder->add(

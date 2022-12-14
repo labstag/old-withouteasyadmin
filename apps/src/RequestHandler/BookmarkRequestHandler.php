@@ -7,10 +7,10 @@ use Labstag\Lib\RequestHandlerLib;
 
 class BookmarkRequestHandler extends RequestHandlerLib
 {
-    public function handle($oldEntity, $entity)
+    public function handle($oldEntity, $entity): void
     {
         parent::handle($oldEntity, $entity);
-        $this->dispatcher->dispatch(
+        $this->eventDispatcher->dispatch(
             new BookmarkEntityEvent($oldEntity, $entity)
         );
     }

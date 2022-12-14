@@ -6,14 +6,18 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\Chapter;
+use Labstag\Entity\Meta;
 use Labstag\Lib\FixtureLib;
 
 class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
 {
 
-    protected $position = [];
+    protected array $position = [];
 
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return [
             DataFixtures::class,
@@ -22,40 +26,42 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         ];
     }
 
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $objectManager): void
     {
-        unset($manager);
+        unset($objectManager);
         $this->loadForeach(self::NUMBER_HISTORY, 'addChapter');
     }
 
     protected function addChapter(
-        Generator $faker,
+        Generator $generator,
         int $index,
         array $states
     ): void
     {
-        $chapter    = new Chapter();
+        $chapter = new Chapter();
+        $meta    = new Meta();
+        $meta->setChapter($chapter);
+        $this->setMeta($meta);
         $oldChapter = clone $chapter;
-        $chapter->setName($faker->unique()->colorName);
-        $chapter->setMetaKeywords(implode(', ', $faker->unique()->words(random_int(4, 10))));
-        $chapter->setMetaDescription($faker->unique()->sentence);
+        $chapter->setName($generator->unique()->colorName());
         // @var string $content
-        $content = $faker->paragraphs(random_int(4, 10), true);
-        $chapter->setContent(str_replace("\n\n", "<br />\n", $content));
-        $indexHistory = $faker->numberBetween(0, self::NUMBER_HISTORY - 1);
+        $content = $generator->paragraphs(random_int(4, 10), true);
+        $chapter->setContent(str_replace("\n\n", "<br />\n", (string) $content));
+        $indexHistory = $generator->numberBetween(0, self::NUMBER_HISTORY - 1);
         $history      = $this->getReference('history_'.$indexHistory);
         if (!isset($this->position[$indexHistory])) {
             $this->position[$indexHistory] = [];
         }
 
         $chapter->setRefhistory($history);
-        $chapter->setPublished($faker->unique()->dateTime('now'));
+        $chapter->setPublished($generator->unique()->dateTime('now'));
+
         $indexposition = $this->position[$indexHistory];
         $position      = is_countable($indexposition) ? count($indexposition) : 0;
         $chapter->setPosition($position + 1);
         $this->addReference('chapter_'.$index, $chapter);
         $this->position[$indexHistory][] = $chapter;
-        $this->chapterRH->handle($oldChapter, $chapter);
-        $this->chapterRH->changeWorkflowState($chapter, $states);
+        $this->chapterRequestHandler->handle($oldChapter, $chapter);
+        $this->chapterRequestHandler->changeWorkflowState($chapter, $states);
     }
 }

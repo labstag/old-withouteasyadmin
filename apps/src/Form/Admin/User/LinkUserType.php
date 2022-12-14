@@ -15,13 +15,13 @@ class LinkUserType extends LinkType
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        parent::buildForm($builder, $options);
+        parent::buildForm($formBuilder, $options);
 
-        $builder->add(
+        $formBuilder->add(
             'refuser',
             SearchableType::class,
             [
@@ -37,9 +37,9 @@ class LinkUserType extends LinkType
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => LinkUser::class,
             ]

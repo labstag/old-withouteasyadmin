@@ -2,50 +2,46 @@
 
 namespace Labstag\Controller;
 
-use Labstag\Entity\Page;
-use Labstag\Lib\ControllerLib;
-use Labstag\Service\TemplatePageService;
+use Labstag\Entity\Edito;
+use Labstag\Lib\FrontControllerLib;
+use Labstag\Repository\EditoRepository;
+use Labstag\Repository\PageRepository;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FrontController extends ControllerLib
+class FrontController extends FrontControllerLib
 {
-    #[Route(path: '/{slug}', name: 'front', requirements: ['slug' => '.+'], defaults: ['slug' => ''], priority: -1)]
-    public function front(string $slug, TemplatePageService $templatePageService): mixed
+    #[Route(path: '/edito', name: 'front_edito', priority: 1)]
+    public function edio(
+        EditoRepository $editoRepository
+    ): Response
     {
-        $slug = trim($slug);
-        if ('' == $slug) {
-            $page = $this->getRepository(Page::class)->findOneBy(['front' => 1]);
-        }
+        $edito = $editoRepository->findOnePublier();
 
-        $search = $slug;
-        $find   = 0;
-        $page   = null;
-        $strlen = strlen($search);
-        while (0 == $find || 0 != $strlen) {
-            $searchPage = $this->getRepository(Page::class)->findOneBy(['frontslug' => $search]);
-            if ($searchPage instanceof Page) {
-                $page = $searchPage;
-
-                break;
-            }
-
-            $search = substr($search, 0, -1);
-            $strlen = strlen($search);
-        }
-
-        if (!isset($page)) {
+        if (!$edito instanceof Edito) {
             throw $this->createNotFoundException();
         }
 
-        $slugFront = $page->getFrontslug();
-        preg_match('/'.$slugFront.'(.*)/', $slug, $matches);
-        $class = $templatePageService->getClass($page->getFunction());
-        if (is_null($class)) {
-            throw $this->createNotFoundException();
-        }
+        return $this->render(
+            'front.html.twig',
+            ['content' => $edito]
+        );
+    }
 
-        $slug = strstr($slug, (string) $page->getSlug());
-
-        return $class->__invoke($matches);
+    #[Route(
+        path: '/{slug}{_</(?!/)>}',
+        name: 'front',
+        requirements: ['slug' => '.+'],
+        defaults: [
+            'slug' => '',
+            '_'    => '',
+        ]
+    )]
+    public function index(
+        string $slug,
+        PageRepository $pageRepository
+    ): Response
+    {
+        return $this->page($slug, $pageRepository);
     }
 }

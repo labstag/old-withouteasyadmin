@@ -8,10 +8,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LinkType extends AbstractLinkType
 {
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
+        parent::configureOptions($optionsResolver);
         // Configure your form options here
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => LinkUser::class,
             ]

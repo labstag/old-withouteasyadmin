@@ -4,29 +4,28 @@ namespace Labstag\Controller\Admin\History;
 
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
-use Labstag\Form\Admin\ChapterType;
-use Labstag\Form\Admin\Search\ChapterType as SearchChapterType;
+use Labstag\Entity\History;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\ChapterRepository;
 use Labstag\RequestHandler\ChapterRequestHandler;
-use Labstag\Search\ChapterSearch;
-use Labstag\Service\AttachFormService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Uid\Uuid;
 
-#[Route(path: '/admin/chapter')]
+#[Route(path: '/admin/history/chapter')]
 class ChapterController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'admin_chapter_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_chapter_new', methods: ['GET', 'POST'])]
-    public function edit(AttachFormService $service, ?Chapter $chapter, ChapterRequestHandler $requestHandler): Response
+    public function edit(
+        ?Chapter $chapter
+    ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
-            ChapterType::class,
-            !is_null($chapter) ? $chapter : new Chapter(),
+            $this->getDomainEntity(),
+            is_null($chapter) ? new Chapter() : $chapter,
             'admin/chapter/form.html.twig'
         );
     }
@@ -39,9 +38,28 @@ class ChapterController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Chapter::class,
+            $this->getDomainEntity(),
             'admin/chapter/index.html.twig',
         );
+    }
+
+    #[Route(path: '/new/{id}', name: 'admin_chapter_new', methods: ['GET', 'POST'])]
+    public function new(
+        History $history,
+        ChapterRepository $chapterRepository,
+        ChapterRequestHandler $chapterRequestHandler
+    ): RedirectResponse
+    {
+        $chapter = new Chapter();
+        $chapter->setRefhistory($history);
+        $chapter->setName(Uuid::v1());
+        $chapter->setPosition((is_countable($history->getChapters()) ? count($history->getChapters()) : 0) + 1);
+
+        $old = clone $chapter;
+        $chapterRepository->add($chapter);
+        $chapterRequestHandler->handle($old, $chapter);
+
+        return $this->redirectToRoute('admin_chapter_edit', ['id' => $chapter->getId()]);
     }
 
     /**
@@ -52,109 +70,14 @@ class ChapterController extends AdminControllerLib
     public function showOrPreview(Chapter $chapter): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $chapter,
             'admin/chapter/show.html.twig'
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_chapter_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_chapter_index',
-            'new'      => 'admin_chapter_new',
-            'preview'  => 'admin_chapter_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_chapter_show',
-            'trash'    => 'admin_chapter_trash',
-            'workflow' => 'api_action_workflow',
-        ];
-    }
-
-    protected function searchForm(): array
-    {
-        return [
-            'form' => SearchChapterType::class,
-            'data' => new ChapterSearch(),
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminChapter(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('chapter.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_index',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminChapterEdit(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('chapter.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_edit',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminChapterNew(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('chapter.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_new',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminChapterPreview(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('chapter.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_trash',
-            ],
-            [
-                'title' => $this->translator->trans('chapter.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_preview',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminChapterShow(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('chapter.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminChapterTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('chapter.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_chapter_trash',
-            ],
-        ];
-    }
-
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return array_merge(
-            $headers,
-            [
-                'admin_chapter' => $this->translator->trans('chapter.title', [], 'admin.header'),
-            ]
-        );
+        return $this->domainService->getDomain(Chapter::class);
     }
 }

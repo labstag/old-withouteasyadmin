@@ -13,6 +13,9 @@ class ServiceMethodMessage
         return $this->method;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getParams(): array
     {
         return $this->params;

@@ -2,14 +2,10 @@
 
 namespace Labstag\Form\Admin;
 
-use Labstag\Entity\Layout;
 use Labstag\Entity\Page;
 use Labstag\Lib\AbstractTypeLib;
-use Labstag\Repository\LayoutRepository;
 use Labstag\Repository\PageRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,11 +16,11 @@ class PageType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        $formBuilder->add(
             'name',
             TextType::class,
             [
@@ -32,7 +28,15 @@ class PageType extends AbstractTypeLib
                 'help'  => $this->translator->trans('page.name.help', [], 'admin.form'),
             ]
         );
-        $builder->add(
+        $this->addParagraph(
+            $formBuilder,
+            [
+                'add'    => 'admin_page_paragraph_add',
+                'edit'   => 'admin_page_paragraph_show',
+                'delete' => 'admin_page_paragraph_delete',
+            ]
+        );
+        $formBuilder->add(
             'password',
             TextType::class,
             [
@@ -41,7 +45,7 @@ class PageType extends AbstractTypeLib
                 'required' => false,
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'slug',
             TextType::class,
             [
@@ -51,49 +55,21 @@ class PageType extends AbstractTypeLib
             ]
         );
 
-        $builder->add(
+        $formBuilder->add(
             'parent',
             EntityType::class,
             [
                 'required'      => false,
                 'class'         => Page::class,
-                'query_builder' => fn (PageRepository $er) => $er->formType($options),
+                'query_builder' => static fn (PageRepository $pageRepository) => $pageRepository->formType($options),
             ]
         );
-
-        $builder->add(
-            'reflayout',
-            EntityType::class,
-            [
-                'label'         => $this->translator->trans('page.reflayout.label', [], 'admin.form'),
-                'help'          => $this->translator->trans('page.reflayout.help', [], 'admin.form'),
-                'class'         => Layout::class,
-                'query_builder' => fn (LayoutRepository $er) => $er->formType(),
-            ]
-        );
-
-        $builder->add(
-            'front',
-            CheckboxType::class,
-            [
-                'label' => $this->translator->trans('page.front.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('page.front.help', [], 'admin.form'),
-            ]
-        );
-
-        $choices = $this->templatePageService->getChoices();
-
-        $builder->add(
-            'function',
-            ChoiceType::class,
-            ['choices' => $choices]
-        );
-        unset($options);
+        $this->setMeta($formBuilder);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Page::class,
             ]

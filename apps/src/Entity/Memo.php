@@ -3,6 +3,8 @@
 namespace Labstag\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -25,7 +27,7 @@ class Memo implements Stringable
     use StateableEntity;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      * @Assert\NotBlank
      */
     protected $content;
@@ -72,15 +74,32 @@ class Memo implements Stringable
      */
     protected $title;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="memo", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"position" = "ASC"})
+     */
+    private $paragraphs;
+
     public function __construct()
     {
-        $this->dateStart = new DateTime();
-        $this->dateEnd   = new DateTime();
+        $this->dateStart  = new DateTime();
+        $this->dateEnd    = new DateTime();
+        $this->paragraphs = new ArrayCollection();
     }
 
     public function __toString(): string
     {
         return (string) $this->getTitle();
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setMemo($this);
+        }
+
+        return $this;
     }
 
     public function getContent(): ?string
@@ -113,6 +132,14 @@ class Memo implements Stringable
         return $this->id;
     }
 
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
+    }
+
     public function getRefuser(): ?User
     {
         return $this->refuser;
@@ -123,23 +150,33 @@ class Memo implements Stringable
         return $this->title;
     }
 
-    public function setContent(string $content): self
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphs->removeElement($paragraph) && $paragraph->getMemo() === $this) {
+            $paragraph->setMemo(null);
+        }
+
+        return $this;
+    }
+
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 
         return $this;
     }
 
-    public function setDateEnd(?DateTime $dateEnd): self
+    public function setDateEnd(?DateTime $dateTime): self
     {
-        $this->dateEnd = $dateEnd;
+        $this->dateEnd = $dateTime;
 
         return $this;
     }
 
-    public function setDateStart(DateTime $dateStart): self
+    public function setDateStart(DateTime $dateTime): self
     {
-        $this->dateStart = $dateStart;
+        $this->dateStart = $dateTime;
 
         return $this;
     }
@@ -151,16 +188,16 @@ class Memo implements Stringable
         return $this;
     }
 
-    public function setFond(?Attachment $fond): self
+    public function setFond(?Attachment $attachment): self
     {
-        $this->fond = $fond;
+        $this->fond = $attachment;
 
         return $this;
     }
 
-    public function setRefuser(?User $refuser): self
+    public function setRefuser(?User $user): self
     {
-        $this->refuser = $refuser;
+        $this->refuser = $user;
 
         return $this;
     }

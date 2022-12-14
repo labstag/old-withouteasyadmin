@@ -7,35 +7,25 @@ use Labstag\Form\Admin\Collections\User\AddressType;
 use Labstag\Form\Admin\Collections\User\EmailType;
 use Labstag\Form\Admin\Collections\User\LinkType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
+use Labstag\FormType\EmailVerifChoiceType;
 use Labstag\Lib\AbstractTypeLib;
-use Labstag\Repository\EmailUserRepository;
-use Labstag\Service\TemplatePageService;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProfilType extends AbstractTypeLib
 {
-    public function __construct(
-        protected EmailUserRepository $repository,
-        TranslatorInterface $translator,
-        TemplatePageService $templatePageService
-    )
-    {
-        parent::__construct($translator, $templatePageService);
-    }
-
     /**
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $builder->add(
+        unset($options);
+        $formBuilder->add(
             'username',
             TextType::class,
             [
@@ -46,10 +36,12 @@ class ProfilType extends AbstractTypeLib
                 ],
             ]
         );
-        $this->addPlainPassword($builder);
-        $this->addEmails($builder, $options, $this->repository);
-
-        $builder->add(
+        $this->addPlainPassword($formBuilder);
+        $formBuilder->add(
+            'email',
+            EmailVerifChoiceType::class,
+        );
+        $formBuilder->add(
             'file',
             FileType::class,
             [
@@ -66,12 +58,12 @@ class ProfilType extends AbstractTypeLib
             'addressUsers' => AddressType::class,
             'linkUsers'    => LinkType::class,
         ];
-        $this->setCollectionType($builder, $tab);
+        $this->setCollectionType($formBuilder, $tab);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => User::class,
             ]

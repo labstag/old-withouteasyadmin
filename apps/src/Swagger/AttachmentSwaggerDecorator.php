@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class AttachmentSwaggerDecorator implements NormalizerInterface
 {
-    public function __construct(private NormalizerInterface $decorated)
+    public function __construct(private readonly NormalizerInterface $normalizer)
     {
     }
 
@@ -27,7 +27,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         array $context = []
     ): array|string|int|float|bool|ArrayObject|null
     {
-        $docs = $this->decorated->normalize($object, $format, $context);
+        $docs = $this->normalizer->normalize($object, $format, $context);
         $this->setProfilAvatar($docs);
         $this->setUserAvatar($docs);
         $this->setPostImg($docs);
@@ -42,10 +42,10 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
      */
     public function supportsNormalization($data, ?string $format = null): bool
     {
-        return $this->decorated->supportsNormalization($data, $format);
+        return $this->normalizer->supportsNormalization($data, $format);
     }
 
-    private function setEditoFond(&$docs)
+    private function setEditoFond(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'edito fond.',
@@ -57,7 +57,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/edito/fond/{entity}']['delete'] = $statsEndpoint;
     }
 
-    private function setMemoFond(&$docs)
+    private function setMemoFond(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'node interne Fond.',
@@ -69,7 +69,10 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/memo/fond/{entity}']['delete'] = $statsEndpoint;
     }
 
-    private function setParameters()
+    /**
+     * @return array<int, mixed[]>
+     */
+    private function setParameters(): array
     {
         return [
             [
@@ -89,7 +92,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setPostImg(&$docs)
+    private function setPostImg(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'Post Img.',
@@ -101,7 +104,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/post/img/{entity}']['delete'] = $statsEndpoint;
     }
 
-    private function setProfilAvatar(&$docs)
+    private function setProfilAvatar(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'Profil avatar.',
@@ -121,7 +124,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         $docs['paths']['/api/attachment/profil/avatar']['delete'] = $statsEndpoint;
     }
 
-    private function setResponses()
+    private function setResponses(): array
     {
         return [
             Response::HTTP_OK => [
@@ -142,7 +145,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setUserAvatar(&$docs)
+    private function setUserAvatar(&$docs): void
     {
         $statsEndpoint = [
             'summary'    => 'User avatar.',

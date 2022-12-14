@@ -2,6 +2,7 @@
 
 namespace Labstag\Repository;
 
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Post;
@@ -12,16 +13,16 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class PostRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Post::class);
+        parent::__construct($managerRegistry, Post::class);
     }
 
     public function findDateArchive()
     {
-        $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->select(
-            'date_format(p.published,\'%Y-%m\') as code, p.published, COUNT(p)'
+        $query = $this->createQueryBuilder('p');
+        $query->select(
+            "date_format(p.published,'%Y-%m') as code, p.published, COUNT(p)"
         );
         $query->where(
             'p.state LIKE :state'
@@ -36,10 +37,10 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getResult();
     }
 
-    public function findPublier()
+    public function findPublier(): Query
     {
-        $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
+        $query = $this->createQueryBuilder('p');
+        $query->innerjoin('p.refuser', 'u');
         $query->where(
             'p.state LIKE :state'
         );
@@ -51,12 +52,12 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierArchive($published)
+    public function findPublierArchive($published): Query
     {
-        $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->innerjoin('p.refuser', 'u');
+        $query = $this->createQueryBuilder('p');
+        $query->innerjoin('p.refuser', 'u');
         $query->where('p.state LIKE :state');
-        $query->andWhere('date_format(p.published,\'%Y-%m\') = :published');
+        $query->andWhere("date_format(p.published,'%Y-%m') = :published");
         $query->orderBy('p.published', 'DESC');
         $query->setParameters(
             [
@@ -68,10 +69,10 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierCategory($code)
+    public function findPublierCategory($code): Query
     {
-        $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->where('p.state LIKE :state');
+        $query = $this->createQueryBuilder('p');
+        $query->where('p.state LIKE :state');
         $query->orderBy('p.published', 'DESC');
         $query->leftJoin('p.refcategory', 'c');
         $query->andWhere('c.slug=:slug');
@@ -85,10 +86,10 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierLibelle($code)
+    public function findPublierLibelle($code): Query
     {
-        $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->where('p.state LIKE :state');
+        $query = $this->createQueryBuilder('p');
+        $query->where('p.state LIKE :state');
         $query->orderBy('p.published', 'DESC');
         $query->leftJoin('p.libelles', 'l');
         $query->andWhere('l.slug=:slug');
@@ -102,11 +103,11 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierUsername($username)
+    public function findPublierUsername($username): Query
     {
-        $queryBuilder = $this->createQueryBuilder('p');
-        $query        = $queryBuilder->leftJoin('p.refuser', 'u');
-        $query        = $query->where('p.state LIKE :state');
+        $query = $this->createQueryBuilder('p');
+        $query->leftJoin('p.refuser', 'u');
+        $query->where('p.state LIKE :state');
         $query->andWhere('u.username = :username');
         $query->orderBy('p.published', 'DESC');
         $query->setParameters(

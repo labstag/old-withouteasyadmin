@@ -26,17 +26,17 @@ class PhoneService
     /**
      * Verifie le numéro de téléphone en fonction du pays.
      *
-     * @param string $numero Numéro de téléphone
-     * @param string $locale code du pays
+     * @param null|string $numero Numéro de téléphone
+     * @param null|string $locale code du pays
      *
      * @throws NumberParseException
      */
     public function verif(?string $numero, ?string $locale): array
     {
-        $numero         = str_replace([' ', '-', '.'], '', (string) $numero);
-        $data           = [];
-        $timeZoneMapper = PhoneNumberToTimeZonesMapper::getInstance();
-        $carrier        = PhoneNumberToCarrierMapper::getInstance();
+        $numero                       = str_replace([' ', '-', '.'], '', (string) $numero);
+        $data                         = [];
+        $phoneNumberToTimeZonesMapper = PhoneNumberToTimeZonesMapper::getInstance();
+        $phoneNumberToCarrierMapper   = PhoneNumberToCarrierMapper::getInstance();
 
         try {
             $parse   = $this->phoneUtil->parse(
@@ -60,15 +60,15 @@ class PhoneService
                     PhoneNumberFormat::INTERNATIONAL
                 ),
             ];
-            $data['timezones'] = $timeZoneMapper->getTimeZonesForNumber($parse);
-            $data['carrier']   = $carrier->getNameForNumber(
+            $data['timezones'] = $phoneNumberToTimeZonesMapper->getTimeZonesForNumber($parse);
+            $data['carrier']   = $phoneNumberToCarrierMapper->getNameForNumber(
                 $parse,
                 strtoupper($locale)
             );
             $data['parse']     = $parse;
-        } catch (NumberParseException $exception) {
-            $this->errorService->set($exception);
-            $data['error'] = $exception->getMessage();
+        } catch (NumberParseException $numberParseException) {
+            $this->errorService->set($numberParseException);
+            $data['error'] = $numberParseException->getMessage();
         }
 
         return $data;

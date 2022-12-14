@@ -14,6 +14,14 @@ picture {
   }
 }
 
+.menu-admin {
+  @extend .me-auto;
+}
+
+.menu-admin-profil {
+  @extend .ms-auto;
+}
+
 .entity-move {
   @extend .list-group;
 

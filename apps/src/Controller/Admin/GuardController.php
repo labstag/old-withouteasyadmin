@@ -2,10 +2,10 @@
 
 namespace Labstag\Controller\Admin;
 
-use Labstag\Entity\Groupe;
-use Labstag\Entity\Route as EntityRoute;
-use Labstag\Entity\Workflow;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\RouteRepository;
+use Labstag\Repository\WorkflowRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,9 +13,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class GuardController extends AdminControllerLib
 {
     #[Route(path: '/', name: 'admin_guard_index', methods: ['GET', 'POST'])]
-    public function index(): Response
+    public function index(
+        WorkflowRepository $workflowRepository,
+        GroupeRepository $groupeRepository,
+        RouteRepository $routeRepository
+    ): Response
     {
-        $workflows = $this->getRepository(Workflow::class)->findBy(
+        $workflows = $workflowRepository->findBy(
             [],
             [
                 'entity'     => 'ASC',
@@ -26,31 +30,9 @@ class GuardController extends AdminControllerLib
         return $this->render(
             'admin/guard/index.html.twig',
             [
-                'groups'    => $this->getRepository(Groupe::class)->findBy([], ['name' => 'ASC']),
-                'routes'    => $this->getRepository(EntityRoute::class)->findBy([], ['name' => 'ASC']),
+                'groups'    => $groupeRepository->findBy([], ['name' => 'ASC']),
+                'routes'    => $routeRepository->findBy([], ['name' => 'ASC']),
                 'workflows' => $workflows,
-            ]
-        );
-    }
-
-    protected function setBreadcrumbsPageAdminGuard(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('guard.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_guard_index',
-            ],
-        ];
-    }
-
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return array_merge(
-            $headers,
-            [
-                'admin_guard' => $this->translator->trans('guard.title', [], 'admin.header'),
             ]
         );
     }

@@ -8,13 +8,8 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Bookmark\ImportType;
-use Labstag\Form\Admin\Bookmark\PrincipalType;
-use Labstag\Form\Admin\Search\BookmarkType;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Queue\EnqueueMethod;
-use Labstag\RequestHandler\BookmarkRequestHandler;
-use Labstag\Search\BookmarkSearch;
-use Labstag\Service\AttachFormService;
 use Labstag\Service\BookmarkService;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -29,31 +24,29 @@ class BookmarkController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_bookmark_edit', methods: ['GET', 'POST'])]
     #[Route(path: '/new', name: 'admin_bookmark_new', methods: ['GET', 'POST'])]
     public function edit(
-        AttachFormService $service,
-        ?Bookmark $bookmark,
-        BookmarkRequestHandler $requestHandler
+        ?Bookmark $bookmark
     ): Response
     {
         $this->modalAttachmentDelete();
 
         return $this->form(
-            $service,
-            $requestHandler,
-            PrincipalType::class,
-            !is_null($bookmark) ? $bookmark : new Bookmark(),
+            $this->getDomainEntity(),
+            is_null($bookmark) ? new Bookmark() : $bookmark,
             'admin/bookmark/form.html.twig'
         );
     }
 
     #[Route(path: '/import', name: 'admin_bookmark_import', methods: ['GET', 'POST'])]
-    public function import(Request $request, Security $security, EnqueueMethod $enqueue)
+    public function import(Request $request, Security $security, EnqueueMethod $enqueueMethod): Response
     {
-        $this->setBtnList($this->getUrlAdmin());
+        $domain = $this->getDomainEntity();
+        $url    = $domain->getUrlAdmin();
+        $this->setBtnList($url);
         $form = $this->createForm(ImportType::class, []);
         $this->btnInstance()->addBtnSave($form->getName(), 'Import');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->uploadFile($form, $security, $enqueue);
+            $this->uploadFile($form, $security, $enqueueMethod);
         }
 
         return $this->renderForm(
@@ -70,7 +63,7 @@ class BookmarkController extends AdminControllerLib
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
-            Bookmark::class,
+            $this->getDomainEntity(),
             'admin/bookmark/index.html.twig'
         );
     }
@@ -83,143 +76,38 @@ class BookmarkController extends AdminControllerLib
     public function showOrPreview(Bookmark $bookmark): Response
     {
         return $this->renderShowOrPreview(
+            $this->getDomainEntity(),
             $bookmark,
             'admin/bookmark/show.html.twig'
         );
     }
 
-    protected function getUrlAdmin(): array
+    protected function getDomainEntity()
     {
-        return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_bookmark_edit',
-            'empty'    => 'api_action_empty',
-            'import'   => 'admin_bookmark_import',
-            'list'     => 'admin_bookmark_index',
-            'new'      => 'admin_bookmark_new',
-            'preview'  => 'admin_bookmark_preview',
-            'restore'  => 'api_action_restore',
-            'show'     => 'admin_bookmark_show',
-            'trash'    => 'admin_bookmark_trash',
-            'workflow' => 'api_action_workflow',
-        ];
-    }
-
-    protected function searchForm(): array
-    {
-        return [
-            'form' => BookmarkType::class,
-            'data' => new BookmarkSearch(),
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminBookmark(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('bookmark.title', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_index',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminBookmarkEdit(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('bookmark.edit', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_edit',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminBookmarkImport(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('bookmark.import', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_import',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminBookmarkNew(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('bookmark.new', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_new',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminBookmarkPreview(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('bookmark.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_trash',
-            ],
-            [
-                'title' => $this->translator->trans('bookmark.preview', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_preview',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminBookmarkShow(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('bookmark.show', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_show',
-            ],
-        ];
-    }
-
-    protected function setBreadcrumbsPageAdminBookmarkTrash(): array
-    {
-        return [
-            [
-                'title' => $this->translator->trans('bookmark.trash', [], 'admin.breadcrumb'),
-                'route' => 'admin_bookmark_trash',
-            ],
-        ];
-    }
-
-    protected function setHeaderTitle(): array
-    {
-        $headers = parent::setHeaderTitle();
-
-        return array_merge(
-            $headers,
-            [
-                'admin_bookmark' => $this->translator->trans('bookmark.title', [], 'admin.header'),
-            ]
-        );
+        return $this->domainService->getDomain(Bookmark::class);
     }
 
     private function uploadFile(
         FormInterface $form,
         Security $security,
-        EnqueueMethod $enqueue
-    )
+        EnqueueMethod $enqueueMethod
+    ): void
     {
         $file = $form->get('file')->getData();
         if (!$file instanceof UploadedFile) {
             return;
         }
 
-        $doc = new DOMDocument();
-        $doc->loadHTMLFile($file->getPathname(), LIBXML_NOWARNING | LIBXML_NOERROR);
-        $tags = $doc->getElementsByTagName('a');
-        $date = new DateTime();
+        $domDocument = new DOMDocument();
+        $domDocument->loadHTMLFile($file->getPathname(), LIBXML_NOWARNING | LIBXML_NOERROR);
+
+        $domNodeList = $domDocument->getElementsByTagName('a');
+        $dateTime    = new DateTime();
         /** @var User $user */
         $user   = $security->getUser();
         $userId = $user->getId();
-        foreach ($tags as $tag) {
-            $enqueue->enqueue(
+        foreach ($domNodeList as $tag) {
+            $enqueueMethod->enqueue(
                 BookmarkService::class,
                 'process',
                 [
@@ -227,7 +115,7 @@ class BookmarkController extends AdminControllerLib
                     'url'    => $tag->getAttribute('href'),
                     'name'   => $tag->nodeValue,
                     'icon'   => $tag->getAttribute('icon'),
-                    'date'   => $date->setTimestamp((int) $tag->getAttribute('add_date')),
+                    'date'   => $dateTime->setTimestamp((int) $tag->getAttribute('add_date')),
                 ]
             );
         }

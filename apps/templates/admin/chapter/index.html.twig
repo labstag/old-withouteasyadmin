@@ -12,6 +12,9 @@
                     'name': 'chapter.name'|trans({}, 'admin.messages')
                 },
                 {
+                    'name': 'chapter.paragraphs'|trans({}, 'admin.messages')
+                },
+                {
                     'field': 'a.published',
                     'name': 'chapter.published'|trans({}, 'admin.messages')
                 },
@@ -30,6 +33,7 @@
                 <tr data-id="{{ entity.id }}">
                     <td>{{ entity.refhistory.name }}</td>
                     <td>{{ entity.name }}</td>
+                    <td>{{ entity.paragraphs|length }}</td>
                     <td>{{ entity.published|format_datetime(pattern=formatdatetime.admin) }}</td>
                     <td>
                         {% for state in workflow_marked_places(entity) %}

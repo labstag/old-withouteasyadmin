@@ -9,12 +9,14 @@ use ReflectionClass;
 
 class UploadAnnotationReader
 {
-    public function __construct(protected AnnotationReader $reader)
+    public function __construct(protected AnnotationReader $annotationReader)
     {
     }
 
     /**
      * Liste les champs uploadable d'une entité (sous forme de tableau associatif).
+     *
+     * @return mixed[]
      */
     public function getUploadableFields($entity): array
     {
@@ -24,13 +26,13 @@ class UploadAnnotationReader
         }
 
         $reflection = $this->setReflection($entity);
-        foreach ($reflection->getProperties() as $property) {
-            $annotation = $this->reader->getPropertyAnnotation($property, UploadableField::class);
+        foreach ($reflection->getProperties() as $reflectionProperty) {
+            $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, UploadableField::class);
             if (is_null($annotation)) {
                 continue;
             }
 
-            $properties[$property->getName()] = $annotation;
+            $properties[$reflectionProperty->getName()] = $annotation;
         }
 
         return $properties;
@@ -40,9 +42,9 @@ class UploadAnnotationReader
     {
         $reflection = $this->setReflection($entity);
 
-        $annotation = $this->reader->getClassAnnotation($reflection, Uploadable::class);
+        $uploadable = $this->annotationReader->getClassAnnotation($reflection, Uploadable::class);
 
-        return !is_null($annotation);
+        return !is_null($uploadable);
     }
 
     protected function setReflection($entity): ReflectionClass

@@ -22,18 +22,25 @@
         {{- block('choice_widget_options') -}}
     </select>
 {% endblock %}
+
+{% block paragraph_row %}
+    <fieldset data-url="{{ urlAdd }}">
+        <legend>{{ form.vars.label }}</legend>
+        <div id="paragraph-list">
+            {% include "admin/paragraph/list.html.twig" with {'addurl': urlAdd, 'urledit': urlEdit, 'urldelete': urlDelete, 'paragraphs': paragraphs} %}
+        </div>
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+        {{ form_help(form) }}
+    </fieldset>
+{% endblock %}
+
 {% block form_rows %}
     {% set template = formClass(form) %}
-    {% if template == '' %}
-        {% for child in form|filter(child => not child.rendered) %}
-            {{ form_row(child) }}
-        {% endfor %}
-    {% else %}
-        {% include template with {
-            'row': form|filter(child => not child.rendered),
-            'allow_delete': false
-        } %}
-    {% endif %}
+    {% include template with {
+        'row': form|filter(child => not child.rendered),
+        'allow_delete': false
+    } %}
 {% endblock %}
 
 {% block fieldset_widget %}
@@ -310,9 +317,9 @@
 
 {% block form_row %}
 	{% set label_attr = {} %}
-	{% set element_attr = {
+	{% set element_attr =  attr|merge({
 		'class': 'form-group'
-	} %}
+	}) %}
     {% if form.children.date is defined and form.children.time is defined %}
         {% set element = 'div' %}
     {% elseif compound is defined and form.children.hour is defined %}
@@ -325,9 +332,11 @@
         {% set element = 'div' %}
     {% elseif compound is defined and compound %}
         {% set element = 'fieldset' %}
-        {% set element_attr = {
-            'class': 'form-group fieldcollection'
-        } %}
+        {% if prototype is defined %}
+            {% set element_attr = element_attr|merge({
+                'class': 'form-group fieldcollection'
+            }) %}
+        {% endif %}
         {% if "collection" in form.vars.block_prefixes %}
             {% if prototype is defined and allow_add %}
                 {% set label_attr = label_attr|merge({
@@ -337,6 +346,9 @@
                     'data-prototype': block('collection_item_widget')|replace({'"': "'", "\n": "", "\t": ""})
                 }) %}
             {% endif %}
+        {% endif %}
+        {% if prototype is not defined %}
+            {% set element = 'div' %}
         {% endif %}
     {% endif %}
     {% set widget_attr = {} %}
@@ -379,7 +391,7 @@
             {% set element = 'label' %}
         {% elseif expanded is defined and expanded %}
             {% set element = 'label' %}
-        {% elseif compound is defined and compound %}
+        {% elseif compound is defined and compound and prototype is defined %}
             {% set element = 'legend' %}
             {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' col-form-label')|trim}) %}
         {% else %}
@@ -449,22 +461,7 @@
             {% if prototype is defined %}
                 <div class="collection-row">
             {% endif %}
-            {% if template == '' %}
-                <div class="row">
-                    {% for input in row %}
-                        <div class="col-6">
-                            {{ form_row(input) }}
-                        </div>
-                    {% endfor %}
-                    {% if allow_delete %}
-                        <div class="text-center col-12">
-                            {{ block('collection_delete') }}
-                        </div>
-                    {% endif %}
-                </div>
-            {% else %}
-                {% include template with {'row': row, 'allow_delete': allow_delete} %}
-            {% endif %}
+            {% include template with {'row': row, 'allow_delete': allow_delete} %}
             {% if prototype is defined %}
                 </div>
             {% endif %}

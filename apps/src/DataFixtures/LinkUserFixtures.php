@@ -11,7 +11,10 @@ use Labstag\Lib\FixtureLib;
 
 class LinkUserFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    public function getDependencies()
+    /**
+     * @return class-string[]
+     */
+    public function getDependencies(): array
     {
         return [
             DataFixtures::class,
@@ -19,22 +22,23 @@ class LinkUserFixtures extends FixtureLib implements DependentFixtureInterface
         ];
     }
 
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $objectManager): void
     {
-        unset($manager);
+        unset($objectManager);
         $this->loadForeachUser(self::NUMBER_LINK, 'addLink');
     }
 
     protected function addLink(
-        Generator $faker,
+        Generator $generator,
         User $user
     ): void
     {
-        $link = new LinkUser();
-        $old  = clone $link;
-        $link->setRefUser($user);
-        $link->setName($faker->word());
-        $link->setAddress($faker->url);
-        $this->linkUserRH->handle($old, $link);
+        $linkUser = new LinkUser();
+        $old      = clone $linkUser;
+        $linkUser->setRefUser($user);
+        $linkUser->setName($generator->word());
+        $linkUser->setAddress($generator->url());
+
+        $this->linkUserRequestHandler->handle($old, $linkUser);
     }
 }

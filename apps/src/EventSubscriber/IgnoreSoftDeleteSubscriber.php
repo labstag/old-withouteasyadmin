@@ -2,42 +2,31 @@
 
 namespace Labstag\EventSubscriber;
 
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\Lib\EventSubscriberLib;
 use ReflectionClass;
 use ReflectionObject;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
-class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
+class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
 {
-    public const ANNOTATION = 'Labstag\Annotation\IgnoreSoftDelete';
+    /**
+     * @var class-string<IgnoreSoftDelete>
+     */
+    final public const ANNOTATION = 'Labstag\Annotation\IgnoreSoftDelete';
 
-    // @var null|Request
-    protected $request;
-
-    public function __construct(
-        protected Reader $reader,
-        protected EntityManagerInterface $entityManager,
-        protected RequestStack $requestStack
-    )
-    {
-        // @var Request $request
-        $request       = $this->requestStack->getCurrentRequest();
-        $this->request = $request;
-    }
-
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return ['kernel.controller' => 'onKernelController'];
     }
 
-    public function onKernelController(ControllerEvent $event)
+    public function onKernelController(ControllerEvent $controllerEvent): void
     {
-        $controller = $event->getController();
+        $controller = $controllerEvent->getController();
         if (!is_array($controller)) {
             return;
         }
@@ -50,7 +39,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
         $this->ignoreSoftDeleteAnnotation($controller, $method);
     }
 
-    protected function ignoreSoftDeleteAnnotation($controller, $method)
+    protected function ignoreSoftDeleteAnnotation($controller, $method): void
     {
         $routeCurrent = $this->request->attributes->get('_route');
         $routes       = [
@@ -68,7 +57,7 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 
         $find = 0;
         foreach ($routes as $route) {
-            if (0 != substr_count($routeCurrent, $route)) {
+            if (0 != substr_count((string) $routeCurrent, $route)) {
                 $find = 1;
 
                 break;
@@ -84,15 +73,15 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
         }
     }
 
-    protected function readAnnotation($controller, $method, $annotation)
+    protected function readAnnotation($controller, $method, $annotation): bool|array
     {
-        $utils           = new ClassUtils();
-        $classReflection = new ReflectionClass($utils->getClass($controller));
-        $classAnnotation = $this->reader->getClassAnnotation($classReflection, $annotation);
+        $classUtils      = new ClassUtils();
+        $reflectionClass = new ReflectionClass($classUtils->getClass($controller));
+        $classAnnotation = $this->reader->getClassAnnotation($reflectionClass, $annotation);
 
-        $objectReflection = new ReflectionObject($controller);
-        $methodReflection = $objectReflection->getMethod($method);
-        $methodAnnotation = $this->reader->getMethodAnnotation($methodReflection, $annotation);
+        $reflectionObject = new ReflectionObject($controller);
+        $reflectionMethod = $reflectionObject->getMethod($method);
+        $methodAnnotation = $this->reader->getMethodAnnotation($reflectionMethod, $annotation);
 
         if (!$classAnnotation && !$methodAnnotation) {
             return false;
@@ -100,9 +89,9 @@ class IgnoreSoftDeleteSubscriber implements EventSubscriberInterface
 
         return [
             $classAnnotation,
-            $classReflection,
+            $reflectionClass,
             $methodAnnotation,
-            $methodReflection,
+            $reflectionMethod,
         ];
     }
 }

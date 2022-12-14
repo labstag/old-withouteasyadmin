@@ -2,38 +2,30 @@
 
 namespace Labstag\EventSubscriber;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
-use Labstag\Entity\Workflow;
 use Labstag\Entity\WorkflowGroupe;
 use Labstag\Entity\WorkflowUser;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Labstag\Lib\EventSubscriberLib;
 use Symfony\Component\Workflow\Event\GuardEvent;
 
-class WorkflowGuardSubscriber implements EventSubscriberInterface
+class WorkflowGuardSubscriber extends EventSubscriberLib
 {
-    public function __construct(
-        protected EntityManagerInterface $entityManager,
-        protected TokenStorageInterface $token
-    )
-    {
-    }
-
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return ['workflow.guard' => 'onWorkflowAttachmentGuard'];
     }
 
-    public function onWorkflowAttachmentGuard(GuardEvent $event)
+    public function onWorkflowAttachmentGuard(GuardEvent $guardEvent): void
     {
         $stategroupe = false;
         $stateuser   = false;
-        $token       = $this->token->getToken();
-        $name        = $event->getWorkflowName();
-        $transition  = $event->getTransition()->getName();
-        $workflow    = $this->getRepository(Workflow::class)->findOneBy(
+        $token       = $this->tokenStorage->getToken();
+        $name        = $guardEvent->getWorkflowName();
+        $transition  = $guardEvent->getTransition()->getName();
+        $workflow    = $this->workflowRepository->findOneBy(
             [
                 'entity'     => $name,
                 'transition' => $transition,
@@ -47,8 +39,8 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
         // @var User $user
         $user = $token->getUser();
         if (!$user instanceof User) {
-            $groupe         = $this->getRepository(Groupe::class)->findOneBy(['code' => 'visiteur']);
-            $workflowGroupe = $this->getRepository(WorkflowGroupe::class)->findOneBy(
+            $groupe         = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
+            $workflowGroupe = $this->workflowGroupeRepository->findOneBy(
                 [
                     'refgroupe'   => $groupe,
                     'refworkflow' => $workflow,
@@ -56,7 +48,7 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
             );
 
             $stategroupe = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
-            $event->setBlocked(!$stategroupe);
+            $guardEvent->setBlocked(!$stategroupe);
 
             return;
         }
@@ -66,14 +58,14 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $workflowGroupe = $this->getRepository(WorkflowGroupe::class)->findOneBy(
+        $workflowGroupe = $this->workflowGroupeRepository->findOneBy(
             [
                 'refgroupe'   => $groupe,
                 'refworkflow' => $workflow,
             ]
         );
         $stategroupe    = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
-        $workflowUser   = $this->getRepository(WorkflowUser::class)->findOneBy(
+        $workflowUser   = $this->workflowUserRepository->findOneBy(
             [
                 'refuser'     => $user,
                 'refworkflow' => $workflow,
@@ -81,11 +73,6 @@ class WorkflowGuardSubscriber implements EventSubscriberInterface
         );
         $stategroupe    = ($workflowUser instanceof WorkflowUser) ? $workflowUser->getState() : $stategroupe;
 
-        $event->setBlocked(!$stategroupe || !$stateuser);
-    }
-
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
+        $guardEvent->setBlocked(!$stategroupe || !$stateuser);
     }
 }

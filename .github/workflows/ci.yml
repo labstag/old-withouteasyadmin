@@ -27,7 +27,7 @@ jobs:
             apps/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/apps/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ hashFiles('**/apps/composer.lock') }}
+            ${{ runner.os }}-composer-
       - name: Cache npm packages
         id: npm-cache
         uses: actions/cache@v3
@@ -35,7 +35,7 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+            ${{ runner.os }}-node-
       - name: Install npm dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: make node_modules
@@ -59,8 +59,8 @@ jobs:
         run: make linter phpcs-onlyerror
       - name: linter PHP MD
         run: make linter phpmd
-      # - name: linter PHPMND
-      #   run: make linter phpmnd
+      - name: linter PHPMND
+        run: make linter phpmnd
       - name: Add assets
         run: make assets
       - name: Test lancement bootstrap
@@ -69,10 +69,12 @@ jobs:
         run: make linter twig
       - name: Linter yaml
         run: make linter yaml
-      # - name: linter phpstan
-      #   run: make linter phpstan
+      - name: linter phpstan
+        run: make linter phpstan
       - name: 'BDD MIGRATE'
         run: make bdd migrate
+      - name: 'BDD Schema update'
+        run: make bdd schemaupdate
       - name: 'Run the fixtures'
         run: make bdd fixtures
       - name: Run Acceptance Tests

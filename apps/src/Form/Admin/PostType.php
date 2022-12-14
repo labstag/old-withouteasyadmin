@@ -20,15 +20,22 @@ class PostType extends AbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $this->setTextType($builder);
-        $this->addPublished($builder);
-        $this->setContent($builder);
-        $this->setMeta($builder);
-        $builder->add(
+        $this->setTextType($formBuilder);
+        $this->addPublished($formBuilder);
+        $this->setContent($formBuilder);
+        $this->addParagraph(
+            $formBuilder,
+            [
+                'add'    => 'admin_post_paragraph_add',
+                'edit'   => 'admin_post_paragraph_show',
+                'delete' => 'admin_post_paragraph_delete',
+            ]
+        );
+        $formBuilder->add(
             'file',
             FileType::class,
             [
@@ -38,7 +45,7 @@ class PostType extends AbstractTypeLib
                 'attr'     => ['accept' => 'image/*'],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'refuser',
             SearchableType::class,
             [
@@ -52,7 +59,7 @@ class PostType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'refcategory',
             SearchableType::class,
             [
@@ -66,7 +73,7 @@ class PostType extends AbstractTypeLib
                 ],
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'remark',
             CheckboxType::class,
             [
@@ -74,7 +81,7 @@ class PostType extends AbstractTypeLib
                 'help'  => $this->translator->trans('post.remark.help', [], 'admin.form'),
             ]
         );
-        $builder->add(
+        $formBuilder->add(
             'libelles',
             SearchableType::class,
             [
@@ -89,19 +96,20 @@ class PostType extends AbstractTypeLib
                 ],
             ]
         );
+        $this->setMeta($formBuilder);
         unset($options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class' => Post::class,
             ]
         );
     }
 
-    protected function setTextType($builder)
+    protected function setTextType($builder): void
     {
         $texttype = [
             'title' => [

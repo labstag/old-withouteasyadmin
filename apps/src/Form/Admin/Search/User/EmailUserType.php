@@ -14,24 +14,24 @@ class EmailUserType extends SearchAbstractTypeLib
      * @inheritDoc
      */
     public function buildForm(
-        FormBuilderInterface $builder,
+        FormBuilderInterface $formBuilder,
         array $options
     ): void
     {
-        $this->addRefUser($builder);
+        $this->addRefUser($formBuilder);
         $this->showState(
-            $builder,
+            $formBuilder,
             new EmailUser(),
             $this->translator->trans('emailuser.etape.label', [], 'admin.search.form'),
             $this->translator->trans('emailuser.etape.help', [], 'admin.search.form'),
             $this->translator->trans('emailuser.etape.placeholder', [], 'admin.search.form')
         );
-        parent::buildForm($builder, $options);
+        parent::buildForm($formBuilder, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults(
+        $optionsResolver->setDefaults(
             [
                 'data_class'      => EmailUserSearch::class,
                 'csrf_protection' => false,

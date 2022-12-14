@@ -12,15 +12,15 @@ use Labstag\Lib\ServiceEntityRepositoryLib;
  */
 class LibelleRepository extends ServiceEntityRepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Libelle::class);
+        parent::__construct($managerRegistry, Libelle::class);
     }
 
     public function findByBookmark()
     {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->innerJoin('a.bookmarks', 'b');
+        $query = $this->createQueryBuilder('a');
+        $query->innerJoin('a.bookmarks', 'b');
         $query->where('b.state LIKE :state');
         $query->setParameters(
             ['state' => '%publie%']
@@ -31,8 +31,8 @@ class LibelleRepository extends ServiceEntityRepositoryLib
 
     public function findByPost()
     {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->innerJoin('a.posts', 'p');
+        $query = $this->createQueryBuilder('a');
+        $query->innerJoin('a.posts', 'p');
         $query->innerjoin('p.refuser', 'u');
         $query->where('p.state LIKE :state');
         $query->setParameters(
@@ -44,8 +44,8 @@ class LibelleRepository extends ServiceEntityRepositoryLib
 
     public function findName(string $field)
     {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $query        = $queryBuilder->where(
+        $query = $this->createQueryBuilder('u');
+        $query->where(
             'u.name LIKE :name'
         );
         $query->setParameters(

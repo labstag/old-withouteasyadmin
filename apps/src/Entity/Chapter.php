@@ -3,10 +3,11 @@
 namespace Labstag\Entity;
 
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Labstag\Entity\Traits\MetatagsEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\ChapterRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -18,7 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Chapter
 {
-    use MetatagsEntity;
     use SoftDeleteableEntity;
     use StateableEntity;
 
@@ -42,6 +42,11 @@ class Chapter
     private $id;
 
     /**
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="chapter", orphanRemoval=true)
+     */
+    private $metas;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
@@ -49,7 +54,13 @@ class Chapter
     /**
      * @ORM\Column(type="integer")
      */
-    private $pages;
+    private int $pages = 0;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="chapter", orphanRemoval=true)
+     * @ORM\OrderBy({"position" = "ASC"})
+     */
+    private $paragraphs;
 
     /**
      * @ORM\Column(type="integer")
@@ -83,7 +94,28 @@ class Chapter
 
     public function __construct()
     {
-        $this->pages = 0;
+        $this->metas      = new ArrayCollection();
+        $this->paragraphs = new ArrayCollection();
+    }
+
+    public function addMeta(Meta $meta): self
+    {
+        if (!$this->metas->contains($meta)) {
+            $this->metas[] = $meta;
+            $meta->setChapter($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setChapter($this);
+        }
+
+        return $this;
     }
 
     public function getContent(): ?string
@@ -101,6 +133,14 @@ class Chapter
         return $this->id;
     }
 
+    /**
+     * @return Collection<int, Meta>
+     */
+    public function getMetas(): Collection
+    {
+        return $this->metas;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -109,6 +149,14 @@ class Chapter
     public function getPages(): ?int
     {
         return $this->pages;
+    }
+
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
+    {
+        return $this->paragraphs;
     }
 
     public function getPosition(): ?int
@@ -136,6 +184,20 @@ class Chapter
         return $this->updated;
     }
 
+    public function removeMeta(Meta $meta): self
+    {
+        $this->removeElementChapter($this->metas, $meta);
+
+        return $this;
+    }
+
+    public function removeParagraph(Paragraph $paragraph): self
+    {
+        $this->removeElementChapter($this->paragraphs, $paragraph);
+
+        return $this;
+    }
+
     public function setContent(?string $content): self
     {
         $this->content = $content;
@@ -143,9 +205,9 @@ class Chapter
         return $this;
     }
 
-    public function setCreated(DateTimeInterface $created): self
+    public function setCreated(DateTimeInterface $dateTime): self
     {
-        $this->created = $created;
+        $this->created = $dateTime;
 
         return $this;
     }
@@ -171,16 +233,16 @@ class Chapter
         return $this;
     }
 
-    public function setPublished(DateTimeInterface $published): self
+    public function setPublished(DateTimeInterface $dateTime): self
     {
-        $this->published = $published;
+        $this->published = $dateTime;
 
         return $this;
     }
 
-    public function setRefhistory(?History $refhistory): self
+    public function setRefhistory(?History $history): self
     {
-        $this->refhistory = $refhistory;
+        $this->refhistory = $history;
 
         return $this;
     }
@@ -192,10 +254,17 @@ class Chapter
         return $this;
     }
 
-    public function setUpdated(DateTimeInterface $updated): self
+    public function setUpdated(DateTimeInterface $dateTime): self
     {
-        $this->updated = $updated;
+        $this->updated = $dateTime;
 
         return $this;
+    }
+
+    private function removeElementChapter($element, $variable)
+    {
+        if ($element->removeElement($variable) && $variable->getChapter() === $this) {
+            $variable->setChapter(null);
+        }
     }
 }
