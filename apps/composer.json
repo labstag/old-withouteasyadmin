@@ -90,7 +90,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "3.4.2",
-        "phpunit/phpunit": "9.5.20",
+        "phpunit/phpunit": "9.5.27",
         "povils/phpmnd": "^3.0",
         "rector/rector": "0.14.2",
         "symfony/browser-kit": "6.0.3",
