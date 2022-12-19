@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.4",
-    "@popperjs/core": "2.11.2",
+    "@popperjs/core": "2.11.6",
     "bootstrap": "5.2.1",
     "ckeditor4": "^4.18.0",
     "flag-icon-css": "^4.0.0",
