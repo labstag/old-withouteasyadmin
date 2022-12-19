@@ -48,7 +48,8 @@ jobs:
       - name: 'Build containers'
         run: make docker deploy
       - name: 'sleep'
-        run: make sleep 90
+        run: |
+          npm run korojscommands waiting '{"labstag_phpfpm": "running"}'
       - name: 'docker ls'
         run: make docker ls
       - name: linter readme.md
