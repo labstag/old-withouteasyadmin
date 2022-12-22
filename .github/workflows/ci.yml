@@ -31,7 +31,7 @@ jobs:
       - name: 'Waiting'
         run: npm run docker_waiting
       - name: 'docker ls'
-        run: npm docker_ls
+        run: npm run docker_ls
       - name: linter readme.md
         run: npx markdownlint readme.md
       - name: linter SCSS
