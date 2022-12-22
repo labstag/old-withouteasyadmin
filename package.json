@@ -65,7 +65,7 @@
     "ckeditor4": "^4.18.0",
     "flag-icon-css": "^4.0.0",
     "jquery": "3.6.0",
-    "korojscommands": "^0.1.6",
+    "korojscommands": "^1.1.6",
     "sortablejs": "1.14.0",
     "tarteaucitronjs": "^1.9.5",
     "tom-select": "1.7.8"
