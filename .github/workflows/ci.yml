@@ -38,6 +38,8 @@ jobs:
         run: make linter stylelint
       - name: "install PHAR"
         run: npx korojscommands php_download-phar
+      - name: 'docker ls'
+        run: npm run docker_ls
       - name: linter PHP Code Sniffer
         run: make linter phpcs-onlyerror
       - name: linter PHP MD
