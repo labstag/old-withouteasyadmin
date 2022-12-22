@@ -19,24 +19,25 @@ jobs:
           repository: koromerzhin/lampy
           path: lampy
       - name: Install npm dependencies
-        run: make node_modules
+        run: npm install
       - name: 'SET BDD'
-        run: make bddset
+        run: npm run bddset-mariadb
       - name: 'Launch Lampy'
-        run: make lampy
+        run: cd lampy && npm run exec
       - name: 'Image pull'
-        run: make docker image-pull
+        run: npm run docker_getpull-image
       - name: 'Build containers'
-        run: make docker deploy
-      - name: 'sleep'
-        run: |
-          npm run korojscommands waiting '{"labstag_phpfpm": "running"}'
+        run: npm run docker_deploy
+      - name: 'Waiting'
+        run: npm run docker_waiting
       - name: 'docker ls'
-        run: make docker ls
+        run: npm docker_ls
       - name: linter readme.md
-        run: make linter readme
+        run: npx markdownlint readme.md
       - name: linter SCSS
         run: make linter stylelint
+      - name: "install PHAR"
+        run: npx korojscommands download-phar
       - name: linter PHP Code Sniffer
         run: make linter phpcs-onlyerror
       - name: linter PHP MD

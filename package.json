@@ -4,7 +4,12 @@
   "description": "Site Internet sous Symfony",
   "main": "index.js",
   "scripts": {
-    "korojscommands": "korojscommands",
+    "bddset-mariadb": "korojscommands bddset-mariadb",
+    "docker_getpull-image": "korojscommands docker_getpull-image --files docker-compose.yml",
+    "docker_deploy": "korojscommands docker_deploy --files docker-compose.yml",
+    "docker_waiting": "korojscommands docker_waiting --status running --container apache phpfpm",
+    "docker_ls": "korojscommands docker_ls",
+    "exec": "npm-run-all bdd-mariadb docker_getpull-image docker_deploy docker_waiting docker_ls",
     "stylelint": "stylelint assets/scss/*.scss",
     "stylelint-fix": "stylelint assets/scss/*.scss --fix",
     "eslint": "eslint assets/js/",
