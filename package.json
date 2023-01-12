@@ -67,7 +67,7 @@
     "messenger:consume": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) symfony console messenger:consume async -vv",
     "rector:dry": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) symfony composer run rector-dry",
     "rector": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) symfony composer run rector",
-    "test:behat": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) php -d memory_limit=-1 behat.phat --config behat.yaml",
+    "test:behat": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) php -d memory_limit=-1 behat.phar --config behat.yaml",
     "test:phpunit:unit-integration": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) symfony composer run simple-phpunit-unit-integration",
     "test:phpunit": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) symfony composer run simple-phpunit",
     "translation:update": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) symfony console translation:update --force --format=yaml --clean fr",
