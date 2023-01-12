@@ -25,7 +25,7 @@ jobs:
       - name: 'set .env'
         run: 'cp .env.example .env'
       - name: 'SET BDD'
-        run: npm run bddset-mariadb
+        run: npm run bdd:mariadb
       - name: 'Launch Lampy'
         run: cd lampy && npm run exec
       - name: 'Image pull'
