@@ -38,12 +38,6 @@ git clone git@github.com:koromerzhin/labstag.git labstag
 cd labstag
 ```
 
-## Install
-
-```sh
-npm install
-```
-
 ## Récupérer les images docker
 
 ```sh
