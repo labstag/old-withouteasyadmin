@@ -10,7 +10,7 @@
 ## 🏠 [Homepage](https://github.com/koromerzhin/labstag#readme)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#-contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)]
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ### ✨ [Demo](https://www.letoullec.fr)
@@ -68,7 +68,7 @@ npm run cmd:install:dev
 - Github: [@koromerzhin](https://github.com/koromerzhin)
 - LinkedIn: [@koromerzhin](https://linkedin.com/in/koromerzhin)
 
-## 🤝 Contributing
+## Contributing
 
 Contributions, issues and feature requests are welcome! Feel free to check
 [issues page](https://github.com/koromerzhin/labstag/issues).
@@ -95,10 +95,12 @@ Thanks goes to these wonderful people
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
-  <tr>
-    <td align="center"><a href="https://github.com/koromerzhin"><img src="https://avatars0.githubusercontent.com/u/308012?v=4" width="100px;" alt=""/><br /><sub><b>Le TOULLEC Martial</b></sub></a></td>
-    <td align="center"><a href="https://github.com/apps/renovate"><img src="https://avatars1.githubusercontent.com/in/2740?v=4" width="100px;" alt=""/><br /><sub><b>renovate[bot]</b></sub></a></td>
-  </tr>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/koromerzhin"><img src="https://avatars0.githubusercontent.com/u/308012?v=4" width="100px;" alt=""/><br /><sub><b>Le TOULLEC Martial</b></sub></a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/apps/renovate"><img src="https://avatars1.githubusercontent.com/in/2740?v=4" width="100px;" alt=""/><br /><sub><b>renovate[bot]</b></sub></a></td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- markdownlint-restore -->
