@@ -11,3 +11,4 @@ apps/public/uploads
 mariadb
 node_modules
 report
+docker-compose-override.yml

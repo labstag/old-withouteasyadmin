@@ -19,7 +19,6 @@
 
 Software:
 
-- make
 - npm
 - docker
 - repository koromerzhin/lampy
@@ -37,32 +36,24 @@ Hosts:
 ```sh
 git clone git@github.com:koromerzhin/labstag.git labstag
 cd labstag
-git submodule update --init
-```
-
-## Récupérer les images docker
-
-```sh
-make docker image-pull
 ```
 
 ## Install
 
 ```sh
-make install dev
+npm install
 ```
 
-## after git add
+## Récupérer les images docker
 
 ```sh
-make git check
+npm run docker_getpull-image
 ```
 
-## help
+## Install
 
 ```sh
-make help
-```
+npm run cmd:install:dev
 
 ## Users
 

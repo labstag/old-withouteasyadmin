@@ -22,45 +22,47 @@ jobs:
         run: npm install
       - name: 'set .env'
         run: 'cp apps/.env.test apps/.env'
+      - name: 'set .env'
+        run: 'cp .env.example .env'
       - name: 'SET BDD'
         run: npm run bddset-mariadb
       - name: 'Launch Lampy'
         run: cd lampy && npm run exec
       - name: 'Image pull'
-        run: npm run docker_getpull-image
+        run: npm run docker:getpull-image
       - name: 'Build containers'
-        run: npm run docker_deploy
+        run: npm run docker:deploy
       - name: 'Waiting'
-        run: npm run docker_waiting
+        run: npm run docker:waiting
       - name: linter readme.md
-        run: npx markdownlint readme.md
+        run: npm run lint:markdown
       - name: linter SCSS
-        run: make linter stylelint
+        run: npm run lint:stylelint:fix
       - name: "install PHAR"
-        run: npx korojscommands php_download-phar
+        run: npm run download:phar
       - name: 'docker ls'
-        run: npm run docker_ls
+        run: npm run docker:ls
       - name: linter PHP Code Sniffer
-        run: make linter phpcs-onlyerror
+        run: npm run lint:phpcs:error
       - name: linter PHP MD
-        run: make linter phpmd
+        run: npm run lint:phpmd
       - name: linter PHPMND
-        run: make linter phpmnd
+        run: npm run lint:phpmnd
       - name: Add assets
-        run: make assets
+        run: npm run assets
       - name: Test lancement bootstrap
-        run: make encore dev
+        run: npm run encore:dev
       - name: Linter twig
-        run: make linter twig
+        run: npm run lint:twig
       - name: Linter yaml
-        run: make linter yaml
+        run: npm run lint:yaml
       - name: linter phpstan
-        run: make linter phpstan
+        run: npm run lint:phpstan
       - name: 'BDD MIGRATE'
-        run: make bdd migrate
+        run: npm run doctrine:migrate
       - name: 'BDD Schema update'
-        run: make bdd schemaupdate
+        run: npm run doctrine:schema:update
       - name: 'Run the fixtures'
-        run: make bdd fixtures
+        run: npm run doctrine:fixtures
       - name: Run Acceptance Tests
-        run: make tests behat
+        run: npm run test:behat
