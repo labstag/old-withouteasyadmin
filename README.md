@@ -10,7 +10,9 @@
 ## 🏠 [Homepage](https://github.com/koromerzhin/labstag#readme)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)]
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ### ✨ [Demo](https://www.letoullec.fr)
@@ -116,3 +118,4 @@ specification. Contributions of any kind welcome!
 
 _This README was generated with ❤️ by
 [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+```
