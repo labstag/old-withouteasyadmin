@@ -1,10 +1,6 @@
 version: "3.4"
 
 networks:
-  proxylampy:
-    external: true
-  serverlampy:
-    external: true
   net:
     driver: overlay
     attachable: true
@@ -19,64 +15,19 @@ services:
       - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     networks:
       - net
-      - proxylampy
-    deploy:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.labstag.rule=Host(`labstag.traefik.me`)"
-        - "traefik.http.routers.labstag-tls.tls.domains[0].main=labstag.traefik.me"
-        - "traefik.http.routers.labstag.tls=true"
-        - "traefik.http.services.labstag.loadbalancer.server.port=80"
   phpfpm:
     image: koromerzhin/phpfpm:8.1.11
-    command: sh -c "php-fpm"
+    command: sh -c "composer install && php-fpm"
     depends_on:
       - mariadb
       - mercure
       - mailhog
       - redis
-    environment:
-      APP_ENV: dev
-      APP_SECRET: "6fc13c15dc2208ac54cfd2f3b348dbc7"
-      COMPOSER_MEMORY_LIMIT: -1
-      MAILER_DSN: "smtp://mailhog:1025"
-      MESSENGER_TRANSPORT_DSN: "doctrine://default"
-      LOCK_DNS: semaphore
-      DATABASE_URL: "mysqli://labstag:password@mariadb:3306/labstag_bdd"
     volumes:
       - ${PWD}/apps:/var/www/:delegated
-      - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
       - ${PWD}/conf/php.ini-development:/usr/local/etc/php/php.ini
       - ${PWD}/conf/docker-php-ram-limit.ini:/usr/local/etc/php/conf.d/docker-php-ram-limit.ini
     networks:
-      - serverlampy
-      - net
-    deploy:
-      labels:
-        - "traefik.enable=false"
-  phpfpmexec:
-    image: koromerzhin/phpfpm:8.1.11
-    command: sh -c "composer install"
-    depends_on:
-      - mariadb
-      - mercure
-      - mailhog
-      - redis
-    environment:
-      APP_ENV: dev
-      APP_SECRET: "6fc13c15dc2208ac54cfd2f3b348dbc7"
-      COMPOSER_MEMORY_LIMIT: -1
-      MAILER_DSN: "smtp://mailhog:1025"
-      MESSENGER_TRANSPORT_DSN: "doctrine://default"
-      LOCK_DNS: semaphore
-      DATABASE_URL: "mysqli://labstag:password@mariadb:3306/labstag_bdd"
-    volumes:
-      - ${PWD}/apps:/var/www/:delegated
-      - ${PWD}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
-      - ${PWD}/conf/php.ini-development:/usr/local/etc/php/php.ini
-      - ${PWD}/conf/docker-php-ram-limit.ini:/usr/local/etc/php/conf.d/docker-php-ram-limit.ini
-    networks:
-      - serverlampy
       - net
     deploy:
       labels:

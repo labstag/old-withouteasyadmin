@@ -1,13 +1,15 @@
+!apps/bin/console
+.env
 /apps/.env
 /apps/.phpcs-cache
 /apps/*.cache
 apps/.phpdoc
 apps/*.phar
 apps/bin/
-!apps/bin/console
 apps/public/assets
 apps/public/docs
 apps/public/uploads
+docker-compose-override.yml
 mariadb
 node_modules
 report
