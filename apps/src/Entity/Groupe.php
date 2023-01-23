@@ -41,7 +41,7 @@ class Groupe implements Stringable
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)
      */
     protected $routes;
 
@@ -56,7 +56,7 @@ class Groupe implements Stringable
     protected $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)
      */
     private $workflowGroupes;
 

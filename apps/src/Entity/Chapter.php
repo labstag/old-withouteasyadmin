@@ -42,7 +42,7 @@ class Chapter
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="chapter", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="chapter", cascade={"persist"}, orphanRemoval=true)
      */
     private $metas;
 
@@ -57,7 +57,7 @@ class Chapter
     private int $pages = 0;
 
     /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="chapter", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="chapter", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
@@ -74,7 +74,7 @@ class Chapter
     private $published;
 
     /**
-     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="chapters")
+     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="chapters", cascade={"persist"})
      * @Assert\NotBlank
      * @ORM\JoinColumn(nullable=false)
      */

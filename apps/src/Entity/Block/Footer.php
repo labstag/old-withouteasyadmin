@@ -17,7 +17,7 @@ class Footer
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="footers")
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="footers", cascade={"persist"})
      */
     private $block;
 

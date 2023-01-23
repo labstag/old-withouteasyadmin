@@ -50,7 +50,7 @@ class Memo implements Stringable
     protected $file;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="noteInternes")
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="noteInternes", cascade={"persist"})
      */
     protected $fond;
 
@@ -63,7 +63,7 @@ class Memo implements Stringable
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     protected $refuser;

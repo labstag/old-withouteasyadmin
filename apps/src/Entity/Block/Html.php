@@ -15,7 +15,7 @@ class Html
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="htmls")
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="htmls", cascade={"persist"})
      */
     private $block;
 

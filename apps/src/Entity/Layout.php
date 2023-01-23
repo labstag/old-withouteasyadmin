@@ -18,7 +18,7 @@ class Layout
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Custom::class, inversedBy="layouts")
+     * @ORM\ManyToOne(targetEntity=Custom::class, inversedBy="layouts", cascade={"persist"})
      */
     private $custom;
 

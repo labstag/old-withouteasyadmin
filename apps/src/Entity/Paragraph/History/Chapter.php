@@ -23,7 +23,7 @@ class Chapter
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="historyChapters")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="historyChapters", cascade={"persist"})
      */
     private $paragraph;
 

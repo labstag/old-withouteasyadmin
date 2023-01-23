@@ -23,7 +23,7 @@ class Category
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="bookmarkCategories")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="bookmarkCategories", cascade={"persist"})
      */
     private $paragraph;
 

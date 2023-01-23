@@ -28,27 +28,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     use StateableEntity;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity=AddressUser::class,
-     *     mappedBy="refuser",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity=AddressUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     protected $addressUsers;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="users", cascade={"persist"})
      */
     protected $avatar;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity=Edito::class,
-     *     mappedBy="refuser",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     protected $editos;
 
@@ -58,12 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     protected $email;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity=EmailUser::class,
-     *     mappedBy="refuser",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity=EmailUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     protected $emailUsers;
 
@@ -81,32 +66,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     protected $id;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity=LinkUser::class,
-     *     mappedBy="refuser",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity=LinkUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     protected $linkUsers;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity=Memo::class,
-     *     mappedBy="refuser",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     protected $noteInternes;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity=OauthConnectUser::class,
-     *     mappedBy="refuser",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity=OauthConnectUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     protected $oauthConnectUsers;
 
@@ -117,12 +87,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     protected $password;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity=PhoneUser::class,
-     *     mappedBy="refuser",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity=PhoneUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     protected $phoneUsers;
 
@@ -132,7 +97,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     protected $plainPassword;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     protected Groupe $refgroupe;
@@ -143,7 +108,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     protected array $roles = ['ROLE_USER'];
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     protected $routes;
 
@@ -159,7 +124,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     private $bookmarks;
 
     /**
-     * @ORM\OneToMany(targetEntity=History::class, mappedBy="refuser", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=History::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     private $histories;
 
@@ -169,7 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     private $posts;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refuser", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     private $workflowUsers;
 

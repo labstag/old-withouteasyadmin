@@ -48,12 +48,12 @@ class Bookmark
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="bookmarks")
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="bookmarks", cascade={"persist"})
      */
     private $img;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Libelle::class, inversedBy="bookmarks")
+     * @ORM\ManyToMany(targetEntity=Libelle::class, inversedBy="bookmarks", cascade={"persist"})
      */
     private $libelles;
 
@@ -68,12 +68,12 @@ class Bookmark
     private $published;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bookmarks")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bookmarks", cascade={"persist"})
      */
     private $refcategory;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bookmarks")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bookmarks", cascade={"persist"})
      * @Assert\NotBlank
      * @ORM\JoinColumn(nullable=false)
      */

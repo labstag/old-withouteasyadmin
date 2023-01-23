@@ -21,12 +21,12 @@ class RouteUser
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="users", cascade={"persist"})
      */
     protected $refroute;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="routes")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="routes", cascade={"persist"})
      */
     protected $refuser;
 

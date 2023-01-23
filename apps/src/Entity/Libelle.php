@@ -20,7 +20,7 @@ class Libelle implements Stringable
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Bookmark::class, mappedBy="libelles")
+     * @ORM\ManyToMany(targetEntity=Bookmark::class, mappedBy="libelles", cascade={"persist"}, orphanRemoval=true)
      */
     private $bookmarks;
 

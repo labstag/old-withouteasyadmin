@@ -43,7 +43,7 @@ class OauthConnectUser
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="oauthConnectUsers")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="oauthConnectUsers", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      *
      * @var User

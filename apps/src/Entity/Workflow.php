@@ -33,12 +33,12 @@ class Workflow
     private $transition;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refworkflow", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refworkflow", cascade={"persist"}, orphanRemoval=true)
      */
     private $workflowGroupes;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refworkflow", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refworkflow", cascade={"persist"}, orphanRemoval=true)
      */
     private $workflowUsers;
 

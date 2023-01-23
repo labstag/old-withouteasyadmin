@@ -24,7 +24,7 @@ class History
     use StateableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Chapter::class, mappedBy="refhistory", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Chapter::class, mappedBy="refhistory", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $chapters;
@@ -44,7 +44,7 @@ class History
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="history", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="history", cascade={"persist"}, orphanRemoval=true)
      */
     private $metas;
 
@@ -59,7 +59,7 @@ class History
     private int $pages = 0;
 
     /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="history", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="history", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
@@ -70,7 +70,7 @@ class History
     private $published;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="histories")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="histories", cascade={"persist"})
      * @Assert\NotBlank
      * @ORM\JoinColumn(nullable=false)
      */

@@ -23,7 +23,7 @@ class Libelle
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="bookmarkLibelles")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="bookmarkLibelles", cascade={"persist"})
      */
     private $paragraph;
 

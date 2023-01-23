@@ -51,7 +51,7 @@ class Page implements Stringable
     private $paragraphs;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children")
+     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children", cascade={"persist"})
      * @ORM\JoinColumn(
      *     name="parent_id",
      *     referencedColumnName="id",

@@ -12,22 +12,22 @@ trait EditoEntity
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Edito::class, inversedBy="paragraphs")
+     * @ORM\ManyToOne(targetEntity=Edito::class, inversedBy="paragraphs", cascade={"persist"})
      */
     private $edito;
 
     /**
-     * @ORM\OneToMany(targetEntity=EditoHeader::class, mappedBy="paragraph", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=EditoHeader::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $editoHeaders;
 
     /**
-     * @ORM\OneToMany(targetEntity=ParagraphEdito::class, mappedBy="paragraph", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=ParagraphEdito::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $editos;
 
     /**
-     * @ORM\OneToMany(targetEntity=EditoShow::class, mappedBy="paragraph", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=EditoShow::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $editoShows;
 

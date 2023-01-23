@@ -21,12 +21,12 @@ class WorkflowUser
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="workflowUsers")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="workflowUsers", cascade={"persist"})
      */
     private $refuser;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Workflow::class, inversedBy="workflowUsers")
+     * @ORM\ManyToOne(targetEntity=Workflow::class, inversedBy="workflowUsers", cascade={"persist"})
      */
     private $refworkflow;
 

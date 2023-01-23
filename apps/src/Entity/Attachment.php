@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -73,6 +74,11 @@ class Attachment
      */
     private $code;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="image")
+     */
+    private $paragraphVideos;
+
     public function __construct()
     {
         $this->users        = new ArrayCollection();
@@ -80,6 +86,7 @@ class Attachment
         $this->editos       = new ArrayCollection();
         $this->noteInternes = new ArrayCollection();
         $this->bookmarks    = new ArrayCollection();
+        $this->paragraphVideos = new ArrayCollection();
     }
 
     public function addBookmark(Bookmark $bookmark): self
@@ -281,6 +288,36 @@ class Attachment
     public function setSize(?int $size): self
     {
         $this->size = $size;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getParagraphVideos(): Collection
+    {
+        return $this->paragraphVideos;
+    }
+
+    public function addParagraphVideo(Video $paragraphVideo): self
+    {
+        if (!$this->paragraphVideos->contains($paragraphVideo)) {
+            $this->paragraphVideos[] = $paragraphVideo;
+            $paragraphVideo->setImage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphVideo(Video $paragraphVideo): self
+    {
+        if ($this->paragraphVideos->removeElement($paragraphVideo)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphVideo->getImage() === $this) {
+                $paragraphVideo->setImage(null);
+            }
+        }
 
         return $this;
     }

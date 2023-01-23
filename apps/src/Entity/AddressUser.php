@@ -12,7 +12,7 @@ class AddressUser extends Address
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="addressUsers")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="addressUsers", cascade={"persist"})
      */
     protected $refuser;
 

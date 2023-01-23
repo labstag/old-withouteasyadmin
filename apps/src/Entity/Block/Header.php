@@ -17,7 +17,7 @@ class Header
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="headers")
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="headers", cascade={"persist"})
      */
     private $block;
 

@@ -21,12 +21,12 @@ class RouteGroupe
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="routes")
+     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="routes", cascade={"persist"})
      */
     protected $refgroupe;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="groupes")
+     * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="groupes", cascade={"persist"})
      */
     protected $refroute;
 

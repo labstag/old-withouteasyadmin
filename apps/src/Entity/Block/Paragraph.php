@@ -15,7 +15,7 @@ class Paragraph
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="paragraphs")
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="paragraphs", cascade={"persist"})
      */
     private $block;
 

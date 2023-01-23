@@ -19,7 +19,7 @@ class Custom implements Stringable
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="customs")
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="customs", cascade={"persist"})
      */
     private $block;
 

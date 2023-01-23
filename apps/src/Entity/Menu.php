@@ -22,12 +22,7 @@ class Menu implements Stringable
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity=Menu::class,
-     *     mappedBy="parent",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity=Menu::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"position" = "ASC"})
      */
     protected $children;
@@ -61,7 +56,7 @@ class Menu implements Stringable
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children")
+     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children", cascade={"persist"})
      * @ORM\JoinColumn(
      *     name="parent_id",
      *     referencedColumnName="id",
@@ -84,7 +79,7 @@ class Menu implements Stringable
     protected $separateur = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="menu")
+     * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="menu", cascade={"persist"}, orphanRemoval=true)
      */
     private $navbars;
 

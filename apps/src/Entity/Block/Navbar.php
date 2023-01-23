@@ -16,7 +16,7 @@ class Navbar
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="menu")
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="menu", cascade={"persist"})
      */
     private $block;
 
@@ -29,7 +29,7 @@ class Navbar
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="navbars")
+     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="navbars", cascade={"persist"})
      */
     private $menu;
 

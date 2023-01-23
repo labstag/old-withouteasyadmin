@@ -15,7 +15,7 @@ class Flashbag
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="flashbags")
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="flashbags", cascade={"persist"})
      */
     private $block;
 

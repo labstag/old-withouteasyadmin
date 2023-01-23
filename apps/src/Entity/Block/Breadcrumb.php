@@ -15,7 +15,7 @@ class Breadcrumb
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="breadcrumbs")
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="breadcrumbs", cascade={"persist"})
      */
     private $block;
 

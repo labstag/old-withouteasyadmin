@@ -39,7 +39,7 @@ class Edito implements Stringable
     protected $file;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="editos")
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="editos", cascade={"persist"})
      */
     protected $fond;
 
@@ -52,7 +52,7 @@ class Edito implements Stringable
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="editos")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="editos", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     protected $refuser;

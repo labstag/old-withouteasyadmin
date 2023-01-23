@@ -23,7 +23,7 @@ class Liste
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postLists")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postLists", cascade={"persist"})
      */
     private $paragraph;
 

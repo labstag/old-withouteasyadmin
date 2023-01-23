@@ -52,12 +52,12 @@ class Post implements Stringable
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="posts")
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="posts", cascade={"persist"})
      */
     private $img;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"}, orphanRemoval=true)
      */
     private $libelles;
 
@@ -78,12 +78,12 @@ class Post implements Stringable
     private $published;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="posts")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="posts", cascade={"persist"})
      */
     private $refcategory;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts", cascade={"persist"})
      * @Assert\NotBlank
      * @ORM\JoinColumn(nullable=false)
      */

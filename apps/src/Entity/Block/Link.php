@@ -20,12 +20,12 @@ class Link implements Stringable
     private $external;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Footer::class, inversedBy="links")
+     * @ORM\ManyToOne(targetEntity=Footer::class, inversedBy="links", cascade={"persist"})
      */
     private $footer;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Header::class, inversedBy="links")
+     * @ORM\ManyToOne(targetEntity=Header::class, inversedBy="links", cascade={"persist"})
      */
     private $header;
 

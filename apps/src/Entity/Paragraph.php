@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph\Text;
+use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Traits\Paragraph\BookmarkEntity;
 use Labstag\Entity\Traits\Paragraph\EditoEntity;
 use Labstag\Entity\Traits\Paragraph\HistoryEntity;
@@ -67,7 +68,7 @@ class Paragraph
     private int $position = 0;
 
     /**
-     * @ORM\OneToMany(targetEntity=Text::class, mappedBy="paragraph", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Text::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $texts;
 
@@ -75,6 +76,11 @@ class Paragraph
      * @ORM\Column(type="string", length=255)
      */
     private $type;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $videos;
 
     public function __construct()
     {
@@ -100,6 +106,7 @@ class Paragraph
         $this->historyShows       = new ArrayCollection();
         $this->editoShows         = new ArrayCollection();
         $this->editoHeaders       = new ArrayCollection();
+        $this->videos             = new ArrayCollection();
     }
 
     public function addText(Text $text): self
@@ -107,6 +114,16 @@ class Paragraph
         if (!$this->texts->contains($text)) {
             $this->texts[] = $text;
             $text->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setParagraph($this);
         }
 
         return $this;
@@ -165,11 +182,31 @@ class Paragraph
         return $this->type;
     }
 
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
     public function removeText(Text $text): self
     {
         // set the owning side to null (unless already changed)
         if ($this->texts->removeElement($text) && $text->getParagraph() === $this) {
             $text->setParagraph(null);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getParagraph() === $this) {
+                $video->setParagraph(null);
+            }
         }
 
         return $this;

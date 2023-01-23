@@ -16,7 +16,7 @@ class Route implements Stringable
 {
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refroute", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refroute", cascade={"persist"}, orphanRemoval=true)
      */
     protected $groupes;
 
@@ -34,7 +34,7 @@ class Route implements Stringable
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refroute", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refroute", cascade={"persist"}, orphanRemoval=true)
      */
     protected $users;
 

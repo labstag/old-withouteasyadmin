@@ -23,7 +23,7 @@ class User
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postUsers")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postUsers", cascade={"persist"})
      */
     private $paragraph;
 

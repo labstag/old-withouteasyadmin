@@ -23,7 +23,7 @@ class Year
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postYears")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postYears", cascade={"persist"})
      */
     private $paragraph;
 
