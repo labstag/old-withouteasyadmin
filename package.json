@@ -46,7 +46,7 @@
     "labstag:guard-route": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) symfony console labstag:guard-route",
     "labstag:install": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) symfony console labstag:install",
     "labstag:workflows-show": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) symfony console labstag:workflows-show",
-    "lint:all": "npm-run-all validate_outdated php-cs-fixer_phpcbf eslint:fix lint:stylelint:fix lint:twig lint:container lint:yaml lint:phpaudit lint:markdown rector",
+    "lint:all": "npm-run-all cmd:validate_outdated cmd:php-cs-fixer_phpcbf eslint:fix lint:stylelint:fix lint:twig lint:container lint:yaml lint:phpaudit lint:markdown rector",
     "lint:container": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) symfony console lint:container",
     "lint:markdown": "markdownlint README.md",
     "lint:php-cs-fixer": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) php -d memory_limit=-1 php-cs-fixer.phar fix src",
