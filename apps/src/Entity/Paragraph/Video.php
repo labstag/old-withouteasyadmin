@@ -5,10 +5,14 @@ namespace Labstag\Entity\Paragraph;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
+use Labstag\Annotation\Uploadable;
+use Labstag\Annotation\UploadableField;
 use Labstag\Repository\Paragraph\VideoRepository;
 
 /**
+ * @ORM\Table(name="paragraph_video")
  * @ORM\Entity(repositoryClass=VideoRepository::class)
+ * @Uploadable
  */
 class Video
 {
@@ -39,6 +43,11 @@ class Video
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
+
+    /**
+     * @UploadableField(filename="fond", path="video/image", slug="title")
+     */
+    protected $file;
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphVideos")
@@ -82,6 +91,18 @@ class Video
     public function setTitle(?string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file): self
+    {
+        $this->file = $file;
 
         return $this;
     }
