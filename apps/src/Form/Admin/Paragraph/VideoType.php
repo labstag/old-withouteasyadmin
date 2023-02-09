@@ -11,7 +11,7 @@ class VideoType extends ParagraphAbstractTypeLib
 {
     public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        unset($options);
+        unset($formBuilder, $options);
     }
 
     public function configureOptions(OptionsResolver $optionsResolver): void
