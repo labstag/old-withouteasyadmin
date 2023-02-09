@@ -6,13 +6,6 @@
     {{ form_row(form.date_start) }}
     {{ form_row(form.date_end) }}
     {% if entity.id is not null %}
-        {{ macro_admin.form_img(
-            entity,
-            entity.fond,
-            "memo.fond"|trans({}, 'admin.messages'),
-            path('api_attachment_memofond', {'entity': entity.id})
-        ) }}
-    {% endif %}
     {{ form_row(form.file) }}
     {{ form_row(form.content) }}
     {{ form_row(form.paragraph) }}

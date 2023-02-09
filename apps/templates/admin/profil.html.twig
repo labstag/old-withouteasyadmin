@@ -41,12 +41,6 @@
 			{{ form_row(form.linkUsers) }}
 		</div>
 		<div class="tab-pane fade" id="avatar" role="tabpanel" aria-labelledby="avatar-tab">
-			{{ macro_admin.form_img(
-                entity,
-                entity.avatar,
-                "form.profil.avatar"|trans({}, 'admin.messages'),
-                path('api_attachment_profilavatar')
-            ) }}
 			{{ form_row(form.file) }}
 		</div>
 	    {% if entity.oauthconnectusers|length != 0 or oauthActivated|length != 0 %}

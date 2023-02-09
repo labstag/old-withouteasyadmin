@@ -2,6 +2,7 @@
 
 namespace Labstag\Form\Admin\Collections\Form;
 
+use Labstag\FormType\UploadType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -27,7 +28,7 @@ class OtherFieldsType extends AbstractTypeLib
         );
         $formBuilder->add(
             'file',
-            FileType::class,
+            UploadType::class,
             ['help' => 'help']
         );
         $formBuilder->add(

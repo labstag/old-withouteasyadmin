@@ -23,7 +23,7 @@ class Edito
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="editos", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="editos")
      */
     private $paragraph;
 

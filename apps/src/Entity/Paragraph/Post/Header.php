@@ -23,7 +23,7 @@ class Header
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postHeaders", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postHeaders")
      */
     private $paragraph;
 

@@ -75,7 +75,7 @@ class Attachment
     private $code;
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="image")
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="image", orphanRemoval=true)
      */
     private $paragraphVideos;
 

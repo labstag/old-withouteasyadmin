@@ -5,6 +5,7 @@ namespace Labstag\Form\Admin;
 use Labstag\Entity\Memo;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
+use Labstag\FormType\UploadType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -67,7 +68,7 @@ class MemoType extends AbstractTypeLib
 
         $formBuilder->add(
             'file',
-            FileType::class,
+            UploadType::class,
             [
                 'label'    => $this->translator->trans('memo.file.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('memo.file.help', [], 'admin.form'),

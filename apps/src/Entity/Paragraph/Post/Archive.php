@@ -23,7 +23,7 @@ class Archive
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postArchives", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postArchives")
      */
     private $paragraph;
 

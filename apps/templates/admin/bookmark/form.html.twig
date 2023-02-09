@@ -7,14 +7,6 @@
     {{ form_row(form.slug) }}
     {{ form_row(form.url) }}
     {{ form_row(form.content) }}
-    {% if entity.id is not null %}
-        {{ macro_admin.form_img(
-            entity,
-            entity.img,
-            "bookmark.image"|trans({}, 'admin.messages'),
-            path('api_attachment_bookmarkimg', {'entity': entity.id})
-        ) }}
-    {% endif %}
     {{ form_row(form.file) }}
     {{ form_row(form.refcategory) }}
     {{ form_row(form.libelles) }}

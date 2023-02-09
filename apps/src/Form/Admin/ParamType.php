@@ -9,6 +9,7 @@ use Labstag\Form\Admin\Collections\Param\NotificationType;
 use Labstag\Form\Admin\Collections\Param\OauthType;
 use Labstag\Form\Admin\Collections\Param\TarteaucitronType;
 use Labstag\FormType\MinMaxCollectionType;
+use Labstag\FormType\UploadType;
 use Labstag\FormType\WysiwygType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -117,7 +118,7 @@ class ParamType extends AbstractTypeLib
         foreach ($images as $key => $row) {
             $builder->add(
                 $key,
-                FileType::class,
+                UploadType::class,
                 [
                     'label'    => $row['label'],
                     'help'     => $row['help'],

@@ -57,21 +57,9 @@
 			{{ form_row(form['disclaimer']) }}
 		</div>
 		<div class="tab-pane fade" id="image" role="tabpanel" aria-labelledby="image-tab">
-            {{ macro_admin.form_img(
-                images['image'],
-                images['image'],
-                "form.param.image"|trans({}, 'admin.messages'),
-                path('api_attachment_image')
-            ) }}
             {{ form_row(form['image']) }}
 		</div>
 		<div class="tab-pane fade" id="favicon" role="tabpanel" aria-labelledby="favicon-tab">
-            {{ macro_admin.form_img(
-                images['favicon'],
-                images['favicon'],
-                "form.param.favicon"|trans({}, 'admin.messages'),
-                path('api_attachment_favicon')
-            ) }}
             {{ form_row(form['favicon']) }}
 		</div>
 	</div>

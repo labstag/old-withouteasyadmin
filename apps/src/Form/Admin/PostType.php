@@ -7,6 +7,7 @@ use Labstag\Entity\Libelle;
 use Labstag\Entity\Post;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
+use Labstag\FormType\UploadType;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -37,7 +38,7 @@ class PostType extends AbstractTypeLib
         );
         $formBuilder->add(
             'file',
-            FileType::class,
+            UploadType::class,
             [
                 'label'    => $this->translator->trans('post.file.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('post.file.help', [], 'admin.form'),

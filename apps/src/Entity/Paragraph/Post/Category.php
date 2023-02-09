@@ -23,7 +23,7 @@ class Category
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postCategories", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postCategories")
      */
     private $paragraph;
 

@@ -23,7 +23,7 @@ class Show
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="historyShows", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="historyShows")
      */
     private $paragraph;
 

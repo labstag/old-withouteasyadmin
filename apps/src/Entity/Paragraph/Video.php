@@ -25,7 +25,7 @@ class Video
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="videos", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="videos")
      */
     private $paragraph;
 
@@ -40,12 +40,12 @@ class Video
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $slug;
 
     /**
-     * @UploadableField(filename="fond", path="video/image", slug="title")
+     * @UploadableField(filename="image", path="paragraph/video/image", slug="title")
      */
     protected $file;
 

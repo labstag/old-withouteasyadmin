@@ -41,8 +41,10 @@ abstract class ParagraphControllerLib extends ControllerLib
         $repository = $this->getRepository(Paragraph::class);
         $form->handleRequest($request);
         $old = clone $paragraph;
+        $entity = $this->paragraphService->getEntity($paragraph);
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->add($paragraph);
+            $this->attachFormService->upload($entity);
             $this->addFlash('success', 'Paragraph sauvegardé.');
             $paragraphRequestHandler->handle($old, $paragraph);
         }
