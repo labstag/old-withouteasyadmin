@@ -2,11 +2,7 @@ name: Continuous Integration
 on: [push]
 jobs:
   tests:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -67,3 +63,10 @@ jobs:
         run: npm run doctrine:fixtures
       - name: Run Acceptance Tests
         run: npm run test:behat
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+      - name: Archive screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshot
+          path: cypress/
