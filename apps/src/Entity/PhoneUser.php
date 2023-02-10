@@ -14,6 +14,7 @@ class PhoneUser extends Phone
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="phoneUsers", cascade={"persist"})
+     *
      * @Assert\NotBlank
      */
     protected $refuser;

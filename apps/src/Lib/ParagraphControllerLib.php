@@ -33,11 +33,11 @@ abstract class ParagraphControllerLib extends ControllerLib
 
     protected function showTwig(Paragraph $paragraph, ParagraphRequestHandler $paragraphRequestHandler)
     {
-        $form       = $this->createForm(
+        $form = $this->createForm(
             ParagraphType::class,
             $paragraph
         );
-        $request    = $this->requeststack->getCurrentRequest();
+        $request = $this->requeststack->getCurrentRequest();
         $repository = $this->getRepository(Paragraph::class);
         $form->handleRequest($request);
         $old = clone $paragraph;

@@ -40,7 +40,7 @@ class BookmarkController extends AdminControllerLib
     public function import(Request $request, Security $security, EnqueueMethod $enqueueMethod): Response
     {
         $domain = $this->getDomainEntity();
-        $url    = $domain->getUrlAdmin();
+        $url = $domain->getUrlAdmin();
         $this->setBtnList($url);
         $form = $this->createForm(ImportType::class, []);
         $this->btnInstance()->addBtnSave($form->getName(), 'Import');
@@ -102,9 +102,9 @@ class BookmarkController extends AdminControllerLib
         $domDocument->loadHTMLFile($file->getPathname(), LIBXML_NOWARNING | LIBXML_NOERROR);
 
         $domNodeList = $domDocument->getElementsByTagName('a');
-        $dateTime    = new DateTime();
+        $dateTime = new DateTime();
         /** @var User $user */
-        $user   = $security->getUser();
+        $user = $security->getUser();
         $userId = $user->getId();
         foreach ($domNodeList as $tag) {
             $enqueueMethod->enqueue(

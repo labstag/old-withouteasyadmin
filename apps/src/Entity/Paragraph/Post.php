@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Table(name="paragraph_post")
+ *
  * @ORM\Entity(repositoryClass=PostRepository::class)
  */
 class Post
@@ -16,8 +17,11 @@ class Post
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;

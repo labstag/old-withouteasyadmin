@@ -43,7 +43,7 @@ class LabstagUserCommand extends CommandLib
         $action
     ): void
     {
-        $helper         = $this->getHelper('question');
+        $helper = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
             $this->tableQuestionUser()
@@ -75,12 +75,12 @@ class LabstagUserCommand extends CommandLib
 
     protected function actionState(InputInterface $input, OutputInterface $output, SymfonyStyle $symfonyStyle): void
     {
-        $helper         = $this->getHelper('question');
+        $helper = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
             $this->tableQuestionUser()
         );
-        $username       = $helper->ask($input, $output, $choiceQuestion);
+        $username = $helper->ask($input, $output, $choiceQuestion);
         $this->state($helper, $username, $symfonyStyle, $input, $output);
     }
 
@@ -90,12 +90,12 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle
     ): void
     {
-        $helper         = $this->getHelper('question');
+        $helper = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
             $this->tableQuestionUser()
         );
-        $username       = $helper->ask($input, $output, $choiceQuestion);
+        $username = $helper->ask($input, $output, $choiceQuestion);
         $this->updatePassword($helper, $username, $symfonyStyle, $input, $output);
     }
 
@@ -107,16 +107,16 @@ class LabstagUserCommand extends CommandLib
     protected function create($helper, SymfonyStyle $symfonyStyle, InputInterface $input, OutputInterface $output): void
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
-        $user         = new User();
-        $old          = clone $user;
-        $question     = new Question("Entrer le username de l'utilisateur : ");
-        $username     = $helper->ask($input, $output, $question);
+        $user = new User();
+        $old = clone $user;
+        $question = new Question("Entrer le username de l'utilisateur : ");
+        $username = $helper->ask($input, $output, $question);
         $user->setUsername($username);
         $question = new Question("Entrer le password de l'utilisateur : ");
         $question->setHidden(true);
 
         $password1 = $helper->ask($input, $output, $question);
-        $question  = new Question("Resaisir le password de l'utilisateur : ");
+        $question = new Question("Resaisir le password de l'utilisateur : ");
         $question->setHidden(true);
 
         $password2 = $helper->ask($input, $output, $question);
@@ -128,10 +128,10 @@ class LabstagUserCommand extends CommandLib
 
         $user->setPlainPassword($password1);
         $question = new Question("Entrer l'email de l'utilisateur : ");
-        $email    = $helper->ask($input, $output, $question);
+        $email = $helper->ask($input, $output, $question);
         $user->setEmail($email);
         $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
-        $data    = [];
+        $data = [];
         foreach ($groupes as $groupe) {
             // @var Groupe $groupe
             if ('visiteur' == $groupe->getCode()) {
@@ -141,7 +141,7 @@ class LabstagUserCommand extends CommandLib
             $data[$groupe->getCode()] = $groupe->getName();
         }
 
-        $question  = new ChoiceQuestion(
+        $question = new ChoiceQuestion(
             "Groupe à attribuer à l'utilisateur",
             $data
         );
@@ -297,8 +297,8 @@ class LabstagUserCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $symfonyStyle   = new SymfonyStyle($input, $output);
-        $helper         = $this->getHelper('question');
+        $symfonyStyle = new SymfonyStyle($input, $output);
+        $helper = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             'Action à effectué',
             [
@@ -367,11 +367,11 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $states      = [];
-        $workflow    = $this->registry->get($entity);
+        $states = [];
+        $workflow = $this->registry->get($entity);
         $transitions = $workflow->getEnabledTransitions($entity);
         foreach ($transitions as $transition) {
-            $name          = $transition->getName();
+            $name = $transition->getName();
             $states[$name] = $name;
         }
 
@@ -379,7 +379,7 @@ class LabstagUserCommand extends CommandLib
             "Passer l'utilisateur à l'épage : ",
             $states
         );
-        $state          = $helper->ask($input, $output, $choiceQuestion);
+        $state = $helper->ask($input, $output, $choiceQuestion);
         if (!$workflow->can($entity, $state)) {
             $symfonyStyle->warning(
                 ['Action impossible']
@@ -437,7 +437,7 @@ class LabstagUserCommand extends CommandLib
         $question->setHidden(true);
 
         $password1 = $helper->ask($input, $output, $question);
-        $question  = new Question("Resaisir le password de l'utilisateur : ");
+        $question = new Question("Resaisir le password de l'utilisateur : ");
         $question->setHidden(true);
 
         $password2 = $helper->ask($input, $output, $question);

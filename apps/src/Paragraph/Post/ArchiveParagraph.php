@@ -40,8 +40,8 @@ class ArchiveParagraph extends ParagraphLib
     {
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $archives         = $entityRepository->findDateArchive();
-        $page             = $this->request->query->getInt('page', 1);
+        $archives = $entityRepository->findDateArchive();
+        $page = $this->request->query->getInt('page', 1);
         if (1 != $page) {
             return;
         }

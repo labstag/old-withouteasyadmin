@@ -33,20 +33,20 @@ class PhoneService
      */
     public function verif(?string $numero, ?string $locale): array
     {
-        $numero                       = str_replace([' ', '-', '.'], '', (string) $numero);
-        $data                         = [];
+        $numero = str_replace([' ', '-', '.'], '', (string) $numero);
+        $data = [];
         $phoneNumberToTimeZonesMapper = PhoneNumberToTimeZonesMapper::getInstance();
-        $phoneNumberToCarrierMapper   = PhoneNumberToCarrierMapper::getInstance();
+        $phoneNumberToCarrierMapper = PhoneNumberToCarrierMapper::getInstance();
 
         try {
-            $parse   = $this->phoneUtil->parse(
+            $parse = $this->phoneUtil->parse(
                 $numero,
                 strtoupper($locale)
             );
             $isvalid = $this->phoneUtil->isValidNumber($parse);
 
-            $data['isvalid']   = $isvalid;
-            $data['format']    = [
+            $data['isvalid'] = $isvalid;
+            $data['format'] = [
                 'e164'          => $this->phoneUtil->format(
                     $parse,
                     PhoneNumberFormat::E164
@@ -61,11 +61,11 @@ class PhoneService
                 ),
             ];
             $data['timezones'] = $phoneNumberToTimeZonesMapper->getTimeZonesForNumber($parse);
-            $data['carrier']   = $phoneNumberToCarrierMapper->getNameForNumber(
+            $data['carrier'] = $phoneNumberToCarrierMapper->getNameForNumber(
                 $parse,
                 strtoupper($locale)
             );
-            $data['parse']     = $parse;
+            $data['parse'] = $parse;
         } catch (NumberParseException $numberParseException) {
             $this->errorService->set($numberParseException);
             $data['error'] = $numberParseException->getMessage();

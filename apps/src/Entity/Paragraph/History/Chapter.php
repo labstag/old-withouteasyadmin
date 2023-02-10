@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Table(name="paragraph_history_chapter")
+ *
  * @ORM\Entity(repositoryClass=ChapterRepository::class)
  */
 class Chapter
@@ -16,8 +17,11 @@ class Chapter
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;

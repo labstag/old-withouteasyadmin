@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Table(name="paragraph_post_category")
+ *
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  */
 class Category
@@ -16,8 +17,11 @@ class Category
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;

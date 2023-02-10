@@ -5,7 +5,6 @@ namespace Labstag\Form\Admin\Paragraph;
 use Labstag\Entity\Paragraph\Video;
 use Labstag\FormType\UploadType;
 use Labstag\Lib\ParagraphAbstractTypeLib;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,22 +18,25 @@ class VideoType extends ParagraphAbstractTypeLib
             TextType::class,
             [
                 'required' => false,
-                'label' => 'title'
-            ]);
+                'label'    => 'title',
+            ]
+        );
         $formBuilder->add(
             'url',
             TextType::class,
             [
                 'required' => false,
-                'label' => 'url'
-            ]);
+                'label'    => 'url',
+            ]
+        );
         $formBuilder->add(
             'slug',
             TextType::class,
             [
                 'required' => false,
-                'label' => 'slug'
-            ]);
+                'label'    => 'slug',
+            ]
+        );
         $formBuilder->add(
             'file',
             UploadType::class,

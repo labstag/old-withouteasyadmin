@@ -45,7 +45,7 @@ class HistoryService
         }
 
         $html2Pdf = $this->generateHistoryPdf($history, $arrayCollection);
-        $path     = sprintf(
+        $path = sprintf(
             '%s/%s',
             $fileDirectory,
             'history'
@@ -64,10 +64,10 @@ class HistoryService
 
     private function generateHistoryPdf(History $history, Collection $collection): Html2Pdf
     {
-        $tmpfile  = tmpfile();
-        $data     = stream_get_meta_data($tmpfile);
+        $tmpfile = tmpfile();
+        $data = stream_get_meta_data($tmpfile);
         $html2Pdf = new Html2Pdf();
-        $html     = $this->environment->render(
+        $html = $this->environment->render(
             'pdf/history/index.html.twig',
             [
                 'history'  => $history,

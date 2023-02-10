@@ -71,10 +71,10 @@ class CustomBlock extends BlockLib
 
     private function setParagraphs(Custom $custom)
     {
-        $all         = $this->request->attributes->all();
-        $route       = $all['_route'];
+        $all = $this->request->attributes->all();
+        $route = $all['_route'];
         $dataLayouts = $this->layoutRepository->findByCustom($custom);
-        $layouts     = [];
+        $layouts = [];
         foreach ($dataLayouts as $layout) {
             if (!in_array($route, $layout->getUrl())) {
                 continue;

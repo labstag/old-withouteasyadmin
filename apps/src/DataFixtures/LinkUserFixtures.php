@@ -34,7 +34,7 @@ class LinkUserFixtures extends FixtureLib implements DependentFixtureInterface
     ): void
     {
         $linkUser = new LinkUser();
-        $old      = clone $linkUser;
+        $old = clone $linkUser;
         $linkUser->setRefUser($user);
         $linkUser->setName($generator->word());
         $linkUser->setAddress($generator->url());

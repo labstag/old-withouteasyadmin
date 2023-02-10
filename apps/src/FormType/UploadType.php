@@ -7,19 +7,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 
 class UploadType extends AbstractType
 {
-
     public function __construct(
         private readonly UploadAnnotationReader $uploadAnnotationReader,
         protected RouterInterface $router
     )
     {
-
     }
 
     public function buildView(
@@ -30,16 +27,16 @@ class UploadType extends AbstractType
     {
         $entity = $form->getParent()->getData();
         $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
-        $property = $form->getName();
+        $name = $form->getName();
         $field = null;
-        if (isset($annotations[$property])) {
-            $accessor = PropertyAccess::createPropertyAccessor();
-            $field    = $accessor->getValue($entity, $annotations[$property]->getFileName());
+        if (isset($annotations[$name])) {
+            $propertyAccessor = PropertyAccess::createPropertyAccessor();
+            $field = $propertyAccessor->getValue($entity, $annotations[$name]->getFileName());
         }
 
         $formView->vars['field'] = $field;
-        $formView->vars['url']  = $this->router->generate('api_attachment_delete', ['entity' => $field->getId()]);
-        unset($form);
+        $formView->vars['url'] = $this->router->generate('api_attachment_delete', ['entity' => $field->getId()]);
+        unset($form, $options);
     }
 
     /**

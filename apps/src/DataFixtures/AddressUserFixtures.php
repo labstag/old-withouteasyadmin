@@ -36,7 +36,7 @@ class AddressUserFixtures extends FixtureLib implements DependentInterface
     ): void
     {
         $addressUser = new AddressUser();
-        $old         = clone $addressUser;
+        $old = clone $addressUser;
         $addressUser->setRefuser($user);
         $addressUser->setStreet($generator->streetAddress);
         $addressUser->setCity($generator->city);
@@ -44,9 +44,9 @@ class AddressUserFixtures extends FixtureLib implements DependentInterface
         $addressUser->setZipcode($generator->postcode);
         $addressUser->setType($generator->unique()->colorName());
 
-        $latitude  = $generator->latitude;
+        $latitude = $generator->latitude;
         $longitude = $generator->longitude;
-        $gps       = $latitude.','.$longitude;
+        $gps = $latitude.','.$longitude;
         $addressUser->setGps($gps);
         $addressUser->setPmr((bool) random_int(0, 1));
 

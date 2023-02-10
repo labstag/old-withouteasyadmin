@@ -223,11 +223,11 @@ abstract class FixtureLib extends Fixture
 
     protected function loadForeach($number, $method)
     {
-        $faker     = $this->setFaker();
+        $faker = $this->setFaker();
         $statesTab = $this->getStatesData();
         for ($index = 0; $index < $number; ++$index) {
             $stateId = array_rand($statesTab);
-            $states  = $statesTab[$stateId];
+            $states = $statesTab[$stateId];
             call_user_func([$this, $method], $faker, $index, $states);
         }
     }
@@ -238,7 +238,7 @@ abstract class FixtureLib extends Fixture
         $users = $this->installService->getData('user');
         for ($index = 0; $index < $number; ++$index) {
             $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
-            $user      = $this->getReference('user_'.$indexUser);
+            $user = $this->getReference('user_'.$indexUser);
             call_user_func([$this, $method], $faker, $user);
         }
     }
@@ -261,7 +261,7 @@ abstract class FixtureLib extends Fixture
         $nbr = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
         for ($i = 0; $i < $nbr; ++$i) {
             $indexLibelle = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
-            $libelle      = $this->getReference('libelle_'.$indexLibelle);
+            $libelle = $this->getReference('libelle_'.$indexLibelle);
             $entity->addLibelle($libelle);
         }
     }
@@ -281,23 +281,23 @@ abstract class FixtureLib extends Fixture
         }
 
         // @var resource $finfo
-        $finfo        = finfo_open(FILEINFO_MIME_TYPE);
-        $annotations  = $this->uploadAnnotationReader->getUploadableFields($entity);
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
         $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
-            $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
-            $title    = $accessor->getValue($entity, $annotation->getSlug());
-            $slug     = $asciiSlugger->slug($title);
+            $title = $accessor->getValue($entity, $annotation->getSlug());
+            $slug = $asciiSlugger->slug($title);
 
             try {
-                $image   = $generator->picsum(null, 640, 480, true);
+                $image = $generator->picsum(null, 640, 480, true);
                 $content = file_get_contents($image);
                 // @var resource $tmpfile
                 $tmpfile = tmpfile();
-                $data    = stream_get_meta_data($tmpfile);
+                $data = stream_get_meta_data($tmpfile);
                 file_put_contents($data['uri'], $content);
-                $file     = new UploadedFile(
+                $file = new UploadedFile(
                     $data['uri'],
                     $slug.'.jpg',
                     (string) finfo_file($finfo, $data['uri']),
@@ -320,7 +320,7 @@ abstract class FixtureLib extends Fixture
             }
 
             if (isset($filename)) {
-                $file       = $path.'/'.$filename;
+                $file = $path.'/'.$filename;
                 $attachment = $this->fileService->setAttachment($file);
                 $accessor->setValue($entity, $annotation->getFilename(), $attachment);
             }

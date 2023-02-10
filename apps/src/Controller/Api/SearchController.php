@@ -21,7 +21,7 @@ class SearchController extends ApiControllerLib
     public function libelle(Request $request): JsonResponse
     {
         $attributes = $request->attributes->all();
-        $route      = $attributes['_route'];
+        $route = $attributes['_route'];
         $entityName = match ($route) {
             'api_search_user' => User::class,
             'api_search_category' => Category::class,
@@ -40,13 +40,13 @@ class SearchController extends ApiControllerLib
 
     private function showData($request, $entity, $method): JsonResponse
     {
-        $get    = $request->query->all();
+        $get = $request->query->all();
         $return = ['isvalid' => false];
         if (!array_key_exists('name', $get) || is_null($entity)) {
             return $this->json($return);
         }
 
-        $data   = call_user_func([$this->getRepository($entity), $method], $get['name']);
+        $data = call_user_func([$this->getRepository($entity), $method], $get['name']);
         $result = [
             'results' => [],
         ];

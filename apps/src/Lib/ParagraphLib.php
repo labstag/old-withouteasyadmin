@@ -35,9 +35,9 @@ abstract class ParagraphLib extends AbstractController
 
     protected function getParagraphFile(string $type): string
     {
-        $folder   = __DIR__.'/../../templates/';
+        $folder = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';
-        $files    = [
+        $files = [
             'paragraph/'.$type.$htmltwig,
             'paragraph/default'.$htmltwig,
         ];

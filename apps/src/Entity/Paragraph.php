@@ -26,8 +26,11 @@ class Paragraph
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
@@ -84,29 +87,29 @@ class Paragraph
 
     public function __construct()
     {
-        $this->texts              = new ArrayCollection();
-        $this->bookmarks          = new ArrayCollection();
-        $this->histories          = new ArrayCollection();
-        $this->editos             = new ArrayCollection();
-        $this->posts              = new ArrayCollection();
-        $this->postLists          = new ArrayCollection();
-        $this->historyLists       = new ArrayCollection();
-        $this->bookmarkLists      = new ArrayCollection();
-        $this->postArchives       = new ArrayCollection();
-        $this->postUsers          = new ArrayCollection();
-        $this->postLibelles       = new ArrayCollection();
-        $this->bookmarkLibelles   = new ArrayCollection();
+        $this->texts = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
+        $this->histories = new ArrayCollection();
+        $this->editos = new ArrayCollection();
+        $this->posts = new ArrayCollection();
+        $this->postLists = new ArrayCollection();
+        $this->historyLists = new ArrayCollection();
+        $this->bookmarkLists = new ArrayCollection();
+        $this->postArchives = new ArrayCollection();
+        $this->postUsers = new ArrayCollection();
+        $this->postLibelles = new ArrayCollection();
+        $this->bookmarkLibelles = new ArrayCollection();
         $this->bookmarkCategories = new ArrayCollection();
-        $this->postYears          = new ArrayCollection();
-        $this->postShows          = new ArrayCollection();
-        $this->postCategories     = new ArrayCollection();
-        $this->postHeaders        = new ArrayCollection();
-        $this->historyUsers       = new ArrayCollection();
-        $this->historyChapters    = new ArrayCollection();
-        $this->historyShows       = new ArrayCollection();
-        $this->editoShows         = new ArrayCollection();
-        $this->editoHeaders       = new ArrayCollection();
-        $this->videos             = new ArrayCollection();
+        $this->postYears = new ArrayCollection();
+        $this->postShows = new ArrayCollection();
+        $this->postCategories = new ArrayCollection();
+        $this->postHeaders = new ArrayCollection();
+        $this->historyUsers = new ArrayCollection();
+        $this->historyChapters = new ArrayCollection();
+        $this->historyShows = new ArrayCollection();
+        $this->editoShows = new ArrayCollection();
+        $this->editoHeaders = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
     public function addText(Text $text): self
@@ -202,11 +205,9 @@ class Paragraph
 
     public function removeVideo(Video $video): self
     {
-        if ($this->videos->removeElement($video)) {
-            // set the owning side to null (unless already changed)
-            if ($video->getParagraph() === $this) {
-                $video->setParagraph(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->videos->removeElement($video) && $video->getParagraph() === $this) {
+            $video->setParagraph(null);
         }
 
         return $this;

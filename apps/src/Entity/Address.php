@@ -11,9 +11,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ *
  * @ORM\InheritanceType("SINGLE_TABLE")
+ *
  * @ORM\DiscriminatorColumn(name="discr", type="string")
+ *
  * @ORM\DiscriminatorMap({"user" = "AddressUser"})
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 abstract class Address implements Stringable
@@ -22,13 +26,16 @@ abstract class Address implements Stringable
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank
      */
     protected $city;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank
+     *
      * @Assert\Country
      */
     protected $country;
@@ -40,8 +47,11 @@ abstract class Address implements Stringable
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
@@ -53,18 +63,21 @@ abstract class Address implements Stringable
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank
      */
     protected $street;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *
      * @Assert\NotBlank
      */
     protected $type;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank
      */
     protected $zipcode;

@@ -41,7 +41,7 @@ class PostParagraph extends ParagraphLib
     {
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(EntityPost::class);
-        $posts            = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
+        $posts = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
 
         return $this->render(
             $this->getParagraphFile('post'),

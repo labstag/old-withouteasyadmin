@@ -13,6 +13,7 @@ class LinkUser extends Link
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="linkUsers", cascade={"persist"})
+     *
      * @ORM\JoinColumn(nullable=false)
      */
     protected $refuser;

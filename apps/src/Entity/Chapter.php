@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ChapterRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Chapter
@@ -29,14 +30,18 @@ class Chapter
 
     /**
      * @Gedmo\Timestampable(on="create")
+     *
      * @ORM\Column(type="datetime")
      */
     private $created;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
@@ -58,6 +63,7 @@ class Chapter
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="chapter", cascade={"persist"}, orphanRemoval=true)
+     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
@@ -69,32 +75,37 @@ class Chapter
 
     /**
      * @Gedmo\Timestampable(on="create")
+     *
      * @ORM\Column(type="datetime")
      */
     private $published;
 
     /**
      * @ORM\ManyToOne(targetEntity=History::class, inversedBy="chapters", cascade={"persist"})
+     *
      * @Assert\NotBlank
+     *
      * @ORM\JoinColumn(nullable=false)
      */
     private $refhistory;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
     /**
      * @Gedmo\Timestampable(on="create")
+     *
      * @ORM\Column(type="datetime")
      */
     private $updated;
 
     public function __construct()
     {
-        $this->metas      = new ArrayCollection();
+        $this->metas = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
     }
 

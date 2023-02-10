@@ -12,9 +12,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ *
  * @ORM\InheritanceType("SINGLE_TABLE")
+ *
  * @ORM\DiscriminatorColumn(name="discr", type="string")
+ *
  * @ORM\DiscriminatorMap({"user" = "PhoneUser"})
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 abstract class Phone implements Stringable
@@ -24,21 +28,27 @@ abstract class Phone implements Stringable
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *
      * @Assert\NotBlank
+     *
      * @Assert\Country
      */
     protected $country;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank
      */
     protected $numero;
@@ -50,6 +60,7 @@ abstract class Phone implements Stringable
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank
      */
     protected $type;

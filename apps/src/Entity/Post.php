@@ -19,7 +19,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PostRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ *
  * @Uploadable
  */
 class Post implements Stringable
@@ -39,14 +41,18 @@ class Post implements Stringable
 
     /**
      * @Gedmo\Timestampable(on="create")
+     *
      * @ORM\Column(type="datetime")
      */
     private DateTime $created;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
@@ -68,6 +74,7 @@ class Post implements Stringable
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
+     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
@@ -84,7 +91,9 @@ class Post implements Stringable
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts", cascade={"persist"})
+     *
      * @Assert\NotBlank
+     *
      * @ORM\JoinColumn(nullable=false)
      */
     private $refuser;
@@ -96,6 +105,7 @@ class Post implements Stringable
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
@@ -107,15 +117,16 @@ class Post implements Stringable
 
     /**
      * @Gedmo\Timestampable(on="update")
+     *
      * @ORM\Column(type="datetime")
      */
     private DateTime $updated;
 
     public function __construct()
     {
-        $this->libelles   = new ArrayCollection();
+        $this->libelles = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
-        $this->metas      = new ArrayCollection();
+        $this->metas = new ArrayCollection();
     }
 
     public function __toString(): string

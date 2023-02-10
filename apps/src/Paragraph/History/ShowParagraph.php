@@ -38,12 +38,12 @@ class ShowParagraph extends ParagraphLib
 
     public function show(Show $show)
     {
-        $all        = $this->request->attributes->all();
+        $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        $slug       = $routeParam['slug'] ?? null;
+        $slug = $routeParam['slug'] ?? null;
         /** @var HistoryRepository $entityRepository */
         $entityRepository = $this->getRepository(History::class);
-        $history          = $entityRepository->findOneBy(
+        $history = $entityRepository->findOneBy(
             ['slug' => $slug]
         );
 

@@ -19,7 +19,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ *
  * @Uploadable
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
@@ -59,8 +61,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
@@ -82,6 +87,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     /**
      * @var string The hashed password
+     *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $password;
@@ -98,6 +104,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     /**
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users", cascade={"persist"})
+     *
      * @ORM\JoinColumn(nullable=true)
      */
     protected Groupe $refgroupe;
@@ -114,6 +121,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
+     *
      * @Assert\NotNull
      */
     protected $username;
@@ -140,18 +148,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function __construct()
     {
-        $this->editos            = new ArrayCollection();
-        $this->noteInternes      = new ArrayCollection();
-        $this->linkUsers         = new ArrayCollection();
-        $this->emailUsers        = new ArrayCollection();
-        $this->phoneUsers        = new ArrayCollection();
-        $this->addressUsers      = new ArrayCollection();
+        $this->editos = new ArrayCollection();
+        $this->noteInternes = new ArrayCollection();
+        $this->linkUsers = new ArrayCollection();
+        $this->emailUsers = new ArrayCollection();
+        $this->phoneUsers = new ArrayCollection();
+        $this->addressUsers = new ArrayCollection();
         $this->oauthConnectUsers = new ArrayCollection();
-        $this->routes            = new ArrayCollection();
-        $this->workflowUsers     = new ArrayCollection();
-        $this->posts             = new ArrayCollection();
-        $this->bookmarks         = new ArrayCollection();
-        $this->histories         = new ArrayCollection();
+        $this->routes = new ArrayCollection();
+        $this->workflowUsers = new ArrayCollection();
+        $this->posts = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
+        $this->histories = new ArrayCollection();
     }
 
     public function __toString(): string

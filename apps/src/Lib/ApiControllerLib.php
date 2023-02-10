@@ -43,7 +43,7 @@ abstract class ApiControllerLib extends AbstractController
         }
 
         $data['user'] = [];
-        $user         = $this->userRepository->find($get['user']);
+        $user = $this->userRepository->find($get['user']);
         if (!$user instanceof User) {
             return $data;
         }

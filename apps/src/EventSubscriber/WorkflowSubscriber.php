@@ -30,7 +30,7 @@ class WorkflowSubscriber extends EventSubscriberLib
     public function onTransition(Event $event): void
     {
         $transition = $event->getTransition();
-        $name       = $transition->getName();
+        $name = $transition->getName();
         if ('submit' == $name) {
             $this->transitionSubmit($event);
 

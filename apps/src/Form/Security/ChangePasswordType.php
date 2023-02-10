@@ -16,7 +16,7 @@ class ChangePasswordType extends AbstractTypeLib
         array $options
     ): void
     {
-        $first  = [
+        $first = [
             'label' => $this->translator->trans('changepassword.password.label', [], 'security.form'),
             'help'  => $this->translator->trans('changepassword.password.help', [], 'security.form'),
         ];

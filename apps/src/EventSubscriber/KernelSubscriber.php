@@ -115,8 +115,8 @@ class KernelSubscriber extends EventSubscriberLib
 
     public function onKernelResponse($event): void
     {
-        $response   = $event->getResponse();
-        $request    = $event->getRequest();
+        $response = $event->getResponse();
+        $request = $event->getRequest();
         $controller = $request->attributes->get('_controller');
         preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
         preg_match(self::API_CONTROLLER, (string) $controller, $apis);
@@ -141,7 +141,7 @@ class KernelSubscriber extends EventSubscriberLib
             'new-inline-tags'             => implode(' ', self::TAGS),
             'wrap'                        => 200,
         ];
-        $tidy   = new tidy();
+        $tidy = new tidy();
         $tidy->parseString($content, $config, 'utf8');
         $tidy->cleanRepair();
 

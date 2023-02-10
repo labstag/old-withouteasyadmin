@@ -15,12 +15,12 @@ class SessionService
     public function flashBagAdd(string $type, $message): void
     {
         $requestStack = $this->requestStack;
-        $request      = $requestStack->getCurrentRequest();
+        $request = $requestStack->getCurrentRequest();
         if (is_null($request)) {
             return;
         }
 
-        $session  = $requestStack->getSession();
+        $session = $requestStack->getSession();
         $flashbag = $session->getFlashBag();
         $flashbag->add($type, $message);
     }

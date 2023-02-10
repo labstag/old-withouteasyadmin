@@ -4,7 +4,6 @@ namespace Labstag\Form\Admin\Bookmark;
 
 use Labstag\FormType\UploadType;
 use Labstag\Lib\AbstractTypeLib;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

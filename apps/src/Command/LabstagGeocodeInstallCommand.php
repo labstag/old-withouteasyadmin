@@ -61,7 +61,7 @@ class LabstagGeocodeInstallCommand extends CommandLib
         }
 
         $progressBar = new ProgressBar($output, is_countable($csv) ? count($csv) : 0);
-        $table       = $this->geocodeService->tables($csv);
+        $table = $this->geocodeService->tables($csv);
         $progressBar->start();
         foreach ($table as $row) {
             $this->geocodeService->add($row);

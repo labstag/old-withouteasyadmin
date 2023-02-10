@@ -40,14 +40,14 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         // @var string $content
         $content = $generator->paragraphs(random_int(4, 10), true);
         $post->setContent(str_replace("\n\n", "<br />\n", (string) $content));
-        $users     = $this->installService->getData('user');
+        $users = $this->installService->getData('user');
         $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
-        $user      = $this->getReference('user_'.$indexUser);
+        $user = $this->getReference('user_'.$indexUser);
         $post->setRefuser($user);
         $post->setPublished($generator->unique()->dateTime('now'));
         $this->setLibelles($generator, $post);
         $indexLibelle = $generator->numberBetween(0, self::NUMBER_CATEGORY - 1);
-        $category     = $this->getReference('category_'.$indexLibelle);
+        $category = $this->getReference('category_'.$indexLibelle);
         $post->setRefcategory($category);
         $post->setRemark((bool) random_int(0, 1));
         $this->upload($post, $generator);

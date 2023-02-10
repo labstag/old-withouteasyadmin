@@ -34,7 +34,7 @@ class PageFixtures extends FixtureLib implements DependentFixtureInterface
     ): void
     {
         $page = new Page();
-        $old  = clone $page;
+        $old = clone $page;
         $page->setName($pageData['name']);
         if (!is_null($parent)) {
             $page->setParent($parent);

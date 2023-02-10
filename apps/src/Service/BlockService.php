@@ -24,8 +24,8 @@ class BlockService
     {
         $data = [];
         foreach ($this->blocksclass as $row) {
-            $type        = $row->getType();
-            $name        = $row->getName();
+            $type = $row->getType();
+            $name = $row->getName();
             $data[$name] = $type;
         }
 
@@ -43,8 +43,8 @@ class BlockService
 
         $data = [];
         foreach ($blocks as $block) {
-            $title        = $block->getTitle();
-            $id           = $block->getId();
+            $title = $block->getTitle();
+            $id = $block->getId();
             $data[$title] = $id;
         }
 
@@ -54,17 +54,17 @@ class BlockService
     public function getEntity(Block $block)
     {
         $entity = null;
-        $field  = $this->getEntityField($block);
+        $field = $this->getEntityField($block);
         if (is_null($field)) {
             return $entity;
         }
 
-        $reflection       = $this->setReflection($block);
+        $reflection = $this->setReflection($block);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() == $field) {
                 $entities = $propertyAccessor->getValue($block, $field);
-                $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
+                $entity = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
 
                 break;
             }
@@ -75,7 +75,7 @@ class BlockService
 
     public function getEntityField(Block $block)
     {
-        $field       = null;
+        $field = null;
         $childentity = $this->getTypeEntity($block);
         if (is_null($childentity)) {
             return $field;
@@ -123,7 +123,7 @@ class BlockService
 
     public function getTypeEntity(Block $block)
     {
-        $type  = $block->getType();
+        $type = $block->getType();
         $block = null;
         foreach ($this->blocksclass as $row) {
             if ($row->getType() == $type) {
@@ -168,9 +168,9 @@ class BlockService
 
     public function showContent(Block $block, $content)
     {
-        $type   = $block->getType();
+        $type = $block->getType();
         $entity = $this->getEntity($block);
-        $html   = new Response();
+        $html = new Response();
         if (is_null($entity)) {
             return $html;
         }

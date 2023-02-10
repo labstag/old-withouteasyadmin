@@ -57,8 +57,8 @@ abstract class RequestHandlerLib
             return;
         }
 
-        $workflow    = $this->registry->get($entity);
-        $definition  = $workflow->getDefinition();
+        $workflow = $this->registry->get($entity);
+        $definition = $workflow->getDefinition();
         $transitions = $definition->getTransitions();
         foreach ($transitions as $transition) {
             $name = $transition->getName();
@@ -77,7 +77,7 @@ abstract class RequestHandlerLib
     protected function setArrayCollectionUser(User $user)
     {
         $userCollectionEvent = new UserCollectionEvent();
-        $oauthConnectUsers   = $user->getOauthConnectUsers();
+        $oauthConnectUsers = $user->getOauthConnectUsers();
         foreach ($oauthConnectUsers as $oauthConnectUser) {
             // @var OauthConnectUser $row
             $old = clone $oauthConnectUser;

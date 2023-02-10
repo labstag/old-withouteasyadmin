@@ -40,7 +40,7 @@ class ShowParagraph extends ParagraphLib
     {
         /** @var EditoRepository $entityRepository */
         $entityRepository = $this->getRepository(Edito::class);
-        $edito            = $entityRepository->findOnePublier();
+        $edito = $entityRepository->findOnePublier();
 
         if (!$edito instanceof Edito) {
             return;

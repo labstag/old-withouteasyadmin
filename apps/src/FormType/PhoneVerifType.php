@@ -27,13 +27,13 @@ class PhoneVerifType extends AbstractType
     ): void
     {
         $phoneUser = $form->getParent()->getData();
-        $verif     = false;
+        $verif = false;
         if ($phoneUser instanceof Phone) {
             $phoneUser = $form->getParent()->getData();
-            $country   = $phoneUser->getCountry();
-            $number    = $phoneUser->getNumero();
-            $verif     = $this->phoneService->verif($number, $country);
-            $verif     = array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
+            $country = $phoneUser->getCountry();
+            $number = $phoneUser->getNumero();
+            $verif = $this->phoneService->verif($number, $country);
+            $verif = array_key_exists('isvalid', $verif) ? $verif['isvalid'] : false;
         }
 
         $formView->vars['attr']['class'] = $verif ? 'is-valid' : 'is-invalid';

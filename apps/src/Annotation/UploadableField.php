@@ -7,6 +7,7 @@ use InvalidArgumentException;
 
 /**
  * @Annotation
+ *
  * @Target("PROPERTY")
  */
 class UploadableField
@@ -33,8 +34,8 @@ class UploadableField
         }
 
         $this->filename = $options['filename'];
-        $this->path     = $options['path'];
-        $this->slug     = $options['slug'];
+        $this->path = $options['path'];
+        $this->slug = $options['slug'];
     }
 
     public function getFilename()

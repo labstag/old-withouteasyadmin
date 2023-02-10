@@ -21,7 +21,7 @@ class MailerService
     public function createEmail(array $data = []): Email
     {
         $config = $this->dataService->getConfig();
-        $email  = new Email();
+        $email = new Email();
         if (isset($data['html'])) {
             $html = $this->environment->render(
                 'mails/base.html.twig',

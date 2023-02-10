@@ -22,8 +22,11 @@ class Route implements Stringable
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
@@ -41,7 +44,7 @@ class Route implements Stringable
     public function __construct()
     {
         $this->groupes = new ArrayCollection();
-        $this->users   = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function __toString(): string

@@ -41,7 +41,7 @@ class BookmarkService
         DateTime $dateTime
     ): void
     {
-        $user     = $this->userRepository->find($userid);
+        $user = $this->userRepository->find($userid);
         $bookmark = $this->bookmarkRepository->findOneBy(
             ['url' => $url]
         );
@@ -50,7 +50,7 @@ class BookmarkService
         }
 
         $bookmark = new bookmark();
-        $old      = clone $bookmark;
+        $old = clone $bookmark;
         $bookmark->setRefuser($user);
         $bookmark->setUrl($url);
         $bookmark->setIcon($icon);
@@ -63,9 +63,9 @@ class BookmarkService
                 return;
             }
 
-            $meta        = get_meta_tags($url);
+            $meta = get_meta_tags($url);
             $description = $meta['description'] ?? null;
-            $code        = 'twitter:description';
+            $code = 'twitter:description';
             $description = (is_null($description) && isset($meta[$code])) ? $meta[$code] : $description;
             $bookmark->setContent($description);
             $image = $meta['twitter:image'] ?? null;
@@ -90,23 +90,23 @@ class BookmarkService
         }
 
         // @var resource $finfo
-        $finfo        = finfo_open(FILEINFO_MIME_TYPE);
-        $annotations  = $this->uploadAnnotationReader->getUploadableFields($bookmark);
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $annotations = $this->uploadAnnotationReader->getUploadableFields($bookmark);
         $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
-            $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
-            $title    = $accessor->getValue($bookmark, $annotation->getSlug());
-            $slug     = $asciiSlugger->slug($title);
+            $title = $accessor->getValue($bookmark, $annotation->getSlug());
+            $slug = $asciiSlugger->slug($title);
 
             try {
                 $pathinfo = pathinfo((string) $image);
-                $content  = file_get_contents($image);
+                $content = file_get_contents($image);
                 // @var resource $tmpfile
                 $tmpfile = tmpfile();
-                $data    = stream_get_meta_data($tmpfile);
+                $data = stream_get_meta_data($tmpfile);
                 file_put_contents($data['uri'], $content);
-                $file     = new UploadedFile(
+                $file = new UploadedFile(
                     $data['uri'],
                     $slug.'.'.$pathinfo['extension'],
                     (string) finfo_file($finfo, $data['uri']),
@@ -127,7 +127,7 @@ class BookmarkService
                 $this->errorService->set($exception);
             }
 
-            $file       = $path.'/'.$filename;
+            $file = $path.'/'.$filename;
             $attachment = $this->fileService->setAttachment($file);
             $accessor->setValue($bookmark, $annotation->getFilename(), $attachment);
         }

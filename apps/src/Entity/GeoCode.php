@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=GeoCodeRepository::class)
+ *
  * @ApiResource(
  *     collectionOperations={
  *         "get"
@@ -22,10 +23,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get"
  *     }
  * )
+ *
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={"countryCode" = "exact", "postalCode" = "exact", "placeName" = "partial"}
  * )
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class GeoCode
@@ -49,14 +52,18 @@ class GeoCode
 
     /**
      * @ORM\Column(type="string", length=2)
+     *
      * @Assert\Country
      */
     protected $countryCode;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;

@@ -19,7 +19,7 @@ class ActionsController extends ApiControllerLib
     #[Route(path: '/delete/{entity}/{id}', name: 'api_action_delete', methods: ['DELETE'])]
     public function delete(string $entity, string $id): JsonResponse
     {
-        $data   = [
+        $data = [
             'action' => false,
             'error'  => '',
         ];
@@ -64,12 +64,12 @@ class ActionsController extends ApiControllerLib
     #[Route(path: '/destroy/{entity}/{id}', name: 'api_action_destroy', methods: ['DELETE'])]
     public function destroy(string $entity, string $id): JsonResponse
     {
-        $data       = [
+        $data = [
             'action' => false,
             'error'  => '',
         ];
         $repository = $this->getRepoByEntity($entity);
-        $entity     = $repository->find($id);
+        $entity = $repository->find($id);
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
             $data['error'] = 'entité inconnu';
 
@@ -95,7 +95,7 @@ class ActionsController extends ApiControllerLib
     #[Route(path: '/empties', name: 'api_action_empties', methods: ['DELETE'])]
     public function empties(Request $request): JsonResponse
     {
-        $data       = [
+        $data = [
             'action' => false,
             'error'  => '',
         ];
@@ -107,7 +107,7 @@ class ActionsController extends ApiControllerLib
         }
 
         $entities = explode(',', (string) $request->request->get('entities'));
-        $error    = [];
+        $error = [];
         foreach ($entities as $entity) {
             $repository = $this->getRepoByEntity($entity);
 
@@ -132,7 +132,7 @@ class ActionsController extends ApiControllerLib
     #[Route(path: '/empty/{entity}', name: 'api_action_empty', methods: ['DELETE'])]
     public function empty(string $entity): JsonResponse
     {
-        $data       = [
+        $data = [
             'action' => false,
             'error'  => '',
         ];
@@ -167,7 +167,7 @@ class ActionsController extends ApiControllerLib
     public function emptyall(TrashService $trashService): JsonResponse
     {
         $tokenValid = $this->tokenVerif('emptyall');
-        $data       = [
+        $data = [
             'action' => false,
             'error'  => '',
         ];
@@ -177,7 +177,7 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $error         = $this->deleteAll($trashService);
+        $error = $this->deleteAll($trashService);
         $data['error'] = $error;
         if (0 === (is_countable($error) ? count($error) : 0)) {
             $data['action'] = true;
@@ -192,7 +192,7 @@ class ActionsController extends ApiControllerLib
     #[Route(path: '/restore/{entity}/{id}', name: 'api_action_restore', methods: ['POST'])]
     public function restore(string $entity, string $id): JsonResponse
     {
-        $data   = [
+        $data = [
             'action' => false,
             'error'  => '',
         ];
@@ -228,12 +228,12 @@ class ActionsController extends ApiControllerLib
     #[Route(path: '/workflow/{entity}/{state}/{id}', name: 'api_action_workflow', methods: ['POST'])]
     public function workflow(string $entity, string $state, string $id): JsonResponse
     {
-        $data       = [
+        $data = [
             'action' => false,
             'error'  => '',
         ];
         $repository = $this->getRepoByEntity($entity);
-        $entity     = $repository->find($id);
+        $entity = $repository->find($id);
         $this->denyAccessUnlessGranted('workflow-'.$state, $entity);
         if (is_null($entity)) {
             $data['error'] = 'entité inconnu';
@@ -273,11 +273,11 @@ class ActionsController extends ApiControllerLib
      */
     protected function setRepository(): array
     {
-        $files        = glob($this->getParameter('kernel.project_dir').'/src/Entity/*.php');
+        $files = glob($this->getParameter('kernel.project_dir').'/src/Entity/*.php');
         $repositories = [];
         foreach ($files as $file) {
-            $path                                = pathinfo((string) $file);
-            $filename                            = $path['filename'];
+            $path = pathinfo((string) $file);
+            $filename = $path['filename'];
             $repositories[strtolower($filename)] = 'Labstag\\Entity\\'.$filename;
         }
 
@@ -289,10 +289,10 @@ class ActionsController extends ApiControllerLib
      */
     private function deleteAll(TrashService $trashService): array
     {
-        $all   = $trashService->all();
+        $all = $trashService->all();
         $error = [];
         foreach ($all as $data) {
-            $entity     = $data['name'];
+            $entity = $data['name'];
             $repository = $this->getRepoByEntity($entity);
 
             try {
@@ -317,7 +317,7 @@ class ActionsController extends ApiControllerLib
 
     private function deleteEntityByRepository($repository): void
     {
-        $all   = $repository->findTrashForAdmin([]);
+        $all = $repository->findTrashForAdmin([]);
         $files = [];
         foreach ($all as $entity) {
             $repository->remove($entity);
@@ -351,10 +351,10 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $entities   = explode(',', (string) $request->request->get('entities'));
-        $error      = [];
+        $entities = explode(',', (string) $request->request->get('entities'));
+        $error = [];
         $repository = $this->getRepoByEntity($entity);
-        $method     = match ($token) {
+        $method = match ($token) {
             'deleties' => 'deleteEntity',
             'destroies' => 'destroyEntity',
             default => 'restoreEntity'
@@ -385,7 +385,7 @@ class ActionsController extends ApiControllerLib
             return;
         }
 
-        $file       = '';
+        $file = '';
         $repository = $this->getRepository($entity::class);
         $repository->remove($entity);
         if ($entity instanceof Attachment) {

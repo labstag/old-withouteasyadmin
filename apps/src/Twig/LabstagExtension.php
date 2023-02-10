@@ -69,11 +69,11 @@ class LabstagExtension extends AbstractExtension
             return $file;
         }
 
-        $vars   = $class->vars;
-        $type   = strtolower($this->setTypeformClass($vars));
+        $vars = $class->vars;
+        $type = strtolower($this->setTypeformClass($vars));
         $folder = __DIR__.'/../../templates/';
-        $files  = $this->setFilesformClass($type, $class);
-        $view   = end($files);
+        $files = $this->setFilesformClass($type, $class);
+        $view = end($files);
 
         foreach ($files as $file) {
             if (is_file($folder.$file)) {
@@ -113,7 +113,7 @@ class LabstagExtension extends AbstractExtension
             return null;
         }
 
-        $id         = $data->getId();
+        $id = $data->getId();
         $attachment = $this->attachmentRepository->findOneBy(['id' => $id]);
         if (is_null($attachment)) {
             return null;
@@ -147,7 +147,7 @@ class LabstagExtension extends AbstractExtension
     public function getFilters(): array
     {
         $dataFilters = $this->getFiltersFunctions();
-        $filters     = [];
+        $filters = [];
         foreach ($dataFilters as $key => $function) {
             $filters[] = new TwigFilter($key, [$this, $function]);
         }
@@ -161,7 +161,7 @@ class LabstagExtension extends AbstractExtension
     public function getFunctions(): array
     {
         $dataFunctions = $this->getFiltersFunctions();
-        $functions     = [];
+        $functions = [];
         foreach ($dataFunctions as $key => $function) {
             $functions[] = new TwigFunction($key, [$this, $function]);
         }
@@ -204,7 +204,7 @@ class LabstagExtension extends AbstractExtension
     public function getTextColorSection($data): string
     {
         $paragraph = $data->getParagraph();
-        $code      = $paragraph->getColor();
+        $code = $paragraph->getColor();
 
         return empty($code) ? '' : 'm--theme-'.$code;
     }
@@ -332,11 +332,11 @@ class LabstagExtension extends AbstractExtension
     private function setFilesformClass($type, $class): array
     {
         $htmltwig = '.html.twig';
-        $files    = [
+        $files = [
             'forms/'.$type.$htmltwig,
         ];
 
-        $vars      = $class->vars;
+        $vars = $class->vars;
         $classtype = (isset($vars['value']) && is_object($vars['value'])) ? $vars['value']::class : null;
         if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
             $files[] = 'forms/paragraph/'.$type.$htmltwig;

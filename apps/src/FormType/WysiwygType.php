@@ -15,9 +15,9 @@ class WysiwygType extends AbstractType
         array $options
     ): void
     {
-        $attr            = $options['attr'];
+        $attr = $options['attr'];
         $attr['class'] ??= '';
-        $attr['class']   = trim($attr['class'].' wysiwyg');
+        $attr['class'] = trim($attr['class'].' wysiwyg');
 
         $formView->vars['attr'] = $attr;
         unset($form);

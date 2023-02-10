@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Table(name="block_navbar")
+ *
  * @ORM\Entity(repositoryClass=NavbarRepository::class)
  */
 class Navbar
@@ -22,8 +23,11 @@ class Navbar
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;

@@ -20,6 +20,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=BlockRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Block
@@ -58,8 +59,11 @@ class Block
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
@@ -96,14 +100,14 @@ class Block
 
     public function __construct()
     {
-        $this->headers     = new ArrayCollection();
-        $this->htmls       = new ArrayCollection();
-        $this->footers     = new ArrayCollection();
-        $this->paragraphs  = new ArrayCollection();
+        $this->headers = new ArrayCollection();
+        $this->htmls = new ArrayCollection();
+        $this->footers = new ArrayCollection();
+        $this->paragraphs = new ArrayCollection();
         $this->breadcrumbs = new ArrayCollection();
-        $this->menu        = new ArrayCollection();
-        $this->flashbags   = new ArrayCollection();
-        $this->customs     = new ArrayCollection();
+        $this->menu = new ArrayCollection();
+        $this->flashbags = new ArrayCollection();
+        $this->customs = new ArrayCollection();
     }
 
     public function addBreadcrumb(Breadcrumb $breadcrumb): self

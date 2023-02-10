@@ -35,17 +35,17 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         array $blockData
     ): void
     {
-        $type  = $blockData['type'];
+        $type = $blockData['type'];
         $block = new Block();
-        $old   = clone $block;
+        $old = clone $block;
         $block->setTitle($region.' - '.$type.'('.($position + 1).')');
         $block->setRegion($region);
         $block->setType($type);
         $block->setPosition($position + 1);
         if (array_key_exists('code-menu', $blockData)) {
-            $menu        = $this->getReference('menu_'.$blockData['code-menu']);
+            $menu = $this->getReference('menu_'.$blockData['code-menu']);
             $classentity = $this->blockService->getTypeEntity($block);
-            $entity      = $this->blockService->getEntity($block);
+            $entity = $this->blockService->getEntity($block);
             if (!is_null($entity) || is_null($classentity)) {
                 return;
             }

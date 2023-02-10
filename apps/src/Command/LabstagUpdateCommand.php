@@ -26,10 +26,10 @@ class LabstagUpdateCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $symfonyStyle    = new SymfonyStyle($input, $output);
-        $publicIndex     = 'public/index.php';
+        $symfonyStyle = new SymfonyStyle($input, $output);
+        $publicIndex = 'public/index.php';
         $maintenanceFile = 'maintenance.html';
-        $actifFile       = 'public.php';
+        $actifFile = 'public.php';
         if (!is_file($publicIndex)) {
             return Command::FAILURE;
         }

@@ -75,13 +75,13 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $globals         = $this->environment->getGlobals();
-        $modal           = $globals['modal'] ?? [];
+        $globals = $this->environment->getGlobals();
+        $modal = $globals['modal'] ?? [];
         $modal['delete'] = true;
         $this->environment->addGlobal('modal', $modal);
-        $code  = 'delete'.$entity->getId();
+        $code = 'delete'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr  = [
+        $attr = [
             'id'       => 'DeleteForm',
             'is'       => 'link-btnadmindelete',
             'token'    => $token,
@@ -146,13 +146,13 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $globals        = $this->environment->getGlobals();
-        $modal          = $globals['modal'] ?? [];
+        $globals = $this->environment->getGlobals();
+        $modal = $globals['modal'] ?? [];
         $modal['empty'] = true;
         $this->environment->addGlobal('modal', $modal);
-        $code  = 'empty';
+        $code = 'empty';
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr  = [
+        $attr = [
             'is'       => 'link-btnadminempty',
             'token'    => $token,
             'redirect' => $this->router->generate($route['list']),
@@ -362,12 +362,12 @@ class AdminBtnSingleton
         GuardService $guardService
     ): void
     {
-        $this->environment      = $environment;
-        $this->router           = $router;
-        $this->token            = $tokenStorage;
+        $this->environment = $environment;
+        $this->router = $router;
+        $this->token = $tokenStorage;
         $this->csrfTokenManager = $csrfTokenManager;
-        $this->guardService     = $guardService;
-        $this->init             = true;
+        $this->guardService = $guardService;
+        $this->init = true;
     }
 
     protected function addBtnVider(
@@ -382,8 +382,8 @@ class AdminBtnSingleton
             return;
         }
 
-        $globals           = $this->environment->getGlobals();
-        $modal             = $globals['modal'] ?? [];
+        $globals = $this->environment->getGlobals();
+        $modal = $globals['modal'] ?? [];
         $modal[$codemodal] = true;
         $this->environment->addGlobal('modal', $modal);
         $this->add(
@@ -450,13 +450,13 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $globals      = $this->environment->getGlobals();
-        $modal        = $globals['modal'] ?? [];
+        $globals = $this->environment->getGlobals();
+        $modal = $globals['modal'] ?? [];
         $modal[$word] = true;
         $this->environment->addGlobal('modal', $modal);
-        $code  = $word.$entity->getId();
+        $code = $word.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr  = [
+        $attr = [
             'token'    => $token,
             'is'       => 'link-btnadmin'.$word,
             'redirect' => $this->router->generate($route['list']),

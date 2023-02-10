@@ -3,26 +3,40 @@
 namespace Labstag\Entity\Paragraph;
 
 use Doctrine\ORM\Mapping as ORM;
-use Labstag\Entity\Attachment;
-use Labstag\Entity\Paragraph;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Entity\Attachment;
+use Labstag\Entity\Paragraph;
 use Labstag\Repository\Paragraph\VideoRepository;
 
 /**
  * @ORM\Table(name="paragraph_video")
+ *
  * @ORM\Entity(repositoryClass=VideoRepository::class)
+ *
  * @Uploadable
  */
 class Video
 {
 
     /**
+     * @UploadableField(filename="image", path="paragraph/video/image", slug="title")
+     */
+    protected $file;
+
+    /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue
+     *
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphVideos")
+     */
+    private $image;
 
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="videos")
@@ -32,7 +46,7 @@ class Video
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $url;
+    private $slug;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -42,21 +56,21 @@ class Video
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $slug;
+    private $url;
 
-    /**
-     * @UploadableField(filename="image", path="paragraph/video/image", slug="title")
-     */
-    protected $file;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphVideos")
-     */
-    private $image;
+    public function getFile()
+    {
+        return $this->file;
+    }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getImage(): ?Attachment
+    {
+        return $this->image;
     }
 
     public function getParagraph(): ?Paragraph
@@ -64,23 +78,9 @@ class Video
         return $this->paragraph;
     }
 
-    public function setParagraph(?Paragraph $paragraph): self
+    public function getSlug(): ?string
     {
-        $this->paragraph = $paragraph;
-
-        return $this;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(?string $url): self
-    {
-        $this->url = $url;
-
-        return $this;
+        return $this->slug;
     }
 
     public function getTitle(): ?string
@@ -88,16 +88,9 @@ class Video
         return $this->title;
     }
 
-    public function setTitle(?string $title): self
+    public function getUrl(): ?string
     {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getFile()
-    {
-        return $this->file;
+        return $this->url;
     }
 
     public function setFile($file): self
@@ -107,9 +100,18 @@ class Video
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function setImage(?Attachment $attachment): self
     {
-        return $this->slug;
+        $this->image = $attachment;
+
+        return $this;
+    }
+
+    public function setParagraph(?Paragraph $paragraph): self
+    {
+        $this->paragraph = $paragraph;
+
+        return $this;
     }
 
     public function setSlug(string $slug): self
@@ -119,14 +121,16 @@ class Video
         return $this;
     }
 
-    public function getImage(): ?Attachment
+    public function setTitle(?string $title): self
     {
-        return $this->image;
+        $this->title = $title;
+
+        return $this;
     }
 
-    public function setImage(?Attachment $image): self
+    public function setUrl(?string $url): self
     {
-        $this->image = $image;
+        $this->url = $url;
 
         return $this;
     }

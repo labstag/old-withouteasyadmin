@@ -41,7 +41,7 @@ class HistoryParagraph extends ParagraphLib
     {
         /** @var HistoryRepository $entityRepository */
         $entityRepository = $this->getRepository(EntityHistory::class);
-        $histories        = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
+        $histories = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
 
         return $this->render(
             $this->getParagraphFile('history'),

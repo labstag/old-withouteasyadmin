@@ -14,6 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=AttachmentRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Attachment
@@ -28,8 +29,11 @@ class Attachment
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
@@ -81,11 +85,11 @@ class Attachment
 
     public function __construct()
     {
-        $this->users        = new ArrayCollection();
-        $this->posts        = new ArrayCollection();
-        $this->editos       = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->posts = new ArrayCollection();
+        $this->editos = new ArrayCollection();
         $this->noteInternes = new ArrayCollection();
-        $this->bookmarks    = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
         $this->paragraphVideos = new ArrayCollection();
     }
 
@@ -124,6 +128,16 @@ class Attachment
         if (!$this->noteInternes->contains($memo)) {
             $this->noteInternes[] = $memo;
             $memo->setFond($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraphVideo(Video $paragraphVideo): self
+    {
+        if (!$this->paragraphVideos->contains($paragraphVideo)) {
+            $this->paragraphVideos[] = $paragraphVideo;
+            $paragraphVideo->setImage($this);
         }
 
         return $this;
@@ -189,6 +203,14 @@ class Attachment
         return $this->noteInternes;
     }
 
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getParagraphVideos(): Collection
+    {
+        return $this->paragraphVideos;
+    }
+
     public function getPosts(): Collection
     {
         return $this->posts;
@@ -244,6 +266,16 @@ class Attachment
         return $this;
     }
 
+    public function removeParagraphVideo(Video $paragraphVideo): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphVideos->removeElement($paragraphVideo) && $paragraphVideo->getImage() === $this) {
+            $paragraphVideo->setImage(null);
+        }
+
+        return $this;
+    }
+
     public function removePost(Post $post): self
     {
         // set the owning side to null (unless already changed)
@@ -288,36 +320,6 @@ class Attachment
     public function setSize(?int $size): self
     {
         $this->size = $size;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Video>
-     */
-    public function getParagraphVideos(): Collection
-    {
-        return $this->paragraphVideos;
-    }
-
-    public function addParagraphVideo(Video $paragraphVideo): self
-    {
-        if (!$this->paragraphVideos->contains($paragraphVideo)) {
-            $this->paragraphVideos[] = $paragraphVideo;
-            $paragraphVideo->setImage($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParagraphVideo(Video $paragraphVideo): self
-    {
-        if ($this->paragraphVideos->removeElement($paragraphVideo)) {
-            // set the owning side to null (unless already changed)
-            if ($paragraphVideo->getImage() === $this) {
-                $paragraphVideo->setImage(null);
-            }
-        }
 
         return $this;
     }

@@ -31,7 +31,7 @@ class AttachFormService
         $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
         foreach ($annotations as $property => $annotation) {
             $accessor = PropertyAccess::createPropertyAccessor();
-            $file     = $accessor->getValue($entity, $property);
+            $file = $accessor->getValue($entity, $property);
             if (!$file instanceof UploadedFile) {
                 continue;
             }
@@ -41,10 +41,10 @@ class AttachFormService
                 $entity,
                 $annotation
             );
-            $old        = clone $attachment;
+            $old = clone $attachment;
 
             $filename = $file->getClientOriginalName();
-            $path     = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
             if (!is_dir($path)) {
                 mkdir($path, 0777, true);
             }

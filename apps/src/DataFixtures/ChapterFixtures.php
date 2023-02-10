@@ -39,7 +39,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
     ): void
     {
         $chapter = new Chapter();
-        $meta    = new Meta();
+        $meta = new Meta();
         $meta->setChapter($chapter);
         $this->setMeta($meta);
         $oldChapter = clone $chapter;
@@ -48,7 +48,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         $content = $generator->paragraphs(random_int(4, 10), true);
         $chapter->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $indexHistory = $generator->numberBetween(0, self::NUMBER_HISTORY - 1);
-        $history      = $this->getReference('history_'.$indexHistory);
+        $history = $this->getReference('history_'.$indexHistory);
         if (!isset($this->position[$indexHistory])) {
             $this->position[$indexHistory] = [];
         }
@@ -57,7 +57,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         $chapter->setPublished($generator->unique()->dateTime('now'));
 
         $indexposition = $this->position[$indexHistory];
-        $position      = is_countable($indexposition) ? count($indexposition) : 0;
+        $position = is_countable($indexposition) ? count($indexposition) : 0;
         $chapter->setPosition($position + 1);
         $this->addReference('chapter_'.$index, $chapter);
         $this->position[$indexHistory][] = $chapter;

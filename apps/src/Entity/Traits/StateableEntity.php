@@ -25,6 +25,7 @@ trait StateableEntity
      * @var DateTime
      *
      * @ORM\Column(name="state_changed", type="datetime", nullable=true)
+     *
      * @Gedmo\Timestampable(on="change", field={"state"})
      */
     private $stateChanged;

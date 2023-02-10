@@ -19,7 +19,7 @@ class FileService
     {
         if (is_null($attachment) && is_null($old)) {
             $attachment = new Attachment();
-            $old        = clone $attachment;
+            $old = clone $attachment;
         }
 
         $attachment->setMimeType(mime_content_type($file));

@@ -24,11 +24,11 @@ class RenderFixtures extends FixtureLib implements DependentFixtureInterface
         unset($objectManager);
         $routes = $this->guardService->getPublicRouteWithParams();
         foreach (array_keys($routes) as $route) {
-            $words  = explode('_', $route);
-            $words  = array_map(static fn ($value) => ucfirst(strtolower((string) $value)), $words);
-            $words  = implode(' ', $words);
+            $words = explode('_', $route);
+            $words = array_map(static fn ($value) => ucfirst(strtolower((string) $value)), $words);
+            $words = implode(' ', $words);
             $render = new Render();
-            $old    = clone $render;
+            $old = clone $render;
             $render->setUrl($route);
             $render->setName($words);
             $this->renderRequestHandler->handle($old, $render);

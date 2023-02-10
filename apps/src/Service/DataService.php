@@ -53,7 +53,7 @@ class DataService
         }
 
         $oauthActivateds = $this->oauthActivated;
-        $oauthUsers      = $user->getOauthConnectUsers();
+        $oauthUsers = $user->getOauthConnectUsers();
         foreach ($oauthActivateds as $index => $oauthActivated) {
             $trouver = 0;
             foreach ($oauthUsers as $oauthUser) {
@@ -77,12 +77,12 @@ class DataService
      */
     protected function getConfiguration(): array
     {
-        $data   = $this->configurationRepository->findAll();
+        $data = $this->configurationRepository->findAll();
         $config = [];
         // @var Configuration $row
         foreach ($data as $row) {
-            $key          = $row->getName();
-            $value        = $row->getValue();
+            $key = $row->getName();
+            $value = $row->getValue();
             $config[$key] = $value;
         }
 
@@ -111,13 +111,13 @@ class DataService
         }
 
         $oauth = [];
-        $data  = $config['oauth'];
+        $data = $config['oauth'];
         foreach ($data as $row) {
             if (1 != $row['activate']) {
                 continue;
             }
 
-            $type         = $row['type'];
+            $type = $row['type'];
             $oauth[$type] = $row;
         }
 

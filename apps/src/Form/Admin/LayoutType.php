@@ -52,7 +52,7 @@ class LayoutType extends AbstractTypeLib
                 'query_builder' => static fn (CustomRepository $customRepository) => $customRepository->formType(),
             ]
         );
-        $all     = $this->guardService->getPublicRoute();
+        $all = $this->guardService->getPublicRoute();
         $choices = [];
         foreach (array_keys($all) as $key) {
             $choices[$key] = $key;

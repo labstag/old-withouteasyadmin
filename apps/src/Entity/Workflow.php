@@ -21,8 +21,11 @@ class Workflow
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
@@ -45,7 +48,7 @@ class Workflow
     public function __construct()
     {
         $this->workflowGroupes = new ArrayCollection();
-        $this->workflowUsers   = new ArrayCollection();
+        $this->workflowUsers = new ArrayCollection();
     }
 
     public function addWorkflowGroupe(WorkflowGroupe $workflowGroupe): self
