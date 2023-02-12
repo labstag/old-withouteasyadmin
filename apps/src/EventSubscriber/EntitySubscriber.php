@@ -175,7 +175,7 @@ class EntitySubscriber extends EventSubscriberLib
         $this->pageRepository->add($entity);
     }
 
-    public function onParagraphEntityEvent(ParagraphEntityEvent $paragraphEntityEvent): void
+    private function onParagraphEntityEventInit(ParagraphEntityEvent $paragraphEntityEvent): void
     {
         $paragraph = $paragraphEntityEvent->getNewEntity();
         $oldEntity = $paragraphEntityEvent->getOldEntity();
@@ -201,6 +201,18 @@ class EntitySubscriber extends EventSubscriberLib
 
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
+    }
+
+    private function onParagraphEntityEventData(ParagraphEntityEvent $paragraphEntityEvent): void
+    {
+        $paragraph = $paragraphEntityEvent->getNewEntity();
+        $this->paragraphService->setData($paragraph);
+    }
+
+    public function onParagraphEntityEvent(ParagraphEntityEvent $paragraphEntityEvent): void
+    {
+        $this->onParagraphEntityEventInit($paragraphEntityEvent);
+        $this->onParagraphEntityEventData($paragraphEntityEvent);
     }
 
     public function onPostEntityEvent(PostEntityEvent $postEntityEvent): void

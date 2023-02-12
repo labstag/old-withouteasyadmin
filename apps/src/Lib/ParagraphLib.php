@@ -5,6 +5,10 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Entity\Paragraph;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Service\ErrorService;
+use Labstag\Service\FileService;
 use Labstag\Service\FormService;
 use Labstag\Service\ParagraphService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,6 +24,9 @@ abstract class ParagraphLib extends AbstractController
     protected ?Request $request;
 
     public function __construct(
+        protected FileService $fileService,
+        protected UploadAnnotationReader $uploadAnnotationReader,
+        protected ErrorService $errorService,
         protected PaginatorInterface $paginator,
         protected TranslatorInterface $translator,
         protected MailerInterface $mailer,
@@ -62,5 +69,10 @@ abstract class ParagraphLib extends AbstractController
     protected function getRepository(string $entity): EntityRepository
     {
         return $this->entityManager->getRepository($entity);
+    }
+
+    public function setData(Paragraph $paragraph)
+    {
+
     }
 }

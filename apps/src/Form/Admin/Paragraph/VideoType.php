@@ -6,6 +6,7 @@ use Labstag\Entity\Paragraph\Video;
 use Labstag\FormType\UploadType;
 use Labstag\Lib\ParagraphAbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,8 +23,16 @@ class VideoType extends ParagraphAbstractTypeLib
             ]
         );
         $formBuilder->add(
-            'url',
+            'slug',
             TextType::class,
+            [
+                'required' => false,
+                'label'    => 'slug',
+            ]
+        );
+        $formBuilder->add(
+            'url',
+            UrlType::class,
             [
                 'required' => false,
                 'label'    => 'url',

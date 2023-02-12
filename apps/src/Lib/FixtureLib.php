@@ -320,7 +320,6 @@ abstract class FixtureLib extends Fixture
             }
 
             if (isset($filename)) {
-                $file = $path.'/'.$filename;
                 $attachment = $this->fileService->setAttachment($file);
                 $accessor->setValue($entity, $annotation->getFilename(), $attachment);
             }
