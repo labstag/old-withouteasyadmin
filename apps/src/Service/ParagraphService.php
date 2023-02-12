@@ -103,24 +103,6 @@ class ParagraphService
         return $field;
     }
 
-    public function setData(Paragraph $paragraph)
-    {
-        $entity = $this->getEntity($paragraph);
-        if (is_null($entity)) {
-            return;
-        }
-        
-        $type = $paragraph->getType();
-        foreach ($this->paragraphsclass as $row)
-        {
-            if ($row->getType() == $type)
-            {
-                $row->setData($paragraph);
-                break;
-            }
-        }
-    }
-
     public function getName(Paragraph $paragraph)
     {
         $type = $paragraph->getType();
@@ -193,6 +175,23 @@ class ParagraphService
         }
 
         return $show;
+    }
+
+    public function setData(Paragraph $paragraph)
+    {
+        $entity = $this->getEntity($paragraph);
+        if (is_null($entity)) {
+            return;
+        }
+
+        $type = $paragraph->getType();
+        foreach ($this->paragraphsclass as $row) {
+            if ($row->getType() == $type) {
+                $row->setData($paragraph);
+
+                break;
+            }
+        }
     }
 
     public function showContent(Paragraph $paragraph)

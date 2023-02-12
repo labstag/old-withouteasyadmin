@@ -41,6 +41,18 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         return $this->normalizer->supportsNormalization($data, $format);
     }
 
+    private function setDeleteAttachment(&$docs): void
+    {
+        $statsEndpoint = [
+            'summary'    => 'Post Img.',
+            'tags'       => ['Attachment'],
+            'parameters' => $this->setParameters(),
+            'responses'  => $this->setResponses(),
+        ];
+
+        $docs['paths']['/api/attachment/delete/{entity}']['delete'] = $statsEndpoint;
+    }
+
     /**
      * @return array<int, mixed[]>
      */
@@ -62,18 +74,6 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
                 'schema'      => ['type' => 'string'],
             ],
         ];
-    }
-
-    private function setDeleteAttachment(&$docs): void
-    {
-        $statsEndpoint = [
-            'summary'    => 'Post Img.',
-            'tags'       => ['Attachment'],
-            'parameters' => $this->setParameters(),
-            'responses'  => $this->setResponses(),
-        ];
-
-        $docs['paths']['/api/attachment/delete/{entity}']['delete'] = $statsEndpoint;
     }
 
     private function setResponses(): array

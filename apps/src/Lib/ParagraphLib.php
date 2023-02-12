@@ -40,6 +40,10 @@ abstract class ParagraphLib extends AbstractController
         $this->request = $requestStack->getCurrentRequest();
     }
 
+    public function setData(Paragraph $paragraph)
+    {
+    }
+
     protected function getParagraphFile(string $type): string
     {
         $folder = __DIR__.'/../../templates/';
@@ -69,10 +73,5 @@ abstract class ParagraphLib extends AbstractController
     protected function getRepository(string $entity): EntityRepository
     {
         return $this->entityManager->getRepository($entity);
-    }
-
-    public function setData(Paragraph $paragraph)
-    {
-
     }
 }

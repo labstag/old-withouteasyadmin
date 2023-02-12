@@ -3,11 +3,11 @@
 namespace Labstag\Entity\Paragraph;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Labstag\Repository\Paragraph\VideoRepository;
 
 /**
@@ -46,6 +46,7 @@ class Video
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
+     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $slug;

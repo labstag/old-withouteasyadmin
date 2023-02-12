@@ -5,7 +5,6 @@ namespace Labstag\Controller\Api;
 use Labstag\Entity\Attachment;
 use Labstag\Lib\ApiControllerLib;
 use Labstag\Repository\AttachmentRepository;
-use Labstag\RequestHandler\MemoRequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;

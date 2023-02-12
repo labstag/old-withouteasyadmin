@@ -175,40 +175,6 @@ class EntitySubscriber extends EventSubscriberLib
         $this->pageRepository->add($entity);
     }
 
-    private function onParagraphEntityEventInit(ParagraphEntityEvent $paragraphEntityEvent): void
-    {
-        $paragraph = $paragraphEntityEvent->getNewEntity();
-        $oldEntity = $paragraphEntityEvent->getOldEntity();
-        if (0 != $oldEntity->getPosition()) {
-            return;
-        }
-
-        $classentity = $this->paragraphService->getTypeEntity($paragraph);
-        if (is_null($classentity)) {
-            $this->entityManager->remove($paragraph);
-            $this->entityManager->flush();
-
-            return;
-        }
-
-        $entity = $this->paragraphService->getEntity($paragraph);
-        if (!is_null($entity)) {
-            return;
-        }
-
-        $entity = new $classentity();
-        $entity->setParagraph($paragraph);
-
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
-    }
-
-    private function onParagraphEntityEventData(ParagraphEntityEvent $paragraphEntityEvent): void
-    {
-        $paragraph = $paragraphEntityEvent->getNewEntity();
-        $this->paragraphService->setData($paragraph);
-    }
-
     public function onParagraphEntityEvent(ParagraphEntityEvent $paragraphEntityEvent): void
     {
         $this->onParagraphEntityEventInit($paragraphEntityEvent);
@@ -407,6 +373,40 @@ class EntitySubscriber extends EventSubscriberLib
         } catch (Exception $exception) {
             $this->errorService->set($exception);
         }
+    }
+
+    private function onParagraphEntityEventData(ParagraphEntityEvent $paragraphEntityEvent): void
+    {
+        $paragraph = $paragraphEntityEvent->getNewEntity();
+        $this->paragraphService->setData($paragraph);
+    }
+
+    private function onParagraphEntityEventInit(ParagraphEntityEvent $paragraphEntityEvent): void
+    {
+        $paragraph = $paragraphEntityEvent->getNewEntity();
+        $oldEntity = $paragraphEntityEvent->getOldEntity();
+        if (0 != $oldEntity->getPosition()) {
+            return;
+        }
+
+        $classentity = $this->paragraphService->getTypeEntity($paragraph);
+        if (is_null($classentity)) {
+            $this->entityManager->remove($paragraph);
+            $this->entityManager->flush();
+
+            return;
+        }
+
+        $entity = $this->paragraphService->getEntity($paragraph);
+        if (!is_null($entity)) {
+            return;
+        }
+
+        $entity = new $classentity();
+        $entity->setParagraph($paragraph);
+
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
     }
 
     private function verifMetas($entity)

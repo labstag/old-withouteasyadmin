@@ -2,7 +2,8 @@
 
 namespace Labstag\Paragraph;
 
-use DoctrineExtensions\Query\Mysql\Week;
+use Embed\Embed;
+use Exception;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
 use Labstag\Entity\History;
@@ -14,8 +15,6 @@ use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\VideoType;
 use Labstag\Lib\ParagraphLib;
-use Embed\Embed;
-use Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -48,24 +47,17 @@ class VideoParagraph extends ParagraphLib
         return true;
     }
 
-    public function show(Video $video): Response
-    {
-        return $this->render(
-            $this->getParagraphFile('video'),
-            ['paragraph' => $video]
-        );
-    }
-
     public function setData(Paragraph $paragraph)
     {
         $videos = $paragraph->getVideos();
         $video = $videos[0];
-        
+
         if (!$this->uploadAnnotationReader->isUploadable($video)) {
             return;
         }
 
         $url = $video->getUrl();
+
         try {
             $asciiSlugger = new AsciiSlugger();
             $slug = $asciiSlugger->slug($video->getTitle());
@@ -78,15 +70,14 @@ class VideoParagraph extends ParagraphLib
             /** @var VideoRepository $repository */
             $repository = $this->entityManager->getRepository(Video::class);
             $repository->add($video);
-        }
-        catch (Exception $exception) {
+        } catch (Exception $exception) {
             $image = '';
         }
 
-        if ($image == '') {
+        if ('' == $image) {
             return;
         }
-        
+
         try {
             $annotations = $this->uploadAnnotationReader->getUploadableFields($video);
             foreach ($annotations as $annotation) {
@@ -126,6 +117,14 @@ class VideoParagraph extends ParagraphLib
             $this->errorService->set($exception);
             echo $exception->getMessage();
         }
+    }
+
+    public function show(Video $video): Response
+    {
+        return $this->render(
+            $this->getParagraphFile('video'),
+            ['paragraph' => $video]
+        );
     }
 
     /**
