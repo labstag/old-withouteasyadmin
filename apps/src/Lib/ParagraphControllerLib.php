@@ -31,6 +31,14 @@ abstract class ParagraphControllerLib extends ControllerLib
         );
     }
 
+    public function modalAttachmentDelete(): void
+    {
+        $globals = $this->environment->getGlobals();
+        $modal = $globals['modal'] ?? [];
+        $modal['attachmentdelete'] = true;
+        $this->environment->addGlobal('modal', $modal);
+    }
+
     protected function showTwig(Paragraph $paragraph, ParagraphRequestHandler $paragraphRequestHandler)
     {
         $this->modalAttachmentDelete();
