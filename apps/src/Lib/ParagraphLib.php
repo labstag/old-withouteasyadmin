@@ -42,6 +42,7 @@ abstract class ParagraphLib extends AbstractController
 
     public function setData(Paragraph $paragraph)
     {
+        unset($paragraph);
     }
 
     protected function getParagraphFile(string $type): string

@@ -17,7 +17,6 @@ use Labstag\Form\Admin\Paragraph\VideoType;
 use Labstag\Lib\ParagraphLib;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class VideoParagraph extends ParagraphLib
@@ -82,7 +81,6 @@ class VideoParagraph extends ParagraphLib
             $annotations = $this->uploadAnnotationReader->getUploadableFields($video);
             foreach ($annotations as $annotation) {
                 $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
-                $accessor = PropertyAccess::createPropertyAccessor();
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 $content = file_get_contents($image);
                 // @var resource $tmpfile
