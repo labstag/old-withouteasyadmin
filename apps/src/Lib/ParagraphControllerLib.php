@@ -33,6 +33,7 @@ abstract class ParagraphControllerLib extends ControllerLib
 
     protected function showTwig(Paragraph $paragraph, ParagraphRequestHandler $paragraphRequestHandler)
     {
+        $this->modalAttachmentDelete();
         $form = $this->createForm(
             ParagraphType::class,
             $paragraph

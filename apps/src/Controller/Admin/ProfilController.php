@@ -16,8 +16,6 @@ class ProfilController extends AdminControllerLib
         Security $security
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             $security->getUser(),

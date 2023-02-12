@@ -17,8 +17,6 @@ class CategoryController extends AdminControllerLib
         ?Category $category
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($category) ? new Category() : $category

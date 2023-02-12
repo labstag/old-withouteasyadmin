@@ -22,8 +22,6 @@ class EditoController extends AdminControllerLib
         ?Edito $edito
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($edito) ? new Edito() : $edito,

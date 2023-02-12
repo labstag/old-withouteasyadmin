@@ -21,8 +21,6 @@ class ChapterController extends AdminControllerLib
         ?Chapter $chapter
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($chapter) ? new Chapter() : $chapter,

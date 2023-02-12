@@ -97,8 +97,6 @@ class UserController extends AdminControllerLib
     #[Route(path: '/preview/{id}', name: 'admin_user_preview', methods: ['GET'])]
     public function showOrPreview(User $user): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->renderShowOrPreview(
             $this->getDomainEntity(),
             $user,

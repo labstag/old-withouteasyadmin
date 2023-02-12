@@ -22,8 +22,6 @@ class PostController extends AdminControllerLib
         ?Post $post
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($post) ? new Post() : $post,

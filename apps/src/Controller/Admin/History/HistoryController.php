@@ -25,8 +25,6 @@ class HistoryController extends AdminControllerLib
         ?History $history
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($history) ? new History() : $history,

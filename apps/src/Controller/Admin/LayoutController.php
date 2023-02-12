@@ -25,8 +25,6 @@ class LayoutController extends AdminControllerLib
         ?Layout $layout
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($layout) ? new Layout() : $layout,

@@ -4,6 +4,7 @@ namespace Labstag\Paragraph;
 
 use Embed\Embed;
 use Exception;
+use Labstag\Entity\Attachment;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
 use Labstag\Entity\History;
@@ -73,7 +74,7 @@ class VideoParagraph extends ParagraphLib
             $image = '';
         }
 
-        if ('' == $image) {
+        if ('' == $image || $video->getImage() instanceof Attachment) {
             return;
         }
 

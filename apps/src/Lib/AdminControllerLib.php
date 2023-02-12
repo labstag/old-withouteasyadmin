@@ -30,6 +30,7 @@ abstract class AdminControllerLib extends ControllerLib
         array $parameters = []
     ): Response
     {
+        $this->modalAttachmentDelete();
         $requestHandlerLib = $domain->getRequestHandler();
         $formType = $domain->getType();
         $url = $domain->getUrlAdmin();

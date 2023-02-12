@@ -17,8 +17,6 @@ class LibelleController extends AdminControllerLib
         ?Libelle $libelle
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($libelle) ? new Libelle() : $libelle

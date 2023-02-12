@@ -27,8 +27,6 @@ class BookmarkController extends AdminControllerLib
         ?Bookmark $bookmark
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($bookmark) ? new Bookmark() : $bookmark,
