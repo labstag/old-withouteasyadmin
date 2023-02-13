@@ -27,9 +27,14 @@ class Chapter
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="historyChapters")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="historyChapters", cascade={"persist"})
      */
     private $paragraph;
+
+    public function __toString(): string
+    {
+        return (string) $this->getParagraph()->getType();
+    }
 
     public function getId(): ?string
     {

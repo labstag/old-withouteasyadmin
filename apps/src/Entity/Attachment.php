@@ -23,7 +23,7 @@ class Attachment
     use StateableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond", cascade={"persist"}, orphanRemoval=true)
      */
     protected $editos;
 
@@ -49,12 +49,12 @@ class Attachment
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="fond", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="fond", cascade={"persist"}, orphanRemoval=true)
      */
     protected $noteInternes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img", cascade={"persist"}, orphanRemoval=true)
      */
     protected $posts;
 
@@ -64,12 +64,12 @@ class Attachment
     protected $size;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar", cascade={"persist"}, orphanRemoval=true)
      */
     protected $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img", cascade={"persist"}, orphanRemoval=true)
      */
     private $bookmarks;
 
@@ -79,7 +79,7 @@ class Attachment
     private $code;
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="image", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
      */
     private $paragraphVideos;
 

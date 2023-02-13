@@ -27,9 +27,14 @@ class Category
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="bookmarkCategories")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="bookmarkCategories", cascade={"persist"})
      */
     private $paragraph;
+
+    public function __toString(): string
+    {
+        return (string) $this->getParagraph()->getType();
+    }
 
     public function getId(): ?string
     {

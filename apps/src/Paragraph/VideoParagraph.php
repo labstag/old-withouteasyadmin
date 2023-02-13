@@ -57,16 +57,19 @@ class VideoParagraph extends ParagraphLib
         }
 
         $url = $video->getUrl();
+        if ($url == '') {
+            return;
+        }
 
         try {
-            $asciiSlugger = new AsciiSlugger();
-            $slug = $asciiSlugger->slug($video->getTitle());
             $embed = new Embed();
             $info = $embed->get($url);
             $image = $info->image->__toString();
             $title = $info->title;
-            $video->setSlug($slug);
+            $asciiSlugger = new AsciiSlugger();
             $video->setTitle($title);
+            $slug = $asciiSlugger->slug($video->getTitle());
+            $video->setSlug($slug);
             /** @var VideoRepository $repository */
             $repository = $this->entityManager->getRepository(Video::class);
             $repository->add($video);

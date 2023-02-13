@@ -27,9 +27,14 @@ class Edito
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="editos")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="editos", cascade={"persist"})
      */
     private $paragraph;
+
+    public function __toString(): string
+    {
+        return (string) $this->getParagraph()->getType();
+    }
 
     public function getId(): ?string
     {

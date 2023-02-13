@@ -12,7 +12,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 #[Route(path: '/api/attachment')]
 class AttachmentController extends ApiControllerLib
 {
-    #[Route(path: '/delete/{entity}', name: 'api_attachment_delete')]
+    #[Route(path: '/delete/{attachment}', name: 'api_attachment_delete')]
     public function delete(
         AttachmentRepository $attachmentRepository,
         Attachment $attachment
@@ -23,6 +23,7 @@ class AttachmentController extends ApiControllerLib
             'error' => '',
         ];
         $token = $this->verifToken($attachment);
+        dump($attachment);
         if (!$token) {
             $return['error'] = 'Token incorrect';
 
@@ -46,7 +47,7 @@ class AttachmentController extends ApiControllerLib
 
     protected function verifToken($entity): bool
     {
-        $token = $this->requeststack->getCurrentRequest()->request->all('_token');
+        $token = $this->requeststack->getCurrentRequest()->request->get('_token');
 
         $csrfToken = new CsrfToken(
             'attachment-img-'.$entity->getId(),

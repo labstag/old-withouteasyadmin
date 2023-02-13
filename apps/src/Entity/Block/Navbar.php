@@ -37,6 +37,11 @@ class Navbar
      */
     private $menu;
 
+    public function __toString(): string
+    {
+        return (string) $this->getBlock()->getTitle();
+    }
+
     public function getBlock(): ?Block
     {
         return $this->block;

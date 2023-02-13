@@ -6,6 +6,7 @@ use Labstag\Entity\Paragraph;
 use Labstag\Form\Admin\ParagraphType;
 use Labstag\Repository\ParagraphRepository;
 use Labstag\RequestHandler\ParagraphRequestHandler;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 abstract class ParagraphControllerLib extends ControllerLib
 {
@@ -56,6 +57,8 @@ abstract class ParagraphControllerLib extends ControllerLib
             $this->attachFormService->upload($entity);
             $this->addFlash('success', 'Paragraph sauvegardé.');
             $paragraphRequestHandler->handle($old, $paragraph);
+            $referer = $request->headers->get('referer'); 
+            return new RedirectResponse($referer);
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {

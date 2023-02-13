@@ -30,7 +30,7 @@
         {{ form_widget(form) }}
         {{ form_errors(form) }}
         {{ form_help(form) }}
-        {% if field.id is not null %}
+        {% if field is not null and field.id is not null %}
             {% set file = attachment(field) %}
             {% set state = guard_route(url) %}
             {% if state == false %}

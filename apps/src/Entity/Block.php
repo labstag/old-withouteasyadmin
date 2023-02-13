@@ -28,17 +28,17 @@ class Block
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Breadcrumb::class, mappedBy="block", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Breadcrumb::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
     private $breadcrumbs;
 
     /**
-     * @ORM\OneToMany(targetEntity=Custom::class, mappedBy="block", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Custom::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
     private $customs;
 
     /**
-     * @ORM\OneToMany(targetEntity=Flashbag::class, mappedBy="block", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Flashbag::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
     private $flashbags;
 
@@ -69,7 +69,7 @@ class Block
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="block", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
     private $menu;
 

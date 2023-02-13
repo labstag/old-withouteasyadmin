@@ -63,7 +63,7 @@ class Post implements Stringable
     private $img;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"})
      */
     private $libelles;
 

@@ -52,12 +52,7 @@ class Groupe implements Stringable
     protected $routes;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity=User::class,
-     *     mappedBy="refgroupe",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)
      */
     protected $users;
 

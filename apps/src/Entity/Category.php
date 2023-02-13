@@ -21,7 +21,7 @@ class Category implements Stringable
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory", cascade={"persist"}, orphanRemoval=true)
      */
     private $bookmarks;
 
@@ -58,7 +58,7 @@ class Category implements Stringable
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refcategory", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refcategory", cascade={"persist"}, orphanRemoval=true)
      */
     private $posts;
 

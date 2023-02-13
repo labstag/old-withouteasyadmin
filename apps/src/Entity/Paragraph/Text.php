@@ -32,9 +32,14 @@ class Text
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="texts")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="texts", cascade={"persist"})
      */
     private $paragraph;
+
+    public function __toString(): string
+    {
+        return (string) $this->getParagraph()->getType();
+    }
 
     public function getContent(): ?string
     {

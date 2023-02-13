@@ -27,9 +27,14 @@ class Libelle
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postLibelles")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postLibelles", cascade={"persist"})
      */
     private $paragraph;
+
+    public function __toString(): string
+    {
+        return (string) $this->getParagraph()->getType();
+    }
 
     public function getId(): ?string
     {

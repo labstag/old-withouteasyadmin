@@ -27,9 +27,14 @@ class Header
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="editoHeaders")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="editoHeaders", cascade={"persist"})
      */
     private $paragraph;
+
+    public function __toString(): string
+    {
+        return (string) $this->getParagraph()->getType();
+    }
 
     public function getId(): ?string
     {

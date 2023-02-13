@@ -31,6 +31,11 @@ class Paragraph
      */
     private $id;
 
+    public function __toString(): string
+    {
+        return (string) $this->getBlock()->getTitle();
+    }
+
     public function getBlock(): ?Block
     {
         return $this->block;

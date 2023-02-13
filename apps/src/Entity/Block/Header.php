@@ -38,6 +38,11 @@ class Header
      */
     private $links;
 
+    public function __toString(): string
+    {
+        return (string) $this->getBlock()->getTitle();
+    }
+
     public function __construct()
     {
         $this->links = new ArrayCollection();

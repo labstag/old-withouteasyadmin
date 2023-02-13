@@ -27,9 +27,14 @@ class Year
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postYears")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postYears", cascade={"persist"})
      */
     private $paragraph;
+
+    public function __toString(): string
+    {
+        return (string) $this->getParagraph()->getType();
+    }
 
     public function getId(): ?string
     {

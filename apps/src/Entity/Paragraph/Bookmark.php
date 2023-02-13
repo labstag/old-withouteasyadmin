@@ -27,9 +27,14 @@ class Bookmark
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="bookmarks")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="bookmarks", cascade={"persist"})
      */
     private $paragraph;
+
+    public function __toString(): string
+    {
+        return (string) $this->getParagraph()->getType();
+    }
 
     public function getId(): ?string
     {

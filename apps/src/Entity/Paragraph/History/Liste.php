@@ -27,9 +27,14 @@ class Liste
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="historyLists")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="historyLists", cascade={"persist"})
      */
     private $paragraph;
+
+    public function __toString(): string
+    {
+        return (string) $this->getParagraph()->getType();
+    }
 
     public function getId(): ?string
     {

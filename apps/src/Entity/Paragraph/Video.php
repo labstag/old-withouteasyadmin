@@ -9,6 +9,7 @@ use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
 use Labstag\Repository\Paragraph\VideoRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Table(name="paragraph_video")
@@ -28,19 +29,21 @@ class Video
     /**
      * @ORM\Id
      *
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="CUSTOM")
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="guid", unique=true)
+     *
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphVideos")
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphVideos", cascade={"persist"})
      */
     private $image;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="videos")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="videos", cascade={"persist"})
      */
     private $paragraph;
 
@@ -61,12 +64,17 @@ class Video
      */
     private $url;
 
+    public function __toString(): string
+    {
+        return (string) $this->getParagraph()->getType();
+    }
+
     public function getFile()
     {
         return $this->file;
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -117,7 +125,7 @@ class Video
         return $this;
     }
 
-    public function setSlug(string $slug): self
+    public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
 

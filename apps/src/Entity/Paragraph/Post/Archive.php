@@ -27,9 +27,14 @@ class Archive
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postArchives")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postArchives", cascade={"persist"})
      */
     private $paragraph;
+
+    public function __toString(): string
+    {
+        return (string) $this->getParagraph()->getType();
+    }
 
     public function getId(): ?string
     {
