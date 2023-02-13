@@ -5,6 +5,7 @@ namespace Labstag\Entity\Paragraph;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Repository\Paragraph\TextRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
@@ -12,7 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=TextRepository::class)
  */
-class Text
+class Text implements Stringable
 {
 
     /**

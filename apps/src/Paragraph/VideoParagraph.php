@@ -22,6 +22,18 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class VideoParagraph extends ParagraphLib
 {
+    public function getData(Video $video): array
+    {
+        $url = $video->getUrl();
+        if ('' == $url) {
+            return [];
+        }
+
+        $embed = new Embed();
+
+        return $embed->get($url);
+    }
+
     public function getEntity(): string
     {
         return Video::class;
@@ -49,15 +61,15 @@ class VideoParagraph extends ParagraphLib
 
     public function setData(Paragraph $paragraph)
     {
-        $videos = $paragraph->getVideos();
-        $video = $videos[0];
+        $collection = $paragraph->getVideos();
+        $video = $collection[0];
 
         if (!$this->uploadAnnotationReader->isUploadable($video)) {
             return;
         }
 
         $url = $video->getUrl();
-        if ($url == '') {
+        if ('' == $url) {
             return;
         }
 
@@ -70,10 +82,10 @@ class VideoParagraph extends ParagraphLib
             $video->setTitle($title);
             $slug = $asciiSlugger->slug($video->getTitle());
             $video->setSlug($slug);
-            /** @var VideoRepository $repository */
-            $repository = $this->entityManager->getRepository(Video::class);
-            $repository->add($video);
-        } catch (Exception $exception) {
+            /** @var VideoRepository $entityRepository */
+            $entityRepository = $this->entityManager->getRepository(Video::class);
+            $entityRepository->add($video);
+        } catch (Exception) {
             $image = '';
         }
 
@@ -81,43 +93,9 @@ class VideoParagraph extends ParagraphLib
             return;
         }
 
-        try {
-            $annotations = $this->uploadAnnotationReader->getUploadableFields($video);
-            foreach ($annotations as $annotation) {
-                $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $content = file_get_contents($image);
-                // @var resource $tmpfile
-                $tmpfile = tmpfile();
-                $data = stream_get_meta_data($tmpfile);
-                file_put_contents($data['uri'], $content);
-                $file = new UploadedFile(
-                    $data['uri'],
-                    $slug.'.jpg',
-                    (string) finfo_file($finfo, $data['uri']),
-                    null,
-                    true
-                );
-                $filename = $file->getClientOriginalName();
-                if (!is_dir($path)) {
-                    mkdir($path, 0777, true);
-                }
-
-                $file->move(
-                    $path,
-                    $filename
-                );
-                $file = $path.'/'.$filename;
-
-                if (isset($filename)) {
-                    $attachment = $this->fileService->setAttachment($file);
-                    $video->setImage($attachment);
-                    $repository->add($video);
-                }
-            }
-        } catch (Exception $exception) {
-            $this->errorService->set($exception);
-            echo $exception->getMessage();
+        $annotations = $this->uploadAnnotationReader->getUploadableFields($video);
+        foreach ($annotations as $annotation) {
+            $this->setDataAnnotation($annotation, $image, $video, $entityRepository, $slug);
         }
     }
 
@@ -125,7 +103,10 @@ class VideoParagraph extends ParagraphLib
     {
         return $this->render(
             $this->getParagraphFile('video'),
-            ['paragraph' => $video]
+            [
+                'paragraph' => $video,
+                'data'      => $this->getData($video),
+            ]
         );
     }
 
@@ -143,5 +124,44 @@ class VideoParagraph extends ParagraphLib
             Page::class,
             Post::class,
         ];
+    }
+
+    private function setDataAnnotation($annotation, $image, $video, $repository, $slug)
+    {
+        try {
+            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $content = file_get_contents($image);
+            // @var resource $tmpfile
+            $tmpfile = tmpfile();
+            $data = stream_get_meta_data($tmpfile);
+            file_put_contents($data['uri'], $content);
+            $file = new UploadedFile(
+                $data['uri'],
+                $slug.'.jpg',
+                (string) finfo_file($finfo, $data['uri']),
+                null,
+                true
+            );
+            $clientOriginalName = $file->getClientOriginalName();
+            if (!is_dir($path)) {
+                mkdir($path, 0777, true);
+            }
+
+            $file->move(
+                $path,
+                $clientOriginalName
+            );
+            $file = $path.'/'.$clientOriginalName;
+
+            if (isset($clientOriginalName)) {
+                $attachment = $this->fileService->setAttachment($file);
+                $video->setImage($attachment);
+                $repository->add($video);
+            }
+        } catch (Exception $exception) {
+            $this->errorService->set($exception);
+            echo $exception->getMessage();
+        }
     }
 }

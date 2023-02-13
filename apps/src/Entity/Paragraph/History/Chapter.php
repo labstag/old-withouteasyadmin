@@ -5,6 +5,7 @@ namespace Labstag\Entity\Paragraph\History;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Repository\Paragraph\History\ChapterRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
@@ -12,7 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=ChapterRepository::class)
  */
-class Chapter
+class Chapter implements Stringable
 {
 
     /**

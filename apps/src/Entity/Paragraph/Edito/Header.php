@@ -5,6 +5,7 @@ namespace Labstag\Entity\Paragraph\Edito;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Repository\Paragraph\Edito\HeaderRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
@@ -12,7 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=HeaderRepository::class)
  */
-class Header
+class Header implements Stringable
 {
 
     /**

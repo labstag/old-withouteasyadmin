@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Repository\Block\FooterRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
@@ -14,7 +15,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=FooterRepository::class)
  */
-class Footer
+class Footer implements Stringable
 {
 
     /**
@@ -38,14 +39,14 @@ class Footer
      */
     private $links;
 
-    public function __toString(): string
-    {
-        return (string) $this->getBlock()->getTitle();
-    }
-
     public function __construct()
     {
         $this->links = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->getBlock()->getTitle();
     }
 
     public function addLink(Link $link): self

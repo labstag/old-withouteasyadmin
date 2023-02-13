@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Repository\Block\HeaderRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
@@ -14,7 +15,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=HeaderRepository::class)
  */
-class Header
+class Header implements Stringable
 {
 
     /**
@@ -38,14 +39,14 @@ class Header
      */
     private $links;
 
-    public function __toString(): string
-    {
-        return (string) $this->getBlock()->getTitle();
-    }
-
     public function __construct()
     {
         $this->links = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->getBlock()->getTitle();
     }
 
     public function addLink(Link $link): self

@@ -57,7 +57,8 @@ abstract class ParagraphControllerLib extends ControllerLib
             $this->attachFormService->upload($entity);
             $this->addFlash('success', 'Paragraph sauvegardé.');
             $paragraphRequestHandler->handle($old, $paragraph);
-            $referer = $request->headers->get('referer'); 
+            $referer = $request->headers->get('referer');
+
             return new RedirectResponse($referer);
         }
 

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Entity\Menu;
 use Labstag\Repository\Block\NavbarRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
@@ -13,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=NavbarRepository::class)
  */
-class Navbar
+class Navbar implements Stringable
 {
 
     /**

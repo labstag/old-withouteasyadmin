@@ -9,6 +9,7 @@ use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
 use Labstag\Repository\Paragraph\VideoRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
@@ -18,7 +19,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @Uploadable
  */
-class Video
+class Video implements Stringable
 {
 
     /**

@@ -5,6 +5,7 @@ namespace Labstag\Entity\Paragraph\Post;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Repository\Paragraph\Post\CategoryRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
@@ -12,7 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  */
-class Category
+class Category implements Stringable
 {
 
     /**

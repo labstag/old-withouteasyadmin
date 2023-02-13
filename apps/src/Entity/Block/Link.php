@@ -53,7 +53,7 @@ class Link implements Stringable
 
     public function __toString(): string
     {
-        return (string) $this->getBlock()->getTitle();
+        return (string) $this->getTitle();
     }
 
     public function getExternal(): ?bool

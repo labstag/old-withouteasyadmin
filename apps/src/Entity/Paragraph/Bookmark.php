@@ -5,6 +5,7 @@ namespace Labstag\Entity\Paragraph;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Repository\Paragraph\BookmarkRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
@@ -12,7 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=BookmarkRepository::class)
  */
-class Bookmark
+class Bookmark implements Stringable
 {
 
     /**
