@@ -24,10 +24,6 @@ class AttachFormService
 
     public function upload($entity): void
     {
-        if (!$this->uploadAnnotationReader->isUploadable($entity)) {
-            return;
-        }
-
         $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
         foreach ($annotations as $property => $annotation) {
             $accessor = PropertyAccess::createPropertyAccessor();

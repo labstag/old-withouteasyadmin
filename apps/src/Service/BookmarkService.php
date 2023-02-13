@@ -85,10 +85,6 @@ class BookmarkService
 
     protected function upload(Bookmark $bookmark, $image): void
     {
-        if (is_null($image) || !$this->uploadAnnotationReader->isUploadable($bookmark)) {
-            return;
-        }
-
         // @var resource $finfo
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $annotations = $this->uploadAnnotationReader->getUploadableFields($bookmark);

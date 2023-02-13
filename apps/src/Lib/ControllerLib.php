@@ -4,6 +4,7 @@ namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\BlockService;
 use Labstag\Service\DataService;
@@ -33,6 +34,7 @@ abstract class ControllerLib extends AbstractController
     protected Request $request;
 
     public function __construct(
+        protected UploadAnnotationReader $uploadAnnotationReader,
         protected FrontService $frontService,
         protected DomainService $domainService,
         protected AttachFormService $attachFormService,

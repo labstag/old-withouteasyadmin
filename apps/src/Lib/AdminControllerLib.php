@@ -9,10 +9,8 @@ use Labstag\Entity\Paragraph;
 use Labstag\Entity\User;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Singleton\AdminBtnSingleton;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Matcher\TraceableUrlMatcher;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -781,39 +779,6 @@ abstract class AdminControllerLib extends ControllerLib
             $url['trash'],
             'Trash',
         );
-    }
-
-    protected function upload($entity): void
-    {
-        $uploadAnnotationReader = $this->attachFormService->getUploadAnnotationReader();
-        if (!$uploadAnnotationReader->isUploadable($entity)) {
-            return;
-        }
-
-        $annotations = $uploadAnnotationReader->getUploadableFields($entity);
-        foreach ($annotations as $property => $annotation) {
-            $accessor = PropertyAccess::createPropertyAccessor();
-            $file = $accessor->getValue($entity, $property);
-            if (!$file instanceof UploadedFile) {
-                continue;
-            }
-
-            $attachment = $this->setAttachment(
-                $accessor,
-                $entity,
-                $annotation
-            );
-            $old = clone $attachment;
-
-            $filename = $file->getClientOriginalName();
-            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
-            if (!is_dir($path)) {
-                mkdir($path, 0777, true);
-            }
-
-            $this->moveFile($file, $path, $filename, $attachment, $old);
-            $accessor->setValue($entity, $annotation->getFilename(), $attachment);
-        }
     }
 
     private function addInBreadcrumb($breadcrumb, $trace)

@@ -40,6 +40,8 @@ class Video implements Stringable
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphVideos", cascade={"persist"})
+     *
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $image;
 

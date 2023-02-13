@@ -61,9 +61,12 @@ class VideoParagraph extends ParagraphLib
 
     public function setData(Paragraph $paragraph)
     {
+        /** @var VideoRepository $videoRepository */
+        $videoRepository = $this->entityManager->getRepository(Video::class);
+        /** @var AttachmentRepository $attachmentRepository */
+        $attachmentRepository = $this->entityManager->getRepository(Attachment::class);
         $collection = $paragraph->getVideos();
         $video = $collection[0];
-
         if (!$this->uploadAnnotationReader->isUploadable($video)) {
             return;
         }
@@ -82,20 +85,24 @@ class VideoParagraph extends ParagraphLib
             $video->setTitle($title);
             $slug = $asciiSlugger->slug($video->getTitle());
             $video->setSlug($slug);
-            /** @var VideoRepository $entityRepository */
-            $entityRepository = $this->entityManager->getRepository(Video::class);
-            $entityRepository->add($video);
+            $videoRepository->add($video);
         } catch (Exception) {
             $image = '';
         }
 
-        if ('' == $image || $video->getImage() instanceof Attachment) {
+        $attachment = $attachmentRepository->FindOneBy(
+            [
+                'id'        => $video->getImage()->getId(),
+                'deletedAt' => null,
+            ]
+        );
+        if ('' == $image || $attachment instanceof Attachment) {
             return;
         }
 
         $annotations = $this->uploadAnnotationReader->getUploadableFields($video);
         foreach ($annotations as $annotation) {
-            $this->setDataAnnotation($annotation, $image, $video, $entityRepository, $slug);
+            $this->setDataAnnotation($annotation, $image, $video, $videoRepository, $slug);
         }
     }
 
@@ -156,6 +163,7 @@ class VideoParagraph extends ParagraphLib
 
             if (isset($clientOriginalName)) {
                 $attachment = $this->fileService->setAttachment($file);
+                $repository->add($attachment);
                 $video->setImage($attachment);
                 $repository->add($video);
             }

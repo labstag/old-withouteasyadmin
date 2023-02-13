@@ -6,12 +6,28 @@ use Labstag\Entity\Paragraph;
 use Labstag\Form\Admin\ParagraphType;
 use Labstag\Repository\ParagraphRepository;
 use Labstag\RequestHandler\ParagraphRequestHandler;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 abstract class ParagraphControllerLib extends ControllerLib
 {
-    public function modalAttachmentDelete(): void
+    public function modalAttachmentDelete(Paragraph $paragraph, FormInterface $form): void
     {
+        $entity = $this->paragraphService->getEntity($paragraph);
+        $annotations = array_merge(
+            $this->uploadAnnotationReader->getUploadableFields($paragraph),
+            $this->uploadAnnotationReader->getUploadableFields($entity),
+        );
+        if (0 == count($annotations)) {
+            return;
+        }
+
+        $fields = $form->all();
+        $enable = $this->uploadAnnotationReader->enableAttachment($annotations, $fields);
+        if (!$enable) {
+            return;
+        }
+
         $globals = $this->environment->getGlobals();
         $modal = $globals['modal'] ?? [];
         $modal['attachmentdelete'] = true;
@@ -42,12 +58,13 @@ abstract class ParagraphControllerLib extends ControllerLib
 
     protected function showTwig(Paragraph $paragraph, ParagraphRequestHandler $paragraphRequestHandler)
     {
-        $this->modalAttachmentDelete();
         $form = $this->createForm(
             ParagraphType::class,
             $paragraph
         );
+        $this->modalAttachmentDelete($paragraph, $form);
         $request = $this->requeststack->getCurrentRequest();
+        /** @var ParagraphRepository $repository */
         $repository = $this->getRepository(Paragraph::class);
         $form->handleRequest($request);
         $old = clone $paragraph;

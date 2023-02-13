@@ -276,10 +276,6 @@ abstract class FixtureLib extends Fixture
 
     protected function upload($entity, Generator $generator): void
     {
-        if (!$this->uploadAnnotationReader->isUploadable($entity)) {
-            return;
-        }
-
         // @var resource $finfo
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);

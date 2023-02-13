@@ -23,26 +23,22 @@ class AttachmentController extends ApiControllerLib
             'error' => '',
         ];
         $token = $this->verifToken($attachment);
-        dump($attachment);
         if (!$token) {
             $return['error'] = 'Token incorrect';
 
             return new JsonResponse($return);
         }
 
-        $this->deleteAttachment($attachmentRepository, $attachment);
-        $return['state'] = true;
-
-        return new JsonResponse($return);
-    }
-
-    protected function deleteAttachment(AttachmentRepository $attachmentRepository, ?Attachment $attachment): void
-    {
         if (is_null($attachment)) {
-            return;
+            $return['state'] = false;
+
+            return new JsonResponse($return);
         }
 
         $attachmentRepository->remove($attachment);
+        $return['state'] = true;
+
+        return new JsonResponse($return);
     }
 
     protected function verifToken($entity): bool
