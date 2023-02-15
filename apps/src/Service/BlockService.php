@@ -84,7 +84,7 @@ class BlockService
         $reflection = $this->setReflection($childentity);
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ('block' == $reflectionProperty->getName()) {
-                preg_match('#inversedBy=\"(.*)\"#m', (string) $reflectionProperty->getDocComment(), $matches);
+                preg_match('#inversedBy=\"(.*)\", #m', (string) $reflectionProperty->getDocComment(), $matches);
                 $field = $matches[1] ?? $field;
 
                 break;
@@ -168,13 +168,14 @@ class BlockService
 
     public function showContent(Block $block, $content)
     {
+
         $type = $block->getType();
         $entity = $this->getEntity($block);
+        dump($entity);
         $html = new Response();
         if (is_null($entity)) {
             return $html;
         }
-
         foreach ($this->blocksclass as $row) {
             if ($type == $row->getType()) {
                 $html = $row->show($entity, $content);

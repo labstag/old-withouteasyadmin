@@ -31,7 +31,7 @@ class VideoParagraph extends ParagraphLib
 
         $embed = new Embed();
 
-        return $embed->get($url);
+        return get_class_methods($embed->get($url));
     }
 
     public function getEntity(): string
@@ -67,10 +67,6 @@ class VideoParagraph extends ParagraphLib
         $attachmentRepository = $this->entityManager->getRepository(Attachment::class);
         $collection = $paragraph->getVideos();
         $video = $collection[0];
-        if (!$this->uploadAnnotationReader->isUploadable($video)) {
-            return;
-        }
-
         $url = $video->getUrl();
         if ('' == $url) {
             return;
@@ -90,12 +86,15 @@ class VideoParagraph extends ParagraphLib
             $image = '';
         }
 
-        $attachment = $attachmentRepository->FindOneBy(
-            [
-                'id'        => $video->getImage()->getId(),
-                'deletedAt' => null,
-            ]
-        );
+        $attachment = null;
+        if (!is_null($video->getImage())) {
+            $attachment = $attachmentRepository->FindOneBy(
+                [
+                    'id'        => $video->getImage()->getId(),
+                    'deletedAt' => null,
+                ]
+            );
+        }
         if ('' == $image || $attachment instanceof Attachment) {
             return;
         }
@@ -108,11 +107,13 @@ class VideoParagraph extends ParagraphLib
 
     public function show(Video $video): Response
     {
+        $data = $this->getData($video);
+        dump($data);
         return $this->render(
             $this->getParagraphFile('video'),
             [
                 'paragraph' => $video,
-                'data'      => $this->getData($video),
+                'data'      => $data,
             ]
         );
     }
