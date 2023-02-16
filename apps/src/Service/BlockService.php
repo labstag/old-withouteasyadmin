@@ -168,7 +168,6 @@ class BlockService
 
     public function showContent(Block $block, $content)
     {
-
         $type = $block->getType();
         $entity = $this->getEntity($block);
         $html = new Response();

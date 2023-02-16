@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @see CheckController
  */
-final class CheckSwaggerDecorator implements NormalizerInterface
+final readonly class CheckSwaggerDecorator implements NormalizerInterface
 {
     public function __construct(private readonly NormalizerInterface $normalizer)
     {

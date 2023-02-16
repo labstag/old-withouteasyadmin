@@ -110,14 +110,15 @@ class VideoParagraph extends ParagraphLib
     {
         $data = $this->getData($video);
         dump($data->code);
+
         return $this->render(
             $this->getParagraphFile('video'),
             [
                 'paragraph' => $video,
                 'video_id'  => '9Czd4CoQbj8',
                 'srcdoc'    => 'https://www.youtube.com/embed/9Czd4CoQbj8?feature=oembed',
-                'width'     => $data->code->width *3,
-                'height'    => $data->code->height *3,
+                'width'     => $data->code->width * 3,
+                'height'    => $data->code->height * 3,
                 'data'      => $data,
             ]
         );

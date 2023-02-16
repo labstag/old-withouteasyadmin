@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @see AttachmentDecorator
  */
-final class AttachmentSwaggerDecorator implements NormalizerInterface
+final readonly class AttachmentSwaggerDecorator implements NormalizerInterface
 {
     public function __construct(private readonly NormalizerInterface $normalizer)
     {
