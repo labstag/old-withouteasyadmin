@@ -171,11 +171,11 @@ class BlockService
 
         $type = $block->getType();
         $entity = $this->getEntity($block);
-        dump($entity);
         $html = new Response();
         if (is_null($entity)) {
             return $html;
         }
+
         foreach ($this->blocksclass as $row) {
             if ($type == $row->getType()) {
                 $html = $row->show($entity, $content);

@@ -22,7 +22,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class VideoParagraph extends ParagraphLib
 {
-    public function getData(Video $video): array
+    public function getData(Video $video)
     {
         $url = $video->getUrl();
         if ('' == $url) {
@@ -31,7 +31,7 @@ class VideoParagraph extends ParagraphLib
 
         $embed = new Embed();
 
-        return get_class_methods($embed->get($url));
+        return $embed->get($url);
     }
 
     public function getEntity(): string
@@ -95,6 +95,7 @@ class VideoParagraph extends ParagraphLib
                 ]
             );
         }
+
         if ('' == $image || $attachment instanceof Attachment) {
             return;
         }
@@ -108,11 +109,15 @@ class VideoParagraph extends ParagraphLib
     public function show(Video $video): Response
     {
         $data = $this->getData($video);
-        dump($data);
+        dump($data->code);
         return $this->render(
             $this->getParagraphFile('video'),
             [
                 'paragraph' => $video,
+                'video_id'  => '9Czd4CoQbj8',
+                'srcdoc'    => 'https://www.youtube.com/embed/9Czd4CoQbj8?feature=oembed',
+                'width'     => $data->code->width *3,
+                'height'    => $data->code->height *3,
                 'data'      => $data,
             ]
         );
