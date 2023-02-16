@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @see SearchController
  */
-final readonly class SearchSwaggerDecorator implements NormalizerInterface
+final class SearchSwaggerDecorator implements NormalizerInterface
 {
     public function __construct(private readonly NormalizerInterface $normalizer)
     {
