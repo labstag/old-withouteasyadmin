@@ -16,6 +16,7 @@ use Rector\Set\ValueObject\SetList;
 use Rector\Php80\Rector\Property\NestedAnnotationToAttributeRector;
 use Rector\Php80\ValueObject\NestedAnnotationToAttribute;
 use Rector\Doctrine\Set\DoctrineSetList;
+use Rector\Php82\Rector\Class_\ReadOnlyClassRector;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->cacheClass(FileCacheStorage::class);
@@ -33,6 +34,11 @@ return static function (RectorConfig $rectorConfig): void {
             ArrayKeyExistsTernaryThenValueToCoalescingRector::class,
             ArrayMergeOfNonArraysToSimpleArrayRector::class,
             EncapsedStringsToSprintfRector::class,
+        ]
+    );
+    $rectorConfig->skip(
+        [
+            ReadOnlyClassRector::class,
         ]
     );
     $rectorConfig->ruleWithConfiguration(
