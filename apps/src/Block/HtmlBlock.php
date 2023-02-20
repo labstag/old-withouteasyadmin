@@ -44,7 +44,6 @@ class HtmlBlock extends BlockLib
     public function show(Html $html, $content): Response
     {
         $content = null;
-        unset($content);
 
         return $this->render(
             $this->getTemplateFile($this->getCode($html, $content)),
