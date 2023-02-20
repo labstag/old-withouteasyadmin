@@ -24,6 +24,13 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class VideoParagraph extends ParagraphLib
 {
+    public function getCode($video): string
+    {
+        unset($video);
+
+        return 'video';
+    }
+
     public function getData(Video $video)
     {
         $url = $video->getUrl();
@@ -59,12 +66,6 @@ class VideoParagraph extends ParagraphLib
     public function isShowForm(): bool
     {
         return true;
-    }
-
-    public function getCode($video): string
-    {
-        unset($video);
-        return 'video';
     }
 
     public function setData(Paragraph $paragraph)

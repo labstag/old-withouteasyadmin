@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class YearParagraph extends ParagraphLib
 {
+    public function getCode($postyear): string
+    {
+        unset($postyear);
+
+        return 'post/year';
+    }
+
     public function getEntity(): string
     {
         return Year::class;
@@ -35,12 +42,6 @@ class YearParagraph extends ParagraphLib
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function getCode($postyear): string
-    {
-        unset($postyear);
-        return 'post/year';
     }
 
     public function show(Year $postyear): Response

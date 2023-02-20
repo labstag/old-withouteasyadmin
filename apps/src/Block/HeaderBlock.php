@@ -9,6 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HeaderBlock extends BlockLib
 {
+    public function getCode($header, $content): string
+    {
+        unset($header, $content);
+
+        return 'header';
+    }
+
     public function getEntity(): string
     {
         return Header::class;
@@ -22,12 +29,6 @@ class HeaderBlock extends BlockLib
     public function getName(): string
     {
         return $this->translator->trans('header.name', [], 'block');
-    }
-
-    public function getCode($header, $content): string
-    {
-        unset($header, $content);
-        return 'header';
     }
 
     public function getType(): string

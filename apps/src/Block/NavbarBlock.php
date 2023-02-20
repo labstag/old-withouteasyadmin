@@ -22,15 +22,16 @@ class NavbarBlock extends BlockLib
         parent::__construct($translator, $environment);
     }
 
-    public function getEntity(): string
-    {
-        return Navbar::class;
-    }
-
     public function getCode($navbar, $content): string
     {
         unset($navbar, $content);
+
         return 'navbar';
+    }
+
+    public function getEntity(): string
+    {
+        return Navbar::class;
     }
 
     public function getForm(): string

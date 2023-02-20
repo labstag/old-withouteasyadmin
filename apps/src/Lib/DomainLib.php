@@ -12,13 +12,13 @@ abstract class DomainLib
     {
     }
 
+    public function getSearchForm()
+    {
+
+    }
+
     public function getUrlAdmin()
     {
         return [];
-    }
-
-    public function getSearchForm()
-    {
-        return null;
     }
 }

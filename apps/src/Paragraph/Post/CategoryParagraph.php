@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CategoryParagraph extends ParagraphLib
 {
+    public function getCode($category): string
+    {
+        unset($category);
+
+        return 'post/category';
+    }
+
     public function getEntity(): string
     {
         return Category::class;
@@ -35,12 +42,6 @@ class CategoryParagraph extends ParagraphLib
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function getCode($category): string
-    {
-        unset($category);
-        return 'post/category';
     }
 
     public function show(Category $category): Response

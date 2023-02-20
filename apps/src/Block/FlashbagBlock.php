@@ -9,6 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FlashbagBlock extends BlockLib
 {
+    public function getCode($flashbag, $content): string
+    {
+        unset($flashbag, $content);
+
+        return 'flashbag';
+    }
+
     public function getEntity(): string
     {
         return Flashbag::class;
@@ -17,12 +24,6 @@ class FlashbagBlock extends BlockLib
     public function getForm(): string
     {
         return FlashbagType::class;
-    }
-
-    public function getCode($flashbag, $content): string
-    {
-        unset($flashbag, $content);
-        return 'flashbag';
     }
 
     public function getName(): string

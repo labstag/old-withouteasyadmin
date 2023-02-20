@@ -87,7 +87,7 @@ abstract class FrontControllerLib extends ControllerLib
 
                 $parameters['blocks'][$key][] = [
                     'template' => $template,
-                    'data' => $data
+                    'data'     => $data,
                 ];
             }
         }

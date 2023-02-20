@@ -11,6 +11,13 @@ use Labstag\Repository\PostRepository;
 
 class HeaderParagraph extends ParagraphLib
 {
+    public function getCode($header): string
+    {
+        unset($header);
+
+        return 'post/header';
+    }
+
     public function getEntity(): string
     {
         return Header::class;
@@ -34,12 +41,6 @@ class HeaderParagraph extends ParagraphLib
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function getCode($header): string
-    {
-        unset($header);
-        return 'post/header';
     }
 
     public function show(Header $header)

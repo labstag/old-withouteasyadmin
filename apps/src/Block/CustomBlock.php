@@ -30,6 +30,13 @@ class CustomBlock extends BlockLib
         parent::__construct($translator, $environment);
     }
 
+    public function getCode($custom, $content): string
+    {
+        unset($custom, $content);
+
+        return 'custom';
+    }
+
     public function getEntity(): string
     {
         return Custom::class;
@@ -53,12 +60,6 @@ class CustomBlock extends BlockLib
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function getCode($custom, $content): string
-    {
-        unset($custom, $content);
-        return 'custom';
     }
 
     public function show(Custom $custom, $content): Response

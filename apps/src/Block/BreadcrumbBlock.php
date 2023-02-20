@@ -31,6 +31,13 @@ class BreadcrumbBlock extends BlockLib
         parent::__construct($translator, $environment);
     }
 
+    public function getCode($breadcrumb, $content): string
+    {
+        unset($breadcrumb, $content);
+
+        return 'breadcrumb';
+    }
+
     public function getEntity(): string
     {
         return Breadcrumb::class;
@@ -54,12 +61,6 @@ class BreadcrumbBlock extends BlockLib
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function getCode($breadcrumb, $content): string
-    {
-        unset($breadcrumb, $content);
-        return 'breadcrumb';
     }
 
     public function show(Breadcrumb $breadcrumb, $content)

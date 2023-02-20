@@ -19,6 +19,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ImageParagraph extends ParagraphLib
 {
+    public function getCode($image): string
+    {
+        unset($image);
+
+        return 'image';
+    }
+
     public function getEntity(): string
     {
         return Image::class;
@@ -42,12 +49,6 @@ class ImageParagraph extends ParagraphLib
     public function isShowForm(): bool
     {
         return true;
-    }
-
-    public function getCode($image): string
-    {
-        unset($image);
-        return 'image';
     }
 
     public function show(Image $image): Response

@@ -11,6 +11,13 @@ use Labstag\Repository\EditoRepository;
 
 class ShowParagraph extends ParagraphLib
 {
+    public function getCode($show): string
+    {
+        unset($show);
+
+        return 'edito/show';
+    }
+
     public function getEntity(): string
     {
         return Show::class;
@@ -24,12 +31,6 @@ class ShowParagraph extends ParagraphLib
     public function getName(): string
     {
         return $this->translator->trans('editoshow.name', [], 'paragraph');
-    }
-
-    public function getCode($show): string
-    {
-        unset($show);
-        return 'edito/show';
     }
 
     public function getType(): string

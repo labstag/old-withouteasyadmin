@@ -23,6 +23,31 @@ abstract class BlockLib extends AbstractController
         return '';
     }
 
+    public function template($entity, $content)
+    {
+        return $this->showTemplateFile($this->getCode($entity, $content));
+    }
+
+    protected function getParagraphsArray($service, $content, $paragraphs)
+    {
+        $paragraphsArray = $content->getParagraphs();
+        foreach ($paragraphsArray as $paragraphArray) {
+            $data = $service->showContent($paragraphArray);
+            if (is_null($data)) {
+                continue;
+            }
+
+            $template = $service->showTemplate($paragraphArray);
+
+            $paragraphs[] = [
+                'template' => $template,
+                'data'     => $data,
+            ];
+        }
+
+        return $paragraphs;
+    }
+
     protected function getTemplateData(string $type): array
     {
         if (isset($this->template[$type])) {
@@ -48,12 +73,11 @@ abstract class BlockLib extends AbstractController
         }
 
         $this->template[$type] = [
-            'hook' => 'block',
-            'type' => $type,
+            'hook'  => 'block',
+            'type'  => $type,
             'files' => $files,
-            'view' => $view,
+            'view'  => $view,
         ];
-
 
         return $this->template[$type];
     }
@@ -74,30 +98,5 @@ abstract class BlockLib extends AbstractController
         }
 
         return [];
-    }
-
-    public function template($entity, $content)
-    {
-        return $this->showTemplateFile($this->getCode($entity, $content));
-    }
-
-    protected function getParagraphsArray($service, $content, $paragraphs)
-    {
-        $paragraphsArray = $content->getParagraphs();
-        foreach ($paragraphsArray as $paragraphArray) {
-            $data = $service->showContent($paragraphArray);
-            if (is_null($data)) {
-                continue;
-            }
-
-            $template = $service->showTemplate($paragraphArray);
-
-            $paragraphs[] = [
-                'template' => $template,
-                'data' => $data
-            ];
-        }
-
-        return $paragraphs;
     }
 }

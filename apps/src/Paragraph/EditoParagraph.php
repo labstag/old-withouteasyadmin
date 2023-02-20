@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EditoParagraph extends ParagraphLib
 {
+    public function getCode($edito): string
+    {
+        unset($edito);
+
+        return 'edito';
+    }
+
     public function getEntity(): string
     {
         return Edito::class;
@@ -35,12 +42,6 @@ class EditoParagraph extends ParagraphLib
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function getCode($edito): string
-    {
-        unset($edito);
-        return 'edito';
     }
 
     public function show(Edito $edito): Response

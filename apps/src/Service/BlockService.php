@@ -194,7 +194,7 @@ class BlockService
         if (is_null($entity)) {
             return $template;
         }
-        
+
         foreach ($this->blocksclass as $row) {
             if ($type == $row->getType()) {
                 $template = $row->template($entity, $content);

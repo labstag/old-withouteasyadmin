@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserParagraph extends ParagraphLib
 {
+    public function getCode($user): string
+    {
+        unset($user);
+
+        return 'history/user';
+    }
+
     public function getEntity(): string
     {
         return User::class;
@@ -30,12 +37,6 @@ class UserParagraph extends ParagraphLib
     public function getType(): string
     {
         return 'historyuser';
-    }
-
-    public function getCode($user): string
-    {
-        unset($user);
-        return 'history/user';
     }
 
     public function isShowForm(): bool

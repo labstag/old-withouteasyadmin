@@ -10,6 +10,13 @@ use Labstag\Lib\ParagraphLib;
 
 class ChapterParagraph extends ParagraphLib
 {
+    public function getCode($historychapter): string
+    {
+        unset($historychapter);
+
+        return 'history/chapter';
+    }
+
     public function getEntity(): string
     {
         return HistoryChapter::class;
@@ -28,12 +35,6 @@ class ChapterParagraph extends ParagraphLib
     public function getType(): string
     {
         return 'historychapter';
-    }
-
-    public function getCode($historychapter): string
-    {
-        unset($historychapter);
-        return 'history/chapter';
     }
 
     public function isShowForm(): bool

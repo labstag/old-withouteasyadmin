@@ -11,6 +11,13 @@ use Labstag\Repository\EditoRepository;
 
 class HeaderParagraph extends ParagraphLib
 {
+    public function getCode($header): string
+    {
+        unset($header);
+
+        return 'edito/header';
+    }
+
     public function getEntity(): string
     {
         return Header::class;
@@ -29,12 +36,6 @@ class HeaderParagraph extends ParagraphLib
     public function getType(): string
     {
         return 'editoheader';
-    }
-
-    public function getCode($header): string
-    {
-        unset($header);
-        return 'edito/header';
     }
 
     public function isHeaderForm(): bool

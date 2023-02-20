@@ -11,6 +11,13 @@ use Labstag\Repository\PostRepository;
 
 class ArchiveParagraph extends ParagraphLib
 {
+    public function getCode($archive): string
+    {
+        unset($archive);
+
+        return 'post/archive';
+    }
+
     public function getEntity(): string
     {
         return Archive::class;
@@ -34,12 +41,6 @@ class ArchiveParagraph extends ParagraphLib
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function getCode($archive): string
-    {
-        unset($archive);
-        return 'post/archive';
     }
 
     public function show(Archive $archive)

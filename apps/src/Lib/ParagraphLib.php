@@ -23,7 +23,7 @@ abstract class ParagraphLib extends AbstractController
 
     protected ?Request $request;
 
-    protected array $template;
+    protected array $template = [];
 
     public function __construct(
         protected FileService $fileService,
@@ -39,13 +39,29 @@ abstract class ParagraphLib extends AbstractController
         protected EntityManagerInterface $entityManager
     )
     {
-        $this->template = [];
         $this->request = $requestStack->getCurrentRequest();
+    }
+
+    public function getCode($block): string
+    {
+        unset($block);
+
+        return '';
     }
 
     public function setData(Paragraph $paragraph)
     {
         unset($paragraph);
+    }
+
+    public function template($entity)
+    {
+        return $this->showTemplateFile($this->getCode($entity));
+    }
+
+    protected function getRepository(string $entity): EntityRepository
+    {
+        return $this->entityManager->getRepository($entity);
     }
 
     protected function getTemplateData(string $type): array
@@ -72,10 +88,10 @@ abstract class ParagraphLib extends AbstractController
         }
 
         $this->template[$type] = [
-            'hook' => 'paragraph',
-            'type' => $type,
+            'hook'  => 'paragraph',
+            'type'  => $type,
             'files' => $files,
-            'view' => $view,
+            'view'  => $view,
         ];
 
         return $this->template[$type];
@@ -88,18 +104,6 @@ abstract class ParagraphLib extends AbstractController
         return $data['view'];
     }
 
-    public function getCode($block): string
-    {
-        unset($block);
-
-        return '';
-    }
-
-    public function template($entity)
-    {
-        return $this->showTemplateFile($this->getCode($entity));
-    }
-
     protected function showTemplateFile(string $type): array
     {
         $data = $this->getTemplateData($type);
@@ -109,10 +113,5 @@ abstract class ParagraphLib extends AbstractController
         }
 
         return [];
-    }
-
-    protected function getRepository(string $entity): EntityRepository
-    {
-        return $this->entityManager->getRepository($entity);
     }
 }

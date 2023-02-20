@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib
 {
+    public function getCode($liste): string
+    {
+        unset($liste);
+
+        return 'bookmark/list';
+    }
+
     public function getEntity(): string
     {
         return Liste::class;
@@ -30,12 +37,6 @@ class ListParagraph extends ParagraphLib
     public function getType(): string
     {
         return 'bookmarklist';
-    }
-
-    public function getCode($liste): string
-    {
-        unset($liste);
-        return 'bookmark/list';
     }
 
     public function isShowForm(): bool

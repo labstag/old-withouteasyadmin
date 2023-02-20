@@ -20,6 +20,12 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  */
 class TextImage
 {
+
+    /**
+     * @UploadableField(filename="image", path="paragraph/textimage", slug="title")
+     */
+    protected $file;
+
     /**
      * @ORM\Id
      *
@@ -32,9 +38,16 @@ class TextImage
     private $id;
 
     /**
-     * @UploadableField(filename="image", path="paragraph/textimage", slug="title")
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphTextImages", cascade={"persist"})
+     *
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
-    protected $file;
+    private $image;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="textImages", cascade={"persist"})
+     */
+    private $paragraph;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
@@ -48,17 +61,10 @@ class TextImage
      */
     private $title;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="textImages", cascade={"persist"})
-     */
-    private $paragraph;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphTextImages", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
-    private $image;
+    public function getFile()
+    {
+        return $this->file;
+    }
 
     public function getId(): ?int
     {
@@ -68,6 +74,21 @@ class TextImage
     public function getImage(): ?Attachment
     {
         return $this->image;
+    }
+
+    public function getParagraph(): ?Paragraph
+    {
+        return $this->paragraph;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
     }
 
     public function setFile($file): self
@@ -84,14 +105,11 @@ class TextImage
         return $this;
     }
 
-    public function getFile()
+    public function setParagraph(?Paragraph $paragraph): self
     {
-        return $this->file;
-    }
+        $this->paragraph = $paragraph;
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
+        return $this;
     }
 
     public function setSlug(?string $slug): self
@@ -101,26 +119,9 @@ class TextImage
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
     public function setTitle(?string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getParagraph(): ?Paragraph
-    {
-        return $this->paragraph;
-    }
-
-    public function setParagraph(?Paragraph $paragraph): self
-    {
-        $this->paragraph = $paragraph;
 
         return $this;
     }

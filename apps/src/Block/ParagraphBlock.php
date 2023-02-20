@@ -21,6 +21,13 @@ class ParagraphBlock extends BlockLib
         parent::__construct($translator, $environment);
     }
 
+    public function getCode($paragraph, $content): string
+    {
+        unset($paragraph, $content);
+
+        return 'paragraph';
+    }
+
     public function getEntity(): string
     {
         return Paragraph::class;
@@ -38,12 +45,6 @@ class ParagraphBlock extends BlockLib
 
     public function getType(): string
     {
-        return 'paragraph';
-    }
-
-    public function getCode($paragraph, $content): string
-    {
-        unset($paragraph, $content);
         return 'paragraph';
     }
 

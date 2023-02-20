@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BookmarkParagraph extends ParagraphLib
 {
+    public function getCode($bookmark): string
+    {
+        unset($bookmark);
+
+        return 'bookmark';
+    }
+
     public function getEntity(): string
     {
         return Bookmark::class;
@@ -35,12 +42,6 @@ class BookmarkParagraph extends ParagraphLib
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function getCode($bookmark): string
-    {
-        unset($bookmark);
-        return 'bookmark';
     }
 
     public function show(Bookmark $bookmark): Response

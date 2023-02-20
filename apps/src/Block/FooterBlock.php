@@ -9,6 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FooterBlock extends BlockLib
 {
+    public function getCode($footer, $content): string
+    {
+        unset($footer, $content);
+
+        return 'footer';
+    }
+
     public function getEntity(): string
     {
         return Footer::class;
@@ -22,12 +29,6 @@ class FooterBlock extends BlockLib
     public function getName(): string
     {
         return $this->translator->trans('footer.name', [], 'block');
-    }
-
-    public function getCode($footer, $content): string
-    {
-        unset($footer, $content);
-        return 'footer';
     }
 
     public function getType(): string

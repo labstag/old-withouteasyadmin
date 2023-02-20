@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LibelleParagraph extends ParagraphLib
 {
+    public function getCode($libelle): string
+    {
+        unset($libelle);
+
+        return 'post/libelle';
+    }
+
     public function getEntity(): string
     {
         return Libelle::class;
@@ -30,12 +37,6 @@ class LibelleParagraph extends ParagraphLib
     public function getType(): string
     {
         return 'postlibelle';
-    }
-
-    public function getCode($libelle): string
-    {
-        unset($libelle);
-        return 'post/libelle';
     }
 
     public function isShowForm(): bool

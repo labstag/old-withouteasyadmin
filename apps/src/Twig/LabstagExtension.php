@@ -17,7 +17,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Registry;
 use Twig\Extension\AbstractExtension;
-use Twig\Markup;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
@@ -56,6 +55,34 @@ class LabstagExtension extends AbstractExtension
         );
 
         return trim(strtolower($class));
+    }
+
+    public function debugBegin($data): string
+    {
+        if (is_null($data) || 0 == (is_countable($data) ? count($data) : 0)) {
+            return '';
+        }
+
+        $html = "<!--\nTHEME DEBUG\n";
+        $html .= "THEME HOOK : '".$data['hook']."'\n";
+        if (0 != (is_countable($data['files']) ? count($data['files']) : 0)) {
+            $html .= "FILE NAME SUGGESTIONS: \n";
+            foreach ($data['files'] as $file) {
+                $checked = ($data['view'] == $file) ? 'X' : '*';
+                $html .= ' '.$checked.' '.$file."\n";
+            }
+        }
+
+        return $html . ("BEGIN OUTPUT from '".$data['view']."' -->\n");
+    }
+
+    public function debugEnd($data): string
+    {
+        if (is_null($data) || 0 == (is_countable($data) ? count($data) : 0)) {
+            return '';
+        }
+
+        return "\n<!-- END OUTPUT from '".$data['view']."' -->\n";
     }
 
     public function formClass($class)
@@ -297,38 +324,6 @@ class LabstagExtension extends AbstractExtension
         }
 
         dump($var);
-    }
-
-    public function debugBegin($data): string
-    {
-        if (is_null($data) || count($data) == 0) {
-            return '';
-        }
-
-        $html = "<!--\nTHEME DEBUG\n";
-        $html .= "THEME HOOK : '".$data['hook']."'\n";
-        if (count($data['files']) != 0) {
-            $html .= "FILE NAME SUGGESTIONS: \n";
-            foreach ($data['files'] as $file) {
-                $checked = ($data['view'] == $file) ?  "X" : "*";
-                $html .= ' '.$checked.' '.$file."\n";
-            }
-        }
-
-        $html .= "BEGIN OUTPUT from '".$data['view']."' -->\n";
-
-        return $html;
-    }
-
-    public function debugEnd($data): string
-    {
-        if (is_null($data) || count($data) == 0) {
-            return '';
-        }
-
-        $html = "\n<!-- END OUTPUT from '".$data['view']."' -->\n";
-
-        return $html;
     }
 
     private function getFiltersFunctions(): array

@@ -16,6 +16,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TextParagraph extends ParagraphLib
 {
+    public function getCode($text): string
+    {
+        unset($text);
+
+        return 'text';
+    }
+
     public function getEntity(): string
     {
         return Text::class;
@@ -39,12 +46,6 @@ class TextParagraph extends ParagraphLib
     public function isShowForm(): bool
     {
         return true;
-    }
-
-    public function getCode($text): string
-    {
-        unset($text);
-        return 'text';
     }
 
     public function show(Text $text): Response

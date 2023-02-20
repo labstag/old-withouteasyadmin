@@ -78,6 +78,11 @@ class Paragraph
     private int $position = 0;
 
     /**
+     * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $textImages;
+
+    /**
      * @ORM\OneToMany(targetEntity=Text::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $texts;
@@ -91,11 +96,6 @@ class Paragraph
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $videos;
-
-    /**
-     * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $textImages;
 
     public function __construct()
     {
@@ -141,6 +141,16 @@ class Paragraph
         if (!$this->texts->contains($text)) {
             $this->texts[] = $text;
             $text->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function addTextImage(TextImage $textImage): self
+    {
+        if (!$this->textImages->contains($textImage)) {
+            $this->textImages[] = $textImage;
+            $textImage->setParagraph($this);
         }
 
         return $this;
@@ -205,6 +215,14 @@ class Paragraph
     }
 
     /**
+     * @return Collection<int, TextImage>
+     */
+    public function getTextImages(): Collection
+    {
+        return $this->textImages;
+    }
+
+    /**
      * @return Collection<int, Text>
      */
     public function getTexts(): Collection
@@ -240,6 +258,16 @@ class Paragraph
         // set the owning side to null (unless already changed)
         if ($this->texts->removeElement($text) && $text->getParagraph() === $this) {
             $text->setParagraph(null);
+        }
+
+        return $this;
+    }
+
+    public function removeTextImage(TextImage $textImage): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->textImages->removeElement($textImage) && $textImage->getParagraph() === $this) {
+            $textImage->setParagraph(null);
         }
 
         return $this;
@@ -307,36 +335,6 @@ class Paragraph
     public function setType(string $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, TextImage>
-     */
-    public function getTextImages(): Collection
-    {
-        return $this->textImages;
-    }
-
-    public function addTextImage(TextImage $textImage): self
-    {
-        if (!$this->textImages->contains($textImage)) {
-            $this->textImages[] = $textImage;
-            $textImage->setParagraph($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTextImage(TextImage $textImage): self
-    {
-        if ($this->textImages->removeElement($textImage)) {
-            // set the owning side to null (unless already changed)
-            if ($textImage->getParagraph() === $this) {
-                $textImage->setParagraph(null);
-            }
-        }
 
         return $this;
     }

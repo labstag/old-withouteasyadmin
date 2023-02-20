@@ -11,6 +11,13 @@ use Labstag\Repository\PostRepository;
 
 class ShowParagraph extends ParagraphLib
 {
+    public function getCode($show): string
+    {
+        unset($show);
+
+        return 'post/show';
+    }
+
     public function getEntity(): string
     {
         return Show::class;
@@ -34,12 +41,6 @@ class ShowParagraph extends ParagraphLib
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function getCode($show): string
-    {
-        unset($show);
-        return 'post/show';
     }
 
     public function show(Show $show)

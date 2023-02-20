@@ -9,6 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HtmlBlock extends BlockLib
 {
+    public function getCode($html, $content): string
+    {
+        unset($html, $content);
+
+        return 'html';
+    }
+
     public function getEntity(): string
     {
         return Html::class;
@@ -24,12 +31,6 @@ class HtmlBlock extends BlockLib
         return $this->translator->trans('html.name', [], 'block');
     }
 
-    public function getCode($html, $content): string
-    {
-        unset($html, $content);
-        return 'html';
-    }
-
     public function getType(): string
     {
         return 'html';
@@ -42,6 +43,7 @@ class HtmlBlock extends BlockLib
 
     public function show(Html $html, $content): Response
     {
+        $content = null;
         unset($content);
 
         return $this->render(
