@@ -8,25 +8,18 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
-use Labstag\Repository\Paragraph\VideoRepository;
-use Stringable;
+use Labstag\Repository\Paragraph\TextImageRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
- * @ORM\Table(name="paragraph_video")
+ * @ORM\Table(name="paragraph_textimage")
  *
- * @ORM\Entity(repositoryClass=VideoRepository::class)
+ * @ORM\Entity(repositoryClass=TextImageRepository::class)
  *
  * @Uploadable
  */
-class Video implements Stringable
+class TextImage
 {
-
-    /**
-     * @UploadableField(filename="image", path="paragraph/video", slug="title")
-     */
-    protected $file;
-
     /**
      * @ORM\Id
      *
@@ -39,16 +32,9 @@ class Video implements Stringable
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphVideos", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     * @UploadableField(filename="image", path="paragraph/textimage", slug="title")
      */
-    private $image;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="videos", cascade={"persist"})
-     */
-    private $paragraph;
+    protected $file;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
@@ -63,21 +49,18 @@ class Video implements Stringable
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="textImages", cascade={"persist"})
      */
-    private $url;
+    private $paragraph;
 
-    public function __toString(): string
-    {
-        return (string) $this->getParagraph()->getType();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphTextImages", cascade={"persist"})
+     *
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $image;
 
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -85,26 +68,6 @@ class Video implements Stringable
     public function getImage(): ?Attachment
     {
         return $this->image;
-    }
-
-    public function getParagraph(): ?Paragraph
-    {
-        return $this->paragraph;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
     }
 
     public function setFile($file): self
@@ -121,11 +84,14 @@ class Video implements Stringable
         return $this;
     }
 
-    public function setParagraph(?Paragraph $paragraph): self
+    public function getFile()
     {
-        $this->paragraph = $paragraph;
+        return $this->file;
+    }
 
-        return $this;
+    public function getTitle(): ?string
+    {
+        return $this->title;
     }
 
     public function setSlug(?string $slug): self
@@ -135,6 +101,11 @@ class Video implements Stringable
         return $this;
     }
 
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
     public function setTitle(?string $title): self
     {
         $this->title = $title;
@@ -142,9 +113,14 @@ class Video implements Stringable
         return $this;
     }
 
-    public function setUrl(?string $url): self
+    public function getParagraph(): ?Paragraph
     {
-        $this->url = $url;
+        return $this->paragraph;
+    }
+
+    public function setParagraph(?Paragraph $paragraph): self
+    {
+        $this->paragraph = $paragraph;
 
         return $this;
     }

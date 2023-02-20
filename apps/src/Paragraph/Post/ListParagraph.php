@@ -32,6 +32,12 @@ class ListParagraph extends ParagraphLib
         return 'postlist';
     }
 
+    public function getCode($liste): string
+    {
+        unset($liste);
+        return 'post/list';
+    }
+
     public function isShowForm(): bool
     {
         return false;
@@ -48,7 +54,7 @@ class ListParagraph extends ParagraphLib
         );
 
         return $this->render(
-            $this->getParagraphFile('post/list'),
+            $this->getTemplateFile($this->getCode($liste)),
             [
                 'pagination' => $pagination,
                 'paragraph'  => $liste,

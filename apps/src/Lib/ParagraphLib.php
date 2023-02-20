@@ -23,6 +23,8 @@ abstract class ParagraphLib extends AbstractController
 
     protected ?Request $request;
 
+    protected array $template;
+
     public function __construct(
         protected FileService $fileService,
         protected UploadAnnotationReader $uploadAnnotationReader,
@@ -37,6 +39,7 @@ abstract class ParagraphLib extends AbstractController
         protected EntityManagerInterface $entityManager
     )
     {
+        $this->template = [];
         $this->request = $requestStack->getCurrentRequest();
     }
 
@@ -45,8 +48,12 @@ abstract class ParagraphLib extends AbstractController
         unset($paragraph);
     }
 
-    protected function getParagraphFile(string $type): string
+    protected function getTemplateData(string $type): array
     {
+        if (isset($this->template[$type])) {
+            return $this->template[$type];
+        }
+
         $folder = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';
         $files = [
@@ -64,11 +71,44 @@ abstract class ParagraphLib extends AbstractController
             }
         }
 
-        if ('dev' == $this->getParameter('kernel.debug')) {
-            dump(['paragraph', $type, $files, $view]);
+        $this->template[$type] = [
+            'hook' => 'paragraph',
+            'type' => $type,
+            'files' => $files,
+            'view' => $view,
+        ];
+
+        return $this->template[$type];
+    }
+
+    protected function getTemplateFile(string $type): string
+    {
+        $data = $this->getTemplateData($type);
+
+        return $data['view'];
+    }
+
+    public function getCode($block): string
+    {
+        unset($block);
+
+        return '';
+    }
+
+    public function template($entity)
+    {
+        return $this->showTemplateFile($this->getCode($entity));
+    }
+
+    protected function showTemplateFile(string $type): array
+    {
+        $data = $this->getTemplateData($type);
+        $globals = $this->environment->getGlobals();
+        if ('dev' == $globals['app']->getDebug()) {
+            return $data;
         }
 
-        return $view;
+        return [];
     }
 
     protected function getRepository(string $entity): EntityRepository

@@ -37,6 +37,12 @@ class PostParagraph extends ParagraphLib
         return false;
     }
 
+    public function getCode($post): string
+    {
+        unset($post);
+        return 'post';
+    }
+
     public function show(Post $post): Response
     {
         /** @var PostRepository $entityRepository */
@@ -44,7 +50,7 @@ class PostParagraph extends ParagraphLib
         $posts = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
 
         return $this->render(
-            $this->getParagraphFile('post'),
+            $this->getTemplateFile($this->getCode($post)),
             [
                 'posts'     => $posts,
                 'paragraph' => $post,

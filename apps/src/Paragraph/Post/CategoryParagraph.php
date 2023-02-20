@@ -37,6 +37,12 @@ class CategoryParagraph extends ParagraphLib
         return false;
     }
 
+    public function getCode($category): string
+    {
+        unset($category);
+        return 'post/category';
+    }
+
     public function show(Category $category): Response
     {
         $all = $this->request->attributes->all();
@@ -51,7 +57,7 @@ class CategoryParagraph extends ParagraphLib
         );
 
         return $this->render(
-            $this->getParagraphFile('post/category'),
+            $this->getTemplateFile($this->getCode($category)),
             [
                 'pagination' => $pagination,
                 'paragraph'  => $category,

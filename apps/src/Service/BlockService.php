@@ -186,6 +186,24 @@ class BlockService
         return $html;
     }
 
+    public function showTemplate(Block $block, $content)
+    {
+        $type = $block->getType();
+        $entity = $this->getEntity($block);
+        $template = null;
+        if (is_null($entity)) {
+            return $template;
+        }
+        
+        foreach ($this->blocksclass as $row) {
+            if ($type == $row->getType()) {
+                $template = $row->template($entity, $content);
+            }
+        }
+
+        return $template;
+    }
+
     protected function setReflection($entity): ReflectionClass
     {
         return new ReflectionClass($entity);

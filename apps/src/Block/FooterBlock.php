@@ -24,6 +24,12 @@ class FooterBlock extends BlockLib
         return $this->translator->trans('footer.name', [], 'block');
     }
 
+    public function getCode($footer, $content): string
+    {
+        unset($footer, $content);
+        return 'footer';
+    }
+
     public function getType(): string
     {
         return 'footer';
@@ -36,10 +42,8 @@ class FooterBlock extends BlockLib
 
     public function show(Footer $footer, $content): Response
     {
-        unset($content);
-
         return $this->render(
-            $this->getBlockFile('footer'),
+            $this->getTemplateFile($this->getCode($footer, $content)),
             ['block' => $footer]
         );
     }

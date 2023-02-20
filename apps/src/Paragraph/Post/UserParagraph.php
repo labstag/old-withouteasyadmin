@@ -37,6 +37,12 @@ class UserParagraph extends ParagraphLib
         return false;
     }
 
+    public function getCode($user): string
+    {
+        unset($user);
+        return 'post/user';
+    }
+
     public function show(User $user): Response
     {
         $all = $this->request->attributes->all();
@@ -51,7 +57,7 @@ class UserParagraph extends ParagraphLib
         );
 
         return $this->render(
-            $this->getParagraphFile('post/user'),
+            $this->getTemplateFile($this->getCode($user)),
             [
                 'pagination' => $pagination,
                 'paragraph'  => $user,

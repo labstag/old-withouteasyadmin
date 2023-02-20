@@ -30,6 +30,12 @@ class ChapterParagraph extends ParagraphLib
         return 'historychapter';
     }
 
+    public function getCode($historychapter): string
+    {
+        unset($historychapter);
+        return 'history/chapter';
+    }
+
     public function isShowForm(): bool
     {
         return false;
@@ -50,7 +56,7 @@ class ChapterParagraph extends ParagraphLib
         $prevnext = $this->getPrevNext($chapter, $chapter->getRefhistory());
 
         return $this->render(
-            $this->getParagraphFile('history/chapter'),
+            $this->getTemplateFile($this->getcode($historychapter)),
             [
                 'prev'      => $prevnext['prev'],
                 'next'      => $prevnext['next'],

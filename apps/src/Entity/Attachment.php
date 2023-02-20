@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Entity\Paragraph\Image;
+use Labstag\Entity\Paragraph\TextImage;
 use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\AttachmentRepository;
@@ -79,6 +81,16 @@ class Attachment
     private $code;
 
     /**
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $paragraphImages;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $paragraphTextImages;
+
+    /**
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
      */
     private $paragraphVideos;
@@ -91,6 +103,8 @@ class Attachment
         $this->noteInternes = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
         $this->paragraphVideos = new ArrayCollection();
+        $this->paragraphImages = new ArrayCollection();
+        $this->paragraphTextImages = new ArrayCollection();
     }
 
     public function addBookmark(Bookmark $bookmark): self
@@ -133,11 +147,31 @@ class Attachment
         return $this;
     }
 
-    public function addParagraphVideo(Video $paragraphVideo): self
+    public function addParagraphImage(Image $image): self
     {
-        if (!$this->paragraphVideos->contains($paragraphVideo)) {
-            $this->paragraphVideos[] = $paragraphVideo;
-            $paragraphVideo->setImage($this);
+        if (!$this->paragraphImages->contains($image)) {
+            $this->paragraphImages[] = $image;
+            $image->setImage($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraphTextImage(TextImage $textimage): self
+    {
+        if (!$this->paragraphTextImages->contains($textimage)) {
+            $this->paragraphTextImages[] = $textimage;
+            $textimage->setImage($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraphVideo(Video $video): self
+    {
+        if (!$this->paragraphVideos->contains($video)) {
+            $this->paragraphVideos[] = $video;
+            $video->setImage($this);
         }
 
         return $this;
@@ -206,6 +240,22 @@ class Attachment
     /**
      * @return Collection<int, Video>
      */
+    public function getParagraphImages(): Collection
+    {
+        return $this->paragraphImages;
+    }
+
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getParagraphTextImages(): Collection
+    {
+        return $this->paragraphTextImages;
+    }
+
+    /**
+     * @return Collection<int, Video>
+     */
     public function getParagraphVideos(): Collection
     {
         return $this->paragraphVideos;
@@ -261,6 +311,26 @@ class Attachment
         // set the owning side to null (unless already changed)
         if ($this->noteInternes->removeElement($memo) && $memo->getFond() === $this) {
             $memo->setFond(null);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphImage(Image $image): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphImages->removeElement($image) && $image->getImage() === $this) {
+            $image->setImage(null);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphTextImage(TextImage $textimage): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphTextImages->removeElement($textimage) && $textimage->getImage() === $this) {
+            $textimage->setImage(null);
         }
 
         return $this;

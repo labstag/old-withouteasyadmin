@@ -27,6 +27,12 @@ class NavbarBlock extends BlockLib
         return Navbar::class;
     }
 
+    public function getCode($navbar, $content): string
+    {
+        unset($navbar, $content);
+        return 'navbar';
+    }
+
     public function getForm(): string
     {
         return NavbarType::class;
@@ -53,10 +59,8 @@ class NavbarBlock extends BlockLib
         $item = ($menu instanceof Menu) ? $this->menuService->createMenu($menu) : '';
         $show = (0 != count($item->getChildren()));
 
-        unset($content);
-
         return $this->render(
-            $this->getBlockFile('navbar'),
+            $this->getTemplateFile($this->getCode($navbar, $content)),
             [
                 'show'  => $show,
                 'item'  => $item,

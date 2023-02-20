@@ -41,6 +41,12 @@ class ParagraphBlock extends BlockLib
         return 'paragraph';
     }
 
+    public function getCode($paragraph, $content): string
+    {
+        unset($paragraph, $content);
+        return 'paragraph';
+    }
+
     public function isShowForm(): bool
     {
         return false;
@@ -51,7 +57,7 @@ class ParagraphBlock extends BlockLib
         $data = $this->setParagraphs($content);
 
         return $this->render(
-            $this->getBlockFile('paragraph'),
+            $this->getTemplateFile($this->getCode($paragraph, $content)),
             [
                 'paragraphs' => $data,
                 'block'      => $paragraph,

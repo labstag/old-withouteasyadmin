@@ -24,6 +24,12 @@ class HeaderBlock extends BlockLib
         return $this->translator->trans('header.name', [], 'block');
     }
 
+    public function getCode($header, $content): string
+    {
+        unset($header, $content);
+        return 'header';
+    }
+
     public function getType(): string
     {
         return 'header';
@@ -36,10 +42,8 @@ class HeaderBlock extends BlockLib
 
     public function show(Header $header, $content): Response
     {
-        unset($content);
-
         return $this->render(
-            $this->getBlockFile('header'),
+            $this->getTemplateFile($this->getcode($header, $content)),
             ['block' => $header]
         );
     }

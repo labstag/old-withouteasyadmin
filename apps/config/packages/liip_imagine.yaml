@@ -18,3 +18,11 @@ liip_imagine:
         quality: 75
         filters:
           thumbnail  : {size: [1320, 290]}
+      paragraph_video :
+        quality: 75
+        filters:
+          thumbnail  : {size: [800,600]}
+      paragraph_image :
+        quality: 75
+        filters:
+          thumbnail  : {size: [800,600]}

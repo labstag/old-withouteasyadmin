@@ -55,13 +55,18 @@ class CustomBlock extends BlockLib
         return false;
     }
 
+    public function getCode($custom, $content): string
+    {
+        unset($custom, $content);
+        return 'custom';
+    }
+
     public function show(Custom $custom, $content): Response
     {
-        unset($content);
         $paragraphs = $this->setParagraphs($custom);
 
         return $this->render(
-            $this->getBlockFile('custom'),
+            $this->getTemplateFile($this->getCode($custom, $content)),
             [
                 'paragraphs' => $paragraphs,
                 'block'      => $custom,

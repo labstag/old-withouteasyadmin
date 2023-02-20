@@ -56,6 +56,12 @@ class BreadcrumbBlock extends BlockLib
         return false;
     }
 
+    public function getCode($breadcrumb, $content): string
+    {
+        unset($breadcrumb, $content);
+        return 'breadcrumb';
+    }
+
     public function show(Breadcrumb $breadcrumb, $content)
     {
         $breadcrumbs = $this->frontService->setBreadcrumb($content);
@@ -64,7 +70,7 @@ class BreadcrumbBlock extends BlockLib
         }
 
         return $this->render(
-            $this->getBlockFile('breadcrumb'),
+            $this->getTemplateFile($this->getCode($breadcrumb, $content)),
             [
                 'breadcrumbs' => $breadcrumbs,
                 'block'       => $breadcrumb,

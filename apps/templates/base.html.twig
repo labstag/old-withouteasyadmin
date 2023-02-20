@@ -39,7 +39,6 @@
     {{ configtarteaucitron|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
     );
     tarteaucitron.job = tarteaucitron.job || [];
-    tarteaucitron.job.push('youtube');
     {% if config.tarteaucitron.job is defined %}
 {{ config.tarteaucitron.job|raw }}
     {% endif %}

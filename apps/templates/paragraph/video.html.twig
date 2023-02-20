@@ -1,3 +1,6 @@
 <section id="{{ paragraph_id(paragraph) }}" class="{{ paragraph_class(paragraph) }}">
-    <div class="youtube_player" videoID="9Czd4CoQbj8" theme="light" rel="0" controls="1" showinfo="1" autoplay="0"></div>
+    <div alt="{{ paragraph.title|e('html_attr') }}" data-embed="{{ embed }}" class="video" style="--img: url({{ image | imagefilter('paragraph_video') }}); width: 50%; margin:auto; background-image: var(--img); background-repeat: no-repeat; background-size: cover; aspect-ratio: 16 / 9;">
+        <button>Play</button>
+        <div class="player"></div>
+    </div>
 </section>

@@ -36,6 +36,12 @@ class ArchiveParagraph extends ParagraphLib
         return false;
     }
 
+    public function getCode($archive): string
+    {
+        unset($archive);
+        return 'post/archive';
+    }
+
     public function show(Archive $archive)
     {
         /** @var PostRepository $entityRepository */
@@ -47,7 +53,7 @@ class ArchiveParagraph extends ParagraphLib
         }
 
         return $this->render(
-            $this->getParagraphFile('post/archive'),
+            $this->getTemplateFile($this->getCode($archive)),
             [
                 'archives'  => $archives,
                 'paragraph' => $archive,

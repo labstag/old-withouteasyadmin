@@ -37,6 +37,12 @@ class HistoryParagraph extends ParagraphLib
         return false;
     }
 
+    public function getCode($history): string
+    {
+        unset($history);
+        return 'history';
+    }
+
     public function show(History $history): Response
     {
         /** @var HistoryRepository $entityRepository */
@@ -44,7 +50,7 @@ class HistoryParagraph extends ParagraphLib
         $histories = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
 
         return $this->render(
-            $this->getParagraphFile('history'),
+            $this->getTemplateFile($this->getcode($history)),
             [
                 'histories' => $histories,
                 'paragraph' => $history,

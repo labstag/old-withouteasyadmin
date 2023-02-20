@@ -26,6 +26,12 @@ class ShowParagraph extends ParagraphLib
         return $this->translator->trans('editoshow.name', [], 'paragraph');
     }
 
+    public function getCode($show): string
+    {
+        unset($show);
+        return 'edito/show';
+    }
+
     public function getType(): string
     {
         return 'editoshow';
@@ -47,7 +53,7 @@ class ShowParagraph extends ParagraphLib
         }
 
         return $this->render(
-            $this->getParagraphFile('edito/show'),
+            $this->getTemplateFile($this->getCode($show)),
             [
                 'edito'     => $edito,
                 'paragraph' => $show,

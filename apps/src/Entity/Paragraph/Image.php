@@ -8,22 +8,21 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
-use Labstag\Repository\Paragraph\VideoRepository;
-use Stringable;
+use Labstag\Repository\Paragraph\ImageRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
- * @ORM\Table(name="paragraph_video")
+ * @ORM\Table(name="paragraph_image")
  *
- * @ORM\Entity(repositoryClass=VideoRepository::class)
+ * @ORM\Entity(repositoryClass=ImageRepository::class)
  *
  * @Uploadable
  */
-class Video implements Stringable
+class Image
 {
 
     /**
-     * @UploadableField(filename="image", path="paragraph/video", slug="title")
+     * @UploadableField(filename="image", path="paragraph/image", slug="title")
      */
     protected $file;
 
@@ -39,14 +38,14 @@ class Video implements Stringable
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphVideos", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphImages", cascade={"persist"})
      *
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $image;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="videos", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="images", cascade={"persist"})
      */
     private $paragraph;
 
@@ -61,16 +60,6 @@ class Video implements Stringable
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $title;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $url;
-
-    public function __toString(): string
-    {
-        return (string) $this->getParagraph()->getType();
-    }
 
     public function getFile()
     {
@@ -100,11 +89,6 @@ class Video implements Stringable
     public function getTitle(): ?string
     {
         return $this->title;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
     }
 
     public function setFile($file): self
@@ -138,13 +122,6 @@ class Video implements Stringable
     public function setTitle(?string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function setUrl(?string $url): self
-    {
-        $this->url = $url;
 
         return $this;
     }

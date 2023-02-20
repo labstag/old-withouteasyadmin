@@ -32,6 +32,12 @@ class UserParagraph extends ParagraphLib
         return 'historyuser';
     }
 
+    public function getCode($user): string
+    {
+        unset($user);
+        return 'history/user';
+    }
+
     public function isShowForm(): bool
     {
         return false;
@@ -51,7 +57,7 @@ class UserParagraph extends ParagraphLib
         );
 
         return $this->render(
-            $this->getParagraphFile('history/user'),
+            $this->getTemplateFile($this->getCode($user)),
             [
                 'pagination' => $pagination,
                 'paragraph'  => $user,

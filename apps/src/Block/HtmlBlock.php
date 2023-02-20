@@ -24,6 +24,12 @@ class HtmlBlock extends BlockLib
         return $this->translator->trans('html.name', [], 'block');
     }
 
+    public function getCode($html, $content): string
+    {
+        unset($html, $content);
+        return 'html';
+    }
+
     public function getType(): string
     {
         return 'html';
@@ -39,7 +45,7 @@ class HtmlBlock extends BlockLib
         unset($content);
 
         return $this->render(
-            $this->getBlockFile('html'),
+            $this->getTemplateFile($this->getCode($html, $content)),
             ['block' => $html]
         );
     }

@@ -214,6 +214,26 @@ class ParagraphService
         return $html;
     }
 
+    public function showTemplate(Paragraph $paragraph)
+    {
+        $type = $paragraph->getType();
+        $entity = $this->getEntity($paragraph);
+        $template = null;
+        if (is_null($entity)) {
+            return $template;
+        }
+
+        foreach ($this->paragraphsclass as $row) {
+            if ($type == $row->getType()) {
+                $template = $row->template($entity);
+
+                break;
+            }
+        }
+
+        return $template;
+    }
+
     private function getMethod($entity)
     {
         $method = null;

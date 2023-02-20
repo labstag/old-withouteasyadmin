@@ -37,6 +37,12 @@ class YearParagraph extends ParagraphLib
         return false;
     }
 
+    public function getCode($postyear): string
+    {
+        unset($postyear);
+        return 'post/year';
+    }
+
     public function show(Year $postyear): Response
     {
         $all = $this->request->attributes->all();
@@ -51,7 +57,7 @@ class YearParagraph extends ParagraphLib
         );
 
         return $this->render(
-            $this->getParagraphFile('post/year'),
+            $this->getTemplateFile($this->getCode($postyear)),
             [
                 'pagination' => $pagination,
                 'paragraph'  => $postyear,

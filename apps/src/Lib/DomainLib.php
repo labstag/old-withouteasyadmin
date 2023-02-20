@@ -16,4 +16,9 @@ abstract class DomainLib
     {
         return [];
     }
+
+    public function getSearchForm()
+    {
+        return null;
+    }
 }

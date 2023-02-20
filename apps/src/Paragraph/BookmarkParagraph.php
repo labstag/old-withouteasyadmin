@@ -37,6 +37,12 @@ class BookmarkParagraph extends ParagraphLib
         return false;
     }
 
+    public function getCode($bookmark): string
+    {
+        unset($bookmark);
+        return 'bookmark';
+    }
+
     public function show(Bookmark $bookmark): Response
     {
         /** @var BookmarkRepository $entityRepository */
@@ -44,7 +50,7 @@ class BookmarkParagraph extends ParagraphLib
         $bookmarks = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
 
         return $this->render(
-            $this->getParagraphFile('bookmark'),
+            $this->getTemplateFile($this->getcode($bookmark)),
             [
                 'paragraph' => $bookmark,
                 'bookmarks' => $bookmarks,

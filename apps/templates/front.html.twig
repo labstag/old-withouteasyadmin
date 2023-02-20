@@ -4,10 +4,12 @@
     {{ encore_entry_link_tags('front') }}
 {% endblock %}
 {% block content %}
-    {% for row, block in blocks %}
+    {% for row, blockhtml in blocks %}
         <{{ row }}>
-            {% for html in block %}
-                {{ html.content|raw }}
+            {% for html in blockhtml %}
+                {{ debug_begin(html.template) }}
+                {{ html.data.content|raw }}
+                {{ debug_end(html.template) }}
             {% endfor %}
         </{{ row }}>
     {% endfor %}

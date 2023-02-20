@@ -36,6 +36,12 @@ class ShowParagraph extends ParagraphLib
         return false;
     }
 
+    public function getCode($show): string
+    {
+        unset($show);
+        return 'history/show';
+    }
+
     public function show(Show $show)
     {
         $all = $this->request->attributes->all();
@@ -52,7 +58,7 @@ class ShowParagraph extends ParagraphLib
         }
 
         return $this->render(
-            $this->getParagraphFile('history/show'),
+            $this->getTemplateFile($this->getCode($show)),
             [
                 'history'   => $history,
                 'paragraph' => $show,

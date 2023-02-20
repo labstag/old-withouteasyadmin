@@ -83,7 +83,12 @@ abstract class FrontControllerLib extends ControllerLib
                     continue;
                 }
 
-                $parameters['blocks'][$key][] = $data;
+                $template = $this->blockService->showTemplate($block, $content);
+
+                $parameters['blocks'][$key][] = [
+                    'template' => $template,
+                    'data' => $data
+                ];
             }
         }
 

@@ -31,6 +31,12 @@ class HeaderParagraph extends ParagraphLib
         return 'editoheader';
     }
 
+    public function getCode($header): string
+    {
+        unset($header);
+        return 'edito/header';
+    }
+
     public function isHeaderForm(): bool
     {
         return false;
@@ -47,7 +53,7 @@ class HeaderParagraph extends ParagraphLib
         }
 
         return $this->render(
-            $this->getParagraphFile('edito/header'),
+            $this->getTemplateFile($this->getCode($header)),
             [
                 'edito'     => $edito,
                 'paragraph' => $header,

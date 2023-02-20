@@ -19,6 +19,12 @@ class FlashbagBlock extends BlockLib
         return FlashbagType::class;
     }
 
+    public function getCode($flashbag, $content): string
+    {
+        unset($flashbag, $content);
+        return 'flashbag';
+    }
+
     public function getName(): string
     {
         return $this->translator->trans('flashbag.name', [], 'block');
@@ -36,10 +42,8 @@ class FlashbagBlock extends BlockLib
 
     public function show(Flashbag $flashbag, $content): Response
     {
-        unset($content);
-
         return $this->render(
-            $this->getBlockFile('flashbag'),
+            $this->getTemplateFile($this->getCode($flashbag, $content)),
             ['block' => $flashbag]
         );
     }

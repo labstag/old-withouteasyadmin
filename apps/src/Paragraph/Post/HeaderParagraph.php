@@ -36,6 +36,12 @@ class HeaderParagraph extends ParagraphLib
         return false;
     }
 
+    public function getCode($header): string
+    {
+        unset($header);
+        return 'post/header';
+    }
+
     public function show(Header $header)
     {
         $all = $this->request->attributes->all();
@@ -52,7 +58,7 @@ class HeaderParagraph extends ParagraphLib
         }
 
         return $this->render(
-            $this->getParagraphFile('post/header'),
+            $this->getTemplateFile($this->getCode($header)),
             [
                 'post'      => $post,
                 'paragraph' => $header,

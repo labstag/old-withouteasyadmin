@@ -10,13 +10,25 @@ abstract class BlockLib extends AbstractController
 {
     public function __construct(
         protected TranslatorInterface $translator,
-        protected Environment $environment
+        protected Environment $environment,
+        protected array $template = []
     )
     {
     }
 
-    protected function getBlockFile(string $type): string
+    public function getCode($block, $content): string
     {
+        unset($block, $content);
+
+        return '';
+    }
+
+    protected function getTemplateData(string $type): array
+    {
+        if (isset($this->template[$type])) {
+            return $this->template[$type];
+        }
+
         $folder = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';
 
@@ -35,12 +47,38 @@ abstract class BlockLib extends AbstractController
             }
         }
 
+        $this->template[$type] = [
+            'hook' => 'block',
+            'type' => $type,
+            'files' => $files,
+            'view' => $view,
+        ];
+
+
+        return $this->template[$type];
+    }
+
+    protected function getTemplateFile(string $type): string
+    {
+        $data = $this->getTemplateData($type);
+
+        return $data['view'];
+    }
+
+    protected function showTemplateFile(string $type): array
+    {
+        $data = $this->getTemplateData($type);
         $globals = $this->environment->getGlobals();
         if ('dev' == $globals['app']->getDebug()) {
-            dump(['block', $type, $files, $view]);
+            return $data;
         }
 
-        return $view;
+        return [];
+    }
+
+    public function template($entity, $content)
+    {
+        return $this->showTemplateFile($this->getCode($entity, $content));
     }
 
     protected function getParagraphsArray($service, $content, $paragraphs)
@@ -52,7 +90,12 @@ abstract class BlockLib extends AbstractController
                 continue;
             }
 
-            $paragraphs[] = $data;
+            $template = $service->showTemplate($paragraphArray);
+
+            $paragraphs[] = [
+                'template' => $template,
+                'data' => $data
+            ];
         }
 
         return $paragraphs;

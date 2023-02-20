@@ -17,6 +17,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Workflow\Registry;
 use Twig\Extension\AbstractExtension;
+use Twig\Markup;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
@@ -149,7 +150,7 @@ class LabstagExtension extends AbstractExtension
         $dataFilters = $this->getFiltersFunctions();
         $filters = [];
         foreach ($dataFilters as $key => $function) {
-            $filters[] = new TwigFilter($key, [$this, $function]);
+            $filters[] = new TwigFilter($key, [$this, $function], ['is_safe' => ['all']]);
         }
 
         return $filters;
@@ -163,7 +164,7 @@ class LabstagExtension extends AbstractExtension
         $dataFunctions = $this->getFiltersFunctions();
         $functions = [];
         foreach ($dataFunctions as $key => $function) {
-            $functions[] = new TwigFunction($key, [$this, $function]);
+            $functions[] = new TwigFunction($key, [$this, $function], ['is_safe' => ['all']]);
         }
 
         return $functions;
@@ -298,9 +299,43 @@ class LabstagExtension extends AbstractExtension
         dump($var);
     }
 
+    public function debugBegin($data): string
+    {
+        if (is_null($data) || count($data) == 0) {
+            return '';
+        }
+
+        $html = "<!--\nTHEME DEBUG\n";
+        $html .= "THEME HOOK : '".$data['hook']."'\n";
+        if (count($data['files']) != 0) {
+            $html .= "FILE NAME SUGGESTIONS: \n";
+            foreach ($data['files'] as $file) {
+                $checked = ($data['view'] == $file) ?  "X" : "*";
+                $html .= ' '.$checked.' '.$file."\n";
+            }
+        }
+
+        $html .= "BEGIN OUTPUT from '".$data['view']."' -->\n";
+
+        return $html;
+    }
+
+    public function debugEnd($data): string
+    {
+        if (is_null($data) || count($data) == 0) {
+            return '';
+        }
+
+        $html = "\n<!-- END OUTPUT from '".$data['view']."' -->\n";
+
+        return $html;
+    }
+
     private function getFiltersFunctions(): array
     {
         return [
+            'debug_begin'              => 'debugBegin',
+            'debug_end'                => 'debugEnd',
             'paragraph_name'           => 'getParagraphName',
             'paragraph_id'             => 'getParagraphId',
             'block_id'                 => 'getBlockId',

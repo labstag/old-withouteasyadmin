@@ -16,6 +16,8 @@ use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\VideoType;
 use Labstag\Lib\ParagraphLib;
+use Symfony\Component\Asset\Package;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -57,6 +59,12 @@ class VideoParagraph extends ParagraphLib
     public function isShowForm(): bool
     {
         return true;
+    }
+
+    public function getCode($video): string
+    {
+        unset($video);
+        return 'video';
     }
 
     public function setData(Paragraph $paragraph)
@@ -109,17 +117,26 @@ class VideoParagraph extends ParagraphLib
     public function show(Video $video): Response
     {
         $data = $this->getData($video);
-        dump($data->code);
+
+        $package = new Package(new EmptyVersionStrategy());
+        $image = ($video->getImage() instanceof Attachment) ? $package->getUrl('/'.$video->getImage()->getName()) : null;
+
+        if (is_null($image)) {
+            $image = $data->image->__toString();
+        }
+
+        $metas = $data->getMetas();
+
+        $datas = $metas->get('og:video:url');
+        $embed = (0 != count($datas)) ? $datas[0] : null;
 
         return $this->render(
-            $this->getParagraphFile('video'),
+            $this->getTemplateFile($this->getCode($video)),
             [
                 'paragraph' => $video,
-                'video_id'  => '9Czd4CoQbj8',
-                'srcdoc'    => 'https://www.youtube.com/embed/9Czd4CoQbj8?feature=oembed',
-                'width'     => $data->code->width * 3,
-                'height'    => $data->code->height * 3,
+                'image'     => $image,
                 'data'      => $data,
+                'embed'     => $embed,
             ]
         );
     }

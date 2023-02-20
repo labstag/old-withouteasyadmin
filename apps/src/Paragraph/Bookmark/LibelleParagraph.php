@@ -32,6 +32,12 @@ class LibelleParagraph extends ParagraphLib
         return 'bookmarklibelle';
     }
 
+    public function getCode($libelle): string
+    {
+        unset($libelle);
+        return 'bookmark/libelle';
+    }
+
     public function isShowForm(): bool
     {
         return false;
@@ -51,7 +57,7 @@ class LibelleParagraph extends ParagraphLib
         );
 
         return $this->render(
-            $this->getParagraphFile('bookmark/libelle'),
+            $this->getTemplateFile($this->getCode($libelle)),
             [
                 'pagination' => $pagination,
                 'paragraph'  => $libelle,
