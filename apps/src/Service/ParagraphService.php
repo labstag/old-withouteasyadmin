@@ -11,7 +11,6 @@ use Labstag\Entity\Paragraph;
 use Labstag\Entity\Post;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use ReflectionClass;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Twig\Environment;
 
@@ -198,7 +197,7 @@ class ParagraphService
     {
         $type = $paragraph->getType();
         $entity = $this->getEntity($paragraph);
-        $html = new Response();
+        $html = null;
         if (is_null($entity)) {
             return $html;
         }

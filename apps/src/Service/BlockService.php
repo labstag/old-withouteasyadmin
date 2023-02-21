@@ -5,7 +5,6 @@ namespace Labstag\Service;
 use Labstag\Entity\Block;
 use Labstag\Repository\BlockRepository;
 use ReflectionClass;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class BlockService
@@ -170,7 +169,7 @@ class BlockService
     {
         $type = $block->getType();
         $entity = $this->getEntity($block);
-        $html = new Response();
+        $html = null;
         if (is_null($entity)) {
             return $html;
         }

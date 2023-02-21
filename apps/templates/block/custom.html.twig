@@ -1,5 +1,5 @@
-{% for paragraph in paragraphs %}
-    {{ debug_begin(paragraph.template) }}
-    {{ paragraph.data.content|raw }}
-    {{ debug_end(paragraph.template) }}
+{% for row in paragraphs %}
+    {{ debug_begin(row.template) }}
+    {{ row.data.content|raw }}
+    {{ debug_end(row.template) }}
 {% endfor %}
