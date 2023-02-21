@@ -5,19 +5,15 @@ namespace Labstag\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Lib\CommandLib;
 use Labstag\Service\InstallService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'labstag:install')]
 class LabstagInstallCommand extends CommandLib
 {
-
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'labstag:install';
-
     public function __construct(
         protected array $serverenv,
         EntityManagerInterface $entityManager,

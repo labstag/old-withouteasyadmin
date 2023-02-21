@@ -114,6 +114,10 @@ class AdminController extends AdminControllerLib
             ];
         }
 
+        foreach ($images as $key => $value) {
+            $images[$key] = $value;
+        }
+
         $form = $this->createForm(ParamType::class, $config);
         $this->btnInstance()->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
@@ -132,7 +136,7 @@ class AdminController extends AdminControllerLib
             ]
         );
 
-        return $this->renderForm(
+        return $this->render(
             'admin/param.html.twig',
             [
                 'images' => $images,
@@ -155,7 +159,7 @@ class AdminController extends AdminControllerLib
         ];
         $form = $this->createForm(FormType::class, $data);
 
-        return $this->renderForm(
+        return $this->render(
             'admin/form.html.twig',
             ['form' => $form]
         );

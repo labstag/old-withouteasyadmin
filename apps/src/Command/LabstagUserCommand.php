@@ -9,6 +9,7 @@ use Labstag\Lib\CommandLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\UserRequestHandler;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,14 +18,9 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Workflow\Registry;
 
+#[AsCommand(name: 'labstag:user')]
 class LabstagUserCommand extends CommandLib
 {
-
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'labstag:user';
-
     public function __construct(
         EntityManagerInterface $entityManager,
         protected Registry $registry,
@@ -309,6 +305,7 @@ class LabstagUserCommand extends CommandLib
                 'delete'         => 'delete',
                 'state'          => 'state',
                 'updatepassword' => 'updatepassword',
+                'cancel'         => 'cancel',
             ]
         );
 
@@ -319,6 +316,7 @@ class LabstagUserCommand extends CommandLib
             'updatepassword' => $this->actionUpdatePassword($input, $output, $symfonyStyle),
             'state' => $this->actionState($input, $output, $symfonyStyle),
             'enable', 'disable', 'delete' => $this->actionEnableDisableDelete($input, $output, $symfonyStyle, $action),
+            'cancel' => $output->writeln('cancel'),
         };
 
         return Command::SUCCESS;

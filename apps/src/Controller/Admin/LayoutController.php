@@ -75,7 +75,7 @@ class LayoutController extends AdminControllerLib
         ];
         $parameters = $this->setSearchForms($parameters, $domain);
 
-        return $this->renderForm(
+        return $this->render(
             'admin/layout/index.html.twig',
             $parameters
         );

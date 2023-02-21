@@ -39,17 +39,6 @@ abstract class FrontControllerLib extends ControllerLib
         return parent::render($view, $parameters, $response);
     }
 
-    protected function renderForm(
-        string $view,
-        array $parameters = [],
-        ?Response $response = null
-    ): Response
-    {
-        $parameters = $this->setParameters($parameters);
-
-        return parent::renderForm($view, $parameters, $response);
-    }
-
     private function setParameters($parameters)
     {
         $blocksArray = $this->getRepository(Block::class)->getDataByRegion();

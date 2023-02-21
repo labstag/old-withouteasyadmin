@@ -34,7 +34,10 @@ class ParagraphType extends AbstractType
         }
 
         $formView->vars['label'] = 'Paragraphs';
-        $formView->vars['urlAdd'] = $this->router->generate($options['add'], ['id' => $entity->getId()]);
+        if (!is_null($entity->getId())) {
+            $formView->vars['urlAdd'] = $this->router->generate($options['add'], ['id' => $entity->getId()]);
+        }
+
         $formView->vars['paragraphs'] = $entity->getParagraphs();
         $formView->vars['urlEdit'] = $options['edit'];
         $formView->vars['urlDelete'] = $options['delete'];

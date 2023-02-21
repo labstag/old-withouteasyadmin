@@ -47,7 +47,7 @@ class BookmarkController extends AdminControllerLib
             $this->uploadFile($form, $security, $enqueueMethod);
         }
 
-        return $this->renderForm(
+        return $this->render(
             'admin/bookmark/import.html.twig',
             ['form' => $form]
         );

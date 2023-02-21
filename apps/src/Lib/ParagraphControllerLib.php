@@ -83,7 +83,7 @@ abstract class ParagraphControllerLib extends ControllerLib
             $this->addFlash('danger', 'Erreur lors de la modification.');
         }
 
-        return $this->renderForm(
+        return $this->render(
             'admin/paragraph/show.html.twig',
             [
                 'paragraph' => $paragraph,

@@ -22,6 +22,8 @@ class PostController extends AdminControllerLib
         ?Post $post
     ): Response
     {
+        dump($post);
+
         return $this->form(
             $this->getDomainEntity(),
             is_null($post) ? new Post() : $post,

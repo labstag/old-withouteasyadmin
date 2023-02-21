@@ -2,6 +2,7 @@
 
 namespace Labstag\FormType;
 
+use Labstag\Entity\Attachment;
 use Labstag\Reader\UploadAnnotationReader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -26,13 +27,19 @@ class UploadType extends AbstractType
     ): void
     {
         $entity = $form->getParent()->getData();
-        $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
         $name = $form->getName();
         $field = null;
-        if (isset($annotations[$name])) {
-            $propertyAccessor = PropertyAccess::createPropertyAccessor();
-            $field = $propertyAccessor->getValue($entity, $annotations[$name]->getFileName());
+        if (!is_array($entity)) {
+            $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
+            if (isset($annotations[$name])) {
+                $propertyAccessor = PropertyAccess::createPropertyAccessor();
+                $field = $propertyAccessor->getValue($entity, $annotations[$name]->getFileName());
+            }
+        } elseif (isset($entity[$name]) && $entity[$name] instanceof Attachment) {
+            $field = $entity[$name];
         }
+
+        dump($field);
 
         $formView->vars['field'] = $field;
         $formView->vars['url'] = null;

@@ -48,10 +48,14 @@
 {% endblock %}
 
 {% block paragraph_row %}
-    <fieldset data-url="{{ urlAdd }}">
+    <fieldset{% if urlAdd is defined %} data-url="{{ urlAdd }}"{% endif %}>
         <legend>{{ form.vars.label }}</legend>
         <div id="paragraph-list">
-            {% include "admin/paragraph/list.html.twig" with {'addurl': urlAdd, 'urledit': urlEdit, 'urldelete': urlDelete, 'paragraphs': paragraphs} %}
+            {% set param = {'urledit': urlEdit, 'urldelete': urlDelete, 'paragraphs': paragraphs} %}
+            {% if urlAdd is defined %}
+                {% set param = {'addurl': urlAdd, 'urledit': urlEdit, 'urldelete': urlDelete, 'paragraphs': paragraphs} %}
+            {% endif %}
+            {% include "admin/paragraph/list.html.twig" with param %}
         </div>
         {{ form_widget(form) }}
         {{ form_errors(form) }}

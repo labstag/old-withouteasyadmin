@@ -54,7 +54,7 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('front');
         }
 
-        return $this->renderForm(
+        return $this->render(
             'security/change-password.html.twig',
             ['formChangePassword' => $form]
         );
@@ -153,7 +153,7 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('front');
         }
 
-        return $this->renderForm(
+        return $this->render(
             'security/disclaimer.html.twig',
             [
                 'class_body' => 'DisclaimerPage',
@@ -178,7 +178,7 @@ class SecurityController extends ControllerLib
         );
         $oauths = $oauthConnectUserRepository->findDistinctAllOauth();
 
-        return $this->renderForm(
+        return $this->render(
             'security/login.html.twig',
             [
                 'oauths'    => $oauths,
@@ -208,7 +208,7 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->renderForm(
+        return $this->render(
             'security/lost-password.html.twig',
             ['formLostPassword' => $form]
         );

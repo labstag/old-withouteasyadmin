@@ -63,7 +63,7 @@ abstract class AdminControllerLib extends ControllerLib
             }
         }
 
-        return $this->renderForm(
+        return $this->render(
             $twig,
             array_merge(
                 $parameters,
@@ -102,7 +102,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
         $parameters = $this->setSearchForms($parameters, $domain);
 
-        return $this->renderForm(
+        return $this->render(
             $html,
             $parameters
         );
@@ -381,13 +381,6 @@ abstract class AdminControllerLib extends ControllerLib
         $parameters['btnadmin'] = $this->btnInstance()->get();
 
         return parent::render($view, $parameters, $response);
-    }
-
-    protected function renderForm(string $view, array $parameters = [], ?Response $response = null): Response
-    {
-        $parameters = $this->generateMenus($parameters);
-
-        return parent::renderForm($view, $parameters, $response);
     }
 
     /**

@@ -80,7 +80,7 @@ class BlockController extends AdminControllerLib
             throw new AccessDeniedException();
         }
 
-        return $this->renderForm(
+        return $this->render(
             'admin/block/index.html.twig',
             [
                 'data'    => $data,
