@@ -17,8 +17,6 @@ class RenderController extends AdminControllerLib
         ?Render $render
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($render) ? new Render() : $render,

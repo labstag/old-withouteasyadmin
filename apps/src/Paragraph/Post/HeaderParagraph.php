@@ -11,6 +11,13 @@ use Labstag\Repository\PostRepository;
 
 class HeaderParagraph extends ParagraphLib
 {
+    public function getCode($header): string
+    {
+        unset($header);
+
+        return 'post/header';
+    }
+
     public function getEntity(): string
     {
         return Header::class;
@@ -38,12 +45,12 @@ class HeaderParagraph extends ParagraphLib
 
     public function show(Header $header)
     {
-        $all        = $this->request->attributes->all();
+        $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        $slug       = $routeParam['slug'] ?? null;
+        $slug = $routeParam['slug'] ?? null;
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $post             = $entityRepository->findOneBy(
+        $post = $entityRepository->findOneBy(
             ['slug' => $slug]
         );
 
@@ -52,7 +59,7 @@ class HeaderParagraph extends ParagraphLib
         }
 
         return $this->render(
-            $this->getParagraphFile('post/header'),
+            $this->getTemplateFile($this->getCode($header)),
             [
                 'post'      => $post,
                 'paragraph' => $header,

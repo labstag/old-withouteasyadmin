@@ -42,7 +42,7 @@ class TwigEventSubscriber extends EventSubscriberLib
     protected function isStateConfig(ControllerEvent $controllerEvent)
     {
         $controller = $controllerEvent->getRequest()->attributes->get('_controller');
-        $matches    = [];
+        $matches = [];
         preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
 
         return 0 == count($matches) && !in_array($controller, self::ERROR_CONTROLLER);
@@ -57,7 +57,7 @@ class TwigEventSubscriber extends EventSubscriberLib
         }
 
         $globals = $this->environment->getGlobals();
-        $config  = $globals['config'] ?? $this->dataService->getConfig();
+        $config = $globals['config'] ?? $this->dataService->getConfig();
         $this->setConfigMeta($config);
         $this->setConfigTac($config);
         $this->setFormatDatetime($config);
@@ -66,7 +66,7 @@ class TwigEventSubscriber extends EventSubscriberLib
 
     protected function setConfigCanonical()
     {
-        $globals   = $this->environment->getGlobals();
+        $globals = $this->environment->getGlobals();
         $canonical = $globals['canonical'] ?? $this->request->getUri();
         $this->environment->AddGlobal('canonical', $canonical);
     }
@@ -119,7 +119,7 @@ class TwigEventSubscriber extends EventSubscriberLib
     protected function setLoginPage(ControllerEvent $controllerEvent): void
     {
         $currentRoute = $controllerEvent->getRequest()->attributes->get('_route');
-        $routes       = [
+        $routes = [
             'app_login',
             'admin_profil',
         ];

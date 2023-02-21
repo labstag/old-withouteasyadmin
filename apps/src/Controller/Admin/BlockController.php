@@ -55,22 +55,22 @@ class BlockController extends AdminControllerLib
             'admin_block_move',
             'Move',
         );
-        $form       = $this->createForm(
+        $form = $this->createForm(
             NewBlockType::class,
             new Block(),
             [
                 'action' => $this->router->generate('admin_block_new'),
             ]
         );
-        $domain     = $this->getDomainEntity();
-        $url        = $domain->getUrlAdmin();
+        $domain = $this->getDomainEntity();
+        $url = $domain->getUrlAdmin();
         $repository = $domain->getRepository();
-        $request    = $this->requeststack->getCurrentRequest();
-        $all        = $request->attributes->all();
-        $route      = $all['_route'];
-        $routeType  = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
+        $request = $this->requeststack->getCurrentRequest();
+        $all = $request->attributes->all();
+        $route = $all['_route'];
+        $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
         $this->setBtnListOrTrash($routeType, $domain);
-        $data  = $repository->getDataByRegion();
+        $data = $repository->getDataByRegion();
         $total = 0;
         foreach ($data as $region) {
             $total += is_countable($region) ? count($region) : 0;
@@ -80,7 +80,7 @@ class BlockController extends AdminControllerLib
             throw new AccessDeniedException();
         }
 
-        return $this->renderForm(
+        return $this->render(
             'admin/block/index.html.twig',
             [
                 'data'    => $data,
@@ -130,9 +130,9 @@ class BlockController extends AdminControllerLib
         BlockRequestHandler $blockRequestHandler
     ): RedirectResponse
     {
-        $post  = $request->request->all('new_block');
+        $post = $request->request->all('new_block');
         $block = new Block();
-        $old   = clone $block;
+        $old = clone $block;
         $block->setTitle(Uuid::v1());
         $block->setRegion($post['region']);
         $block->setType($post['type']);

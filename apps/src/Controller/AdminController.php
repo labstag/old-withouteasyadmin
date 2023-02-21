@@ -32,7 +32,7 @@ class AdminController extends AdminControllerLib
         $config = $dataService->getConfig();
         ksort($config);
         $content = json_encode($config, JSON_PRETTY_PRINT);
-        $file    = '../json/config.json';
+        $file = '../json/config.json';
         if (is_file($file)) {
             try {
                 file_put_contents($file, $content);
@@ -107,11 +107,15 @@ class AdminController extends AdminControllerLib
         }
 
         $config = $dataService->getConfig();
-        $tab    = $this->getParameter('metatags');
+        $tab = $this->getParameter('metatags');
         foreach ($tab as $index) {
             $config[$index] = [
                 $config[$index],
             ];
+        }
+
+        foreach ($images as $key => $value) {
+            $images[$key] = $value;
         }
 
         $form = $this->createForm(ParamType::class, $config);
@@ -132,7 +136,7 @@ class AdminController extends AdminControllerLib
             ]
         );
 
-        return $this->renderForm(
+        return $this->render(
             'admin/param.html.twig',
             [
                 'images' => $images,
@@ -155,7 +159,7 @@ class AdminController extends AdminControllerLib
         ];
         $form = $this->createForm(FormType::class, $data);
 
-        return $this->renderForm(
+        return $this->render(
             'admin/form.html.twig',
             ['form' => $form]
         );
@@ -181,11 +185,11 @@ class AdminController extends AdminControllerLib
             return $this->redirectToRoute('admin');
         }
 
-        $globals        = $environment->getGlobals();
-        $modal          = $globals['modal'] ?? [];
+        $globals = $environment->getGlobals();
+        $modal = $globals['modal'] ?? [];
         $modal['empty'] = true;
         if ($this->isRouteEnable('api_action_emptyall')) {
-            $value             = $csrfTokenManager->getToken('emptyall')->getValue();
+            $value = $csrfTokenManager->getToken('emptyall')->getValue();
             $modal['emptyall'] = true;
             $this->btnInstance()->add(
                 'btn-admin-header-emptyall',
@@ -222,7 +226,7 @@ class AdminController extends AdminControllerLib
 
     private function setUpload(Request $request, array $images): void
     {
-        $all   = $request->files->all();
+        $all = $request->files->all();
         $files = $all['param'];
         $paths = [
             'image'   => $this->getParameter('file_directory'),
@@ -242,10 +246,10 @@ class AdminController extends AdminControllerLib
             }
 
             $attachment = $images[$key];
-            $old        = clone $attachment;
-            $filename   = $file->getClientOriginalName();
-            $path       = $paths[$key];
-            $filename   = ('favicon' == $key) ? 'favicon.ico' : $filename;
+            $old = clone $attachment;
+            $filename = $file->getClientOriginalName();
+            $path = $paths[$key];
+            $filename = ('favicon' == $key) ? 'favicon.ico' : $filename;
             $this->moveFile($file, $path, $filename, $attachment, $old);
         }
     }

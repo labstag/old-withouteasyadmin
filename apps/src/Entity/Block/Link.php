@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Table(name="block_link")
+ *
  * @ORM\Entity(repositoryClass=LinkRepository::class)
  */
 class Link implements Stringable
@@ -20,19 +21,22 @@ class Link implements Stringable
     private $external;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Footer::class, inversedBy="links")
+     * @ORM\ManyToOne(targetEntity=Footer::class, inversedBy="links", cascade={"persist"})
      */
     private $footer;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Header::class, inversedBy="links")
+     * @ORM\ManyToOne(targetEntity=Header::class, inversedBy="links", cascade={"persist"})
      */
     private $header;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
@@ -49,13 +53,7 @@ class Link implements Stringable
 
     public function __toString(): string
     {
-        return implode(
-            ' ',
-            [
-                $this->getUrl(),
-                $this->getTitle(),
-            ]
-        );
+        return (string) $this->getTitle();
     }
 
     public function getExternal(): ?bool

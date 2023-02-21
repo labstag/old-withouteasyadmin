@@ -21,8 +21,11 @@ class Workflow
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
@@ -33,19 +36,19 @@ class Workflow
     private $transition;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refworkflow", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refworkflow", cascade={"persist"}, orphanRemoval=true)
      */
     private $workflowGroupes;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refworkflow", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refworkflow", cascade={"persist"}, orphanRemoval=true)
      */
     private $workflowUsers;
 
     public function __construct()
     {
         $this->workflowGroupes = new ArrayCollection();
-        $this->workflowUsers   = new ArrayCollection();
+        $this->workflowUsers = new ArrayCollection();
     }
 
     public function addWorkflowGroupe(WorkflowGroupe $workflowGroupe): self

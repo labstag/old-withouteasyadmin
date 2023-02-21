@@ -8,8 +8,8 @@ use Labstag\Form\Admin\Collections\User\EmailType;
 use Labstag\Form\Admin\Collections\User\LinkType;
 use Labstag\Form\Admin\Collections\User\PhoneType;
 use Labstag\FormType\EmailVerifChoiceType;
+use Labstag\FormType\UploadType;
 use Labstag\Lib\AbstractTypeLib;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,7 +43,7 @@ class ProfilType extends AbstractTypeLib
         );
         $formBuilder->add(
             'file',
-            FileType::class,
+            UploadType::class,
             [
                 'label'    => ' ',
                 'help'     => $this->translator->trans('profil.file.help', [], 'admin.form'),

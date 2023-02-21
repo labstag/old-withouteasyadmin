@@ -64,9 +64,9 @@ class GuardService
      */
     public function all(): array
     {
-        $data            = [];
+        $data = [];
         $routeCollection = $this->router->getRouteCollection();
-        $all             = $routeCollection->all();
+        $all = $routeCollection->all();
         foreach ($all as $name => $route) {
             // @var Routing $route
             $defaults = $route->getDefaults();
@@ -90,9 +90,9 @@ class GuardService
      */
     public function allRoutes(): array
     {
-        $data            = [];
+        $data = [];
         $routeCollection = $this->router->getRouteCollection();
-        $all             = $routeCollection->all();
+        $all = $routeCollection->all();
         foreach ($all as $name => $route) {
             $data[$name] = $route;
         }
@@ -139,9 +139,9 @@ class GuardService
      */
     public function getPublicRoute(): array
     {
-        $data            = [];
+        $data = [];
         $routeCollection = $this->router->getRouteCollection();
-        $all             = $routeCollection->all();
+        $all = $routeCollection->all();
         foreach ($all as $name => $route) {
             // @var Routing $route
             $defaults = $route->getDefaults();
@@ -196,7 +196,7 @@ class GuardService
         }
 
         // @var User $user
-        $user   = $token->getUser();
+        $user = $token->getUser();
         $groupe = $user->getRefgroupe();
         if ('superadmin' == $groupe->getCode()) {
             return true;
@@ -227,7 +227,7 @@ class GuardService
     public function old(): array
     {
         $results = $this->getLostRoute();
-        $data    = [];
+        $data = [];
         foreach ($results as $result) {
             $data[] = [$result];
         }
@@ -256,7 +256,7 @@ class GuardService
      */
     public function routesEnableGroupe(Groupe $groupe): array
     {
-        $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
+        $data = $this->routeRepository->findBy([], ['name' => 'ASC']);
         $routes = [];
         foreach ($data as $route) {
             $state = $this->guardRouteEnableGroupe($route, $groupe);
@@ -275,7 +275,7 @@ class GuardService
      */
     public function routesEnableUser(User $user): array
     {
-        $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
+        $data = $this->routeRepository->findBy([], ['name' => 'ASC']);
         $routes = [];
         foreach ($data as $route) {
             $state = $this->guardRouteEnableUser($route, $user);
@@ -312,11 +312,11 @@ class GuardService
     public function tables(): array
     {
         $data = [];
-        $all  = $this->all();
+        $all = $this->all();
         foreach ($all as $name => $route) {
             // @var Routing $route
             $defaults = $route->getDefaults();
-            $data[]   = [
+            $data[] = [
                 $name,
                 $defaults['_controller'],
             ];
@@ -338,15 +338,15 @@ class GuardService
     protected function searchRouteUser(User $user, string $route): bool
     {
         $stateGroupe = $this->searchRouteGroupe($user->getRefgroupe(), $route);
-        $entity      = $this->routeUserRepository->findRoute($user, $route);
-        $stateUser   = ($entity instanceof RouteUser) ? $entity->isState() : false;
+        $entity = $this->routeUserRepository->findRoute($user, $route);
+        $stateUser = ($entity instanceof RouteUser) ? $entity->isState() : false;
 
         return $stateGroupe || $stateUser;
     }
 
     private function getLostRoute()
     {
-        $all    = $this->all();
+        $all = $this->all();
         $routes = array_keys($all);
 
         return $this->routeRepository->findLost($routes);
@@ -366,9 +366,9 @@ class GuardService
             return false;
         }
 
-        $data     = $all[$route];
+        $data = $all[$route];
         $defaults = $data->getDefaults();
-        $matches  = [];
+        $matches = [];
         preg_match(self::REGEX_CONTROLLER_ADMIN, (string) $defaults['_controller'], $matches);
 
         return !(0 != count($matches) && 'visiteur' == $groupe->getCode());

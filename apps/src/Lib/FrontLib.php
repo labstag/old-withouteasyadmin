@@ -28,8 +28,8 @@ abstract class FrontLib
     {
         foreach ($metas as $entity) {
             $meta['description'] = $entity->getDescription();
-            $meta['keywords']    = $entity->getKeywords();
-            $meta['title']       = $entity->getTitle();
+            $meta['keywords'] = $entity->getKeywords();
+            $meta['title'] = $entity->getTitle();
         }
 
         return $meta;

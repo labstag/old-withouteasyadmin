@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib
 {
+    public function getCode($liste): string
+    {
+        unset($liste);
+
+        return 'post/list';
+    }
+
     public function getEntity(): string
     {
         return Liste::class;
@@ -41,14 +48,14 @@ class ListParagraph extends ParagraphLib
     {
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $pagination       = $this->paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $entityRepository->findPublier(),
             $this->request->query->getInt('page', 1),
             10
         );
 
         return $this->render(
-            $this->getParagraphFile('post/list'),
+            $this->getTemplateFile($this->getCode($liste)),
             [
                 'pagination' => $pagination,
                 'paragraph'  => $liste,

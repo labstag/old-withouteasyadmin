@@ -5,17 +5,19 @@ namespace Labstag\Entity\Block;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Repository\Block\HtmlRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Table(name="block_html")
+ *
  * @ORM\Entity(repositoryClass=HtmlRepository::class)
  */
-class Html
+class Html implements Stringable
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="htmls")
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="htmls", cascade={"persist"})
      */
     private $block;
 
@@ -26,8 +28,11 @@ class Html
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
@@ -36,6 +41,11 @@ class Html
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $title;
+
+    public function __toString(): string
+    {
+        return (string) $this->getBlock()->getTitle();
+    }
 
     public function getBlock(): ?Block
     {

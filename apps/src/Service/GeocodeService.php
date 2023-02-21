@@ -57,9 +57,9 @@ class GeocodeService
 
     public function csv(string $country)
     {
-        $country    = strtoupper($country);
-        $file       = 'http://download.geonames.org/export/zip/'.$country.'.zip';
-        $response   = $this->httpClient->request(
+        $country = strtoupper($country);
+        $file = 'http://download.geonames.org/export/zip/'.$country.'.zip';
+        $response = $this->httpClient->request(
             'GET',
             $file
         );
@@ -68,9 +68,9 @@ class GeocodeService
             return [];
         }
 
-        $content  = $response->getContent();
+        $content = $response->getContent();
         $tempFile = tmpfile();
-        $path     = stream_get_meta_data($tempFile)['uri'];
+        $path = stream_get_meta_data($tempFile)['uri'];
         file_put_contents($path, $content);
         $zipArchive = new ZipArchive();
         if (!$zipArchive->open($path)) {
@@ -78,7 +78,7 @@ class GeocodeService
         }
 
         $content = $zipArchive->getFromName($country.'.txt');
-        $csv     = str_getcsv($content, "\n");
+        $csv = str_getcsv($content, "\n");
         $zipArchive->close();
 
         return $csv;
@@ -91,7 +91,7 @@ class GeocodeService
     {
         $data = [];
         foreach ($csv as $line) {
-            $row    = str_getcsv((string) $line, "\t");
+            $row = str_getcsv((string) $line, "\t");
             $data[] = $row;
         }
 

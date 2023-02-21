@@ -5,14 +5,6 @@
     {{ form_row(form.title) }}
     {{ form_row(form.published) }}
     {{ form_row(form.content) }}
-    {% if entity.id is not null %}
-        {{ macro_admin.form_img(
-            entity,
-            entity.fond,
-            "edito.fond"|trans({}, 'admin.messages'),
-            path('api_attachment_editofond', {'entity': entity.id})
-        ) }}
-    {% endif %}
     {{ form_row(form.file) }}
     {{ form_row(form.paragraph) }}
     {{ form_row(form.refuser) }}

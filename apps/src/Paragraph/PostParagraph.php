@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PostParagraph extends ParagraphLib
 {
+    public function getCode($post): string
+    {
+        unset($post);
+
+        return 'post';
+    }
+
     public function getEntity(): string
     {
         return Post::class;
@@ -41,10 +48,10 @@ class PostParagraph extends ParagraphLib
     {
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(EntityPost::class);
-        $posts            = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
+        $posts = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
 
         return $this->render(
-            $this->getParagraphFile('post'),
+            $this->getTemplateFile($this->getCode($post)),
             [
                 'posts'     => $posts,
                 'paragraph' => $post,

@@ -10,6 +10,13 @@ use Labstag\Lib\ParagraphLib;
 
 class ChapterParagraph extends ParagraphLib
 {
+    public function getCode($historychapter): string
+    {
+        unset($historychapter);
+
+        return 'history/chapter';
+    }
+
     public function getEntity(): string
     {
         return HistoryChapter::class;
@@ -37,12 +44,12 @@ class ChapterParagraph extends ParagraphLib
 
     public function show(HistoryChapter $historychapter)
     {
-        $all              = $this->request->attributes->all();
-        $routeParam       = $all['_route_params'];
-        $history          = $routeParam['history'] ?? null;
-        $chapter          = $routeParam['chapter'] ?? null;
+        $all = $this->request->attributes->all();
+        $routeParam = $all['_route_params'];
+        $history = $routeParam['history'] ?? null;
+        $chapter = $routeParam['chapter'] ?? null;
         $entityRepository = $this->getRepository(Chapter::class);
-        $chapter          = $entityRepository->findChapterByHistory($history, $chapter);
+        $chapter = $entityRepository->findChapterByHistory($history, $chapter);
         if (!$chapter instanceof Chapter) {
             return;
         }
@@ -50,7 +57,7 @@ class ChapterParagraph extends ParagraphLib
         $prevnext = $this->getPrevNext($chapter, $chapter->getRefhistory());
 
         return $this->render(
-            $this->getParagraphFile('history/chapter'),
+            $this->getTemplateFile($this->getcode($historychapter)),
             [
                 'prev'      => $prevnext['prev'],
                 'next'      => $prevnext['next'],
@@ -77,12 +84,12 @@ class ChapterParagraph extends ParagraphLib
     private function getPrevNext($chapter, $history): array
     {
         $chapters = $history->getchapters();
-        $prev     = null;
-        $next     = null;
+        $prev = null;
+        $next = null;
         foreach ($chapters as $i => $row) {
             if ($row->getSlug() == $chapter->getSlug()) {
-                $prev    = $chapters[$i - 1] ?? null;
-                $next    = $chapters[$i + 1] ?? null;
+                $prev = $chapters[$i - 1] ?? null;
+                $next = $chapters[$i + 1] ?? null;
                 $chapter = $row;
 
                 break;

@@ -2,8 +2,8 @@
 
 namespace Labstag\Form\Admin\Bookmark;
 
+use Labstag\FormType\UploadType;
 use Labstag\Lib\AbstractTypeLib;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,7 +19,7 @@ class ImportType extends AbstractTypeLib
     {
         $formBuilder->add(
             'file',
-            FileType::class,
+            UploadType::class,
             [
                 'label'    => $this->translator->trans('bookmark.import.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('bookmark.import.help', [], 'admin.form'),

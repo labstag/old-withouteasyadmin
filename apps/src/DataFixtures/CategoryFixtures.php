@@ -21,11 +21,11 @@ class CategoryFixtures extends DataFixtureLib implements DependentFixtureInterfa
 
     protected function addCategory(Generator $generator, int $index): Category
     {
-        $category    = new Category();
+        $category = new Category();
         $oldCategory = clone $category;
         $category->setName($generator->unique()->colorName());
         $indexCategory = $generator->numberBetween(0, $index);
-        $code          = 'category_'.$indexCategory;
+        $code = 'category_'.$indexCategory;
         if ($this->hasReference($code) && 1 == random_int(0, 1)) {
             $parent = $this->getReference($code);
             $category->setParent($parent);

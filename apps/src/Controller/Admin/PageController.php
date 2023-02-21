@@ -20,8 +20,6 @@ class PageController extends AdminControllerLib
         ?Page $page
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($page) ? new Page() : $page,

@@ -14,19 +14,22 @@ class WorkflowGroupe
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="workflowGroupes")
+     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="workflowGroupes", cascade={"persist"})
      */
     private $refgroupe;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Workflow::class, inversedBy="workflowGroupes")
+     * @ORM\ManyToOne(targetEntity=Workflow::class, inversedBy="workflowGroupes", cascade={"persist"})
      */
     private $refworkflow;
 

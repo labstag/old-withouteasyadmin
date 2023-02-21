@@ -11,6 +11,13 @@ use Labstag\Repository\PostRepository;
 
 class ShowParagraph extends ParagraphLib
 {
+    public function getCode($show): string
+    {
+        unset($show);
+
+        return 'post/show';
+    }
+
     public function getEntity(): string
     {
         return Show::class;
@@ -38,12 +45,12 @@ class ShowParagraph extends ParagraphLib
 
     public function show(Show $show)
     {
-        $all        = $this->request->attributes->all();
+        $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        $slug       = $routeParam['slug'] ?? null;
+        $slug = $routeParam['slug'] ?? null;
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $post             = $entityRepository->findOneBy(
+        $post = $entityRepository->findOneBy(
             ['slug' => $slug]
         );
 
@@ -52,7 +59,7 @@ class ShowParagraph extends ParagraphLib
         }
 
         return $this->render(
-            $this->getParagraphFile('post/show'),
+            $this->getTemplateFile($this->getCode($show)),
             [
                 'post'      => $post,
                 'paragraph' => $show,

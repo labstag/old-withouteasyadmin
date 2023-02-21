@@ -62,8 +62,8 @@ class InstallService
      */
     public function getEnv($serverEnv): array
     {
-        $file   = __DIR__.'/../../.env';
-        $data   = [];
+        $file = __DIR__.'/../../.env';
+        $data = [];
         $dotenv = new Dotenv();
         if (is_file($file)) {
             $data = $dotenv->parse(file_get_contents($file));
@@ -77,7 +77,7 @@ class InstallService
 
     public function users(): void
     {
-        $users   = $this->getData('user');
+        $users = $this->getData('user');
         $groupes = $this->groupeRepository->findAll();
         foreach ($users as $user) {
             $this->addUser($groupes, $user);
@@ -89,7 +89,7 @@ class InstallService
         $value
     ): void
     {
-        $search        = ['name' => $key];
+        $search = ['name' => $key];
         $configuration = $this->configurationRepository->findOneBy($search);
         if (!$configuration instanceof Configuration) {
             $configuration = new Configuration();
@@ -110,7 +110,7 @@ class InstallService
         $search = [
             'username' => $dataUser['username'],
         ];
-        $user   = $this->userRepository->findOneBy($search);
+        $user = $this->userRepository->findOneBy($search);
         if ($user instanceof User) {
             return;
         }
@@ -120,18 +120,18 @@ class InstallService
 
     protected function setOauth(array $serverEnv, array &$data): void
     {
-        $env   = $this->getEnv($serverEnv);
+        $env = $this->getEnv($serverEnv);
         $oauth = [];
         foreach ($env as $key => $val) {
             if (0 == substr_count((string) $key, 'OAUTH_')) {
                 continue;
             }
 
-            $code    = str_replace('OAUTH_', '', (string) $key);
-            $code    = strtolower($code);
+            $code = str_replace('OAUTH_', '', (string) $key);
+            $code = strtolower($code);
             $explode = explode('_', $code);
-            $type    = $explode[0];
-            $key     = $explode[1];
+            $type = $explode[0];
+            $key = $explode[1];
             if (!isset($oauth[$type])) {
                 $activate = $this->oauthService->getActivedProvider($type);
 

@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CategoryParagraph extends ParagraphLib
 {
+    public function getCode($category): string
+    {
+        unset($category);
+
+        return 'post/category';
+    }
+
     public function getEntity(): string
     {
         return Category::class;
@@ -39,19 +46,19 @@ class CategoryParagraph extends ParagraphLib
 
     public function show(Category $category): Response
     {
-        $all        = $this->request->attributes->all();
+        $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        $slug       = $routeParam['slug'] ?? null;
+        $slug = $routeParam['slug'] ?? null;
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $pagination       = $this->paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $entityRepository->findPublierCategory($slug),
             $this->request->query->getInt('page', 1),
             10
         );
 
         return $this->render(
-            $this->getParagraphFile('post/category'),
+            $this->getTemplateFile($this->getCode($category)),
             [
                 'pagination' => $pagination,
                 'paragraph'  => $category,

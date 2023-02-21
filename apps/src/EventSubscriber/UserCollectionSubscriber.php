@@ -21,8 +21,8 @@ class UserCollectionSubscriber extends EventSubscriberLib
     public function onUserCollectionEvent(UserCollectionEvent $userCollectionEvent): void
     {
         $oauthConnectUser = $userCollectionEvent->getOauthConnectUser();
-        $linkUser         = $userCollectionEvent->getLinkUser();
-        $addressUser      = $userCollectionEvent->getAddressUser();
+        $linkUser = $userCollectionEvent->getLinkUser();
+        $addressUser = $userCollectionEvent->getAddressUser();
 
         $this->setOauthConnectUser($oauthConnectUser);
         $this->setLinkUser($linkUser);

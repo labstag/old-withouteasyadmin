@@ -7,6 +7,7 @@ use Labstag\Entity\Workflow;
 use Labstag\Lib\CommandLib;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\WorkflowRequestHandler;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,14 +15,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Workflow\Registry;
 
+#[AsCommand(name: 'labstag:workflows-show')]
 class LabstagWorkflowsShowCommand extends CommandLib
 {
-
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'labstag:workflows-show';
-
     public function __construct(
         protected $entitiesclass,
         EntityManagerInterface $entityManager,
@@ -44,14 +40,14 @@ class LabstagWorkflowsShowCommand extends CommandLib
         $symfonyStyle = new SymfonyStyle($input, $output);
         $symfonyStyle->title('Ajout des workflows dans la base de données');
 
-        $data     = [];
+        $data = [];
         $entities = [];
         foreach ($this->entitiesclass as $entity) {
             if ($this->registry->has($entity)) {
-                $workflow    = $this->registry->get($entity);
-                $definition  = $workflow->getDefinition();
-                $name        = $workflow->getName();
-                $entities[]  = $name;
+                $workflow = $this->registry->get($entity);
+                $definition = $workflow->getDefinition();
+                $name = $workflow->getName();
+                $entities[] = $name;
                 $transitions = $definition->getTransitions();
                 foreach ($transitions as $transition) {
                     $data[$name][] = $transition->getName();

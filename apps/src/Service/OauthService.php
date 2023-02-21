@@ -221,9 +221,9 @@ class OauthService
 
     protected function initProvider(string $clientName): AbstractProvider
     {
-        $code  = strtoupper($clientName);
+        $code = strtoupper($clientName);
         $oauth = $this->oauthActivated[strtolower($code)];
-        $url   = 'https:'.$this->router->generate(
+        $url = 'https:'.$this->router->generate(
             'connect_check',
             ['oauthCode' => $clientName],
             UrlGeneratorInterface::NETWORK_PATH

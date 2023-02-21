@@ -5,6 +5,10 @@
 			"path": ".github"
 		},
 		{
+			"name": "cypress",
+			"path": "cypress"
+		},
+		{
 			"name": "assets",
 			"path": "assets"
 		},

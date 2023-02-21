@@ -13,20 +13,24 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Table(name="block_custom")
+ *
  * @ORM\Entity(repositoryClass=CustomRepository::class)
  */
 class Custom implements Stringable
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="customs")
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="customs", cascade={"persist"})
      */
     private $block;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;

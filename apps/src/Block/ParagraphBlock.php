@@ -21,6 +21,13 @@ class ParagraphBlock extends BlockLib
         parent::__construct($translator, $environment);
     }
 
+    public function getCode($paragraph, $content): string
+    {
+        unset($paragraph, $content);
+
+        return 'paragraph';
+    }
+
     public function getEntity(): string
     {
         return Paragraph::class;
@@ -51,7 +58,7 @@ class ParagraphBlock extends BlockLib
         $data = $this->setParagraphs($content);
 
         return $this->render(
-            $this->getBlockFile('paragraph'),
+            $this->getTemplateFile($this->getCode($paragraph, $content)),
             [
                 'paragraphs' => $data,
                 'block'      => $paragraph,

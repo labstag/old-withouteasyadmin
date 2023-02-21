@@ -11,6 +11,13 @@ use Labstag\Repository\EditoRepository;
 
 class HeaderParagraph extends ParagraphLib
 {
+    public function getCode($header): string
+    {
+        unset($header);
+
+        return 'edito/header';
+    }
+
     public function getEntity(): string
     {
         return Header::class;
@@ -40,14 +47,14 @@ class HeaderParagraph extends ParagraphLib
     {
         /** @var EditoRepository $entityRepository */
         $entityRepository = $this->getRepository(Edito::class);
-        $edito            = $entityRepository->findOnePublier();
+        $edito = $entityRepository->findOnePublier();
 
         if (!$edito instanceof Edito) {
             return;
         }
 
         return $this->render(
-            $this->getParagraphFile('edito/header'),
+            $this->getTemplateFile($this->getCode($header)),
             [
                 'edito'     => $edito,
                 'paragraph' => $header,

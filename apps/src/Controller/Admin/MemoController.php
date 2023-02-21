@@ -21,8 +21,6 @@ class MemoController extends AdminControllerLib
         ?Memo $memo
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($memo) ? new Memo() : $memo,

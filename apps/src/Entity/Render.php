@@ -18,14 +18,17 @@ class Render
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="render")
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="render", cascade={"persist"}, orphanRemoval=true)
      */
     private $metas;
 

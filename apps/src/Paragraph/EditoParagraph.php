@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EditoParagraph extends ParagraphLib
 {
+    public function getCode($edito): string
+    {
+        unset($edito);
+
+        return 'edito';
+    }
+
     public function getEntity(): string
     {
         return Edito::class;
@@ -43,7 +50,7 @@ class EditoParagraph extends ParagraphLib
         $entityRepository = $this->getRepository(EntityEdito::class);
 
         return $this->render(
-            $this->getParagraphFile('edito'),
+            $this->getTemplateFile($this->getCode($edito)),
             [
                 'edito'     => $entityRepository->findOnePublier(),
                 'paragraph' => $edito,

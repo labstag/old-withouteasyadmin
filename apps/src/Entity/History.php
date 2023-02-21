@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=HistoryRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class History
@@ -24,27 +25,32 @@ class History
     use StateableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Chapter::class, mappedBy="refhistory", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Chapter::class, mappedBy="refhistory", cascade={"persist"}, orphanRemoval=true)
+     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $chapters;
 
     /**
      * @Gedmo\Timestampable(on="create")
+     *
      * @ORM\Column(type="datetime")
      */
     private $created;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="history", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="history", cascade={"persist"}, orphanRemoval=true)
      */
     private $metas;
 
@@ -59,7 +65,8 @@ class History
     private int $pages = 0;
 
     /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="history", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="history", cascade={"persist"}, orphanRemoval=true)
+     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
@@ -70,14 +77,17 @@ class History
     private $published;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="histories")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="histories", cascade={"persist"})
+     *
      * @Assert\NotBlank
+     *
      * @ORM\JoinColumn(nullable=false)
      */
     private $refuser;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
@@ -89,14 +99,15 @@ class History
 
     /**
      * @Gedmo\Timestampable(on="update")
+     *
      * @ORM\Column(type="datetime")
      */
     private $updated;
 
     public function __construct()
     {
-        $this->chapters   = new ArrayCollection();
-        $this->metas      = new ArrayCollection();
+        $this->chapters = new ArrayCollection();
+        $this->metas = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
     }
 
@@ -138,9 +149,9 @@ class History
     public function getChaptersPublished(): Collection
     {
         $arrayCollection = new ArrayCollection();
-        $collection      = $this->getChapters();
+        $collection = $this->getChapters();
         foreach ($collection as $chapter) {
-            $state     = in_array('publie', (array) $chapter->getState());
+            $state = in_array('publie', (array) $chapter->getState());
             $published = $chapter->getPublished() <= new DateTime();
             if ($state && $published) {
                 $arrayCollection->add($chapter);

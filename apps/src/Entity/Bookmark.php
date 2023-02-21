@@ -17,7 +17,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BookmarkRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ *
  * @Uploadable
  */
 class Bookmark
@@ -41,19 +43,22 @@ class Bookmark
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="bookmarks")
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="bookmarks", cascade={"persist"})
      */
     private $img;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Libelle::class, inversedBy="bookmarks")
+     * @ORM\ManyToMany(targetEntity=Libelle::class, inversedBy="bookmarks", cascade={"persist"})
      */
     private $libelles;
 
@@ -68,19 +73,22 @@ class Bookmark
     private $published;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bookmarks")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bookmarks", cascade={"persist"})
      */
     private $refcategory;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bookmarks")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bookmarks", cascade={"persist"})
+     *
      * @Assert\NotBlank
+     *
      * @ORM\JoinColumn(nullable=false)
      */
     private $refuser;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
@@ -92,6 +100,7 @@ class Bookmark
 
     /**
      * @ORM\Column(name="state_changed", type="datetime", nullable=true)
+     *
      * @Gedmo\Timestampable(on="change", field={"state"})
      */
     private DateTime $stateChanged;

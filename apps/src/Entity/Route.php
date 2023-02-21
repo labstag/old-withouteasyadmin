@@ -16,14 +16,17 @@ class Route implements Stringable
 {
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refroute", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refroute", cascade={"persist"}, orphanRemoval=true)
      */
     protected $groupes;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
@@ -34,14 +37,14 @@ class Route implements Stringable
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refroute", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refroute", cascade={"persist"}, orphanRemoval=true)
      */
     protected $users;
 
     public function __construct()
     {
         $this->groupes = new ArrayCollection();
-        $this->users   = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function __toString(): string

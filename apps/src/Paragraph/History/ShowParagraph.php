@@ -11,6 +11,13 @@ use Labstag\Repository\HistoryRepository;
 
 class ShowParagraph extends ParagraphLib
 {
+    public function getCode($show): string
+    {
+        unset($show);
+
+        return 'history/show';
+    }
+
     public function getEntity(): string
     {
         return Show::class;
@@ -38,12 +45,12 @@ class ShowParagraph extends ParagraphLib
 
     public function show(Show $show)
     {
-        $all        = $this->request->attributes->all();
+        $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        $slug       = $routeParam['slug'] ?? null;
+        $slug = $routeParam['slug'] ?? null;
         /** @var HistoryRepository $entityRepository */
         $entityRepository = $this->getRepository(History::class);
-        $history          = $entityRepository->findOneBy(
+        $history = $entityRepository->findOneBy(
             ['slug' => $slug]
         );
 
@@ -52,7 +59,7 @@ class ShowParagraph extends ParagraphLib
         }
 
         return $this->render(
-            $this->getParagraphFile('history/show'),
+            $this->getTemplateFile($this->getCode($show)),
             [
                 'history'   => $history,
                 'paragraph' => $show,

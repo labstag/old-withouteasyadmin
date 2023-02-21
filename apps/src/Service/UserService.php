@@ -40,9 +40,9 @@ class UserService
         $userOauth
     ): void
     {
-        $data     = is_array($userOauth) ? $userOauth : $userOauth->toArray();
+        $data = is_array($userOauth) ? $userOauth : $userOauth->toArray();
         $identity = $this->oauthService->getIdentity($data, $client);
-        $find     = $this->findOAuthIdentity(
+        $find = $this->findOAuthIdentity(
             $user,
             $identity,
             $client,
@@ -90,7 +90,7 @@ class UserService
     public function create(array $groupes, $dataUser): User
     {
         $user = new User();
-        $old  = clone $user;
+        $old = clone $user;
 
         $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
         $user->setUsername($dataUser['username']);
@@ -142,8 +142,8 @@ class UserService
         &$oauthConnect = null
     ): bool
     {
-        $return        = false;
-        $oauthConnect  = null;
+        $return = false;
+        $oauthConnect = null;
         $oauthConnects = $user->getOauthConnectUsers();
         foreach ($oauthConnects as $oauthConnect) {
             $test1 = ($oauthConnect->getName() == $client);

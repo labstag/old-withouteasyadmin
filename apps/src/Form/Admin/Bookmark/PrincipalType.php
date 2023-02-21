@@ -7,8 +7,8 @@ use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
+use Labstag\FormType\UploadType;
 use Labstag\Lib\AbstractTypeLib;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,7 +41,7 @@ class PrincipalType extends AbstractTypeLib
         $this->setContent($formBuilder);
         $formBuilder->add(
             'file',
-            FileType::class,
+            UploadType::class,
             [
                 'label'    => $this->translator->trans('bookmark.file.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('bookmark.file.help', [], 'admin.form'),

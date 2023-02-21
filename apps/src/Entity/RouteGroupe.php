@@ -14,19 +14,22 @@ class RouteGroupe
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="routes")
+     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="routes", cascade={"persist"})
      */
     protected $refgroupe;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="groupes")
+     * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="groupes", cascade={"persist"})
      */
     protected $refroute;
 

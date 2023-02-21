@@ -37,7 +37,7 @@ class RenderType extends AbstractTypeLib
                 'help'  => $this->translator->trans('render.name.help', [], 'admin.form'),
             ]
         );
-        $all     = $this->guardService->getPublicRouteWithParams();
+        $all = $this->guardService->getPublicRouteWithParams();
         $choices = [];
         foreach (array_keys($all) as $key) {
             $choices[$key] = $key;

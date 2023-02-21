@@ -11,6 +11,13 @@ use Labstag\Repository\PostRepository;
 
 class ArchiveParagraph extends ParagraphLib
 {
+    public function getCode($archive): string
+    {
+        unset($archive);
+
+        return 'post/archive';
+    }
+
     public function getEntity(): string
     {
         return Archive::class;
@@ -40,14 +47,14 @@ class ArchiveParagraph extends ParagraphLib
     {
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $archives         = $entityRepository->findDateArchive();
-        $page             = $this->request->query->getInt('page', 1);
+        $archives = $entityRepository->findDateArchive();
+        $page = $this->request->query->getInt('page', 1);
         if (1 != $page) {
             return;
         }
 
         return $this->render(
-            $this->getParagraphFile('post/archive'),
+            $this->getTemplateFile($this->getCode($archive)),
             [
                 'archives'  => $archives,
                 'paragraph' => $archive,

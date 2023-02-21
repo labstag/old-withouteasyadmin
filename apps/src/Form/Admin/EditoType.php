@@ -5,8 +5,8 @@ namespace Labstag\Form\Admin;
 use Labstag\Entity\Edito;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
+use Labstag\FormType\UploadType;
 use Labstag\Lib\AbstractTypeLib;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -36,7 +36,7 @@ class EditoType extends AbstractTypeLib
         $this->setContent($formBuilder);
         $formBuilder->add(
             'file',
-            FileType::class,
+            UploadType::class,
             [
                 'label'    => $this->translator->trans('edito.file.label', [], 'admin.form'),
                 'help'     => $this->translator->trans('edito.file.help', [], 'admin.form'),

@@ -23,7 +23,7 @@ class BlockRepository extends ServiceEntityRepositoryLib
             'content',
             'footer',
         ];
-        $data  = [];
+        $data = [];
         foreach ($types as $type) {
             $data[$type] = $this->findBy(
                 ['region' => $type],

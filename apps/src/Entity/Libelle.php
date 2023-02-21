@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=LibelleRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Libelle implements Stringable
@@ -20,14 +21,17 @@ class Libelle implements Stringable
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Bookmark::class, mappedBy="libelles")
+     * @ORM\ManyToMany(targetEntity=Bookmark::class, mappedBy="libelles", cascade={"persist"})
      */
     private $bookmarks;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
@@ -44,13 +48,14 @@ class Libelle implements Stringable
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
     public function __construct()
     {
-        $this->posts     = new ArrayCollection();
+        $this->posts = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
     }
 

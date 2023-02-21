@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MenuRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Menu implements Stringable
@@ -22,12 +23,8 @@ class Menu implements Stringable
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity=Menu::class,
-     *     mappedBy="parent",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity=Menu::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
+     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     protected $children;
@@ -49,8 +46,11 @@ class Menu implements Stringable
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
@@ -61,7 +61,8 @@ class Menu implements Stringable
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children")
+     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children", cascade={"persist"})
+     *
      * @ORM\JoinColumn(
      *     name="parent_id",
      *     referencedColumnName="id",
@@ -74,6 +75,7 @@ class Menu implements Stringable
 
     /**
      * @ORM\Column(type="integer")
+     *
      * @Assert\NotNull
      */
     protected int $position = 0;
@@ -84,14 +86,14 @@ class Menu implements Stringable
     protected $separateur = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="menu")
+     * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="menu", cascade={"persist"}, orphanRemoval=true)
      */
     private $navbars;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
-        $this->navbars  = new ArrayCollection();
+        $this->navbars = new ArrayCollection();
     }
 
     public function __toString(): string

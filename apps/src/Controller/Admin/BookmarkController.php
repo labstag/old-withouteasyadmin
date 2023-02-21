@@ -27,8 +27,6 @@ class BookmarkController extends AdminControllerLib
         ?Bookmark $bookmark
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($bookmark) ? new Bookmark() : $bookmark,
@@ -40,7 +38,7 @@ class BookmarkController extends AdminControllerLib
     public function import(Request $request, Security $security, EnqueueMethod $enqueueMethod): Response
     {
         $domain = $this->getDomainEntity();
-        $url    = $domain->getUrlAdmin();
+        $url = $domain->getUrlAdmin();
         $this->setBtnList($url);
         $form = $this->createForm(ImportType::class, []);
         $this->btnInstance()->addBtnSave($form->getName(), 'Import');
@@ -49,7 +47,7 @@ class BookmarkController extends AdminControllerLib
             $this->uploadFile($form, $security, $enqueueMethod);
         }
 
-        return $this->renderForm(
+        return $this->render(
             'admin/bookmark/import.html.twig',
             ['form' => $form]
         );
@@ -102,9 +100,9 @@ class BookmarkController extends AdminControllerLib
         $domDocument->loadHTMLFile($file->getPathname(), LIBXML_NOWARNING | LIBXML_NOERROR);
 
         $domNodeList = $domDocument->getElementsByTagName('a');
-        $dateTime    = new DateTime();
+        $dateTime = new DateTime();
         /** @var User $user */
-        $user   = $security->getUser();
+        $user = $security->getUser();
         $userId = $user->getId();
         foreach ($domNodeList as $tag) {
             $enqueueMethod->enqueue(

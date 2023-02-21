@@ -7,6 +7,7 @@ use InvalidArgumentException;
 
 /**
  * @Annotation
+ *
  * @Target("CLASS")
  */
 class Trashable

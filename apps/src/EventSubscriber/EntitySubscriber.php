@@ -58,7 +58,7 @@ class EntitySubscriber extends EventSubscriberLib
 
     public function onBlockEntityEvent(BlockEntityEvent $blockEntityEvent): void
     {
-        $block       = $blockEntityEvent->getNewEntity();
+        $block = $blockEntityEvent->getNewEntity();
         $classentity = $this->blockService->getTypeEntity($block);
         if (is_null($classentity)) {
             $this->entityManager->remove($block);
@@ -177,30 +177,8 @@ class EntitySubscriber extends EventSubscriberLib
 
     public function onParagraphEntityEvent(ParagraphEntityEvent $paragraphEntityEvent): void
     {
-        $paragraph = $paragraphEntityEvent->getNewEntity();
-        $oldEntity = $paragraphEntityEvent->getOldEntity();
-        if (0 != $oldEntity->getPosition()) {
-            return;
-        }
-
-        $classentity = $this->paragraphService->getTypeEntity($paragraph);
-        if (is_null($classentity)) {
-            $this->entityManager->remove($paragraph);
-            $this->entityManager->flush();
-
-            return;
-        }
-
-        $entity = $this->paragraphService->getEntity($paragraph);
-        if (!is_null($entity)) {
-            return;
-        }
-
-        $entity = new $classentity();
-        $entity->setParagraph($paragraph);
-
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
+        $this->onParagraphEntityEventInit($paragraphEntityEvent);
+        $this->onParagraphEntityEventData($paragraphEntityEvent);
     }
 
     public function onPostEntityEvent(PostEntityEvent $postEntityEvent): void
@@ -217,7 +195,7 @@ class EntitySubscriber extends EventSubscriberLib
 
     public function onUserEntityEvent(UserEntityEvent $userEntityEvent): void
     {
-        $user      = $userEntityEvent->getOldEntity();
+        $user = $userEntityEvent->getOldEntity();
         $newEntity = $userEntityEvent->getNewEntity();
         $this->setPassword($newEntity);
         $this->setPrincipalMail($user, $newEntity);
@@ -337,7 +315,7 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $address = $newEntity->getEmail();
-        $emails  = $newEntity->getEmailUsers();
+        $emails = $newEntity->getEmailUsers();
         $trouver = false;
         foreach ($emails as $emailUser) {
             // @var EmailUser $emailUser
@@ -366,7 +344,7 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $emailUser = new EmailUser();
-        $old       = clone $emailUser;
+        $old = clone $emailUser;
         $emailUser->setRefuser($newEntity);
         $emailUser->setPrincipal(true);
         $emailUser->setAddress($address);
@@ -383,7 +361,7 @@ class EntitySubscriber extends EventSubscriberLib
 
         try {
             $value = $post['robotstxt'];
-            $file  = 'robots.txt';
+            $file = 'robots.txt';
             if (is_file($file)) {
                 unlink($file);
             }
@@ -397,6 +375,40 @@ class EntitySubscriber extends EventSubscriberLib
         }
     }
 
+    private function onParagraphEntityEventData(ParagraphEntityEvent $paragraphEntityEvent): void
+    {
+        $paragraph = $paragraphEntityEvent->getNewEntity();
+        $this->paragraphService->setData($paragraph);
+    }
+
+    private function onParagraphEntityEventInit(ParagraphEntityEvent $paragraphEntityEvent): void
+    {
+        $paragraph = $paragraphEntityEvent->getNewEntity();
+        $oldEntity = $paragraphEntityEvent->getOldEntity();
+        if (0 != $oldEntity->getPosition()) {
+            return;
+        }
+
+        $classentity = $this->paragraphService->getTypeEntity($paragraph);
+        if (is_null($classentity)) {
+            $this->entityManager->remove($paragraph);
+            $this->entityManager->flush();
+
+            return;
+        }
+
+        $entity = $this->paragraphService->getEntity($paragraph);
+        if (!is_null($entity)) {
+            return;
+        }
+
+        $entity = new $classentity();
+        $entity->setParagraph($paragraph);
+
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+    }
+
     private function verifMetas($entity)
     {
         $title = null;
@@ -405,9 +417,9 @@ class EntitySubscriber extends EventSubscriberLib
             return;
         }
 
-        $meta   = new Meta();
+        $meta = new Meta();
         $method = '';
-        $title  = '';
+        $title = '';
         $this->verifMetasChapter($entity, $method, $title);
         $this->verifMetasEdito($entity, $method, $title);
         $this->verifMetasHistory($entity, $method, $title);
@@ -430,7 +442,7 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $method = 'setChapter';
-        $title  = $entity->getName();
+        $title = $entity->getName();
     }
 
     private function verifMetasEdito($entity, &$method, &$title)
@@ -440,7 +452,7 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $method = 'setEdito';
-        $title  = $entity->getTitle();
+        $title = $entity->getTitle();
     }
 
     private function verifMetasHistory($entity, &$method, &$title)
@@ -450,7 +462,7 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $method = 'setHistory';
-        $title  = $entity->getName();
+        $title = $entity->getName();
     }
 
     private function verifMetasPage($entity, &$method, &$title)
@@ -460,7 +472,7 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $method = 'setPage';
-        $title  = $entity->getName();
+        $title = $entity->getName();
     }
 
     private function verifMetasPost($entity, &$method, &$title)
@@ -470,7 +482,7 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $method = 'setPost';
-        $title  = $entity->getTitle();
+        $title = $entity->getTitle();
     }
 
     private function verifMetasRender($entity, &$method, &$title)
@@ -480,6 +492,6 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $method = 'setRender';
-        $title  = $entity->getName();
+        $title = $entity->getName();
     }
 }

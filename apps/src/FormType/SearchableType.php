@@ -60,11 +60,11 @@ class SearchableType extends AbstractType
 
         $placeholder = $options['placeholder'] ?? null;
 
-        $formView->vars['placeholder']               = $placeholder;
-        $formView->vars['placeholder_in_choices']    = false;
-        $formView->vars['multiple']                  = $options['multiple'];
-        $formView->vars['preferred_choices']         = [];
-        $formView->vars['choices']                   = $this->choices($form->getData(), $options);
+        $formView->vars['placeholder'] = $placeholder;
+        $formView->vars['placeholder_in_choices'] = false;
+        $formView->vars['multiple'] = $options['multiple'];
+        $formView->vars['preferred_choices'] = [];
+        $formView->vars['choices'] = $this->choices($form->getData(), $options);
         $formView->vars['choice_translation_domain'] = false;
         if ($options['multiple']) {
             $formView->vars['full_name'] .= '[]';
@@ -117,7 +117,7 @@ class SearchableType extends AbstractType
             return $ids;
         }
 
-        $entityManager    = $this->entityManager;
+        $entityManager = $this->entityManager;
         $entityRepository = $entityManager->getRepository($options['class']);
         foreach ($ids as $id => $key) {
             $entity = $entityRepository->find($key);

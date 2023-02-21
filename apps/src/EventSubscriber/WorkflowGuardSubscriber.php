@@ -21,11 +21,11 @@ class WorkflowGuardSubscriber extends EventSubscriberLib
     public function onWorkflowAttachmentGuard(GuardEvent $guardEvent): void
     {
         $stategroupe = false;
-        $stateuser   = false;
-        $token       = $this->tokenStorage->getToken();
-        $name        = $guardEvent->getWorkflowName();
-        $transition  = $guardEvent->getTransition()->getName();
-        $workflow    = $this->workflowRepository->findOneBy(
+        $stateuser = false;
+        $token = $this->tokenStorage->getToken();
+        $name = $guardEvent->getWorkflowName();
+        $transition = $guardEvent->getTransition()->getName();
+        $workflow = $this->workflowRepository->findOneBy(
             [
                 'entity'     => $name,
                 'transition' => $transition,
@@ -39,7 +39,7 @@ class WorkflowGuardSubscriber extends EventSubscriberLib
         // @var User $user
         $user = $token->getUser();
         if (!$user instanceof User) {
-            $groupe         = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
+            $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
             $workflowGroupe = $this->workflowGroupeRepository->findOneBy(
                 [
                     'refgroupe'   => $groupe,
@@ -64,14 +64,14 @@ class WorkflowGuardSubscriber extends EventSubscriberLib
                 'refworkflow' => $workflow,
             ]
         );
-        $stategroupe    = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
-        $workflowUser   = $this->workflowUserRepository->findOneBy(
+        $stategroupe = ($workflowGroupe instanceof WorkflowGroupe) ? $workflowGroupe->getState() : $stategroupe;
+        $workflowUser = $this->workflowUserRepository->findOneBy(
             [
                 'refuser'     => $user,
                 'refworkflow' => $workflow,
             ]
         );
-        $stategroupe    = ($workflowUser instanceof WorkflowUser) ? $workflowUser->getState() : $stategroupe;
+        $stategroupe = ($workflowUser instanceof WorkflowUser) ? $workflowUser->getState() : $stategroupe;
 
         $guardEvent->setBlocked(!$stategroupe || !$stateuser);
     }

@@ -3,20 +3,16 @@
 namespace Labstag\Command;
 
 use Labstag\Lib\CommandLib;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'labstag:update')]
 class LabstagUpdateCommand extends CommandLib
 {
-
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'labstag:update';
-
     protected function configure(): void
     {
         $this->setDescription('Add a short description for your command');
@@ -26,10 +22,10 @@ class LabstagUpdateCommand extends CommandLib
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $symfonyStyle    = new SymfonyStyle($input, $output);
-        $publicIndex     = 'public/index.php';
+        $symfonyStyle = new SymfonyStyle($input, $output);
+        $publicIndex = 'public/index.php';
         $maintenanceFile = 'maintenance.html';
-        $actifFile       = 'public.php';
+        $actifFile = 'public.php';
         if (!is_file($publicIndex)) {
             return Command::FAILURE;
         }

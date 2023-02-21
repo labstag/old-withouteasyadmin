@@ -15,14 +15,17 @@ class Meta implements Stringable
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Chapter::class, inversedBy="metas")
+     * @ORM\ManyToOne(targetEntity=Chapter::class, inversedBy="metas", cascade={"persist"})
      */
     private $chapter;
 
@@ -32,7 +35,7 @@ class Meta implements Stringable
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Edito::class, inversedBy="metas")
+     * @ORM\ManyToOne(targetEntity=Edito::class, inversedBy="metas", cascade={"persist"})
      */
     private $edito;
 

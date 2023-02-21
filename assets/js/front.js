@@ -9,6 +9,6 @@ function gotopClick () {
     }
   )
 }
-if (gotop.length !== 0) {
+if (gotop !== undefined) {
   gotop.addEventListener('click', gotopClick)
 }

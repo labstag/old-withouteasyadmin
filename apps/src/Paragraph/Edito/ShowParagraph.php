@@ -11,6 +11,13 @@ use Labstag\Repository\EditoRepository;
 
 class ShowParagraph extends ParagraphLib
 {
+    public function getCode($show): string
+    {
+        unset($show);
+
+        return 'edito/show';
+    }
+
     public function getEntity(): string
     {
         return Show::class;
@@ -40,14 +47,14 @@ class ShowParagraph extends ParagraphLib
     {
         /** @var EditoRepository $entityRepository */
         $entityRepository = $this->getRepository(Edito::class);
-        $edito            = $entityRepository->findOnePublier();
+        $edito = $entityRepository->findOnePublier();
 
         if (!$edito instanceof Edito) {
             return;
         }
 
         return $this->render(
-            $this->getParagraphFile('edito/show'),
+            $this->getTemplateFile($this->getCode($show)),
             [
                 'edito'     => $edito,
                 'paragraph' => $show,

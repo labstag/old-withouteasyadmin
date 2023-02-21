@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class YearParagraph extends ParagraphLib
 {
+    public function getCode($postyear): string
+    {
+        unset($postyear);
+
+        return 'post/year';
+    }
+
     public function getEntity(): string
     {
         return Year::class;
@@ -39,19 +46,19 @@ class YearParagraph extends ParagraphLib
 
     public function show(Year $postyear): Response
     {
-        $all        = $this->request->attributes->all();
+        $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        $year       = $routeParam['year'] ?? null;
+        $year = $routeParam['year'] ?? null;
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $pagination       = $this->paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $entityRepository->findPublierArchive($year),
             $this->request->query->getInt('page', 1),
             10
         );
 
         return $this->render(
-            $this->getParagraphFile('post/year'),
+            $this->getTemplateFile($this->getCode($postyear)),
             [
                 'pagination' => $pagination,
                 'paragraph'  => $postyear,

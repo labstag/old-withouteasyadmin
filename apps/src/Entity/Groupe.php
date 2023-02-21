@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=GroupeRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Groupe implements Stringable
@@ -22,49 +23,49 @@ class Groupe implements Stringable
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
+     *
      * @ORM\Column(type="string", length=255, unique=true)
      */
     protected $code;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank
      */
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)
      */
     protected $routes;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity=User::class,
-     *     mappedBy="refgroupe",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)
      */
     protected $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)
      */
     private $workflowGroupes;
 
     public function __construct()
     {
-        $this->routes          = new ArrayCollection();
+        $this->routes = new ArrayCollection();
         $this->workflowGroupes = new ArrayCollection();
-        $this->users           = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function __toString(): string

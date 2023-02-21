@@ -5,6 +5,10 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Labstag\Entity\Paragraph;
+use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Service\ErrorService;
+use Labstag\Service\FileService;
 use Labstag\Service\FormService;
 use Labstag\Service\ParagraphService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +23,12 @@ abstract class ParagraphLib extends AbstractController
 
     protected ?Request $request;
 
+    protected array $template = [];
+
     public function __construct(
+        protected FileService $fileService,
+        protected UploadAnnotationReader $uploadAnnotationReader,
+        protected ErrorService $errorService,
         protected PaginatorInterface $paginator,
         protected TranslatorInterface $translator,
         protected MailerInterface $mailer,
@@ -33,11 +42,37 @@ abstract class ParagraphLib extends AbstractController
         $this->request = $requestStack->getCurrentRequest();
     }
 
-    protected function getParagraphFile(string $type): string
+    public function getCode($block): string
     {
-        $folder   = __DIR__.'/../../templates/';
+        unset($block);
+
+        return '';
+    }
+
+    public function setData(Paragraph $paragraph)
+    {
+        unset($paragraph);
+    }
+
+    public function template($entity)
+    {
+        return $this->showTemplateFile($this->getCode($entity));
+    }
+
+    protected function getRepository(string $entity): EntityRepository
+    {
+        return $this->entityManager->getRepository($entity);
+    }
+
+    protected function getTemplateData(string $type): array
+    {
+        if (isset($this->template[$type])) {
+            return $this->template[$type];
+        }
+
+        $folder = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';
-        $files    = [
+        $files = [
             'paragraph/'.$type.$htmltwig,
             'paragraph/default'.$htmltwig,
         ];
@@ -52,15 +87,31 @@ abstract class ParagraphLib extends AbstractController
             }
         }
 
-        if ('dev' == $this->getParameter('kernel.debug')) {
-            dump(['paragraph', $type, $files, $view]);
-        }
+        $this->template[$type] = [
+            'hook'  => 'paragraph',
+            'type'  => $type,
+            'files' => $files,
+            'view'  => $view,
+        ];
 
-        return $view;
+        return $this->template[$type];
     }
 
-    protected function getRepository(string $entity): EntityRepository
+    protected function getTemplateFile(string $type): string
     {
-        return $this->entityManager->getRepository($entity);
+        $data = $this->getTemplateData($type);
+
+        return $data['view'];
+    }
+
+    protected function showTemplateFile(string $type): array
+    {
+        $data = $this->getTemplateData($type);
+        $globals = $this->environment->getGlobals();
+        if ('dev' == $globals['app']->getDebug()) {
+            return $data;
+        }
+
+        return [];
     }
 }

@@ -5,27 +5,37 @@ namespace Labstag\Entity\Paragraph\Post;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Repository\Paragraph\Post\UserRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Table(name="paragraph_post_user")
+ *
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class User
+class User implements Stringable
 {
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postUsers")
+     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postUsers", cascade={"persist"})
      */
     private $paragraph;
+
+    public function __toString(): string
+    {
+        return (string) $this->getParagraph()->getType();
+    }
 
     public function getId(): ?string
     {

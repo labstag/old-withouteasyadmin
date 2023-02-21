@@ -11,7 +11,6 @@ use Labstag\Entity\Paragraph;
 use Labstag\Entity\Post;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use ReflectionClass;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Twig\Environment;
 
@@ -35,7 +34,7 @@ class ParagraphService
         $position = (is_countable($entity->getParagraphs()) ? count($entity->getParagraphs()) : 0) + 1;
 
         $paragraph = new Paragraph();
-        $old       = clone $paragraph;
+        $old = clone $paragraph;
         $paragraph->setType($code);
         $paragraph->setPosition($position);
         call_user_func([$paragraph, $method], $entity);
@@ -50,8 +49,8 @@ class ParagraphService
         $data = [];
         foreach ($this->paragraphsclass as $row) {
             $inUse = $row->useIn();
-            $type  = $row->getType();
-            $name  = $row->getName();
+            $type = $row->getType();
+            $name = $row->getName();
             if (in_array($entity::class, $inUse)) {
                 $data[$name] = $type;
             }
@@ -63,17 +62,17 @@ class ParagraphService
     public function getEntity(Paragraph $paragraph)
     {
         $entity = null;
-        $field  = $this->getEntityField($paragraph);
+        $field = $this->getEntityField($paragraph);
         if (is_null($field)) {
             return $entity;
         }
 
-        $reflection       = $this->setReflection($paragraph);
+        $reflection = $this->setReflection($paragraph);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() == $field) {
                 $entities = $propertyAccessor->getValue($paragraph, $field);
-                $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
+                $entity = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
 
                 break;
             }
@@ -84,7 +83,7 @@ class ParagraphService
 
     public function getEntityField(Paragraph $paragraph)
     {
-        $field       = null;
+        $field = null;
         $childentity = $this->getTypeEntity($paragraph);
         if (is_null($childentity)) {
             return $field;
@@ -93,7 +92,7 @@ class ParagraphService
         $reflection = $this->setReflection($childentity);
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ('paragraph' == $reflectionProperty->getName()) {
-                preg_match('#inversedBy=\"(.*)\"#m', (string) $reflectionProperty->getDocComment(), $matches);
+                preg_match('#inversedBy=\"(.*)\", #m', (string) $reflectionProperty->getDocComment(), $matches);
                 $field = $matches[1] ?? $field;
 
                 break;
@@ -134,7 +133,7 @@ class ParagraphService
 
     public function getTypeEntity(Paragraph $paragraph)
     {
-        $type      = $paragraph->getType();
+        $type = $paragraph->getType();
         $paragraph = null;
         foreach ($this->paragraphsclass as $row) {
             if ($row->getType() == $type) {
@@ -177,11 +176,28 @@ class ParagraphService
         return $show;
     }
 
+    public function setData(Paragraph $paragraph)
+    {
+        $entity = $this->getEntity($paragraph);
+        if (is_null($entity)) {
+            return;
+        }
+
+        $type = $paragraph->getType();
+        foreach ($this->paragraphsclass as $row) {
+            if ($row->getType() == $type) {
+                $row->setData($paragraph);
+
+                break;
+            }
+        }
+    }
+
     public function showContent(Paragraph $paragraph)
     {
-        $type   = $paragraph->getType();
+        $type = $paragraph->getType();
         $entity = $this->getEntity($paragraph);
-        $html   = new Response();
+        $html = null;
         if (is_null($entity)) {
             return $html;
         }
@@ -195,6 +211,26 @@ class ParagraphService
         }
 
         return $html;
+    }
+
+    public function showTemplate(Paragraph $paragraph)
+    {
+        $type = $paragraph->getType();
+        $entity = $this->getEntity($paragraph);
+        $template = null;
+        if (is_null($entity)) {
+            return $template;
+        }
+
+        foreach ($this->paragraphsclass as $row) {
+            if ($type == $row->getType()) {
+                $template = $row->template($entity);
+
+                break;
+            }
+        }
+
+        return $template;
     }
 
     private function getMethod($entity)

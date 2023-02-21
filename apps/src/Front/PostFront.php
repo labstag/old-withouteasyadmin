@@ -49,9 +49,9 @@ class PostFront extends PageFront
 
     private function setBreadcrumbRouting($breadcrumb)
     {
-        $all        = $this->request->attributes->all();
-        $route      = $all['_route'];
-        $params     = $all['_route_params'];
+        $all = $this->request->attributes->all();
+        $route = $all['_route'];
+        $params = $all['_route_params'];
         $breadcrumb = $this->setBreadcrumbRoutingYear($route, $params, $breadcrumb);
         $breadcrumb = $this->setBreadcrumbRoutingLibelle($route, $params, $breadcrumb);
 
@@ -65,7 +65,7 @@ class PostFront extends PageFront
         }
 
         $repository = $this->getRepository(Category::class);
-        $category   = $repository->findOneBy(
+        $category = $repository->findOneBy(
             [
                 'slug' => $params['slug'],
             ]
@@ -93,7 +93,7 @@ class PostFront extends PageFront
         }
 
         $repository = $this->getRepository(Libelle::class);
-        $libelle    = $repository->findOneBy(
+        $libelle = $repository->findOneBy(
             [
                 'slug' => $params['slug'],
             ]
@@ -127,7 +127,7 @@ class PostFront extends PageFront
             ),
             'title' => $params['year'],
         ];
-        $page         = $this->pageRepository->findOneBy(
+        $page = $this->pageRepository->findOneBy(
             ['slug' => 'mes-articles/archive']
         );
 

@@ -9,6 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FooterBlock extends BlockLib
 {
+    public function getCode($footer, $content): string
+    {
+        unset($footer, $content);
+
+        return 'footer';
+    }
+
     public function getEntity(): string
     {
         return Footer::class;
@@ -36,10 +43,8 @@ class FooterBlock extends BlockLib
 
     public function show(Footer $footer, $content): Response
     {
-        unset($content);
-
         return $this->render(
-            $this->getBlockFile('footer'),
+            $this->getTemplateFile($this->getCode($footer, $content)),
             ['block' => $footer]
         );
     }

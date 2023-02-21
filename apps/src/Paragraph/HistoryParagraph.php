@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HistoryParagraph extends ParagraphLib
 {
+    public function getCode($history): string
+    {
+        unset($history);
+
+        return 'history';
+    }
+
     public function getEntity(): string
     {
         return History::class;
@@ -41,10 +48,10 @@ class HistoryParagraph extends ParagraphLib
     {
         /** @var HistoryRepository $entityRepository */
         $entityRepository = $this->getRepository(EntityHistory::class);
-        $histories        = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
+        $histories = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
 
         return $this->render(
-            $this->getParagraphFile('history'),
+            $this->getTemplateFile($this->getcode($history)),
             [
                 'histories' => $histories,
                 'paragraph' => $history,

@@ -23,11 +23,39 @@
     </select>
 {% endblock %}
 
+{% block upload_row %}
+    <fieldset>
+        <legend>{{ form.vars.label }}</legend>
+        <div>
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+        {{ form_help(form) }}
+        {% if field is not null and field.id is not null %}
+            {% set file = attachment(field) %}
+            {% set state = guard_route(url) %}
+            {% if state == false %}
+                {% set url = '#' %}
+            {% endif %}
+            {% if file is not null and file.name is not null %}
+                <attachment-img
+                    src="{{ asset(file.name) | imagefilter('my_thumb') }}"
+                    url="{{ url }}"
+                    token="{{ csrf_token('attachment-img-' ~ file.id) }}"
+                ></attachment-img>
+            {% endif %}
+        {% endif %}
+    </fieldset>
+{% endblock %}
+
 {% block paragraph_row %}
-    <fieldset data-url="{{ urlAdd }}">
+    <fieldset{% if urlAdd is defined %} data-url="{{ urlAdd }}"{% endif %}>
         <legend>{{ form.vars.label }}</legend>
         <div id="paragraph-list">
-            {% include "admin/paragraph/list.html.twig" with {'addurl': urlAdd, 'urledit': urlEdit, 'urldelete': urlDelete, 'paragraphs': paragraphs} %}
+            {% set param = {'urledit': urlEdit, 'urldelete': urlDelete, 'paragraphs': paragraphs} %}
+            {% if urlAdd is defined %}
+                {% set param = {'addurl': urlAdd, 'urledit': urlEdit, 'urldelete': urlDelete, 'paragraphs': paragraphs} %}
+            {% endif %}
+            {% include "admin/paragraph/list.html.twig" with param %}
         </div>
         {{ form_widget(form) }}
         {{ form_errors(form) }}

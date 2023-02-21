@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Category implements Stringable
@@ -20,7 +21,7 @@ class Category implements Stringable
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory", cascade={"persist"}, orphanRemoval=true)
      */
     private $bookmarks;
 
@@ -31,8 +32,11 @@ class Category implements Stringable
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
@@ -44,6 +48,7 @@ class Category implements Stringable
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="children", cascade={"persist"})
+     *
      * @ORM\JoinColumn(
      *     name="parent_id",
      *     referencedColumnName="id",
@@ -53,27 +58,28 @@ class Category implements Stringable
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refcategory", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refcategory", cascade={"persist"}, orphanRemoval=true)
      */
     private $posts;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
     public function __construct()
     {
-        $this->children  = new ArrayCollection();
-        $this->posts     = new ArrayCollection();
+        $this->children = new ArrayCollection();
+        $this->posts = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
     }
 
     public function __toString(): string
     {
         $category = $this->getParent();
-        $text     = is_null($category) ? '' : $category.' - ';
+        $text = is_null($category) ? '' : $category.' - ';
 
         return $text.$this->getName();
     }

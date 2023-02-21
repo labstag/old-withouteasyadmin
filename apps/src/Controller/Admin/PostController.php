@@ -22,7 +22,7 @@ class PostController extends AdminControllerLib
         ?Post $post
     ): Response
     {
-        $this->modalAttachmentDelete();
+        dump($post);
 
         return $this->form(
             $this->getDomainEntity(),

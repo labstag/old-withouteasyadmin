@@ -43,10 +43,10 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     public function findEnableByGroupe(?Groupe $groupe = null)
     {
         $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->where(
+        $query = $queryBuilder->where(
             'a.state=:state'
         );
-        $parameters   = ['state' => 1];
+        $parameters = ['state' => 1];
         if (!is_null($groupe)) {
             $query->andWhere('a.refgroupe=:refgroupe');
             $parameters['refgroupe'] = $groupe;
@@ -60,10 +60,10 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     public function findEnableByUser(?User $user = null)
     {
         $queryBuilder = $this->createQueryBuilder('a');
-        $query        = $queryBuilder->where(
+        $query = $queryBuilder->where(
             'a.state=:state'
         );
-        $parameters   = ['state' => 1];
+        $parameters = ['state' => 1];
         if (!is_null($user)) {
             $query->andWhere('a.refuser=:refuser');
             $parameters['refuser'] = $user;
@@ -80,10 +80,10 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     public function findOneRandom(): object
     {
         $classMetadataName = $this->getClassMetadataName();
-        $dql               = 'SELECT p FROM '.$classMetadataName.' p ORDER BY RAND()';
-        $entityManager     = $this->getEntityManager();
-        $query             = $entityManager->createQuery($dql);
-        $query             = $query->setMaxResults(1);
+        $dql = 'SELECT p FROM '.$classMetadataName.' p ORDER BY RAND()';
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery($dql);
+        $query = $query->setMaxResults(1);
 
         return $query->getOneOrNullResult();
     }
@@ -120,7 +120,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     protected function getClassMetadataName(): string
     {
         $methods = get_class_methods($this);
-        $name    = '';
+        $name = '';
         if (in_array('getClassMetadata', $methods)) {
             $name = $this->getClassMetadata()->getName();
         }
@@ -240,7 +240,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
             Post::class,
             User::class,
         ];
-        $launch   = in_array($this->_entityName, $entities);
+        $launch = in_array($this->_entityName, $entities);
         if ($launch || !isset($get['etape']) || empty($get['etape'])) {
             return;
         }
@@ -258,7 +258,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
             Libelle::class,
             Template::class,
         ];
-        $launch   = in_array($this->_entityName, $entities);
+        $launch = in_array($this->_entityName, $entities);
         if (!$launch || !isset($get['name']) || empty($get['name'])) {
             return;
         }
@@ -348,7 +348,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
             PhoneUser::class,
             Post::class,
         ];
-        $launch   = in_array($this->_entityName, $entities);
+        $launch = in_array($this->_entityName, $entities);
         if (!$launch || !isset($get['refuser']) || empty($get['refuser'])) {
             return;
         }

@@ -10,14 +10,51 @@ abstract class BlockLib extends AbstractController
 {
     public function __construct(
         protected TranslatorInterface $translator,
-        protected Environment $environment
+        protected Environment $environment,
+        protected array $template = []
     )
     {
     }
 
-    protected function getBlockFile(string $type): string
+    public function getCode($block, $content): string
     {
-        $folder   = __DIR__.'/../../templates/';
+        unset($block, $content);
+
+        return '';
+    }
+
+    public function template($entity, $content)
+    {
+        return $this->showTemplateFile($this->getCode($entity, $content));
+    }
+
+    protected function getParagraphsArray($service, $content, $paragraphs)
+    {
+        $paragraphsArray = $content->getParagraphs();
+        foreach ($paragraphsArray as $paragraphArray) {
+            $data = $service->showContent($paragraphArray);
+            if (is_null($data)) {
+                continue;
+            }
+
+            $template = $service->showTemplate($paragraphArray);
+
+            $paragraphs[] = [
+                'template' => $template,
+                'data'     => $data,
+            ];
+        }
+
+        return $paragraphs;
+    }
+
+    protected function getTemplateData(string $type): array
+    {
+        if (isset($this->template[$type])) {
+            return $this->template[$type];
+        }
+
+        $folder = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';
 
         $files = [
@@ -35,26 +72,31 @@ abstract class BlockLib extends AbstractController
             }
         }
 
-        $globals = $this->environment->getGlobals();
-        if ('dev' == $globals['app']->getDebug()) {
-            dump(['block', $type, $files, $view]);
-        }
+        $this->template[$type] = [
+            'hook'  => 'block',
+            'type'  => $type,
+            'files' => $files,
+            'view'  => $view,
+        ];
 
-        return $view;
+        return $this->template[$type];
     }
 
-    protected function getParagraphsArray($service, $content, $paragraphs)
+    protected function getTemplateFile(string $type): string
     {
-        $paragraphsArray = $content->getParagraphs();
-        foreach ($paragraphsArray as $paragraphArray) {
-            $data = $service->showContent($paragraphArray);
-            if (is_null($data)) {
-                continue;
-            }
+        $data = $this->getTemplateData($type);
 
-            $paragraphs[] = $data;
+        return $data['view'];
+    }
+
+    protected function showTemplateFile(string $type): array
+    {
+        $data = $this->getTemplateData($type);
+        $globals = $this->environment->getGlobals();
+        if ('dev' == $globals['app']->getDebug()) {
+            return $data;
         }
 
-        return $paragraphs;
+        return [];
     }
 }

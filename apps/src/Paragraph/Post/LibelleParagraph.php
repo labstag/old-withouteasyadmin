@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LibelleParagraph extends ParagraphLib
 {
+    public function getCode($libelle): string
+    {
+        unset($libelle);
+
+        return 'post/libelle';
+    }
+
     public function getEntity(): string
     {
         return Libelle::class;
@@ -39,19 +46,19 @@ class LibelleParagraph extends ParagraphLib
 
     public function show(Libelle $libelle): Response
     {
-        $all        = $this->request->attributes->all();
+        $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        $slug       = $routeParam['slug'] ?? null;
+        $slug = $routeParam['slug'] ?? null;
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $pagination       = $this->paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $entityRepository->findPublierLibelle($slug),
             $this->request->query->getInt('page', 1),
             10
         );
 
         return $this->render(
-            $this->getParagraphFile('post/libelle'),
+            $this->getTemplateFile($this->getCode($libelle)),
             [
                 'pagination' => $pagination,
                 'paragraph'  => $libelle,

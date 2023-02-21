@@ -28,11 +28,7 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
     ): array|string|int|float|bool|ArrayObject|null
     {
         $docs = $this->normalizer->normalize($object, $format, $context);
-        $this->setProfilAvatar($docs);
-        $this->setUserAvatar($docs);
-        $this->setPostImg($docs);
-        $this->setMemoFond($docs);
-        $this->setEditoFond($docs);
+        $this->setDeleteAttachment($docs);
 
         return $docs;
     }
@@ -45,28 +41,16 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         return $this->normalizer->supportsNormalization($data, $format);
     }
 
-    private function setEditoFond(&$docs): void
+    private function setDeleteAttachment(&$docs): void
     {
         $statsEndpoint = [
-            'summary'    => 'edito fond.',
+            'summary'    => 'Post Img.',
             'tags'       => ['Attachment'],
             'parameters' => $this->setParameters(),
             'responses'  => $this->setResponses(),
         ];
 
-        $docs['paths']['/api/attachment/edito/fond/{entity}']['delete'] = $statsEndpoint;
-    }
-
-    private function setMemoFond(&$docs): void
-    {
-        $statsEndpoint = [
-            'summary'    => 'node interne Fond.',
-            'tags'       => ['Attachment'],
-            'parameters' => $this->setParameters(),
-            'responses'  => $this->setResponses(),
-        ];
-
-        $docs['paths']['/api/attachment/memo/fond/{entity}']['delete'] = $statsEndpoint;
+        $docs['paths']['/api/attachment/delete/{entity}']['delete'] = $statsEndpoint;
     }
 
     /**
@@ -92,38 +76,6 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
         ];
     }
 
-    private function setPostImg(&$docs): void
-    {
-        $statsEndpoint = [
-            'summary'    => 'Post Img.',
-            'tags'       => ['Attachment'],
-            'parameters' => $this->setParameters(),
-            'responses'  => $this->setResponses(),
-        ];
-
-        $docs['paths']['/api/attachment/post/img/{entity}']['delete'] = $statsEndpoint;
-    }
-
-    private function setProfilAvatar(&$docs): void
-    {
-        $statsEndpoint = [
-            'summary'    => 'Profil avatar.',
-            'tags'       => ['Attachment'],
-            'parameters' => [
-                [
-                    'name'        => '_token',
-                    'in'          => 'query',
-                    'required'    => true,
-                    'description' => 'token',
-                    'schema'      => ['type' => 'string'],
-                ],
-            ],
-            'responses'  => $this->setResponses(),
-        ];
-
-        $docs['paths']['/api/attachment/profil/avatar']['delete'] = $statsEndpoint;
-    }
-
     private function setResponses(): array
     {
         return [
@@ -143,17 +95,5 @@ final class AttachmentSwaggerDecorator implements NormalizerInterface
                 ],
             ],
         ];
-    }
-
-    private function setUserAvatar(&$docs): void
-    {
-        $statsEndpoint = [
-            'summary'    => 'User avatar.',
-            'tags'       => ['Attachment'],
-            'parameters' => $this->setParameters(),
-            'responses'  => $this->setResponses(),
-        ];
-
-        $docs['paths']['/api/attachment/user/avatar/{entity}']['delete'] = $statsEndpoint;
     }
 }

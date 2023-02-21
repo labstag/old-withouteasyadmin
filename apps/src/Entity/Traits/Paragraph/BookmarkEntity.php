@@ -12,22 +12,22 @@ trait BookmarkEntity
 {
 
     /**
-     * @ORM\OneToMany(targetEntity=BookmarkCategory::class, mappedBy="paragraph", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=BookmarkCategory::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $bookmarkCategories;
 
     /**
-     * @ORM\OneToMany(targetEntity=BookmarkLibelle::class, mappedBy="paragraph", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=BookmarkLibelle::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $bookmarkLibelles;
 
     /**
-     * @ORM\OneToMany(targetEntity=BookmarkList::class, mappedBy="paragraph", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=BookmarkList::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $bookmarkLists;
 
     /**
-     * @ORM\OneToMany(targetEntity=ParagraphBookmark::class, mappedBy="paragraph", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=ParagraphBookmark::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $bookmarks;
 

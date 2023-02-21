@@ -14,7 +14,7 @@ trait HistoryEntity
 {
 
     /**
-     * @ORM\OneToMany(targetEntity=ParagraphHistory::class, mappedBy="paragraph", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=ParagraphHistory::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $histories;
 
@@ -24,22 +24,22 @@ trait HistoryEntity
     private $history;
 
     /**
-     * @ORM\OneToMany(targetEntity=HistoryChapter::class, mappedBy="paragraph", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=HistoryChapter::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $historyChapters;
 
     /**
-     * @ORM\OneToMany(targetEntity=HistoryList::class, mappedBy="paragraph", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=HistoryList::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $historyLists;
 
     /**
-     * @ORM\OneToMany(targetEntity=HistoryShow::class, mappedBy="paragraph")
+     * @ORM\OneToMany(targetEntity=HistoryShow::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $historyShows;
 
     /**
-     * @ORM\OneToMany(targetEntity=HistoryUser::class, mappedBy="paragraph", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=HistoryUser::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
     private $historyUsers;
 

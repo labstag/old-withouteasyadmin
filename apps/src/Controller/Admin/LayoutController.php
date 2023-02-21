@@ -25,8 +25,6 @@ class LayoutController extends AdminControllerLib
         ?Layout $layout
     ): Response
     {
-        $this->modalAttachmentDelete();
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($layout) ? new Layout() : $layout,
@@ -57,11 +55,11 @@ class LayoutController extends AdminControllerLib
             ]
         );
 
-        $domain    = $this->getDomainEntity();
-        $url       = $domain->getUrlAdmin();
-        $request   = $this->requeststack->getCurrentRequest();
-        $all       = $request->attributes->all();
-        $route     = $all['_route'];
+        $domain = $this->getDomainEntity();
+        $url = $domain->getUrlAdmin();
+        $request = $this->requeststack->getCurrentRequest();
+        $all = $request->attributes->all();
+        $route = $all['_route'];
         $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
         $this->setBtnListOrTrash($routeType, $domain);
         $pagination = $this->setPagination($routeType, $domain);
@@ -77,7 +75,7 @@ class LayoutController extends AdminControllerLib
         ];
         $parameters = $this->setSearchForms($parameters, $domain);
 
-        return $this->renderForm(
+        return $this->render(
             'admin/layout/index.html.twig',
             $parameters
         );
@@ -91,7 +89,7 @@ class LayoutController extends AdminControllerLib
         CustomRepository $customRepository
     ): RedirectResponse
     {
-        $post   = $request->request->all('new_layout');
+        $post = $request->request->all('new_layout');
         $custom = $customRepository->findOneBy(
             [
                 'id' => $post['custom'],

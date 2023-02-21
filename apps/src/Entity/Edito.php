@@ -19,7 +19,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EditoRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ *
  * @Uploadable
  */
 class Edito implements Stringable
@@ -29,6 +31,7 @@ class Edito implements Stringable
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     *
      * @Assert\NotBlank
      */
     protected $content;
@@ -39,26 +42,31 @@ class Edito implements Stringable
     protected $file;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="editos")
+     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="editos", cascade={"persist"})
      */
     protected $fond;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="editos")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="editos", cascade={"persist"})
+     *
      * @ORM\JoinColumn(nullable=false)
      */
     protected $refuser;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true, nullable=false)
+     *
      * @Assert\NotBlank
      */
     protected $title;
@@ -70,6 +78,7 @@ class Edito implements Stringable
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
+     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
@@ -82,7 +91,7 @@ class Edito implements Stringable
     public function __construct()
     {
         $this->paragraphs = new ArrayCollection();
-        $this->metas      = new ArrayCollection();
+        $this->metas = new ArrayCollection();
     }
 
     public function __toString(): string

@@ -42,7 +42,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
     protected function ignoreSoftDeleteAnnotation($controller, $method): void
     {
         $routeCurrent = $this->request->attributes->get('_route');
-        $routes       = [
+        $routes = [
             'api_action_destroies',
             'api_action_restories',
             'api_action_deleties',
@@ -75,7 +75,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
 
     protected function readAnnotation($controller, $method, $annotation): bool|array
     {
-        $classUtils      = new ClassUtils();
+        $classUtils = new ClassUtils();
         $reflectionClass = new ReflectionClass($classUtils->getClass($controller));
         $classAnnotation = $this->reader->getClassAnnotation($reflectionClass, $annotation);
 

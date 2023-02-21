@@ -54,7 +54,7 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('front');
         }
 
-        return $this->renderForm(
+        return $this->render(
             'security/change-password.html.twig',
             ['formChangePassword' => $form]
         );
@@ -153,7 +153,7 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('front');
         }
 
-        return $this->renderForm(
+        return $this->render(
             'security/disclaimer.html.twig',
             [
                 'class_body' => 'DisclaimerPage',
@@ -172,13 +172,13 @@ class SecurityController extends ControllerLib
         $authenticationException = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        $form         = $this->createForm(
+        $form = $this->createForm(
             LoginType::class,
             ['username' => $lastUsername]
         );
-        $oauths       = $oauthConnectUserRepository->findDistinctAllOauth();
+        $oauths = $oauthConnectUserRepository->findDistinctAllOauth();
 
-        return $this->renderForm(
+        return $this->render(
             'security/login.html.twig',
             [
                 'oauths'    => $oauths,
@@ -208,7 +208,7 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->renderForm(
+        return $this->render(
             'security/lost-password.html.twig',
             ['formLostPassword' => $form]
         );
@@ -222,7 +222,7 @@ class SecurityController extends ControllerLib
     {
         // @var AbstractProvider $provider
         $provider = $oauthService->setProvider($oauthCode);
-        $session  = $request->getSession();
+        $session = $request->getSession();
         // @var string $referer
         $query = $request->query->all();
         if (array_key_exists('link', $query)) {
@@ -247,8 +247,8 @@ class SecurityController extends ControllerLib
         }
 
         $authorizationUrl = $provider->getAuthorizationUrl();
-        $session          = $request->getSession();
-        $referer          = $request->headers->get('referer');
+        $session = $request->getSession();
+        $referer = $request->headers->get('referer');
         $session->set('referer', $referer);
         $session->set('oauth2state', $provider->getState());
 
@@ -271,10 +271,10 @@ class SecurityController extends ControllerLib
     ): RedirectResponse
     {
         // @var AbstractProvider $provider
-        $provider    = $oauthService->setProvider($oauthCode);
-        $query       = $request->query->all();
-        $session     = $request->getSession();
-        $referer     = $session->get('referer');
+        $provider = $oauthService->setProvider($oauthCode);
+        $query = $request->query->all();
+        $session = $request->getSession();
+        $referer = $session->get('referer');
         $oauth2state = $session->get('oauth2state');
         // @var string $url
         $url = $this->generateUrl('front');

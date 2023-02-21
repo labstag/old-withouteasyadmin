@@ -39,21 +39,10 @@ abstract class FrontControllerLib extends ControllerLib
         return parent::render($view, $parameters, $response);
     }
 
-    protected function renderForm(
-        string $view,
-        array $parameters = [],
-        ?Response $response = null
-    ): Response
-    {
-        $parameters = $this->setParameters($parameters);
-
-        return parent::renderForm($view, $parameters, $response);
-    }
-
     private function setParameters($parameters)
     {
         $blocksArray = $this->getRepository(Block::class)->getDataByRegion();
-        $content     = null;
+        $content = null;
         if (isset($parameters['content'])) {
             $content = $parameters['content'];
             unset($parameters['content']);
@@ -61,7 +50,7 @@ abstract class FrontControllerLib extends ControllerLib
 
         $globals = $this->environment->getGlobals();
 
-        $config   = $globals['config'] ?? $this->dataService->getConfig();
+        $config = $globals['config'] ?? $this->dataService->getConfig();
         $tagsmeta = $config['meta'] ?? [];
         $tagsmeta = array_merge(
             $tagsmeta,
@@ -75,7 +64,7 @@ abstract class FrontControllerLib extends ControllerLib
 
         $parameters['blocks'] = [];
         foreach ($blocksArray as $key => $blocks) {
-            $key                        = ('content' == $key) ? 'main' : $key;
+            $key = ('content' == $key) ? 'main' : $key;
             $parameters['blocks'][$key] = [];
             foreach ($blocks as $block) {
                 $data = $this->blockService->showContent($block, $content);
@@ -83,7 +72,12 @@ abstract class FrontControllerLib extends ControllerLib
                     continue;
                 }
 
-                $parameters['blocks'][$key][] = $data;
+                $template = $this->blockService->showTemplate($block, $content);
+
+                $parameters['blocks'][$key][] = [
+                    'template' => $template,
+                    'data'     => $data,
+                ];
             }
         }
 

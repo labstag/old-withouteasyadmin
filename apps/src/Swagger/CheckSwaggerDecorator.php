@@ -27,7 +27,7 @@ final class CheckSwaggerDecorator implements NormalizerInterface
         array $context = []
     ): array|string|int|float|bool|ArrayObject|null
     {
-        $docs          = $this->normalizer->normalize($object, $format, $context);
+        $docs = $this->normalizer->normalize($object, $format, $context);
         $statsEndpoint = [
             'summary'    => 'Phone number.',
             'tags'       => ['Check'],

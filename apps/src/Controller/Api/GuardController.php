@@ -49,18 +49,18 @@ class GuardController extends ApiControllerLib
         RouteGroupeRepository $routeGroupeRepository
     ): JsonResponse
     {
-        $post   = $this->requeststack->getCurrentRequest()->request->all();
-        $data   = ['ok' => false];
+        $post = $this->requeststack->getCurrentRequest()->request->all();
+        $data = ['ok' => false];
         $groupe = $groupeRepository->findOneBy(['code' => $groupe]);
-        $route  = $routeRepository->findOneBy(['name' => $route]);
+        $route = $routeRepository->findOneBy(['name' => $route]);
         if (empty($groupe) || empty($route) || !array_key_exists('_token', $post)) {
             $data['error'] = 'Erreur de saisie';
 
             return new JsonResponse($data);
         }
 
-        $groupeId  = $groupe->getId();
-        $routeId   = $route->getId();
+        $groupeId = $groupe->getId();
+        $routeId = $route->getId();
         $csrfToken = new CsrfToken(
             'guard-'.$groupeId.'-route-'.$routeId,
             $post['_token']
@@ -104,9 +104,9 @@ class GuardController extends ApiControllerLib
         RouteUserRepository $routeUserRepository
     ): JsonResponse
     {
-        $data  = ['ok' => false];
-        $post  = $this->requeststack->getCurrentRequest()->request->all();
-        $user  = $userRepository->findOneBy(['username' => $user]);
+        $data = ['ok' => false];
+        $post = $this->requeststack->getCurrentRequest()->request->all();
+        $user = $userRepository->findOneBy(['username' => $user]);
         $route = $routeRepository->findOneBy(['name' => $route]);
         if (empty($user) || empty($route) || !array_key_exists('_token', $post)) {
             $data['error'] = 'Erreur de saisie';
@@ -114,8 +114,8 @@ class GuardController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $userId    = $user->getId();
-        $routeId   = $route->getId();
+        $userId = $user->getId();
+        $routeId = $route->getId();
         $csrfToken = new CsrfToken(
             'guard-'.$userId.'-route-'.$routeId,
             $post['_token']
@@ -156,7 +156,7 @@ class GuardController extends ApiControllerLib
         RouteUserRepository $routeUserRepository
     ): JsonResponse
     {
-        $data    = [
+        $data = [
             'groups' => [],
             'user'   => [],
         ];
@@ -185,7 +185,7 @@ class GuardController extends ApiControllerLib
     ): JsonResponse
     {
         $results = $routeGroupeRepository->findEnableByGroupe($groupe);
-        $data    = [];
+        $data = [];
         foreach ($results as $result) {
             // @var RouteGroupe $row
             $data[] = [

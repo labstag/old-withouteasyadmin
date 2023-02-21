@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserParagraph extends ParagraphLib
 {
+    public function getCode($user): string
+    {
+        unset($user);
+
+        return 'post/user';
+    }
+
     public function getEntity(): string
     {
         return User::class;
@@ -39,19 +46,19 @@ class UserParagraph extends ParagraphLib
 
     public function show(User $user): Response
     {
-        $all        = $this->request->attributes->all();
+        $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        $username   = $routeParam['username'] ?? null;
+        $username = $routeParam['username'] ?? null;
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
-        $pagination       = $this->paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $entityRepository->findPublierUsername($username),
             $this->request->query->getInt('page', 1),
             10
         );
 
         return $this->render(
-            $this->getParagraphFile('post/user'),
+            $this->getTemplateFile($this->getCode($user)),
             [
                 'pagination' => $pagination,
                 'paragraph'  => $user,

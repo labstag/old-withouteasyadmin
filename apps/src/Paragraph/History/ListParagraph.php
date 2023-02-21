@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib
 {
+    public function getCode($liste): string
+    {
+        unset($liste);
+
+        return 'history/list';
+    }
+
     public function getEntity(): string
     {
         return Liste::class;
@@ -49,7 +56,7 @@ class ListParagraph extends ParagraphLib
         );
 
         return $this->render(
-            $this->getParagraphFile('history/list'),
+            $this->getTemplateFile($this->getCode($liste)),
             [
                 'pagination' => $pagination,
                 'paragraph'  => $liste,

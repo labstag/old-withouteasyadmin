@@ -3,27 +3,23 @@ import { AttachmentDelete } from './AttachmentDelete'
 export class AttachmentImg extends ElementHTML {
   constructor () {
     super()
-    const title = this.getAttribute('name')
     this.classList.add('attachment-img')
-    const fieldsetElement = document.createElement('fieldset')
-    const legendElement = document.createElement('legend')
-    legendElement.append(document.createTextNode(title))
-    fieldsetElement.append(legendElement)
+    const element = document.createElement('fieldset')
     const pictureElement = document.createElement('picture')
     const imgElement = document.createElement('img')
     pictureElement.append(imgElement)
-    fieldsetElement.append(pictureElement)
+    element.append(pictureElement)
     if (this.getAttribute('url') !== '#') {
       const brElement = document.createElement('br')
-      fieldsetElement.append(brElement)
+      element.append(brElement)
       const divElement = document.createElement('div')
       divElement.classList.add('text-center')
       const attachmentDeleteElement = new AttachmentDelete()
       divElement.append(attachmentDeleteElement)
-      fieldsetElement.append(divElement)
+      element.append(divElement)
     }
 
-    this.append(fieldsetElement)
+    this.append(element)
 
     const imgs = this.getElementsByTagName('img')
     const img = imgs[imgs.length - 1]

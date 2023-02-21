@@ -6,32 +6,42 @@ use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Entity\Menu;
 use Labstag\Repository\Block\NavbarRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Table(name="block_navbar")
+ *
  * @ORM\Entity(repositoryClass=NavbarRepository::class)
  */
-class Navbar
+class Navbar implements Stringable
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="menu")
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="menu", cascade={"persist"})
      */
     private $block;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="navbars")
+     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="navbars", cascade={"persist"})
      */
     private $menu;
+
+    public function __toString(): string
+    {
+        return (string) $this->getBlock()->getTitle();
+    }
 
     public function getBlock(): ?Block
     {

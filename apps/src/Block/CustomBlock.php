@@ -30,6 +30,13 @@ class CustomBlock extends BlockLib
         parent::__construct($translator, $environment);
     }
 
+    public function getCode($custom, $content): string
+    {
+        unset($custom, $content);
+
+        return 'custom';
+    }
+
     public function getEntity(): string
     {
         return Custom::class;
@@ -57,11 +64,10 @@ class CustomBlock extends BlockLib
 
     public function show(Custom $custom, $content): Response
     {
-        unset($content);
         $paragraphs = $this->setParagraphs($custom);
 
         return $this->render(
-            $this->getBlockFile('custom'),
+            $this->getTemplateFile($this->getCode($custom, $content)),
             [
                 'paragraphs' => $paragraphs,
                 'block'      => $custom,
@@ -71,10 +77,10 @@ class CustomBlock extends BlockLib
 
     private function setParagraphs(Custom $custom)
     {
-        $all         = $this->request->attributes->all();
-        $route       = $all['_route'];
+        $all = $this->request->attributes->all();
+        $route = $all['_route'];
         $dataLayouts = $this->layoutRepository->findByCustom($custom);
-        $layouts     = [];
+        $layouts = [];
         foreach ($dataLayouts as $layout) {
             if (!in_array($route, $layout->getUrl())) {
                 continue;

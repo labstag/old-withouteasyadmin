@@ -37,10 +37,10 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
     {
         $users = $this->userRepository->findAll();
         $edito = new Edito();
-        $meta  = new Meta();
+        $meta = new Meta();
         $meta->setEdito($edito);
         $this->setMeta($meta);
-        $old    = clone $edito;
+        $old = clone $edito;
         $random = $generator->numberBetween(5, 50);
         $edito->setTitle($generator->unique()->text($random));
         // @var string $content

@@ -16,6 +16,7 @@ use Rector\Set\ValueObject\SetList;
 use Rector\Php80\Rector\Property\NestedAnnotationToAttributeRector;
 use Rector\Php80\ValueObject\NestedAnnotationToAttribute;
 use Rector\Doctrine\Set\DoctrineSetList;
+use Rector\Php82\Rector\Class_\ReadOnlyClassRector;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->cacheClass(FileCacheStorage::class);
@@ -26,13 +27,18 @@ return static function (RectorConfig $rectorConfig): void {
         __DIR__ . '/tests'
     ]);
 
-    $rectorConfig->phpVersion(PhpVersion::PHP_81);
+    $rectorConfig->phpVersion(PhpVersion::PHP_82);
     $rectorConfig->rules(
         [
             InlineConstructorDefaultToPropertyRector::class,
             ArrayKeyExistsTernaryThenValueToCoalescingRector::class,
             ArrayMergeOfNonArraysToSimpleArrayRector::class,
             EncapsedStringsToSprintfRector::class,
+        ]
+    );
+    $rectorConfig->skip(
+        [
+            ReadOnlyClassRector::class,
         ]
     );
     $rectorConfig->ruleWithConfiguration(
@@ -66,9 +72,9 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::CODING_STYLE,
         // SetList::DEAD_CODE,
         SetList::NAMING,
-        SetList::PHP_81,
+        SetList::PHP_82,
         SetList::PSR_4,
         // SetList::TYPE_DECLARATION,
-        LevelSetList::UP_TO_PHP_81
+        LevelSetList::UP_TO_PHP_82
     ]);
 };

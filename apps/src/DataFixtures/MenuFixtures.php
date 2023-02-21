@@ -23,7 +23,7 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
     {
         unset($objectManager);
         $faker = $this->setFaker();
-        $data  = $this->installService->getData('menu');
+        $data = $this->installService->getData('menu');
         foreach ($data as $menu) {
             $this->addMenu($faker, $menu);
         }
@@ -35,7 +35,7 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
     ): void
     {
         $menu = new Menu();
-        $old  = clone $menu;
+        $old = clone $menu;
         if (array_key_exists('clef', $dataMenu)) {
             $this->addReference('menu_'.$dataMenu['clef'], $menu);
             $menu->setClef($dataMenu['clef']);
@@ -59,7 +59,7 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
     )
     {
         $menu = new Menu();
-        $old  = clone $menu;
+        $old = clone $menu;
         $menu->setPosition($position + 1);
         $menu->setParent($parent);
         $menu->setSeparateur(array_key_exists('separator', $child));

@@ -12,9 +12,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ *
  * @ORM\InheritanceType("SINGLE_TABLE")
+ *
  * @ORM\DiscriminatorColumn(name="discr", type="string")
+ *
  * @ORM\DiscriminatorMap({"user" = "EmailUser"})
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 abstract class Email implements Stringable
@@ -26,6 +30,7 @@ abstract class Email implements Stringable
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank
+     *
      * @Assert\Email(
      *     message="The email '{{ value }}' is not a valid email."
      * )
@@ -34,8 +39,11 @@ abstract class Email implements Stringable
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;

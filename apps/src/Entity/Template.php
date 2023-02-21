@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TemplateRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Template implements Stringable
@@ -20,32 +21,39 @@ class Template implements Stringable
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
+     *
      * @ORM\Column(type="string", length=255)
      */
     protected $code;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     *
      * @Assert\NotBlank
      */
     protected $html;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank
      */
     protected $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     *
      * @Assert\NotBlank
      */
     protected $text;

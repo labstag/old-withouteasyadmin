@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PageRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Page implements Stringable
@@ -27,8 +28,11 @@ class Page implements Stringable
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
@@ -40,18 +44,21 @@ class Page implements Stringable
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
+     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children")
+     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children", cascade={"persist"})
+     *
      * @ORM\JoinColumn(
      *     name="parent_id",
      *     referencedColumnName="id",
@@ -67,20 +74,23 @@ class Page implements Stringable
 
     /**
      * @Gedmo\Slug(handlers={
+     *
      * @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\TreeSlugHandler", options={
+     *
      * @Gedmo\SlugHandlerOption(name="parentRelationField", value="parent"),
      * @Gedmo\SlugHandlerOption(name="separator", value="/")
      *      })
      * }, fields={"name"})
+     *
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $slug;
 
     public function __construct()
     {
-        $this->children   = new ArrayCollection();
+        $this->children = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
-        $this->metas      = new ArrayCollection();
+        $this->metas = new ArrayCollection();
     }
 
     public function __toString(): string

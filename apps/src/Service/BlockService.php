@@ -5,7 +5,6 @@ namespace Labstag\Service;
 use Labstag\Entity\Block;
 use Labstag\Repository\BlockRepository;
 use ReflectionClass;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class BlockService
@@ -24,8 +23,8 @@ class BlockService
     {
         $data = [];
         foreach ($this->blocksclass as $row) {
-            $type        = $row->getType();
-            $name        = $row->getName();
+            $type = $row->getType();
+            $name = $row->getName();
             $data[$name] = $type;
         }
 
@@ -43,8 +42,8 @@ class BlockService
 
         $data = [];
         foreach ($blocks as $block) {
-            $title        = $block->getTitle();
-            $id           = $block->getId();
+            $title = $block->getTitle();
+            $id = $block->getId();
             $data[$title] = $id;
         }
 
@@ -54,17 +53,17 @@ class BlockService
     public function getEntity(Block $block)
     {
         $entity = null;
-        $field  = $this->getEntityField($block);
+        $field = $this->getEntityField($block);
         if (is_null($field)) {
             return $entity;
         }
 
-        $reflection       = $this->setReflection($block);
+        $reflection = $this->setReflection($block);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() == $field) {
                 $entities = $propertyAccessor->getValue($block, $field);
-                $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
+                $entity = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
 
                 break;
             }
@@ -75,7 +74,7 @@ class BlockService
 
     public function getEntityField(Block $block)
     {
-        $field       = null;
+        $field = null;
         $childentity = $this->getTypeEntity($block);
         if (is_null($childentity)) {
             return $field;
@@ -84,7 +83,7 @@ class BlockService
         $reflection = $this->setReflection($childentity);
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ('block' == $reflectionProperty->getName()) {
-                preg_match('#inversedBy=\"(.*)\"#m', (string) $reflectionProperty->getDocComment(), $matches);
+                preg_match('#inversedBy=\"(.*)\", #m', (string) $reflectionProperty->getDocComment(), $matches);
                 $field = $matches[1] ?? $field;
 
                 break;
@@ -123,7 +122,7 @@ class BlockService
 
     public function getTypeEntity(Block $block)
     {
-        $type  = $block->getType();
+        $type = $block->getType();
         $block = null;
         foreach ($this->blocksclass as $row) {
             if ($row->getType() == $type) {
@@ -168,9 +167,9 @@ class BlockService
 
     public function showContent(Block $block, $content)
     {
-        $type   = $block->getType();
+        $type = $block->getType();
         $entity = $this->getEntity($block);
-        $html   = new Response();
+        $html = null;
         if (is_null($entity)) {
             return $html;
         }
@@ -184,6 +183,24 @@ class BlockService
         }
 
         return $html;
+    }
+
+    public function showTemplate(Block $block, $content)
+    {
+        $type = $block->getType();
+        $entity = $this->getEntity($block);
+        $template = null;
+        if (is_null($entity)) {
+            return $template;
+        }
+
+        foreach ($this->blocksclass as $row) {
+            if ($type == $row->getType()) {
+                $template = $row->template($entity, $content);
+            }
+        }
+
+        return $template;
     }
 
     protected function setReflection($entity): ReflectionClass

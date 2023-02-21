@@ -7,12 +7,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Entity\Paragraph\Image;
+use Labstag\Entity\Paragraph\TextImage;
+use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=AttachmentRepository::class)
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Attachment
@@ -21,14 +25,17 @@ class Attachment
     use StateableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond", cascade={"persist"}, orphanRemoval=true)
      */
     protected $editos;
 
     /**
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;
@@ -44,12 +51,12 @@ class Attachment
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="fond", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="fond", cascade={"persist"}, orphanRemoval=true)
      */
     protected $noteInternes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img", cascade={"persist"}, orphanRemoval=true)
      */
     protected $posts;
 
@@ -59,12 +66,12 @@ class Attachment
     protected $size;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar", cascade={"persist"}, orphanRemoval=true)
      */
     protected $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img", cascade={"persist"}, orphanRemoval=true)
      */
     private $bookmarks;
 
@@ -73,13 +80,31 @@ class Attachment
      */
     private $code;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $paragraphImages;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $paragraphTextImages;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $paragraphVideos;
+
     public function __construct()
     {
-        $this->users        = new ArrayCollection();
-        $this->posts        = new ArrayCollection();
-        $this->editos       = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->posts = new ArrayCollection();
+        $this->editos = new ArrayCollection();
         $this->noteInternes = new ArrayCollection();
-        $this->bookmarks    = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
+        $this->paragraphVideos = new ArrayCollection();
+        $this->paragraphImages = new ArrayCollection();
+        $this->paragraphTextImages = new ArrayCollection();
     }
 
     public function addBookmark(Bookmark $bookmark): self
@@ -117,6 +142,36 @@ class Attachment
         if (!$this->noteInternes->contains($memo)) {
             $this->noteInternes[] = $memo;
             $memo->setFond($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraphImage(Image $image): self
+    {
+        if (!$this->paragraphImages->contains($image)) {
+            $this->paragraphImages[] = $image;
+            $image->setImage($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraphTextImage(TextImage $textimage): self
+    {
+        if (!$this->paragraphTextImages->contains($textimage)) {
+            $this->paragraphTextImages[] = $textimage;
+            $textimage->setImage($this);
+        }
+
+        return $this;
+    }
+
+    public function addParagraphVideo(Video $video): self
+    {
+        if (!$this->paragraphVideos->contains($video)) {
+            $this->paragraphVideos[] = $video;
+            $video->setImage($this);
         }
 
         return $this;
@@ -182,6 +237,30 @@ class Attachment
         return $this->noteInternes;
     }
 
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getParagraphImages(): Collection
+    {
+        return $this->paragraphImages;
+    }
+
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getParagraphTextImages(): Collection
+    {
+        return $this->paragraphTextImages;
+    }
+
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getParagraphVideos(): Collection
+    {
+        return $this->paragraphVideos;
+    }
+
     public function getPosts(): Collection
     {
         return $this->posts;
@@ -232,6 +311,36 @@ class Attachment
         // set the owning side to null (unless already changed)
         if ($this->noteInternes->removeElement($memo) && $memo->getFond() === $this) {
             $memo->setFond(null);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphImage(Image $image): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphImages->removeElement($image) && $image->getImage() === $this) {
+            $image->setImage(null);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphTextImage(TextImage $textimage): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphTextImages->removeElement($textimage) && $textimage->getImage() === $this) {
+            $textimage->setImage(null);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphVideo(Video $paragraphVideo): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->paragraphVideos->removeElement($paragraphVideo) && $paragraphVideo->getImage() === $this) {
+            $paragraphVideo->setImage(null);
         }
 
         return $this;
