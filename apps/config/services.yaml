@@ -91,16 +91,16 @@ services:
             - !tagged_iterator frontclass
       # add more service definitions when explicit configuration is needed
       # please note that last definitions always *replace* previous ones
-    Labstag\Swagger\CheckSwaggerDecorator:
-      decorates: 'api_platform.swagger.normalizer.api_gateway'
-    Labstag\Swagger\SearchSwaggerDecorator:
-      decorates: 'api_platform.swagger.normalizer.api_gateway'
-    Labstag\Swagger\GuardSwaggerDecorator:
-      decorates: 'api_platform.swagger.normalizer.api_gateway'
-    Labstag\Swagger\ActionsSwaggerDecorator:
-      decorates: 'api_platform.swagger.normalizer.api_gateway'
-    Labstag\Swagger\AttachmentSwaggerDecorator:
-      decorates: 'api_platform.swagger.normalizer.api_gateway'
+    # Labstag\Swagger\CheckSwaggerDecorator:
+    #   decorates: 'api_platform.swagger.normalizer.api_gateway'
+    # Labstag\Swagger\SearchSwaggerDecorator:
+    #   decorates: 'api_platform.swagger.normalizer.api_gateway'
+    # Labstag\Swagger\GuardSwaggerDecorator:
+    #   decorates: 'api_platform.swagger.normalizer.api_gateway'
+    # Labstag\Swagger\ActionsSwaggerDecorator:
+    #   decorates: 'api_platform.swagger.normalizer.api_gateway'
+    # Labstag\Swagger\AttachmentSwaggerDecorator:
+    #   decorates: 'api_platform.swagger.normalizer.api_gateway'
     Labstag\Reader\UploadAnnotationReader:
       arguments: ["@annotations.reader"]
 

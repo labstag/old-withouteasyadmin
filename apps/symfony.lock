@@ -3,17 +3,16 @@
         "version": "1.1.3"
     },
     "api-platform/core": {
-        "version": "2.6",
+        "version": "3.1",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.5",
-            "ref": "05b57782a78c21a664a42055dc11cf1954ca36bb"
+            "branch": "main",
+            "version": "3.0",
+            "ref": "0330386d716d3eecc52ee5ac66976e733eb8f961"
         },
         "files": [
-            "config/packages/api_platform.yaml",
             "config/routes/api_platform.yaml",
-            "src/Entity/.gitignore"
+            "src/ApiResource/.gitignore"
         ]
     },
     "beberlei/doctrineextensions": {
@@ -123,9 +122,6 @@
     },
     "fakerphp/faker": {
         "version": "v1.16.0"
-    },
-    "fig/link-util": {
-        "version": "1.2.0"
     },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.2"
@@ -379,18 +375,6 @@
     },
     "sebastian/version": {
         "version": "3.0.2"
-    },
-    "sensio/framework-extra-bundle": {
-        "version": "5.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.2",
-            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
-        },
-        "files": [
-            "config/packages/sensio_framework_extra.yaml"
-        ]
     },
     "spipu/html2pdf": {
         "version": "v5.2.3"
@@ -883,9 +867,6 @@
     },
     "webonyx/graphql-php": {
         "version": "v14.11.3"
-    },
-    "willdurand/negotiation": {
-        "version": "3.0.0"
     },
     "wohali/oauth2-discord-new": {
         "version": "1.1.0"
