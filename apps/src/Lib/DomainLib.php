@@ -14,7 +14,6 @@ abstract class DomainLib
 
     public function getSearchForm()
     {
-
     }
 
     public function getUrlAdmin()

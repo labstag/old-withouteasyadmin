@@ -27,6 +27,11 @@ class TextImage
     protected $file;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $content;
+
+    /**
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -45,6 +50,11 @@ class TextImage
     private $image;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private ?bool $leftimage = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="textImages", cascade={"persist"})
      */
     private $paragraph;
@@ -61,6 +71,15 @@ class TextImage
      */
     private $title;
 
+    public function __construct()
+    {
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
     public function getFile()
     {
         return $this->file;
@@ -74,6 +93,11 @@ class TextImage
     public function getImage(): ?Attachment
     {
         return $this->image;
+    }
+
+    public function getLeftimage(): ?bool
+    {
+        return $this->leftimage;
     }
 
     public function getParagraph(): ?Paragraph
@@ -91,6 +115,13 @@ class TextImage
         return $this->title;
     }
 
+    public function setContent(?string $content): self
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
     public function setFile($file): self
     {
         $this->file = $file;
@@ -101,6 +132,13 @@ class TextImage
     public function setImage(?Attachment $attachment): self
     {
         $this->image = $attachment;
+
+        return $this;
+    }
+
+    public function setLeftimage(?bool $leftimage): self
+    {
+        $this->leftimage = $leftimage;
 
         return $this;
     }

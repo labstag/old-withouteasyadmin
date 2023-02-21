@@ -1,8 +1,10 @@
+{% import "macro.html.twig" as macro_site %}
 {% extends 'admin.html.twig' %}
 {% block content %}
-  <fieldset>
-    <legend>{{ paragraph_name(paragraph.type) }}</legend>
-    {{ form_start(form) }}
-    {{ form_end(form) }}
-  </fieldset>
+	{{ macro_site.flashbag(app) }}
+	<fieldset>
+		<legend>{{ paragraph_name(paragraph.type) }}</legend>
+		{{ form_start(form) }}
+		{{ form_end(form) }}
+	</fieldset>
 {% endblock %}

@@ -73,7 +73,7 @@ class LabstagExtension extends AbstractExtension
             }
         }
 
-        return $html . ("BEGIN OUTPUT from '".$data['view']."' -->\n");
+        return $html.("BEGIN OUTPUT from '".$data['view']."' -->\n");
     }
 
     public function debugEnd($data): string

@@ -31,7 +31,7 @@ abstract class ParagraphControllerLib extends ControllerLib
         $globals = $this->environment->getGlobals();
         $modal = $globals['modal'] ?? [];
         $modal['attachmentdelete'] = true;
-        $this->environment->addGlobal('modal', $modal);
+        $this->environment->mergeGlobals(['modal' => $modal]);
     }
 
     protected function deleteParagraph(Paragraph $paragraph, $entity, string $urledit)
