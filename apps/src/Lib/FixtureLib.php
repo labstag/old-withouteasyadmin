@@ -287,7 +287,7 @@ abstract class FixtureLib extends Fixture
             $slug = $asciiSlugger->slug($title);
 
             try {
-                /** @phpstan-ignore-next-line */
+                /** @var PicsumProvider $generator */
                 $image = $generator->picsum(null, 640, 480, true);
                 $content = file_get_contents($image);
                 // @var resource $tmpfile
