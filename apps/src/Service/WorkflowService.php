@@ -32,54 +32,33 @@ class WorkflowService
 
     public function get($entity): Workflow
     {
-        if ($entity instanceof Attachment) {
-            return $this->attachmentStateMachine;
-        }
-
-        if ($entity instanceof Bookmark) {
-            return $this->bookmarkStateMachine;
-        }
-
-        if ($entity instanceof Edito) {
-            return $this->editoStateMachine;
-        }
-
-        if ($entity instanceof Email) {
-            return $this->emailStateMachine;
-        }
-
-        if ($entity instanceof History) {
-            return $this->historyStateMachine;
-        }
-
-        if ($entity instanceof Memo) {
-            return $this->memoStateMachine;
-        }
-
-        if ($entity instanceof Phone) {
-            return $this->phoneStateMachine;
-        }
-
-        if ($entity instanceof Post) {
-            return $this->postStateMachine;
-        }
-
-        if ($entity instanceof User) {
-            return $this->userStateMachine;
-        }
+        return match (true) {
+            ($entity instanceof Attachment) => $this->attachmentStateMachine,
+            ($entity instanceof Bookmark) => $this->bookmarkStateMachine,
+            ($entity instanceof Edito) => $this->editoStateMachine,
+            ($entity instanceof Email) => $this->emailStateMachine,
+            ($entity instanceof History) => $this->historyStateMachine,
+            ($entity instanceof Memo) => $this->memoStateMachine,
+            ($entity instanceof Phone) => $this->phoneStateMachine,
+            ($entity instanceof Post) => $this->postStateMachine,
+            ($entity instanceof User) => $this->userStateMachine,
+        };
     }
 
     public function has($entity): bool
     {
-        $status = $entity instanceof Attachment;
-        $status = ($entity instanceof Bookmark) ? true : $status;
-        $status = ($entity instanceof Edito) ? true : $status;
-        $status = ($entity instanceof Email) ? true : $status;
-        $status = ($entity instanceof History) ? true : $status;
-        $status = ($entity instanceof Memo) ? true : $status;
-        $status = ($entity instanceof Phone) ? true : $status;
-        $status = ($entity instanceof Post) ? true : $status;
-
-        return ($entity instanceof User) ? true : $status;
+        $class = get_class($entity);
+        $tabs = [
+            Attachment::class,
+            Bookmark::class,
+            Edito::class,
+            Email::class,
+            History::class,
+            Memo::class,
+            Phone::class,
+            Post::class,
+            User::class,
+        ];
+        return in_array($class, $tab);
     }
 }

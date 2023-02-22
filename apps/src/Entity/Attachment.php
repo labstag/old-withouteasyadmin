@@ -73,7 +73,7 @@ class Attachment
     /**
      * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $bookmarks;
+    private $bookmarks;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -83,17 +83,17 @@ class Attachment
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $paragraphImages;
+    private $paragraphImages;
 
     /**
      * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $paragraphTextImages;
+    private $paragraphTextImages;
 
     /**
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $paragraphVideos;
+    private $paragraphVideos;
 
     public function __construct()
     {

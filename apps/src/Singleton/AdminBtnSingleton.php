@@ -15,8 +15,6 @@ class AdminBtnSingleton
 
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
-    protected Environment $twigEnvironment;
-
     protected GuardService $guardService;
 
     protected bool $init = false;
@@ -26,6 +24,8 @@ class AdminBtnSingleton
     protected RouterInterface $router;
 
     protected TokenStorageInterface $token;
+
+    protected Environment $twigEnvironment;
 
     protected function __construct()
     {

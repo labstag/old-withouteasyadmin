@@ -89,7 +89,7 @@ class Memo implements Stringable
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private ArrayCollection|array $paragraphs;
+    private $paragraphs;
 
     public function __construct()
     {

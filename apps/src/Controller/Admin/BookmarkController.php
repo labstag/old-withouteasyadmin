@@ -27,6 +27,8 @@ class BookmarkController extends AdminControllerLib
         ?Bookmark $bookmark
     ): Response
     {
+        dump(get_class($bookmark));
+        dump(Bookmark::class);
         return $this->form(
             $this->getDomainEntity(),
             is_null($bookmark) ? new Bookmark() : $bookmark,
