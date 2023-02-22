@@ -17,6 +17,7 @@ use Rector\Php80\Rector\Property\NestedAnnotationToAttributeRector;
 use Rector\Php80\ValueObject\NestedAnnotationToAttribute;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php82\Rector\Class_\ReadOnlyClassRector;
+use Rector\TypeDeclaration\Rector\Property\TypedPropertyFromAssignsRector;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->cacheClass(FileCacheStorage::class);
@@ -38,6 +39,7 @@ return static function (RectorConfig $rectorConfig): void {
     );
     $rectorConfig->skip(
         [
+            TypedPropertyFromAssignsRector::class,
             ReadOnlyClassRector::class,
         ]
     );
