@@ -48,7 +48,10 @@ abstract class ApiControllerLib extends AbstractController
             return $data;
         }
 
-        $results = $this->getRepository($entityClass)->findEnableByUser($user);
+        /** @var ServiceEntityRepositoryLib $entityRepository */
+        $entityRepository = $this->entityManager->getRepository($entityClass);
+
+        $results = $entityRepository->findEnableByUser($user);
         if (RouteUser::class == $entityClass) {
             foreach ($results as $row) {
                 // @var RouteUser $row
@@ -71,20 +74,18 @@ abstract class ApiControllerLib extends AbstractController
         return $data;
     }
 
-    protected function getRepository(string $entity): ServiceEntityRepositoryLib
-    {
-        return $this->entityManager->getRepository($entity);
-    }
-
     protected function getResultWorkflow($request, $entity)
     {
+        $userRepository = $this->entityManager->getRepository(User::class);
+        /** @var ServiceEntityRepositoryLib $entityRepository */
+        $entityRepository = $this->entityManager->getRepository($entity);
         $get = $request->query->all();
         if (array_key_exists('user', $get)) {
-            $user = $this->getRepository(User::class)->find($get['user']);
+            $user = $userRepository->find($get['user']);
 
-            return $this->getRepository($entity)->findEnableByGroupe($user->getRefgroupe());
+            return $entityRepository->findEnableByGroupe($user->getRefgroupe());
         }
 
-        return $this->getRepository($entity)->findEnableByGroupe();
+        return $entityRepository->findEnableByGroupe();
     }
 }

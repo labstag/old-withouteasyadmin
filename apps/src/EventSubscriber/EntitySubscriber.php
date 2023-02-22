@@ -236,11 +236,6 @@ class EntitySubscriber extends EventSubscriberLib
         return $this->parameterBag->get($name);
     }
 
-    protected function getRepository(string $entity): ServiceEntityRepositoryLib
-    {
-        return $this->entityManager->getRepository($entity);
-    }
-
     protected function setChangePassword(User $oldEntity, User $newEntity): void
     {
         if ($oldEntity->getState() == $newEntity->getState()) {
@@ -279,7 +274,8 @@ class EntitySubscriber extends EventSubscriberLib
         foreach ($states as $state) {
             foreach ($state as $entity) {
                 $entity->setDeletedAt($datetime);
-                $repository = $this->getRepository($entity::class);
+                /** @var ServiceEntityRepositoryLib $repository */
+                $repository = $this->entityManager->getRepository($entity::class);
                 $repository->add($entity);
             }
         }
@@ -326,7 +322,8 @@ class EntitySubscriber extends EventSubscriberLib
                 $trouver = true;
             }
 
-            $repository = $this->getRepository($emailUser::class);
+            /** @var ServiceEntityRepositoryLib $repository */
+            $repository = $this->entityManager->getRepository($emailUser::class);
             $repository->add($emailUser);
         }
 
