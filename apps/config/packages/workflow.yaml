@@ -1,5 +1,267 @@
 framework:
   workflows:
-    enabled: true
-imports:
-  - { resource: workflows/* }
+    attachment:
+      type: 'state_machine'
+      audit_trail:
+        enabled: "%kernel.debug%"
+      marking_store:
+        type: 'method'
+        property: 'state'
+      supports:
+        - Labstag\Entity\Attachment
+      initial_marking: start
+      places:
+        - start
+        - averifier
+        - valide
+        - nonconforme
+      transitions:
+        submit:
+            from: start
+            to: averifier
+        valider:
+            from: averifier
+            to: valide
+        reenvoyer:
+            from: [nonconforme, averifier]
+            to: averifier
+        annuler:
+            from: averifier
+            to: nonconforme
+    bookmark:
+      type: "state_machine"
+      audit_trail:
+        enabled: "%kernel.debug%"
+      marking_store:
+        type: "method"
+        property: "state"
+      supports:
+        - Labstag\Entity\Bookmark
+      initial_marking: start
+      places:
+        - start
+        - brouillon
+        - relecture
+        - publie
+        - rejete
+      transitions:
+        submit:
+          from: start
+          to: brouillon
+        relire:
+          from: brouillon
+          to: relecture
+        corriger:
+          from: relecture
+          to: brouillon
+        publier:
+          from: relecture
+          to: publie
+        rejeter:
+          from: relecture
+          to: rejete
+    edito:
+      type: 'state_machine'
+      audit_trail:
+        enabled: "%kernel.debug%"
+      marking_store:
+        type: 'method'
+        property: 'state'
+      supports:
+        - Labstag\Entity\Edito
+      initial_marking: start
+      places:
+        - start
+        - brouillon
+        - relecture
+        - publie
+        - rejete
+      transitions:
+        submit:
+            from: start
+            to: brouillon
+        relire:
+            from: brouillon
+            to: relecture
+        corriger:
+            from: relecture
+            to: brouillon
+        publier:
+            from: relecture
+            to: publie
+        rejeter:
+            from: relecture
+            to: rejete
+    email:
+      type: 'state_machine'
+      audit_trail:
+        enabled: "%kernel.debug%"
+      marking_store:
+        type: 'method'
+        property: 'state'
+      supports:
+        - Labstag\Entity\Email
+      initial_marking: start
+      places:
+        - start
+        - averifier
+        - valide
+      transitions:
+        submit:
+            from: start
+            to: averifier
+        valider:
+            from: averifier
+            to: valide
+    history:
+      type: "state_machine"
+      audit_trail:
+        enabled: "%kernel.debug%"
+      marking_store:
+        type: "method"
+        property: "state"
+      supports:
+        - Labstag\Entity\History
+      initial_marking: start
+      places:
+        - start
+        - brouillon
+        - relecture
+        - publie
+        - rejete
+      transitions:
+        submit:
+          from: start
+          to: brouillon
+        relire:
+          from: brouillon
+          to: relecture
+        corriger:
+          from: relecture
+          to: brouillon
+        publier:
+          from: relecture
+          to: publie
+        rejeter:
+          from: relecture
+          to: rejete
+    memo:
+      type: 'state_machine'
+      audit_trail:
+        enabled: "%kernel.debug%"
+      marking_store:
+        type: 'method'
+        property: 'state'
+      supports:
+        - Labstag\Entity\Memo
+      initial_marking: start
+      places:
+        - start
+        - brouillon
+        - relecture
+        - publie
+        - rejete
+      transitions:
+        submit:
+            from: start
+            to: brouillon
+        relire:
+            from: brouillon
+            to: relecture
+        corriger:
+            from: relecture
+            to: brouillon
+        publier:
+            from: relecture
+            to: publie
+        rejeter:
+            from: relecture
+            to: rejete
+    phone:
+      type: 'state_machine'
+      audit_trail:
+        enabled: "%kernel.debug%"
+      marking_store:
+        type: 'method'
+        property: 'state'
+      supports:
+        - Labstag\Entity\Phone
+      initial_marking: start
+      places:
+        - start
+        - averifier
+        - valide
+      transitions:
+        submit:
+            from: start
+            to: averifier
+        valider:
+            from: averifier
+            to: valide
+    post:
+      type: "state_machine"
+      audit_trail:
+        enabled: "%kernel.debug%"
+      marking_store:
+        type: "method"
+        property: "state"
+      supports:
+        - Labstag\Entity\Post
+      initial_marking: start
+      places:
+        - start
+        - brouillon
+        - relecture
+        - publie
+        - rejete
+      transitions:
+        submit:
+          from: start
+          to: brouillon
+        relire:
+          from: brouillon
+          to: relecture
+        corriger:
+          from: relecture
+          to: brouillon
+        publier:
+          from: relecture
+          to: publie
+        rejeter:
+          from: relecture
+          to: rejete
+    user:
+      type: 'state_machine'
+      audit_trail:
+        enabled: "%kernel.debug%"
+      marking_store:
+        type: 'method'
+        property: 'state'
+      supports:
+        - Labstag\Entity\User
+      initial_marking: start
+      places:
+        - start
+        - nonverifier
+        - valider
+        - lostpassword
+        - disable
+      transitions:
+        submit:
+            from: start
+            to: nonverifier
+        validation:
+            from: nonverifier
+            to: valider
+        passwordlost:
+            from: valider
+            to: lostpassword
+        changepassword:
+            from: lostpassword
+            to: valider
+        desactiver:
+            from: valider
+            to: disable
+        activer:
+            from: disable
+            to: valider

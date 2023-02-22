@@ -6,7 +6,7 @@ use Labstag\Entity\Profil;
 use Labstag\Lib\AdminControllerLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 #[Route(path: '/admin/profil')]
 class ProfilController extends AdminControllerLib
