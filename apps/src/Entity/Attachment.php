@@ -86,12 +86,12 @@ class Attachment
     private $paragraphImages;
 
     /**
-     * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="image", cascade={privatet"}, orphanRemoprivatee)
+     * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
      */
     private $paragraphTextImages;
 
     /**
-     * @ORM\OneToMany(targetEntiprivateo::class, mappedBy="image", cascade={privatet"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
      */
     private $paragraphVideos;
 
