@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity\Traits\Paragraph;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Labstag\Entity\Edito;
 use Labstag\Entity\Paragraph\Edito as ParagraphEdito;
@@ -66,10 +67,7 @@ trait EditoEntity
         return $this->edito;
     }
 
-    /**
-     * @return Collection<int, Header>
-     */
-    public function getEditoHeaders(): Collection
+    public function getEditoHeaders(): ArrayCollection
     {
         return $this->editoHeaders;
     }
@@ -82,10 +80,7 @@ trait EditoEntity
         return $this->editos;
     }
 
-    /**
-     * @return Collection<int, Show>
-     */
-    public function getEditoShows(): Collection
+    public function getEditoShows(): ArrayCollection
     {
         return $this->editoShows;
     }

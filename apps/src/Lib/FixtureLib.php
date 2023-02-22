@@ -315,7 +315,7 @@ abstract class FixtureLib extends Fixture
                 echo $exception->getMessage();
             }
 
-            if (isset($filename)) {
+            if (isset($file)) {
                 $attachment = $this->fileService->setAttachment($file);
                 $accessor->setValue($entity, $annotation->getFilename(), $attachment);
             }

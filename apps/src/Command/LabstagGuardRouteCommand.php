@@ -61,7 +61,7 @@ class LabstagGuardRouteCommand extends CommandLib
                 ['route'],
                 $table
             );
-            $table = $this->guardService->delete();
+            $this->guardService->delete();
             $symfonyStyle->newLine();
             $symfonyStyle->success('Fin de suppression');
         }

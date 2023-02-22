@@ -36,9 +36,6 @@ class GuardController extends ApiControllerLib
         return $this->getRefgroupe($routeGroupeRepository);
     }
 
-    /**
-     * @return Response
-     */
     #[Route(path: '/setgroup/{route}/{groupe}', name: 'api_guard_setgroup')]
     public function setgroup(
         string $route,
@@ -91,9 +88,6 @@ class GuardController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    /**
-     * @return Response
-     */
     #[Route(path: '/setuser/{route}/{user}', name: 'api_guard_setuser', methods: ['POST'])]
     public function setuser(
         string $route,
@@ -146,9 +140,6 @@ class GuardController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    /**
-     * @return Response
-     */
     #[Route(path: '/users/{user}', name: 'api_guard_user')]
     public function user(
         User $user,

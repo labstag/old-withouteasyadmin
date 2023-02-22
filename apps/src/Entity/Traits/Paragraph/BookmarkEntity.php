@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity\Traits\Paragraph;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Labstag\Entity\Paragraph\Bookmark as ParagraphBookmark;
 use Labstag\Entity\Paragraph\Bookmark\Category as BookmarkCategory;
@@ -95,10 +96,7 @@ trait BookmarkEntity
         return $this->bookmarkLists;
     }
 
-    /**
-     * @return Collection<int, Bookmark>
-     */
-    public function getBookmarks(): Collection
+    public function getBookmarks(): ArrayCollection
     {
         return $this->bookmarks;
     }

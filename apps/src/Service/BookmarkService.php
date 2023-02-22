@@ -123,9 +123,10 @@ class BookmarkService
                 $this->errorService->set($exception);
             }
 
-            $file = $path.'/'.$filename;
-            $attachment = $this->fileService->setAttachment($file);
-            $accessor->setValue($bookmark, $annotation->getFilename(), $attachment);
+            if (isset($file)) {
+                $attachment = $this->fileService->setAttachment($file);
+                $accessor->setValue($bookmark, $annotation->getFilename(), $attachment);
+            }
         }
     }
 }

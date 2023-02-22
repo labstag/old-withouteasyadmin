@@ -71,7 +71,7 @@ abstract class ApiControllerLib extends AbstractController
         return $data;
     }
 
-    protected function getRepository(string $entity): EntityRepository
+    protected function getRepository(string $entity): ServiceEntityRepositoryLib
     {
         return $this->entityManager->getRepository($entity);
     }

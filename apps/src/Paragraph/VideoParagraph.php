@@ -16,6 +16,8 @@ use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\VideoType;
 use Labstag\Lib\ParagraphLib;
+use Labstag\Repository\AttachmentRepository;
+use Labstag\Repository\Paragraph\VideoRepository;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -81,6 +83,7 @@ class VideoParagraph extends ParagraphLib
             return;
         }
 
+        $slug = null;
         try {
             $embed = new Embed();
             $info = $embed->get($url);
@@ -105,7 +108,7 @@ class VideoParagraph extends ParagraphLib
             );
         }
 
-        if ('' == $image || $attachment instanceof Attachment) {
+        if ('' == $image || $attachment instanceof Attachment || is_null($slug)) {
             return;
         }
 
@@ -185,13 +188,10 @@ class VideoParagraph extends ParagraphLib
                 $clientOriginalName
             );
             $file = $path.'/'.$clientOriginalName;
-
-            if (isset($clientOriginalName)) {
-                $attachment = $this->fileService->setAttachment($file);
-                $repository->add($attachment);
-                $video->setImage($attachment);
-                $repository->add($video);
-            }
+            $attachment = $this->fileService->setAttachment($file);
+            $repository->add($attachment);
+            $video->setImage($attachment);
+            $repository->add($video);
         } catch (Exception $exception) {
             $this->errorService->set($exception);
             echo $exception->getMessage();

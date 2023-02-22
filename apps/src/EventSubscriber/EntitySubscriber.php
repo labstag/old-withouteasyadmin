@@ -28,6 +28,7 @@ use Labstag\Event\PostEntityEvent;
 use Labstag\Event\RenderEntityEvent;
 use Labstag\Event\UserEntityEvent;
 use Labstag\Lib\EventSubscriberLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\HistoryService;
 
 class EntitySubscriber extends EventSubscriberLib
@@ -235,7 +236,7 @@ class EntitySubscriber extends EventSubscriberLib
         return $this->parameterBag->get($name);
     }
 
-    protected function getRepository(string $entity): EntityRepository
+    protected function getRepository(string $entity): ServiceEntityRepositoryLib
     {
         return $this->entityManager->getRepository($entity);
     }
