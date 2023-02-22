@@ -59,6 +59,6 @@ class WorkflowService
             Post::class,
             User::class,
         ];
-        return in_array($class, $tab);
+        return in_array($class, $tabs);
     }
 }
