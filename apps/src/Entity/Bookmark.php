@@ -103,7 +103,7 @@ class Bookmark
      *
      * @Gedmo\Timestampable(on="change", field={"state"})
      */
-    private DateTime $stateChanged;
+    private ?DateTimeInterface $stateChanged = null;
 
     /**
      * @ORM\Column(type="string", length=255)

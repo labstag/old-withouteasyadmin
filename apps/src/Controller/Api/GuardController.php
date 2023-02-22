@@ -62,7 +62,7 @@ class GuardController extends ApiControllerLib
             'guard-'.$groupeId.'-route-'.$routeId,
             $post['_token']
         );
-        if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
+        if ($this->csrfTokenManager->isTokenValid($csrfToken)) {
             $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
@@ -114,7 +114,7 @@ class GuardController extends ApiControllerLib
             'guard-'.$userId.'-route-'.$routeId,
             $post['_token']
         );
-        if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
+        if ($this->csrfTokenManager->isTokenValid($csrfToken)) {
             $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);

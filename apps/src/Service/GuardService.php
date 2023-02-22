@@ -203,7 +203,7 @@ class GuardService
         return $this->searchRouteUser($user, $route);
     }
 
-    public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
+    public function guardRouteEnableGroupe(Route $route, Groupe $groupe): bool
     {
         return $this->isRouteGroupe(
             $groupe,
@@ -211,7 +211,7 @@ class GuardService
         );
     }
 
-    public function guardRouteEnableUser(string $route, User $user): bool
+    public function guardRouteEnableUser(Route $route, User $user): bool
     {
         return $this->isRouteGroupe(
             $user->getRefgroupe(),
@@ -351,7 +351,7 @@ class GuardService
     }
 
     private function isRouteGroupe(
-        $groupe,
+        Groupe $groupe,
         $route
     ): bool
     {

@@ -29,7 +29,7 @@ class BlockController extends AdminControllerLib
 
         return $this->form(
             $this->getDomainEntity(),
-            is_null($block) ? new Block() : $block,
+            $block,
             'admin/block/form.html.twig',
             ['field' => $field]
         );

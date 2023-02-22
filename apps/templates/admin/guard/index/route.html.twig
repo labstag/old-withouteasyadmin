@@ -54,7 +54,7 @@
                 </td>
                 {% for group in groups %}
                     <td>
-                        {% set enable = guard_route_enable_group(route.name, group) %}
+                        {% set enable = guard_route_enable_group(route, group) %}
                         {% if 'superadmin' != group.code and enable %}
                             <guard-setroute
                                 title="{{ group.name|e('html_attr') }}"

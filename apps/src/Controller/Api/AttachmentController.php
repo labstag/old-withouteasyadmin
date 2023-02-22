@@ -29,12 +29,6 @@ class AttachmentController extends ApiControllerLib
             return new JsonResponse($return);
         }
 
-        if (is_null($attachment)) {
-            $return['state'] = false;
-
-            return new JsonResponse($return);
-        }
-
         $attachmentRepository->remove($attachment);
         $return['state'] = true;
 

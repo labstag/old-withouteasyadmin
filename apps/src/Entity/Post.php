@@ -44,7 +44,7 @@ class Post implements Stringable
      *
      * @ORM\Column(type="datetime")
      */
-    private DateTime $created;
+    private ?DateTimeInterface $created = null;
 
     /**
      * @ORM\Id
@@ -120,7 +120,7 @@ class Post implements Stringable
      *
      * @ORM\Column(type="datetime")
      */
-    private DateTime $updated;
+    private ?DateTimeInterface $updated = null;
 
     public function __construct()
     {

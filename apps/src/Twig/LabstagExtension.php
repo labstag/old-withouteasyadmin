@@ -4,6 +4,7 @@ namespace Labstag\Twig;
 
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Route;
 use Labstag\Entity\User;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\GuardService;
@@ -258,12 +259,12 @@ class LabstagExtension extends AbstractExtension
         return $this->guardService->guardRoute($route, $token);
     }
 
-    public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
+    public function guardRouteEnableGroupe(Route $route, Groupe $groupe): bool
     {
         return $this->guardService->guardRouteEnableGroupe($route, $groupe);
     }
 
-    public function guardRouteEnableUser(string $route, User $user): bool
+    public function guardRouteEnableUser(Route $route, User $user): bool
     {
         return $this->guardService->guardRouteEnableUser($route, $user);
     }
