@@ -12,13 +12,11 @@ use Labstag\RequestHandler\OauthConnectUserRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserService
 {
 
-    protected FlashBagInterface $flashbag;
 
     public function __construct(
         protected OauthService $oauthService,

@@ -3,6 +3,7 @@
 namespace Labstag\Service;
 
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 
 class SessionService
 {
@@ -20,6 +21,7 @@ class SessionService
             return;
         }
 
+        /** @var FlashBagAwareSessionInterface $session */
         $session = $requestStack->getSession();
         $flashbag = $session->getFlashBag();
         $flashbag->add($type, $message);

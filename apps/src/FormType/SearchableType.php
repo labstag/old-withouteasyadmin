@@ -5,6 +5,7 @@ namespace Labstag\FormType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
@@ -118,6 +119,7 @@ class SearchableType extends AbstractType
         }
 
         $entityManager = $this->entityManager;
+        /** @var ServiceEntityRepositoryLib $entityRepository */
         $entityRepository = $entityManager->getRepository($options['class']);
         foreach ($ids as $id => $key) {
             $entity = $entityRepository->find($key);

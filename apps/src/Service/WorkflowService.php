@@ -30,7 +30,7 @@ class WorkflowService
     {
     }
 
-    public function get($entity): Workflow
+    public function get($entity): WorkflowInterface
     {
         return match (true) {
             ($entity instanceof Attachment) => $this->attachmentStateMachine,

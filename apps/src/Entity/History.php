@@ -141,12 +141,12 @@ class History
         return $this;
     }
 
-    public function getChapters(): Collection
+    public function getChapters(): ArrayCollection
     {
         return $this->chapters;
     }
 
-    public function getChaptersPublished(): Collection
+    public function getChaptersPublished(): ArrayCollection
     {
         $arrayCollection = new ArrayCollection();
         $chapters = $this->getChapters();

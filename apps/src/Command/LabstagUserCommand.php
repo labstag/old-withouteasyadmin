@@ -12,6 +12,8 @@ use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\WorkflowService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\HelperInterface;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -39,6 +41,7 @@ class LabstagUserCommand extends CommandLib
         $action
     ): void
     {
+        /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
@@ -71,6 +74,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function actionState(InputInterface $input, OutputInterface $output, SymfonyStyle $symfonyStyle): void
     {
+        /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
@@ -86,6 +90,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle
     ): void
     {
+        /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
@@ -294,6 +299,7 @@ class LabstagUserCommand extends CommandLib
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
+        /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             'Action à effectué',

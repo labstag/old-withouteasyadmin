@@ -10,7 +10,6 @@ class DataFixtures extends FixtureLib
     public function load(ObjectManager $objectManager): void
     {
         unset($objectManager);
-        $this->cache->clear();
         $folder = 'public/uploads';
         if (is_dir($folder)) {
             $this->delTree($folder);
