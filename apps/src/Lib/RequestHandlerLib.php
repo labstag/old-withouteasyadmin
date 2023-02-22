@@ -5,6 +5,7 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\User;
 use Labstag\Event\UserCollectionEvent;
+use Labstag\Service\WorkflowService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Workflow\Registry;
 
@@ -12,7 +13,7 @@ abstract class RequestHandlerLib
 {
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        protected Registry $registry,
+        protected WorkflowService $workflowService,
         protected EventDispatcherInterface $eventDispatcher
     )
     {
@@ -20,11 +21,11 @@ abstract class RequestHandlerLib
 
     public function changeWorkflowState($entity, array $states): void
     {
-        if (!$this->registry->has($entity)) {
+        if (!$this->workflowService->has($entity)) {
             return;
         }
 
-        $workflow = $this->registry->get($entity);
+        $workflow = $this->workflowService->get($entity);
         foreach ($states as $state) {
             if (!$workflow->can($entity, $state)) {
                 continue;
@@ -53,11 +54,11 @@ abstract class RequestHandlerLib
 
     protected function initWorkflow($entity): void
     {
-        if (!$this->registry->has($entity)) {
+        if (!$this->workflowService->has($entity)) {
             return;
         }
 
-        $workflow = $this->registry->get($entity);
+        $workflow = $this->workflowService->get($entity);
         $definition = $workflow->getDefinition();
         $transitions = $definition->getTransitions();
         foreach ($transitions as $transition) {

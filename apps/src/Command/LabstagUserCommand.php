@@ -9,6 +9,7 @@ use Labstag\Lib\CommandLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\UserRequestHandler;
+use Labstag\Service\WorkflowService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +24,7 @@ class LabstagUserCommand extends CommandLib
 {
     public function __construct(
         EntityManagerInterface $entityManager,
-        protected Registry $registry,
+        protected WorkflowService $workflowService,
         protected UserRequestHandler $userRequestHandler,
         protected GroupeRepository $groupeRepository,
         protected UserRepository $userRepository
@@ -217,7 +218,7 @@ class LabstagUserCommand extends CommandLib
         );
 
         $action = $helper->ask($input, $output, $choiceQuestion);
-        if ('oui' !== $action || !$this->registry->has($entity)) {
+        if ('oui' !== $action || !$this->workflowService->has($entity)) {
             $symfonyStyle->warning(
                 ['Action impossible']
             );
@@ -225,7 +226,7 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $workflow = $this->registry->get($entity);
+        $workflow = $this->workflowService->get($entity);
         if (!$workflow->can($entity, 'desactiver')) {
             $symfonyStyle->warning(
                 ['Action impossible']
@@ -267,7 +268,7 @@ class LabstagUserCommand extends CommandLib
         );
 
         $action = $helper->ask($input, $output, $choiceQuestion);
-        if ('oui' !== $action || !$this->registry->has($entity)) {
+        if ('oui' !== $action || !$this->workflowService->has($entity)) {
             $symfonyStyle->warning(
                 ['Action impossible']
             );
@@ -275,7 +276,7 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $workflow = $this->registry->get($entity);
+        $workflow = $this->workflowService->get($entity);
         if (!$workflow->can($entity, 'activer')) {
             $symfonyStyle->warning(
                 ['Action impossible']
@@ -366,7 +367,7 @@ class LabstagUserCommand extends CommandLib
         }
 
         $states = [];
-        $workflow = $this->registry->get($entity);
+        $workflow = $this->workflowService->get($entity);
         $transitions = $workflow->getEnabledTransitions($entity);
         foreach ($transitions as $transition) {
             $name = $transition->getName();

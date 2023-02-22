@@ -7,6 +7,7 @@ use Labstag\Entity\Workflow;
 use Labstag\Lib\CommandLib;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\WorkflowRequestHandler;
+use Labstag\Service\WorkflowService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,7 +22,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
     public function __construct(
         protected $entitiesclass,
         EntityManagerInterface $entityManager,
-        protected Registry $registry,
+        protected WorkflowService $workflowService,
         protected EventDispatcherInterface $eventDispatcher,
         protected WorkflowRequestHandler $workflowRequestHandler,
         protected WorkflowRepository $workflowRepository
@@ -43,8 +44,8 @@ class LabstagWorkflowsShowCommand extends CommandLib
         $data = [];
         $entities = [];
         foreach ($this->entitiesclass as $entity) {
-            if ($this->registry->has($entity)) {
-                $workflow = $this->registry->get($entity);
+            if ($this->workflowService->has($entity)) {
+                $workflow = $this->workflowService->get($entity);
                 $definition = $workflow->getDefinition();
                 $name = $workflow->getName();
                 $entities[] = $name;

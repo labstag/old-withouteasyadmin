@@ -1,4 +1,5 @@
+framework:
+  workflows:
+    enabled: true
 imports:
   - { resource: workflows/* }
-framework:
-  workflows: null

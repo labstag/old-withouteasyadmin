@@ -5,6 +5,9 @@ namespace Labstag\Lib;
 use Labstag\Entity\Category;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
+use Labstag\Service\WorkflowService;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -18,7 +21,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class SearchAbstractTypeLib extends AbstractType
 {
-    public function __construct(protected Registry $registry, protected TranslatorInterface $translator)
+    public function __construct(
+        protected ParameterBagInterface $parameterBagInterface,
+        protected WorkflowService $workflowService,
+        protected TranslatorInterface $translator
+    )
     {
     }
 
@@ -140,7 +147,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
         $placeholder
     )
     {
-        $workflow = $this->registry->get($entityclass);
+        $workflow = $this->workflowService->get($entityclass);
         $definition = $workflow->getDefinition();
         $places = $definition->getPlaces();
         $builder->add(

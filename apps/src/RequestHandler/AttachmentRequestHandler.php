@@ -15,7 +15,7 @@ class AttachmentRequestHandler extends RequestHandlerLib
             unlink($oldFile);
         }
 
-        $workflow = $this->registry->get($entity);
+        $workflow = $this->workflowService->get($entity);
         if ($workflow->can($entity, 'reenvoyer')) {
             $workflow->apply($entity, 'reenvoyer');
         }

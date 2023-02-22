@@ -50,7 +50,6 @@ class GuardService
     public function __construct(
         protected RouterInterface $router,
         protected EntityManagerInterface $entityManager,
-        protected Registry $registry,
         protected GroupeRepository $groupeRepository,
         protected RouteRepository $routeRepository,
         protected RouteGroupeRepository $routeGroupeRepository,

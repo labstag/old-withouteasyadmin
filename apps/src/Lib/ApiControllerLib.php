@@ -9,6 +9,7 @@ use Labstag\Entity\User;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\PhoneService;
+use Labstag\Service\WorkflowService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -28,7 +29,7 @@ abstract class ApiControllerLib extends AbstractController
         protected PhoneService $phoneService,
         protected EntityManagerInterface $entityManager,
         protected AttachmentRequestHandler $attachmentRequestHandler,
-        protected Registry $registry,
+        protected WorkflowService $workflowService,
         protected UserRepository $userRepository
     )
     {

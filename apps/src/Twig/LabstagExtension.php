@@ -9,6 +9,7 @@ use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\GuardService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\PhoneService;
+use Labstag\Service\WorkflowService;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -37,7 +38,7 @@ class LabstagExtension extends AbstractExtension
         protected RouterInterface $router,
         protected PhoneService $phoneService,
         protected CacheManager $cacheManager,
-        protected Registry $registry,
+        protected WorkflowService $workflowService,
         protected TokenStorageInterface $tokenStorage,
         protected LoggerInterface $logger,
         protected GuardService $guardService,
@@ -303,7 +304,7 @@ class LabstagExtension extends AbstractExtension
 
     public function workflowHas(object $entity): bool
     {
-        return $this->registry->has($entity);
+        return $this->workflowService->has($entity);
     }
 
     protected function setTypeformClass(array $class): string
