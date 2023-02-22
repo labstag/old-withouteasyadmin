@@ -67,7 +67,7 @@ trait EditoEntity
         return $this->edito;
     }
 
-    public function getEditoHeaders(): ArrayCollection
+    public function getEditoHeaders()
     {
         return $this->editoHeaders;
     }
@@ -80,7 +80,7 @@ trait EditoEntity
         return $this->editos;
     }
 
-    public function getEditoShows(): ArrayCollection
+    public function getEditoShows()
     {
         return $this->editoShows;
     }

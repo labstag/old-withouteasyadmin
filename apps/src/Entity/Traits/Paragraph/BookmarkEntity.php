@@ -96,7 +96,7 @@ trait BookmarkEntity
         return $this->bookmarkLists;
     }
 
-    public function getBookmarks(): ArrayCollection
+    public function getBookmarks()
     {
         return $this->bookmarks;
     }
