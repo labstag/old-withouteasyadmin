@@ -43,7 +43,7 @@ class Layout
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $paragraphs;
+    private ArrayCollection|array $paragraphs;
 
     /**
      * @ORM\Column(type="array", nullable=true)

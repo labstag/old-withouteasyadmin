@@ -23,7 +23,7 @@ class Libelle implements Stringable
     /**
      * @ORM\ManyToMany(targetEntity=Bookmark::class, mappedBy="libelles", cascade={"persist"})
      */
-    private $bookmarks;
+    private ArrayCollection|array $bookmarks;
 
     /**
      * @ORM\Id
@@ -44,7 +44,7 @@ class Libelle implements Stringable
     /**
      * @ORM\ManyToMany(targetEntity=Post::class, inversedBy="libelles", cascade={"persist"})
      */
-    private $posts;
+    private ArrayCollection|array $posts;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})

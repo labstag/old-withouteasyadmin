@@ -38,7 +38,7 @@ class Custom implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Layout::class, mappedBy="custom", cascade={"persist"}, orphanRemoval=true)
      */
-    private $layouts;
+    private ArrayCollection|array $layouts;
 
     public function __construct()
     {

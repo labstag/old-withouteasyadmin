@@ -30,7 +30,7 @@ class Render
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="render", cascade={"persist"}, orphanRemoval=true)
      */
-    private $metas;
+    private ArrayCollection|array $metas;
 
     /**
      * @ORM\Column(type="string", length=255)

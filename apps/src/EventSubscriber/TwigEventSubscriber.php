@@ -73,8 +73,8 @@ class TwigEventSubscriber extends EventSubscriberLib
 
     protected function setConfigFavicon()
     {
-        $favicon = $this->attachmentRepository->getFavicon();
-        $this->twigEnvironment->AddGlobal('favicon', $favicon);
+        $attachment = $this->attachmentRepository->getFavicon();
+        $this->twigEnvironment->AddGlobal('favicon', $attachment);
     }
 
     protected function setConfigMeta($config)

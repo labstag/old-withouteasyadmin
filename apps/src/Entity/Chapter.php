@@ -49,7 +49,7 @@ class Chapter
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="chapter", cascade={"persist"}, orphanRemoval=true)
      */
-    private $metas;
+    private ArrayCollection|array $metas;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -66,7 +66,7 @@ class Chapter
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $paragraphs;
+    private ArrayCollection|array $paragraphs;
 
     /**
      * @ORM\Column(type="integer")

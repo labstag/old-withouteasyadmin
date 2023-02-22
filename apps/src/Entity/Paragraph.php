@@ -55,7 +55,7 @@ class Paragraph
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
-    private $images;
+    private ArrayCollection|array $images;
 
     /**
      * @ORM\ManyToOne(targetEntity=Layout::class, inversedBy="paragraphs", cascade={"persist"})
@@ -80,12 +80,12 @@ class Paragraph
     /**
      * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
-    private $textImages;
+    private ArrayCollection|array $textImages;
 
     /**
      * @ORM\OneToMany(targetEntity=Text::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
-    private $texts;
+    private ArrayCollection|array $texts;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -95,7 +95,7 @@ class Paragraph
     /**
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
-    private $videos;
+    private ArrayCollection|array $videos;
 
     public function __construct()
     {

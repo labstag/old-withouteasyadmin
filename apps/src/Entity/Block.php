@@ -30,32 +30,32 @@ class Block
     /**
      * @ORM\OneToMany(targetEntity=Breadcrumb::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
-    private $breadcrumbs;
+    private ArrayCollection|array $breadcrumbs;
 
     /**
      * @ORM\OneToMany(targetEntity=Custom::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
-    private $customs;
+    private ArrayCollection|array $customs;
 
     /**
      * @ORM\OneToMany(targetEntity=Flashbag::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
-    private $flashbags;
+    private ArrayCollection|array $flashbags;
 
     /**
      * @ORM\OneToMany(targetEntity=Footer::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
-    private $footers;
+    private ArrayCollection|array $footers;
 
     /**
      * @ORM\OneToMany(targetEntity=Header::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
-    private $headers;
+    private ArrayCollection|array $headers;
 
     /**
      * @ORM\OneToMany(targetEntity=Html::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
-    private $htmls;
+    private ArrayCollection|array $htmls;
 
     /**
      * @ORM\Id
@@ -71,12 +71,12 @@ class Block
     /**
      * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
-    private $menu;
+    private ArrayCollection|array $menu;
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
-    private $paragraphs;
+    private ArrayCollection|array $paragraphs;
 
     /**
      * @ORM\Column(type="integer")

@@ -132,13 +132,13 @@ class FrontService
 
     private function configMetaImage($meta)
     {
-        $imageDefault = $this->attachmentRepository->getImageDefault();
-        $this->twigEnvironment->AddGlobal('imageglobal', $imageDefault);
-        if (!isset($meta['image']) || is_null($imageDefault) || is_null($imageDefault->getName())) {
+        $attachment = $this->attachmentRepository->getImageDefault();
+        $this->twigEnvironment->AddGlobal('imageglobal', $attachment);
+        if (!isset($meta['image']) || is_null($attachment) || is_null($attachment->getName())) {
             return $meta;
         }
 
-        $image = $meta['image'] ?? $imageDefault->getName();
+        $image = $meta['image'] ?? $attachment->getName();
 
         $pathPackage = new PathPackage('/', new EmptyVersionStrategy());
         $url = $pathPackage->getUrl($image);

@@ -47,7 +47,7 @@ class WorkflowService
 
     public function has($entity): bool
     {
-        $class = get_class($entity);
+        $class = $entity::class;
         $tabs = [
             Attachment::class,
             Bookmark::class,
@@ -59,6 +59,7 @@ class WorkflowService
             Post::class,
             User::class,
         ];
+
         return in_array($class, $tabs);
     }
 }

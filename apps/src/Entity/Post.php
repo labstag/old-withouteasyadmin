@@ -65,19 +65,19 @@ class Post implements Stringable
     /**
      * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"})
      */
-    private $libelles;
+    private ArrayCollection|array $libelles;
 
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
      */
-    private $metas;
+    private ArrayCollection|array $metas;
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $paragraphs;
+    private ArrayCollection|array $paragraphs;
 
     /**
      * @ORM\Column(type="datetime")
