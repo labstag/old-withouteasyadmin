@@ -20,7 +20,7 @@ class Layout
     /**
      * @ORM\ManyToOne(targetEntity=Custom::class, inversedBy="layouts", cascade={"persist"})
      */
-    private $custom;
+    private ?Custom $custom = null;
 
     /**
      * @ORM\Id
@@ -36,19 +36,19 @@ class Layout
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="layout", cascade={"persist"}, orphanRemoval=true)
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $paragraphs;
+    private ArrayCollection|array $paragraphs;
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $url = [];
+    private ?array $url = [];
 
     public function __construct()
     {

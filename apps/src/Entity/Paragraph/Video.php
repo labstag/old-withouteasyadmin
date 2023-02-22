@@ -43,29 +43,29 @@ class Video implements Stringable
      *
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
-    private $image;
+    private ?Attachment $image = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="videos", cascade={"persist"})
      */
-    private $paragraph;
+    private ?Paragraph $paragraph = null;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $slug;
+    private ?string $slug = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $title;
+    private ?string $title = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $url;
+    private ?string $url = null;
 
     public function __toString(): string
     {

@@ -30,7 +30,7 @@ class Edito implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="editos", cascade={"persist"})
      */
-    private $paragraph;
+    private ?Paragraph $paragraph = null;
 
     public function __toString(): string
     {

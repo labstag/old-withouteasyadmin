@@ -29,7 +29,7 @@ class TextImage
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $content;
+    private ?string $content = null;
 
     /**
      * @ORM\Id
@@ -47,7 +47,7 @@ class TextImage
      *
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
-    private $image;
+    private ?Attachment $image = null;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -57,19 +57,19 @@ class TextImage
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="textImages", cascade={"persist"})
      */
-    private $paragraph;
+    private ?Paragraph $paragraph = null;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $slug;
+    private ?string $slug = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $title;
+    private ?string $title = null;
 
     public function __construct()
     {

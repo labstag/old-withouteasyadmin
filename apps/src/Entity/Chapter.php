@@ -26,14 +26,14 @@ class Chapter
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $content;
+    private ?string $content = null;
 
     /**
      * @Gedmo\Timestampable(on="create")
      *
      * @ORM\Column(type="datetime")
      */
-    private $created;
+    private ?DateTimeInterface $created = null;
 
     /**
      * @ORM\Id
@@ -49,12 +49,12 @@ class Chapter
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="chapter", cascade={"persist"}, orphanRemoval=true)
      */
-    private $metas;
+    private ArrayCollection|array $metas;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name = null;
 
     /**
      * @ORM\Column(type="integer")
@@ -66,19 +66,19 @@ class Chapter
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $paragraphs;
+    private ArrayCollection|array $paragraphs;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $position;
+    private ?int $position = null;
 
     /**
      * @Gedmo\Timestampable(on="create")
      *
      * @ORM\Column(type="datetime")
      */
-    private $published;
+    private ?DateTimeInterface $published = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=History::class, inversedBy="chapters", cascade={"persist"})
@@ -87,21 +87,21 @@ class Chapter
      *
      * @ORM\JoinColumn(nullable=false)
      */
-    private $refhistory;
+    private ?History $refhistory = null;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
      *
      * @ORM\Column(type="string", length=255)
      */
-    private $slug;
+    private ?string $slug = null;
 
     /**
      * @Gedmo\Timestampable(on="create")
      *
      * @ORM\Column(type="datetime")
      */
-    private $updated;
+    private ?DateTimeInterface $updated = null;
 
     public function __construct()
     {

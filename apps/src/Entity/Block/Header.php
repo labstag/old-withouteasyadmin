@@ -21,7 +21,7 @@ class Header implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="headers", cascade={"persist"})
      */
-    private $block;
+    private ?Block $block = null;
 
     /**
      * @ORM\Id
@@ -37,7 +37,7 @@ class Header implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Link::class, mappedBy="header", cascade={"persist"}, orphanRemoval=true)
      */
-    private $links;
+    private ArrayCollection|array $links;
 
     public function __construct()
     {

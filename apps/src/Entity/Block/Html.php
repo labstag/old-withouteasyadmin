@@ -19,12 +19,12 @@ class Html implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="htmls", cascade={"persist"})
      */
-    private $block;
+    private ?Block $block = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $content;
+    private ?string $content = null;
 
     /**
      * @ORM\Id
@@ -40,7 +40,7 @@ class Html implements Stringable
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $title;
+    private ?string $title = null;
 
     public function __toString(): string
     {

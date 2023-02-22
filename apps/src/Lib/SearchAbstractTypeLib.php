@@ -6,7 +6,6 @@ use Labstag\Entity\Category;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
 use Labstag\Service\WorkflowService;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,13 +15,12 @@ use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Workflow\Registry;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class SearchAbstractTypeLib extends AbstractType
 {
     public function __construct(
-        protected ParameterBagInterface $parameterBagInterface,
+        protected ParameterBagInterface $parameterBag,
         protected WorkflowService $workflowService,
         protected TranslatorInterface $translator
     )

@@ -133,7 +133,7 @@ abstract class FixtureLib extends Fixture
         protected UserRepository $userRepository,
         protected GroupeRepository $groupeRepository,
         protected GuardService $guardService,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected BlockService $blockService,
         protected EmailUserRequestHandler $emailUserRequestHandler,
         protected LinkUserRequestHandler $linkUserRequestHandler,

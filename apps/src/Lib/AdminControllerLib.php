@@ -110,10 +110,10 @@ abstract class AdminControllerLib extends ControllerLib
 
     public function modalAttachmentDelete(): void
     {
-        $globals = $this->environment->getGlobals();
+        $globals = $this->twigEnvironment->getGlobals();
         $modal = $globals['modal'] ?? [];
         $modal['attachmentdelete'] = true;
-        $this->environment->addGlobal('modal', $modal);
+        $this->twigEnvironment->addGlobal('modal', $modal);
     }
 
     public function renderShowOrPreview(
@@ -219,7 +219,7 @@ abstract class AdminControllerLib extends ControllerLib
 
         if (!$this->btns->isInit()) {
             $this->btns->setConf(
-                $this->environment,
+                $this->twigEnvironment,
                 $this->router,
                 $this->tokenStorage,
                 $this->csrfTokenManager,
@@ -276,7 +276,6 @@ abstract class AdminControllerLib extends ControllerLib
         ServiceEntityRepositoryLib $serviceEntityRepositoryLib
     )
     {
-        $environment = null;
         $entity = strtolower(
             str_replace(
                 'Labstag\\Entity\\',
@@ -300,12 +299,11 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        $twig = $this->environment;
-        $globals = $twig->getGlobals();
+        $globals = $this->twigEnvironment->getGlobals();
         $modal = $globals['modal'] ?? [];
         $modal['destroy'] = (isset($url['destroy']));
         $modal['restore'] = (isset($url['restore']));
-        $environment->addGlobal('modal', $modal);
+        $this->twigEnvironment->addGlobal('modal', $modal);
 
         $request = $this->requeststack->getCurrentRequest();
         $all = $request->attributes->all();
@@ -432,7 +430,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
 
         $data = $this->setSingletons()->get();
-        $this->environment->addGlobal('breadcrumbs', $data);
+        $this->twigEnvironment->addGlobal('breadcrumbs', $data);
     }
 
     protected function setBtnDelete(array $url, object $entity): void
@@ -660,12 +658,12 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        $globals = $this->environment->getGlobals();
+        $globals = $this->twigEnvironment->getGlobals();
         $modal = $globals['modal'] ?? [];
         $modal['delete'] = (isset($url['delete']));
         $modal['workflow'] = (isset($url['workflow']));
 
-        $this->environment->addGlobal('modal', $modal);
+        $this->twigEnvironment->addGlobal('modal', $modal);
     }
 
     protected function showOrPreviewadd(array $url, string $routeType, $entity): void
@@ -852,10 +850,10 @@ abstract class AdminControllerLib extends ControllerLib
 
     private function modalParagraphs(): void
     {
-        $globals = $this->environment->getGlobals();
+        $globals = $this->twigEnvironment->getGlobals();
         $modal = $globals['modal'] ?? [];
         $modal['paragraphs'] = true;
-        $this->environment->addGlobal('modal', $modal);
+        $this->twigEnvironment->addGlobal('modal', $modal);
     }
 
     private function setPositionParagraphs(): void

@@ -26,17 +26,17 @@ class WorkflowUser
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="workflowUsers", cascade={"persist"})
      */
-    private $refuser;
+    private ?User $refuser = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Workflow::class, inversedBy="workflowUsers", cascade={"persist"})
      */
-    private $refworkflow;
+    private ?Workflow $refworkflow = null;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $state;
+    private ?bool $state = null;
 
     public function getId(): ?string
     {

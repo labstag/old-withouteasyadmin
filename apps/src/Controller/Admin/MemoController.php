@@ -7,10 +7,10 @@ use Labstag\Entity\Memo;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\MemoRepository;
 use Labstag\RequestHandler\MemoRequestHandler;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/memo')]

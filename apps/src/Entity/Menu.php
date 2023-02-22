@@ -88,7 +88,7 @@ class Menu implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="menu", cascade={"persist"}, orphanRemoval=true)
      */
-    private $navbars;
+    private ArrayCollection|array $navbars;
 
     public function __construct()
     {

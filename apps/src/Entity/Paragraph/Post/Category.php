@@ -30,7 +30,7 @@ class Category implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postCategories", cascade={"persist"})
      */
-    private $paragraph;
+    private ?Paragraph $paragraph = null;
 
     public function __toString(): string
     {

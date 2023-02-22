@@ -18,7 +18,7 @@ class ParagraphService
 {
     public function __construct(
         protected $paragraphsclass,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected ParagraphRequestHandler $paragraphRequestHandler
     )
     {

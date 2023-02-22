@@ -34,12 +34,12 @@ class Bookmark
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $content;
+    private ?string $content = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $icon;
+    private ?string $icon = null;
 
     /**
      * @ORM\Id
@@ -55,27 +55,27 @@ class Bookmark
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="bookmarks", cascade={"persist"})
      */
-    private $img;
+    private ?Attachment $img = null;
 
     /**
      * @ORM\ManyToMany(targetEntity=Libelle::class, inversedBy="bookmarks", cascade={"persist"})
      */
-    private $libelles;
+    private ArrayCollection|array $libelles;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name = null;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $published;
+    private ?DateTimeInterface $published = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bookmarks", cascade={"persist"})
      */
-    private $refcategory;
+    private ?Category $refcategory = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bookmarks", cascade={"persist"})
@@ -84,14 +84,14 @@ class Bookmark
      *
      * @ORM\JoinColumn(nullable=false)
      */
-    private $refuser;
+    private ?User $refuser = null;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
      *
      * @ORM\Column(type="string", length=255)
      */
-    private $slug;
+    private ?string $slug = null;
 
     /**
      * @ORM\Column(type="array")
@@ -108,7 +108,7 @@ class Bookmark
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $url;
+    private ?string $url = null;
 
     public function __construct()
     {

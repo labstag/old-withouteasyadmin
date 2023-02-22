@@ -20,7 +20,7 @@ class Navbar implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="menu", cascade={"persist"})
      */
-    private $block;
+    private ?Block $block = null;
 
     /**
      * @ORM\Id
@@ -36,7 +36,7 @@ class Navbar implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="navbars", cascade={"persist"})
      */
-    private $menu;
+    private ?Menu $menu = null;
 
     public function __toString(): string
     {

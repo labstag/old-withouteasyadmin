@@ -32,7 +32,7 @@ abstract class ParagraphLib extends AbstractController
         protected PaginatorInterface $paginator,
         protected TranslatorInterface $translator,
         protected MailerInterface $mailer,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected ParagraphService $paragraphService,
         protected RequestStack $requestStack,
         protected FormService $formService,
@@ -107,7 +107,7 @@ abstract class ParagraphLib extends AbstractController
     protected function showTemplateFile(string $type): array
     {
         $data = $this->getTemplateData($type);
-        $globals = $this->environment->getGlobals();
+        $globals = $this->twigEnvironment->getGlobals();
         if ('dev' == $globals['app']->getDebug()) {
             return $data;
         }

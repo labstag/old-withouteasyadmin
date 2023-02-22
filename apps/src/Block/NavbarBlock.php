@@ -16,10 +16,10 @@ class NavbarBlock extends BlockLib
     public function __construct(
         protected MenuService $menuService,
         TranslatorInterface $translator,
-        Environment $environment
+        Environment $twigEnvironment
     )
     {
-        parent::__construct($translator, $environment);
+        parent::__construct($translator, $twigEnvironment);
     }
 
     public function getCode($navbar, $content): string

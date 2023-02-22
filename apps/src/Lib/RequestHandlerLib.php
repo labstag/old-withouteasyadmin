@@ -7,7 +7,6 @@ use Labstag\Entity\User;
 use Labstag\Event\UserCollectionEvent;
 use Labstag\Service\WorkflowService;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Workflow\Registry;
 
 abstract class RequestHandlerLib
 {

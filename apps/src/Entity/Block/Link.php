@@ -18,17 +18,17 @@ class Link implements Stringable
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $external;
+    private ?bool $external = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Footer::class, inversedBy="links", cascade={"persist"})
      */
-    private $footer;
+    private ?Footer $footer = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Header::class, inversedBy="links", cascade={"persist"})
      */
-    private $header;
+    private ?Header $header = null;
 
     /**
      * @ORM\Id
@@ -44,12 +44,12 @@ class Link implements Stringable
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $title;
+    private ?string $title = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $url;
+    private ?string $url = null;
 
     public function __toString(): string
     {

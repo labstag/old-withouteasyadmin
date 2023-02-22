@@ -30,9 +30,48 @@ class WorkflowService
     {
     }
 
+    public function get($entity): Workflow
+    {
+        if ($entity instanceof Attachment) {
+            return $this->attachmentStateMachine;
+        }
+
+        if ($entity instanceof Bookmark) {
+            return $this->bookmarkStateMachine;
+        }
+
+        if ($entity instanceof Edito) {
+            return $this->editoStateMachine;
+        }
+
+        if ($entity instanceof Email) {
+            return $this->emailStateMachine;
+        }
+
+        if ($entity instanceof History) {
+            return $this->historyStateMachine;
+        }
+
+        if ($entity instanceof Memo) {
+            return $this->memoStateMachine;
+        }
+
+        if ($entity instanceof Phone) {
+            return $this->phoneStateMachine;
+        }
+
+        if ($entity instanceof Post) {
+            return $this->postStateMachine;
+        }
+
+        if ($entity instanceof User) {
+            return $this->userStateMachine;
+        }
+    }
+
     public function has($entity): bool
     {
-        $status = ($entity instanceof Attachment) ? true : false;
+        $status = $entity instanceof Attachment;
         $status = ($entity instanceof Bookmark) ? true : $status;
         $status = ($entity instanceof Edito) ? true : $status;
         $status = ($entity instanceof Email) ? true : $status;
@@ -40,31 +79,7 @@ class WorkflowService
         $status = ($entity instanceof Memo) ? true : $status;
         $status = ($entity instanceof Phone) ? true : $status;
         $status = ($entity instanceof Post) ? true : $status;
-        $status = ($entity instanceof User) ? true : $status;
 
-        return $status;
-    }
-
-    public function get($entity): Workflow
-    {
-        if ($entity instanceof Attachment) {
-            return $this->attachmentStateMachine;
-        }elseif($entity instanceof Bookmark) {
-            return $this->bookmarkStateMachine;
-        }elseif($entity instanceof Edito) {
-            return $this->editoStateMachine;
-        }elseif($entity instanceof Email) {
-            return $this->emailStateMachine;
-        }elseif($entity instanceof History) {
-            return $this->historyStateMachine;
-        }elseif($entity instanceof Memo) {
-            return $this->memoStateMachine;
-        }elseif($entity instanceof Phone) {
-            return $this->phoneStateMachine;
-        }elseif($entity instanceof Post) {
-            return $this->postStateMachine;
-        }elseif($entity instanceof User) {
-            return $this->userStateMachine;
-        }
+        return ($entity instanceof User) ? true : $status;
     }
 }

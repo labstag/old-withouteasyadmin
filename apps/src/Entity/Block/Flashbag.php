@@ -19,7 +19,7 @@ class Flashbag implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="flashbags", cascade={"persist"})
      */
-    private $block;
+    private ?Block $block = null;
 
     /**
      * @ORM\Id

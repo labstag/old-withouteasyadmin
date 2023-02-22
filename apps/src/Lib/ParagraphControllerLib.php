@@ -28,10 +28,10 @@ abstract class ParagraphControllerLib extends ControllerLib
             return;
         }
 
-        $globals = $this->environment->getGlobals();
+        $globals = $this->twigEnvironment->getGlobals();
         $modal = $globals['modal'] ?? [];
         $modal['attachmentdelete'] = true;
-        $this->environment->mergeGlobals(['modal' => $modal]);
+        $this->twigEnvironment->mergeGlobals(['modal' => $modal]);
     }
 
     protected function deleteParagraph(Paragraph $paragraph, $entity, string $urledit)

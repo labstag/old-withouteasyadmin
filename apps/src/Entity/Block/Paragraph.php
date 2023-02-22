@@ -19,7 +19,7 @@ class Paragraph implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="paragraphs", cascade={"persist"})
      */
-    private $block;
+    private ?Block $block = null;
 
     /**
      * @ORM\Id

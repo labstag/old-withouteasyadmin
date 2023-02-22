@@ -17,7 +17,7 @@ class Workflow
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $entity;
+    private ?string $entity = null;
 
     /**
      * @ORM\Id
@@ -33,17 +33,17 @@ class Workflow
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $transition;
+    private ?string $transition = null;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refworkflow", cascade={"persist"}, orphanRemoval=true)
      */
-    private $workflowGroupes;
+    private ArrayCollection|array $workflowGroupes;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refworkflow", cascade={"persist"}, orphanRemoval=true)
      */
-    private $workflowUsers;
+    private ArrayCollection|array $workflowUsers;
 
     public function __construct()
     {

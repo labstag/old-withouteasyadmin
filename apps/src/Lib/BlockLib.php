@@ -10,7 +10,7 @@ abstract class BlockLib extends AbstractController
 {
     public function __construct(
         protected TranslatorInterface $translator,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected array $template = []
     )
     {
@@ -92,7 +92,7 @@ abstract class BlockLib extends AbstractController
     protected function showTemplateFile(string $type): array
     {
         $data = $this->getTemplateData($type);
-        $globals = $this->environment->getGlobals();
+        $globals = $this->twigEnvironment->getGlobals();
         if ('dev' == $globals['app']->getDebug()) {
             return $data;
         }

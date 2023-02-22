@@ -130,7 +130,7 @@ class KernelSubscriber extends EventSubscriberLib
         }
 
         $content = $response->getContent();
-        $content = preg_replace('#<script>#i', '<script type="text/javascript">', $content);
+        $content = preg_replace('#<script>#i', '<script type="text/javascript">', (string) $content);
 
         $config = [
             'indent'                      => true,

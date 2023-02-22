@@ -171,7 +171,7 @@ class AdminController extends AdminControllerLib
     #[Route(path: '/trash', name: 'admin_trash')]
     public function trash(
         CsrfTokenManagerInterface $csrfTokenManager,
-        Environment $environment,
+        Environment $twigEnvironment,
         TrashService $trashService
     ): Response
     {
@@ -185,7 +185,7 @@ class AdminController extends AdminControllerLib
             return $this->redirectToRoute('admin');
         }
 
-        $globals = $environment->getGlobals();
+        $globals = $twigEnvironment->getGlobals();
         $modal = $globals['modal'] ?? [];
         $modal['empty'] = true;
         if ($this->isRouteEnable('api_action_emptyall')) {
@@ -203,7 +203,7 @@ class AdminController extends AdminControllerLib
             );
         }
 
-        $environment->addGlobal('modal', $modal);
+        $twigEnvironment->addGlobal('modal', $modal);
         $this->btnInstance()->addViderSelection(
             [
                 'redirect' => [

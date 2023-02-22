@@ -39,9 +39,9 @@ class EntityVoter extends Voter
     protected function canMoveHistory(History $history, TokenInterface $token): bool
     {
         unset($token);
-        $collection = $history->getChapters();
+        $chapters = $history->getChapters();
 
-        return count($collection) >= self::NBR_CHAPTER;
+        return count($chapters) >= self::NBR_CHAPTER;
     }
 
     protected function supports($attribute, $subject): bool

@@ -30,7 +30,7 @@ class Year implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postYears", cascade={"persist"})
      */
-    private $paragraph;
+    private ?Paragraph $paragraph = null;
 
     public function __toString(): string
     {

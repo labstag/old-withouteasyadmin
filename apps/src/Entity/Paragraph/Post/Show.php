@@ -30,7 +30,7 @@ class Show implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postShows", cascade={"persist"})
      */
-    private $paragraph;
+    private ?Paragraph $paragraph = null;
 
     public function __toString(): string
     {

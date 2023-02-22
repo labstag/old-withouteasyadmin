@@ -21,7 +21,7 @@ class Footer implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="footers", cascade={"persist"})
      */
-    private $block;
+    private ?Block $block = null;
 
     /**
      * @ORM\Id
@@ -37,7 +37,7 @@ class Footer implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Link::class, mappedBy="footer", cascade={"persist"}, orphanRemoval=true)
      */
-    private $links;
+    private ArrayCollection|array $links;
 
     public function __construct()
     {

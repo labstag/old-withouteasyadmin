@@ -37,7 +37,7 @@ class Post implements Stringable
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $content;
+    private ?string $content = null;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -60,34 +60,34 @@ class Post implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="posts", cascade={"persist"})
      */
-    private $img;
+    private ?Attachment $img = null;
 
     /**
      * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"})
      */
-    private $libelles;
+    private ArrayCollection|array $libelles;
 
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
      */
-    private $metas;
+    private ArrayCollection|array $metas;
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $paragraphs;
+    private ArrayCollection|array $paragraphs;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $published;
+    private ?DateTimeInterface $published = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="posts", cascade={"persist"})
      */
-    private $refcategory;
+    private ?Category $refcategory = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts", cascade={"persist"})
@@ -96,24 +96,24 @@ class Post implements Stringable
      *
      * @ORM\JoinColumn(nullable=false)
      */
-    private $refuser;
+    private ?User $refuser = null;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $remark;
+    private ?bool $remark = null;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
      *
      * @ORM\Column(type="string", length=255)
      */
-    private $slug;
+    private ?string $slug = null;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      */
-    private $title;
+    private ?string $title = null;
 
     /**
      * @Gedmo\Timestampable(on="update")

@@ -27,47 +27,47 @@ class Meta implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Chapter::class, inversedBy="metas", cascade={"persist"})
      */
-    private $chapter;
+    private ?Chapter $chapter = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Edito::class, inversedBy="metas", cascade={"persist"})
      */
-    private $edito;
+    private ?Edito $edito = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=History::class, inversedBy="metas", cascade={"persist"})
      */
-    private $history;
+    private ?History $history = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $keywords;
+    private ?string $keywords = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="metas", cascade={"persist"})
      */
-    private $page;
+    private ?Page $page = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="metas", cascade={"persist"})
      */
-    private $post;
+    private ?Post $post = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Render::class, inversedBy="metas", cascade={"persist"})
      */
-    private $render;
+    private ?Render $render = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $title;
+    private ?string $title = null;
 
     public function __toString(): string
     {

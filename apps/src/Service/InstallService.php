@@ -25,7 +25,7 @@ class InstallService
         protected UserRequestHandler $userRequestHandler,
         protected TemplateRequestHandler $templateRequestHandler,
         protected EntityManagerInterface $entityManager,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected CacheInterface $cache,
         protected GroupeRepository $groupeRepository,
         protected ConfigurationRepository $configurationRepository,

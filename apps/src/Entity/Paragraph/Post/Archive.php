@@ -30,7 +30,7 @@ class Archive implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postArchives", cascade={"persist"})
      */
-    private $paragraph;
+    private ?Paragraph $paragraph = null;
 
     public function __toString(): string
     {

@@ -74,8 +74,8 @@ class VideoParagraph extends ParagraphLib
         $videoRepository = $this->entityManager->getRepository(Video::class);
         /** @var AttachmentRepository $attachmentRepository */
         $attachmentRepository = $this->entityManager->getRepository(Attachment::class);
-        $collection = $paragraph->getVideos();
-        $video = $collection[0];
+        $videos = $paragraph->getVideos();
+        $video = $videos[0];
         $url = $video->getUrl();
         if ('' == $url) {
             return;

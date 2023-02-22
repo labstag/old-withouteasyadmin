@@ -86,15 +86,15 @@ class MenuController extends AdminControllerLib
 
     #[Route(path: '/', name: 'admin_menu_index', methods: ['GET'])]
     public function index(
-        Environment $environment,
+        Environment $twigEnvironment,
         MenuRepository $menuRepository
     ): Response
     {
         $all = $menuRepository->findAllCode();
-        $globals = $environment->getGlobals();
+        $globals = $twigEnvironment->getGlobals();
         $modal = $globals['modal'] ?? [];
         $modal['delete'] = true;
-        $environment->addGlobal('modal', $modal);
+        $twigEnvironment->addGlobal('modal', $modal);
         $this->btnInstance()->addBtnNew('admin_menu_new');
 
         return $this->render(

@@ -22,7 +22,7 @@ class Custom implements Stringable
     /**
      * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="customs", cascade={"persist"})
      */
-    private $block;
+    private ?Block $block = null;
 
     /**
      * @ORM\Id
@@ -38,7 +38,7 @@ class Custom implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Layout::class, mappedBy="custom", cascade={"persist"}, orphanRemoval=true)
      */
-    private $layouts;
+    private ArrayCollection|array $layouts;
 
     public function __construct()
     {

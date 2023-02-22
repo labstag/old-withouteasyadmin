@@ -24,7 +24,7 @@ class Page implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Page::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
      */
-    private $children;
+    private ArrayCollection|array $children;
 
     /**
      * @ORM\Id
@@ -40,21 +40,21 @@ class Page implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
      */
-    private $metas;
+    private ArrayCollection|array $metas;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank
      */
-    private $name;
+    private ?string $name = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $paragraphs;
+    private ArrayCollection|array $paragraphs;
 
     /**
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children", cascade={"persist"})
@@ -65,12 +65,12 @@ class Page implements Stringable
      *     onDelete="SET NULL"
      * )
      */
-    private $parent;
+    private ?\Labstag\Entity\Page $parent = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $password;
+    private ?string $password = null;
 
     /**
      * @Gedmo\Slug(handlers={
@@ -84,7 +84,7 @@ class Page implements Stringable
      *
      * @ORM\Column(type="string", length=255, nullable=false)
      */
-    private $slug;
+    private ?string $slug = null;
 
     public function __construct()
     {

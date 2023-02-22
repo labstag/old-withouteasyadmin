@@ -39,7 +39,7 @@ abstract class ControllerLib extends AbstractController
         protected DomainService $domainService,
         protected AttachFormService $attachFormService,
         protected FileService $fileService,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected ErrorService $errorService,
         protected SessionService $sessionService,
         protected EntityManagerInterface $entityManager,

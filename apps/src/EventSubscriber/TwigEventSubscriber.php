@@ -56,25 +56,25 @@ class TwigEventSubscriber extends EventSubscriberLib
             return;
         }
 
-        $globals = $this->environment->getGlobals();
+        $globals = $this->twigEnvironment->getGlobals();
         $config = $globals['config'] ?? $this->dataService->getConfig();
         $this->setConfigMeta($config);
         $this->setConfigTac($config);
         $this->setFormatDatetime($config);
-        $this->environment->AddGlobal('config', $config);
+        $this->twigEnvironment->AddGlobal('config', $config);
     }
 
     protected function setConfigCanonical()
     {
-        $globals = $this->environment->getGlobals();
+        $globals = $this->twigEnvironment->getGlobals();
         $canonical = $globals['canonical'] ?? $this->request->getUri();
-        $this->environment->AddGlobal('canonical', $canonical);
+        $this->twigEnvironment->AddGlobal('canonical', $canonical);
     }
 
     protected function setConfigFavicon()
     {
         $favicon = $this->attachmentRepository->getFavicon();
-        $this->environment->AddGlobal('favicon', $favicon);
+        $this->twigEnvironment->AddGlobal('favicon', $favicon);
     }
 
     protected function setConfigMeta($config)
@@ -113,7 +113,7 @@ class TwigEventSubscriber extends EventSubscriberLib
 
         unset($tarteaucitron['job']);
 
-        $this->environment->AddGlobal('configtarteaucitron', $tarteaucitron);
+        $this->twigEnvironment->AddGlobal('configtarteaucitron', $tarteaucitron);
     }
 
     protected function setLoginPage(ControllerEvent $controllerEvent): void
@@ -129,11 +129,11 @@ class TwigEventSubscriber extends EventSubscriberLib
         }
 
         $oauthActivated = $this->dataService->getOauthActivated($this->security->getUser());
-        $this->environment->AddGlobal('oauthActivated', $oauthActivated);
+        $this->twigEnvironment->AddGlobal('oauthActivated', $oauthActivated);
     }
 
     private function setFormatDatetime($config): void
     {
-        $this->environment->AddGlobal('formatdatetime', $config['format_datetime']);
+        $this->twigEnvironment->AddGlobal('formatdatetime', $config['format_datetime']);
     }
 }

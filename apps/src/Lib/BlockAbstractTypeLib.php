@@ -13,24 +13,24 @@ abstract class BlockAbstractTypeLib extends AbstractTypeLib
         TranslatorInterface $translator,
         protected RouterInterface $router,
         protected BlockService $blockService,
-        protected Environment $environment
+        protected Environment $twigEnvironment
     )
     {
         parent::__construct($translator);
     }
 
-    public function getFieldEntity()
+    public function getFieldEntity(): string
     {
         return '';
     }
 
-    public function getFormType()
+    public function getFormType(): string
     {
         return '';
     }
 
     protected function getRender($view, array $param = [])
     {
-        return $this->environment->render($view, $param);
+        return $this->twigEnvironment->render($view, $param);
     }
 }

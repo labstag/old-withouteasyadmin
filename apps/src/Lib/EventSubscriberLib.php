@@ -24,6 +24,7 @@ use Labstag\Service\ParagraphService;
 use Labstag\Service\SessionService;
 use Labstag\Service\UserMailService;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -31,7 +32,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -55,7 +55,7 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected WorkflowGroupeRepository $workflowGroupeRepository,
         protected WorkflowUserRepository $workflowUserRepository,
         protected Reader $reader,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected FrontService $frontService,
         protected UrlGeneratorInterface $urlGenerator,
         protected CsrfTokenManagerInterface $csrfTokenManager,

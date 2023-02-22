@@ -29,14 +29,14 @@ class History
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $chapters;
+    private ArrayCollection|array $chapters;
 
     /**
      * @Gedmo\Timestampable(on="create")
      *
      * @ORM\Column(type="datetime")
      */
-    private $created;
+    private ?DateTimeInterface $created = null;
 
     /**
      * @ORM\Id
@@ -52,12 +52,12 @@ class History
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="history", cascade={"persist"}, orphanRemoval=true)
      */
-    private $metas;
+    private ArrayCollection|array $metas;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name = null;
 
     /**
      * @ORM\Column(type="integer")
@@ -69,12 +69,12 @@ class History
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $paragraphs;
+    private ArrayCollection|array $paragraphs;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $published;
+    private ?DateTimeInterface $published = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="histories", cascade={"persist"})
@@ -83,26 +83,26 @@ class History
      *
      * @ORM\JoinColumn(nullable=false)
      */
-    private $refuser;
+    private ?User $refuser = null;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
      *
      * @ORM\Column(type="string", length=255)
      */
-    private $slug;
+    private ?string $slug = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $summary;
+    private ?string $summary = null;
 
     /**
      * @Gedmo\Timestampable(on="update")
      *
      * @ORM\Column(type="datetime")
      */
-    private $updated;
+    private ?DateTimeInterface $updated = null;
 
     public function __construct()
     {
@@ -149,8 +149,8 @@ class History
     public function getChaptersPublished(): Collection
     {
         $arrayCollection = new ArrayCollection();
-        $collection = $this->getChapters();
-        foreach ($collection as $chapter) {
+        $chapters = $this->getChapters();
+        foreach ($chapters as $chapter) {
             $state = in_array('publie', (array) $chapter->getState());
             $published = $chapter->getPublished() <= new DateTime();
             if ($state && $published) {

@@ -40,37 +40,37 @@ class Paragraph
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $background;
+    private ?string $background = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Chapter::class, inversedBy="paragraphs", cascade={"persist"})
      */
-    private $chapter;
+    private ?Chapter $chapter = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $color;
+    private ?string $color = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
-    private $images;
+    private ArrayCollection|array $images;
 
     /**
      * @ORM\ManyToOne(targetEntity=Layout::class, inversedBy="paragraphs", cascade={"persist"})
      */
-    private $layout;
+    private ?Layout $layout = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Memo::class, inversedBy="paragraphs", cascade={"persist"})
      */
-    private $memo;
+    private ?Memo $memo = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="paragraphs", cascade={"persist"})
      */
-    private $page;
+    private ?Page $page = null;
 
     /**
      * @ORM\Column(type="integer")
@@ -80,22 +80,22 @@ class Paragraph
     /**
      * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
-    private $textImages;
+    private ArrayCollection|array $textImages;
 
     /**
      * @ORM\OneToMany(targetEntity=Text::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
-    private $texts;
+    private ArrayCollection|array $texts;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $type;
+    private ?string $type = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
      */
-    private $videos;
+    private ArrayCollection|array $videos;
 
     public function __construct()
     {

@@ -17,7 +17,7 @@ class HistoryService
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        private readonly Environment $environment,
+        private readonly Environment $twigEnvironment,
         protected HistoryRepository $historyRepository
     )
     {
@@ -67,7 +67,7 @@ class HistoryService
         $tmpfile = tmpfile();
         $data = stream_get_meta_data($tmpfile);
         $html2Pdf = new Html2Pdf();
-        $html = $this->environment->render(
+        $html = $this->twigEnvironment->render(
             'pdf/history/index.html.twig',
             [
                 'history'  => $history,

@@ -29,7 +29,7 @@ class FrontService
 
     public function __construct(
         protected $frontclass,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected RequestStack $requestStack,
         protected UrlGeneratorInterface $urlGenerator,
         protected AttachmentRepository $attachmentRepository
@@ -101,7 +101,7 @@ class FrontService
             ];
         }
 
-        $this->environment->AddGlobal('sitemetatags', $metatags);
+        $this->twigEnvironment->AddGlobal('sitemetatags', $metatags);
     }
 
     private function arrayKeyExists(array $var, $data): bool
@@ -133,7 +133,7 @@ class FrontService
     private function configMetaImage($meta)
     {
         $imageDefault = $this->attachmentRepository->getImageDefault();
-        $this->environment->AddGlobal('imageglobal', $imageDefault);
+        $this->twigEnvironment->AddGlobal('imageglobal', $imageDefault);
         if (!isset($meta['image']) || is_null($imageDefault) || is_null($imageDefault->getName())) {
             return $meta;
         }

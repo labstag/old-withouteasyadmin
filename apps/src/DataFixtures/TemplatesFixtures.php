@@ -30,12 +30,12 @@ class TemplatesFixtures extends DataFixtureLib implements DependentFixtureInterf
 
         $htmlfile = 'tpl/mail-'.$key.'.html.twig';
         if (is_file('templates/'.$htmlfile)) {
-            $template->setHtml($this->environment->render($htmlfile));
+            $template->setHtml($this->twigEnvironment->render($htmlfile));
         }
 
         $txtfile = 'tpl/mail-'.$key.'.txt.twig';
         if (is_file('templates/'.$txtfile)) {
-            $template->setText($this->environment->render($txtfile));
+            $template->setText($this->twigEnvironment->render($txtfile));
         }
 
         $this->templateRequestHandler->handle($old, $template);

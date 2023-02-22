@@ -13,7 +13,6 @@ use Labstag\Repository\RouteRepository;
 use Labstag\Repository\RouteUserRepository;
 use Symfony\Component\Routing\Route as Routing;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Workflow\Registry;
 
 class GuardService
 {

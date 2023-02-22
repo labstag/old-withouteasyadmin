@@ -20,14 +20,14 @@ class CustomBlock extends BlockLib
 
     public function __construct(
         TranslatorInterface $translator,
-        Environment $environment,
+        Environment $twigEnvironment,
         protected RequestStack $requestStack,
         protected ParagraphService $paragraphService,
         protected LayoutRepository $layoutRepository
     )
     {
         $this->request = $requestStack->getCurrentRequest();
-        parent::__construct($translator, $environment);
+        parent::__construct($translator, $twigEnvironment);
     }
 
     public function getCode($custom, $content): string

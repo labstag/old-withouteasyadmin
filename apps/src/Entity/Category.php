@@ -23,12 +23,12 @@ class Category implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory", cascade={"persist"}, orphanRemoval=true)
      */
-    private $bookmarks;
+    private ArrayCollection|array $bookmarks;
 
     /**
      * @ORM\OneToMany(targetEntity=Category::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
      */
-    private $children;
+    private ArrayCollection|array $children;
 
     /**
      * @ORM\Id
@@ -44,7 +44,7 @@ class Category implements Stringable
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="children", cascade={"persist"})
@@ -55,19 +55,19 @@ class Category implements Stringable
      *     onDelete="SET NULL"
      * )
      */
-    private $parent;
+    private ?\Labstag\Entity\Category $parent = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refcategory", cascade={"persist"}, orphanRemoval=true)
      */
-    private $posts;
+    private ArrayCollection|array $posts;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
      *
      * @ORM\Column(type="string", length=255)
      */
-    private $slug;
+    private ?string $slug = null;
 
     public function __construct()
     {

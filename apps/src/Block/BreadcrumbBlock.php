@@ -20,7 +20,7 @@ class BreadcrumbBlock extends BlockLib
 
     public function __construct(
         TranslatorInterface $translator,
-        Environment $environment,
+        Environment $twigEnvironment,
         protected FrontService $frontService,
         protected RequestStack $requestStack,
         protected RouterInterface $router,
@@ -28,7 +28,7 @@ class BreadcrumbBlock extends BlockLib
     )
     {
         $this->request = $requestStack->getCurrentRequest();
-        parent::__construct($translator, $environment);
+        parent::__construct($translator, $twigEnvironment);
     }
 
     public function getCode($breadcrumb, $content): string
