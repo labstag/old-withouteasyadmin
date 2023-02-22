@@ -50,7 +50,7 @@ class Bookmark
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="bookmarks", cascade={"persist"})

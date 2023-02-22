@@ -25,7 +25,7 @@ class Render
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="render", cascade={"persist"}, orphanRemoval=true)

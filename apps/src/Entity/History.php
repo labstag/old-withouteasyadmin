@@ -47,7 +47,7 @@ class History
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="history", cascade={"persist"}, orphanRemoval=true)

@@ -31,7 +31,7 @@ class Navbar implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="navbars", cascade={"persist"})

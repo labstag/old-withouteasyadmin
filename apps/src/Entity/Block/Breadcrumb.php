@@ -30,7 +30,7 @@ class Breadcrumb implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    private $id;
+    protected $id;
 
     public function __toString(): string
     {

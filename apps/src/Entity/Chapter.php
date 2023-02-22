@@ -44,7 +44,7 @@ class Chapter
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="chapter", cascade={"persist"}, orphanRemoval=true)

@@ -25,7 +25,7 @@ class Archive implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postArchives", cascade={"persist"})

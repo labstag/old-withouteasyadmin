@@ -32,7 +32,7 @@ class Footer implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Link::class, mappedBy="footer", cascade={"persist"}, orphanRemoval=true)

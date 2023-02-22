@@ -58,7 +58,7 @@ class BookmarkService
         $bookmark->setPublished($dateTime);
 
         try {
-            $headers = get_headers($url, TRUE);
+            $headers = get_headers($url, true);
             if (self::CLIENTNUMBER < substr((string) $headers[0], 9, 3)) {
                 return;
             }
