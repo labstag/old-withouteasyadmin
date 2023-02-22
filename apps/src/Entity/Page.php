@@ -24,7 +24,7 @@ class Page implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Page::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $children;
+    private $children;
 
     /**
      * @ORM\Id
@@ -40,7 +40,7 @@ class Page implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $metas;
+    private $metas;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -54,7 +54,7 @@ class Page implements Stringable
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private ArrayCollection|array $paragraphs;
+    private $paragraphs;
 
     /**
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children", cascade={"persist"})

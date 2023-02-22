@@ -37,7 +37,7 @@ class Header implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Link::class, mappedBy="header", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $links;
+    private $links;
 
     public function __construct()
     {

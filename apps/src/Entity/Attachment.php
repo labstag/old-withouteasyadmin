@@ -83,17 +83,17 @@ class Attachment
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $paragraphImages;
+    private $paragraphImages;
 
     /**
      * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $paragraphTextImages;
+    private $paragraphTextImages;
 
     /**
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $paragraphVideos;
+    private $paragraphVideos;
 
     public function __construct()
     {

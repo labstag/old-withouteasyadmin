@@ -29,7 +29,7 @@ class History
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private ArrayCollection|array $chapters;
+    private $chapters;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -52,7 +52,7 @@ class History
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="history", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $metas;
+    private $metas;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -69,7 +69,7 @@ class History
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private ArrayCollection|array $paragraphs;
+    private $paragraphs;
 
     /**
      * @ORM\Column(type="datetime")

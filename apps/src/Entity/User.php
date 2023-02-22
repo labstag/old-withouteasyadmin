@@ -129,22 +129,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     /**
      * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $bookmarks;
+    private $bookmarks;
 
     /**
      * @ORM\OneToMany(targetEntity=History::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $histories;
+    private $histories;
 
     /**
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $posts;
+    private $posts;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $workflowUsers;
+    private $workflowUsers;
 
     public function __construct()
     {

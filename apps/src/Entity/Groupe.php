@@ -59,7 +59,7 @@ class Groupe implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $workflowGroupes;
+    private $workflowGroupes;
 
     public function __construct()
     {

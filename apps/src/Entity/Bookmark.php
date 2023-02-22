@@ -60,7 +60,7 @@ class Bookmark
     /**
      * @ORM\ManyToMany(targetEntity=Libelle::class, inversedBy="bookmarks", cascade={"persist"})
      */
-    private ArrayCollection|array $libelles;
+    private $libelles;
 
     /**
      * @ORM\Column(type="string", length=255)

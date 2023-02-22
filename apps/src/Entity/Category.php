@@ -23,12 +23,12 @@ class Category implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $bookmarks;
+    private $bookmarks;
 
     /**
      * @ORM\OneToMany(targetEntity=Category::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $children;
+    private $children;
 
     /**
      * @ORM\Id
@@ -60,7 +60,7 @@ class Category implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refcategory", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $posts;
+    private $posts;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})

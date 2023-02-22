@@ -74,14 +74,14 @@ class Edito implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $metas;
+    private $metas;
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private ArrayCollection|array $paragraphs;
+    private $paragraphs;
 
     /**
      * @ORM\Column(type="datetime")

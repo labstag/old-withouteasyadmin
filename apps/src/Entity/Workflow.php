@@ -38,12 +38,12 @@ class Workflow
     /**
      * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refworkflow", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $workflowGroupes;
+    private $workflowGroupes;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refworkflow", cascade={"persist"}, orphanRemoval=true)
      */
-    private ArrayCollection|array $workflowUsers;
+    private $workflowUsers;
 
     public function __construct()
     {
