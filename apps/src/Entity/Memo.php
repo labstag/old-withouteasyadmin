@@ -64,16 +64,13 @@ class Memo implements Stringable
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
      * @ORM\Column(type="guid", unique=true)
-     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes", cascade={"persist"})
-     *
      * @ORM\JoinColumn(nullable=false)
      */
     protected $refuser;
@@ -87,7 +84,6 @@ class Memo implements Stringable
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="memo", cascade={"persist"}, orphanRemoval=true)
-     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;

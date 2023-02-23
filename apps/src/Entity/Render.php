@@ -21,9 +21,7 @@ class Render implements EntityPublicLib
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
      * @ORM\Column(type="guid", unique=true)
-     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
@@ -46,6 +44,11 @@ class Render implements EntityPublicLib
     public function __construct()
     {
         $this->metas = new ArrayCollection();
+    }
+
+    public function getParagraphs(): Collection
+    {
+        return new ArrayCollection();
     }
 
     public function addMeta(Meta $meta): self

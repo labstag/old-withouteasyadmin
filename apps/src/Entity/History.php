@@ -30,23 +30,19 @@ class History implements EntityPublicLib
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
      * @ORM\Column(type="guid", unique=true)
-     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Chapter::class, mappedBy="refhistory", cascade={"persist"}, orphanRemoval=true)
-     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $chapters;
 
     /**
      * @Gedmo\Timestampable(on="create")
-     *
      * @ORM\Column(type="datetime")
      */
     private ?DateTimeInterface $created = null;
@@ -68,7 +64,6 @@ class History implements EntityPublicLib
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="history", cascade={"persist"}, orphanRemoval=true)
-     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
@@ -89,7 +84,6 @@ class History implements EntityPublicLib
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
-     *
      * @ORM\Column(type="string", length=255)
      */
     private ?string $slug = null;
@@ -101,7 +95,6 @@ class History implements EntityPublicLib
 
     /**
      * @Gedmo\Timestampable(on="update")
-     *
      * @ORM\Column(type="datetime")
      */
     private ?DateTimeInterface $updated = null;

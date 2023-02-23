@@ -40,7 +40,7 @@ class AttachFormService
             $old = clone $attachment;
 
             $filename = $file->getClientOriginalName();
-            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $path = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
             if (!is_dir($path)) {
                 mkdir($path, 0777, true);
             }
@@ -48,11 +48,6 @@ class AttachFormService
             $this->moveFile($file, $path, $filename, $attachment, $old);
             $accessor->setValue($entity, $annotation->getFilename(), $attachment);
         }
-    }
-
-    protected function getParameter(string $name)
-    {
-        return $this->containerBag->get($name);
     }
 
     protected function moveFile($file, $path, $filename, $attachment, $old)

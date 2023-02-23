@@ -24,9 +24,7 @@ class Libelle implements Stringable
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
      * @ORM\Column(type="guid", unique=true)
-     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
@@ -48,7 +46,6 @@ class Libelle implements Stringable
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
-     *
      * @ORM\Column(type="string", length=255)
      */
     private ?string $slug = null;

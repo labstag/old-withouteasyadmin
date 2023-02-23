@@ -179,11 +179,6 @@ abstract class FixtureLib extends Fixture
         }
     }
 
-    protected function getParameter(string $name)
-    {
-        return $this->containerBag->get($name);
-    }
-
     protected function getRefgroupe(array $groupes, string $code): ?Groupe
     {
         foreach ($groupes as $groupe) {
@@ -281,7 +276,7 @@ abstract class FixtureLib extends Fixture
         $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
         $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
-            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $path = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
             $title = $accessor->getValue($entity, $annotation->getSlug());
             $slug = $asciiSlugger->slug($title);

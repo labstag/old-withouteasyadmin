@@ -63,9 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
      * @ORM\Column(type="guid", unique=true)
-     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
@@ -99,7 +97,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     /**
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users", cascade={"persist"})
-     *
      * @ORM\JoinColumn(nullable=true)
      */
     protected Groupe $refgroupe;

@@ -48,7 +48,7 @@ class LabstagGeocodeInstallCommand extends CommandLib
         }
 
         $csv = $this->geocodeService->csv($country);
-        if (0 == $csv) {
+        if ([] == $csv) {
             $symfonyStyle->warning(
                 ['fichier inexistant']
             );

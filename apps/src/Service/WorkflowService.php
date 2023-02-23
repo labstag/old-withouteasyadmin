@@ -29,7 +29,7 @@ class WorkflowService
     {
     }
 
-    public function get($entity): ?WorkflowInterface
+    public function get(mixed $entity): ?WorkflowInterface
     {
         return match (true) {
             ($entity instanceof Attachment) => $this->attachmentStateMachine,
@@ -45,7 +45,7 @@ class WorkflowService
         };
     }
 
-    public function has($entity): bool
+    public function has(mixed $entity): bool
     {
         $class = $entity::class;
         $tabs = [

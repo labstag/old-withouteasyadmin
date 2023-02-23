@@ -31,16 +31,13 @@ class Image implements EntityParagraphLib
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
      * @ORM\Column(type="guid", unique=true)
-     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphImages", cascade={"persist"})
-     *
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private ?Attachment $image = null;
@@ -52,7 +49,6 @@ class Image implements EntityParagraphLib
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $slug = null;

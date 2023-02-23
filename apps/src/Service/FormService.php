@@ -35,7 +35,11 @@ class FormService
         return $success;
     }
 
-    private function execute($form, $success, $formName)
+    private function execute(
+        $form,
+        $success,
+        $formName
+    )
     {
         $formClass = $form::class;
         foreach ($this->postform as $row) {

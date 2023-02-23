@@ -31,9 +31,7 @@ class TextImage implements EntityParagraphLib
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
      * @ORM\Column(type="guid", unique=true)
-     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
@@ -45,7 +43,6 @@ class TextImage implements EntityParagraphLib
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphTextImages", cascade={"persist"})
-     *
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private ?Attachment $image = null;
@@ -62,7 +59,6 @@ class TextImage implements EntityParagraphLib
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $slug = null;
@@ -86,7 +82,7 @@ class TextImage implements EntityParagraphLib
         return $this->file;
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }

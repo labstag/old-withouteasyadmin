@@ -138,11 +138,10 @@ class UserService
         User $user,
         string $identity,
         string $client,
-        &$oauthConnect = null
+        ?OauthConnectUser &$oauthConnect = null
     ): bool
     {
         $return = false;
-        $oauthConnect = null;
         $oauthConnects = $user->getOauthConnectUsers();
         foreach ($oauthConnects as $oauthConnect) {
             $test1 = ($oauthConnect->getName() == $client);

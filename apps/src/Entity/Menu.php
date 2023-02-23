@@ -24,7 +24,6 @@ class Menu implements Stringable
 
     /**
      * @ORM\OneToMany(targetEntity=Menu::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
-     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     protected $children;
@@ -48,9 +47,7 @@ class Menu implements Stringable
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
      * @ORM\Column(type="guid", unique=true)
-     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
@@ -62,7 +59,6 @@ class Menu implements Stringable
 
     /**
      * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children", cascade={"persist"})
-     *
      * @ORM\JoinColumn(
      *     name="parent_id",
      *     referencedColumnName="id",

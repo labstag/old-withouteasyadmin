@@ -2,9 +2,11 @@
 
 namespace Labstag\Service;
 
+use Labstag\Lib\EntityPublicLib;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
@@ -24,8 +26,7 @@ class FrontService
         'error_controller::preview',
     ];
 
-    // @var null|Request
-    protected $request;
+    protected Request $request;
 
     public function __construct(
         protected $frontclass,
@@ -38,7 +39,10 @@ class FrontService
         $this->request = $this->requestStack->getCurrentRequest();
     }
 
-    public function configMeta($config, $meta)
+    public function configMeta(
+        array $config,
+        array $meta
+    ): array
     {
         $meta = $this->configMetaImage($meta);
         $meta = $this->configMetaRobots($meta);
@@ -48,7 +52,7 @@ class FrontService
         return $this->configMetaDescription($meta);
     }
 
-    public function setBreadcrumb($content)
+    public function setBreadcrumb(?EntityPublicLib $content)
     {
         $breadcrumb = [];
         foreach ($this->frontclass as $row) {
@@ -74,7 +78,7 @@ class FrontService
         return $meta;
     }
 
-    public function setMetatags($meta): void
+    public function setMetatags(array $meta): void
     {
         $metatags = [];
         $meta['twitter:card'] = 'summary_large_image';
@@ -114,7 +118,7 @@ class FrontService
         return 0 != $find;
     }
 
-    private function configMetaDescription($meta)
+    private function configMetaDescription(array $meta): array
     {
         $tests = [
             'og:description',
@@ -130,7 +134,7 @@ class FrontService
         return $meta;
     }
 
-    private function configMetaImage($meta)
+    private function configMetaImage(array $meta): array
     {
         $attachment = $this->attachmentRepository->getImageDefault();
         $this->twigEnvironment->AddGlobal('imageglobal', $attachment);
@@ -151,7 +155,10 @@ class FrontService
         return $meta;
     }
 
-    private function configMetaLocale($config, $meta)
+    private function configMetaLocale(
+        array $config,
+        array $meta
+    ): array
     {
         if (!$this->isStateMeta()) {
             return $meta;
@@ -174,7 +181,7 @@ class FrontService
         return $meta;
     }
 
-    private function configMetaRobots($meta)
+    private function configMetaRobots(array $meta): array
     {
         if (!$this->isStateMeta()) {
             $meta['robots'] = 'noindex';
@@ -183,7 +190,10 @@ class FrontService
         return $meta;
     }
 
-    private function configMetaTitle($config, $meta)
+    private function configMetaTitle(
+        array $config,
+        array $meta
+    ): array
     {
         if (!array_key_exists('site_title', $config)) {
             return $meta;

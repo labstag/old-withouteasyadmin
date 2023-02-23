@@ -15,7 +15,11 @@ class FileService
     {
     }
 
-    public function setAttachment($file, $attachment = null, $old = null)
+    public function setAttachment(
+        string $file,
+        ?Attachment $attachment = null,
+        ?Attachment $old = null
+    ): Attachment
     {
         if (is_null($attachment) && is_null($old)) {
             $attachment = new Attachment();
@@ -26,7 +30,7 @@ class FileService
         $attachment->setSize(filesize($file));
         $attachment->setName(
             str_replace(
-                $this->getParameter('kernel.project_dir').'/public/',
+                $this->containerBag->get('kernel.project_dir').'/public/',
                 '',
                 (string) $file
             )
@@ -34,10 +38,5 @@ class FileService
         $this->attachmentRequestHandler->handle($old, $attachment);
 
         return $attachment;
-    }
-
-    protected function getParameter(string $name)
-    {
-        return $this->containerBag->get($name);
     }
 }

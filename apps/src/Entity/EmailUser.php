@@ -14,7 +14,6 @@ class EmailUser extends Email
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="emailUsers", cascade={"persist"})
-     *
      * @ORM\JoinColumn(nullable=false)
      */
     protected $refuser;

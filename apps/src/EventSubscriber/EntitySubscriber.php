@@ -92,7 +92,7 @@ class EntitySubscriber extends EventSubscriberLib
             HistoryService::class,
             'process',
             [
-                'fileDirectory' => $this->getParameter('file_directory'),
+                'fileDirectory' => $this->parameterBag->get('file_directory'),
                 'historyId'     => $chapter->getRefhistory()->getId(),
                 'all'           => false,
             ]
@@ -121,7 +121,7 @@ class EntitySubscriber extends EventSubscriberLib
             HistoryService::class,
             'process',
             [
-                'fileDirectory' => $this->getParameter('file_directory'),
+                'fileDirectory' => $this->parameterBag->get('file_directory'),
                 'historyId'     => $history->getId(),
                 'all'           => false,
             ]
@@ -216,7 +216,7 @@ class EntitySubscriber extends EventSubscriberLib
                 $configuration->setName($key);
             }
 
-            if (in_array($key, $this->getParameter('metatags'))) {
+            if (in_array($key, $this->parameterBag->get('metatags'))) {
                 $value = $value[0];
             }
 
@@ -228,11 +228,6 @@ class EntitySubscriber extends EventSubscriberLib
             'success',
             $this->translator->trans('param.change')
         );
-    }
-
-    protected function getParameter(string $name)
-    {
-        return $this->parameterBag->get($name);
     }
 
     protected function setChangePassword(User $oldEntity, User $newEntity): void

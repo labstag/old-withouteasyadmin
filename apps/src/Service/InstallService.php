@@ -46,7 +46,7 @@ class InstallService
         $this->cache->delete('configuration');
     }
 
-    public function getData($file)
+    public function getData(string $file): array
     {
         $file = __DIR__.'/../../json/'.$file.'.json';
         $data = [];
@@ -60,7 +60,7 @@ class InstallService
     /**
      * @return mixed[]
      */
-    public function getEnv($serverEnv): array
+    public function getEnv(array $serverEnv): array
     {
         $file = __DIR__.'/../../.env';
         $data = [];
@@ -86,7 +86,7 @@ class InstallService
 
     protected function addConfig(
         string $key,
-        $value
+        mixed $value
     ): void
     {
         $search = ['name' => $key];

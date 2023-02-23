@@ -21,9 +21,7 @@ class OauthConnectUser
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
      * @ORM\Column(type="guid", unique=true)
-     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
@@ -40,7 +38,6 @@ class OauthConnectUser
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="oauthConnectUsers", cascade={"persist"})
-     *
      * @ORM\JoinColumn(nullable=false)
      */
     protected UserInterface $refuser;

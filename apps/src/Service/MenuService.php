@@ -124,7 +124,11 @@ class MenuService
         }
     }
 
-    protected function deleteParent($children, $key, $menu): void
+    protected function deleteParent(
+        $children,
+        $key,
+        $menu
+    ): void
     {
         $divider = 0;
         foreach ($children as $child) {
@@ -139,7 +143,10 @@ class MenuService
         }
     }
 
-    private function setDataChild(&$dataChild, &$data): void
+    private function setDataChild(
+        ?array &$dataChild,
+        array &$data
+    ): void
     {
         if (isset($dataChild['url'])) {
             $data['uri'] = $dataChild['url'];

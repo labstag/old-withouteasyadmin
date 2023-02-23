@@ -55,7 +55,7 @@ class GeocodeService
         $this->geoCodeRequestHandler->handle($old, $entity);
     }
 
-    public function csv(string $country)
+    public function csv(string $country): array
     {
         $country = strtoupper($country);
         $file = 'http://download.geonames.org/export/zip/'.$country.'.zip';

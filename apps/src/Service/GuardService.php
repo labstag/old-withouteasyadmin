@@ -180,7 +180,10 @@ class GuardService
         return $data;
     }
 
-    public function guardRoute($route, $token): bool
+    public function guardRoute(
+        string $route,
+        $token
+    ): bool
     {
         $all = $this->all();
         if (!array_key_exists($route, $all)) {
@@ -342,7 +345,7 @@ class GuardService
         return $stateGroupe || $stateUser;
     }
 
-    private function getLostRoute()
+    private function getLostRoute(): mixed
     {
         $all = $this->all();
         $routes = array_keys($all);
@@ -352,7 +355,7 @@ class GuardService
 
     private function isRouteGroupe(
         Groupe $groupe,
-        $route
+        string $route
     ): bool
     {
         $all = $this->all();
@@ -372,7 +375,7 @@ class GuardService
         return !(0 != count($matches) && 'visiteur' == $groupe->getCode());
     }
 
-    private function regexPublic(string $string)
+    private function regexPublic(string $string): array
     {
         $data = $this->regex($string);
         foreach (self::REGEX_PUBLIC as $regex) {

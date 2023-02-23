@@ -40,9 +40,7 @@ class Post implements Stringable, EntityPublicLib
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
      * @ORM\Column(type="guid", unique=true)
-     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
@@ -54,7 +52,6 @@ class Post implements Stringable, EntityPublicLib
 
     /**
      * @Gedmo\Timestampable(on="create")
-     *
      * @ORM\Column(type="datetime")
      */
     private ?DateTimeInterface $created = null;
@@ -76,7 +73,6 @@ class Post implements Stringable, EntityPublicLib
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
-     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
@@ -107,7 +103,6 @@ class Post implements Stringable, EntityPublicLib
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"title"})
-     *
      * @ORM\Column(type="string", length=255)
      */
     private ?string $slug = null;
@@ -119,7 +114,6 @@ class Post implements Stringable, EntityPublicLib
 
     /**
      * @Gedmo\Timestampable(on="update")
-     *
      * @ORM\Column(type="datetime")
      */
     private ?DateTimeInterface $updated = null;

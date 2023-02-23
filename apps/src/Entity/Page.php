@@ -26,9 +26,7 @@ class Page implements Stringable, EntityPublicLib
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
      * @ORM\Column(type="guid", unique=true)
-     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
@@ -52,14 +50,12 @@ class Page implements Stringable, EntityPublicLib
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
-     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
 
     /**
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children", cascade={"persist"})
-     *
      * @ORM\JoinColumn(
      *     name="parent_id",
      *     referencedColumnName="id",
@@ -82,7 +78,6 @@ class Page implements Stringable, EntityPublicLib
      * @Gedmo\SlugHandlerOption(name="separator", value="/")
      *      })
      * }, fields={"name"})
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private ?string $slug = null;

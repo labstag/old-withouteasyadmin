@@ -67,7 +67,7 @@ class ParagraphService
             return $entity;
         }
 
-        $reflection = $this->setReflection($paragraph);
+        $reflection = new ReflectionClass($paragraph);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() == $field) {
@@ -89,7 +89,7 @@ class ParagraphService
             return $field;
         }
 
-        $reflection = $this->setReflection($childentity);
+        $reflection = new ReflectionClass($childentity);
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ('paragraph' == $reflectionProperty->getName()) {
                 preg_match('#inversedBy=\"(.*)\", #m', (string) $reflectionProperty->getDocComment(), $matches);
@@ -243,10 +243,5 @@ class ParagraphService
         $method = ($entity instanceof Page) ? 'setPage' : $method;
 
         return ($entity instanceof Post) ? 'setPost' : $method;
-    }
-
-    private function setReflection($entity): ReflectionClass
-    {
-        return new ReflectionClass($entity);
     }
 }

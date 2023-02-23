@@ -38,6 +38,11 @@ abstract class BlockLib extends AbstractController
         array $paragraphs
     ): array
     {
+        $methods = get_class_methods($entityPublicLib);
+        if (!in_array('getParagraphs', $methods)) {
+            return $paragraphs;
+        }
+
         $paragraphsArray = $entityPublicLib->getParagraphs();
         foreach ($paragraphsArray as $paragraphArray) {
             $data = $paragraphService->showContent($paragraphArray);

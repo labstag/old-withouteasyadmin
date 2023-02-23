@@ -78,11 +78,6 @@ class BookmarkService
         }
     }
 
-    protected function getParameter(string $name)
-    {
-        return $this->containerBag->get($name);
-    }
-
     protected function upload(Bookmark $bookmark, $image): void
     {
         // @var resource $finfo
@@ -90,7 +85,7 @@ class BookmarkService
         $annotations = $this->uploadAnnotationReader->getUploadableFields($bookmark);
         $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
-            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $path = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
             $title = $accessor->getValue($bookmark, $annotation->getSlug());
             $slug = $asciiSlugger->slug($title);
