@@ -22,7 +22,7 @@ class RouteUser
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected string $id;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="users", cascade={"persist"})

@@ -28,7 +28,7 @@ class Header implements Stringable, EntityBlockLib
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected string $id;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="headers", cascade={"persist"})

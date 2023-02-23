@@ -69,7 +69,7 @@ class Memo implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected string $id;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes", cascade={"persist"})

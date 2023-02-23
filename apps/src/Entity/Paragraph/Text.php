@@ -26,7 +26,7 @@ class Text implements Stringable, EntityParagraphLib
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected string $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)

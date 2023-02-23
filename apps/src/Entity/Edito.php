@@ -57,7 +57,7 @@ class Edito implements Stringable, EntityPublicLib
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected string $id;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="editos", cascade={"persist"})

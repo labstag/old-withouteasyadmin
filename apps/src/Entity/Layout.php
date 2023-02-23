@@ -26,7 +26,7 @@ class Layout
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected string $id;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Custom::class, inversedBy="layouts", cascade={"persist"})

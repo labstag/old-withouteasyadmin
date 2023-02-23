@@ -68,7 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected string $id;
+    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity=LinkUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)

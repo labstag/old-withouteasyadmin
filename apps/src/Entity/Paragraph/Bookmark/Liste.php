@@ -26,7 +26,7 @@ class Liste implements Stringable, EntityParagraphLib
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected string $id;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="bookmarkLists", cascade={"persist"})

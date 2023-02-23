@@ -27,7 +27,7 @@ class Configuration implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected string $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)

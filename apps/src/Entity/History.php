@@ -35,7 +35,7 @@ class History implements EntityPublicLib
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected string $id;
+    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Chapter::class, mappedBy="refhistory", cascade={"persist"}, orphanRemoval=true)
