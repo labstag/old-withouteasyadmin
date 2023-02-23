@@ -71,9 +71,9 @@ abstract class SearchAbstractTypeLib extends AbstractType
         return '';
     }
 
-    protected function addName($builder)
+    protected function addName(FormBuilderInterface $formBuilder)
     {
-        $builder->add(
+        $formBuilder->add(
             'name',
             TextType::class,
             [
@@ -85,9 +85,9 @@ abstract class SearchAbstractTypeLib extends AbstractType
         );
     }
 
-    protected function addPublished($builder)
+    protected function addPublished(FormBuilderInterface $formBuilder)
     {
-        $builder->add(
+        $formBuilder->add(
             'published',
             DateType::class,
             [
@@ -99,9 +99,9 @@ abstract class SearchAbstractTypeLib extends AbstractType
         );
     }
 
-    protected function addRefCategory($builder)
+    protected function addRefCategory(FormBuilderInterface $formBuilder)
     {
-        $builder->add(
+        $formBuilder->add(
             'refcategory',
             SearchableType::class,
             [
@@ -118,9 +118,9 @@ abstract class SearchAbstractTypeLib extends AbstractType
         );
     }
 
-    protected function addRefUser($builder)
+    protected function addRefUser(FormBuilderInterface $formBuilder)
     {
-        $builder->add(
+        $formBuilder->add(
             'refuser',
             SearchableType::class,
             [
@@ -138,7 +138,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
     }
 
     protected function showState(
-        $builder,
+        FormBuilderInterface $formBuilder,
         object $entityclass,
         $label,
         $help,
@@ -148,7 +148,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
         $workflow = $this->workflowService->get($entityclass);
         $definition = $workflow->getDefinition();
         $places = $definition->getPlaces();
-        $builder->add(
+        $formBuilder->add(
             'etape',
             ChoiceType::class,
             [

@@ -13,6 +13,7 @@ use Labstag\Repository\RouteRepository;
 use Labstag\Repository\RouteUserRepository;
 use Symfony\Component\Routing\Route as Routing;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class GuardService
 {
@@ -160,7 +161,7 @@ class GuardService
         return $data;
     }
 
-    public function getPublicRouteWithParams()
+    public function getPublicRouteWithParams(): array
     {
         $data = $this->getPublicRoute();
         if (isset($data['front'])) {
@@ -182,7 +183,7 @@ class GuardService
 
     public function guardRoute(
         string $route,
-        $token
+        ?TokenInterface $token
     ): bool
     {
         $all = $this->all();

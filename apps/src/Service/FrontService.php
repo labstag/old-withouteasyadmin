@@ -52,21 +52,21 @@ class FrontService
         return $this->configMetaDescription($meta);
     }
 
-    public function setBreadcrumb(?EntityPublicLib $content)
+    public function setBreadcrumb(?EntityPublicLib $entityPublicLib): array
     {
         $breadcrumb = [];
         foreach ($this->frontclass as $row) {
-            $breadcrumb = $row->setBreadcrumb($content, $breadcrumb);
+            $breadcrumb = $row->setBreadcrumb($entityPublicLib, $breadcrumb);
         }
 
         return array_reverse($breadcrumb);
     }
 
-    public function setMeta($content)
+    public function setMeta(?EntityPublicLib $entityPublicLib): array
     {
         $meta = [];
         foreach ($this->frontclass as $row) {
-            $meta = $row->setMeta($content, $meta);
+            $meta = $row->setMeta($entityPublicLib, $meta);
         }
 
         foreach ($meta as $key => $value) {
@@ -108,7 +108,10 @@ class FrontService
         $this->twigEnvironment->AddGlobal('sitemetatags', $metatags);
     }
 
-    private function arrayKeyExists(array $var, $data): bool
+    private function arrayKeyExists(
+        array $var,
+        array $data
+    ): bool
     {
         $find = 0;
         foreach ($var as $name) {
@@ -213,7 +216,7 @@ class FrontService
         return $meta;
     }
 
-    private function isStateMeta()
+    private function isStateMeta(): bool
     {
         $controller = $this->request->attributes->get('_controller');
         preg_match(self::ADMIN_CONTROLLER, (string) $controller, $matches);

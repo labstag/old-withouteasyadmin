@@ -50,7 +50,7 @@ class PageFront extends FrontLib
         array $breadcrumb
     ): array
     {
-        /** @var Page $entityPublicLib */
+        // @var Page $entityPublicLib
         $breadcrumb[] = [
             'route' => $this->router->generate(
                 'front',

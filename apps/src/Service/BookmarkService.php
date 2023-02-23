@@ -78,7 +78,10 @@ class BookmarkService
         }
     }
 
-    protected function upload(Bookmark $bookmark, $image): void
+    protected function upload(
+        Bookmark $bookmark,
+        string $image
+    ): void
     {
         // @var resource $finfo
         $finfo = finfo_open(FILEINFO_MIME_TYPE);

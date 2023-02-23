@@ -38,7 +38,11 @@ class SearchController extends ApiControllerLib
         return $this->showData($request, $entityName, $function);
     }
 
-    private function showData($request, $entity, $method): JsonResponse
+    private function showData(
+        Request $request,
+        ?string $entity,
+        string $method
+    ): JsonResponse
     {
         $get = $request->query->all();
         $return = ['isvalid' => false];

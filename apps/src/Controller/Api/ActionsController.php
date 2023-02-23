@@ -68,6 +68,7 @@ class ActionsController extends ApiControllerLib
             'action' => false,
             'error'  => '',
         ];
+        /** @var ServiceEntityRepositoryLib $repository */
         $repository = $this->entityManager->getRepository($entity);
         $entity = $repository->find($id);
         if (is_null($entity) || is_null($entity->getDeletedAt())) {

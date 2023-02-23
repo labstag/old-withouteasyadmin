@@ -50,7 +50,13 @@ class AttachFormService
         }
     }
 
-    protected function moveFile($file, $path, $filename, $attachment, $old)
+    protected function moveFile(
+        $file,
+        $path,
+        $filename,
+        $attachment,
+        $old
+    )
     {
         $file->move(
             $path,

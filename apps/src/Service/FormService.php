@@ -2,6 +2,8 @@
 
 namespace Labstag\Service;
 
+use Labstag\Lib\AbstractTypeLib;
+
 class FormService
 {
     public function __construct(protected $formfront, protected $postform)
@@ -36,12 +38,12 @@ class FormService
     }
 
     private function execute(
-        $form,
-        $success,
-        $formName
+        AbstractTypeLib $typeLib,
+        array $success,
+        string $formName
     )
     {
-        $formClass = $form::class;
+        $formClass = $typeLib::class;
         foreach ($this->postform as $row) {
             if ($row->getForm() == $formClass) {
                 $success = $row->execute($formClass, $success, $formName);

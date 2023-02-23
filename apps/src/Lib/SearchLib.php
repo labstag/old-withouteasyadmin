@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Category;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
@@ -12,11 +13,14 @@ abstract class SearchLib
 
     public $limit;
 
-    public function search(array $get, $doctrine)
+    public function search(
+        array $get,
+        EntityManagerInterface $entityManager
+    ): void
     {
-        $userRepo = $doctrine->getRepository(User::class);
-        $categoryRepo = $doctrine->getRepository(Category::class);
-        $groupeRepo = $doctrine->getRepository(Groupe::class);
+        $entityRepository = $entityManager->getRepository(User::class);
+        $categoryRepo = $entityManager->getRepository(Category::class);
+        $groupeRepo = $entityManager->getRepository(Groupe::class);
         $dateTime = new DateTime();
         foreach ($get as $key => $value) {
             $this->{$key} = $value;
@@ -39,7 +43,7 @@ abstract class SearchLib
             }
 
             $this->{$key} = match ($key) {
-                'refuser' => $userRepo->find($value),
+                'refuser' => $entityRepository->find($value),
                 'refcategory' => $categoryRepo->find($value),
                 'refgroup' => $groupeRepo->find($value),
                 default => $this->{$key}

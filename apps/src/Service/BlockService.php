@@ -59,9 +59,9 @@ class BlockService
             return $entity;
         }
 
-        $reflection = $this->setReflection($block);
+        $reflectionClass = new ReflectionClass($block);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        foreach ($reflection->getProperties() as $reflectionProperty) {
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() == $field) {
                 $entities = $propertyAccessor->getValue($block, $field);
                 $entity = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
@@ -81,8 +81,8 @@ class BlockService
             return $field;
         }
 
-        $reflection = $this->setReflection($childentity);
-        foreach ($reflection->getProperties() as $reflectionProperty) {
+        $reflectionClass = new ReflectionClass($childentity);
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ('block' == $reflectionProperty->getName()) {
                 preg_match('#inversedBy=\"(.*)\", #m', (string) $reflectionProperty->getDocComment(), $matches);
                 $field = $matches[1] ?? $field;
@@ -186,7 +186,10 @@ class BlockService
         return $html;
     }
 
-    public function showTemplate(Block $block, $content)
+    public function showTemplate(
+        Block $block,
+        ?EntityPublicLib $entityPublicLib
+    ): ?array
     {
         $type = $block->getType();
         $entity = $this->getEntity($block);
@@ -197,15 +200,10 @@ class BlockService
 
         foreach ($this->blocksclass as $row) {
             if ($type == $row->getType()) {
-                $template = $row->template($entity, $content);
+                $template = $row->template($entity, $entityPublicLib);
             }
         }
 
         return $template;
-    }
-
-    protected function setReflection($entity): ReflectionClass
-    {
-        return new ReflectionClass($entity);
     }
 }

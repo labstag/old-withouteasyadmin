@@ -44,7 +44,10 @@ class EntityVoter extends Voter
         return count($chapters) >= self::NBR_CHAPTER;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(
+        mixed $attribute,
+        mixed $subject
+    ): bool
     {
         unset($attribute);
         $entities = [

@@ -5,6 +5,7 @@ namespace Labstag\Lib;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Labstag\Entity\AddressUser;
 use Labstag\Entity\Bookmark;
@@ -99,10 +100,14 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $this->setQuery($query, $get);
     }
 
-    public function getLimitOffsetResult($query, $limit, $offset)
+    public function getLimitOffsetResult(
+        Query $query,
+        ?int $limit = null,
+        ?int $offset = null
+    )
     {
-        $query->setMaxResults($limit ?: null);
-        $query->setFirstResult($offset ?: null);
+        $query->setMaxResults($limit);
+        $query->setFirstResult($offset);
 
         return $query->getResult();
     }
@@ -111,7 +116,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove($entity): void
+    public function remove(mixed $entity): void
     {
         $this->_em->remove($entity);
         $this->_em->flush();

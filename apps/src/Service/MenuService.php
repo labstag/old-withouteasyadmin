@@ -125,9 +125,9 @@ class MenuService
     }
 
     protected function deleteParent(
-        $children,
+        array $children,
         $key,
-        $menu
+        MenuItem $menuItem
     ): void
     {
         $divider = 0;
@@ -139,7 +139,7 @@ class MenuService
         }
 
         if ($divider == (is_countable($children) ? count($children) : 0)) {
-            $menu->removeChild($key);
+            $menuItem->removeChild($key);
         }
     }
 

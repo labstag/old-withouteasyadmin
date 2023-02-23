@@ -17,6 +17,7 @@ use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route(path: '/api/guard/route')]
 class GuardRouteController extends ApiControllerLib
@@ -199,15 +200,15 @@ class GuardRouteController extends ApiControllerLib
         RouteGroupeRepository $routeGroupeRepository,
         GuardService $guardService,
         $data,
-        $group,
-        $route,
+        ?Groupe $groupe,
+        ?Route $route,
         $state,
         $routeGroupeRH
     )
     {
         $routeGroupe = $routeGroupeRepository->findOneBy(
             [
-                'refgroupe' => $group,
+                'refgroupe' => $groupe,
                 'refroute'  => $route,
             ]
         );
@@ -220,15 +221,15 @@ class GuardRouteController extends ApiControllerLib
             return $data;
         }
 
-        $enable = $guardService->guardRouteEnableGroupe($route->getName(), $group);
-        if ('superadmin' === $group->getCode() || !$enable) {
+        $enable = $guardService->guardRouteEnableGroupe($route->getName(), $groupe);
+        if ('superadmin' === $groupe->getCode() || !$enable) {
             return $data;
         }
 
         if (!$routeGroupe instanceof RouteGroupe) {
             $routeGroupe = new RouteGroupe();
             $data['add'] = 1;
-            $routeGroupe->setRefgroupe($group);
+            $routeGroupe->setRefgroupe($groupe);
             $routeGroupe->setRefroute($route);
             $old = clone $routeGroupe;
             $routeGroupe->setState($state);
@@ -245,8 +246,8 @@ class GuardRouteController extends ApiControllerLib
         RouteUserRepository $routeUserRepository,
         guardService $guardService,
         array $data,
-        $user,
-        $state,
+        ?UserInterface $user,
+        bool $state,
         EntityRoute $entityRoute,
         RouteUserRequestHandler $routeUserRequestHandler
     ): array

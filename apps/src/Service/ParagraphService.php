@@ -9,8 +9,10 @@ use Labstag\Entity\Memo;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph;
 use Labstag\Entity\Post;
+use Labstag\Lib\EntityPublicLib;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use ReflectionClass;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Twig\Environment;
 
@@ -67,10 +69,10 @@ class ParagraphService
             return $entity;
         }
 
-        $reflection = new ReflectionClass($paragraph);
+        $reflectionClass = new ReflectionClass($paragraph);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        foreach ($reflection->getProperties() as $reflectionProperty) {
-            if ($reflectionProperty->getName() == $field) {
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
+            if ($reflectionProperty->getName() === $field) {
                 $entities = $propertyAccessor->getValue($paragraph, $field);
                 $entity = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
 
@@ -81,7 +83,7 @@ class ParagraphService
         return $entity;
     }
 
-    public function getEntityField(Paragraph $paragraph)
+    public function getEntityField(Paragraph $paragraph): ?string
     {
         $field = null;
         $childentity = $this->getTypeEntity($paragraph);
@@ -89,8 +91,8 @@ class ParagraphService
             return $field;
         }
 
-        $reflection = new ReflectionClass($childentity);
-        foreach ($reflection->getProperties() as $reflectionProperty) {
+        $reflectionClass = new ReflectionClass($childentity);
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ('paragraph' == $reflectionProperty->getName()) {
                 preg_match('#inversedBy=\"(.*)\", #m', (string) $reflectionProperty->getDocComment(), $matches);
                 $field = $matches[1] ?? $field;
@@ -102,7 +104,7 @@ class ParagraphService
         return $field;
     }
 
-    public function getName(Paragraph $paragraph)
+    public function getName(Paragraph $paragraph): string
     {
         $type = $paragraph->getType();
         $name = '';
@@ -117,7 +119,7 @@ class ParagraphService
         return $name;
     }
 
-    public function getNameByCode($code)
+    public function getNameByCode(string $code): string
     {
         $name = '';
         foreach ($this->paragraphsclass as $row) {
@@ -131,7 +133,7 @@ class ParagraphService
         return $name;
     }
 
-    public function getTypeEntity(Paragraph $paragraph)
+    public function getTypeEntity(Paragraph $paragraph): ?string
     {
         $type = $paragraph->getType();
         $paragraph = null;
@@ -146,7 +148,7 @@ class ParagraphService
         return $paragraph;
     }
 
-    public function getTypeForm(Paragraph $paragraph)
+    public function getTypeForm(Paragraph $paragraph): ?string
     {
         $type = $paragraph->getType();
         $form = null;
@@ -161,7 +163,7 @@ class ParagraphService
         return $form;
     }
 
-    public function isShow(Paragraph $paragraph)
+    public function isShow(Paragraph $paragraph): bool
     {
         $type = $paragraph->getType();
         $show = false;
@@ -193,7 +195,7 @@ class ParagraphService
         }
     }
 
-    public function showContent(Paragraph $paragraph)
+    public function showContent(Paragraph $paragraph): ?Response
     {
         $type = $paragraph->getType();
         $entity = $this->getEntity($paragraph);
@@ -213,7 +215,7 @@ class ParagraphService
         return $html;
     }
 
-    public function showTemplate(Paragraph $paragraph)
+    public function showTemplate(Paragraph $paragraph): ?array
     {
         $type = $paragraph->getType();
         $entity = $this->getEntity($paragraph);
@@ -233,15 +235,16 @@ class ParagraphService
         return $template;
     }
 
-    private function getMethod($entity)
+    private function getMethod(EntityPublicLib $entityPublicLib): ?string
     {
-        $method = null;
-        $method = ($entity instanceof Chapter) ? 'setChapter' : $method;
-        $method = ($entity instanceof History) ? 'setHistory' : $method;
-        $method = ($entity instanceof Layout) ? 'setLayout' : $method;
-        $method = ($entity instanceof Memo) ? 'setMemo' : $method;
-        $method = ($entity instanceof Page) ? 'setPage' : $method;
-
-        return ($entity instanceof Post) ? 'setPost' : $method;
+        return match (true) {
+            $entityPublicLib instanceof Chapter => 'setChapter',
+            $entityPublicLib instanceof History => 'setHistory',
+            $entityPublicLib instanceof Layout => 'setLayout',
+            $entityPublicLib instanceof Memo => 'setMemo',
+            $entityPublicLib instanceof Page => 'setPage',
+            $entityPublicLib instanceof Post => 'setPost',
+            default => null,
+        };
     }
 }

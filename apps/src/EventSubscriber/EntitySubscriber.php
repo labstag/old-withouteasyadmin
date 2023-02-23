@@ -401,7 +401,9 @@ class EntitySubscriber extends EventSubscriberLib
         $this->entityManager->flush();
     }
 
-    private function verifMetas($entity)
+    private function verifMetas(
+        mixed $entity
+    ): void
     {
         $title = null;
         $metas = $entity->getMetas();
@@ -427,7 +429,11 @@ class EntitySubscriber extends EventSubscriberLib
         $this->entityManager->flush();
     }
 
-    private function verifMetasChapter($entity, &$method, &$title)
+    private function verifMetasChapter(
+        mixed $entity,
+        string &$method,
+        string &$title
+    ): void
     {
         if (!$entity instanceof Chapter) {
             return;
@@ -437,7 +443,11 @@ class EntitySubscriber extends EventSubscriberLib
         $title = $entity->getName();
     }
 
-    private function verifMetasEdito($entity, &$method, &$title)
+    private function verifMetasEdito(
+        mixed $entity,
+        string &$method,
+        string &$title
+    ): void
     {
         if (!$entity instanceof Edito) {
             return;
@@ -447,7 +457,11 @@ class EntitySubscriber extends EventSubscriberLib
         $title = $entity->getTitle();
     }
 
-    private function verifMetasHistory($entity, &$method, &$title)
+    private function verifMetasHistory(
+        mixed $entity,
+        string &$method,
+        string &$title
+    ): void
     {
         if (!$entity instanceof History) {
             return;
@@ -457,7 +471,11 @@ class EntitySubscriber extends EventSubscriberLib
         $title = $entity->getName();
     }
 
-    private function verifMetasPage($entity, &$method, &$title)
+    private function verifMetasPage(
+        mixed $entity,
+        string &$method,
+        string &$title
+    ): void
     {
         if (!$entity instanceof Page) {
             return;
@@ -467,7 +485,11 @@ class EntitySubscriber extends EventSubscriberLib
         $title = $entity->getName();
     }
 
-    private function verifMetasPost($entity, &$method, &$title)
+    private function verifMetasPost(
+        mixed $entity,
+        string &$method,
+        string &$title
+    ): void
     {
         if (!$entity instanceof Post) {
             return;
@@ -477,7 +499,11 @@ class EntitySubscriber extends EventSubscriberLib
         $title = $entity->getTitle();
     }
 
-    private function verifMetasRender($entity, &$method, &$title)
+    private function verifMetasRender(
+        mixed $entity,
+        string &$method,
+        string &$title
+    ): void
     {
         if (!$entity instanceof Render) {
             return;

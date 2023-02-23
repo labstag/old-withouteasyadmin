@@ -28,7 +28,9 @@ class Chapter implements EntityPublicLib
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
@@ -40,6 +42,7 @@ class Chapter implements EntityPublicLib
 
     /**
      * @Gedmo\Timestampable(on="create")
+     *
      * @ORM\Column(type="datetime")
      */
     private ?DateTimeInterface $created = null;
@@ -61,6 +64,7 @@ class Chapter implements EntityPublicLib
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="chapter", cascade={"persist"}, orphanRemoval=true)
+     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;
@@ -72,6 +76,7 @@ class Chapter implements EntityPublicLib
 
     /**
      * @Gedmo\Timestampable(on="create")
+     *
      * @ORM\Column(type="datetime")
      */
     private ?DateTimeInterface $published = null;
@@ -87,12 +92,14 @@ class Chapter implements EntityPublicLib
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
+     *
      * @ORM\Column(type="string", length=255)
      */
     private ?string $slug = null;
 
     /**
      * @Gedmo\Timestampable(on="create")
+     *
      * @ORM\Column(type="datetime")
      */
     private ?DateTimeInterface $updated = null;

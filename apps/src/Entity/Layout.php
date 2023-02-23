@@ -21,7 +21,9 @@ class Layout
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
@@ -38,6 +40,7 @@ class Layout
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="layout", cascade={"persist"}, orphanRemoval=true)
+     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;

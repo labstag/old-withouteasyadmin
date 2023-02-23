@@ -12,7 +12,7 @@ class DomainService
     {
     }
 
-    public function getDomain($entity): DomainLib
+    public function getDomain(string $entity): ?DomainLib
     {
         $return = null;
         foreach ($this->domainsclass as $domain) {
@@ -26,7 +26,7 @@ class DomainService
         return $return;
     }
 
-    public function getTitles()
+    public function getTitles(): array
     {
         $titles = [];
         foreach ($this->domainsclass as $domain) {

@@ -236,8 +236,8 @@ class GuardWorkflowController extends ApiControllerLib
     private function setWorkflowUser(
         WorkflowUserRepository $workflowUserRepository,
         $data,
-        $user,
-        $workflow,
+        ?User $user,
+        ?Workflow $workflow,
         $state,
         $workflowUserRH
     )

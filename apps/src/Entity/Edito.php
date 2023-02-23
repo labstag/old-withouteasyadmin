@@ -52,13 +52,16 @@ class Edito implements Stringable, EntityPublicLib
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\Column(type="guid", unique=true)
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="editos", cascade={"persist"})
+     *
      * @ORM\JoinColumn(nullable=false)
      */
     protected $refuser;
@@ -77,6 +80,7 @@ class Edito implements Stringable, EntityPublicLib
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
+     *
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $paragraphs;

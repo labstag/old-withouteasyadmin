@@ -138,7 +138,7 @@ class UserService
         User $user,
         string $identity,
         string $client,
-        ?OauthConnectUser &$oauthConnect = null
+        ?OauthConnectUser &$oauthConnectUser = null
     ): bool
     {
         $return = false;
@@ -148,6 +148,7 @@ class UserService
             $test2 = ($oauthConnect->getIdentity() == $identity);
             if ($test1 && $test2) {
                 $return = true;
+                $oauthConnectUser = $oauthConnect;
 
                 break;
             }
