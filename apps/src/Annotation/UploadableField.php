@@ -13,11 +13,11 @@ use InvalidArgumentException;
 class UploadableField
 {
 
-    protected $filename;
+    protected string $filename;
 
-    protected $path;
+    protected string $path;
 
-    protected $slug;
+    protected string $slug;
 
     public function __construct(array $options)
     {
@@ -38,12 +38,12 @@ class UploadableField
         $this->slug = $options['slug'];
     }
 
-    public function getFilename()
+    public function getFilename(): string
     {
         return $this->filename;
     }
 
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }

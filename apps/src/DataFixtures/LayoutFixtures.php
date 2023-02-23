@@ -51,7 +51,7 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
         $this->addReference('layout_'.$type.'-'.$region.'-'.$dataLayout['name'], $layout);
     }
 
-    protected function addLayouts($data)
+    protected function addLayouts(array $data): void
     {
         $type = $data['block-type'];
         $region = $data['block-region'];

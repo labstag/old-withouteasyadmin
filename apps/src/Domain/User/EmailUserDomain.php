@@ -7,6 +7,8 @@ use Labstag\Entity\EmailUser;
 use Labstag\Form\Admin\Search\User\EmailUserType as SearchEmailUserType;
 use Labstag\Form\Admin\User\EmailUserType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\EmailUserRepository;
 use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Search\User\EmailUserSearch;
@@ -23,27 +25,27 @@ class EmailUserDomain extends DomainLib
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return EmailUser::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->emailUserRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->emailUserRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): EmailUserSearch
     {
         return new EmailUserSearch();
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchEmailUserType::class;
     }
@@ -63,7 +65,7 @@ class EmailUserDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return EmailUserType::class;
     }

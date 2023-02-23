@@ -4,6 +4,7 @@ namespace Labstag\Entity\Paragraph\Post;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Repository\Paragraph\Post\ArchiveRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -13,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=ArchiveRepository::class)
  */
-class Archive implements Stringable
+class Archive implements Stringable, EntityParagraphLib
 {
 
     /**
@@ -25,7 +26,7 @@ class Archive implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postArchives", cascade={"persist"})

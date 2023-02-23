@@ -14,6 +14,7 @@ use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\MemoRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -68,7 +69,7 @@ class Memo implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes", cascade={"persist"})
@@ -151,7 +152,7 @@ class Memo implements Stringable
         return $this->paragraphs;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
         return $this->refuser;
     }
@@ -206,7 +207,7 @@ class Memo implements Stringable
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
         $this->refuser = $user;
 

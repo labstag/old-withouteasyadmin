@@ -6,7 +6,7 @@ use Labstag\Lib\RequestHandlerLib;
 
 class AttachmentRequestHandler extends RequestHandlerLib
 {
-    public function handle($oldEntity, $entity): void
+    public function handle(mixed $oldEntity, mixed $entity): void
     {
         parent::handle($oldEntity, $entity);
 

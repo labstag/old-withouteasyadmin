@@ -6,14 +6,16 @@ use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Show;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\ShowType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShowParagraph extends ParagraphLib
 {
-    public function getCode($show): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($show);
+        unset($entityParagraphLib);
 
         return 'post/show';
     }
@@ -43,7 +45,7 @@ class ShowParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Show $show)
+    public function show(Show $show): ?Response
     {
         $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -55,7 +57,7 @@ class ShowParagraph extends ParagraphLib
         );
 
         if (!$post instanceof Post) {
-            return;
+            return null;
         }
 
         return $this->render(

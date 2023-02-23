@@ -53,7 +53,7 @@ class Menu implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -68,10 +68,8 @@ class Menu implements Stringable
      *     referencedColumnName="id",
      *     onDelete="SET NULL"
      * )
-     *
-     * @var null|Menu
      */
-    protected $parent;
+    protected ?Menu $parent = null;
 
     /**
      * @ORM\Column(type="integer")
@@ -236,7 +234,7 @@ class Menu implements Stringable
         return $this;
     }
 
-    public function setParent(Menu $menu): void
+    public function setParent(?Menu $menu): void
     {
         $this->parent = $menu;
     }

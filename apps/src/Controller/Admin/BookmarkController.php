@@ -9,6 +9,7 @@ use Labstag\Entity\Bookmark;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Bookmark\ImportType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\Service\BookmarkService;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -80,7 +81,7 @@ class BookmarkController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(Bookmark::class);
     }

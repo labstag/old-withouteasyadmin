@@ -39,7 +39,7 @@ class GeoCodeType extends SearchAbstractTypeLib
         );
     }
 
-    protected function setTextType($builder): void
+    protected function setTextType(FormBuilderInterface $formBuilder): void
     {
         $texttype = [
             'postalcode'    => [
@@ -104,7 +104,7 @@ class GeoCodeType extends SearchAbstractTypeLib
             ],
         ];
         foreach ($texttype as $key => $args) {
-            $builder->add($key, TextType::class, $args);
+            $formBuilder->add($key, TextType::class, $args);
         }
     }
 }

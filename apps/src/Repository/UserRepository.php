@@ -17,7 +17,10 @@ class UserRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, User::class);
     }
 
-    public function findOauth(string $identity, $name)
+    public function findOauth(
+        string $identity,
+        string $name
+    ): mixed
     {
         $query = $this->createQueryBuilder('u');
         $query->leftJoin('u.oauthConnectUsers', 'o');
@@ -52,7 +55,7 @@ class UserRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getOneOrNullResult();
     }
 
-    public function findUserName(string $field)
+    public function findUserName(string $field): mixed
     {
         $query = $this->createQueryBuilder('u');
         $query->where(

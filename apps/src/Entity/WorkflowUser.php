@@ -5,6 +5,7 @@ namespace Labstag\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\WorkflowUserRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=WorkflowUserRepository::class)
@@ -21,12 +22,12 @@ class WorkflowUser
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="workflowUsers", cascade={"persist"})
      */
-    private ?User $refuser = null;
+    private ?UserInterface $refuser = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Workflow::class, inversedBy="workflowUsers", cascade={"persist"})
@@ -43,7 +44,7 @@ class WorkflowUser
         return $this->id;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
         return $this->refuser;
     }
@@ -58,7 +59,7 @@ class WorkflowUser
         return $this->state;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
         $this->refuser = $user;
 

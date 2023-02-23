@@ -21,7 +21,7 @@ class WorkflowGroupe
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="workflowGroupes", cascade={"persist"})

@@ -5,13 +5,15 @@ namespace Labstag\Block;
 use Labstag\Entity\Block\Flashbag;
 use Labstag\Form\Admin\Block\FlashbagType;
 use Labstag\Lib\BlockLib;
+use Labstag\Lib\EntityBlockLib;
+use Labstag\Lib\EntityPublicLib;
 use Symfony\Component\HttpFoundation\Response;
 
 class FlashbagBlock extends BlockLib
 {
-    public function getCode($flashbag, $content): string
+    public function getCode(EntityBlockLib $entityBlockLib, ?EntityPublicLib $entityPublicLib): string
     {
-        unset($flashbag, $content);
+        unset($entityBlockLib, $entityPublicLib);
 
         return 'flashbag';
     }
@@ -41,10 +43,10 @@ class FlashbagBlock extends BlockLib
         return false;
     }
 
-    public function show(Flashbag $flashbag, $content): Response
+    public function show(Flashbag $flashbag, ?EntityPublicLib $entityPublicLib): Response
     {
         return $this->render(
-            $this->getTemplateFile($this->getCode($flashbag, $content)),
+            $this->getTemplateFile($this->getCode($flashbag, $entityPublicLib)),
             ['block' => $flashbag]
         );
     }

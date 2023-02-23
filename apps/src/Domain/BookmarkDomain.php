@@ -7,6 +7,8 @@ use Labstag\Entity\Bookmark;
 use Labstag\Form\Admin\Bookmark\PrincipalType;
 use Labstag\Form\Admin\Search\BookmarkType as SearchBookmarkType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\BookmarkRepository;
 use Labstag\RequestHandler\BookmarkRequestHandler;
 use Labstag\Search\BookmarkSearch;
@@ -23,27 +25,27 @@ class BookmarkDomain extends DomainLib
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Bookmark::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->bookmarkRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->bookmarkRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): BookmarkSearch
     {
         return new BookmarkSearch();
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchBookmarkType::class;
     }
@@ -64,7 +66,7 @@ class BookmarkDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return PrincipalType::class;
     }

@@ -16,8 +16,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserService
 {
-
-
     public function __construct(
         protected OauthService $oauthService,
         protected SessionService $sessionService,
@@ -60,7 +58,7 @@ class UserService
                 $oauthConnect->setName($client);
             }
 
-            // @var User $refuser
+            /** @var User $refuser */
             $refuser = $oauthConnect->getRefuser();
             if ($refuser->getId() !== $user->getId()) {
                 $oauthConnect = null;
@@ -85,7 +83,10 @@ class UserService
         );
     }
 
-    public function create(array $groupes, $dataUser): User
+    public function create(
+        array $groupes,
+        array $dataUser
+    ): User
     {
         $user = new User();
         $old = clone $user;

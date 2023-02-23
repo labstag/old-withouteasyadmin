@@ -7,6 +7,7 @@ use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
 use Labstag\Form\Admin\NewLayoutType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\Block\CustomRepository;
 use Labstag\Repository\LayoutRepository;
 use Labstag\RequestHandler\LayoutRequestHandler;
@@ -124,7 +125,7 @@ class LayoutController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(Layout::class);
     }

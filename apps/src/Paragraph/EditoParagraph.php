@@ -6,15 +6,16 @@ use Labstag\Entity\Edito as EntityEdito;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Edito;
 use Labstag\Form\Admin\Paragraph\EditoType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\EditoRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class EditoParagraph extends ParagraphLib
 {
-    public function getCode($edito): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($edito);
+        unset($entityParagraphLib);
 
         return 'edito';
     }

@@ -3,17 +3,20 @@
 namespace Labstag\Paragraph\History;
 
 use Labstag\Entity\Chapter;
+use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\History\Chapter as HistoryChapter;
 use Labstag\Form\Admin\Paragraph\History\ChapterType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\ChapterRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class ChapterParagraph extends ParagraphLib
 {
-    public function getCode($historychapter): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($historychapter);
+        unset($entityParagraphLib);
 
         return 'history/chapter';
     }
@@ -43,7 +46,7 @@ class ChapterParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(HistoryChapter $historychapter)
+    public function show(HistoryChapter $historychapter): ?Response
     {
         $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -53,7 +56,7 @@ class ChapterParagraph extends ParagraphLib
         $entityRepository = $this->getRepository(Chapter::class);
         $chapter = $entityRepository->findChapterByHistory($history, $chapter);
         if (!$chapter instanceof Chapter) {
-            return;
+            return null;
         }
 
         $prevnext = $this->getPrevNext($chapter, $chapter->getRefhistory());
@@ -83,7 +86,10 @@ class ChapterParagraph extends ParagraphLib
     /**
      * @return array<string, mixed>
      */
-    private function getPrevNext($chapter, $history): array
+    private function getPrevNext(
+        Chapter $chapter,
+        History $history
+    ): array
     {
         $chapters = $history->getchapters();
         $prev = null;

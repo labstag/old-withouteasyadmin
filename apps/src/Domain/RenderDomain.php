@@ -7,6 +7,8 @@ use Labstag\Entity\Render;
 use Labstag\Form\Admin\RenderType;
 use Labstag\Form\Admin\Search\RenderType as SearchRenderType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\RenderRepository;
 use Labstag\RequestHandler\RenderRequestHandler;
 use Labstag\Search\RenderSearch;
@@ -23,27 +25,27 @@ class RenderDomain extends DomainLib
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Render::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->renderRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->renderRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): RenderSearch
     {
         return new RenderSearch();
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchRenderType::class;
     }
@@ -63,7 +65,7 @@ class RenderDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return RenderType::class;
     }

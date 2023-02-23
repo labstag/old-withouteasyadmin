@@ -46,7 +46,7 @@ abstract class Email implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\Column(type="boolean")

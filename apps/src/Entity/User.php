@@ -68,7 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\OneToMany(targetEntity=LinkUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
@@ -86,21 +86,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     protected $oauthConnectUsers;
 
     /**
-     * @var string The hashed password
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $password;
+    protected string $password;
 
     /**
      * @ORM\OneToMany(targetEntity=PhoneUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
     protected $phoneUsers;
 
-    /**
-     * @var null|string
-     */
-    protected $plainPassword;
+    protected ?string $plainPassword = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users", cascade={"persist"})

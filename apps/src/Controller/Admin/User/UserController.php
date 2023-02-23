@@ -5,6 +5,7 @@ namespace Labstag\Controller\Admin\User;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\WorkflowRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -104,7 +105,7 @@ class UserController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(User::class);
     }

@@ -43,9 +43,6 @@ class OauthAuthenticator extends AbstractAuthenticator
 
     protected Request $request;
 
-    // @var string
-    protected $route;
-
     public function __construct(
         protected ErrorService $errorService,
         protected EntityManagerInterface $entityManager,
@@ -83,14 +80,13 @@ class OauthAuthenticator extends AbstractAuthenticator
         }
 
         try {
-            // @var AccessToken $tokenProvider
+            /** @var AccessToken $accessToken */
             $accessToken = $provider->getAccessToken(
                 'authorization_code',
                 [
                     'code' => $query['code'],
                 ]
             );
-            // @var mixed $userOauth
             $resourceOwner = $provider->getResourceOwner($accessToken);
             $data = $resourceOwner->toArray();
             $client = $attributes['_route_params']['oauthCode'];
@@ -146,8 +142,6 @@ class OauthAuthenticator extends AbstractAuthenticator
     {
         $session = $request->getSession()->all();
         $route = $request->attributes->get('_route');
-        $this->route = $route;
-
         $token = $this->tokenStorage->getToken();
         $test1 = 'connect_check' === $route && !array_key_exists('link', $session);
         $test2 = (is_null($token) || !$token->getUser() instanceof User);

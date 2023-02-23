@@ -6,14 +6,16 @@ use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\History\Show;
 use Labstag\Form\Admin\Paragraph\History\ShowType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShowParagraph extends ParagraphLib
 {
-    public function getCode($show): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($show);
+        unset($entityParagraphLib);
 
         return 'history/show';
     }
@@ -43,7 +45,7 @@ class ShowParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Show $show)
+    public function show(Show $show): ?Response
     {
         $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -55,7 +57,7 @@ class ShowParagraph extends ParagraphLib
         );
 
         if (!$history instanceof History) {
-            return;
+            return null;
         }
 
         return $this->render(

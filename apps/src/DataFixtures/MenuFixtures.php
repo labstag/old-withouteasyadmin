@@ -4,6 +4,7 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Generator;
 use Labstag\Entity\Menu;
 use Labstag\Lib\FixtureLib;
 
@@ -30,7 +31,7 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
     }
 
     protected function addMenu(
-        $faker,
+        Generator $generator,
         array $dataMenu
     ): void
     {
@@ -47,16 +48,16 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
         }
 
         foreach ($dataMenu['childs'] as $position => $child) {
-            $this->addMenuChild($faker, $position, $menu, $child);
+            $this->addMenuChild($generator, $position, $menu, $child);
         }
     }
 
     protected function addMenuChild(
-        $faker,
+        Generator $generator,
         int $position,
         Menu $parent,
         array $child
-    )
+    ): void
     {
         $menu = new Menu();
         $old = clone $menu;
@@ -74,7 +75,7 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
         $this->menuRequestHandler->handle($old, $menu);
         if (array_key_exists('childs', $child)) {
             foreach ($child['childs'] as $i => $row) {
-                $this->addMenuChild($faker, $i, $menu, $row);
+                $this->addMenuChild($generator, $i, $menu, $row);
             }
         }
     }

@@ -35,12 +35,12 @@ class AttachmentController extends ApiControllerLib
         return new JsonResponse($return);
     }
 
-    protected function verifToken($entity): bool
+    protected function verifToken(Attachment $attachment): bool
     {
         $token = $this->requeststack->getCurrentRequest()->request->get('_token');
 
         $csrfToken = new CsrfToken(
-            'attachment-img-'.$entity->getId(),
+            'attachment-img-'.$attachment->getId(),
             $token
         );
 

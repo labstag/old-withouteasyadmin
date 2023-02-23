@@ -61,7 +61,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
         return Command::SUCCESS;
     }
 
-    private function executeChapter()
+    private function executeChapter(): void
     {
         $all = $this->chapterRepository->findAll();
         foreach ($all as $entity) {
@@ -70,7 +70,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
         }
     }
 
-    private function executeEdito()
+    private function executeEdito(): void
     {
         $all = $this->editoRepository->findAll();
         foreach ($all as $entity) {
@@ -79,7 +79,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
         }
     }
 
-    private function executeHistory()
+    private function executeHistory(): void
     {
         $all = $this->historyRepository->findAll();
         foreach ($all as $entity) {
@@ -88,7 +88,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
         }
     }
 
-    private function executePage()
+    private function executePage(): void
     {
         $all = $this->pageRepository->findAll();
         foreach ($all as $entity) {
@@ -97,7 +97,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
         }
     }
 
-    private function executePost()
+    private function executePost(): void
     {
         $all = $this->postRepository->findAll();
         foreach ($all as $entity) {
@@ -106,7 +106,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
         }
     }
 
-    private function executeRender()
+    private function executeRender(): void
     {
         $all = $this->renderRepository->findAll();
         foreach ($all as $entity) {

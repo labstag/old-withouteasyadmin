@@ -3,13 +3,17 @@
 namespace Labstag\Front;
 
 use Labstag\Entity\Page;
+use Labstag\Lib\EntityPublicLib;
 use Labstag\Lib\FrontLib;
 
 class PageFront extends FrontLib
 {
-    public function setBreadcrumb($content, $breadcrumb)
+    public function setBreadcrumb(
+        ?EntityPublicLib $entityPublicLib,
+        array $breadcrumb
+    ): array
     {
-        if (!$content instanceof Page) {
+        if (!$entityPublicLib instanceof Page) {
             return $breadcrumb;
         }
 
@@ -17,40 +21,52 @@ class PageFront extends FrontLib
             'route' => $this->router->generate(
                 'front',
                 [
-                    'slug' => $content->getSlug(),
+                    'slug' => $entityPublicLib->getSlug(),
                 ]
             ),
-            'title' => $content->getName(),
+            'title' => $entityPublicLib->getName(),
         ];
-        if ($content->getParent() instanceof Page) {
-            $breadcrumb = $this->setBreadcrumbPage($content->getParent(), $breadcrumb);
+        if ($entityPublicLib->getParent() instanceof Page) {
+            $breadcrumb = $this->setBreadcrumbPage($entityPublicLib->getParent(), $breadcrumb);
         }
 
         return $breadcrumb;
     }
 
-    public function setMeta($content, $meta)
+    public function setMeta(
+        ?EntityPublicLib $entityPublicLib,
+        array $meta
+    ): array
     {
-        if (!$content instanceof Page) {
+        if (!$entityPublicLib instanceof Page) {
             return $meta;
         }
 
-        return $this->getMeta($content->getMetas(), $meta);
+        return $this->getMeta($entityPublicLib->getMetas(), $meta);
     }
 
-    protected function setBreadcrumbPage($content, $breadcrumb)
+    protected function setBreadcrumbPage(
+        ?EntityPublicLib $entityPublicLib,
+        array $breadcrumb
+    ): array
     {
+        // @var Page $content
         $breadcrumb[] = [
             'route' => $this->router->generate(
                 'front',
                 [
-                    'slug' => $content->getSlug(),
+                    'slug' => $entityPublicLib->getSlug(),
                 ]
             ),
-            'title' => $content->getName(),
+            'title' => $entityPublicLib->getName(),
         ];
-        if ($content->getParent() instanceof Page) {
-            $breadcrumb = $this->setBreadcrumbPage($content->getParent(), $breadcrumb);
+        $parent = $entityPublicLib->getParent();
+        if (is_null($parent)) {
+            return $breadcrumb;
+        }
+
+        if ($parent instanceof Page) {
+            $breadcrumb = $this->setBreadcrumbPage($parent, $breadcrumb);
         }
 
         return $breadcrumb;

@@ -6,13 +6,17 @@ use Labstag\Entity\Attachment;
 use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\Post;
+use Labstag\Lib\EntityPublicLib;
 
 class PostFront extends PageFront
 {
-    public function setBreadcrumb($content, $breadcrumb)
+    public function setBreadcrumb(
+        ?EntityPublicLib $entityPublicLib,
+        array $breadcrumb
+    ): array
     {
         $breadcrumb = $this->setBreadcrumbRouting($breadcrumb);
-        if (!$content instanceof Post) {
+        if (!$entityPublicLib instanceof Post) {
             return $breadcrumb;
         }
 
@@ -20,10 +24,10 @@ class PostFront extends PageFront
             'route' => $this->router->generate(
                 'front_article',
                 [
-                    'slug' => $content->getSlug(),
+                    'slug' => $entityPublicLib->getSlug(),
                 ]
             ),
-            'title' => $content->getTitle(),
+            'title' => $entityPublicLib->getTitle(),
         ];
 
         $page = $this->pageRepository->findOneBy(
@@ -33,21 +37,24 @@ class PostFront extends PageFront
         return $this->setBreadcrumbPage($page, $breadcrumb);
     }
 
-    public function setMeta($content, $meta)
+    public function setMeta(
+        ?EntityPublicLib $entityPublicLib,
+        array $meta
+    ): array
     {
-        if (!$content instanceof Post) {
+        if (!$entityPublicLib instanceof Post) {
             return $meta;
         }
 
-        $meta = $this->getMeta($content->getMetas(), $meta);
-        if ($content->getImg() instanceof Attachment) {
-            $meta['image'] = $content->getImg()->getName();
+        $meta = $this->getMeta($entityPublicLib->getMetas(), $meta);
+        if ($entityPublicLib->getImg() instanceof Attachment) {
+            $meta['image'] = $entityPublicLib->getImg()->getName();
         }
 
         return $meta;
     }
 
-    private function setBreadcrumbRouting($breadcrumb)
+    private function setBreadcrumbRouting(array $breadcrumb): array
     {
         $all = $this->request->attributes->all();
         $route = $all['_route'];
@@ -58,7 +65,11 @@ class PostFront extends PageFront
         return $this->setBreadcrumbRoutingCategory($route, $params, $breadcrumb);
     }
 
-    private function setBreadcrumbRoutingCategory($route, $params, $breadcrumb)
+    private function setBreadcrumbRoutingCategory(
+        string $route,
+        array $params,
+        array $breadcrumb
+    ): array
     {
         if ('front_article_category' != $route) {
             return $breadcrumb;
@@ -86,7 +97,11 @@ class PostFront extends PageFront
         return $this->setBreadcrumbPage($page, $breadcrumb);
     }
 
-    private function setBreadcrumbRoutingLibelle($route, $params, $breadcrumb)
+    private function setBreadcrumbRoutingLibelle(
+        string $route,
+        array $params,
+        array $breadcrumb
+    ): array
     {
         if ('front_article_libelle' != $route) {
             return $breadcrumb;
@@ -114,7 +129,11 @@ class PostFront extends PageFront
         return $this->setBreadcrumbPage($page, $breadcrumb);
     }
 
-    private function setBreadcrumbRoutingYear($route, $params, $breadcrumb)
+    private function setBreadcrumbRoutingYear(
+        string $route,
+        array $params,
+        array $breadcrumb
+    ): array
     {
         if ('front_article_year' != $route && !isset($params['year'])) {
             return $breadcrumb;

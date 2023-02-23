@@ -18,7 +18,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Post::class);
     }
 
-    public function findDateArchive()
+    public function findDateArchive(): mixed
     {
         $query = $this->createQueryBuilder('p');
         $query->select(
@@ -52,7 +52,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierArchive($published): Query
+    public function findPublierArchive(int $published): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->innerjoin('p.refuser', 'u');
@@ -69,7 +69,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierCategory($code): Query
+    public function findPublierCategory(string $code): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->where('p.state LIKE :state');
@@ -86,7 +86,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierLibelle($code): Query
+    public function findPublierLibelle(string $code): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->where('p.state LIKE :state');
@@ -103,7 +103,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierUsername($username): Query
+    public function findPublierUsername(string $username): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->leftJoin('p.refuser', 'u');

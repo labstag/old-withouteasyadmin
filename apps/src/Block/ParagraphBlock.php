@@ -5,6 +5,8 @@ namespace Labstag\Block;
 use Labstag\Entity\Block\Paragraph;
 use Labstag\Form\Admin\Block\ParagraphType;
 use Labstag\Lib\BlockLib;
+use Labstag\Lib\EntityBlockLib;
+use Labstag\Lib\EntityPublicLib;
 use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -21,9 +23,9 @@ class ParagraphBlock extends BlockLib
         parent::__construct($translator, $twigEnvironment);
     }
 
-    public function getCode($paragraph, $content): string
+    public function getCode(EntityBlockLib $entityBlockLib, ?EntityPublicLib $entityPublicLib): string
     {
-        unset($paragraph, $content);
+        unset($entityBlockLib, $entityPublicLib);
 
         return 'paragraph';
     }
@@ -53,12 +55,12 @@ class ParagraphBlock extends BlockLib
         return false;
     }
 
-    public function show(Paragraph $paragraph, $content): Response
+    public function show(Paragraph $paragraph, ?EntityPublicLib $entityPublicLib): Response
     {
-        $data = $this->setParagraphs($content);
+        $data = $this->setParagraphs($entityPublicLib);
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($paragraph, $content)),
+            $this->getTemplateFile($this->getCode($paragraph, $entityPublicLib)),
             [
                 'paragraphs' => $data,
                 'block'      => $paragraph,
@@ -66,18 +68,18 @@ class ParagraphBlock extends BlockLib
         );
     }
 
-    private function setParagraphs($content)
+    private function setParagraphs(?EntityPublicLib $entityPublicLib): array
     {
         $paragraphs = [];
-        if (is_null($content)) {
+        if (is_null($entityPublicLib)) {
             return $paragraphs;
         }
 
-        $methods = get_class_methods($content);
+        $methods = get_class_methods($entityPublicLib);
         if (!in_array('getParagraphs', $methods)) {
             return $paragraphs;
         }
 
-        return $this->getParagraphsArray($this->paragraphService, $content, $paragraphs);
+        return $this->getParagraphsArray($this->paragraphService, $entityPublicLib, $paragraphs);
     }
 }

@@ -42,9 +42,9 @@ abstract class ParagraphLib extends AbstractController
         $this->request = $requestStack->getCurrentRequest();
     }
 
-    public function getCode($block): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($block);
+        unset($entityParagraphLib);
 
         return '';
     }

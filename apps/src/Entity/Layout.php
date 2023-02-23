@@ -18,11 +18,6 @@ class Layout
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Custom::class, inversedBy="layouts", cascade={"persist"})
-     */
-    private ?Custom $custom = null;
-
-    /**
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -31,7 +26,12 @@ class Layout
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Custom::class, inversedBy="layouts", cascade={"persist"})
+     */
+    private ?Custom $custom = null;
 
     /**
      * @ORM\Column(type="string", length=255)

@@ -61,7 +61,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         $this->addReference('block_'.$region.'-'.$type, $block);
     }
 
-    protected function addBlocks($region, $blocks)
+    protected function addBlocks(string $region, array $blocks): void
     {
         foreach ($blocks as $position => $block) {
             $this->addBlock($region, $position, $block);

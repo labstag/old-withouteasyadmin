@@ -11,7 +11,6 @@ use Labstag\Entity\Memo;
 use Labstag\Entity\Phone;
 use Labstag\Entity\Post;
 use Labstag\Entity\User;
-use Symfony\Component\Workflow\Workflow;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 class WorkflowService
@@ -30,7 +29,7 @@ class WorkflowService
     {
     }
 
-    public function get($entity): WorkflowInterface
+    public function get($entity): ?WorkflowInterface
     {
         return match (true) {
             ($entity instanceof Attachment) => $this->attachmentStateMachine,
@@ -42,6 +41,7 @@ class WorkflowService
             ($entity instanceof Phone) => $this->phoneStateMachine,
             ($entity instanceof Post) => $this->postStateMachine,
             ($entity instanceof User) => $this->userStateMachine,
+            default => null
         };
     }
 

@@ -3,6 +3,7 @@
 namespace Labstag\Service;
 
 use Labstag\Entity\Block;
+use Labstag\Lib\EntityPublicLib;
 use Labstag\Repository\BlockRepository;
 use ReflectionClass;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -165,7 +166,7 @@ class BlockService
         return $show;
     }
 
-    public function showContent(Block $block, $content)
+    public function showContent(Block $block, ?EntityPublicLib $entityPublicLib)
     {
         $type = $block->getType();
         $entity = $this->getEntity($block);
@@ -176,7 +177,7 @@ class BlockService
 
         foreach ($this->blocksclass as $row) {
             if ($type == $row->getType()) {
-                $html = $row->show($entity, $content);
+                $html = $row->show($entity, $entityPublicLib);
 
                 break;
             }

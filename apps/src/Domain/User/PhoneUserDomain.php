@@ -7,6 +7,8 @@ use Labstag\Entity\PhoneUser;
 use Labstag\Form\Admin\Search\User\PhoneUserType as SearchPhoneUserType;
 use Labstag\Form\Admin\User\PhoneUserType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\PhoneUserRepository;
 use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\Search\User\PhoneUserSearch;
@@ -23,27 +25,27 @@ class PhoneUserDomain extends DomainLib
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return PhoneUser::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->phoneUserRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->phoneUserRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): PhoneUserSearch
     {
         return new PhoneUserSearch();
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchPhoneUserType::class;
     }
@@ -63,7 +65,7 @@ class PhoneUserDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return PhoneUserType::class;
     }

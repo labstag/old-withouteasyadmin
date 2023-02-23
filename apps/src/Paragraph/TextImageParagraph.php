@@ -12,6 +12,7 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\TextImage;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\TextImageType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
@@ -19,9 +20,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TextImageParagraph extends ParagraphLib
 {
-    public function getCode($textimage): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($textimage);
+        unset($entityParagraphLib);
 
         return 'textimage';
     }

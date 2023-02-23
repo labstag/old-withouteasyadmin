@@ -4,6 +4,7 @@ namespace Labstag\Entity\Paragraph\History;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Repository\Paragraph\History\ListeRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -13,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=ListeRepository::class)
  */
-class Liste implements Stringable
+class Liste implements Stringable, EntityParagraphLib
 {
 
     /**
@@ -25,7 +26,7 @@ class Liste implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="historyLists", cascade={"persist"})

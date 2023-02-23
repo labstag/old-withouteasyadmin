@@ -28,6 +28,17 @@ class Block
     use SoftDeleteableEntity;
 
     /**
+     * @ORM\Id
+     *
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
+     * @ORM\Column(type="guid", unique=true)
+     *
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     */
+    protected string $id;
+
+    /**
      * @ORM\OneToMany(targetEntity=Breadcrumb::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
     private $breadcrumbs;
@@ -56,17 +67,6 @@ class Block
      * @ORM\OneToMany(targetEntity=Html::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
      */
     private $htmls;
-
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)

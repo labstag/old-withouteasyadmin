@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
+use Labstag\Lib\EntityBlockLib;
 use Labstag\Repository\Block\FooterRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -15,13 +16,8 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=FooterRepository::class)
  */
-class Footer implements Stringable
+class Footer implements Stringable, EntityBlockLib
 {
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="footers", cascade={"persist"})
-     */
-    private ?Block $block = null;
 
     /**
      * @ORM\Id
@@ -32,7 +28,12 @@ class Footer implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="footers", cascade={"persist"})
+     */
+    private ?Block $block = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Link::class, mappedBy="footer", cascade={"persist"}, orphanRemoval=true)

@@ -5,6 +5,7 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Page;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\PageRepository;
 use Labstag\RequestHandler\PageRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -67,7 +68,7 @@ class PageController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(Page::class);
     }

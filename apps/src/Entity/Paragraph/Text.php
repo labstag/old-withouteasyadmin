@@ -4,6 +4,7 @@ namespace Labstag\Entity\Paragraph;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Repository\Paragraph\TextRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -13,13 +14,8 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=TextRepository::class)
  */
-class Text implements Stringable
+class Text implements Stringable, EntityParagraphLib
 {
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $content = null;
 
     /**
      * @ORM\Id
@@ -30,7 +26,12 @@ class Text implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $content = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="texts", cascade={"persist"})

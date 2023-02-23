@@ -13,7 +13,7 @@ class RouteRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Route::class);
     }
 
-    public function findLost(array $routes)
+    public function findLost(array $routes): mixed
     {
         $queryBuilder = $this->createQueryBuilder('u');
         $queryBuilder->where(

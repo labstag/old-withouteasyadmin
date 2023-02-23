@@ -26,7 +26,7 @@ class CategoryRepository extends ServiceEntityRepositoryLib
         return $this->setQuery($query, $get);
     }
 
-    public function findByBookmark()
+    public function findByBookmark(): mixed
     {
         $query = $this->createQueryBuilder('a');
         $query->leftJoin('a.bookmarks', 'b');
@@ -38,7 +38,7 @@ class CategoryRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getResult();
     }
 
-    public function findByPost()
+    public function findByPost(): mixed
     {
         $query = $this->createQueryBuilder('a');
         $query->leftJoin('a.posts', 'p');
@@ -51,7 +51,7 @@ class CategoryRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getResult();
     }
 
-    public function findName(string $field)
+    public function findName(string $field): mixed
     {
         $query = $this->createQueryBuilder('u');
         $query->where(

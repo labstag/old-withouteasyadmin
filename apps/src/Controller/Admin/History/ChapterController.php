@@ -6,6 +6,7 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\ChapterRepository;
 use Labstag\RequestHandler\ChapterRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -74,7 +75,7 @@ class ChapterController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(Chapter::class);
     }

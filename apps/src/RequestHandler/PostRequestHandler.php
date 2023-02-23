@@ -7,7 +7,7 @@ use Labstag\Lib\RequestHandlerLib;
 
 class PostRequestHandler extends RequestHandlerLib
 {
-    public function handle($oldEntity, $entity): void
+    public function handle(mixed $oldEntity, mixed $entity): void
     {
         parent::handle($oldEntity, $entity);
         $this->eventDispatcher->dispatch(

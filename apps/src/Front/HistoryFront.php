@@ -3,17 +3,24 @@
 namespace Labstag\Front;
 
 use Labstag\Entity\History;
+use Labstag\Lib\EntityPublicLib;
 
 class HistoryFront extends PageFront
 {
-    public function setBreadcrumb($content, $breadcrumb)
+    public function setBreadcrumb(
+        ?EntityPublicLib $entityPublicLib,
+        array $breadcrumb
+    ): array
     {
-        return $this->setBreadcrumbHistory($content, $breadcrumb);
+        return $this->setBreadcrumbHistory($entityPublicLib, $breadcrumb);
     }
 
-    public function setBreadcrumbHistory($content, $breadcrumb)
+    public function setBreadcrumbHistory(
+        ?EntityPublicLib $entityPublicLib,
+        array $breadcrumb
+    ): array
     {
-        if (!$content instanceof History) {
+        if (!$entityPublicLib instanceof History) {
             return $breadcrumb;
         }
 
@@ -21,10 +28,10 @@ class HistoryFront extends PageFront
             'route' => $this->router->generate(
                 'front_history',
                 [
-                    'slug' => $content->getSlug(),
+                    'slug' => $entityPublicLib->getSlug(),
                 ]
             ),
-            'title' => $content->getName(),
+            'title' => $entityPublicLib->getName(),
         ];
 
         $page = $this->pageRepository->findOneBy(
@@ -34,12 +41,15 @@ class HistoryFront extends PageFront
         return $this->setBreadcrumbPage($page, $breadcrumb);
     }
 
-    public function setMeta($content, $meta)
+    public function setMeta(
+        ?EntityPublicLib $entityPublicLib,
+        array $meta
+    ): array
     {
-        if (!$content instanceof History) {
+        if (!$entityPublicLib instanceof History) {
             return $meta;
         }
 
-        return $this->getMeta($content->getMetas(), $meta);
+        return $this->getMeta($entityPublicLib->getMetas(), $meta);
     }
 }

@@ -17,7 +17,7 @@ class GroupeRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Groupe::class);
     }
 
-    public function findName(string $field)
+    public function findName(string $field): mixed
     {
         $queryBuilder = $this->createQueryBuilder('u');
         $queryBuilder->where(

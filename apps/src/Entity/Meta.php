@@ -22,7 +22,7 @@ class Meta implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Chapter::class, inversedBy="metas", cascade={"persist"})

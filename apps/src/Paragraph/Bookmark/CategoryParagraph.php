@@ -6,15 +6,16 @@ use Labstag\Entity\Bookmark;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Bookmark\Category;
 use Labstag\Form\Admin\Paragraph\Bookmark\CategoryType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\BookmarkRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryParagraph extends ParagraphLib
 {
-    public function getCode($category): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($category);
+        unset($entityParagraphLib);
 
         return 'bookmark/category';
     }

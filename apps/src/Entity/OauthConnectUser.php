@@ -4,6 +4,7 @@ namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Labstag\Repository\OauthConnectUserRepository")
@@ -13,10 +14,8 @@ class OauthConnectUser
 
     /**
      * @ORM\Column(type="array")
-     *
-     * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * @ORM\Id
@@ -26,33 +25,25 @@ class OauthConnectUser
      * @ORM\Column(type="guid", unique=true)
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     *
-     * @var string
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @var string
      */
-    protected $identity;
+    protected string $identity;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="oauthConnectUsers", cascade={"persist"})
      *
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @var User
      */
-    protected $refuser;
+    protected UserInterface $refuser;
 
     public function getData(): ?array
     {
@@ -74,7 +65,7 @@ class OauthConnectUser
         return $this->name;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
         return $this->refuser;
     }
@@ -100,7 +91,7 @@ class OauthConnectUser
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
         $this->refuser = $user;
 

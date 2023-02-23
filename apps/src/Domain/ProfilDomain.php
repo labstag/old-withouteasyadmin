@@ -5,6 +5,8 @@ namespace Labstag\Domain;
 use Labstag\Entity\Profil;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -20,17 +22,17 @@ class ProfilDomain extends DomainLib
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Profil::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->userRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->userRequestHandler;
     }
@@ -45,7 +47,7 @@ class ProfilDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return ProfilType::class;
     }

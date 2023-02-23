@@ -5,6 +5,7 @@ namespace Labstag\Controller\Admin\User;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\PhoneUser;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -50,7 +51,7 @@ class PhoneUserController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(PhoneUser::class);
     }

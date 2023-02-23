@@ -3,12 +3,16 @@
 namespace Labstag\Front;
 
 use Labstag\Entity\Chapter;
+use Labstag\Lib\EntityPublicLib;
 
 class ChapterFront extends HistoryFront
 {
-    public function setBreadcrumb($content, $breadcrumb)
+    public function setBreadcrumb(
+        ?EntityPublicLib $entityPublicLib,
+        array $breadcrumb
+    ): array
     {
-        if (!$content instanceof Chapter) {
+        if (!$entityPublicLib instanceof Chapter) {
             return $breadcrumb;
         }
 
@@ -16,28 +20,31 @@ class ChapterFront extends HistoryFront
             'route' => $this->router->generate(
                 'front_history_chapter',
                 [
-                    'history' => $content->getRefhistory()->getSlug(),
-                    'chapter' => $content->getSlug(),
+                    'history' => $entityPublicLib->getRefhistory()->getSlug(),
+                    'chapter' => $entityPublicLib->getSlug(),
                 ]
             ),
-            'title' => $content->getName(),
+            'title' => $entityPublicLib->getName(),
         ];
 
-        return $this->setBreadcrumbHistory($content->getRefhistory(), $breadcrumb);
+        return $this->setBreadcrumbHistory($entityPublicLib->getRefhistory(), $breadcrumb);
     }
 
-    public function setMeta($content, $meta)
+    public function setMeta(
+        ?EntityPublicLib $entityPublicLib,
+        array $meta
+    ): array
     {
-        if (!$content instanceof Chapter) {
+        if (!$entityPublicLib instanceof Chapter) {
             return $meta;
         }
 
-        $history = $this->getMeta($content->getRefhistory()->getMetas(), $meta);
-        $chapter = $this->getMeta($content->getMetas(), $meta);
+        $history = $this->getMeta($entityPublicLib->getRefhistory()->getMetas(), $meta);
+        $meta = $this->getMeta($entityPublicLib->getMetas(), $meta);
         if (isset($history['title'])) {
-            $chapter['title'] = $chapter['title'].' - '.$history['title'];
+            $meta['title'] = $meta['title'].' - '.$history['title'];
         }
 
-        return $chapter;
+        return $meta;
     }
 }

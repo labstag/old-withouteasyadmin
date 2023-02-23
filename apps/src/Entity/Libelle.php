@@ -21,11 +21,6 @@ class Libelle implements Stringable
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Bookmark::class, mappedBy="libelles", cascade={"persist"})
-     */
-    private $bookmarks;
-
-    /**
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -34,7 +29,12 @@ class Libelle implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Bookmark::class, mappedBy="libelles", cascade={"persist"})
+     */
+    private $bookmarks;
 
     /**
      * @ORM\Column(type="string", length=255)

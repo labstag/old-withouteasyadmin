@@ -6,6 +6,7 @@ use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\EditoRepository;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -50,6 +51,9 @@ class EditoController extends AdminControllerLib
     ): RedirectResponse
     {
         $user = $security->getUser();
+        if (is_null($user)) {
+            return $this->redirectToRoute('admin_edito_index');
+        }
 
         $edito = new Edito();
         $edito->setPublished(new DateTime());
@@ -77,7 +81,7 @@ class EditoController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(Edito::class);
     }

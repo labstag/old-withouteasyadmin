@@ -17,7 +17,7 @@ class MemoRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Memo::class);
     }
 
-    public function findPublier()
+    public function findPublier(): mixed
     {
         $queryBuilder = $this->createQueryBuilder('n');
         $queryBuilder->innerJoin('n.refuser', 'u');

@@ -14,7 +14,7 @@ class LayoutRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Layout::class);
     }
 
-    public function findByCustom(Custom $custom)
+    public function findByCustom(Custom $custom): mixed
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $queryBuilder->leftJoin('a.custom', 'c');

@@ -11,14 +11,15 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Text;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\TextType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Symfony\Component\HttpFoundation\Response;
 
 class TextParagraph extends ParagraphLib
 {
-    public function getCode($text): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($text);
+        unset($entityParagraphLib);
 
         return 'text';
     }

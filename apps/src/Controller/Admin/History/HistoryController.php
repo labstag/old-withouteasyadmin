@@ -7,6 +7,7 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\HistoryRepository;
 use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Service\HistoryService;
@@ -53,6 +54,9 @@ class HistoryController extends AdminControllerLib
     ): RedirectResponse
     {
         $user = $security->getUser();
+        if (is_null($user)) {
+            return $this->redirectToRoute('admin_history_index');
+        }
 
         $history = new History();
         $history->setPublished(new DateTime());
@@ -134,7 +138,7 @@ class HistoryController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(History::class);
     }

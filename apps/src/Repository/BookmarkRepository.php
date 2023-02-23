@@ -33,7 +33,7 @@ class BookmarkRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierCategory($code): Query
+    public function findPublierCategory(string $code): Query
     {
         $query = $this->createQueryBuilder('b');
         $query->where('b.state LIKE :state');
@@ -50,7 +50,7 @@ class BookmarkRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierLibelle($code): Query
+    public function findPublierLibelle(string $code): Query
     {
         $query = $this->createQueryBuilder('b');
         $query->where('b.state LIKE :state');

@@ -261,7 +261,7 @@ class GuardRouteController extends ApiControllerLib
             return $data;
         }
 
-        $enable = $guardService->guardRouteEnableGroupe($entityRoute->getName(), $user->getRefgroupe());
+        $enable = $guardService->guardRouteEnableGroupe($entityRoute, $user->getRefgroupe());
         if ('superadmin' === $user->getRefgroupe()->getCode() || !$enable) {
             return $data;
         }

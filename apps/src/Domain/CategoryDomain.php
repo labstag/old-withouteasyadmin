@@ -7,6 +7,8 @@ use Labstag\Form\Admin\CategoryType;
 
 use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\CategoryRepository;
 use Labstag\RequestHandler\CategoryRequestHandler;
 use Labstag\Search\CategorySearch;
@@ -23,27 +25,27 @@ class CategoryDomain extends DomainLib
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Category::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->categoryRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->categoryRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): CategorySearch
     {
         return new CategorySearch();
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchCategoryType::class;
     }
@@ -63,7 +65,7 @@ class CategoryDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return CategoryType::class;
     }

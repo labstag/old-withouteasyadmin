@@ -14,7 +14,10 @@ class UploadAnnotationReader
     {
     }
 
-    public function enableAttachment($annotations, $fields)
+    public function enableAttachment(
+        mixed $annotations,
+        array $fields
+    ): bool
     {
         $enable = false;
         foreach (array_keys($annotations) as $key) {
@@ -49,7 +52,7 @@ class UploadAnnotationReader
      *
      * @return mixed[]
      */
-    public function getUploadableFields($entity): array
+    public function getUploadableFields(mixed $entity): array
     {
         $properties = [];
         if (!$this->isUploadable($entity)) {
@@ -69,12 +72,12 @@ class UploadAnnotationReader
         return $properties;
     }
 
-    protected function setReflection($entity): ReflectionClass
+    protected function setReflection(mixed $entity): ReflectionClass
     {
         return new ReflectionClass($entity::class);
     }
 
-    private function isUploadable($entity): bool
+    private function isUploadable(mixed $entity): bool
     {
         $reflection = $this->setReflection($entity);
 

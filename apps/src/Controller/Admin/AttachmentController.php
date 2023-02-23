@@ -5,6 +5,7 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,7 +25,7 @@ class AttachmentController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(Attachment::class);
     }

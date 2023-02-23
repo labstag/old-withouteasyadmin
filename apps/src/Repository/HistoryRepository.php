@@ -34,7 +34,7 @@ class HistoryRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierUsername($username): Query
+    public function findPublierUsername(string $username): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->leftJoin('p.refuser', 'u');

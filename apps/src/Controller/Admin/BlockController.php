@@ -3,9 +3,11 @@
 namespace Labstag\Controller\Admin;
 
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\Domain\BlockDomain;
 use Labstag\Entity\Block;
 use Labstag\Form\Admin\NewBlockType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\BlockRepository;
 use Labstag\RequestHandler\BlockRequestHandler;
 use Labstag\Service\BlockService;
@@ -62,15 +64,17 @@ class BlockController extends AdminControllerLib
                 'action' => $this->router->generate('admin_block_new'),
             ]
         );
+        /** @var BlockDomain $domain */
         $domain = $this->getDomainEntity();
         $url = $domain->getUrlAdmin();
-        $repository = $domain->getRepository();
+        /** @var BlockRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $domain->getRepository();
         $request = $this->requeststack->getCurrentRequest();
         $all = $request->attributes->all();
         $route = $all['_route'];
         $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
         $this->setBtnListOrTrash($routeType, $domain);
-        $data = $repository->getDataByRegion();
+        $data = $serviceEntityRepositoryLib->getDataByRegion();
         $total = 0;
         foreach ($data as $region) {
             $total += is_countable($region) ? count($region) : 0;
@@ -143,7 +147,7 @@ class BlockController extends AdminControllerLib
         return $this->redirectToRoute('admin_block_edit', ['id' => $block->getId()]);
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(Block::class);
     }

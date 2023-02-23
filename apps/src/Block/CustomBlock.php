@@ -5,6 +5,8 @@ namespace Labstag\Block;
 use Labstag\Entity\Block\Custom;
 use Labstag\Form\Admin\Block\CustomType;
 use Labstag\Lib\BlockLib;
+use Labstag\Lib\EntityBlockLib;
+use Labstag\Lib\EntityPublicLib;
 use Labstag\Repository\LayoutRepository;
 use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,9 +32,9 @@ class CustomBlock extends BlockLib
         parent::__construct($translator, $twigEnvironment);
     }
 
-    public function getCode($custom, $content): string
+    public function getCode(EntityBlockLib $entityBlockLib, ?EntityPublicLib $entityPublicLib): string
     {
-        unset($custom, $content);
+        unset($entityBlockLib, $entityPublicLib);
 
         return 'custom';
     }
@@ -62,12 +64,12 @@ class CustomBlock extends BlockLib
         return false;
     }
 
-    public function show(Custom $custom, $content): Response
+    public function show(Custom $custom, ?EntityPublicLib $entityPublicLib): Response
     {
         $paragraphs = $this->setParagraphs($custom);
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($custom, $content)),
+            $this->getTemplateFile($this->getCode($custom, $entityPublicLib)),
             [
                 'paragraphs' => $paragraphs,
                 'block'      => $custom,
@@ -75,7 +77,7 @@ class CustomBlock extends BlockLib
         );
     }
 
-    private function setParagraphs(Custom $custom)
+    private function setParagraphs(Custom $custom): array
     {
         $all = $this->request->attributes->all();
         $route = $all['_route'];

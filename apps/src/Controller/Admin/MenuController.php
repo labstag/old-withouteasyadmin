@@ -5,6 +5,7 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\MenuRepository;
 use Labstag\RequestHandler\MenuRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -156,7 +157,7 @@ class MenuController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(Menu::class);
     }

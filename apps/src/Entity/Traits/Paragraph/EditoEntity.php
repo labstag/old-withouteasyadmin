@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity\Traits\Paragraph;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Labstag\Entity\Edito;
 use Labstag\Entity\Paragraph\Edito as ParagraphEdito;

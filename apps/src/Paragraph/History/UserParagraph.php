@@ -6,15 +6,16 @@ use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\History\User;
 use Labstag\Form\Admin\Paragraph\History\UserType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserParagraph extends ParagraphLib
 {
-    public function getCode($user): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($user);
+        unset($entityParagraphLib);
 
         return 'history/user';
     }

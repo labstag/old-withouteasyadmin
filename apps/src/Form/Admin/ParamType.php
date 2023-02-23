@@ -102,7 +102,7 @@ class ParamType extends AbstractTypeLib
         );
     }
 
-    private function setFileType($builder): void
+    private function setFileType(FormBuilderInterface $formBuilder): void
     {
         $images = [
             'image'   => [
@@ -115,7 +115,7 @@ class ParamType extends AbstractTypeLib
             ],
         ];
         foreach ($images as $key => $row) {
-            $builder->add(
+            $formBuilder->add(
                 $key,
                 UploadType::class,
                 [
@@ -128,7 +128,7 @@ class ParamType extends AbstractTypeLib
         }
     }
 
-    private function setInputs($builder): void
+    private function setInputs(FormBuilderInterface $formBuilder): void
     {
         $inputs = [
             'title_format'    => [
@@ -163,7 +163,7 @@ class ParamType extends AbstractTypeLib
             ],
         ];
         foreach ($inputs as $key => $row) {
-            $builder->add(
+            $formBuilder->add(
                 $key,
                 $row['class'],
                 [
@@ -177,7 +177,7 @@ class ParamType extends AbstractTypeLib
         }
     }
 
-    private function setMinMaxCollectionType($builder): void
+    private function setMinMaxCollectionType(FormBuilderInterface $formBuilder): void
     {
         $mixmax = [
             'tarteaucitron' => TarteaucitronType::class,
@@ -186,7 +186,7 @@ class ParamType extends AbstractTypeLib
             'notification'  => NotificationType::class,
         ];
         foreach ($mixmax as $key => $entry) {
-            $builder->add(
+            $formBuilder->add(
                 $key,
                 MinMaxCollectionType::class,
                 [

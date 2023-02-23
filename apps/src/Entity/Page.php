@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Lib\EntityPublicLib;
 use Labstag\Repository\PageRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -17,14 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Page implements Stringable
+class Page implements Stringable, EntityPublicLib
 {
     use SoftDeleteableEntity;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Page::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $children;
 
     /**
      * @ORM\Id
@@ -35,7 +31,12 @@ class Page implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Page::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $children;
 
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)

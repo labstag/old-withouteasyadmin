@@ -29,7 +29,7 @@ abstract class Address implements Stringable
      *
      * @Assert\NotBlank
      */
-    protected $city;
+    protected string $city;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -38,12 +38,12 @@ abstract class Address implements Stringable
      *
      * @Assert\Country
      */
-    protected $country;
+    protected string $country;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $gps;
+    protected string $gps;
 
     /**
      * @ORM\Id
@@ -54,33 +54,33 @@ abstract class Address implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $pmr;
+    protected bool $pmr;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank
      */
-    protected $street;
+    protected string $street;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @Assert\NotBlank
      */
-    protected $type;
+    protected string $type;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank
      */
-    protected $zipcode;
+    protected string $zipcode;
 
     public function __toString(): string
     {

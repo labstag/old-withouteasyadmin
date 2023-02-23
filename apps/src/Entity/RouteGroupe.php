@@ -21,7 +21,7 @@ class RouteGroupe
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="routes", cascade={"persist"})

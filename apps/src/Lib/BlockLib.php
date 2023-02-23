@@ -2,6 +2,7 @@
 
 namespace Labstag\Lib;
 
+use Labstag\Service\ParagraphService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -16,28 +17,35 @@ abstract class BlockLib extends AbstractController
     {
     }
 
-    public function getCode($block, $content): string
+    public function getCode(EntityBlockLib $entityBlockLib, ?EntityPublicLib $entityPublicLib): string
     {
-        unset($block, $content);
+        unset($entityBlockLib, $entityPublicLib);
 
         return '';
     }
 
-    public function template($entity, $content)
+    public function template(
+        EntityBlockLib $entityBlockLib,
+        ?EntityPublicLib $entityPublicLib
+    ): array
     {
-        return $this->showTemplateFile($this->getCode($entity, $content));
+        return $this->showTemplateFile($this->getCode($entityBlockLib, $entityPublicLib));
     }
 
-    protected function getParagraphsArray($service, $content, $paragraphs)
+    protected function getParagraphsArray(
+        ParagraphService $paragraphService,
+        EntityPublicLib $entityPublicLib,
+        array $paragraphs
+    ): array
     {
-        $paragraphsArray = $content->getParagraphs();
+        $paragraphsArray = $entityPublicLib->getParagraphs();
         foreach ($paragraphsArray as $paragraphArray) {
-            $data = $service->showContent($paragraphArray);
+            $data = $paragraphService->showContent($paragraphArray);
             if (is_null($data)) {
                 continue;
             }
 
-            $template = $service->showTemplate($paragraphArray);
+            $template = $paragraphService->showTemplate($paragraphArray);
 
             $paragraphs[] = [
                 'template' => $template,

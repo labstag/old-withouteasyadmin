@@ -6,14 +6,16 @@ use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Header;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\HeaderType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class HeaderParagraph extends ParagraphLib
 {
-    public function getCode($header): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($header);
+        unset($entityParagraphLib);
 
         return 'post/header';
     }
@@ -43,7 +45,7 @@ class HeaderParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Header $header)
+    public function show(Header $header): ?Response
     {
         $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
@@ -55,7 +57,7 @@ class HeaderParagraph extends ParagraphLib
         );
 
         if (!$post instanceof Post) {
-            return;
+            return null;
         }
 
         return $this->render(

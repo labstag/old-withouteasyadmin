@@ -6,15 +6,16 @@ use Labstag\Entity\Bookmark;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Bookmark\Libelle;
 use Labstag\Form\Admin\Paragraph\Bookmark\LibelleType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\BookmarkRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class LibelleParagraph extends ParagraphLib
 {
-    public function getCode($libelle): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($libelle);
+        unset($entityParagraphLib);
 
         return 'bookmark/libelle';
     }

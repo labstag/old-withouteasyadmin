@@ -41,12 +41,12 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
         $symfonyStyle->progressStart(is_countable($histories) ? count($histories) : 0);
         foreach ($histories as $history) {
             $this->historyService->process(
-                $this->getParameter('file_directory'),
+                $this->parameterBag->get('file_directory'),
                 $history->getId(),
                 true
             );
             $this->historyService->process(
-                $this->getParameter('file_directory'),
+                $this->parameterBag->get('file_directory'),
                 $history->getId(),
                 false
             );
@@ -56,10 +56,5 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
         $symfonyStyle->progressFinish();
 
         return Command::SUCCESS;
-    }
-
-    protected function getParameter(string $name)
-    {
-        return $this->parameterBag->get($name);
     }
 }

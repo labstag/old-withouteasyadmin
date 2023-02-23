@@ -7,6 +7,8 @@ use Labstag\Entity\Post;
 use Labstag\Form\Admin\PostType;
 use Labstag\Form\Admin\Search\PostType as SearchPostType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\PostRepository;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\Search\PostSearch;
@@ -23,27 +25,27 @@ class PostDomain extends DomainLib
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Post::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->postRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->postRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): PostSearch
     {
         return new PostSearch();
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchPostType::class;
     }
@@ -63,7 +65,7 @@ class PostDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return PostType::class;
     }

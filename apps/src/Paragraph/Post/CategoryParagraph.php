@@ -6,15 +6,16 @@ use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Category;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\CategoryType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryParagraph extends ParagraphLib
 {
-    public function getCode($category): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($category);
+        unset($entityParagraphLib);
 
         return 'post/category';
     }

@@ -37,7 +37,7 @@ abstract class RequestHandlerLib
         $repository->add($entity);
     }
 
-    public function handle($oldEntity, $entity)
+    public function handle(mixed $oldEntity, mixed $entity)
     {
         $repository = $this->getRepository($entity::class);
         $repository->add($entity);

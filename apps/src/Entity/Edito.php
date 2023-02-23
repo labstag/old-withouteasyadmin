@@ -12,9 +12,11 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Lib\EntityPublicLib;
 use Labstag\Repository\EditoRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -24,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Uploadable
  */
-class Edito implements Stringable
+class Edito implements Stringable, EntityPublicLib
 {
     use SoftDeleteableEntity;
     use StateableEntity;
@@ -55,7 +57,7 @@ class Edito implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="editos", cascade={"persist"})
@@ -160,7 +162,7 @@ class Edito implements Stringable
         return $this->published;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
         return $this->refuser;
     }
@@ -218,7 +220,7 @@ class Edito implements Stringable
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
         $this->refuser = $user;
 

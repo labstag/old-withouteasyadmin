@@ -266,21 +266,21 @@ class UserMailService
     }
 
     private function setEmail(
-        $template,
+        Template $template,
         User $user,
         array $change = []
     ): void
     {
         $html = $template->getHtml();
-        $txt = $template->getText();
-        $subject = $template->getName();
+        $text = $template->getText();
+        $name = $template->getName();
         $email = $this->mailerService->createEmail(
             [
                 'html' => $this->changeValue($user, $html, $change),
-                'txt'  => $this->changeValue($user, $txt, $change),
+                'txt'  => $this->changeValue($user, $text, $change),
             ]
         );
-        $email->subject($subject);
+        $email->subject($name);
         $email->to($user->getEmail());
 
         $this->mailerService->send($email);

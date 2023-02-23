@@ -6,15 +6,16 @@ use Labstag\Entity\Bookmark;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Bookmark\Liste;
 use Labstag\Form\Admin\Paragraph\Bookmark\ListType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\BookmarkRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib
 {
-    public function getCode($liste): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($liste);
+        unset($entityParagraphLib);
 
         return 'bookmark/list';
     }

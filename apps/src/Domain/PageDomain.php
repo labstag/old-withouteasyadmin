@@ -7,6 +7,8 @@ use Labstag\Entity\Page;
 use Labstag\Form\Admin\PageType;
 use Labstag\Form\Admin\Search\PageType as SearchPageType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\PageRepository;
 use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\Search\PageSearch;
@@ -23,27 +25,27 @@ class PageDomain extends DomainLib
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Page::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->pageRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->pageRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): PageSearch
     {
         return new PageSearch();
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchPageType::class;
     }
@@ -63,7 +65,7 @@ class PageDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return PageType::class;
     }

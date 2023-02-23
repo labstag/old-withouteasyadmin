@@ -6,15 +6,16 @@ use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Libelle;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\LibelleType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class LibelleParagraph extends ParagraphLib
 {
-    public function getCode($libelle): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($libelle);
+        unset($entityParagraphLib);
 
         return 'post/libelle';
     }

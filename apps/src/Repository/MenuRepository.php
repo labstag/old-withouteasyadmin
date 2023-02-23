@@ -18,7 +18,7 @@ class MenuRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Menu::class);
     }
 
-    public function findAllCode()
+    public function findAllCode(): mixed
     {
         $queryBuilder = $this->findAllCodeQuery();
 

@@ -15,11 +15,6 @@ class Workflow
 {
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private ?string $entity = null;
-
-    /**
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -28,7 +23,12 @@ class Workflow
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private ?string $entity = null;
 
     /**
      * @ORM\Column(type="string", length=255)

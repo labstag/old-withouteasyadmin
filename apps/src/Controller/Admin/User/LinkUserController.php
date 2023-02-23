@@ -5,6 +5,7 @@ namespace Labstag\Controller\Admin\User;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\LinkUser;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -50,7 +51,7 @@ class LinkUserController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(LinkUser::class);
     }

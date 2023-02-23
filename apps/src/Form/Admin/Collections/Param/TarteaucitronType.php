@@ -111,7 +111,7 @@ class TarteaucitronType extends AbstractTypeLib
         );
     }
 
-    private function setInputTextAll($builder): void
+    private function setInputTextAll(FormBuilderInterface $formBuilder): void
     {
         $tab = [
             'hashtag'     => [
@@ -142,13 +142,16 @@ class TarteaucitronType extends AbstractTypeLib
                 ),
             ],
         ];
-        $this->setInputText($builder, $tab);
+        $this->setInputText($formBuilder, $tab);
     }
 
-    private function setInputTrueFalse($builder, $tab): void
+    private function setInputTrueFalse(
+        FormBuilderInterface $formBuilder,
+        array $tab
+    ): void
     {
         foreach ($tab as $id => $row) {
-            $builder->add(
+            $formBuilder->add(
                 $id,
                 ChoiceType::class,
                 [
@@ -166,7 +169,7 @@ class TarteaucitronType extends AbstractTypeLib
         }
     }
 
-    private function setInputTrueFalsePartie1($builder): void
+    private function setInputTrueFalsePartie1(FormBuilderInterface $formBuilder): void
     {
         $tab = [
             'groupServices'  => [
@@ -215,10 +218,10 @@ class TarteaucitronType extends AbstractTypeLib
                 ),
             ],
         ];
-        $this->setInputTrueFalse($builder, $tab);
+        $this->setInputTrueFalse($formBuilder, $tab);
     }
 
-    private function setInputTrueFalsePartie2($builder): void
+    private function setInputTrueFalsePartie2(FormBuilderInterface $formBuilder): void
     {
         $tab = [
             'adblocker'               => [
@@ -293,6 +296,6 @@ class TarteaucitronType extends AbstractTypeLib
                 ),
             ],
         ];
-        $this->setInputTrueFalse($builder, $tab);
+        $this->setInputTrueFalse($formBuilder, $tab);
     }
 }

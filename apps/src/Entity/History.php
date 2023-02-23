@@ -10,8 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Lib\EntityPublicLib;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -19,10 +21,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class History
+class History implements EntityPublicLib
 {
     use SoftDeleteableEntity;
     use StateableEntity;
+
+    /**
+     * @ORM\Id
+     *
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
+     * @ORM\Column(type="guid", unique=true)
+     *
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     */
+    protected string $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Chapter::class, mappedBy="refhistory", cascade={"persist"}, orphanRemoval=true)
@@ -37,17 +50,6 @@ class History
      * @ORM\Column(type="datetime")
      */
     private ?DateTimeInterface $created = null;
-
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="history", cascade={"persist"}, orphanRemoval=true)
@@ -83,7 +85,7 @@ class History
      *
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?User $refuser = null;
+    private ?UserInterface $refuser = null;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
@@ -202,7 +204,7 @@ class History
         return $this->published;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
         return $this->refuser;
     }
@@ -271,7 +273,7 @@ class History
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
         $this->refuser = $user;
 

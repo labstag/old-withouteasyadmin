@@ -5,13 +5,15 @@ namespace Labstag\Block;
 use Labstag\Entity\Block\Footer;
 use Labstag\Form\Admin\Block\FooterType;
 use Labstag\Lib\BlockLib;
+use Labstag\Lib\EntityBlockLib;
+use Labstag\Lib\EntityPublicLib;
 use Symfony\Component\HttpFoundation\Response;
 
 class FooterBlock extends BlockLib
 {
-    public function getCode($footer, $content): string
+    public function getCode(EntityBlockLib $entityBlockLib, ?EntityPublicLib $entityPublicLib): string
     {
-        unset($footer, $content);
+        unset($entityBlockLib, $entityPublicLib);
 
         return 'footer';
     }
@@ -41,10 +43,10 @@ class FooterBlock extends BlockLib
         return true;
     }
 
-    public function show(Footer $footer, $content): Response
+    public function show(Footer $footer, ?EntityPublicLib $entityPublicLib): Response
     {
         return $this->render(
-            $this->getTemplateFile($this->getCode($footer, $content)),
+            $this->getTemplateFile($this->getCode($footer, $entityPublicLib)),
             ['block' => $footer]
         );
     }

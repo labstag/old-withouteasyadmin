@@ -21,16 +21,6 @@ class Category implements Stringable
     use SoftDeleteableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $bookmarks;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $children;
-
-    /**
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -39,7 +29,17 @@ class Category implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $bookmarks;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $children;
 
     /**
      * @ORM\Column(type="string", length=255)

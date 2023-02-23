@@ -48,7 +48,10 @@ class ChapterController extends ParagraphControllerLib
     }
 
     #[Route(path: '/show/{id}', name: 'admin_chapter_paragraph_show')]
-    public function show(Paragraph $paragraph, ParagraphRequestHandler $paragraphRequestHandler)
+    public function show(
+        Paragraph $paragraph,
+        ParagraphRequestHandler $paragraphRequestHandler
+    ): Response
     {
         return parent::showTwig($paragraph, $paragraphRequestHandler);
     }

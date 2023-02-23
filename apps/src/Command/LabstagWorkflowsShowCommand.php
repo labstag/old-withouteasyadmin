@@ -81,7 +81,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
         return Command::SUCCESS;
     }
 
-    private function delete(array $entities, $data): void
+    private function delete(array $entities, array $data): void
     {
         $toDelete = $this->workflowRepository->toDeleteEntities($entities);
         foreach ($toDelete as $entity) {

@@ -12,9 +12,11 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Lib\EntityPublicLib;
 use Labstag\Repository\PostRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -24,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Uploadable
  */
-class Post implements Stringable
+class Post implements Stringable, EntityPublicLib
 {
     use SoftDeleteableEntity;
     use StateableEntity;
@@ -33,6 +35,17 @@ class Post implements Stringable
      * @UploadableField(filename="img", path="post/img", slug="title")
      */
     protected $file;
+
+    /**
+     * @ORM\Id
+     *
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
+     * @ORM\Column(type="guid", unique=true)
+     *
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     */
+    protected string $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -45,17 +58,6 @@ class Post implements Stringable
      * @ORM\Column(type="datetime")
      */
     private ?DateTimeInterface $created = null;
-
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="posts", cascade={"persist"})
@@ -96,7 +98,7 @@ class Post implements Stringable
      *
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?User $refuser = null;
+    private ?UserInterface $refuser = null;
 
     /**
      * @ORM\Column(type="boolean")
@@ -220,7 +222,7 @@ class Post implements Stringable
         return $this->refcategory;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
         return $this->refuser;
     }
@@ -310,7 +312,7 @@ class Post implements Stringable
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
         $this->refuser = $user;
 

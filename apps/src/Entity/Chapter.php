@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Lib\EntityPublicLib;
 use Labstag\Repository\ChapterRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,10 +19,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Chapter
+class Chapter implements EntityPublicLib
 {
     use SoftDeleteableEntity;
     use StateableEntity;
+
+    /**
+     * @ORM\Id
+     *
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
+     * @ORM\Column(type="guid", unique=true)
+     *
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     */
+    protected string $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -34,17 +46,6 @@ class Chapter
      * @ORM\Column(type="datetime")
      */
     private ?DateTimeInterface $created = null;
-
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="chapter", cascade={"persist"}, orphanRemoval=true)

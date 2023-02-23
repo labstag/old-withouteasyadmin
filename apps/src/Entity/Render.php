@@ -6,13 +6,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Lib\EntityPublicLib;
 use Labstag\Repository\RenderRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=RenderRepository::class)
  */
-class Render
+class Render implements EntityPublicLib
 {
     use SoftDeleteableEntity;
 
@@ -25,7 +26,7 @@ class Render
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="render", cascade={"persist"}, orphanRemoval=true)

@@ -71,7 +71,7 @@ class WorkflowGuardSubscriber extends EventSubscriberLib
                 'refworkflow' => $workflow,
             ]
         );
-        $stategroupe = ($workflowUser instanceof WorkflowUser) ? $workflowUser->getState() : $stategroupe;
+        $stateuser = ($workflowUser instanceof WorkflowUser) ? $workflowUser->getState() : $stateuser;
 
         $guardEvent->setBlocked(!$stategroupe || !$stateuser);
     }

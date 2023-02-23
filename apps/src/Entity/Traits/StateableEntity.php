@@ -22,13 +22,11 @@ trait StateableEntity
     protected $state;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(name="state_changed", type="datetime", nullable=true)
      *
      * @Gedmo\Timestampable(on="change", field={"state"})
      */
-    private $stateChanged;
+    private DateTime $stateChanged;
 
     public function getState()
     {

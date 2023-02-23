@@ -2,6 +2,8 @@
 
 namespace Labstag\Service;
 
+use Labstag\Lib\DomainLib;
+
 class DomainService
 {
     public function __construct(
@@ -10,7 +12,7 @@ class DomainService
     {
     }
 
-    public function getDomain($entity)
+    public function getDomain($entity): DomainLib
     {
         $return = null;
         foreach ($this->domainsclass as $domain) {

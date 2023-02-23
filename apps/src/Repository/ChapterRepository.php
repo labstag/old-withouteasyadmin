@@ -17,7 +17,10 @@ class ChapterRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Chapter::class);
     }
 
-    public function findChapterByHistory($history, $chapter)
+    public function findChapterByHistory(
+        string $history,
+        string $chapter
+    ): mixed
     {
         $queryBuilder = $this->createQueryBuilder('c');
         $queryBuilder->leftJoin('c.refhistory', 'h');

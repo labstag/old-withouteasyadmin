@@ -29,7 +29,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends ControllerLib
@@ -295,7 +294,7 @@ class SecurityController extends ControllerLib
         }
 
         try {
-            // @var AccessToken $tokenProvider
+            /** @var AccessToken $accessToken */
             $accessToken = $provider->getAccessToken(
                 'authorization_code',
                 [
@@ -305,7 +304,7 @@ class SecurityController extends ControllerLib
 
             $session->remove('oauth2state');
             $resourceOwner = $provider->getResourceOwner($accessToken);
-            // @var TokenInterface $token
+            // @var User $user
             $user = $usageTrackingTokenStorage->getToken()->getUser();
             if (!$user instanceof User) {
                 $this->sessionService->flashBagAdd(
@@ -347,7 +346,7 @@ class SecurityController extends ControllerLib
     ): RedirectResponse
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
-        // @var User $user
+        /** @var User $user */
         $user = $security->getUser();
         // @var string $referer
         $referer = $request->headers->get('referer');

@@ -5,6 +5,7 @@ namespace Labstag\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\RouteUserRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=RouteUserRepository::class)
@@ -21,7 +22,7 @@ class RouteUser
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="users", cascade={"persist"})
@@ -48,7 +49,7 @@ class RouteUser
         return $this->refroute;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
         return $this->refuser;
     }
@@ -70,7 +71,7 @@ class RouteUser
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
         $this->refuser = $user;
 

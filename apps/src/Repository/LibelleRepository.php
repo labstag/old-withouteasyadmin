@@ -17,7 +17,7 @@ class LibelleRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Libelle::class);
     }
 
-    public function findByBookmark()
+    public function findByBookmark(): mixed
     {
         $query = $this->createQueryBuilder('a');
         $query->innerJoin('a.bookmarks', 'b');
@@ -29,7 +29,7 @@ class LibelleRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getResult();
     }
 
-    public function findByPost()
+    public function findByPost(): mixed
     {
         $query = $this->createQueryBuilder('a');
         $query->innerJoin('a.posts', 'p');
@@ -42,7 +42,7 @@ class LibelleRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getResult();
     }
 
-    public function findName(string $field)
+    public function findName(string $field): mixed
     {
         $query = $this->createQueryBuilder('u');
         $query->where(

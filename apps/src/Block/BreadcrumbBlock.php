@@ -5,10 +5,13 @@ namespace Labstag\Block;
 use Labstag\Entity\Block\Breadcrumb;
 use Labstag\Form\Admin\Block\BreadcrumbType;
 use Labstag\Lib\BlockLib;
+use Labstag\Lib\EntityBlockLib;
+use Labstag\Lib\EntityPublicLib;
 use Labstag\Repository\PageRepository;
 use Labstag\Service\FrontService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -31,9 +34,9 @@ class BreadcrumbBlock extends BlockLib
         parent::__construct($translator, $twigEnvironment);
     }
 
-    public function getCode($breadcrumb, $content): string
+    public function getCode(EntityBlockLib $entityBlockLib, ?EntityPublicLib $entityPublicLib): string
     {
-        unset($breadcrumb, $content);
+        unset($entityBlockLib, $entityPublicLib);
 
         return 'breadcrumb';
     }
@@ -63,15 +66,15 @@ class BreadcrumbBlock extends BlockLib
         return false;
     }
 
-    public function show(Breadcrumb $breadcrumb, $content)
+    public function show(Breadcrumb $breadcrumb, ?EntityPublicLib $entityPublicLib): ?Response
     {
-        $breadcrumbs = $this->frontService->setBreadcrumb($content);
+        $breadcrumbs = $this->frontService->setBreadcrumb($entityPublicLib);
         if ((is_countable($breadcrumbs) ? count($breadcrumbs) : 0) <= 1) {
-            return;
+            return null;
         }
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($breadcrumb, $content)),
+            $this->getTemplateFile($this->getCode($breadcrumb, $entityPublicLib)),
             [
                 'breadcrumbs' => $breadcrumbs,
                 'block'       => $breadcrumb,

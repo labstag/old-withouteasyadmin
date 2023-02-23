@@ -38,7 +38,7 @@ class Attachment
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)

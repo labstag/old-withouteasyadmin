@@ -17,7 +17,7 @@ class EditoRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Edito::class);
     }
 
-    public function findOnePublier()
+    public function findOnePublier(): mixed
     {
         $queryBuilder = $this->createQueryBuilder('e');
         $queryBuilder->leftjoin('e.refuser', 'u');

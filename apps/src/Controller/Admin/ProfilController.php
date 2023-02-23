@@ -4,6 +4,7 @@ namespace Labstag\Controller\Admin;
 
 use Labstag\Entity\Profil;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +24,7 @@ class ProfilController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(Profil::class);
     }

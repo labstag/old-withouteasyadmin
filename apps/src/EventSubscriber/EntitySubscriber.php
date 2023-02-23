@@ -2,7 +2,6 @@
 
 namespace Labstag\EventSubscriber;
 
-use Doctrine\ORM\EntityRepository;
 use Exception;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Configuration;

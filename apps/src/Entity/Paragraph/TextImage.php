@@ -8,6 +8,7 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Repository\Paragraph\TextImageRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
@@ -18,18 +19,13 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @Uploadable
  */
-class TextImage
+class TextImage implements EntityParagraphLib
 {
 
     /**
      * @UploadableField(filename="image", path="paragraph/textimage", slug="title")
      */
     protected $file;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $content = null;
 
     /**
      * @ORM\Id
@@ -40,7 +36,12 @@ class TextImage
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $content = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphTextImages", cascade={"persist"})

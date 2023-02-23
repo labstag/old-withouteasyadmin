@@ -13,7 +13,6 @@ use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\WorkflowService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -39,7 +38,7 @@ class LabstagUserCommand extends CommandLib
         InputInterface $input,
         OutputInterface $output,
         SymfonyStyle $symfonyStyle,
-        $action
+        string $action
     ): void
     {
         /** @var QuestionHelper $helper */
@@ -106,22 +105,27 @@ class LabstagUserCommand extends CommandLib
         $this->setDescription('command for admin user');
     }
 
-    protected function create($helper, SymfonyStyle $symfonyStyle, InputInterface $input, OutputInterface $output): void
+    protected function create(
+        QuestionHelper $questionHelper,
+        SymfonyStyle $symfonyStyle,
+        InputInterface $input,
+        OutputInterface $output
+    ): void
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
         $user = new User();
         $old = clone $user;
         $question = new Question("Entrer le username de l'utilisateur : ");
-        $username = $helper->ask($input, $output, $question);
+        $username = $questionHelper->ask($input, $output, $question);
         $user->setUsername($username);
         $question = new Question("Entrer le password de l'utilisateur : ");
         $question->setHidden(true);
 
-        $password1 = $helper->ask($input, $output, $question);
+        $password1 = $questionHelper->ask($input, $output, $question);
         $question = new Question("Resaisir le password de l'utilisateur : ");
         $question->setHidden(true);
 
-        $password2 = $helper->ask($input, $output, $question);
+        $password2 = $questionHelper->ask($input, $output, $question);
         if ($password1 !== $password2) {
             $symfonyStyle->error('Mot de passe incorrect');
 
@@ -130,7 +134,7 @@ class LabstagUserCommand extends CommandLib
 
         $user->setPlainPassword($password1);
         $question = new Question("Entrer l'email de l'utilisateur : ");
-        $email = $helper->ask($input, $output, $question);
+        $email = $questionHelper->ask($input, $output, $question);
         $user->setEmail($email);
         $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
         $data = [];
@@ -147,7 +151,7 @@ class LabstagUserCommand extends CommandLib
             "Groupe à attribuer à l'utilisateur",
             $data
         );
-        $selection = $helper->ask($input, $output, $question);
+        $selection = $questionHelper->ask($input, $output, $question);
         foreach ($groupes as $groupe) {
             // @var Groupe $groupe
             if ($selection != $groupe->getCode()) {
@@ -162,7 +166,7 @@ class LabstagUserCommand extends CommandLib
     }
 
     protected function delete(
-        $helper,
+        QuestionHelper $questionHelper,
         string $username,
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
@@ -186,7 +190,7 @@ class LabstagUserCommand extends CommandLib
             ]
         );
 
-        $action = $helper->ask($input, $output, $choiceQuestion);
+        $action = $questionHelper->ask($input, $output, $choiceQuestion);
         if ('oui' !== $action) {
             return;
         }
@@ -198,8 +202,8 @@ class LabstagUserCommand extends CommandLib
     }
 
     protected function disable(
-        $helper,
-        $username,
+        QuestionHelper $questionHelper,
+        string $username,
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
@@ -222,7 +226,7 @@ class LabstagUserCommand extends CommandLib
             ]
         );
 
-        $action = $helper->ask($input, $output, $choiceQuestion);
+        $action = $questionHelper->ask($input, $output, $choiceQuestion);
         if ('oui' !== $action || !$this->workflowService->has($entity)) {
             $symfonyStyle->warning(
                 ['Action impossible']
@@ -248,8 +252,8 @@ class LabstagUserCommand extends CommandLib
     }
 
     protected function enable(
-        $helper,
-        $username,
+        QuestionHelper $questionHelper,
+        string $username,
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
@@ -272,7 +276,7 @@ class LabstagUserCommand extends CommandLib
             ]
         );
 
-        $action = $helper->ask($input, $output, $choiceQuestion);
+        $action = $questionHelper->ask($input, $output, $choiceQuestion);
         if ('oui' !== $action || !$this->workflowService->has($entity)) {
             $symfonyStyle->warning(
                 ['Action impossible']
@@ -316,7 +320,7 @@ class LabstagUserCommand extends CommandLib
             ]
         );
 
-        $action = $helper->ask($input, $output, $choiceQuestion);
+        $action = (string) $helper->ask($input, $output, $choiceQuestion);
         match ($action) {
             'list' => $this->list($symfonyStyle, $output),
             'create' => $this->create($helper, $symfonyStyle, $input, $output),
@@ -324,6 +328,7 @@ class LabstagUserCommand extends CommandLib
             'state' => $this->actionState($input, $output, $symfonyStyle),
             'enable', 'disable', 'delete' => $this->actionEnableDisableDelete($input, $output, $symfonyStyle, $action),
             'cancel' => $output->writeln('cancel'),
+            default => $output->writeln('Action inconnue'),
         };
 
         return Command::SUCCESS;
@@ -356,8 +361,8 @@ class LabstagUserCommand extends CommandLib
     }
 
     protected function state(
-        $helper,
-        $username,
+        QuestionHelper $questionHelper,
+        string $username,
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
@@ -384,7 +389,7 @@ class LabstagUserCommand extends CommandLib
             "Passer l'utilisateur à l'épage : ",
             $states
         );
-        $state = $helper->ask($input, $output, $choiceQuestion);
+        $state = $questionHelper->ask($input, $output, $choiceQuestion);
         if (!$workflow->can($entity, $state)) {
             $symfonyStyle->warning(
                 ['Action impossible']
@@ -422,8 +427,8 @@ class LabstagUserCommand extends CommandLib
     }
 
     protected function updatePassword(
-        $helper,
-        $username,
+        QuestionHelper $questionHelper,
+        string $username,
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
@@ -441,11 +446,11 @@ class LabstagUserCommand extends CommandLib
         $question = new Question("Entrer le password de l'utilisateur : ");
         $question->setHidden(true);
 
-        $password1 = $helper->ask($input, $output, $question);
+        $password1 = $questionHelper->ask($input, $output, $question);
         $question = new Question("Resaisir le password de l'utilisateur : ");
         $question->setHidden(true);
 
-        $password2 = $helper->ask($input, $output, $question);
+        $password2 = $questionHelper->ask($input, $output, $question);
         if ($password1 !== $password2) {
             $symfonyStyle->error('Mot de passe incorrect');
 

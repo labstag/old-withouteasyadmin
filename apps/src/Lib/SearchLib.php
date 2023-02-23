@@ -27,7 +27,7 @@ abstract class SearchLib
                         $month,
                         $day,
                     ] = explode('-', (string) $value);
-                    $dateTime->setDate($year, $month, $day);
+                    $dateTime->setDate((int) $year, (int) $month, (int) $day);
                     $this->{$key} = $dateTime;
 
                     continue;

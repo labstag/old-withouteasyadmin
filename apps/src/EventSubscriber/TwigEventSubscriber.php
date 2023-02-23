@@ -2,6 +2,7 @@
 
 namespace Labstag\EventSubscriber;
 
+use Labstag\Entity\User;
 use Labstag\Lib\EventSubscriberLib;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
@@ -128,7 +129,9 @@ class TwigEventSubscriber extends EventSubscriberLib
             return;
         }
 
-        $oauthActivated = $this->dataService->getOauthActivated($this->security->getUser());
+        /** @var User $user */
+        $user = $this->security->getUser();
+        $oauthActivated = $this->dataService->getOauthActivated($user);
         $this->twigEnvironment->AddGlobal('oauthActivated', $oauthActivated);
     }
 

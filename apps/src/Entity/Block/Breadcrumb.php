@@ -4,6 +4,7 @@ namespace Labstag\Entity\Block;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
+use Labstag\Lib\EntityBlockLib;
 use Labstag\Repository\Block\BreadcrumbRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -13,13 +14,8 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=BreadcrumbRepository::class)
  */
-class Breadcrumb implements Stringable
+class Breadcrumb implements Stringable, EntityBlockLib
 {
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="breadcrumbs", cascade={"persist"})
-     */
-    private ?Block $block = null;
 
     /**
      * @ORM\Id
@@ -30,7 +26,12 @@ class Breadcrumb implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="breadcrumbs", cascade={"persist"})
+     */
+    private ?Block $block = null;
 
     public function __toString(): string
     {

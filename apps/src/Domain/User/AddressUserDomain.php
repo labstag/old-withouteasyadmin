@@ -7,6 +7,8 @@ use Labstag\Entity\AddressUser;
 use Labstag\Form\Admin\Search\User\AddressUserType as SearchAddressUserType;
 use Labstag\Form\Admin\User\AddressUserType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\AddressUserRepository;
 use Labstag\RequestHandler\AddressUserRequestHandler;
 use Labstag\Search\User\AddressUserSearch;
@@ -23,27 +25,27 @@ class AddressUserDomain extends DomainLib
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return AddressUser::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->addressUserRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->addressUserRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): AddressUserSearch
     {
         return new AddressUserSearch();
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchAddressUserType::class;
     }
@@ -63,7 +65,7 @@ class AddressUserDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return AddressUserType::class;
     }

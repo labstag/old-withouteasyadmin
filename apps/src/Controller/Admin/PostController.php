@@ -6,6 +6,7 @@ use DateTime;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\PostRepository;
 use Labstag\RequestHandler\PostRequestHandler;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -22,8 +23,6 @@ class PostController extends AdminControllerLib
         ?Post $post
     ): Response
     {
-        dump($post);
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($post) ? new Post() : $post,
@@ -52,6 +51,9 @@ class PostController extends AdminControllerLib
     ): RedirectResponse
     {
         $user = $security->getUser();
+        if (is_null($user)) {
+            return $this->redirectToRoute('admin_post_index');
+        }
 
         $post = new Post();
         $post->setPublished(new DateTime());
@@ -80,7 +82,7 @@ class PostController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(Post::class);
     }

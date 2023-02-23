@@ -5,6 +5,7 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Memo;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\MemoRepository;
 use Labstag\RequestHandler\MemoRequestHandler;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -49,6 +50,9 @@ class MemoController extends AdminControllerLib
     ): RedirectResponse
     {
         $user = $security->getUser();
+        if (is_null($user)) {
+            return $this->redirectToRoute('admin_memo_index');
+        }
 
         $memo = new Memo();
         $memo->setTitle(Uuid::v1());
@@ -75,7 +79,7 @@ class MemoController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
         return $this->domainService->getDomain(Memo::class);
     }

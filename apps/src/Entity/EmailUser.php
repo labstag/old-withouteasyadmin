@@ -4,6 +4,7 @@ namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\EmailUserRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=EmailUserRepository::class)
@@ -18,12 +19,12 @@ class EmailUser extends Email
      */
     protected $refuser;
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
         return $this->refuser;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
         $this->refuser = $user;
 

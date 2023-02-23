@@ -12,8 +12,7 @@ use Psr\Log\LoggerInterface;
 class PhoneService
 {
 
-    // @var PhoneNumberUtil
-    protected $phoneUtil;
+    protected PhoneNumberUtil $phoneUtil;
 
     public function __construct(
         protected ErrorService $errorService,

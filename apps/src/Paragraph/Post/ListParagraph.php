@@ -6,15 +6,16 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post\Liste;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\ListType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib
 {
-    public function getCode($liste): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($liste);
+        unset($entityParagraphLib);
 
         return 'post/list';
     }

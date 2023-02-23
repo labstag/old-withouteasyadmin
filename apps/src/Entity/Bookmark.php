@@ -13,6 +13,7 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Repository\BookmarkRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -32,16 +33,6 @@ class Bookmark
     protected $file;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $content = null;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $icon = null;
-
-    /**
      * @ORM\Id
      *
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -50,7 +41,17 @@ class Bookmark
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected string $id;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $content = null;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $icon = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="bookmarks", cascade={"persist"})
@@ -84,7 +85,7 @@ class Bookmark
      *
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?User $refuser = null;
+    private ?UserInterface $refuser = null;
 
     /**
      * @Gedmo\Slug(updatable=false, fields={"name"})
@@ -169,7 +170,7 @@ class Bookmark
         return $this->refcategory;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
         return $this->refuser;
     }
@@ -250,7 +251,7 @@ class Bookmark
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
         $this->refuser = $user;
 

@@ -4,6 +4,7 @@ namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\LinkUserRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=LinkUserRepository::class)
@@ -18,12 +19,12 @@ class LinkUser extends Link
      */
     protected $refuser;
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
         return $this->refuser;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
         $this->refuser = $user;
 

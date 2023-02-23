@@ -6,14 +6,16 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post\Archive;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\ArchiveType;
+use Labstag\Lib\EntityParagraphLib;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class ArchiveParagraph extends ParagraphLib
 {
-    public function getCode($archive): string
+    public function getCode(EntityParagraphLib $entityParagraphLib): string
     {
-        unset($archive);
+        unset($entityParagraphLib);
 
         return 'post/archive';
     }
@@ -43,14 +45,14 @@ class ArchiveParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Archive $archive)
+    public function show(Archive $archive): ?Response
     {
         /** @var PostRepository $entityRepository */
         $entityRepository = $this->getRepository(Post::class);
         $archives = $entityRepository->findDateArchive();
         $page = $this->request->query->getInt('page', 1);
         if (1 != $page) {
-            return;
+            return null;
         }
 
         return $this->render(

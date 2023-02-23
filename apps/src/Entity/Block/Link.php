@@ -3,6 +3,7 @@
 namespace Labstag\Entity\Block;
 
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Lib\EntityBlockLib;
 use Labstag\Repository\Block\LinkRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -12,8 +13,19 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=LinkRepository::class)
  */
-class Link implements Stringable
+class Link implements Stringable, EntityBlockLib
 {
+
+    /**
+     * @ORM\Id
+     *
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
+     * @ORM\Column(type="guid", unique=true)
+     *
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     */
+    protected string $id;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -29,17 +41,6 @@ class Link implements Stringable
      * @ORM\ManyToOne(targetEntity=Header::class, inversedBy="links", cascade={"persist"})
      */
     private ?Header $header = null;
-
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
