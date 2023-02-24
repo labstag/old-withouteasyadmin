@@ -26,7 +26,7 @@ class FrontService
         'error_controller::preview',
     ];
 
-    protected Request $request;
+    protected ?Request $request;
 
     public function __construct(
         protected $frontclass,
