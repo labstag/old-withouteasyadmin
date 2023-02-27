@@ -435,7 +435,13 @@ class AdminBtnSingleton
         return $return;
     }
 
-    private function addBtnDestroyRestore($word, $entity, $route, array $routeParam, string $text)
+    private function addBtnDestroyRestore(
+        $word,
+        $entity,
+        $route,
+        array $routeParam,
+        string $text
+    )
     {
         if (!isset($route['list']) || !isset($route[$word])) {
             return $this;
@@ -473,7 +479,7 @@ class AdminBtnSingleton
         );
     }
 
-    private function arrayKeyExistsRedirect($routes): bool
+    private function arrayKeyExistsRedirect(array $routes): bool
     {
         return !array_key_exists('redirect', $routes)
         || !array_key_exists('href', $routes['redirect'])
@@ -481,7 +487,7 @@ class AdminBtnSingleton
         || !$this->isRouteEnable($routes['redirect']['href']);
     }
 
-    private function arrayKeyExistsUrl($routes): bool
+    private function arrayKeyExistsUrl(array $routes): bool
     {
         return !array_key_exists('url', $routes)
         || !array_key_exists('href', $routes['url'])

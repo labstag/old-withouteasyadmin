@@ -13,13 +13,14 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 #[AsCommand(name: 'labstag:workflows-show')]
 class LabstagWorkflowsShowCommand extends CommandLib
 {
     public function __construct(
-        protected $entitiesclass,
+        protected RewindableGenerator $rewindableGenerator,
         EntityManagerInterface $entityManager,
         protected WorkflowService $workflowService,
         protected EventDispatcherInterface $eventDispatcher,
@@ -42,7 +43,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
 
         $data = [];
         $entities = [];
-        foreach ($this->entitiesclass as $entity) {
+        foreach ($this->rewindableGenerator as $entity) {
             if ($this->workflowService->has($entity)) {
                 $workflow = $this->workflowService->get($entity);
                 $definition = $workflow->getDefinition();

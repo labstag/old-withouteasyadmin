@@ -6,6 +6,7 @@ use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
+use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -29,7 +30,7 @@ class FrontService
     protected ?Request $request;
 
     public function __construct(
-        protected $frontclass,
+        protected RewindableGenerator $rewindableGenerator,
         protected Environment $twigEnvironment,
         protected RequestStack $requestStack,
         protected UrlGeneratorInterface $urlGenerator,
@@ -55,7 +56,7 @@ class FrontService
     public function setBreadcrumb(?FrontInterface $front): array
     {
         $breadcrumb = [];
-        foreach ($this->frontclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             $breadcrumb = $row->setBreadcrumb($front, $breadcrumb);
         }
 
@@ -65,7 +66,7 @@ class FrontService
     public function setMeta(?FrontInterface $front): array
     {
         $meta = [];
-        foreach ($this->frontclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             $meta = $row->setMeta($front, $meta);
         }
 

@@ -6,12 +6,13 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use ReflectionClass;
+use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class TrashService
 {
     public function __construct(
-        protected $repositories,
+        protected RewindableGenerator $rewindableGenerator,
         protected ManagerRegistry $managerRegistry,
         protected CsrfTokenManagerInterface $csrfTokenManager
     )
@@ -24,7 +25,7 @@ class TrashService
     public function all(): array
     {
         $data = [];
-        foreach ($this->repositories as $repository) {
+        foreach ($this->rewindableGenerator as $repository) {
             $isTrashable = $this->isTrashable($repository::class);
             if (!$isTrashable) {
                 continue;

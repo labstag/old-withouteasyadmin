@@ -6,13 +6,14 @@ use Labstag\Entity\Block;
 use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\BlockRepository;
 use ReflectionClass;
+use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class BlockService
 {
     public function __construct(
-        protected $blocksclass,
+        protected RewindableGenerator $rewindableGenerator,
         protected BlockRepository $blockRepository
     )
     {
@@ -24,7 +25,7 @@ class BlockService
     public function getAll(): array
     {
         $data = [];
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             $type = $row->getType();
             $name = $row->getName();
             $data[$name] = $type;
@@ -52,7 +53,7 @@ class BlockService
         return $data;
     }
 
-    public function getEntity(Block $block)
+    public function getEntity(Block $block): mixed
     {
         $entity = null;
         $field = $this->getEntityField($block);
@@ -99,7 +100,7 @@ class BlockService
     {
         $type = $block->getType();
         $form = null;
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $form = $row->getName();
 
@@ -122,11 +123,11 @@ class BlockService
         ];
     }
 
-    public function getTypeEntity(Block $block)
+    public function getTypeEntity(Block $block): mixed
     {
         $type = $block->getType();
         $block = null;
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $block = $row->getEntity();
 
@@ -141,7 +142,7 @@ class BlockService
     {
         $type = $block->getType();
         $form = null;
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $form = $row->getForm();
 
@@ -156,7 +157,7 @@ class BlockService
     {
         $type = $block->getType();
         $show = false;
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $show = $row->isShowForm();
 
@@ -179,7 +180,7 @@ class BlockService
             return $html;
         }
 
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($type == $row->getType()) {
                 $html = $row->show($entity, $front);
 
@@ -202,7 +203,7 @@ class BlockService
             return $template;
         }
 
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($type == $row->getType()) {
                 $template = $row->template($entity, $front);
             }

@@ -12,6 +12,7 @@ use Labstag\Entity\Post;
 use Labstag\Interfaces\FrontInterface;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use ReflectionClass;
+use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Twig\Environment;
@@ -19,7 +20,7 @@ use Twig\Environment;
 class ParagraphService
 {
     public function __construct(
-        protected $paragraphsclass,
+        protected RewindableGenerator $rewindableGenerator,
         protected Environment $twigEnvironment,
         protected ParagraphRequestHandler $paragraphRequestHandler
     )
@@ -49,7 +50,7 @@ class ParagraphService
     public function getAll($entity): array
     {
         $data = [];
-        foreach ($this->paragraphsclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             $inUse = $row->useIn();
             $type = $row->getType();
             $name = $row->getName();
@@ -61,7 +62,7 @@ class ParagraphService
         return $data;
     }
 
-    public function getEntity(Paragraph $paragraph)
+    public function getEntity(Paragraph $paragraph): mixed
     {
         $entity = null;
         $field = $this->getEntityField($paragraph);
@@ -108,7 +109,7 @@ class ParagraphService
     {
         $type = $paragraph->getType();
         $name = '';
-        foreach ($this->paragraphsclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $name = $row->getName();
 
@@ -122,7 +123,7 @@ class ParagraphService
     public function getNameByCode(string $code): string
     {
         $name = '';
-        foreach ($this->paragraphsclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $code) {
                 $name = $row->getName();
 
@@ -137,7 +138,7 @@ class ParagraphService
     {
         $type = $paragraph->getType();
         $paragraph = null;
-        foreach ($this->paragraphsclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $paragraph = $row->getEntity();
 
@@ -152,7 +153,7 @@ class ParagraphService
     {
         $type = $paragraph->getType();
         $form = null;
-        foreach ($this->paragraphsclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $form = $row->getForm();
 
@@ -167,7 +168,7 @@ class ParagraphService
     {
         $type = $paragraph->getType();
         $show = false;
-        foreach ($this->paragraphsclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $show = $row->isShowForm();
 
@@ -178,7 +179,7 @@ class ParagraphService
         return $show;
     }
 
-    public function setData(Paragraph $paragraph)
+    public function setData(Paragraph $paragraph): void
     {
         $entity = $this->getEntity($paragraph);
         if (is_null($entity)) {
@@ -186,7 +187,7 @@ class ParagraphService
         }
 
         $type = $paragraph->getType();
-        foreach ($this->paragraphsclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $row->setData($paragraph);
 
@@ -204,7 +205,7 @@ class ParagraphService
             return $html;
         }
 
-        foreach ($this->paragraphsclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($type == $row->getType()) {
                 $html = $row->show($entity);
 
@@ -224,7 +225,7 @@ class ParagraphService
             return $template;
         }
 
-        foreach ($this->paragraphsclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($type == $row->getType()) {
                 $template = $row->template($entity);
 

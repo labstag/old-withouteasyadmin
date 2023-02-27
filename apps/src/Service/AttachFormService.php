@@ -9,6 +9,7 @@ use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class AttachFormService
 {
@@ -68,12 +69,12 @@ class AttachFormService
     }
 
     protected function setAttachment(
-        $accessor,
-        $entity,
+        PropertyAccessor $propertyAccessor,
+        mixed $entity,
         $annotation
     ): Attachment
     {
-        $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
+        $attachmentField = $propertyAccessor->getValue($entity, $annotation->getFilename());
         if (is_null($attachmentField)) {
             return new Attachment();
         }

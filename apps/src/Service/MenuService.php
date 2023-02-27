@@ -126,7 +126,7 @@ class MenuService
 
     protected function deleteParent(
         array $children,
-        $key,
+        ItemInterface|string $key,
         MenuItem $menuItem
     ): void
     {

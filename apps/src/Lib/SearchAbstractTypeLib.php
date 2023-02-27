@@ -71,7 +71,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
         return '';
     }
 
-    protected function addName(FormBuilderInterface $formBuilder)
+    protected function addName(FormBuilderInterface $formBuilder): void
     {
         $formBuilder->add(
             'name',
@@ -85,7 +85,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
         );
     }
 
-    protected function addPublished(FormBuilderInterface $formBuilder)
+    protected function addPublished(FormBuilderInterface $formBuilder): void
     {
         $formBuilder->add(
             'published',
@@ -99,7 +99,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
         );
     }
 
-    protected function addRefCategory(FormBuilderInterface $formBuilder)
+    protected function addRefCategory(FormBuilderInterface $formBuilder): void
     {
         $formBuilder->add(
             'refcategory',
@@ -118,7 +118,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
         );
     }
 
-    protected function addRefUser(FormBuilderInterface $formBuilder)
+    protected function addRefUser(FormBuilderInterface $formBuilder): void
     {
         $formBuilder->add(
             'refuser',
@@ -140,10 +140,10 @@ abstract class SearchAbstractTypeLib extends AbstractType
     protected function showState(
         FormBuilderInterface $formBuilder,
         object $entityclass,
-        $label,
-        $help,
-        $placeholder
-    )
+        string $label,
+        string $help,
+        string $placeholder
+    ): void
     {
         $workflow = $this->workflowService->get($entityclass);
         $definition = $workflow->getDefinition();

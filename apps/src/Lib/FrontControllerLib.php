@@ -39,7 +39,7 @@ abstract class FrontControllerLib extends ControllerLib
         return parent::render($view, $parameters, $response);
     }
 
-    private function setParameters($parameters)
+    private function setParameters(array $parameters): array
     {
         $blocksArray = $this->getRepository(Block::class)->getDataByRegion();
         $content = null;

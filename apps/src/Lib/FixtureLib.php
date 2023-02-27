@@ -301,7 +301,7 @@ abstract class FixtureLib extends Fixture
                     if (!is_dir($path)) {
                         mkdir($path, 0777, true);
                     }
-    
+
                     $file->move(
                         $path,
                         $filename

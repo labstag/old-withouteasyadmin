@@ -28,7 +28,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add($entity): void
+    public function add(mixed $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush();
@@ -41,7 +41,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $this->setQuery($queryBuilder, $get);
     }
 
-    public function findEnableByGroupe(?Groupe $groupe = null)
+    public function findEnableByGroupe(?Groupe $groupe = null): mixed
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $query = $queryBuilder->where(
@@ -58,7 +58,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    public function findEnableByUser(?User $user = null)
+    public function findEnableByUser(?User $user = null): mixed
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $query = $queryBuilder->where(
@@ -104,7 +104,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         Query $query,
         ?int $limit = null,
         ?int $offset = null
-    )
+    ): mixed
     {
         $query->setMaxResults($limit);
         $query->setFirstResult($offset);

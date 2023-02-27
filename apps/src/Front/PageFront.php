@@ -46,21 +46,20 @@ class PageFront extends FrontLib
     }
 
     protected function setBreadcrumbPage(
-        ?FrontInterface $front,
+        ?Page $page,
         array $breadcrumb
     ): array
     {
-        // @var Page $entityPublicLib
         $breadcrumb[] = [
             'route' => $this->router->generate(
                 'front',
                 [
-                    'slug' => $front->getSlug(),
+                    'slug' => $page->getSlug(),
                 ]
             ),
-            'title' => $front->getName(),
+            'title' => $page->getName(),
         ];
-        $parent = $front->getParent();
+        $parent = $page->getParent();
         if (is_null($parent)) {
             return $breadcrumb;
         }

@@ -8,7 +8,6 @@ use Labstag\Entity\Workflow;
 use Labstag\Entity\WorkflowGroupe;
 use Labstag\Entity\WorkflowUser;
 use Labstag\Lib\ApiControllerLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\WorkflowGroupeRepository;
 use Labstag\Repository\WorkflowRepository;
@@ -28,7 +27,7 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowRepository $workflowRepository,
         Request $request,
         Groupe $groupe,
-        WorkflowGroupeRequestHandler $workflowGroupeRequestHandler
+        WorkflowUserRequestHandler $workflowUserRequestHandler
     ): JsonResponse
     {
         return $this->setWorkflow(
@@ -36,7 +35,7 @@ class GuardWorkflowController extends ApiControllerLib
             $workflowRepository,
             $request,
             $groupe,
-            $workflowGroupeRequestHandler
+            $workflowUserRequestHandler
         );
     }
 
@@ -167,8 +166,8 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowUserRepository $workflowUserRepository,
         WorkflowRepository $workflowRepository,
         Request $request,
-        $entity,
-        RequestHandlerLib $requestHandlerLib
+        mixed $entity,
+        WorkflowUserRequestHandler $workflowUserRequestHandler
     ): JsonResponse
     {
         $data = [
@@ -178,15 +177,14 @@ class GuardWorkflowController extends ApiControllerLib
         ];
         $state = $request->request->all('state');
         $workflows = $workflowRepository->findAll();
-        // @var WorkflowUser $route
         foreach ($workflows as $workflow) {
             $data = $this->setWorkflowUser(
                 $workflowUserRepository,
                 $data,
                 $entity,
                 $workflow,
-                $state,
-                $requestHandlerLib
+                (bool) $state,
+                $workflowUserRequestHandler
             );
         }
 
