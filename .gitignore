@@ -9,7 +9,8 @@ apps/bin/
 apps/public/assets
 apps/public/docs
 apps/public/uploads
-docker-compose-override.yml
+docker-compose-*.yml
+!docker-compose-override.yml
 mariadb
 node_modules
 report
