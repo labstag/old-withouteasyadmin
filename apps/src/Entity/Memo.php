@@ -11,6 +11,7 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\MemoRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -24,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Uploadable
  */
-class Memo implements Stringable
+class Memo implements Stringable, FrontInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;

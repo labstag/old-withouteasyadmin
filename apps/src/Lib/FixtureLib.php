@@ -284,28 +284,30 @@ abstract class FixtureLib extends Fixture
             try {
                 /** @var PicsumProvider $generator */
                 $image = $generator->picsum(null, 640, 480, true);
-                $content = file_get_contents($image);
-                // @var resource $tmpfile
-                $tmpfile = tmpfile();
-                $data = stream_get_meta_data($tmpfile);
-                file_put_contents($data['uri'], $content);
-                $file = new UploadedFile(
-                    $data['uri'],
-                    $slug.'.jpg',
-                    (string) finfo_file($finfo, $data['uri']),
-                    null,
-                    true
-                );
-                $filename = $file->getClientOriginalName();
-                if (!is_dir($path)) {
-                    mkdir($path, 0777, true);
+                if (!empty($image)) {
+                    $content = file_get_contents($image);
+                    // @var resource $tmpfile
+                    $tmpfile = tmpfile();
+                    $data = stream_get_meta_data($tmpfile);
+                    file_put_contents($data['uri'], $content);
+                    $file = new UploadedFile(
+                        $data['uri'],
+                        $slug.'.jpg',
+                        (string) finfo_file($finfo, $data['uri']),
+                        null,
+                        true
+                    );
+                    $filename = $file->getClientOriginalName();
+                    if (!is_dir($path)) {
+                        mkdir($path, 0777, true);
+                    }
+    
+                    $file->move(
+                        $path,
+                        $filename
+                    );
+                    $file = $path.'/'.$filename;
                 }
-
-                $file->move(
-                    $path,
-                    $filename
-                );
-                $file = $path.'/'.$filename;
             } catch (Exception $exception) {
                 $this->errorService->set($exception);
                 echo $exception->getMessage();
