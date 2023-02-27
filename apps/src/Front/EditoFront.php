@@ -4,22 +4,22 @@ namespace Labstag\Front;
 
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Edito;
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 
 class EditoFront extends PageFront
 {
     public function setBreadcrumb(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $breadcrumb
     ): array
     {
-        if (!$entityPublicLib instanceof Edito) {
+        if (!$front instanceof Edito) {
             return $breadcrumb;
         }
 
         $breadcrumb[] = [
             'route' => $this->router->generate('front_edito'),
-            'title' => $entityPublicLib->getTitle(),
+            'title' => $front->getTitle(),
         ];
 
         $page = $this->pageRepository->findOneBy(
@@ -30,17 +30,17 @@ class EditoFront extends PageFront
     }
 
     public function setMeta(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $meta
     ): array
     {
-        if (!$entityPublicLib instanceof Edito) {
+        if (!$front instanceof Edito) {
             return $meta;
         }
 
-        $meta = $this->getMeta($entityPublicLib->getMetas(), $meta);
-        if ($entityPublicLib->getFond() instanceof Attachment) {
-            $meta['image'] = $entityPublicLib->getFond()->getName();
+        $meta = $this->getMeta($front->getMetas(), $meta);
+        if ($front->getFond() instanceof Attachment) {
+            $meta['image'] = $front->getFond()->getName();
         }
 
         return $meta;

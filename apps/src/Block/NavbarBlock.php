@@ -5,9 +5,9 @@ namespace Labstag\Block;
 use Labstag\Entity\Block\Navbar;
 use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Block\NavbarType;
+use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Lib\BlockLib;
-use Labstag\Lib\EntityBlockLib;
-use Labstag\Lib\EntityPublicLib;
 use Labstag\Service\MenuService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -24,9 +24,9 @@ class NavbarBlock extends BlockLib
         parent::__construct($translator, $twigEnvironment);
     }
 
-    public function getCode(EntityBlockLib $entityBlockLib, ?EntityPublicLib $entityPublicLib): string
+    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
     {
-        unset($entityBlockLib, $entityPublicLib);
+        unset($entityBlockLib, $front);
 
         return 'navbar';
     }
@@ -56,14 +56,14 @@ class NavbarBlock extends BlockLib
         return true;
     }
 
-    public function show(Navbar $navbar, ?EntityPublicLib $entityPublicLib): Response
+    public function show(Navbar $navbar, ?FrontInterface $front): Response
     {
         $menu = $navbar->getMenu();
         $item = ($menu instanceof Menu) ? $this->menuService->createMenu($menu) : '';
         $show = (0 != count($item->getChildren()));
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($navbar, $entityPublicLib)),
+            $this->getTemplateFile($this->getCode($navbar, $front)),
             [
                 'show'  => $show,
                 'item'  => $item,

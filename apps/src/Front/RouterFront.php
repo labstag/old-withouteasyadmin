@@ -2,26 +2,26 @@
 
 namespace Labstag\Front;
 
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 
 class RouterFront extends PageFront
 {
     public function setBreadcrumb(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $breadcrumb
     ): array
     {
-        unset($entityPublicLib);
+        unset($front);
 
         return $breadcrumb;
     }
 
     public function setMeta(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $meta
     ): array
     {
-        unset($entityPublicLib);
+        unset($front);
 
         return $meta;
     }

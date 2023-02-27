@@ -4,7 +4,7 @@ namespace Labstag\Entity\Paragraph;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
-use Labstag\Lib\EntityParagraphLib;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\Paragraph\BookmarkRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=BookmarkRepository::class)
  */
-class Bookmark implements Stringable, EntityParagraphLib
+class Bookmark implements Stringable, ParagraphInterface
 {
 
     /**

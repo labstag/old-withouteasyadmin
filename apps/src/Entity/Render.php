@@ -6,14 +6,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\RenderRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=RenderRepository::class)
  */
-class Render implements EntityPublicLib
+class Render implements FrontInterface
 {
     use SoftDeleteableEntity;
 

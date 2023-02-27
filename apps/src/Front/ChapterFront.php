@@ -3,16 +3,16 @@
 namespace Labstag\Front;
 
 use Labstag\Entity\Chapter;
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 
 class ChapterFront extends HistoryFront
 {
     public function setBreadcrumb(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $breadcrumb
     ): array
     {
-        if (!$entityPublicLib instanceof Chapter) {
+        if (!$front instanceof Chapter) {
             return $breadcrumb;
         }
 
@@ -20,27 +20,27 @@ class ChapterFront extends HistoryFront
             'route' => $this->router->generate(
                 'front_history_chapter',
                 [
-                    'history' => $entityPublicLib->getRefhistory()->getSlug(),
-                    'chapter' => $entityPublicLib->getSlug(),
+                    'history' => $front->getRefhistory()->getSlug(),
+                    'chapter' => $front->getSlug(),
                 ]
             ),
-            'title' => $entityPublicLib->getName(),
+            'title' => $front->getName(),
         ];
 
-        return $this->setBreadcrumbHistory($entityPublicLib->getRefhistory(), $breadcrumb);
+        return $this->setBreadcrumbHistory($front->getRefhistory(), $breadcrumb);
     }
 
     public function setMeta(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $meta
     ): array
     {
-        if (!$entityPublicLib instanceof Chapter) {
+        if (!$front instanceof Chapter) {
             return $meta;
         }
 
-        $history = $this->getMeta($entityPublicLib->getRefhistory()->getMetas(), $meta);
-        $meta = $this->getMeta($entityPublicLib->getMetas(), $meta);
+        $history = $this->getMeta($front->getRefhistory()->getMetas(), $meta);
+        $meta = $this->getMeta($front->getMetas(), $meta);
         if (isset($history['title'])) {
             $meta['title'] = $meta['title'].' - '.$history['title'];
         }

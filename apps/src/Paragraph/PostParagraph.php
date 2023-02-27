@@ -6,14 +6,14 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post;
 use Labstag\Entity\Post as EntityPost;
 use Labstag\Form\Admin\Paragraph\PostType;
-use Labstag\Lib\EntityParagraphLib;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostParagraph extends ParagraphLib
 {
-    public function getCode(EntityParagraphLib $entityParagraphLib): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
         unset($entityParagraphLib);
 

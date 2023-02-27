@@ -3,17 +3,17 @@
 namespace Labstag\Front;
 
 use Labstag\Entity\Page;
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Lib\FrontLib;
 
 class PageFront extends FrontLib
 {
     public function setBreadcrumb(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $breadcrumb
     ): array
     {
-        if (!$entityPublicLib instanceof Page) {
+        if (!$front instanceof Page) {
             return $breadcrumb;
         }
 
@@ -21,32 +21,32 @@ class PageFront extends FrontLib
             'route' => $this->router->generate(
                 'front',
                 [
-                    'slug' => $entityPublicLib->getSlug(),
+                    'slug' => $front->getSlug(),
                 ]
             ),
-            'title' => $entityPublicLib->getName(),
+            'title' => $front->getName(),
         ];
-        if ($entityPublicLib->getParent() instanceof Page) {
-            $breadcrumb = $this->setBreadcrumbPage($entityPublicLib->getParent(), $breadcrumb);
+        if ($front->getParent() instanceof Page) {
+            $breadcrumb = $this->setBreadcrumbPage($front->getParent(), $breadcrumb);
         }
 
         return $breadcrumb;
     }
 
     public function setMeta(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $meta
     ): array
     {
-        if (!$entityPublicLib instanceof Page) {
+        if (!$front instanceof Page) {
             return $meta;
         }
 
-        return $this->getMeta($entityPublicLib->getMetas(), $meta);
+        return $this->getMeta($front->getMetas(), $meta);
     }
 
     protected function setBreadcrumbPage(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $breadcrumb
     ): array
     {
@@ -55,12 +55,12 @@ class PageFront extends FrontLib
             'route' => $this->router->generate(
                 'front',
                 [
-                    'slug' => $entityPublicLib->getSlug(),
+                    'slug' => $front->getSlug(),
                 ]
             ),
-            'title' => $entityPublicLib->getName(),
+            'title' => $front->getName(),
         ];
-        $parent = $entityPublicLib->getParent();
+        $parent = $front->getParent();
         if (is_null($parent)) {
             return $breadcrumb;
         }

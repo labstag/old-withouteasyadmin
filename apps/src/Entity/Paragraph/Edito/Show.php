@@ -4,7 +4,7 @@ namespace Labstag\Entity\Paragraph\Edito;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
-use Labstag\Lib\EntityParagraphLib;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\Paragraph\Edito\ShowRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=ShowRepository::class)
  */
-class Show implements Stringable, EntityParagraphLib
+class Show implements Stringable, ParagraphInterface
 {
 
     /**

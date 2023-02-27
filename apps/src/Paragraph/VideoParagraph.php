@@ -16,7 +16,7 @@ use Labstag\Entity\Paragraph;
 use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\VideoType;
-use Labstag\Lib\EntityParagraphLib;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\AttachmentRepository;
@@ -29,7 +29,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class VideoParagraph extends ParagraphLib
 {
-    public function getCode(EntityParagraphLib $entityParagraphLib): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
         unset($entityParagraphLib);
 

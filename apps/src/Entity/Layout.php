@@ -7,14 +7,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Block\Custom;
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\LayoutRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=LayoutRepository::class)
  */
-class Layout implements EntityPublicLib
+class Layout implements FrontInterface
 {
     use SoftDeleteableEntity;
 

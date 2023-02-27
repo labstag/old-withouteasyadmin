@@ -6,14 +6,14 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post\Archive;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\ArchiveType;
-use Labstag\Lib\EntityParagraphLib;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class ArchiveParagraph extends ParagraphLib
 {
-    public function getCode(EntityParagraphLib $entityParagraphLib): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
         unset($entityParagraphLib);
 

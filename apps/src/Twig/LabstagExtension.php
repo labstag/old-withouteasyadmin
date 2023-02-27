@@ -6,6 +6,8 @@ use Labstag\Entity\Attachment;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Route;
 use Labstag\Entity\User;
+use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\GuardService;
 use Labstag\Service\ParagraphService;
@@ -48,7 +50,7 @@ class LabstagExtension extends AbstractExtension
     {
     }
 
-    public function classEntity($entity): string
+    public function classEntity(object $entity): string
     {
         $class = substr(
             (string) $entity::class,
@@ -58,9 +60,9 @@ class LabstagExtension extends AbstractExtension
         return trim(strtolower($class));
     }
 
-    public function debugBegin($data): string
+    public function debugBegin(array $data): string
     {
-        if (is_null($data) || 0 == (is_countable($data) ? count($data) : 0)) {
+        if (0 == (is_countable($data) ? count($data) : 0)) {
             return '';
         }
 
@@ -77,16 +79,16 @@ class LabstagExtension extends AbstractExtension
         return $html.("BEGIN OUTPUT from '".$data['view']."' -->\n");
     }
 
-    public function debugEnd($data): string
+    public function debugEnd(array $data): string
     {
-        if (is_null($data) || 0 == (is_countable($data) ? count($data) : 0)) {
+        if (0 == (is_countable($data) ? count($data) : 0)) {
             return '';
         }
 
         return "\n<!-- END OUTPUT from '".$data['view']."' -->\n";
     }
 
-    public function formClass($class)
+    public function formClass(mixed $class): string
     {
         $file = 'forms/default.html.twig';
 
@@ -136,7 +138,7 @@ class LabstagExtension extends AbstractExtension
         return $newFile;
     }
 
-    public function getAttachment($data): ?Attachment
+    public function getAttachment(mixed $data): ?Attachment
     {
         if (is_null($data)) {
             return null;
@@ -156,16 +158,16 @@ class LabstagExtension extends AbstractExtension
         return $attachment;
     }
 
-    public function getBlockClass($data): string
+    public function getBlockClass(BlockInterface $entityBlockLib): string
     {
-        $block = $data->getBlock();
+        $block = $entityBlockLib->getBlock();
 
         return 'block-'.$block->getType();
     }
 
-    public function getBlockId($data): string
+    public function getBlockId(BlockInterface $entityBlockLib): string
     {
-        $block = $data->getBlock();
+        $block = $entityBlockLib->getBlock();
 
         return 'block-'.$block->getType().'-'.$block->getId();
     }
@@ -198,9 +200,9 @@ class LabstagExtension extends AbstractExtension
         return $functions;
     }
 
-    public function getParagraphClass($data): string
+    public function getParagraphClass(ParagraphInterface $entityParagraphLib): string
     {
-        $paragraph = $data->getParagraph();
+        $paragraph = $entityParagraphLib->getParagraph();
         $dataClass = [
             'paragraph-'.$paragraph->getType(),
         ];
@@ -218,21 +220,21 @@ class LabstagExtension extends AbstractExtension
         return implode(' ', $dataClass);
     }
 
-    public function getParagraphId($data): string
+    public function getParagraphId(ParagraphInterface $entityParagraphLib): string
     {
-        $paragraph = $data->getParagraph();
+        $paragraph = $entityParagraphLib->getParagraph();
 
         return 'paragraph-'.$paragraph->getType().'-'.$paragraph->getId();
     }
 
-    public function getParagraphName($code)
+    public function getParagraphName(string $code): string
     {
         return $this->paragraphService->getNameByCode($code);
     }
 
-    public function getTextColorSection($data): string
+    public function getTextColorSection(ParagraphInterface $entityParagraphLib): string
     {
-        $paragraph = $data->getParagraph();
+        $paragraph = $entityParagraphLib->getParagraph();
         $code = $paragraph->getColor();
 
         return empty($code) ? '' : 'm--theme-'.$code;
@@ -295,7 +297,7 @@ class LabstagExtension extends AbstractExtension
         return parse_url($url, PHP_URL_PATH);
     }
 
-    public function verifPhone(string $country, string $phone)
+    public function verifPhone(string $country, string $phone): bool
     {
         $verif = $this->phoneService->verif($phone, $country);
 
@@ -320,7 +322,7 @@ class LabstagExtension extends AbstractExtension
 
     private function dump(mixed $var): void
     {
-        if ('dev' != $this->getParameter('kernel.debug')) {
+        if ('dev' != $this->containerBag->get('kernel.debug')) {
             return;
         }
 
@@ -352,15 +354,13 @@ class LabstagExtension extends AbstractExtension
         ];
     }
 
-    private function getParameter(string $name)
-    {
-        return $this->containerBag->get($name);
-    }
-
     /**
      * @return mixed[]
      */
-    private function setFilesformClass($type, $class): array
+    private function setFilesformClass(
+        string $type,
+        object $class
+    ): array
     {
         $htmltwig = '.html.twig';
         $files = [

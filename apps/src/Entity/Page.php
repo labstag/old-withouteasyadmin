@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\PageRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Page implements Stringable, EntityPublicLib
+class Page implements Stringable, FrontInterface
 {
     use SoftDeleteableEntity;
 

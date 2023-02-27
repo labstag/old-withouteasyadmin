@@ -3,24 +3,24 @@
 namespace Labstag\Front;
 
 use Labstag\Entity\History;
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 
 class HistoryFront extends PageFront
 {
     public function setBreadcrumb(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $breadcrumb
     ): array
     {
-        return $this->setBreadcrumbHistory($entityPublicLib, $breadcrumb);
+        return $this->setBreadcrumbHistory($front, $breadcrumb);
     }
 
     public function setBreadcrumbHistory(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $breadcrumb
     ): array
     {
-        if (!$entityPublicLib instanceof History) {
+        if (!$front instanceof History) {
             return $breadcrumb;
         }
 
@@ -28,10 +28,10 @@ class HistoryFront extends PageFront
             'route' => $this->router->generate(
                 'front_history',
                 [
-                    'slug' => $entityPublicLib->getSlug(),
+                    'slug' => $front->getSlug(),
                 ]
             ),
-            'title' => $entityPublicLib->getName(),
+            'title' => $front->getName(),
         ];
 
         $page = $this->pageRepository->findOneBy(
@@ -42,14 +42,14 @@ class HistoryFront extends PageFront
     }
 
     public function setMeta(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $meta
     ): array
     {
-        if (!$entityPublicLib instanceof History) {
+        if (!$front instanceof History) {
             return $meta;
         }
 
-        return $this->getMeta($entityPublicLib->getMetas(), $meta);
+        return $this->getMeta($front->getMetas(), $meta);
     }
 }

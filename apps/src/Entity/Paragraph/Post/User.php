@@ -4,7 +4,7 @@ namespace Labstag\Entity\Paragraph\Post;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
-use Labstag\Lib\EntityParagraphLib;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\Paragraph\Post\UserRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class User implements Stringable, EntityParagraphLib
+class User implements Stringable, ParagraphInterface
 {
 
     /**

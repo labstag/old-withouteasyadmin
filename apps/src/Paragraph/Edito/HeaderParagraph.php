@@ -6,14 +6,14 @@ use Labstag\Entity\Edito;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Edito\Header;
 use Labstag\Form\Admin\Paragraph\Edito\HeaderType;
-use Labstag\Lib\EntityParagraphLib;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\EditoRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class HeaderParagraph extends ParagraphLib
 {
-    public function getCode(EntityParagraphLib $entityParagraphLib): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
         unset($entityParagraphLib);
 

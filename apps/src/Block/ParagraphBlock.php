@@ -4,9 +4,9 @@ namespace Labstag\Block;
 
 use Labstag\Entity\Block\Paragraph;
 use Labstag\Form\Admin\Block\ParagraphType;
+use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Lib\BlockLib;
-use Labstag\Lib\EntityBlockLib;
-use Labstag\Lib\EntityPublicLib;
 use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -23,9 +23,9 @@ class ParagraphBlock extends BlockLib
         parent::__construct($translator, $twigEnvironment);
     }
 
-    public function getCode(EntityBlockLib $entityBlockLib, ?EntityPublicLib $entityPublicLib): string
+    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
     {
-        unset($entityBlockLib, $entityPublicLib);
+        unset($entityBlockLib, $front);
 
         return 'paragraph';
     }
@@ -55,12 +55,12 @@ class ParagraphBlock extends BlockLib
         return false;
     }
 
-    public function show(Paragraph $paragraph, ?EntityPublicLib $entityPublicLib): Response
+    public function show(Paragraph $paragraph, ?FrontInterface $front): Response
     {
-        $data = $this->setParagraphs($entityPublicLib);
+        $data = $this->setParagraphs($front);
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($paragraph, $entityPublicLib)),
+            $this->getTemplateFile($this->getCode($paragraph, $front)),
             [
                 'paragraphs' => $data,
                 'block'      => $paragraph,
@@ -68,18 +68,18 @@ class ParagraphBlock extends BlockLib
         );
     }
 
-    private function setParagraphs(?EntityPublicLib $entityPublicLib): array
+    private function setParagraphs(?FrontInterface $front): array
     {
         $paragraphs = [];
-        if (is_null($entityPublicLib)) {
+        if (is_null($front)) {
             return $paragraphs;
         }
 
-        $methods = get_class_methods($entityPublicLib);
+        $methods = get_class_methods($front);
         if (!in_array('getParagraphs', $methods)) {
             return $paragraphs;
         }
 
-        return $this->getParagraphsArray($this->paragraphService, $entityPublicLib, $paragraphs);
+        return $this->getParagraphsArray($this->paragraphService, $front, $paragraphs);
     }
 }

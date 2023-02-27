@@ -1,10 +1,10 @@
 <?php
 
-namespace Labstag\Lib;
+namespace Labstag\Interfaces;
 
 use Doctrine\Common\Collections\Collection;
 
-interface EntityPublicLib
+interface FrontInterface
 {
     public function getParagraphs(): Collection;
 }

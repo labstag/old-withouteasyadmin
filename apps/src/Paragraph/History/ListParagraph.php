@@ -6,14 +6,14 @@ use Labstag\Entity\History;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\History\Liste;
 use Labstag\Form\Admin\Paragraph\History\ListType;
-use Labstag\Lib\EntityParagraphLib;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib
 {
-    public function getCode(EntityParagraphLib $entityParagraphLib): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
         unset($entityParagraphLib);
 

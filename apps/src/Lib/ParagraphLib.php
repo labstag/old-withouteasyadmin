@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Paragraph;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
@@ -42,7 +43,7 @@ abstract class ParagraphLib extends AbstractController
         $this->request = $requestStack->getCurrentRequest();
     }
 
-    public function getCode(EntityParagraphLib $entityParagraphLib): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
         unset($entityParagraphLib);
 

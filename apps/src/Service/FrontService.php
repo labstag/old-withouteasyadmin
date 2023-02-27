@@ -2,7 +2,7 @@
 
 namespace Labstag\Service;
 
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
@@ -52,21 +52,21 @@ class FrontService
         return $this->configMetaDescription($meta);
     }
 
-    public function setBreadcrumb(?EntityPublicLib $entityPublicLib): array
+    public function setBreadcrumb(?FrontInterface $front): array
     {
         $breadcrumb = [];
         foreach ($this->frontclass as $row) {
-            $breadcrumb = $row->setBreadcrumb($entityPublicLib, $breadcrumb);
+            $breadcrumb = $row->setBreadcrumb($front, $breadcrumb);
         }
 
         return array_reverse($breadcrumb);
     }
 
-    public function setMeta(?EntityPublicLib $entityPublicLib): array
+    public function setMeta(?FrontInterface $front): array
     {
         $meta = [];
         foreach ($this->frontclass as $row) {
-            $meta = $row->setMeta($entityPublicLib, $meta);
+            $meta = $row->setMeta($front, $meta);
         }
 
         foreach ($meta as $key => $value) {

@@ -46,7 +46,7 @@ class GuardRouteController extends ApiControllerLib
                 $data,
                 $groupe,
                 $route,
-                $state,
+                (bool) $state,
                 $routeGroupeRequestHandler
             );
         }
@@ -199,20 +199,20 @@ class GuardRouteController extends ApiControllerLib
     private function setRouteGroupe(
         RouteGroupeRepository $routeGroupeRepository,
         GuardService $guardService,
-        $data,
+        array $data,
         ?Groupe $groupe,
-        ?Route $route,
-        $state,
-        $routeGroupeRH
-    )
+        ?EntityRoute $entityRoute,
+        bool $state,
+        RouteGroupeRequestHandler $routeGroupeRequestHandler
+    ): array
     {
         $routeGroupe = $routeGroupeRepository->findOneBy(
             [
                 'refgroupe' => $groupe,
-                'refroute'  => $route,
+                'refroute'  => $entityRoute,
             ]
         );
-        if ('0' === $state) {
+        if (false === $state) {
             if ($routeGroupe instanceof RouteGroupe) {
                 $data['delete'] = 1;
                 $routeGroupeRepository->remove($routeGroupe);
@@ -221,7 +221,7 @@ class GuardRouteController extends ApiControllerLib
             return $data;
         }
 
-        $enable = $guardService->guardRouteEnableGroupe($route->getName(), $groupe);
+        $enable = $guardService->guardRouteEnableGroupe($entityRoute, $groupe);
         if ('superadmin' === $groupe->getCode() || !$enable) {
             return $data;
         }
@@ -230,18 +230,15 @@ class GuardRouteController extends ApiControllerLib
             $routeGroupe = new RouteGroupe();
             $data['add'] = 1;
             $routeGroupe->setRefgroupe($groupe);
-            $routeGroupe->setRefroute($route);
+            $routeGroupe->setRefroute($entityRoute);
             $old = clone $routeGroupe;
             $routeGroupe->setState($state);
-            $routeGroupeRH->handle($old, $routeGroupe);
+            $routeGroupeRequestHandler->handle($old, $routeGroupe);
         }
 
         return $data;
     }
 
-    /**
-     * @return mixed[]
-     */
     private function setRouteUser(
         RouteUserRepository $routeUserRepository,
         guardService $guardService,
@@ -253,7 +250,7 @@ class GuardRouteController extends ApiControllerLib
     ): array
     {
         $routeUser = $routeUserRepository->findOneBy(['refuser' => $user, 'refroute' => $entityRoute]);
-        if ('0' === $state) {
+        if (false == $state) {
             if ($routeUser instanceof RouteUser) {
                 $data['delete'] = 1;
                 $routeUserRepository->remove($routeUser);
@@ -262,6 +259,7 @@ class GuardRouteController extends ApiControllerLib
             return $data;
         }
 
+        /** @var User $user */
         $enable = $guardService->guardRouteEnableGroupe($entityRoute, $user->getRefgroupe());
         if ('superadmin' === $user->getRefgroupe()->getCode() || !$enable) {
             return $data;

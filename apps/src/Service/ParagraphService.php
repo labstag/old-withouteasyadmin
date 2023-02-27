@@ -9,7 +9,7 @@ use Labstag\Entity\Memo;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph;
 use Labstag\Entity\Post;
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\Response;
@@ -235,15 +235,15 @@ class ParagraphService
         return $template;
     }
 
-    private function getMethod(EntityPublicLib $entityPublicLib): ?string
+    private function getMethod(FrontInterface $front): ?string
     {
         return match (true) {
-            $entityPublicLib instanceof Chapter => 'setChapter',
-            $entityPublicLib instanceof History => 'setHistory',
-            $entityPublicLib instanceof Layout => 'setLayout',
-            $entityPublicLib instanceof Memo => 'setMemo',
-            $entityPublicLib instanceof Page => 'setPage',
-            $entityPublicLib instanceof Post => 'setPost',
+            $front instanceof Chapter => 'setChapter',
+            $front instanceof History => 'setHistory',
+            $front instanceof Layout => 'setLayout',
+            $front instanceof Memo => 'setMemo',
+            $front instanceof Page => 'setPage',
+            $front instanceof Post => 'setPost',
             default => null,
         };
     }

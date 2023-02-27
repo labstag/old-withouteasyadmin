@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
-use Labstag\Lib\EntityBlockLib;
+use Labstag\Interfaces\BlockInterface;
 use Labstag\Repository\Block\HeaderRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=HeaderRepository::class)
  */
-class Header implements Stringable, EntityBlockLib
+class Header implements Stringable, BlockInterface
 {
 
     /**

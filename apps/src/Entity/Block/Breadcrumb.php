@@ -4,7 +4,7 @@ namespace Labstag\Entity\Block;
 
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
-use Labstag\Lib\EntityBlockLib;
+use Labstag\Interfaces\BlockInterface;
 use Labstag\Repository\Block\BreadcrumbRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=BreadcrumbRepository::class)
  */
-class Breadcrumb implements Stringable, EntityBlockLib
+class Breadcrumb implements Stringable, BlockInterface
 {
 
     /**

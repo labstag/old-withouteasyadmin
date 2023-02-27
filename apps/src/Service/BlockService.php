@@ -3,9 +3,10 @@
 namespace Labstag\Service;
 
 use Labstag\Entity\Block;
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\BlockRepository;
 use ReflectionClass;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class BlockService
@@ -62,7 +63,7 @@ class BlockService
         $reflectionClass = new ReflectionClass($block);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
-            if ($reflectionProperty->getName() == $field) {
+            if ($reflectionProperty->getName() === $field) {
                 $entities = $propertyAccessor->getValue($block, $field);
                 $entity = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
 
@@ -73,7 +74,7 @@ class BlockService
         return $entity;
     }
 
-    public function getEntityField(Block $block)
+    public function getEntityField(Block $block): ?string
     {
         $field = null;
         $childentity = $this->getTypeEntity($block);
@@ -94,7 +95,7 @@ class BlockService
         return $field;
     }
 
-    public function getName(Block $block)
+    public function getName(Block $block): ?string
     {
         $type = $block->getType();
         $form = null;
@@ -136,7 +137,7 @@ class BlockService
         return $block;
     }
 
-    public function getTypeForm(Block $block)
+    public function getTypeForm(Block $block): ?string
     {
         $type = $block->getType();
         $form = null;
@@ -151,7 +152,7 @@ class BlockService
         return $form;
     }
 
-    public function isShow(Block $block)
+    public function isShow(Block $block): bool
     {
         $type = $block->getType();
         $show = false;
@@ -166,7 +167,10 @@ class BlockService
         return $show;
     }
 
-    public function showContent(Block $block, ?EntityPublicLib $entityPublicLib)
+    public function showContent(
+        Block $block,
+        ?FrontInterface $front
+    ): ?Response
     {
         $type = $block->getType();
         $entity = $this->getEntity($block);
@@ -177,7 +181,7 @@ class BlockService
 
         foreach ($this->blocksclass as $row) {
             if ($type == $row->getType()) {
-                $html = $row->show($entity, $entityPublicLib);
+                $html = $row->show($entity, $front);
 
                 break;
             }
@@ -188,7 +192,7 @@ class BlockService
 
     public function showTemplate(
         Block $block,
-        ?EntityPublicLib $entityPublicLib
+        ?FrontInterface $front
     ): ?array
     {
         $type = $block->getType();
@@ -200,7 +204,7 @@ class BlockService
 
         foreach ($this->blocksclass as $row) {
             if ($type == $row->getType()) {
-                $template = $row->template($entity, $entityPublicLib);
+                $template = $row->template($entity, $front);
             }
         }
 

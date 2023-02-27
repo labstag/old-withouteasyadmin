@@ -6,17 +6,17 @@ use Labstag\Entity\Attachment;
 use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\Post;
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 
 class PostFront extends PageFront
 {
     public function setBreadcrumb(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $breadcrumb
     ): array
     {
         $breadcrumb = $this->setBreadcrumbRouting($breadcrumb);
-        if (!$entityPublicLib instanceof Post) {
+        if (!$front instanceof Post) {
             return $breadcrumb;
         }
 
@@ -24,10 +24,10 @@ class PostFront extends PageFront
             'route' => $this->router->generate(
                 'front_article',
                 [
-                    'slug' => $entityPublicLib->getSlug(),
+                    'slug' => $front->getSlug(),
                 ]
             ),
-            'title' => $entityPublicLib->getTitle(),
+            'title' => $front->getTitle(),
         ];
 
         $page = $this->pageRepository->findOneBy(
@@ -38,17 +38,17 @@ class PostFront extends PageFront
     }
 
     public function setMeta(
-        ?EntityPublicLib $entityPublicLib,
+        ?FrontInterface $front,
         array $meta
     ): array
     {
-        if (!$entityPublicLib instanceof Post) {
+        if (!$front instanceof Post) {
             return $meta;
         }
 
-        $meta = $this->getMeta($entityPublicLib->getMetas(), $meta);
-        if ($entityPublicLib->getImg() instanceof Attachment) {
-            $meta['image'] = $entityPublicLib->getImg()->getName();
+        $meta = $this->getMeta($front->getMetas(), $meta);
+        if ($front->getImg() instanceof Attachment) {
+            $meta['image'] = $front->getImg()->getName();
         }
 
         return $meta;

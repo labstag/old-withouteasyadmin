@@ -12,7 +12,7 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
-use Labstag\Lib\EntityPublicLib;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\PostRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Uploadable
  */
-class Post implements Stringable, EntityPublicLib
+class Post implements Stringable, FrontInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;

@@ -3,7 +3,6 @@
 namespace Labstag\Entity\Block;
 
 use Doctrine\ORM\Mapping as ORM;
-use Labstag\Lib\EntityBlockLib;
 use Labstag\Repository\Block\LinkRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -13,7 +12,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  *
  * @ORM\Entity(repositoryClass=LinkRepository::class)
  */
-class Link implements Stringable, EntityBlockLib
+class Link implements Stringable
 {
 
     /**
