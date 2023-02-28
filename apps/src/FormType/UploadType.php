@@ -42,7 +42,11 @@ class UploadType extends AbstractType
         $formView->vars['field'] = $field;
         $formView->vars['url'] = null;
         if (null != $field) {
-            $formView->vars['url'] = $this->router->generate('api_attachment_delete', ['attachment' => $field->getId()]);
+            $route = $this->router->generate(
+                'api_attachment_delete',
+                ['attachment' => $field->getId()]
+            );
+            $formView->vars['url'] = $route;
         }
 
         unset($form, $options);

@@ -12,11 +12,15 @@ use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\Paragraph\ImageRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-#[Uploadable]
+#[Uploadable()]
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 #[ORM\Table(name: 'paragraph_image')]
 class Image implements ParagraphInterface
 {
+
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphImages', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'image_id', nullable: true, onDelete: 'SET NULL')]
+    private ?Attachment $attachment = null;
 
     #[UploadableField(filename: 'image', path: 'paragraph/image', slug: 'title')]
     private $file;
@@ -26,10 +30,6 @@ class Image implements ParagraphInterface
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
-
-    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphImages', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'image_id', nullable: true, onDelete: 'SET NULL')]
-    private ?Attachment $attachment = null;
 
     #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'images', cascade: ['persist'])]
     private ?Paragraph $paragraph = null;

@@ -16,14 +16,14 @@ class Layout implements FrontInterface
 {
     use SoftDeleteableEntity;
 
+    #[ORM\ManyToOne(targetEntity: Custom::class, inversedBy: 'layouts', cascade: ['persist'])]
+    private ?Custom $custom = null;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
-
-    #[ORM\ManyToOne(targetEntity: Custom::class, inversedBy: 'layouts', cascade: ['persist'])]
-    private ?Custom $custom = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;

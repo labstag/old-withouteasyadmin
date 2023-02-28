@@ -12,6 +12,9 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class Workflow
 {
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $entity = null;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
@@ -19,15 +22,24 @@ class Workflow
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $entity = null;
-
-    #[ORM\Column(type: 'string', length: 255)]
     private ?string $transition = null;
 
-    #[ORM\OneToMany(targetEntity: WorkflowGroupe::class, mappedBy: 'refworkflow', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: WorkflowGroupe::class,
+        mappedBy: 'refworkflow',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $workflowGroupes;
 
-    #[ORM\OneToMany(targetEntity: WorkflowUser::class, mappedBy: 'refworkflow', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: WorkflowUser::class,
+        mappedBy: 'refworkflow',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $workflowUsers;
 
     public function __construct()

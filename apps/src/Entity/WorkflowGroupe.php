@@ -10,22 +10,22 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class WorkflowGroupe
 {
 
+    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'workflowGroupes', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refgroupe_id')]
+    private ?Groupe $groupe = null;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'workflowGroupes', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'refgroupe_id')]
-    private ?Groupe $groupe = null;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $state = null;
 
     #[ORM\ManyToOne(targetEntity: Workflow::class, inversedBy: 'workflowGroupes', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refworkflow_id')]
     private ?Workflow $workflow = null;
-
-    #[ORM\Column(type: 'boolean')]
-    private ?bool $state = null;
 
     public function getId(): ?string
     {

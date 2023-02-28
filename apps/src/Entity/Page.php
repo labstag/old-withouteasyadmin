@@ -6,12 +6,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Sluggable\Handler\TreeSlugHandler;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\PageRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
-use Gedmo\Sluggable\Handler\TreeSlugHandler;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
@@ -20,14 +20,14 @@ class Page implements Stringable, FrontInterface
 {
     use SoftDeleteableEntity;
 
+    #[ORM\OneToMany(targetEntity: Page::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
+    private $children;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
-
-    #[ORM\OneToMany(targetEntity: Page::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
-    private $children;
 
     #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
     private $metas;
@@ -36,22 +36,25 @@ class Page implements Stringable, FrontInterface
     #[Assert\NotBlank]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
-    #[ORM\OrderBy(['position' => 'ASC'])]
-    private $paragraphs;
-
     #[ORM\ManyToOne(targetEntity: Page::class, inversedBy: 'children', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private ?Page $page = null;
+
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
+    private $paragraphs;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $password = null;
 
     #[Gedmo\Slug(fields: ['name'])]
-    #[Gedmo\SlugHandler(class: TreeSlugHandler::class, options: [
-        'parentRelationField' => 'page',
-        'separator'           => '/',
-    ])]
+    #[Gedmo\SlugHandler(
+        class: TreeSlugHandler::class,
+        options: [
+            'parentRelationField' => 'page',
+            'separator'           => '/',
+        ]
+    )]
     #[ORM\Column(type: 'string', length: 255, nullable: false)]
     private ?string $slug = null;
 

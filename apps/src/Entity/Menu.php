@@ -19,15 +19,23 @@ class Menu implements Stringable
 {
     use SoftDeleteableEntity;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected array $data = [];
+
+    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'children', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Menu $menu = null;
+
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotNull]
+    protected int $position = 0;
+
     #[ORM\OneToMany(targetEntity: Menu::class, mappedBy: 'menu', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
     private $children;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $clef;
-
-    #[ORM\Column(type: 'json', nullable: true)]
-    protected array $data = [];
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $icon;
@@ -41,19 +49,11 @@ class Menu implements Stringable
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'children', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
-    protected ?Menu $menu = null;
-
-    #[ORM\Column(type: 'integer')]
-    #[Assert\NotNull]
-    protected int $position = 0;
+    #[ORM\OneToMany(targetEntity: Navbar::class, mappedBy: 'menu', cascade: ['persist'], orphanRemoval: true)]
+    private $navbars;
 
     #[ORM\Column(type: 'boolean')]
     private $separateur = false;
-
-    #[ORM\OneToMany(targetEntity: Navbar::class, mappedBy: 'menu', cascade: ['persist'], orphanRemoval: true)]
-    private $navbars;
 
     public function __construct()
     {

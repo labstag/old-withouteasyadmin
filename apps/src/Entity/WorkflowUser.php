@@ -17,16 +17,26 @@ class WorkflowUser
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'workflowUsers', cascade: ['persist'])]
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $state = null;
+
+    #[ORM\ManyToOne(
+        targetEntity: User::class,
+        inversedBy: 'workflowUsers',
+        cascade: ['persist']
+    )
+    ]
     #[ORM\JoinColumn(name: 'refuser_id')]
     private ?UserInterface $user = null;
 
-    #[ORM\ManyToOne(targetEntity: Workflow::class, inversedBy: 'workflowUsers', cascade: ['persist'])]
+    #[ORM\ManyToOne(
+        targetEntity: Workflow::class,
+        inversedBy: 'workflowUsers',
+        cascade: ['persist']
+    )
+    ]
     #[ORM\JoinColumn(name: 'refworkflow_id')]
     private ?Workflow $workflow = null;
-
-    #[ORM\Column(type: 'boolean')]
-    private ?bool $state = null;
 
     public function getId(): ?string
     {

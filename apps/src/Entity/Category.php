@@ -17,24 +17,24 @@ class Category implements Stringable
 {
     use SoftDeleteableEntity;
 
+    #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'refcategory', cascade: ['persist'], orphanRemoval: true)]
+    private $bookmarks;
+
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'children', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    private ?Category $category = null;
+
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'category', cascade: ['persist'], orphanRemoval: true)]
+    private $children;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'refcategory', cascade: ['persist'], orphanRemoval: true)]
-    private $bookmarks;
-
-    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'category', cascade: ['persist'], orphanRemoval: true)]
-    private $children;
-
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
-
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'children', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
-    private ?Category $category = null;
 
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'refcategory', cascade: ['persist'], orphanRemoval: true)]
     private $posts;

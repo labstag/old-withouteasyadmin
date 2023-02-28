@@ -2,13 +2,13 @@
 
 namespace Labstag\Annotation;
 
-use Doctrine\Common\Annotations\Annotation\Target;
+use Attribute;
+use Doctrine\Common\Annotations\Annotation;
 
 /**
  * @Annotation
- *
- * @Target("CLASS")
  */
-class Uploadable
+#[Attribute(Attribute::TARGET_CLASS)]
+final class Uploadable
 {
 }

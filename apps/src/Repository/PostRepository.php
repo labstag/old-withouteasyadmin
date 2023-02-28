@@ -8,9 +8,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Post;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @Trashable(url="admin_post_trash")
- */
+#[Trashable(url: 'admin_post_trash')]
 class PostRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

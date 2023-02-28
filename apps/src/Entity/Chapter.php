@@ -21,18 +21,23 @@ class Chapter implements FrontInterface
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
-
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content = null;
 
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $created = null;
+
+    #[ORM\ManyToOne(targetEntity: History::class, inversedBy: 'chapters', cascade: ['persist'])]
+    #[Assert\NotBlank]
+    #[ORM\JoinColumn(name: 'refhistory_id', nullable: false)]
+    private ?History $history = null;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private $id;
 
     #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'chapter', cascade: ['persist'], orphanRemoval: true)]
     private $metas;
@@ -53,11 +58,6 @@ class Chapter implements FrontInterface
     #[Gedmo\Timestampable(on: 'update')]
     #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $published = null;
-
-    #[ORM\ManyToOne(targetEntity: History::class, inversedBy: 'chapters', cascade: ['persist'])]
-    #[Assert\NotBlank]
-    #[ORM\JoinColumn(name: 'refhistory_id', nullable: false)]
-    private ?History $history = null;
 
     #[Gedmo\Slug(updatable: false, fields: ['name'])]
     #[ORM\Column(type: 'string', length: 255)]

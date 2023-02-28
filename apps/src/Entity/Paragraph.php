@@ -24,12 +24,6 @@ class Paragraph
     use HistoryEntity;
     use PostEntity;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
-
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $background = null;
 
@@ -38,6 +32,12 @@ class Paragraph
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $color = null;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private $id;
 
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $images;

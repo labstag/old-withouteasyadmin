@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Uploadable]
+#[Uploadable()]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
@@ -25,44 +25,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    #[ORM\OneToMany(targetEntity: AddressUser::class, mappedBy: 'refuser', cascade: ['persist'], orphanRemoval: true)]
-    private $addressUsers;
-
-    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'users', cascade: ['persist'])]
-    private $avatar;
-
-    #[ORM\OneToMany(targetEntity: Edito::class, mappedBy: 'refuser', cascade: ['persist'], orphanRemoval: true)]
-    private $editos;
-
-    #[ORM\Column(type: 'string', nullable: true)]
-    private $email;
-
-    #[ORM\OneToMany(targetEntity: EmailUser::class, mappedBy: 'refuser', cascade: ['persist'], orphanRemoval: true)]
-    private $emailUsers;
-
-    #[UploadableField(filename: 'avatar', path: 'user/avatar', slug: 'username')]
-    private $file;
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
-
-    #[ORM\OneToMany(targetEntity: LinkUser::class, mappedBy: 'refuser', cascade: ['persist'], orphanRemoval: true)]
-    private $linkUsers;
-
-    #[ORM\OneToMany(targetEntity: Memo::class, mappedBy: 'refuser', cascade: ['persist'], orphanRemoval: true)]
-    private $noteInternes;
-
-    #[ORM\OneToMany(targetEntity: OauthConnectUser::class, mappedBy: 'refuser', cascade: ['persist'], orphanRemoval: true)]
-    private $oauthConnectUsers;
-
     #[ORM\Column(type: 'string', nullable: true)]
     protected string $password;
-
-    #[ORM\OneToMany(targetEntity: PhoneUser::class, mappedBy: 'refuser', cascade: ['persist'], orphanRemoval: true)]
-    private $phoneUsers;
 
     protected ?string $plainPassword = null;
 
@@ -73,23 +37,131 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     #[ORM\Column(type: 'json')]
     protected array $roles = ['ROLE_USER'];
 
-    #[ORM\OneToMany(targetEntity: RouteUser::class, mappedBy: 'refuser', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: AddressUser::class,
+        mappedBy: 'refuser',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private $addressUsers;
+
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'users', cascade: ['persist'])]
+    private $avatar;
+
+    #[ORM\OneToMany(
+        targetEntity: Bookmark::class,
+        mappedBy: 'refuser',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private $bookmarks;
+
+    #[ORM\OneToMany(
+        targetEntity: Edito::class,
+        mappedBy: 'refuser',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private $editos;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private $email;
+
+    #[ORM\OneToMany(
+        targetEntity: EmailUser::class,
+        mappedBy: 'refuser',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private $emailUsers;
+
+    #[UploadableField(filename: 'avatar', path: 'user/avatar', slug: 'username')]
+    private $file;
+
+    #[ORM\OneToMany(
+        targetEntity: History::class,
+        mappedBy: 'refuser',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private $histories;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private $id;
+
+    #[ORM\OneToMany(
+        targetEntity: LinkUser::class,
+        mappedBy: 'refuser',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private $linkUsers;
+
+    #[ORM\OneToMany(
+        targetEntity: Memo::class,
+        mappedBy: 'refuser',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private $noteInternes;
+
+    #[ORM\OneToMany(
+        targetEntity: OauthConnectUser::class,
+        mappedBy: 'refuser',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private $oauthConnectUsers;
+
+    #[ORM\OneToMany(
+        targetEntity: PhoneUser::class,
+        mappedBy: 'refuser',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private $phoneUsers;
+
+    #[ORM\OneToMany(
+        targetEntity: Post::class,
+        mappedBy: 'refuser',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private $posts;
+
+    #[ORM\OneToMany(
+        targetEntity: RouteUser::class,
+        mappedBy: 'refuser',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $routes;
 
     #[ORM\Column(type: 'string', length: 180, unique: true, nullable: false)]
     #[Assert\NotNull]
     private $username;
 
-    #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'refuser', cascade: ['persist'], orphanRemoval: true)]
-    private $bookmarks;
-
-    #[ORM\OneToMany(targetEntity: History::class, mappedBy: 'refuser', cascade: ['persist'], orphanRemoval: true)]
-    private $histories;
-
-    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'refuser', cascade: ['persist'], orphanRemoval: true)]
-    private $posts;
-
-    #[ORM\OneToMany(targetEntity: WorkflowUser::class, mappedBy: 'refuser', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: WorkflowUser::class,
+        mappedBy: 'refuser',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $workflowUsers;
 
     public function __construct()

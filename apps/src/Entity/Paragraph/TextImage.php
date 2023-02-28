@@ -12,11 +12,18 @@ use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\Paragraph\TextImageRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-#[Uploadable]
+#[Uploadable()]
 #[ORM\Entity(repositoryClass: TextImageRepository::class)]
 #[ORM\Table(name: 'paragraph_textimage')]
 class TextImage implements ParagraphInterface
 {
+
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphTextImages', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'image_id', nullable: true, onDelete: 'SET NULL')]
+    private ?Attachment $attachment = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $content = null;
 
     #[UploadableField(filename: 'image', path: 'paragraph/textimage', slug: 'title')]
     private $file;
@@ -26,13 +33,6 @@ class TextImage implements ParagraphInterface
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $content = null;
-
-    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphTextImages', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'image_id', nullable: true, onDelete: 'SET NULL')]
-    private ?Attachment $attachment = null;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $leftimage = false;

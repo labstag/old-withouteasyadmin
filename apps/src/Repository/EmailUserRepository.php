@@ -7,9 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\User;
 
-/**
- * @Trashable(url="admin_emailuser_trash")
- */
+#[Trashable(url: 'admin_emailuser_trash')]
 class EmailUserRepository extends EmailRepository
 {
     public function __construct(ManagerRegistry $managerRegistry)

@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,13 +18,28 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Uploadable]
+#[Uploadable()]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post implements Stringable, FrontInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
+
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'posts', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'img_id')]
+    private ?Attachment $attachment = null;
+
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'posts', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refcategory_id')]
+    private ?Category $category = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $content = null;
+
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $created = null;
 
     #[UploadableField(filename: 'img', path: 'post/img', slug: 'title')]
     private $file;
@@ -35,17 +49,6 @@ class Post implements Stringable, FrontInterface
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $content = null;
-
-    #[Gedmo\Timestampable(on: 'create')]
-    #[ORM\Column(type: 'datetime')]
-    private ?DateTimeInterface $created = null;
-
-    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'posts', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'img_id')]
-    private ?Attachment $attachment = null;
 
     #[ORM\ManyToMany(targetEntity: Libelle::class, mappedBy: 'posts', cascade: ['persist'])]
     private $libelles;
@@ -60,15 +63,6 @@ class Post implements Stringable, FrontInterface
     #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $published = null;
 
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'posts', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'refcategory_id')]
-    private ?Category $category = null;
-
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'posts', cascade: ['persist'])]
-    #[Assert\NotBlank]
-    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
-    private ?UserInterface $user = null;
-
     #[ORM\Column(type: 'boolean')]
     private ?bool $remark = null;
 
@@ -82,6 +76,11 @@ class Post implements Stringable, FrontInterface
     #[Gedmo\Timestampable(on: 'update')]
     #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $updated = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'posts', cascade: ['persist'])]
+    #[Assert\NotBlank]
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
+    private ?UserInterface $user = null;
 
     public function __construct()
     {

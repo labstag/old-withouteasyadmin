@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,31 +15,35 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Uploadable]
+#[Uploadable()]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: BookmarkRepository::class)]
 class Bookmark
 {
     use SoftDeleteableEntity;
 
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'bookmarks', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'img_id')]
+    private ?Attachment $attachment = null;
+
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'bookmarks', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refcategory_id')]
+    private ?Category $category = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $content = null;
+
     #[UploadableField(filename: 'img', path: 'bookmark/img', slug: 'name')]
     private $file;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $icon = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $content = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $icon = null;
-
-    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'bookmarks', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'img_id')]
-    private ?Attachment $attachment = null;
 
     #[ORM\ManyToMany(targetEntity: Libelle::class, inversedBy: 'bookmarks', cascade: ['persist'])]
     private $libelles;
@@ -50,15 +53,6 @@ class Bookmark
 
     #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $published = null;
-
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'bookmarks', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'refcategory_id')]
-    private ?Category $category = null;
-
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookmarks', cascade: ['persist'])]
-    #[Assert\NotBlank]
-    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
-    private ?UserInterface $user = null;
 
     #[Gedmo\Slug(updatable: false, fields: ['name'])]
     #[ORM\Column(type: 'string', length: 255)]
@@ -73,6 +67,11 @@ class Bookmark
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $url = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookmarks', cascade: ['persist'])]
+    #[Assert\NotBlank]
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
+    private ?UserInterface $user = null;
 
     public function __construct()
     {

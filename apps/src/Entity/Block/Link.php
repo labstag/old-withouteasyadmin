@@ -12,12 +12,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class Link implements Stringable
 {
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
-
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $external = null;
 
@@ -26,6 +20,12 @@ class Link implements Stringable
 
     #[ORM\ManyToOne(targetEntity: Header::class, inversedBy: 'links', cascade: ['persist'])]
     private ?Header $header = null;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $title = null;

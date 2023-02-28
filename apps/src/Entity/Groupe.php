@@ -32,13 +32,31 @@ class Groupe implements Stringable
     #[Assert\NotBlank]
     private $name;
 
-    #[ORM\OneToMany(targetEntity: RouteGroupe::class, mappedBy: 'refgroupe', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: RouteGroupe::class,
+        mappedBy: 'refgroupe',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $routes;
 
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'refgroupe', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: User::class,
+        mappedBy: 'refgroupe',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $users;
 
-    #[ORM\OneToMany(targetEntity: WorkflowGroupe::class, mappedBy: 'refgroupe', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: WorkflowGroupe::class,
+        mappedBy: 'refgroupe',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $workflowGroupes;
 
     public function __construct()

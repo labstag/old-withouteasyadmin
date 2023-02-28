@@ -30,12 +30,6 @@ abstract class Address implements Stringable
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected string $gps;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
-
     #[ORM\Column(type: 'boolean')]
     protected bool $pmr;
 
@@ -50,6 +44,12 @@ abstract class Address implements Stringable
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     protected string $zipcode;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private $id;
 
     public function __toString(): string
     {

@@ -2,13 +2,13 @@
 
 namespace Labstag\Annotation;
 
+use Attribute;
 use Doctrine\Common\Annotations\Annotation;
 
 /**
  * @Annotation
- *
- * @Target({"CLASS", "METHOD"})
  */
-class IgnoreSoftDelete extends Annotation
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
+final class IgnoreSoftDelete extends Annotation
 {
 }

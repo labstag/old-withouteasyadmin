@@ -48,8 +48,8 @@ class MenuService
     {
         $data = $this->menuRepository->findOneBy(
             [
-                'clef'   => $clef,
-                'parent' => null,
+                'clef' => $clef,
+                'menu' => null,
             ]
         );
 

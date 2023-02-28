@@ -11,12 +11,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class Meta implements Stringable
 {
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
-
     #[ORM\ManyToOne(targetEntity: Chapter::class, inversedBy: 'metas', cascade: ['persist'])]
     private ?Chapter $chapter = null;
 
@@ -28,6 +22,12 @@ class Meta implements Stringable
 
     #[ORM\ManyToOne(targetEntity: History::class, inversedBy: 'metas', cascade: ['persist'])]
     private ?History $history = null;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $keywords = null;

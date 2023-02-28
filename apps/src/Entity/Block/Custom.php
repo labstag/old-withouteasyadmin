@@ -17,14 +17,14 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class Custom implements Stringable, BlockInterface
 {
 
+    #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'customs', cascade: ['persist'])]
+    private ?Block $block = null;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
-
-    #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'customs', cascade: ['persist'])]
-    private ?Block $block = null;
 
     #[ORM\OneToMany(targetEntity: Layout::class, mappedBy: 'custom', cascade: ['persist'], orphanRemoval: true)]
     private $layouts;

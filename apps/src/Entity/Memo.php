@@ -18,17 +18,13 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Uploadable]
+#[Uploadable()]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: MemoRepository::class)]
 class Memo implements Stringable, FrontInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    #[Assert\NotBlank]
-    private $content;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     #[Assert\GreaterThanOrEqual(propertyPath: 'dateStart')]
@@ -37,6 +33,10 @@ class Memo implements Stringable, FrontInterface
     #[ORM\Column(type: 'datetime')]
     #[Assert\LessThanOrEqual(propertyPath: 'dateEnd')]
     protected DateTime $dateStart;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank]
+    private $content;
 
     #[UploadableField(filename: 'fond', path: 'memo/fond', slug: 'title')]
     private $file;
@@ -50,6 +50,10 @@ class Memo implements Stringable, FrontInterface
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'memo', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
+    private $paragraphs;
+
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'noteInternes', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private $refuser;
@@ -57,10 +61,6 @@ class Memo implements Stringable, FrontInterface
     #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
     #[Assert\NotBlank]
     private $title;
-
-    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'memo', cascade: ['persist'], orphanRemoval: true)]
-    #[ORM\OrderBy(['position' => 'ASC'])]
-    private $paragraphs;
 
     public function __construct()
     {

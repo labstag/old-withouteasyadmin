@@ -2,8 +2,8 @@
 
 namespace Labstag\Entity\Traits\Paragraph;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\History;
 use Labstag\Entity\Paragraph\History as ParagraphHistory;
 use Labstag\Entity\Paragraph\History\Chapter as HistoryChapter;
@@ -14,22 +14,57 @@ use Labstag\Entity\Paragraph\History\User as HistoryUser;
 trait HistoryEntity
 {
 
-    #[ORM\OneToMany(targetEntity: ParagraphHistory::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: ParagraphHistory::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $histories;
 
-    #[ORM\ManyToOne(targetEntity: History::class, inversedBy: 'paragraphs', cascade: ['persist'])]
+    #[ORM\ManyToOne(
+        targetEntity: History::class,
+        inversedBy: 'paragraphs',
+        cascade: ['persist']
+    )
+    ]
     private $history;
 
-    #[ORM\OneToMany(targetEntity: HistoryChapter::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: HistoryChapter::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $historyChapters;
 
-    #[ORM\OneToMany(targetEntity: HistoryList::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: HistoryList::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $historyLists;
 
-    #[ORM\OneToMany(targetEntity: HistoryShow::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: HistoryShow::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $historyShows;
 
-    #[ORM\OneToMany(targetEntity: HistoryUser::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: HistoryUser::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $historyUsers;
 
     public function addHistory(ParagraphHistory $paragraphHistory): self

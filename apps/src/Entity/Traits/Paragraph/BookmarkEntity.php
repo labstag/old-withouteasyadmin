@@ -2,8 +2,8 @@
 
 namespace Labstag\Entity\Traits\Paragraph;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph\Bookmark as ParagraphBookmark;
 use Labstag\Entity\Paragraph\Bookmark\Category as BookmarkCategory;
 use Labstag\Entity\Paragraph\Bookmark\Libelle as BookmarkLibelle;
@@ -12,16 +12,40 @@ use Labstag\Entity\Paragraph\Bookmark\Liste as BookmarkList;
 trait BookmarkEntity
 {
 
-    #[ORM\OneToMany(targetEntity: BookmarkCategory::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: BookmarkCategory::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $bookmarkCategories;
 
-    #[ORM\OneToMany(targetEntity: BookmarkLibelle::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: BookmarkLibelle::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $bookmarkLibelles;
 
-    #[ORM\OneToMany(targetEntity: BookmarkList::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: BookmarkList::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $bookmarkLists;
 
-    #[ORM\OneToMany(targetEntity: ParagraphBookmark::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        targetEntity: ParagraphBookmark::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
     private $bookmarks;
 
     public function addBookmark(ParagraphBookmark $paragraphBookmark): self

@@ -6,9 +6,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\PhoneUser;
 
-/**
- * @Trashable(url="admin_phoneuser_trash")
- */
+#[Trashable(url: 'admin_phoneuser_trash')]
 class PhoneUserRepository extends PhoneRepository
 {
     public function __construct(ManagerRegistry $managerRegistry)

@@ -15,14 +15,14 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class Navbar implements Stringable, BlockInterface
 {
 
+    #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'menu', cascade: ['persist'])]
+    private ?Block $block = null;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
-
-    #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'menu', cascade: ['persist'])]
-    private ?Block $block = null;
 
     #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'navbars', cascade: ['persist'])]
     private ?Menu $menu = null;

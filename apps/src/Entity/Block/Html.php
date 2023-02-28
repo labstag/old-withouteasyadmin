@@ -14,17 +14,17 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class Html implements Stringable, BlockInterface
 {
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
-
     #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'htmls', cascade: ['persist'])]
     private ?Block $block = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content = null;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $title = null;

@@ -2,14 +2,12 @@
 
 namespace Labstag\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Interfaces\FrontInterface;
@@ -29,7 +27,10 @@ class Edito implements Stringable, FrontInterface
     #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\NotBlank]
     private $content;
-    
+
+    #[ORM\Column(name: 'published', type: 'datetime')]
+    private ?DateTimeInterface $dateTime = null;
+
     #[UploadableField(filename: 'fond', path: 'edito/fond', slug: 'title')]
     private $file;
 
@@ -42,14 +43,6 @@ class Edito implements Stringable, FrontInterface
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'editos', cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private $refuser;
-
-    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
-    #[Assert\NotBlank]
-    private $title;
-
     #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'edito', cascade: ['persist'], orphanRemoval: true)]
     private $metas;
 
@@ -57,8 +50,13 @@ class Edito implements Stringable, FrontInterface
     #[ORM\OrderBy(['position' => 'ASC'])]
     private $paragraphs;
 
-    #[ORM\Column(name: 'published', type: 'datetime')]
-    private ?DateTimeInterface $dateTime = null;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'editos', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $refuser;
+
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
+    #[Assert\NotBlank]
+    private $title;
 
     public function __construct()
     {

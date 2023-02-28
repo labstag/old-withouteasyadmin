@@ -2,8 +2,8 @@
 
 namespace Labstag\Entity;
 
-use Labstag\Repository\OauthConnectUserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Repository\OauthConnectUserRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -14,12 +14,6 @@ class OauthConnectUser
     #[ORM\Column(type: 'array')]
     protected array $data = [];
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
-
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected string $identity;
 
@@ -29,6 +23,12 @@ class OauthConnectUser
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'oauthConnectUsers', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     protected UserInterface $refuser;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private $id;
 
     public function getData(): ?array
     {

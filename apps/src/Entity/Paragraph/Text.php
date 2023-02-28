@@ -14,14 +14,14 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class Text implements Stringable, ParagraphInterface
 {
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $content = null;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $content = null;
 
     #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'texts', cascade: ['persist'])]
     private ?Paragraph $paragraph = null;

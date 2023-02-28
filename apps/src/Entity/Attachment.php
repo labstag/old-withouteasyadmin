@@ -21,6 +21,12 @@ class Attachment
     use SoftDeleteableEntity;
     use StateableEntity;
 
+    #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'img', cascade: ['persist'], orphanRemoval: true)]
+    private $bookmarks;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $code = null;
+
     #[ORM\OneToMany(targetEntity: Edito::class, mappedBy: 'fond', cascade: ['persist'], orphanRemoval: true)]
     private $editos;
 
@@ -39,21 +45,6 @@ class Attachment
     #[ORM\OneToMany(targetEntity: Memo::class, mappedBy: 'fond', cascade: ['persist'], orphanRemoval: true)]
     private $noteInternes;
 
-    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'img', cascade: ['persist'], orphanRemoval: true)]
-    private $posts;
-
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $size;
-
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'avatar', cascade: ['persist'], orphanRemoval: true)]
-    private $users;
-
-    #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'img', cascade: ['persist'], orphanRemoval: true)]
-    private $bookmarks;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $code = null;
-
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'image', cascade: ['persist'], orphanRemoval: true)]
     private $paragraphImages;
 
@@ -62,6 +53,15 @@ class Attachment
 
     #[ORM\OneToMany(targetEntity: Video::class, mappedBy: 'image', cascade: ['persist'], orphanRemoval: true)]
     private $paragraphVideos;
+
+    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'img', cascade: ['persist'], orphanRemoval: true)]
+    private $posts;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $size;
+
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'avatar', cascade: ['persist'], orphanRemoval: true)]
+    private $users;
 
     public function __construct()
     {
