@@ -15,7 +15,8 @@ use InvalidArgumentException;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class Trashable implements MappingAttribute
 {
-    protected ?string $url = null;
+
+    private ?string $url = null;
 
     public function __construct(
         ?string $url = null

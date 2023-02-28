@@ -7,8 +7,8 @@ use Labstag\Service\BookmarkService;
 use Labstag\Service\HistoryService;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 #[AsMessageHandler]
 class ServiceMethodMessageHandler implements ServiceSubscriberInterface

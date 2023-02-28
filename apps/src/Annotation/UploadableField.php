@@ -15,9 +15,12 @@ use InvalidArgumentException;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class UploadableField implements MappingAttribute
 {
-    protected ?string $filename = null;
-    protected ?string $path = null;
-    protected ?string $slug = null;
+
+    private ?string $filename = null;
+
+    private ?string $path = null;
+
+    private ?string $slug = null;
 
     public function __construct(
         ?string $filename = null,
@@ -36,7 +39,7 @@ final class UploadableField implements MappingAttribute
         if (empty($slug)) {
             throw new InvalidArgumentException("L'annotation UplodableField doit avoir un attribut 'slug'");
         }
-        
+
         $this->filename = $filename;
         $this->path = $path;
         $this->slug = $slug;
