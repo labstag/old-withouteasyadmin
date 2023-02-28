@@ -59,11 +59,6 @@ abstract class ControllerLib extends AbstractController
         $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
     }
 
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
-    }
-
     protected function setSingletons()
     {
         return $this->breadcrumbsInstance;

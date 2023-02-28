@@ -3,7 +3,6 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Labstag\Repository\PageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -33,10 +32,5 @@ abstract class FrontLib
         }
 
         return $meta;
-    }
-
-    protected function getRepository(string $entity): EntityRepository
-    {
-        return $this->entityManager->getRepository($entity);
     }
 }

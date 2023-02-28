@@ -5,12 +5,14 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\User;
 use Labstag\Event\UserCollectionEvent;
+use Labstag\Service\RepositoryService;
 use Labstag\Service\WorkflowService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 abstract class RequestHandlerLib
 {
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected EntityManagerInterface $entityManager,
         protected WorkflowService $workflowService,
         protected EventDispatcherInterface $eventDispatcher
@@ -33,22 +35,17 @@ abstract class RequestHandlerLib
             $workflow->apply($entity, $state);
         }
 
-        $repository = $this->getRepository($entity::class);
+        $repository = $this->repositoryService->get($entity::class);
         $repository->add($entity);
     }
 
     public function handle(mixed $oldEntity, mixed $entity)
     {
-        $repository = $this->getRepository($entity::class);
+        $repository = $this->repositoryService->get($entity::class);
         $repository->add($entity);
         if ($oldEntity->getId() != $entity->getId()) {
             $this->initWorkflow($entity);
         }
-    }
-
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
     }
 
     protected function initWorkflow($entity): void
@@ -67,7 +64,7 @@ abstract class RequestHandlerLib
             }
 
             $workflow->apply($entity, $name);
-            $repository = $this->getRepository($entity::class);
+            $repository = $this->repositoryService->get($entity::class);
             $repository->add($entity);
 
             break;
