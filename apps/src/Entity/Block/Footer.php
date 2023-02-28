@@ -11,33 +11,21 @@ use Labstag\Repository\Block\FooterRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="block_footer")
- *
- * @ORM\Entity(repositoryClass=FooterRepository::class)
- */
+#[ORM\Entity(repositoryClass: FooterRepository::class)]
+#[ORM\Table(name: 'block_footer')]
 class Footer implements Stringable, BlockInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="footers", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'footers', cascade: ['persist'])]
     private ?Block $block = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Link::class, mappedBy="footer", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Link::class, mappedBy: 'footer', cascade: ['persist'], orphanRemoval: true)]
     private $links;
 
     public function __construct()

@@ -6,17 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\LinkUserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=LinkUserRepository::class)
- */
+#[ORM\Entity(repositoryClass: LinkUserRepository::class)]
 class LinkUser extends Link
 {
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="linkUsers", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'linkUsers', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     private $refuser;
 
     public function getRefuser(): ?UserInterface

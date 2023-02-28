@@ -9,28 +9,18 @@ use Labstag\Repository\Paragraph\HistoryRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="paragraph_history")
- *
- * @ORM\Entity(repositoryClass=HistoryRepository::class)
- */
+#[ORM\Entity(repositoryClass: HistoryRepository::class)]
+#[ORM\Table(name: 'paragraph_history')]
 class History implements Stringable, ParagraphInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="histories", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'histories', cascade: ['persist'])]
     private ?Paragraph $paragraph = null;
 
     public function __toString(): string

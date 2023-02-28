@@ -6,17 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\EmailUserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=EmailUserRepository::class)
- */
+#[ORM\Entity(repositoryClass: EmailUserRepository::class)]
 class EmailUser extends Email
 {
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="emailUsers", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'emailUsers', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     private $refuser;
 
     public function getRefuser(): ?UserInterface

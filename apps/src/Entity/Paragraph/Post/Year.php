@@ -9,28 +9,18 @@ use Labstag\Repository\Paragraph\Post\YearRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="paragraph_post_year")
- *
- * @ORM\Entity(repositoryClass=YearRepository::class)
- */
+#[ORM\Entity(repositoryClass: YearRepository::class)]
+#[ORM\Table(name: 'paragraph_post_year')]
 class Year implements Stringable, ParagraphInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postYears", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'postYears', cascade: ['persist'])]
     private ?Paragraph $paragraph = null;
 
     public function __toString(): string

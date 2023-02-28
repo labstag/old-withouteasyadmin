@@ -9,28 +9,18 @@ use Labstag\Repository\Block\FlashbagRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="block_flashbag")
- *
- * @ORM\Entity(repositoryClass=FlashbagRepository::class)
- */
+#[ORM\Entity(repositoryClass: FlashbagRepository::class)]
+#[ORM\Table(name: 'block_flashbag')]
 class Flashbag implements Stringable, BlockInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="flashbags", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'flashbags', cascade: ['persist'])]
     private ?Block $block = null;
 
     public function __toString(): string

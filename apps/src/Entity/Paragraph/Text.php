@@ -9,33 +9,21 @@ use Labstag\Repository\Paragraph\TextRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="paragraph_text")
- *
- * @ORM\Entity(repositoryClass=TextRepository::class)
- */
+#[ORM\Entity(repositoryClass: TextRepository::class)]
+#[ORM\Table(name: 'paragraph_text')]
 class Text implements Stringable, ParagraphInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="texts", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'texts', cascade: ['persist'])]
     private ?Paragraph $paragraph = null;
 
     public function __toString(): string

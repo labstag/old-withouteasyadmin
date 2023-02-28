@@ -18,79 +18,48 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=MemoRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- *
- * @Uploadable
- */
+#[Uploadable]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: MemoRepository::class)]
 class Memo implements Stringable, FrontInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank]
     private $content;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Assert\GreaterThanOrEqual(propertyPath="dateStart")
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\GreaterThanOrEqual(propertyPath: 'dateStart')]
     protected DateTime $dateEnd;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Assert\LessThanOrEqual(propertyPath="dateEnd")
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Assert\LessThanOrEqual(propertyPath: 'dateEnd')]
     protected DateTime $dateStart;
 
-    /**
-     * @UploadableField(filename="fond", path="memo/fond", slug="title")
-     */
+    #[UploadableField(filename: 'fond', path: 'memo/fond', slug: 'title')]
     private $file;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="noteInternes", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'noteInternes', cascade: ['persist'])]
     private $fond;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'noteInternes', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     private $refuser;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
-     *
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
+    #[Assert\NotBlank]
     private $title;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="memo", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'memo', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private $paragraphs;
 
     public function __construct()

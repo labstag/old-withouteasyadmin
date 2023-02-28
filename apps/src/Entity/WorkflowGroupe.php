@@ -6,36 +6,25 @@ use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\WorkflowGroupeRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=WorkflowGroupeRepository::class)
- */
+#[ORM\Entity(repositoryClass: WorkflowGroupeRepository::class)]
 class WorkflowGroupe
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="workflowGroupes", cascade={"persist"})
-     */
-    private ?Groupe $refgroupe = null;
+    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'workflowGroupes', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refgroupe_id')]
+    private ?Groupe $groupe = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Workflow::class, inversedBy="workflowGroupes", cascade={"persist"})
-     */
-    private ?Workflow $refworkflow = null;
+    #[ORM\ManyToOne(targetEntity: Workflow::class, inversedBy: 'workflowGroupes', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refworkflow_id')]
+    private ?Workflow $workflow = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private ?bool $state = null;
 
     public function getId(): ?string
@@ -45,12 +34,12 @@ class WorkflowGroupe
 
     public function getRefgroupe(): ?Groupe
     {
-        return $this->refgroupe;
+        return $this->groupe;
     }
 
     public function getRefworkflow(): ?Workflow
     {
-        return $this->refworkflow;
+        return $this->workflow;
     }
 
     public function getState(): ?bool
@@ -60,14 +49,14 @@ class WorkflowGroupe
 
     public function setRefgroupe(?Groupe $groupe): self
     {
-        $this->refgroupe = $groupe;
+        $this->groupe = $groupe;
 
         return $this;
     }
 
     public function setRefworkflow(?Workflow $workflow): self
     {
-        $this->refworkflow = $workflow;
+        $this->workflow = $workflow;
 
         return $this;
     }

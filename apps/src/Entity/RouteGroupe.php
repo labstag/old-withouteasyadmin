@@ -6,36 +6,23 @@ use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\RouteGroupeRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=RouteGroupeRepository::class)
- */
+#[ORM\Entity(repositoryClass: RouteGroupeRepository::class)]
 class RouteGroupe
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="routes", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'routes', cascade: ['persist'])]
     private $refgroupe;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="groupes", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Route::class, inversedBy: 'groupes', cascade: ['persist'])]
     private $refroute;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $state;
 
     public function getId(): ?string

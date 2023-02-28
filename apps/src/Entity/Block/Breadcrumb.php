@@ -9,28 +9,18 @@ use Labstag\Repository\Block\BreadcrumbRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="block_breadcrumb")
- *
- * @ORM\Entity(repositoryClass=BreadcrumbRepository::class)
- */
+#[ORM\Entity(repositoryClass: BreadcrumbRepository::class)]
+#[ORM\Table(name: 'block_breadcrumb')]
 class Breadcrumb implements Stringable, BlockInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="breadcrumbs", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'breadcrumbs', cascade: ['persist'])]
     private ?Block $block = null;
 
     public function __toString(): string

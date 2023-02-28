@@ -19,109 +19,68 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=PostRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- *
- * @Uploadable
- */
+#[Uploadable]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post implements Stringable, FrontInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    /**
-     * @UploadableField(filename="img", path="post/img", slug="title")
-     */
+    #[UploadableField(filename: 'img', path: 'post/img', slug: 'title')]
     private $file;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content = null;
 
-    /**
-     * @Gedmo\Timestampable(on="create")
-     *
-     * @ORM\Column(type="datetime")
-     */
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $created = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="posts", cascade={"persist"})
-     */
-    private ?Attachment $img = null;
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'posts', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'img_id')]
+    private ?Attachment $attachment = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"})
-     */
+    #[ORM\ManyToMany(targetEntity: Libelle::class, mappedBy: 'posts', cascade: ['persist'])]
     private $libelles;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'post', cascade: ['persist'], orphanRemoval: true)]
     private $metas;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'post', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private $paragraphs;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $published = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="posts", cascade={"persist"})
-     */
-    private ?Category $refcategory = null;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'posts', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refcategory_id')]
+    private ?Category $category = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts", cascade={"persist"})
-     *
-     * @Assert\NotBlank
-     *
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private ?UserInterface $refuser = null;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'posts', cascade: ['persist'])]
+    #[Assert\NotBlank]
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
+    private ?UserInterface $user = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private ?bool $remark = null;
 
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"title"})
-     *
-     * @ORM\Column(type="string", length=255)
-     */
+    #[Gedmo\Slug(updatable: false, fields: ['title'])]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $slug = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
-     */
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
     private ?string $title = null;
 
-    /**
-     * @Gedmo\Timestampable(on="update")
-     *
-     * @ORM\Column(type="datetime")
-     */
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $updated = null;
 
     public function __construct()
@@ -188,7 +147,7 @@ class Post implements Stringable, FrontInterface
 
     public function getImg(): ?Attachment
     {
-        return $this->img;
+        return $this->attachment;
     }
 
     public function getLibelles(): Collection
@@ -219,12 +178,12 @@ class Post implements Stringable, FrontInterface
 
     public function getRefcategory(): ?Category
     {
-        return $this->refcategory;
+        return $this->category;
     }
 
     public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function getRemark(): ?bool
@@ -293,7 +252,7 @@ class Post implements Stringable, FrontInterface
 
     public function setImg(?Attachment $attachment): self
     {
-        $this->img = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }
@@ -307,14 +266,14 @@ class Post implements Stringable, FrontInterface
 
     public function setRefcategory(?Category $category): self
     {
-        $this->refcategory = $category;
+        $this->category = $category;
 
         return $this;
     }
 
     public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }

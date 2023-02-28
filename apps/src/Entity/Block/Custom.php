@@ -12,33 +12,21 @@ use Labstag\Repository\Block\CustomRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="block_custom")
- *
- * @ORM\Entity(repositoryClass=CustomRepository::class)
- */
+#[ORM\Entity(repositoryClass: CustomRepository::class)]
+#[ORM\Table(name: 'block_custom')]
 class Custom implements Stringable, BlockInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="customs", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'customs', cascade: ['persist'])]
     private ?Block $block = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Layout::class, mappedBy="custom", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Layout::class, mappedBy: 'custom', cascade: ['persist'], orphanRemoval: true)]
     private $layouts;
 
     public function __construct()

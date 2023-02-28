@@ -14,85 +14,53 @@ use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=AttachmentRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: AttachmentRepository::class)]
 class Attachment
 {
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Edito::class, mappedBy: 'fond', cascade: ['persist'], orphanRemoval: true)]
     private $editos;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mimeType;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="fond", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Memo::class, mappedBy: 'fond', cascade: ['persist'], orphanRemoval: true)]
     private $noteInternes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'img', cascade: ['persist'], orphanRemoval: true)]
     private $posts;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $size;
 
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'avatar', cascade: ['persist'], orphanRemoval: true)]
     private $users;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'img', cascade: ['persist'], orphanRemoval: true)]
     private $bookmarks;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $code = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'image', cascade: ['persist'], orphanRemoval: true)]
     private $paragraphImages;
 
-    /**
-     * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: TextImage::class, mappedBy: 'image', cascade: ['persist'], orphanRemoval: true)]
     private $paragraphTextImages;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Video::class, mappedBy: 'image', cascade: ['persist'], orphanRemoval: true)]
     private $paragraphVideos;
 
     public function __construct()
@@ -237,25 +205,16 @@ class Attachment
         return $this->noteInternes;
     }
 
-    /**
-     * @return Collection<int, Video>
-     */
     public function getParagraphImages(): Collection
     {
         return $this->paragraphImages;
     }
 
-    /**
-     * @return Collection<int, Video>
-     */
     public function getParagraphTextImages(): Collection
     {
         return $this->paragraphTextImages;
     }
 
-    /**
-     * @return Collection<int, Video>
-     */
     public function getParagraphVideos(): Collection
     {
         return $this->paragraphVideos;

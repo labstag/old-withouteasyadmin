@@ -19,76 +19,46 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=EditoRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- *
- * @Uploadable
- */
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: EditoRepository::class)]
 class Edito implements Stringable, FrontInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank]
     private $content;
-
-    /**
-     * @UploadableField(filename="fond", path="edito/fond", slug="title")
-     */
+    
+    #[UploadableField(filename: 'fond', path: 'edito/fond', slug: 'title')]
     private $file;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="editos", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'editos', cascade: ['persist'])]
     private $fond;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="editos", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'editos', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     private $refuser;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
-     *
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
+    #[Assert\NotBlank]
     private $title;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'edito', cascade: ['persist'], orphanRemoval: true)]
     private $metas;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'edito', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private $paragraphs;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private ?DateTimeInterface $published = null;
+    #[ORM\Column(name: 'published', type: 'datetime')]
+    private ?DateTimeInterface $dateTime = null;
 
     public function __construct()
     {
@@ -159,7 +129,7 @@ class Edito implements Stringable, FrontInterface
 
     public function getPublished(): ?DateTimeInterface
     {
-        return $this->published;
+        return $this->dateTime;
     }
 
     public function getRefuser(): ?UserInterface
@@ -215,7 +185,7 @@ class Edito implements Stringable, FrontInterface
 
     public function setPublished(DateTimeInterface $dateTime): self
     {
-        $this->published = $dateTime;
+        $this->dateTime = $dateTime;
 
         return $this;
     }

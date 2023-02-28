@@ -11,80 +11,48 @@ use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\PageRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Gedmo\Sluggable\Handler\TreeSlugHandler;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=PageRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: PageRepository::class)]
 class Page implements Stringable, FrontInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Page::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Page::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
     private $children;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
     private $metas;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private $paragraphs;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(
-     *     name="parent_id",
-     *     referencedColumnName="id",
-     *     onDelete="SET NULL"
-     * )
-     */
-    private ?\Labstag\Entity\Page $parent = null;
+    #[ORM\ManyToOne(targetEntity: Page::class, inversedBy: 'children', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    private ?Page $page = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $password = null;
 
-    /**
-     * @Gedmo\Slug(handlers={
-     *
-     * @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\TreeSlugHandler", options={
-     *
-     * @Gedmo\SlugHandlerOption(name="parentRelationField", value="parent"),
-     * @Gedmo\SlugHandlerOption(name="separator", value="/")
-     *      })
-     * }, fields={"name"})
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
+    #[Gedmo\Slug(fields: ['name'])]
+    #[Gedmo\SlugHandler(class: TreeSlugHandler::class, options: [
+        'parentRelationField' => 'page',
+        'separator'           => '/',
+    ])]
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     private ?string $slug = null;
 
     public function __construct()
@@ -162,7 +130,7 @@ class Page implements Stringable, FrontInterface
 
     public function getParent(): ?Page
     {
-        return $this->parent;
+        return $this->page;
     }
 
     public function getPassword(): ?string
@@ -208,7 +176,7 @@ class Page implements Stringable, FrontInterface
 
     public function setParent(?self $parent): self
     {
-        $this->parent = $parent;
+        $this->page = $parent;
 
         return $this;
     }

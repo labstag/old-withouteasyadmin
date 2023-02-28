@@ -9,28 +9,18 @@ use Labstag\Repository\Paragraph\Edito\HeaderRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="paragraph_edito_header")
- *
- * @ORM\Entity(repositoryClass=HeaderRepository::class)
- */
+#[ORM\Entity(repositoryClass: HeaderRepository::class)]
+#[ORM\Table(name: 'paragraph_edito_header')]
 class Header implements Stringable, ParagraphInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="editoHeaders", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'editoHeaders', cascade: ['persist'])]
     private ?Paragraph $paragraph = null;
 
     public function __toString(): string

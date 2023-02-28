@@ -9,36 +9,23 @@ use Labstag\Repository\RouteRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=RouteRepository::class)
- */
+#[ORM\Entity(repositoryClass: RouteRepository::class)]
 class Route implements Stringable
 {
 
-    /**
-     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refroute", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: RouteGroupe::class, mappedBy: 'refroute', cascade: ['persist'], orphanRemoval: true)]
     private $groupes;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refroute", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: RouteUser::class, mappedBy: 'refroute', cascade: ['persist'], orphanRemoval: true)]
     private $users;
 
     public function __construct()

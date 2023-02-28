@@ -7,48 +7,30 @@ use Labstag\Repository\Block\LinkRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="block_link")
- *
- * @ORM\Entity(repositoryClass=LinkRepository::class)
- */
+#[ORM\Entity(repositoryClass: LinkRepository::class)]
+#[ORM\Table(name: 'block_link')]
 class Link implements Stringable
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $external = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Footer::class, inversedBy="links", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Footer::class, inversedBy: 'links', cascade: ['persist'])]
     private ?Footer $footer = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Header::class, inversedBy="links", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Header::class, inversedBy: 'links', cascade: ['persist'])]
     private ?Header $header = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $title = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $url = null;
 
     public function __toString(): string

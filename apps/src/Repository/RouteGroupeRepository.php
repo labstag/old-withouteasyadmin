@@ -14,7 +14,7 @@ class RouteGroupeRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, RouteGroupe::class);
     }
 
-    public function findRoute(Groupe $groupe, string $route): mixed
+    public function findRoute(Groupe $groupe, ?string $route): mixed
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $queryBuilder->leftJoin(

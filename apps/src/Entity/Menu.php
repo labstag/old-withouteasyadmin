@@ -13,79 +13,46 @@ use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=MenuRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: MenuRepository::class)]
 class Menu implements Stringable
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Menu::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
+    #[ORM\OneToMany(targetEntity: Menu::class, mappedBy: 'menu', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private $children;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $clef;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: 'json', nullable: true)]
     protected array $data = [];
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $icon;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(
-     *     name="parent_id",
-     *     referencedColumnName="id",
-     *     onDelete="SET NULL"
-     * )
-     */
-    protected ?Menu $parent = null;
+    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'children', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Menu $menu = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     *
-     * @Assert\NotNull
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotNull]
     protected int $position = 0;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $separateur = false;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="menu", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Navbar::class, mappedBy: 'menu', cascade: ['persist'], orphanRemoval: true)]
     private $navbars;
 
     public function __construct()
@@ -168,7 +135,7 @@ class Menu implements Stringable
 
     public function getParent(): ?Menu
     {
-        return $this->parent;
+        return $this->menu;
     }
 
     public function getPosition(): ?int
@@ -236,7 +203,7 @@ class Menu implements Stringable
 
     public function setParent(?Menu $menu): void
     {
-        $this->parent = $menu;
+        $this->menu = $menu;
     }
 
     public function setPosition(int $position): self

@@ -9,28 +9,18 @@ use Labstag\Repository\Paragraph\Post\ArchiveRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="paragraph_post_archive")
- *
- * @ORM\Entity(repositoryClass=ArchiveRepository::class)
- */
+#[ORM\Entity(repositoryClass: ArchiveRepository::class)]
+#[ORM\Table(name: 'paragraph_post_archive')]
 class Archive implements Stringable, ParagraphInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postArchives", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'postArchives', cascade: ['persist'])]
     private ?Paragraph $paragraph = null;
 
     public function __toString(): string

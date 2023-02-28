@@ -13,59 +13,35 @@ use Labstag\Repository\Paragraph\VideoRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="paragraph_video")
- *
- * @ORM\Entity(repositoryClass=VideoRepository::class)
- *
- * @Uploadable
- */
+#[Uploadable]
+#[ORM\Entity(repositoryClass: VideoRepository::class)]
+#[ORM\Table(name: 'paragraph_video')]
 class Video implements Stringable, ParagraphInterface
 {
-
-    /**
-     * @UploadableField(filename="image", path="paragraph/video", slug="title")
-     */
+    #[UploadableField(filename: 'image', path: 'paragraph/video', slug: 'title')]
     private $file;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphVideos", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
-    private ?Attachment $image = null;
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphVideos', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'image_id', nullable: true, onDelete: 'SET NULL')]
+    private ?Attachment $attachment = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="videos", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'videos', cascade: ['persist'])]
     private ?Paragraph $paragraph = null;
 
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"title"})
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Gedmo\Slug(updatable: false, fields: ['title'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $slug = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $title = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $url = null;
 
     public function __toString(): string
@@ -85,7 +61,7 @@ class Video implements Stringable, ParagraphInterface
 
     public function getImage(): ?Attachment
     {
-        return $this->image;
+        return $this->attachment;
     }
 
     public function getParagraph(): ?Paragraph
@@ -117,7 +93,7 @@ class Video implements Stringable, ParagraphInterface
 
     public function setImage(?Attachment $attachment): self
     {
-        $this->image = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }

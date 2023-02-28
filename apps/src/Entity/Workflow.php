@@ -8,41 +8,26 @@ use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\WorkflowRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=WorkflowRepository::class)
- */
+#[ORM\Entity(repositoryClass: WorkflowRepository::class)]
 class Workflow
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $entity = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $transition = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refworkflow", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: WorkflowGroupe::class, mappedBy: 'refworkflow', cascade: ['persist'], orphanRemoval: true)]
     private $workflowGroupes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refworkflow", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: WorkflowUser::class, mappedBy: 'refworkflow', cascade: ['persist'], orphanRemoval: true)]
     private $workflowUsers;
 
     public function __construct()

@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity\Traits\Paragraph;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Labstag\Entity\Edito;
 use Labstag\Entity\Paragraph\Edito as ParagraphEdito;
@@ -11,24 +12,16 @@ use Labstag\Entity\Paragraph\Edito\Show as EditoShow;
 trait EditoEntity
 {
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Edito::class, inversedBy="paragraphs", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Edito::class, inversedBy: 'paragraphs', cascade: ['persist'])]
     private $edito;
 
-    /**
-     * @ORM\OneToMany(targetEntity=EditoHeader::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: EditoHeader::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $editoHeaders;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ParagraphEdito::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: ParagraphEdito::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $editos;
 
-    /**
-     * @ORM\OneToMany(targetEntity=EditoShow::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: EditoShow::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $editoShows;
 
     public function addEdito(ParagraphEdito $paragraphEdito): self

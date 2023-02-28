@@ -9,28 +9,18 @@ use Labstag\Repository\Paragraph\BookmarkRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="paragraph_bookmark")
- *
- * @ORM\Entity(repositoryClass=BookmarkRepository::class)
- */
+#[ORM\Entity(repositoryClass: BookmarkRepository::class)]
+#[ORM\Table(name: 'paragraph_bookmark')]
 class Bookmark implements Stringable, ParagraphInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="bookmarks", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'bookmarks', cascade: ['persist'])]
     private ?Paragraph $paragraph = null;
 
     public function __toString(): string

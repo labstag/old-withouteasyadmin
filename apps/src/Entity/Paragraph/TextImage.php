@@ -12,64 +12,39 @@ use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\Paragraph\TextImageRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="paragraph_textimage")
- *
- * @ORM\Entity(repositoryClass=TextImageRepository::class)
- *
- * @Uploadable
- */
+#[Uploadable]
+#[ORM\Entity(repositoryClass: TextImageRepository::class)]
+#[ORM\Table(name: 'paragraph_textimage')]
 class TextImage implements ParagraphInterface
 {
 
-    /**
-     * @UploadableField(filename="image", path="paragraph/textimage", slug="title")
-     */
+    #[UploadableField(filename: 'image', path: 'paragraph/textimage', slug: 'title')]
     private $file;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphTextImages", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
-    private ?Attachment $image = null;
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphTextImages', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'image_id', nullable: true, onDelete: 'SET NULL')]
+    private ?Attachment $attachment = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $leftimage = false;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="textImages", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'textImages', cascade: ['persist'])]
     private ?Paragraph $paragraph = null;
 
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"title"})
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Gedmo\Slug(updatable: false, fields: ['title'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $slug = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $title = null;
 
     public function __construct()
@@ -93,7 +68,7 @@ class TextImage implements ParagraphInterface
 
     public function getImage(): ?Attachment
     {
-        return $this->image;
+        return $this->attachment;
     }
 
     public function getLeftimage(): ?bool
@@ -132,7 +107,7 @@ class TextImage implements ParagraphInterface
 
     public function setImage(?Attachment $attachment): self
     {
-        $this->image = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }

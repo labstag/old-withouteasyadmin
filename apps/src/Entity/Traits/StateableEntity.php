@@ -6,26 +6,14 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * A soft deletable trait you can apply to your Doctrine ORM entities.
- * Includes default annotation mapping.
- *
- * @author Wesley van Opdorp <wesley.van.opdorp@freshheads.com>
- * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
- */
 trait StateableEntity
 {
 
-    /**
-     * @ORM\Column(type="array")
-     */
+    #[ORM\Column(type: 'array')]
     private $state;
 
-    /**
-     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
-     *
-     * @Gedmo\Timestampable(on="change", field={"state"})
-     */
+    #[Gedmo\Timestampable(on: 'change', field: ['state'])]
+    #[ORM\Column(name: 'state_changed', type: 'datetime', nullable: true)]
     private DateTime $stateChanged;
 
     public function getState()

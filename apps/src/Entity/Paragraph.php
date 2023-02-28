@@ -16,9 +16,7 @@ use Labstag\Entity\Traits\Paragraph\PostEntity;
 use Labstag\Repository\ParagraphRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=ParagraphRepository::class)
- */
+#[ORM\Entity(repositoryClass: ParagraphRepository::class)]
 class Paragraph
 {
     use BookmarkEntity;
@@ -26,75 +24,46 @@ class Paragraph
     use HistoryEntity;
     use PostEntity;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $background = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Chapter::class, inversedBy="paragraphs", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Chapter::class, inversedBy: 'paragraphs', cascade: ['persist'])]
     private ?Chapter $chapter = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $color = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $images;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Layout::class, inversedBy="paragraphs", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Layout::class, inversedBy: 'paragraphs', cascade: ['persist'])]
     private ?Layout $layout = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Memo::class, inversedBy="paragraphs", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Memo::class, inversedBy: 'paragraphs', cascade: ['persist'])]
     private ?Memo $memo = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="paragraphs", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Page::class, inversedBy: 'paragraphs', cascade: ['persist'])]
     private ?Page $page = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private int $position = 0;
 
-    /**
-     * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: TextImage::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $textImages;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Text::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Text::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $texts;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $type = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Video::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $videos;
 
     public function __construct()

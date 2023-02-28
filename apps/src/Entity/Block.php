@@ -18,84 +18,52 @@ use Labstag\Entity\Block\Paragraph;
 use Labstag\Repository\BlockRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=BlockRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: BlockRepository::class)]
 class Block
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Breadcrumb::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Breadcrumb::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
     private $breadcrumbs;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Custom::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Custom::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
     private $customs;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Flashbag::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Flashbag::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
     private $flashbags;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Footer::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Footer::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
     private $footers;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Header::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Header::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
     private $headers;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Html::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Html::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
     private $htmls;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Navbar::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
     private $menu;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="block", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
     private $paragraphs;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private int $position = 0;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $region = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $title = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $type = null;
 
     public function __construct()
@@ -190,49 +158,31 @@ class Block
         return $this;
     }
 
-    /**
-     * @return Collection<int, Breadcrumb>
-     */
     public function getBreadcrumbs(): Collection
     {
         return $this->breadcrumbs;
     }
 
-    /**
-     * @return Collection<int, Custom>
-     */
     public function getCustoms(): Collection
     {
         return $this->customs;
     }
 
-    /**
-     * @return Collection<int, Flashbag>
-     */
     public function getFlashbags(): Collection
     {
         return $this->flashbags;
     }
 
-    /**
-     * @return Collection<int, Footer>
-     */
     public function getFooters(): Collection
     {
         return $this->footers;
     }
 
-    /**
-     * @return Collection<int, Header>
-     */
     public function getHeaders(): Collection
     {
         return $this->headers;
     }
 
-    /**
-     * @return Collection<int, Html>
-     */
     public function getHtmls(): Collection
     {
         return $this->htmls;
@@ -243,17 +193,11 @@ class Block
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, Navbar>
-     */
     public function getMenu(): Collection
     {
         return $this->menu;
     }
 
-    /**
-     * @return Collection<int, Paragraph>
-     */
     public function getParagraphs(): Collection
     {
         return $this->paragraphs;

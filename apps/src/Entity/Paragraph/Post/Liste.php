@@ -9,28 +9,18 @@ use Labstag\Repository\Paragraph\Post\ListeRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="paragraph_post_list")
- *
- * @ORM\Entity(repositoryClass=ListeRepository::class)
- */
+#[ORM\Entity(repositoryClass: ListeRepository::class)]
+#[ORM\Table(name: 'paragraph_post_list')]
 class Liste implements Stringable, ParagraphInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="postLists", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'postLists', cascade: ['persist'])]
     private ?Paragraph $paragraph = null;
 
     public function __toString(): string

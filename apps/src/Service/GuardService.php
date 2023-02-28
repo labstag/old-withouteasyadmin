@@ -182,7 +182,7 @@ class GuardService
     }
 
     public function guardRoute(
-        string $route,
+        ?string $route,
         ?TokenInterface $token
     ): bool
     {
@@ -327,7 +327,7 @@ class GuardService
         return $data;
     }
 
-    protected function searchRouteGroupe(Groupe $groupe, string $route): bool
+    protected function searchRouteGroupe(Groupe $groupe, ?string $route): bool
     {
         $entity = $this->routeGroupeRepository->findRoute($groupe, $route);
         if (empty($entity)) {
@@ -337,7 +337,7 @@ class GuardService
         return $entity->isState();
     }
 
-    protected function searchRouteUser(User $user, string $route): bool
+    protected function searchRouteUser(User $user, ?string $route): bool
     {
         $stateGroupe = $this->searchRouteGroupe($user->getRefgroupe(), $route);
         $entity = $this->routeUserRepository->findRoute($user, $route);

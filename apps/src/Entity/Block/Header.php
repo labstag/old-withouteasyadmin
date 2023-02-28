@@ -11,33 +11,21 @@ use Labstag\Repository\Block\HeaderRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="block_header")
- *
- * @ORM\Entity(repositoryClass=HeaderRepository::class)
- */
+#[ORM\Entity(repositoryClass: HeaderRepository::class)]
+#[ORM\Table(name: 'block_header')]
 class Header implements Stringable, BlockInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="headers", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'headers', cascade: ['persist'])]
     private ?Block $block = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Link::class, mappedBy="header", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Link::class, mappedBy: 'header', cascade: ['persist'], orphanRemoval: true)]
     private $links;
 
     public function __construct()

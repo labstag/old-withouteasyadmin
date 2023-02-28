@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity\Traits\Paragraph;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Labstag\Entity\Paragraph\Post\Archive as PostArchive;
 use Labstag\Entity\Paragraph\Post as ParagraphPost;
@@ -17,54 +18,34 @@ use Labstag\Entity\Post;
 trait PostEntity
 {
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="paragraphs", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'paragraphs', cascade: ['persist'])]
     private $post;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostArchive::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: PostArchive::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $postArchives;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostCategory::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: PostCategory::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $postCategories;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostHeader::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: PostHeader::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $postHeaders;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostLibelle::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: PostLibelle::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $postLibelles;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostList::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: PostList::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $postLists;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ParagraphPost::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: ParagraphPost::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $posts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostShow::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: PostShow::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $postShows;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostUser::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: PostUser::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $postUsers;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostYear::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: PostYear::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
     private $postYears;
 
     public function addPost(ParagraphPost $paragraphPost): self
