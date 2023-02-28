@@ -18,7 +18,7 @@ class PhoneUser extends Phone
      *
      * @Assert\NotBlank
      */
-    protected $refuser;
+    private $refuser;
 
     public function getRefuser(): ?UserInterface
     {

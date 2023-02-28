@@ -57,7 +57,7 @@ class AttachFormService
         $filename,
         $attachment,
         $old
-    )
+    ): void
     {
         $file->move(
             $path,

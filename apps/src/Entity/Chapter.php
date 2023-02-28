@@ -33,7 +33,7 @@ class Chapter implements FrontInterface
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)

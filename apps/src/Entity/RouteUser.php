@@ -22,22 +22,22 @@ class RouteUser
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="users", cascade={"persist"})
      */
-    protected $refroute;
+    private $refroute;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="routes", cascade={"persist"})
      */
-    protected $refuser;
+    private $refuser;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $state;
+    private $state;
 
     public function getId(): ?string
     {

@@ -26,7 +26,7 @@ class Video implements Stringable, ParagraphInterface
     /**
      * @UploadableField(filename="image", path="paragraph/video", slug="title")
      */
-    protected $file;
+    private $file;
 
     /**
      * @ORM\Id
@@ -37,7 +37,7 @@ class Video implements Stringable, ParagraphInterface
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphVideos", cascade={"persist"})

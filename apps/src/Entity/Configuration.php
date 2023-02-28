@@ -27,17 +27,17 @@ class Configuration implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\Column(type="object", nullable=true)
      */
-    protected $value;
+    private $value;
 
     public function __toString(): string
     {

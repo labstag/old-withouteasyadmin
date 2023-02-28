@@ -27,7 +27,10 @@ class ParagraphService
     {
     }
 
-    public function add($entity, string $code)
+    public function add(
+        mixed $entity,
+        string $code
+    ): void
     {
         $method = $this->getMethod($entity);
         if (is_null($method)) {
@@ -47,7 +50,7 @@ class ParagraphService
     /**
      * @return array<int|string, mixed>
      */
-    public function getAll($entity): array
+    public function getAll(mixed $entity): array
     {
         $data = [];
         foreach ($this->rewindableGenerator as $row) {

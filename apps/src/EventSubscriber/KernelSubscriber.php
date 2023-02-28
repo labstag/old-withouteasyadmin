@@ -142,7 +142,7 @@ class KernelSubscriber extends EventSubscriberLib
             'wrap'                        => 200,
         ];
         $tidy = new tidy();
-        $tidy->parseString($content, $config, 'utf8');
+        $tidy->parseString((string) $content, $config, 'utf8');
         $tidy->cleanRepair();
 
         $response->setContent($tidy);

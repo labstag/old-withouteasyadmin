@@ -35,7 +35,7 @@ abstract class Email implements Stringable
      *     message="The email '{{ value }}' is not a valid email."
      * )
      */
-    protected $address;
+    private $address;
 
     /**
      * @ORM\Id
@@ -46,12 +46,12 @@ abstract class Email implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $principal = false;
+    private $principal = false;
 
     public function __toString(): string
     {

@@ -31,7 +31,7 @@ abstract class Link implements Stringable
      *
      * @Assert\Url
      */
-    protected $address;
+    private $address;
 
     /**
      * @ORM\Id
@@ -42,14 +42,14 @@ abstract class Link implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank
      */
-    protected $name;
+    private $name;
 
     public function __toString(): string
     {

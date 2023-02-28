@@ -35,7 +35,7 @@ class Memo implements Stringable, FrontInterface
      *
      * @Assert\NotBlank
      */
-    protected $content;
+    private $content;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -54,12 +54,12 @@ class Memo implements Stringable, FrontInterface
     /**
      * @UploadableField(filename="fond", path="memo/fond", slug="title")
      */
-    protected $file;
+    private $file;
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="noteInternes", cascade={"persist"})
      */
-    protected $fond;
+    private $fond;
 
     /**
      * @ORM\Id
@@ -70,21 +70,21 @@ class Memo implements Stringable, FrontInterface
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes", cascade={"persist"})
      *
      * @ORM\JoinColumn(nullable=false)
      */
-    protected $refuser;
+    private $refuser;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      *
      * @Assert\NotBlank
      */
-    protected $title;
+    private $title;
 
     /**
      * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="memo", cascade={"persist"}, orphanRemoval=true)

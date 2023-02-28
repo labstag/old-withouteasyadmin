@@ -18,7 +18,7 @@ class Route implements Stringable
     /**
      * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refroute", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $groupes;
+    private $groupes;
 
     /**
      * @ORM\Id
@@ -29,17 +29,17 @@ class Route implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refroute", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $users;
+    private $users;
 
     public function __construct()
     {

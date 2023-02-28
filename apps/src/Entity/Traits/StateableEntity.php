@@ -19,7 +19,7 @@ trait StateableEntity
     /**
      * @ORM\Column(type="array")
      */
-    protected $state;
+    private $state;
 
     /**
      * @ORM\Column(name="state_changed", type="datetime", nullable=true)

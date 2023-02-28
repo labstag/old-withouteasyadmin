@@ -25,7 +25,7 @@ class TextImage implements ParagraphInterface
     /**
      * @UploadableField(filename="image", path="paragraph/textimage", slug="title")
      */
-    protected $file;
+    private $file;
 
     /**
      * @ORM\Id
@@ -36,7 +36,7 @@ class TextImage implements ParagraphInterface
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)

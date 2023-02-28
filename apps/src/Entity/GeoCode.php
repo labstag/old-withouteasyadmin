@@ -21,24 +21,24 @@ class GeoCode
     /**
      * @ORM\Column(type="integer")
      */
-    protected $accuracy;
+    private $accuracy;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    protected $communityCode;
+    private $communityCode;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    protected $communityName;
+    private $communityName;
 
     /**
      * @ORM\Column(type="string", length=2)
      *
      * @Assert\Country
      */
-    protected $countryCode;
+    private $countryCode;
 
     /**
      * @ORM\Id
@@ -49,47 +49,47 @@ class GeoCode
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $latitude;
+    private $latitude;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $longitude;
+    private $longitude;
 
     /**
      * @ORM\Column(type="string", length=180)
      */
-    protected $placeName;
+    private $placeName;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    protected $postalCode;
+    private $postalCode;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    protected $provinceCode;
+    private $provinceCode;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    protected $provinceName;
+    private $provinceName;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    protected $stateCode;
+    private $stateCode;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    protected $stateName;
+    private $stateName;
 
     public function getAccuracy(): ?int
     {

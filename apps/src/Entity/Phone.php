@@ -33,7 +33,7 @@ abstract class Phone implements Stringable
      *
      * @Assert\Country
      */
-    protected $country;
+    private $country;
 
     /**
      * @ORM\Id
@@ -44,26 +44,26 @@ abstract class Phone implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank
      */
-    protected $numero;
+    private $numero;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $principal = false;
+    private $principal = false;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank
      */
-    protected $type;
+    private $type;
 
     public function __toString(): string
     {

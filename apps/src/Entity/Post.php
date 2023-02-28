@@ -34,7 +34,7 @@ class Post implements Stringable, FrontInterface
     /**
      * @UploadableField(filename="img", path="post/img", slug="title")
      */
-    protected $file;
+    private $file;
 
     /**
      * @ORM\Id
@@ -45,7 +45,7 @@ class Post implements Stringable, FrontInterface
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)

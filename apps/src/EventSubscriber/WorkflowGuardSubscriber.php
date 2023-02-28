@@ -2,6 +2,7 @@
 
 namespace Labstag\EventSubscriber;
 
+use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Entity\WorkflowGroupe;
 use Labstag\Entity\WorkflowUser;
@@ -54,7 +55,7 @@ class WorkflowGuardSubscriber extends EventSubscriberLib
         }
 
         $groupe = $user->getRefgroupe();
-        if ('superadmin' === $groupe->getCode()) {
+        if (!$groupe instanceof Groupe || 'superadmin' === $groupe->getCode()) {
             return;
         }
 

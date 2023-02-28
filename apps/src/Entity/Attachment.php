@@ -27,7 +27,7 @@ class Attachment
     /**
      * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $editos;
+    private $editos;
 
     /**
      * @ORM\Id
@@ -38,37 +38,37 @@ class Attachment
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $mimeType;
+    private $mimeType;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="fond", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $noteInternes;
+    private $noteInternes;
 
     /**
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $posts;
+    private $posts;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    protected $size;
+    private $size;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $users;
+    private $users;
 
     /**
      * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img", cascade={"persist"}, orphanRemoval=true)

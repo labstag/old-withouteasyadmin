@@ -27,12 +27,12 @@ class Menu implements Stringable
      *
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    protected $children;
+    private $children;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $clef;
+    private $clef;
 
     /**
      * @ORM\Column(type="json", nullable=true)
@@ -42,7 +42,7 @@ class Menu implements Stringable
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $icon;
+    private $icon;
 
     /**
      * @ORM\Id
@@ -53,12 +53,12 @@ class Menu implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children", cascade={"persist"})
@@ -81,7 +81,7 @@ class Menu implements Stringable
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $separateur = false;
+    private $separateur = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="menu", cascade={"persist"}, orphanRemoval=true)

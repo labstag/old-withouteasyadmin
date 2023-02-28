@@ -26,7 +26,7 @@ class Groupe implements Stringable
      *
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    protected $code;
+    private $code;
 
     /**
      * @ORM\Id
@@ -37,24 +37,24 @@ class Groupe implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $routes;
+    private $routes;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $users;
+    private $users;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)

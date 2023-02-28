@@ -27,7 +27,7 @@ class Layout implements FrontInterface
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Custom::class, inversedBy="layouts", cascade={"persist"})

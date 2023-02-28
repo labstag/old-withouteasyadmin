@@ -17,7 +17,7 @@ class LinkUser extends Link
      *
      * @ORM\JoinColumn(nullable=false)
      */
-    protected $refuser;
+    private $refuser;
 
     public function getRefuser(): ?UserInterface
     {

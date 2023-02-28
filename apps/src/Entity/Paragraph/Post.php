@@ -26,7 +26,7 @@ class Post implements Stringable, ParagraphInterface
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="posts", cascade={"persist"})

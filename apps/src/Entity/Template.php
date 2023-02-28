@@ -24,14 +24,14 @@ class Template implements Stringable
      *
      * @ORM\Column(type="string", length=255)
      */
-    protected $code;
+    private $code;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\NotBlank
      */
-    protected $html;
+    private $html;
 
     /**
      * @ORM\Id
@@ -42,21 +42,21 @@ class Template implements Stringable
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\NotBlank
      */
-    protected $text;
+    private $text;
 
     public function __toString(): string
     {

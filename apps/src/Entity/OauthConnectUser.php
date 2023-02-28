@@ -26,7 +26,7 @@ class OauthConnectUser
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)

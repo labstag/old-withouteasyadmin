@@ -32,32 +32,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     /**
      * @ORM\OneToMany(targetEntity=AddressUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $addressUsers;
+    private $addressUsers;
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="users", cascade={"persist"})
      */
-    protected $avatar;
+    private $avatar;
 
     /**
      * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $editos;
+    private $editos;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $email;
+    private $email;
 
     /**
      * @ORM\OneToMany(targetEntity=EmailUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $emailUsers;
+    private $emailUsers;
 
     /**
      * @UploadableField(filename="avatar", path="user/avatar", slug="username")
      */
-    protected $file;
+    private $file;
 
     /**
      * @ORM\Id
@@ -68,22 +68,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\OneToMany(targetEntity=LinkUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $linkUsers;
+    private $linkUsers;
 
     /**
      * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $noteInternes;
+    private $noteInternes;
 
     /**
      * @ORM\OneToMany(targetEntity=OauthConnectUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $oauthConnectUsers;
+    private $oauthConnectUsers;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -93,7 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     /**
      * @ORM\OneToMany(targetEntity=PhoneUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $phoneUsers;
+    private $phoneUsers;
 
     protected ?string $plainPassword = null;
 
@@ -112,14 +112,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     /**
      * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $routes;
+    private $routes;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
      *
      * @Assert\NotNull
      */
-    protected $username;
+    private $username;
 
     /**
      * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)

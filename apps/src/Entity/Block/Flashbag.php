@@ -26,7 +26,7 @@ class Flashbag implements Stringable, BlockInterface
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="flashbags", cascade={"persist"})

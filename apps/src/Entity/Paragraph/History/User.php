@@ -26,7 +26,7 @@ class User implements Stringable, ParagraphInterface
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="historyUsers", cascade={"persist"})

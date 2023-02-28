@@ -31,7 +31,7 @@ class FormService
         return $form;
     }
 
-    public function test()
+    public function test(): array
     {
         $success = [];
         foreach ($this->formfront as $form) {

@@ -21,22 +21,22 @@ class RouteGroupe
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="routes", cascade={"persist"})
      */
-    protected $refgroupe;
+    private $refgroupe;
 
     /**
      * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="groupes", cascade={"persist"})
      */
-    protected $refroute;
+    private $refroute;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $state;
+    private $state;
 
     public function getId(): ?string
     {

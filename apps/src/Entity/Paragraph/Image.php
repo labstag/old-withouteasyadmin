@@ -25,7 +25,7 @@ class Image implements ParagraphInterface
     /**
      * @UploadableField(filename="image", path="paragraph/image", slug="title")
      */
-    protected $file;
+    private $file;
 
     /**
      * @ORM\Id
@@ -36,7 +36,7 @@ class Image implements ParagraphInterface
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphImages", cascade={"persist"})

@@ -30,7 +30,7 @@ class Bookmark
     /**
      * @UploadableField(filename="img", path="bookmark/img", slug="name")
      */
-    protected $file;
+    private $file;
 
     /**
      * @ORM\Id
@@ -41,7 +41,7 @@ class Bookmark
      *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)
