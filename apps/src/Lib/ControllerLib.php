@@ -15,6 +15,7 @@ use Labstag\Service\FrontService;
 use Labstag\Service\GuardService;
 use Labstag\Service\MenuService;
 use Labstag\Service\ParagraphService;
+use Labstag\Service\RepositoryService;
 use Labstag\Service\SessionService;
 use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,6 +35,7 @@ abstract class ControllerLib extends AbstractController
     protected Request $request;
 
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected UploadAnnotationReader $uploadAnnotationReader,
         protected FrontService $frontService,
         protected DomainService $domainService,

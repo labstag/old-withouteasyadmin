@@ -75,7 +75,7 @@ class PostFront extends PageFront
             return $breadcrumb;
         }
 
-        $repository = $this->getRepository(Category::class);
+        $repository = $this->repositoryService->get(Category::class);
         $category = $repository->findOneBy(
             [
                 'slug' => $params['slug'],
@@ -107,7 +107,7 @@ class PostFront extends PageFront
             return $breadcrumb;
         }
 
-        $repository = $this->getRepository(Libelle::class);
+        $repository = $this->repositoryService->get(Libelle::class);
         $libelle = $repository->findOneBy(
             [
                 'slug' => $params['slug'],

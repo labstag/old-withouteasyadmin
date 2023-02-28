@@ -4,6 +4,7 @@ namespace Labstag\Lib;
 
 use Labstag\Entity\Block;
 use Labstag\Entity\Page;
+use Labstag\Repository\BlockRepository;
 use Labstag\Repository\PageRepository;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -41,7 +42,9 @@ abstract class FrontControllerLib extends ControllerLib
 
     private function setParameters(array $parameters): array
     {
-        $blocksArray = $this->getRepository(Block::class)->getDataByRegion();
+        /** @var BlockRepository $blockRepository */
+        $blockRepository = $this->repositoryService->get(Block::class);
+        $blocksArray = $blockRepository->getDataByRegion();
         $content = null;
         if (isset($parameters['content'])) {
             $content = $parameters['content'];

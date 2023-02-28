@@ -16,9 +16,4 @@ abstract class CommandLib extends Command
     {
         parent::__construct();
     }
-
-    protected function getRepository(string $entity): EntityRepository
-    {
-        return $this->repositoryService->get($entity);
-    }
 }

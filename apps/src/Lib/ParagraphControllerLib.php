@@ -43,7 +43,7 @@ abstract class ParagraphControllerLib extends ControllerLib
     ): RedirectResponse
     {
         /** @var ParagraphRepository $repository */
-        $repository = $this->getRepository(Paragraph::class);
+        $repository = $this->repositoryService->get(Paragraph::class);
         $repository->remove($paragraph);
         $this->addFlash('success', 'Paragraph supprimée.');
 
@@ -78,7 +78,7 @@ abstract class ParagraphControllerLib extends ControllerLib
         $this->modalAttachmentDelete($paragraph, $form);
         $request = $this->requeststack->getCurrentRequest();
         /** @var ParagraphRepository $repository */
-        $repository = $this->getRepository(Paragraph::class);
+        $repository = $this->repositoryService->get(Paragraph::class);
         $form->handleRequest($request);
         $old = clone $paragraph;
         $entity = $this->paragraphService->getEntity($paragraph);

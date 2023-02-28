@@ -401,7 +401,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
 
         /** @var AttachmentRepository $repository */
-        $repository = $this->getRepository(Attachment::class);
+        $repository = $this->repositoryService->get(Attachment::class);
         $attachment = $repository->findOneBy(['id' => $attachmentField->getId()]);
         if (!$attachment instanceof Attachment) {
             $attachment = new Attachment();
@@ -597,7 +597,7 @@ abstract class AdminControllerLib extends ControllerLib
             foreach ($position as $row) {
                 $id = $row['id'];
                 $position = (int) $row['position'];
-                $repository = $this->getRepository($entityclass);
+                $repository = $this->repositoryService->get($entityclass);
                 $entity = $repository->find($id);
                 if (!is_null($entity)) {
                     $entity->setPosition($position + 1);
@@ -864,7 +864,7 @@ abstract class AdminControllerLib extends ControllerLib
             return;
         }
 
-        $repository = $this->getRepository(Paragraph::class);
+        $repository = $this->repositoryService->get(Paragraph::class);
         foreach ($paragraphs as $id => $position) {
             $paragraph = $repository->find($id);
             if (!$paragraph instanceof Paragraph) {
