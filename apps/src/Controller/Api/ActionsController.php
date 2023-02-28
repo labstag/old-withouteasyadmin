@@ -69,7 +69,7 @@ class ActionsController extends ApiControllerLib
             'error'  => '',
         ];
         /** @var ServiceEntityRepositoryLib $repository */
-        $repository = $this->entityManager->getRepository($entity);
+        $repository = $this->repositoryService->get($entity);
         $entity = $repository->find($id);
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
             $data['error'] = 'entité inconnu';
@@ -110,7 +110,7 @@ class ActionsController extends ApiControllerLib
         $entities = explode(',', (string) $request->request->get('entities'));
         $error = [];
         foreach ($entities as $entity) {
-            $repository = $this->entityManager->getRepository($entity);
+            $repository = $this->repositoryService->get($entity);
 
             try {
                 $this->deleteEntityByRepository($repository);
@@ -137,7 +137,7 @@ class ActionsController extends ApiControllerLib
             'action' => false,
             'error'  => '',
         ];
-        $repository = $this->entityManager->getRepository($entity);
+        $repository = $this->repositoryService->get($entity);
         $tokenValid = $this->tokenVerif('empty');
         if (!$tokenValid) {
             $data['error'] = 'token incorrect';
@@ -233,7 +233,7 @@ class ActionsController extends ApiControllerLib
             'action' => false,
             'error'  => '',
         ];
-        $repository = $this->entityManager->getRepository($entity);
+        $repository = $this->repositoryService->get($entity);
         $entity = $repository->find($id);
         $this->denyAccessUnlessGranted('workflow-'.$state, $entity);
         if (is_null($entity)) {
@@ -268,7 +268,7 @@ class ActionsController extends ApiControllerLib
         $error = [];
         foreach ($all as $data) {
             $entity = $data['name'];
-            $repository = $this->entityManager->getRepository($entity);
+            $repository = $this->repositoryService->get($entity);
 
             try {
                 $this->deleteEntityByRepository($repository);
@@ -287,7 +287,7 @@ class ActionsController extends ApiControllerLib
         }
 
         /** @var ServiceEntityRepositoryLib $repository */
-        $repository = $this->entityManager->getRepository($entity::class);
+        $repository = $this->repositoryService->get($entity::class);
         $repository->remove($entity);
     }
 
@@ -329,7 +329,7 @@ class ActionsController extends ApiControllerLib
 
         $entities = explode(',', (string) $request->request->get('entities'));
         $error = [];
-        $repository = $this->entityManager->getRepository($entity);
+        $repository = $this->repositoryService->get($entity);
         $method = match ($token) {
             'deleties' => 'deleteEntity',
             'destroies' => 'destroyEntity',
@@ -363,7 +363,7 @@ class ActionsController extends ApiControllerLib
 
         $file = '';
         /** @var ServiceEntityRepositoryLib $repository */
-        $repository = $this->entityManager->getRepository($entity::class);
+        $repository = $this->repositoryService->get($entity::class);
         $repository->remove($entity);
         if ($entity instanceof Attachment) {
             $file = $entity->getName();
@@ -376,7 +376,7 @@ class ActionsController extends ApiControllerLib
 
     private function getDataRestoreDelete(string $entity, $id)
     {
-        $repository = $this->entityManager->getRepository($entity);
+        $repository = $this->repositoryService->get($entity);
 
         return $repository->find($id);
     }
@@ -389,7 +389,7 @@ class ActionsController extends ApiControllerLib
 
         $entity->setDeletedAt(null);
         /** @var ServiceEntityRepositoryLib $repository */
-        $repository = $this->entityManager->getRepository($entity::class);
+        $repository = $this->repositoryService->get($entity::class);
         $repository->add($entity);
     }
 

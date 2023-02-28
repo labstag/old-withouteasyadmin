@@ -16,6 +16,7 @@ use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\RequestHandler\RenderRequestHandler;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,6 +29,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class LabstagMetatagsCorrectionCommand extends CommandLib
 {
     public function __construct(
+        RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected ChapterRepository $chapterRepository,
         protected EditoRepository $editoRepository,
@@ -43,7 +45,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
         protected RenderRequestHandler $renderRequestHandler
     )
     {
-        parent::__construct($entityManager);
+        parent::__construct($repositoryService, $entityManager);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

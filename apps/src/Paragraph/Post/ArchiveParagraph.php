@@ -47,9 +47,9 @@ class ArchiveParagraph extends ParagraphLib
 
     public function show(Archive $archive): ?Response
     {
-        /** @var PostRepository $entityRepository */
-        $entityRepository = $this->getRepository(Post::class);
-        $archives = $entityRepository->findDateArchive();
+        /** @var PostRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
+        $archives = $serviceEntityRepositoryLib->findDateArchive();
         $page = $this->request->query->getInt('page', 1);
         if (1 != $page) {
             return null;

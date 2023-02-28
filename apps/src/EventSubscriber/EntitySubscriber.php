@@ -269,7 +269,7 @@ class EntitySubscriber extends EventSubscriberLib
             foreach ($state as $entity) {
                 $entity->setDeletedAt($datetime);
                 /** @var ServiceEntityRepositoryLib $repository */
-                $repository = $this->entityManager->getRepository($entity::class);
+                $repository = $this->repositoryService->get($entity::class);
                 $repository->add($entity);
             }
         }
@@ -317,7 +317,7 @@ class EntitySubscriber extends EventSubscriberLib
             }
 
             /** @var ServiceEntityRepositoryLib $repository */
-            $repository = $this->entityManager->getRepository($emailUser::class);
+            $repository = $this->repositoryService->get($emailUser::class);
             $repository->add($emailUser);
         }
 

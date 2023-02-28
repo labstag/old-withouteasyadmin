@@ -47,10 +47,10 @@ class ListParagraph extends ParagraphLib
 
     public function show(Liste $liste): Response
     {
-        /** @var BookmarkRepository $entityRepository */
-        $entityRepository = $this->getRepository(Bookmark::class);
+        /** @var BookmarkRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Bookmark::class);
         $pagination = $this->paginator->paginate(
-            $entityRepository->findPublier(),
+            $serviceEntityRepositoryLib->findPublier(),
             $this->request->query->getInt('page', 1),
             10
         );

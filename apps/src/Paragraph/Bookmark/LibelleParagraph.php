@@ -50,10 +50,10 @@ class LibelleParagraph extends ParagraphLib
         $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
         $slug = $routeParam['slug'] ?? null;
-        /** @var BookmarkRepository $entityRepository */
-        $entityRepository = $this->getRepository(Bookmark::class);
+        /** @var BookmarkRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Bookmark::class);
         $pagination = $this->paginator->paginate(
-            $entityRepository->findPublierLibelle($slug),
+            $serviceEntityRepositoryLib->findPublierLibelle($slug),
             $this->request->query->getInt('page', 1),
             10
         );

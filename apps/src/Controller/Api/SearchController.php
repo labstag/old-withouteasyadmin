@@ -50,8 +50,8 @@ class SearchController extends ApiControllerLib
             return $this->json($return);
         }
 
-        $entityRepository = $this->entityManager->getRepository($entity);
-        $data = call_user_func([$entityRepository, $method], $get['name']);
+        $serviceEntityRepositoryLib = $this->repositoryService->get($entity);
+        $data = call_user_func([$serviceEntityRepositoryLib, $method], $get['name']);
         $result = [
             'results' => [],
         ];

@@ -4,11 +4,13 @@ namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\Console\Command\Command;
 
 abstract class CommandLib extends Command
 {
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected EntityManagerInterface $entityManager
     )
     {
@@ -17,6 +19,6 @@ abstract class CommandLib extends Command
 
     protected function getRepository(string $entity): EntityRepository
     {
-        return $this->entityManager->getRepository($entity);
+        return $this->repositoryService->get($entity);
     }
 }

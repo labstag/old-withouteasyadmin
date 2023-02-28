@@ -47,13 +47,13 @@ class EditoParagraph extends ParagraphLib
 
     public function show(Edito $edito): Response
     {
-        /** @var EditoRepository $entityRepository */
-        $entityRepository = $this->getRepository(EntityEdito::class);
+        /** @var EditoRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(EntityEdito::class);
 
         return $this->render(
             $this->getTemplateFile($this->getCode($edito)),
             [
-                'edito'     => $entityRepository->findOnePublier(),
+                'edito'     => $serviceEntityRepositoryLib->findOnePublier(),
                 'paragraph' => $edito,
             ]
         );

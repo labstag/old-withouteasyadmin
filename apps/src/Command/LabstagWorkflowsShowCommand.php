@@ -7,6 +7,7 @@ use Labstag\Entity\Workflow;
 use Labstag\Lib\CommandLib;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\WorkflowRequestHandler;
+use Labstag\Service\RepositoryService;
 use Labstag\Service\WorkflowService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -21,6 +22,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
 {
     public function __construct(
         protected RewindableGenerator $rewindableGenerator,
+        RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected WorkflowService $workflowService,
         protected EventDispatcherInterface $eventDispatcher,
@@ -28,7 +30,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
         protected WorkflowRepository $workflowRepository
     )
     {
-        parent::__construct($entityManager);
+        parent::__construct($repositoryService, $entityManager);
     }
 
     protected function configure(): void

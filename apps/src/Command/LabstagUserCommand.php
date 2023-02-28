@@ -10,6 +10,7 @@ use Labstag\Lib\CommandLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\UserRequestHandler;
+use Labstag\Service\RepositoryService;
 use Labstag\Service\WorkflowService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -24,6 +25,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class LabstagUserCommand extends CommandLib
 {
     public function __construct(
+        RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected WorkflowService $workflowService,
         protected UserRequestHandler $userRequestHandler,
@@ -31,7 +33,7 @@ class LabstagUserCommand extends CommandLib
         protected UserRepository $userRepository
     )
     {
-        parent::__construct($entityManager);
+        parent::__construct($repositoryService, $entityManager);
     }
 
     protected function actionEnableDisableDelete(

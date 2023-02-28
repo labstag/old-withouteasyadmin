@@ -47,10 +47,10 @@ class ListParagraph extends ParagraphLib
 
     public function show(Liste $liste): Response
     {
-        /** @var PostRepository $entityRepository */
-        $entityRepository = $this->getRepository(Post::class);
+        /** @var PostRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
         $pagination = $this->paginator->paginate(
-            $entityRepository->findPublier(),
+            $serviceEntityRepositoryLib->findPublier(),
             $this->request->query->getInt('page', 1),
             10
         );

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Lib\CommandLib;
 use Labstag\Repository\HistoryRepository;
 use Labstag\Service\HistoryService;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,13 +20,14 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class LabstagHistoryGeneratePdfCommand extends CommandLib
 {
     public function __construct(
+        RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected ParameterBagInterface $parameterBag,
         protected HistoryService $historyService,
         protected HistoryRepository $historyRepository
     )
     {
-        parent::__construct($entityManager);
+        parent::__construct($repositoryService, $entityManager);
     }
 
     protected function configure(): void

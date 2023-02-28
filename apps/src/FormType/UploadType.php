@@ -39,8 +39,6 @@ class UploadType extends AbstractType
             $field = $entity[$name];
         }
 
-        dump($field);
-
         $formView->vars['field'] = $field;
         $formView->vars['url'] = null;
         if (null != $field) {

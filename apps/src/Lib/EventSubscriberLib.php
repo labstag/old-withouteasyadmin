@@ -21,6 +21,7 @@ use Labstag\Service\ErrorService;
 use Labstag\Service\FrontService;
 use Labstag\Service\GuardService;
 use Labstag\Service\ParagraphService;
+use Labstag\Service\RepositoryService;
 use Labstag\Service\SessionService;
 use Labstag\Service\UserMailService;
 use Psr\Log\LoggerInterface;
@@ -44,6 +45,7 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
     protected $request;
 
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected ParagraphService $paragraphService,
         protected BlockService $blockService,
         protected ConfigurationRepository $configurationRepository,

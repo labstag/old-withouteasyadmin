@@ -50,6 +50,7 @@ npm run docker_getpull-image
 
 ```sh
 npm run cmd:install:dev
+```
 
 ## Users
 

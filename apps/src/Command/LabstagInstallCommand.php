@@ -5,6 +5,7 @@ namespace Labstag\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Lib\CommandLib;
 use Labstag\Service\InstallService;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,12 +16,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class LabstagInstallCommand extends CommandLib
 {
     public function __construct(
-        protected array $serverenv,
+        protected $serverenv,
+        RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected InstallService $installService
     )
     {
-        parent::__construct($entityManager);
+        parent::__construct($repositoryService, $entityManager);
     }
 
     protected function configure(): void

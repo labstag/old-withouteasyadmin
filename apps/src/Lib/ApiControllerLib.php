@@ -8,6 +8,7 @@ use Labstag\Entity\User;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\PhoneService;
+use Labstag\Service\RepositoryService;
 use Labstag\Service\WorkflowService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,7 @@ abstract class ApiControllerLib extends AbstractController
     protected Request $request;
 
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected RequestStack $requeststack,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected TokenStorageInterface $tokenStorage,
@@ -47,9 +49,7 @@ abstract class ApiControllerLib extends AbstractController
             return $data;
         }
 
-        /** @var ServiceEntityRepositoryLib $entityRepository */
-        $entityRepository = $this->entityManager->getRepository($entityClass);
-
+        $entityRepository = $this->repositoryService->get($entityClass);
         $results = $entityRepository->findEnableByUser($user);
         if (RouteUser::class == $entityClass) {
             foreach ($results as $row) {
@@ -75,9 +75,8 @@ abstract class ApiControllerLib extends AbstractController
 
     protected function getResultWorkflow($request, $entity)
     {
-        $userRepository = $this->entityManager->getRepository(User::class);
-        /** @var ServiceEntityRepositoryLib $entityRepository */
-        $entityRepository = $this->entityManager->getRepository($entity);
+        $userRepository = $this->repositoryService->get(User::class);
+        $entityRepository = $this->repositoryService->get($entity);
         $get = $request->query->all();
         if (array_key_exists('user', $get)) {
             $user = $userRepository->find($get['user']);

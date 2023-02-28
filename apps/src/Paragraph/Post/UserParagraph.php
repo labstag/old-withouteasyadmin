@@ -50,10 +50,10 @@ class UserParagraph extends ParagraphLib
         $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
         $username = $routeParam['username'] ?? null;
-        /** @var PostRepository $entityRepository */
-        $entityRepository = $this->getRepository(Post::class);
+        /** @var PostRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
         $pagination = $this->paginator->paginate(
-            $entityRepository->findPublierUsername($username),
+            $serviceEntityRepositoryLib->findPublierUsername($username),
             $this->request->query->getInt('page', 1),
             10
         );

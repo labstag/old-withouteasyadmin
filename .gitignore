@@ -10,7 +10,7 @@ apps/public/assets
 apps/public/docs
 apps/public/uploads
 docker-compose-*.yml
-!docker-compose-override.yml
+!docker-compose-lampy.yml
 mariadb
 node_modules
 report

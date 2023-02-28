@@ -47,9 +47,9 @@ class BookmarkParagraph extends ParagraphLib
 
     public function show(Bookmark $bookmark): Response
     {
-        /** @var BookmarkRepository $entityRepository */
-        $entityRepository = $this->getRepository(EntityBookmark::class);
-        $bookmarks = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
+        /** @var BookmarkRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(EntityBookmark::class);
+        $bookmarks = $serviceEntityRepositoryLib->getLimitOffsetResult($serviceEntityRepositoryLib->findPublier(), 5, 0);
 
         return $this->render(
             $this->getTemplateFile($this->getcode($bookmark)),

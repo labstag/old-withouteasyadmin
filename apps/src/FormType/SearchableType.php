@@ -5,7 +5,7 @@ namespace Labstag\FormType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
@@ -19,6 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SearchableType extends AbstractType
 {
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected RouterInterface $router,
         protected TranslatorInterface $translator,
         protected EntityManagerInterface $entityManager
@@ -42,14 +43,14 @@ class SearchableType extends AbstractType
                         return is_array($ids) ? new ArrayCollection([]) : null;
                     }
 
-                    $entityRepository = $this->entityManager->getRepository($options['class']);
+                    $serviceEntityRepositoryLib = $this->repositoryService->get($options['class']);
                     if ($options['add'] && is_array($ids)) {
                         $ids = $this->addToentity($ids, $options);
                     }
 
                     return is_array($ids) ? new ArrayCollection(
-                        $entityRepository->findBy(['id' => $ids])
-                    ) : $entityRepository->find($ids);
+                        $serviceEntityRepositoryLib->findBy(['id' => $ids])
+                    ) : $serviceEntityRepositoryLib->find($ids);
                 }
             )
         );
@@ -118,9 +119,7 @@ class SearchableType extends AbstractType
             return $ids;
         }
 
-        $entityManager = $this->entityManager;
-        /** @var ServiceEntityRepositoryLib $entityRepository */
-        $entityRepository = $entityManager->getRepository($options['class']);
+        $entityRepository = $this->repositoryService->get($options['class']);
         foreach ($ids as $id => $key) {
             $entity = $entityRepository->find($key);
             if ($entity instanceof $options['class']) {

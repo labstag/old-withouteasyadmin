@@ -67,6 +67,9 @@ services:
     Labstag\Command\LabstagWorkflowsShowCommand:
         arguments:  
             - !tagged_iterator entitiesclass
+    Labstag\Service\RepositoryService:
+        arguments:  
+            - !tagged_iterator repositories
     Labstag\Service\TrashService:
         arguments:  
             - !tagged_iterator repositories

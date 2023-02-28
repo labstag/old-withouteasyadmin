@@ -3,7 +3,6 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\ParagraphInterface;
@@ -12,6 +11,7 @@ use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
 use Labstag\Service\FormService;
 use Labstag\Service\ParagraphService;
+use Labstag\Service\RepositoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -27,6 +27,7 @@ abstract class ParagraphLib extends AbstractController
     protected array $template = [];
 
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected FileService $fileService,
         protected UploadAnnotationReader $uploadAnnotationReader,
         protected ErrorService $errorService,
@@ -58,11 +59,6 @@ abstract class ParagraphLib extends AbstractController
     public function template($entity)
     {
         return $this->showTemplateFile($this->getCode($entity));
-    }
-
-    protected function getRepository(string $entity): EntityRepository
-    {
-        return $this->entityManager->getRepository($entity);
     }
 
     protected function getTemplateData(string $type): array

@@ -50,9 +50,9 @@ class HeaderParagraph extends ParagraphLib
         $all = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
         $slug = $routeParam['slug'] ?? null;
-        /** @var PostRepository $entityRepository */
-        $entityRepository = $this->getRepository(Post::class);
-        $post = $entityRepository->findOneBy(
+        /** @var PostRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
+        $post = $serviceEntityRepositoryLib->findOneBy(
             ['slug' => $slug]
         );
 
