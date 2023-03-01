@@ -19,6 +19,7 @@ class AddressUserDomain extends DomainLib
     public function __construct(
         protected AddressUserRequestHandler $addressUserRequestHandler,
         protected AddressUserRepository $addressUserRepository,
+        protected AddressUserSearch $addressUserSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class AddressUserDomain extends DomainLib
 
     public function getSearchData(): AddressUserSearch
     {
-        return new AddressUserSearch();
+        return $this->addressUserSearch;
     }
 
     public function getSearchForm(): string

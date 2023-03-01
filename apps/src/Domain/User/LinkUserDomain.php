@@ -19,6 +19,7 @@ class LinkUserDomain extends DomainLib
     public function __construct(
         protected LinkUserRequestHandler $linkUserRequestHandler,
         protected LinkUserRepository $linkUserRepository,
+        protected LinkUserSearch $linkUserSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class LinkUserDomain extends DomainLib
 
     public function getSearchData(): LinkUserSearch
     {
-        return new LinkUserSearch();
+        return $this->linkUserSearch;
     }
 
     public function getSearchForm(): string

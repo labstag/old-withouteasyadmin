@@ -19,6 +19,7 @@ class MemoDomain extends DomainLib
     public function __construct(
         protected MemoRequestHandler $memoRequestHandler,
         protected MemoRepository $memoRepository,
+        protected MemoSearch $memoSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class MemoDomain extends DomainLib
 
     public function getSearchData(): MemoSearch
     {
-        return new MemoSearch();
+        return $this->memoSearch;
     }
 
     public function getSearchForm(): string

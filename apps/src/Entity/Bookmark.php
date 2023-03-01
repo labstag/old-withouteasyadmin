@@ -24,11 +24,11 @@ class Bookmark
 
     #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'bookmarks', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'img_id')]
-    private ?Attachment $attachment = null;
+    private ?Attachment $img = null;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'bookmarks', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refcategory_id')]
-    private ?Category $category = null;
+    private ?Category $refcategory = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content = null;
@@ -71,7 +71,7 @@ class Bookmark
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookmarks', cascade: ['persist'])]
     #[Assert\NotBlank]
     #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
-    private ?UserInterface $user = null;
+    private ?UserInterface $refuser = null;
 
     public function __construct()
     {
@@ -109,7 +109,7 @@ class Bookmark
 
     public function getImg(): ?Attachment
     {
-        return $this->attachment;
+        return $this->img;
     }
 
     public function getLibelles(): Collection
@@ -129,12 +129,12 @@ class Bookmark
 
     public function getRefcategory(): ?Category
     {
-        return $this->category;
+        return $this->refcategory;
     }
 
     public function getRefuser(): ?UserInterface
     {
-        return $this->user;
+        return $this->refuser;
     }
 
     public function getSlug(): ?string
@@ -187,7 +187,7 @@ class Bookmark
 
     public function setImg(?Attachment $attachment): self
     {
-        $this->attachment = $attachment;
+        $this->img = $attachment;
 
         return $this;
     }
@@ -208,14 +208,14 @@ class Bookmark
 
     public function setRefcategory(?Category $category): self
     {
-        $this->category = $category;
+        $this->refcategory = $category;
 
         return $this;
     }
 
     public function setRefuser(?UserInterface $user): self
     {
-        $this->user = $user;
+        $this->refuser = $user;
 
         return $this;
     }

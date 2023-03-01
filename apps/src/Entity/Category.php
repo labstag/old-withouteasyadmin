@@ -22,9 +22,9 @@ class Category implements Stringable
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'children', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
-    private ?Category $category = null;
+    private ?Category $parent = null;
 
-    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'category', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'parent', cascade: ['persist'], orphanRemoval: true)]
     private $children;
 
     #[ORM\Id]
@@ -110,7 +110,7 @@ class Category implements Stringable
 
     public function getParent(): ?self
     {
-        return $this->category;
+        return $this->parent;
     }
 
     public function getPosts(): Collection
@@ -156,7 +156,7 @@ class Category implements Stringable
 
     public function setParent(?self $parent): self
     {
-        $this->category = $parent;
+        $this->parent = $parent;
 
         return $this;
     }

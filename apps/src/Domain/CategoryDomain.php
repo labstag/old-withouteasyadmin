@@ -19,6 +19,7 @@ class CategoryDomain extends DomainLib
     public function __construct(
         protected CategoryRequestHandler $categoryRequestHandler,
         protected CategoryRepository $categoryRepository,
+        protected CategorySearch $categorySearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class CategoryDomain extends DomainLib
 
     public function getSearchData(): CategorySearch
     {
-        return new CategorySearch();
+        return $this->categorySearch;
     }
 
     public function getSearchForm(): string

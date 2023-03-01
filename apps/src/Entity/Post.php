@@ -28,11 +28,11 @@ class Post implements Stringable, FrontInterface
 
     #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'posts', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'img_id')]
-    private ?Attachment $attachment = null;
+    private ?Attachment $img = null;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'posts', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refcategory_id')]
-    private ?Category $category = null;
+    private ?Category $refcategory = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content = null;
@@ -80,7 +80,7 @@ class Post implements Stringable, FrontInterface
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'posts', cascade: ['persist'])]
     #[Assert\NotBlank]
     #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
-    private ?UserInterface $user = null;
+    private ?UserInterface $refuser = null;
 
     public function __construct()
     {
@@ -146,7 +146,7 @@ class Post implements Stringable, FrontInterface
 
     public function getImg(): ?Attachment
     {
-        return $this->attachment;
+        return $this->img;
     }
 
     public function getLibelles(): Collection
@@ -177,12 +177,12 @@ class Post implements Stringable, FrontInterface
 
     public function getRefcategory(): ?Category
     {
-        return $this->category;
+        return $this->refcategory;
     }
 
     public function getRefuser(): ?UserInterface
     {
-        return $this->user;
+        return $this->refuser;
     }
 
     public function getRemark(): ?bool
@@ -251,7 +251,7 @@ class Post implements Stringable, FrontInterface
 
     public function setImg(?Attachment $attachment): self
     {
-        $this->attachment = $attachment;
+        $this->img = $attachment;
 
         return $this;
     }
@@ -265,14 +265,14 @@ class Post implements Stringable, FrontInterface
 
     public function setRefcategory(?Category $category): self
     {
-        $this->category = $category;
+        $this->refcategory = $category;
 
         return $this;
     }
 
     public function setRefuser(?UserInterface $user): self
     {
-        $this->user = $user;
+        $this->refuser = $user;
 
         return $this;
     }

@@ -12,7 +12,7 @@ class WorkflowGroupe
 
     #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'workflowGroupes', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refgroupe_id')]
-    private ?Groupe $groupe = null;
+    private ?Groupe $refgroupe = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -25,7 +25,7 @@ class WorkflowGroupe
 
     #[ORM\ManyToOne(targetEntity: Workflow::class, inversedBy: 'workflowGroupes', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refworkflow_id')]
-    private ?Workflow $workflow = null;
+    private ?Workflow $refworkflow = null;
 
     public function getId(): ?string
     {
@@ -34,12 +34,12 @@ class WorkflowGroupe
 
     public function getRefgroupe(): ?Groupe
     {
-        return $this->groupe;
+        return $this->refgroupe;
     }
 
     public function getRefworkflow(): ?Workflow
     {
-        return $this->workflow;
+        return $this->refworkflow;
     }
 
     public function getState(): ?bool
@@ -49,14 +49,14 @@ class WorkflowGroupe
 
     public function setRefgroupe(?Groupe $groupe): self
     {
-        $this->groupe = $groupe;
+        $this->refgroupe = $groupe;
 
         return $this;
     }
 
     public function setRefworkflow(?Workflow $workflow): self
     {
-        $this->workflow = $workflow;
+        $this->refworkflow = $workflow;
 
         return $this;
     }

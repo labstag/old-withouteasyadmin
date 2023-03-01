@@ -19,6 +19,7 @@ class PhoneUserDomain extends DomainLib
     public function __construct(
         protected PhoneUserRequestHandler $phoneUserRequestHandler,
         protected PhoneUserRepository $phoneUserRepository,
+        protected PhoneUserSearch $phoneUserSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class PhoneUserDomain extends DomainLib
 
     public function getSearchData(): PhoneUserSearch
     {
-        return new PhoneUserSearch();
+        return $this->phoneUserSearch;
     }
 
     public function getSearchForm(): string

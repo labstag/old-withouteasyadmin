@@ -19,6 +19,7 @@ class LibelleDomain extends DomainLib
     public function __construct(
         protected LibelleRequestHandler $libelleRequestHandler,
         protected LibelleRepository $libelleRepository,
+        protected LibelleSearch $libelleSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class LibelleDomain extends DomainLib
 
     public function getSearchData(): LibelleSearch
     {
-        return new LibelleSearch();
+        return $this->libelleSearch;
     }
 
     public function getSearchForm(): string

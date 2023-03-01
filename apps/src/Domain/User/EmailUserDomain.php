@@ -19,6 +19,7 @@ class EmailUserDomain extends DomainLib
     public function __construct(
         protected EmailUserRequestHandler $emailUserRequestHandler,
         protected EmailUserRepository $emailUserRepository,
+        protected EmailUserSearch $emailUserSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class EmailUserDomain extends DomainLib
 
     public function getSearchData(): EmailUserSearch
     {
-        return new EmailUserSearch();
+        return $this->emailUserSearch;
     }
 
     public function getSearchForm(): string

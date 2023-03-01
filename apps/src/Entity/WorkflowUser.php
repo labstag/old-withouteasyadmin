@@ -27,7 +27,7 @@ class WorkflowUser
     )
     ]
     #[ORM\JoinColumn(name: 'refuser_id')]
-    private ?UserInterface $user = null;
+    private ?UserInterface $refuser = null;
 
     #[ORM\ManyToOne(
         targetEntity: Workflow::class,
@@ -45,7 +45,7 @@ class WorkflowUser
 
     public function getRefuser(): ?UserInterface
     {
-        return $this->user;
+        return $this->refuser;
     }
 
     public function getRefworkflow(): ?Workflow
@@ -60,7 +60,7 @@ class WorkflowUser
 
     public function setRefuser(?UserInterface $user): self
     {
-        $this->user = $user;
+        $this->refuser = $user;
 
         return $this;
     }

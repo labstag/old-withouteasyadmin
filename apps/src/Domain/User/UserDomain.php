@@ -18,6 +18,7 @@ class UserDomain extends DomainLib
     public function __construct(
         protected UserRequestHandler $userRequestHandler,
         protected UserRepository $userRepository,
+        protected UserSearch $userSearch,
         TranslatorInterface $translator
     )
     {
@@ -41,7 +42,7 @@ class UserDomain extends DomainLib
 
     public function getSearchData(): UserSearch
     {
-        return new UserSearch();
+        return $this->userSearch;
     }
 
     public function getSearchForm(): string

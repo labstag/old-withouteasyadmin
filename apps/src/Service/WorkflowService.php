@@ -4,6 +4,7 @@ namespace Labstag\Service;
 
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Bookmark;
+use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
 use Labstag\Entity\Email;
 use Labstag\Entity\History;
@@ -17,6 +18,7 @@ class WorkflowService
 {
     public function __construct(
         protected WorkflowInterface $attachmentStateMachine,
+        protected WorkflowInterface $chapterStateMachine,
         protected WorkflowInterface $bookmarkStateMachine,
         protected WorkflowInterface $editoStateMachine,
         protected WorkflowInterface $emailStateMachine,
@@ -37,6 +39,7 @@ class WorkflowService
             ($entity instanceof Edito) => $this->editoStateMachine,
             ($entity instanceof Email) => $this->emailStateMachine,
             ($entity instanceof History) => $this->historyStateMachine,
+            ($entity instanceof Chapter) => $this->chapterStateMachine,
             ($entity instanceof Memo) => $this->memoStateMachine,
             ($entity instanceof Phone) => $this->phoneStateMachine,
             ($entity instanceof Post) => $this->postStateMachine,

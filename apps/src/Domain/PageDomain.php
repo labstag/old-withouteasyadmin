@@ -19,6 +19,7 @@ class PageDomain extends DomainLib
     public function __construct(
         protected PageRequestHandler $pageRequestHandler,
         protected PageRepository $pageRepository,
+        protected PageSearch $pageSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class PageDomain extends DomainLib
 
     public function getSearchData(): PageSearch
     {
-        return new PageSearch();
+        return $this->pageSearch;
     }
 
     public function getSearchForm(): string

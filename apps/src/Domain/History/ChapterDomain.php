@@ -19,6 +19,7 @@ class ChapterDomain extends DomainLib
     public function __construct(
         protected ChapterRequestHandler $chapterRequestHandler,
         protected ChapterRepository $chapterRepository,
+        protected ChapterSearch $chapterSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class ChapterDomain extends DomainLib
 
     public function getSearchData(): ChapterSearch
     {
-        return new ChapterSearch();
+        return $this->chapterSearch;
     }
 
     public function getSearchForm(): string

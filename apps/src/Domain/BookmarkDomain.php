@@ -19,6 +19,7 @@ class BookmarkDomain extends DomainLib
     public function __construct(
         protected BookmarkRequestHandler $bookmarkRequestHandler,
         protected BookmarkRepository $bookmarkRepository,
+        protected BookmarkSearch $bookmarkSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class BookmarkDomain extends DomainLib
 
     public function getSearchData(): BookmarkSearch
     {
-        return new BookmarkSearch();
+        return $this->bookmarkSearch;
     }
 
     public function getSearchForm(): string

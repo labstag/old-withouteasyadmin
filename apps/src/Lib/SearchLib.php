@@ -21,11 +21,10 @@ abstract class SearchLib
         $entityRepository = $entityManager->getRepository(User::class);
         $categoryRepo = $entityManager->getRepository(Category::class);
         $groupeRepo = $entityManager->getRepository(Groupe::class);
-        $dateTime = new DateTime();
         foreach ($get as $key => $value) {
-            $this->{$key} = $value;
             if ('published' == $key) {
                 if (!empty($value)) {
+                    $dateTime = new DateTime();
                     [
                         $year,
                         $month,
@@ -46,7 +45,7 @@ abstract class SearchLib
                 'refuser' => $entityRepository->find($value),
                 'refcategory' => $categoryRepo->find($value),
                 'refgroup' => $groupeRepo->find($value),
-                default => $this->{$key}
+                default => $value
             };
         }
     }

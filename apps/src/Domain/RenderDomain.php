@@ -19,6 +19,7 @@ class RenderDomain extends DomainLib
     public function __construct(
         protected RenderRequestHandler $renderRequestHandler,
         protected RenderRepository $renderRepository,
+        protected RenderSearch $renderSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class RenderDomain extends DomainLib
 
     public function getSearchData(): RenderSearch
     {
-        return new RenderSearch();
+        return $this->renderSearch;
     }
 
     public function getSearchForm(): string

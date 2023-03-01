@@ -19,6 +19,7 @@ class HistoryDomain extends DomainLib
     public function __construct(
         protected HistoryRequestHandler $historyRequestHandler,
         protected HistoryRepository $historyRepository,
+        protected HistorySearch $historySearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class HistoryDomain extends DomainLib
 
     public function getSearchData(): HistorySearch
     {
-        return new HistorySearch();
+        return $this->historySearch;
     }
 
     public function getSearchForm(): string

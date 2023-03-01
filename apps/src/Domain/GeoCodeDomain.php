@@ -19,6 +19,7 @@ class GeoCodeDomain extends DomainLib
     public function __construct(
         protected GeoCodeRequestHandler $geoCodeRequestHandler,
         protected GeoCodeRepository $geoCodeRepository,
+        protected GeoCodeSearch $geoCodeSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class GeoCodeDomain extends DomainLib
 
     public function getSearchData(): GeoCodeSearch
     {
-        return new GeoCodeSearch();
+        return $this->geoCodeSearch;
     }
 
     public function getSearchForm(): string

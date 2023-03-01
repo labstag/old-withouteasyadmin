@@ -19,6 +19,7 @@ class PostDomain extends DomainLib
     public function __construct(
         protected PostRequestHandler $postRequestHandler,
         protected PostRepository $postRepository,
+        protected PostSearch $postSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class PostDomain extends DomainLib
 
     public function getSearchData(): PostSearch
     {
-        return new PostSearch();
+        return $this->postSearch;
     }
 
     public function getSearchForm(): string

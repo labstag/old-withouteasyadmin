@@ -19,6 +19,7 @@ class GroupeDomain extends DomainLib
     public function __construct(
         protected GroupeRequestHandler $groupeRequestHandler,
         protected GroupeRepository $groupeRepository,
+        protected GroupeSearch $groupeSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class GroupeDomain extends DomainLib
 
     public function getSearchData(): GroupeSearch
     {
-        return new GroupeSearch();
+        return $this->groupeSearch;
     }
 
     public function getSearchForm(): string

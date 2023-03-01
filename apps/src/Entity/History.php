@@ -23,7 +23,7 @@ class History implements FrontInterface
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    #[ORM\OneToMany(targetEntity: Chapter::class, mappedBy: 'refhistory', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Chapter::class, mappedBy: 'history', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
     private $chapters;
 
@@ -67,7 +67,7 @@ class History implements FrontInterface
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'histories', cascade: ['persist'])]
     #[Assert\NotBlank]
     #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
-    private ?UserInterface $user = null;
+    private ?UserInterface $refuser = null;
 
     public function __construct()
     {
@@ -106,7 +106,7 @@ class History implements FrontInterface
         return $this;
     }
 
-    public function getChapters(): ArrayCollection
+    public function getChapters(): Collection
     {
         return $this->chapters;
     }
@@ -169,7 +169,7 @@ class History implements FrontInterface
 
     public function getRefuser(): ?UserInterface
     {
-        return $this->user;
+        return $this->refuser;
     }
 
     public function getSlug(): ?string
@@ -238,7 +238,7 @@ class History implements FrontInterface
 
     public function setRefuser(?UserInterface $user): self
     {
-        $this->user = $user;
+        $this->refuser = $user;
 
         return $this;
     }

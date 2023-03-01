@@ -19,6 +19,7 @@ class LayoutDomain extends DomainLib
     public function __construct(
         protected LayoutRequestHandler $layoutRequestHandler,
         protected LayoutRepository $layoutRepository,
+        protected LayoutSearch $layoutSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class LayoutDomain extends DomainLib
 
     public function getSearchData(): LayoutSearch
     {
-        return new LayoutSearch();
+        return $this->layoutSearch;
     }
 
     public function getSearchForm(): string

@@ -2,6 +2,7 @@
 
 namespace Labstag\Search;
 
+use Labstag\Entity\User;
 use Labstag\Lib\SearchLib;
 
 class BookmarkSearch extends SearchLib
@@ -13,5 +14,5 @@ class BookmarkSearch extends SearchLib
 
     public $refcategory;
 
-    public $refuser;
+    public ?User $refuser;
 }

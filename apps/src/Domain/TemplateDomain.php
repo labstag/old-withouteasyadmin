@@ -19,6 +19,7 @@ class TemplateDomain extends DomainLib
     public function __construct(
         protected TemplateRequestHandler $templateRequestHandler,
         protected TemplateRepository $templateRepository,
+        protected TemplateSearch $templateSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class TemplateDomain extends DomainLib
 
     public function getSearchData(): TemplateSearch
     {
-        return new TemplateSearch();
+        return $this->templateSearch;
     }
 
     public function getSearchForm(): string

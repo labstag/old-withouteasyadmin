@@ -19,6 +19,7 @@ class EditoDomain extends DomainLib
     public function __construct(
         protected EditoRequestHandler $editoRequestHandler,
         protected EditoRepository $editoRepository,
+        protected EditoSearch $editoSearch,
         TranslatorInterface $translator
     )
     {
@@ -42,7 +43,7 @@ class EditoDomain extends DomainLib
 
     public function getSearchData(): EditoSearch
     {
-        return new EditoSearch();
+        return $this->editoSearch;
     }
 
     public function getSearchForm(): string
