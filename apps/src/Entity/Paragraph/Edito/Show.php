@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: ShowRepository::class)]
 #[ORM\Table(name: 'paragraph_edito_show')]
-#[ApiResource(routePrefix: '/paragraph')]
+#[ApiResource(routePrefix: '/paragraph/edito')]
 class Show implements Stringable, ParagraphInterface
 {
 

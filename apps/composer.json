@@ -32,6 +32,7 @@
         "liip/imagine-bundle": "2.10.*",
         "michaelkaefer/oauth2-amazon": "1.0.*",
         "mmo/faker-images": "0.8.*",
+        "nelmio/cors-bundle": "2.3.*",
         "omines/oauth2-gitlab": "3.5.*",
         "phpdocumentor/reflection-docblock": "5.3.*",
         "rtheunissen/oauth2-reddit": "2.0.*",

@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: ListeRepository::class)]
 #[ORM\Table(name: 'paragraph_bookmark_list')]
-#[ApiResource(routePrefix: '/paragraph')]
+#[ApiResource(routePrefix: '/paragraph/bookmark')]
 class Liste implements Stringable, ParagraphInterface
 {
 
