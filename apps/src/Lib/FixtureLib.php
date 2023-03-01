@@ -283,7 +283,11 @@ abstract class FixtureLib extends Fixture
 
             try {
                 /** @var PicsumProvider $generator */
-                $image = $generator->picsum(null, 640, 480, true);
+                $image = $generator->picsum(
+                    width: 640,
+                    height: 480,
+                    fullPath: true
+                );
                 if (!empty($image)) {
                     $content = file_get_contents($image);
                     // @var resource $tmpfile

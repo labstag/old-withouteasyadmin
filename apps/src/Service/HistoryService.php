@@ -2,7 +2,6 @@
 
 namespace Labstag\Service;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\History;
@@ -83,7 +82,7 @@ class HistoryService
         return $html2Pdf;
     }
 
-    private function getChapters(History $history, bool $all): ArrayCollection
+    private function getChapters(History $history, bool $all): Collection
     {
         return $all ? $history->getChapters() : $history->getChaptersPublished();
     }

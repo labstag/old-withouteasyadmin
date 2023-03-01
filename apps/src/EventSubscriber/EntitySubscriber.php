@@ -146,7 +146,11 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         if (isset($data['param'], $data['route'])) {
-            $data['params'] = json_decode((string) $data['param'], null, 512, JSON_THROW_ON_ERROR);
+            $data['params'] = json_decode(
+                json: (string) $data['param'],
+                depth: 512,
+                flags: JSON_THROW_ON_ERROR
+            );
             unset($data['param']);
         }
 
