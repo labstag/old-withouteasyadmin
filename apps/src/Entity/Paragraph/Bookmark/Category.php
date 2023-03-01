@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity\Paragraph\Bookmark;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\ParagraphInterface;
@@ -11,6 +12,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\Table(name: 'paragraph_bookmark_category')]
+#[ApiResource(routePrefix: '/paragraph')]
 class Category implements Stringable, ParagraphInterface
 {
 

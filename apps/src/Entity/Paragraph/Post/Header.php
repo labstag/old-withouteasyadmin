@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity\Paragraph\Post;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\ParagraphInterface;
@@ -11,6 +12,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: HeaderRepository::class)]
 #[ORM\Table(name: 'paragraph_post_header')]
+#[ApiResource(routePrefix: '/paragraph')]
 class Header implements Stringable, ParagraphInterface
 {
 

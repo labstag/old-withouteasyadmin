@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity\Block;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Entity\Menu;
@@ -12,6 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: NavbarRepository::class)]
 #[ORM\Table(name: 'block_navbar')]
+#[ApiResource(routePrefix: '/block')]
 class Navbar implements Stringable, BlockInterface
 {
 

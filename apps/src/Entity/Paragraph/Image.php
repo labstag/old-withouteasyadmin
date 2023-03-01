@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity\Paragraph;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Labstag\Annotation\Uploadable;
@@ -15,6 +16,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[Uploadable()]
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 #[ORM\Table(name: 'paragraph_image')]
+#[ApiResource(routePrefix: '/paragraph')]
 class Image implements ParagraphInterface
 {
 

@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity\Block;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: HeaderRepository::class)]
 #[ORM\Table(name: 'block_header')]
+#[ApiResource(routePrefix: '/block')]
 class Header implements Stringable, BlockInterface
 {
 

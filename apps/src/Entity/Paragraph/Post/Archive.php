@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity\Paragraph\Post;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\ParagraphInterface;
@@ -11,6 +12,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: ArchiveRepository::class)]
 #[ORM\Table(name: 'paragraph_post_archive')]
+#[ApiResource(routePrefix: '/paragraph')]
 class Archive implements Stringable, ParagraphInterface
 {
 

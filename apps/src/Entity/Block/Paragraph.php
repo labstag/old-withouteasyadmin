@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity\Block;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Interfaces\BlockInterface;
@@ -11,6 +12,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: ParagraphRepository::class)]
 #[ORM\Table(name: 'block_paragraph')]
+#[ApiResource(routePrefix: '/block')]
 class Paragraph implements Stringable, BlockInterface
 {
 

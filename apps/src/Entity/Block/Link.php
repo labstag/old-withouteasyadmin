@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity\Block;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Repository\Block\LinkRepository;
 use Stringable;
@@ -9,6 +10,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: LinkRepository::class)]
 #[ORM\Table(name: 'block_link')]
+#[ApiResource(routePrefix: '/block')]
 class Link implements Stringable
 {
 

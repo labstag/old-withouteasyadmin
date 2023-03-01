@@ -59,11 +59,11 @@ class UploadAnnotationReader
             return $properties;
         }
 
-        $reflection = new ReflectionClass($entity::class);
-        foreach ($reflection->getProperties() as $reflectionProperty) {
+        $reflectionClass = new ReflectionClass($entity::class);
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             $attributes = $reflectionProperty->getAttributes();
             foreach ($attributes as $attribute) {
-                if ($attribute->getName() == UploadableField::class) {
+                if (UploadableField::class == $attribute->getName()) {
                     $properties[$reflectionProperty->getName()] = $attribute->newInstance();
                 }
             }
@@ -74,11 +74,11 @@ class UploadAnnotationReader
 
     private function isUploadable(mixed $entity): bool
     {
-        $reflection = new ReflectionClass($entity::class);
+        $reflectionClass = new ReflectionClass($entity::class);
 
         $uploadable = false;
-        foreach ($reflection->getAttributes() as $attribute) {
-            if ($attribute->getName() === Uploadable::class) {
+        foreach ($reflectionClass->getAttributes() as $attribute) {
+            if (Uploadable::class === $attribute->getName()) {
                 $uploadable = true;
 
                 break;
