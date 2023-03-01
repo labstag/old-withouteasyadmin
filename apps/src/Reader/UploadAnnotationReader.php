@@ -59,30 +59,32 @@ class UploadAnnotationReader
             return $properties;
         }
 
-        $reflection = $this->setReflection($entity);
+        $reflection = new ReflectionClass($entity::class);
         foreach ($reflection->getProperties() as $reflectionProperty) {
-            $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, UploadableField::class);
-            if (is_null($annotation)) {
-                continue;
+            $attributes = $reflectionProperty->getAttributes();
+            foreach ($attributes as $attribute) {
+                if ($attribute->getName() == UploadableField::class) {
+                    $properties[$reflectionProperty->getName()] = $attribute->newInstance();
+                }
             }
-
-            $properties[$reflectionProperty->getName()] = $annotation;
         }
 
         return $properties;
     }
 
-    protected function setReflection(mixed $entity): ReflectionClass
-    {
-        return new ReflectionClass($entity::class);
-    }
-
     private function isUploadable(mixed $entity): bool
     {
-        $reflection = $this->setReflection($entity);
+        $reflection = new ReflectionClass($entity::class);
 
-        $uploadable = $this->annotationReader->getClassAnnotation($reflection, Uploadable::class);
+        $uploadable = false;
+        foreach ($reflection->getAttributes() as $attribute) {
+            if ($attribute->getName() === Uploadable::class) {
+                $uploadable = true;
 
-        return !is_null($uploadable);
+                break;
+            }
+        }
+
+        return $uploadable;
     }
 }

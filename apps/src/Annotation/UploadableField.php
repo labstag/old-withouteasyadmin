@@ -10,7 +10,7 @@ use InvalidArgumentException;
 
 /**
  * @Annotation
- * @NamedArgumentConstructor
+ * @NamedArgumentConstructor()
  */
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class UploadableField implements MappingAttribute
