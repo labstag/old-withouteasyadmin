@@ -22,14 +22,11 @@ class SearchOpenApi implements OpenApiFactoryInterface
         $paths->addPath(
             '/api/search/phone',
             new PathItem(
-                null,
-                'Phone number',
-                null,
-                new Operation(
-                    'get',
-                    ['Search'],
-                    [],
-                    'Phone number'
+                description: 'Phone number',
+                get: new Operation(
+                    operationId: 'get',
+                    tags: ['Search'],
+                    summary: 'Phone number'
                 )
             )
         );

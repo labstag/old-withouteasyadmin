@@ -22,14 +22,11 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         $paths->addPath(
             '/api/actions/phone',
             new PathItem(
-                null,
-                'Phone number',
-                null,
-                new Operation(
-                    'get',
-                    ['Actions'],
-                    [],
-                    'Phone number'
+                description: 'Phone number',
+                get: new Operation(
+                    operationId: 'get',
+                    tags: ['Actions'],
+                    summary: 'Phone number'
                 )
             )
         );

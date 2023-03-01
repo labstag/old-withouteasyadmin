@@ -22,14 +22,11 @@ class GuardOpenApi implements OpenApiFactoryInterface
         $paths->addPath(
             '/api/guard/phone',
             new PathItem(
-                null,
-                'Phone number',
-                null,
-                new Operation(
-                    'get',
-                    ['Guard'],
-                    [],
-                    'Phone number'
+                description: 'Phone number',
+                get: new Operation(
+                    operationId: 'get',
+                    tags: ['Guard'],
+                    summary: 'Phone number'
                 )
             )
         );

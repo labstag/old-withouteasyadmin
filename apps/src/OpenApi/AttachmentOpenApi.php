@@ -22,14 +22,11 @@ class AttachmentOpenApi implements OpenApiFactoryInterface
         $paths->addPath(
             '/api/attachment/phone',
             new PathItem(
-                null,
-                'Phone number',
-                null,
-                new Operation(
-                    'get',
-                    ['attachment'],
-                    [],
-                    'Phone number'
+                description: 'Phone number',
+                get: new Operation(
+                    operationId: 'get',
+                    tags: ['attachment'],
+                    summary: 'Phone number'
                 )
             )
         );
