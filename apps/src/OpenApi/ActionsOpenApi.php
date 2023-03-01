@@ -11,7 +11,6 @@ use ApiPlatform\OpenApi\OpenApi;
 
 class ActionsOpenApi implements OpenApiFactoryInterface
 {
-
     public function __construct(private readonly OpenApiFactoryInterface $openApiFactory)
     {
     }

@@ -11,7 +11,6 @@ use ApiPlatform\OpenApi\OpenApi;
 
 class SearchOpenApi implements OpenApiFactoryInterface
 {
-
     public function __construct(private readonly OpenApiFactoryInterface $openApiFactory)
     {
     }

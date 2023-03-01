@@ -295,11 +295,10 @@ abstract class FixtureLib extends Fixture
                     $data = stream_get_meta_data($tmpfile);
                     file_put_contents($data['uri'], $content);
                     $file = new UploadedFile(
-                        $data['uri'],
-                        $slug.'.jpg',
-                        (string) finfo_file($finfo, $data['uri']),
-                        null,
-                        true
+                        path: $data['uri'],
+                        originalName: $slug.'.jpg',
+                        mimeType: (string) finfo_file($finfo, $data['uri']),
+                        test: true
                     );
                     $filename = $file->getClientOriginalName();
                     if (!is_dir($path)) {

@@ -113,7 +113,7 @@ class History implements FrontInterface
         return $this->chapters;
     }
 
-    public function getChaptersPublished(): Collection 
+    public function getChaptersPublished(): Collection
     {
         $arrayCollection = new ArrayCollection();
         $chapters = $this->getChapters();
