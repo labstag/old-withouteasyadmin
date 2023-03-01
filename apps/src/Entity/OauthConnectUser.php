@@ -21,8 +21,8 @@ class OauthConnectUser
     protected string $name;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'oauthConnectUsers', cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
-    protected UserInterface $refuser;
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
+    protected UserInterface $user;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -52,7 +52,7 @@ class OauthConnectUser
 
     public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function setData(array $data): self
@@ -78,7 +78,7 @@ class OauthConnectUser
 
     public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }

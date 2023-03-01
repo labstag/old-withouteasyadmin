@@ -67,7 +67,7 @@ class History implements FrontInterface
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'histories', cascade: ['persist'])]
     #[Assert\NotBlank]
     #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
-    private ?UserInterface $refuser = null;
+    private ?UserInterface $user = null;
 
     public function __construct()
     {
@@ -169,7 +169,7 @@ class History implements FrontInterface
 
     public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function getSlug(): ?string
@@ -238,7 +238,7 @@ class History implements FrontInterface
 
     public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }

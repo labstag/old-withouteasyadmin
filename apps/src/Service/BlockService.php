@@ -86,8 +86,10 @@ class BlockService
         $reflectionClass = new ReflectionClass($childentity);
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ('block' == $reflectionProperty->getName()) {
-                preg_match('#inversedBy=\"(.*)\", #m', (string) $reflectionProperty->getDocComment(), $matches);
-                $field = $matches[1] ?? $field;
+                $attributes = $reflectionProperty->getAttributes();
+                $attribute = $attributes[0];
+                $arguments = $attribute->getArguments();
+                $field = $arguments['inversedBy'] ?? $field;
 
                 break;
             }

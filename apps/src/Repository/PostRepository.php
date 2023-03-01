@@ -38,7 +38,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     public function findPublier(): Query
     {
         $query = $this->createQueryBuilder('p');
-        $query->innerjoin('p.refuser', 'u');
+        $query->innerjoin('p.user', 'u');
         $query->where(
             'p.state LIKE :state'
         );
@@ -53,7 +53,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     public function findPublierArchive(int $published): Query
     {
         $query = $this->createQueryBuilder('p');
-        $query->innerjoin('p.refuser', 'u');
+        $query->innerjoin('p.user', 'u');
         $query->where('p.state LIKE :state');
         $query->andWhere("date_format(p.published,'%Y-%m') = :published");
         $query->orderBy('p.published', 'DESC');
@@ -72,7 +72,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         $query = $this->createQueryBuilder('p');
         $query->where('p.state LIKE :state');
         $query->orderBy('p.published', 'DESC');
-        $query->leftJoin('p.refcategory', 'c');
+        $query->leftJoin('p.category', 'c');
         $query->andWhere('c.slug=:slug');
         $query->setParameters(
             [
@@ -104,7 +104,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     public function findPublierUsername(string $username): Query
     {
         $query = $this->createQueryBuilder('p');
-        $query->leftJoin('p.refuser', 'u');
+        $query->leftJoin('p.user', 'u');
         $query->where('p.state LIKE :state');
         $query->andWhere('u.username = :username');
         $query->orderBy('p.published', 'DESC');

@@ -12,16 +12,16 @@ class AddressUser extends Address
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'addressUsers', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refuser_id')]
-    protected ?UserInterface $refuser = null;
+    protected ?UserInterface $user = null;
 
     public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }

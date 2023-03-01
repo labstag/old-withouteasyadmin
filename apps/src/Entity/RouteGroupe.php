@@ -10,17 +10,19 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class RouteGroupe
 {
 
+    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'routes', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refgroupe_id')]
+    private $groupe;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'routes', cascade: ['persist'])]
-    private $refgroupe;
-
     #[ORM\ManyToOne(targetEntity: Route::class, inversedBy: 'groupes', cascade: ['persist'])]
-    private $refroute;
+    #[ORM\JoinColumn(name: 'refroute_id')]
+    private $route;
 
     #[ORM\Column(type: 'boolean')]
     private $state;
@@ -32,12 +34,12 @@ class RouteGroupe
 
     public function getRefgroupe(): ?Groupe
     {
-        return $this->refgroupe;
+        return $this->groupe;
     }
 
     public function getRefroute(): ?Route
     {
-        return $this->refroute;
+        return $this->route;
     }
 
     public function getState(): ?bool
@@ -52,14 +54,14 @@ class RouteGroupe
 
     public function setRefgroupe(?Groupe $groupe): self
     {
-        $this->refgroupe = $groupe;
+        $this->groupe = $groupe;
 
         return $this;
     }
 
     public function setRefroute(?Route $route): self
     {
-        $this->refroute = $route;
+        $this->route = $route;
 
         return $this;
     }

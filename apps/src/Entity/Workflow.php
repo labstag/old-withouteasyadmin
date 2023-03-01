@@ -26,7 +26,7 @@ class Workflow
 
     #[ORM\OneToMany(
         targetEntity: WorkflowGroupe::class,
-        mappedBy: 'refworkflow',
+        mappedBy: 'workflow',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -35,7 +35,7 @@ class Workflow
 
     #[ORM\OneToMany(
         targetEntity: WorkflowUser::class,
-        mappedBy: 'refworkflow',
+        mappedBy: 'workflow',
         cascade: ['persist'],
         orphanRemoval: true
     )

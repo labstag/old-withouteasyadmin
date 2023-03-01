@@ -18,11 +18,11 @@ class RouteGroupeRepository extends ServiceEntityRepositoryLib
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $queryBuilder->leftJoin(
-            'a.refgroupe',
+            'a.groupe',
             'g'
         );
         $queryBuilder->leftJoin(
-            'a.refroute',
+            'a.route',
             'r'
         );
         $queryBuilder->where(

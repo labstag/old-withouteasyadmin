@@ -18,7 +18,7 @@ class MemoRepository extends ServiceEntityRepositoryLib
     public function findPublier(): mixed
     {
         $queryBuilder = $this->createQueryBuilder('n');
-        $queryBuilder->innerJoin('n.refuser', 'u');
+        $queryBuilder->innerJoin('n.user', 'u');
         $queryBuilder->where(
             'n.state LIKE :state'
         );

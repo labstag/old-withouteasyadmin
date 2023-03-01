@@ -25,21 +25,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     use SoftDeleteableEntity;
     use StateableEntity;
 
+    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'users', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
+    protected Groupe $groupe;
+
     #[ORM\Column(type: 'string', nullable: true)]
     protected string $password;
 
     protected ?string $plainPassword = null;
-
-    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'users', cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: true)]
-    protected Groupe $refgroupe;
 
     #[ORM\Column(type: 'json')]
     protected array $roles = ['ROLE_USER'];
 
     #[ORM\OneToMany(
         targetEntity: AddressUser::class,
-        mappedBy: 'refuser',
+        mappedBy: 'user',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -51,7 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\OneToMany(
         targetEntity: Bookmark::class,
-        mappedBy: 'refuser',
+        mappedBy: 'user',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -60,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\OneToMany(
         targetEntity: Edito::class,
-        mappedBy: 'refuser',
+        mappedBy: 'user',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -72,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\OneToMany(
         targetEntity: EmailUser::class,
-        mappedBy: 'refuser',
+        mappedBy: 'user',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -84,7 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\OneToMany(
         targetEntity: History::class,
-        mappedBy: 'refuser',
+        mappedBy: 'user',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -99,7 +99,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\OneToMany(
         targetEntity: LinkUser::class,
-        mappedBy: 'refuser',
+        mappedBy: 'user',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -108,7 +108,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\OneToMany(
         targetEntity: Memo::class,
-        mappedBy: 'refuser',
+        mappedBy: 'user',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -117,7 +117,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\OneToMany(
         targetEntity: OauthConnectUser::class,
-        mappedBy: 'refuser',
+        mappedBy: 'user',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -126,7 +126,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\OneToMany(
         targetEntity: PhoneUser::class,
-        mappedBy: 'refuser',
+        mappedBy: 'user',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -135,7 +135,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\OneToMany(
         targetEntity: Post::class,
-        mappedBy: 'refuser',
+        mappedBy: 'user',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -144,7 +144,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\OneToMany(
         targetEntity: RouteUser::class,
-        mappedBy: 'refuser',
+        mappedBy: 'user',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -157,7 +157,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\OneToMany(
         targetEntity: WorkflowUser::class,
-        mappedBy: 'refuser',
+        mappedBy: 'user',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -431,7 +431,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function getRefgroupe(): ?Groupe
     {
-        return $this->refgroupe;
+        return $this->groupe;
     }
 
     /**
@@ -671,7 +671,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function setRefgroupe(?Groupe $groupe): self
     {
-        $this->refgroupe = $groupe;
+        $this->groupe = $groupe;
 
         return $this;
     }

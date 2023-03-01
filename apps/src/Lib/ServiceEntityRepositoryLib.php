@@ -8,6 +8,7 @@ use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Labstag\Entity\AddressUser;
+use Labstag\Entity\Block;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\Category;
 use Labstag\Entity\Edito;
@@ -49,7 +50,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         );
         $parameters = ['state' => 1];
         if (!is_null($groupe)) {
-            $query->andWhere('a.refgroupe=:refgroupe');
+            $query->andWhere('a.groupe=:refgroupe');
             $parameters['refgroupe'] = $groupe;
         }
 
@@ -66,7 +67,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         );
         $parameters = ['state' => 1];
         if (!is_null($user)) {
-            $query->andWhere('a.refuser=:refuser');
+            $query->andWhere('a.user=:refuser');
             $parameters['refuser'] = $user;
         }
 
@@ -323,7 +324,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
             return;
         }
 
-        $queryBuilder->leftJoin('a.refcategory', 'u');
+        $queryBuilder->leftJoin('a.category', 'u');
         $queryBuilder->andWhere('u.id = :refcategory');
         $queryBuilder->setParameter('refcategory', $get['refcategory']);
     }
@@ -331,13 +332,13 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     protected function setQueryRefGroup(QueryBuilder &$queryBuilder, array $get): void
     {
         $launch = User::class == $this->_entityName;
-        if (!$launch || !isset($get['refgroup']) || empty($get['refgroup'])) {
+        if (!$launch || !isset($get['groupe']) || empty($get['groupe'])) {
             return;
         }
 
-        $queryBuilder->leftJoin('a.refgroupe', 'g');
+        $queryBuilder->leftJoin('a.groupe', 'g');
         $queryBuilder->andWhere('g.id = :refgroup');
-        $queryBuilder->setParameter('refgroup', $get['refgroup']);
+        $queryBuilder->setParameter('refgroup', $get['groupe']);
     }
 
     protected function setQueryRefUser(QueryBuilder &$queryBuilder, array $get): void
@@ -358,7 +359,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
             return;
         }
 
-        $queryBuilder->leftJoin('a.refuser', 'u');
+        $queryBuilder->leftJoin('a.user', 'u');
         $queryBuilder->andWhere('u.id = :refuser');
         $queryBuilder->setParameter('refuser', $get['refuser']);
     }
@@ -376,7 +377,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 
     protected function setQueryTitle(QueryBuilder &$queryBuilder, array $get): void
     {
-        $launch = in_array($this->_entityName, [Edito::class, Memo::class, Post::class]);
+        $launch = in_array($this->_entityName, [Block::class, Edito::class, Memo::class, Post::class]);
         if (!$launch || !isset($get['title']) || empty($get['title'])) {
             return;
         }

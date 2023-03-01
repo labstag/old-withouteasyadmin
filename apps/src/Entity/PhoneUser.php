@@ -12,17 +12,18 @@ class PhoneUser extends Phone
 {
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'phoneUsers', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refuser_id')]
     #[Assert\NotBlank]
-    private $refuser;
+    private $user;
 
     public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }

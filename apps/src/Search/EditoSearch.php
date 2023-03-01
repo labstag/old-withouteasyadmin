@@ -11,7 +11,7 @@ class EditoSearch extends SearchLib
 
     public $published;
 
-    public $refuser;
-
     public $title;
+
+    public $user;
 }

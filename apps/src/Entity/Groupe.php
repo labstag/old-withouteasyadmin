@@ -34,7 +34,7 @@ class Groupe implements Stringable
 
     #[ORM\OneToMany(
         targetEntity: RouteGroupe::class,
-        mappedBy: 'refgroupe',
+        mappedBy: 'groupe',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -43,7 +43,7 @@ class Groupe implements Stringable
 
     #[ORM\OneToMany(
         targetEntity: User::class,
-        mappedBy: 'refgroupe',
+        mappedBy: 'groupe',
         cascade: ['persist'],
         orphanRemoval: true
     )
@@ -52,7 +52,7 @@ class Groupe implements Stringable
 
     #[ORM\OneToMany(
         targetEntity: WorkflowGroupe::class,
-        mappedBy: 'refgroupe',
+        mappedBy: 'groupe',
         cascade: ['persist'],
         orphanRemoval: true
     )

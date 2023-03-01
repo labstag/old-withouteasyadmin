@@ -8,11 +8,11 @@ use Labstag\Lib\SearchLib;
 class BookmarkSearch extends SearchLib
 {
 
+    public $category;
+
     public $etape;
 
     public $name;
 
-    public $refcategory;
-
-    public ?User $refuser;
+    public ?User $user = null;
 }

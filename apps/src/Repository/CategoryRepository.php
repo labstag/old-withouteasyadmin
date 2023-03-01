@@ -19,7 +19,7 @@ class CategoryRepository extends ServiceEntityRepositoryLib
     public function findAllParentForAdmin(array $get): QueryBuilder
     {
         $query = $this->createQueryBuilder('a');
-        $query->where('a.parent IS NULL');
+        $query->where('a.category IS NULL');
 
         return $this->setQuery($query, $get);
     }
@@ -40,7 +40,7 @@ class CategoryRepository extends ServiceEntityRepositoryLib
     {
         $query = $this->createQueryBuilder('a');
         $query->leftJoin('a.posts', 'p');
-        $query->innerJoin('p.refuser', 'u');
+        $query->innerJoin('p.user', 'u');
         $query->where('p.state LIKE :state');
         $query->setParameters(
             ['state' => '%publie%']
@@ -68,7 +68,7 @@ class CategoryRepository extends ServiceEntityRepositoryLib
     {
         $query = $this->createQueryBuilder('a');
         $query->where('a.deletedAt IS NOT NULL');
-        $query->andwhere('a.parent IS NULL');
+        $query->andwhere('a.category IS NULL');
 
         return $this->setQuery($query, $get);
     }

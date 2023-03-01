@@ -11,5 +11,5 @@ class AddressUserSearch extends SearchLib
 
     public $country;
 
-    public $refuser;
+    public $user;
 }

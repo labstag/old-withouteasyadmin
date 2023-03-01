@@ -13,7 +13,7 @@ class MemoSearch extends SearchLib
 
     public $etape;
 
-    public $refuser;
-
     public $title;
+
+    public $user;
 }

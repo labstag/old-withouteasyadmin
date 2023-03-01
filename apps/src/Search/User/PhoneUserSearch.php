@@ -11,5 +11,5 @@ class PhoneUserSearch extends SearchLib
 
     public $etape;
 
-    public $refuser;
+    public $user;
 }

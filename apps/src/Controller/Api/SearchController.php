@@ -32,7 +32,7 @@ class SearchController extends ApiControllerLib
 
         $function = match ($route) {
             'api_search_user' => 'findUserName',
-            default => 'fidName'
+            default => 'findName'
         };
 
         return $this->showData($request, $entityName, $function);

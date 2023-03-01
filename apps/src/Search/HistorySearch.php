@@ -13,5 +13,5 @@ class HistorySearch extends SearchLib
 
     public $published;
 
-    public $refuser;
+    public $user;
 }

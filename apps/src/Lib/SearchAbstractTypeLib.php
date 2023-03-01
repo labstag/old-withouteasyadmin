@@ -102,7 +102,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
     protected function addRefCategory(FormBuilderInterface $formBuilder): void
     {
         $formBuilder->add(
-            'refcategory',
+            'category',
             SearchableType::class,
             [
                 'required' => false,
@@ -121,7 +121,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
     protected function addRefUser(FormBuilderInterface $formBuilder): void
     {
         $formBuilder->add(
-            'refuser',
+            'user',
             SearchableType::class,
             [
                 'required' => false,

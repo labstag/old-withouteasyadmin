@@ -54,13 +54,13 @@ class Memo implements Stringable, FrontInterface
     #[ORM\OrderBy(['position' => 'ASC'])]
     private $paragraphs;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'noteInternes', cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private $refuser;
-
     #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
     #[Assert\NotBlank]
     private $title;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'noteInternes', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
+    private $user;
 
     public function __construct()
     {
@@ -124,7 +124,7 @@ class Memo implements Stringable, FrontInterface
 
     public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function getTitle(): ?string
@@ -179,7 +179,7 @@ class Memo implements Stringable, FrontInterface
 
     public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }

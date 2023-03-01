@@ -18,11 +18,11 @@ class RouteUserRepository extends ServiceEntityRepositoryLib
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $queryBuilder->leftJoin(
-            'a.refuser',
+            'a.user',
             'u'
         );
         $queryBuilder->leftJoin(
-            'a.refroute',
+            'a.route',
             'r'
         );
         $queryBuilder->where(

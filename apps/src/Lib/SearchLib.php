@@ -13,6 +13,8 @@ abstract class SearchLib
 
     public $limit;
 
+    public $page;
+
     public function search(
         array $get,
         EntityManagerInterface $entityManager
@@ -42,9 +44,9 @@ abstract class SearchLib
             }
 
             $this->{$key} = match ($key) {
-                'refuser' => $entityRepository->find($value),
-                'refcategory' => $categoryRepo->find($value),
-                'refgroup' => $groupeRepo->find($value),
+                'user' => $entityRepository->find($value),
+                'category' => $categoryRepo->find($value),
+                'groupe' => $groupeRepo->find($value),
                 default => $value
             };
         }

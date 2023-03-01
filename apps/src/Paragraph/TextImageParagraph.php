@@ -55,7 +55,8 @@ class TextImageParagraph extends ParagraphLib
     public function show(TextImage $textimage): Response
     {
         $package = new Package(new EmptyVersionStrategy());
-        $attachment = ($textimage->getImage() instanceof Attachment) ? $package->getUrl('/'.$textimage->getImage()->getName()) : null;
+        $image = $textimage->getImage();
+        $attachment = ($image instanceof Attachment) ? $package->getUrl('/'.$image->getName()) : null;
 
         return $this->render(
             $this->getTemplateFile($this->getCode($textimage)),

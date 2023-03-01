@@ -18,13 +18,15 @@ class RouteUser
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Route::class, inversedBy: 'users', cascade: ['persist'])]
-    private $refroute;
-
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'routes', cascade: ['persist'])]
-    private $refuser;
+    #[ORM\JoinColumn(name: 'refroute_id')]
+    private $route;
 
     #[ORM\Column(type: 'boolean')]
     private $state;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'routes', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refuser_id')]
+    private $user;
 
     public function getId(): ?string
     {
@@ -33,12 +35,12 @@ class RouteUser
 
     public function getRefroute(): ?Route
     {
-        return $this->refroute;
+        return $this->route;
     }
 
     public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function getState(): ?bool
@@ -53,14 +55,14 @@ class RouteUser
 
     public function setRefroute(?Route $route): self
     {
-        $this->refroute = $route;
+        $this->route = $route;
 
         return $this;
     }
 
     public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }

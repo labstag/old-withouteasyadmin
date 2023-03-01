@@ -55,13 +55,14 @@ class ImageParagraph extends ParagraphLib
     public function show(Image $image): Response
     {
         $package = new Package(new EmptyVersionStrategy());
-        $attachment = ($image->getImage() instanceof Attachment) ? $package->getUrl('/'.$image->getImage()->getName()) : null;
+        $attachment = $image->getImage();
+        $file = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
 
         return $this->render(
             $this->getTemplateFile($this->getCode($image)),
             [
                 'paragraph'  => $image,
-                'attachment' => $attachment,
+                'attachment' => $file,
             ]
         );
     }

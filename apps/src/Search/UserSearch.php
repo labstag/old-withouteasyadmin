@@ -11,7 +11,7 @@ class UserSearch extends SearchLib
 
     public $etape;
 
-    public $refgroup;
+    public $groupe;
 
     public $username;
 }

@@ -33,19 +33,24 @@ class WorkflowService
 
     public function get(mixed $entity): ?WorkflowInterface
     {
-        return match (true) {
-            ($entity instanceof Attachment) => $this->attachmentStateMachine,
-            ($entity instanceof Bookmark) => $this->bookmarkStateMachine,
-            ($entity instanceof Edito) => $this->editoStateMachine,
-            ($entity instanceof Email) => $this->emailStateMachine,
-            ($entity instanceof History) => $this->historyStateMachine,
-            ($entity instanceof Chapter) => $this->chapterStateMachine,
-            ($entity instanceof Memo) => $this->memoStateMachine,
-            ($entity instanceof Phone) => $this->phoneStateMachine,
-            ($entity instanceof Post) => $this->postStateMachine,
-            ($entity instanceof User) => $this->userStateMachine,
-            default => null
-        };
+        $data = [
+            Attachment::class => $this->attachmentStateMachine,
+            Bookmark::class   => $this->bookmarkStateMachine,
+            Edito::class      => $this->editoStateMachine,
+            Email::class      => $this->emailStateMachine,
+            History::class    => $this->historyStateMachine,
+            Chapter::class    => $this->chapterStateMachine,
+            Memo::class       => $this->memoStateMachine,
+            Phone::class      => $this->phoneStateMachine,
+            Post::class       => $this->postStateMachine,
+            User::class       => $this->userStateMachine,
+        ];
+
+        if (isset($data[$entity::class])) {
+            return $data[$entity::class];
+        }
+
+        return null;
     }
 
     public function has(mixed $entity): bool

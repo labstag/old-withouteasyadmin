@@ -31,7 +31,7 @@ class LibelleRepository extends ServiceEntityRepositoryLib
     {
         $query = $this->createQueryBuilder('a');
         $query->innerJoin('a.posts', 'p');
-        $query->innerjoin('p.refuser', 'u');
+        $query->innerjoin('p.user', 'u');
         $query->where('p.state LIKE :state');
         $query->setParameters(
             ['state' => '%publie%']

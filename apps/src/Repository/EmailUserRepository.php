@@ -19,7 +19,7 @@ class EmailUserRepository extends EmailRepository
     {
         $queryBuilder = $this->createQueryBuilder('u');
         $queryBuilder->where(
-            'u.refuser=:user AND u.state LIKE :state'
+            'u.user=:user AND u.state LIKE :state'
         );
         $queryBuilder->setParameters(
             [

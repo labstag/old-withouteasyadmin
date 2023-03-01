@@ -21,7 +21,7 @@ class Video implements Stringable, ParagraphInterface
 
     #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphVideos', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'image_id', nullable: true, onDelete: 'SET NULL')]
-    private ?Attachment $image = null;
+    private ?Attachment $attachment = null;
 
     #[UploadableField(filename: 'image', path: 'paragraph/video', slug: 'title')]
     private $file;
@@ -62,7 +62,7 @@ class Video implements Stringable, ParagraphInterface
 
     public function getImage(): ?Attachment
     {
-        return $this->image;
+        return $this->attachment;
     }
 
     public function getParagraph(): ?Paragraph
@@ -94,7 +94,7 @@ class Video implements Stringable, ParagraphInterface
 
     public function setImage(?Attachment $attachment): self
     {
-        $this->image = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }

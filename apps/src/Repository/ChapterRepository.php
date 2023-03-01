@@ -21,7 +21,7 @@ class ChapterRepository extends ServiceEntityRepositoryLib
     ): mixed
     {
         $queryBuilder = $this->createQueryBuilder('c');
-        $queryBuilder->leftJoin('c.refhistory', 'h');
+        $queryBuilder->leftJoin('c.history', 'h');
         $queryBuilder->where('h.slug = :slughistory');
         $queryBuilder->andWhere('c.slug = :slugchapter');
         $queryBuilder->setParameters(

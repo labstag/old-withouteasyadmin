@@ -7,13 +7,13 @@ use Labstag\Lib\SearchLib;
 class PostSearch extends SearchLib
 {
 
+    public $category;
+
     public $etape;
 
     public $published;
 
-    public $refcategory;
-
-    public $refuser;
-
     public $title;
+
+    public $user;
 }

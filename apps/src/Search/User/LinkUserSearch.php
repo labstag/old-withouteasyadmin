@@ -7,5 +7,5 @@ use Labstag\Lib\SearchLib;
 class LinkUserSearch extends SearchLib
 {
 
-    public $refuser;
+    public $user;
 }

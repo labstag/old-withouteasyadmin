@@ -118,7 +118,8 @@ class VideoParagraph extends ParagraphLib
         }
 
         $package = new Package(new EmptyVersionStrategy());
-        $image = ($video->getImage() instanceof Attachment) ? $package->getUrl('/'.$video->getImage()->getName()) : null;
+        $attachment = $video->getImage();
+        $image = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
 
         if (is_null($image)) {
             $image = $extractor->image->__toString();
