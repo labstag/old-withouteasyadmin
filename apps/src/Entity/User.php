@@ -49,6 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     private Collection $addressUsers;
 
     #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'users', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'avatar_id')]
     private ?Attachment $attachment = null;
 
     #[ORM\OneToMany(
@@ -70,7 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     private Collection $editos;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    private $email;
+    private ?string $email = null;
 
     #[ORM\OneToMany(
         targetEntity: EmailUser::class,
@@ -155,7 +156,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\Column(type: 'string', length: 180, unique: true, nullable: false)]
     #[Assert\NotNull]
-    private $username;
+    private string $username;
 
     #[ORM\OneToMany(
         targetEntity: WorkflowUser::class,
@@ -338,7 +339,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         // $this->plainPassword = null;
     }
 
-    public function getAddressUsers()
+    public function getAddressUsers(): Collection
     {
         return $this->addressUsers;
     }
@@ -353,7 +354,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this->bookmarks;
     }
 
-    public function getEditos()
+    public function getEditos(): Collection
     {
         return $this->editos;
     }
@@ -368,7 +369,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return (string) $this->email;
     }
 
-    public function getEmailUsers()
+    public function getEmailUsers(): Collection
     {
         return $this->emailUsers;
     }
@@ -388,12 +389,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this->id;
     }
 
-    public function getLinkUsers()
+    public function getLinkUsers(): Collection
     {
         return $this->linkUsers;
     }
 
-    public function getMemos()
+    public function getMemos(): Collection
     {
         return $this->noteInternes;
     }
@@ -403,7 +404,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this->noteInternes;
     }
 
-    public function getOauthConnectUsers()
+    public function getOauthConnectUsers(): Collection
     {
         return $this->oauthConnectUsers;
     }
@@ -416,7 +417,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return (string) $this->password;
     }
 
-    public function getPhoneUsers()
+    public function getPhoneUsers(): Collection
     {
         return $this->phoneUsers;
     }
@@ -692,7 +693,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function unserialize($serialized)
+    public function unserialize(string $serialized): void
     {
         [
             $this->id,
@@ -701,7 +702,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         ] = unserialize($serialized);
     }
 
-    private function removeElementUser($element, $variable)
+    private function removeElementUser(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getRefuser() === $this) {
             $variable->setRefuser(null);

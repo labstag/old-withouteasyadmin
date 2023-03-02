@@ -25,7 +25,7 @@ abstract class Phone implements Stringable
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Country]
-    private $country;
+    private ?string $country = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -35,14 +35,14 @@ abstract class Phone implements Stringable
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
-    private $numero;
+    private string $numero;
 
     #[ORM\Column(type: 'boolean')]
-    private $principal = false;
+    private bool $principal = false;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
-    private $type;
+    private string $type;
 
     public function __toString(): string
     {

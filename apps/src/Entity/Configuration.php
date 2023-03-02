@@ -44,7 +44,7 @@ class Configuration implements Stringable
         return $this->name;
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }

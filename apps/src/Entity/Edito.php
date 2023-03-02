@@ -26,18 +26,19 @@ class Edito implements Stringable, FrontInterface
     use SoftDeleteableEntity;
     use StateableEntity;
 
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'editos', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'fond_id')]
+    private ?Attachment $attachment = null;
+
     #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\NotBlank]
-    private $content;
+    private ?string $content = null;
 
     #[ORM\Column(name: 'published', type: 'datetime')]
     private ?DateTimeInterface $dateTime = null;
 
     #[UploadableField(filename: 'fond', path: 'edito/fond', slug: 'title')]
     private $file;
-
-    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'editos', cascade: ['persist'])]
-    private ?Attachment $attachment = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -54,7 +55,7 @@ class Edito implements Stringable, FrontInterface
 
     #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
     #[Assert\NotBlank]
-    private $title;
+    private string $title;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'editos', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]

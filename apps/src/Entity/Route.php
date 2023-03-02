@@ -25,7 +25,7 @@ class Route implements Stringable
     private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    private string $name;
 
     #[ORM\OneToMany(targetEntity: RouteUser::class, mappedBy: 'route', cascade: ['persist'], orphanRemoval: true)]
     private Collection $users;
@@ -102,7 +102,10 @@ class Route implements Stringable
         return $this;
     }
 
-    private function removeElementRoute($element, $variable)
+    private function removeElementRoute(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getRefroute() === $this) {
             $variable->setRefroute(null);

@@ -21,7 +21,7 @@ trait StateableEntity
         return $this->state;
     }
 
-    public function getStateChanged()
+    public function getStateChanged(): DateTime
     {
         return $this->stateChanged;
     }

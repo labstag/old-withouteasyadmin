@@ -149,7 +149,7 @@ class Bookmark
         return $this->state;
     }
 
-    public function getStateChanged()
+    public function getStateChanged(): ?DateTimeInterface
     {
         return $this->stateChanged;
     }

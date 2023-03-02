@@ -25,7 +25,7 @@ abstract class Email implements Stringable
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Email(message: "The email '{{ value }}' is not a valid email.")]
-    private $address;
+    private string $address;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -34,7 +34,7 @@ abstract class Email implements Stringable
     private ?string $id = null;
 
     #[ORM\Column(type: 'boolean')]
-    private $principal = false;
+    private bool $principal = false;
 
     public function __toString(): string
     {

@@ -142,8 +142,8 @@ class UserService
     ): bool
     {
         $return = false;
-        $oauthConnects = $user->getOauthConnectUsers();
-        foreach ($oauthConnects as $oauthConnect) {
+        $oauthConnectUsers = $user->getOauthConnectUsers();
+        foreach ($oauthConnectUsers as $oauthConnect) {
             $test1 = ($oauthConnect->getName() == $client);
             $test2 = ($oauthConnect->getIdentity() == $identity);
             if ($test1 && $test2) {

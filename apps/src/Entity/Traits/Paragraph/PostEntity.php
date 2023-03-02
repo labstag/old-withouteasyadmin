@@ -344,7 +344,10 @@ trait PostEntity
         return $this;
     }
 
-    private function removeElementPost($element, $variable)
+    private function removeElementPost(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);

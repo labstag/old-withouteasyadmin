@@ -82,8 +82,8 @@ abstract class RequestHandlerLib
             $userCollectionEvent->addOauthConnectUser($old, $oauthConnectUser);
         }
 
-        $linksUsers = $user->getLinkUsers();
-        foreach ($linksUsers as $linkUser) {
+        $linkUsers = $user->getLinkUsers();
+        foreach ($linkUsers as $linkUser) {
             // @var LinkUser $row
             $old = clone $linkUser;
             $linkUser->setRefuser($user);

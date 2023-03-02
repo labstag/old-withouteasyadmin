@@ -112,7 +112,7 @@ trait BookmarkEntity
         return $this->bookmarkLists;
     }
 
-    public function getBookmarks()
+    public function getBookmarks(): Collection
     {
         return $this->bookmarks;
     }
@@ -146,7 +146,10 @@ trait BookmarkEntity
         return $this;
     }
 
-    private function removeElementBookmark($element, $variable)
+    private function removeElementBookmark(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);

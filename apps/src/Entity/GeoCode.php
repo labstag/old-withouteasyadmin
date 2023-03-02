@@ -18,17 +18,17 @@ class GeoCode
     use SoftDeleteableEntity;
 
     #[ORM\Column(type: 'integer')]
-    private $accuracy;
+    private int $accuracy;
 
     #[ORM\Column(type: 'string', length: 20)]
-    private $communityCode;
+    private string $communityCode;
 
     #[ORM\Column(type: 'string', length: 100)]
-    private $communityName;
+    private string $communityName;
 
     #[ORM\Column(type: 'string', length: 2)]
     #[Assert\Country]
-    private $countryCode;
+    private string $countryCode;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -37,28 +37,28 @@ class GeoCode
     private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $latitude;
+    private string $latitude;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $longitude;
+    private string $longitude;
 
     #[ORM\Column(type: 'string', length: 180)]
-    private $placeName;
+    private string $placeName;
 
     #[ORM\Column(type: 'string', length: 20)]
-    private $postalCode;
+    private string $postalCode;
 
     #[ORM\Column(type: 'string', length: 20)]
-    private $provinceCode;
+    private string $provinceCode;
 
     #[ORM\Column(type: 'string', length: 100)]
-    private $provinceName;
+    private string $provinceName;
 
     #[ORM\Column(type: 'string', length: 20)]
-    private $stateCode;
+    private string $stateCode;
 
     #[ORM\Column(type: 'string', length: 100)]
-    private $stateName;
+    private string $stateName;
 
     public function getAccuracy(): ?int
     {
@@ -125,7 +125,7 @@ class GeoCode
         return $this->stateName;
     }
 
-    public function setAccuracy($accuracy): self
+    public function setAccuracy(int $accuracy): self
     {
         $this->accuracy = $accuracy;
 

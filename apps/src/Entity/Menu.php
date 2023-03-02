@@ -37,10 +37,10 @@ class Menu implements Stringable
     private Collection $children;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $clef;
+    private ?string $clef = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $icon;
+    private ?string $icon = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -49,13 +49,13 @@ class Menu implements Stringable
     private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $name;
+    private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: Navbar::class, mappedBy: 'menu', cascade: ['persist'], orphanRemoval: true)]
     private Collection $navbars;
 
     #[ORM\Column(type: 'boolean')]
-    private $separateur = false;
+    private bool $separateur = false;
 
     public function __construct()
     {
@@ -97,7 +97,7 @@ class Menu implements Stringable
         return $this;
     }
 
-    public function getChildren()
+    public function getChildren(): Collection
     {
         return $this->children;
     }

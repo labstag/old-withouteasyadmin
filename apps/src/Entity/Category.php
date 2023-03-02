@@ -170,7 +170,10 @@ class Category implements Stringable
         return $this;
     }
 
-    private function removeElementCategory($element, $variable)
+    private function removeElementCategory(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getRefcategory() === $this) {
             $variable->setRefcategory(null);

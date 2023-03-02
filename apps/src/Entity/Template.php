@@ -20,11 +20,11 @@ class Template implements Stringable
 
     #[Gedmo\Slug(updatable: false, fields: ['name'])]
     #[ORM\Column(type: 'string', length: 255)]
-    private $code;
+    private string $code;
 
     #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\NotBlank]
-    private $html;
+    private ?string $html = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -34,11 +34,11 @@ class Template implements Stringable
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
-    private $name;
+    private string $name;
 
     #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\NotBlank]
-    private $text;
+    private ?string $text = null;
 
     public function __toString(): string
     {

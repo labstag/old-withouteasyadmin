@@ -123,7 +123,10 @@ class Workflow
         return $this;
     }
 
-    private function removeElementWorkflow($element, $variable)
+    private function removeElementWorkflow(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getRefworkflow() === $this) {
             $variable->setRefworkflow(null);

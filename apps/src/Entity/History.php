@@ -266,7 +266,10 @@ class History implements FrontInterface
         return $this;
     }
 
-    private function removeElementHistory($element, $variable)
+    private function removeElementHistory(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getHistory() === $this) {
             $variable->setHistory(null);

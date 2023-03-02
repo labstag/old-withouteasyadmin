@@ -204,7 +204,10 @@ trait HistoryEntity
         return $this;
     }
 
-    private function removeElementHistory($element, $variable)
+    private function removeElementHistory(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);

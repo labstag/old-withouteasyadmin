@@ -82,7 +82,7 @@ trait EditoEntity
         return $this->edito;
     }
 
-    public function getEditoHeaders()
+    public function getEditoHeaders(): Collection
     {
         return $this->editoHeaders;
     }
@@ -95,7 +95,7 @@ trait EditoEntity
         return $this->editos;
     }
 
-    public function getEditoShows()
+    public function getEditoShows(): Collection
     {
         return $this->editoShows;
     }
@@ -128,7 +128,10 @@ trait EditoEntity
         return $this;
     }
 
-    private function removeElementEdito($element, $variable)
+    private function removeElementEdito(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);

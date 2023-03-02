@@ -200,7 +200,10 @@ class Page implements Stringable, FrontInterface
         return $this;
     }
 
-    private function removeElementPage($element, $variable)
+    private function removeElementPage(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getPage() === $this) {
             $variable->setPage(null);

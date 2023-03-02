@@ -53,11 +53,11 @@ class DataService
         }
 
         $oauthActivateds = $this->oauthActivated;
-        $oauthUsers = $user->getOauthConnectUsers();
+        $oauthConnectUsers = $user->getOauthConnectUsers();
         foreach ($oauthActivateds as $index => $oauthActivated) {
             $trouver = 0;
-            foreach ($oauthUsers as $oauthUser) {
-                if ($oauthUser->getName() == $oauthActivated['type']) {
+            foreach ($oauthConnectUsers as $oauthConnectUser) {
+                if ($oauthConnectUser->getName() == $oauthActivated['type']) {
                     $trouver = 1;
 
                     break;

@@ -16,6 +16,7 @@ use Labstag\Entity\Block\Header;
 use Labstag\Entity\Block\Html;
 use Labstag\Entity\Block\Navbar;
 use Labstag\Entity\Block\Paragraph;
+use Labstag\Interfaces\BlockInterface;
 use Labstag\Repository\BlockRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
@@ -309,10 +310,13 @@ class Block
         return $this;
     }
 
-    private function removeElementBlock($element, $variable)
+    private function removeElementBlock(
+        Collection $element,
+        BlockInterface $block
+    ): void
     {
-        if ($element->removeElement($variable) && $variable->getBlock() === $this) {
-            $variable->setBlock(null);
+        if ($element->removeElement($block) && $block->getBlock() === $this) {
+            $block->setBlock(null);
         }
     }
 }

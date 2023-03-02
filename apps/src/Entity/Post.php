@@ -131,7 +131,7 @@ class Post implements Stringable, FrontInterface
         return $this->content;
     }
 
-    public function getCreated()
+    public function getCreated(): ?DateTimeInterface
     {
         return $this->created;
     }
@@ -202,7 +202,7 @@ class Post implements Stringable, FrontInterface
         return $this->title;
     }
 
-    public function getUpdated()
+    public function getUpdated(): ?DateTimeInterface
     {
         return $this->updated;
     }
@@ -307,7 +307,10 @@ class Post implements Stringable, FrontInterface
         return $this;
     }
 
-    private function removeElementPost($element, $variable)
+    private function removeElementPost(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getPost() === $this) {
             $variable->setPost(null);

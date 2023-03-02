@@ -22,7 +22,7 @@ class Groupe implements Stringable
 
     #[Gedmo\Slug(updatable: false, fields: ['name'])]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    private $code;
+    private string $code;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -32,7 +32,7 @@ class Groupe implements Stringable
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
-    private $name;
+    private string $name;
 
     #[ORM\OneToMany(
         targetEntity: RouteGroupe::class,
@@ -123,7 +123,7 @@ class Groupe implements Stringable
         return $this->routes;
     }
 
-    public function getUsers()
+    public function getUsers(): Collection
     {
         return $this->users;
     }
@@ -174,7 +174,10 @@ class Groupe implements Stringable
         return $this;
     }
 
-    private function removeElementGroupe($element, $variable)
+    private function removeElementGroupe(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getRefgroupe() === $this) {
             $variable->setRefgroupe(null);

@@ -100,7 +100,7 @@ class Chapter implements FrontInterface
         return $this->content;
     }
 
-    public function getCreated()
+    public function getCreated(): ?DateTimeInterface
     {
         return $this->created;
     }
@@ -238,7 +238,10 @@ class Chapter implements FrontInterface
         return $this;
     }
 
-    private function removeElementChapter($element, $variable)
+    private function removeElementChapter(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getChapter() === $this) {
             $variable->setChapter(null);

@@ -36,15 +36,16 @@ class Memo implements Stringable, FrontInterface
     #[Assert\LessThanOrEqual(propertyPath: 'dateEnd')]
     protected DateTime $dateStart;
 
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'noteInternes', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'fond_id')]
+    private ?Attachment $attachment = null;
+
     #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\NotBlank]
-    private $content;
+    private ?string $content = null;
 
     #[UploadableField(filename: 'fond', path: 'memo/fond', slug: 'title')]
     private string $file;
-
-    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'noteInternes', cascade: ['persist'])]
-    private ?Attachment $attachment = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -58,7 +59,7 @@ class Memo implements Stringable, FrontInterface
 
     #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
     #[Assert\NotBlank]
-    private $title;
+    private string $title;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'noteInternes', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]

@@ -21,7 +21,7 @@ abstract class Link implements Stringable
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Url]
-    private $address;
+    private string $address;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -31,7 +31,7 @@ abstract class Link implements Stringable
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
-    private $name;
+    private string $name;
 
     public function __toString(): string
     {

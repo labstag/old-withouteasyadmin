@@ -436,9 +436,9 @@ class AdminBtnSingleton
     }
 
     private function addBtnDestroyRestore(
-        $word,
-        $entity,
-        $route,
+        string $word,
+        mixed $entity,
+        array $route,
         array $routeParam,
         string $text
     )
