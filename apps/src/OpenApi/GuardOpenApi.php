@@ -34,7 +34,7 @@ class GuardOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setGroup(OpenApi $openApi): OpenApi
+    protected function setGroup(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -61,7 +61,7 @@ class GuardOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setGroups(OpenApi $openApi): OpenApi
+    protected function setGroups(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->adDPath(
@@ -79,7 +79,7 @@ class GuardOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setRefGroup(OpenApi $openApi): OpenApi
+    protected function setRefGroup(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -138,7 +138,7 @@ class GuardOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setRefUser(OpenApi $openApi): OpenApi
+    protected function setRefUser(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -197,7 +197,7 @@ class GuardOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setResponses(): array
+    protected function setResponses(): array
     {
         return [
             Response::HTTP_OK => [
@@ -221,7 +221,7 @@ class GuardOpenApi implements OpenApiFactoryInterface
     /**
      * @return array<string, mixed[]>
      */
-    public function setReturnUserGroup(): array
+    protected function setReturnUserGroup(): array
     {
         return [
             'ok'      => [
@@ -235,7 +235,7 @@ class GuardOpenApi implements OpenApiFactoryInterface
         ];
     }
 
-    public function setUser(OpenApi $openApi): OpenApi
+    protected function setUser(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(

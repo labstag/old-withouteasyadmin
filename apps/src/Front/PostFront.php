@@ -54,18 +54,7 @@ class PostFront extends PageFront
         return $meta;
     }
 
-    private function setBreadcrumbRouting(array $breadcrumb): array
-    {
-        $all = $this->request->attributes->all();
-        $route = $all['_route'];
-        $params = $all['_route_params'];
-        $breadcrumb = $this->setBreadcrumbRoutingYear($route, $params, $breadcrumb);
-        $breadcrumb = $this->setBreadcrumbRoutingLibelle($route, $params, $breadcrumb);
-
-        return $this->setBreadcrumbRoutingCategory($route, $params, $breadcrumb);
-    }
-
-    private function setBreadcrumbRoutingCategory(
+    protected function setBreadcrumbRoutingCategory(
         string $route,
         array $params,
         array $breadcrumb
@@ -97,7 +86,7 @@ class PostFront extends PageFront
         return $this->setBreadcrumbPage($page, $breadcrumb);
     }
 
-    private function setBreadcrumbRoutingLibelle(
+    protected function setBreadcrumbRoutingLibelle(
         string $route,
         array $params,
         array $breadcrumb
@@ -129,7 +118,7 @@ class PostFront extends PageFront
         return $this->setBreadcrumbPage($page, $breadcrumb);
     }
 
-    private function setBreadcrumbRoutingYear(
+    protected function setBreadcrumbRoutingYear(
         string $route,
         array $params,
         array $breadcrumb
@@ -151,5 +140,33 @@ class PostFront extends PageFront
         );
 
         return $this->setBreadcrumbPage($page, $breadcrumb);
+    }
+
+    private function setBreadcrumbRouting(array $breadcrumb): array
+    {
+        $all = $this->request->attributes->all();
+        $route = $all['_route'];
+        $params = $all['_route_params'];
+
+        $functions = [
+            'setBreadcrumbRoutingYear',
+            'setBreadcrumbRoutingLibelle',
+            'setBreadcrumbRoutingCategory',
+        ];
+        foreach ($functions as $function) {
+            $breadcrumb = call_user_func_array(
+                [
+                    $this,
+                    $function,
+                ],
+                [
+                    $route,
+                    $params,
+                    $breadcrumb,
+                ]
+            );
+        }
+
+        return $breadcrumb;
     }
 }

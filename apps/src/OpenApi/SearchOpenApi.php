@@ -33,7 +33,7 @@ class SearchOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setCategories(OpenApi $openApi): OpenApi
+    protected function setCategories(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -52,7 +52,7 @@ class SearchOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setGroupes(OpenApi $openApi): OpenApi
+    protected function setGroupes(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -71,7 +71,7 @@ class SearchOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setLibelles(OpenApi $openApi): OpenApi
+    protected function setLibelles(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -90,7 +90,7 @@ class SearchOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setParameters(): array
+    protected function setParameters(): array
     {
         return [
             [
@@ -103,7 +103,7 @@ class SearchOpenApi implements OpenApiFactoryInterface
         ];
     }
 
-    public function setUsers(OpenApi $openApi): OpenApi
+    protected function setUsers(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->getPath(

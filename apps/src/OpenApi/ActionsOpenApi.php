@@ -39,7 +39,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setDelete(OpenApi $openApi): OpenApi
+    protected function setDelete(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -58,7 +58,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setDeleties(OpenApi $openApi): OpenApi
+    protected function setDeleties(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -77,7 +77,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setDestroies(OpenApi $openApi): OpenApi
+    protected function setDestroies(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -96,7 +96,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setDestroy(OpenApi $openApi): OpenApi
+    protected function setDestroy(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -115,7 +115,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setEmpties(OpenApi $openApi): OpenApi
+    protected function setEmpties(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -134,7 +134,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setEmpty(OpenApi $openApi): OpenApi
+    protected function setEmpty(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -168,7 +168,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setEmptyAll(OpenApi $openApi): OpenApi
+    protected function setEmptyAll(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -198,7 +198,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
     /**
      * @return array<int, mixed[]>
      */
-    public function setParametersDeleteDestroyRestore(): array
+    protected function setParametersDeleteDestroyRestore(): array
     {
         return [
             [
@@ -228,7 +228,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
     /**
      * @return array<int, mixed[]>
      */
-    public function setParametersDeletiesEmpties(): array
+    protected function setParametersDeletiesEmpties(): array
     {
         return [
             [
@@ -251,7 +251,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
     /**
      * @return array<int, mixed[]>
      */
-    public function setParametersRestoreDestroy(): array
+    protected function setParametersRestoreDestroy(): array
     {
         return [
             [
@@ -278,7 +278,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         ];
     }
 
-    public function setResponses(): array
+    protected function setResponses(): array
     {
         return [
             Response::HTTP_OK => [
@@ -299,7 +299,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         ];
     }
 
-    public function setRestore(OpenApi $openApi): OpenApi
+    protected function setRestore(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -318,7 +318,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setRestories(OpenApi $openApi): OpenApi
+    protected function setRestories(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(
@@ -337,7 +337,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    public function setWorkflow(OpenApi $openApi): OpenApi
+    protected function setWorkflow(OpenApi $openApi): OpenApi
     {
         $paths = $openApi->getPaths();
         $paths->addPath(

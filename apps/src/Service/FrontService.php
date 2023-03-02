@@ -45,12 +45,19 @@ class FrontService
         array $meta
     ): array
     {
-        $meta = $this->configMetaImage($meta);
-        $meta = $this->configMetaRobots($meta);
-        $meta = $this->configMetaTitle($config, $meta);
-        $meta = $this->configMetaLocale($config, $meta);
+        $functions = [
+            'configMetaImage',
+            'configMetaRobots',
+            'configMetaTitle',
+            'configMetaLocale',
+            'configMetaDescription',
+        ];
 
-        return $this->configMetaDescription($meta);
+        foreach ($functions as $function) {
+            $meta = call_user_func_array([$this, $function], [$config, $meta]);
+        }
+
+        return $meta;
     }
 
     public function setBreadcrumb(?FrontInterface $front): array
@@ -84,7 +91,6 @@ class FrontService
         $metatags = [];
         $meta['twitter:card'] = 'summary_large_image';
         $meta['og:type'] = 'website';
-
         ksort($meta);
         foreach ($meta as $key => $value) {
             if ('' == $value || is_null($value) || 'title' == $key) {
@@ -109,21 +115,9 @@ class FrontService
         $this->twigEnvironment->AddGlobal('sitemetatags', $metatags);
     }
 
-    private function arrayKeyExists(
-        array $var,
-        array $data
-    ): bool
+    protected function configMetaDescription(array $config, array $meta): array
     {
-        $find = 0;
-        foreach ($var as $name) {
-            $find = (int) array_key_exists($name, $data);
-        }
-
-        return 0 != $find;
-    }
-
-    private function configMetaDescription(array $meta): array
-    {
+        unset($config);
         $tests = [
             'og:description',
             'twitter:description',
@@ -138,8 +132,9 @@ class FrontService
         return $meta;
     }
 
-    private function configMetaImage(array $meta): array
+    protected function configMetaImage(array $config, array $meta): array
     {
+        unset($config);
         $attachment = $this->attachmentRepository->getImageDefault();
         $this->twigEnvironment->AddGlobal('imageglobal', $attachment);
         if (!isset($meta['image']) || is_null($attachment) || is_null($attachment->getName())) {
@@ -159,7 +154,7 @@ class FrontService
         return $meta;
     }
 
-    private function configMetaLocale(
+    protected function configMetaLocale(
         array $config,
         array $meta
     ): array
@@ -185,8 +180,9 @@ class FrontService
         return $meta;
     }
 
-    private function configMetaRobots(array $meta): array
+    protected function configMetaRobots(array $config, array $meta): array
     {
+        unset($config);
         if (!$this->isStateMeta()) {
             $meta['robots'] = 'noindex';
         }
@@ -194,7 +190,7 @@ class FrontService
         return $meta;
     }
 
-    private function configMetaTitle(
+    protected function configMetaTitle(
         array $config,
         array $meta
     ): array
@@ -215,6 +211,19 @@ class FrontService
         $meta['twitter:title'] = $title;
 
         return $meta;
+    }
+
+    private function arrayKeyExists(
+        array $var,
+        array $data
+    ): bool
+    {
+        $find = 0;
+        foreach ($var as $name) {
+            $find = (int) array_key_exists($name, $data);
+        }
+
+        return 0 != $find;
     }
 
     private function isStateMeta(): bool

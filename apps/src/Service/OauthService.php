@@ -137,17 +137,34 @@ class OauthService
     protected function generateStandardProvider(string $clientName, array $params): ?AbstractProvider
     {
         $provider = null;
-        $provider = $this->generateStandardProviderBitbucket($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderDiscord($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderDropbox($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderGithub($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderGitlab($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderGoogle($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderLinkedin($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderReddit($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderSlack($clientName, $params, $provider);
+        $functions = [
+            'generateStandardProviderBitbucket',
+            'generateStandardProviderDiscord',
+            'generateStandardProviderDropbox',
+            'generateStandardProviderGithub',
+            'generateStandardProviderGitlab',
+            'generateStandardProviderGoogle',
+            'generateStandardProviderLinkedin',
+            'generateStandardProviderReddit',
+            'generateStandardProviderSlack',
+            'generateStandardProviderTwitch',
+        ];
 
-        return $this->generateStandardProviderTwitch($clientName, $params, $provider);
+        foreach ($functions as $function) {
+            $provider = call_user_func_array(
+                [
+                    $this,
+                    $function,
+                ],
+                [
+                    $clientName,
+                    $params,
+                    $provider,
+                ]
+            );
+        }
+
+        return $provider;
     }
 
     protected function generateStandardProviderBitbucket(

@@ -564,9 +564,15 @@ abstract class AdminControllerLib extends ControllerLib
             return;
         }
 
-        $this->setBtnShow($url, $entity);
-        $this->setBtnGuard($url, $entity);
-        $this->setBtnDelete($url, $entity);
+        $functions = [
+            'setBtnShow',
+            'setBtnGuard',
+            'setBtnDelete',
+        ];
+
+        foreach ($functions as $function) {
+            call_user_func_array([$this, $function], [$url, $entity]);
+        }
     }
 
     /**
@@ -691,12 +697,18 @@ abstract class AdminControllerLib extends ControllerLib
         mixed $entity
     ): void
     {
-        $this->showOrPreviewaddBtnList($url, $routeType);
-        $this->showOrPreviewaddBtnGuard($url, $routeType, $entity);
-        $this->showOrPreviewaddBtnTrash($url, $routeType);
-        $this->showOrPreviewaddBtnEdit($url, $routeType, $entity);
-        $this->showOrPreviewaddBtnRestore($url, $routeType, $entity);
-        $this->showOrPreviewaddBtnDestroy($url, $routeType, $entity);
+        $functions = [
+            'showOrPreviewaddBtnList',
+            'showOrPreviewaddBtnGuard',
+            'showOrPreviewaddBtnTrash',
+            'showOrPreviewaddBtnEdit',
+            'showOrPreviewaddBtnRestore',
+            'showOrPreviewaddBtnDestroy',
+        ];
+
+        foreach ($functions as $function) {
+            call_user_func_array([$this, $function], [$url, $routeType, $entity]);
+        }
     }
 
     protected function showOrPreviewaddBtnDestroy(
@@ -761,8 +773,9 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function showOrPreviewaddBtnList(array $url, string $routeType): void
+    protected function showOrPreviewaddBtnList(array $url, string $routeType, mixed $entity): void
     {
+        unset($entity);
         if (!(isset($url['list']) && 'show' == $routeType)) {
             return;
         }
@@ -795,8 +808,9 @@ abstract class AdminControllerLib extends ControllerLib
         }
     }
 
-    protected function showOrPreviewaddBtnTrash(array $url, string $routeType): void
+    protected function showOrPreviewaddBtnTrash(array $url, string $routeType, mixed $entity): void
     {
+        unset($entity);
         if (!(isset($url['trash']) && 'preview' == $routeType)) {
             return;
         }

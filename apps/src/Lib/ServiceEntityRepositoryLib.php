@@ -136,24 +136,30 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 
     protected function setQuery(QueryBuilder $queryBuilder, array $get): QueryBuilder
     {
-        $this->setQueryCity($queryBuilder, $get);
-        $this->setQueryCommunityName($queryBuilder, $get);
-        $this->setQueryCountry($queryBuilder, $get);
-        $this->setQueryCountryCode($queryBuilder, $get);
-        $this->setQueryDateEnd($queryBuilder, $get);
-        $this->setQueryDateStart($queryBuilder, $get);
-        $this->setQueryEmail($queryBuilder, $get);
-        $this->setQueryEtape($queryBuilder, $get);
-        $this->setQueryName($queryBuilder, $get);
-        $this->setQueryPlaceName($queryBuilder, $get);
-        $this->setQueryPostalCode($queryBuilder, $get);
-        $this->setQueryProvinceName($queryBuilder, $get);
-        $this->setQueryPublished($queryBuilder, $get);
-        $this->setQueryRefCategory($queryBuilder, $get);
-        $this->setQueryRefGroup($queryBuilder, $get);
-        $this->setQueryRefUser($queryBuilder, $get);
-        $this->setQueryStateName($queryBuilder, $get);
-        $this->setQueryTitle($queryBuilder, $get);
+        $functions = [
+            'setQueryCity',
+            'setQueryCommunityName',
+            'setQueryCountry',
+            'setQueryCountryCode',
+            'setQueryDateEnd',
+            'setQueryDateStart',
+            'setQueryEmail',
+            'setQueryEtape',
+            'setQueryName',
+            'setQueryPlaceName',
+            'setQueryPostalCode',
+            'setQueryProvinceName',
+            'setQueryPublished',
+            'setQueryRefCategory',
+            'setQueryRefGroup',
+            'setQueryRefUser',
+            'setQueryStateName',
+            'setQueryTitle',
+        ];
+
+        foreach ($functions as $function) {
+            call_user_func_array([$this, $function], [$queryBuilder, $get]);
+        }
 
         return $queryBuilder;
     }
