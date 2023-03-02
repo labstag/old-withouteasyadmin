@@ -2,16 +2,18 @@
 
 namespace Labstag\Search;
 
+use DateTime;
 use Labstag\Lib\SearchLib;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class EditoSearch extends SearchLib
 {
 
-    public $etape;
+    public ?string $etape = null;
 
-    public $published;
+    public ?DateTime $published = null;
 
-    public $title;
+    public ?string $title = null;
 
-    public $user;
+    public ?UserInterface $user = null;
 }

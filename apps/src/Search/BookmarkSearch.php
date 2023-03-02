@@ -2,17 +2,18 @@
 
 namespace Labstag\Search;
 
+use Labstag\Entity\Category;
 use Labstag\Entity\User;
 use Labstag\Lib\SearchLib;
 
 class BookmarkSearch extends SearchLib
 {
 
-    public $category;
+    public ?Category $category = null;
 
-    public $etape;
+    public ?string $etape = null;
 
-    public $name;
+    public ?string $name = null;
 
     public ?User $user = null;
 }

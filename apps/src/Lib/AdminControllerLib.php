@@ -821,7 +821,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    private function addInBreadcrumb($breadcrumb, $trace)
+    private function addInBreadcrumb(array $breadcrumb, array $trace): array
     {
         $add = true;
         foreach ($breadcrumb as $row) {

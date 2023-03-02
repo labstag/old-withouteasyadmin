@@ -3,6 +3,7 @@
 namespace Labstag\EventSubscriber;
 
 use Labstag\Lib\EventSubscriberLib;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use tidy;
 
 class KernelSubscriber extends EventSubscriberLib
@@ -113,7 +114,7 @@ class KernelSubscriber extends EventSubscriberLib
         return ['kernel.response' => 'onKernelResponse'];
     }
 
-    public function onKernelResponse($event): void
+    public function onKernelResponse(ResponseEvent $event): void
     {
         $response = $event->getResponse();
         $request = $event->getRequest();
@@ -145,7 +146,7 @@ class KernelSubscriber extends EventSubscriberLib
         $tidy->parseString((string) $content, $config, 'utf8');
         $tidy->cleanRepair();
 
-        $response->setContent($tidy);
+        $response->setContent($tidy->html()->value);
         $event->setResponse($response);
     }
 }

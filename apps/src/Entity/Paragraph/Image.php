@@ -25,7 +25,7 @@ class Image implements ParagraphInterface
     private ?Attachment $attachment = null;
 
     #[UploadableField(filename: 'image', path: 'paragraph/image', slug: 'title')]
-    private $file;
+    private mixed $file;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -43,7 +43,7 @@ class Image implements ParagraphInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $title = null;
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -73,7 +73,7 @@ class Image implements ParagraphInterface
         return $this->title;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 

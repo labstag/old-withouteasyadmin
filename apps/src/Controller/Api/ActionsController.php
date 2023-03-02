@@ -280,7 +280,7 @@ class ActionsController extends ApiControllerLib
         return $error;
     }
 
-    private function deleteEntity($entity): void
+    private function deleteEntity(mixed $entity): void
     {
         if (is_null($entity) || !is_null($entity->getDeletedAt())) {
             return;

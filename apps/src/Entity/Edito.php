@@ -38,7 +38,7 @@ class Edito implements Stringable, FrontInterface
     private ?DateTimeInterface $dateTime = null;
 
     #[UploadableField(filename: 'fond', path: 'edito/fond', slug: 'title')]
-    private $file;
+    private mixed $file;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -97,7 +97,7 @@ class Edito implements Stringable, FrontInterface
         return $this->content;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -170,7 +170,7 @@ class Edito implements Stringable, FrontInterface
         return $this;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 

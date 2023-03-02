@@ -19,7 +19,7 @@
             <tr>
                 <th>{{ 'user.avatar'|trans({}, 'admin.messages') }}</th>
                 <td>
-                    <picture >
+                    <picture>
                         <img alt="{{ 'user.avatar'|trans({}, 'admin.messages')|e("html_attr") }}" src="{{ asset(avatar.name) | imagefilter('my_thumb') }}" />
                     </picture>
                 </td>

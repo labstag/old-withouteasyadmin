@@ -7,5 +7,5 @@ use Labstag\Lib\SearchLib;
 class LibelleSearch extends SearchLib
 {
 
-    public $name;
+    public ?string $name = null;
 }

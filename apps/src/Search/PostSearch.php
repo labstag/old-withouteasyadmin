@@ -2,18 +2,21 @@
 
 namespace Labstag\Search;
 
+use DateTime;
+use Labstag\Entity\Category;
 use Labstag\Lib\SearchLib;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class PostSearch extends SearchLib
 {
 
-    public $category;
+    public ?Category $category = null;
 
-    public $etape;
+    public ?string $etape = null;
 
-    public $published;
+    public ?DateTime $published = null;
 
-    public $title;
+    public ?string $title = null;
 
-    public $user;
+    public ?UserInterface $user = null;
 }

@@ -7,7 +7,7 @@ use Labstag\Lib\SearchLib;
 class PageSearch extends SearchLib
 {
 
-    public $etape;
+    public ?string $etape = null;
 
-    public $name;
+    public ?string $name = null;
 }

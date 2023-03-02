@@ -23,7 +23,7 @@ class AttachFormService
     {
     }
 
-    public function upload($entity): void
+    public function upload(mixed $entity): void
     {
         $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
         foreach ($annotations as $property => $annotation) {

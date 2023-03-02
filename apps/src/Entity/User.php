@@ -83,7 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     private Collection $emailUsers;
 
     #[UploadableField(filename: 'avatar', path: 'user/avatar', slug: 'username')]
-    private $file;
+    private mixed $file;
 
     #[ORM\OneToMany(
         targetEntity: History::class,
@@ -374,7 +374,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this->emailUsers;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -650,7 +650,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 

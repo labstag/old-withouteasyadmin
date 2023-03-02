@@ -26,7 +26,7 @@ class Video implements Stringable, ParagraphInterface
     private ?Attachment $attachment = null;
 
     #[UploadableField(filename: 'image', path: 'paragraph/video', slug: 'title')]
-    private $file;
+    private mixed $file;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -52,7 +52,7 @@ class Video implements Stringable, ParagraphInterface
         return (string) $this->getParagraph()->getType();
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -87,7 +87,7 @@ class Video implements Stringable, ParagraphInterface
         return $this->url;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 

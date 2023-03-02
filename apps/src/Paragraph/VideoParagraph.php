@@ -171,7 +171,7 @@ class VideoParagraph extends ParagraphLib
 
     private function setDataAnnotation(
         $annotation,
-        $image,
+        string $image,
         Video $video,
         ServiceEntityRepositoryLib $serviceEntityRepositoryLib,
         string $slug

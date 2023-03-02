@@ -36,7 +36,7 @@ class Bookmark
     private ?string $content = null;
 
     #[UploadableField(filename: 'img', path: 'bookmark/img', slug: 'name')]
-    private $file;
+    private mixed $file;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $icon = null;
@@ -61,7 +61,7 @@ class Bookmark
     private ?string $slug = null;
 
     #[ORM\Column(type: 'array')]
-    private $state;
+    private mixed $state;
 
     #[Gedmo\Timestampable(on: 'change', field: ['state'])]
     #[ORM\Column(name: 'state_changed', type: 'datetime', nullable: true)]
@@ -94,7 +94,7 @@ class Bookmark
         return $this->content;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -144,7 +144,7 @@ class Bookmark
         return $this->slug;
     }
 
-    public function getState()
+    public function getState(): mixed
     {
         return $this->state;
     }
@@ -173,7 +173,7 @@ class Bookmark
         return $this;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 
@@ -229,7 +229,7 @@ class Bookmark
         return $this;
     }
 
-    public function setState($state): self
+    public function setState(mixed $state): self
     {
         $this->state = $state;
 

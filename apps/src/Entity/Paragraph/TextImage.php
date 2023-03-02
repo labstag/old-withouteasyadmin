@@ -28,7 +28,7 @@ class TextImage implements ParagraphInterface
     private ?string $content = null;
 
     #[UploadableField(filename: 'image', path: 'paragraph/textimage', slug: 'title')]
-    private $file;
+    private mixed $file;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -58,7 +58,7 @@ class TextImage implements ParagraphInterface
         return $this->content;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -100,7 +100,7 @@ class TextImage implements ParagraphInterface
         return $this;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 

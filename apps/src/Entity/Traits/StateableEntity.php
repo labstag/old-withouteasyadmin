@@ -10,13 +10,13 @@ trait StateableEntity
 {
 
     #[ORM\Column(type: 'array')]
-    private $state;
+    private mixed $state = null;
 
     #[Gedmo\Timestampable(on: 'change', field: ['state'])]
     #[ORM\Column(name: 'state_changed', type: 'datetime', nullable: true)]
     private DateTime $stateChanged;
 
-    public function getState()
+    public function getState(): mixed
     {
         return $this->state;
     }
@@ -26,8 +26,10 @@ trait StateableEntity
         return $this->stateChanged;
     }
 
-    public function setState($state)
+    public function setState(mixed $state): self
     {
         $this->state = $state;
+
+        return $this;
     }
 }

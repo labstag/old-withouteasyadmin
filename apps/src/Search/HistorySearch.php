@@ -2,16 +2,18 @@
 
 namespace Labstag\Search;
 
+use DateTime;
 use Labstag\Lib\SearchLib;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class HistorySearch extends SearchLib
 {
 
-    public $etape;
+    public ?string $etape = null;
 
-    public $name;
+    public ?string $name = null;
 
-    public $published;
+    public ?DateTime $published = null;
 
-    public $user;
+    public ?UserInterface $user = null;
 }

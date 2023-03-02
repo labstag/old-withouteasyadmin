@@ -11,9 +11,9 @@ use Labstag\Entity\User;
 abstract class SearchLib
 {
 
-    public $limit;
+    public int $limit = 10;
 
-    public $page;
+    public int $page = 0;
 
     public function search(
         array $get,
@@ -24,6 +24,10 @@ abstract class SearchLib
         $categoryRepo = $entityManager->getRepository(Category::class);
         $groupeRepo = $entityManager->getRepository(Groupe::class);
         foreach ($get as $key => $value) {
+            if (!isset($this->{$key})) {
+                continue;
+            }
+
             if ('published' == $key) {
                 if (!empty($value)) {
                     $dateTime = new DateTime();
@@ -33,12 +37,12 @@ abstract class SearchLib
                         $day,
                     ] = explode('-', (string) $value);
                     $dateTime->setDate((int) $year, (int) $month, (int) $day);
-                    $this->{$key} = $dateTime;
+                    $value = $dateTime;
 
                     continue;
                 }
 
-                $this->{$key} = null;
+                $value = null;
 
                 continue;
             }

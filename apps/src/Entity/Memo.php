@@ -102,7 +102,7 @@ class Memo implements Stringable, FrontInterface
         return $this->dateStart;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -166,7 +166,7 @@ class Memo implements Stringable, FrontInterface
         return $this;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 

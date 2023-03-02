@@ -7,7 +7,7 @@ use Labstag\Lib\SearchLib;
 class LayoutSearch extends SearchLib
 {
 
-    public $etape;
+    public ?string $etape = null;
 
-    public $name;
+    public ?string $name = null;
 }

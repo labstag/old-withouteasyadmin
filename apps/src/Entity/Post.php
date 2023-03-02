@@ -44,7 +44,7 @@ class Post implements Stringable, FrontInterface
     private ?DateTimeInterface $created = null;
 
     #[UploadableField(filename: 'img', path: 'post/img', slug: 'title')]
-    private $file;
+    private mixed $file;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -136,7 +136,7 @@ class Post implements Stringable, FrontInterface
         return $this->created;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -244,7 +244,7 @@ class Post implements Stringable, FrontInterface
         return $this;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 
