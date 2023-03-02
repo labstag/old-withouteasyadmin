@@ -8,6 +8,7 @@ use ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface;
 use ApiPlatform\OpenApi\Model\Operation;
 use ApiPlatform\OpenApi\Model\PathItem;
 use ApiPlatform\OpenApi\OpenApi;
+use Symfony\Component\HttpFoundation\Response;
 
 class CheckOpenApi implements OpenApiFactoryInterface
 {
@@ -24,9 +25,41 @@ class CheckOpenApi implements OpenApiFactoryInterface
             new PathItem(
                 description: 'Phone number',
                 get: new Operation(
-                    operationId : 'get',
                     tags: ['Check'],
-                    summary: 'Phone number'
+                    summary: 'Phone number',
+                    responses: [
+                        Response::HTTP_OK => [
+                            'content' => [
+                                'application/json' => [
+                                    'schema' => [
+                                        'type'       => 'object',
+                                        'properties' => [
+                                            'isvalid' => [
+                                                'type'    => 'boolean',
+                                                'example' => true,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                    parameters: [
+                        [
+                            'name'        => 'country',
+                            'in'          => 'query',
+                            'required'    => true,
+                            'description' => 'country code',
+                            'schema'      => ['type' => 'string'],
+                        ],
+                        [
+                            'name'        => 'phone',
+                            'in'          => 'query',
+                            'required'    => true,
+                            'description' => 'phone',
+                            'schema'      => ['type' => 'string'],
+                        ],
+                    ]
                 )
             )
         );
