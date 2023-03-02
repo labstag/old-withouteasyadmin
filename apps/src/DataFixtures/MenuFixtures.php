@@ -23,10 +23,10 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $objectManager): void
     {
         unset($objectManager);
-        $faker = $this->setFaker();
+        $generator = $this->setFaker();
         $data = $this->installService->getData('menu');
         foreach ($data as $menu) {
-            $this->addMenu($faker, $menu);
+            $this->addMenu($generator, $menu);
         }
     }
 

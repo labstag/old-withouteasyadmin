@@ -23,7 +23,7 @@ class Text implements Stringable, ParagraphInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'texts', cascade: ['persist'])]
     private ?Paragraph $paragraph = null;

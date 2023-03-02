@@ -19,7 +19,7 @@ trait BookmarkEntity
         orphanRemoval: true
     )
     ]
-    private $bookmarkCategories;
+    private Collection $bookmarkCategories;
 
     #[ORM\OneToMany(
         targetEntity: BookmarkLibelle::class,
@@ -28,7 +28,7 @@ trait BookmarkEntity
         orphanRemoval: true
     )
     ]
-    private $bookmarkLibelles;
+    private Collection $bookmarkLibelles;
 
     #[ORM\OneToMany(
         targetEntity: BookmarkList::class,
@@ -37,7 +37,7 @@ trait BookmarkEntity
         orphanRemoval: true
     )
     ]
-    private $bookmarkLists;
+    private Collection $bookmarkLists;
 
     #[ORM\OneToMany(
         targetEntity: ParagraphBookmark::class,
@@ -46,7 +46,7 @@ trait BookmarkEntity
         orphanRemoval: true
     )
     ]
-    private $bookmarks;
+    private Collection $bookmarks;
 
     public function addBookmark(ParagraphBookmark $paragraphBookmark): self
     {

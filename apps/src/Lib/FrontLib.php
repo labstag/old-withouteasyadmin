@@ -2,6 +2,7 @@
 
 namespace Labstag\Lib;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Repository\PageRepository;
 use Labstag\Service\RepositoryService;
@@ -25,7 +26,7 @@ abstract class FrontLib
         $this->request = $requestStack->getCurrentRequest();
     }
 
-    protected function getMeta($metas, $meta)
+    protected function getMeta(array|Collection $metas, array $meta): array
     {
         foreach ($metas as $entity) {
             $meta['description'] = $entity->getDescription();

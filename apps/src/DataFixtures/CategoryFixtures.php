@@ -13,9 +13,9 @@ class CategoryFixtures extends DataFixtureLib implements DependentFixtureInterfa
     public function load(ObjectManager $objectManager): void
     {
         unset($objectManager);
-        $faker = $this->setFaker();
+        $generator = $this->setFaker();
         for ($index = 0; $index < self::NUMBER_CATEGORY; ++$index) {
-            $this->addCategory($faker, $index);
+            $this->addCategory($generator, $index);
         }
     }
 

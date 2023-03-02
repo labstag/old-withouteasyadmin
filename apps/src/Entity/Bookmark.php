@@ -45,10 +45,10 @@ class Bookmark
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\ManyToMany(targetEntity: Libelle::class, inversedBy: 'bookmarks', cascade: ['persist'])]
-    private $libelles;
+    private Collection $libelles;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;

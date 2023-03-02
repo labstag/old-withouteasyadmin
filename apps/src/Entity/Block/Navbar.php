@@ -24,7 +24,7 @@ class Navbar implements Stringable, BlockInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'navbars', cascade: ['persist'])]
     private ?Menu $menu = null;

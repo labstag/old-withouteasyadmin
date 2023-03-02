@@ -37,7 +37,7 @@ abstract class ApiControllerLib extends AbstractController
         $this->request = $this->requeststack->getCurrentRequest();
     }
 
-    protected function getGuardRouteOrWorkflow($data, $get, $entityClass)
+    protected function getGuardRouteOrWorkflow(array $data, array $get, string $entityClass): array
     {
         if (!array_key_exists('user', $get)) {
             return $data;
@@ -73,7 +73,7 @@ abstract class ApiControllerLib extends AbstractController
         return $data;
     }
 
-    protected function getResultWorkflow($request, $entity)
+    protected function getResultWorkflow(Request $request, mixed $entity): mixed
     {
         $userRepository = $this->repositoryService->get(User::class);
         $entityRepository = $this->repositoryService->get($entity);

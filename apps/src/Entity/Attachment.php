@@ -24,46 +24,46 @@ class Attachment
     use StateableEntity;
 
     #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
-    private $bookmarks;
+    private Collection $bookmarks;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $code = null;
 
     #[ORM\OneToMany(targetEntity: Edito::class, mappedBy: 'fond', cascade: ['persist'], orphanRemoval: true)]
-    private $editos;
+    private Collection $editos;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $mimeType;
+    private ?string $mimeType = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $name;
+    private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: Memo::class, mappedBy: 'fond', cascade: ['persist'], orphanRemoval: true)]
-    private $noteInternes;
+    private Collection $noteInternes;
 
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
-    private $paragraphImages;
+    private Collection $paragraphImages;
 
     #[ORM\OneToMany(targetEntity: TextImage::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
-    private $paragraphTextImages;
+    private Collection $paragraphTextImages;
 
     #[ORM\OneToMany(targetEntity: Video::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
-    private $paragraphVideos;
+    private Collection $paragraphVideos;
 
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
-    private $posts;
+    private Collection $posts;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $size;
+    private ?int $size = null;
 
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'avatar', cascade: ['persist'], orphanRemoval: true)]
-    private $users;
+    private Collection $users;
 
     public function __construct()
     {

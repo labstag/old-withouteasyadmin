@@ -61,7 +61,7 @@ abstract class ControllerLib extends AbstractController
         $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
     }
 
-    protected function setSingletons()
+    protected function setSingletons(): BreadcrumbsSingleton
     {
         return $this->breadcrumbsInstance;
     }

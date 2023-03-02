@@ -14,20 +14,20 @@ class RouteGroupe
 
     #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'routes', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refgroupe_id')]
-    private $groupe;
+    private Groupe $groupe;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\ManyToOne(targetEntity: Route::class, inversedBy: 'groupes', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refroute_id')]
-    private $route;
+    private Route $route;
 
     #[ORM\Column(type: 'boolean')]
-    private $state;
+    private bool $state = false;
 
     public function getId(): ?string
     {

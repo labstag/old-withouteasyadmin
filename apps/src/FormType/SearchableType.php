@@ -113,7 +113,7 @@ class SearchableType extends AbstractType
     /**
      * @return mixed[]
      */
-    protected function addToentity(array $ids, $options): array
+    protected function addToentity(array $ids, array $options): array
     {
         if (is_null($options['new'])) {
             return $ids;
@@ -135,7 +135,7 @@ class SearchableType extends AbstractType
         return $ids;
     }
 
-    private function choices($values, array $options): ?array
+    private function choices(mixed $values, array $options): ?array
     {
         if (is_null($values)) {
             return ($options['multiple']) ? [] : null;

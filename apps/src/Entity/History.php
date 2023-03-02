@@ -27,7 +27,7 @@ class History implements FrontInterface
 
     #[ORM\OneToMany(targetEntity: Chapter::class, mappedBy: 'history', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
-    private $chapters;
+    private Collection $chapters;
 
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(type: 'datetime')]
@@ -37,10 +37,10 @@ class History implements FrontInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'history', cascade: ['persist'], orphanRemoval: true)]
-    private $metas;
+    private Collection $metas;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
@@ -50,7 +50,7 @@ class History implements FrontInterface
 
     #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'history', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
-    private $paragraphs;
+    private Collection $paragraphs;
 
     #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $published = null;

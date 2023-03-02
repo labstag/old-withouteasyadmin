@@ -29,7 +29,7 @@ abstract class BlockAbstractTypeLib extends AbstractTypeLib
         return '';
     }
 
-    protected function getRender($view, array $param = [])
+    protected function getRender(string $view, array $param = [])
     {
         return $this->twigEnvironment->render($view, $param);
     }

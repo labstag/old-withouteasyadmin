@@ -24,7 +24,7 @@ trait PostEntity
         cascade: ['persist']
     )
     ]
-    private $post;
+    private ?Post $post = null;
 
     #[ORM\OneToMany(
         targetEntity: PostArchive::class,
@@ -33,7 +33,7 @@ trait PostEntity
         orphanRemoval: true
     )
     ]
-    private $postArchives;
+    private Collection $postArchives;
 
     #[ORM\OneToMany(
         targetEntity: PostCategory::class,
@@ -42,7 +42,7 @@ trait PostEntity
         orphanRemoval: true
     )
     ]
-    private $postCategories;
+    private Collection $postCategories;
 
     #[ORM\OneToMany(
         targetEntity: PostHeader::class,
@@ -51,7 +51,7 @@ trait PostEntity
         orphanRemoval: true
     )
     ]
-    private $postHeaders;
+    private Collection $postHeaders;
 
     #[ORM\OneToMany(
         targetEntity: PostLibelle::class,
@@ -60,7 +60,7 @@ trait PostEntity
         orphanRemoval: true
     )
     ]
-    private $postLibelles;
+    private Collection $postLibelles;
 
     #[ORM\OneToMany(
         targetEntity: PostList::class,
@@ -69,7 +69,7 @@ trait PostEntity
         orphanRemoval: true
     )
     ]
-    private $postLists;
+    private Collection $postLists;
 
     #[ORM\OneToMany(
         targetEntity: ParagraphPost::class,
@@ -78,7 +78,7 @@ trait PostEntity
         orphanRemoval: true
     )
     ]
-    private $posts;
+    private Collection $posts;
 
     #[ORM\OneToMany(
         targetEntity: PostShow::class,
@@ -87,7 +87,7 @@ trait PostEntity
         orphanRemoval: true
     )
     ]
-    private $postShows;
+    private Collection $postShows;
 
     #[ORM\OneToMany(
         targetEntity: PostUser::class,
@@ -96,7 +96,7 @@ trait PostEntity
         orphanRemoval: true
     )
     ]
-    private $postUsers;
+    private Collection $postUsers;
 
     #[ORM\OneToMany(
         targetEntity: PostYear::class,
@@ -105,7 +105,7 @@ trait PostEntity
         orphanRemoval: true
     )
     ]
-    private $postYears;
+    private Collection $postYears;
 
     public function addPost(ParagraphPost $paragraphPost): self
     {

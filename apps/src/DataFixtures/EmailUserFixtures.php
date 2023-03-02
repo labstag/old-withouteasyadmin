@@ -25,12 +25,12 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
     public function load(ObjectManager $objectManager): void
     {
         unset($objectManager);
-        $faker = $this->setFaker();
+        $generator = $this->setFaker();
         $users = $this->installService->getData('user');
         for ($index = 0; $index < self::NUMBER_EMAIL; ++$index) {
-            $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
+            $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
             $user = $this->getReference('user_'.$indexUser);
-            $this->addEmail($faker, $user);
+            $this->addEmail($generator, $user);
         }
     }
 

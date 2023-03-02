@@ -28,7 +28,7 @@ class Groupe implements Stringable
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
@@ -41,7 +41,7 @@ class Groupe implements Stringable
         orphanRemoval: true
     )
     ]
-    private $routes;
+    private Collection $routes;
 
     #[ORM\OneToMany(
         targetEntity: User::class,
@@ -50,7 +50,7 @@ class Groupe implements Stringable
         orphanRemoval: true
     )
     ]
-    private $users;
+    private Collection $users;
 
     #[ORM\OneToMany(
         targetEntity: WorkflowGroupe::class,
@@ -59,7 +59,7 @@ class Groupe implements Stringable
         orphanRemoval: true
     )
     ]
-    private $workflowGroupes;
+    private Collection $workflowGroupes;
 
     public function __construct()
     {

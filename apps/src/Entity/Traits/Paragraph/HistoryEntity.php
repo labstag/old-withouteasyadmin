@@ -21,7 +21,7 @@ trait HistoryEntity
         orphanRemoval: true
     )
     ]
-    private $histories;
+    private Collection $histories;
 
     #[ORM\ManyToOne(
         targetEntity: History::class,
@@ -29,7 +29,7 @@ trait HistoryEntity
         cascade: ['persist']
     )
     ]
-    private $history;
+    private ?History $history = null;
 
     #[ORM\OneToMany(
         targetEntity: HistoryChapter::class,
@@ -38,7 +38,7 @@ trait HistoryEntity
         orphanRemoval: true
     )
     ]
-    private $historyChapters;
+    private Collection $historyChapters;
 
     #[ORM\OneToMany(
         targetEntity: HistoryList::class,
@@ -47,7 +47,7 @@ trait HistoryEntity
         orphanRemoval: true
     )
     ]
-    private $historyLists;
+    private Collection $historyLists;
 
     #[ORM\OneToMany(
         targetEntity: HistoryShow::class,
@@ -56,7 +56,7 @@ trait HistoryEntity
         orphanRemoval: true
     )
     ]
-    private $historyShows;
+    private Collection $historyShows;
 
     #[ORM\OneToMany(
         targetEntity: HistoryUser::class,
@@ -65,7 +65,7 @@ trait HistoryEntity
         orphanRemoval: true
     )
     ]
-    private $historyUsers;
+    private Collection $historyUsers;
 
     public function addHistory(ParagraphHistory $paragraphHistory): self
     {

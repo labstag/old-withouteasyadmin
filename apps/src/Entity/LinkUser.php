@@ -14,7 +14,7 @@ class LinkUser extends Link
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'linkUsers', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getRefuser(): ?UserInterface
     {

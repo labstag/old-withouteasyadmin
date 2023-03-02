@@ -21,7 +21,7 @@ class Workflow
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $transition = null;
@@ -33,7 +33,7 @@ class Workflow
         orphanRemoval: true
     )
     ]
-    private $workflowGroupes;
+    private Collection $workflowGroupes;
 
     #[ORM\OneToMany(
         targetEntity: WorkflowUser::class,
@@ -42,7 +42,7 @@ class Workflow
         orphanRemoval: true
     )
     ]
-    private $workflowUsers;
+    private Collection $workflowUsers;
 
     public function __construct()
     {

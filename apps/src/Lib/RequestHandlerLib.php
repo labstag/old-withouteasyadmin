@@ -20,7 +20,7 @@ abstract class RequestHandlerLib
     {
     }
 
-    public function changeWorkflowState($entity, array $states): void
+    public function changeWorkflowState(mixed $entity, array $states): void
     {
         if (!$this->workflowService->has($entity)) {
             return;
@@ -39,7 +39,7 @@ abstract class RequestHandlerLib
         $repository->add($entity);
     }
 
-    public function handle(mixed $oldEntity, mixed $entity)
+    public function handle(mixed $oldEntity, mixed $entity): void
     {
         $repository = $this->repositoryService->get($entity::class);
         $repository->add($entity);
@@ -48,7 +48,7 @@ abstract class RequestHandlerLib
         }
     }
 
-    protected function initWorkflow($entity): void
+    protected function initWorkflow(mixed $entity): void
     {
         if (!$this->workflowService->has($entity)) {
             return;
@@ -71,7 +71,7 @@ abstract class RequestHandlerLib
         }
     }
 
-    protected function setArrayCollectionUser(User $user)
+    protected function setArrayCollectionUser(User $user): void
     {
         $userCollectionEvent = new UserCollectionEvent();
         $oauthConnectUsers = $user->getOauthConnectUsers();

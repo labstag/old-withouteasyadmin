@@ -162,7 +162,7 @@ abstract class FixtureLib extends Fixture
     {
     }
 
-    public function getDependenciesBookmarkPost()
+    public function getDependenciesBookmarkPost(): array
     {
         return [
             DataFixtures::class,
@@ -172,7 +172,7 @@ abstract class FixtureLib extends Fixture
         ];
     }
 
-    protected function addParagraphs($entity, $paragraphs)
+    protected function addParagraphs(mixed $entity, array $paragraphs): void
     {
         foreach ($paragraphs as $paragraph) {
             $this->paragraphService->add($entity, $paragraph);
@@ -190,7 +190,7 @@ abstract class FixtureLib extends Fixture
         return null;
     }
 
-    protected function getStatesData()
+    protected function getStatesData(): array
     {
         return [
             ['submit'],
@@ -216,7 +216,7 @@ abstract class FixtureLib extends Fixture
         ];
     }
 
-    protected function loadForeach($number, $method)
+    protected function loadForeach(int $number, string $method): void
     {
         $faker = $this->setFaker();
         $statesTab = $this->getStatesData();
@@ -227,7 +227,7 @@ abstract class FixtureLib extends Fixture
         }
     }
 
-    protected function loadForeachUser($number, $method)
+    protected function loadForeachUser(int $number, string $method): void
     {
         $faker = $this->setFaker();
         $users = $this->installService->getData('user');
@@ -238,7 +238,7 @@ abstract class FixtureLib extends Fixture
         }
     }
 
-    protected function setFaker()
+    protected function setFaker(): Generator
     {
         $generator = Factory::create('fr_FR');
         $generator->addProvider(new PicsumProvider($generator));
@@ -247,21 +247,21 @@ abstract class FixtureLib extends Fixture
         return $generator;
     }
 
-    protected function setLibelles($faker, $entity): void
+    protected function setLibelles(Generator $generator, mixed $entity): void
     {
         if (1 != random_int(0, 1)) {
             return;
         }
 
-        $nbr = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
+        $nbr = $generator->numberBetween(0, self::NUMBER_LIBELLE - 1);
         for ($i = 0; $i < $nbr; ++$i) {
-            $indexLibelle = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
+            $indexLibelle = $generator->numberBetween(0, self::NUMBER_LIBELLE - 1);
             $libelle = $this->getReference('libelle_'.$indexLibelle);
             $entity->addLibelle($libelle);
         }
     }
 
-    protected function setMeta(Meta $meta)
+    protected function setMeta(Meta $meta): void
     {
         $faker = $this->setFaker();
         $meta->setTitle($faker->unique()->colorName());
@@ -269,7 +269,7 @@ abstract class FixtureLib extends Fixture
         $meta->setKeywords($faker->unique()->words(random_int(1, 5), true));
     }
 
-    protected function upload($entity, Generator $generator): void
+    protected function upload(mixed $entity, Generator $generator): void
     {
         // @var resource $finfo
         $finfo = finfo_open(FILEINFO_MIME_TYPE);

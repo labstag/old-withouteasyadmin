@@ -18,7 +18,7 @@ trait EditoEntity
         cascade: ['persist']
     )
     ]
-    private $edito;
+    private ?Edito $edito = null;
 
     #[ORM\OneToMany(
         targetEntity: EditoHeader::class,
@@ -27,7 +27,7 @@ trait EditoEntity
         orphanRemoval: true
     )
     ]
-    private $editoHeaders;
+    private Collection $editoHeaders;
 
     #[ORM\OneToMany(
         targetEntity: ParagraphEdito::class,
@@ -36,7 +36,7 @@ trait EditoEntity
         orphanRemoval: true
     )
     ]
-    private $editos;
+    private Collection $editos;
 
     #[ORM\OneToMany(
         targetEntity: EditoShow::class,
@@ -45,7 +45,7 @@ trait EditoEntity
         orphanRemoval: true
     )
     ]
-    private $editoShows;
+    private Collection $editoShows;
 
     public function addEdito(ParagraphEdito $paragraphEdito): self
     {

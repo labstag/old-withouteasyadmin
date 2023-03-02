@@ -39,10 +39,10 @@ class Paragraph
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
-    private $images;
+    private Collection $images;
 
     #[ORM\ManyToOne(targetEntity: Layout::class, inversedBy: 'paragraphs', cascade: ['persist'])]
     private ?Layout $layout = null;
@@ -57,16 +57,16 @@ class Paragraph
     private int $position = 0;
 
     #[ORM\OneToMany(targetEntity: TextImage::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
-    private $textImages;
+    private Collection $textImages;
 
     #[ORM\OneToMany(targetEntity: Text::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
-    private $texts;
+    private Collection $texts;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $type = null;
 
     #[ORM\OneToMany(targetEntity: Video::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
-    private $videos;
+    private Collection $videos;
 
     public function __construct()
     {

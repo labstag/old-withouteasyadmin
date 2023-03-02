@@ -26,10 +26,10 @@ class Custom implements Stringable, BlockInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\OneToMany(targetEntity: Layout::class, mappedBy: 'custom', cascade: ['persist'], orphanRemoval: true)]
-    private $layouts;
+    private Collection $layouts;
 
     public function __construct()
     {

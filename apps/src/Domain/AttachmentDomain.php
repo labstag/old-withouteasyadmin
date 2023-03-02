@@ -9,6 +9,7 @@ use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
+use Labstag\Search\AttachmentSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AttachmentDomain extends DomainLib
@@ -16,6 +17,7 @@ class AttachmentDomain extends DomainLib
     public function __construct(
         protected AttachmentRequestHandler $attachmentRequestHandler,
         protected AttachmentRepository $attachmentRepository,
+        protected AttachmentSearch $attachmentSearch,
         TranslatorInterface $translator
     )
     {
@@ -37,6 +39,11 @@ class AttachmentDomain extends DomainLib
         return $this->attachmentRequestHandler;
     }
 
+    public function getSearchData(): AttachmentSearch
+    {
+        return $this->attachmentSearch;
+    }
+
     /**
      * @return mixed[]
      */
@@ -45,6 +52,11 @@ class AttachmentDomain extends DomainLib
         return [
             'admin_attachment_index' => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
         ];
+    }
+
+    public function getType(): string
+    {
+        return '';
     }
 
     public function getUrlAdmin(): array

@@ -291,17 +291,22 @@ class ActionsController extends ApiControllerLib
         $repository->remove($entity);
     }
 
-    private function deleteEntityByRepository($repository): void
+    private function deleteEntityByRepository(ServiceEntityRepositoryLib $serviceEntityRepositoryLib): void
     {
-        $all = $repository->findTrashForAdmin([]);
+        $queryBuilder = $serviceEntityRepositoryLib->findTrashForAdmin([]);
+        $result = $queryBuilder->getQuery()->getResult();
         $files = [];
-        foreach ($all as $entity) {
-            $repository->remove($entity);
+        foreach ($result as $entity) {
+            $serviceEntityRepositoryLib->remove($entity);
             if (!$entity instanceof Attachment) {
                 continue;
             }
 
             $files[] = $entity->getName();
+        }
+
+        if (0 == count($files)) {
+            return;
         }
 
         foreach ($files as $file) {
@@ -355,7 +360,7 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    private function destroyEntity($entity): void
+    private function destroyEntity(mixed $entity): void
     {
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
             return;
@@ -374,14 +379,14 @@ class ActionsController extends ApiControllerLib
         }
     }
 
-    private function getDataRestoreDelete(string $entity, $id)
+    private function getDataRestoreDelete(string $entity, mixed $id): mixed
     {
         $repository = $this->repositoryService->get($entity);
 
         return $repository->find($id);
     }
 
-    private function restoreEntity($entity): void
+    private function restoreEntity(mixed $entity): void
     {
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
             return;
@@ -393,7 +398,7 @@ class ActionsController extends ApiControllerLib
         $repository->add($entity);
     }
 
-    private function tokenVerif(string $action, $entity = null): bool
+    private function tokenVerif(string $action, mixed $entity = null): bool
     {
         $token = $this->requeststack->getCurrentRequest()->get('_token');
 

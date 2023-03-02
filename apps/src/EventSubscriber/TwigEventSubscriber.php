@@ -40,7 +40,7 @@ class TwigEventSubscriber extends EventSubscriberLib
         $this->setConfig($controllerEvent);
     }
 
-    protected function isStateConfig(ControllerEvent $controllerEvent)
+    protected function isStateConfig(ControllerEvent $controllerEvent): bool
     {
         $controller = $controllerEvent->getRequest()->attributes->get('_controller');
         $matches = [];
@@ -65,20 +65,20 @@ class TwigEventSubscriber extends EventSubscriberLib
         $this->twigEnvironment->AddGlobal('config', $config);
     }
 
-    protected function setConfigCanonical()
+    protected function setConfigCanonical(): void
     {
         $globals = $this->twigEnvironment->getGlobals();
-        $canonical = $globals['canonical'] ?? $this->request->getUri();
+        $canonical = $globals['canonical'] ?? $this->requestStack->getCurrentRequest()->getUri();
         $this->twigEnvironment->AddGlobal('canonical', $canonical);
     }
 
-    protected function setConfigFavicon()
+    protected function setConfigFavicon(): void
     {
         $attachment = $this->attachmentRepository->getFavicon();
         $this->twigEnvironment->AddGlobal('favicon', $attachment);
     }
 
-    protected function setConfigMeta($config)
+    protected function setConfigMeta(array $config): void
     {
         $config['meta'] = array_key_exists('meta', $config) ? $config['meta'] : [];
         $config['meta'] = $this->frontService->configMeta($config, $config['meta']);
@@ -135,7 +135,7 @@ class TwigEventSubscriber extends EventSubscriberLib
         $this->twigEnvironment->AddGlobal('oauthActivated', $oauthActivated);
     }
 
-    private function setFormatDatetime($config): void
+    private function setFormatDatetime(array $config): void
     {
         $this->twigEnvironment->AddGlobal('formatdatetime', $config['format_datetime']);
     }

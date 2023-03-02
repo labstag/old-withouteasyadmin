@@ -14,7 +14,7 @@ class PhoneUser extends Phone
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'phoneUsers', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refuser_id')]
     #[Assert\NotBlank]
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getRefuser(): ?UserInterface
     {

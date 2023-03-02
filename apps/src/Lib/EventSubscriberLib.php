@@ -40,10 +40,6 @@ use Twig\Environment;
 
 abstract class EventSubscriberLib implements EventSubscriberInterface
 {
-
-    // @var null|Request
-    protected $request;
-
     public function __construct(
         protected RepositoryService $repositoryService,
         protected ParagraphService $paragraphService,
@@ -81,7 +77,5 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected TranslatorInterface $translator
     )
     {
-        // @var Request $request
-        $this->request = $this->requestStack->getCurrentRequest();
     }
 }

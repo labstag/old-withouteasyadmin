@@ -51,12 +51,12 @@ abstract class ParagraphLib extends AbstractController
         return '';
     }
 
-    public function setData(Paragraph $paragraph)
+    public function setData(Paragraph $paragraph): void
     {
         unset($paragraph);
     }
 
-    public function template($entity)
+    public function template(mixed $entity): array
     {
         return $this->showTemplateFile($this->getCode($entity));
     }

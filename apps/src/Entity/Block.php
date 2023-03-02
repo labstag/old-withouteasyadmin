@@ -27,34 +27,34 @@ class Block
     use SoftDeleteableEntity;
 
     #[ORM\OneToMany(targetEntity: Breadcrumb::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
-    private $breadcrumbs;
+    private Collection $breadcrumbs;
 
     #[ORM\OneToMany(targetEntity: Custom::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
-    private $customs;
+    private Collection $customs;
 
     #[ORM\OneToMany(targetEntity: Flashbag::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
-    private $flashbags;
+    private Collection $flashbags;
 
     #[ORM\OneToMany(targetEntity: Footer::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
-    private $footers;
+    private Collection $footers;
 
     #[ORM\OneToMany(targetEntity: Header::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
-    private $headers;
+    private Collection $headers;
 
     #[ORM\OneToMany(targetEntity: Html::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
-    private $htmls;
+    private Collection $htmls;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\OneToMany(targetEntity: Navbar::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
-    private $menu;
+    private Collection $menu;
 
     #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
-    private $paragraphs;
+    private Collection $paragraphs;
 
     #[ORM\Column(type: 'integer')]
     private int $position = 0;

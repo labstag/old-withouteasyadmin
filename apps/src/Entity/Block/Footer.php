@@ -25,10 +25,10 @@ class Footer implements Stringable, BlockInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\OneToMany(targetEntity: Link::class, mappedBy: 'footer', cascade: ['persist'], orphanRemoval: true)]
-    private $links;
+    private Collection $links;
 
     public function __construct()
     {

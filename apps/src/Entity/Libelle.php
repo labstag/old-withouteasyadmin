@@ -20,19 +20,19 @@ class Libelle implements Stringable
     use SoftDeleteableEntity;
 
     #[ORM\ManyToMany(targetEntity: Bookmark::class, mappedBy: 'libelles', cascade: ['persist'])]
-    private $bookmarks;
+    private Collection $bookmarks;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Post::class, inversedBy: 'libelles', cascade: ['persist'])]
-    private $posts;
+    private Collection $posts;
 
     #[Gedmo\Slug(updatable: false, fields: ['name'])]
     #[ORM\Column(type: 'string', length: 255)]

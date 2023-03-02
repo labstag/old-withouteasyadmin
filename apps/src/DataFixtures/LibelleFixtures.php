@@ -13,9 +13,9 @@ class LibelleFixtures extends DataFixtureLib implements DependentFixtureInterfac
     public function load(ObjectManager $objectManager): void
     {
         unset($objectManager);
-        $faker = $this->setFaker();
+        $generator = $this->setFaker();
         for ($index = 0; $index < self::NUMBER_LIBELLE; ++$index) {
-            $this->addLibelle($faker, $index);
+            $this->addLibelle($generator, $index);
         }
     }
 

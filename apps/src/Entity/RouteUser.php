@@ -17,18 +17,18 @@ class RouteUser
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\ManyToOne(targetEntity: Route::class, inversedBy: 'users', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refroute_id')]
-    private $route;
+    private Route $route;
 
     #[ORM\Column(type: 'boolean')]
-    private $state;
+    private bool $state = false;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'routes', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refuser_id')]
-    private $user;
+    private UserInterface $user;
 
     public function getId(): ?string
     {

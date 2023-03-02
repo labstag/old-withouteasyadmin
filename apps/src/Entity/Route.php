@@ -16,19 +16,19 @@ class Route implements Stringable
 {
 
     #[ORM\OneToMany(targetEntity: RouteGroupe::class, mappedBy: 'route', cascade: ['persist'], orphanRemoval: true)]
-    private $groupes;
+    private Collection $groupes;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
     #[ORM\OneToMany(targetEntity: RouteUser::class, mappedBy: 'route', cascade: ['persist'], orphanRemoval: true)]
-    private $users;
+    private Collection $users;
 
     public function __construct()
     {

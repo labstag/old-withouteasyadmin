@@ -20,26 +20,26 @@ class Category implements Stringable
     use SoftDeleteableEntity;
 
     #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'category', cascade: ['persist'], orphanRemoval: true)]
-    private $bookmarks;
+    private Collection $bookmarks;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'children', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private ?Category $category = null;
 
     #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'category', cascade: ['persist'], orphanRemoval: true)]
-    private $children;
+    private Collection $children;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'category', cascade: ['persist'], orphanRemoval: true)]
-    private $posts;
+    private Collection $posts;
 
     #[Gedmo\Slug(updatable: false, fields: ['name'])]
     #[ORM\Column(type: 'string', length: 255)]

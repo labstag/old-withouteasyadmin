@@ -21,13 +21,13 @@ class Configuration implements Stringable
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    private string $name;
 
     #[ORM\Column(type: 'object', nullable: true)]
-    private $value;
+    private mixed $value;
 
     public function __toString(): string
     {
@@ -56,7 +56,7 @@ class Configuration implements Stringable
         return $this;
     }
 
-    public function setValue($value): self
+    public function setValue(mixed $value): self
     {
         $this->value = $value;
 

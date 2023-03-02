@@ -41,20 +41,20 @@ class Memo implements Stringable, FrontInterface
     private $content;
 
     #[UploadableField(filename: 'fond', path: 'memo/fond', slug: 'title')]
-    private $file;
+    private string $file;
 
     #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'noteInternes', cascade: ['persist'])]
-    private $fond;
+    private ?Attachment $attachment = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'memo', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
-    private $paragraphs;
+    private Collection $paragraphs;
 
     #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
     #[Assert\NotBlank]
@@ -62,7 +62,7 @@ class Memo implements Stringable, FrontInterface
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'noteInternes', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
-    private $user;
+    private ?UserInterface $user = null;
 
     public function __construct()
     {
@@ -108,7 +108,7 @@ class Memo implements Stringable, FrontInterface
 
     public function getFond(): ?Attachment
     {
-        return $this->fond;
+        return $this->attachment;
     }
 
     public function getId(): ?string
@@ -174,7 +174,7 @@ class Memo implements Stringable, FrontInterface
 
     public function setFond(?Attachment $attachment): self
     {
-        $this->fond = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }

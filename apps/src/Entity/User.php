@@ -46,10 +46,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         orphanRemoval: true
     )
     ]
-    private $addressUsers;
+    private Collection $addressUsers;
 
     #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'users', cascade: ['persist'])]
-    private $avatar;
+    private ?Attachment $attachment = null;
 
     #[ORM\OneToMany(
         targetEntity: Bookmark::class,
@@ -58,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         orphanRemoval: true
     )
     ]
-    private $bookmarks;
+    private Collection $bookmarks;
 
     #[ORM\OneToMany(
         targetEntity: Edito::class,
@@ -67,7 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         orphanRemoval: true
     )
     ]
-    private $editos;
+    private Collection $editos;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private $email;
@@ -79,7 +79,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         orphanRemoval: true
     )
     ]
-    private $emailUsers;
+    private Collection $emailUsers;
 
     #[UploadableField(filename: 'avatar', path: 'user/avatar', slug: 'username')]
     private $file;
@@ -91,13 +91,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         orphanRemoval: true
     )
     ]
-    private $histories;
+    private Collection $histories;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\OneToMany(
         targetEntity: LinkUser::class,
@@ -106,7 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         orphanRemoval: true
     )
     ]
-    private $linkUsers;
+    private Collection $linkUsers;
 
     #[ORM\OneToMany(
         targetEntity: Memo::class,
@@ -115,7 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         orphanRemoval: true
     )
     ]
-    private $noteInternes;
+    private Collection $noteInternes;
 
     #[ORM\OneToMany(
         targetEntity: OauthConnectUser::class,
@@ -124,7 +124,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         orphanRemoval: true
     )
     ]
-    private $oauthConnectUsers;
+    private Collection $oauthConnectUsers;
 
     #[ORM\OneToMany(
         targetEntity: PhoneUser::class,
@@ -133,7 +133,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         orphanRemoval: true
     )
     ]
-    private $phoneUsers;
+    private Collection $phoneUsers;
 
     #[ORM\OneToMany(
         targetEntity: Post::class,
@@ -142,7 +142,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         orphanRemoval: true
     )
     ]
-    private $posts;
+    private Collection $posts;
 
     #[ORM\OneToMany(
         targetEntity: RouteUser::class,
@@ -151,7 +151,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         orphanRemoval: true
     )
     ]
-    private $routes;
+    private Collection $routes;
 
     #[ORM\Column(type: 'string', length: 180, unique: true, nullable: false)]
     #[Assert\NotNull]
@@ -164,7 +164,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         orphanRemoval: true
     )
     ]
-    private $workflowUsers;
+    private Collection $workflowUsers;
 
     public function __construct()
     {
@@ -345,7 +345,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function getAvatar(): ?Attachment
     {
-        return $this->avatar;
+        return $this->attachment;
     }
 
     public function getBookmarks(): Collection
@@ -637,7 +637,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function setAvatar(?Attachment $attachment): self
     {
-        $this->avatar = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }

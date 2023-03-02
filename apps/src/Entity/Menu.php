@@ -34,7 +34,7 @@ class Menu implements Stringable
 
     #[ORM\OneToMany(targetEntity: Menu::class, mappedBy: 'menu', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
-    private $children;
+    private Collection $children;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $clef;
@@ -46,13 +46,13 @@ class Menu implements Stringable
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
     #[ORM\OneToMany(targetEntity: Navbar::class, mappedBy: 'menu', cascade: ['persist'], orphanRemoval: true)]
-    private $navbars;
+    private Collection $navbars;
 
     #[ORM\Column(type: 'boolean')]
     private $separateur = false;

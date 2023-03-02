@@ -14,7 +14,7 @@ class EmailUser extends Email
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'emailUsers', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getRefuser(): ?UserInterface
     {
