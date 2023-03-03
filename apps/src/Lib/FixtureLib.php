@@ -223,7 +223,7 @@ abstract class FixtureLib extends Fixture
         for ($index = 0; $index < $number; ++$index) {
             $stateId = array_rand($statesTab);
             $states = $statesTab[$stateId];
-            call_user_func([$this, $method], $faker, $index, $states);
+            call_user_func_array([$this, $method], [$faker, $index, $states]);
         }
     }
 
@@ -234,7 +234,7 @@ abstract class FixtureLib extends Fixture
         for ($index = 0; $index < $number; ++$index) {
             $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
             $user = $this->getReference('user_'.$indexUser);
-            call_user_func([$this, $method], $faker, $user);
+            call_user_func_array([$this, $method], [$faker, $user]);
         }
     }
 

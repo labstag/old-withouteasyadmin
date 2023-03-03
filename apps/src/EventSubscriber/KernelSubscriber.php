@@ -114,10 +114,10 @@ class KernelSubscriber extends EventSubscriberLib
         return ['kernel.response' => 'onKernelResponse'];
     }
 
-    public function onKernelResponse(ResponseEvent $event): void
+    public function onKernelResponse(ResponseEvent $responseEvent): void
     {
-        $response = $event->getResponse();
-        $request = $event->getRequest();
+        $response = $responseEvent->getResponse();
+        $request = $responseEvent->getRequest();
         $controller = $request->attributes->get('_controller');
         preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
         preg_match(self::API_CONTROLLER, (string) $controller, $apis);
@@ -147,6 +147,6 @@ class KernelSubscriber extends EventSubscriberLib
         $tidy->cleanRepair();
 
         $response->setContent($tidy->html()->value);
-        $event->setResponse($response);
+        $responseEvent->setResponse($response);
     }
 }

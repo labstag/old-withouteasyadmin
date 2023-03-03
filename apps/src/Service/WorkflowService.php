@@ -16,6 +16,9 @@ use Symfony\Component\Workflow\WorkflowInterface;
 
 class WorkflowService
 {
+
+    private array $data = [];
+
     public function __construct(
         protected WorkflowInterface $attachmentStateMachine,
         protected WorkflowInterface $chapterStateMachine,
@@ -29,11 +32,7 @@ class WorkflowService
         protected WorkflowInterface $userStateMachine
     )
     {
-    }
-
-    public function get(mixed $entity): ?WorkflowInterface
-    {
-        $data = [
+        $this->data = [
             Attachment::class => $this->attachmentStateMachine,
             Bookmark::class   => $this->bookmarkStateMachine,
             Edito::class      => $this->editoStateMachine,
@@ -45,9 +44,12 @@ class WorkflowService
             Post::class       => $this->postStateMachine,
             User::class       => $this->userStateMachine,
         ];
+    }
 
-        if (isset($data[$entity::class])) {
-            return $data[$entity::class];
+    public function get(mixed $entity): ?WorkflowInterface
+    {
+        if (isset($this->data[$entity::class])) {
+            return $this->data[$entity::class];
         }
 
         return null;
@@ -55,19 +57,6 @@ class WorkflowService
 
     public function has(mixed $entity): bool
     {
-        $class = $entity::class;
-        $tabs = [
-            Attachment::class,
-            Bookmark::class,
-            Edito::class,
-            Email::class,
-            History::class,
-            Memo::class,
-            Phone::class,
-            Post::class,
-            User::class,
-        ];
-
-        return in_array($class, $tabs);
+        return isset($this->data[$entity::class]);
     }
 }
