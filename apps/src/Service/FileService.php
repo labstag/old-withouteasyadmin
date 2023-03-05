@@ -15,6 +15,23 @@ class FileService
     {
     }
 
+    public function moveFile(
+        mixed $file,
+        string $path,
+        string $filename,
+        ?Attachment $attachment,
+        ?Attachment $old
+    ): void
+    {
+        $file->move(
+            $path,
+            $filename
+        );
+        $file = $path.'/'.$filename;
+
+        $this->setAttachment($file, $attachment, $old);
+    }
+
     public function setAttachment(
         string $file,
         ?Attachment $attachment = null,

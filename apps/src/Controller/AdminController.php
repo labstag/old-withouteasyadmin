@@ -176,6 +176,7 @@ class AdminController extends AdminControllerLib
     ): Response
     {
         $all = $trashService->all();
+        dump($all);
         if (0 == (is_countable($all) ? count($all) : 0)) {
             $this->sessionService->flashBagAdd(
                 'danger',
@@ -250,7 +251,7 @@ class AdminController extends AdminControllerLib
             $filename = $file->getClientOriginalName();
             $path = $paths[$key];
             $filename = ('favicon' == $key) ? 'favicon.ico' : $filename;
-            $this->moveFile($file, $path, $filename, $attachment, $old);
+            $this->fileService->moveFile($file, $path, $filename, $attachment, $old);
         }
     }
 }

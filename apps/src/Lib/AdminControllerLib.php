@@ -360,17 +360,6 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function moveFile($file, $path, $filename, $attachment, $old)
-    {
-        $file->move(
-            $path,
-            $filename
-        );
-        $file = $path.'/'.$filename;
-
-        $this->fileService->setAttachment($file, $attachment, $old);
-    }
-
     protected function render(
         string $view,
         array $parameters = [],

@@ -46,26 +46,9 @@ class AttachFormService
                 mkdir($path, 0777, true);
             }
 
-            $this->moveFile($file, $path, $filename, $attachment, $old);
+            $this->fileService->moveFile($file, $path, $filename, $attachment, $old);
             $accessor->setValue($entity, $annotation->getFilename(), $attachment);
         }
-    }
-
-    protected function moveFile(
-        $file,
-        $path,
-        $filename,
-        $attachment,
-        $old
-    ): void
-    {
-        $file->move(
-            $path,
-            $filename
-        );
-        $file = $path.'/'.$filename;
-
-        $this->fileService->setAttachment($file, $attachment, $old);
     }
 
     protected function setAttachment(

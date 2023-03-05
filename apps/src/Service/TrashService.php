@@ -31,6 +31,8 @@ class TrashService
                 continue;
             }
 
+            dump($repository::class);
+
             $entity = $repository->getClassName();
             $trash = $repository->findTrashForAdmin([]);
             $result = $trash->getQuery()->getResult();
@@ -59,7 +61,7 @@ class TrashService
             return $properties;
         }
 
-        $reflection = $this->setReflection($repository);
+        $reflection = new ReflectionClass($repository);
         $properties = $annotationReader->getClassAnnotations($reflection);
 
         return $properties[0];
@@ -68,14 +70,19 @@ class TrashService
     public function isTrashable(string $repository): bool
     {
         $annotationReader = new AnnotationReader();
-        $reflection = $this->setReflection($repository);
-        $trashable = $annotationReader->getClassAnnotation($reflection, Trashable::class);
+        $reflection = new ReflectionClass($repository);
+        $attributes = $reflection->getAttributes();
+        $find = false;
+        foreach ($attributes as $attribute)
+        {
+            if ($attribute->getName() != Trashable::class) {
+                continue;
+            }
 
-        return !is_null($trashable);
-    }
+            $find = true;
+            break;
+        }
 
-    protected function setReflection(string $repository): ReflectionClass
-    {
-        return new ReflectionClass($repository);
+        return $find;
     }
 }
