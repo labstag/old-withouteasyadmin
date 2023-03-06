@@ -2,7 +2,6 @@
 
 namespace Labstag\Service;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use ReflectionClass;
@@ -50,7 +49,6 @@ class TrashService
 
     public function getProperties(string $repository)
     {
-        $annotationReader = new AnnotationReader();
         $properties = [];
         if (!$this->isTrashable($repository)) {
             return $properties;
