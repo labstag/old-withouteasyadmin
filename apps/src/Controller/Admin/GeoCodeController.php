@@ -24,9 +24,7 @@ class GeoCodeController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_geocode_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_geocode_index', methods: ['GET'])]
     public function index(): Response
@@ -37,9 +35,7 @@ class GeoCodeController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_geocode_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_geocode_preview', methods: ['GET'])]
     public function showOrPreview(GeoCode $geoCode): Response

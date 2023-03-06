@@ -33,9 +33,7 @@ class HistoryController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_history_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_history_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -105,11 +103,11 @@ class HistoryController extends AdminControllerLib
             $this->setPositionEntity($request, Chapter::class);
         }
 
-        $this->btnInstance()->addBtnList(
+        $this->adminBtnService->addBtnList(
             'admin_history_index',
             'Liste',
         );
-        $this->btnInstance()->add(
+        $this->adminBtnService->add(
             'btn-admin-save-move',
             'Enregistrer',
             [
@@ -124,9 +122,7 @@ class HistoryController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_history_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_history_preview', methods: ['GET'])]
     public function showOrPreview(History $history): Response

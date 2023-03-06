@@ -24,9 +24,7 @@ class PhoneUserController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_phoneuser_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_phoneuser_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -37,9 +35,7 @@ class PhoneUserController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_phoneuser_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_phoneuser_preview', methods: ['GET'])]
     public function showOrPreview(PhoneUser $phoneUser): Response

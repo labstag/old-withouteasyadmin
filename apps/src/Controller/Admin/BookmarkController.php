@@ -42,7 +42,7 @@ class BookmarkController extends AdminControllerLib
         $url = $domain->getUrlAdmin();
         $this->setBtnList($url);
         $form = $this->createForm(ImportType::class, []);
-        $this->btnInstance()->addBtnSave($form->getName(), 'Import');
+        $this->adminBtnService->addBtnSave($form->getName(), 'Import');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->uploadFile($form, $security, $enqueueMethod);
@@ -54,9 +54,7 @@ class BookmarkController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_bookmark_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_bookmark_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -67,9 +65,7 @@ class BookmarkController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_bookmark_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_bookmark_preview', methods: ['GET'])]
     public function showOrPreview(Bookmark $bookmark): Response

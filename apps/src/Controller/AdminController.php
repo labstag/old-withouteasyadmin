@@ -119,7 +119,7 @@ class AdminController extends AdminControllerLib
         }
 
         $form = $this->createForm(ParamType::class, $config);
-        $this->btnInstance()->addBtnSave($form->getName(), 'Sauvegarder');
+        $this->adminBtnService->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $this->setUpload($request, $images);
@@ -128,7 +128,7 @@ class AdminController extends AdminControllerLib
             $eventDispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
 
-        $this->btnInstance()->add(
+        $this->adminBtnService->add(
             'btn-admin-header-export',
             'Exporter',
             [
@@ -165,9 +165,7 @@ class AdminController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_trash')]
     public function trash(
         CsrfTokenManagerInterface $csrfTokenManager,
@@ -192,7 +190,7 @@ class AdminController extends AdminControllerLib
         if ($this->isRouteEnable('api_action_emptyall')) {
             $value = $csrfTokenManager->getToken('emptyall')->getValue();
             $modal['emptyall'] = true;
-            $this->btnInstance()->add(
+            $this->adminBtnService->add(
                 'btn-admin-header-emptyall',
                 'Tout vider',
                 [
@@ -205,7 +203,7 @@ class AdminController extends AdminControllerLib
         }
 
         $twigEnvironment->addGlobal('modal', $modal);
-        $this->btnInstance()->addViderSelection(
+        $this->adminBtnService->addViderSelection(
             [
                 'redirect' => [
                     'href'   => 'admin_trash',

@@ -170,7 +170,7 @@ class VideoParagraph extends ParagraphLib
     }
 
     private function setDataAnnotation(
-        $annotation,
+        mixed $annotation,
         string $image,
         Video $video,
         ServiceEntityRepositoryLib $serviceEntityRepositoryLib,

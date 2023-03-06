@@ -5,8 +5,10 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Service\AdminBtnService;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\BlockService;
+use Labstag\Service\BreadcrumbService;
 use Labstag\Service\DataService;
 use Labstag\Service\DomainService;
 use Labstag\Service\ErrorService;
@@ -17,7 +19,6 @@ use Labstag\Service\MenuService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\RepositoryService;
 use Labstag\Service\SessionService;
-use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -29,8 +30,6 @@ use Twig\Environment;
 
 abstract class ControllerLib extends AbstractController
 {
-
-    protected BreadcrumbsSingleton $breadcrumbsInstance;
 
     protected Request $request;
 
@@ -55,14 +54,10 @@ abstract class ControllerLib extends AbstractController
         protected PaginatorInterface $paginator,
         protected TranslatorInterface $translator,
         protected BlockService $blockService,
-        protected MenuService $menuService
+        protected MenuService $menuService,
+        protected BreadcrumbService $breadcrumbService,
+        protected AdminBtnService $adminBtnService
     )
     {
-        $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
-    }
-
-    protected function setSingletons(): BreadcrumbsSingleton
-    {
-        return $this->breadcrumbsInstance;
     }
 }

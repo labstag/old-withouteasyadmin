@@ -25,9 +25,7 @@ class RenderController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_render_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_render_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -38,9 +36,7 @@ class RenderController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_render_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_render_preview', methods: ['GET'])]
     public function showOrPreview(Render $render): Response

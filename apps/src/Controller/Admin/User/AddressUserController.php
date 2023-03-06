@@ -24,9 +24,7 @@ class AddressUserController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_addressuser_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_addressuser_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -37,9 +35,7 @@ class AddressUserController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_addressuser_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_addressuser_preview', methods: ['GET'])]
     public function showOrPreview(AddressUser $addressUser): Response

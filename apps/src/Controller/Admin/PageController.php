@@ -28,9 +28,7 @@ class PageController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_page_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_page_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -54,9 +52,7 @@ class PageController extends AdminControllerLib
         return $this->redirectToRoute('admin_page_edit', ['id' => $page->getId()]);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_page_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_page_preview', methods: ['GET'])]
     public function showOrPreview(Page $page): Response

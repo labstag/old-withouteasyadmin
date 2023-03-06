@@ -37,15 +37,13 @@ class BlockController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_block_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_block_index', methods: ['GET'])]
     public function indexOrTrash(): Response
     {
         $region = null;
-        $this->btnInstance()->add(
+        $this->adminBtnService->add(
             'btn-admin-header-new',
             'Nouveau',
             [
@@ -53,7 +51,7 @@ class BlockController extends AdminControllerLib
                 'data-url' => $this->router->generate('admin_block_new'),
             ]
         );
-        $this->btnInstance()->addBtnList(
+        $this->adminBtnService->addBtnList(
             'admin_block_move',
             'Move',
         );
@@ -105,11 +103,11 @@ class BlockController extends AdminControllerLib
             $this->setPositionEntity($request, Block::class);
         }
 
-        $this->btnInstance()->addBtnList(
+        $this->adminBtnService->addBtnList(
             'admin_block_index',
             'Liste',
         );
-        $this->btnInstance()->add(
+        $this->adminBtnService->add(
             'btn-admin-save-move',
             'Enregistrer',
             [

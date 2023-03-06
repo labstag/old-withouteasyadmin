@@ -2,20 +2,13 @@
 
 namespace Labstag\EventSubscriber;
 
-use Doctrine\Common\Util\ClassUtils;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Lib\EventSubscriberLib;
 use ReflectionClass;
-use ReflectionObject;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
 {
-    /**
-     * @var class-string<IgnoreSoftDelete>
-     */
-    final public const ANNOTATION = 'Labstag\Annotation\IgnoreSoftDelete';
-
     /**
      * @return array<string, string>
      */
@@ -71,34 +64,30 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
             return;
         }
 
-        if ($this->readAnnotation($controller, $method, self::ANNOTATION)) {
+        if ($this->readAnnotation($controller, $method)) {
             $this->entityManager->getFilters()->disable('softdeleteable');
         }
     }
 
     protected function readAnnotation(
         mixed $controller,
-        string $method,
-        $annotation
-    ): bool|array
+        string $method
+    ): bool
     {
-        $classUtils = new ClassUtils();
-        $reflectionClass = new ReflectionClass($classUtils->getClass($controller));
-        $classAnnotation = $this->reader->getClassAnnotation($reflectionClass, $annotation);
+        $status = false;
+        $reflectionClass = new ReflectionClass($controller::class);
+        $reflectionMethod = $reflectionClass->getMethod($method);
+        $attributes = $reflectionMethod->getAttributes();
+        foreach ($attributes as $attribute) {
+            if (IgnoreSoftDelete::class != $attribute->getName()) {
+                continue;
+            }
 
-        $reflectionObject = new ReflectionObject($controller);
-        $reflectionMethod = $reflectionObject->getMethod($method);
-        $methodAnnotation = $this->reader->getMethodAnnotation($reflectionMethod, $annotation);
+            $status = true;
 
-        if (!$classAnnotation && !$methodAnnotation) {
-            return false;
+            break;
         }
 
-        return [
-            $classAnnotation,
-            $reflectionClass,
-            $methodAnnotation,
-            $reflectionMethod,
-        ];
+        return $status;
     }
 }

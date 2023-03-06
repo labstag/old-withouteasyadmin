@@ -1,33 +1,24 @@
 <?php
 
-namespace Labstag\Singleton;
+namespace Labstag\Service;
 
-use Labstag\Service\GuardService;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
 
-class AdminBtnSingleton
+class AdminBtnService
 {
 
     protected array $bouton = [];
 
-    protected CsrfTokenManagerInterface $csrfTokenManager;
-
-    protected GuardService $guardService;
-
-    protected bool $init = false;
-
-    protected static $instance;
-
-    protected RouterInterface $router;
-
-    protected TokenStorageInterface $token;
-
-    protected Environment $twigEnvironment;
-
-    protected function __construct()
+    public function __construct(
+        protected Environment $twigEnvironment,
+        protected RouterInterface $router,
+        protected TokenStorageInterface $tokenStorage,
+        protected CsrfTokenManagerInterface $csrfTokenManager,
+        protected GuardService $guardService
+    )
     {
     }
 
@@ -340,36 +331,6 @@ class AdminBtnSingleton
         return $this->bouton;
     }
 
-    public static function getInstance(): ?AdminBtnSingleton
-    {
-        if (is_null(self::$instance)) {
-            self::$instance = new AdminBtnSingleton();
-        }
-
-        return self::$instance;
-    }
-
-    public function isInit(): bool
-    {
-        return $this->init;
-    }
-
-    public function setConf(
-        Environment $twigEnvironment,
-        RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        GuardService $guardService
-    ): void
-    {
-        $this->twigEnvironment = $twigEnvironment;
-        $this->router = $router;
-        $this->token = $tokenStorage;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->guardService = $guardService;
-        $this->init = true;
-    }
-
     protected function addBtnVider(
         string $codemodal,
         array $routes,
@@ -413,7 +374,7 @@ class AdminBtnSingleton
 
     protected function isRouteEnable(string $route): bool
     {
-        $token = $this->token->getToken();
+        $token = $this->tokenStorage->getToken();
 
         return $this->guardService->guardRoute($route, $token);
     }

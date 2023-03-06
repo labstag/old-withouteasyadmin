@@ -24,9 +24,7 @@ class LibelleController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_libelle_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_libelle_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -37,9 +35,7 @@ class LibelleController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_libelle_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_libelle_preview', methods: ['GET'])]
     public function showOrPreview(Libelle $libelle): Response

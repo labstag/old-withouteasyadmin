@@ -31,18 +31,18 @@ class GroupeController extends AdminControllerLib
         WorkflowRepository $workflowRepository
     ): Response
     {
-        $this->btnInstance()->addBtnList(
+        $this->adminBtnService->addBtnList(
             'admin_groupuser_index',
             'Liste',
         );
-        $this->btnInstance()->addBtnShow(
+        $this->adminBtnService->addBtnShow(
             'admin_groupuser_show',
             'Show',
             [
                 'id' => $groupe->getId(),
             ]
         );
-        $this->btnInstance()->addBtnEdit(
+        $this->adminBtnService->addBtnEdit(
             'admin_groupuser_edit',
             'Editer',
             [
@@ -77,9 +77,7 @@ class GroupeController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_groupuser_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_groupuser_index', methods: ['GET'])]
     public function index(): Response
@@ -90,9 +88,7 @@ class GroupeController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_groupuser_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_groupuser_preview', methods: ['GET'])]
     public function showOrPreview(Groupe $groupe): Response

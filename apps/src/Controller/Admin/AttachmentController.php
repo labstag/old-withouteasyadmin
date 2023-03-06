@@ -12,9 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/admin/attachment')]
 class AttachmentController extends AdminControllerLib
 {
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_attachment_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_attachment_index', methods: ['GET'])]
     public function indexOrTrash(): Response

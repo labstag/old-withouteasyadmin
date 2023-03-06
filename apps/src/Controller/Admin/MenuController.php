@@ -96,7 +96,7 @@ class MenuController extends AdminControllerLib
         $modal = $globals['modal'] ?? [];
         $modal['delete'] = true;
         $twigEnvironment->addGlobal('modal', $modal);
-        $this->btnInstance()->addBtnNew('admin_menu_new');
+        $this->adminBtnService->addBtnNew('admin_menu_new');
 
         return $this->render(
             'admin/menu/index.html.twig',
@@ -117,11 +117,11 @@ class MenuController extends AdminControllerLib
             $this->setPositionEntity($request, Menu::class);
         }
 
-        $this->btnInstance()->addBtnList(
+        $this->adminBtnService->addBtnList(
             'admin_menu_index',
             'Liste',
         );
-        $this->btnInstance()->add(
+        $this->adminBtnService->add(
             'btn-admin-save-move',
             'Enregistrer',
             [
@@ -145,9 +145,7 @@ class MenuController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_menu_trash', methods: ['GET'])]
     public function trash(): Response
     {

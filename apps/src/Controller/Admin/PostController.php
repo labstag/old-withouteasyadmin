@@ -30,9 +30,7 @@ class PostController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_post_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_post_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -68,9 +66,7 @@ class PostController extends AdminControllerLib
         return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_post_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_post_preview', methods: ['GET'])]
     public function showOrPreview(Post $post): Response

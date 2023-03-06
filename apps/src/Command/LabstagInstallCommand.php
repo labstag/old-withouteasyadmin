@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class LabstagInstallCommand extends CommandLib
 {
     public function __construct(
-        protected $serverenv,
+        protected mixed $serverenv,
         RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected InstallService $installService

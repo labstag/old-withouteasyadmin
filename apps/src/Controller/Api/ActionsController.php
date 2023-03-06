@@ -49,18 +49,14 @@ class ActionsController extends ApiControllerLib
         return $this->deleteOrRestore($entity, $request, 'deleties');
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/destroies/{entity}', name: 'api_action_destroies', methods: ['DELETE'])]
     public function destroies(string $entity, Request $request): JsonResponse
     {
         return $this->deleteOrRestore($entity, $request, 'destroies');
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/destroy/{entity}/{id}', name: 'api_action_destroy', methods: ['DELETE'])]
     public function destroy(string $entity, string $id): JsonResponse
     {
@@ -90,9 +86,7 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/empties', name: 'api_action_empties', methods: ['DELETE'])]
     public function empties(Request $request): JsonResponse
     {
@@ -127,9 +121,7 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/empty/{entity}', name: 'api_action_empty', methods: ['DELETE'])]
     public function empty(string $entity): JsonResponse
     {
@@ -161,9 +153,7 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/emptyall', name: 'api_action_emptyall', methods: ['DELETE'])]
     public function emptyall(TrashService $trashService): JsonResponse
     {
@@ -187,9 +177,7 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/restore/{entity}/{id}', name: 'api_action_restore', methods: ['POST'])]
     public function restore(string $entity, string $id): JsonResponse
     {
@@ -217,9 +205,7 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/restories/{entity}', name: 'api_action_restories', methods: ['POST'])]
     public function restories(string $entity, Request $request): JsonResponse
     {

@@ -24,9 +24,7 @@ class EmailUserController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_emailuser_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_emailuser_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -37,9 +35,7 @@ class EmailUserController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_emailuser_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_emailuser_preview', methods: ['GET'])]
     public function showOrPreview(EmailUser $emailUser): Response

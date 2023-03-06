@@ -45,7 +45,7 @@ class FormService
         AbstractTypeLib $typeLib,
         array $success,
         string $formName
-    )
+    ): array
     {
         $formClass = $typeLib::class;
         foreach ($this->postform as $row) {

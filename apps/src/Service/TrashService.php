@@ -47,7 +47,7 @@ class TrashService
         return $data;
     }
 
-    public function getProperties(string $repository)
+    public function getProperties(string $repository): array
     {
         $properties = [];
         if (!$this->isTrashable($repository)) {

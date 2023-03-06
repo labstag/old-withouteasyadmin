@@ -24,9 +24,7 @@ class CategoryController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_category_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_category_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -37,9 +35,7 @@ class CategoryController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_category_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_category_preview', methods: ['GET'])]
     public function showOrPreview(Category $category): Response

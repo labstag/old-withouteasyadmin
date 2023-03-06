@@ -24,9 +24,7 @@ class TemplateController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_template_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_template_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -37,9 +35,7 @@ class TemplateController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_template_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_template_preview', methods: ['GET'])]
     public function showOrPreview(Template $template): Response

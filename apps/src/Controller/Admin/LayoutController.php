@@ -33,14 +33,12 @@ class LayoutController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_layout_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_layout_index', methods: ['GET'])]
     public function indexOrTrash(): Response
     {
-        $this->btnInstance()->add(
+        $this->adminBtnService->add(
             'btn-admin-header-new',
             'Nouveau',
             [
@@ -111,9 +109,7 @@ class LayoutController extends AdminControllerLib
         return $this->redirectToRoute('admin_layout_edit', ['id' => $layout->getId()]);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_layout_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_layout_preview', methods: ['GET'])]
     public function showOrPreview(Layout $layout): Response

@@ -54,7 +54,7 @@ class AttachFormService
     protected function setAttachment(
         PropertyAccessor $propertyAccessor,
         mixed $entity,
-        $annotation
+        mixed $annotation
     ): Attachment
     {
         $attachmentField = $propertyAccessor->getValue($entity, $annotation->getFilename());

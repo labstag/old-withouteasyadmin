@@ -29,9 +29,7 @@ class MemoController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_memo_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_memo_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -65,9 +63,7 @@ class MemoController extends AdminControllerLib
         return $this->redirectToRoute('admin_memo_edit', ['id' => $memo->getId()]);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_memo_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_memo_preview', methods: ['GET'])]
     public function showOrPreview(Memo $memo): Response
