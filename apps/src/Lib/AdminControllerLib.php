@@ -4,15 +4,14 @@ namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
-use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
 use Labstag\Entity\User;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Singleton\AdminBtnSingleton;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Matcher\TraceableUrlMatcher;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 abstract class AdminControllerLib extends ControllerLib
@@ -143,12 +142,12 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     protected function addNewBreadcrumb(
-        $data,
+        Route $data,
         array $routeParam,
         string $route
     ): void
     {
-        $compiled = $data->compile();
+        $compiledRoute = $data->compile();
         $breadcrumbTitle = array_merge(
             $this->setHeaderTitle(),
             $this->domainService->getTitles()
@@ -166,7 +165,7 @@ abstract class AdminControllerLib extends ControllerLib
             return;
         }
 
-        $variables = $compiled->getPathVariables();
+        $variables = $compiledRoute->getPathVariables();
         $params = [];
         foreach ($variables as $variable) {
             if (isset($routeParam[$variable])) {
@@ -381,27 +380,6 @@ abstract class AdminControllerLib extends ControllerLib
     protected function searchForm(): array
     {
         return [];
-    }
-
-    protected function setAttachment(
-        $accessor,
-        $entity,
-        $annotation
-    ): Attachment
-    {
-        $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
-        if (is_null($attachmentField)) {
-            return new Attachment();
-        }
-
-        /** @var AttachmentRepository $repository */
-        $repository = $this->repositoryService->get(Attachment::class);
-        $attachment = $repository->findOneBy(['id' => $attachmentField->getId()]);
-        if (!$attachment instanceof Attachment) {
-            $attachment = new Attachment();
-        }
-
-        return $attachment;
     }
 
     protected function setBreadcrumbsPage(): void
@@ -841,9 +819,13 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    private function getBreadcrumb($matcher, $pathinfo, $breadcrumb)
+    private function getBreadcrumb(
+        TraceableUrlMatcher $traceableUrlMatcher,
+        string $pathinfo,
+        array $breadcrumb
+    ): array
     {
-        $traces = $matcher->getTraces($pathinfo);
+        $traces = $traceableUrlMatcher->getTraces($pathinfo);
         foreach ($traces as $trace) {
             $testadmin = 0 != substr_count((string) $trace['name'], 'admin');
             if (TraceableUrlMatcher::ROUTE_MATCHES == $trace['level'] && $testadmin) {
@@ -853,12 +835,12 @@ abstract class AdminControllerLib extends ControllerLib
 
         if (0 != substr_count((string) $pathinfo, '/')) {
             $newpathinfo = substr((string) $pathinfo, 0, strrpos((string) $pathinfo, '/') + 1);
-            if ($newpathinfo == $pathinfo) {
+            if ($newpathinfo === $pathinfo) {
                 $newpathinfo = substr((string) $pathinfo, 0, strrpos((string) $pathinfo, '/'));
             }
 
             $breadcrumb = $this->getBreadcrumb(
-                $matcher,
+                $traceableUrlMatcher,
                 $newpathinfo,
                 $breadcrumb
             );

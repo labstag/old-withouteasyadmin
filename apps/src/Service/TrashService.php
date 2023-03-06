@@ -31,15 +31,10 @@ class TrashService
                 continue;
             }
 
-            dump($repository::class);
-
             $entity = $repository->getClassName();
             $trash = $repository->findTrashForAdmin([]);
             $result = $trash->getQuery()->getResult();
             $test = is_countable($result) ? count($result) : 0;
-            if (0 == $test) {
-                continue;
-            }
 
             $data[] = [
                 'name'       => strtolower(substr((string) $entity, strrpos((string) $entity, '\\') + 1)),
@@ -61,25 +56,33 @@ class TrashService
             return $properties;
         }
 
-        $reflection = new ReflectionClass($repository);
-        $properties = $annotationReader->getClassAnnotations($reflection);
+        $reflectionClass = new ReflectionClass($repository);
+        $attributes = $reflectionClass->getAttributes();
+        foreach ($attributes as $attribute) {
+            if (Trashable::class != $attribute->getName()) {
+                continue;
+            }
 
-        return $properties[0];
+            $properties = $attribute->getArguments();
+
+            break;
+        }
+
+        return $properties;
     }
 
     public function isTrashable(string $repository): bool
     {
-        $annotationReader = new AnnotationReader();
-        $reflection = new ReflectionClass($repository);
-        $attributes = $reflection->getAttributes();
+        $reflectionClass = new ReflectionClass($repository);
+        $attributes = $reflectionClass->getAttributes();
         $find = false;
-        foreach ($attributes as $attribute)
-        {
-            if ($attribute->getName() != Trashable::class) {
+        foreach ($attributes as $attribute) {
+            if (Trashable::class != $attribute->getName()) {
                 continue;
             }
 
             $find = true;
+
             break;
         }
 

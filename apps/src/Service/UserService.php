@@ -11,6 +11,7 @@ use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\OauthConnectUserRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use League\OAuth2\Client\Provider\AbstractProvider;
+use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -33,11 +34,10 @@ class UserService
     public function addOauthToUser(
         string $client,
         User $user,
-        $userOauth
+        ResourceOwnerInterface $resourceOwner
     ): void
     {
-        $data = is_array($userOauth) ? $userOauth : $userOauth->toArray();
-        $identity = $this->oauthService->getIdentity($data, $client);
+        $identity = $this->oauthService->getIdentity($resourceOwner->toArray(), $client);
         $find = $this->findOAuthIdentity(
             $user,
             $identity,
@@ -67,7 +67,7 @@ class UserService
 
         if ($oauthConnect instanceof OauthConnectUser) {
             $old = clone $oauthConnect;
-            $oauthConnect->setData($data);
+            $oauthConnect->setData($resourceOwner->toArray());
             $this->oauthConnectUserRequestHandler->handle($old, $oauthConnect);
             $this->sessionService->flashBagAdd(
                 'success',

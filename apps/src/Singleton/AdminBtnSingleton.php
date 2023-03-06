@@ -404,7 +404,7 @@ class AdminBtnSingleton
         );
     }
 
-    protected function classEntity($entity): string
+    protected function classEntity(mixed $entity): string
     {
         $class = str_replace('Labstag\\Entity\\', '', (string) $entity::class);
 
@@ -441,10 +441,10 @@ class AdminBtnSingleton
         array $route,
         array $routeParam,
         string $text
-    )
+    ): void
     {
         if (!isset($route['list']) || !isset($route[$word])) {
-            return $this;
+            return;
         }
 
         $routes = [
@@ -453,7 +453,7 @@ class AdminBtnSingleton
         ];
 
         if (!$this->isRoutesEnable($routes)) {
-            return $this;
+            return;
         }
 
         $globals = $this->twigEnvironment->getGlobals();

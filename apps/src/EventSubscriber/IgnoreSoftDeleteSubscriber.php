@@ -40,7 +40,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
     }
 
     protected function ignoreSoftDeleteAnnotation(
-        callable $controller,
+        mixed $controller,
         string $method
     ): void
     {
@@ -77,7 +77,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
     }
 
     protected function readAnnotation(
-        callable $controller,
+        mixed $controller,
         string $method,
         $annotation
     ): bool|array
