@@ -229,7 +229,7 @@ class AdminController extends AdminControllerLib
         $files = $all['param'];
         $paths = [
             'image'   => $this->getParameter('file_directory'),
-            'favicon' => $this->getParameter('kernel.project_dir').'/public',
+            'favicon' => ((string) $this->getParameter('kernel.project_dir')).'/public',
         ];
         foreach ($paths as $path) {
             if (is_dir($path)) {

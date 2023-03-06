@@ -3,6 +3,7 @@
 namespace Labstag\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\History;
 use Labstag\Lib\CommandLib;
 use Labstag\Repository\HistoryRepository;
 use Labstag\Service\HistoryService;
@@ -41,14 +42,17 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
         $histories = $this->historyRepository->findAll();
         $symfonyStyle->title('Génération des PDF');
         $symfonyStyle->progressStart(is_countable($histories) ? count($histories) : 0);
+
+        $fileDirectory = (string) $this->parameterBag->get('file_directory');
+        /** @var History $history */
         foreach ($histories as $history) {
             $this->historyService->process(
-                $this->parameterBag->get('file_directory'),
+                $fileDirectory,
                 $history->getId(),
                 true
             );
             $this->historyService->process(
-                $this->parameterBag->get('file_directory'),
+                $fileDirectory,
                 $history->getId(),
                 false
             );

@@ -79,6 +79,7 @@ abstract class ApiControllerLib extends AbstractController
         $entityRepository = $this->repositoryService->get($entity);
         $get = $request->query->all();
         if (array_key_exists('user', $get)) {
+            /** @var User $user */
             $user = $userRepository->find($get['user']);
 
             return $entityRepository->findEnableByGroupe($user->getRefgroupe());

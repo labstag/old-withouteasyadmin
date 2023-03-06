@@ -37,7 +37,7 @@ class LabstagGeocodeInstallCommand extends CommandLib
         $symfonyStyle = new SymfonyStyle($input, $output);
         $symfonyStyle->title('Récupération des code postaux');
 
-        $country = $input->getArgument('country');
+        $country = (string) $input->getArgument('country');
         if (empty($country)) {
             $symfonyStyle->note(
                 sprintf(

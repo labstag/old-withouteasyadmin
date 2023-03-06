@@ -113,7 +113,7 @@ class HistoryController extends FrontControllerLib
         $filename = $historyService->getFilename();
 
         $filename = str_replace(
-            $this->getParameter('kernel.project_dir').'/public/',
+            ((string) $this->getParameter('kernel.project_dir')).'/public/',
             '/',
             $filename
         );

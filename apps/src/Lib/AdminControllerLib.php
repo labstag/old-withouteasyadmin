@@ -814,7 +814,7 @@ abstract class AdminControllerLib extends ControllerLib
         if (0 != substr_count((string) $pathinfo, '/')) {
             $newpathinfo = substr((string) $pathinfo, 0, strrpos((string) $pathinfo, '/') + 1);
             if ($newpathinfo === $pathinfo) {
-                $newpathinfo = substr((string) $pathinfo, 0, strrpos((string) $pathinfo, '/'));
+                $newpathinfo = substr((string) $pathinfo, 0, (int) strrpos((string) $pathinfo, '/'));
             }
 
             $breadcrumb = $this->getBreadcrumb(

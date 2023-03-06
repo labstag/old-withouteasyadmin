@@ -72,7 +72,7 @@ class HistoryController extends AdminControllerLib
     public function pdf(HistoryService $historyService, History $history): RedirectResponse
     {
         $historyService->process(
-            $this->getParameter('file_directory'),
+            (string) $this->getParameter('file_directory'),
             $history->getId(),
             true
         );
@@ -82,7 +82,7 @@ class HistoryController extends AdminControllerLib
         }
 
         $filename = str_replace(
-            $this->getParameter('kernel.project_dir').'/public/',
+            ((string) $this->getParameter('kernel.project_dir')).'/public/',
             '/',
             $filename
         );

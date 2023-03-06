@@ -2,6 +2,7 @@
 
 namespace Labstag\Block;
 
+use Knp\Menu\ItemInterface;
 use Labstag\Entity\Block\Navbar;
 use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Block\NavbarType;
@@ -60,7 +61,7 @@ class NavbarBlock extends BlockLib
     {
         $menu = $navbar->getMenu();
         $item = ($menu instanceof Menu) ? $this->menuService->createMenu($menu) : '';
-        $show = (0 != count($item->getChildren()));
+        $show = ($item instanceof ItemInterface) ? (0 != count($item->getChildren())) : false;
 
         return $this->render(
             $this->getTemplateFile($this->getCode($navbar, $front)),

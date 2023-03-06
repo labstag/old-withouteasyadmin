@@ -412,8 +412,8 @@ class LabstagUserCommand extends CommandLib
     {
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
+        /** @Var User $user */
         foreach ($users as $user) {
-            // @var User $user
             $table[$user->getUsername()] = json_encode(
                 [
                     'username' => $user->getUsername(),

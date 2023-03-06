@@ -7,6 +7,7 @@ use Labstag\Entity\Groupe;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -51,18 +52,22 @@ class SearchController extends ApiControllerLib
         }
 
         $serviceEntityRepositoryLib = $this->repositoryService->get($entity);
-        $data = call_user_func([$serviceEntityRepositoryLib, $method], $get['name']);
-        $result = [
+        if (!$serviceEntityRepositoryLib instanceof ServiceEntityRepositoryLib) {
+            return $this->json($return);
+        }
+
+        $return = [
             'results' => [],
         ];
+        $data = call_user_func([$serviceEntityRepositoryLib, $method], $get['name']);
 
         foreach ($data as $user) {
-            $result['results'][] = [
+            $return['results'][] = [
                 'id'   => $user->getId(),
                 'text' => (string) $user,
             ];
         }
 
-        return $this->json($result);
+        return $this->json($return);
     }
 }
