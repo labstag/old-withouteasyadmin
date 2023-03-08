@@ -37,7 +37,7 @@ class WorkflowGuardSubscriber extends EventSubscriberLib
             return;
         }
 
-        // @var User $user
+        /** @var  User $user */
         $user = $token->getUser();
         if (!$user instanceof User) {
             $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);

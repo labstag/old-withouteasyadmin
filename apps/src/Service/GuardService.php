@@ -67,7 +67,7 @@ class GuardService
         $routeCollection = $this->router->getRouteCollection();
         $all = $routeCollection->all();
         foreach ($all as $name => $route) {
-            // @var Routing $route
+            /** @var  Routing $route */
             $defaults = $route->getDefaults();
             if (!isset($defaults['_controller'])) {
                 continue;
@@ -142,7 +142,7 @@ class GuardService
         $routeCollection = $this->router->getRouteCollection();
         $all = $routeCollection->all();
         foreach ($all as $name => $route) {
-            // @var Routing $route
+            /** @var  Routing $route */
             $defaults = $route->getDefaults();
             if (!isset($defaults['_controller'])) {
                 continue;
@@ -197,7 +197,7 @@ class GuardService
             return $this->searchRouteGroupe($groupe, $route);
         }
 
-        // @var User $user
+        /** @var  User $user */
         $user = $token->getUser();
         $groupe = $user->getRefgroupe();
         if ('superadmin' == $groupe->getCode()) {
@@ -316,7 +316,7 @@ class GuardService
         $data = [];
         $all = $this->all();
         foreach ($all as $name => $route) {
-            // @var Routing $route
+            /** @var  Routing $route */
             $defaults = $route->getDefaults();
             $data[] = [
                 $name,

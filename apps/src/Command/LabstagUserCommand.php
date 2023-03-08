@@ -141,7 +141,7 @@ class LabstagUserCommand extends CommandLib
         $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
         $data = [];
         foreach ($groupes as $groupe) {
-            // @var Groupe $groupe
+            /** @var  Groupe $groupe */
             if ('visiteur' == $groupe->getCode()) {
                 continue;
             }
@@ -155,7 +155,7 @@ class LabstagUserCommand extends CommandLib
         );
         $selection = $questionHelper->ask($input, $output, $question);
         foreach ($groupes as $groupe) {
-            // @var Groupe $groupe
+            /** @var  Groupe $groupe */
             if ($selection != $groupe->getCode()) {
                 continue;
             }
@@ -341,7 +341,7 @@ class LabstagUserCommand extends CommandLib
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
-            // @var User $user
+            /** @var  User $user */
             $table[] = [
                 'username' => $user->getUsername(),
                 'email'    => $user->getEmail(),

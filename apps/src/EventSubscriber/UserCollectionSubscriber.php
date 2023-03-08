@@ -35,9 +35,9 @@ class UserCollectionSubscriber extends EventSubscriberLib
             return;
         }
 
-        // @var AddressUser $old
+        /** @var  AddressUser $old */
         $old = $data['old'];
-        // @var AddressUser $new
+        /** @var  AddressUser $new */
         $new = $data['new'];
         if ($old->getId() == $new->getId()) {
             return;
@@ -52,9 +52,9 @@ class UserCollectionSubscriber extends EventSubscriberLib
             return;
         }
 
-        // @var LinkUser $old
+        /** @var  LinkUser $old */
         $old = $data['old'];
-        // @var LinkUser $new
+        /** @var  LinkUser $new */
         $new = $data['new'];
         if ($old->getId() == $new->getId()) {
             return;
@@ -69,9 +69,9 @@ class UserCollectionSubscriber extends EventSubscriberLib
             return;
         }
 
-        // @var OauthConnectUser $old
+        /** @var  OauthConnectUser $old */
         $old = $data['old'];
-        // @var OauthConnectUser $new
+        /** @var  OauthConnectUser $new */
         $new = $data['new'];
         if ($old->getId() == $new->getId()) {
             return;

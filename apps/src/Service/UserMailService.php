@@ -39,7 +39,7 @@ class UserMailService
 
     public function changeEmailPrincipal(User $user): void
     {
-        // @var Template $template
+        /** @var  Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'change-email-principal']
         );
@@ -55,7 +55,7 @@ class UserMailService
 
     public function changePassword(User $user): void
     {
-        // @var Template $template
+        /** @var  Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'change-password']
         );
@@ -93,7 +93,7 @@ class UserMailService
 
     public function checkNewAddress(User $user, AddressUser $addressUser): void
     {
-        // @var Template $template
+        /** @var  Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-address']
         );
@@ -118,7 +118,7 @@ class UserMailService
 
     public function checkNewLink(User $user, LinkUser $linkUser): void
     {
-        // @var Template $template
+        /** @var  Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-link']
         );
@@ -138,7 +138,7 @@ class UserMailService
 
     public function checkNewMail(User $user, EmailUser $emailUser): void
     {
-        // @var Template $template
+        /** @var  Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-mail']
         );
@@ -168,7 +168,7 @@ class UserMailService
         OauthConnectUser $oauthConnectUser
     ): void
     {
-        // @var Template $template
+        /** @var  Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-oauthconnectuser']
         );
@@ -188,7 +188,7 @@ class UserMailService
 
     public function checkNewPhone(User $user, PhoneUser $phoneUser): void
     {
-        // @var Template $template
+        /** @var  Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-phone']
         );
@@ -215,7 +215,7 @@ class UserMailService
 
     public function lostPassword(User $user): void
     {
-        // @var Template $template
+        /** @var  Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'lost-password']
         );
@@ -241,7 +241,7 @@ class UserMailService
 
     public function newUser(User $user): void
     {
-        // @var Template $template
+        /** @var  Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-user']
         );

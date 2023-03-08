@@ -56,7 +56,7 @@ class OauthAuthenticator extends AbstractAuthenticator
         protected UserRepository $userRepository
     )
     {
-        // @var Request $request
+        /** @var  Request $request */
         $this->request = $this->requestStack->getCurrentRequest();
 
         $attributes = $this->request->attributes;
@@ -65,7 +65,7 @@ class OauthAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        // @var AbstractProvider $provider
+        /** @var  AbstractProvider $provider */
         $provider = $this->oauthService->setProvider($this->oauthCode);
         $attributes = $request->attributes->all();
         $query = $request->query->all();

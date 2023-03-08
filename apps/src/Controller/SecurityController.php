@@ -219,10 +219,10 @@ class SecurityController extends ControllerLib
     #[Route(path: '/oauth/connect/{oauthCode}', name: 'connect_start', priority: 1)]
     public function oauthConnect(Request $request, string $oauthCode, OauthService $oauthService): RedirectResponse
     {
-        // @var AbstractProvider $provider
+        /** @var  AbstractProvider $provider */
         $provider = $oauthService->setProvider($oauthCode);
         $session = $request->getSession();
-        // @var string $referer
+        /** @var  string $referer */
         $query = $request->query->all();
         if (array_key_exists('link', $query)) {
             $session->set('link', 1);
@@ -230,7 +230,7 @@ class SecurityController extends ControllerLib
 
         $referer = $request->headers->get('referer');
         $session->set('referer', $referer);
-        // @var string $url
+        /** @var  string $url */
         $url = $this->generateUrl('front');
         if ('' == $referer) {
             $referer = $url;
@@ -269,13 +269,13 @@ class SecurityController extends ControllerLib
         UserService $userService
     ): RedirectResponse
     {
-        // @var AbstractProvider $provider
+        /** @var  AbstractProvider $provider */
         $provider = $oauthService->setProvider($oauthCode);
         $query = $request->query->all();
         $session = $request->getSession();
         $referer = $session->get('referer');
         $oauth2state = $session->get('oauth2state');
-        // @var string $url
+        /** @var  string $url */
         $url = $this->generateUrl('front');
         if ('' == $referer) {
             $referer = $url;
@@ -304,7 +304,7 @@ class SecurityController extends ControllerLib
 
             $session->remove('oauth2state');
             $resourceOwner = $provider->getResourceOwner($accessToken);
-            // @var User $user
+            /** @var  User $user */
             $user = $usageTrackingTokenStorage->getToken()->getUser();
             if (!$user instanceof User) {
                 $this->sessionService->flashBagAdd(
@@ -348,11 +348,11 @@ class SecurityController extends ControllerLib
         $this->denyAccessUnlessGranted('ROLE_USER');
         /** @var User $user */
         $user = $security->getUser();
-        // @var string $referer
+        /** @var  string $referer */
         $referer = $request->headers->get('referer');
         $session = $request->getSession();
         $session->set('referer', $referer);
-        // @var string $url
+        /** @var  string $url */
         $url = $this->generateUrl('front');
         if ('' == $referer) {
             $referer = $url;

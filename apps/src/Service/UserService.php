@@ -45,7 +45,7 @@ class UserService
             $oauthConnect
         );
         if (false === $find) {
-            // @var null|OauthConnectUser $oauthConnect
+            /** @var  null|OauthConnectUser $oauthConnect */
             $oauthConnect = $this->oauthConnectUserRepository->findOauthNotUser(
                 $user,
                 $identity,
@@ -125,7 +125,7 @@ class UserService
             return;
         }
 
-        // @var User $user
+        /** @var  User $user */
         $user = $this->userRepository->findUserEnable($post['value']);
         if (!$user instanceof User) {
             return;

@@ -19,7 +19,7 @@ class ServiceMethodMessageHandler implements ServiceSubscriberInterface
 
     public function __invoke(ServiceMethodMessage $serviceMethodMessage): void
     {
-        // @var callable $callable
+        /** @var  callable $callable */
         $callable = [
             $this->container->get($serviceMethodMessage->getServiceName()),
             $serviceMethodMessage->getMethod(),

@@ -37,7 +37,7 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
         $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
         $user = $this->getReference('user_'.$indexUser);
         $bookmark->setRefuser($user);
-        // @var string $content
+        /** @var  string $content */
         $content = $generator->paragraphs(random_int(4, 10), true);
         $bookmark->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $indexLibelle = $generator->numberBetween(0, self::NUMBER_CATEGORY - 1);

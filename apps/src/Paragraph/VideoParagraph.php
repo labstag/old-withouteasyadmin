@@ -181,7 +181,7 @@ class VideoParagraph extends ParagraphLib
             $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $content = file_get_contents($image);
-            // @var resource $tmpfile
+            /** @var  resource $tmpfile */
             $tmpfile = tmpfile();
             $data = stream_get_meta_data($tmpfile);
             file_put_contents($data['uri'], $content);
