@@ -30,7 +30,7 @@ class EmailVerifChoiceType extends AbstractType
         $data = $this->emailUserRepository->getEmailsUserVerif($entity, true);
         $choices = [];
         foreach ($data as $email) {
-            /** @var  EmailUser $email */
+            /** @var EmailUser $email */
             $address = $email->getAddress();
             $choices[$address] = new ChoiceView('', $address, $address);
         }

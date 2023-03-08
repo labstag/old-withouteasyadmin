@@ -271,7 +271,7 @@ abstract class FixtureLib extends Fixture
 
     protected function upload(mixed $entity, Generator $generator): void
     {
-        /** @var  resource $finfo */
+        /** @var resource $finfo */
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
         $asciiSlugger = new AsciiSlugger();
@@ -290,7 +290,7 @@ abstract class FixtureLib extends Fixture
                 );
                 if (!empty($image)) {
                     $content = file_get_contents($image);
-                    /** @var  resource $tmpfile */
+                    /** @var resource $tmpfile */
                     $tmpfile = tmpfile();
                     $data = stream_get_meta_data($tmpfile);
                     file_put_contents($data['uri'], $content);

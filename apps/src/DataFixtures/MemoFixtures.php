@@ -46,12 +46,12 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
         $dateEnd->modify('+'.$generator->numberBetween(2, 24).' hours');
 
         $memo->setDateEnd($dateEnd);
-        /** @var  string $content */
+        /** @var string $content */
         $content = $generator->paragraphs(4, true);
         $memo->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $this->addReference('memo_'.$index, $memo);
         $tabIndex = array_rand($users);
-        /** @var  User $user */
+        /** @var User $user */
         $user = $users[$tabIndex];
         $memo->setRefuser($user);
         $this->upload($memo, $generator);

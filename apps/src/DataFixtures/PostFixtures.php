@@ -37,7 +37,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $this->setMeta($meta);
         $oldPost = clone $post;
         $post->setTitle($generator->unique()->colorName());
-        /** @var  string $content */
+        /** @var string $content */
         $content = $generator->paragraphs(random_int(4, 10), true);
         $post->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $users = $this->installService->getData('user');

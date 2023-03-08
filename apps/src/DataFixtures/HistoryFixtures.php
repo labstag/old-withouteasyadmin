@@ -41,7 +41,7 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         $this->setMeta($meta);
         $oldHistory = clone $history;
         $history->setName($generator->unique()->colorName());
-        /** @var  string $content */
+        /** @var string $content */
         $content = $generator->paragraphs(random_int(2, 4), true);
         $history->setSummary(str_replace("\n\n", "<br />\n", (string) $content));
         $users = $this->installService->getData('user');
