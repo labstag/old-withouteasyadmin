@@ -43,14 +43,14 @@ class LabstagWorkflowsShowCommand extends CommandLib
         $symfonyStyle = new SymfonyStyle($input, $output);
         $symfonyStyle->title('Ajout des workflows dans la base de données');
 
-        $data = [];
+        $data     = [];
         $entities = [];
         foreach ($this->rewindableGenerator as $entity) {
             if ($this->workflowService->has($entity)) {
-                $workflow = $this->workflowService->get($entity);
-                $definition = $workflow->getDefinition();
-                $name = $workflow->getName();
-                $entities[] = $name;
+                $workflow    = $this->workflowService->get($entity);
+                $definition  = $workflow->getDefinition();
+                $name        = $workflow->getName();
+                $entities[]  = $name;
                 $transitions = $definition->getTransitions();
                 foreach ($transitions as $transition) {
                     $data[$name][] = $transition->getName();

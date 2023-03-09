@@ -68,13 +68,13 @@ class Attachment implements EntityTrashInterface
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
-        $this->posts = new ArrayCollection();
-        $this->editos = new ArrayCollection();
-        $this->noteInternes = new ArrayCollection();
-        $this->bookmarks = new ArrayCollection();
-        $this->paragraphVideos = new ArrayCollection();
-        $this->paragraphImages = new ArrayCollection();
+        $this->users               = new ArrayCollection();
+        $this->posts               = new ArrayCollection();
+        $this->editos              = new ArrayCollection();
+        $this->noteInternes        = new ArrayCollection();
+        $this->bookmarks           = new ArrayCollection();
+        $this->paragraphVideos     = new ArrayCollection();
+        $this->paragraphImages     = new ArrayCollection();
         $this->paragraphTextImages = new ArrayCollection();
     }
 

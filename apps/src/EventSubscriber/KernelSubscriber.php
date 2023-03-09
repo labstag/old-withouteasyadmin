@@ -116,8 +116,8 @@ class KernelSubscriber extends EventSubscriberLib
 
     public function onKernelResponse(ResponseEvent $responseEvent): void
     {
-        $response = $responseEvent->getResponse();
-        $request = $responseEvent->getRequest();
+        $response   = $responseEvent->getResponse();
+        $request    = $responseEvent->getRequest();
         $controller = $request->attributes->get('_controller');
         preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
         preg_match(self::API_CONTROLLER, (string) $controller, $apis);

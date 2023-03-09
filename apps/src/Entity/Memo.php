@@ -68,8 +68,8 @@ class Memo implements Stringable, FrontInterface, EntityTrashInterface
 
     public function __construct()
     {
-        $this->dateStart = new DateTime();
-        $this->dateEnd = new DateTime();
+        $this->dateStart  = new DateTime();
+        $this->dateEnd    = new DateTime();
         $this->paragraphs = new ArrayCollection();
     }
 

@@ -19,13 +19,13 @@ class SessionService
     ): void
     {
         $requestStack = $this->requestStack;
-        $request = $requestStack->getCurrentRequest();
+        $request      = $requestStack->getCurrentRequest();
         if (is_null($request)) {
             return;
         }
 
         /** @var FlashBagAwareSessionInterface $session */
-        $session = $requestStack->getSession();
+        $session  = $requestStack->getSession();
         $flashbag = $session->getFlashBag();
         $flashbag->add($type, $message);
     }

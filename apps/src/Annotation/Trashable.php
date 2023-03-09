@@ -10,6 +10,7 @@ use InvalidArgumentException;
 
 /**
  * @Annotation
+ *
  * @NamedArgumentConstructor
  */
 #[Attribute(Attribute::TARGET_CLASS)]

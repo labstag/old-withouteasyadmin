@@ -41,7 +41,7 @@ class Libelle implements Stringable, EntityTrashInterface
 
     public function __construct()
     {
-        $this->posts = new ArrayCollection();
+        $this->posts     = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
     }
 

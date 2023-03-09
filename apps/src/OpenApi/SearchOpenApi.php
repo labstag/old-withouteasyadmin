@@ -18,7 +18,7 @@ class SearchOpenApi implements OpenApiFactoryInterface
 
     public function __invoke(array $context = []): OpenApi
     {
-        $openApi = $this->openApiFactory->__invoke($context);
+        $openApi   = $this->openApiFactory->__invoke($context);
         $functions = [
             'setUsers',
             'setLibelles',

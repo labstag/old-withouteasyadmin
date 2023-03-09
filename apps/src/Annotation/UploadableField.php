@@ -10,6 +10,7 @@ use InvalidArgumentException;
 
 /**
  * @Annotation
+ *
  * @NamedArgumentConstructor()
  */
 #[Attribute(Attribute::TARGET_PROPERTY)]
@@ -41,8 +42,8 @@ final class UploadableField implements MappingAttribute
         }
 
         $this->filename = $filename;
-        $this->path = $path;
-        $this->slug = $slug;
+        $this->path     = $path;
+        $this->slug     = $slug;
     }
 
     public function getFilename(): string

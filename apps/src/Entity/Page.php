@@ -63,9 +63,9 @@ class Page implements Stringable, FrontInterface, EntityTrashInterface
 
     public function __construct()
     {
-        $this->children = new ArrayCollection();
+        $this->children   = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
-        $this->metas = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
     }
 
     public function __toString(): string

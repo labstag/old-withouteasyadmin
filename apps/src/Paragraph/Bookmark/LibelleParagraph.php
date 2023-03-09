@@ -47,12 +47,12 @@ class LibelleParagraph extends ParagraphLib
 
     public function show(Libelle $libelle): Response
     {
-        $all = $this->request->attributes->all();
+        $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        $slug = $routeParam['slug'] ?? null;
+        $slug       = $routeParam['slug'] ?? null;
         /** @var BookmarkRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(Bookmark::class);
-        $pagination = $this->paginator->paginate(
+        $pagination                 = $this->paginator->paginate(
             $serviceEntityRepositoryLib->findPublierLibelle($slug),
             $this->request->query->getInt('page', 1),
             10

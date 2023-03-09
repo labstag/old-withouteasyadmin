@@ -100,11 +100,11 @@ class LabstagExtension extends AbstractExtension
             return $file;
         }
 
-        $vars = $class->vars;
-        $type = strtolower($this->setTypeformClass($vars));
+        $vars   = $class->vars;
+        $type   = strtolower($this->setTypeformClass($vars));
         $folder = __DIR__.'/../../templates/';
-        $files = $this->setFilesformClass($type, $class);
-        $view = end($files);
+        $files  = $this->setFilesformClass($type, $class);
+        $view   = end($files);
 
         foreach ($files as $file) {
             if (is_file($folder.$file)) {
@@ -144,7 +144,7 @@ class LabstagExtension extends AbstractExtension
             return null;
         }
 
-        $id = $data->getId();
+        $id         = $data->getId();
         $attachment = $this->attachmentRepository->findOneBy(['id' => $id]);
         if (is_null($attachment)) {
             return null;
@@ -179,7 +179,7 @@ class LabstagExtension extends AbstractExtension
     public function getFilters(): array
     {
         $dataFilters = $this->getFiltersFunctions();
-        $filters = [];
+        $filters     = [];
         foreach ($dataFilters as $key => $function) {
             /** @var callable $callable */
             $callable = [
@@ -198,7 +198,7 @@ class LabstagExtension extends AbstractExtension
     public function getFunctions(): array
     {
         $dataFunctions = $this->getFiltersFunctions();
-        $functions = [];
+        $functions     = [];
         foreach ($dataFunctions as $key => $function) {
             /** @var callable $callable */
             $callable = [
@@ -246,7 +246,7 @@ class LabstagExtension extends AbstractExtension
     public function getTextColorSection(ParagraphInterface $entityParagraphLib): string
     {
         $paragraph = $entityParagraphLib->getParagraph();
-        $code = $paragraph->getColor();
+        $code      = $paragraph->getColor();
 
         return empty($code) ? '' : 'm--theme-'.$code;
     }
@@ -367,13 +367,13 @@ class LabstagExtension extends AbstractExtension
     ): array
     {
         $htmltwig = '.html.twig';
-        $files = [
+        $files    = [
             'forms/'.$type.$htmltwig,
         ];
 
         if (isset($class->vars)) {
             /** @var array $vars */
-            $vars = $class->vars;
+            $vars      = $class->vars;
             $classtype = (isset($vars['value']) && is_object($vars['value'])) ? $vars['value']::class : null;
             if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
                 $files[] = 'forms/paragraph/'.$type.$htmltwig;

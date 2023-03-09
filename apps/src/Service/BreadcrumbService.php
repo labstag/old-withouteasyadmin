@@ -18,7 +18,7 @@ class BreadcrumbService
     public function addPosition(array $breadcrumbs, int $position): void
     {
         $newbreadcrumbs = [];
-        $integer = 0;
+        $integer        = 0;
         foreach ($this->data as $key => $row) {
             $newbreadcrumbs[$key] = $row;
             if ($position === $integer) {

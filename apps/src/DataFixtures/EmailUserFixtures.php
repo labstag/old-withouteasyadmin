@@ -26,7 +26,7 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
     {
         unset($objectManager);
         $generator = $this->setFaker();
-        $users = $this->installService->getData('user');
+        $users     = $this->installService->getData('user');
         for ($index = 0; $index < self::NUMBER_EMAIL; ++$index) {
             $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
             /** @var User $user */
@@ -41,7 +41,7 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
     ): void
     {
         $emailUser = new EmailUser();
-        $old = clone $emailUser;
+        $old       = clone $emailUser;
         $emailUser->setRefuser($user);
         $emailUser->setAddress($generator->safeEmail);
 

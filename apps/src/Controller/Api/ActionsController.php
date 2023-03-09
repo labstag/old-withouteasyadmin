@@ -104,7 +104,7 @@ class ActionsController extends ApiControllerLib
         }
 
         $entities = explode(',', (string) $request->request->get('entities'));
-        $error = [];
+        $error    = [];
         foreach ($entities as $entity) {
             $repository = $this->repositoryService->get($entity);
 
@@ -160,7 +160,7 @@ class ActionsController extends ApiControllerLib
     public function emptyall(TrashService $trashService): JsonResponse
     {
         $tokenValid = $this->tokenVerif('emptyall');
-        $data = [
+        $data       = [
             'action' => false,
             'error'  => '',
         ];
@@ -170,7 +170,7 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $error = $this->deleteAll($trashService);
+        $error         = $this->deleteAll($trashService);
         $data['error'] = $error;
         if (0 === (is_countable($error) ? count($error) : 0)) {
             $data['action'] = true;
@@ -222,7 +222,7 @@ class ActionsController extends ApiControllerLib
             'error'  => '',
         ];
         $repository = $this->repositoryService->get($entity);
-        $entity = $repository->find($id);
+        $entity     = $repository->find($id);
         $this->denyAccessUnlessGranted('workflow-'.$state, $entity);
         if (is_null($entity)) {
             $data['error'] = 'entité inconnu';
@@ -252,10 +252,10 @@ class ActionsController extends ApiControllerLib
      */
     private function deleteAll(TrashService $trashService): array
     {
-        $all = $trashService->all();
+        $all   = $trashService->all();
         $error = [];
         foreach ($all as $data) {
-            $entity = $data['name'];
+            $entity     = $data['name'];
             $repository = $this->repositoryService->get($entity);
 
             try {
@@ -282,8 +282,8 @@ class ActionsController extends ApiControllerLib
     private function deleteEntityByRepository(ServiceEntityRepositoryLib $serviceEntityRepositoryLib): void
     {
         $queryBuilder = $serviceEntityRepositoryLib->findTrashForAdmin([]);
-        $result = $queryBuilder->getQuery()->getResult();
-        $files = [];
+        $result       = $queryBuilder->getQuery()->getResult();
+        $files        = [];
         foreach ($result as $entity) {
             $serviceEntityRepositoryLib->remove($entity);
             if (!$entity instanceof Attachment) {
@@ -320,13 +320,13 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $entities = explode(',', (string) $request->request->get('entities'));
-        $error = [];
+        $entities   = explode(',', (string) $request->request->get('entities'));
+        $error      = [];
         $repository = $this->repositoryService->get($entity);
-        $method = match ($token) {
-            'deleties' => 'deleteEntity',
+        $method     = match ($token) {
+            'deleties'  => 'deleteEntity',
             'destroies' => 'destroyEntity',
-            default => 'restoreEntity'
+            default     => 'restoreEntity'
         };
 
         foreach ($entities as $id) {

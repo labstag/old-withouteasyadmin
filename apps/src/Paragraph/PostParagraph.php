@@ -49,7 +49,7 @@ class PostParagraph extends ParagraphLib
     {
         /** @var PostRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(EntityPost::class);
-        $posts = $serviceEntityRepositoryLib->getLimitOffsetResult($serviceEntityRepositoryLib->findPublier(), 5, 0);
+        $posts                      = $serviceEntityRepositoryLib->getLimitOffsetResult($serviceEntityRepositoryLib->findPublier(), 5, 0);
 
         return $this->render(
             $this->getTemplateFile($this->getCode($post)),

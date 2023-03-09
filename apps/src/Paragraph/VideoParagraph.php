@@ -68,9 +68,9 @@ class VideoParagraph extends ParagraphLib
         $videoRepository = $this->entityManager->getRepository(Video::class);
         /** @var AttachmentRepository $attachmentRepository */
         $attachmentRepository = $this->entityManager->getRepository(Attachment::class);
-        $videos = $paragraph->getVideos();
-        $video = $videos[0];
-        $url = $video->getUrl();
+        $videos               = $paragraph->getVideos();
+        $video                = $videos[0];
+        $url                  = $video->getUrl();
         if ('' == $url) {
             return;
         }
@@ -78,10 +78,10 @@ class VideoParagraph extends ParagraphLib
         $slug = null;
 
         try {
-            $embed = new Embed();
-            $info = $embed->get($url);
-            $image = $info->image->__toString();
-            $title = $info->title;
+            $embed        = new Embed();
+            $info         = $embed->get($url);
+            $image        = $info->image->__toString();
+            $title        = $info->title;
             $asciiSlugger = new AsciiSlugger();
             $video->setTitle($title);
             $slug = (string) $asciiSlugger->slug($video->getTitle());
@@ -118,9 +118,9 @@ class VideoParagraph extends ParagraphLib
             return null;
         }
 
-        $package = new Package(new EmptyVersionStrategy());
+        $package    = new Package(new EmptyVersionStrategy());
         $attachment = $video->getImage();
-        $image = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
+        $image      = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
 
         if (is_null($image)) {
             $image = $extractor->image->__toString();
@@ -179,18 +179,18 @@ class VideoParagraph extends ParagraphLib
     ): void
     {
         /** @var finfo $finfo */
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $finfo         = finfo_open(FILEINFO_MIME_TYPE);
         $fileDirectory = $this->getParameter('file_directory');
         if (!is_string($fileDirectory)) {
             return;
         }
 
         try {
-            $path = $fileDirectory.'/'.$annotation->getPath();
+            $path    = $fileDirectory.'/'.$annotation->getPath();
             $content = file_get_contents($image);
             /** @var resource $tmpfile */
             $tmpfile = tmpfile();
-            $data = stream_get_meta_data($tmpfile);
+            $data    = stream_get_meta_data($tmpfile);
             file_put_contents($data['uri'], $content);
             $file = new UploadedFile(
                 $data['uri'],
@@ -208,7 +208,7 @@ class VideoParagraph extends ParagraphLib
                 $path,
                 $clientOriginalName
             );
-            $file = $path.'/'.$clientOriginalName;
+            $file       = $path.'/'.$clientOriginalName;
             $attachment = $this->fileService->setAttachment($file);
             $serviceEntityRepositoryLib->add($attachment);
             $video->setImage($attachment);

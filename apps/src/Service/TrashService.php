@@ -32,9 +32,9 @@ class TrashService
             }
 
             $entity = $repository->getClassName();
-            $trash = $repository->findTrashForAdmin([]);
+            $trash  = $repository->findTrashForAdmin([]);
             $result = $trash->getQuery()->getResult();
-            $test = is_countable($result) ? count($result) : 0;
+            $test   = is_countable($result) ? count($result) : 0;
 
             $data[] = [
                 'name'       => strtolower(substr((string) $entity, strrpos((string) $entity, '\\') + 1)),
@@ -56,7 +56,7 @@ class TrashService
         }
 
         $reflectionClass = new ReflectionClass($serviceEntityRepositoryLib);
-        $attributes = $reflectionClass->getAttributes();
+        $attributes      = $reflectionClass->getAttributes();
         foreach ($attributes as $attribute) {
             if (Trashable::class != $attribute->getName()) {
                 continue;
@@ -73,8 +73,8 @@ class TrashService
     private function isTrashable(ServiceEntityRepositoryLib $serviceEntityRepositoryLib): bool
     {
         $reflectionClass = new ReflectionClass($serviceEntityRepositoryLib);
-        $attributes = $reflectionClass->getAttributes();
-        $find = false;
+        $attributes      = $reflectionClass->getAttributes();
+        $find            = false;
         foreach ($attributes as $attribute) {
             if (Trashable::class != $attribute->getName()) {
                 continue;

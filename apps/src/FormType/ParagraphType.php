@@ -26,9 +26,9 @@ class ParagraphType extends AbstractType
         array $options
     ): void
     {
-        $entity = $form->getParent()->getData();
+        $entity     = $form->getParent()->getData();
         $paragraphs = $this->paragraphService->getAll($entity);
-        $choices = [];
+        $choices    = [];
         foreach ($paragraphs as $name => $type) {
             $choices[$type] = new ChoiceView('', (string) $type, (string) $name);
         }
@@ -39,9 +39,9 @@ class ParagraphType extends AbstractType
         }
 
         $formView->vars['paragraphs'] = $entity->getParagraphs();
-        $formView->vars['urlEdit'] = $options['edit'];
-        $formView->vars['urlDelete'] = $options['delete'];
-        $formView->vars['choices'] = $choices;
+        $formView->vars['urlEdit']    = $options['edit'];
+        $formView->vars['urlDelete']  = $options['delete'];
+        $formView->vars['choices']    = $choices;
         $formView->vars['attr']['is'] = 'select-paragraph';
         unset($form);
     }

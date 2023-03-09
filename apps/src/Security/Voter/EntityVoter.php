@@ -94,7 +94,7 @@ class EntityVoter extends Voter
         $state = true;
         if ($subject instanceof History) {
             $state = match ($attribute) {
-                'move' => $this->canMoveHistory($subject, $token),
+                'move'  => $this->canMoveHistory($subject, $token),
                 default => true,
             };
         }

@@ -69,7 +69,7 @@ abstract class BlockLib extends AbstractController
             return $this->template[$type];
         }
 
-        $folder = __DIR__.'/../../templates/';
+        $folder   = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';
 
         $files = [
@@ -106,7 +106,7 @@ abstract class BlockLib extends AbstractController
 
     protected function showTemplateFile(string $type): array
     {
-        $data = $this->getTemplateData($type);
+        $data    = $this->getTemplateData($type);
         $globals = $this->twigEnvironment->getGlobals();
         if ('dev' == $globals['app']->getDebug()) {
             return $data;

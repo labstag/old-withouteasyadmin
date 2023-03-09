@@ -15,9 +15,9 @@ class BlockType extends BlockAbstractTypeLib
     public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         $formType = $this->blockService->getTypeForm($formBuilder->getData());
-        $label = $this->blockService->getName($formBuilder->getData());
-        $field = $this->blockService->getEntityField($formBuilder->getData());
-        $show = $this->blockService->isShow($formBuilder->getData());
+        $label    = $this->blockService->getName($formBuilder->getData());
+        $field    = $this->blockService->getEntityField($formBuilder->getData());
+        $show     = $this->blockService->isShow($formBuilder->getData());
         $formBuilder->add(
             'title',
             TextType::class,

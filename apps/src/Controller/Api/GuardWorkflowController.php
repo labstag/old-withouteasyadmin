@@ -53,7 +53,7 @@ class GuardWorkflowController extends ApiControllerLib
             'add'    => 0,
             'error'  => '',
         ];
-        $state = $request->request->all('state');
+        $state   = $request->request->all('state');
         $groupes = $groupeRepository->findAll();
         foreach ($groupes as $groupe) {
             /** @var Groupe $groupe */
@@ -76,11 +76,11 @@ class GuardWorkflowController extends ApiControllerLib
         $data = [
             'group' => [],
         ];
-        $get = $request->query->all();
-        $data = $this->getGuardRouteOrWorkflow($data, $get, WorkflowUser::class);
+        $get     = $request->query->all();
+        $data    = $this->getGuardRouteOrWorkflow($data, $get, WorkflowUser::class);
         $results = $this->getResultWorkflow($request, WorkflowGroupe::class);
         foreach ($results as $result) {
-            /** @var  WorkflowGroupe $row */
+            // @var  WorkflowGroupe $row
             $data['group'][] = [
                 'groupe'     => $result->getRefgroupe()->getCode(),
                 'entity'     => $result->getRefworkflow()->getEntity(),
@@ -106,7 +106,7 @@ class GuardWorkflowController extends ApiControllerLib
             'error'  => '',
         ];
         $state = $request->request->all('state');
-        $data = $this->setWorkflowGroupe(
+        $data  = $this->setWorkflowGroupe(
             $workflowGroupeRepository,
             $data,
             $groupe,
@@ -133,7 +133,7 @@ class GuardWorkflowController extends ApiControllerLib
             'error'  => '',
         ];
         $state = $request->request->all('state');
-        $data = $this->setWorkflowUser(
+        $data  = $this->setWorkflowUser(
             $workflowUserRepository,
             $data,
             $user,
@@ -176,7 +176,7 @@ class GuardWorkflowController extends ApiControllerLib
             'add'    => 0,
             'error'  => '',
         ];
-        $state = $request->request->all('state');
+        $state     = $request->request->all('state');
         $workflows = $workflowRepository->findAll();
         foreach ($workflows as $workflow) {
             /** @var Workflow $workflow */
@@ -223,7 +223,7 @@ class GuardWorkflowController extends ApiControllerLib
 
         if (!$workflowGroupe instanceof WorkflowGroupe) {
             $workflowGroupe = new WorkflowGroupe();
-            $data['add'] = 1;
+            $data['add']    = 1;
             $workflowGroupe->setRefgroupe($groupe);
             $workflowGroupe->setRefworkflow($workflow);
             $old = clone $workflowGroupe;
@@ -258,7 +258,7 @@ class GuardWorkflowController extends ApiControllerLib
         }
 
         if (!$workflowUser instanceof WorkflowUser) {
-            $data['add'] = 1;
+            $data['add']  = 1;
             $workflowUser = new WorkflowUser();
             $workflowUser->setRefuser($user);
             $workflowUser->setRefworkflow($workflow);

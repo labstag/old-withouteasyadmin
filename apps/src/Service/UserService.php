@@ -38,7 +38,7 @@ class UserService
     ): void
     {
         $identity = $this->oauthService->getIdentity($resourceOwner->toArray(), $client);
-        $find = $this->findOAuthIdentity(
+        $find     = $this->findOAuthIdentity(
             $user,
             $identity,
             $client,
@@ -89,7 +89,7 @@ class UserService
     ): User
     {
         $user = new User();
-        $old = clone $user;
+        $old  = clone $user;
 
         $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
         $user->setUsername($dataUser['username']);
@@ -141,13 +141,13 @@ class UserService
         ?OauthConnectUser &$oauthConnectUser = null
     ): bool
     {
-        $return = false;
+        $return            = false;
         $oauthConnectUsers = $user->getOauthConnectUsers();
         foreach ($oauthConnectUsers as $oauthConnect) {
             $test1 = ($oauthConnect->getName() == $client);
             $test2 = ($oauthConnect->getIdentity() == $identity);
             if ($test1 && $test2) {
-                $return = true;
+                $return           = true;
                 $oauthConnectUser = $oauthConnect;
 
                 break;

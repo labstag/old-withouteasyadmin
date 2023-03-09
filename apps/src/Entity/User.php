@@ -170,18 +170,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function __construct()
     {
-        $this->editos = new ArrayCollection();
-        $this->noteInternes = new ArrayCollection();
-        $this->linkUsers = new ArrayCollection();
-        $this->emailUsers = new ArrayCollection();
-        $this->phoneUsers = new ArrayCollection();
-        $this->addressUsers = new ArrayCollection();
+        $this->editos            = new ArrayCollection();
+        $this->noteInternes      = new ArrayCollection();
+        $this->linkUsers         = new ArrayCollection();
+        $this->emailUsers        = new ArrayCollection();
+        $this->phoneUsers        = new ArrayCollection();
+        $this->addressUsers      = new ArrayCollection();
         $this->oauthConnectUsers = new ArrayCollection();
-        $this->routes = new ArrayCollection();
-        $this->workflowUsers = new ArrayCollection();
-        $this->posts = new ArrayCollection();
-        $this->bookmarks = new ArrayCollection();
-        $this->histories = new ArrayCollection();
+        $this->routes            = new ArrayCollection();
+        $this->workflowUsers     = new ArrayCollection();
+        $this->posts             = new ArrayCollection();
+        $this->bookmarks         = new ArrayCollection();
+        $this->histories         = new ArrayCollection();
     }
 
     public function __toString(): string

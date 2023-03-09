@@ -141,7 +141,7 @@ class OauthService
 
     protected function generateStandardProvider(string $clientName, array $params): ?AbstractProvider
     {
-        $provider = null;
+        $provider  = null;
         $functions = [
             'generateStandardProviderBitbucket',
             'generateStandardProviderDiscord',
@@ -282,9 +282,9 @@ class OauthService
 
     protected function initProvider(string $clientName): AbstractProvider
     {
-        $code = strtoupper($clientName);
+        $code  = strtoupper($clientName);
         $oauth = $this->oauthActivated[strtolower($code)];
-        $url = 'https:'.$this->router->generate(
+        $url   = 'https:'.$this->router->generate(
             'connect_check',
             ['oauthCode' => $clientName],
             UrlGeneratorInterface::NETWORK_PATH

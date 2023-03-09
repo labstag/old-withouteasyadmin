@@ -72,14 +72,14 @@ class Block implements EntityTrashInterface
 
     public function __construct()
     {
-        $this->headers = new ArrayCollection();
-        $this->htmls = new ArrayCollection();
-        $this->footers = new ArrayCollection();
-        $this->paragraphs = new ArrayCollection();
+        $this->headers     = new ArrayCollection();
+        $this->htmls       = new ArrayCollection();
+        $this->footers     = new ArrayCollection();
+        $this->paragraphs  = new ArrayCollection();
         $this->breadcrumbs = new ArrayCollection();
-        $this->menu = new ArrayCollection();
-        $this->flashbags = new ArrayCollection();
-        $this->customs = new ArrayCollection();
+        $this->menu        = new ArrayCollection();
+        $this->flashbags   = new ArrayCollection();
+        $this->customs     = new ArrayCollection();
     }
 
     public function addBreadcrumb(Breadcrumb $breadcrumb): self

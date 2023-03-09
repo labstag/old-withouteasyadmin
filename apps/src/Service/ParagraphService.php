@@ -40,7 +40,7 @@ class ParagraphService
         $position = (is_countable($entity->getParagraphs()) ? count($entity->getParagraphs()) : 0) + 1;
 
         $paragraph = new Paragraph();
-        $old = clone $paragraph;
+        $old       = clone $paragraph;
         $paragraph->setType($code);
         $paragraph->setPosition($position);
         /** @var callable $callable */
@@ -60,8 +60,8 @@ class ParagraphService
         $data = [];
         foreach ($this->rewindableGenerator as $row) {
             $inUse = $row->useIn();
-            $type = $row->getType();
-            $name = $row->getName();
+            $type  = $row->getType();
+            $name  = $row->getName();
             if (in_array($entity::class, $inUse)) {
                 $data[$name] = $type;
             }
@@ -73,17 +73,17 @@ class ParagraphService
     public function getEntity(Paragraph $paragraph): mixed
     {
         $entity = null;
-        $field = $this->getEntityField($paragraph);
+        $field  = $this->getEntityField($paragraph);
         if (is_null($field)) {
             return $entity;
         }
 
-        $reflectionClass = new ReflectionClass($paragraph);
+        $reflectionClass  = new ReflectionClass($paragraph);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() === $field) {
                 $entities = $propertyAccessor->getValue($paragraph, $field);
-                $entity = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
+                $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
 
                 break;
             }
@@ -94,7 +94,7 @@ class ParagraphService
 
     public function getEntityField(Paragraph $paragraph): ?string
     {
-        $field = null;
+        $field       = null;
         $childentity = $this->getTypeEntity($paragraph);
         if (is_null($childentity)) {
             return $field;
@@ -104,9 +104,9 @@ class ParagraphService
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ('paragraph' == $reflectionProperty->getName()) {
                 $attributes = $reflectionProperty->getAttributes();
-                $attribute = $attributes[0];
-                $arguments = $attribute->getArguments();
-                $field = $arguments['inversedBy'] ?? $field;
+                $attribute  = $attributes[0];
+                $arguments  = $attribute->getArguments();
+                $field      = $arguments['inversedBy'] ?? $field;
 
                 break;
             }
@@ -146,7 +146,7 @@ class ParagraphService
 
     public function getTypeEntity(Paragraph $paragraph): mixed
     {
-        $type = $paragraph->getType();
+        $type      = $paragraph->getType();
         $paragraph = null;
         foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
@@ -208,9 +208,9 @@ class ParagraphService
 
     public function showContent(Paragraph $paragraph): ?Response
     {
-        $type = $paragraph->getType();
+        $type   = $paragraph->getType();
         $entity = $this->getEntity($paragraph);
-        $html = null;
+        $html   = null;
         if (is_null($entity)) {
             return $html;
         }
@@ -228,8 +228,8 @@ class ParagraphService
 
     public function showTemplate(Paragraph $paragraph): ?array
     {
-        $type = $paragraph->getType();
-        $entity = $this->getEntity($paragraph);
+        $type     = $paragraph->getType();
+        $entity   = $this->getEntity($paragraph);
         $template = null;
         if (is_null($entity)) {
             return $template;
@@ -251,11 +251,11 @@ class ParagraphService
         return match (true) {
             $front instanceof Chapter => 'setChapter',
             $front instanceof History => 'setHistory',
-            $front instanceof Layout => 'setLayout',
-            $front instanceof Memo => 'setMemo',
-            $front instanceof Page => 'setPage',
-            $front instanceof Post => 'setPost',
-            default => null,
+            $front instanceof Layout  => 'setLayout',
+            $front instanceof Memo    => 'setMemo',
+            $front instanceof Page    => 'setPage',
+            $front instanceof Post    => 'setPost',
+            default                   => null,
         };
     }
 }

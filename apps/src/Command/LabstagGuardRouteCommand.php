@@ -36,7 +36,7 @@ class LabstagGuardRouteCommand extends CommandLib
         $symfonyStyle->title('Installation du système de droit utilisateurs');
         $symfonyStyle->section('Enregistrement des routes');
 
-        $all = $this->guardService->all();
+        $all         = $this->guardService->all();
         $progressBar = new ProgressBar($output, is_countable($all) ? count($all) : 0);
         $progressBar->start();
         foreach (array_keys($all) as $name) {

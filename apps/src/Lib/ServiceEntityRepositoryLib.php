@@ -45,7 +45,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     public function findEnableByGroupe(?Groupe $groupe = null): mixed
     {
         $queryBuilder = $this->createQueryBuilder('a');
-        $query = $queryBuilder->where(
+        $query        = $queryBuilder->where(
             'a.state=:state'
         );
         $parameters = ['state' => 1];
@@ -62,7 +62,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     public function findEnableByUser(?User $user = null): mixed
     {
         $queryBuilder = $this->createQueryBuilder('a');
-        $query = $queryBuilder->where(
+        $query        = $queryBuilder->where(
             'a.state=:state'
         );
         $parameters = ['state' => 1];
@@ -82,10 +82,10 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     public function findOneRandom(): object
     {
         $classMetadataName = $this->getClassMetadataName();
-        $dql = 'SELECT p FROM '.$classMetadataName.' p ORDER BY RAND()';
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery($dql);
-        $query = $query->setMaxResults(1);
+        $dql               = 'SELECT p FROM '.$classMetadataName.' p ORDER BY RAND()';
+        $entityManager     = $this->getEntityManager();
+        $query             = $entityManager->createQuery($dql);
+        $query             = $query->setMaxResults(1);
 
         return $query->getOneOrNullResult();
     }
@@ -126,7 +126,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     protected function getClassMetadataName(): string
     {
         $methods = get_class_methods($this);
-        $name = '';
+        $name    = '';
         if (in_array('getClassMetadata', $methods)) {
             $name = $this->getClassMetadata()->getName();
         }

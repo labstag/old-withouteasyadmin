@@ -74,8 +74,8 @@ class History implements FrontInterface, EntityTrashInterface
 
     public function __construct()
     {
-        $this->chapters = new ArrayCollection();
-        $this->metas = new ArrayCollection();
+        $this->chapters   = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
     }
 
@@ -117,9 +117,9 @@ class History implements FrontInterface, EntityTrashInterface
     public function getChaptersPublished(): Collection
     {
         $arrayCollection = new ArrayCollection();
-        $chapters = $this->getChapters();
+        $chapters        = $this->getChapters();
         foreach ($chapters as $chapter) {
-            $state = in_array('publie', (array) $chapter->getState());
+            $state     = in_array('publie', (array) $chapter->getState());
             $published = $chapter->getPublished() <= new DateTime();
             if ($state && $published) {
                 $arrayCollection->add($chapter);

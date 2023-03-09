@@ -149,8 +149,8 @@ class PostFront extends PageFront
 
     private function setBreadcrumbRouting(array $breadcrumb): array
     {
-        $all = $this->request->attributes->all();
-        $route = $all['_route'];
+        $all    = $this->request->attributes->all();
+        $route  = $all['_route'];
         $params = $all['_route_params'];
 
         $functions = [

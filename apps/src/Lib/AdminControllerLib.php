@@ -32,15 +32,15 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $this->modalAttachmentDelete();
         $requestHandlerLib = $domainLib->getRequestHandler();
-        $formType = $domainLib->getType();
-        $url = $domainLib->getUrlAdmin();
+        $formType          = $domainLib->getType();
+        $url               = $domainLib->getUrlAdmin();
         $this->denyAccessUnlessGranted(
             empty($entity->getId()) ? 'new' : 'edit',
             $entity
         );
         $this->setBtnViewUpdate($url, $entity);
         $oldEntity = clone $entity;
-        $form = $this->createForm($formType, $entity);
+        $form      = $this->createForm($formType, $entity);
         $this->adminBtnService->addBtnSave(
             $form->getName(),
             empty($entity->getId()) ? 'Ajouter' : 'Sauvegarder'
@@ -83,10 +83,10 @@ abstract class AdminControllerLib extends ControllerLib
         array $parameters = []
     ): Response
     {
-        $url = $domainLib->getUrlAdmin();
-        $request = $this->requeststack->getCurrentRequest();
-        $all = $request->attributes->all();
-        $route = $all['_route'];
+        $url       = $domainLib->getUrlAdmin();
+        $request   = $this->requeststack->getCurrentRequest();
+        $all       = $request->attributes->all();
+        $route     = $all['_route'];
         $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
         $this->setBtnListOrTrash($routeType, $domainLib);
         $pagination = $this->setPagination($routeType, $domainLib);
@@ -112,8 +112,8 @@ abstract class AdminControllerLib extends ControllerLib
 
     public function modalAttachmentDelete(): void
     {
-        $globals = $this->twigEnvironment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals                   = $this->twigEnvironment->getGlobals();
+        $modal                     = $globals['modal'] ?? [];
         $modal['attachmentdelete'] = true;
         $this->twigEnvironment->addGlobal('modal', $modal);
     }
@@ -125,9 +125,9 @@ abstract class AdminControllerLib extends ControllerLib
     ): Response
     {
         /** @var EntityTrashInterface $entity */
-        $url = $domainLib->getUrlAdmin();
+        $url          = $domainLib->getUrlAdmin();
         $routeCurrent = $this->requeststack->getCurrentRequest()->get('_route');
-        $routeType = (0 != substr_count((string) $routeCurrent, 'preview')) ? 'preview' : 'show';
+        $routeType    = (0 != substr_count((string) $routeCurrent, 'preview')) ? 'preview' : 'show';
         $this->showOrPreviewadd($url, $routeType, $entity);
 
         if (isset($url['delete']) && 'show' == $routeType) {
@@ -150,7 +150,7 @@ abstract class AdminControllerLib extends ControllerLib
         string $route
     ): void
     {
-        $compiledRoute = $data->compile();
+        $compiledRoute   = $data->compile();
         $breadcrumbTitle = array_merge(
             $this->setHeaderTitle(),
             $this->domainService->getTitles()
@@ -169,7 +169,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
 
         $variables = $compiledRoute->getPathVariables();
-        $params = [];
+        $params    = [];
         foreach ($variables as $variable) {
             if (isset($routeParam[$variable])) {
                 $params[$variable] = $routeParam[$variable];
@@ -287,15 +287,15 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        $globals = $this->twigEnvironment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals          = $this->twigEnvironment->getGlobals();
+        $modal            = $globals['modal'] ?? [];
         $modal['destroy'] = (isset($url['destroy']));
         $modal['restore'] = (isset($url['restore']));
         $this->twigEnvironment->addGlobal('modal', $modal);
 
-        $request = $this->requeststack->getCurrentRequest();
-        $all = $request->attributes->all();
-        $route = $all['_route'];
+        $request     = $this->requeststack->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $route       = $all['_route'];
         $routeParams = $all['_route_params'];
 
         $this->adminBtnService->addViderSelection(
@@ -368,19 +368,19 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function setBreadcrumbsPage(): void
     {
-        $routeCollection = $this->router->getRouteCollection();
-        $requestContext = $this->router->getContext();
+        $routeCollection     = $this->router->getRouteCollection();
+        $requestContext      = $this->router->getContext();
         $traceableUrlMatcher = new TraceableUrlMatcher($routeCollection, $requestContext);
-        $request = $this->requeststack->getCurrentRequest();
-        $attributes = $request->attributes->all();
-        $pathinfo = $request->getPathInfo();
-        $breadcrumb = $this->getBreadcrumb($traceableUrlMatcher, $pathinfo, []);
-        $breadcrumb = array_reverse($breadcrumb);
+        $request             = $this->requeststack->getCurrentRequest();
+        $attributes          = $request->attributes->all();
+        $pathinfo            = $request->getPathInfo();
+        $breadcrumb          = $this->getBreadcrumb($traceableUrlMatcher, $pathinfo, []);
+        $breadcrumb          = array_reverse($breadcrumb);
 
-        $all = $routeCollection->all();
+        $all         = $routeCollection->all();
         $routeParams = $attributes['_route_params'];
         foreach ($breadcrumb as $row) {
-            $name = $row['name'];
+            $name  = $row['name'];
             $route = $all[$name];
             $this->addNewBreadcrumb($route, $routeParams, $name);
         }
@@ -479,13 +479,13 @@ abstract class AdminControllerLib extends ControllerLib
         DomainLib $domainLib
     ): void
     {
-        $url = $domainLib->getUrlAdmin();
+        $url                        = $domainLib->getUrlAdmin();
         $serviceEntityRepositoryLib = $domainLib->getRepository();
-        $request = $this->requeststack->getCurrentRequest();
-        $all = $request->attributes->all();
-        $route = $all['_route'];
-        $routeParams = $all['_route_params'];
-        $methods = $this->getMethodsList();
+        $request                    = $this->requeststack->getCurrentRequest();
+        $all                        = $request->attributes->all();
+        $route                      = $all['_route'];
+        $routeParams                = $all['_route_params'];
+        $methods                    = $this->getMethodsList();
         $this->addNewImport($this->entityManager, $serviceEntityRepositoryLib, $methods, $routeType, $url);
         $this->setBtnDeleties($routeType, $route, $routeParams, $serviceEntityRepositoryLib);
     }
@@ -551,11 +551,11 @@ abstract class AdminControllerLib extends ControllerLib
     ): PaginationInterface
     {
         $serviceEntityRepositoryLib = $domainLib->getRepository();
-        $methods = $this->getMethodsList();
-        $method = $methods[$routeType];
-        $query = $this->requeststack->getCurrentRequest()->query;
-        $get = $query->all();
-        $limit = $query->getInt('limit', 10);
+        $methods                    = $this->getMethodsList();
+        $method                     = $methods[$routeType];
+        $query                      = $this->requeststack->getCurrentRequest()->query;
+        $get                        = $query->all();
+        $limit                      = $query->getInt('limit', 10);
         /** @var callable $callable */
         $callable = [
             $serviceEntityRepositoryLib,
@@ -578,8 +578,8 @@ abstract class AdminControllerLib extends ControllerLib
 
         if (is_array($position)) {
             foreach ($position as $row) {
-                $id = $row['id'];
-                $position = (int) $row['position'];
+                $id         = $row['id'];
+                $position   = (int) $row['position'];
                 $repository = $this->repositoryService->get($entityclass);
                 /** @var Block|Chapter|Menu $entity */
                 $entity = $repository->find($id);
@@ -597,19 +597,19 @@ abstract class AdminControllerLib extends ControllerLib
     ): array
     {
         $query = $this->requeststack->getCurrentRequest()->query;
-        $get = $query->all();
+        $get   = $query->all();
         $limit = $query->getInt('limit', 10);
-        $form = $domainLib->getSearchForm();
+        $form  = $domainLib->getSearchForm();
         if ('' == $form) {
             return $parameters;
         }
 
-        $get = $query->all();
-        $searchLib = $domainLib->getSearchData();
+        $get              = $query->all();
+        $searchLib        = $domainLib->getSearchData();
         $searchLib->limit = $limit;
         $searchLib->search($get, $this->entityManager);
-        $route = $this->requeststack->getCurrentRequest()->get('_route');
-        $url = $this->generateUrl($route);
+        $route      = $this->requeststack->getCurrentRequest()->get('_route');
+        $url        = $this->generateUrl($route);
         $searchForm = $this->createForm(
             $form,
             $searchLib,
@@ -631,7 +631,7 @@ abstract class AdminControllerLib extends ControllerLib
         EntityManagerInterface $entityManager
     ): void
     {
-        $methodTrash = $methods['trash'];
+        $methodTrash      = $methods['trash'];
         $filterCollection = $entityManager->getFilters();
         $filterCollection->disable('softdeleteable');
         /** @var callable $callable */
@@ -639,9 +639,9 @@ abstract class AdminControllerLib extends ControllerLib
             $serviceEntityRepositoryLib,
             $methodTrash,
         ];
-        $trash = call_user_func($callable, []);
+        $trash  = call_user_func($callable, []);
         $result = $trash->getQuery()->getResult();
-        $total = is_countable($result) ? count($result) : 0;
+        $total  = is_countable($result) ? count($result) : 0;
         $filterCollection->enable('softdeleteable');
         if (0 != $total) {
             $this->adminBtnService->addBtnTrash(
@@ -649,9 +649,9 @@ abstract class AdminControllerLib extends ControllerLib
             );
         }
 
-        $globals = $this->twigEnvironment->getGlobals();
-        $modal = $globals['modal'] ?? [];
-        $modal['delete'] = (isset($url['delete']));
+        $globals           = $this->twigEnvironment->getGlobals();
+        $modal             = $globals['modal'] ?? [];
+        $modal['delete']   = (isset($url['delete']));
         $modal['workflow'] = (isset($url['workflow']));
 
         $this->twigEnvironment->addGlobal('modal', $modal);
@@ -874,15 +874,15 @@ abstract class AdminControllerLib extends ControllerLib
 
     private function modalParagraphs(): void
     {
-        $globals = $this->twigEnvironment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals             = $this->twigEnvironment->getGlobals();
+        $modal               = $globals['modal'] ?? [];
         $modal['paragraphs'] = true;
         $this->twigEnvironment->addGlobal('modal', $modal);
     }
 
     private function setPositionParagraphs(): void
     {
-        $request = $this->requeststack->getCurrentRequest();
+        $request    = $this->requeststack->getCurrentRequest();
         $paragraphs = $request->request->all('paragraphs');
         if (!is_array($paragraphs)) {
             return;
@@ -903,10 +903,10 @@ abstract class AdminControllerLib extends ControllerLib
     private function setTitleHeader(array $parameters): array
     {
         $request = $this->requeststack->getCurrentRequest();
-        $all = $request->attributes->all();
-        $route = $all['_route'];
+        $all     = $request->attributes->all();
+        $route   = $all['_route'];
         $headers = $this->domainService->getTitles();
-        $header = '';
+        $header  = '';
         foreach ($headers as $key => $title) {
             if ($key == $route) {
                 $header = $title;

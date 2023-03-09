@@ -30,7 +30,7 @@ class WorkflowSubscriber extends EventSubscriberLib
     public function onTransition(Event $event): void
     {
         $transition = $event->getTransition();
-        $name = $transition->getName();
+        $name       = $transition->getName();
         if ('submit' == $name) {
             $this->transitionSubmit($event);
 
@@ -66,7 +66,7 @@ class WorkflowSubscriber extends EventSubscriberLib
     {
         $entity = $event->getSubject();
         if (User::class == $entity::class) {
-            /** @var User $entity */
+            // @var User $entity
             $this->userMailService->newUser($entity);
             $this->sessionService->flashBagAdd(
                 'success',

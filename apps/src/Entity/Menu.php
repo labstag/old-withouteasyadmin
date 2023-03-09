@@ -61,7 +61,7 @@ class Menu implements Stringable, EntityTrashInterface
     public function __construct()
     {
         $this->children = new ArrayCollection();
-        $this->navbars = new ArrayCollection();
+        $this->navbars  = new ArrayCollection();
     }
 
     public function __toString(): string

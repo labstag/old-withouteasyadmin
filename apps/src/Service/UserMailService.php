@@ -30,10 +30,10 @@ class UserMailService
         protected TemplateRepository $templateRepository
     )
     {
-        $config = $dataService->getConfig();
+        $config       = $dataService->getConfig();
         $this->config = $config;
 
-        $code = 'languagedefault';
+        $code            = 'languagedefault';
         $languagedefault = $config[$code] ?? 'fr';
         Locale::setDefault($languagedefault);
     }
@@ -77,7 +77,7 @@ class UserMailService
     ): string
     {
         $dateTime = new DateTime();
-        $change = [
+        $change   = [
             'username' => $user->getUsername(),
             'datetime' => $dateTime->format('d/m/Y H:i'),
         ];
@@ -85,7 +85,7 @@ class UserMailService
         $change = array_merge($change, $otherchange);
 
         foreach ($change as $key => $after) {
-            $before = '%'.$key.'%';
+            $before  = '%'.$key.'%';
             $content = str_replace($before, $after, $content);
         }
 
@@ -147,7 +147,7 @@ class UserMailService
             return;
         }
 
-        $url = $this->config['site_url'] ?? '';
+        $url    = $this->config['site_url'] ?? '';
         $change = [
             'url_confirm_email' => $url.$this->router->generate(
                 'app_confirm_mail',
@@ -197,7 +197,7 @@ class UserMailService
             return;
         }
 
-        $url = $this->config['site_url'] ?? '';
+        $url    = $this->config['site_url'] ?? '';
         $change = [
             'url_confirm_phone' => $url.$this->router->generate(
                 'app_confirm_phone',
@@ -224,7 +224,7 @@ class UserMailService
             return;
         }
 
-        $url = $this->config['site_url'] ?? $url = '';
+        $url    = $this->config['site_url'] ?? $url = '';
         $change = [
             'url_change_password' => $url.$this->router->generate(
                 'app_changepassword',
@@ -250,7 +250,7 @@ class UserMailService
             return;
         }
 
-        $url = $this->config['site_url'] ?? '';
+        $url    = $this->config['site_url'] ?? '';
         $change = [
             'url_confirm_user' => $url.$this->router->generate(
                 'app_confirm_user',
@@ -273,9 +273,9 @@ class UserMailService
     ): void
     {
         /** @var User $user */
-        $html = $template->getHtml();
-        $text = $template->getText();
-        $name = $template->getName();
+        $html  = $template->getHtml();
+        $text  = $template->getText();
+        $name  = $template->getName();
         $email = $this->mailerService->createEmail(
             [
                 'html' => $this->changeValue($user, $html, $change),

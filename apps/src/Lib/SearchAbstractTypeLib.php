@@ -145,9 +145,9 @@ abstract class SearchAbstractTypeLib extends AbstractType
         string $placeholder
     ): void
     {
-        $workflow = $this->workflowService->get($entityclass);
+        $workflow   = $this->workflowService->get($entityclass);
         $definition = $workflow->getDefinition();
-        $places = $definition->getPlaces();
+        $places     = $definition->getPlaces();
         $formBuilder->add(
             'etape',
             ChoiceType::class,

@@ -19,7 +19,7 @@ class AttachmentOpenApi implements OpenApiFactoryInterface
     public function __invoke(array $context = []): OpenApi
     {
         $openApi = $this->openApiFactory->__invoke($context);
-        $paths = $openApi->getPaths();
+        $paths   = $openApi->getPaths();
         $paths->addPath(
             '/api/attachment/delete/{entity}',
             new PathItem(

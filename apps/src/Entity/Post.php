@@ -87,9 +87,9 @@ class Post implements Stringable, FrontInterface, EntityTrashInterface
 
     public function __construct()
     {
-        $this->libelles = new ArrayCollection();
+        $this->libelles   = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
-        $this->metas = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
     }
 
     public function __toString(): string

@@ -72,7 +72,7 @@ class Chapter implements FrontInterface, EntityTrashInterface
 
     public function __construct()
     {
-        $this->metas = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
     }
 

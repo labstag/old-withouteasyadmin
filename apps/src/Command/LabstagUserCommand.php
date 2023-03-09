@@ -44,7 +44,7 @@ class LabstagUserCommand extends CommandLib
     ): void
     {
         /** @var QuestionHelper $helper */
-        $helper = $this->getHelper('question');
+        $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
             $this->tableQuestionUser()
@@ -77,7 +77,7 @@ class LabstagUserCommand extends CommandLib
     protected function actionState(InputInterface $input, OutputInterface $output, SymfonyStyle $symfonyStyle): void
     {
         /** @var QuestionHelper $helper */
-        $helper = $this->getHelper('question');
+        $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
             $this->tableQuestionUser()
@@ -93,7 +93,7 @@ class LabstagUserCommand extends CommandLib
     ): void
     {
         /** @var QuestionHelper $helper */
-        $helper = $this->getHelper('question');
+        $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
             $this->tableQuestionUser()
@@ -115,16 +115,16 @@ class LabstagUserCommand extends CommandLib
     ): void
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
-        $user = new User();
-        $old = clone $user;
-        $question = new Question("Entrer le username de l'utilisateur : ");
-        $username = $questionHelper->ask($input, $output, $question);
+        $user         = new User();
+        $old          = clone $user;
+        $question     = new Question("Entrer le username de l'utilisateur : ");
+        $username     = $questionHelper->ask($input, $output, $question);
         $user->setUsername($username);
         $question = new Question("Entrer le password de l'utilisateur : ");
         $question->setHidden(true);
 
         $password1 = $questionHelper->ask($input, $output, $question);
-        $question = new Question("Resaisir le password de l'utilisateur : ");
+        $question  = new Question("Resaisir le password de l'utilisateur : ");
         $question->setHidden(true);
 
         $password2 = $questionHelper->ask($input, $output, $question);
@@ -136,10 +136,10 @@ class LabstagUserCommand extends CommandLib
 
         $user->setPlainPassword($password1);
         $question = new Question("Entrer l'email de l'utilisateur : ");
-        $email = $questionHelper->ask($input, $output, $question);
+        $email    = $questionHelper->ask($input, $output, $question);
         $user->setEmail($email);
         $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
-        $data = [];
+        $data    = [];
         foreach ($groupes as $groupe) {
             /** @var Groupe $groupe */
             if ('visiteur' == $groupe->getCode()) {
@@ -307,7 +307,7 @@ class LabstagUserCommand extends CommandLib
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
         /** @var QuestionHelper $helper */
-        $helper = $this->getHelper('question');
+        $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             'Action à effectué',
             [
@@ -324,13 +324,13 @@ class LabstagUserCommand extends CommandLib
 
         $action = (string) $helper->ask($input, $output, $choiceQuestion);
         match ($action) {
-            'list' => $this->list($symfonyStyle, $output),
-            'create' => $this->create($helper, $symfonyStyle, $input, $output),
+            'list'           => $this->list($symfonyStyle, $output),
+            'create'         => $this->create($helper, $symfonyStyle, $input, $output),
             'updatepassword' => $this->actionUpdatePassword($input, $output, $symfonyStyle),
-            'state' => $this->actionState($input, $output, $symfonyStyle),
+            'state'          => $this->actionState($input, $output, $symfonyStyle),
             'enable', 'disable', 'delete' => $this->actionEnableDisableDelete($input, $output, $symfonyStyle, $action),
             'cancel' => $output->writeln('cancel'),
-            default => $output->writeln('Action inconnue'),
+            default  => $output->writeln('Action inconnue'),
         };
 
         return Command::SUCCESS;
@@ -341,7 +341,7 @@ class LabstagUserCommand extends CommandLib
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
-            /** @var User $user */
+            // @var User $user
             $table[] = [
                 'username' => $user->getUsername(),
                 'email'    => $user->getEmail(),
@@ -379,11 +379,11 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $states = [];
-        $workflow = $this->workflowService->get($entity);
+        $states      = [];
+        $workflow    = $this->workflowService->get($entity);
         $transitions = $workflow->getEnabledTransitions($entity);
         foreach ($transitions as $transition) {
-            $name = $transition->getName();
+            $name          = $transition->getName();
             $states[$name] = $name;
         }
 
@@ -413,7 +413,7 @@ class LabstagUserCommand extends CommandLib
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         foreach ($users as $user) {
-            /** @var User $user */
+            // @var User $user
             $table[$user->getUsername()] = json_encode(
                 [
                     'username' => $user->getUsername(),
@@ -449,7 +449,7 @@ class LabstagUserCommand extends CommandLib
         $question->setHidden(true);
 
         $password1 = $questionHelper->ask($input, $output, $question);
-        $question = new Question("Resaisir le password de l'utilisateur : ");
+        $question  = new Question("Resaisir le password de l'utilisateur : ");
         $question->setHidden(true);
 
         $password2 = $questionHelper->ask($input, $output, $question);

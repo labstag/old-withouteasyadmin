@@ -49,7 +49,7 @@ class ListParagraph extends ParagraphLib
     {
         /** @var BookmarkRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(Bookmark::class);
-        $pagination = $this->paginator->paginate(
+        $pagination                 = $this->paginator->paginate(
             $serviceEntityRepositoryLib->findPublier(),
             $this->request->query->getInt('page', 1),
             10

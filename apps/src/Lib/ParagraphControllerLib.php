@@ -15,7 +15,7 @@ abstract class ParagraphControllerLib extends ControllerLib
 {
     public function modalAttachmentDelete(Paragraph $paragraph, FormInterface $form): void
     {
-        $entity = $this->paragraphService->getEntity($paragraph);
+        $entity      = $this->paragraphService->getEntity($paragraph);
         $annotations = array_merge(
             $this->uploadAnnotationReader->getUploadableFields($paragraph),
             $this->uploadAnnotationReader->getUploadableFields($entity),
@@ -30,8 +30,8 @@ abstract class ParagraphControllerLib extends ControllerLib
             return;
         }
 
-        $globals = $this->twigEnvironment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals                   = $this->twigEnvironment->getGlobals();
+        $modal                     = $globals['modal'] ?? [];
         $modal['attachmentdelete'] = true;
         $this->twigEnvironment->mergeGlobals(['modal' => $modal]);
     }
@@ -80,7 +80,7 @@ abstract class ParagraphControllerLib extends ControllerLib
         /** @var ParagraphRepository $repository */
         $repository = $this->repositoryService->get(Paragraph::class);
         $form->handleRequest($request);
-        $old = clone $paragraph;
+        $old    = clone $paragraph;
         $entity = $this->paragraphService->getEntity($paragraph);
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->add($paragraph);

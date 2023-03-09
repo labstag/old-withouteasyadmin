@@ -31,14 +31,16 @@ class SearchableType extends AbstractType
     {
         $formBuilder->addModelTransformer(
             new CallbackTransformer(
-                static function ($value) {
+                static function ($value)
+                {
                     if ($value instanceof Collection) {
                         return $value->map(
                             static fn ($d) => (string) $d->getId()
                         )->toArray();
                     }
                 },
-                function ($ids) use ($options) {
+                function ($ids) use ($options)
+                {
                     if (empty($ids)) {
                         return is_array($ids) ? new ArrayCollection([]) : null;
                     }
@@ -62,11 +64,11 @@ class SearchableType extends AbstractType
 
         $placeholder = $options['placeholder'] ?? null;
 
-        $formView->vars['placeholder'] = $placeholder;
-        $formView->vars['placeholder_in_choices'] = false;
-        $formView->vars['multiple'] = $options['multiple'];
-        $formView->vars['preferred_choices'] = [];
-        $formView->vars['choices'] = $this->choices($form->getData(), $options);
+        $formView->vars['placeholder']               = $placeholder;
+        $formView->vars['placeholder_in_choices']    = false;
+        $formView->vars['multiple']                  = $options['multiple'];
+        $formView->vars['preferred_choices']         = [];
+        $formView->vars['choices']                   = $this->choices($form->getData(), $options);
         $formView->vars['choice_translation_domain'] = false;
         if ($options['multiple']) {
             $formView->vars['full_name'] .= '[]';

@@ -47,12 +47,12 @@ class UserParagraph extends ParagraphLib
 
     public function show(User $user): Response
     {
-        $all = $this->request->attributes->all();
+        $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        $username = $routeParam['username'] ?? null;
+        $username   = $routeParam['username'] ?? null;
         /** @var PostRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
-        $pagination = $this->paginator->paginate(
+        $pagination                 = $this->paginator->paginate(
             $serviceEntityRepositoryLib->findPublierUsername($username),
             $this->request->query->getInt('page', 1),
             10

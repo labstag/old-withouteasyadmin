@@ -17,13 +17,13 @@ class AttachmentRepository extends ServiceEntityRepositoryLib
 
     public function getFavicon(): ?Attachment
     {
-        /** @var ?Attachment $data */
+        // @var ?Attachment $data
         return $this->findOneBy(['code' => 'favicon']);
     }
 
     public function getImageDefault(): ?Attachment
     {
-        /** @var ?Attachment $data */
+        // @var ?Attachment $data
         return $this->findOneBy(['code' => 'image']);
     }
 }

@@ -65,7 +65,7 @@ class Edito implements Stringable, FrontInterface, EntityTrashInterface
     public function __construct()
     {
         $this->paragraphs = new ArrayCollection();
-        $this->metas = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
     }
 
     public function __toString(): string

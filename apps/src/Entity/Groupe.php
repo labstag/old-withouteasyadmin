@@ -64,9 +64,9 @@ class Groupe implements Stringable, EntityTrashInterface
 
     public function __construct()
     {
-        $this->routes = new ArrayCollection();
+        $this->routes          = new ArrayCollection();
         $this->workflowGroupes = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        $this->users           = new ArrayCollection();
     }
 
     public function __toString(): string

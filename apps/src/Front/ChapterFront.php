@@ -40,7 +40,7 @@ class ChapterFront extends HistoryFront
         }
 
         $history = $this->getMeta($front->getRefhistory()->getMetas(), $meta);
-        $meta = $this->getMeta($front->getMetas(), $meta);
+        $meta    = $this->getMeta($front->getMetas(), $meta);
         if (isset($history['title'])) {
             $meta['title'] = $meta['title'].' - '.$history['title'];
         }

@@ -44,8 +44,8 @@ abstract class FrontControllerLib extends ControllerLib
     {
         /** @var BlockRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(Block::class);
-        $blocksArray = $serviceEntityRepositoryLib->getDataByRegion();
-        $content = null;
+        $blocksArray                = $serviceEntityRepositoryLib->getDataByRegion();
+        $content                    = null;
         if (isset($parameters['content'])) {
             $content = $parameters['content'];
             unset($parameters['content']);
@@ -53,7 +53,7 @@ abstract class FrontControllerLib extends ControllerLib
 
         $globals = $this->twigEnvironment->getGlobals();
 
-        $config = $globals['config'] ?? $this->dataService->getConfig();
+        $config   = $globals['config'] ?? $this->dataService->getConfig();
         $tagsmeta = $config['meta'] ?? [];
         $tagsmeta = array_merge(
             $tagsmeta,
@@ -67,7 +67,7 @@ abstract class FrontControllerLib extends ControllerLib
 
         $parameters['blocks'] = [];
         foreach ($blocksArray as $key => $blocks) {
-            $key = ('content' == $key) ? 'main' : $key;
+            $key                        = ('content' == $key) ? 'main' : $key;
             $parameters['blocks'][$key] = [];
             foreach ($blocks as $block) {
                 $data = $this->blockService->showContent($block, $content);

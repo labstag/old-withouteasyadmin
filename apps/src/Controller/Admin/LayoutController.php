@@ -54,11 +54,11 @@ class LayoutController extends AdminControllerLib
             ]
         );
 
-        $domain = $this->getDomainEntity();
-        $url = $domain->getUrlAdmin();
-        $request = $this->requeststack->getCurrentRequest();
-        $all = $request->attributes->all();
-        $route = $all['_route'];
+        $domain    = $this->getDomainEntity();
+        $url       = $domain->getUrlAdmin();
+        $request   = $this->requeststack->getCurrentRequest();
+        $all       = $request->attributes->all();
+        $route     = $all['_route'];
         $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
         $this->setBtnListOrTrash($routeType, $domain);
         $pagination = $this->setPagination($routeType, $domain);
@@ -88,7 +88,7 @@ class LayoutController extends AdminControllerLib
         CustomRepository $customRepository
     ): RedirectResponse
     {
-        $post = $request->request->all('new_layout');
+        $post   = $request->request->all('new_layout');
         $custom = $customRepository->findOneBy(
             [
                 'id' => $post['custom'],

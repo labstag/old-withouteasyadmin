@@ -42,7 +42,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         /** @var string $content */
         $content = $generator->paragraphs(random_int(4, 10), true);
         $post->setContent(str_replace("\n\n", "<br />\n", (string) $content));
-        $users = $this->installService->getData('user');
+        $users     = $this->installService->getData('user');
         $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
         /** @var User $user */
         $user = $this->getReference('user_'.$indexUser);

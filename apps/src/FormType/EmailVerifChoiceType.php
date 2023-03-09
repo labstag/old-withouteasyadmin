@@ -27,12 +27,12 @@ class EmailVerifChoiceType extends AbstractType
         array $options
     ): void
     {
-        $entity = $form->getParent()->getData();
-        $data = $this->emailUserRepository->getEmailsUserVerif($entity, true);
+        $entity  = $form->getParent()->getData();
+        $data    = $this->emailUserRepository->getEmailsUserVerif($entity, true);
         $choices = [];
         foreach ($data as $email) {
             /** @var EmailUser $email */
-            $address = $email->getAddress();
+            $address           = $email->getAddress();
             $choices[$address] = new ChoiceView('', $address, $address);
         }
 
@@ -42,7 +42,7 @@ class EmailVerifChoiceType extends AbstractType
             $formView->vars['required'] = false;
         }
 
-        $formView->vars['value'] = $entity->getEmail();
+        $formView->vars['value']   = $entity->getEmail();
         $formView->vars['choices'] = $choices;
         unset($options, $form);
     }

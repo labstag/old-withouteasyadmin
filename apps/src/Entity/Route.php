@@ -34,7 +34,7 @@ class Route implements Stringable, EntityInterface
     public function __construct()
     {
         $this->groupes = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        $this->users   = new ArrayCollection();
     }
 
     public function __toString(): string

@@ -68,13 +68,13 @@ class AdminBtnService
             return $this;
         }
 
-        $globals = $this->twigEnvironment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals         = $this->twigEnvironment->getGlobals();
+        $modal           = $globals['modal'] ?? [];
         $modal['delete'] = true;
         $this->twigEnvironment->addGlobal('modal', $modal);
-        $code = 'delete'.$entity->getId();
+        $code  = 'delete'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr = [
+        $attr  = [
             'id'       => 'DeleteForm',
             'is'       => 'link-btnadmindelete',
             'token'    => $token,
@@ -139,13 +139,13 @@ class AdminBtnService
             return $this;
         }
 
-        $globals = $this->twigEnvironment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals        = $this->twigEnvironment->getGlobals();
+        $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
         $this->twigEnvironment->addGlobal('modal', $modal);
-        $code = 'empty';
+        $code  = 'empty';
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr = [
+        $attr  = [
             'is'       => 'link-btnadminempty',
             'token'    => $token,
             'redirect' => $this->router->generate($route['list']),
@@ -345,8 +345,8 @@ class AdminBtnService
             return;
         }
 
-        $globals = $this->twigEnvironment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals           = $this->twigEnvironment->getGlobals();
+        $modal             = $globals['modal'] ?? [];
         $modal[$codemodal] = true;
         $this->twigEnvironment->addGlobal('modal', $modal);
         $this->add(
@@ -419,13 +419,13 @@ class AdminBtnService
             return;
         }
 
-        $globals = $this->twigEnvironment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals      = $this->twigEnvironment->getGlobals();
+        $modal        = $globals['modal'] ?? [];
         $modal[$word] = true;
         $this->twigEnvironment->addGlobal('modal', $modal);
-        $code = $word.$entity->getId();
+        $code  = $word.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr = [
+        $attr  = [
             'token'    => $token,
             'is'       => 'link-btnadmin'.$word,
             'redirect' => $this->router->generate($route['list']),

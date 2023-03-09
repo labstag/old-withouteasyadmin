@@ -102,7 +102,7 @@ class HistoryController extends FrontControllerLib
             ['slug' => $slug]
         );
 
-        $fileDirectory = $this->getParameter('file_directory');
+        $fileDirectory    = $this->getParameter('file_directory');
         $kernelProjectDir = $this->getParameter('kernel.project_dir');
 
         if (!$history instanceof History || !is_string($fileDirectory) || !is_string($kernelProjectDir)) {

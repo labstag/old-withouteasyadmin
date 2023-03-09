@@ -35,10 +35,10 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
     ): void
     {
         $dateTime = $generator->unique()->dateTimeInInterval('now', '+30 years');
-        $users = $this->userRepository->findAll();
-        $memo = new Memo();
-        $old = clone $memo;
-        $random = $generator->numberBetween(5, 50);
+        $users    = $this->userRepository->findAll();
+        $memo     = new Memo();
+        $old      = clone $memo;
+        $random   = $generator->numberBetween(5, 50);
         $memo->setTitle($generator->unique()->text($random));
         $dateStart = $generator->dateTime($dateTime);
         $memo->setDateStart($dateStart);

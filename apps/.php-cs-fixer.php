@@ -7,7 +7,6 @@
 $config = new PhpCsFixer\Config();
 return $config
     ->setRules([
-        '@PSR12' => true,
         // Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.
         'align_multiline_comment' => true,
         // Each element of an array must be indented exactly once.
@@ -19,7 +18,12 @@ return $config
         // Converts backtick operators to `shell_exec` calls.
         'backtick_to_shell_exec' => true,
         // Binary operators should be surrounded by space as configured.
-        'binary_operator_spaces' => true,
+        'binary_operator_spaces' => [
+            'operators' => [
+                '=>' => 'align_single_space_minimal',
+                '='  => 'align_single_space_minimal',
+            ]
+        ],
         // There MUST be one blank line after the namespace declaration.
         'blank_line_after_namespace' => true,
         // Ensure there is no code on the same line as the PHP open tag and it is followed by a blank line.
@@ -27,7 +31,13 @@ return $config
         // An empty line feed must precede any configured statement.
         'blank_line_before_statement' => true,
         // The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
-        'braces' => true,
+        'braces' => [
+            'allow_single_line_anonymous_class_with_empty_body' => true,
+            'allow_single_line_closure' => true,
+            'position_after_functions_and_oop_constructs' => 'next',
+            'position_after_control_structures' => 'same',
+            'position_after_anonymous_constructs' => 'next',
+        ],
         // A single space or none should be between cast and variable.
         'cast_spaces' => true,
         // Class, trait and interface elements must be separated with one or none blank line.
@@ -160,10 +170,8 @@ return $config
         'no_superfluous_elseif' => true,
         // Removes `@param`, `@return` and `@var` tags that don't provide any useful information.
         'no_superfluous_phpdoc_tags' => true,
-        // Remove trailing commas in list function calls.
-        'no_trailing_comma_in_list_call' => true,
         // PHP single-line arrays should not have trailing comma.
-        'no_trailing_comma_in_singleline_array' => true,
+        'no_trailing_comma_in_singleline' => true,
         // Remove trailing whitespace at the end of non-blank lines.
         'no_trailing_whitespace' => true,
         // There MUST be no trailing spaces inside comment or PHPDoc.

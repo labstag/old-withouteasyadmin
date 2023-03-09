@@ -48,13 +48,13 @@ class ChapterParagraph extends ParagraphLib
 
     public function show(HistoryChapter $historychapter): ?Response
     {
-        $all = $this->request->attributes->all();
+        $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        $history = $routeParam['history'] ?? null;
-        $chapter = $routeParam['chapter'] ?? null;
+        $history    = $routeParam['history'] ?? null;
+        $chapter    = $routeParam['chapter'] ?? null;
         /** @var ChapterRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(Chapter::class);
-        $chapter = $serviceEntityRepositoryLib->findChapterByHistory($history, $chapter);
+        $chapter                    = $serviceEntityRepositoryLib->findChapterByHistory($history, $chapter);
         if (!$chapter instanceof Chapter) {
             return null;
         }
@@ -92,12 +92,12 @@ class ChapterParagraph extends ParagraphLib
     ): array
     {
         $chapters = $history->getchapters();
-        $prev = null;
-        $next = null;
+        $prev     = null;
+        $next     = null;
         foreach ($chapters as $i => $row) {
             if ($row->getSlug() == $chapter->getSlug()) {
-                $prev = $chapters[$i - 1] ?? null;
-                $next = $chapters[$i + 1] ?? null;
+                $prev    = $chapters[$i - 1] ?? null;
+                $next    = $chapters[$i + 1] ?? null;
                 $chapter = $row;
 
                 break;

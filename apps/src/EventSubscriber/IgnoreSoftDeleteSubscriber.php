@@ -38,7 +38,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
     ): void
     {
         $routeCurrent = $this->requestStack->getCurrentRequest()->attributes->get('_route');
-        $routes = [
+        $routes       = [
             'api_action_destroies',
             'api_action_restories',
             'api_action_deleties',
@@ -74,10 +74,10 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
         string $method
     ): bool
     {
-        $status = false;
-        $reflectionClass = new ReflectionClass($controller::class);
+        $status           = false;
+        $reflectionClass  = new ReflectionClass($controller::class);
         $reflectionMethod = $reflectionClass->getMethod($method);
-        $attributes = $reflectionMethod->getAttributes();
+        $attributes       = $reflectionMethod->getAttributes();
         foreach ($attributes as $attribute) {
             if (IgnoreSoftDelete::class != $attribute->getName()) {
                 continue;

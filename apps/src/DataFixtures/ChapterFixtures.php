@@ -40,7 +40,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
     ): void
     {
         $chapter = new Chapter();
-        $meta = new Meta();
+        $meta    = new Meta();
         $meta->setChapter($chapter);
         $this->setMeta($meta);
         $oldChapter = clone $chapter;
@@ -59,7 +59,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         $chapter->setPublished($generator->unique()->dateTime('now'));
 
         $indexposition = $this->position[$indexHistory];
-        $position = is_countable($indexposition) ? count($indexposition) : 0;
+        $position      = is_countable($indexposition) ? count($indexposition) : 0;
         $chapter->setPosition($position + 1);
         $this->addReference('chapter_'.$index, $chapter);
         $this->position[$indexHistory][] = $chapter;

@@ -47,12 +47,12 @@ class YearParagraph extends ParagraphLib
 
     public function show(Year $postyear): Response
     {
-        $all = $this->request->attributes->all();
+        $all        = $this->request->attributes->all();
         $routeParam = $all['_route_params'];
-        $year = $routeParam['year'] ?? null;
+        $year       = $routeParam['year'] ?? null;
         /** @var PostRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
-        $pagination = $this->paginator->paginate(
+        $pagination                 = $this->paginator->paginate(
             $serviceEntityRepositoryLib->findPublierArchive($year),
             $this->request->query->getInt('page', 1),
             10

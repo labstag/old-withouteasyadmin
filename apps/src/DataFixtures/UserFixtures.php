@@ -24,8 +24,8 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
     {
         unset($objectManager);
         $generator = $this->setFaker();
-        $users = $this->installService->getData('user');
-        $groupes = $this->groupeRepository->findAll();
+        $users     = $this->installService->getData('user');
+        $groupes   = $this->groupeRepository->findAll();
         foreach ($users as $index => $user) {
             $this->addUser($groupes, $index, $user, $generator);
         }

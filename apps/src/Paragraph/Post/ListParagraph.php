@@ -49,7 +49,7 @@ class ListParagraph extends ParagraphLib
     {
         /** @var PostRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
-        $pagination = $this->paginator->paginate(
+        $pagination                 = $this->paginator->paginate(
             $serviceEntityRepositoryLib->findPublier(),
             $this->request->query->getInt('page', 1),
             10

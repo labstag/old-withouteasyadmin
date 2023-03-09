@@ -37,9 +37,9 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
     ): void
     {
         /** @var Block $block */
-        $block = $this->getReference('block_'.$region.'-'.$type);
-        $layout = new Layout();
-        $old = clone $layout;
+        $block   = $this->getReference('block_'.$region.'-'.$type);
+        $layout  = new Layout();
+        $old     = clone $layout;
         $customs = $block->getCustoms();
         $layout->setCustom($customs[0]);
         $layout->setName($dataLayout['name']);
@@ -55,7 +55,7 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
 
     protected function addLayouts(array $data): void
     {
-        $type = $data['block-type'];
+        $type   = $data['block-type'];
         $region = $data['block-region'];
         foreach ($data['layouts'] as $layout) {
             $this->addLayout($type, $region, $layout);

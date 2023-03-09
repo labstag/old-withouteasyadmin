@@ -64,15 +64,15 @@ class BlockController extends AdminControllerLib
         );
         /** @var BlockDomain $domain */
         $domain = $this->getDomainEntity();
-        $url = $domain->getUrlAdmin();
+        $url    = $domain->getUrlAdmin();
         /** @var BlockRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $domain->getRepository();
-        $request = $this->requeststack->getCurrentRequest();
-        $all = $request->attributes->all();
-        $route = $all['_route'];
-        $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
+        $request                    = $this->requeststack->getCurrentRequest();
+        $all                        = $request->attributes->all();
+        $route                      = $all['_route'];
+        $routeType                  = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
         $this->setBtnListOrTrash($routeType, $domain);
-        $data = $serviceEntityRepositoryLib->getDataByRegion();
+        $data  = $serviceEntityRepositoryLib->getDataByRegion();
         $total = 0;
         foreach ($data as $region) {
             $total += is_countable($region) ? count($region) : 0;
@@ -132,9 +132,9 @@ class BlockController extends AdminControllerLib
         BlockRequestHandler $blockRequestHandler
     ): RedirectResponse
     {
-        $post = $request->request->all('new_block');
+        $post  = $request->request->all('new_block');
         $block = new Block();
-        $old = clone $block;
+        $old   = clone $block;
         $block->setTitle(Uuid::v1());
         $block->setRegion($post['region']);
         $block->setType($post['type']);

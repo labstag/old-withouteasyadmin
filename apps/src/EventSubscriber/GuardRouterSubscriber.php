@@ -19,9 +19,9 @@ class GuardRouterSubscriber extends EventSubscriberLib
     public function onKernelRequest(RequestEvent $requestEvent): void
     {
         $request = $requestEvent->getRequest();
-        $route = $request->attributes->get('_route');
-        $token = $this->tokenStorage->getToken();
-        $acces = $this->guardService->guardRoute($route, $token);
+        $route   = $request->attributes->get('_route');
+        $token   = $this->tokenStorage->getToken();
+        $acces   = $this->guardService->guardRoute($route, $token);
         if ($acces) {
             return;
         }

@@ -33,9 +33,9 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
     ): void
     {
         $bookmark = new Bookmark();
-        $old = clone $bookmark;
+        $old      = clone $bookmark;
         $this->setLibelles($generator, $bookmark);
-        $users = $this->installService->getData('user');
+        $users     = $this->installService->getData('user');
         $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
         /** @var User $user */
         $user = $this->getReference('user_'.$indexUser);

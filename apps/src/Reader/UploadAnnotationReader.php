@@ -14,10 +14,7 @@ class UploadAnnotationReader
     {
     }
 
-    public function enableAttachment(
-        mixed $annotations,
-        array $fields
-    ): bool
+    public function enableAttachment(mixed $annotations, array $fields): bool
     {
         $enable = false;
         foreach (array_keys($annotations) as $key) {

@@ -13,13 +13,13 @@ class CheckController extends ApiControllerLib
     #[Route(path: '/phone', name: 'api_check_phone')]
     public function phone(Request $request): Response
     {
-        $get = $request->query->all();
+        $get    = $request->query->all();
         $return = ['isvalid' => false];
         if (!array_key_exists('country', $get) || !array_key_exists('phone', $get)) {
             return $this->json($return);
         }
 
-        $phone = $request->query->get('phone');
+        $phone   = $request->query->get('phone');
         $country = $request->query->get('country');
 
         $verif = $this->phoneService->verif(

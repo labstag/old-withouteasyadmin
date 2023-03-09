@@ -51,6 +51,7 @@
         "lint:container": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) symfony console lint:container",
         "lint:markdown": "markdownlint README.md",
         "lint:php-cs-fixer": "docker exec -e PHP_CS_FIXER_IGNORE_ENV=1 -i $(npx korojscommands docker_getname-container --container phpfpm) php -d memory_limit=-1 php-cs-fixer.phar fix src",
+        "lint:php-cs-fixer:dry": "docker exec -e PHP_CS_FIXER_IGNORE_ENV=1 -i $(npx korojscommands docker_getname-container --container phpfpm) php -d memory_limit=-1 php-cs-fixer.phar fix src --dry-run -v --diff",
         "lint:phpaudit": "npm-run-all -c lint:phpcs lint:phpmd lint:phpmnd lint:phpstan",
         "lint:phpcbf": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) php -d memory_limit=-1 phpcbf.phar -d memory_limit=-1 --report=diff -p --extensions=php --standard=phpcs.xml",
         "lint:phpcs": "docker exec -i $(npx korojscommands docker_getname-container --container phpfpm) php -d memory_limit=-1 phpcs.phar --report=full --extensions=php src --standard=phpcs.xml",

@@ -67,9 +67,9 @@ abstract class ParagraphLib extends AbstractController
             return $this->template[$type];
         }
 
-        $folder = __DIR__.'/../../templates/';
+        $folder   = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';
-        $files = [
+        $files    = [
             'paragraph/'.$type.$htmltwig,
             'paragraph/default'.$htmltwig,
         ];
@@ -103,7 +103,7 @@ abstract class ParagraphLib extends AbstractController
 
     protected function showTemplateFile(string $type): array
     {
-        $data = $this->getTemplateData($type);
+        $data    = $this->getTemplateData($type);
         $globals = $this->twigEnvironment->getGlobals();
         if ('dev' == $globals['app']->getDebug()) {
             return $data;

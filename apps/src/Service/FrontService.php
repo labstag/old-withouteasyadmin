@@ -93,9 +93,9 @@ class FrontService
 
     public function setMetatags(array $meta): void
     {
-        $metatags = [];
+        $metatags             = [];
         $meta['twitter:card'] = 'summary_large_image';
-        $meta['og:type'] = 'website';
+        $meta['og:type']      = 'website';
         ksort($meta);
         foreach ($meta as $key => $value) {
             if ('' == $value || is_null($value) || 'title' == $key) {
@@ -131,7 +131,7 @@ class FrontService
             return $meta;
         }
 
-        $meta['og:description'] = $meta['description'];
+        $meta['og:description']      = $meta['description'];
         $meta['twitter:description'] = $meta['description'];
 
         return $meta;
@@ -148,9 +148,9 @@ class FrontService
 
         $image = $meta['image'] ?? $attachment->getName();
 
-        $pathPackage = new PathPackage('/', new EmptyVersionStrategy());
-        $url = $pathPackage->getUrl($image);
-        $meta['og:image'] = $url;
+        $pathPackage           = new PathPackage('/', new EmptyVersionStrategy());
+        $url                   = $pathPackage->getUrl($image);
+        $meta['og:image']      = $url;
         $meta['twitter:image'] = $url;
         if (isset($meta['image'])) {
             unset($meta['image']);
@@ -178,8 +178,8 @@ class FrontService
             );
         }
 
-        $meta['og:locale'] = $config['languagedefault'];
-        $meta['og:url'] = $url;
+        $meta['og:locale']   = $config['languagedefault'];
+        $meta['og:url']      = $url;
         $meta['twitter:url'] = $url;
 
         return $meta;
@@ -212,7 +212,7 @@ class FrontService
             $meta['title'] = $title;
         }
 
-        $meta['og:title'] = $title;
+        $meta['og:title']      = $title;
         $meta['twitter:title'] = $title;
 
         return $meta;

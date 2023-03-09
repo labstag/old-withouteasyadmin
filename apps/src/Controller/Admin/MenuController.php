@@ -54,10 +54,10 @@ class MenuController extends AdminControllerLib
     #[Route(path: '/divider/{id}', name: 'admin_menu_divider')]
     public function divider(Menu $menu, MenuRequestHandler $menuRequestHandler): RedirectResponse
     {
-        $entity = new Menu();
+        $entity    = new Menu();
         $oldEntity = clone $entity;
-        $children = $menu->getChildren();
-        $position = is_countable($children) ? count($children) : 0;
+        $children  = $menu->getChildren();
+        $position  = is_countable($children) ? count($children) : 0;
         $entity->setPosition($position + 1);
         $entity->setSeparateur(true);
         $entity->setParent($menu);
@@ -75,7 +75,7 @@ class MenuController extends AdminControllerLib
     ): Response
     {
         $this->modalAttachmentDelete();
-        $data = [$menu->getData()];
+        $data             = [$menu->getData()];
         $data[0]['param'] = isset($data[0]['params']) ? json_encode($data[0]['params'], JSON_THROW_ON_ERROR) : '';
         $menu->setData($data);
 
@@ -91,9 +91,9 @@ class MenuController extends AdminControllerLib
         MenuRepository $menuRepository
     ): Response
     {
-        $all = $menuRepository->findAllCode();
-        $globals = $twigEnvironment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $all             = $menuRepository->findAllCode();
+        $globals         = $twigEnvironment->getGlobals();
+        $modal           = $globals['modal'] ?? [];
         $modal['delete'] = true;
         $twigEnvironment->addGlobal('modal', $modal);
         $this->adminBtnService->addBtnNew('admin_menu_new');

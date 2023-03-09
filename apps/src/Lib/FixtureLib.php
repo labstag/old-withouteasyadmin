@@ -219,11 +219,11 @@ abstract class FixtureLib extends Fixture
 
     protected function loadForeach(int $number, string $method): void
     {
-        $faker = $this->setFaker();
+        $faker     = $this->setFaker();
         $statesTab = $this->getStatesData();
         for ($index = 0; $index < $number; ++$index) {
             $stateId = array_rand($statesTab);
-            $states = $statesTab[$stateId];
+            $states  = $statesTab[$stateId];
             /** @var callable $callable */
             $callable = [
                 $this,
@@ -239,7 +239,7 @@ abstract class FixtureLib extends Fixture
         $users = $this->installService->getData('user');
         for ($index = 0; $index < $number; ++$index) {
             $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
-            $user = $this->getReference('user_'.$indexUser);
+            $user      = $this->getReference('user_'.$indexUser);
             /** @var callable $callable */
             $callable = [
                 $this,
@@ -267,7 +267,7 @@ abstract class FixtureLib extends Fixture
         $nbr = $generator->numberBetween(0, self::NUMBER_LIBELLE - 1);
         for ($i = 0; $i < $nbr; ++$i) {
             $indexLibelle = $generator->numberBetween(0, self::NUMBER_LIBELLE - 1);
-            $libelle = $this->getReference('libelle_'.$indexLibelle);
+            $libelle      = $this->getReference('libelle_'.$indexLibelle);
             $entity->addLibelle($libelle);
         }
     }
@@ -287,14 +287,14 @@ abstract class FixtureLib extends Fixture
     protected function upload(mixed $entity, Generator $generator): void
     {
         /** @var finfo $finfo */
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
+        $finfo        = finfo_open(FILEINFO_MIME_TYPE);
+        $annotations  = $this->uploadAnnotationReader->getUploadableFields($entity);
         $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
-            $path = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
+            $path     = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
-            $title = $accessor->getValue($entity, $annotation->getSlug());
-            $slug = $asciiSlugger->slug($title);
+            $title    = $accessor->getValue($entity, $annotation->getSlug());
+            $slug     = $asciiSlugger->slug($title);
 
             try {
                 /** @var PicsumProvider $generator */
@@ -307,7 +307,7 @@ abstract class FixtureLib extends Fixture
                     $content = file_get_contents($image);
                     /** @var resource $tmpfile */
                     $tmpfile = tmpfile();
-                    $data = stream_get_meta_data($tmpfile);
+                    $data    = stream_get_meta_data($tmpfile);
                     file_put_contents($data['uri'], $content);
                     $file = new UploadedFile(
                         path: $data['uri'],

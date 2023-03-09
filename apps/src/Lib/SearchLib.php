@@ -21,8 +21,8 @@ abstract class SearchLib
     ): void
     {
         $entityRepository = $entityManager->getRepository(User::class);
-        $categoryRepo = $entityManager->getRepository(Category::class);
-        $groupeRepo = $entityManager->getRepository(Groupe::class);
+        $categoryRepo     = $entityManager->getRepository(Category::class);
+        $groupeRepo       = $entityManager->getRepository(Groupe::class);
         foreach ($get as $key => $value) {
             if (!isset($this->{$key})) {
                 continue;
@@ -48,10 +48,10 @@ abstract class SearchLib
             }
 
             $this->{$key} = match ($key) {
-                'user' => $entityRepository->find($value),
+                'user'     => $entityRepository->find($value),
                 'category' => $categoryRepo->find($value),
-                'groupe' => $groupeRepo->find($value),
-                default => $value
+                'groupe'   => $groupeRepo->find($value),
+                default    => $value
             };
         }
     }

@@ -71,31 +71,31 @@ class Paragraph implements EntityInterface
 
     public function __construct()
     {
-        $this->texts = new ArrayCollection();
-        $this->bookmarks = new ArrayCollection();
-        $this->histories = new ArrayCollection();
-        $this->editos = new ArrayCollection();
-        $this->posts = new ArrayCollection();
-        $this->postLists = new ArrayCollection();
-        $this->historyLists = new ArrayCollection();
-        $this->bookmarkLists = new ArrayCollection();
-        $this->postArchives = new ArrayCollection();
-        $this->postUsers = new ArrayCollection();
-        $this->postLibelles = new ArrayCollection();
-        $this->bookmarkLibelles = new ArrayCollection();
+        $this->texts              = new ArrayCollection();
+        $this->bookmarks          = new ArrayCollection();
+        $this->histories          = new ArrayCollection();
+        $this->editos             = new ArrayCollection();
+        $this->posts              = new ArrayCollection();
+        $this->postLists          = new ArrayCollection();
+        $this->historyLists       = new ArrayCollection();
+        $this->bookmarkLists      = new ArrayCollection();
+        $this->postArchives       = new ArrayCollection();
+        $this->postUsers          = new ArrayCollection();
+        $this->postLibelles       = new ArrayCollection();
+        $this->bookmarkLibelles   = new ArrayCollection();
         $this->bookmarkCategories = new ArrayCollection();
-        $this->postYears = new ArrayCollection();
-        $this->postShows = new ArrayCollection();
-        $this->postCategories = new ArrayCollection();
-        $this->postHeaders = new ArrayCollection();
-        $this->historyUsers = new ArrayCollection();
-        $this->historyChapters = new ArrayCollection();
-        $this->historyShows = new ArrayCollection();
-        $this->editoShows = new ArrayCollection();
-        $this->editoHeaders = new ArrayCollection();
-        $this->videos = new ArrayCollection();
-        $this->images = new ArrayCollection();
-        $this->textImages = new ArrayCollection();
+        $this->postYears          = new ArrayCollection();
+        $this->postShows          = new ArrayCollection();
+        $this->postCategories     = new ArrayCollection();
+        $this->postHeaders        = new ArrayCollection();
+        $this->historyUsers       = new ArrayCollection();
+        $this->historyChapters    = new ArrayCollection();
+        $this->historyShows       = new ArrayCollection();
+        $this->editoShows         = new ArrayCollection();
+        $this->editoHeaders       = new ArrayCollection();
+        $this->videos             = new ArrayCollection();
+        $this->images             = new ArrayCollection();
+        $this->textImages         = new ArrayCollection();
     }
 
     public function addImage(Image $image): self

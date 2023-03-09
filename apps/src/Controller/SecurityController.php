@@ -171,7 +171,7 @@ class SecurityController extends ControllerLib
         $authenticationException = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        $form = $this->createForm(
+        $form         = $this->createForm(
             LoginType::class,
             ['username' => $lastUsername]
         );
@@ -221,8 +221,8 @@ class SecurityController extends ControllerLib
     {
         /** @var AbstractProvider $provider */
         $provider = $oauthService->setProvider($oauthCode);
-        $session = $request->getSession();
-        $query = $request->query->all();
+        $session  = $request->getSession();
+        $query    = $request->query->all();
         if (array_key_exists('link', $query)) {
             $session->set('link', 1);
         }
@@ -245,8 +245,8 @@ class SecurityController extends ControllerLib
         }
 
         $authorizationUrl = $provider->getAuthorizationUrl();
-        $session = $request->getSession();
-        $referer = $request->headers->get('referer');
+        $session          = $request->getSession();
+        $referer          = $request->headers->get('referer');
         $session->set('referer', $referer);
         $session->set('oauth2state', $provider->getState());
 
@@ -269,10 +269,10 @@ class SecurityController extends ControllerLib
     ): RedirectResponse
     {
         /** @var AbstractProvider $provider */
-        $provider = $oauthService->setProvider($oauthCode);
-        $query = $request->query->all();
-        $session = $request->getSession();
-        $referer = $session->get('referer');
+        $provider    = $oauthService->setProvider($oauthCode);
+        $query       = $request->query->all();
+        $session     = $request->getSession();
+        $referer     = $session->get('referer');
         $oauth2state = $session->get('oauth2state');
         /** @var string $url */
         $url = $this->generateUrl('front');

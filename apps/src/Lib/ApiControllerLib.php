@@ -33,7 +33,7 @@ abstract class ApiControllerLib extends AbstractController
         protected UserRepository $userRepository
     )
     {
-        /** @var  Request $request */
+        // @var  Request $request
         $this->request = $this->requeststack->getCurrentRequest();
     }
 
@@ -44,16 +44,16 @@ abstract class ApiControllerLib extends AbstractController
         }
 
         $data['user'] = [];
-        $user = $this->userRepository->find($get['user']);
+        $user         = $this->userRepository->find($get['user']);
         if (!$user instanceof User) {
             return $data;
         }
 
         $entityRepository = $this->repositoryService->get($entityClass);
-        $results = $entityRepository->findEnableByUser($user);
+        $results          = $entityRepository->findEnableByUser($user);
         if (RouteUser::class == $entityClass) {
             foreach ($results as $row) {
-                /** @var  RouteUser $row */
+                // @var  RouteUser $row
                 $data['user'][] = [
                     'route' => $row->getRefroute()->getName(),
                 ];
@@ -63,7 +63,7 @@ abstract class ApiControllerLib extends AbstractController
         }
 
         foreach ($results as $result) {
-            /** @var  WorkflowGroupe $row */
+            // @var  WorkflowGroupe $row
             $data['group'][] = [
                 'entity'     => $result->getRefworkflow()->getEntity(),
                 'transition' => $result->getRefworkflow()->getTransition(),
@@ -75,9 +75,9 @@ abstract class ApiControllerLib extends AbstractController
 
     protected function getResultWorkflow(Request $request, mixed $entity): mixed
     {
-        $userRepository = $this->repositoryService->get(User::class);
+        $userRepository   = $this->repositoryService->get(User::class);
         $entityRepository = $this->repositoryService->get($entity);
-        $get = $request->query->all();
+        $get              = $request->query->all();
         if (array_key_exists('user', $get)) {
             /** @var User $user */
             $user = $userRepository->find($get['user']);

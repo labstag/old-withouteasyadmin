@@ -56,20 +56,20 @@ class OauthAuthenticator extends AbstractAuthenticator
         protected UserRepository $userRepository
     )
     {
-        /** @var  Request $request */
+        // @var  Request $request
         $this->request = $this->requestStack->getCurrentRequest();
 
-        $attributes = $this->request->attributes;
+        $attributes      = $this->request->attributes;
         $this->oauthCode = $this->setOauthCode($attributes);
     }
 
     public function authenticate(Request $request): Passport
     {
         /** @var AbstractProvider $provider */
-        $provider = $this->oauthService->setProvider($this->oauthCode);
-        $attributes = $request->attributes->all();
-        $query = $request->query->all();
-        $session = $request->getSession();
+        $provider    = $this->oauthService->setProvider($this->oauthCode);
+        $attributes  = $request->attributes->all();
+        $query       = $request->query->all();
+        $session     = $request->getSession();
         $oauth2state = $session->get('oauth2state');
         if (!$provider instanceof AbstractProvider) {
             throw new CustomUserMessageAuthenticationException('No API token provided');
@@ -88,10 +88,10 @@ class OauthAuthenticator extends AbstractAuthenticator
                 ]
             );
             $resourceOwner = $provider->getResourceOwner($accessToken);
-            $data = $resourceOwner->toArray();
-            $client = $attributes['_route_params']['oauthCode'];
-            $identity = $this->oauthService->getIdentity($data, $client);
-            $user = $this->userRepository->findOauth(
+            $data          = $resourceOwner->toArray();
+            $client        = $attributes['_route_params']['oauthCode'];
+            $identity      = $this->oauthService->getIdentity($data, $client);
+            $user          = $this->userRepository->findOauth(
                 $identity,
                 $client
             );
@@ -141,10 +141,10 @@ class OauthAuthenticator extends AbstractAuthenticator
     public function supports(Request $request): ?bool
     {
         $session = $request->getSession()->all();
-        $route = $request->attributes->get('_route');
-        $token = $this->tokenStorage->getToken();
-        $test1 = 'connect_check' === $route && !array_key_exists('link', $session);
-        $test2 = (is_null($token) || !$token->getUser() instanceof User);
+        $route   = $request->attributes->get('_route');
+        $token   = $this->tokenStorage->getToken();
+        $test1   = 'connect_check' === $route && !array_key_exists('link', $session);
+        $test2   = (is_null($token) || !$token->getUser() instanceof User);
 
         return $test1 && $test2;
     }

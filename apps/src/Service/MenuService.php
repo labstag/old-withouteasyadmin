@@ -22,7 +22,7 @@ class MenuService
 
     public function createMenu(Menu $menu): ItemInterface
     {
-        $clef = $menu->getClef();
+        $clef     = $menu->getClef();
         $menuItem = $this->menuFactory->createItem('menulabstag');
         $menuItem->setChildrenAttribute('class', 'navbar-nav menu-'.$clef);
 
@@ -35,9 +35,9 @@ class MenuService
     public function createMenus(): array
     {
         $menus = [];
-        $all = $this->menuRepository->findAllCode();
+        $all   = $this->menuRepository->findAllCode();
         foreach ($all as $row) {
-            $key = $row->getClef();
+            $key         = $row->getClef();
             $menus[$key] = $this->createMenu($row);
         }
 
@@ -69,7 +69,7 @@ class MenuService
 
     protected function addMenu(MenuItem &$menuItem, Menu $menu): void
     {
-        $data = [];
+        $data      = [];
         $dataChild = $menu->getData();
         if ($menu->isSeparateur()) {
             $menuItem->addChild('')->setExtra('divider', true);

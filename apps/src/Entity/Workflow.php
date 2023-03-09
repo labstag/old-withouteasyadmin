@@ -48,7 +48,7 @@ class Workflow implements EntityInterface
     public function __construct()
     {
         $this->workflowGroupes = new ArrayCollection();
-        $this->workflowUsers = new ArrayCollection();
+        $this->workflowUsers   = new ArrayCollection();
     }
 
     public function addWorkflowGroupe(WorkflowGroupe $workflowGroupe): self
